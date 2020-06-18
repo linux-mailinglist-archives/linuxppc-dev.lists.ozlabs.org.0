@@ -1,78 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF981FFC05
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 21:50:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADD71FFCAC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 22:40:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nsxR0llRzDrMr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 05:50:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nv2J5BcWzDr8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 06:40:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::142;
- helo=mail-lf1-x142.google.com; envelope-from=torvalds@linuxfoundation.org;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=O8vGhvfO; 
- dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nsv262LKzDrG3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 05:48:45 +1000 (AEST)
-Received: by mail-lf1-x142.google.com with SMTP id d7so4182708lfi.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 12:48:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=zAj23S3Mp6rRGO4SN+Gp5C3WPkcIYgiIEGIXxkjYIf0=;
- b=O8vGhvfOfOq9wLj1E8rP/VwqEBx1zwNPyHW+trZ6ABPefealuQSSUilZwTmE1SLwx3
- zEwIy5hJ4gIay72KjTq2B1QzBGNJ+P/4jwxTdP42XjdJJEBlYBl/eBUwneIpV2J18exN
- a/r+v/+JeACo1IVMd6iMfbPGsYHL+wiwfVYwk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=zAj23S3Mp6rRGO4SN+Gp5C3WPkcIYgiIEGIXxkjYIf0=;
- b=DCIXZDAw1nP8DVrqtv4MgoqkprG0wghOz4dNn1fcQAVBpLk3VQft9t0czidpqi3BC5
- DxAqSBZ9FIV72MYh/BbaVXvgimuV8MBwk6Y2wKFOjNliEkdKTOq3eUkV111yXwNNl0Zg
- pF4fWYaDdZQdpbPenpoyaGgfui2yt55hXKsrn/tHu7o66haTbXbW+RFt5GzyolvT+3gF
- 0CTbj7rPdvxaL+pRfBQ36B3X7Tom1ASkyV9wAu+hrRgMjBN0WCt8tGF+Y8jVhjjDk6KG
- x0MTYw2QP8AwWr60WzbyZMWojRRxZufgZB7AAdetBCcKJ5HlghOKDEc4mZe9WKpd1b3M
- QynQ==
-X-Gm-Message-State: AOAM531x+a8zLFG8dPfiyaSCB9KOl5PA1Bkwao2KyF1SKJKyoxkJdP8p
- VeCQrRZJ1HFmnZnD7tYwWboTfl89yFw=
-X-Google-Smtp-Source: ABdhPJzz7oH/Yk2t/atNV61cPCLvLutqAqlSLQxZUHABM0X9MuDvaw41m3FMA8vpGMx0wYf4pme7mw==
-X-Received: by 2002:a19:c797:: with SMTP id x145mr3215350lff.143.1592509720019; 
- Thu, 18 Jun 2020 12:48:40 -0700 (PDT)
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com.
- [209.85.208.176])
- by smtp.gmail.com with ESMTPSA id y4sm794376ljd.111.2020.06.18.12.48.38
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Jun 2020 12:48:39 -0700 (PDT)
-Received: by mail-lj1-f176.google.com with SMTP id n24so8712834lji.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 12:48:38 -0700 (PDT)
-X-Received: by 2002:a2e:8e78:: with SMTP id t24mr9039ljk.314.1592509718255;
- Thu, 18 Jun 2020 12:48:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ntzm3mbDzDr8D
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 06:37:56 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05IKWJjo038864; Thu, 18 Jun 2020 16:37:46 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31r6d0q8j5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jun 2020 16:37:46 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05IKVlEV016429;
+ Thu, 18 Jun 2020 20:37:44 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 31quax9npy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jun 2020 20:37:44 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05IKbedF43712598
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 18 Jun 2020 20:37:40 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 612814C04E;
+ Thu, 18 Jun 2020 20:37:40 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 413A44C040;
+ Thu, 18 Jun 2020 20:37:37 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.211.71.42])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 18 Jun 2020 20:37:37 +0000 (GMT)
+Date: Thu, 18 Jun 2020 13:37:34 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 0/4] Migrate non-migrated pages of a SVM.
+Message-ID: <20200618203734.GA6772@oc0525413822.ibm.com>
+References: <1592471945-24786-1-git-send-email-linuxram@us.ibm.com>
 MIME-Version: 1.0
-References: <20200617073755.8068-1-hch@lst.de>
-In-Reply-To: <20200617073755.8068-1-hch@lst.de>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 18 Jun 2020 12:48:22 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
-Message-ID: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
-Subject: Re: rename probe_kernel_* and probe_user_*
-To: Christoph Hellwig <hch@lst.de>, Russell King <linux@armlinux.org.uk>,
- Tony Luck <tony.luck@intel.com>, 
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1592471945-24786-1-git-send-email-linuxram@us.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-18_15:2020-06-18,
+ 2020-06-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015
+ adultscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
+ cotscore=-2147483648 spamscore=0 lowpriorityscore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006180152
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,45 +85,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, bharata@linux.ibm.com,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ Explicitly added architecture lists and developers to the cc to make
-this more visible ]
+I should have elaborated on the problem and the need for these patches.
 
-On Wed, Jun 17, 2020 at 12:38 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> Andrew and I decided to drop the patches implementing your suggested
-> rename of the probe_kernel_* and probe_user_* helpers from -mm as there
-> were way to many conflicts.  After -rc1 might be a good time for this as
-> all the conflicts are resolved now.
+Explaining it here. Will add it to the series in next version.
 
-So I've merged this renaming now, together with my changes to make
-'get_kernel_nofault()' look and act a lot more like 'get_user()'.
+-------------------------------------------------------------
 
-It just felt wrong (and potentially dangerous) to me to have a
-'get_kernel_nofault()' naming that implied semantics that we're all
-familiar with from 'get_user()', but acting very differently.
+The time taken to switch a VM to Secure-VM, increases by the size of
+the VM.  A 100GB VM takes about 7minutes. This is unacceptable.  This
+linear increase is caused by a suboptimal behavior by the Ultravisor and
+the Hypervisor.  The Ultravisor unnecessarily migrates all the GFN of
+the VM from normal-memory to secure-memory. It has to just migrate the
+necessary and sufficient GFNs.
 
-But part of the fixups I made for the type checking are for
-architectures where I didn't even compile-test the end result. I
-looked at every case individually, and the patch looks sane, but I
-could have screwed something up.
+However when the optimization is incorporated in the Ultravisor, the
+Hypervisor starts misbehaving. The Hypervisor has a inbuilt assumption
+that the Ultravisor will explicitly request to migrate, each and every
+GFN of the VM. If only necessary and sufficient GFNs are requested for
+migration, the Hypervisor continues to manage the rest of the GFNs are
+normal GFNs. This leads of memory corruption, manifested consistently
+when the SVM reboots.
 
-Basically, 'get_kernel_nofault()' doesn't do the same automagic type
-munging from the pointer to the target that 'get_user()' does, but at
-least now it checks that the types are superficially compatible.
-There should be build failures if they aren't, but I hopefully fixed
-everything up properly for all architectures.
+The same is true, when a memory slot is hotplugged into a SVM. The
+Hypervisor expects the ultravisor to request migration of all GFNs to
+secure-GFN.  But at the same time the hypervisor is unable to handle any
+H_SVM_PAGE_IN requests from the Ultravisor, done in the context of
+UV_REGISTER_MEM_SLOT ucall.  This problem manifests as random errors in
+the SVM, when a memory-slot is hotplugged.
 
-This email is partly to ask people to double-check, but partly just as
-a heads-up so that _if_ I screwed something up, you'll have the
-background and it won't take you by surprise.
+This patch series automatically migrates the non-migrated pages of a SVM,
+and thus solves the problem.
 
-               Linus
+------------------------------------------------------------------
+
+
+
+On Thu, Jun 18, 2020 at 02:19:01AM -0700, Ram Pai wrote:
+> This patch series migrates the non-migrated pages of a SVM.
+> This is required when the UV calls H_SVM_INIT_DONE, and
+> when a memory-slot is hotplugged to a Secure VM.
+> 
+> Testing: Passed rigorous SVM reboot test using different
+> 	sized SVMs.
+> 
+> Changelog:
+> 	. fixed a bug observed by Bharata. Pages that
+> 	where paged-in and later paged-out must also be
+> 	skipped from migration during H_SVM_INIT_DONE.
+> 
+> Laurent Dufour (1):
+>   KVM: PPC: Book3S HV: migrate hot plugged memory
+> 
+> Ram Pai (3):
+>   KVM: PPC: Book3S HV: Fix function definition in book3s_hv_uvmem.c
+>   KVM: PPC: Book3S HV: track the state GFNs associated with secure VMs
+>   KVM: PPC: Book3S HV: migrate remaining normal-GFNs to secure-GFNs in
+>     H_SVM_INIT_DONE
+> 
+>  Documentation/powerpc/ultravisor.rst        |   2 +
+>  arch/powerpc/include/asm/kvm_book3s_uvmem.h |   8 +-
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c      |   2 +-
+>  arch/powerpc/kvm/book3s_hv.c                |  12 +-
+>  arch/powerpc/kvm/book3s_hv_uvmem.c          | 449 ++++++++++++++++++++++------
+>  5 files changed, 368 insertions(+), 105 deletions(-)
+> 
+> -- 
+> 1.8.3.1
+
+-- 
+Ram Pai
