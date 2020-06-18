@@ -2,45 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD5B1FDA5A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 02:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCEA1FDA97
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 02:49:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nNS64Hp0zDqvL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 10:42:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nNcr16mDzDqnv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 10:49:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
- helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nNZh5XVHzDqk8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 10:47:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=telegraphics.com.au
-Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
- [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49nNQS54RCzDqvH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 10:40:48 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by kvm5.telegraphics.com.au (Postfix) with ESMTP id 2C6062073E;
- Wed, 17 Jun 2020 20:40:40 -0400 (EDT)
-Date: Thu, 18 Jun 2020 10:40:37 +1000 (AEST)
-From: Finn Thain <fthain@telegraphics.com.au>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
-In-Reply-To: <yq1366ul8o4.fsf@ca-mkp.ca.oracle.com>
-Message-ID: <alpine.LNX.2.22.394.2006180953320.8@nippy.intranet>
-References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com>
- <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet>
- <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
- <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
- <8da0c285-d707-a3d2-063e-472af5cc560f@boo.tc>
- <alpine.LNX.2.22.394.2006161929380.8@nippy.intranet>
- <8cbab988-fba7-8e27-7faf-9f7aa36ca235@acm.org>
- <SN4PR0401MB35982D889857E3C03E96E49D9B9D0@SN4PR0401MB3598.namprd04.prod.outlook.com>
- <1592321667.4394.5.camel@HansenPartnership.com>
- <5e512185-45d1-61eb-9bec-91e9f9d53ea3@boo.tc>
- <yq1366ul8o4.fsf@ca-mkp.ca.oracle.com>
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=SbXjA23Q; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49nNZg50TZz9sSc;
+ Thu, 18 Jun 2020 10:47:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1592441276;
+ bh=TG7uARSNXOCtzyhqf6WfzaFhVxvui+qt2GtCF7JxfbU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=SbXjA23Qv4zCSPbZbYwvnNOG+10UWft7vXba1l9SRCrtwcmGfZqVAQUaL6AuE9TsE
+ Xl8kpUEXPhep2rbqO6NXznsrJ5pmyAvobpwjHEHVxQiLxssesbWWXAjq11rpOqkPJ/
+ Bu4Kua0elnAKRocSOzhOkFZs0N25INuOTibgKUf1RUgfOyxCB1ETRQ2to3KOuFgtyN
+ 4Y4paRw+lgO4Ne7RBVvUmfBnBjSnl1zBRS+9dp0XvBE0Li3frprvJrcWlaIuJDQ576
+ 8sy17H7cJwQpV3mCBEfaY//7xxH7MvhtZF4XaTVSxt+ZFFtYEvyouNv4FV5eu143yd
+ PEplI/YofUrmQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH v5 01/13] powerpc: Remove Xilinx PPC405/PPC440 support
+In-Reply-To: <CAKwvOdnkcjLGay0jdQ77kHTmKhE56F9jvzh01XWwEE8rjbhLAA@mail.gmail.com>
+References: <cover.1590079968.git.christophe.leroy@csgroup.eu>
+ <8c593895e2cb57d232d85ce4d8c3a1aa7f0869cc.1590079968.git.christophe.leroy@csgroup.eu>
+ <20200616002720.GA1307277@ubuntu-n2-xlarge-x86>
+ <68503e5e-7456-b81c-e43d-27cb331a4b72@xilinx.com>
+ <20200616181630.GA3403678@ubuntu-n2-xlarge-x86>
+ <50fb2dd6-4e8f-a550-6eda-073beb86f2ff@xilinx.com>
+ <87bllidmk4.fsf@mpe.ellerman.id.au> <878sgmdmcv.fsf@mpe.ellerman.id.au>
+ <CAKwvOdnkcjLGay0jdQ77kHTmKhE56F9jvzh01XWwEE8rjbhLAA@mail.gmail.com>
+Date: Thu, 18 Jun 2020 10:48:21 +1000
+Message-ID: <87tuz9ci7e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,78 +64,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bart Van Assche <bvanassche@acm.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
- Chuhong Yuan <hslester96@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Nicholas Bellinger <nab@linux-iscsi.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>,
- Chris Boot <bootc@boo.tc>, "linux1394-devel@lists.sourceforge.net"
- <linux1394-devel@lists.sourceforge.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Stefan Richter <stefanr@s5r6.in-berlin.de>
+Cc: Arnd Bergmann <arnd@arndb.de>, Michal Simek <michal.simek@xilinx.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 16 Jun 2020, Martin K. Petersen wrote:
+Nick Desaulniers <ndesaulniers@google.com> writes:
+> On Wed, Jun 17, 2020 at 3:20 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>> > Michal Simek <michal.simek@xilinx.com> writes:
+>> <snip>
+>>
+>> >> Or if bamboo requires uImage to be built by default you can do it via
+>> >> Kconfig.
+>> >>
+>> >> diff --git a/arch/powerpc/platforms/44x/Kconfig
+>> >> b/arch/powerpc/platforms/44x/Kconfig
+>> >> index 39e93d23fb38..300864d7b8c9 100644
+>> >> --- a/arch/powerpc/platforms/44x/Kconfig
+>> >> +++ b/arch/powerpc/platforms/44x/Kconfig
+>> >> @@ -13,6 +13,7 @@ config BAMBOO
+>> >>         select PPC44x_SIMPLE
+>> >>         select 440EP
+>> >>         select FORCE_PCI
+>> >> +       select DEFAULT_UIMAGE
+>> >>         help
+>> >>           This option enables support for the IBM PPC440EP evaluation board.
+>> >
+>> > Who knows what the actual bamboo board used. But I'd be happy to take a
+>> > SOB'ed patch to do the above, because these days the qemu emulation is
+>> > much more likely to be used than the actual board.
+>>
+>> I just went to see why my CI boot of 44x didn't catch this, and it's
+>> because I don't use the uImage, I just boot the vmlinux directly:
+>>
+>>   $ qemu-system-ppc -M bamboo -m 128m -display none -kernel build~/vmlinux -append "console=ttyS0" -display none -nodefaults -serial mon:stdio
+>>   Linux version 5.8.0-rc1-00118-g69119673bd50 (michael@alpine1-p1) (gcc (Ubuntu 9.3.0-10ubuntu2) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #4 Wed Jun 17 20:19:22 AEST 2020
+>>   Using PowerPC 44x Platform machine description
+>>   ioremap() called early from find_legacy_serial_ports+0x690/0x770. Use early_ioremap() instead
+>>   printk: bootconsole [udbg0] enabled
+>>
+>>
+>> So that's probably the simplest solution?
+>
+> If the uImage or zImage self decompresses, I would prefer to test that as well.
 
-> 
-> However, keeping code around is not free.
+The uImage is decompressed by qemu AIUI.
 
-Right. And removing code isn't free either, if it forces people to find 
-workarounds.
+>> That means previously arch/powerpc/boot/zImage was just a hardlink to
+>> the uImage:
+>
+> It sounds like we can just boot the zImage, or is that no longer
+> created with the uImage?
 
-> Core interfaces change frequently.  Nobody enjoys having to tweak host 
-> templates for 50 devices they have never even heard about.
+The zImage won't boot on bamboo.
 
-And yet some people seem to enjoy writing patches that are as trivial as 
-they are invasive...
+Because of the vagaries of the arch/powerpc/boot/Makefile the zImage
+ends up pointing to treeImage.ebony, which is for a different board.
 
-You seem to be making an argument for more automation here, not an 
-argument for less code. Or is there some upper bound to the size of the 
-kernel, that might be lifted by adding maintainers? (Can you deliver a 
-better product by adding more developers to your project?)
+The zImage link is made to the first item in $(image-y):
 
-> Also, we now live in a reality where there is a constant barrage of 
-> build bots and code analyzers sending mail. So the effective cost of 
-> keeping code around in the tree is going up.
+$(obj)/zImage:		$(addprefix $(obj)/, $(image-y))
+	$(Q)rm -f $@; ln $< $@
+                         ^
+                         first preqrequisite
 
-But if maintenance cost rises due to good analysis, the value of the code 
-should rise too. So what's the problem? It seems to me that the real 
-problem is too many analyses that generate pedantic noise and no tangible 
-improvement in code quality or value.
+Which for this defconfig happens to be:
 
-> I get a substantial amount of code analysis mail about drivers nobody 
-> have touched in a decade or more.
-> 
+image-$(CONFIG_EBONY)			+= treeImage.ebony cuImage.ebony
 
-When stable, mature code fails analysis, the analysis is also questionable 
-(in the absence of real examples).
+If you turned off CONFIG_EBONY then the zImage will be a link to
+treeImage.bamboo, but qemu can't boot that either.
 
-> Consequently, I am much more inclined to remove drivers than I have been 
-> in the past. But I am also very happy to bring them back if somebody 
-> uses them or - even better - are willing to step up and maintain them.
-> 
+It's kind of nuts that the zImage points to some arbitrary image
+depending on what's configured and the order of things in the Makefile.
+But I'm not sure how we make it less nuts without risking breaking
+people's existing setups.
 
-You seem to be saying that 1) a driver should be removed when it no longer 
-meets the present threshold for code quality and 2) that a low quality 
-driver is eligible for re-addition because someone wants to use it.
-I don't think you can have it both ways.
-
-> I don't particularly like the notion of a driver being orphaned because 
-> all that really means is that the driver transitions from being (at 
-> least partially) somebody else's problem to being mine and mine alone.
-> 
-
-Yes it's your problem but only on a best-effort basis.
-
-Many issues detected by automatic analyzers can be fixed with automatic 
-code transformation tools. This kind of solution works tree-wide, so even 
-if some defect in your driver is "yours and yours alone", the solution 
-will probably come from others.
-
-This email, like yours, is just hand-waving. So feel free to ignore it or 
-(preferably) provide evidence of real defects.
+cheers
