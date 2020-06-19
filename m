@@ -2,78 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E889E2016B0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 18:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E865D2016B4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 18:41:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49pPXx2g3GzDrRG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 02:34:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49pPj01tsWzDrRP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 02:41:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=none (no SPF record) smtp.mailfrom=ubuntu.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ubuntu.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49pL6d5WYZzDrMF
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jun 2020 00:00:25 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05JDcIQF027794; Fri, 19 Jun 2020 10:00:20 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31rmmf1g8w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Jun 2020 10:00:20 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05JDsqm6008992;
- Fri, 19 Jun 2020 14:00:19 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04dal.us.ibm.com with ESMTP id 31rd95fvnb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Jun 2020 14:00:19 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05JE0IwF60162324
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jun 2020 14:00:18 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 02560BE04F;
- Fri, 19 Jun 2020 14:00:18 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CAD87BE054;
- Fri, 19 Jun 2020 14:00:15 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.79.220.36])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 19 Jun 2020 14:00:15 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v5 26/26] powerpc/selftest/ptrace-pkey: IAMR and uamor cannot
- be updated by ptrace
-Date: Fri, 19 Jun 2020 19:28:50 +0530
-Message-Id: <20200619135850.47155-27-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
-References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49pL8z4w13zDqXB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jun 2020 00:02:27 +1000 (AEST)
+Received: from ip-109-41-0-196.web.vodafone.de ([109.41.0.196]
+ helo=wittgenstein) by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <christian.brauner@ubuntu.com>)
+ id 1jmHau-0002Hs-LG; Fri, 19 Jun 2020 14:02:15 +0000
+Date: Fri, 19 Jun 2020 16:01:48 +0200
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: linux-next: manual merge of the pidfd tree with the
+ powerpc-fixes tree
+Message-ID: <20200619140148.4ytme4wsvtw2oyrg@wittgenstein>
+References: <20200618121131.4ad29150@canb.auug.org.au>
+ <878sgjcnjp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-19_11:2020-06-19,
- 2020-06-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015 spamscore=0
- bulkscore=0 malwarescore=0 adultscore=0 cotscore=-2147483648
- impostorscore=0 mlxscore=0 mlxlogscore=999 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006190096
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <878sgjcnjp.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,45 +49,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxram@us.ibm.com,
- bauerman@linux.ibm.com
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Christian Brauner <christian@brauner.io>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Both IAMR and uamor are privileged and cannot be updated by userspace. Hence
-we also don't allow ptrace interface to update them. Don't update them in the
-test. Also expected_iamr is only changed if we can allocate a  DISABLE_EXECUTE
-pkey.
+On Fri, Jun 19, 2020 at 09:17:30PM +1000, Michael Ellerman wrote:
+> Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> > Hi all,
+> >
+> > Today's linux-next merge of the pidfd tree got a conflict in:
+> >
+> >   arch/powerpc/kernel/syscalls/syscall.tbl
+> >
+> > between commit:
+> >
+> >   35e32a6cb5f6 ("powerpc/syscalls: Split SPU-ness out of ABI")
+> >
+> > from the powerpc-fixes tree and commit:
+> >
+> >   9b4feb630e8e ("arch: wire-up close_range()")
+> >
+> > from the pidfd tree.
+> >
+> > I fixed it up (see below) and can carry the fix as necessary. This
+> > is now fixed as far as linux-next is concerned, but any non trivial
+> > conflicts should be mentioned to your upstream maintainer when your tree
+> > is submitted for merging.  You may also want to consider cooperating
+> > with the maintainer of the conflicting tree to minimise any particularly
+> > complex conflicts.
+> 
+> Thanks.
+> 
+> I thought the week between rc1 and rc2 would be a safe time to do that
+> conversion of the syscall table, but I guess I was wrong :)
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+:)
 
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-index bc33d748d95b..5c3c8222de46 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-@@ -101,15 +101,12 @@ static int child(struct shared_info *info)
- 	 */
- 	info->invalid_amr = info->amr2 | (~0x0UL & ~info->expected_uamor);
- 
-+	/*
-+	 * if PKEY_DISABLE_EXECUTE succeeded we should update the expected_iamr
-+	 */
- 	if (disable_execute)
- 		info->expected_iamr |= 1ul << pkeyshift(pkey1);
--	else
--		info->expected_iamr &= ~(1ul << pkeyshift(pkey1));
--
--	info->expected_iamr &= ~(1ul << pkeyshift(pkey2) | 1ul << pkeyshift(pkey3));
- 
--	info->expected_uamor |= 3ul << pkeyshift(pkey1) |
--				3ul << pkeyshift(pkey2);
- 	/*
- 	 * Create an IAMR value different from expected value.
- 	 * Kernel will reject an IAMR and UAMOR change.
--- 
-2.26.2
+> 
+> I'm planning to send those changes to Linus for rc2, so the conflict
+> will then be vs mainline. But I guess it's pretty trivial so it doesn't
+> really matter.
 
+close_range() is targeted for the v5.9 merge window. I always do
+test-merges with mainline at the time I'm creating a pr and I'll just
+mention to Linus that there's conflict with ppc. :)
+
+Thanks!
+Christian
