@@ -1,79 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF2420019C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 07:16:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202EB2001C4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 07:51:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49p6Th60wMzDrPB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 15:16:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49p7Gj3cgDzDrP1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 15:51:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=N8EWbXE3; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
+ header.s=20161025 header.b=VLVq/MTQ; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49p6Hy2dHzzDrBk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 15:07:42 +1000 (AEST)
-Received: by mail-qk1-x744.google.com with SMTP id n11so7889731qkn.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 22:07:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49p7Dx1mvrzDrMS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 15:50:08 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id n2so3480635pld.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 22:50:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=LxhuxQycNieQ16w87JkTA9DQfwrE4fTWZ8DvCETKWbk=;
- b=N8EWbXE33GuLRhB4nF/r7qebEqLn6wGSnJRbNKKhK5CKbMgeUNWwwLSOVtNoB2MWTg
- 6hYDMpCLOhswyz5LBmFFbLVrj7SZh7DbmtJx748+o7XwX5IyztICXLe/F4R14xuUallm
- 5KXaGE4CirCMYqEmvdSQTY0uv4F0fEWNLYct/ITrZ8o90JDMR6W95hNCxaZxchQtn6HY
- s1IYQOUgZ2gVSXnQpK23D9Nd2Gol2iys92eXiZ2xOdqeC0ibK0SgRYhFF4BA3o1wVvSI
- iduaOHHbGnwNjSWUl4r4pfnlQxnCCbPSEJOxi6O2zxekqyp5fl6h1HQUhssB4yVP4Zx5
- m7nQ==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=uJunhxgU/GhtFdUD98Pvml4aHtu/6+uQFMKPVljojZY=;
+ b=VLVq/MTQU/NNg1KDEodPCc0dIVnRN0lPQnSff9+nrJhdE1v5B72E4p0G+nx7HDdROB
+ TwUXIT0/yD8D0OJ+3VxMmx+8x23YbT8Wxj//0vsxG6/Pag1QcQlwYCEIhI9n09u4bPaF
+ dR7NvqkQyN/C+6IU3hD6PN/CmCZsXNgwBR9NIg8ZJ8KWDhDpnNHqyBXnwffA9CRTJ8h3
+ LbaWrqCCkrPlv1EKl5zAswa/WrO+a2HBU0tpoe5lafMudJGyYhwoW7Qw74dZ2u1El1yR
+ Ab7eDkHYshROtUglv+eB0hoCm1UgWZDNEr1+xgIzG5oodweXDbRJ9G5zWb2M9ZPjnjxL
+ 3s8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=LxhuxQycNieQ16w87JkTA9DQfwrE4fTWZ8DvCETKWbk=;
- b=WfJ/07VeGl+zk+P0fk4K5HyPYDt3ZQywGlAxXtdc6b1ULeCVnqs/M1BCoHVUBCrbqN
- 8ie7U9VwbH25mWqvFQmhw9hfIKsIJW+GfWsaoqhL6QuViQv3t3wFRD9sA2Rnwy7Xk58t
- c1Lo17l/J4fNNKoBVPWyqtMznxX/AMxECtgdVHxuWHAvcCwPF2+73h3iiz8TqZWwmvej
- azgRga0n+tKPKbHFM8f7JOafiXkVJo2AN01dch9wzW755Noj9ECd7USvZPffgGQWYdHR
- KGTsbgrOR0G7jgFCiyBPgvDpYE5B5GVWK2HRAaftiHNSdv7RZqhZBKrBv8XoD/u0eo+P
- hq2Q==
-X-Gm-Message-State: AOAM5311GpiqlY8p3iIGG8jmQHcamzTZwrQ0i2q6kxM/ssbvspCWT0eA
- q4pMKRBzO2Hqv0RPqfSgwbGG/i9L
-X-Google-Smtp-Source: ABdhPJypgjgeE05JPijQXMPTOnCQ0LI/Ef1IGd5HGvb7euUV2UZ7GmUd/GQ+FbWq/bF5/CQuSKn4MQ==
-X-Received: by 2002:a37:4b17:: with SMTP id y23mr1809929qka.73.1592543259489; 
- Thu, 18 Jun 2020 22:07:39 -0700 (PDT)
-Received: from LeoBras.ibmuc.com (177-131-65-187.dynamic.desktop.com.br.
- [177.131.65.187])
- by smtp.gmail.com with ESMTPSA id o6sm5235503qtd.59.2020.06.18.22.07.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jun 2020 22:07:38 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Leonardo Bras <leobras.c@gmail.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>
-Subject: [PATCH 4/4] powerpc/pseries/iommu: Remove default DMA window before
- creating DDW
-Date: Fri, 19 Jun 2020 02:06:20 -0300
-Message-Id: <20200619050619.266888-5-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200619050619.266888-1-leobras.c@gmail.com>
-References: <20200619050619.266888-1-leobras.c@gmail.com>
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=uJunhxgU/GhtFdUD98Pvml4aHtu/6+uQFMKPVljojZY=;
+ b=caxxIcMFsLsBoKTtgysUhbzEfkfntLrv6bIqdFWkF/cuk3u3K+PVTdTrdDywDyNR6U
+ JNdmRSguhEJnyhrKKSMKfOuRcL/FvoTM6qvWRBbctLLVrwDv9ddJKgNlgHEVZojamyFx
+ WlpohS7EWC9U4snkVfoHiRoY2k2ePZqx4sMurdCSxG2F07jnvwmpfnQYn1l/ajx9Ud3n
+ D0OOOaJikily4vgrkcvG2oEdxP4UPMQJA12Y/8OxeDrzu6sS4HYAif1sxeNIZsuYw+Hc
+ /oBlPautlUBtSHp3+28C+5IuwpCBQKP4OkQkKFeDBqzxC6OANPimV7gOMtyUTTTkucn1
+ EpPQ==
+X-Gm-Message-State: AOAM530fN84FOPdlcczy5PZlkUaGyN66cyFZlLw7gg7tudl497DHsejT
+ BASC/xPEL7vB4OyKMdhIII8=
+X-Google-Smtp-Source: ABdhPJx9GYYwyzfa4Sv6g1ItpE1EMJ1VSw6RWycMP3Mmz6sGniIT+wDPwVV1zAwACzJLNVQELZuDEQ==
+X-Received: by 2002:a17:90a:1a17:: with SMTP id
+ 23mr1880621pjk.231.1592545803758; 
+ Thu, 18 Jun 2020 22:50:03 -0700 (PDT)
+Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
+ by smtp.gmail.com with ESMTPSA id w17sm5028544pff.27.2020.06.18.22.50.02
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 18 Jun 2020 22:50:03 -0700 (PDT)
+Date: Thu, 18 Jun 2020 22:49:43 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_spdif: Add pm runtime function
+Message-ID: <20200619054942.GA25856@Asurada-Nvidia>
+References: <1592481334-3680-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1592481334-3680-1-git-send-email-shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,73 +80,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, perex@perex.cz,
+ broonie@kernel.org, festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On LoPAR "DMA Window Manipulation Calls", it's recommended to remove the
-default DMA window for the device, before attempting to configure a DDW,
-in order to make the maximum resources available for the next DDW to be
-created.
+On Thu, Jun 18, 2020 at 07:55:34PM +0800, Shengjiu Wang wrote:
+> Add pm runtime support and move clock handling there.
+> Close the clocks at suspend to reduce the power consumption.
+> 
+> fsl_spdif_suspend is replaced by pm_runtime_force_suspend.
+> fsl_spdif_resume is replaced by pm_runtime_force_resume.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-This is a requirement for some devices to use DDW, given they only
-allow one DMA window.
+LGTM, yet some nits, please add my ack after fixing:
 
-If setting up a new DDW fails anywhere after the removal of this
-default DMA window, restore it using reset_dma_window.
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
----
- arch/powerpc/platforms/pseries/iommu.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+> @@ -495,25 +496,10 @@ static int fsl_spdif_startup(struct snd_pcm_substream *substream,
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index de633f6ae093..68d1ea957ac7 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1074,8 +1074,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	u64 dma_addr, max_addr;
- 	struct device_node *dn;
- 	u32 ddw_avail[3];
-+
- 	struct direct_window *window;
--	struct property *win64;
-+	struct property *win64, *dfl_win;
- 	struct dynamic_dma_window_prop *ddwprop;
- 	struct failed_ddw_pdn *fpdn;
- 
-@@ -1110,8 +1111,19 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	if (ret)
- 		goto out_failed;
- 
--       /*
--	 * Query if there is a second window of size to map the
-+	/*
-+	 * First step of setting up DDW is removing the default DMA window,
-+	 * if it's present. It will make all the resources available to the
-+	 * new DDW window.
-+	 * If anything fails after this, we need to restore it.
-+	 */
-+
-+	dfl_win = of_find_property(pdn, "ibm,dma-window", NULL);
-+	if (dfl_win)
-+		remove_dma_window(pdn, ddw_avail, dfl_win);
-+
-+	/*
-+	 * Query if there is a window of size to map the
- 	 * whole partition.  Query returns number of windows, largest
- 	 * block assigned to PE (partition endpoint), and two bitmasks
- 	 * of page sizes: supported and supported for migrate-dma.
-@@ -1219,6 +1231,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	kfree(win64);
- 
- out_failed:
-+	if (dfl_win)
-+		reset_dma_window(dev, pdn);
- 
- 	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
- 	if (!fpdn)
--- 
-2.25.4
+>  
+> -disable_txclk:
+> -	for (i--; i >= 0; i--)
+> -		clk_disable_unprepare(spdif_priv->txclk[i]);
+>  err:
+> -	if (!IS_ERR(spdif_priv->spbaclk))
+> -		clk_disable_unprepare(spdif_priv->spbaclk);
+> -err_spbaclk:
+> -	clk_disable_unprepare(spdif_priv->coreclk);
+> -
+>  	return ret;
 
+Only "return ret;" remains now. We could clean the goto away.
+
+> -static int fsl_spdif_resume(struct device *dev)
+> +static int fsl_spdif_runtime_resume(struct device *dev)
+
+> +disable_rx_clk:
+> +	clk_disable_unprepare(spdif_priv->rxclk);
+> +disable_tx_clk:
+> +disable_spba_clk:
+
+Why have two duplicated ones? Could probably drop the 2nd one.
