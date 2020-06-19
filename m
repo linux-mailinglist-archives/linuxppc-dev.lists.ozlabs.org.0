@@ -2,73 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202EB2001C4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 07:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB9E2001D8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 08:11:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49p7Gj3cgDzDrP1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 15:51:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49p7j82jxPzDrNH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 16:11:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d42;
+ helo=mail-io1-xd42.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VLVq/MTQ; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20161025 header.b=NgqVy5db; dkim-atps=neutral
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
+ [IPv6:2607:f8b0:4864:20::d42])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49p7Dx1mvrzDrMS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 15:50:08 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id n2so3480635pld.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 22:50:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49p7gG455WzDrND
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 16:09:30 +1000 (AEST)
+Received: by mail-io1-xd42.google.com with SMTP id f23so4643020iof.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 23:09:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=uJunhxgU/GhtFdUD98Pvml4aHtu/6+uQFMKPVljojZY=;
- b=VLVq/MTQU/NNg1KDEodPCc0dIVnRN0lPQnSff9+nrJhdE1v5B72E4p0G+nx7HDdROB
- TwUXIT0/yD8D0OJ+3VxMmx+8x23YbT8Wxj//0vsxG6/Pag1QcQlwYCEIhI9n09u4bPaF
- dR7NvqkQyN/C+6IU3hD6PN/CmCZsXNgwBR9NIg8ZJ8KWDhDpnNHqyBXnwffA9CRTJ8h3
- LbaWrqCCkrPlv1EKl5zAswa/WrO+a2HBU0tpoe5lafMudJGyYhwoW7Qw74dZ2u1El1yR
- Ab7eDkHYshROtUglv+eB0hoCm1UgWZDNEr1+xgIzG5oodweXDbRJ9G5zWb2M9ZPjnjxL
- 3s8A==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=QYxn2HuTRA3kCqcFXfYQRyqqNTAy3PwXnnRQDGWHA4U=;
+ b=NgqVy5db7TBXpcCoWsiNcm81+r8wB7QoDkLtYA8FTiExi4WXjDYhZZiktk6PQx+XXi
+ sNxsk+YR6+9p7fACijf3HzJYlxbgVbZzTjdaQrrhetJ/R4Msgq6290Oig1cg+jTZIq2f
+ yl3EQph2BWnzfnIPbz9YFUN+YlB64zBSDACRy9ju9RnuM0+IE9NHqsVNFE0K645veJ5R
+ gJajFl76B1M0FeuAE1cy/TjkYbJ0XHTuoi8R3H1e9ARnD+B5r4wLjsgRkphK1qVwu1E8
+ uP2NRtbMUBkLewVc4iw5Hm4i14DQpXnVaB3wz9nF5jl8RwMI5eB/VBwciS2v6XBnbmiK
+ jTPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=uJunhxgU/GhtFdUD98Pvml4aHtu/6+uQFMKPVljojZY=;
- b=caxxIcMFsLsBoKTtgysUhbzEfkfntLrv6bIqdFWkF/cuk3u3K+PVTdTrdDywDyNR6U
- JNdmRSguhEJnyhrKKSMKfOuRcL/FvoTM6qvWRBbctLLVrwDv9ddJKgNlgHEVZojamyFx
- WlpohS7EWC9U4snkVfoHiRoY2k2ePZqx4sMurdCSxG2F07jnvwmpfnQYn1l/ajx9Ud3n
- D0OOOaJikily4vgrkcvG2oEdxP4UPMQJA12Y/8OxeDrzu6sS4HYAif1sxeNIZsuYw+Hc
- /oBlPautlUBtSHp3+28C+5IuwpCBQKP4OkQkKFeDBqzxC6OANPimV7gOMtyUTTTkucn1
- EpPQ==
-X-Gm-Message-State: AOAM530fN84FOPdlcczy5PZlkUaGyN66cyFZlLw7gg7tudl497DHsejT
- BASC/xPEL7vB4OyKMdhIII8=
-X-Google-Smtp-Source: ABdhPJx9GYYwyzfa4Sv6g1ItpE1EMJ1VSw6RWycMP3Mmz6sGniIT+wDPwVV1zAwACzJLNVQELZuDEQ==
-X-Received: by 2002:a17:90a:1a17:: with SMTP id
- 23mr1880621pjk.231.1592545803758; 
- Thu, 18 Jun 2020 22:50:03 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id w17sm5028544pff.27.2020.06.18.22.50.02
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Thu, 18 Jun 2020 22:50:03 -0700 (PDT)
-Date: Thu, 18 Jun 2020 22:49:43 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_spdif: Add pm runtime function
-Message-ID: <20200619054942.GA25856@Asurada-Nvidia>
-References: <1592481334-3680-1-git-send-email-shengjiu.wang@nxp.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=QYxn2HuTRA3kCqcFXfYQRyqqNTAy3PwXnnRQDGWHA4U=;
+ b=LFYxCEq2oHI5HqUandWcxJzO976l8ssKbKNjf/KVpZ+txdVZK93g5JIsRa1b0DYQXS
+ tENCr8TWnBFYl0wSgmAlm1upu0zDHQambUEH7o18MsU7Pt1IknoRfEgeLJC0rSGJL6MN
+ dT+vhBiLocJawT4WggTA/WCbM7A/Z06r/h7VBwoen5BA9m/2/I4WY/JWkaaFeCtS2O/w
+ Ra3Tq9sMjNef8T7D9F9Ytj6c9+YbBtBNRvppIQVaCFXCUUfF4pqBti0vjoguOqYvG2TF
+ QOSFDc0LtPkcR3h3md5oo04Roawt5kJJ8qrPFJ2Z+Y2zQAiJkTpSsqnHG/rHxG8i7Gs7
+ fhmg==
+X-Gm-Message-State: AOAM533s+YAJw2tAhEUDxqOo5HFXxjQDpqqTN6iYnNPSNY9QCYf0xaum
+ sRvT1pMDX7Yq/i6h/MzbYNZX1PyTU/MS+Y2urTk=
+X-Google-Smtp-Source: ABdhPJxY7eSgKH6dKZYnyajlEKqNF9Z9p1uErbaLgioSZZ78WjmRrjQY8zG6KEncBf0O3XFyxmsKLcD7ZiP7npCW3ok=
+X-Received: by 2002:a6b:780d:: with SMTP id j13mr2723403iom.66.1592546966717; 
+ Thu, 18 Jun 2020 23:09:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1592481334-3680-1-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <1590499319-6472-1-git-send-email-wenxiong@linux.vnet.ibm.com>
+ <87r1ufdy1x.fsf@mpe.ellerman.id.au>
+ <CAOSf1CHT9A55+ZAKquikHy9Siy_k5E0ucB-qY2G7hjfVSmf7pg@mail.gmail.com>
+ <87ftaudx1x.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87ftaudx1x.fsf@mpe.ellerman.id.au>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 19 Jun 2020 16:09:15 +1000
+Message-ID: <CAOSf1CEusxHAvXOUJ=R8MV8z0rt8Hh0Ag33QmSDopH1FQrxEGg@mail.gmail.com>
+Subject: Re: powerpc/pci: [PATCH 1/1 V3] PCIE PHB reset
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,48 +75,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, perex@perex.cz,
- broonie@kernel.org, festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: Brian King <brking@linux.vnet.ibm.com>,
+ Wen Xiong <wenxiong@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, wenxiong@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 18, 2020 at 07:55:34PM +0800, Shengjiu Wang wrote:
-> Add pm runtime support and move clock handling there.
-> Close the clocks at suspend to reduce the power consumption.
-> 
-> fsl_spdif_suspend is replaced by pm_runtime_force_suspend.
-> fsl_spdif_resume is replaced by pm_runtime_force_resume.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+On Wed, Jun 17, 2020 at 4:29 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> "Oliver O'Halloran" <oohall@gmail.com> writes:
+> > On Tue, Jun 16, 2020 at 9:55 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> >> wenxiong@linux.vnet.ibm.com writes:
+> >> > From: Wen Xiong <wenxiong@linux.vnet.ibm.com>
+> >> >
+> >> > Several device drivers hit EEH(Extended Error handling) when triggering
+> >> > kdump on Pseries PowerVM. This patch implemented a reset of the PHBs
+> >> > in pci general code when triggering kdump.
+> >>
+> >> Actually it's in pseries specific PCI code, and the reset is done in the
+> >> 2nd kernel as it boots, not when triggering the kdump.
+> >>
+> >> You're doing it as a:
+> >>
+> >>   machine_postcore_initcall(pseries, pseries_phb_reset);
+> >>
+> >> But we do the EEH initialisation in:
+> >>
+> >>   core_initcall_sync(eeh_init);
+> >>
+> >> Which happens first.
+> >>
+> >> So it seems to me that this should be called from pseries_eeh_init().
+> >
+> > This happens to use some of the same RTAS calls as EEH, but it's
+> > entirely orthogonal to it.
+>
+> I don't agree. I mean it's literally calling EEH_RESET_FUNDAMENTAL etc.
+> Those RTAS calls are all documented in the EEH section of PAPR.
+>
+> I guess you're saying it's orthogonal to the kernel handling an EEH and
+> doing the recovery process etc, which I can kind of see.
+>
+> > Wedging the two together doesn't make any real sense IMO since this
+> > should be usable even with !CONFIG_EEH.
+>
+> You can't turn CONFIG_EEH off for pseries or powernv.
 
-LGTM, yet some nits, please add my ack after fixing:
+Not yet :)
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+> And if you could this patch wouldn't compile because it uses EEH
+> constants that are behind #ifdef CONFIG_EEH.
 
-> @@ -495,25 +496,10 @@ static int fsl_spdif_startup(struct snd_pcm_substream *substream,
+That's fixable.
 
->  
-> -disable_txclk:
-> -	for (i--; i >= 0; i--)
-> -		clk_disable_unprepare(spdif_priv->txclk[i]);
->  err:
-> -	if (!IS_ERR(spdif_priv->spbaclk))
-> -		clk_disable_unprepare(spdif_priv->spbaclk);
-> -err_spbaclk:
-> -	clk_disable_unprepare(spdif_priv->coreclk);
-> -
->  	return ret;
+> If you could turn CONFIG_EEH off it would presumably be because you were
+> on a platform that didn't support EEH, in which case you wouldn't need
+> this code.
 
-Only "return ret;" remains now. We could clean the goto away.
+I think there's an argument to be made for disabling EEH in some
+situations. A lot of drivers do a pretty poor job of recovering in the
+first place so it's conceivable that someone might want to disable it
+in say, a kdump kernel. That said, the real reason is mostly for the
+sake of code organisation. EEH is an optional platform feature but you
+wouldn't know it looking at the implementation and I'd like to stop it
+bleeding into odd places. Making it buildable without !CONFIG_EEH
+would probably help.
 
-> -static int fsl_spdif_resume(struct device *dev)
-> +static int fsl_spdif_runtime_resume(struct device *dev)
+> So IMO this is EEH code, and should be with the other EEH code and
+> should be behind CONFIG_EEH.
 
-> +disable_rx_clk:
-> +	clk_disable_unprepare(spdif_priv->rxclk);
-> +disable_tx_clk:
-> +disable_spba_clk:
+*shrug*
 
-Why have two duplicated ones? Could probably drop the 2nd one.
+I wanted it to follow the model of the powernv implementation of the
+same feature which is done immediately after initialising the
+pci_controller and independent of all of the EEH setup. Although,
+looking at it again I see it calls pnv_eeh_phb_reset() which is in
+eeh_powernv.c so I guess that's pretty similar to what you're
+suggesting.
+
+> That sounds like a good cleanup. I'm not concerned about conflicts
+> within arch/powerpc, I can fix them up.
+>
+> >> > +             list_for_each_entry(phb, &hose_list, list_node) {
+> >> > +                     config_addr = pseries_get_pdn_addr(phb);
+> >> > +                     if (config_addr == -1)
+> >> > +                             continue;
+> >> > +
+> >> > +                     ret = rtas_call(ibm_set_slot_reset, 4, 1, NULL,
+> >> > +                             config_addr, BUID_HI(phb->buid),
+> >> > +                             BUID_LO(phb->buid), EEH_RESET_FUNDAMENTAL);
+> >> > +
+> >> > +                     /* If fundamental-reset not supported, try hot-reset */
+> >> > +                     if (ret == -8)
+> >>
+> >> Where does -8 come from?
+> >
+> > There's a comment right there.
+>
+> Yeah I guess. I was expecting it would map to some RTAS_ERROR_FOO value,
+> but it's just literally -8 in PAPR.
+
+Yeah, as far as I can tell the meaning of the return codes are
+specific to each RTAS call, it's a bit bad.
