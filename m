@@ -1,95 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89052019A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 19:44:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5812019BD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 19:50:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49pR5P0PsRzDrTK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 03:44:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49pRCx0JCGzDqHk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 03:50:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=peterx@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=okaya@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=RxnCyb0c; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=h502I52O; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=d78wgNJs; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49pP4R3FV7zDqX1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jun 2020 02:13:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1592583215;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
- b=RxnCyb0cqqovNroxZowRnZrqnHfJ69C7sV+Wx2KIml8xgKKvpR8TNoU6WUweFMKeasWt7m
- QSLKUYuFgmiq1A72M4/4GEvmBbPOBnzGp5tRtaHHqECkyEhzfU2Mv+u0fzII2QQRRPFiYL
- miseAivrL5YU7YSiDRhfGhmpsmDC8hg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1592583216;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
- b=h502I52Ob6dJcZk19XsOyNxL5mHDRheGu5/KsfCjFybmWN4VP7+S6XDnz5sXWuTcDLcB86
- vqUUF6i87gO3pWepzGHssLRKKHMNl5RkoaUzcxjR5eWBaDWkEB69NBNRlODQUfWdWJW+2r
- WppoLo3ldsSs8JF7G7puwvqaqunn4lE=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-411-drCx8dBZMs61b2c5DuwV7Q-1; Fri, 19 Jun 2020 12:13:31 -0400
-X-MC-Unique: drCx8dBZMs61b2c5DuwV7Q-1
-Received: by mail-qt1-f200.google.com with SMTP id y5so7503089qtd.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 09:13:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
- b=WEPiTPjRICv9zOcqZK++KkBJzCOHrneJNvjwhHQShtck+Zkl7eA+ADLzTCThDzIEP8
- LaUXpG5mTQNwcZVxe5B/lu6UMb3aiBisIPda/wyClVHVBD6TLhfkBng1+iDr5zZZtTuX
- ZM/0enx9/LOW/2AA8DY+Ca98/jxC8fQrxK1gpRIPysPtuDEyDUVSw4KAXBmrv4la5LNi
- nHfs2StG3vzYXB9cVZXFgkDXgogW2uo6LFPyQMF2TIwLkNRZhrh84Ipuc2iXqx7vPDQ4
- Ve+tTIKMgXZeZN3HL0kEEvI01KHDEfyK/qQJRYCAol6/bjsvyebu28QE8ZO1fhSYs/Ds
- Mr4A==
-X-Gm-Message-State: AOAM531x+wjcCQogomamaaVJKJ0kVdxyvMr3T0gntPXc3MFk88f/2boj
- N6MUjTVuS1rfyQinGT8VWAvxjABq1bRhRD04PBij1FQ9jjPUYz6cd8nK7n1XXSFsnWkeSN5zFwP
- +hnQ5VE+Cwioq2BTbXwLuW88haQ==
-X-Received: by 2002:ac8:46d6:: with SMTP id h22mr4171908qto.145.1592583211232; 
- Fri, 19 Jun 2020 09:13:31 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxPf3L9dwnzhcKrCo1xqDr8zLwbACSJhy9YaZ+W+WiIy3zkGSSlH37gZSMbp9D62VN2NzGxsA==
-X-Received: by 2002:ac8:46d6:: with SMTP id h22mr4171872qto.145.1592583210896; 
- Fri, 19 Jun 2020 09:13:30 -0700 (PDT)
-Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
- by smtp.gmail.com with ESMTPSA id s52sm7597075qtb.3.2020.06.19.09.13.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Jun 2020 09:13:30 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 16/26] mm/powerpc: Use general page fault accounting
-Date: Fri, 19 Jun 2020 12:13:27 -0400
-Message-Id: <20200619161327.9564-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200619160538.8641-1-peterx@redhat.com>
-References: <20200619160538.8641-1-peterx@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49pQTY12bSzDrSG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jun 2020 03:17:04 +1000 (AEST)
+Received: from [192.168.1.74] (75-58-59-55.lightspeed.rlghnc.sbcglobal.net
+ [75.58.59.55])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5ED0120DD4;
+ Fri, 19 Jun 2020 17:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1592587022;
+ bh=ZXqvXAmVATfcOFfYDgssdi24IIgo7rfGyS4R1yKWIB0=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=d78wgNJsoEVyI8veX7Z8JHTuu5+qT47of6JK7UQwqdGNtgoorNO6t9sgsZ45aMfcW
+ cLArwSQOeEaOU4+uXfwiliUP97QcEIZ90wvmEEJGAZ9bRSDY1+ixU48ZkayuafuX04
+ 5vQyqOmXeLNuNALDkTVsl1UeclqvlEaztkvdql7k=
+Subject: Re: [PATCH] pci: pcie: AER: Fix logging of Correctable errors
+To: Matt Jolly <Kangie@footclan.ninja>, Russell Currey <ruscur@russell.cc>,
+ Sam Bobroff <sbobroff@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200618155511.16009-1-Kangie@footclan.ninja>
+From: Sinan Kaya <okaya@kernel.org>
+Autocrypt: addr=okaya@kernel.org; keydata=
+ mQENBFrnOrUBCADGOL0kF21B6ogpOkuYvz6bUjO7NU99PKhXx1MfK/AzK+SFgxJF7dMluoF6
+ uT47bU7zb7HqACH6itTgSSiJeSoq86jYoq5s4JOyaj0/18Hf3/YBah7AOuwk6LtV3EftQIhw
+ 9vXqCnBwP/nID6PQ685zl3vH68yzF6FVNwbDagxUz/gMiQh7scHvVCjiqkJ+qu/36JgtTYYw
+ 8lGWRcto6gr0eTF8Wd8f81wspmUHGsFdN/xPsZPKMw6/on9oOj3AidcR3P9EdLY4qQyjvcNC
+ V9cL9b5I/Ud9ghPwW4QkM7uhYqQDyh3SwgEFudc+/RsDuxjVlg9CFnGhS0nPXR89SaQZABEB
+ AAG0HVNpbmFuIEtheWEgPG9rYXlhQGtlcm5lbC5vcmc+iQFOBBMBCAA4FiEEYdOlMSE+a7/c
+ ckrQvGF4I+4LAFcFAlztcAoCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQvGF4I+4L
+ AFfidAf/VKHInxep0Z96iYkIq42432HTZUrxNzG9IWk4HN7c3vTJKv2W+b9pgvBF1SmkyQSy
+ 8SJ3Zd98CO6FOHA1FigFyZahVsme+T0GsS3/OF1kjrtMktoREr8t0rK0yKpCTYVdlkHadxmR
+ Qs5xLzW1RqKlrNigKHI2yhgpMwrpzS+67F1biT41227sqFzW9urEl/jqGJXaB6GV+SRKSHN+
+ ubWXgE1NkmfAMeyJPKojNT7ReL6eh3BNB/Xh1vQJew+AE50EP7o36UXghoUktnx6cTkge0ZS
+ qgxuhN33cCOU36pWQhPqVSlLTZQJVxuCmlaHbYWvye7bBOhmiuNKhOzb3FcgT7kBDQRa5zq1
+ AQgAyRq/7JZKOyB8wRx6fHE0nb31P75kCnL3oE+smKW/sOcIQDV3C7mZKLf472MWB1xdr4Tm
+ eXeL/wT0QHapLn5M5wWghC80YvjjdolHnlq9QlYVtvl1ocAC28y43tKJfklhHiwMNDJfdZbw
+ 9lQ2h+7nccFWASNUu9cqZOABLvJcgLnfdDpnSzOye09VVlKr3NHgRyRZa7me/oFJCxrJlKAl
+ 2hllRLt0yV08o7i14+qmvxI2EKLX9zJfJ2rGWLTVe3EJBnCsQPDzAUVYSnTtqELu2AGzvDiM
+ gatRaosnzhvvEK+kCuXuCuZlRWP7pWSHqFFuYq596RRG5hNGLbmVFZrCxQARAQABiQEfBBgB
+ CAAJBQJa5zq1AhsMAAoJELxheCPuCwBX2UYH/2kkMC4mImvoClrmcMsNGijcZHdDlz8NFfCI
+ gSb3NHkarnA7uAg8KJuaHUwBMk3kBhv2BGPLcmAknzBIehbZ284W7u3DT9o1Y5g+LDyx8RIi
+ e7pnMcC+bE2IJExCVf2p3PB1tDBBdLEYJoyFz/XpdDjZ8aVls/pIyrq+mqo5LuuhWfZzPPec
+ 9EiM2eXpJw+Rz+vKjSt1YIhg46YbdZrDM2FGrt9ve3YaM5H0lzJgq/JQPKFdbd5MB0X37Qc+
+ 2m/A9u9SFnOovA42DgXUyC2cSbIJdPWOK9PnzfXqF3sX9Aol2eLUmQuLpThJtq5EHu6FzJ7Y
+ L+s0nPaNMKwv/Xhhm6Y=
+Message-ID: <d611dabd-b943-8492-a29e-0b7fb1980de8@kernel.org>
+Date: Fri, 19 Jun 2020 13:17:00 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200618155511.16009-1-Kangie@footclan.ninja>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,55 +86,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Peter Xu <peterx@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- Will Deacon <will@kernel.org>, Gerald Schaefer <gerald.schaefer@de.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the general page fault accounting by passing regs into handle_mm_fault().
+On 6/18/2020 11:55 AM, Matt Jolly wrote:
 
-CC: Michael Ellerman <mpe@ellerman.id.au>
-CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-CC: Paul Mackerras <paulus@samba.org>
-CC: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- arch/powerpc/mm/fault.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+> +		pci_warn(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> +			dev->vendor, dev->device,
+> +			info->status, info->mask);
+> +	} else {
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 992b10c3761c..e325d13efaf5 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -563,7 +563,7 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
- 	 * make sure we exit gracefully rather than endlessly redo
- 	 * the fault.
- 	 */
--	fault = handle_mm_fault(vma, address, flags, NULL);
-+	fault = handle_mm_fault(vma, address, flags, regs);
- 
- #ifdef CONFIG_PPC_MEM_KEYS
- 	/*
-@@ -604,14 +604,9 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
- 	/*
- 	 * Major/minor page fault accounting.
- 	 */
--	if (major) {
--		current->maj_flt++;
--		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ, 1, regs, address);
-+	if (major)
- 		cmo_account_page_fault();
--	} else {
--		current->min_flt++;
--		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MIN, 1, regs, address);
--	}
-+
- 	return 0;
- }
- NOKPROBE_SYMBOL(__do_page_fault);
--- 
-2.26.2
+<snip>
 
+> +		pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> +			dev->vendor, dev->device,
+> +			info->status, info->mask);
+
+
+Function pointers for pci_warn vs. pci_err ?
+
+This looks like a lot of copy/paste.
