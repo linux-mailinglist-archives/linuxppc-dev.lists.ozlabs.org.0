@@ -1,78 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B353201980
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 19:33:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89052019A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 19:44:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49pQry6LQMzDrQH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 03:33:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49pR5P0PsRzDrTK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 03:44:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=cheloha@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=peterx@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=RxnCyb0c; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=h502I52O; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49pNCG6RDxzDrQm
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jun 2020 01:34:27 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05JFVvHe039114
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 11:34:22 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31rmmf4f7c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 11:34:22 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05JFJPv5022759
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 15:34:21 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02dal.us.ibm.com with ESMTP id 31q6c8v16m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 15:34:21 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05JFYIFJ7995834
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jun 2020 15:34:18 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA35DC605B;
- Fri, 19 Jun 2020 15:34:19 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E36BC6057;
- Fri, 19 Jun 2020 15:34:19 +0000 (GMT)
-Received: from rascal.austin.ibm.com (unknown [9.41.179.32])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 19 Jun 2020 15:34:19 +0000 (GMT)
-From: Scott Cheloha <cheloha@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pseries: new lparcfg key/value pair:
- partition_affinity_score
-Date: Fri, 19 Jun 2020 10:34:19 -0500
-Message-Id: <20200619153419.3676392-1-cheloha@linux.ibm.com>
-X-Mailer: git-send-email 2.24.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49pP4R3FV7zDqX1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jun 2020 02:13:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1592583215;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
+ b=RxnCyb0cqqovNroxZowRnZrqnHfJ69C7sV+Wx2KIml8xgKKvpR8TNoU6WUweFMKeasWt7m
+ QSLKUYuFgmiq1A72M4/4GEvmBbPOBnzGp5tRtaHHqECkyEhzfU2Mv+u0fzII2QQRRPFiYL
+ miseAivrL5YU7YSiDRhfGhmpsmDC8hg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1592583216;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
+ b=h502I52Ob6dJcZk19XsOyNxL5mHDRheGu5/KsfCjFybmWN4VP7+S6XDnz5sXWuTcDLcB86
+ vqUUF6i87gO3pWepzGHssLRKKHMNl5RkoaUzcxjR5eWBaDWkEB69NBNRlODQUfWdWJW+2r
+ WppoLo3ldsSs8JF7G7puwvqaqunn4lE=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-411-drCx8dBZMs61b2c5DuwV7Q-1; Fri, 19 Jun 2020 12:13:31 -0400
+X-MC-Unique: drCx8dBZMs61b2c5DuwV7Q-1
+Received: by mail-qt1-f200.google.com with SMTP id y5so7503089qtd.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 09:13:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
+ b=WEPiTPjRICv9zOcqZK++KkBJzCOHrneJNvjwhHQShtck+Zkl7eA+ADLzTCThDzIEP8
+ LaUXpG5mTQNwcZVxe5B/lu6UMb3aiBisIPda/wyClVHVBD6TLhfkBng1+iDr5zZZtTuX
+ ZM/0enx9/LOW/2AA8DY+Ca98/jxC8fQrxK1gpRIPysPtuDEyDUVSw4KAXBmrv4la5LNi
+ nHfs2StG3vzYXB9cVZXFgkDXgogW2uo6LFPyQMF2TIwLkNRZhrh84Ipuc2iXqx7vPDQ4
+ Ve+tTIKMgXZeZN3HL0kEEvI01KHDEfyK/qQJRYCAol6/bjsvyebu28QE8ZO1fhSYs/Ds
+ Mr4A==
+X-Gm-Message-State: AOAM531x+wjcCQogomamaaVJKJ0kVdxyvMr3T0gntPXc3MFk88f/2boj
+ N6MUjTVuS1rfyQinGT8VWAvxjABq1bRhRD04PBij1FQ9jjPUYz6cd8nK7n1XXSFsnWkeSN5zFwP
+ +hnQ5VE+Cwioq2BTbXwLuW88haQ==
+X-Received: by 2002:ac8:46d6:: with SMTP id h22mr4171908qto.145.1592583211232; 
+ Fri, 19 Jun 2020 09:13:31 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxPf3L9dwnzhcKrCo1xqDr8zLwbACSJhy9YaZ+W+WiIy3zkGSSlH37gZSMbp9D62VN2NzGxsA==
+X-Received: by 2002:ac8:46d6:: with SMTP id h22mr4171872qto.145.1592583210896; 
+ Fri, 19 Jun 2020 09:13:30 -0700 (PDT)
+Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
+ by smtp.gmail.com with ESMTPSA id s52sm7597075qtb.3.2020.06.19.09.13.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 Jun 2020 09:13:30 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 16/26] mm/powerpc: Use general page fault accounting
+Date: Fri, 19 Jun 2020 12:13:27 -0400
+Message-Id: <20200619161327.9564-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200619160538.8641-1-peterx@redhat.com>
+References: <20200619160538.8641-1-peterx@redhat.com>
 MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-19_16:2020-06-19,
- 2020-06-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 suspectscore=1 phishscore=0 clxscore=1011 spamscore=0
- bulkscore=0 malwarescore=0 adultscore=0 cotscore=-2147483648
- impostorscore=0 mlxscore=0 mlxlogscore=824 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006190111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,103 +101,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ Peter Xu <peterx@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Will Deacon <will@kernel.org>, Gerald Schaefer <gerald.schaefer@de.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The H_GetPerformanceCounterInfo PHYP hypercall has a subcall,
-Affinity_Domain_Info_By_Partition, which returns, among other things,
-a "partition affinity score" for a given LPAR.  This score, a value on
-[0-100], represents the processor-memory affinity for the LPAR in
-question.  A score of 0 indicates the worst possible affinity while a
-score of 100 indicates perfect affinity.  The score can be used to
-reason about performance.
+Use the general page fault accounting by passing regs into handle_mm_fault().
 
-This patch adds the score for the local LPAR to the lparcfg procfile
-under a new 'partition_affinity_score' key.
-
-The H_GetPerformanceCounterInfo hypercall is already used elsewhere in
-the kernel, in powerpc/perf/hv-gpci.c.  Refactoring that code and this
-code into a more general API might be worthwhile if additional modules
-require the hypercall in the future.
-
-Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+CC: Michael Ellerman <mpe@ellerman.id.au>
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC: Paul Mackerras <paulus@samba.org>
+CC: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/powerpc/platforms/pseries/lparcfg.c | 53 ++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ arch/powerpc/mm/fault.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index b8d28ab88178..b75151eee0f0 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -136,6 +136,57 @@ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
- 	return rc;
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 992b10c3761c..e325d13efaf5 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -563,7 +563,7 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	 * make sure we exit gracefully rather than endlessly redo
+ 	 * the fault.
+ 	 */
+-	fault = handle_mm_fault(vma, address, flags, NULL);
++	fault = handle_mm_fault(vma, address, flags, regs);
+ 
+ #ifdef CONFIG_PPC_MEM_KEYS
+ 	/*
+@@ -604,14 +604,9 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	/*
+ 	 * Major/minor page fault accounting.
+ 	 */
+-	if (major) {
+-		current->maj_flt++;
+-		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ, 1, regs, address);
++	if (major)
+ 		cmo_account_page_fault();
+-	} else {
+-		current->min_flt++;
+-		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MIN, 1, regs, address);
+-	}
++
+ 	return 0;
  }
- 
-+/*
-+ * Based on H_GetPerformanceCounterInfo v1.10.
-+ */
-+static void show_gpci_data(struct seq_file *m)
-+{
-+	struct perf_counter_info_params {
-+		__be32 counter_request;
-+		__be32 starting_index;
-+		__be16 secondary_index;
-+		__be16 returned_values;
-+		__be32 detail_rc;
-+		__be16 counter_value_element_size;
-+		u8     counter_info_version_in;
-+		u8     counter_info_version_out;
-+		u8     reserved[0xC];
-+	} __packed;
-+	struct hv_gpci_request_buffer {
-+		struct perf_counter_info_params params;
-+		u8 output[4096 - sizeof(struct perf_counter_info_params)];
-+	} __packed;
-+	struct hv_gpci_request_buffer *buf;
-+	long ret;
-+	unsigned int affinity_score;
-+
-+	buf = kmalloc(sizeof(*buf), GFP_KERNEL);
-+	if (buf == NULL)
-+		return;
-+
-+	/*
-+	 * Show the local LPAR's affinity score.
-+	 *
-+	 * 0xB1 selects the Affinity_Domain_Info_By_Partition subcall.
-+	 * The score is at byte 0xB in the output buffer.
-+	 */
-+	memset(&buf->params, 0, sizeof(buf->params));
-+	buf->params.counter_request = cpu_to_be32(0xB1);
-+	buf->params.starting_index = cpu_to_be32(-1);	/* local LPAR */
-+	buf->params.counter_info_version_in = 0x5;	/* v5+ for score */
-+	ret = plpar_hcall_norets(H_GET_PERF_COUNTER_INFO, virt_to_phys(buf),
-+				 sizeof(*buf));
-+	if (ret != H_SUCCESS) {
-+		pr_debug("hcall failed: H_GET_PERF_COUNTER_INFO: %ld, %x\n",
-+			 ret, be32_to_cpu(buf->params.detail_rc));
-+		goto out;
-+	}
-+	affinity_score = buf->output[0xB];
-+	seq_printf(m, "partition_affinity_score=%u\n", affinity_score);
-+out:
-+	kfree(buf);
-+}
-+
- static unsigned h_pic(unsigned long *pool_idle_time,
- 		      unsigned long *num_procs)
- {
-@@ -487,6 +538,8 @@ static int pseries_lparcfg_data(struct seq_file *m, void *v)
- 			   partition_active_processors * 100);
- 	}
- 
-+	show_gpci_data(m);
-+
- 	seq_printf(m, "partition_active_processors=%d\n",
- 		   partition_active_processors);
- 
+ NOKPROBE_SYMBOL(__do_page_fault);
 -- 
-2.24.1
+2.26.2
 
