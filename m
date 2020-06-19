@@ -1,54 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9247F2001EA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 08:22:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FDB200266
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 09:03:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49p7yQ5hw5zDqV8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 16:22:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49p8sf31hTzDrQV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 17:03:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49p7wP5T8wzDrNB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 16:20:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sathnaga@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=MgSsavce; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49p7wL5jVwz9sRk;
- Fri, 19 Jun 2020 16:20:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1592547653;
- bh=EKAlwH7KMWYrcFWL23SicxqJVWA6PUXsyMOdTXnR/PY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MgSsavcewAYAsBdDFbtoBeCs4pwI8Pw44ofaqZsWzbBvq/8XIIX5HBYIj1OGZ1RBH
- SBR3aXYv3KyrTy7uZZA6Ur26SBqzW3f7GzJbauWhV9BiSvkNmgcZwl45966TlljNL0
- 0nC02luelmCpLqXFfsCx2pS9OC+R6l8V+mpwjFC5NjZuUC84niSlpcfs65KBIo7uW4
- 0a5huAuSz3bWTfax5WFGP6PRj+NVuer2xaCuJpOiGu5FbQmcmIXXAcEr+86kSl8LY3
- K0TG3L7/8QwVal78sg2tT7Pb2WSUFxZN19KK+34iL6sa2mMOupHRyg6ziGP1+vzjs0
- fHbErT7mhl2zA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>, Russell King <linux@armlinux.org.uk>,
- Tony Luck <tony.luck@intel.com>, Helge Deller <deller@gmx.de>
-Subject: Re: rename probe_kernel_* and probe_user_*
-In-Reply-To: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
-References: <20200617073755.8068-1-hch@lst.de>
- <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
-Date: Fri, 19 Jun 2020 16:21:18 +1000
-Message-ID: <87lfkjd19d.fsf@mpe.ellerman.id.au>
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49p8qt4R0KzDrMC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 17:02:02 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05J6WgYp175276; Fri, 19 Jun 2020 03:01:57 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31rpvr2ca2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jun 2020 03:01:56 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05J703dq007890;
+ Fri, 19 Jun 2020 07:01:53 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 31qur629vm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jun 2020 07:01:53 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05J71oik50331706
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 19 Jun 2020 07:01:50 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 695AFA405B;
+ Fri, 19 Jun 2020 07:01:50 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DC64DA405F;
+ Fri, 19 Jun 2020 07:01:23 +0000 (GMT)
+Received: from satheesh.ibmuc.com (unknown [9.199.32.210])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 19 Jun 2020 07:01:23 +0000 (GMT)
+From: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH V2] powerpc/pseries/svm: Remove unwanted check for
+ shared_lppaca_size
+Date: Fri, 19 Jun 2020 12:31:13 +0530
+Message-Id: <20200619070113.16696-1-sathnaga@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-19_01:2020-06-18,
+ 2020-06-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ adultscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ cotscore=-2147483648 impostorscore=0 suspectscore=0 bulkscore=0
+ mlxlogscore=999 mlxscore=0 priorityscore=1501 spamscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006190043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,49 +83,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Laurent Dufour <ldufour@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+ linux-kernel@vger.kernel.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus Torvalds <torvalds@linux-foundation.org> writes:
-> [ Explicitly added architecture lists and developers to the cc to make
-> this more visible ]
->
-> On Wed, Jun 17, 2020 at 12:38 AM Christoph Hellwig <hch@lst.de> wrote:
->>
->> Andrew and I decided to drop the patches implementing your suggested
->> rename of the probe_kernel_* and probe_user_* helpers from -mm as there
->> were way to many conflicts.  After -rc1 might be a good time for this as
->> all the conflicts are resolved now.
->
-> So I've merged this renaming now, together with my changes to make
-> 'get_kernel_nofault()' look and act a lot more like 'get_user()'.
->
-> It just felt wrong (and potentially dangerous) to me to have a
-> 'get_kernel_nofault()' naming that implied semantics that we're all
-> familiar with from 'get_user()', but acting very differently.
->
-> But part of the fixups I made for the type checking are for
-> architectures where I didn't even compile-test the end result. I
-> looked at every case individually, and the patch looks sane, but I
-> could have screwed something up.
->
-> Basically, 'get_kernel_nofault()' doesn't do the same automagic type
-> munging from the pointer to the target that 'get_user()' does, but at
-> least now it checks that the types are superficially compatible.
-> There should be build failures if they aren't, but I hopefully fixed
-> everything up properly for all architectures.
->
-> This email is partly to ask people to double-check, but partly just as
-> a heads-up so that _if_ I screwed something up, you'll have the
-> background and it won't take you by surprise.
+Early secure guest boot hits the below crash while booting with
+vcpus numbers aligned with page boundary for PAGE size of 64k
+and LPPACA size of 1k i.e 64, 128 etc, due to the BUG_ON assert
+for shared_lppaca_total_size equal to shared_lppaca_size,
 
-The powerpc changes look right, compile cleanly and seem to work
-correctly.
+ [    0.000000] Partition configured for 64 cpus.
+ [    0.000000] CPU maps initialized for 1 thread per core
+ [    0.000000] ------------[ cut here ]------------
+ [    0.000000] kernel BUG at arch/powerpc/kernel/paca.c:89!
+ [    0.000000] Oops: Exception in kernel mode, sig: 5 [#1]
+ [    0.000000] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
 
-cheers
+which is not necessary, let's remove it.
+
+Fixes: bd104e6db6f0 ("powerpc/pseries/svm: Use shared memory for LPPACA structures")
+Cc: linux-kernel@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Ram Pai <linuxram@us.ibm.com>
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Cc: Laurent Dufour <ldufour@linux.ibm.com>
+Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
+Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Signed-off-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+---
+
+V2:
+Added Reviewed by Thiago and Laurent.
+Added Fixes tag as per Thiago suggest.
+
+V1: https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200609105731.14032-1-sathnaga@linux.vnet.ibm.com/ 
+---
+ arch/powerpc/kernel/paca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index 2168372b792d..74da65aacbc9 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -87,7 +87,7 @@ static void *__init alloc_shared_lppaca(unsigned long size, unsigned long align,
+ 	 * This is very early in boot, so no harm done if the kernel crashes at
+ 	 * this point.
+ 	 */
+-	BUG_ON(shared_lppaca_size >= shared_lppaca_total_size);
++	BUG_ON(shared_lppaca_size > shared_lppaca_total_size);
+ 
+ 	return ptr;
+ }
+-- 
+2.26.2
+
