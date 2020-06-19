@@ -2,79 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4AF2003F0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 10:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0AF200634
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 12:27:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49pBpq2HF7zDrPJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 18:31:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49pFNc31ndzDrNB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 20:27:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cogentembedded.com (client-ip=2a00:1450:4864:20::143;
- helo=mail-lf1-x143.google.com;
- envelope-from=sergei.shtylyov@cogentembedded.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=cogentembedded.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=cogentembedded-com.20150623.gappssmtp.com
- header.i=@cogentembedded-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=qkbi8YvZ; dkim-atps=neutral
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49pBmN6ZDfzDrMb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 18:29:04 +1000 (AEST)
-Received: by mail-lf1-x143.google.com with SMTP id d27so5062781lfq.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 01:29:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=irVvm75B8uOjhet4ds9NewlHhGnanjSr3qTRTZzIUE4=;
- b=qkbi8YvZIpYdgXOhuLz+oLhk6FU5nre6FOh8jwCxVM9654uCe38mG3xi4sHqGzzDyG
- SEH1hJrw2TFIChHUxX1ZXnbwARwg6RC5j0BV0+jMRPStvzbKMhHOWFkkmEsrWjqdX5F+
- D1IOfQlW2zLQg/nVx9gJMOxi4uOERKvqBd1S1RhEt6EhjY5th0/tAvBfP2KAJAM96y7o
- h72udRwv1GPKxwptl875dVONvJoltvXpQNW88Rr7UCqkXi2dwlS43kJ7lnlN+shZedPc
- UEpFi+EUsizwMgSG5KrzWkYQzjXdopu2qfdbxfjTUi6dvlVTSJe8cWAu3gdUIqCShHxT
- T2Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=irVvm75B8uOjhet4ds9NewlHhGnanjSr3qTRTZzIUE4=;
- b=sjg+yBwvVyVl3QBgP7QaQahxYnzt/U1i+UqFwcs0LYMMyrdGcTq2IYYjG7uYZdXzOt
- XX6yEwEbL2kwed5bABhLXYtO5mrkk7lmizVhq3LpuembXK+XiMeDLMeBOVynDjjv18Zn
- 0ckRlt9lnv3VAqfFJhJP7aaOGUWtchfctv7gHIiaY6QiyIdyE0DLf841NwpLQ51dBRIf
- ewGoAuj3o8vDADKgYYbtx4/W2BzKolC9jQ+z3Wiy1P1uxcqgelwzoMIrNoA5cjEwA9fv
- yhRMGqqBLXFQ5a+qJUSP5cGsGJPJaQsA3xWF/0DxNeLKD4Zo47B+iRFN0FvSEFsCWAzH
- Ajbg==
-X-Gm-Message-State: AOAM532FUnqyludOxH4YefjmPKdc2aZ4AwhOUpb7o1GVym59ucGrPYoW
- 5C2K9xsJWGonTUSCAG57T7IDVg==
-X-Google-Smtp-Source: ABdhPJxnSAk4hCfsyIu7N052ONa1UuRXTstPiF0JmLx3L/kM6WdrlnqV1xaj4A+uNl5wLop8yEYwoQ==
-X-Received: by 2002:ac2:5c49:: with SMTP id s9mr1327184lfp.90.1592555339610;
- Fri, 19 Jun 2020 01:28:59 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:8c9:4beb:2ce8:f19d:33e5:571e?
- ([2a00:1fa0:8c9:4beb:2ce8:f19d:33e5:571e])
- by smtp.gmail.com with ESMTPSA id a16sm1058721ljb.107.2020.06.19.01.28.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jun 2020 01:28:58 -0700 (PDT)
-Subject: Re: [PATCH 3/6] exec: cleanup the count() function
-To: Christoph Hellwig <hch@lst.de>, Al Viro <viro@zeniv.linux.org.uk>
-References: <20200618144627.114057-1-hch@lst.de>
- <20200618144627.114057-4-hch@lst.de>
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <04e7876b-a8f3-3f6e-939c-bb0764ece1ac@cogentembedded.com>
-Date: Fri, 19 Jun 2020 11:28:44 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49pFLr4GFszDqTZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 20:25:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=aVcWrsEr; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49pFLq6hSbz9sSd; Fri, 19 Jun 2020 20:25:39 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49pFLp73VDz9sSJ;
+ Fri, 19 Jun 2020 20:25:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1592562339;
+ bh=v3lZ1zhxm30dbuwgJcVNBDOXwalAnBkaTaUQ7+IoMNs=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=aVcWrsEruaaErbDP8NVcrNS+EK8+wxDbELGLevLdX9mcDCpb2pHRbgdeARe5/0EAL
+ HesWHI6KgwsqORqKaT58fELkECtqgo2D4W9poc7mZN1pDn08e6v1zwhsW8Q0bQ4BIQ
+ 6GRgbhI4Wh5rwGGp8dFKkH1goaM4iZMptx53G0/eTk9OLEZJ4Kj1ZdvcCQ7vNDxmnm
+ KcVGCIcLF/uOJg6YXgAM+fVIWQ9RuTLN8p/6GvgtoRZX1B2nfBLgz/NZ9MeMofKBaU
+ x6S5cFKqCuS38FqqKoevBr+TYTdwgNwV5GXeBTi6ct72b3/mDTums4QVH+QXSuzlva
+ Rjvb3HigWEwpA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH 2/2] powerpc/syscalls: Split SPU-ness out of ABI
+In-Reply-To: <20200616135617.2937252-2-mpe@ellerman.id.au>
+References: <20200616135617.2937252-1-mpe@ellerman.id.au>
+ <20200616135617.2937252-2-mpe@ellerman.id.au>
+Date: Fri, 19 Jun 2020 20:26:05 +1000
+Message-ID: <87h7v7cpxe.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200618144627.114057-4-hch@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,28 +61,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Brian Gerst <brgerst@gmail.com>, x86@kernel.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@ozlabs.org, linux-kernel@vger.kernel.org, arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello!
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Using the ABI field to encode whether a syscall is usable by SPU
+> programs or not is a bit of kludge.
+>
+> The ABI of the syscall doesn't change depending on the SPU-ness, but
+> in order to make the syscall generation work we have to pretend that
+> it does.
+>
+> It also means we have more duplicated syscall lines than we need to,
+> and the SPU logic is not well contained, instead all of the syscall
+> generation targets need to know if they are spu or nospu.
+>
+> So instead add a separate file which contains the information on which
+> syscalls are available for SPU programs. It's just a list of syscall
+> numbers with a single "spu" field. If the field has the value "spu"
+> then the syscall is available to SPU programs, any other value or no
+> entry entirely means the syscall is not available to SPU programs.
+>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/kernel/syscalls/Makefile      |  16 +-
+>  arch/powerpc/kernel/syscalls/spu.tbl       | 430 +++++++++++++++++++++
+>  arch/powerpc/kernel/syscalls/syscall.tbl   | 195 ++++------
+>  arch/powerpc/kernel/syscalls/syscalltbl.sh |  10 +-
+>  4 files changed, 523 insertions(+), 128 deletions(-)
+>  create mode 100644 arch/powerpc/kernel/syscalls/spu.tbl
 
-On 18.06.2020 17:46, Christoph Hellwig wrote:
+For the archives, the changes to the syscall table & the generation of
+the spu.tbl can be more-or-less generated with the script below
+(ignoring whitespace & comments).
 
-> Remove the max argument as it is hard wired to MAX_ARG_STRINGS, and
+cheers
 
-    Technically, argument is what's actually passed to a function, you're 
-removing a function parameter.
 
-> give the function a slightly less generic name.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-[...]
+#!/bin/bash
 
-MBR, Sergei
+git checkout v5.8-rc1
+
+table=arch/powerpc/kernel/syscalls/syscall.tbl
+
+for number in {0..439}
+do
+    line=$(grep -E "^$number\s+(common|spu)" $table)
+    if [[ -n "$line" ]]; then
+	read number abi name syscall compat <<< "$line"
+	if [[ "$syscall" != "sys_ni_syscall" ]]; then
+	    if [[ "$name" == "utimesat" ]]; then # fix typo
+		name="futimesat"
+	    fi
+	    echo -e "$number\t$name\tspu"
+	    continue
+	fi
+    fi
+
+    line=$(grep -m 1 -E "^$number\s+" $table)
+    read number abi name syscall compat <<< "$line"
+    if [[ -n "$name" ]]; then
+	echo -e "$number\t$name\t-"
+    fi
+done > spu-generated.tbl
+
+cat $table | while read line
+do
+    read number abi name syscall compat <<< "$line"
+
+    if [[ "$number" == "#" ]]; then
+	echo $line
+	continue
+    fi
+
+    case "$abi" in
+	"nospu")	;&
+	"common")	;&
+	"32")		;&
+	"64") echo "$line" | sed -e "s/nospu/common/" ;;
+    esac
+done > syscall-generated.tbl
+
+git cat-file -p 35e32a6cb5f6:$table | diff -w -u - syscall-generated.tbl
+git cat-file -p 35e32a6cb5f6:arch/powerpc/kernel/syscalls/spu.tbl | diff -w -u - spu-generated.tbl
+
