@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE672014B8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 18:16:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCAB201589
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 18:24:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49pP7t397nzDr7D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 02:16:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49pPJd31VdzDrMK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jun 2020 02:24:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,45 +19,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49pL6W4vTWzDrN4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49pL6X0VRhzDrN8
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jun 2020 00:00:19 +1000 (AEST)
 Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05JDcVJV040812; Fri, 19 Jun 2020 10:00:12 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ruk7p18s-1
+ 05JDcXdx041011; Fri, 19 Jun 2020 10:00:15 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31ruk7p1bh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Jun 2020 10:00:12 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05JDtBUL026315;
- Fri, 19 Jun 2020 14:00:11 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03dal.us.ibm.com with ESMTP id 31q6c6b1gy-1
+ Fri, 19 Jun 2020 10:00:15 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05JDxPP8029737;
+ Fri, 19 Jun 2020 14:00:14 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma02dal.us.ibm.com with ESMTP id 31q6c8uas4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Jun 2020 14:00:11 +0000
+ Fri, 19 Jun 2020 14:00:14 +0000
 Received: from b03ledav005.gho.boulder.ibm.com
  (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05JE09b849938786
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05JE0CFC60162526
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jun 2020 14:00:09 GMT
+ Fri, 19 Jun 2020 14:00:12 GMT
 Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 747DCBE05F;
- Fri, 19 Jun 2020 14:00:09 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7F738BE059;
+ Fri, 19 Jun 2020 14:00:12 +0000 (GMT)
 Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 751FBBE059;
- Fri, 19 Jun 2020 14:00:07 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7DBC0BE05B;
+ Fri, 19 Jun 2020 14:00:10 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.79.220.36])
  by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 19 Jun 2020 14:00:07 +0000 (GMT)
+ Fri, 19 Jun 2020 14:00:09 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v5 23/26] powerpc/book3s64/kuap: Move UAMOR setup to key init
- function
-Date: Fri, 19 Jun 2020 19:28:47 +0530
-Message-Id: <20200619135850.47155-24-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v5 24/26] powerpc/selftest/ptrave-pkey: Rename variables to
+ make it easier to follow code
+Date: Fri, 19 Jun 2020 19:28:48 +0530
+Message-Id: <20200619135850.47155-25-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
 References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
@@ -90,209 +90,102 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-UAMOR values are not application-specific. The kernel initializes
-its value based on different reserved keys. Remove the thread-specific
-UAMOR value and don't switch the UAMOR on context switch.
-
-Move UAMOR initialization to key initialization code. Now that
-KUAP/KUEP feature depends on PPC_MEM_KEYS, we can start to consolidate
-all register initialization to keys init.
+Rename variable to indicate that they are invalid values which we will use to
+test ptrace update of pkeys.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/kup.h |  2 ++
- arch/powerpc/include/asm/processor.h     |  1 -
- arch/powerpc/kernel/ptrace/ptrace-view.c | 17 ++++++++----
- arch/powerpc/kernel/smp.c                |  5 ++++
- arch/powerpc/mm/book3s64/pkeys.c         | 35 ++++++++++++++----------
- 5 files changed, 39 insertions(+), 21 deletions(-)
+ .../selftests/powerpc/ptrace/ptrace-pkey.c    | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index 3a0e138d2735..942594745dfa 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -67,6 +67,8 @@
- #include <asm/mmu.h>
- #include <asm/ptrace.h>
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
+index bdbbbe8431e0..f9216c7a1829 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
+@@ -44,7 +44,7 @@ struct shared_info {
+ 	unsigned long amr2;
  
-+extern u64 default_uamor;
-+
- static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
- {
- 	if (mmu_has_feature(MMU_FTR_KUAP) && unlikely(regs->kuap != amr)) {
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index 52a67835057a..6ac12168f1fe 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -237,7 +237,6 @@ struct thread_struct {
- #ifdef CONFIG_PPC_MEM_KEYS
- 	unsigned long	amr;
- 	unsigned long	iamr;
--	unsigned long	uamor;
- #endif
- #ifdef CONFIG_KVM_BOOK3S_32_HANDLER
- 	void*		kvm_shadow_vcpu; /* KVM internal data */
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
-index caeb5822a8f4..689711eb018a 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-view.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
-@@ -488,14 +488,22 @@ static int pkey_active(struct task_struct *target, const struct user_regset *reg
- static int pkey_get(struct task_struct *target, const struct user_regset *regset,
- 		    unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf)
- {
-+	int ret;
-+
- 	BUILD_BUG_ON(TSO(amr) + sizeof(unsigned long) != TSO(iamr));
--	BUILD_BUG_ON(TSO(iamr) + sizeof(unsigned long) != TSO(uamor));
+ 	/* AMR value that ptrace should refuse to write to the child. */
+-	unsigned long amr3;
++	unsigned long invalid_amr;
  
- 	if (!arch_pkeys_enabled())
- 		return -ENODEV;
+ 	/* IAMR value the parent expects to read from the child. */
+ 	unsigned long expected_iamr;
+@@ -57,8 +57,8 @@ struct shared_info {
+ 	 * (even though they're valid ones) because userspace doesn't have
+ 	 * access to those registers.
+ 	 */
+-	unsigned long new_iamr;
+-	unsigned long new_uamor;
++	unsigned long invalid_iamr;
++	unsigned long invalid_uamor;
+ };
  
--	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, &target->thread.amr,
--				   0, ELF_NPKEY * sizeof(unsigned long));
-+	ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &target->thread.amr,
-+				  0, 2 * sizeof(unsigned long));
-+	if (ret)
-+		goto err_out;
-+
-+	ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &default_uamor,
-+				  2 * sizeof(unsigned long), 3 * sizeof(unsigned long));
-+err_out:
-+	return ret;
- }
+ static int sys_pkey_alloc(unsigned long flags, unsigned long init_access_rights)
+@@ -100,7 +100,7 @@ static int child(struct shared_info *info)
  
- static int pkey_set(struct task_struct *target, const struct user_regset *regset,
-@@ -518,8 +526,7 @@ static int pkey_set(struct task_struct *target, const struct user_regset *regset
+ 	info->amr1 |= 3ul << pkeyshift(pkey1);
+ 	info->amr2 |= 3ul << pkeyshift(pkey2);
+-	info->amr3 |= info->amr2 | 3ul << pkeyshift(pkey3);
++	info->invalid_amr |= info->amr2 | 3ul << pkeyshift(pkey3);
+ 
+ 	if (disable_execute)
+ 		info->expected_iamr |= 1ul << pkeyshift(pkey1);
+@@ -111,8 +111,8 @@ static int child(struct shared_info *info)
+ 
+ 	info->expected_uamor |= 3ul << pkeyshift(pkey1) |
+ 				3ul << pkeyshift(pkey2);
+-	info->new_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
+-	info->new_uamor |= 3ul << pkeyshift(pkey1);
++	info->invalid_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
++	info->invalid_uamor |= 3ul << pkeyshift(pkey1);
+ 
+ 	/*
+ 	 * We won't use pkey3. We just want a plausible but invalid key to test
+@@ -196,9 +196,9 @@ static int parent(struct shared_info *info, pid_t pid)
+ 	PARENT_SKIP_IF_UNSUPPORTED(ret, &info->child_sync);
+ 	PARENT_FAIL_IF(ret, &info->child_sync);
+ 
+-	info->amr1 = info->amr2 = info->amr3 = regs[0];
+-	info->expected_iamr = info->new_iamr = regs[1];
+-	info->expected_uamor = info->new_uamor = regs[2];
++	info->amr1 = info->amr2 = info->invalid_amr = regs[0];
++	info->expected_iamr = info->invalid_iamr = regs[1];
++	info->expected_uamor = info->invalid_uamor = regs[2];
+ 
+ 	/* Wake up child so that it can set itself up. */
+ 	ret = prod_child(&info->child_sync);
+@@ -234,10 +234,10 @@ static int parent(struct shared_info *info, pid_t pid)
  		return ret;
  
- 	/* UAMOR determines which bits of the AMR can be set from userspace. */
--	target->thread.amr = (new_amr & target->thread.uamor) |
--			     (target->thread.amr & ~target->thread.uamor);
-+	target->thread.amr = (new_amr & default_uamor) | (target->thread.amr & ~default_uamor);
+ 	/* Write invalid AMR value in child. */
+-	ret = ptrace_write_regs(pid, NT_PPC_PKEY, &info->amr3, 1);
++	ret = ptrace_write_regs(pid, NT_PPC_PKEY, &info->invalid_amr, 1);
+ 	PARENT_FAIL_IF(ret, &info->child_sync);
  
- 	return 0;
- }
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index c820c95162ff..eec40082599f 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -59,6 +59,7 @@
- #include <asm/asm-prototypes.h>
- #include <asm/cpu_has_feature.h>
- #include <asm/ftrace.h>
-+#include <asm/kup.h>
+-	printf("%-30s AMR: %016lx\n", ptrace_write_running, info->amr3);
++	printf("%-30s AMR: %016lx\n", ptrace_write_running, info->invalid_amr);
  
- #ifdef DEBUG
- #include <asm/udbg.h>
-@@ -1256,6 +1257,10 @@ void start_secondary(void *unused)
- 	mmgrab(&init_mm);
- 	current->active_mm = &init_mm;
+ 	/* Wake up child so that it can verify it didn't change. */
+ 	ret = prod_child(&info->child_sync);
+@@ -249,7 +249,7 @@ static int parent(struct shared_info *info, pid_t pid)
  
-+#ifdef CONFIG_PPC_MEM_KEYS
-+	mtspr(SPRN_UAMOR, default_uamor);
-+#endif
-+
- 	smp_store_cpu_info(cpu);
- 	set_dec(tb_ticks_per_jiffy);
- 	preempt_disable();
-diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index aeecc8b8e11c..3f3593f85358 100644
---- a/arch/powerpc/mm/book3s64/pkeys.c
-+++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -24,7 +24,7 @@ static u32  initial_allocation_mask;   /* Bits set for the initially allocated k
- static u64 default_amr;
- static u64 default_iamr;
- /* Allow all keys to be modified by default */
--static u64 default_uamor = ~0x0UL;
-+u64 default_uamor = ~0x0UL;
- /*
-  * Key used to implement PROT_EXEC mmap. Denies READ/WRITE
-  * We pick key 2 because 0 is special key and 1 is reserved as per ISA.
-@@ -113,8 +113,16 @@ void __init pkey_early_init_devtree(void)
- 	/* scan the device tree for pkey feature */
- 	pkeys_total = scan_pkey_feature();
- 	if (!pkeys_total) {
--		/* No support for pkey. Mark it disabled */
--		return;
-+		/*
-+		 * No key support but on radix we can use key 0
-+		 * to implement kuap.
-+		 */
-+		if (early_radix_enabled())
-+			/*
-+			 * Make sure userspace can't change the AMR
-+			 */
-+			default_uamor = 0;
-+		goto err_out;
- 	}
+ 	/* Try to write to IAMR. */
+ 	regs[0] = info->amr1;
+-	regs[1] = info->new_iamr;
++	regs[1] = info->invalid_iamr;
+ 	ret = ptrace_write_regs(pid, NT_PPC_PKEY, regs, 2);
+ 	PARENT_FAIL_IF(!ret, &info->child_sync);
  
- 	cur_cpu_spec->mmu_features |= MMU_FTR_PKEY;
-@@ -197,6 +205,12 @@ void __init pkey_early_init_devtree(void)
- 	initial_allocation_mask |= reserved_allocation_mask;
+@@ -257,7 +257,7 @@ static int parent(struct shared_info *info, pid_t pid)
+ 	       ptrace_write_running, regs[0], regs[1]);
  
- 	pr_info("Enabling Memory keys with max key count %d", max_pkey);
-+err_out:
-+	/*
-+	 * Setup uamor on boot cpu
-+	 */
-+	mtspr(SPRN_UAMOR, default_uamor);
-+
- 	return;
- }
+ 	/* Try to write to IAMR and UAMOR. */
+-	regs[2] = info->new_uamor;
++	regs[2] = info->invalid_uamor;
+ 	ret = ptrace_write_regs(pid, NT_PPC_PKEY, regs, 3);
+ 	PARENT_FAIL_IF(!ret, &info->child_sync);
  
-@@ -232,8 +246,9 @@ void __init setup_kuap(bool disabled)
- 		cur_cpu_spec->mmu_features |= MMU_FTR_KUAP;
- 	}
- 
--	/* Make sure userspace can't change the AMR */
--	mtspr(SPRN_UAMOR, 0);
-+	/*
-+	 * Set the default kernel AMR values on all cpus.
-+	 */
- 	mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
- 	isync();
- }
-@@ -278,11 +293,6 @@ static inline u64 read_uamor(void)
- 	return mfspr(SPRN_UAMOR);
- }
- 
--static inline void write_uamor(u64 value)
--{
--	mtspr(SPRN_UAMOR, value);
--}
--
- static bool is_pkey_enabled(int pkey)
- {
- 	u64 uamor = read_uamor();
-@@ -353,7 +363,6 @@ void thread_pkey_regs_save(struct thread_struct *thread)
- 	 */
- 	thread->amr = read_amr();
- 	thread->iamr = read_iamr();
--	thread->uamor = read_uamor();
- }
- 
- void thread_pkey_regs_restore(struct thread_struct *new_thread,
-@@ -366,8 +375,6 @@ void thread_pkey_regs_restore(struct thread_struct *new_thread,
- 		write_amr(new_thread->amr);
- 	if (old_thread->iamr != new_thread->iamr)
- 		write_iamr(new_thread->iamr);
--	if (old_thread->uamor != new_thread->uamor)
--		write_uamor(new_thread->uamor);
- }
- 
- void thread_pkey_regs_init(struct thread_struct *thread)
-@@ -377,11 +384,9 @@ void thread_pkey_regs_init(struct thread_struct *thread)
- 
- 	thread->amr   = default_amr;
- 	thread->iamr  = default_iamr;
--	thread->uamor = default_uamor;
- 
- 	write_amr(default_amr);
- 	write_iamr(default_iamr);
--	write_uamor(default_uamor);
- }
- 
- int execute_only_pkey(struct mm_struct *mm)
 -- 
 2.26.2
 
