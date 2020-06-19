@@ -1,75 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92391FFEB0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 01:35:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2300D1FFF9C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 03:18:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nywv3TSKzDrMm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 09:35:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49p1CB0hKLzDr86
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 11:18:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=Ewi80sWV; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nyv216FJzDrMT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 09:34:05 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id s10so3682354pgm.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 16:34:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=vzMoTDgws5PlJ9TvYEmWHyaZ7Qpk9jmHSWqWqw0ANTA=;
- b=Ewi80sWV0n+/DP/17c63Vb7jKadOV6GgvQKsky4OaGKjTCttb5aZmXV/DCO2N6Yg0I
- rUCGjVS7EuVlN5R12i7QA/VSKcv+O59aYhF2d3schmJmPZa0jzjhVAekNFxSIfqSNnIN
- 35U8t1kWy7RnLJMTKWOtvvLRzLtyRm4dOLhJNK7V6o3tSFCJo9uo8qRmlCcvHXpNC+Lk
- X4+oMy9blcsGQ+Ft5/1GDNWFR2h4anquYBU3tqvS4sL73LwkNeNV/gGRWRREPpix7yGk
- CAvEYZK4bggM4XJLHThuSWxUmxzwU5zt9uiQRHADkqAthYcnS5ZWfV+cqMkBNyR8BgEi
- 5mKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=vzMoTDgws5PlJ9TvYEmWHyaZ7Qpk9jmHSWqWqw0ANTA=;
- b=by1RXKml+jXNyLOQVR26K2xnQQ4iPaW9Ps0C58A7+vhU7T1i6q+V/ieShXPokTmR/t
- oSMYjaYwy/ImyK4o0g4g+bWRdSXXV72TR3ATql+8whfvt7o71MdkDkqqV73KVDXMYqWU
- tyRLMp0YiqjvuEYKakLYh4PgZK4zRceT1GrotGI9XPfkP6u4rMoPZEynjCQNSwyu+DNZ
- 1xA+Qlfk6xS0QoeOmDuoTDHbQ4xD46OTERXDKlnNW6vvP5J+Lk7XM1RqM9Zi5phWbSqt
- Fk7UzeIitcGdXTYqZdIjiz2M2tfTcN6xoziulmEkk0TvGxx6VSyjeaNL0I9NIf2HT+Y0
- 6SQw==
-X-Gm-Message-State: AOAM5321qxxzeOXO8VAVWqWg26O5MyEh2DsBib1NtUxoi4bTZzeHTeuM
- hnhzzf0xYbclBB520PC8jmlkuSBpCgqypXatYIYAwg==
-X-Google-Smtp-Source: ABdhPJylpCbzSialaLk8pB9ppDsJx1vLI57MrnJmVY8Ehtzn3RslDcnj32ZNhbjYtsX0HvPbYrYBOCZ1vsdRWTR/ZpE=
-X-Received: by 2002:a63:a119:: with SMTP id b25mr772906pgf.10.1592523242019;
- Thu, 18 Jun 2020 16:34:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49p19S15TczDrDX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 11:16:43 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05J13WZA185906; Thu, 18 Jun 2020 21:16:36 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31rg0rn1cw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jun 2020 21:16:36 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05J1Akdd021930;
+ Fri, 19 Jun 2020 01:16:33 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma05fra.de.ibm.com with ESMTP id 31r1kq0k8m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jun 2020 01:16:33 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05J1GUQB65470876
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 19 Jun 2020 01:16:30 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E3D80AE051;
+ Fri, 19 Jun 2020 01:16:29 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B6C0AE045;
+ Fri, 19 Jun 2020 01:16:27 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.211.71.42])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 19 Jun 2020 01:16:26 +0000 (GMT)
+Date: Thu, 18 Jun 2020 18:16:24 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH v2 2/4] KVM: PPC: Book3S HV: track the state GFNs
+ associated with secure VMs
+Message-ID: <20200619011624.GB6772@oc0525413822.ibm.com>
+References: <1592471945-24786-1-git-send-email-linuxram@us.ibm.com>
+ <1592471945-24786-3-git-send-email-linuxram@us.ibm.com>
+ <7f5aea68-0cc5-6ae5-c30e-eee60eff5a92@linux.ibm.com>
 MIME-Version: 1.0
-References: <cover.1590079968.git.christophe.leroy@csgroup.eu>
- <8c593895e2cb57d232d85ce4d8c3a1aa7f0869cc.1590079968.git.christophe.leroy@csgroup.eu>
- <20200616002720.GA1307277@ubuntu-n2-xlarge-x86>
- <68503e5e-7456-b81c-e43d-27cb331a4b72@xilinx.com>
- <20200616181630.GA3403678@ubuntu-n2-xlarge-x86>
- <50fb2dd6-4e8f-a550-6eda-073beb86f2ff@xilinx.com>
- <87bllidmk4.fsf@mpe.ellerman.id.au> <878sgmdmcv.fsf@mpe.ellerman.id.au>
- <CAKwvOdnkcjLGay0jdQ77kHTmKhE56F9jvzh01XWwEE8rjbhLAA@mail.gmail.com>
- <87tuz9ci7e.fsf@mpe.ellerman.id.au>
- <20200618031622.GA195@Ryzen-9-3900X.localdomain>
-In-Reply-To: <20200618031622.GA195@Ryzen-9-3900X.localdomain>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Thu, 18 Jun 2020 16:33:50 -0700
-Message-ID: <CAKwvOdnGPFndupGj0dZq8xfepYahVvsASGGbS10Ki19YmbqZHQ@mail.gmail.com>
-Subject: Re: [PATCH v5 01/13] powerpc: Remove Xilinx PPC405/PPC440 support
-To: Nathan Chancellor <natechancellor@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7f5aea68-0cc5-6ae5-c30e-eee60eff5a92@linux.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-18_21:2020-06-18,
+ 2020-06-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ adultscore=0 suspectscore=0 mlxscore=0 priorityscore=1501 phishscore=0
+ bulkscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015 spamscore=0
+ cotscore=-2147483648 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006190004
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,36 +88,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Robert Lippert <rlippert@google.com>, Arnd Bergmann <arnd@arndb.de>,
- Michal Simek <michal.simek@xilinx.com>, LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>, Greg Thelen <gthelen@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org, bharata@linux.ibm.com,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 17, 2020 at 8:16 PM Nathan Chancellor
-<natechancellor@gmail.com> wrote:
->
-> Admittedly, we really do not have many PowerPC experts in our
-> organization
+On Thu, Jun 18, 2020 at 03:31:06PM +0200, Laurent Dufour wrote:
+> Le 18/06/2020 à 11:19, Ram Pai a écrit :
+> >
 
-Not with that attitude. :P /s
-https://www.youtube.com/watch?v=Kck_upSlx60
+.snip..
 
-> so we are supporting it on a "best effort" basis, which
-> often involves using whatever knowledge is floating around or can be
-> gained from interactions such as this :) so thank you for that!
+> >************************************************************************
+> >  1. States of a GFN
+> >     ---------------
+> >  The GFN can be in one of the following states.
+> >diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
 
-That said, Google does have a significant amount of POWER machines in
-the fleet used by our "prodkernel" teams.  Anecdotally, I've been
-getting cc'ed on more and more internal bugs regarding ppc+clang+linux
-kernels.  "prodkernel" is still in the process of moving a massive
-fleet over to clang built kernels, but ppc is very important to
-Google.  ppc32...I'm not so sure...let me ask some of our ppc folks
-more about which uarch's and word sizes they really care about...
+...snip...
 
---
-Thanks,
-~Nick Desaulniers
+> >index 803940d..3448459 100644
+> >--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> >+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> >@@ -1100,7 +1100,7 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
+> >  	unsigned int shift;
+> >  	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START)
+> >-		kvmppc_uvmem_drop_pages(memslot, kvm, true);
+> >+		kvmppc_uvmem_drop_pages(memslot, kvm, true, false);
+> 
+> When reviewing the v1 of this series, I asked you the question about
+> the fact that the call here is made with purge_gfn = false. Your
+> answer was:
+> 
+> >This function does not know, under what context it is called. Since
+> >its job is to just flush the memslot, it cannot assume anything
+> >about purging the pages in the memslot.
+> 
+> Indeed in the case of the memory hotplug operation, this function is
+> called to wipe the page from the secure device in the case the pages
+> are secured. In that case the purge is required. Indeed, I checked
+> the other call to kvmppc_radix_flush_memslot() in
+> kvmppc_core_flush_memslot_hv() and I cannot see why in that case too
+> purge_gfn should be false, especially when the memslot is reused as
+> detailed in __kvm_set_memory_region() around the call to
+> kvm_arch_flush_shadow_memslot().
+> 
+> I'm sorry to not have ask this earlier, but could you please elaborate on this?
+
+You are right. kvmppc_radix_flush_memslot() is getting called everytime with
+the intention of disassociating the memslot from that VM. Which implies,
+the memslot is intended to be deleted and possibly reused.
+
+I should be calling kvmppc_uvmem_drop_pages() with purge_gfn=true, here
+aswell.
+
+I expect some form of problem showing up in memhot-plug/unplug path.
+
+RP
+
