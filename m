@@ -1,52 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111F020280E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 04:57:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6720720292D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 08:54:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49qHJW6XLKzDqlc
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 12:57:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49qNZX0LC3zDqht
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 16:54:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.24;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=DgmW9dC/; 
+ dkim-atps=neutral
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [85.215.255.24])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49qHDh72kszDqdk
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jun 2020 12:53:51 +1000 (AEST)
-IronPort-SDR: EelR1+hF40A0BTva3y2JL0UagQGmGUrmXl0Yrbdnc7d1TMrehamKPs9vyB+rWkZQtMQavzeNZu
- WnLNlLtnmW3g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9658"; a="123729352"
-X-IronPort-AV: E=Sophos;i="5.75,261,1589266800"; d="scan'208";a="123729352"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2020 19:53:48 -0700
-IronPort-SDR: 39nc3bc+5cn9s20VqpqA2gVyHzVsVqb2lgYUWxB56O3znN2/9DR8Wwl/ttfZ+edIQgAloAzvNl
- 1O98qqrYaKBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,261,1589266800"; d="scan'208";a="309795227"
-Received: from lkp-server02.sh.intel.com (HELO 3aa54c81372e) ([10.239.97.151])
- by orsmga008.jf.intel.com with ESMTP; 20 Jun 2020 19:53:47 -0700
-Received: from kbuild by 3aa54c81372e with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1jmq78-0001xZ-MD; Sun, 21 Jun 2020 02:53:46 +0000
-Date: Sun, 21 Jun 2020 10:52:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- e8d5573a575dc20421d3de0739d97e4abb459019
-Message-ID: <5eeecb89.o7hAYEd56O6GHhBm%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49qNG649sNzDqg8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jun 2020 16:40:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1592721621;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=To:Cc:Message-Id:Subject:Date:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+ Subject:Sender;
+ bh=+Tvi0LDe0B9iwAHBPweCGmIXnyiXr/te6rYmedqq9AQ=;
+ b=DgmW9dC/GWTGKBK8JI11F9K9DgPW7IEHEKiuMGlbCLdbY47YYub9dw1CWExzk5ZhhZ
+ ZIkX+rBACJlSeCIcVcgN84LZvM7xNnEy7p/fXk82mQfdzeOgk+S29erhOiT+WoS+yaLd
+ ujd1sOBsZG6EGhPUnz336BVxE/a8Hd/O0hDNjT0PJDH1dVj+a4qVkRZ2pHk8DZqP8DU1
+ h9ewznp1f2ZPJaBnJX9Xl+HfUvF0WiKRpRlyx7g1UaNRikqftbNP5LNwfQf3+7y9pwLi
+ mK/Yk8v1x+zIJc2JovjFG7fFb6y8DP1EvVEkcMpqaALVAuqFVge5qA/odMIPut1z04bR
+ 9DTg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7aWdxiboxknTzOqX0GiCmXNzTL0vPXE3f7PkieW51"
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a01:598:d002:df2e:e143:9708:ccc1:31a0]
+ by smtp.strato.de (RZmta 46.10.4 AUTH)
+ with ESMTPSA id m08564w5L6eFSE8
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Sun, 21 Jun 2020 08:40:15 +0200 (CEST)
+Content-Type: multipart/alternative;
+ boundary=Apple-Mail-E3A8421F-B332-4EF5-8EF8-178DBCC3A721
 Content-Transfer-Encoding: 7bit
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Mime-Version: 1.0 (1.0)
+Date: Sun, 21 Jun 2020 08:40:14 +0200
+Subject: FSL P5020/P5040: DPAA Ethernet issue with the latest Git kernel
+Message-Id: <56DB95B8-5F42-4837-ABA0-7E580FE04B73@xenosoft.de>
+To: agordeev@linux.ibm.com
+X-Mailer: iPhone Mail (17E262)
+X-Mailman-Approved-At: Sun, 21 Jun 2020 16:53:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,173 +67,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Darren Stevens <darren@stevens-zone.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: e8d5573a575dc20421d3de0739d97e4abb459019   powerpc/4xx: ppc4xx compile flag optimizations
 
-elapsed time: 858m
+--Apple-Mail-E3A8421F-B332-4EF5-8EF8-178DBCC3A721
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-configs tested: 150
-configs skipped: 10
+Hello Alexander,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The DPAA Ethernet doesn=E2=80=99t work anymore on our FSL P5020/P5040 boards=
+ [1] since the RC1 of kernel 5.8 [2].
+We bisected last days [3] and found the problematic commit [4]. I was able t=
+o revert it [5]. After that the DPAA Ethernet works again. I created a patch=
+ for reverting the commit [5]. This patch works and I will use it for the RC=
+2.
+Could you please check your commit? [4]
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                         s3c6400_defconfig
-m68k                       bvme6000_defconfig
-arm                         mv78xx0_defconfig
-mips                           ip27_defconfig
-powerpc                 mpc8272_ads_defconfig
-arm                           spitz_defconfig
-m68k                        stmark2_defconfig
-sh                          r7780mp_defconfig
-s390                             allyesconfig
-powerpc                     mpc5200_defconfig
-mips                         rt305x_defconfig
-riscv                    nommu_virt_defconfig
-arm                         s5pv210_defconfig
-arm                        mini2440_defconfig
-sh                                  defconfig
-arm                       mainstone_defconfig
-m68k                       m5475evb_defconfig
-powerpc                          g5_defconfig
-mips                      pistachio_defconfig
-arm                        trizeps4_defconfig
-arc                      axs103_smp_defconfig
-mips                         db1xxx_defconfig
-riscv                            alldefconfig
-m68k                            mac_defconfig
-ia64                      gensparse_defconfig
-s390                             allmodconfig
-microblaze                        allnoconfig
-arm                          gemini_defconfig
-m68k                        m5407c3_defconfig
-arm                        oxnas_v6_defconfig
-m68k                        mvme16x_defconfig
-mips                        qi_lb60_defconfig
-x86_64                              defconfig
-arc                              alldefconfig
-s390                              allnoconfig
-arc                        nsimosci_defconfig
-mips                     cu1000-neo_defconfig
-sh                   secureedge5410_defconfig
-arm                           u8500_defconfig
-sh                        edosk7705_defconfig
-arm                        spear3xx_defconfig
-sh                               j2_defconfig
-arm                           h5000_defconfig
-sh                          rsk7201_defconfig
-h8300                            allmodconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a006-20200621
-i386                 randconfig-a002-20200621
-i386                 randconfig-a003-20200621
-i386                 randconfig-a001-20200621
-i386                 randconfig-a005-20200621
-i386                 randconfig-a004-20200621
-i386                 randconfig-a002-20200619
-i386                 randconfig-a006-20200619
-i386                 randconfig-a001-20200619
-i386                 randconfig-a004-20200619
-i386                 randconfig-a005-20200619
-i386                 randconfig-a003-20200619
-x86_64               randconfig-a012-20200621
-x86_64               randconfig-a011-20200621
-x86_64               randconfig-a013-20200621
-x86_64               randconfig-a014-20200621
-x86_64               randconfig-a015-20200621
-x86_64               randconfig-a016-20200621
-i386                 randconfig-a011-20200619
-i386                 randconfig-a015-20200619
-i386                 randconfig-a014-20200619
-i386                 randconfig-a013-20200619
-i386                 randconfig-a016-20200619
-i386                 randconfig-a012-20200619
-i386                 randconfig-a013-20200621
-i386                 randconfig-a016-20200621
-i386                 randconfig-a012-20200621
-i386                 randconfig-a014-20200621
-i386                 randconfig-a015-20200621
-i386                 randconfig-a011-20200621
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                                allnoconfig
-um                                  defconfig
-um                               allmodconfig
-um                               allyesconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
+Thanks,
+Christian
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+[1] http://wiki.amiga.org/index.php?title=3DX5000
+[2] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D50885#p50885
+[3] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D50892#p50892
+[4] lib: fix bitmap_parse() on 64-bit big endian archs: https://git.kernel.o=
+rg/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3D81c4f4d924d5d009=
+b5ed785a3e22b18d0f7b831f
+[5] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D50982#p50982
+
+
+
+--Apple-Mail-E3A8421F-B332-4EF5-8EF8-178DBCC3A721
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto">Hello Alexander,<div><br></div><div>The DPA=
+A Ethernet doesn=E2=80=99t work anymore on our FSL P5020/P5040 boards [1] si=
+nce the RC1 of kernel 5.8 [2].</div><div>We bisected last days [3] and found=
+ the problematic commit [4]. I was able to revert it [5]. After that the DPA=
+A Ethernet works again. I created a patch for reverting the commit [5]. This=
+ patch works and I will use it for the RC2.</div><div>Could you please check=
+ your commit? [4]</div><div><br></div><div>Thanks,</div><div>Christian</div>=
+<div><br></div><div>[1]&nbsp;<a href=3D"http://wiki.amiga.org/index.php?titl=
+e=3DX5000">http://wiki.amiga.org/index.php?title=3DX5000</a></div><div>[2]&n=
+bsp;<a href=3D"https://forum.hyperion-entertainment.com/viewtopic.php?p=3D50=
+885#p50885">https://forum.hyperion-entertainment.com/viewtopic.php?p=3D50885=
+#p50885</a></div><div>[3]&nbsp;<a href=3D"https://forum.hyperion-entertainme=
+nt.com/viewtopic.php?p=3D50892#p50892">https://forum.hyperion-entertainment.=
+com/viewtopic.php?p=3D50892#p50892</a></div><div>[4] lib: fix bitmap_parse()=
+ on 64-bit big endian archs:&nbsp;<a href=3D"https://git.kernel.org/pub/scm/=
+linux/kernel/git/torvalds/linux.git/commit/?id=3D81c4f4d924d5d009b5ed785a3e2=
+2b18d0f7b831f">https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linu=
+x.git/commit/?id=3D81c4f4d924d5d009b5ed785a3e22b18d0f7b831f</a></div><div>[5=
+]&nbsp;<a href=3D"https://forum.hyperion-entertainment.com/viewtopic.php?p=3D=
+50982#p50982">https://forum.hyperion-entertainment.com/viewtopic.php?p=3D509=
+82#p50982</a></div><div><br><div dir=3D"ltr"><br></div></div></body></html>=
+
+--Apple-Mail-E3A8421F-B332-4EF5-8EF8-178DBCC3A721--
