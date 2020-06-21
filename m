@@ -1,47 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BC7202812
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 04:59:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111F020280E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 04:57:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49qHLV1y2wzDqbG
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 12:58:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49qHJW6XLKzDqlc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Jun 2020 12:57:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49qHDj1Q8pzDqfB
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49qHDh72kszDqdk
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Jun 2020 12:53:51 +1000 (AEST)
-IronPort-SDR: GoH23A7IRMp3klDawW6VlJxUBmaOkqQJcCHQvrKxTQX3+bUq2Swnq17cwxmbG1zibWteY++W2M
- 1dZ1Aaek/xgw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9658"; a="130841688"
-X-IronPort-AV: E=Sophos;i="5.75,261,1589266800"; d="scan'208";a="130841688"
+IronPort-SDR: EelR1+hF40A0BTva3y2JL0UagQGmGUrmXl0Yrbdnc7d1TMrehamKPs9vyB+rWkZQtMQavzeNZu
+ WnLNlLtnmW3g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9658"; a="123729352"
+X-IronPort-AV: E=Sophos;i="5.75,261,1589266800"; d="scan'208";a="123729352"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Jun 2020 19:53:48 -0700
-IronPort-SDR: vYF23kJhNGdp/qKejqduBhkyrN8lv7sB0cHEh4wwK6kiboH5omv06RnFi71Z79wmgeAIkgXxyz
- gJn9kDuZsLUQ==
+IronPort-SDR: 39nc3bc+5cn9s20VqpqA2gVyHzVsVqb2lgYUWxB56O3znN2/9DR8Wwl/ttfZ+edIQgAloAzvNl
+ 1O98qqrYaKBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,261,1589266800"; d="scan'208";a="478030600"
+X-IronPort-AV: E=Sophos;i="5.75,261,1589266800"; d="scan'208";a="309795227"
 Received: from lkp-server02.sh.intel.com (HELO 3aa54c81372e) ([10.239.97.151])
- by fmsmga006.fm.intel.com with ESMTP; 20 Jun 2020 19:53:47 -0700
+ by orsmga008.jf.intel.com with ESMTP; 20 Jun 2020 19:53:47 -0700
 Received: from kbuild by 3aa54c81372e with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1jmq78-0001xQ-Am; Sun, 21 Jun 2020 02:53:46 +0000
-Date: Sun, 21 Jun 2020 10:52:55 +0800
+ id 1jmq78-0001xZ-MD; Sun, 21 Jun 2020 02:53:46 +0000
+Date: Sun, 21 Jun 2020 10:52:57 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes] BUILD SUCCESS c0e1c8c22bebecef40097c80c1c74492ff96d081
-Message-ID: <5eeecb87.VDyQl0I1Y+uEB+gP%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ e8d5573a575dc20421d3de0739d97e4abb459019
+Message-ID: <5eeecb89.o7hAYEd56O6GHhBm%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -62,13 +63,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes
-branch HEAD: c0e1c8c22bebecef40097c80c1c74492ff96d081  powerpc/8xx: Provide ptep_get() with 16k pages
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: e8d5573a575dc20421d3de0739d97e4abb459019   powerpc/4xx: ppc4xx compile flag optimizations
 
-elapsed time: 836m
+elapsed time: 858m
 
-configs tested: 141
-configs skipped: 13
+configs tested: 150
+configs skipped: 10
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -84,9 +85,12 @@ arm64                             allnoconfig
 arm                         s3c6400_defconfig
 m68k                       bvme6000_defconfig
 arm                         mv78xx0_defconfig
+mips                           ip27_defconfig
+powerpc                 mpc8272_ads_defconfig
+arm                           spitz_defconfig
+m68k                        stmark2_defconfig
 sh                          r7780mp_defconfig
 s390                             allyesconfig
-csky                                defconfig
 powerpc                     mpc5200_defconfig
 mips                         rt305x_defconfig
 riscv                    nommu_virt_defconfig
@@ -98,6 +102,11 @@ m68k                       m5475evb_defconfig
 powerpc                          g5_defconfig
 mips                      pistachio_defconfig
 arm                        trizeps4_defconfig
+arc                      axs103_smp_defconfig
+mips                         db1xxx_defconfig
+riscv                            alldefconfig
+m68k                            mac_defconfig
+ia64                      gensparse_defconfig
 s390                             allmodconfig
 microblaze                        allnoconfig
 arm                          gemini_defconfig
@@ -114,10 +123,10 @@ sh                   secureedge5410_defconfig
 arm                           u8500_defconfig
 sh                        edosk7705_defconfig
 arm                        spear3xx_defconfig
-h8300                            allmodconfig
 sh                               j2_defconfig
 arm                           h5000_defconfig
 sh                          rsk7201_defconfig
+h8300                            allmodconfig
 i386                              allnoconfig
 i386                             allyesconfig
 i386                                defconfig
@@ -140,6 +149,7 @@ openrisc                         allyesconfig
 nds32                               defconfig
 nds32                             allnoconfig
 csky                             allyesconfig
+csky                                defconfig
 alpha                               defconfig
 alpha                            allyesconfig
 xtensa                           allyesconfig
