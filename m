@@ -1,70 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A03203060
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 09:12:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193AD203066
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 09:13:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49r0w40T1FzDqWR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 17:12:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49r0y53j5CzDqg9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 17:13:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49r0st5sw6zDqW6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 17:10:10 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49r0t00wTwzDqdZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 17:10:15 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05M737qM131261; Mon, 22 Jun 2020 03:10:04 -0400
+ 05M72VDt130085; Mon, 22 Jun 2020 03:10:09 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31sne8nter-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sj0bgw0w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jun 2020 03:10:04 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05M74hn2137986;
- Mon, 22 Jun 2020 03:10:03 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31sne8ntdb-1
+ Mon, 22 Jun 2020 03:10:09 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05M73KjV134217;
+ Mon, 22 Jun 2020 03:10:08 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sj0bgw01-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jun 2020 03:10:03 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05M7A1GJ010492;
- Mon, 22 Jun 2020 07:10:01 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 31sa381520-1
+ Mon, 22 Jun 2020 03:10:08 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05M7691P024279;
+ Mon, 22 Jun 2020 07:10:06 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 31sa382vjc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jun 2020 07:10:01 +0000
+ Mon, 22 Jun 2020 07:10:06 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05M79w357405842
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05M78jiS66388262
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jun 2020 07:09:58 GMT
+ Mon, 22 Jun 2020 07:08:45 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7476EA4059;
- Mon, 22 Jun 2020 07:09:58 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 00B3AA405E;
+ Mon, 22 Jun 2020 07:10:04 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 94E3CA405D;
- Mon, 22 Jun 2020 07:09:54 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7C2F4A4055;
+ Mon, 22 Jun 2020 07:10:00 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.52.56])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 22 Jun 2020 07:09:54 +0000 (GMT)
+ Mon, 22 Jun 2020 07:10:00 +0000 (GMT)
 From: Balamuruhan S <bala24@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH 0/6] Prefixed instruction tests to cover negative cases
-Date: Mon, 22 Jun 2020 12:39:35 +0530
-Message-Id: <20200622070941.759307-1-bala24@linux.ibm.com>
+Subject: [PATCH 1/6] powerpc test_emulate_step: update nip with patched
+ instruction address
+Date: Mon, 22 Jun 2020 12:39:36 +0530
+Message-Id: <20200622070941.759307-2-bala24@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200622070941.759307-1-bala24@linux.ibm.com>
+References: <20200622070941.759307-1-bala24@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -72,10 +75,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-22_02:2020-06-22,
  2020-06-22 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=717 suspectscore=0 bulkscore=0
- cotscore=-2147483648 clxscore=1015 spamscore=0 impostorscore=0
- malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ suspectscore=1 mlxscore=0
+ bulkscore=0 phishscore=0 clxscore=1015 adultscore=0 cotscore=-2147483648
+ spamscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=760 impostorscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2004280000 definitions=main-2006220048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -95,27 +98,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patchset adds support to test negative scenarios and adds testcase
-for paddi with few fixes. It is based on powerpc/next and on top of
-Jordan's tests for prefixed instructions patchset,
+pt_regs are initialized to zero in the test infrastructure, R bit
+in prefixed instruction form is used to specify whether the effective
+address of the storage operand is computed relative to the address
+of the instruction.
 
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-May/211394.html
+If R = 1 and RA = R0|0, the sum of the address of the instruction
+and the value SI is placed into register RT. So to assert the emulated
+instruction with executed instruction, update nip of emulated pt_regs.
 
-Balamuruhan S (6):
-  powerpc test_emulate_step: update nip with patched instruction address
-  powerpc test_emulate_step: fix pr_info() to print 8-byte for prefixed
-    instruction
-  powerpc test_emulate_step: enhancement to test negative scenarios
-  powerpc test_emulate_step: add negative tests for prefixed addi
-  powerpc sstep: introduce macros to retrieve Prefix instruction
-    operands
-  powerpc test_emulate_step: move extern declaration to sstep.h
+Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+---
+ arch/powerpc/lib/test_emulate_step.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
- arch/powerpc/include/asm/sstep.h     |  6 +++
- arch/powerpc/lib/sstep.c             | 12 ++---
- arch/powerpc/lib/test_emulate_step.c | 78 +++++++++++++++++++++++-----
- 3 files changed, 77 insertions(+), 19 deletions(-)
-
+diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
+index 33a72b7d2764..d5902b7b4e5c 100644
+--- a/arch/powerpc/lib/test_emulate_step.c
++++ b/arch/powerpc/lib/test_emulate_step.c
+@@ -1204,13 +1204,24 @@ static struct compute_test compute_tests[] = {
+ static int __init emulate_compute_instr(struct pt_regs *regs,
+ 					struct ppc_inst instr)
+ {
++	int prefix_r, ra;
+ 	extern s32 patch__exec_instr;
+ 	struct instruction_op op;
+ 
+ 	if (!regs || !ppc_inst_val(instr))
+ 		return -EINVAL;
+ 
+-	regs->nip = patch_site_addr(&patch__exec_instr);
++	/*
++	 * If R=1 and RA=0 in Prefixed instruction form, calculate the address
++	 * of the instruction and update nip to assert with executed
++	 * instruction
++	 */
++	if (ppc_inst_prefixed(instr)) {
++		prefix_r = ppc_inst_val(instr) & (1UL << 20);
++		ra = (ppc_inst_suffix(instr) >> 16) & 0x1f;
++		if (prefix_r && !ra)
++			regs->nip = patch_site_addr(&patch__exec_instr);
++	}
+ 
+ 	if (analyse_instr(&op, regs, instr) != 1 ||
+ 	    GETTYPE(op.type) != COMPUTE) {
 -- 
 2.24.1
 
