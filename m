@@ -2,73 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24AF8202FE5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 08:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A03203060
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 09:12:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49r0Fs32DXzDqfP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 16:42:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49r0w40T1FzDqWR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 17:12:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49r0Cg0nc9zDqZ1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 16:40:30 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49r0st5sw6zDqW6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 17:10:10 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05M6X7WV111004; Mon, 22 Jun 2020 02:40:25 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ss0h96p8-1
+ 05M737qM131261; Mon, 22 Jun 2020 03:10:04 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sne8nter-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jun 2020 02:40:25 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05M6Zm3D015608;
- Mon, 22 Jun 2020 06:40:25 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma02dal.us.ibm.com with ESMTP id 31t35bfk4k-1
+ Mon, 22 Jun 2020 03:10:04 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05M74hn2137986;
+ Mon, 22 Jun 2020 03:10:03 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sne8ntdb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jun 2020 06:40:25 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05M6eO4F40894728
+ Mon, 22 Jun 2020 03:10:03 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05M7A1GJ010492;
+ Mon, 22 Jun 2020 07:10:01 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04fra.de.ibm.com with ESMTP id 31sa381520-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jun 2020 07:10:01 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05M79w357405842
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jun 2020 06:40:24 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2AEE7B2064;
- Mon, 22 Jun 2020 06:40:24 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC86BB205F;
- Mon, 22 Jun 2020 06:40:22 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.79.210.147])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 22 Jun 2020 06:40:22 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/mm/book3s64: Skip 16G page reservation with radix
-Date: Mon, 22 Jun 2020 12:10:19 +0530
-Message-Id: <20200622064019.16682-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ Mon, 22 Jun 2020 07:09:58 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7476EA4059;
+ Mon, 22 Jun 2020 07:09:58 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 94E3CA405D;
+ Mon, 22 Jun 2020 07:09:54 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.52.56])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 22 Jun 2020 07:09:54 +0000 (GMT)
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH 0/6] Prefixed instruction tests to cover negative cases
+Date: Mon, 22 Jun 2020 12:39:35 +0530
+Message-Id: <20200622070941.759307-1-bala24@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-22_01:2020-06-19,
+ definitions=2020-06-22_02:2020-06-22,
  2020-06-22 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- adultscore=0 suspectscore=0 priorityscore=1501 cotscore=-2147483648
- phishscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0 clxscore=1015
- mlxlogscore=999 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006220045
+ adultscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 mlxlogscore=717 suspectscore=0 bulkscore=0
+ cotscore=-2147483648 clxscore=1015 spamscore=0 impostorscore=0
+ malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006220048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,36 +88,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com,
+ Balamuruhan S <bala24@linux.ibm.com>, paulus@samba.org, sandipan@linux.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With hash translation, the hypervisor can hint the LPAR about 16GB contiguous range
-via ibm,expected#pages. The kernel marks the range specified in the device tree
-as reserved. Avoid doing this when using radix translation. Radix translation
-only supports 1G gigantic hugepage and kernel can do the 1G gigantic hugepage
-allocation via early memblock reservation. This can be done because with radix
-translation pages are not required to be contiguous on the host.
+This patchset adds support to test negative scenarios and adds testcase
+for paddi with few fixes. It is based on powerpc/next and on top of
+Jordan's tests for prefixed instructions patchset,
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/book3s64/hash_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-May/211394.html
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 0124003e60d0..65ab00566233 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -596,7 +596,7 @@ static void __init htab_scan_page_sizes(void)
- 	}
- 
- #ifdef CONFIG_HUGETLB_PAGE
--	if (!hugetlb_disabled) {
-+	if (!hugetlb_disabled && !early_radix_enabled() ) {
- 		/* Reserve 16G huge page memory sections for huge pages */
- 		of_scan_flat_dt(htab_dt_scan_hugepage_blocks, NULL);
- 	}
+Balamuruhan S (6):
+  powerpc test_emulate_step: update nip with patched instruction address
+  powerpc test_emulate_step: fix pr_info() to print 8-byte for prefixed
+    instruction
+  powerpc test_emulate_step: enhancement to test negative scenarios
+  powerpc test_emulate_step: add negative tests for prefixed addi
+  powerpc sstep: introduce macros to retrieve Prefix instruction
+    operands
+  powerpc test_emulate_step: move extern declaration to sstep.h
+
+ arch/powerpc/include/asm/sstep.h     |  6 +++
+ arch/powerpc/lib/sstep.c             | 12 ++---
+ arch/powerpc/lib/test_emulate_step.c | 78 +++++++++++++++++++++++-----
+ 3 files changed, 77 insertions(+), 19 deletions(-)
+
 -- 
-2.26.2
+2.24.1
 
