@@ -2,52 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2428F202EFD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 06:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25747202F2F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 06:27:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49qx6V0cbdzDqcy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 14:20:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49qxFh1WcMzDqcP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 14:27:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49qx4b3mfszDqXM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 14:19:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=aHW3Amow; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49qx4Z5bmsz9sRN;
- Mon, 22 Jun 2020 14:19:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1592799551;
- bh=0tEIz6JxNkf7bgRb+6/0QwG9eouCp7+4YDrSoXR8HxY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=aHW3AmowwS2VFgoC895R8RCop4tahFGfE6KrrIugUoAZF4ZjaOS1SX+lRgTC7mZLS
- 7Ij6i2+VtOEWaDUFWXwOM5LsO4xkSg1M/KDnmqxdR68mWXkOGCiaRBYDZyj76e+J5O
- yRiHD5nRI2em23eOpru479AkmK7RkepLcgzrN3Mm77lQSwLj42/kuQhfn1ZDXkyz7/
- snMXaZoXD7m27vt2i+x52DnzS+sk619eg+tUVYWM4lDUCkApklij28m2lb8cIV6IzV
- YbjayaAGqMvIHcPjNe1a7zyrp6i8Bl/8C2Vo8zB8jLG2VFcE/gSJgKe1Bz8ltmZO90
- KRKSeGBsvW/Yg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/2] selftests/powerpc: Add prefixed loads/stores to
- alignment_handler test
-In-Reply-To: <2070842.8SDOZEvoPg@townsend>
-References: <20200520021103.19798-1-jniethe5@gmail.com>
- <20200520021103.19798-2-jniethe5@gmail.com> <2070842.8SDOZEvoPg@townsend>
-Date: Mon, 22 Jun 2020 14:19:39 +1000
-Message-ID: <87wo3zbulg.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49qxCZ6xt3zDqZm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 14:25:14 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05M42TSJ107048; Mon, 22 Jun 2020 00:25:05 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sk2qufk1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jun 2020 00:25:05 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05M42Zmm107345;
+ Mon, 22 Jun 2020 00:25:05 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sk2qufj4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jun 2020 00:25:04 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05M4Kku0003420;
+ Mon, 22 Jun 2020 04:25:02 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 31sa382nve-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jun 2020 04:25:02 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05M4NfD963570388
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 Jun 2020 04:23:41 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6F01AE058;
+ Mon, 22 Jun 2020 04:24:59 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1EC46AE04D;
+ Mon, 22 Jun 2020 04:24:54 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.199.35.228])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon, 22 Jun 2020 04:24:53 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Mon, 22 Jun 2020 09:54:52 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [PATCH 0/2] powerpc/papr_scm: add support for reporting NVDIMM
+ 'life_used_percentage' metric
+Date: Mon, 22 Jun 2020 09:54:49 +0530
+Message-Id: <20200622042451.22448-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-21_14:2020-06-19,
+ 2020-06-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
+ cotscore=-2147483648 mlxscore=0 priorityscore=1501 malwarescore=0
+ adultscore=0 spamscore=0 phishscore=0 impostorscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006220025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,22 +92,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>
+Cc: Santosh Sivaraj <santosh@fossix.org>, Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Alistair Popple <alistair@popple.id.au> writes:
-> On Wednesday, 20 May 2020 12:11:03 PM AEST Jordan Niethe wrote:
->> +/* POWER10 feature */
->> +#ifndef PPC_FEATURE2_ARCH_3_10
->> +#define PPC_FEATURE2_ARCH_3_10 0x00040000
->> +#endif
->
-> One minor nit pick, this needs to be updated to PPC_FEATURE2_ARCH_3_1 to 
-> reflect the changes made in response to feedback on the patch series that 
-> introduced this feature.
+This small patchset implements kernel side support for reporting
+'life_used_percentage' metric in NDCTL with dimm health output for
+papr-scm NVDIMMs. With corresponding NDCTL side changes [1] output for
+should be like:
 
-Done, thanks for noticing.
+$ sudo ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "life_used_percentage":0,
+      "shutdown_state":"clean"
+    }
+  }
+]
 
-cheers
+PHYP supports H_SCM_PERFORMANCE_STATS hcall through which an LPAR can
+fetch various performance stats including 'fuel_gauge' percentage for
+an NVDIMM. 'fuel_gauge' metric indicates the usable life remaining of
+an NVDIMM expressed as percentage and  'life_used_percentage' can be
+calculated as 'life_used_percentage = 100 - fuel_gauge'.
+
+Structure of the patchset
+=========================
+First patch implements necessary scaffolding needed to issue the
+H_SCM_PERFORMANCE_STATS hcall and fetch performance stats
+catalogue. The patch also implements support for 'perf_stats' sysfs
+attribute to report the full catalogue of supported performance stats
+by PHYP.
+
+Second and final patch implements support for sending this value to
+libndctl by extending the PAPR_PDSM_HEALTH pdsm payload to add a new
+field named 'dimm_fuel_gauge' to it.
+
+References
+==========
+[1]
+https://github.com/vaibhav92/ndctl/tree/papr_scm_health_v13_run_guage
+
+Vaibhav Jain (2):
+  powerpc/papr_scm: Fetch nvdimm performance stats from PHYP
+  powerpc/papr_scm: Add support for fetching nvdimm 'fuel-gauge' metric
+
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 +++
+ arch/powerpc/include/uapi/asm/papr_pdsm.h     |   9 +
+ arch/powerpc/platforms/pseries/papr_scm.c     | 186 ++++++++++++++++++
+ 3 files changed, 222 insertions(+)
+
+-- 
+2.26.2
+
