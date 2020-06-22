@@ -2,76 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691012036B8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 14:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 454F720372D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 14:48:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49r7xp6dryzDqRn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 22:29:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49r8ND5q0qzDqTQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jun 2020 22:48:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49r7t75wvCzDqW7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 22:25:43 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05MC34uS034199; Mon, 22 Jun 2020 08:25:35 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31sqs04a0t-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49r8Km1tYQzDqJY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 22:46:18 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05MCgT60047649
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 08:46:16 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31t02g20dk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 08:46:16 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05MCX0LO017557
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 08:46:15 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31t02g20dc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jun 2020 08:25:35 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05MCLvhn019384;
- Mon, 22 Jun 2020 12:25:33 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma02fra.de.ibm.com with ESMTP id 31sa381amm-1
+ Mon, 22 Jun 2020 08:46:15 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05MCjevs015064;
+ Mon, 22 Jun 2020 12:46:15 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02dal.us.ibm.com with ESMTP id 31t35bj2n6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jun 2020 12:25:33 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05MCPVkj42139800
+ Mon, 22 Jun 2020 12:46:14 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05MCkBHh14483776
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jun 2020 12:25:31 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4A1C111C052;
- Mon, 22 Jun 2020 12:25:31 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6442011C064;
- Mon, 22 Jun 2020 12:25:30 +0000 (GMT)
-Received: from [9.85.95.171] (unknown [9.85.95.171])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 22 Jun 2020 12:25:30 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.14\))
-Subject: [next-20200621] LTP tests af_alg02/05 failure on POWER9 PowerVM LPAR
-Message-Id: <DF21C7B5-3824-4A6E-B59C-78B67E247383@linux.vnet.ibm.com>
-Date: Mon, 22 Jun 2020 17:55:29 +0530
-To: herbert@gondor.apana.org.au, linux-crypto@vger.kernel.org
-X-Mailer: Apple Mail (2.3445.104.14)
+ Mon, 22 Jun 2020 12:46:11 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 47D52BE051;
+ Mon, 22 Jun 2020 12:46:13 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB098BE04F;
+ Mon, 22 Jun 2020 12:46:10 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.79.210.147])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 22 Jun 2020 12:46:10 +0000 (GMT)
+X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC PATCH v0 2/5] powerpc/mm/radix: Create separate mappings
+ for hot-plugged memory
+In-Reply-To: <20200406034925.22586-3-bharata@linux.ibm.com>
+References: <20200406034925.22586-1-bharata@linux.ibm.com>
+ <20200406034925.22586-3-bharata@linux.ibm.com>
+Date: Mon, 22 Jun 2020 18:16:07 +0530
+Message-ID: <87imfj46b4.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-22_04:2020-06-22,
+ definitions=2020-06-22_07:2020-06-22,
  2020-06-22 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- cotscore=-2147483648
- priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
- bulkscore=0 mlxscore=0 spamscore=0 adultscore=0 clxscore=1011 phishscore=0
- mlxlogscore=930 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006220087
+ malwarescore=0 spamscore=0
+ phishscore=0 adultscore=0 clxscore=1015 cotscore=-2147483648 mlxscore=0
+ bulkscore=0 mlxlogscore=999 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006220094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,43 +93,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: leonardo@linux.ibm.com, aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+ Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With recent next(next-20200621) af_alg02/05 tests fail while running on =
-POWER9
-PowerVM LPAR.
+Bharata B Rao <bharata@linux.ibm.com> writes:
 
-Results from  5.8.0-rc1-next-20200622
-# ./af_alg02
-tst_test.c:1096: INFO: Timeout per run is 0h 00m 20s
-af_alg02.c:52: BROK: Timed out while reading from request socket.
-#
+> Memory that gets hot-plugged _during_ boot (and not the memory
+> that gets plugged in after boot), is mapped with 1G mappings
+> and will undergo splitting when it is unplugged. The splitting
+> code has a few issues:
+>
+> 1. Recursive locking
+> --------------------
+> Memory unplug path takes cpu_hotplug_lock and calls stop_machine()
+> for splitting the mappings. However stop_machine() takes
+> cpu_hotplug_lock again causing deadlock.
+>
+> 2. BUG: sleeping function called from in_atomic() context
+> ---------------------------------------------------------
+> Memory unplug path (remove_pagetable) takes init_mm.page_table_lock
+> spinlock and later calls stop_machine() which does wait_for_completion()
+>
+> 3. Bad unlock unbalance
+> -----------------------
+> Memory unplug path takes init_mm.page_table_lock spinlock and calls
+> stop_machine(). The stop_machine thread function runs in a different
+> thread context (migration thread) which tries to release and reaquire
+> ptl. Releasing ptl from a different thread than which acquired it
+> causes bad unlock unbalance.
+>
+> These problems can be avoided if we avoid mapping hot-plugged memory
+> with 1G mapping, thereby removing the need for splitting them during
+> unplug. During radix init, identify(*) the hot-plugged memory region
+> and create separate mappings for each LMB so that they don't get mapped
+> with 1G mappings.
+>
+> To create separate mappings for every LMB in the hot-plugged
+> region, we need lmb-size. I am currently using memory_block_size_bytes()
+> API to get the lmb-size. Since this is early init time code, the
+> machine type isn't probed yet and hence memory_block_size_bytes()
+> would return the default LMB size as 16MB. Hence we end up creating
+> separate mappings at much lower granularity than what we can ideally
+> do for pseries machine.
+>
+> (*) Identifying and differentiating hot-plugged memory from the
+> boot time memory is now possible with PAPR extension to LMB flags.
+> (Ref: https://lore.kernel.org/linuxppc-dev/f55a7b65a43cc9dc7b22385cf9960f8b11d5ce2e.camel@linux.ibm.com/T/#t)
+>
 
-5.8.0-rc1-next-20200618 was good. The test case ran fine.
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-Root cause analysis point to following commit:
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index dd1bea45325c..4a4fb30f6c3d 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/hugetlb.h>
+>  #include <linux/string_helpers.h>
+>  #include <linux/stop_machine.h>
+> +#include <linux/memory.h>
+>  
+>  #include <asm/pgtable.h>
+>  #include <asm/pgalloc.h>
+> @@ -313,6 +314,8 @@ static void __init radix_init_pgtable(void)
+>  {
+>  	unsigned long rts_field;
+>  	struct memblock_region *reg;
+> +	phys_addr_t addr;
+> +	u64 lmb_size = memory_block_size_bytes();
+>  
+>  	/* We don't support slb for radix */
+>  	mmu_slb_size = 0;
+> @@ -331,9 +334,15 @@ static void __init radix_init_pgtable(void)
+>  			continue;
+>  		}
+>  
+> -		WARN_ON(create_physical_mapping(reg->base,
+> -						reg->base + reg->size,
+> -						-1));
+> +		if (memblock_is_hotpluggable(reg)) {
+> +			for (addr = reg->base; addr < (reg->base + reg->size);
+> +				addr += lmb_size)
+> +				WARN_ON(create_physical_mapping(addr,
+> +				addr + lmb_size, -1));
 
-commit f3c802a1f30013f8f723b62d7fa49eb9e991da23
-    crypto: algif_aead - Only wake up when ctx->more is zero
+Is that indentation correct? 
 
-Reverting this commit allows the test to PASS.
-
-Results after reverting the mentioned commit:
-
-# uname -r
-5.8.0-rc1-next-20200622-dirty
-# ./af_alg02=20
-tst_test.c:1096: INFO: Timeout per run is 0h 00m 20s
-af_alg02.c:33: PASS: Successfully "encrypted" an empty message
-#
-# ./af_alg05
-tst_test.c:1096: INFO: Timeout per run is 0h 05m 00s
-af_alg05.c:34: PASS: read() expectedly failed with EINVAL
-#=20
-
-Thanks
--Sachin=
+> +		} else
+> +			WARN_ON(create_physical_mapping(reg->base,
+> +							reg->base + reg->size,
+> +							-1));
+>  	}
+>  
+>  	/* Find out how many PID bits are supported */
+> -- 
+> 2.21.0
