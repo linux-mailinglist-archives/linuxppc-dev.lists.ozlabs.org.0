@@ -2,111 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84CB204F00
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 12:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90025204F0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 12:29:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rj9q25CdzDqSt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 20:26:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rjFd66KmzDqJ8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 20:29:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=pbonzini@redhat.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rjCj3HzFzDqGt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 20:28:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=UQpR6sez; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=UQpR6sez; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49rjCj2wWFz8tW2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 20:28:01 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49rjCj2YVxz9sRh; Tue, 23 Jun 2020 20:28:01 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rj802mjdzDqGt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 20:24:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1592907884;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rM1BfodItBtK7hezukdZSeFePaoeuCpD4E8vQ9IKGDU=;
- b=UQpR6sezXewhvjEHd2WzS0gocnChl5WNNacxcdC8B9WNKzsCtUypWz+r9hWoh8kCTNfiGO
- 7IJMEN+Cy4+HzZuK6yLUPQVExZOll17urXYwSEgQF+URC4EV3tx6KxXsB8lamAzWc+XCn1
- zD5kzbEzLsOdop/Nbtx9DpEYNbcVqQo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1592907884;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rM1BfodItBtK7hezukdZSeFePaoeuCpD4E8vQ9IKGDU=;
- b=UQpR6sezXewhvjEHd2WzS0gocnChl5WNNacxcdC8B9WNKzsCtUypWz+r9hWoh8kCTNfiGO
- 7IJMEN+Cy4+HzZuK6yLUPQVExZOll17urXYwSEgQF+URC4EV3tx6KxXsB8lamAzWc+XCn1
- zD5kzbEzLsOdop/Nbtx9DpEYNbcVqQo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-355-izHYmbAxPCGbeOSfPttdPA-1; Tue, 23 Jun 2020 06:24:42 -0400
-X-MC-Unique: izHYmbAxPCGbeOSfPttdPA-1
-Received: by mail-wm1-f69.google.com with SMTP id p24so3459556wmc.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 03:24:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=K0VMF+zOglKc79uK7nAPfjf+HV37t2ditCPtYi6hRnc=;
- b=aJLJLBQ4U7gr//kpWKBdoAjjCDpVZmZwLYC1AxF1Up91YZDh4xvdN/u/N2leJnVKJT
- fKLXrHVToZJQoLr3P1lfORVRHmRKH36paR7pm4uY9cfxz9a01n2BZgiUirIccJd0eYht
- tVQpVlWZnjPDypd4SuhWvTzuS/m2mtEaD05rT0jOvKs2jLQmWKgiAdbRny9eLYtjZJhO
- 4kq4XiDcLiGxNVircemzMNB08jJW7yrEEDWbc1obvk9LEV2qoAYrdspbg+S2jAowLlsT
- d1aWWGBiwrxdT6MP/j0M4WmvPerJuJZUhaGLSKgCF90UrL0ad7OK7QSqnd9eUg44xUg8
- Twmg==
-X-Gm-Message-State: AOAM533HM7SuzKpVrFqBDMXqfBqcLvEgErZONfqgTymzLnNuPjs9VZB5
- 1KtEBxk96kois13OwaOfmx4OyQNqkx3D5A5/rf+MIr99h0gv5qvi0I9iiZkpo5oja0IRY4jdYAx
- h07ESwOvrH0wp5WMOwmIkUlQPmw==
-X-Received: by 2002:a05:6000:ce:: with SMTP id
- q14mr16454574wrx.294.1592907881340; 
- Tue, 23 Jun 2020 03:24:41 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw7GKxnJWV0b4Mz/7lWJjdPl3+rZwUgIO80Ac5HDjj13PmRVjDey+yK0l49hJjTmncjlmTnYw==
-X-Received: by 2002:a05:6000:ce:: with SMTP id
- q14mr16454534wrx.294.1592907881013; 
- Tue, 23 Jun 2020 03:24:41 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:24f5:23b:4085:b879?
- ([2001:b07:6468:f312:24f5:23b:4085:b879])
- by smtp.gmail.com with ESMTPSA id c66sm3351206wma.20.2020.06.23.03.24.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jun 2020 03:24:40 -0700 (PDT)
-Subject: Re: [PATCH v4 0/7] clean up redundant 'kvm_run' parameters
-To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
- tsbogend@alpha.franken.de, paulus@ozlabs.org, mpe@ellerman.id.au,
- benh@kernel.crashing.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
- david@redhat.com, cohuck@redhat.com, heiko.carstens@de.ibm.com,
- gor@linux.ibm.com, sean.j.christopherson@intel.com, vkuznets@redhat.com,
- wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
- julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
- christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com,
- chenhuacai@gmail.com
-References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
- <fe463233-d094-fca5-b4e9-c1d97124fd69@redhat.com>
- <3a2bee8b-20b4-5d33-7d12-09c374a5afde@linux.alibaba.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <bad08799-274e-0a6f-9638-92c0010b1ba1@redhat.com>
-Date: Tue, 23 Jun 2020 12:24:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by ozlabs.org (Postfix) with ESMTPS id 49rjCh5WHNz9sRf
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 20:28:00 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05NA2T26152064
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 06:27:57 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31ud985mew-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 06:27:57 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05NA2db3153183
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 06:27:57 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31ud985me9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Jun 2020 06:27:56 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NAQYon003491;
+ Tue, 23 Jun 2020 10:27:55 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04fra.de.ibm.com with ESMTP id 31sa381ya4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Jun 2020 10:27:55 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05NARqsF4522308
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 23 Jun 2020 10:27:52 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4468B4C04A;
+ Tue, 23 Jun 2020 10:27:52 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9A4F64C046;
+ Tue, 23 Jun 2020 10:27:51 +0000 (GMT)
+Received: from [192.168.122.1] (unknown [9.199.32.33])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 23 Jun 2020 10:27:51 +0000 (GMT)
+Subject: [PATCH v2] hmi: Move hmi irq stat from percpu variable to paca.
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Date: Tue, 23 Jun 2020 15:57:50 +0530
+Message-ID: <159290806973.3642154.5244613424529764050.stgit@jupiter>
+User-Agent: StGit/0.21
 MIME-Version: 1.0
-In-Reply-To: <3a2bee8b-20b4-5d33-7d12-09c374a5afde@linux.alibaba.com>
-Content-Language: en-US
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-23_05:2020-06-22,
+ 2020-06-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ malwarescore=0 spamscore=0 cotscore=-2147483648 mlxlogscore=865
+ lowpriorityscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ bulkscore=0 adultscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006230075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,43 +105,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
- linux-arm-kernel@lists.infradead.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23/06/20 12:00, Tianjia Zhang wrote:
-> 
-> 
-> On 2020/6/23 17:42, Paolo Bonzini wrote:
->> On 27/04/20 06:35, Tianjia Zhang wrote:
->>> In the current kvm version, 'kvm_run' has been included in the
->>> 'kvm_vcpu'
->>> structure. For historical reasons, many kvm-related function parameters
->>> retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
->>> patch does a unified cleanup of these remaining redundant parameters.
->>>
->>> This series of patches has completely cleaned the architecture of
->>> arm64, mips, ppc, and s390 (no such redundant code on x86). Due to
->>> the large number of modified codes, a separate patch is made for each
->>> platform. On the ppc platform, there is also a redundant structure
->>> pointer of 'kvm_run' in 'vcpu_arch', which has also been cleaned
->>> separately.
->>
->> Tianjia, can you please refresh the patches so that each architecture
->> maintainer can pick them up?  Thanks very much for this work!
->>
->> Paolo
->>
-> 
-> No problem, this is what I should do.
-> After I update, do I submit separately for each architecture or submit
-> them together in a patchset?
+With the proposed change in percpu bootmem allocator to use page mapping
+[1], the percpu first chunk memory area can come from vmalloc ranges. This
+makes hmi handler to crash the kernel whenever percpu variable is accessed
+in real mode.  This patch fixes this issue by moving the hmi irq stat
+inside paca for safe access in realmode.
 
-You can send them together.
+[1] https://lore.kernel.org/linuxppc-dev/20200608070904.387440-1-aneesh.kumar@linux.ibm.com/
 
-Paolo
+Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+---
+Machine check handling as well touches percpu variables in realmode. Will
+address that in separate patchset.
+
+Change in v2:
+- Fix the build failures for pmac32 and ppc64e configs.
+---
+ arch/powerpc/include/asm/hardirq.h |    1 -
+ arch/powerpc/include/asm/paca.h    |    1 +
+ arch/powerpc/kernel/irq.c          |    8 ++++++--
+ arch/powerpc/kernel/mce.c          |    2 +-
+ arch/powerpc/kvm/book3s_hv_ras.c   |    2 +-
+ 5 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/hardirq.h b/arch/powerpc/include/asm/hardirq.h
+index f1e9067bd5ac..f133b5930ae1 100644
+--- a/arch/powerpc/include/asm/hardirq.h
++++ b/arch/powerpc/include/asm/hardirq.h
+@@ -13,7 +13,6 @@ typedef struct {
+ 	unsigned int pmu_irqs;
+ 	unsigned int mce_exceptions;
+ 	unsigned int spurious_irqs;
+-	unsigned int hmi_exceptions;
+ 	unsigned int sreset_irqs;
+ #ifdef CONFIG_PPC_WATCHDOG
+ 	unsigned int soft_nmi_irqs;
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index 45a839a7c6cf..cc07c399306e 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -225,6 +225,7 @@ struct paca_struct {
+ 	u16 in_mce;
+ 	u8 hmi_event_available;		/* HMI event is available */
+ 	u8 hmi_p9_special_emu;		/* HMI P9 special emulation */
++	u32 hmi_irqs;			/* HMI irq stat */
+ #endif
+ 	u8 ftrace_enabled;		/* Hard disable ftrace */
+ 
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 112d150354b2..a05f9ce05459 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -621,13 +621,15 @@ int arch_show_interrupts(struct seq_file *p, int prec)
+ 		seq_printf(p, "%10u ", per_cpu(irq_stat, j).mce_exceptions);
+ 	seq_printf(p, "  Machine check exceptions\n");
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
+ 	if (cpu_has_feature(CPU_FTR_HVMODE)) {
+ 		seq_printf(p, "%*s: ", prec, "HMI");
+ 		for_each_online_cpu(j)
+ 			seq_printf(p, "%10u ",
+-					per_cpu(irq_stat, j).hmi_exceptions);
++					paca_ptrs[j]->hmi_irqs);
+ 		seq_printf(p, "  Hypervisor Maintenance Interrupts\n");
+ 	}
++#endif
+ 
+ 	seq_printf(p, "%*s: ", prec, "NMI");
+ 	for_each_online_cpu(j)
+@@ -665,7 +667,9 @@ u64 arch_irq_stat_cpu(unsigned int cpu)
+ 	sum += per_cpu(irq_stat, cpu).mce_exceptions;
+ 	sum += per_cpu(irq_stat, cpu).spurious_irqs;
+ 	sum += per_cpu(irq_stat, cpu).timer_irqs_others;
+-	sum += per_cpu(irq_stat, cpu).hmi_exceptions;
++#ifdef CONFIG_PPC_BOOK3S_64
++	sum += paca_ptrs[cpu]->hmi_irqs;
++#endif
+ 	sum += per_cpu(irq_stat, cpu).sreset_irqs;
+ #ifdef CONFIG_PPC_WATCHDOG
+ 	sum += per_cpu(irq_stat, cpu).soft_nmi_irqs;
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index fd90c0eda229..dc11fc16750f 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -711,7 +711,7 @@ long hmi_exception_realmode(struct pt_regs *regs)
+ {	
+ 	int ret;
+ 
+-	__this_cpu_inc(irq_stat.hmi_exceptions);
++	local_paca->hmi_irqs++;
+ 
+ 	ret = hmi_handle_debugtrig(regs);
+ 	if (ret >= 0)
+diff --git a/arch/powerpc/kvm/book3s_hv_ras.c b/arch/powerpc/kvm/book3s_hv_ras.c
+index 79f7d07ef674..6028628ea3ac 100644
+--- a/arch/powerpc/kvm/book3s_hv_ras.c
++++ b/arch/powerpc/kvm/book3s_hv_ras.c
+@@ -244,7 +244,7 @@ long kvmppc_realmode_hmi_handler(void)
+ {
+ 	bool resync_req;
+ 
+-	__this_cpu_inc(irq_stat.hmi_exceptions);
++	local_paca->hmi_irqs++;
+ 
+ 	if (hmi_handle_debugtrig(NULL) >= 0)
+ 		return 1;
+
 
