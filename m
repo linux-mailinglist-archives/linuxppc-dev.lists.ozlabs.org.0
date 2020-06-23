@@ -2,98 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90025204F0A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 12:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E746204F0E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 12:32:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rjFd66KmzDqJ8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 20:29:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rjKH5Q9szDqJ1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 20:32:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rjCj3HzFzDqGt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 20:28:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49rjCj2wWFz8tW2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 20:28:01 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49rjCj2YVxz9sRh; Tue, 23 Jun 2020 20:28:01 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49rjCh5WHNz9sRf
- for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 20:28:00 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rjHM71jPzDq9L
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 20:31:11 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05NA2T26152064
- for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 06:27:57 -0400
+ 05NA3nTX164878
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 06:31:09 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31ud985mew-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31ufgj13cv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 06:27:57 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05NA2db3153183
- for <linuxppc-dev@ozlabs.org>; Tue, 23 Jun 2020 06:27:57 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31ud985me9-1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 06:31:08 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05NA4YTr168358
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 06:31:08 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31ufgj13ch-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jun 2020 06:27:56 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NAQYon003491;
- Tue, 23 Jun 2020 10:27:55 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 31sa381ya4-1
+ Tue, 23 Jun 2020 06:31:08 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NATc7p026468;
+ Tue, 23 Jun 2020 10:31:07 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma02dal.us.ibm.com with ESMTP id 31t35btrg0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jun 2020 10:27:55 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05NARqsF4522308
+ Tue, 23 Jun 2020 10:31:07 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05NAV63L58458420
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Jun 2020 10:27:52 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4468B4C04A;
- Tue, 23 Jun 2020 10:27:52 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A4F64C046;
- Tue, 23 Jun 2020 10:27:51 +0000 (GMT)
-Received: from [192.168.122.1] (unknown [9.199.32.33])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 23 Jun 2020 10:27:51 +0000 (GMT)
-Subject: [PATCH v2] hmi: Move hmi irq stat from percpu variable to paca.
-From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@ozlabs.org>
-Date: Tue, 23 Jun 2020 15:57:50 +0530
-Message-ID: <159290806973.3642154.5244613424529764050.stgit@jupiter>
-User-Agent: StGit/0.21
+ Tue, 23 Jun 2020 10:31:06 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 23618BE054;
+ Tue, 23 Jun 2020 10:31:06 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 988D9BE053;
+ Tue, 23 Jun 2020 10:31:04 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.71.222])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 23 Jun 2020 10:31:04 +0000 (GMT)
+X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v1 1/3] powerpc/mm/radix: Create separate mappings for
+ hot-plugged memory
+In-Reply-To: <20200623073017.1951-2-bharata@linux.ibm.com>
+References: <20200623073017.1951-1-bharata@linux.ibm.com>
+ <20200623073017.1951-2-bharata@linux.ibm.com>
+Date: Tue, 23 Jun 2020 16:01:02 +0530
+Message-ID: <87v9ji2hw9.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-23_05:2020-06-22,
+ definitions=2020-06-23_05:2020-06-23,
  2020-06-23 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- malwarescore=0 spamscore=0 cotscore=-2147483648 mlxlogscore=865
- lowpriorityscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- bulkscore=0 adultscore=0 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006230075
+ malwarescore=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
+ adultscore=0 cotscore=-2147483648 clxscore=1015 bulkscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006230079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,117 +93,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: npiggin@gmail.com, Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With the proposed change in percpu bootmem allocator to use page mapping
-[1], the percpu first chunk memory area can come from vmalloc ranges. This
-makes hmi handler to crash the kernel whenever percpu variable is accessed
-in real mode.  This patch fixes this issue by moving the hmi irq stat
-inside paca for safe access in realmode.
+Bharata B Rao <bharata@linux.ibm.com> writes:
 
-[1] https://lore.kernel.org/linuxppc-dev/20200608070904.387440-1-aneesh.kumar@linux.ibm.com/
+> Memory that gets hot-plugged _during_ boot (and not the memory
+> that gets plugged in after boot), is mapped with 1G mappings
+> and will undergo splitting when it is unplugged. The splitting
+> code has a few issues:
+>
+> 1. Recursive locking
+> --------------------
+> Memory unplug path takes cpu_hotplug_lock and calls stop_machine()
+> for splitting the mappings. However stop_machine() takes
+> cpu_hotplug_lock again causing deadlock.
+>
+> 2. BUG: sleeping function called from in_atomic() context
+> ---------------------------------------------------------
+> Memory unplug path (remove_pagetable) takes init_mm.page_table_lock
+> spinlock and later calls stop_machine() which does wait_for_completion()
+>
+> 3. Bad unlock unbalance
+> -----------------------
+> Memory unplug path takes init_mm.page_table_lock spinlock and calls
+> stop_machine(). The stop_machine thread function runs in a different
+> thread context (migration thread) which tries to release and reaquire
+> ptl. Releasing ptl from a different thread than which acquired it
+> causes bad unlock unbalance.
+>
+> These problems can be avoided if we avoid mapping hot-plugged memory
+> with 1G mapping, thereby removing the need for splitting them during
+> unplug. Hence, during radix init, identify the hot-plugged memory region
+> and create separate mappings for each LMB so that they don't get mapped
+> with 1G mappings. The identification of hot-plugged memory has become
+> possible after the commit b6eca183e23e ("powerpc/kernel: Enables memory
+> hot-remove after reboot on pseries guests").
+>
+> To create separate mappings for every LMB in the hot-plugged
+> region, we need lmb-size for which we use memory_block_size_bytes().
+> Since this is early init time code, the machine type isn't probed yet
+> and hence memory_block_size_bytes() would return the default LMB size
+> as 16MB. Hence we end up issuing more number of mapping requests
+> than earlier.
 
-Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
----
-Machine check handling as well touches percpu variables in realmode. Will
-address that in separate patchset.
-
-Change in v2:
-- Fix the build failures for pmac32 and ppc64e configs.
----
- arch/powerpc/include/asm/hardirq.h |    1 -
- arch/powerpc/include/asm/paca.h    |    1 +
- arch/powerpc/kernel/irq.c          |    8 ++++++--
- arch/powerpc/kernel/mce.c          |    2 +-
- arch/powerpc/kvm/book3s_hv_ras.c   |    2 +-
- 5 files changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/hardirq.h b/arch/powerpc/include/asm/hardirq.h
-index f1e9067bd5ac..f133b5930ae1 100644
---- a/arch/powerpc/include/asm/hardirq.h
-+++ b/arch/powerpc/include/asm/hardirq.h
-@@ -13,7 +13,6 @@ typedef struct {
- 	unsigned int pmu_irqs;
- 	unsigned int mce_exceptions;
- 	unsigned int spurious_irqs;
--	unsigned int hmi_exceptions;
- 	unsigned int sreset_irqs;
- #ifdef CONFIG_PPC_WATCHDOG
- 	unsigned int soft_nmi_irqs;
-diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
-index 45a839a7c6cf..cc07c399306e 100644
---- a/arch/powerpc/include/asm/paca.h
-+++ b/arch/powerpc/include/asm/paca.h
-@@ -225,6 +225,7 @@ struct paca_struct {
- 	u16 in_mce;
- 	u8 hmi_event_available;		/* HMI event is available */
- 	u8 hmi_p9_special_emu;		/* HMI P9 special emulation */
-+	u32 hmi_irqs;			/* HMI irq stat */
- #endif
- 	u8 ftrace_enabled;		/* Hard disable ftrace */
- 
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 112d150354b2..a05f9ce05459 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -621,13 +621,15 @@ int arch_show_interrupts(struct seq_file *p, int prec)
- 		seq_printf(p, "%10u ", per_cpu(irq_stat, j).mce_exceptions);
- 	seq_printf(p, "  Machine check exceptions\n");
- 
-+#ifdef CONFIG_PPC_BOOK3S_64
- 	if (cpu_has_feature(CPU_FTR_HVMODE)) {
- 		seq_printf(p, "%*s: ", prec, "HMI");
- 		for_each_online_cpu(j)
- 			seq_printf(p, "%10u ",
--					per_cpu(irq_stat, j).hmi_exceptions);
-+					paca_ptrs[j]->hmi_irqs);
- 		seq_printf(p, "  Hypervisor Maintenance Interrupts\n");
- 	}
-+#endif
- 
- 	seq_printf(p, "%*s: ", prec, "NMI");
- 	for_each_online_cpu(j)
-@@ -665,7 +667,9 @@ u64 arch_irq_stat_cpu(unsigned int cpu)
- 	sum += per_cpu(irq_stat, cpu).mce_exceptions;
- 	sum += per_cpu(irq_stat, cpu).spurious_irqs;
- 	sum += per_cpu(irq_stat, cpu).timer_irqs_others;
--	sum += per_cpu(irq_stat, cpu).hmi_exceptions;
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	sum += paca_ptrs[cpu]->hmi_irqs;
-+#endif
- 	sum += per_cpu(irq_stat, cpu).sreset_irqs;
- #ifdef CONFIG_PPC_WATCHDOG
- 	sum += per_cpu(irq_stat, cpu).soft_nmi_irqs;
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index fd90c0eda229..dc11fc16750f 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -711,7 +711,7 @@ long hmi_exception_realmode(struct pt_regs *regs)
- {	
- 	int ret;
- 
--	__this_cpu_inc(irq_stat.hmi_exceptions);
-+	local_paca->hmi_irqs++;
- 
- 	ret = hmi_handle_debugtrig(regs);
- 	if (ret >= 0)
-diff --git a/arch/powerpc/kvm/book3s_hv_ras.c b/arch/powerpc/kvm/book3s_hv_ras.c
-index 79f7d07ef674..6028628ea3ac 100644
---- a/arch/powerpc/kvm/book3s_hv_ras.c
-+++ b/arch/powerpc/kvm/book3s_hv_ras.c
-@@ -244,7 +244,7 @@ long kvmppc_realmode_hmi_handler(void)
- {
- 	bool resync_req;
- 
--	__this_cpu_inc(irq_stat.hmi_exceptions);
-+	local_paca->hmi_irqs++;
- 
- 	if (hmi_handle_debugtrig(NULL) >= 0)
- 		return 1;
+Considering we can split 1G pages correctly, we can avoid doing this?
 
 
+
+>
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 8acb96de0e48..ffccfe00ca2a 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/hugetlb.h>
+>  #include <linux/string_helpers.h>
+>  #include <linux/stop_machine.h>
+> +#include <linux/memory.h>
+>  
+>  #include <asm/pgtable.h>
+>  #include <asm/pgalloc.h>
+> @@ -320,6 +321,8 @@ static void __init radix_init_pgtable(void)
+>  {
+>  	unsigned long rts_field;
+>  	struct memblock_region *reg;
+> +	phys_addr_t addr;
+> +	u64 lmb_size = memory_block_size_bytes();
+>  
+>  	/* We don't support slb for radix */
+>  	mmu_slb_size = 0;
+> @@ -338,9 +341,15 @@ static void __init radix_init_pgtable(void)
+>  			continue;
+>  		}
+>  
+> -		WARN_ON(create_physical_mapping(reg->base,
+> -						reg->base + reg->size,
+> -						-1, PAGE_KERNEL));
+> +		if (memblock_is_hotpluggable(reg)) {
+> +			for (addr = reg->base; addr < (reg->base + reg->size);
+> +			     addr += lmb_size)
+> +				WARN_ON(create_physical_mapping(addr,
+> +					addr + lmb_size, -1, PAGE_KERNEL));
+> +		} else
+> +			WARN_ON(create_physical_mapping(reg->base,
+> +							reg->base + reg->size,
+> +							-1, PAGE_KERNEL));
+>  	}
+>  
+>  	/* Find out how many PID bits are supported */
+> -- 
+> 2.21.3
