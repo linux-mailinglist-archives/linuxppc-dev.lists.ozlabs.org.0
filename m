@@ -2,76 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F99204E74
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 11:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A6C204E45
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 11:44:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rhPb0gktzDqVC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 19:51:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rhFX0H0JzDqQQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 19:44:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=hejianet@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=pbonzini@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=iS5yRye3; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=ZLG5dtpw; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZLG5dtpw; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rdTg1K9DzDqMm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 17:39:44 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id 35so8782276ple.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 00:39:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to;
- bh=uOQb9dQe44rsxmw6i/h0rSh/nLflDHEslMMMeD/giQw=;
- b=iS5yRye3rDh+O05niU8/utqB4imUEJKkAaWos4gUjcWXB4jNLvVIZDFcsRhJLnJspR
- 7sFs+WDR9vjy847KXHy4gDO9V70Ecjc7NhgjSm4G90rk1NFUwrc8rRDUStNGGf9FQbYX
- X9MPm+wvPsQetwL/CZHmC2hoZDUNP+nMyKA+S4Z6j54pdc6NCKo+ndkHtFw+RmuUnWkg
- eytq7PAgfMiJowMtloZ6acFKnJKxtPazYdirzKc4aete4eP9rB3MeVsIRIGSfwaGwYDX
- bui9wXVyEqZjg4U8umlcPRsJL5E5suNWUJBiUpw8l/lM/CL/TB/FQnJkRbwoCM6oF1sQ
- vIRQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rhCY4MPgzDqMG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 19:42:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1592905366;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QoBwKmjOvInG9MfmBsLrqKkfpaZqKCYNSmoYTUfOHHE=;
+ b=ZLG5dtpwtkla4mBaG6iRidFYELlZHLyhe/p1NVi5lAT0wiv+Gmd3Gpq3DSWqkokcxObDjK
+ 5HC4fGF9K6YFQ6AejRE/azWMsUlHdAAbQOYiKKHITil85dPqBWig1MM7ugM2vpSXnRSoQ6
+ 7HCVBGjwdnIm/SaxpmCf1i40hMbeb1Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1592905366;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QoBwKmjOvInG9MfmBsLrqKkfpaZqKCYNSmoYTUfOHHE=;
+ b=ZLG5dtpwtkla4mBaG6iRidFYELlZHLyhe/p1NVi5lAT0wiv+Gmd3Gpq3DSWqkokcxObDjK
+ 5HC4fGF9K6YFQ6AejRE/azWMsUlHdAAbQOYiKKHITil85dPqBWig1MM7ugM2vpSXnRSoQ6
+ 7HCVBGjwdnIm/SaxpmCf1i40hMbeb1Y=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-245-JT9VLAufN5u2I7HTHYVhNQ-1; Tue, 23 Jun 2020 05:42:42 -0400
+X-MC-Unique: JT9VLAufN5u2I7HTHYVhNQ-1
+Received: by mail-wr1-f72.google.com with SMTP id g14so7829790wrp.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 02:42:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to;
- bh=uOQb9dQe44rsxmw6i/h0rSh/nLflDHEslMMMeD/giQw=;
- b=l4paxuUcI/d/4+JUcaZlXdjTQeI4bRNdb3YepoTZfV9hXWawhSNqIOJpfiMAS32mN9
- fSAeODvonxpyy5nDBFHRHLs2tZBvnTMvIpk5CzfiyqInP8z5+9c6c33P4IYze9/Gyar8
- XvZdwEb0OWsd8gwdW8sekpUmo1RefByUDVRz8wOw82s6XDtQOHc2SMKmxx4MT28Uo57e
- Rm0oKCo89oegkTOo3FFs6jFeZdQf4OW1acT8lBYx5J3VAqXg9lcOvfCAIsM6bTIZxbpf
- 6SL06hLtBwFv6vPhGrd05uihJIPf024yWAUgKMZCp1RIIk3Ti3ur6AZcBp7yTY/JC6lN
- UNYQ==
-X-Gm-Message-State: AOAM53173AeFHxpo9IiO0ZpD9YRHD7BLK9NQu8Saw8ENSnav5vBCnUMH
- iqVaOhYZomfYBQ7lFQQ7Mac=
-X-Google-Smtp-Source: ABdhPJzl1907jFXmG8/hUrrT6R8iVBl17pz8a52tk13vPq7/sfscqbo9LriRFRn7RANhCL2RiJH8aw==
-X-Received: by 2002:a17:902:44:: with SMTP id
- 62mr22883504pla.104.1592897980547; 
- Tue, 23 Jun 2020 00:39:40 -0700 (PDT)
-Received: from [0.0.0.0] ([45.76.223.48])
- by smtp.gmail.com with ESMTPSA id g21sm15811626pfh.134.2020.06.23.00.39.11
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=QoBwKmjOvInG9MfmBsLrqKkfpaZqKCYNSmoYTUfOHHE=;
+ b=tVBuRnRMi1D9tyFtg6WShrRsNcnbjvNsvSJEMk/buKbNOiEjB8fyL+uagbDwMFEpS8
+ DcsI1FdWHtlfJzc2lFNgE5QoKoEhVguZ3cZRRQCxo2CRXS0bpr28kMobzcvdkVYfCxbu
+ oTdt0c3A9ajgucAo4NUVv1LNJk8PKdKnDjAs90vGwa0OYuOY88d1aL1k12IG+unokOTe
+ r0ZdrPIKaPrzxiMOi8+TxAL1soWVHqi25Trbm/rQ1gB3elCF2oT9XgQfqY8CdrF0hVa/
+ 2p9SU221HPMcK3Xm4zUz6N4WMJmf+TN703KukGZS8glRfgjiF7tkkLL/0wh/GHqYezrG
+ M0VQ==
+X-Gm-Message-State: AOAM531d8UjvA+dctd9k9BUiyEuxmi9ULj4axVBq7A/JAP+s0Yz6rbMj
+ a62PlP7Q/Ev9SRiPINX7bfwS6t0eOQEQg7n3KExGuQbuX5mE0b+tUjCJFPcxYCvRi1rjPl7uQfm
+ NzGf8zRD7sWkBVeMrMVpc4b5Lvw==
+X-Received: by 2002:adf:e908:: with SMTP id f8mr1064528wrm.3.1592905361579;
+ Tue, 23 Jun 2020 02:42:41 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwYpabjIXBcOB9eaiLhNkEzAaSPqokuBtil8iucj5gBxqX45bVu6WVMKG+2KSXPDnKUswgA9A==
+X-Received: by 2002:adf:e908:: with SMTP id f8mr1064490wrm.3.1592905361326;
+ Tue, 23 Jun 2020 02:42:41 -0700 (PDT)
+Received: from ?IPv6:2001:b07:6468:f312:fd64:dd90:5ad5:d2e1?
+ ([2001:b07:6468:f312:fd64:dd90:5ad5:d2e1])
+ by smtp.gmail.com with ESMTPSA id 26sm1149131wmj.25.2020.06.23.02.42.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jun 2020 00:39:39 -0700 (PDT)
-Subject: Re: [PATCH V3 (RESEND) 0/3] arm64: Enable vmemmap mapping from device
- memory
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-References: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
-From: Jia He <hejianet@gmail.com>
-Message-ID: <efeabd28-e5d4-3734-505a-77486c03f508@gmail.com>
-Date: Tue, 23 Jun 2020 15:39:05 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ Tue, 23 Jun 2020 02:42:40 -0700 (PDT)
+Subject: Re: [PATCH v4 0/7] clean up redundant 'kvm_run' parameters
+To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+ tsbogend@alpha.franken.de, paulus@ozlabs.org, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
+ david@redhat.com, cohuck@redhat.com, heiko.carstens@de.ibm.com,
+ gor@linux.ibm.com, sean.j.christopherson@intel.com, vkuznets@redhat.com,
+ wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
+ julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
+ christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com,
+ chenhuacai@gmail.com
+References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <fe463233-d094-fca5-b4e9-c1d97124fd69@redhat.com>
+Date: Tue, 23 Jun 2020 11:42:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: multipart/alternative;
- boundary="------------F45777FE1D773B7A3A04E8C0"
-X-Mailman-Approved-At: Tue, 23 Jun 2020 19:46:01 +1000
+In-Reply-To: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
+Content-Language: en-US
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,317 +114,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Fenghua Yu <fenghua.yu@intel.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Andy Lutomirski <luto@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------F45777FE1D773B7A3A04E8C0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On 27/04/20 06:35, Tianjia Zhang wrote:
+> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
+> structure. For historical reasons, many kvm-related function parameters
+> retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
+> patch does a unified cleanup of these remaining redundant parameters.
+> 
+> This series of patches has completely cleaned the architecture of
+> arm64, mips, ppc, and s390 (no such redundant code on x86). Due to
+> the large number of modified codes, a separate patch is made for each
+> platform. On the ppc platform, there is also a redundant structure
+> pointer of 'kvm_run' in 'vcpu_arch', which has also been cleaned
+> separately.
 
-Hi
+Tianjia, can you please refresh the patches so that each architecture
+maintainer can pick them up?  Thanks very much for this work!
 
-I also tested the addional cases on arm64
+Paolo
 
-1, 4k page size + devdax + --map=mem
+> 
+> ---
+> v4 change:
+>   mips: fixes two errors in entry.c.
+> 
+> v3 change:
+>   Keep the existing `vcpu->run` in the function body unchanged.
+> 
+> v2 change:
+>   s390 retains the original variable name and minimizes modification.
+> 
+> Tianjia Zhang (7):
+>   KVM: s390: clean up redundant 'kvm_run' parameters
+>   KVM: arm64: clean up redundant 'kvm_run' parameters
+>   KVM: PPC: Remove redundant kvm_run from vcpu_arch
+>   KVM: PPC: clean up redundant 'kvm_run' parameters
+>   KVM: PPC: clean up redundant kvm_run parameters in assembly
+>   KVM: MIPS: clean up redundant 'kvm_run' parameters
+>   KVM: MIPS: clean up redundant kvm_run parameters in assembly
+> 
+>  arch/arm64/include/asm/kvm_coproc.h      |  12 +--
+>  arch/arm64/include/asm/kvm_host.h        |  11 +--
+>  arch/arm64/include/asm/kvm_mmu.h         |   2 +-
+>  arch/arm64/kvm/handle_exit.c             |  36 +++----
+>  arch/arm64/kvm/sys_regs.c                |  13 ++-
+>  arch/mips/include/asm/kvm_host.h         |  32 +------
+>  arch/mips/kvm/emulate.c                  |  59 ++++--------
+>  arch/mips/kvm/entry.c                    |  21 ++---
+>  arch/mips/kvm/mips.c                     |  14 +--
+>  arch/mips/kvm/trap_emul.c                | 114 ++++++++++-------------
+>  arch/mips/kvm/vz.c                       |  26 ++----
+>  arch/powerpc/include/asm/kvm_book3s.h    |  16 ++--
+>  arch/powerpc/include/asm/kvm_host.h      |   1 -
+>  arch/powerpc/include/asm/kvm_ppc.h       |  27 +++---
+>  arch/powerpc/kvm/book3s.c                |   4 +-
+>  arch/powerpc/kvm/book3s.h                |   2 +-
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c      |  12 +--
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c   |   4 +-
+>  arch/powerpc/kvm/book3s_emulate.c        |  10 +-
+>  arch/powerpc/kvm/book3s_hv.c             |  64 ++++++-------
+>  arch/powerpc/kvm/book3s_hv_nested.c      |  12 +--
+>  arch/powerpc/kvm/book3s_interrupts.S     |  17 ++--
+>  arch/powerpc/kvm/book3s_paired_singles.c |  72 +++++++-------
+>  arch/powerpc/kvm/book3s_pr.c             |  33 ++++---
+>  arch/powerpc/kvm/booke.c                 |  39 ++++----
+>  arch/powerpc/kvm/booke.h                 |   8 +-
+>  arch/powerpc/kvm/booke_emulate.c         |   2 +-
+>  arch/powerpc/kvm/booke_interrupts.S      |   9 +-
+>  arch/powerpc/kvm/bookehv_interrupts.S    |  10 +-
+>  arch/powerpc/kvm/e500_emulate.c          |  15 ++-
+>  arch/powerpc/kvm/emulate.c               |  10 +-
+>  arch/powerpc/kvm/emulate_loadstore.c     |  32 +++----
+>  arch/powerpc/kvm/powerpc.c               |  72 +++++++-------
+>  arch/powerpc/kvm/trace_hv.h              |   6 +-
+>  arch/s390/kvm/kvm-s390.c                 |  23 +++--
+>  virt/kvm/arm/arm.c                       |   6 +-
+>  virt/kvm/arm/mmio.c                      |  11 ++-
+>  virt/kvm/arm/mmu.c                       |   5 +-
+>  38 files changed, 392 insertions(+), 470 deletions(-)
+> 
 
-2, 64k page size + devdax + --map=mem
-
-3, 4k page size + devdax + --map=dev
-
-4, 64k page size + devdax + --map=dev
-
-case 4 is important to verify Anshuman's this series.
-
-Host kernel: 5.7-rc3
-
-guest kernel: 5.7-rc5 with this series
-
-ndctl: https://github.com/pmem/ndctl/tree/c7767834871 
-<https://github.com/pmem/ndctl/tree/c7767834871f7ce50a2abe1da946e9e16fb08eda>
-
-On the guest:
-
-1. ./ndctl/.libs/ndctl create-namespace -e namespace0.0 --mode=devdax --map=dev 
--s 1g -f -v -a 64K
-
-  echo dax0.0 > /sys/bus/dax/drivers/device_dax/unbind
-  echo dax0.0 > /sys/bus/dax/drivers/kmem/new_id
-
-The 1g block was added
-
-2. echo 0 > /sys/devices/system/memory/memory10/online
-
-modprobe -r dax_pmem
-
-The 1g block was removed
-
-
-Some minor fix should be applied which is not relevant to this series itself. 
-e.g numa id
-
----
-Cheers,
-Justin (Jia He)
-
-On 2020/6/18 9:15, Anshuman Khandual wrote:
-> This series enables vmemmap backing memory allocation from device memory
-> ranges on arm64. But before that, it enables vmemmap_populate_basepages()
-> and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
-> alocation requests.
->
-> This series applies on 5.8-rc1.
->
-> Pending Question:
->
-> altmap_alloc_block_buf() does not have any other remaining users in the
-> tree after this change. Should it be converted into a static function and
-> it's declaration be dropped from the header (include/linux/mm.h). Avoided
-> doing so because I was not sure if there are any off-tree users or not.
->
-> Changes in V3:
->
-> - Dropped comment from free_hotplug_page_range() per Robin
-> - Modified comment in unmap_hotplug_range() per Robin
-> - Enabled altmap support in vmemmap_alloc_block_buf() per Robin
->
-> Changes in V2: (https://lkml.org/lkml/2020/3/4/475)
->
-> - Rebased on latest hot-remove series (v14) adding P4D page table support
->
-> Changes in V1: (https://lkml.org/lkml/2020/1/23/12)
->
-> - Added an WARN_ON() in unmap_hotplug_range() when altmap is
->    provided without the page table backing memory being freed
->
-> Changes in RFC V2: (https://lkml.org/lkml/2019/10/21/11)
->
-> - Changed the commit message on 1/2 patch per Will
-> - Changed the commit message on 2/2 patch as well
-> - Rebased on arm64 memory hot remove series (v10)
->
-> RFC V1: (https://lkml.org/lkml/2019/6/28/32)
->
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Fenghua Yu <fenghua.yu@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Mike Rapoport <rppt@linux.ibm.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: x86@kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
->
-> Anshuman Khandual (3):
->    mm/sparsemem: Enable vmem_altmap support in vmemmap_populate_basepages()
->    mm/sparsemem: Enable vmem_altmap support in vmemmap_alloc_block_buf()
->    arm64/mm: Enable vmem_altmap support for vmemmap mappings
->
->   arch/arm64/mm/mmu.c       | 59 ++++++++++++++++++++++++++-------------
->   arch/ia64/mm/discontig.c  |  2 +-
->   arch/powerpc/mm/init_64.c | 10 +++----
->   arch/riscv/mm/init.c      |  2 +-
->   arch/x86/mm/init_64.c     | 12 ++++----
->   include/linux/mm.h        |  8 ++++--
->   mm/sparse-vmemmap.c       | 38 ++++++++++++++++++++-----
->   7 files changed, 87 insertions(+), 44 deletions(-)
->
--- 
-
-
---------------F45777FE1D773B7A3A04E8C0
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>Hi</p>
-    <p>I also tested the addional cases on arm64<br>
-    </p>
-    <p>1, 4k page size + devdax + --map=mem</p>
-    <p>2, 64k page size + devdax + --map=mem</p>
-    <p>3, 4k page size + devdax + --map=dev</p>
-    <p>4, 64k page size + devdax + --map=dev</p>
-    <p>case 4 is important to verify Anshuman's this series.</p>
-    <p>Host kernel: 5.7-rc3</p>
-    <p>guest kernel: 5.7-rc5 with this series</p>
-    <p>ndctl: <a
-href="https://github.com/pmem/ndctl/tree/c7767834871f7ce50a2abe1da946e9e16fb08eda"
-        class="external-link" rel="nofollow" style="color: rgb(102, 0,
-        0); text-decoration: underline; cursor: pointer; font-family:
-        -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
-        Oxygen, Ubuntu, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;,
-        &quot;Helvetica Neue&quot;, sans-serif; font-size: 14px;
-        font-style: normal; font-variant-ligatures: normal;
-        font-variant-caps: normal; font-weight: 400; letter-spacing:
-        normal; orphans: 2; text-align: start; text-indent: 0px;
-        text-transform: none; white-space: normal; widows: 2;
-        word-spacing: 0px; -webkit-text-stroke-width: 0px;
-        background-color: rgb(244, 245, 247);">https://github.com/pmem/ndctl/tree/c7767834871</a><span
-        style="color: rgb(23, 43, 77); font-family: -apple-system,
-        BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen,
-        Ubuntu, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;,
-        &quot;Helvetica Neue&quot;, sans-serif; font-size: 14px;
-        font-style: normal; font-variant-ligatures: normal;
-        font-variant-caps: normal; font-weight: 400; letter-spacing:
-        normal; orphans: 2; text-align: start; text-indent: 0px;
-        text-transform: none; white-space: normal; widows: 2;
-        word-spacing: 0px; -webkit-text-stroke-width: 0px;
-        background-color: rgb(244, 245, 247); text-decoration-style:
-        initial; text-decoration-color: initial; display: inline
-        !important; float: none;"><br>
-      </span></p>
-    <p>On the guest:</p>
-    <p>1. ./ndctl/.libs/ndctl create-namespace -e namespace0.0
-      --mode=devdax --map=dev -s 1g -f -v -a 64K</p>
-    <p> echo dax0.0 &gt; /sys/bus/dax/drivers/device_dax/unbind<br>
-       echo dax0.0 &gt; /sys/bus/dax/drivers/kmem/new_id</p>
-    <p>The 1g block was added</p>
-    <p>2. echo 0 &gt; /sys/devices/system/memory/memory10/online</p>
-    <p>modprobe -r dax_pmem</p>
-    <p>The 1g block was removed</p>
-    <p><br>
-    </p>
-    <p>Some minor fix should be applied which is not relevant to this
-      series itself. e.g numa id <br>
-    </p>
-    <pre class="moz-signature" cols="79">---
-Cheers,
-Justin (Jia He)</pre>
-    <div class="moz-cite-prefix">On 2020/6/18 9:15, Anshuman Khandual
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:1592442930-9380-1-git-send-email-anshuman.khandual@arm.com">
-      <pre class="moz-quote-pre" wrap="">This series enables vmemmap backing memory allocation from device memory
-ranges on arm64. But before that, it enables vmemmap_populate_basepages()
-and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
-alocation requests.
-
-This series applies on 5.8-rc1.
-
-Pending Question:
-
-altmap_alloc_block_buf() does not have any other remaining users in the
-tree after this change. Should it be converted into a static function and
-it's declaration be dropped from the header (include/linux/mm.h). Avoided
-doing so because I was not sure if there are any off-tree users or not.
-
-Changes in V3:
-
-- Dropped comment from free_hotplug_page_range() per Robin
-- Modified comment in unmap_hotplug_range() per Robin
-- Enabled altmap support in vmemmap_alloc_block_buf() per Robin
-
-Changes in V2: (<a class="moz-txt-link-freetext" href="https://lkml.org/lkml/2020/3/4/475">https://lkml.org/lkml/2020/3/4/475</a>)
-
-- Rebased on latest hot-remove series (v14) adding P4D page table support
-
-Changes in V1: (<a class="moz-txt-link-freetext" href="https://lkml.org/lkml/2020/1/23/12">https://lkml.org/lkml/2020/1/23/12</a>)
-
-- Added an WARN_ON() in unmap_hotplug_range() when altmap is
-  provided without the page table backing memory being freed
-
-Changes in RFC V2: (<a class="moz-txt-link-freetext" href="https://lkml.org/lkml/2019/10/21/11">https://lkml.org/lkml/2019/10/21/11</a>)
-
-- Changed the commit message on 1/2 patch per Will
-- Changed the commit message on 2/2 patch as well
-- Rebased on arm64 memory hot remove series (v10)
-
-RFC V1: (<a class="moz-txt-link-freetext" href="https://lkml.org/lkml/2019/6/28/32">https://lkml.org/lkml/2019/6/28/32</a>)
-
-Cc: Catalin Marinas <a class="moz-txt-link-rfc2396E" href="mailto:catalin.marinas@arm.com">&lt;catalin.marinas@arm.com&gt;</a>
-Cc: Will Deacon <a class="moz-txt-link-rfc2396E" href="mailto:will@kernel.org">&lt;will@kernel.org&gt;</a>
-Cc: Mark Rutland <a class="moz-txt-link-rfc2396E" href="mailto:mark.rutland@arm.com">&lt;mark.rutland@arm.com&gt;</a>
-Cc: Paul Walmsley <a class="moz-txt-link-rfc2396E" href="mailto:paul.walmsley@sifive.com">&lt;paul.walmsley@sifive.com&gt;</a>
-Cc: Palmer Dabbelt <a class="moz-txt-link-rfc2396E" href="mailto:palmer@dabbelt.com">&lt;palmer@dabbelt.com&gt;</a>
-Cc: Tony Luck <a class="moz-txt-link-rfc2396E" href="mailto:tony.luck@intel.com">&lt;tony.luck@intel.com&gt;</a>
-Cc: Fenghua Yu <a class="moz-txt-link-rfc2396E" href="mailto:fenghua.yu@intel.com">&lt;fenghua.yu@intel.com&gt;</a>
-Cc: Dave Hansen <a class="moz-txt-link-rfc2396E" href="mailto:dave.hansen@linux.intel.com">&lt;dave.hansen@linux.intel.com&gt;</a>
-Cc: Andy Lutomirski <a class="moz-txt-link-rfc2396E" href="mailto:luto@kernel.org">&lt;luto@kernel.org&gt;</a>
-Cc: Peter Zijlstra <a class="moz-txt-link-rfc2396E" href="mailto:peterz@infradead.org">&lt;peterz@infradead.org&gt;</a>
-Cc: Thomas Gleixner <a class="moz-txt-link-rfc2396E" href="mailto:tglx@linutronix.de">&lt;tglx@linutronix.de&gt;</a>
-Cc: Ingo Molnar <a class="moz-txt-link-rfc2396E" href="mailto:mingo@redhat.com">&lt;mingo@redhat.com&gt;</a>
-Cc: David Hildenbrand <a class="moz-txt-link-rfc2396E" href="mailto:david@redhat.com">&lt;david@redhat.com&gt;</a>
-Cc: Mike Rapoport <a class="moz-txt-link-rfc2396E" href="mailto:rppt@linux.ibm.com">&lt;rppt@linux.ibm.com&gt;</a>
-Cc: Michal Hocko <a class="moz-txt-link-rfc2396E" href="mailto:mhocko@suse.com">&lt;mhocko@suse.com&gt;</a>
-Cc: "Matthew Wilcox (Oracle)" <a class="moz-txt-link-rfc2396E" href="mailto:willy@infradead.org">&lt;willy@infradead.org&gt;</a>
-Cc: "Kirill A. Shutemov" <a class="moz-txt-link-rfc2396E" href="mailto:kirill.shutemov@linux.intel.com">&lt;kirill.shutemov@linux.intel.com&gt;</a>
-Cc: Andrew Morton <a class="moz-txt-link-rfc2396E" href="mailto:akpm@linux-foundation.org">&lt;akpm@linux-foundation.org&gt;</a>
-Cc: Dan Williams <a class="moz-txt-link-rfc2396E" href="mailto:dan.j.williams@intel.com">&lt;dan.j.williams@intel.com&gt;</a>
-Cc: Pavel Tatashin <a class="moz-txt-link-rfc2396E" href="mailto:pasha.tatashin@soleen.com">&lt;pasha.tatashin@soleen.com&gt;</a>
-Cc: Benjamin Herrenschmidt <a class="moz-txt-link-rfc2396E" href="mailto:benh@kernel.crashing.org">&lt;benh@kernel.crashing.org&gt;</a>
-Cc: Paul Mackerras <a class="moz-txt-link-rfc2396E" href="mailto:paulus@samba.org">&lt;paulus@samba.org&gt;</a>
-Cc: Michael Ellerman <a class="moz-txt-link-rfc2396E" href="mailto:mpe@ellerman.id.au">&lt;mpe@ellerman.id.au&gt;</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:linux-arm-kernel@lists.infradead.org">linux-arm-kernel@lists.infradead.org</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:linux-ia64@vger.kernel.org">linux-ia64@vger.kernel.org</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:linux-riscv@lists.infradead.org">linux-riscv@lists.infradead.org</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:x86@kernel.org">x86@kernel.org</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:linuxppc-dev@lists.ozlabs.org">linuxppc-dev@lists.ozlabs.org</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:linux-mm@kvack.org">linux-mm@kvack.org</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:linux-kernel@vger.kernel.org">linux-kernel@vger.kernel.org</a>
-
-Anshuman Khandual (3):
-  mm/sparsemem: Enable vmem_altmap support in vmemmap_populate_basepages()
-  mm/sparsemem: Enable vmem_altmap support in vmemmap_alloc_block_buf()
-  arm64/mm: Enable vmem_altmap support for vmemmap mappings
-
- arch/arm64/mm/mmu.c       | 59 ++++++++++++++++++++++++++-------------
- arch/ia64/mm/discontig.c  |  2 +-
- arch/powerpc/mm/init_64.c | 10 +++----
- arch/riscv/mm/init.c      |  2 +-
- arch/x86/mm/init_64.c     | 12 ++++----
- include/linux/mm.h        |  8 ++++--
- mm/sparse-vmemmap.c       | 38 ++++++++++++++++++++-----
- 7 files changed, 87 insertions(+), 44 deletions(-)
-
-</pre>
-    </blockquote>
-    <pre class="moz-signature" cols="79">-- 
-
-</pre>
-  </body>
-</html>
-
---------------F45777FE1D773B7A3A04E8C0--
