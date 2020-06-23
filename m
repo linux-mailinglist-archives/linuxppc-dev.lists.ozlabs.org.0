@@ -2,80 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FB120472C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 04:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA75204734
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 04:22:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rVK53P5LzDqVQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 12:16:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rVR05HCXzDqWj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 12:22:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::844;
- helo=mail-qt1-x844.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f44;
+ helo=mail-qv1-xf44.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kg41CQjE; dkim-atps=neutral
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
+ header.s=20161025 header.b=MWXtKJKU; dkim-atps=neutral
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com
+ [IPv6:2607:f8b0:4864:20::f44])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rVHD3msYzDqCk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 12:15:20 +1000 (AEST)
-Received: by mail-qt1-x844.google.com with SMTP id v19so11851911qtq.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 19:15:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rVPG1JXxzDqV7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 12:20:33 +1000 (AEST)
+Received: by mail-qv1-xf44.google.com with SMTP id e2so8985925qvw.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 19:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=message-id:subject:from:to:cc:date:in-reply-to:references
  :organization:user-agent:mime-version:content-transfer-encoding;
- bh=zPuuLnD2JMR0gFscQNLcEig+u3tWYGPvfC5HYQiv6xs=;
- b=kg41CQjE3NNtozsMZU3SWTq5uaRK6UfddOHwptmHW5TxRBCXtchMkMFehcQcyXs84K
- c/KCPMKBmgOkBo3M3t3j5lpg5HfMMchaAHST+1+PwGtDEvwQK3YeaOrCnL0zCipN3HaQ
- QWXTVROn8nzTta4nsFRAktAGyRM2KYhIrj7dIp5xpA76qZ5JJ+5SjxNKnv7fQ4OXLkkM
- U2Oq5++o+9N0E/hhYnFkUibrohfZvo1b+Cb9ZTCQMXHsqxTBOhBen/6iYJ+P4a3x4SB4
- h4dpUjS4/ndB+XhHhoWYCnpF+TAxsSQS0ENVptcjSkbKKjuv86rLuwkdg1/ZfQAmCgbU
- 7ScQ==
+ bh=RiVxZrK7W9En977XCqTruiSR8ZglkbLVbM9+VSLHSI4=;
+ b=MWXtKJKUKdl6cavddgRsqTACe0qSqYfUD+h8OoCMRaFkJn8MW5oGBWRo3sYI3tBmjn
+ GlCyeSkJcVxN4JZ9I7cprk7lqmnoIwO4HgiaVEFawCVujnHDG/FotlhyhutJBT5a9kc+
+ L5bo4tYBZjFR6/tQIxJvaIXogKMLV3H0waYQ2sB5jk4kIF+BdbSf7lX0Zrgz/ccxer/w
+ lDZGwsQAOJVY3zeU0w2kIqUzCwVdY+h4DGCD70wxt9ulXDVmrhLB8b3MXxjq77/yZ4Rb
+ EEcuanMK/aT+d1lMeRQSxdWfWSM6n5IP7kAUFYDX2O6ky2MzTctlovKI/wH62lsEmcUq
+ pCkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
  :references:organization:user-agent:mime-version
  :content-transfer-encoding;
- bh=zPuuLnD2JMR0gFscQNLcEig+u3tWYGPvfC5HYQiv6xs=;
- b=DjwuakbHr4R61+gVrYQWkoiCp/szyTWhvjthQJImGJPFjHxDf/kXaBW1c5uGmnSbmG
- Idnb2SliDW6Qr6oCFb1Buqs31jA6MyRhF53W449POXDOUyCe5+X8A0ygDb8HPVFbIDR3
- YEs4dQFS9hVqaESN7Hy5tK0xSTBpFxAIunnP+YBZztip2Af3uHBLQz1QpEndInOyUA51
- lbObFHuPwbg0XGeFAC8y0QwKWgLo72sfiJGjJDcSukGGaooZsa6YuHV9BG9HH8xGCSGF
- GgUnSx23MA0XR3zEUPrb74AeLE8s1G2oZqmzBdUEwJT/LaACuJ/YQzwcJvTA8ZzGigrV
- /t9Q==
-X-Gm-Message-State: AOAM533lZtj1/KfTa1Q+MtF2jRxZbDa3lVn1bhQr+hcH5HYu7MRoS/Rv
- S9JU+j+056MIaI2JaCM9A0U=
-X-Google-Smtp-Source: ABdhPJzoHZz2iVjx44jQQQ0Lt8K6HySqMbRySz+68LnyY4O+3VMRtC54RCFdp6jMTxxw7TrsrVXdqA==
-X-Received: by 2002:aed:2062:: with SMTP id 89mr19110910qta.327.1592878516477; 
- Mon, 22 Jun 2020 19:15:16 -0700 (PDT)
+ bh=RiVxZrK7W9En977XCqTruiSR8ZglkbLVbM9+VSLHSI4=;
+ b=MbCa7XQKfuTpmTT5e9st/rHEJGWz9uVUihAbEf/0BJ4bbKSrZ/QK1b+RqjkxErpuDK
+ 85TZvFTQj9caAk3V541Tu9gG9H+hzfChgaNNZTKM7A/RVbSxtxK4AnJx/Yaa5VGcJ2A2
+ ypqDc6ORO2pajDnIITWwzWtRooBT5KA7B1PySQLLIpEZNEidtEZbdOsALcevLkHJyIDs
+ r39vrl3zp5IP7rnZvC3GI0afr6N7OV40WZS29bMAk14s0owxN8CqAVmeehzeThud0xTg
+ cP/W2yXGn2cF28hLdExF6xBig89FN2Vn8Xir/eBCF4toWN2ymDqnwFGcNofE3hf0InVE
+ e23A==
+X-Gm-Message-State: AOAM533q1nxbF4CjKV8JKJyGkKdIJn64zgQ8dqpamHtxUxFLEYAkxo+F
+ JI0tFoEHKt4M8tgRGp+15XoxTtvB
+X-Google-Smtp-Source: ABdhPJzACCXKb4DvU1aJ1moVc8D+dJbwDtwToBTSHC1yig/UIau1yudbB8TD5XAgO8ixR0k3mShnMA==
+X-Received: by 2002:ad4:4526:: with SMTP id l6mr286078qvu.16.1592878830489;
+ Mon, 22 Jun 2020 19:20:30 -0700 (PDT)
 Received: from LeoBras (177-131-65-187.dynamic.desktop.com.br.
  [177.131.65.187])
- by smtp.gmail.com with ESMTPSA id d2sm15527769qti.62.2020.06.22.19.15.06
+ by smtp.gmail.com with ESMTPSA id p80sm4214865qke.19.2020.06.22.19.20.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jun 2020 19:15:15 -0700 (PDT)
-Message-ID: <c331742c9f7a3e3ccead5d9db99a66d3f268b95f.camel@gmail.com>
-Subject: Re: [PATCH 1/4] powerpc/pseries/iommu: Update call to
- ibm,query-pe-dma-windows
+ Mon, 22 Jun 2020 19:20:29 -0700 (PDT)
+Message-ID: <020498a66f6683e21d9691c0f23642dae7f176cf.camel@gmail.com>
+Subject: Re: [PATCH 2/4] powerpc/pseries/iommu: Implement
+ ibm,reset-pe-dma-windows rtas call
 From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Date: Mon, 22 Jun 2020 23:14:51 -0300
-In-Reply-To: <4176ea2b-c778-2f59-ba57-7339b873ead5@ozlabs.ru>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Thiago Jung Bauermann
+ <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
+Date: Mon, 22 Jun 2020 23:20:08 -0300
+In-Reply-To: <c02fbebb-32ed-f328-ff93-ab2201844d61@ozlabs.ru>
 References: <20200619050619.266888-1-leobras.c@gmail.com>
- <20200619050619.266888-2-leobras.c@gmail.com>
- <cfbcacde-ca7f-5fc7-2fcf-267f698f3d49@ozlabs.ru>
- <c15189a5c77752ea62022608dab28601965afaaa.camel@gmail.com>
- <4176ea2b-c778-2f59-ba57-7339b873ead5@ozlabs.ru>
+ <20200619050619.266888-3-leobras.c@gmail.com>
+ <2f004ecc-4788-47b6-e9ae-0c08d4723008@ozlabs.ru>
+ <4180fd9bb0409a9c7009fef3ccae8eb2ad46d0a2.camel@gmail.com>
+ <c02fbebb-32ed-f328-ff93-ab2201844d61@ozlabs.ru>
 Organization: IBM
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,177 +90,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-06-23 at 11:12 +1000, Alexey Kardashevskiy wrote:
-[snip]
-> > > > +static int query_ddw_out_sz(struct device_node *par_dn)
-> > > 
-> > > Can easily be folded into query_ddw().
+On Tue, 2020-06-23 at 11:11 +1000, Alexey Kardashevskiy wrote:
+> 
+> On 23/06/2020 04:58, Leonardo Bras wrote:
+> > Hello Alexey, thanks for the feedback!
 > > 
-> > Sure, but it will get inlined by the compiler, and I think it reads
-> > better this way. 
-> > I mean, I understand you have a reason to think it's better to fold it
-> > in query_ddw(), and I would like to better understand that to improve
-> > my code in the future.
-> 
-> You have numbers 5 and 6 (the number of parameters) twice in the file,
-> this is why I brought it up. query_ddw_out_sz() can potentially return
-> something else than 5 or 6 and you will have to change the callsite(s)
-> then, since these are not macros, this allows to think there may be more
-> places with 5 and 6. Dunno. A single function will simplify things imho.
-
-That's a good point. Thanks!
-
-> 
-> 
+> > On Mon, 2020-06-22 at 20:02 +1000, Alexey Kardashevskiy wrote:
+> > > On 19/06/2020 15:06, Leonardo Bras wrote:
+> > > > Platforms supporting the DDW option starting with LoPAR level 2.7 implement
+> > > > ibm,ddw-extensions. The first extension available (index 2) carries the
+> > > > token for ibm,reset-pe-dma-windows rtas call, which is used to restore
+> > > > the default DMA window for a device, if it has been deleted.
+> > > > 
+> > > > It does so by resetting the TCE table allocation for the PE to it's
+> > > > boot time value, available in "ibm,dma-window" device tree node.
+> > > > 
+> > > > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> > > > ---
+> > > >  arch/powerpc/platforms/pseries/iommu.c | 33 ++++++++++++++++++++++++++
+> > > >  1 file changed, 33 insertions(+)
+> > > > 
+> > > > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> > > > index e5a617738c8b..5e1fbc176a37 100644
+> > > > --- a/arch/powerpc/platforms/pseries/iommu.c
+> > > > +++ b/arch/powerpc/platforms/pseries/iommu.c
+> > > > @@ -1012,6 +1012,39 @@ static phys_addr_t ddw_memory_hotplug_max(void)
+> > > >  	return max_addr;
+> > > >  }
+> > > >  
+> > > > +/*
+> > > > + * Platforms supporting the DDW option starting with LoPAR level 2.7 implement
+> > > > + * ibm,ddw-extensions, which carries the rtas token for
+> > > > + * ibm,reset-pe-dma-windows.
+> > > > + * That rtas-call can be used to restore the default DMA window for the device.
+> > > > + */
+> > > > +static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
 > > > > +{
 > > > > +	int ret;
-> > > > +	u32 ddw_ext[3];
+> > > > +	u32 cfg_addr, ddw_ext[3];
+> > > > +	u64 buid;
+> > > > +	struct device_node *dn;
+> > > > +	struct pci_dn *pdn;
 > > > > +
 > > > > +	ret = of_property_read_u32_array(par_dn, "ibm,ddw-extensions",
 > > > > +					 &ddw_ext[0], 3);
-> > > > +	if (ret || ddw_ext[0] < 2 || ddw_ext[2] != 1)
 > > > 
-> > > Oh that PAPR thing again :-/
+> > > s/3/2/ as for the reset extension you do not need the "64bit largest
+> > > block" extension.
+> > 
+> > Sure, I will update this.
+> > 
 > > > 
-> > > ===
-> > > The “ibm,ddw-extensions” property value is a list of integers the first
-> > > integer indicates the number of extensions implemented and subsequent
-> > > integers, one per extension, provide a value associated with that
-> > > extension.
-> > > ===
+> > > > +	if (ret)
+> > > > +		return;
+> > > > +
+> > > > +	dn = pci_device_to_OF_node(dev);
+> > > > +	pdn = PCI_DN(dn);
+> > > > +	buid = pdn->phb->buid;
+> > > > +	cfg_addr = ((pdn->busno << 16) | (pdn->devfn << 8));
+> > > > +
+> > > > +	ret = rtas_call(ddw_ext[1], 3, 1, NULL, cfg_addr,
 > > > 
-> > > So ddw_ext[0] is length.
-> > > Listindex==2 is for "reset" says PAPR and
-> > > Listindex==3 is for this new 64bit "largest_available_block".
+> > > Here the "reset" extention is in ddw_ext[1]. Hm. 1/4 has a bug then.
+> > 
+> > Humm, in 1/4 I used dd_ext[0] (how many extensions) and ddw_ext[2] (64-
+> > bit largest window count). I fail to see the bug here.
+> 
+> There is none, my bad :)
+> 
+> 
+> > > And I am pretty sure it won't compile as reset_dma_window() is not used
+> > > and it is static so fold it into one the next patches. Thanks,
+> > 
+> > Sure, I will do that. 
+> > I was questioning myself about this and thought it would be better to
+> > split for easier revision.
+> 
+> People separate things when a patch is really huge but even then I miss
+> the point - I'd really like to see a new function _and_ its uses in the
+> same patch, otherwise I either need to jump between mails or apply the
+> series, either is little but extra work :) Thanks,
+
+
+Sure, that makes sense.
+I will keep that in mind for future patchsets (and v2).
+
+Thank you!
+
+> 
+> 
 > > > 
-> > > So I'd expect ddw_ext[2] to have the "reset" token and ddw_ext[3] to
-> > > have "1" for this new feature but indexes are smaller. I am confused.
-> > > Either way these "2" and "3" needs to be defined in macros, "0" probably
-> > > too.
-> > 
-> > Remember these indexes are not C-like 0-starting indexes, where the
-> > size would be Listindex==1.
-> 
-> Yeah I can see that is the assumption but out of curiosity - is it
-> written anywhere? Across PAPR, they index bytes from 1 but bits from 0 :-/
-
-From LoPAR: 
-The “ibm,ddw-extensions” property value is a list of integers the first
-integer indicates the number of extensions implemented and subsequent
-integers, one per extension, provide a value associated with that
-extension.
-
-And the list/table then shows extensions from 2 on onwards:
-List index 2 : Token of the ibm,reset-pe-dma-windows RTAS Call
-(...)
-
-> Either way make them macros.
-> 
-> 
-> > Basically, in C-like array it's :
-> > a[0] == size, 
-> > a[1] == reset_token, 
-> > a[2] == new 64bit "largest_available_block"
-> > 
-> > > Please post 'lsprop "ibm,ddw-extensions"' here. Thanks,
-> > 
-> > Sure:
-> > [root@host pci@800000029004005]# lsprop "ibm,ddw-extensions"
-> > ibm,dd
-> > w-extensions
-> >                  00000002 00000056 00000000
-> 
-> Right, good. Thanks,
-
-Thank you for reviewing!
-
-> 
-> > 
-> > > > +		return 5;
-> > > > +	return 6;
+> > > > +			BUID_HI(buid), BUID_LO(buid));
+> > > > +	if (ret)
+> > > > +		dev_info(&dev->dev,
+> > > > +			 "ibm,reset-pe-dma-windows(%x) %x %x %x returned %d ",
+> > > > +			 ddw_ext[1], cfg_addr, BUID_HI(buid), BUID_LO(buid),
+> > > > +			 ret);
 > > > > +}
 > > > > +
-> > > >  static int query_ddw(struct pci_dev *dev, const u32 *ddw_avail,
-> > > > -			struct ddw_query_response *query)
-> > > > +		     struct ddw_query_response *query,
-> > > > +		     struct device_node *par_dn)
-> > > >  {
-> > > >  	struct device_node *dn;
-> > > >  	struct pci_dn *pdn;
-> > > > -	u32 cfg_addr;
-> > > > +	u32 cfg_addr, query_out[5];
-> > > >  	u64 buid;
-> > > > -	int ret;
-> > > > +	int ret, out_sz;
-> > > >  
-> > > >  	/*
-> > > >  	 * Get the config address and phb buid of the PE window.
-> > > > @@ -888,12 +906,29 @@ static int query_ddw(struct pci_dev *dev, const u32 *ddw_avail,
-> > > >  	pdn = PCI_DN(dn);
-> > > >  	buid = pdn->phb->buid;
-> > > >  	cfg_addr = ((pdn->busno << 16) | (pdn->devfn << 8));
-> > > > +	out_sz = query_ddw_out_sz(par_dn);
-> > > > +
-> > > > +	ret = rtas_call(ddw_avail[0], 3, out_sz, query_out,
-> > > > +			cfg_addr, BUID_HI(buid), BUID_LO(buid));
-> > > > +	dev_info(&dev->dev, "ibm,query-pe-dma-windows(%x) %x %x %x returned %d\n",
-> > > > +		 ddw_avail[0], cfg_addr, BUID_HI(buid), BUID_LO(buid), ret);
-> > > > +
-> > > > +	switch (out_sz) {
-> > > > +	case 5:
-> > > > +		query->windows_available = query_out[0];
-> > > > +		query->largest_available_block = query_out[1];
-> > > > +		query->page_size = query_out[2];
-> > > > +		query->migration_capable = query_out[3];
-> > > > +		break;
-> > > > +	case 6:
-> > > > +		query->windows_available = query_out[0];
-> > > > +		query->largest_available_block = ((u64)query_out[1] << 32) |
-> > > > +						 query_out[2];
-> > > > +		query->page_size = query_out[3];
-> > > > +		query->migration_capable = query_out[4];
-> > > > +		break;
-> > > > +	}
-> > > >  
-> > > > -	ret = rtas_call(ddw_avail[0], 3, 5, (u32 *)query,
-> > > > -		  cfg_addr, BUID_HI(buid), BUID_LO(buid));
-> > > > -	dev_info(&dev->dev, "ibm,query-pe-dma-windows(%x) %x %x %x"
-> > > > -		" returned %d\n", ddw_avail[0], cfg_addr, BUID_HI(buid),
-> > > > -		BUID_LO(buid), ret);
-> > > >  	return ret;
-> > > >  }
-> > > >  
-> > > > @@ -1040,7 +1075,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
-> > > >  	 * of page sizes: supported and supported for migrate-dma.
-> > > >  	 */
-> > > >  	dn = pci_device_to_OF_node(dev);
-> > > > -	ret = query_ddw(dev, ddw_avail, &query);
-> > > > +	ret = query_ddw(dev, ddw_avail, &query, pdn);
-> > > >  	if (ret != 0)
-> > > >  		goto out_failed;
-> > > >  
-> > > > @@ -1068,7 +1103,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
-> > > >  	/* check largest block * page size > max memory hotplug addr */
-> > > >  	max_addr = ddw_memory_hotplug_max();
-> > > >  	if (query.largest_available_block < (max_addr >> page_shift)) {
-> > > > -		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %u "
-> > > > +		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %llu "
-> > > >  			  "%llu-sized pages\n", max_addr,  query.largest_available_block,
-> > > >  			  1ULL << page_shift);
-> > > >  		goto out_failed;
+> > > >  /*
+> > > >   * If the PE supports dynamic dma windows, and there is space for a table
+> > > >   * that can map all pages in a linear offset, then setup such a table,
 > > > > 
 > > 
 > > Best regards,
 > > Leonardo
 > > 
-
-Best regards,
-Leonardo Bras
 
