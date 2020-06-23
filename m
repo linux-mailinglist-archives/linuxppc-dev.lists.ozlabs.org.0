@@ -1,86 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F5F2057E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 18:52:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101552057F2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 18:54:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rskw6y02zDqWY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 02:52:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rsnM2YqfzDqKM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 02:54:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=casper.20170209 header.b=YgiRjbS+; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rsJr3RmyzDqX8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 02:33:00 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05NGWqRo130588; Tue, 23 Jun 2020 12:32:56 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ukmdbkbg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jun 2020 12:32:54 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05NGWrIv130786;
- Tue, 23 Jun 2020 12:32:53 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ukmdbk8d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jun 2020 12:32:53 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NGURJs008798;
- Tue, 23 Jun 2020 16:32:42 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 31uk4hr4gr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jun 2020 16:32:42 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05NGVKTW65601872
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Jun 2020 16:31:20 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1703EAE053;
- Tue, 23 Jun 2020 16:32:39 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8C337AE051;
- Tue, 23 Jun 2020 16:32:37 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 23 Jun 2020 16:32:37 +0000 (GMT)
-Date: Tue, 23 Jun 2020 22:02:36 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH 14/18] powerpc/numa: remove arch_update_cpu_topology
-Message-ID: <20200623163236.GL24019@linux.vnet.ibm.com>
-References: <20200612051238.1007764-1-nathanl@linux.ibm.com>
- <20200612051238.1007764-15-nathanl@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rsR3687KzDqS7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 02:38:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=RzoHJHCZ7hm1ROHNKEIr2G/Z119807J1u519SSBhfx0=; b=YgiRjbS+IO71QOmY2cByo1vbGd
+ Gr24I10sI0aOw80E4fgkhtZ/AKg3XhTw57Qw6cjSh/E0wUOY1uFLr5SvBxinBVMLvOYhvKKOIIOfS
+ Ub2c1tYdQ/ZKB4e6yg6v3VKsF8VH6KvVMGJ6zlf5OFXjokqIYTpFZ4qOqMCAKFQbNhnfvbHyni2a+
+ JPUMJ3W7qwtOc6iPpxmGRsIV7IeJ/WaFssNyCVTi/Zq3eC9ALn7KCDMlnIBgfSu2sLmSMiuBTZiyp
+ ZYlO+YF76UT2iHB4NtD8Ja0m0I+D7XNLD2TfRoqDaV66RGO6WCaPNE0OI96yvwqw/YM4+1ZjVmLv+
+ yI8aQuBg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnlvS-0002Zv-1A; Tue, 23 Jun 2020 16:37:34 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C847F300F28;
+ Tue, 23 Jun 2020 18:37:30 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id B66FF234EBA5B; Tue, 23 Jun 2020 18:37:30 +0200 (CEST)
+Date: Tue, 23 Jun 2020 18:37:30 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Ahmed S. Darwish" <a.darwish@linutronix.de>
+Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
+ per-cpu variables
+Message-ID: <20200623163730.GA4800@hirez.programming.kicks-ass.net>
+References: <20200623083645.277342609@infradead.org>
+ <20200623083721.512673481@infradead.org>
+ <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
+ <20200623152450.GM4817@hirez.programming.kicks-ass.net>
+ <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200612051238.1007764-15-nathanl@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-23_10:2020-06-23,
- 2020-06-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0
- spamscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- suspectscore=0 phishscore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006120000 definitions=main-2006230121
+In-Reply-To: <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,28 +74,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: tyreld@linux.ibm.com, ego@linux.vnet.ibm.com, npiggin@gmail.com,
- svaidy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, elver@google.com, linuxppc-dev@lists.ozlabs.org,
+ bigeasy@linutronix.de, x86@kernel.org, heiko.carstens@de.ibm.com,
+ linux-kernel@vger.kernel.org, rostedt@goodmis.org, davem@davemloft.net,
+ sparclinux@vger.kernel.org, linux@armlinux.org.uk, tglx@linutronix.de,
+ will@kernel.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Nathan Lynch <nathanl@linux.ibm.com> [2020-06-12 00:12:34]:
-
-> Since arch_update_cpu_topology() doesn't do anything on powerpc now,
-> remove it and associated dead code.
+On Tue, Jun 23, 2020 at 06:13:21PM +0200, Ahmed S. Darwish wrote:
+> Well, freshly merged code is using it. For example, KCSAN:
 > 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/topology.h |  6 ------
->  arch/powerpc/mm/numa.c              | 10 ----------
->  2 files changed, 16 deletions(-)
+>     => f1bc96210c6a ("kcsan: Make KCSAN compatible with lockdep")
+>     => kernel/kcsan/report.c:
 > 
+>     void kcsan_report(...)
+>     {
+> 	...
+>         /*
+>          * With TRACE_IRQFLAGS, lockdep's IRQ trace state becomes corrupted if
+>          * we do not turn off lockdep here; this could happen due to recursion
+>          * into lockdep via KCSAN if we detect a race in utilities used by
+>          * lockdep.
+>          */
+>         lockdep_off();
+> 	...
+>     }
 
-Looks good to me.
-
-Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
--- 
-Thanks and Regards
-Srikar Dronamraju
+Marco, do you remember what exactly happened there? Because I'm about to
+wreck that. That is, I'm going to make TRACE_IRQFLAGS ignore
+lockdep_off().
