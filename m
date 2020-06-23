@@ -2,67 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684E92054D0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 16:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA312055DE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 17:28:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rphm15VPzDqNT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 00:35:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rqtR0FvbzDqSt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 01:28:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--qperret.bounces.google.com
- (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com;
- envelope-from=3-a_yxgckdn0podqqdsfnnfkd.bnlkhmtwoob-cdukhrsr.nyk9ar.nqf@flex--qperret.bounces.google.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=L+PgZpf1; dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com
- [IPv6:2607:f8b0:4864:20::b49])
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=Q2asf/D+; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rpPY1ksbzDqLF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 00:21:46 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id c17so24164260ybf.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 07:21:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=3FVZM6YK4WuItfsUzRuxaLQpo5idX99+ykpcHtbDxao=;
- b=L+PgZpf1ipA1/ahUV409sUxMwe9aXxIjms47WLR6AQumOcds1mlpb4KHQjOh8mUJos
- ZKooyOz/cW31DiK0jFqsCvhBDbK+LojeLU3VpOWEiavltM4rgbl5NtOQfDibxiUb4bLK
- 4cu7P+h9YaxCtzDv/VSqgajZUcfnZX9KGphTkGSNAHsfwG40AtJ+uPy5Q4A5pZX1VkQv
- HkSEHOt21LFJRvA0k6k8RJs/SRMLYTpA+k3+vtbJ/I5AM/Tzs6lU3XHFxhLqsIJoOZ2L
- jyAwAuUNB1/nKjmUCnnvuJQfWJYAz86jtWt4Pmm/pbjnGeSnnqmuqvXuCPWs3SkxsM7Q
- 6UHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:in-reply-to:message-id:mime-version
- :references:subject:from:to:cc;
- bh=3FVZM6YK4WuItfsUzRuxaLQpo5idX99+ykpcHtbDxao=;
- b=AFlCk7PV0+SdrQnkbZvOf5zFBucVhlI0qKQDq6TauR4iE0JdbgqVjrOZNoulH+L8Wx
- B9xq8/R8lVMUaW5ut7zB1c5+aADAyv/osvfukjU3ICoXTd9C6EaB1dPJMXpUY571R19q
- IsxIVUIc6Y0TShqAHm8koSaKsSCnNMmUSFbUblZziEEMkBDHpNqqe1j4je+L9llfdHrl
- yW6S5PRbcCP0y4dZbHdKw5g9oyZQdsQmskzqBYrGgXB9BUi4oxwhxZWLBQcwzksjs74F
- Y3Ys0S/MQZO5No2EIHz2qVHwBY5fooCWSOEpLirtXejz77QcXPdS7k4ihi40eVVMginY
- JvQQ==
-X-Gm-Message-State: AOAM531QXEksz6KLZQYhTfRBDQsY7y1DaADeCLNiEaS35Uu2w39Bp+/7
- TEEy36wOT20N0ehJhTXBrtl6f3ozIx/D
-X-Google-Smtp-Source: ABdhPJwxz7yaVNFBCa7KewRziQgnrBazx0rNXq0015FvhEtCqD12iPNPYMWA9BTVzY0JbqD3X0mIRc8+ZLeM
-X-Received: by 2002:a25:54e:: with SMTP id 75mr35259783ybf.222.1592922104320; 
- Tue, 23 Jun 2020 07:21:44 -0700 (PDT)
-Date: Tue, 23 Jun 2020 15:21:38 +0100
-In-Reply-To: <20200623142138.209513-1-qperret@google.com>
-Message-Id: <20200623142138.209513-3-qperret@google.com>
-Mime-Version: 1.0
-References: <20200623142138.209513-1-qperret@google.com>
-X-Mailer: git-send-email 2.27.0.111.gc72c7da667-goog
-Subject: [PATCH v2 2/2] cpufreq: Specify default governor on command line
-From: Quentin Perret <qperret@google.com>
-To: rjw@rjwysocki.net, rafael@kernel.org, viresh.kumar@linaro.org
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rqpb4RgXzDqFs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 01:25:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=CdyXQj2K/WhL99i44E17m8NIjPfggDEZJpNq1YwlkZk=; b=Q2asf/D+1IaMFnf1i/OVF98de3
+ 7rs3gVfXshkpsFSSEaP3Y7T3/jTzoRPpqVcpPUtnk9TLPRm/yqsLW5rzqU45RZvshYlmMrH648Bp+
+ +VOJgyFc0NC5Vs3bN8mgZAsW1mnElkGwPu5PAeUQupo9bWrU7jFZFfQc7FPoQxcaxz//lpCJDxhJD
+ ZuHJZtkrYUFb3n/y9sZEBKLUqfwZkaGs+bglrCumueb5ZG54b/NxCLJJzXQmO9LxeKerFKX+t6AXz
+ 6X8YpY8hQffzfIE7GoVgFOKPODFGi4aJCr3+VXGUB9CZeB/MY6yUCEz72sg0jKQIZ694RVvWzj7SD
+ Plpff4LA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnkn7-0003Pr-8v; Tue, 23 Jun 2020 15:24:53 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 180DE303DA0;
+ Tue, 23 Jun 2020 17:24:51 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id F17AC234EBA53; Tue, 23 Jun 2020 17:24:50 +0200 (CEST)
+Date: Tue, 23 Jun 2020 17:24:50 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Ahmed S. Darwish" <a.darwish@linutronix.de>
+Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
+ per-cpu variables
+Message-ID: <20200623152450.GM4817@hirez.programming.kicks-ass.net>
+References: <20200623083645.277342609@infradead.org>
+ <20200623083721.512673481@infradead.org>
+ <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,154 +72,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, kernel-team@android.com, vincent.guittot@linaro.org,
- arnd@arndb.de, linux-pm@vger.kernel.org, peterz@infradead.org,
- adharmap@codeaurora.org, qperret@google.com, linux-kernel@vger.kernel.org,
- mingo@redhat.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- tkjos@google.com
+Cc: linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ bigeasy@linutronix.de, x86@kernel.org, heiko.carstens@de.ibm.com,
+ linux-kernel@vger.kernel.org, rostedt@goodmis.org, davem@davemloft.net,
+ sparclinux@vger.kernel.org, linux@armlinux.org.uk, tglx@linutronix.de,
+ will@kernel.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, the only way to specify the default CPUfreq governor is via
-Kconfig options, which suits users who can build the kernel themselves
-perfectly.
+On Tue, Jun 23, 2020 at 05:00:31PM +0200, Ahmed S. Darwish wrote:
+> On Tue, Jun 23, 2020 at 10:36:52AM +0200, Peter Zijlstra wrote:
+> ...
+> > -#define lockdep_assert_irqs_disabled()	do {				\
+> > -		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
+> > -			  current->hardirqs_enabled,			\
+> > -			  "IRQs not disabled as expected\n");		\
+> > -	} while (0)
+> > +#define lockdep_assert_irqs_enabled()					\
+> > +do {									\
+> > +	WARN_ON_ONCE(debug_locks && !this_cpu_read(hardirqs_enabled));	\
+> > +} while (0)
+> >
+> 
+> Can we add a small comment on top of lockdep_off(), stating that lockdep
+> IRQ tracking will still be kept after a lockdep_off call?
 
-However, for those who use a distro-like kernel (such as Android, with
-the Generic Kernel Image project), the only way to use a different
-default is to boot to userspace, and to then switch using the sysfs
-interface. Being able to specify the default governor on the command
-line, like is the case for cpuidle, would enable those users to specify
-their governor of choice earlier on, and to simplify slighlty the
-userspace boot procedure.
-
-To support this use-case, add a kernel command line parameter enabling
-to specify a default governor for CPUfreq, which takes precedence over
-the builtin default.
-
-This implementation has one notable limitation: the default governor
-must be registered before the driver. This is solved for builtin
-governors and drivers using appropriate *_initcall() functions. And in
-the modular case, this must be reflected as a constraint on the module
-loading order.
-
-Signed-off-by: Quentin Perret <qperret@google.com>
----
- .../admin-guide/kernel-parameters.txt         |  5 ++++
- Documentation/admin-guide/pm/cpufreq.rst      |  6 ++---
- drivers/cpufreq/cpufreq.c                     | 23 +++++++++++++++----
- 3 files changed, 26 insertions(+), 8 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index fb95fad81c79..5fd3c9f187eb 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -703,6 +703,11 @@
- 	cpufreq.off=1	[CPU_FREQ]
- 			disable the cpufreq sub-system
- 
-+	cpufreq.default_governor=
-+			[CPU_FREQ] Name of the default cpufreq governor to use.
-+			This governor must be registered in the kernel before
-+			the cpufreq driver probes.
-+
- 	cpu_init_udelay=N
- 			[X86] Delay for N microsec between assert and de-assert
- 			of APIC INIT to start processors.  This delay occurs
-diff --git a/Documentation/admin-guide/pm/cpufreq.rst b/Documentation/admin-guide/pm/cpufreq.rst
-index 0c74a7784964..368e612145d2 100644
---- a/Documentation/admin-guide/pm/cpufreq.rst
-+++ b/Documentation/admin-guide/pm/cpufreq.rst
-@@ -147,9 +147,9 @@ CPUs in it.
- 
- The next major initialization step for a new policy object is to attach a
- scaling governor to it (to begin with, that is the default scaling governor
--determined by the kernel configuration, but it may be changed later
--via ``sysfs``).  First, a pointer to the new policy object is passed to the
--governor's ``->init()`` callback which is expected to initialize all of the
-+determined by the kernel command line or configuration, but it may be changed
-+later via ``sysfs``).  First, a pointer to the new policy object is passed to
-+the governor's ``->init()`` callback which is expected to initialize all of the
- data structures necessary to handle the given policy and, possibly, to add
- a governor ``sysfs`` interface to it.  Next, the governor is started by
- invoking its ``->start()`` callback.
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 0128de3603df..4b1a5c0173cf 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -50,6 +50,9 @@ static LIST_HEAD(cpufreq_governor_list);
- #define for_each_governor(__governor)				\
- 	list_for_each_entry(__governor, &cpufreq_governor_list, governor_list)
- 
-+static char cpufreq_param_governor[CPUFREQ_NAME_LEN];
-+static struct cpufreq_governor *default_governor;
-+
- /**
-  * The "cpufreq driver" - the arch- or hardware-dependent low
-  * level driver of CPUFreq support, and its spinlock. This lock
-@@ -1055,7 +1058,6 @@ __weak struct cpufreq_governor *cpufreq_default_governor(void)
- 
- static int cpufreq_init_policy(struct cpufreq_policy *policy)
- {
--	struct cpufreq_governor *def_gov = cpufreq_default_governor();
- 	struct cpufreq_governor *gov = NULL;
- 	unsigned int pol = CPUFREQ_POLICY_UNKNOWN;
- 
-@@ -1065,8 +1067,8 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
- 		if (gov) {
- 			pr_debug("Restoring governor %s for cpu %d\n",
- 				 policy->governor->name, policy->cpu);
--		} else if (def_gov) {
--			gov = def_gov;
-+		} else if (default_governor) {
-+			gov = default_governor;
- 		} else {
- 			return -ENODATA;
- 		}
-@@ -1074,8 +1076,8 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
- 		/* Use the default policy if there is no last_policy. */
- 		if (policy->last_policy) {
- 			pol = policy->last_policy;
--		} else if (def_gov) {
--			pol = cpufreq_parse_policy(def_gov->name);
-+		} else if (default_governor) {
-+			pol = cpufreq_parse_policy(default_governor->name);
- 			/*
- 			 * In case the default governor is neiter "performance"
- 			 * nor "powersave", fall back to the initial policy
-@@ -2320,6 +2322,9 @@ int cpufreq_register_governor(struct cpufreq_governor *governor)
- 		list_add(&governor->governor_list, &cpufreq_governor_list);
- 	}
- 
-+	if (!strncasecmp(cpufreq_param_governor, governor->name, CPUFREQ_NAME_LEN))
-+		default_governor = governor;
-+
- 	mutex_unlock(&cpufreq_governor_mutex);
- 	return err;
- }
-@@ -2348,6 +2353,8 @@ void cpufreq_unregister_governor(struct cpufreq_governor *governor)
- 
- 	mutex_lock(&cpufreq_governor_mutex);
- 	list_del(&governor->governor_list);
-+	if (governor == default_governor)
-+		default_governor = cpufreq_default_governor();
- 	mutex_unlock(&cpufreq_governor_mutex);
- }
- EXPORT_SYMBOL_GPL(cpufreq_unregister_governor);
-@@ -2789,7 +2796,13 @@ static int __init cpufreq_core_init(void)
- 	cpufreq_global_kobject = kobject_create_and_add("cpufreq", &cpu_subsys.dev_root->kobj);
- 	BUG_ON(!cpufreq_global_kobject);
- 
-+	mutex_lock(&cpufreq_governor_mutex);
-+	if (!default_governor)
-+		default_governor = cpufreq_default_governor();
-+	mutex_unlock(&cpufreq_governor_mutex);
-+
- 	return 0;
- }
- module_param(off, int, 0444);
-+module_param_string(default_governor, cpufreq_param_governor, CPUFREQ_NAME_LEN, 0444);
- core_initcall(cpufreq_core_init);
--- 
-2.27.0.111.gc72c7da667-goog
-
+That would only legitimize lockdep_off(). The only comment I want to put
+on that is: "if you use this, you're doing it wrong'.
