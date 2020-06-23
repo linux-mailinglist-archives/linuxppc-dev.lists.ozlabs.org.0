@@ -2,72 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FC7204694
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 03:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE0F20469A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 03:18:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rSzS6kBPzDq9T
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 11:16:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rT1N2cqXzDqdj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 11:18:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=k73Sz8AB; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20150623 header.b=l1qx8u9c; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rStV3hdTzDqYd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 11:12:18 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id x207so9288515pfc.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 18:12:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rStl16CmzDqX8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 11:12:31 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id z63so9295068pfb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jun 2020 18:12:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=BhvtqZcJDKiaLp2sYRd1RWOIXgwIS0nWz00ZGRo01j0=;
- b=k73Sz8ABPKHq+ATvqFrqBb4MX3qEA1bRIEhli7DScp6sjz2muJuvehPSVTMXfup+v/
- LbcxiYCb9URuDN48c1c1EMdX/5B+P1/t8Fhyqa5k684XhUnHo2Jn5mJ/Dii288xf6oM6
- SSRwMRQkQXRGE9niQLRxzpRZYKhtDm5FjMGBd01zn2wnknacTOTP7CteIkoohgxk/qaV
- PHjg3x5rR7uGqM0yEs+nEI+s2l42nLctSeYm7n4x5XlMEWVEQyaYwXPd6oJF0l2BXYFB
- AB/VvV2aFApXyxb7ew/7r68NS1+TgSYmzINvBHh7xzcip0wmT0vgPQ+bGnT9v4NDM6Zo
- Cmbg==
+ bh=/7XR6S9g27LrNoW7SahuTQXav9iuulJHPvZf+1oIkLI=;
+ b=l1qx8u9cWzxLM0XtTP73o7PHYhZn7hihCC4+j3tGSKNZDh9eIQP8pc0B+kPiupwGlQ
+ WffBBEY8vHATJ8e5s/gOkJIoPGa5YuE2hyFaG1dcXnlYS8oNCzxvQAi5Avecr0jq1gBC
+ FeO9zP9oNUonNGiftL9YyDAAVY/VCvmQt7QrFk+PJlXMJjrWxJwV6ff9WCZwRWFv+lWE
+ ErjusiYff3etyBx0VGhHIyXnfGycgAHdhoNWUp0hpihLnUFlxc476TZzUmEfzsMgVuY1
+ kNNR6qw5+k7qU8DwlfjdCk4SX6bE+QZfDNVSSITlDPklExzWMhPqWn5PSO+mUgvl7Htc
+ RZ+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=BhvtqZcJDKiaLp2sYRd1RWOIXgwIS0nWz00ZGRo01j0=;
- b=KLLDi8yfLQqB4oPOsfDMAMC2mAL9nNIH4HWptlX0g0qhNLRwWP8H2/N3xy/ZIiPnov
- NdC+zM+m/ej71eOa82i5Cydj6VkC83fozifr31fRBRROVS8FXRcxirbyOeHokczHbtA0
- 1Quq8lSzzjTmvEHUBvnGlVgpjsw8cWr3u/IY2S++mXZ/K8Jhfdgp6VnGvdtePmtT2+7z
- Ya7NQgGeSVLJdo4j88FLY5XURWVnjbkNCMgZnvd+znxUwZG3YbySNmJiUwISev/BEHR1
- tXb8L9EsG5Fr7q5/rR8s5wMOnGSZ3G11ZLFdQ7dsvJ8kAshZUxGlp7Ml/EkNU42AE02R
- NlvA==
-X-Gm-Message-State: AOAM532peRLxCdnO61qDcK6loHuL/geBg8UqUtQkMMYMSfTQD9OX7hko
- WZ4Yuk/VPZOIJZVkN2SPYZkE7Q==
-X-Google-Smtp-Source: ABdhPJz6gza2Th1jcPu6rITsPDEk9rkuIwB+4bwcBBtSc1hwEBKvfF+bzTvKH/U/it32yNCaFsn6aQ==
-X-Received: by 2002:a63:461c:: with SMTP id t28mr15701205pga.316.1592874736136; 
- Mon, 22 Jun 2020 18:12:16 -0700 (PDT)
+ bh=/7XR6S9g27LrNoW7SahuTQXav9iuulJHPvZf+1oIkLI=;
+ b=TCiW9QlEfM75d9QzMR9FPmXCHFx1l7MltFzdiuFUTD2avNEs6twzg8V06Kv2r7l3jB
+ WRKyPckall3TxB5+FDid0/q2JLfwImfDM7/LXIkTEP7Fzc4AgCQBfi9xwDJb5VwaXgFb
+ 4d8XyWI2vJULwLDzmyvl8sLWc/NQagufmVFPP4a94JVK0h/kxHwTd3+KiJsaw52W/S9P
+ DvxzbbuRwmz1x4Amzjqdti5in+E5MvX/LJ3lMj7W+rLVxWM+hYj5rXPR5e1akpYnxutY
+ jJqlIiQTb7YS2klQe3/NtcVMWtI9akVqNcoeimXBXhlJQtf3aQaFHwpg4biRkeQeeeuu
+ g6TA==
+X-Gm-Message-State: AOAM5319n/4HK45dKROs9bxlVVJ16QEO6TjuSRdU2WiTrV7FqUucZHgG
+ dNh5pr9wQJDgzlOr+FAKhfqSKA==
+X-Google-Smtp-Source: ABdhPJzAiZpRxeFlsrHyOBRofUMfnB5vUt9EyrVv1wkiJeLeylTnr2J6QKw5XmWE5GjUmCpk3lrPWA==
+X-Received: by 2002:a63:308:: with SMTP id 8mr16055812pgd.112.1592874749279;
+ Mon, 22 Jun 2020 18:12:29 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id c2sm11965931pgk.77.2020.06.22.18.12.12
+ by smtp.gmail.com with ESMTPSA id h4sm612040pjq.55.2020.06.22.18.12.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jun 2020 18:12:15 -0700 (PDT)
-Subject: Re: [PATCH 1/4] powerpc/pseries/iommu: Update call to
- ibm,query-pe-dma-windows
-To: Leonardo Bras <leobras.c@gmail.com>
+ Mon, 22 Jun 2020 18:12:28 -0700 (PDT)
+Subject: Re: [PATCH 3/4] powerpc/pseries/iommu: Move window-removing part of
+ remove_ddw into remove_dma_window
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
 References: <20200619050619.266888-1-leobras.c@gmail.com>
- <20200619050619.266888-2-leobras.c@gmail.com>
- <cfbcacde-ca7f-5fc7-2fcf-267f698f3d49@ozlabs.ru>
- <c15189a5c77752ea62022608dab28601965afaaa.camel@gmail.com>
+ <20200619050619.266888-4-leobras.c@gmail.com>
+ <51201582-efe5-85df-7e65-a998e91ab63f@ozlabs.ru>
+ <ccf7b591f2bf61ba4705699b2e2b050c3cf48d99.camel@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -142,15 +145,15 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <4176ea2b-c778-2f59-ba57-7339b873ead5@ozlabs.ru>
-Date: Tue, 23 Jun 2020 11:12:10 +1000
+Message-ID: <887bf30e-ae9e-b0cb-0388-dc555692ff0a@ozlabs.ru>
+Date: Tue, 23 Jun 2020 11:12:22 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <c15189a5c77752ea62022608dab28601965afaaa.camel@gmail.com>
+In-Reply-To: <ccf7b591f2bf61ba4705699b2e2b050c3cf48d99.camel@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -162,207 +165,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Oliver <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 23/06/2020 04:58, Leonardo Bras wrote:
-> Hello Alexey, thank you for the feedback!
+On 23/06/2020 04:59, Leonardo Bras wrote:
+> Hello Alexey, thanks for the feedback!
 > 
 > On Mon, 2020-06-22 at 20:02 +1000, Alexey Kardashevskiy wrote:
 >>
 >> On 19/06/2020 15:06, Leonardo Bras wrote:
->>> From LoPAR level 2.8, "ibm,ddw-extensions" index 3 can make the number of
->>> outputs from "ibm,query-pe-dma-windows" go from 5 to 6.
+>>> Move the window-removing part of remove_ddw into a new function
+>>> (remove_dma_window), so it can be used to remove other DMA windows.
 >>>
->>> This change of output size is meant to expand the address size of
->>> largest_available_block PE TCE from 32-bit to 64-bit, which ends up
->>> shifting page_size and migration_capable.
->>>
->>> This ends up requiring the update of
->>> ddw_query_response->largest_available_block from u32 to u64, and manually
->>> assigning the values from the buffer into this struct, according to
->>> output size.
+>>> It's useful for removing DMA windows that don't create DIRECT64_PROPNAME
+>>> property, like the default DMA window from the device, which uses
+>>> "ibm,dma-window".
 >>>
 >>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 >>> ---
->>>  arch/powerpc/platforms/pseries/iommu.c | 57 +++++++++++++++++++++-----
->>>  1 file changed, 46 insertions(+), 11 deletions(-)
+>>>  arch/powerpc/platforms/pseries/iommu.c | 53 +++++++++++++++-----------
+>>>  1 file changed, 31 insertions(+), 22 deletions(-)
 >>>
 >>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
->>> index 6d47b4a3ce39..e5a617738c8b 100644
+>>> index 5e1fbc176a37..de633f6ae093 100644
 >>> --- a/arch/powerpc/platforms/pseries/iommu.c
 >>> +++ b/arch/powerpc/platforms/pseries/iommu.c
->>> @@ -334,7 +334,7 @@ struct direct_window {
->>>  /* Dynamic DMA Window support */
->>>  struct ddw_query_response {
->>>  	u32 windows_available;
->>> -	u32 largest_available_block;
->>> +	u64 largest_available_block;
->>>  	u32 page_size;
->>>  	u32 migration_capable;
->>>  };
->>> @@ -869,14 +869,32 @@ static int find_existing_ddw_windows(void)
->>>  }
->>>  machine_arch_initcall(pseries, find_existing_ddw_windows);
+>>> @@ -767,25 +767,14 @@ static int __init disable_ddw_setup(char *str)
 >>>  
->>> +/*
->>> + * From LoPAR level 2.8, "ibm,ddw-extensions" index 3 can rule how many output
->>> + * parameters ibm,query-pe-dma-windows will have, ranging from 5 to 6.
->>> + */
->>> +
->>> +static int query_ddw_out_sz(struct device_node *par_dn)
+>>>  early_param("disable_ddw", disable_ddw_setup);
+>>>  
+>>> -static void remove_ddw(struct device_node *np, bool remove_prop)
+>>> +static void remove_dma_window(struct device_node *pdn, u32 *ddw_avail,
 >>
->> Can easily be folded into query_ddw().
+>> You do not need the entire ddw_avail here, pass just the token you need.
 > 
-> Sure, but it will get inlined by the compiler, and I think it reads
-> better this way. 
+> Well, I just emulated the behavior of create_ddw() and query_ddw() as
+> both just pass the array instead of the token, even though they only
+> use a single token. 
+
+True, there is a pattern.
+
+> I think it's to make the rest of the code independent of the design of
+> the "ibm,ddw-applicable" array, and if it changes, only local changes
+> on the functions will be needed.
+
+The helper removes a window, if you are going to call other operations
+in remove_dma_window(), then you'll have to change its name ;)
 
 
-> I mean, I understand you have a reason to think it's better to fold it
-> in query_ddw(), and I would like to better understand that to improve
-> my code in the future.
+>> Also, despite this particular file, the "pdn" name is usually used for
+>> struct pci_dn (not device_node), let's keep it that way.
+> 
+> Sure, I got confused for some time about this, as we have:
+> static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn).
+> but on *_ddw() we have "struct pci_dn *pdn".
+
+True again, not the cleanest style here.
 
 
-You have numbers 5 and 6 (the number of parameters) twice in the file,
-this is why I brought it up. query_ddw_out_sz() can potentially return
-something else than 5 or 6 and you will have to change the callsite(s)
-then, since these are not macros, this allows to think there may be more
-places with 5 and 6. Dunno. A single function will simplify things imho.
+> I will also add a patch that renames those 'struct device_node *pdn' to
+> something like 'struct device_node *parent_dn'.
+
+I would not go that far, we (well, Oliver) are getting rid of many
+occurrences of pci_dn and Oliver may have a stronger opinion here.
 
 
 > 
->>> +{
+>>> +			      struct property *win)
+>>>  {
+>>>  	struct dynamic_dma_window_prop *dwp;
+>>> -	struct property *win64;
+>>> -	u32 ddw_avail[3];
+>>>  	u64 liobn;
+>>> -	int ret = 0;
+>>> -
+>>> -	ret = of_property_read_u32_array(np, "ibm,ddw-applicable",
+>>> -					 &ddw_avail[0], 3);
+>>> -
+>>> -	win64 = of_find_property(np, DIRECT64_PROPNAME, NULL);
+>>> -	if (!win64)
+>>> -		return;
+>>> -
+>>> -	if (ret || win64->length < sizeof(*dwp))
+>>> -		goto delprop;
 >>> +	int ret;
->>> +	u32 ddw_ext[3];
->>> +
->>> +	ret = of_property_read_u32_array(par_dn, "ibm,ddw-extensions",
->>> +					 &ddw_ext[0], 3);
->>> +	if (ret || ddw_ext[0] < 2 || ddw_ext[2] != 1)
->>
->> Oh that PAPR thing again :-/
->>
->> ===
->> The “ibm,ddw-extensions” property value is a list of integers the first
->> integer indicates the number of extensions implemented and subsequent
->> integers, one per extension, provide a value associated with that
->> extension.
->> ===
->>
->> So ddw_ext[0] is length.
->> Listindex==2 is for "reset" says PAPR and
->> Listindex==3 is for this new 64bit "largest_available_block".
->>
->> So I'd expect ddw_ext[2] to have the "reset" token and ddw_ext[3] to
->> have "1" for this new feature but indexes are smaller. I am confused.
->> Either way these "2" and "3" needs to be defined in macros, "0" probably
->> too.
-> 
-> Remember these indexes are not C-like 0-starting indexes, where the
-> size would be Listindex==1.
-
-Yeah I can see that is the assumption but out of curiosity - is it
-written anywhere? Across PAPR, they index bytes from 1 but bits from 0 :-/
-
-Either way make them macros.
-
-
-> Basically, in C-like array it's :
-> a[0] == size, 
-> a[1] == reset_token, 
-> a[2] == new 64bit "largest_available_block"
-> 
->> Please post 'lsprop "ibm,ddw-extensions"' here. Thanks,
-> 
-> Sure:
-> [root@host pci@800000029004005]# lsprop "ibm,ddw-extensions"
-> ibm,dd
-> w-extensions
->                  00000002 00000056 00000000
-
-Right, good. Thanks,
-
-
-> 
-> 
->>
->>> +		return 5;
->>> +	return 6;
+>>>  
+>>> -	dwp = win64->value;
+>>> +	dwp = win->value;
+>>>  	liobn = (u64)be32_to_cpu(dwp->liobn);
+>>>  
+>>>  	/* clear the whole window, note the arg is in kernel pages */
+>>> @@ -793,24 +782,44 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
+>>>  		1ULL << (be32_to_cpu(dwp->window_shift) - PAGE_SHIFT), dwp);
+>>>  	if (ret)
+>>>  		pr_warn("%pOF failed to clear tces in window.\n",
+>>> -			np);
+>>> +			pdn);
+>>>  	else
+>>>  		pr_debug("%pOF successfully cleared tces in window.\n",
+>>> -			 np);
+>>> +			 pdn);
+>>>  
+>>>  	ret = rtas_call(ddw_avail[2], 1, 1, NULL, liobn);
+>>>  	if (ret)
+>>>  		pr_warn("%pOF: failed to remove direct window: rtas returned "
+>>>  			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
+>>> -			np, ret, ddw_avail[2], liobn);
+>>> +			pdn, ret, ddw_avail[2], liobn);
+>>>  	else
+>>>  		pr_debug("%pOF: successfully removed direct window: rtas returned "
+>>>  			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
+>>> -			np, ret, ddw_avail[2], liobn);
+>>> +			pdn, ret, ddw_avail[2], liobn);
 >>> +}
 >>> +
->>>  static int query_ddw(struct pci_dev *dev, const u32 *ddw_avail,
->>> -			struct ddw_query_response *query)
->>> +		     struct ddw_query_response *query,
->>> +		     struct device_node *par_dn)
->>>  {
->>>  	struct device_node *dn;
->>>  	struct pci_dn *pdn;
->>> -	u32 cfg_addr;
->>> +	u32 cfg_addr, query_out[5];
->>>  	u64 buid;
->>> -	int ret;
->>> +	int ret, out_sz;
->>>  
->>>  	/*
->>>  	 * Get the config address and phb buid of the PE window.
->>> @@ -888,12 +906,29 @@ static int query_ddw(struct pci_dev *dev, const u32 *ddw_avail,
->>>  	pdn = PCI_DN(dn);
->>>  	buid = pdn->phb->buid;
->>>  	cfg_addr = ((pdn->busno << 16) | (pdn->devfn << 8));
->>> +	out_sz = query_ddw_out_sz(par_dn);
+>>> +static void remove_ddw(struct device_node *np, bool remove_prop)
+>>> +{
+>>> +	struct property *win;
+>>> +	u32 ddw_avail[3];
+>>> +	int ret = 0;
 >>> +
->>> +	ret = rtas_call(ddw_avail[0], 3, out_sz, query_out,
->>> +			cfg_addr, BUID_HI(buid), BUID_LO(buid));
->>> +	dev_info(&dev->dev, "ibm,query-pe-dma-windows(%x) %x %x %x returned %d\n",
->>> +		 ddw_avail[0], cfg_addr, BUID_HI(buid), BUID_LO(buid), ret);
+>>> +	ret = of_property_read_u32_array(np, "ibm,ddw-applicable",
+>>> +					 &ddw_avail[0], 3);
+>>> +	if (ret)
+>>> +		return;
 >>> +
->>> +	switch (out_sz) {
->>> +	case 5:
->>> +		query->windows_available = query_out[0];
->>> +		query->largest_available_block = query_out[1];
->>> +		query->page_size = query_out[2];
->>> +		query->migration_capable = query_out[3];
->>> +		break;
->>> +	case 6:
->>> +		query->windows_available = query_out[0];
->>> +		query->largest_available_block = ((u64)query_out[1] << 32) |
->>> +						 query_out[2];
->>> +		query->page_size = query_out[3];
->>> +		query->migration_capable = query_out[4];
->>> +		break;
->>> +	}
+>>> +	win = of_find_property(np, DIRECT64_PROPNAME, NULL);
+>>> +	if (!win)
+>>> +		return;
+>>> +
+>>> +	if (win->length >= sizeof(struct dynamic_dma_window_prop))
+>>
+>> Any good reason not to make it "=="? Is there something optional or we
+>> expect extension (which may not grow from the end but may add cells in
+>> between). Thanks,
+> 
+> Well, it comes from the old behavior of remove_ddw():
+> -	if (ret || win64->length < sizeof(*dwp))
+> -		goto delprop;
+> As I reversed the logic from 'if (test) go out' to 'if (!test) do
+> stuff', I also reversed (a < b) to !(a < b) => (a >= b).
+> 
+> I have no problem changing that to '==', but it will produce a
+> different behavior than before. 
+
+I missed than, never mind then.
+
+
+> 
+>>
+>>
+>>> +		remove_dma_window(np, ddw_avail, win);
+>>> +
+>>> +	if (!remove_prop)
+>>> +		return;
 >>>  
->>> -	ret = rtas_call(ddw_avail[0], 3, 5, (u32 *)query,
->>> -		  cfg_addr, BUID_HI(buid), BUID_LO(buid));
->>> -	dev_info(&dev->dev, "ibm,query-pe-dma-windows(%x) %x %x %x"
->>> -		" returned %d\n", ddw_avail[0], cfg_addr, BUID_HI(buid),
->>> -		BUID_LO(buid), ret);
->>>  	return ret;
->>>  }
->>>  
->>> @@ -1040,7 +1075,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>>  	 * of page sizes: supported and supported for migrate-dma.
->>>  	 */
->>>  	dn = pci_device_to_OF_node(dev);
->>> -	ret = query_ddw(dev, ddw_avail, &query);
->>> +	ret = query_ddw(dev, ddw_avail, &query, pdn);
->>>  	if (ret != 0)
->>>  		goto out_failed;
->>>  
->>> @@ -1068,7 +1103,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>>  	/* check largest block * page size > max memory hotplug addr */
->>>  	max_addr = ddw_memory_hotplug_max();
->>>  	if (query.largest_available_block < (max_addr >> page_shift)) {
->>> -		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %u "
->>> +		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %llu "
->>>  			  "%llu-sized pages\n", max_addr,  query.largest_available_block,
->>>  			  1ULL << page_shift);
->>>  		goto out_failed;
+>>> -delprop:
+>>> -	if (remove_prop)
+>>> -		ret = of_remove_property(np, win64);
+>>> +	ret = of_remove_property(np, win);
+>>>  	if (ret)
+>>>  		pr_warn("%pOF: failed to remove direct window property: %d\n",
+>>>  			np, ret);
 >>>
 > 
 > Best regards,
