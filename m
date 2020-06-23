@@ -2,73 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4873B205A24
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 20:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6A5205A5B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 20:15:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rvNy3tj9zDqVk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 04:06:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rvZT4C3ZzDqQm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 04:14:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::444;
- helo=mail-wr1-x444.google.com; envelope-from=qperret@google.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=DNY2SIEq; dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rvLj3r0nzDqHb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 04:04:45 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id z13so9745583wrw.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 11:04:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=KMyNyMJgXdnDE8dwyWtDRLMYZCApSGZoNnTanpCNMz4=;
- b=DNY2SIEqqg213W0g0T1faTmSZ6dBln1UGUK/rijjLxojRCce8hOkLkT+7v4hj73zxJ
- sb2tRMmbp/i2e+0YWsaATQ8zHIWcg2fKZ6Nkj98z5IqY4QNWEDB2mXz69DefkTZn8xx0
- FeWJgsHgkrrDXtkKrEGdm43P3iVhP6zUmtFMxIZDY9weu3Y+eiW5W/nLqhNHdLUhhGoD
- gnT8dPQAcBuRixz5P/BDF6r+WZwVkxThIhMJ0C6qrV5qKzK0IdyZA8eI3ePdYLTX85ag
- 0VMr8Sd92U4n19cJ329Sa1NO3O8kWQbPK1I2kMJWRv6SdeT1aDYNTxs0NrmQoa9c0SiY
- dQUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=KMyNyMJgXdnDE8dwyWtDRLMYZCApSGZoNnTanpCNMz4=;
- b=EuEJpWZ+mKpNCR+CMnbhM4oyv6FgBvXt8/GsOfp7nWCxadG3Sb2T/Akw+BZWngDLju
- yJlJk88cQMxkjkocg932gA3sLgtYoI3TUxHLU5d+aZefIYpqtdVqPo+ocxQ6BP51zgTW
- 8jk94p8jyCkwpWdVw0faiSN3pXvM/G815rqE5FCe3LzQ5o8VEZMvudf8fpV5p0GcvnpN
- 1QmJF50Sz5oPlnQw3sSCiYjnlvTG5/+T0mykYWj38MR3YInsD9D9OJcqfHtNNgEXlPuD
- B85MZ7NibeYo8YWYaVmIeAis1WZIEm2+DWws4PxEdp0AqPWCQR1WUtPVdV0SdTpKm3/k
- 9pnA==
-X-Gm-Message-State: AOAM532nPlNjlE3wXOcjPs0ukpUiu59LXOzGZOOTExx4WuNuqSij8B5h
- KMH/27wIIYE1qh1DxQUFCOkUug==
-X-Google-Smtp-Source: ABdhPJzf8QrpXcRaMKR0n1A2i2w8BDw+Gir+VgL42qsH/jZ2RAO6SqlzOQkuQuN1npWj+Lpo2pMlsg==
-X-Received: by 2002:a5d:5310:: with SMTP id e16mr23887574wrv.289.1592935481174; 
- Tue, 23 Jun 2020 11:04:41 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
- by smtp.gmail.com with ESMTPSA id i17sm17528076wrc.34.2020.06.23.11.04.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jun 2020 11:04:40 -0700 (PDT)
-Date: Tue, 23 Jun 2020 19:04:37 +0100
-From: Quentin Perret <qperret@google.com>
-To: Doug Smythies <dsmythies@telus.net>
-Subject: Re: [PATCH v2 0/2] cpufreq: Specify the default governor on command
- line
-Message-ID: <20200623180437.GA248517@google.com>
-References: <20200623142138.209513-1-qperret@google.com>
- <002201d64987$5dc93b90$195bb2b0$@net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rvXn4kwQzDqLW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 04:13:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=Esyq+AEdoh1XonloiuoRagpt95xyDAj6PU4H+a2A370=; b=XtqJqEuJ6fk19CHHDiS/uWu7m0
+ RAcYnkqt4nYjb3KNc+oUduIZ4BmQP6z7+ubMqv/JvBbC0/xybPxcpQOpQ/lg78gd2x3ZCJn9O6mkt
+ Jd5I2z7aiGrouE6zK9gfUYo9bIvJl5dPbeWIYGWpiwKHEq2yefSrMbieDo8PwFR4ey3HjXZsEOZo+
+ kpeu2fan50uIPlXjGdc5H6SPIPfo5+/vVs7+Y3TBJ/eY4XYLK7YLqWy42vBSITC110wTLB/gjxvnQ
+ cqjN7VtvtR9/alVFGB6linsRbGqpzYe0uAFkxKU8EndRnmKY04OLN74stY8WRWXUSKeBa9tcMtxn0
+ Pl+jThxQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jnnPO-0006JO-In; Tue, 23 Jun 2020 18:12:34 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9BF5E303DA0;
+ Tue, 23 Jun 2020 20:12:32 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 8DE8F20267E51; Tue, 23 Jun 2020 20:12:32 +0200 (CEST)
+Date: Tue, 23 Jun 2020 20:12:32 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Marco Elver <elver@google.com>
+Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
+ per-cpu variables
+Message-ID: <20200623181232.GB4800@hirez.programming.kicks-ass.net>
+References: <20200623083645.277342609@infradead.org>
+ <20200623083721.512673481@infradead.org>
+ <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
+ <20200623152450.GM4817@hirez.programming.kicks-ass.net>
+ <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
+ <20200623163730.GA4800@hirez.programming.kicks-ass.net>
+ <20200623175957.GA106514@elver.google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <002201d64987$5dc93b90$195bb2b0$@net>
+In-Reply-To: <20200623175957.GA106514@elver.google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,46 +72,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, kernel-team@android.com, vincent.guittot@linaro.org,
- arnd@arndb.de, linux-pm@vger.kernel.org, peterz@infradead.org,
- adharmap@codeaurora.org, rafael@kernel.org, rjw@rjwysocki.net,
- linux-kernel@vger.kernel.org, viresh.kumar@linaro.org, mingo@redhat.com,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org, tkjos@google.com
+Cc: linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ bigeasy@linutronix.de, x86@kernel.org, heiko.carstens@de.ibm.com,
+ linux-kernel@vger.kernel.org, rostedt@goodmis.org, davem@davemloft.net,
+ "Ahmed S. Darwish" <a.darwish@linutronix.de>, sparclinux@vger.kernel.org,
+ linux@armlinux.org.uk, tglx@linutronix.de, will@kernel.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Doug,
-
-On Tuesday 23 Jun 2020 at 10:54:33 (-0700), Doug Smythies wrote:
-> Hi Quentin,
+On Tue, Jun 23, 2020 at 07:59:57PM +0200, Marco Elver wrote:
+> On Tue, Jun 23, 2020 at 06:37PM +0200, Peter Zijlstra wrote:
+> > On Tue, Jun 23, 2020 at 06:13:21PM +0200, Ahmed S. Darwish wrote:
+> > > Well, freshly merged code is using it. For example, KCSAN:
+> > > 
+> > >     => f1bc96210c6a ("kcsan: Make KCSAN compatible with lockdep")
+> > >     => kernel/kcsan/report.c:
+> > > 
+> > >     void kcsan_report(...)
+> > >     {
+> > > 	...
+> > >         /*
+> > >          * With TRACE_IRQFLAGS, lockdep's IRQ trace state becomes corrupted if
+> > >          * we do not turn off lockdep here; this could happen due to recursion
+> > >          * into lockdep via KCSAN if we detect a race in utilities used by
+> > >          * lockdep.
+> > >          */
+> > >         lockdep_off();
+> > > 	...
+> > >     }
+> > 
+> > Marco, do you remember what exactly happened there? Because I'm about to
+> > wreck that. That is, I'm going to make TRACE_IRQFLAGS ignore
+> > lockdep_off().
 > 
-> Because I am lazy and sometimes do not want to recompile
-> the distro source, I have a need/desire for this.
-
-Good to know I'm not the only one ;-)
-
-> Tested these two grub command lines:
+> Yeah, I was trying to squash any kind of recursion:
 > 
-> GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 consoleblank=300 intel_pstate=disable cpufreq.default_governor=schedutil cpuidle_sysfs_switch cpuidle.governor=teo"
+> 	lockdep -> other libs ->
+> 		-> KCSAN
+> 		-> print report
+> 		-> dump stack, printk and friends
+> 		-> lockdep -> other libs
+> 			-> KCSAN ...
 > 
-> And
+> Some history:
 > 
-> #GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 consoleblank=450 intel_pstate=passive cpufreq.default_governor=schedutil cpuidle_sysfs_switch cpuidle.governor=teo"
+> * Initial patch to fix:
+> 	https://lore.kernel.org/lkml/20200115162512.70807-1-elver@google.com/
+
+That patch is weird; just :=n on lockdep.c should've cured that, the
+rest is massive overkill.
+
+> * KCSAN+lockdep+ftrace:
+> 	https://lore.kernel.org/lkml/20200214211035.209972-1-elver@google.com/
+
+That doesn't really have anything useful..
+
+> lockdep now has KCSAN_SANITIZE := n, but we still need to ensure that
+> there are no paths out of lockdep, or the IRQ flags tracing code, that
+> might lead through other libs, through KCSAN, libs used to generate a
+> report, and back to lockdep.
 > 
-> And all worked as expected. I use Ubuntu as my distro, and also had to disable a startup script that switches to "ondemand", or similar, after 1 minute.
+> I never quite figured out the exact trace that led to corruption, but
+> avoiding any kind of potential for recursion was the only thing that
+> would avoid the check_flags() warnings.
 
-Good, thanks for giving it a try.
-
-> As a side note (separate subject, but is one reason I tried it):
-> My i5-9600K based computer seems to hit a power limit during boot approximately 3 seconds after kernel selection on grub.
-> This had no effect on that issue (even when selecting powersave governor).
-
-Interesting ... Could you confirm that compiling with powersave as
-default doesn't fix the issue either?
-
-Other question, when does the intel_pstate driver start on your device?
-Before or after that 3 seconds boot time?
-
-Thanks,
-Quentin
+Fair enough; I'll rip it all up and boot a KCSAN kernel, see what if
+anything happens.
