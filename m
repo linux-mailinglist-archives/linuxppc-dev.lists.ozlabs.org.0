@@ -1,52 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC8A9205372
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 15:31:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B56A2053BA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 15:44:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rnGz6tYtzDqVp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 23:31:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rnZS0Zd9zDqK9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 23:44:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133;
- helo=out30-133.freemail.mail.aliyun.com;
- envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.alibaba.com
-Received: from out30-133.freemail.mail.aliyun.com
- (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rmw60MdKzDqLX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:14:45 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R201e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
- MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=38; SR=0;
- TI=SMTPD_---0U0VwtSQ_1592918060; 
-Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0U0VwtSQ_1592918060) by smtp.aliyun-inc.com(127.0.0.1);
- Tue, 23 Jun 2020 21:14:21 +0800
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
- mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
- frankja@linux.ibm.com, david@redhat.com, cohuck@redhat.com,
- heiko.carstens@de.ibm.com, gor@linux.ibm.com,
- sean.j.christopherson@intel.com, vkuznets@redhat.com,
- wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
- julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
- christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com,
- chenhuacai@gmail.com
-Subject: [PATCH v6 3/5] KVM: PPC: clean up redundant kvm_run parameters in
- assembly
-Date: Tue, 23 Jun 2020 21:14:16 +0800
-Message-Id: <20200623131418.31473-4-tianjia.zhang@linux.alibaba.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200623131418.31473-1-tianjia.zhang@linux.alibaba.com>
-References: <20200623131418.31473-1-tianjia.zhang@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rnWr14dYzDqRb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:42:14 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05NDWbdD177023
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 09:42:11 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sk2sbhu4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 09:42:11 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05NDWjMe177344
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 09:42:11 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31sk2sbht9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Jun 2020 09:42:10 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05NDZ8X5020599;
+ Tue, 23 Jun 2020 13:42:08 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma03fra.de.ibm.com with ESMTP id 31sa3822r8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Jun 2020 13:42:08 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05NDg5PY53215458
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 23 Jun 2020 13:42:05 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48E5811C052;
+ Tue, 23 Jun 2020 13:42:05 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8732C11C04A;
+ Tue, 23 Jun 2020 13:42:04 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.44.89])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue, 23 Jun 2020 13:42:04 +0000 (GMT)
+Date: Tue, 23 Jun 2020 19:12:02 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v1 2/3] powerpc/mm/radix: Fix PTE/PMD fragment count for
+ early page table mappings
+Message-ID: <20200623134202.GA11488@in.ibm.com>
+References: <20200623073017.1951-1-bharata@linux.ibm.com>
+ <20200623073017.1951-3-bharata@linux.ibm.com>
+ <87sgem2hld.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87sgem2hld.fsf@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-23_06:2020-06-23,
+ 2020-06-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ suspectscore=5 clxscore=1015 lowpriorityscore=0 bulkscore=0
+ cotscore=-2147483648 mlxscore=0 priorityscore=1501 malwarescore=0
+ adultscore=0 spamscore=0 phishscore=0 impostorscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006230108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,257 +95,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, tianjia.zhang@linux.alibaba.com,
- kvm@vger.kernel.org, linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
+Reply-To: bharata@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
-structure. For historical reasons, many kvm-related function parameters
-retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
-patch does a unified cleanup of these remaining redundant parameters.
+On Tue, Jun 23, 2020 at 04:07:34PM +0530, Aneesh Kumar K.V wrote:
+> Bharata B Rao <bharata@linux.ibm.com> writes:
+> 
+> > We can hit the following BUG_ON during memory unplug:
+> >
+> > kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:342!
+> > Oops: Exception in kernel mode, sig: 5 [#1]
+> > LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> > NIP [c000000000093308] pmd_fragment_free+0x48/0xc0
+> > LR [c00000000147bfec] remove_pagetable+0x578/0x60c
+> > Call Trace:
+> > 0xc000008050000000 (unreliable)
+> > remove_pagetable+0x384/0x60c
+> > radix__remove_section_mapping+0x18/0x2c
+> > remove_section_mapping+0x1c/0x3c
+> > arch_remove_memory+0x11c/0x180
+> > try_remove_memory+0x120/0x1b0
+> > __remove_memory+0x20/0x40
+> > dlpar_remove_lmb+0xc0/0x114
+> > dlpar_memory+0x8b0/0xb20
+> > handle_dlpar_errorlog+0xc0/0x190
+> > pseries_hp_work_fn+0x2c/0x60
+> > process_one_work+0x30c/0x810
+> > worker_thread+0x98/0x540
+> > kthread+0x1c4/0x1d0
+> > ret_from_kernel_thread+0x5c/0x74
+> >
+> > This occurs when unplug is attempted for such memory which has
+> > been mapped using memblock pages as part of early kernel page
+> > table setup. We wouldn't have initialized the PMD or PTE fragment
+> > count for those PMD or PTE pages.
+> >
+> > Fixing this includes 3 parts:
+> >
+> > - Re-walk the init_mm page tables from mem_init() and initialize
+> >   the PMD and PTE fragment count to 1.
+> > - When freeing PUD, PMD and PTE page table pages, check explicitly
+> >   if they come from memblock and if so free then appropriately.
+> > - When we do early memblock based allocation of PMD and PUD pages,
+> >   allocate in PAGE_SIZE granularity so that we are sure the
+> >   complete page is used as pagetable page.
+> >
+> > Since we now do PAGE_SIZE allocations for both PUD table and
+> > PMD table (Note that PTE table allocation is already of PAGE_SIZE),
+> > we end up allocating more memory for the same amount of system RAM.
+> > Here is a comparision of how much more we need for a 64T and 2G
+> > system after this patch:
+> >
+> > 1. 64T system
+> > -------------
+> > 64T RAM would need 64G for vmemmap with struct page size being 64B.
+> >
+> > 128 PUD tables for 64T memory (1G mappings)
+> > 1 PUD table and 64 PMD tables for 64G vmemmap (2M mappings)
+> >
+> > With default PUD[PMD]_TABLE_SIZE(4K), (128+1+64)*4K=772K
+> > With PAGE_SIZE(64K) table allocations, (128+1+64)*64K=12352K
+> >
+> > 2. 2G system
+> > ------------
+> > 2G RAM would need 2M for vmemmap with struct page size being 64B.
+> >
+> > 1 PUD table for 2G memory (1G mapping)
+> > 1 PUD table and 1 PMD table for 2M vmemmap (2M mappings)
+> >
+> > With default PUD[PMD]_TABLE_SIZE(4K), (1+1+1)*4K=12K
+> > With new PAGE_SIZE(64K) table allocations, (1+1+1)*64K=192K
+> 
+> How about we just do
+> 
+> void pmd_fragment_free(unsigned long *pmd)
+> {
+> 	struct page *page = virt_to_page(pmd);
+> 
+> 	/*
+> 	 * Early pmd pages allocated via memblock
+> 	 * allocator need to be freed differently
+> 	 */
+> 	if (PageReserved(page))
+> 		return free_reserved_page(page);
+> 
+> 	BUG_ON(atomic_read(&page->pt_frag_refcount) <= 0);
+> 	if (atomic_dec_and_test(&page->pt_frag_refcount)) {
+> 		pgtable_pmd_page_dtor(page);
+> 		__free_page(page);
+> 	}
+> }
+> 
+> That way we could avoid the fixup_pgtable_fragments completely?
 
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
----
- arch/powerpc/include/asm/kvm_ppc.h    |  2 +-
- arch/powerpc/kvm/book3s_interrupts.S  | 22 ++++++++++------------
- arch/powerpc/kvm/book3s_pr.c          |  9 ++++-----
- arch/powerpc/kvm/booke.c              |  9 ++++-----
- arch/powerpc/kvm/booke_interrupts.S   |  9 ++++-----
- arch/powerpc/kvm/bookehv_interrupts.S | 10 +++++-----
- 6 files changed, 28 insertions(+), 33 deletions(-)
+Yes we could, by doing the same for pte_fragment_free() too.
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index ccf66b3a4c1d..0a056c64c317 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -59,7 +59,7 @@ enum xlate_readwrite {
- };
- 
- extern int kvmppc_vcpu_run(struct kvm_vcpu *vcpu);
--extern int __kvmppc_vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu);
-+extern int __kvmppc_vcpu_run(struct kvm_vcpu *vcpu);
- extern void kvmppc_handler_highmem(void);
- 
- extern void kvmppc_dump_vcpu(struct kvm_vcpu *vcpu);
-diff --git a/arch/powerpc/kvm/book3s_interrupts.S b/arch/powerpc/kvm/book3s_interrupts.S
-index f7ad99d972ce..a3674f6b8d3d 100644
---- a/arch/powerpc/kvm/book3s_interrupts.S
-+++ b/arch/powerpc/kvm/book3s_interrupts.S
-@@ -55,8 +55,7 @@
-  ****************************************************************************/
- 
- /* Registers:
-- *  r3: kvm_run pointer
-- *  r4: vcpu pointer
-+ *  r3: vcpu pointer
-  */
- _GLOBAL(__kvmppc_vcpu_run)
- 
-@@ -68,8 +67,8 @@ kvm_start_entry:
- 	/* Save host state to the stack */
- 	PPC_STLU r1, -SWITCH_FRAME_SIZE(r1)
- 
--	/* Save r3 (kvm_run) and r4 (vcpu) */
--	SAVE_2GPRS(3, r1)
-+	/* Save r3 (vcpu) */
-+	SAVE_GPR(3, r1)
- 
- 	/* Save non-volatile registers (r14 - r31) */
- 	SAVE_NVGPRS(r1)
-@@ -82,14 +81,13 @@ kvm_start_entry:
- 	PPC_STL	r0, _LINK(r1)
- 
- 	/* Load non-volatile guest state from the vcpu */
--	VCPU_LOAD_NVGPRS(r4)
-+	VCPU_LOAD_NVGPRS(r3)
- 
- kvm_start_lightweight:
- 	/* Copy registers into shadow vcpu so we can access them in real mode */
--	mr	r3, r4
- 	bl	FUNC(kvmppc_copy_to_svcpu)
- 	nop
--	REST_GPR(4, r1)
-+	REST_GPR(3, r1)
- 
- #ifdef CONFIG_PPC_BOOK3S_64
- 	/* Get the dcbz32 flag */
-@@ -146,7 +144,7 @@ after_sprg3_load:
- 	 *
- 	 */
- 
--	PPC_LL	r3, GPR4(r1)		/* vcpu pointer */
-+	PPC_LL	r3, GPR3(r1)		/* vcpu pointer */
- 
- 	/*
- 	 * kvmppc_copy_from_svcpu can clobber volatile registers, save
-@@ -190,11 +188,11 @@ after_sprg3_load:
- 	PPC_STL	r30, VCPU_GPR(R30)(r7)
- 	PPC_STL	r31, VCPU_GPR(R31)(r7)
- 
--	/* Pass the exit number as 3rd argument to kvmppc_handle_exit */
--	lwz	r5, VCPU_TRAP(r7)
-+	/* Pass the exit number as 2nd argument to kvmppc_handle_exit */
-+	lwz	r4, VCPU_TRAP(r7)
- 
--	/* Restore r3 (kvm_run) and r4 (vcpu) */
--	REST_2GPRS(3, r1)
-+	/* Restore r3 (vcpu) */
-+	REST_GPR(3, r1)
- 	bl	FUNC(kvmppc_handle_exit_pr)
- 
- 	/* If RESUME_GUEST, get back in the loop */
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index ef54f917bdaf..01c8fe5abe0d 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -1151,9 +1151,9 @@ static int kvmppc_exit_pr_progint(struct kvm_vcpu *vcpu, unsigned int exit_nr)
- 	return r;
- }
- 
--int kvmppc_handle_exit_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
--			  unsigned int exit_nr)
-+int kvmppc_handle_exit_pr(struct kvm_vcpu *vcpu, unsigned int exit_nr)
- {
-+	struct kvm_run *run = vcpu->run;
- 	int r = RESUME_HOST;
- 	int s;
- 
-@@ -1826,7 +1826,6 @@ static void kvmppc_core_vcpu_free_pr(struct kvm_vcpu *vcpu)
- 
- static int kvmppc_vcpu_run_pr(struct kvm_vcpu *vcpu)
- {
--	struct kvm_run *run = vcpu->run;
- 	int ret;
- #ifdef CONFIG_ALTIVEC
- 	unsigned long uninitialized_var(vrsave);
-@@ -1834,7 +1833,7 @@ static int kvmppc_vcpu_run_pr(struct kvm_vcpu *vcpu)
- 
- 	/* Check if we can run the vcpu at all */
- 	if (!vcpu->arch.sane) {
--		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-+		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -1861,7 +1860,7 @@ static int kvmppc_vcpu_run_pr(struct kvm_vcpu *vcpu)
- 
- 	kvmppc_fix_ee_before_entry();
- 
--	ret = __kvmppc_vcpu_run(run, vcpu);
-+	ret = __kvmppc_vcpu_run(vcpu);
- 
- 	kvmppc_clear_debug(vcpu);
- 
-diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index c0d62a917e20..3e1c9f08e302 100644
---- a/arch/powerpc/kvm/booke.c
-+++ b/arch/powerpc/kvm/booke.c
-@@ -731,12 +731,11 @@ int kvmppc_core_check_requests(struct kvm_vcpu *vcpu)
- 
- int kvmppc_vcpu_run(struct kvm_vcpu *vcpu)
- {
--	struct kvm_run *run = vcpu->run;
- 	int ret, s;
- 	struct debug_reg debug;
- 
- 	if (!vcpu->arch.sane) {
--		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-+		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		return -EINVAL;
- 	}
- 
-@@ -778,7 +777,7 @@ int kvmppc_vcpu_run(struct kvm_vcpu *vcpu)
- 	vcpu->arch.pgdir = vcpu->kvm->mm->pgd;
- 	kvmppc_fix_ee_before_entry();
- 
--	ret = __kvmppc_vcpu_run(run, vcpu);
-+	ret = __kvmppc_vcpu_run(vcpu);
- 
- 	/* No need for guest_exit. It's done in handle_exit.
- 	   We also get here with interrupts enabled. */
-@@ -982,9 +981,9 @@ static int kvmppc_resume_inst_load(struct kvm_vcpu *vcpu,
-  *
-  * Return value is in the form (errcode<<2 | RESUME_FLAG_HOST | RESUME_FLAG_NV)
-  */
--int kvmppc_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu,
--                       unsigned int exit_nr)
-+int kvmppc_handle_exit(struct kvm_vcpu *vcpu, unsigned int exit_nr)
- {
-+	struct kvm_run *run = vcpu->run;
- 	int r = RESUME_HOST;
- 	int s;
- 	int idx;
-diff --git a/arch/powerpc/kvm/booke_interrupts.S b/arch/powerpc/kvm/booke_interrupts.S
-index 2e56ab5a5f55..6fa82efe833b 100644
---- a/arch/powerpc/kvm/booke_interrupts.S
-+++ b/arch/powerpc/kvm/booke_interrupts.S
-@@ -237,7 +237,7 @@ _GLOBAL(kvmppc_resume_host)
- 	/* Switch to kernel stack and jump to handler. */
- 	LOAD_REG_ADDR(r3, kvmppc_handle_exit)
- 	mtctr	r3
--	lwz	r3, HOST_RUN(r1)
-+	mr	r3, r4
- 	lwz	r2, HOST_R2(r1)
- 	mr	r14, r4 /* Save vcpu pointer. */
- 
-@@ -337,15 +337,14 @@ heavyweight_exit:
- 
- 
- /* Registers:
-- *  r3: kvm_run pointer
-- *  r4: vcpu pointer
-+ *  r3: vcpu pointer
-  */
- _GLOBAL(__kvmppc_vcpu_run)
- 	stwu	r1, -HOST_STACK_SIZE(r1)
--	stw	r1, VCPU_HOST_STACK(r4)	/* Save stack pointer to vcpu. */
-+	stw	r1, VCPU_HOST_STACK(r3)	/* Save stack pointer to vcpu. */
- 
- 	/* Save host state to stack. */
--	stw	r3, HOST_RUN(r1)
-+	mr	r4, r3
- 	mflr	r3
- 	stw	r3, HOST_STACK_LR(r1)
- 	mfcr	r5
-diff --git a/arch/powerpc/kvm/bookehv_interrupts.S b/arch/powerpc/kvm/bookehv_interrupts.S
-index c577ba4b3169..8262c14fc9e6 100644
---- a/arch/powerpc/kvm/bookehv_interrupts.S
-+++ b/arch/powerpc/kvm/bookehv_interrupts.S
-@@ -434,9 +434,10 @@ _GLOBAL(kvmppc_resume_host)
- #endif
- 
- 	/* Switch to kernel stack and jump to handler. */
--	PPC_LL	r3, HOST_RUN(r1)
-+	mr	r3, r4
- 	mr	r5, r14 /* intno */
- 	mr	r14, r4 /* Save vcpu pointer. */
-+	mr	r4, r5
- 	bl	kvmppc_handle_exit
- 
- 	/* Restore vcpu pointer and the nonvolatiles we used. */
-@@ -525,15 +526,14 @@ heavyweight_exit:
- 	blr
- 
- /* Registers:
-- *  r3: kvm_run pointer
-- *  r4: vcpu pointer
-+ *  r3: vcpu pointer
-  */
- _GLOBAL(__kvmppc_vcpu_run)
- 	stwu	r1, -HOST_STACK_SIZE(r1)
--	PPC_STL	r1, VCPU_HOST_STACK(r4)	/* Save stack pointer to vcpu. */
-+	PPC_STL	r1, VCPU_HOST_STACK(r3)	/* Save stack pointer to vcpu. */
- 
- 	/* Save host state to stack. */
--	PPC_STL	r3, HOST_RUN(r1)
-+	mr	r4, r3
- 	mflr	r3
- 	mfcr	r5
- 	PPC_STL	r3, HOST_STACK_LR(r1)
--- 
-2.17.1
+However right from the early versions, we were going in the direction of
+making the handling and behaviour of both early page tables and later
+page tables as similar to each other as possible. Hence we started with
+"fixing up" the early page tables.
 
+If that's not a significant consideration, we can do away with fixup
+and retain the other parts (PAGE_SIZE allocations and conditional
+freeing) and still fix the bug.
+
+Regards,
+Bharata.
