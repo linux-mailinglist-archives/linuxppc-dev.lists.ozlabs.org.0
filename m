@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CD3204AB9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 09:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32931204B26
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 09:31:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rcsS5W2kzDqJl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 17:11:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rdJK1JG1zDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 17:31:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,37 +16,36 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=PCP/O/be; dkim-atps=neutral
+ header.s=default header.b=KWgMqyKu; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rcpP67mZzDqJ7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 17:09:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rcpQ40yDzDqJB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 17:09:18 +1000 (AEST)
 Received: from mail.kernel.org (unknown [95.90.213.197])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 798AD207F9;
- Tue, 23 Jun 2020 07:09:15 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7EB142083B;
+ Tue, 23 Jun 2020 07:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592896155;
- bh=bt2XIege4yj8u/sYLDroVzue0wsprC/fD/oatgGW5aw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PCP/O/beUcqU22Qw0CS3avZHL9bs86660ru/EiHjRGJ0g9g+mabEnj7P0BGgz2ioM
- 2qLvq9sEolXNJ+ibifTE1gcSp6bHj8DVaiy+h1TroEXk08iWv1KhouqTzcP4iK6CpN
- RuA/fCHYmr9R+KEXTs9AWH7v7wgC8WfrWrIvJ0Mw=
+ s=default; t=1592896156;
+ bh=DtczuADBn02KNsKn1zVUGW/fHxjVGsLwEaVwTv2OO34=;
+ h=From:To:Cc:Subject:Date:From;
+ b=KWgMqyKu9lNxDusflmUU8a73weNV3oAx3KrcZnO4Y/lhfevMn1bMNCpUhSxBeEyyz
+ pcn/hN/y/PImTIDe4xsgCUs6ENSQ7w680agTfK7sz218NqZd4wR1zbXl+csUuAuOTY
+ COVy/oxbMdnsaSGsHyNVCdTR4ngUEXje5YAadfc4=
 Received: from mchehab by mail.kernel.org with local (Exim 4.93)
  (envelope-from <mchehab@kernel.org>)
- id 1jnd3R-003qjR-Aq; Tue, 23 Jun 2020 09:09:13 +0200
+ id 1jnd3Q-003qib-Tq; Tue, 23 Jun 2020 09:09:12 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH v2 11/15] docs: powerpc: fix some issues at vas-api.rst
-Date: Tue, 23 Jun 2020 09:09:07 +0200
-Message-Id: <fc1138e563bc3a41a9e59b5dd1fe2f6a4bfad253.1592895969.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 00/15] Documentation fixes
+Date: Tue, 23 Jun 2020 09:08:56 +0200
+Message-Id: <cover.1592895969.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1592895969.git.mchehab+huawei@kernel.org>
-References: <cover.1592895969.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Tue, 23 Jun 2020 17:29:26 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,165 +57,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonathan Corbet <corbet@lwn.net>,
+Cc: linux-ia64@vger.kernel.org,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Ram Pai <linuxram@us.ibm.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Sandipan Das <sandipan@linux.ibm.com>,
+ linux-kselftest@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Jan Kara <jack@suse.cz>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ Shuah Khan <shuah@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Florian Fainelli <f.fainelli@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+ Will Deacon <will@kernel.org>, Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Haren Myneni <haren@linux.ibm.com>, Russell King <linux@armlinux.org.uk>,
+ kasan-dev@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>, linux-pci@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Alexey Dobriyan <adobriyan@gmail.com>,
+ linux-media@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
+ Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>,
+ Robin Murphy <robin.murphy@arm.com>, Borislav Petkov <bp@alien8.de>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Bjorn Helgaas <bhelgaas@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Dmitry Vyukov <dvyukov@google.com>,
+ Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
+ Dave Hansen <dave.hansen@intel.com>, Alexey Gladkov <gladkov.alexey@gmail.com>,
+ Akira Shimahara <akira215corp@gmail.com>, Jeff Layton <jlayton@kernel.org>,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are a few issues on this document, when built via the
-building with ``make htmldocs``:
+Hi Jon,
 
-    Documentation/powerpc/vas-api.rst:116: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:116: WARNING: Inline emphasis start-string without end-string.
-    Documentation/powerpc/vas-api.rst:117: WARNING: Block quote ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:117: WARNING: Inline emphasis start-string without end-string.
-    Documentation/powerpc/vas-api.rst:120: WARNING: Definition list ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:124: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:133: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:135: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:150: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:151: WARNING: Block quote ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:161: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:176: WARNING: Definition list ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:253: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:253: WARNING: Inline emphasis start-string without end-string.
-    Documentation/powerpc/vas-api.rst:259: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:261: WARNING: Block quote ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:266: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:267: WARNING: Block quote ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:270: WARNING: Definition list ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:271: WARNING: Definition list ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:273: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:274: WARNING: Block quote ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:277: WARNING: Definition list ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:278: WARNING: Definition list ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:280: WARNING: Unexpected indentation.
-    Documentation/powerpc/vas-api.rst:287: WARNING: Block quote ends without a blank line; unexpected unindent.
-    Documentation/powerpc/vas-api.rst:289: WARNING: Block quote ends without a blank line; unexpected unindent.
+As requested, this is a rebase of a previous series posted on Jan, 15.
 
-Fixes: c12e38b1d52e ("Documentation/powerpc: VAS API")
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/powerpc/vas-api.rst | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+Since then, several patches got merged via other trees or became
+obsolete. There were also 2 patches before that fits better at the
+ReST conversion patchset. So, I'll be sending it on another patch
+series together with the remaining ReST conversions.
 
-diff --git a/Documentation/powerpc/vas-api.rst b/Documentation/powerpc/vas-api.rst
-index 1217c2f1595e..b7fdbe560010 100644
---- a/Documentation/powerpc/vas-api.rst
-+++ b/Documentation/powerpc/vas-api.rst
-@@ -87,6 +87,7 @@ Applications may chose a specific instance of the NX co-processor using
- the vas_id field in the VAS_TX_WIN_OPEN ioctl as detailed below.
- 
- A userspace library libnxz is available here but still in development:
-+
- 	 https://github.com/abalib/power-gzip
- 
- Applications that use inflate / deflate calls can link with libnxz
-@@ -110,6 +111,7 @@ Applications should use the VAS_TX_WIN_OPEN ioctl as follows to establish
- a connection with NX co-processor engine:
- 
- 	::
-+
- 		struct vas_tx_win_open_attr {
- 			__u32   version;
- 			__s16   vas_id; /* specific instance of vas or -1
-@@ -119,8 +121,10 @@ a connection with NX co-processor engine:
- 			__u64   reserved2[6];
- 		};
- 
--	version: The version field must be currently set to 1.
--	vas_id: If '-1' is passed, kernel will make a best-effort attempt
-+	version:
-+		The version field must be currently set to 1.
-+	vas_id:
-+		If '-1' is passed, kernel will make a best-effort attempt
- 		to assign an optimal instance of NX for the process. To
- 		select the specific VAS instance, refer
- 		"Discovery of available VAS engines" section below.
-@@ -129,7 +133,8 @@ a connection with NX co-processor engine:
- 	and must be set to 0.
- 
- 	The attributes attr for the VAS_TX_WIN_OPEN ioctl are defined as
--	follows:
-+	follows::
-+
- 		#define VAS_MAGIC 'v'
- 		#define VAS_TX_WIN_OPEN _IOW(VAS_MAGIC, 1,
- 						struct vas_tx_win_open_attr)
-@@ -141,6 +146,8 @@ a connection with NX co-processor engine:
- 	returns -1 and sets the errno variable to indicate the error.
- 
- 	Error conditions:
-+
-+		======	================================================
- 		EINVAL	fd does not refer to a valid VAS device.
- 		EINVAL	Invalid vas ID
- 		EINVAL	version is not set with proper value
-@@ -149,6 +156,7 @@ a connection with NX co-processor engine:
- 		ENOSPC	System has too many active windows (connections)
- 			opened
- 		EINVAL	reserved fields are not set to 0.
-+		======	================================================
- 
- 	See the ioctl(2) man page for more details, error codes and
- 	restrictions.
-@@ -158,11 +166,13 @@ mmap() NX-GZIP device
- 
- The mmap() system call for a NX-GZIP device fd returns a paste_address
- that the application can use to copy/paste its CRB to the hardware engines.
-+
- 	::
- 
- 		paste_addr = mmap(addr, size, prot, flags, fd, offset);
- 
- 	Only restrictions on mmap for a NX-GZIP device fd are:
-+
- 		* size should be PAGE_SIZE
- 		* offset parameter should be 0ULL
- 
-@@ -170,10 +180,12 @@ that the application can use to copy/paste its CRB to the hardware engines.
- 	In addition to the error conditions listed on the mmap(2) man
- 	page, can also fail with one of the following error codes:
- 
-+		======	=============================================
- 		EINVAL	fd is not associated with an open window
- 			(i.e mmap() does not follow a successful call
- 			to the VAS_TX_WIN_OPEN ioctl).
- 		EINVAL	offset field is not 0ULL.
-+		======	=============================================
- 
- Discovery of available VAS engines
- ==================================
-@@ -210,7 +222,7 @@ In case if NX encounters translation error (called NX page fault) on CSB
- address or any request buffer, raises an interrupt on the CPU to handle the
- fault. Page fault can happen if an application passes invalid addresses or
- request buffers are not in memory. The operating system handles the fault by
--updating CSB with the following data:
-+updating CSB with the following data::
- 
- 	csb.flags = CSB_V;
- 	csb.cc = CSB_CC_TRANSLATION;
-@@ -223,7 +235,7 @@ the application can resend this request to NX.
- 
- If the OS can not update CSB due to invalid CSB address, sends SEGV signal
- to the process who opened the send window on which the original request was
--issued. This signal returns with the following siginfo struct:
-+issued. This signal returns with the following siginfo struct::
- 
- 	siginfo.si_signo = SIGSEGV;
- 	siginfo.si_errno = EFAULT;
-@@ -248,6 +260,7 @@ Simple example
- ==============
- 
- 	::
-+
- 		int use_nx_gzip()
- 		{
- 			int rc, fd;
+I also added reviews/acks received.
+
+So, the series reduced from 29 to 15 patches.
+
+Let's hope b4 would be able to properly handle this one.
+
+Regards,
+Mauro
+
+Mauro Carvalho Chehab (15):
+  mm: vmalloc.c: remove a kernel-doc annotation from a removed parameter
+  net: dev: add a missing kernel-doc annotation
+  net: netdevice.h: add a description for napi_defer_hard_irqs
+  scripts/kernel-doc: parse __ETHTOOL_DECLARE_LINK_MODE_MASK
+  net: pylink.h: add kernel-doc descriptions for new fields at
+    phylink_config
+  scripts/kernel-doc: handle function pointer prototypes
+  fs: fs.h: fix a kernel-doc parameter description
+  kcsan: fix a kernel-doc warning
+  selftests/vm/keys: fix a broken reference at protection_keys.c
+  docs: hugetlbpage.rst: fix some warnings
+  docs: powerpc: fix some issues at vas-api.rst
+  docs: driver-model: remove a duplicated markup at driver.rst
+  docs: ABI: fix a typo when pointing to w1-generic.rst
+  docs: fix references for DMA*.txt files
+  docs: fs: proc.rst: convert a new chapter to ReST
+
+ .../ABI/testing/sysfs-driver-w1_therm         |  2 +-
+ Documentation/PCI/pci.rst                     |  6 +--
+ Documentation/admin-guide/mm/hugetlbpage.rst  | 23 +++++++---
+ Documentation/block/biodoc.rst                |  2 +-
+ Documentation/bus-virt-phys-mapping.txt       |  2 +-
+ Documentation/core-api/dma-api.rst            |  6 +--
+ Documentation/core-api/dma-isa-lpc.rst        |  2 +-
+ .../driver-api/driver-model/driver.rst        |  2 -
+ Documentation/driver-api/usb/dma.rst          |  6 +--
+ Documentation/filesystems/proc.rst            | 44 +++++++++----------
+ Documentation/powerpc/vas-api.rst             | 23 +++++++---
+ .../translations/ko_KR/memory-barriers.txt    |  6 +--
+ arch/ia64/hp/common/sba_iommu.c               | 12 ++---
+ arch/parisc/kernel/pci-dma.c                  |  2 +-
+ arch/x86/include/asm/dma-mapping.h            |  4 +-
+ arch/x86/kernel/amd_gart_64.c                 |  2 +-
+ drivers/parisc/sba_iommu.c                    | 14 +++---
+ include/linux/dma-mapping.h                   |  2 +-
+ include/linux/fs.h                            |  2 +-
+ include/linux/kcsan-checks.h                  | 10 +++--
+ include/linux/netdevice.h                     |  2 +
+ include/linux/phylink.h                       |  4 ++
+ include/media/videobuf-dma-sg.h               |  2 +-
+ kernel/dma/debug.c                            |  2 +-
+ mm/vmalloc.c                                  |  1 -
+ net/core/dev.c                                |  1 +
+ scripts/kernel-doc                            |  7 +++
+ tools/testing/selftests/vm/protection_keys.c  |  2 +-
+ 28 files changed, 114 insertions(+), 79 deletions(-)
+
 -- 
 2.26.2
+
 
