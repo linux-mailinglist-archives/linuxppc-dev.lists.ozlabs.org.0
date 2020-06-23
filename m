@@ -1,74 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D7A204DE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 11:27:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C95B204E62
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 11:47:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rgsk0vyBzDqTy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 19:27:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rhKR28TfzDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 19:47:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::341;
- helo=mail-wm1-x341.google.com; envelope-from=qperret@google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
+ helo=mail-oi1-f193.google.com; envelope-from=geert.uytterhoeven@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=MbtT92jR; dkim-atps=neutral
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rgqw4Pn4zDqQP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 19:25:45 +1000 (AEST)
-Received: by mail-wm1-x341.google.com with SMTP id u26so1803701wmn.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 02:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=q25Robvc8p0VCT45Ku6+CqjX7ikyGj3nKC2Rkm2Sa7U=;
- b=MbtT92jRqhblgP01XYQ289lWx/8/mAZpF2odAygIsMJx7tzVhKf77HPio8ytt2Nlrj
- mz5Hd4SfeetgCbA7EMe00zMQnfEt1VnV895LdA33HSMDUUOhUIvqmY8Baws3UdibTvA6
- Htnjr127Ypdcinq7hAOrpTvgfRiWXrgmo+DATS8V0nsXZRbjyjq0R3I2H/NzzFQ3Qp+g
- tkJgvtIm44r4BqDzPXQwuKHCHw7uGgia3CYyzKlkG6g0jbtx3gIplFyjg/or6P3+F7ng
- yY2DOK4V1zSG0QoAcANXRGjw3nZSAqiNLi/B+R2QuoBPixfWCoBJRUVb3fF0h0BhgInm
- Sn+Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rdRN1HhMzDqZn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 17:37:51 +1000 (AEST)
+Received: by mail-oi1-f193.google.com with SMTP id a21so18043304oic.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 00:37:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=q25Robvc8p0VCT45Ku6+CqjX7ikyGj3nKC2Rkm2Sa7U=;
- b=WlVzJ3pxue90GR7d7naaVjhvEODALAv3J87Pq32WVuhNSxihRruM5tCAXj3Wc2CPNv
- eKiAbSPeO6s0noGVNZR5sALIL+RWpgmCbiECsAKC8AO7Uy4ZxpHf19IrqV5IPyqjiyJ9
- f1b8sIq746sOMdIOMqbM7I58xupghu/qJE3oT5bZnVi5ukkC0qwenUr3E4gMO7wdGwxD
- FvqsQfAq5nSsCy1BI71X3KAJYauSwgqll9QpnpStulNHx1Cc4tEfLQ/dRytSZztql0M9
- UrNhnMLfbU7RQY+avQSLWtZKoB1DkIEEhf/4n1DnjAXsN273YB9A50FP9VHlCg1DmVIX
- 5kxA==
-X-Gm-Message-State: AOAM530LAKErh3HybpUMjk/udcCx3k8LCBEWeaKv228g5Nx3yiTGBqfa
- d5d4xxAhPQ6ysnp1bCEFL84GSg==
-X-Google-Smtp-Source: ABdhPJyl/Wvp1EmPvPKbYZpgmTNv8myFw0amWQE5G3nU/EjHi1cPOLHWOuSUY3bGl4PIoPk41iA8jw==
-X-Received: by 2002:a1c:9896:: with SMTP id a144mr22578733wme.75.1592904340254; 
- Tue, 23 Jun 2020 02:25:40 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
- by smtp.gmail.com with ESMTPSA id u20sm2789618wmc.44.2020.06.23.02.25.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jun 2020 02:25:39 -0700 (PDT)
-Date: Tue, 23 Jun 2020 10:25:36 +0100
-From: Quentin Perret <qperret@google.com>
-To: kernel test robot <rong.a.chen@intel.com>
-Subject: Re: [cpufreq] d83f959b5e:
- kmsg.cpufreq:cpufreq_online:Failed_to_initialize_policy_for_cpu:#(-#)
-Message-ID: <20200623092536.GA52234@google.com>
-References: <20200615165554.228063-3-qperret@google.com>
- <20200622005457.GI5535@shao2-debian>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=7oJwDzhBeEf7oQ+TonriYRlwmomFLiKcHOUg0pAK4SQ=;
+ b=ZJoTATCDRtuIOFrNFZf2heXetekv+7zI4hrXmKnYcAL8h3kC7Bd1OUHL0mCfXC6tlF
+ aClhqqI0NI0gP59CieZXLvERmtYnRFbH5nPoogKqwFoTC5rBVCB9hvDwEKzmIhPZY90Y
+ nTuhFPovdzyzw/F+5j1MEv3kZRmfszDjCRDVbJEmowjm/20aahYIsoLdlRyipd4jn/IC
+ gBVZXiovI1Iq2R60rORImYcMiA+/OUirjS6QJBBLEgFG9HTytOs2N3QCg6shacCniX+/
+ OtJZiRlNHohNuaTiaLTDLXa+IWeraf+h3zwL5J4TByXcd3uIvm5BrlvR3qcbdRF0R0nW
+ TpBw==
+X-Gm-Message-State: AOAM531/iRTxw63zCF/gE4414oBh+4EttjCEsWyvW5zGe36EUhO6SzDJ
+ 9wlDA8+RffZ2FgxSFvKXJsJDcW/INNeP4QdtqEA=
+X-Google-Smtp-Source: ABdhPJxT4D8Rg3orWN4Ut3NBxZ5/1LZ7NRz/AeZjcH8lRfYfsp5aNzdh8MJbSRaix2qdqbDH5Ocb6CYiGlmuOkGOPBI=
+X-Received: by 2002:a54:4006:: with SMTP id x6mr14806231oie.148.1592897869203; 
+ Tue, 23 Jun 2020 00:37:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200622005457.GI5535@shao2-debian>
+References: <20200622234326.906346-1-christian.brauner@ubuntu.com>
+ <20200622234326.906346-17-christian.brauner@ubuntu.com>
+In-Reply-To: <20200622234326.906346-17-christian.brauner@ubuntu.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 23 Jun 2020 09:37:38 +0200
+Message-ID: <CAMuHMdWYuJW9vnCkfqo=c8FRoxpw_HrUDZsXraAsdTOgHtR8Bw@mail.gmail.com>
+Subject: Re: [PATCH 16/17] arch: remove HAVE_COPY_THREAD_TLS
+To: Christian Brauner <christian.brauner@ubuntu.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Tue, 23 Jun 2020 19:46:01 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,66 +62,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, kernel-team@android.com, vincent.guittot@linaro.org,
- arnd@arndb.de, rafael@kernel.org, peterz@infradead.org,
- viresh.kumar@linaro.org, adharmap@codeaurora.org, linux-pm@vger.kernel.org,
- rjw@rjwysocki.net, linux-kernel@vger.kernel.org, lkp@lists.01.org,
- mingo@redhat.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- tkjos@google.com
+Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+ sparclinux <sparclinux@vger.kernel.org>,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>, linux-s390 <linux-s390@vger.kernel.org>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ linux-c6x-dev@linux-c6x.org, Brian Cain <bcain@codeaurora.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Mark Salter <msalter@redhat.com>,
+ Matt Turner <mattst88@gmail.com>, arcml <linux-snps-arc@lists.infradead.org>,
+ "moderated list:H8/300 ARCHITECTURE" <uclinux-h8-devel@lists.sourceforge.jp>,
+ Fenghua Yu <fenghua.yu@intel.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Jeff Dike <jdike@addtoit.com>, alpha <linux-alpha@vger.kernel.org>,
+ linux-um <linux-um@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Guan Xuetao <gxt@pku.edu.cn>, Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Richard Henderson <rth@twiddle.net>, Michal Simek <monstr@monstr.eu>,
+ Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Nick Hu <nickhu@andestech.com>, Vineet Gupta <vgupta@synopsys.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Openrisc <openrisc@lists.librecores.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Weinberger <richard@nod.at>, Paul Mackerras <paulus@samba.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Tue, Jun 23, 2020 at 1:47 AM Christian Brauner
+<christian.brauner@ubuntu.com> wrote:
+> All architectures support copy_thread_tls() now, so remove the legacy
+> copy_thread() function and the HAVE_COPY_THREAD_TLS config option. Everyone
+> uses the same process creation calling convention based on
+> copy_thread_tls() and struct kernel_clone_args. This will make it easier to
+> maintain the core process creation code under kernel/, simplifies the
+> callpaths and makes the identical for all architectures.
 
-Thanks for the report.
+> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
 
-On Monday 22 Jun 2020 at 08:54:57 (+0800), kernel test robot wrote:
-> Greeting,
-> 
-> FYI, we noticed the following commit (built with gcc-9):
-> 
-> commit: d83f959b5e7a6378a4afbff23de2a2d064d95749 ("[PATCH 2/2] cpufreq: Specify default governor on command line")
-> url: https://github.com/0day-ci/linux/commits/Quentin-Perret/cpufreq-Specify-the-default-governor-on-command-line/20200616-005920
-> base: https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git linux-next
-> 
-> in testcase: kernel-selftests
-> with following parameters:
-> 
-> 	group: kselftests-x86
-> 	ucode: 0xdc
-> 
-> test-description: The kernel contains a set of "self tests" under the tools/testing/selftests/ directory. These are intended to be small unit tests to exercise individual code paths in the kernel.
-> test-url: https://www.kernel.org/doc/Documentation/kselftest.txt
-> 
-> 
-> on test machine: 8 threads Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz with 16G memory
-> 
-> caused below changes (please refer to attached dmesg/kmsg for entire log/backtrace):
-> 
-> 
-> 
-> 
-> If you fix the issue, kindly add following tag
-> Reported-by: kernel test robot <rong.a.chen@intel.com>
-> 
-> 
-> 
-> [    8.715369] intel_pstate: Intel P-state driver initializing
-> [    8.721146] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 0 (-61)
-> [    8.728900] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 1 (-61)
-> [    8.736615] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 2 (-61)
-> [    8.744400] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 3 (-61)
-> [    8.752222] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 4 (-61)
-> [    8.760010] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 5 (-61)
-> [    8.768077] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 6 (-61)
-> [    8.775891] cpufreq: cpufreq_online: Failed to initialize policy for cpu: 7 (-61)
+>  arch/m68k/Kconfig          |  1 -
 
-That, I think, is because of the issue I reported here:
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-    https://lore.kernel.org/lkml/20200615174141.GA235811@google.com/
+Gr{oetje,eeting}s,
 
-The v2 (to be posted shortly) will address this.
+                        Geert
 
-Thanks,
-Quentin
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
