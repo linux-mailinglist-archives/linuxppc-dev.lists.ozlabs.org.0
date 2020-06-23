@@ -1,67 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87A9204C71
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 10:33:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10648204CC4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 10:43:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rfgp1KgXzDqQB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 18:33:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rftw6cwMzDqRK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 18:43:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::741;
- helo=mail-qk1-x741.google.com; envelope-from=shengjiu.wang@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MfKUA1iM; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=gAD0zWOY; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rff95Z3BzDqPR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 18:32:17 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id q198so10218837qka.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 01:32:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=WUXkMq3EwcMN7rag+IOzTouUq2jW1leXveyXqam81mE=;
- b=MfKUA1iM2cNLIQb0gJHMFANrfHxAxLJ7OauUZ2pO/Zib5rQxdceNoygxEhaSDMdHF9
- oRekPg5JE8wO67W1XXq2VajDG1CD5zGtq6DzJ+Qqzc0xSSHh8EvgNnEnJ7pA67a4qEGf
- lPl3QQNFvtUUy0Dxt3X/UuNwZ7fbemOh29ZTt497SOrwO3oL3Sey/D/ilE2uGS2PQFbx
- 8eRe/P+4LFzxcDQI8ZY/wsYR0Eaj3Q5c4e3/otG65UcV+dUVpriPExa1pjkoV6FtNKsk
- eTFyhw3iNwgYihpOJRXlLTx1rYmcfRPPKKxP+HEqKHn704oUg1p1fMwDArGlPS5755W+
- rRFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=WUXkMq3EwcMN7rag+IOzTouUq2jW1leXveyXqam81mE=;
- b=L/EpefHkiRGbYxsPgcivr5jKkufj5t7uF2Rle/k6qnrllY6tfChrYUBrOrlDL6yfpX
- K6JYc6ByMf+W7o4pqRnRXYQsfDTCvrXs+2SXyV66K+skatic3zd8TGXnX5bDZvs+uzaY
- +p5uyr77wQFKt8WnMxDYzdu0qd1oFioxehfbf/rNNWJhfGX3uU45IwC/f9HHWyQGULhE
- p2K1fKC6mI/voAD1IMz8JFSsot15Arg7BRdjbW3ukSTStlrh4x8WL6mLGM3SZwkXCuLV
- 5qzyDfH5ESrSwQBAGopz1f2OXLvKQqsK5kIYDh1UTTIt8usaId3mRSPfR5FW5YRont2h
- CGkw==
-X-Gm-Message-State: AOAM533s7Le64p0RrwAGiU0wRWLmGhWDC3kQb/W6JQ9nJOr0WbdST8hw
- AnCUk8QgMYyUHrBGtz3zcIRC3oKNpdRVzHOcu3Q=
-X-Google-Smtp-Source: ABdhPJy8aJP9b/KoDke180z5lb657c5ulXpRf52exbUwqEylh9UUhQV3q7rSAK3MRe5vqIrWMG20D3EDlUJCCfc0XW8=
-X-Received: by 2002:a37:8a43:: with SMTP id m64mr18899695qkd.37.1592901133739; 
- Tue, 23 Jun 2020 01:32:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <39ac8f24-3148-2a3d-3f8d-91567b3c4c9e@web.de>
-In-Reply-To: <39ac8f24-3148-2a3d-3f8d-91567b3c4c9e@web.de>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 23 Jun 2020 16:32:02 +0800
-Message-ID: <CAA+D8APR2NGAn9jRDSZzr1fgj5u0hAvH19VxZS+tj2A7j3PCuw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ASoC: fsl_mqs: Don't check clock is NULL before
- calling clk API
-To: Markus Elfring <Markus.Elfring@web.de>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rfp209ZxzDqR3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 18:39:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Subject:Cc:To:From:Date:Message-ID:
+ Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=FUcYaPjVDKdvDgNAWCH0VBlsZbePqhZn2SLAs+XhAu0=; b=gAD0zWOYV1+jt4nVM7z3Ipgm51
+ 8evIRze1W8EJ84Zziy4r0WwCuxroavZRpy3Og/W1UjErOpi6RCmIobX3Tzp0kzffSS92hZ8WR7Zg4
+ ERPvMDZqZNAAL5Oz52cyutYWBqvlQAyf06hrFtjEQkNtFHKd7gb9jAQdwhR8GY4DlfIO6apmajpsq
+ VpoFUEZ4Ub0Po92gBI3L0eKUBXEin+WKsQww5Yk9FWCyVIkpVZ8BtzVNu7yFhsLGCwf3Pqj7rZfme
+ 8dB7efJJJ4z0/Oa9PxCrzyQNoAtVgmATijrl+3obs5f9ulPN4QuvT38m7AyeP8w6Jbg2JLgnZxXkQ
+ US5MHr1A==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jneS5-0005Rk-Dn; Tue, 23 Jun 2020 08:38:45 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 13B29306E5C;
+ Tue, 23 Jun 2020 10:38:39 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
+ id DB18B237095F8; Tue, 23 Jun 2020 10:38:39 +0200 (CEST)
+Message-ID: <20200623083645.277342609@infradead.org>
+User-Agent: quilt/0.66
+Date: Tue, 23 Jun 2020 10:36:45 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: mingo@kernel.org,
+ will@kernel.org,
+ tglx@linutronix.de
+Subject: [PATCH v4 0/8] lockdep: Change IRQ state tracking to use per-cpu
+ variables
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,42 +68,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, kernel-janitors@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, linux-kernel <linux-kernel@vger.kernel.org>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, peterz@infradead.org, bigeasy@linutronix.de,
+ x86@kernel.org, heiko.carstens@de.ibm.com, linux-kernel@vger.kernel.org,
+ rostedt@goodmis.org, linux@armlinux.org.uk, a.darwish@linutronix.de,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 23, 2020 at 3:38 PM Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> > In-Reply-To: <cover.1592888591.git.shengjiu.wang@nxp.com>
->
-> I guess that it should be sufficient to specify such a field once
-> for the header information.
+Ahmed and Sebastian wanted additional lockdep_assert*() macros and ran into
+header hell. I figured using per-cpu variables would cure that, and also
+ran into header hell, still tracktable though.
 
-seems it's caused by my "git format-patch" command, I will update
-it, hope it is better next time.
+By moving the IRQ state into per-cpu variables we remove the dependency on
+task_struct.
 
->
->
-> > Because clk_prepare_enable and clk_disable_unprepare should
-> > check input clock parameter is NULL or not internally,
->
-> I find this change description unclear.
+Patches go on top of anything recent I think, an actual git tree with them
+in is (for now) here:
 
-    clk_prepare_enable and clk_disable_unprepare check the input
-    clock parameter in the beginning of the function, if the parameter
-    is NULL, clk_prepare_enable and clk_disable_unprepare will
-    return immediately.
+  git://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git locking/irqstate
 
-    So Don't need to check input clock parameters before calling clk
-    API.
+Which 0day blessed with 0 build fails.
 
-Do you think this commit message is better?
 
-best regards
-wang shengjiu
