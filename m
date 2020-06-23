@@ -2,64 +2,122 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7FF204D05
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 10:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 247D4204D3A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 11:00:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rg5F2ydMzDqSF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 18:52:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rgGn2NPgzDqT9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 19:00:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=web.de
+ (client-ip=212.227.15.14; helo=mout.web.de;
+ envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=casper.20170209 header.b=h4SfwS0c; 
+ dmarc=none (p=none dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
+ header.s=dbaedf251592 header.b=LC/Prwk8; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rfp346sWzDqR2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 18:39:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
- Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
- Content-ID:Content-Description:In-Reply-To;
- bh=Pm0qeLUgtNdFZvdu/jg2s3/JXfU4zGZxInPrc6eUgNY=; b=h4SfwS0cyhRsYNDNc5kDr3XUE1
- ttFxx+PRP430I61zGRaCwix1SzjNmgj7u5JZswlirmn+egh1bRuqhV+I1zkR9MAdU6WiepoAzxbVs
- CEvYSACqG9ZMi0Cc+i4XkxGFafh+ESI3fShtPX+aLyH38vOiI9T4xQS1iHtEKEDTm8J7HS8Ahe8+V
- L+tvR4fVVK2OUqvGT8PCg0Lmc8fSC4zwvXEJA/xHp0LVNUva254iZLQrYmd6zO71AvO64FbtKKHoT
- KkRCLiER/74ytMLaiyhBTT1TbImham+mlzkglUnt6vZRTm30w/9yIi6U4TT7Z/uGgITXBh6U9CxQU
- PM13oV2g==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jneS2-0000fp-Jx; Tue, 23 Jun 2020 08:38:42 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C67C0307995;
- Tue, 23 Jun 2020 10:38:41 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
- id 00FE5237095FF; Tue, 23 Jun 2020 10:38:39 +0200 (CEST)
-Message-ID: <20200623083721.571835311@infradead.org>
-User-Agent: quilt/0.66
-Date: Tue, 23 Jun 2020 10:36:53 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: mingo@kernel.org,
- will@kernel.org,
- tglx@linutronix.de
-Subject: [PATCH v4 8/8] lockdep: Remove lockdep_hardirq{s_enabled,
- _context}() argument
-References: <20200623083645.277342609@infradead.org>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rg9l4111zDqT3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 18:56:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1592902554;
+ bh=3yqnrGafGbJ0tXimLwFGtJ2yGSF0QBxzZ4+10OuTalM=;
+ h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+ b=LC/Prwk8dbjEgxsm4IJZ9fqItzwKqZvDN35ht5TbW2gRt6V8ChJPwfXtGOul8CBgg
+ fK3INnhbbZdqoII6Jk3Z1RJXXaw0kMb+9eqefHB07XyEeXClplSJpeowXwrpLhWt7q
+ vevtIFbVcz2TdubuK6hdiSwRfWTCU9lKzruJ+DX0=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.105.198]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lx73h-1ilRBb1EBV-016k8C; Tue, 23
+ Jun 2020 10:55:54 +0200
+Subject: Re: [PATCH v2 1/2] ASoC: fsl_mqs: Don't check clock is NULL before
+ calling clk API
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <39ac8f24-3148-2a3d-3f8d-91567b3c4c9e@web.de>
+ <CAA+D8APR2NGAn9jRDSZzr1fgj5u0hAvH19VxZS+tj2A7j3PCuw@mail.gmail.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <24be48d2-63de-b900-cec7-d21e83a89ca2@web.de>
+Date: Tue, 23 Jun 2020 10:55:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <CAA+D8APR2NGAn9jRDSZzr1fgj5u0hAvH19VxZS+tj2A7j3PCuw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+X-Provags-ID: V03:K1:/wu01VqnpeuiFKn6xE+qbTqm1uXYF9D06eNXdPHGH89BpcHzLjX
+ wrmopcETctrwEaIvACOqKCnGgB9drTAGMcPLhyMw0zaJZSkM8dyGJxpH16Z/L9fu+vsQJFf
+ r02r+mZTgngPx8K66LqVAD0EedxidxAjNk57VcWL2wJaz6ezZdpYqVNaRCGrgi7KA15RibC
+ IYcG6WZ5vV0f/r1rplPUA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Y9JLtKPGUEo=:WfCSFhleUjpYZXkOnTO02/
+ t8edL5u2/HmrmOd5AkpLG48iDISWPtH4HNvhZApy1HqEbfe7K/WWzsdtatcho4icc26P7ZOvO
+ Rc/Q1rxmSV8aN5F0poCN4ZLh56C4ZYCaX84nVeZg6EcQKT0y/4OPappdrF30G0Sw/tsHobbT0
+ Tkn/ULdAdFfpgbzr9ebLuPh3fxb7zOz4Z/J0tEPKzIrwghnLzfRoOgvyI+csYCZfjXKGEEmrv
+ 4qId+ZFkkCZXm4Jy12/g+GdN/nAnKxIPQpVS+bLwovepas4zVz6SFbeOneHsq5zUKl9p/5zHQ
+ DrmMvO6z7kZT9c3RAbnpC0K1ZyImLlDL54R19Rsmbo7nJZ8Y+AcR2qUqHvKKxI/Coit8ukilx
+ QvtoeLSqPqFJecOys48hkGVaIcoH4h9XmEFGdW/RJmGJ3RG3M+pDxuaZ3rjSk4JaJm6Nc/Ri7
+ 5PsmC5ijz8foPMIIz6NehqssecK69I+ZRMQ/prXldLWvNJr8YHUMTMpAt2misYcLx5gTlA/Gm
+ /wFsqywt1tmaLIYvMLQa0Mm2v1MSBw6s8MzDLqfpHibNM6Nc3Z5/f1IuAeLw+TTUCKrGx05Ru
+ rDUEQc/oAEV736aLlkcEeNGEBkVdVEn9ky9RN371k5TJr3GxAjf5lCyfAnofoGONt22/41yKy
+ f7WgLSiEhmjKgZpjedXKBd0E1vaWk/Nh8qztyWranmjZqw1/1rnyJoS3Usv1QgFbKjMGBycT+
+ +BnNjhBS7DjonHMpEghqO+w0Nsn7GLK1kJkZIcbN+grOF9yJqxMIE3q59HKssaU8x57wcMBbj
+ RHwPvv8dvthEsB1RxKKCOwLaeeZbl4jBPP39Pzz3ZOYvhW0foOwMzLQ/Vax7wfsdO5oO/x6JU
+ QHtQwpLl/+WErzParkTXcanbyjLyHeLENhYv3DoJs6GNvhp7m7zBCsvq7E0kPd8InTxmyigxl
+ 7Z3H8/2rGhsNUkX6DPCyCd5ChrBSDmzvSVb4HHnRvG1T63opwNO8K3RzLgtcbAl7pIWAMm7/J
+ ah5h6ykrzMvVAXqzMzX1SC0sBKmOhkrzqXB8EBnjgh88MxHltUjxim3/kKfRNNlO0+dkp7XEx
+ uF1nbaJyKAVnQRkVso9wvFn6pWnhc6mdVaB97i0/nR7CI76/5fhL84h2rU3YN0Mrwzr9r80ay
+ 7BBr2N5wDVqjZ85e0dF8pVJwrjIm7Q59ipMuWgBd6gSYkRNXyE6DmZTxNe6aOJZXUjBTklYa7
+ UFk1xIm5y87O4J3cX
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,219 +129,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, peterz@infradead.org, bigeasy@linutronix.de,
- x86@kernel.org, heiko.carstens@de.ibm.com, linux-kernel@vger.kernel.org,
- rostedt@goodmis.org, linux@armlinux.org.uk, a.darwish@linutronix.de,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, kernel-janitors@vger.kernel.org,
+ Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that the macros use per-cpu data, we no longer need the argument.
+>     clk_prepare_enable and clk_disable_unprepare check the input
+>     clock parameter in the beginning of the function,
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/x86/entry/common.c        |    2 +-
- include/linux/irqflags.h       |    8 ++++----
- include/linux/lockdep.h        |    2 +-
- kernel/locking/lockdep.c       |   30 +++++++++++++++---------------
- kernel/softirq.c               |    2 +-
- tools/include/linux/irqflags.h |    4 ++--
- 6 files changed, 24 insertions(+), 24 deletions(-)
-
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -689,7 +689,7 @@ noinstr void idtentry_exit_user(struct p
- 
- noinstr bool idtentry_enter_nmi(struct pt_regs *regs)
- {
--	bool irq_state = lockdep_hardirqs_enabled(current);
-+	bool irq_state = lockdep_hardirqs_enabled();
- 
- 	__nmi_enter();
- 	lockdep_hardirqs_off(CALLER_ADDR0);
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -40,9 +40,9 @@ DECLARE_PER_CPU(int, hardirq_context);
-   extern void trace_hardirqs_off_finish(void);
-   extern void trace_hardirqs_on(void);
-   extern void trace_hardirqs_off(void);
--# define lockdep_hardirq_context(p)	(this_cpu_read(hardirq_context))
-+# define lockdep_hardirq_context()	(this_cpu_read(hardirq_context))
- # define lockdep_softirq_context(p)	((p)->softirq_context)
--# define lockdep_hardirqs_enabled(p)	(this_cpu_read(hardirqs_enabled))
-+# define lockdep_hardirqs_enabled()	(this_cpu_read(hardirqs_enabled))
- # define lockdep_softirqs_enabled(p)	((p)->softirqs_enabled)
- # define lockdep_hardirq_enter()			\
- do {							\
-@@ -109,9 +109,9 @@ do {						\
- # define trace_hardirqs_off_finish()		do { } while (0)
- # define trace_hardirqs_on()		do { } while (0)
- # define trace_hardirqs_off()		do { } while (0)
--# define lockdep_hardirq_context(p)	0
-+# define lockdep_hardirq_context()	0
- # define lockdep_softirq_context(p)	0
--# define lockdep_hardirqs_enabled(p)	0
-+# define lockdep_hardirqs_enabled()	0
- # define lockdep_softirqs_enabled(p)	0
- # define lockdep_hardirq_enter()	do { } while (0)
- # define lockdep_hardirq_threaded()	do { } while (0)
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -736,7 +736,7 @@ do {									\
- 
- # define lockdep_assert_RT_in_threaded_ctx() do {			\
- 		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
--			  lockdep_hardirq_context(current) &&		\
-+			  lockdep_hardirq_context() &&			\
- 			  !(current->hardirq_threaded || current->irq_config),	\
- 			  "Not in threaded context on PREEMPT_RT as expected\n");	\
- } while (0)
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -2062,9 +2062,9 @@ print_bad_irq_dependency(struct task_str
- 	pr_warn("-----------------------------------------------------\n");
- 	pr_warn("%s/%d [HC%u[%lu]:SC%u[%lu]:HE%u:SE%u] is trying to acquire:\n",
- 		curr->comm, task_pid_nr(curr),
--		lockdep_hardirq_context(curr), hardirq_count() >> HARDIRQ_SHIFT,
-+		lockdep_hardirq_context(), hardirq_count() >> HARDIRQ_SHIFT,
- 		curr->softirq_context, softirq_count() >> SOFTIRQ_SHIFT,
--		lockdep_hardirqs_enabled(curr),
-+		lockdep_hardirqs_enabled(),
- 		curr->softirqs_enabled);
- 	print_lock(next);
- 
-@@ -3331,9 +3331,9 @@ print_usage_bug(struct task_struct *curr
- 
- 	pr_warn("%s/%d [HC%u[%lu]:SC%u[%lu]:HE%u:SE%u] takes:\n",
- 		curr->comm, task_pid_nr(curr),
--		lockdep_hardirq_context(curr), hardirq_count() >> HARDIRQ_SHIFT,
-+		lockdep_hardirq_context(), hardirq_count() >> HARDIRQ_SHIFT,
- 		lockdep_softirq_context(curr), softirq_count() >> SOFTIRQ_SHIFT,
--		lockdep_hardirqs_enabled(curr),
-+		lockdep_hardirqs_enabled(),
- 		lockdep_softirqs_enabled(curr));
- 	print_lock(this);
- 
-@@ -3658,7 +3658,7 @@ void lockdep_hardirqs_on_prepare(unsigne
- 	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
- 		return;
- 
--	if (unlikely(lockdep_hardirqs_enabled(current))) {
-+	if (unlikely(lockdep_hardirqs_enabled())) {
- 		/*
- 		 * Neither irq nor preemption are disabled here
- 		 * so this is racy by nature but losing one hit
-@@ -3686,7 +3686,7 @@ void lockdep_hardirqs_on_prepare(unsigne
- 	 * Can't allow enabling interrupts while in an interrupt handler,
- 	 * that's general bad form and such. Recursion, limited stack etc..
- 	 */
--	if (DEBUG_LOCKS_WARN_ON(lockdep_hardirq_context(current)))
-+	if (DEBUG_LOCKS_WARN_ON(lockdep_hardirq_context()))
- 		return;
- 
- 	current->hardirq_chain_key = current->curr_chain_key;
-@@ -3724,7 +3724,7 @@ void noinstr lockdep_hardirqs_on(unsigne
- 	if (unlikely(current->lockdep_recursion & LOCKDEP_RECURSION_MASK))
- 		return;
- 
--	if (lockdep_hardirqs_enabled(curr)) {
-+	if (lockdep_hardirqs_enabled()) {
- 		/*
- 		 * Neither irq nor preemption are disabled here
- 		 * so this is racy by nature but losing one hit
-@@ -3783,7 +3783,7 @@ void noinstr lockdep_hardirqs_off(unsign
- 	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
- 		return;
- 
--	if (lockdep_hardirqs_enabled(curr)) {
-+	if (lockdep_hardirqs_enabled()) {
- 		/*
- 		 * We have done an ON -> OFF transition:
- 		 */
-@@ -3832,7 +3832,7 @@ void lockdep_softirqs_on(unsigned long i
- 	 * usage bit for all held locks, if hardirqs are
- 	 * enabled too:
- 	 */
--	if (lockdep_hardirqs_enabled(curr))
-+	if (lockdep_hardirqs_enabled())
- 		mark_held_locks(curr, LOCK_ENABLED_SOFTIRQ);
- 	lockdep_recursion_finish();
- }
-@@ -3881,7 +3881,7 @@ mark_usage(struct task_struct *curr, str
- 	 */
- 	if (!hlock->trylock) {
- 		if (hlock->read) {
--			if (lockdep_hardirq_context(curr))
-+			if (lockdep_hardirq_context())
- 				if (!mark_lock(curr, hlock,
- 						LOCK_USED_IN_HARDIRQ_READ))
- 					return 0;
-@@ -3890,7 +3890,7 @@ mark_usage(struct task_struct *curr, str
- 						LOCK_USED_IN_SOFTIRQ_READ))
- 					return 0;
- 		} else {
--			if (lockdep_hardirq_context(curr))
-+			if (lockdep_hardirq_context())
- 				if (!mark_lock(curr, hlock, LOCK_USED_IN_HARDIRQ))
- 					return 0;
- 			if (curr->softirq_context)
-@@ -3928,7 +3928,7 @@ mark_usage(struct task_struct *curr, str
- 
- static inline unsigned int task_irq_context(struct task_struct *task)
- {
--	return LOCK_CHAIN_HARDIRQ_CONTEXT * !!lockdep_hardirq_context(task) +
-+	return LOCK_CHAIN_HARDIRQ_CONTEXT * !!lockdep_hardirq_context() +
- 	       LOCK_CHAIN_SOFTIRQ_CONTEXT * !!task->softirq_context;
- }
- 
-@@ -4021,7 +4021,7 @@ static inline short task_wait_context(st
- 	 * Set appropriate wait type for the context; for IRQs we have to take
- 	 * into account force_irqthread as that is implied by PREEMPT_RT.
- 	 */
--	if (lockdep_hardirq_context(curr)) {
-+	if (lockdep_hardirq_context()) {
- 		/*
- 		 * Check if force_irqthreads will run us threaded.
- 		 */
-@@ -4864,11 +4864,11 @@ static void check_flags(unsigned long fl
- 		return;
- 
- 	if (irqs_disabled_flags(flags)) {
--		if (DEBUG_LOCKS_WARN_ON(lockdep_hardirqs_enabled(current))) {
-+		if (DEBUG_LOCKS_WARN_ON(lockdep_hardirqs_enabled())) {
- 			printk("possible reason: unannotated irqs-off.\n");
- 		}
- 	} else {
--		if (DEBUG_LOCKS_WARN_ON(!lockdep_hardirqs_enabled(current))) {
-+		if (DEBUG_LOCKS_WARN_ON(!lockdep_hardirqs_enabled())) {
- 			printk("possible reason: unannotated irqs-on.\n");
- 		}
- 	}
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -230,7 +230,7 @@ static inline bool lockdep_softirq_start
- {
- 	bool in_hardirq = false;
- 
--	if (lockdep_hardirq_context(current)) {
-+	if (lockdep_hardirq_context()) {
- 		in_hardirq = true;
- 		lockdep_hardirq_exit();
- 	}
---- a/tools/include/linux/irqflags.h
-+++ b/tools/include/linux/irqflags.h
-@@ -2,9 +2,9 @@
- #ifndef _LIBLOCKDEP_LINUX_TRACE_IRQFLAGS_H_
- #define _LIBLOCKDEP_LINUX_TRACE_IRQFLAGS_H_
- 
--# define lockdep_hardirq_context(p)	0
-+# define lockdep_hardirq_context()	0
- # define lockdep_softirq_context(p)	0
--# define lockdep_hardirqs_enabled(p)	0
-+# define lockdep_hardirqs_enabled()	0
- # define lockdep_softirqs_enabled(p)	0
- # define lockdep_hardirq_enter()	do { } while (0)
- # define lockdep_hardirq_exit()		do { } while (0)
+These functions call further functions which perform null pointer checks.
 
 
+>                                                       if the parameter
+>     is NULL, clk_prepare_enable and clk_disable_unprepare will
+>     return immediately.
+
+The interpretation of these function implementations seems to be reasonable.
+Would you like to achieve any improvements for the corresponding software documentation?
+
+
+>     So Don't need to check input clock parameters before calling clk API.
+
+What do you find imperative in this wording?
+
+Another wording alternative:
+   Thus omit extra null pointer checks before four function calls.
+
+Regards,
+Markus
