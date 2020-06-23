@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D8720530A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 15:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD16205362
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 15:28:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49rmj80GDSzDqLr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 23:05:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49rnCd2VPmzDqV9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jun 2020 23:28:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49rmfN05vhzDqC0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:02:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131;
+ helo=out30-131.freemail.mail.aliyun.com;
+ envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Lrdx9+Vh; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 49rmfM4ct7z9s6w; Tue, 23 Jun 2020 23:02:51 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 49rmfM30w9z9sRf; Tue, 23 Jun 2020 23:02:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1592917371;
- bh=7OQWHjAL4WR13EqfARGMTS7Rm8FyLmUHJy2dO/H0evU=;
- h=From:To:Cc:Subject:Date:From;
- b=Lrdx9+VhlD7kSxxR7H2BITASB7Vc09qzAS8jqA9Czum/+BwXlDkDhZBcs/qNpiyp9
- OC+mDYFgx3nk7b0tSTI7DqqMFB1qNSQaCeMMCQ5TcQVjuk1PJjUTxT+5YAVhFwm93E
- /irNbj/nXzEF5jBgAYPuBwERdgVmBARt1IHpr1x3vhDyxg1EfUa4a489psG75RHJoJ
- CXoqC+KnNH3q77eh0o6f1HjZDuo1qXm3fu2Hczl4qN1CMi8CglB+SP/fiC1MwO0GHS
- c6xA0fnIFgwR5BbnRAX1K3RR9PvRCqSSRZ1IkrXkjfVC4xhFTXcY1huItFi3JNmB7H
- 2CKcJf9XtxcSA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/boot/dts: Fix dtc "pciex" warnings
-Date: Tue, 23 Jun 2020 23:03:20 +1000
-Message-Id: <20200623130320.405852-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ header.from=linux.alibaba.com
+Received: from out30-131.freemail.mail.aliyun.com
+ (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49rmvy5x1tzDqLc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:14:37 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R171e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01f04397;
+ MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=38; SR=0;
+ TI=SMTPD_---0U0WFKzW_1592918058; 
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
+ fp:SMTPD_---0U0WFKzW_1592918058) by smtp.aliyun-inc.com(127.0.0.1);
+ Tue, 23 Jun 2020 21:14:18 +0800
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
+ frankja@linux.ibm.com, david@redhat.com, cohuck@redhat.com,
+ heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+ sean.j.christopherson@intel.com, vkuznets@redhat.com,
+ wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
+ julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
+ christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com,
+ chenhuacai@gmail.com
+Subject: [PATCH v6 0/5] clean up redundant 'kvm_run' parameters
+Date: Tue, 23 Jun 2020 21:14:13 +0800
+Message-Id: <20200623131418.31473-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,310 +55,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au
+Cc: linux-s390@vger.kernel.org, tianjia.zhang@linux.alibaba.com,
+ kvm@vger.kernel.org, linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With CONFIG_OF_ALL_DTBS=y, as set by eg. allmodconfig, we see lots of
-warnings about our dts files, such as:
+In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
+structure. For historical reasons, many kvm-related function parameters
+retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
+patch does a unified cleanup of these remaining redundant parameters.
 
-  arch/powerpc/boot/dts/glacier.dts:492.26-532.5:
-  Warning (pci_bridge): /plb/pciex@d00000000: node name is not "pci"
-  or "pcie"
+This series of patches has completely cleaned the architecture of
+arm64, mips, ppc, and s390 (no such redundant code on x86). Due to
+the large number of modified codes, a separate patch is made for each
+platform. On the ppc platform, there is also a redundant structure
+pointer of 'kvm_run' in 'vcpu_arch', which has also been cleaned
+separately.
 
-The node name should not particularly matter, it's just a name, and
-AFAICS there's no kernel code that cares whether nodes are *named*
-"pciex" or "pcie". So shutup these warnings by converting to the name
-dtc wants.
-
-As always there's some risk this could break something obscure that
-does rely on the name, in which case we can revert.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/boot/dts/akebono.dts     | 8 ++++----
- arch/powerpc/boot/dts/bluestone.dts   | 2 +-
- arch/powerpc/boot/dts/canyonlands.dts | 4 ++--
- arch/powerpc/boot/dts/currituck.dts   | 6 +++---
- arch/powerpc/boot/dts/glacier.dts     | 4 ++--
- arch/powerpc/boot/dts/haleakala.dts   | 2 +-
- arch/powerpc/boot/dts/icon.dts        | 4 ++--
- arch/powerpc/boot/dts/katmai.dts      | 6 +++---
- arch/powerpc/boot/dts/kilauea.dts     | 4 ++--
- arch/powerpc/boot/dts/makalu.dts      | 4 ++--
- arch/powerpc/boot/dts/redwood.dts     | 6 +++---
- 11 files changed, 25 insertions(+), 25 deletions(-)
+v6 changes:
+  Rearrange patch sets, only keep the unmerged patch.
+  rebase on mainline.
 
-diff --git a/arch/powerpc/boot/dts/akebono.dts b/arch/powerpc/boot/dts/akebono.dts
-index cd9d66041a3f..df18f8dc4642 100644
---- a/arch/powerpc/boot/dts/akebono.dts
-+++ b/arch/powerpc/boot/dts/akebono.dts
-@@ -248,7 +248,7 @@ FPGA0: fpga@ebc00000 {
- 			};
- 		};
- 
--		PCIE0: pciex@10100000000 {
-+		PCIE0: pcie@10100000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -288,7 +288,7 @@ PCIE0: pciex@10100000000 {
- 				0x0 0x0 0x0 0x4 &MPIC 48 0x2 /* int D */>;
- 		};
- 
--		PCIE1: pciex@20100000000 {
-+		PCIE1: pcie@20100000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -328,7 +328,7 @@ PCIE1: pciex@20100000000 {
- 				0x0 0x0 0x0 0x4 &MPIC 56 0x2 /* int D */>;
- 		};
- 
--		PCIE2: pciex@18100000000 {
-+		PCIE2: pcie@18100000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -368,7 +368,7 @@ PCIE2: pciex@18100000000 {
- 				0x0 0x0 0x0 0x4 &MPIC 64 0x2 /* int D */>;
- 		};
- 
--		PCIE3: pciex@28100000000 {
-+		PCIE3: pcie@28100000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/bluestone.dts b/arch/powerpc/boot/dts/bluestone.dts
-index cc965a1816b6..aa1ae94cd776 100644
---- a/arch/powerpc/boot/dts/bluestone.dts
-+++ b/arch/powerpc/boot/dts/bluestone.dts
-@@ -325,7 +325,7 @@ EMAC0: ethernet@ef600c00 {
- 			};
- 		};
- 
--		PCIE0: pciex@d00000000 {
-+		PCIE0: pcie@d00000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/canyonlands.dts b/arch/powerpc/boot/dts/canyonlands.dts
-index 0d6ac92d0f5e..c5fbb08e0a6e 100644
---- a/arch/powerpc/boot/dts/canyonlands.dts
-+++ b/arch/powerpc/boot/dts/canyonlands.dts
-@@ -461,7 +461,7 @@ PCIX0: pci@c0ec00000 {
- 			interrupt-map = < 0x0 0x0 0x0 0x0 &UIC1 0x0 0x8 >;
- 		};
- 
--		PCIE0: pciex@d00000000 {
-+		PCIE0: pcie@d00000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -503,7 +503,7 @@ PCIE0: pciex@d00000000 {
- 				0x0 0x0 0x0 0x4 &UIC3 0xf 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@d20000000 {
-+		PCIE1: pcie@d20000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/currituck.dts b/arch/powerpc/boot/dts/currituck.dts
-index b6d87b9c2cef..aea8af810106 100644
---- a/arch/powerpc/boot/dts/currituck.dts
-+++ b/arch/powerpc/boot/dts/currituck.dts
-@@ -122,7 +122,7 @@ rtc@68 {
- 			};
- 		};
- 
--		PCIE0: pciex@10100000000 {		// 4xGBIF1
-+		PCIE0: pcie@10100000000 {		// 4xGBIF1
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -160,7 +160,7 @@ PCIE0: pciex@10100000000 {		// 4xGBIF1
- 				0x0 0x0 0x0 0x4 &MPIC 49 0x2 /* int D */>;
- 		};
- 
--		PCIE1: pciex@30100000000 {		// 4xGBIF0
-+		PCIE1: pcie@30100000000 {		// 4xGBIF0
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -197,7 +197,7 @@ PCIE1: pciex@30100000000 {		// 4xGBIF0
- 				0x0 0x0 0x0 0x4 &MPIC 41 0x2 /* int D */>;
- 		};
- 
--		PCIE2: pciex@38100000000 {		// 2xGBIF0
-+		PCIE2: pcie@38100000000 {		// 2xGBIF0
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/glacier.dts b/arch/powerpc/boot/dts/glacier.dts
-index a7a802f4ffdd..e84ff1afb58c 100644
---- a/arch/powerpc/boot/dts/glacier.dts
-+++ b/arch/powerpc/boot/dts/glacier.dts
-@@ -489,7 +489,7 @@ PCIX0: pci@c0ec00000 {
- 			interrupt-map = < 0x0 0x0 0x0 0x0 &UIC1 0x0 0x8 >;
- 		};
- 
--		PCIE0: pciex@d00000000 {
-+		PCIE0: pcie@d00000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -531,7 +531,7 @@ PCIE0: pciex@d00000000 {
- 				0x0 0x0 0x0 0x4 &UIC3 0xf 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@d20000000 {
-+		PCIE1: pcie@d20000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/haleakala.dts b/arch/powerpc/boot/dts/haleakala.dts
-index cb16dad43c92..f81ce8786d59 100644
---- a/arch/powerpc/boot/dts/haleakala.dts
-+++ b/arch/powerpc/boot/dts/haleakala.dts
-@@ -237,7 +237,7 @@ EMAC0: ethernet@ef600900 {
- 			};
- 		};
- 
--		PCIE0: pciex@a0000000 {
-+		PCIE0: pcie@a0000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/icon.dts b/arch/powerpc/boot/dts/icon.dts
-index 2e6e3a7b2604..fbaa60b8f87a 100644
---- a/arch/powerpc/boot/dts/icon.dts
-+++ b/arch/powerpc/boot/dts/icon.dts
-@@ -315,7 +315,7 @@ PCIX0: pci@c0ec00000 {
- 			interrupt-map = <0x0 0x0 0x0 0x0 &UIC1 19 0x8>;
- 		};
- 
--		PCIE0: pciex@d00000000 {
-+		PCIE0: pcie@d00000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -356,7 +356,7 @@ PCIE0: pciex@d00000000 {
- 				0x0 0x0 0x0 0x4 &UIC3 0x3 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@d20000000 {
-+		PCIE1: pcie@d20000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/katmai.dts b/arch/powerpc/boot/dts/katmai.dts
-index 02629e119b87..a8f353229fb7 100644
---- a/arch/powerpc/boot/dts/katmai.dts
-+++ b/arch/powerpc/boot/dts/katmai.dts
-@@ -319,7 +319,7 @@ PCIX0: pci@c0ec00000 {
- 			>;
- 		};
- 
--		PCIE0: pciex@d00000000 {
-+		PCIE0: pcie@d00000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -360,7 +360,7 @@ PCIE0: pciex@d00000000 {
- 				0x0 0x0 0x0 0x4 &UIC3 0x3 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@d20000000 {
-+		PCIE1: pcie@d20000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -401,7 +401,7 @@ PCIE1: pciex@d20000000 {
- 				0x0 0x0 0x0 0x4 &UIC3 0x7 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE2: pciex@d40000000 {
-+		PCIE2: pcie@d40000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/kilauea.dts b/arch/powerpc/boot/dts/kilauea.dts
-index 2a3413221cc1..a709fb47a180 100644
---- a/arch/powerpc/boot/dts/kilauea.dts
-+++ b/arch/powerpc/boot/dts/kilauea.dts
-@@ -322,7 +322,7 @@ EMAC1: ethernet@ef600a00 {
- 			};
- 		};
- 
--		PCIE0: pciex@a0000000 {
-+		PCIE0: pcie@a0000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -363,7 +363,7 @@ PCIE0: pciex@a0000000 {
- 				0x0 0x0 0x0 0x4 &UIC2 0x3 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@c0000000 {
-+		PCIE1: pcie@c0000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/makalu.dts b/arch/powerpc/boot/dts/makalu.dts
-index bf8fe1629392..c473cd911bca 100644
---- a/arch/powerpc/boot/dts/makalu.dts
-+++ b/arch/powerpc/boot/dts/makalu.dts
-@@ -268,7 +268,7 @@ EMAC1: ethernet@ef600a00 {
- 			};
- 		};
- 
--		PCIE0: pciex@a0000000 {
-+		PCIE0: pcie@a0000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -309,7 +309,7 @@ PCIE0: pciex@a0000000 {
- 				0x0 0x0 0x0 0x4 &UIC2 0x3 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@c0000000 {
-+		PCIE1: pcie@c0000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-diff --git a/arch/powerpc/boot/dts/redwood.dts b/arch/powerpc/boot/dts/redwood.dts
-index f3e046fb49e2..f38035a1f4a1 100644
---- a/arch/powerpc/boot/dts/redwood.dts
-+++ b/arch/powerpc/boot/dts/redwood.dts
-@@ -235,7 +235,7 @@ EMAC0: ethernet@ef600a00 {
- 				has-new-stacr-staopc;
- 			};
- 		};
--		PCIE0: pciex@d00000000 {
-+		PCIE0: pcie@d00000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -276,7 +276,7 @@ PCIE0: pciex@d00000000 {
- 				0x0 0x0 0x0 0x4 &UIC3 0x3 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@d20000000 {
-+		PCIE1: pcie@d20000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -317,7 +317,7 @@ PCIE1: pciex@d20000000 {
- 				0x0 0x0 0x0 0x4 &UIC3 0x7 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE2: pciex@d40000000 {
-+		PCIE2: pcie@d40000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
+v5 change:
+  ppc: fix for review.
+
+v4 change:
+  mips: fixes two errors in entry.c.
+
+v3 change:
+  Keep the existing `vcpu->run` in the function body unchanged.
+
+v2 change:
+  s390 retains the original variable name and minimizes modification.
+
+Tianjia Zhang (5):
+  KVM: s390: clean up redundant 'kvm_run' parameters
+  KVM: arm64: clean up redundant 'kvm_run' parameters
+  KVM: PPC: clean up redundant kvm_run parameters in assembly
+  KVM: MIPS: clean up redundant 'kvm_run' parameters
+  KVM: MIPS: clean up redundant kvm_run parameters in assembly
+
+ arch/arm64/include/asm/kvm_coproc.h   |  12 +--
+ arch/arm64/include/asm/kvm_host.h     |  11 +--
+ arch/arm64/include/asm/kvm_mmu.h      |   2 +-
+ arch/arm64/kvm/arm.c                  |   6 +-
+ arch/arm64/kvm/handle_exit.c          |  36 ++++----
+ arch/arm64/kvm/mmio.c                 |  11 +--
+ arch/arm64/kvm/mmu.c                  |   5 +-
+ arch/arm64/kvm/sys_regs.c             |  13 ++-
+ arch/mips/include/asm/kvm_host.h      |  32 ++------
+ arch/mips/kvm/emulate.c               |  59 +++++--------
+ arch/mips/kvm/entry.c                 |  21 ++---
+ arch/mips/kvm/mips.c                  |  14 ++--
+ arch/mips/kvm/trap_emul.c             | 114 +++++++++++---------------
+ arch/mips/kvm/vz.c                    |  26 +++---
+ arch/powerpc/include/asm/kvm_ppc.h    |   2 +-
+ arch/powerpc/kvm/book3s_interrupts.S  |  22 +++--
+ arch/powerpc/kvm/book3s_pr.c          |   9 +-
+ arch/powerpc/kvm/booke.c              |   9 +-
+ arch/powerpc/kvm/booke_interrupts.S   |   9 +-
+ arch/powerpc/kvm/bookehv_interrupts.S |  10 +--
+ arch/s390/kvm/kvm-s390.c              |  23 ++++--
+ 21 files changed, 188 insertions(+), 258 deletions(-)
+
 -- 
-2.25.1
+2.17.1
 
