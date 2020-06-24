@@ -1,55 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF422073C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 14:53:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F642074E4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 15:51:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sNNr2Gh4zDql6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 22:53:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sPgz5jR9zDqjd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 23:51:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
- envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::344;
+ helo=mail-wm1-x344.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=tpf/dcq4; dkim-atps=neutral
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sNLg6J7YzDqkx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 22:51:20 +1000 (AEST)
-Received: by mail-ot1-f65.google.com with SMTP id k15so1762371otp.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 05:51:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sPbd4xg1zDqjn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 23:47:41 +1000 (AEST)
+Received: by mail-wm1-x344.google.com with SMTP id g75so2378986wme.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 06:47:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=lHfk96B0+ihglAFlrm1FT6zDDI3xWocJzEidZ1THNGo=;
+ b=tpf/dcq4PAzW3T54HKNZWmByjNJgL82k45veKEeoYnLdGkSoRmUdwKRSHvfBLDHOG9
+ FEP1fA1ZoqptL6kpfglTgJE1SIQOQRVDZgGpauAwOTppto0B5vDaQsixBq+xxkWeqHtP
+ xeENTkgnV8AZLBR/oycfN8ZuB3EZqbDUo3EhSS9zettNixoVNKhGPcHB21EvWNFgOb2+
+ C5XEZ+6hCIoGhCf8PEWc4/12oNrfC/o2W5x9YkuNlp3lVoe6vwltOgSl2pFpjVjUoBT5
+ zh0VaRnuyMm3j1ejVdDsdsnx+FI5hdkAHB5gVGJQTYaKnK7Lc5XwbCHBIxn2791yYQ8b
+ MVRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=P/bkPQJyEuJLLZDCNPTwD8zOfuXTt/HbpVEXhGvvUkU=;
- b=hFgO2kkCL49trYzQuBjD/wO9r7hix7+FgrVKJPyQWy33x0W+vwwg4bG6fNwN3RHd+0
- TBDkprDDK0Ew3l5hHrMgZxSzdrYhZp139kZUojwyyWUHJTkwzRSps+GwLlFEw+2fVhsq
- R8F1IQOBofsSVN5h4o/xrZVdainZIRFjJJZ2rz10mlQBXmqkeBW6SXWnddz0ROSQtnDe
- 8Y6Z3miuJfOjb9sm5ag7/vOhlifJb6Pmj8iItCv4Kk7iRJIk3I88VS2Il7292lx/PY3p
- G6PTeaAL0N1Ahn8HFckmtAULZJy1o9HtB0Ga9tgfZw3km1VjlmfoE6YgQGJHldxjfluU
- bZhw==
-X-Gm-Message-State: AOAM532d0rIz+WJje3xQcqIbcRgN/D52SamtKC6vCkxm6AHxpcUc6yTl
- jB1pPnPGcbYPONBUXarcIQA2zR6UbQUoZ2xmc5k=
-X-Google-Smtp-Source: ABdhPJyJaj4dGUTvhHBRNMjHUnZdGheAZvOfYIAiAj6lGBGPOY3/8KAhD1pS066Sr/l31WOleOmCuvjLIX/i+LSdSPM=
-X-Received: by 2002:a9d:7d15:: with SMTP id v21mr21740160otn.118.1593003077552; 
- Wed, 24 Jun 2020 05:51:17 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=lHfk96B0+ihglAFlrm1FT6zDDI3xWocJzEidZ1THNGo=;
+ b=EQFprI2+NGiJuZWnKQfJH3oT0Nq3eoL5PH2ih20K/nkKb6StFFRGcvvf2p2N/LnFy1
+ p3ORcoU/w4HdGlLPP/kbCPbevE7dAqPcmOKhhVAQ3sabnzpeyJdKZkLJc9r4mvWfAdoZ
+ DYC2Wh3vISqG4QoO09RFp/ZudM+37o0B3sjFkHhVEge+75tS242A2PLf8OnQeT12j/IK
+ Qk+UEFjgaOV9d3p0CWFjuVSAk9FBqVt3rnbs/EhkX2wJcnZm90IlAyzyw/BiPOPcQXzd
+ edbbT4XamG+GAeMSbqM3xh9bfxcq67EIhZ+/TMk2XjHFop+pYHiEE+N9AqljZ26u3SLO
+ c8hQ==
+X-Gm-Message-State: AOAM532arquqNqbLz/LJTICCv0jtpW5IE4Y/rByBNmORx2Ju9WHsApZo
+ occhpCbs1qWmhLQyeAj8cG/8GgnA
+X-Google-Smtp-Source: ABdhPJzx6K1kek4etHgRf3uNsg3tPsTriU2IDEDRlnOtTzqm2BUNEFWMTc0jAGsTCRsYQMA+ql0v5g==
+X-Received: by 2002:a1c:154:: with SMTP id 81mr29460084wmb.23.1593006456220;
+ Wed, 24 Jun 2020 06:47:36 -0700 (PDT)
+Received: from bobo.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id h14sm11284298wrt.36.2020.06.24.06.47.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Jun 2020 06:47:35 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: Use doorbells even if XIVE is available
+Date: Wed, 24 Jun 2020 23:47:24 +1000
+Message-Id: <20200624134724.2343007-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-References: <20200623142138.209513-1-qperret@google.com>
- <20200623142138.209513-3-qperret@google.com>
- <20200624055023.xofefhohf7wifme5@vireshk-i7>
-In-Reply-To: <20200624055023.xofefhohf7wifme5@vireshk-i7>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 24 Jun 2020 14:51:04 +0200
-Message-ID: <CAJZ5v0ja_rM7i=psW1HRyzEpW=8QwP2u9p+ihN3FS8_53bbxTQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] cpufreq: Specify default governor on command line
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,159 +76,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>,
- "Cc: Android Kernel" <kernel-team@android.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Linux PM <linux-pm@vger.kernel.org>, Quentin Perret <qperret@google.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, adharmap@codeaurora.org,
- Todd Kjos <tkjos@google.com>
+Cc: Anton Blanchard <anton@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 24, 2020 at 7:50 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 23-06-20, 15:21, Quentin Perret wrote:
-> > Currently, the only way to specify the default CPUfreq governor is via
-> > Kconfig options, which suits users who can build the kernel themselves
-> > perfectly.
-> >
-> > However, for those who use a distro-like kernel (such as Android, with
-> > the Generic Kernel Image project), the only way to use a different
-> > default is to boot to userspace, and to then switch using the sysfs
-> > interface. Being able to specify the default governor on the command
-> > line, like is the case for cpuidle, would enable those users to specify
-> > their governor of choice earlier on, and to simplify slighlty the
-> > userspace boot procedure.
-> >
-> > To support this use-case, add a kernel command line parameter enabling
-> > to specify a default governor for CPUfreq, which takes precedence over
-> > the builtin default.
-> >
-> > This implementation has one notable limitation: the default governor
-> > must be registered before the driver. This is solved for builtin
-> > governors and drivers using appropriate *_initcall() functions. And in
-> > the modular case, this must be reflected as a constraint on the module
-> > loading order.
-> >
-> > Signed-off-by: Quentin Perret <qperret@google.com>
-> > ---
-> >  .../admin-guide/kernel-parameters.txt         |  5 ++++
-> >  Documentation/admin-guide/pm/cpufreq.rst      |  6 ++---
-> >  drivers/cpufreq/cpufreq.c                     | 23 +++++++++++++++----
-> >  3 files changed, 26 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> > index fb95fad81c79..5fd3c9f187eb 100644
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -703,6 +703,11 @@
-> >       cpufreq.off=1   [CPU_FREQ]
-> >                       disable the cpufreq sub-system
-> >
-> > +     cpufreq.default_governor=
-> > +                     [CPU_FREQ] Name of the default cpufreq governor to use.
-> > +                     This governor must be registered in the kernel before
-> > +                     the cpufreq driver probes.
-> > +
-> >       cpu_init_udelay=N
-> >                       [X86] Delay for N microsec between assert and de-assert
-> >                       of APIC INIT to start processors.  This delay occurs
-> > diff --git a/Documentation/admin-guide/pm/cpufreq.rst b/Documentation/admin-guide/pm/cpufreq.rst
-> > index 0c74a7784964..368e612145d2 100644
-> > --- a/Documentation/admin-guide/pm/cpufreq.rst
-> > +++ b/Documentation/admin-guide/pm/cpufreq.rst
-> > @@ -147,9 +147,9 @@ CPUs in it.
-> >
-> >  The next major initialization step for a new policy object is to attach a
-> >  scaling governor to it (to begin with, that is the default scaling governor
-> > -determined by the kernel configuration, but it may be changed later
-> > -via ``sysfs``).  First, a pointer to the new policy object is passed to the
-> > -governor's ``->init()`` callback which is expected to initialize all of the
-> > +determined by the kernel command line or configuration, but it may be changed
-> > +later via ``sysfs``).  First, a pointer to the new policy object is passed to
-> > +the governor's ``->init()`` callback which is expected to initialize all of the
-> >  data structures necessary to handle the given policy and, possibly, to add
-> >  a governor ``sysfs`` interface to it.  Next, the governor is started by
-> >  invoking its ``->start()`` callback.
-> > diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-> > index 0128de3603df..4b1a5c0173cf 100644
-> > --- a/drivers/cpufreq/cpufreq.c
-> > +++ b/drivers/cpufreq/cpufreq.c
-> > @@ -50,6 +50,9 @@ static LIST_HEAD(cpufreq_governor_list);
-> >  #define for_each_governor(__governor)                                \
-> >       list_for_each_entry(__governor, &cpufreq_governor_list, governor_list)
-> >
-> > +static char cpufreq_param_governor[CPUFREQ_NAME_LEN];
-> > +static struct cpufreq_governor *default_governor;
-> > +
-> >  /**
-> >   * The "cpufreq driver" - the arch- or hardware-dependent low
-> >   * level driver of CPUFreq support, and its spinlock. This lock
-> > @@ -1055,7 +1058,6 @@ __weak struct cpufreq_governor *cpufreq_default_governor(void)
-> >
-> >  static int cpufreq_init_policy(struct cpufreq_policy *policy)
-> >  {
-> > -     struct cpufreq_governor *def_gov = cpufreq_default_governor();
-> >       struct cpufreq_governor *gov = NULL;
-> >       unsigned int pol = CPUFREQ_POLICY_UNKNOWN;
-> >
-> > @@ -1065,8 +1067,8 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
-> >               if (gov) {
-> >                       pr_debug("Restoring governor %s for cpu %d\n",
-> >                                policy->governor->name, policy->cpu);
-> > -             } else if (def_gov) {
-> > -                     gov = def_gov;
-> > +             } else if (default_governor) {
-> > +                     gov = default_governor;
-> >               } else {
-> >                       return -ENODATA;
-> >               }
-> > @@ -1074,8 +1076,8 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
-> >               /* Use the default policy if there is no last_policy. */
-> >               if (policy->last_policy) {
-> >                       pol = policy->last_policy;
-> > -             } else if (def_gov) {
-> > -                     pol = cpufreq_parse_policy(def_gov->name);
-> > +             } else if (default_governor) {
-> > +                     pol = cpufreq_parse_policy(default_governor->name);
-> >                       /*
-> >                        * In case the default governor is neiter "performance"
-> >                        * nor "powersave", fall back to the initial policy
-> > @@ -2320,6 +2322,9 @@ int cpufreq_register_governor(struct cpufreq_governor *governor)
-> >               list_add(&governor->governor_list, &cpufreq_governor_list);
-> >       }
-> >
-> > +     if (!strncasecmp(cpufreq_param_governor, governor->name, CPUFREQ_NAME_LEN))
-> > +             default_governor = governor;
-> > +
-> >       mutex_unlock(&cpufreq_governor_mutex);
-> >       return err;
-> >  }
-> > @@ -2348,6 +2353,8 @@ void cpufreq_unregister_governor(struct cpufreq_governor *governor)
-> >
-> >       mutex_lock(&cpufreq_governor_mutex);
-> >       list_del(&governor->governor_list);
-> > +     if (governor == default_governor)
-> > +             default_governor = cpufreq_default_governor();
-> >       mutex_unlock(&cpufreq_governor_mutex);
-> >  }
-> >  EXPORT_SYMBOL_GPL(cpufreq_unregister_governor);
-> > @@ -2789,7 +2796,13 @@ static int __init cpufreq_core_init(void)
-> >       cpufreq_global_kobject = kobject_create_and_add("cpufreq", &cpu_subsys.dev_root->kobj);
-> >       BUG_ON(!cpufreq_global_kobject);
-> >
-> > +     mutex_lock(&cpufreq_governor_mutex);
-> > +     if (!default_governor)
-> > +             default_governor = cpufreq_default_governor();
-> > +     mutex_unlock(&cpufreq_governor_mutex);
->
-> I don't think locking is required here at core-initcall level.
+KVM supports msgsndp in guests by trapping and emulating the
+instruction, so it was decided to always use XIVE for IPIs if it is
+available. However on PowerVM systems, msgsndp can be used and gives
+better performance. On large systems, high XIVE interrupt rates can
+have sub-linear scaling, and using msgsndp can reduce the load on
+the interrupt controller.
 
-It isn't necessary AFAICS, but it may as well be regarded as
-annotation (kind of instead of having a comment explaining why it need
-not be used).
+So switch to using core local doorbells even if XIVE is available.
+This reduces performance for KVM guests with an SMT topology by
+about 50% for ping-pong context switching between SMT vCPUs. An
+option vector (or dt-cpu-ftrs) could be defined to disable msgsndp
+to get KVM performance back.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/platforms/pseries/smp.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
+index 6891710833be..a737a2f87c67 100644
+--- a/arch/powerpc/platforms/pseries/smp.c
++++ b/arch/powerpc/platforms/pseries/smp.c
+@@ -188,13 +188,14 @@ static int pseries_smp_prepare_cpu(int cpu)
+ 	return 0;
+ }
+ 
++static void  (*cause_ipi_offcore)(int cpu) __ro_after_init;
++
+ static void smp_pseries_cause_ipi(int cpu)
+ {
+-	/* POWER9 should not use this handler */
+ 	if (doorbell_try_core_ipi(cpu))
+ 		return;
+ 
+-	icp_ops->cause_ipi(cpu);
++	cause_ipi_offcore(cpu);
+ }
+ 
+ static int pseries_cause_nmi_ipi(int cpu)
+@@ -222,10 +223,7 @@ static __init void pSeries_smp_probe_xics(void)
+ {
+ 	xics_smp_probe();
+ 
+-	if (cpu_has_feature(CPU_FTR_DBELL) && !is_secure_guest())
+-		smp_ops->cause_ipi = smp_pseries_cause_ipi;
+-	else
+-		smp_ops->cause_ipi = icp_ops->cause_ipi;
++	smp_ops->cause_ipi = icp_ops->cause_ipi;
+ }
+ 
+ static __init void pSeries_smp_probe(void)
+@@ -238,6 +236,18 @@ static __init void pSeries_smp_probe(void)
+ 		xive_smp_probe();
+ 	else
+ 		pSeries_smp_probe_xics();
++
++	/*
++	 * KVM emulates doorbells by reading the instruction, which
++	 * can't be done if the guest is secure. If a secure guest
++	 * runs under PowerVM, it could use msgsndp but would need a
++	 * way to distinguish.
++	 */
++	if (cpu_has_feature(CPU_FTR_DBELL) &&
++	    cpu_has_feature(CPU_FTR_SMT) && !is_secure_guest()) {
++		cause_ipi_offcore = smp_ops->cause_ipi;
++		smp_ops->cause_ipi = smp_pseries_cause_ipi;
++	}
+ }
+ 
+ static struct smp_ops_t pseries_smp_ops = {
+-- 
+2.23.0
+
