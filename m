@@ -1,88 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F194207288
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 13:50:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBB4207353
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 14:31:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sM0M0q3XzDql8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 21:50:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sMvD4CxszDqlF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 22:31:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=de.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@de.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sLyd35HbzDqRC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 21:48:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sMrY4wtvzDqQh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 22:28:45 +1000 (AEST)
 Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05OBXQxR137219; Wed, 24 Jun 2020 07:48:18 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ux02d77g-1
+ 05OC2dZT025395; Wed, 24 Jun 2020 08:28:40 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31ux02e7nj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jun 2020 07:48:18 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05OBXWRp137775;
- Wed, 24 Jun 2020 07:48:16 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ux02d75v-1
+ Wed, 24 Jun 2020 08:28:39 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05OCEdb7032705;
+ Wed, 24 Jun 2020 12:28:36 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 31uus70mac-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jun 2020 07:48:16 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05OBkbc2026374;
- Wed, 24 Jun 2020 11:48:13 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma01fra.de.ibm.com with ESMTP id 31uururavg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jun 2020 11:48:13 +0000
+ Wed, 24 Jun 2020 12:28:36 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05OBmAwx61079580
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05OCSXSj53543008
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Jun 2020 11:48:10 GMT
+ Wed, 24 Jun 2020 12:28:34 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6AFA3A405C;
- Wed, 24 Jun 2020 11:48:10 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id CE4E4A405F;
+ Wed, 24 Jun 2020 12:28:33 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 45497A4054;
- Wed, 24 Jun 2020 11:48:09 +0000 (GMT)
-Received: from thinkpad (unknown [9.171.4.225])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Wed, 24 Jun 2020 11:48:09 +0000 (GMT)
-Date: Wed, 24 Jun 2020 13:48:08 +0200
-From: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>, Anshuman Khandual
- <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V3 0/4] mm/debug_vm_pgtable: Add some more tests
-Message-ID: <20200624134808.0c460862@thinkpad>
-In-Reply-To: <20200624110539.GC24934@oc3871087118.ibm.com>
-References: <1592192277-8421-1-git-send-email-anshuman.khandual@arm.com>
- <70ddc7dd-b688-b73e-642a-6363178c8cdd@arm.com>
- <20200624110539.GC24934@oc3871087118.ibm.com>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by IMSVA (Postfix) with ESMTP id 1BB67A4060;
+ Wed, 24 Jun 2020 12:28:32 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.59.56])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 24 Jun 2020 12:28:31 +0000 (GMT)
+Subject: Re: [PATCH v2 2/2] powerpc/hv-24x7: Add sysfs files inside hv-24x7
+ device to show cpumask
+To: ego@linux.vnet.ibm.com, Kajol Jain <kjain@linux.ibm.com>
+References: <20200624101754.169612-1-kjain@linux.ibm.com>
+ <20200624101754.169612-3-kjain@linux.ibm.com>
+ <20200624105603.GD31972@in.ibm.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Message-ID: <a6a626e6-22eb-f1c2-4356-dfe1caf8db46@linux.ibm.com>
+Date: Wed, 24 Jun 2020 17:58:31 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20200624105603.GD31972@in.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-24_06:2020-06-24,
  2020-06-24 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1011
+ malwarescore=0 clxscore=1015
  lowpriorityscore=0 phishscore=0 impostorscore=0 cotscore=-2147483648
- bulkscore=0 adultscore=0 mlxlogscore=663 mlxscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
  spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006240085
+ engine=8.12.0-2004280000 definitions=main-2006240088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,46 +89,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, "H. Peter
- Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- ziy@nvidia.com, Catalin Marinas <catalin.marinas@arm.com>,
- linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, maddy@linux.vnet.ibm.com, suka@us.ibm.com,
+ anju@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 24 Jun 2020 13:05:39 +0200
-Alexander Gordeev <agordeev@linux.ibm.com> wrote:
 
-> On Wed, Jun 24, 2020 at 08:43:10AM +0530, Anshuman Khandual wrote:
-> 
-> [...]
-> 
-> > Hello Gerald/Christophe/Vineet,
-> > 
-> > It would be really great if you could give this series a quick test
-> > on s390/ppc/arc platforms respectively. Thank you.
-> 
-> That worked for me with the default and debug s390 configurations.
-> Would you like to try with some particular options or combinations
-> of the options?
 
-It will be enabled automatically on all archs that set
-ARCH_HAS_DEBUG_VM_PGTABLE, which we do for s390 unconditionally.
-Also, DEBUG_VM has to be set, which we have only in the debug config.
-So only the s390 debug config will have it enabled, you can check
-dmesg for "debug_vm_pgtable" to see when / where it was run, and if it
-triggered any warnings.
+On 6/24/20 4:26 PM, Gautham R Shenoy wrote:
+> Hi Kajol,
+>
+> On Wed, Jun 24, 2020 at 03:47:54PM +0530, Kajol Jain wrote:
+>> Patch here adds a cpumask attr to hv_24x7 pmu along with ABI documentation.
+>>
+>> command:# cat /sys/devices/hv_24x7/cpumask
+>> 0
+> Since this sysfs interface is read-only, and the user cannot change
+> the CPU which will be making the HCALLs to obtain the 24x7 counts,
+> does the user even need to know if currently CPU X is the one which is
+> going to make HCALLs to retrive the 24x7 counts ? Does it help in any
+> kind of trouble-shooting ?
+Primary use to expose the cpumask is for the perf tool.
+Which has the capability to parse the driver sysfs folder
+and understand the cpumask file. Having cpumask
+file will reduce the number of perf commandline
+parameters (will avoid "-C" option in the perf tool
+command line). I can also notify the user which is
+the current cpu used to retrieve the counter data.
 
-I also checked with the v3 series, and it works fine for s390.
+> It would have made sense if the interface was read-write, since a user
+> can set this to a CPU which is not running user applications. This
+> would help in minimising jitter on those active CPUs running the user
+> applications.
+
+With cpumask backed by hotplug
+notifiers, enabling user write access to it will
+complicate the code with more additional check.
+CPU will come to play only if the user request for
+counter data. If not, then there will be no HCALLs made
+using the CPU.
+
+Maddy
+
+>
+>
+>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>> ---
+>>   .../sysfs-bus-event_source-devices-hv_24x7    |  7 ++++
+>>   arch/powerpc/perf/hv-24x7.c                   | 36 +++++++++++++++++--
+>>   2 files changed, 41 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7 b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
+>> index e8698afcd952..f9dd3755b049 100644
+>> --- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
+>> +++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
+>> @@ -43,6 +43,13 @@ Description:	read only
+>>   		This sysfs interface exposes the number of cores per chip
+>>   		present in the system.
+>>
+>> +What:		/sys/devices/hv_24x7/cpumask
+>> +Date:		June 2020
+>> +Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
+>> +Description:	read only
+>> +		This sysfs file exposes the cpumask which is designated to make
+>> +		HCALLs to retrive hv-24x7 pmu event counter data.
+>> +
+>>   What:		/sys/bus/event_source/devices/hv_24x7/event_descs/<event-name>
+>>   Date:		February 2014
+>>   Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
+>> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+>> index ce4739e2b407..3c699612d29f 100644
+>> --- a/arch/powerpc/perf/hv-24x7.c
+>> +++ b/arch/powerpc/perf/hv-24x7.c
+>> @@ -448,6 +448,12 @@ static ssize_t device_show_string(struct device *dev,
+>>   	return sprintf(buf, "%s\n", (char *)d->var);
+>>   }
+>>
+>> +static ssize_t cpumask_get_attr(struct device *dev,
+>> +				struct device_attribute *attr, char *buf)
+>> +{
+>> +	return cpumap_print_to_pagebuf(true, buf, &hv_24x7_cpumask);
+>> +}
+>> +
+>>   static ssize_t sockets_show(struct device *dev,
+>>   			    struct device_attribute *attr, char *buf)
+>>   {
+>> @@ -1116,6 +1122,17 @@ static DEVICE_ATTR_RO(sockets);
+>>   static DEVICE_ATTR_RO(chipspersocket);
+>>   static DEVICE_ATTR_RO(coresperchip);
+>>
+>> +static DEVICE_ATTR(cpumask, S_IRUGO, cpumask_get_attr, NULL);
+>> +
+>> +static struct attribute *cpumask_attrs[] = {
+>> +	&dev_attr_cpumask.attr,
+>> +	NULL,
+>> +};
+>> +
+>> +static struct attribute_group cpumask_attr_group = {
+>> +	.attrs = cpumask_attrs,
+>> +};
+>> +
+>>   static struct bin_attribute *if_bin_attrs[] = {
+>>   	&bin_attr_catalog,
+>>   	NULL,
+>> @@ -1143,6 +1160,11 @@ static const struct attribute_group *attr_groups[] = {
+>>   	&event_desc_group,
+>>   	&event_long_desc_group,
+>>   	&if_group,
+>> +	/*
+>> +	 * This NULL is a placeholder for the cpumask attr which will update
+>> +	 * onlyif cpuhotplug registration is successful
+>> +	 */
+>> +	NULL,
+>>   	NULL,
+>>   };
+>>
+>> @@ -1683,7 +1705,7 @@ static int hv_24x7_cpu_hotplug_init(void)
+>>
+>>   static int hv_24x7_init(void)
+>>   {
+>> -	int r;
+>> +	int r, i = -1;
+>>   	unsigned long hret;
+>>   	struct hv_perf_caps caps;
+>>
+>> @@ -1727,8 +1749,18 @@ static int hv_24x7_init(void)
+>>
+>>   	/* init cpuhotplug */
+>>   	r = hv_24x7_cpu_hotplug_init();
+>> -	if (r)
+>> +	if (r) {
+>>   		pr_err("hv_24x7: CPU hotplug init failed\n");
+>> +	} else {
+>> +		/*
+>> +		 * Cpu hotplug init is successful, add the
+>> +		 * cpumask file as part of pmu attr group and
+>> +		 * assign it to very first NULL location.
+>> +		 */
+>> +		while (attr_groups[++i])
+>> +			/* nothing */;
+>> +		attr_groups[i] = &cpumask_attr_group;
+>> +	}
+>>
+>>   	r = perf_pmu_register(&h_24x7_pmu, h_24x7_pmu.name, -1);
+>>   	if (r)
+>> -- 
+>> 2.18.2
+>>
+
