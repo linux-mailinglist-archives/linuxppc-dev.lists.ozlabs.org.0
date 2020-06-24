@@ -1,70 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F642074E4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 15:51:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683DE207544
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 16:07:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sPgz5jR9zDqjd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 23:51:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sQ2F5P7wzDqlV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 00:07:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::344;
- helo=mail-wm1-x344.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tpf/dcq4; dkim-atps=neutral
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sPbd4xg1zDqjn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 23:47:41 +1000 (AEST)
-Received: by mail-wm1-x344.google.com with SMTP id g75so2378986wme.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 06:47:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=lHfk96B0+ihglAFlrm1FT6zDDI3xWocJzEidZ1THNGo=;
- b=tpf/dcq4PAzW3T54HKNZWmByjNJgL82k45veKEeoYnLdGkSoRmUdwKRSHvfBLDHOG9
- FEP1fA1ZoqptL6kpfglTgJE1SIQOQRVDZgGpauAwOTppto0B5vDaQsixBq+xxkWeqHtP
- xeENTkgnV8AZLBR/oycfN8ZuB3EZqbDUo3EhSS9zettNixoVNKhGPcHB21EvWNFgOb2+
- C5XEZ+6hCIoGhCf8PEWc4/12oNrfC/o2W5x9YkuNlp3lVoe6vwltOgSl2pFpjVjUoBT5
- zh0VaRnuyMm3j1ejVdDsdsnx+FI5hdkAHB5gVGJQTYaKnK7Lc5XwbCHBIxn2791yYQ8b
- MVRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=lHfk96B0+ihglAFlrm1FT6zDDI3xWocJzEidZ1THNGo=;
- b=EQFprI2+NGiJuZWnKQfJH3oT0Nq3eoL5PH2ih20K/nkKb6StFFRGcvvf2p2N/LnFy1
- p3ORcoU/w4HdGlLPP/kbCPbevE7dAqPcmOKhhVAQ3sabnzpeyJdKZkLJc9r4mvWfAdoZ
- DYC2Wh3vISqG4QoO09RFp/ZudM+37o0B3sjFkHhVEge+75tS242A2PLf8OnQeT12j/IK
- Qk+UEFjgaOV9d3p0CWFjuVSAk9FBqVt3rnbs/EhkX2wJcnZm90IlAyzyw/BiPOPcQXzd
- edbbT4XamG+GAeMSbqM3xh9bfxcq67EIhZ+/TMk2XjHFop+pYHiEE+N9AqljZ26u3SLO
- c8hQ==
-X-Gm-Message-State: AOAM532arquqNqbLz/LJTICCv0jtpW5IE4Y/rByBNmORx2Ju9WHsApZo
- occhpCbs1qWmhLQyeAj8cG/8GgnA
-X-Google-Smtp-Source: ABdhPJzx6K1kek4etHgRf3uNsg3tPsTriU2IDEDRlnOtTzqm2BUNEFWMTc0jAGsTCRsYQMA+ql0v5g==
-X-Received: by 2002:a1c:154:: with SMTP id 81mr29460084wmb.23.1593006456220;
- Wed, 24 Jun 2020 06:47:36 -0700 (PDT)
-Received: from bobo.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id h14sm11284298wrt.36.2020.06.24.06.47.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jun 2020 06:47:35 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pseries: Use doorbells even if XIVE is available
-Date: Wed, 24 Jun 2020 23:47:24 +1000
-Message-Id: <20200624134724.2343007-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sPxm3QWFzDqgf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 00:03:23 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05OE2svS002277; Wed, 24 Jun 2020 10:03:15 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31uwymjp78-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 10:03:13 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05OE0UJD027415;
+ Wed, 24 Jun 2020 14:03:10 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 31uus50qdy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 14:03:10 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05OE38g346334048
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Jun 2020 14:03:08 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7B32EA405B;
+ Wed, 24 Jun 2020 14:03:08 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A7223A4073;
+ Wed, 24 Jun 2020 14:03:05 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.199.41.174])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 24 Jun 2020 14:03:05 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Wed, 24 Jun 2020 19:33:04 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [PATCH 2/2] powerpc/papr_scm: Add support for fetching nvdimm
+ 'fuel-gauge' metric
+In-Reply-To: <20200623191410.GH3910394@iweiny-DESK2.sc.intel.com>
+References: <20200622042451.22448-1-vaibhav@linux.ibm.com>
+ <20200622042451.22448-3-vaibhav@linux.ibm.com>
+ <20200623191410.GH3910394@iweiny-DESK2.sc.intel.com>
+Date: Wed, 24 Jun 2020 19:33:03 +0530
+Message-ID: <87d05oo92g.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-24_07:2020-06-24,
+ 2020-06-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ cotscore=-2147483648 spamscore=0 malwarescore=0 adultscore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1015 phishscore=0
+ lowpriorityscore=0 suspectscore=22 bulkscore=0 mlxscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006240098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,82 +88,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anton Blanchard <anton@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KVM supports msgsndp in guests by trapping and emulating the
-instruction, so it was decided to always use XIVE for IPIs if it is
-available. However on PowerVM systems, msgsndp can be used and gives
-better performance. On large systems, high XIVE interrupt rates can
-have sub-linear scaling, and using msgsndp can reduce the load on
-the interrupt controller.
+Thanks for reviewing this patch Ira,
 
-So switch to using core local doorbells even if XIVE is available.
-This reduces performance for KVM guests with an SMT topology by
-about 50% for ping-pong context switching between SMT vCPUs. An
-option vector (or dt-cpu-ftrs) could be defined to disable msgsndp
-to get KVM performance back.
+My responses below:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/platforms/pseries/smp.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+Ira Weiny <ira.weiny@intel.com> writes:
 
-diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-index 6891710833be..a737a2f87c67 100644
---- a/arch/powerpc/platforms/pseries/smp.c
-+++ b/arch/powerpc/platforms/pseries/smp.c
-@@ -188,13 +188,14 @@ static int pseries_smp_prepare_cpu(int cpu)
- 	return 0;
- }
- 
-+static void  (*cause_ipi_offcore)(int cpu) __ro_after_init;
-+
- static void smp_pseries_cause_ipi(int cpu)
- {
--	/* POWER9 should not use this handler */
- 	if (doorbell_try_core_ipi(cpu))
- 		return;
- 
--	icp_ops->cause_ipi(cpu);
-+	cause_ipi_offcore(cpu);
- }
- 
- static int pseries_cause_nmi_ipi(int cpu)
-@@ -222,10 +223,7 @@ static __init void pSeries_smp_probe_xics(void)
- {
- 	xics_smp_probe();
- 
--	if (cpu_has_feature(CPU_FTR_DBELL) && !is_secure_guest())
--		smp_ops->cause_ipi = smp_pseries_cause_ipi;
--	else
--		smp_ops->cause_ipi = icp_ops->cause_ipi;
-+	smp_ops->cause_ipi = icp_ops->cause_ipi;
- }
- 
- static __init void pSeries_smp_probe(void)
-@@ -238,6 +236,18 @@ static __init void pSeries_smp_probe(void)
- 		xive_smp_probe();
- 	else
- 		pSeries_smp_probe_xics();
-+
-+	/*
-+	 * KVM emulates doorbells by reading the instruction, which
-+	 * can't be done if the guest is secure. If a secure guest
-+	 * runs under PowerVM, it could use msgsndp but would need a
-+	 * way to distinguish.
-+	 */
-+	if (cpu_has_feature(CPU_FTR_DBELL) &&
-+	    cpu_has_feature(CPU_FTR_SMT) && !is_secure_guest()) {
-+		cause_ipi_offcore = smp_ops->cause_ipi;
-+		smp_ops->cause_ipi = smp_pseries_cause_ipi;
-+	}
- }
- 
- static struct smp_ops_t pseries_smp_ops = {
+[snip]
+>> +static int papr_pdsm_fuel_gauge(struct papr_scm_priv *p,
+>> +				union nd_pdsm_payload *payload)
+>> +{
+>> +	int rc, size;
+>> +	struct papr_scm_perf_stat *stat;
+>> +	struct papr_scm_perf_stats *stats;
+>> +
+>> +	/* Silently fail if fetching performance metrics isn't  supported */
+>> +	if (!p->len_stat_buffer)
+>> +		return 0;
+>> +
+>> +	/* Allocate request buffer enough to hold single performance stat */
+>> +	size = sizeof(struct papr_scm_perf_stats) +
+>> +		sizeof(struct papr_scm_perf_stat);
+>> +
+>> +	stats = kzalloc(size, GFP_KERNEL);
+>> +	if (!stats)
+>> +		return -ENOMEM;
+>> +
+>> +	stat = &stats->scm_statistic[0];
+>> +	memcpy(&stat->statistic_id, "MemLife ", sizeof(stat->statistic_id));
+>> +	stat->statistic_value = 0;
+>> +
+>> +	/* Fetch the fuel gauge and populate it in payload */
+>> +	rc = drc_pmem_query_stats(p, stats, size, 1, NULL);
+>> +	if (!rc) {
+>
+> Always best to except the error case...
+>
+> 	if (rc) {
+> 		... print debuging from below...
+> 		goto free_stats;
+> 	}
+>
+Sure, I don't feel strongly about it. Will update this in v2.
+
+>> +		dev_dbg(&p->pdev->dev,
+>> +			"Fetched fuel-gauge %llu", stat->statistic_value);
+>> +		payload->health.extension_flags |=
+>> +			PDSM_DIMM_HEALTH_RUN_GAUGE_VALID;
+>> +		payload->health.dimm_fuel_gauge = stat->statistic_value;
+>> +
+>> +		rc = sizeof(struct nd_papr_pdsm_health);
+>> +	}
+>> +
+>
+> free_stats:
+>
+>> +	kfree(stats);
+>> +	return rc;
+>> +}
+>> +
+>>  /* Fetch the DIMM health info and populate it in provided package. */
+>>  static int papr_pdsm_health(struct papr_scm_priv *p,
+>>  			    union nd_pdsm_payload *payload)
+>> @@ -546,6 +585,14 @@ static int papr_pdsm_health(struct papr_scm_priv *p,
+>>  
+>>  	/* struct populated hence can release the mutex now */
+>>  	mutex_unlock(&p->health_mutex);
+>> +
+>> +	/* Populate the fuel gauge meter in the payload */
+>> +	rc = papr_pdsm_fuel_gauge(p, payload);
+>> +
+>> +	/* Error fetching fuel gauge is not fatal */
+>> +	if (rc < 0)
+>> +		dev_dbg(&p->pdev->dev, "Err(%d) fetching fuel gauge\n", rc);
+>
+> Why even return an error?  Just have *_fuel_guage() the print the debugging and
+> return void.
+>
+papr_pdsm_fuel_gauge uses the same signature as other PDSM service
+functions as described in pdsm_cmd_desc.service callback. Hence designed
+the function signature as such.
+
+>> +
+>>  	rc = sizeof(struct nd_papr_pdsm_health);
+>
+> You just override rc here anyway...
+>
+> Ira
+>
+>>  
+>>  out:
+>> -- 
+>> 2.26.2
+>> _______________________________________________
+>> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+>> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
 -- 
-2.23.0
-
+Cheers
+~ Vaibhav
