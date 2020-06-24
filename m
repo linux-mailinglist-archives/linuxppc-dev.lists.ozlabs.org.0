@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C268206C83
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 08:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA51206CAB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 08:37:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sD0N5smjzDqkb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 16:35:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sD3k75hxzDqg3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 16:37:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::842;
- helo=mail-qt1-x842.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::844;
+ helo=mail-qt1-x844.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JxQezt9w; dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
+ header.s=20161025 header.b=bXgvbwzE; dkim-atps=neutral
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
+ [IPv6:2607:f8b0:4864:20::844])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sCmY03H8zDqVq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 16:24:45 +1000 (AEST)
-Received: by mail-qt1-x842.google.com with SMTP id d27so866902qtg.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:24:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sCmf1ym7zDqVH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 16:24:49 +1000 (AEST)
+Received: by mail-qt1-x844.google.com with SMTP id g13so846487qtv.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:24:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=So2/vu+EL+OrMb5JxMT9QwjF5FYYejn+1+Omdy+0Eak=;
- b=JxQezt9w39vQyvQ+aIYqYkcus1CujftpADe9rWdSWPYhV+GhDXM3gbFdHVmrM5GYp1
- rxTyuH+nkU/bvUko8gHiWmBMaZeKVjDVyGCOvzm9/SAVpkKHipzQslsP70cphMuofofP
- fANMd87yQ2gNV6tkKsuwPBuLkIWuYKdJ1sDv3OV+rYByzE4xwpzPv/7DZwgtmCWyCprW
- FB60+ZQKFheHuQez/lGMVU/UjSWadkDv2Wr2QRyvB/Jid3LyhUc9NmZE7DM6gpdFoXuX
- iSNF/0ZyrjmF4yNXTYvWLmq7WpTSMEj0Q41WVoFGN+E+yWpJK2m2yRUajpGo4OsL8Kcp
- BF4g==
+ bh=IeFAcmlPcFBcL391CclzBcYNZ0kQLKelbZVf7iyXvbQ=;
+ b=bXgvbwzErNnmUR/gkVDFaUZUc5XjS262NZ0VGDMNQ+SbagcfH8Ax4pUrOVqJrrk8qf
+ a36EPVt0pmNbcxo0TVbFBFj65HbbQOwA9towtA4H99YYcwAk/q2cO39sN4L/ZjB6Vo++
+ hpkA1AK+yaRjFmMCe6i7JqBLDsyygG1EDhYv37rS8vUP5cnE+PD7y6HRC3wy0vBmkozb
+ 1iZYlHPtMBCni9V841A0MefnIEXWWhB+8bKO+T9yX4OEUspOpNdF3uGes1kIPF/etmvs
+ s85IQB04JVaN16wOeHsQ7jB7XYW90NAHGfhu/3q/PVVLLX3gvTgOHC/xoTCxB1G9MAG8
+ DSBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=So2/vu+EL+OrMb5JxMT9QwjF5FYYejn+1+Omdy+0Eak=;
- b=jZkkEHW7kSyTMwngkzz9GlGMPWQKTHzKMj7qyjiWv8u97nnB37H1J57DdzhdM5MCB1
- Vdz9j8P0p0l+avwYVJFmekq1855hcqczve2N8t4hTXNF2zxaroHrGRE0cDtalRYBw8am
- 84mZ4e7yFG/i2GmMWmq/H7DWB9HssDF9jv4Yx7f7287KTUQMdz2yF/tFtjIrq8UWx8/l
- 462+IMi1/tnvvHATxDUOQkXso71AL7Y2nJyKNzx3ARo7+deodrwjfTYvUkIX3VoujEj2
- AMAz3ocZdMqNwlhJLqSFHwksxbuisjo6P4IMVn6nlhcewT464jQUotYbwo2YM6u8xULp
- vFKg==
-X-Gm-Message-State: AOAM533mDLDwmRXkSvzX8REhVEUHbG26UQQF3/Xxv6lrbXpNG9njG/Ej
- kE4FaHq7iBXvCn3/hyQ/TXg=
-X-Google-Smtp-Source: ABdhPJwKQR+t/nHT6BBFIbQL5eKywbKwv9vmIT6XW3aFzkFZm7i4t9TMs0AVYUFbbfW2CFbrJrhSrA==
-X-Received: by 2002:ac8:4e8c:: with SMTP id 12mr25311594qtp.20.1592979882301; 
- Tue, 23 Jun 2020 23:24:42 -0700 (PDT)
+ bh=IeFAcmlPcFBcL391CclzBcYNZ0kQLKelbZVf7iyXvbQ=;
+ b=RfCsmyrZJvovsXm38/kd9jQk5rMZKbYmeiAnYoIKpNtcSOFkZdnNpu3u0noakpaB1I
+ nSX67ikR/PCmJQtYGP4SJy0FBN5zaKZbj9TvxcKrcvbFxprRBbtC5Ir47JnEsDWA49Rm
+ IDIJmyVx68XAoGrySBLDF00bef5Bd2uE6JAwJPxCf1opkDnlWsAAGArcKFX4y86cPq62
+ C3oN9cp3zM2Q22k6RiMn1C+rHqH2ycM0YODHvhllcVKExACRrKlefw+31dgYi59V8nBW
+ 4v60LeTGYvsiMJm04WC9JA1aAMQrVfjjVBxt9QvZ95EJIl3G6lulE7lqNzbDvHbq/o3J
+ oy9Q==
+X-Gm-Message-State: AOAM530FzzlXADgfXpOST/jKCwM250peaQBhLMRWcRlWP9+ylbHnbmaC
+ TEBC6+Yo8ShUNAkxt1wetlg=
+X-Google-Smtp-Source: ABdhPJzx2OQdVTNaGxL2nQJh7sRK2WoX08r1vEI6T415SLqFmTjUWi/FkyUAeMt1OIxexMFzviiSxA==
+X-Received: by 2002:ac8:33f8:: with SMTP id d53mr24168464qtb.80.1592979885652; 
+ Tue, 23 Jun 2020 23:24:45 -0700 (PDT)
 Received: from LeoBras.ibmuc.com (179-125-148-1.dynamic.desktop.com.br.
  [179.125.148.1])
- by smtp.gmail.com with ESMTPSA id n2sm2489727qtp.45.2020.06.23.23.24.38
+ by smtp.gmail.com with ESMTPSA id n2sm2489727qtp.45.2020.06.23.23.24.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jun 2020 23:24:41 -0700 (PDT)
+ Tue, 23 Jun 2020 23:24:45 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -65,10 +65,10 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Alexey Kardashevskiy <aik@ozlabs.ru>,
  Thiago Jung Bauermann <bauerman@linux.ibm.com>,
  Ram Pai <linuxram@us.ibm.com>
-Subject: [PATCH v2 5/6] powerpc/pseries/iommu: Make use of DDW even if it does
- not map the partition
-Date: Wed, 24 Jun 2020 03:24:10 -0300
-Message-Id: <20200624062411.367796-6-leobras.c@gmail.com>
+Subject: [PATCH v2 6/6] powerpc/pseries/iommu: Avoid errors when DDW starts at
+ 0x00
+Date: Wed, 24 Jun 2020 03:24:11 -0300
+Message-Id: <20200624062411.367796-7-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20200624062411.367796-1-leobras.c@gmail.com>
 References: <20200624062411.367796-1-leobras.c@gmail.com>
@@ -90,82 +90,71 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As of today, if a DDW is created and can't map the whole partition, it's
-removed and the default DMA window "ibm,dma-window" is used instead.
+As of today, enable_ddw() will return a non-null DMA address if the
+created DDW maps the whole partition. If the address is valid,
+iommu_bypass_supported_pSeriesLP() will consider iommu bypass enabled.
 
-Usually this DDW is bigger than the default DMA window, so it would be
-better to make use of it instead.
+This can cause some trouble if the DDW happens to start at 0x00.
+
+Instead if checking if the address is non-null, check directly if
+the DDW maps the whole partition, so it can bypass iommu.
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 28 +++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ arch/powerpc/platforms/pseries/iommu.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 4fcf00016fb1..2d217cda4075 100644
+index 2d217cda4075..967634a379b0 100644
 --- a/arch/powerpc/platforms/pseries/iommu.c
 +++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -685,7 +685,7 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
- 	struct iommu_table *tbl;
- 	struct device_node *dn, *pdn;
- 	struct pci_dn *ppci;
--	const __be32 *dma_window = NULL;
-+	const __be32 *dma_window = NULL, *alt_dma_window = NULL;
- 
- 	dn = pci_bus_to_OF_node(bus);
- 
-@@ -699,8 +699,13 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
- 			break;
- 	}
- 
-+	/* If there is a DDW available, use it instead */
-+	alt_dma_window = of_get_property(pdn, DIRECT64_PROPNAME, NULL);
-+	if (alt_dma_window)
-+		dma_window = alt_dma_window;
-+
- 	if (dma_window == NULL) {
--		pr_debug("  no ibm,dma-window property !\n");
-+		pr_debug("  no ibm,dma-window nor linux,direct64-ddr-window-info property !\n");
- 		return;
- 	}
- 
-@@ -1166,16 +1171,19 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 			  query.page_size);
- 		goto out_failed;
- 	}
-+
- 	/* verify the window * number of ptes will map the partition */
--	/* check largest block * page size > max memory hotplug addr */
- 	max_addr = ddw_memory_hotplug_max();
- 	if (query.largest_available_block < (max_addr >> page_shift)) {
--		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %llu "
--			  "%llu-sized pages\n", max_addr,  query.largest_available_block,
--			  1ULL << page_shift);
--		goto out_failed;
-+		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %llu %llu-sized pages\n",
-+			max_addr, query.largest_available_block,
-+			1ULL << page_shift);
-+
-+		len = order_base_2(query.largest_available_block << page_shift);
-+	} else {
-+		len = order_base_2(max_addr);
- 	}
--	len = order_base_2(max_addr);
-+
- 	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
- 	if (!win64) {
- 		dev_info(&dev->dev,
-@@ -1229,7 +1237,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+@@ -1078,7 +1078,8 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+  *
+  * returns the dma offset for use by the direct mapped DMA code.
+  */
+-static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
++static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn,
++		      bool *maps_partition)
+ {
+ 	int len, ret;
+ 	struct ddw_query_response query;
+@@ -1237,9 +1238,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
  	list_add(&window->list, &direct_window_list);
  	spin_unlock(&direct_window_list_lock);
  
--	dma_addr = be64_to_cpu(ddwprop->dma_base);
-+	/* Only returns the dma_addr if DDW maps the whole partition */
-+	if (len == order_base_2(max_addr))
-+		dma_addr = be64_to_cpu(ddwprop->dma_base);
+-	/* Only returns the dma_addr if DDW maps the whole partition */
+ 	if (len == order_base_2(max_addr))
+-		dma_addr = be64_to_cpu(ddwprop->dma_base);
++		*maps_partition = true;
++	dma_addr = be64_to_cpu(ddwprop->dma_base);
  	goto out_unlock;
  
  out_free_window:
+@@ -1324,6 +1325,7 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
+ {
+ 	struct device_node *dn = pci_device_to_OF_node(pdev), *pdn;
+ 	const __be32 *dma_window = NULL;
++	bool ret = false;
+ 
+ 	/* only attempt to use a new window if 64-bit DMA is requested */
+ 	if (dma_mask < DMA_BIT_MASK(64))
+@@ -1344,13 +1346,10 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
+ 			break;
+ 	}
+ 
+-	if (pdn && PCI_DN(pdn)) {
+-		pdev->dev.archdata.dma_offset = enable_ddw(pdev, pdn);
+-		if (pdev->dev.archdata.dma_offset)
+-			return true;
+-	}
++	if (pdn && PCI_DN(pdn))
++		pdev->dev.archdata.dma_offset = enable_ddw(pdev, pdn, &ret);
+ 
+-	return false;
++	return ret;
+ }
+ 
+ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
 -- 
 2.25.4
 
