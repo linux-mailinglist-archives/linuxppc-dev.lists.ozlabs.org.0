@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E9A207E36
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 23:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1082207E6D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 23:24:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sbVF39tLzDqk9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 07:13:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sbkd0CjYzDqTp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 07:24:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=flex--brendanhiggins.bounces.google.com
  (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com;
- envelope-from=3z77zxg4kalarhudtqdxywwydiweewbu.sec@flex--brendanhiggins.bounces.google.com;
+ envelope-from=3ab7zxg4kalitjwfvsfzayyafkyggydw.uge@flex--brendanhiggins.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=Ht//4dFC; dkim-atps=neutral
+ header.s=20161025 header.b=MyLNvjH4; dkim-atps=neutral
 Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com
  [IPv6:2607:f8b0:4864:20::b49])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sb8Y37f7zDqPj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 06:58:17 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id m63so3533091ybc.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 13:58:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sb8b6jjHzDqPj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 06:58:20 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id z7so3619889ybz.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 13:58:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=0vYZtvNiMw5LFIFKa+iHi1yqO9mFLTJ7LRF4fjft6YQ=;
- b=Ht//4dFCRi5Ycs+UMuxNJ7MV/84NLNKbMMrbLHuEjXQGLBEQPIpFzadQ2ao7vcuRer
- GOsbiPE75wfUufWuNvRORj1w7XTppFNHZFb/w9vysRIKLTiJA+xHpDaE+N3XmZZUH7MH
- 7lhF9i0xb8VvBZ80IiWVYGeXmeCW1iu7iamWPbdRq557jmWCZkqp+qV8y6jB2OCJy6VA
- GRc001gVOpxxqc8MYG1JaA8vAVmiGkBrQE6r3W6gpRO7/UpoQZRQV1myeC7/+NUvoKC7
- jr4U5f2PnAS3X2qv6X8g99vU6G58oTPXti+dwKaI8fPvVdUIML6AitHtRQ3va9rivd/F
- VRew==
+ :cc; bh=hVa5/5YjHA4HA55L6gqApWSV/fHdhhYIjiCaFnqYV3g=;
+ b=MyLNvjH4BaSpMVt4m7OL8w8Kh4XLox5uMmU6/Z0ItdZP4yMrnH98CNwuV3QeifZL92
+ 3Y8tuGJwfcNuWZHxP1UkeqK/xJb1NRFlgtf+ZsZAZxk1HsrR1w7SdO7zb9wvBE1lihXo
+ /gM/39u4cbejNpzreOPpLQs+1yfAKtUU1a9px0EyuTVEN0JzHssKb05XMKZvWoaTlB2G
+ t5NtebZVftxPJvJkT4/iXrbXs6qVYFATI3eRi67iQDiHIAzrHfb/09cLTk76ga0CyglA
+ oHFKXvdwJWazciq0ZtyNXvUR8S40GGOhq2T3LzC+e+3smItGPZh/hoBFWoC5eBtta1xc
+ lXFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:in-reply-to:message-id:mime-version
  :references:subject:from:to:cc;
- bh=0vYZtvNiMw5LFIFKa+iHi1yqO9mFLTJ7LRF4fjft6YQ=;
- b=mPhDWmmh4iUVYc+T1KAV0E1VPTKdbhpTP+bhVDJEgTCji1f15bZwccJ5tY/i4RVe5v
- lzOCQQA/fF1rbOxpciyrI8yQO3ZuGyt0aNZXNz60mEH7kLYoBEIE7vlIUAZVhS7oUm9R
- escnyQtrg+6eNtmakDib+JfFDdS405+ktvYfECX2tM3cfnjrHYl/rBQER2UXxKoGtndo
- Mj2/qaevT5t0mfJJfYLWTb80CkjA2Dm25AzojKYmu3wn3LFVx8JwG14COk4uTu9aw5PL
- KRt12S/mXwBgAFo5m5M6k8Z4Zpuwv/9qNNgdUy8EWhYJad/0D6/Of3JVOxasdJ01A1s+
- VsMg==
-X-Gm-Message-State: AOAM533BqjXddWGriv5uADMII/x6elb+9/bGMdBSBLnjxcKBdKlpowhZ
- nlhwLZKVFMUcqh4hhRIiPIxURXZk49th9Fs7Q2o9HA==
-X-Google-Smtp-Source: ABdhPJwOWDerhRlyEc+SD7GJHD/aFxbe2dcsXrDdYmbTX35zuFg+yS8T/ZZb/3aA+5pG2lFXNE77oD59Izt1xQSc+67yag==
-X-Received: by 2002:a25:8403:: with SMTP id u3mr47227886ybk.276.1593032295892; 
- Wed, 24 Jun 2020 13:58:15 -0700 (PDT)
-Date: Wed, 24 Jun 2020 13:55:43 -0700
+ bh=hVa5/5YjHA4HA55L6gqApWSV/fHdhhYIjiCaFnqYV3g=;
+ b=bL1Cgh6wyFIa++iYz+rJ4rIgPoAuVX7eTQSFVJKvlEHK0wSyLqzEdoUltbVtUvAhVV
+ C3ZApW20F4wxD7EEy494QI6Jg7d0NH+wUwHns0EhvT/TIcI/3v0wbhyZbLO77liHt5jF
+ ekLpCtpNKoxoVVvPZZgtv9G+IIWgqMCtLKDz/vZNOpqEGmmq1LEEhaWUMlYWgtvQWl5+
+ mLPu07PggWKFMJLyvB5PZf48AMULyuntRVBG9FX4z0P55XC8fYEQQYmGWRBqkB/m3ZDW
+ yv2boDwvQ+tuA/Yy+R08IYtehpvLNkjLX5wzDn8qfFm6A2o8En1Y2bvqex87LLMGeJSz
+ 0taA==
+X-Gm-Message-State: AOAM5310qvidr3B9TVzZiXpE7PznjqrzdJFrkkY50m7m1vv+mBzUFuB3
+ ei1+vcfToLHV++QIWuRb++IwgQpWjMT9g7BQV7vimg==
+X-Google-Smtp-Source: ABdhPJzg+Au4umwjyLRblCRE3PuIJNmc8kxElVJsT/B0YDcGaL41JkWSqA7GJtKTxCWTEEXd8EUt+BFhsEEeVgNcGl0dpQ==
+X-Received: by 2002:a25:73c3:: with SMTP id
+ o186mr43621885ybc.230.1593032297774; 
+ Wed, 24 Jun 2020 13:58:17 -0700 (PDT)
+Date: Wed, 24 Jun 2020 13:55:44 -0700
 In-Reply-To: <20200624205550.215599-1-brendanhiggins@google.com>
-Message-Id: <20200624205550.215599-5-brendanhiggins@google.com>
+Message-Id: <20200624205550.215599-6-brendanhiggins@google.com>
 Mime-Version: 1.0
 References: <20200624205550.215599-1-brendanhiggins@google.com>
 X-Mailer: git-send-email 2.27.0.212.ge8ba1cc988-goog
-Subject: [PATCH v4 04/11] arch: powerpc: add linker section for KUnit test
- suites
+Subject: [PATCH v4 05/11] arch: um: add linker section for KUnit test suites
 From: Brendan Higgins <brendanhiggins@google.com>
 To: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com, 
  arnd@arndb.de, keescook@chromium.org, skhan@linuxfoundation.org, 
@@ -92,31 +92,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a linker section to powerpc where KUnit can put references to its test
+Add a linker section to UML where KUnit can put references to its test
 suites. This patch is an early step in transitioning to dispatching all
 KUnit tests from a centralized executor rather than having each as its
 own separate late_initcall.
 
 Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 4 ++++
+ arch/um/include/asm/common.lds.S | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 326e113d2e456..0cc97dbfde0ad 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -202,6 +202,10 @@ SECTIONS
- 		CON_INITCALL
- 	}
+diff --git a/arch/um/include/asm/common.lds.S b/arch/um/include/asm/common.lds.S
+index eca6c452a41bd..9a9c97f45694c 100644
+--- a/arch/um/include/asm/common.lds.S
++++ b/arch/um/include/asm/common.lds.S
+@@ -52,6 +52,10 @@
+ 	CON_INITCALL
+   }
  
-+	.kunit_test_suites : {
-+		KUNIT_TEST_SUITES
-+	}
++  .kunit_test_suites : {
++	KUNIT_TEST_SUITES
++  }
 +
- 	. = ALIGN(8);
- 	__ftr_fixup : AT(ADDR(__ftr_fixup) - LOAD_OFFSET) {
- 		__start___ftr_fixup = .;
+   .exitcall : {
+ 	__exitcall_begin = .;
+ 	*(.exitcall.exit)
 -- 
 2.27.0.212.ge8ba1cc988-goog
 
