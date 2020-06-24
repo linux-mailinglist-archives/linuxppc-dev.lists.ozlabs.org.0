@@ -2,74 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D6420778D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 17:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E914F2077BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 17:40:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sRzd52LxzDqdR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 01:35:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sS696zHNzDqbp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 01:40:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::444;
- helo=mail-wr1-x444.google.com; envelope-from=qperret@google.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=NdGWSeUR; dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=SjlcCYhb; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sRxH1gVdzDqkj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 01:33:06 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id a6so2735473wrm.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 08:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=tjbKj2JJLg9M2F9CwUzFaqxTadc+FoDJkeC9qG6WPMU=;
- b=NdGWSeURe89L687lK6viNqICXEaDJjfaGLPwujuLMFiZJ1aDEkLa12K2oxn2S2WIEs
- hkB1pY5if8CE4WN9vmXx0Rt76OtQhGpcgWLvBb3iCCJ+YzMa0+YAGQrTgNniCwPaxZzD
- jLe8XHBoU9Ood6I/yiYOC9k11zyPlMZk0dUuHGDNPIwkrxoAHyHWrD4UMCeRIoTCkV1w
- o8esn5pXHLSpajx8K6CJdbsk9mY5zOIDBMYBBT8F6zfWUR3it3aKHnDkkm8x688uoyBW
- Fbr4PQoeJ2PrJiLw0o2n+X26nm/5PKbIN4tjB76F5y9DL3ehSR9YWAes/eksf5KbWiQ5
- bL2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=tjbKj2JJLg9M2F9CwUzFaqxTadc+FoDJkeC9qG6WPMU=;
- b=huGbS9gpQWEJsfl+gkBq6t/Y0gLRpTy/L/HSqg4PbdN2bHmJpbXlcdHKRyt47wvaMC
- 7484FcItfv7BNHxAqwmIeReSuba+95SaBQrFpQ5m9gzZ0zI/G66+pmLul3zr4tIAZTKi
- BxzEGoeAWeHhkgRMiiSZ+PuitP9dc+JmKeXam0nsKlDzmHY+Uv6qwQMMOgCh0nVfFLbQ
- 1IPWWh0z+VxNOHFDVWsIDyuHeiSyBi4PvpAamJFHrQPdX97f7rXHaeR9oOmEftWPRu5v
- g5kE2ChNZnpopz+9+E3eZckbXrxEq0S8Wel51eb9/n5lTprYgAmATfQsx28hdHcxkgJb
- kB9Q==
-X-Gm-Message-State: AOAM530yyq7ITPxLM+Nf0lgZA7nPKmVc5V/5K4N04lstL6CxHC8HEwZp
- t5geP1dWJTK1s0IDDlgtpihWdQ==
-X-Google-Smtp-Source: ABdhPJzSLr689rNCk/afvTQhZdA+AJuwcms9tOdw/Vdl7nFAHHPTyyLyGmG/dH9YWD0knsSg2tqB1A==
-X-Received: by 2002:a5d:55cf:: with SMTP id i15mr20640246wrw.204.1593012783030; 
- Wed, 24 Jun 2020 08:33:03 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
- by smtp.gmail.com with ESMTPSA id z6sm4359909wmf.33.2020.06.24.08.33.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jun 2020 08:33:02 -0700 (PDT)
-Date: Wed, 24 Jun 2020 16:32:59 +0100
-From: Quentin Perret <qperret@google.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2 2/2] cpufreq: Specify default governor on command line
-Message-ID: <20200624153259.GA2844@google.com>
-References: <20200623142138.209513-1-qperret@google.com>
- <20200623142138.209513-3-qperret@google.com>
- <20200624055023.xofefhohf7wifme5@vireshk-i7>
- <CAJZ5v0ja_rM7i=psW1HRyzEpW=8QwP2u9p+ihN3FS8_53bbxTQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0ja_rM7i=psW1HRyzEpW=8QwP2u9p+ihN3FS8_53bbxTQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sS3j1lDjzDqHw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 01:38:40 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 738D7206FA;
+ Wed, 24 Jun 2020 15:38:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1593013118;
+ bh=k66UnNbdyPj+LwX7I2nsf9Uvi/hIVtOAiKbZmkacQPs=;
+ h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+ b=SjlcCYhbgYzIzfrM1ot62LZQoDUuGcOKV41ckwqgbdgvZsFRh3GPT84jLdJBra0lb
+ zJlkt6b1uDO+GHMVO8rziQOOOcvfX5UDYws3hVF+hkjIEBtu7pamSSr8uFwNBFX1Gi
+ 5OrmjQYl8pc+GTzBPfWWL1Ul1ZEboAmIwOX7ZrCc=
+Date: Wed, 24 Jun 2020 16:38:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: nicoleotsuka@gmail.com, festevam@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, lgirdwood@gmail.com,
+ timur@kernel.org, tiwai@suse.com, perex@perex.cz,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, linux-kernel@vger.kernel.org
+In-Reply-To: <1592895167-30483-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1592895167-30483-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 1/2] ASoC: fsl-asoc-card: Add WM8524 support
+Message-Id: <159301311578.33465.8345204179048045259.b4-ty@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,49 +55,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>,
- "Cc: Android Kernel" <kernel-team@android.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Linux PM <linux-pm@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, adharmap@codeaurora.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Todd Kjos <tkjos@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wednesday 24 Jun 2020 at 14:51:04 (+0200), Rafael J. Wysocki wrote:
-> On Wed, Jun 24, 2020 at 7:50 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> > > @@ -2789,7 +2796,13 @@ static int __init cpufreq_core_init(void)
-> > >       cpufreq_global_kobject = kobject_create_and_add("cpufreq", &cpu_subsys.dev_root->kobj);
-> > >       BUG_ON(!cpufreq_global_kobject);
-> > >
-> > > +     mutex_lock(&cpufreq_governor_mutex);
-> > > +     if (!default_governor)
-> > > +             default_governor = cpufreq_default_governor();
-> > > +     mutex_unlock(&cpufreq_governor_mutex);
-> >
-> > I don't think locking is required here at core-initcall level.
-> 
-> It isn't necessary AFAICS, but it may as well be regarded as
-> annotation (kind of instead of having a comment explaining why it need
-> not be used).
+On Tue, 23 Jun 2020 14:52:46 +0800, Shengjiu Wang wrote:
+> WM8524 only supports playback mode, and only works at
+> slave mode.
 
-Right, but I must admit that, looking at this more, I'm getting a bit
-confused with the overall locking for governors :/
+Applied to
 
-When in cpufreq_init_policy() we find a governor using
-find_governor(policy->last_governor), what guarantees this governor is
-not concurrently unregistered? That is, what guarantees this governor
-doesn't go away between that find_governor() call, and the subsequent
-call to try_module_get() in cpufreq_set_policy() down the line?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Can we somewhat assume that whatever governor is referred to by
-policy->last_governor will have a non-null refcount? Or are the
-cpufreq_online() and cpufreq_unregister_governor() path mutually
-exclusive? Or is there something else?
+Thanks!
+
+[1/2] ASoC: fsl-asoc-card: Add WM8524 support
+      commit: 3cd990267401fc7d0b222fc81f637e75e46967e0
+[2/2] ASoC: bindings: fsl-asoc-card: Add compatible string for wm8524
+      commit: 3b3372fa65bab619f99bcfe272e92fb6faa07219
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Quentin
+Mark
