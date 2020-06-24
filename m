@@ -1,68 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4790B206F9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 11:04:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD137207011
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 11:31:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sHJC08wDzDqg8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 19:03:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sHvt6rp5zDqg5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 19:31:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sHG01kBFzDqdm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 19:02:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=Kqwlt0YK5ZzwRKurTo/3Fb5xM4McmM+yZ9C+08e1t40=; b=WSHIdNQc+BAGqmUZoQB+uueZnP
- PLNSBCIqCpGPtuIxCSQmGh1jNAvfsc5iC4X6Ybu9hWXJ1p9pr9gsurxlCtWAAwdzg2MJ5xzJGlXQ0
- 7lP36Ehnh04q1D9Z39n1/AVShG43lbLoJMXz9Kq8ZiW5vBFjd8lOE+1KUt3P1cE6mZMRoHkSsNf0Q
- L4NErIZVtVE9xDRBgG0sn4OaVrGUYzdlbogo9opu6RLIt/Zi7yqTHh5fYjsoPtPEJSGy9zGXnPQcu
- QQDHsdh5ZC9u2p994hAJbx9fR0lkHeXMl/ZzeDHTihuFC9furK7038x7cAlOUGCSEC+9ufX0tPMyH
- f4vbX2bA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jo1Gm-0001B6-LM; Wed, 24 Jun 2020 09:00:36 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 1EEA030377D;
- Wed, 24 Jun 2020 11:00:33 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 0B3712031510A; Wed, 24 Jun 2020 11:00:33 +0200 (CEST)
-Date: Wed, 24 Jun 2020 11:00:33 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Marco Elver <elver@google.com>
-Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
- per-cpu variables
-Message-ID: <20200624090033.GD4800@hirez.programming.kicks-ass.net>
-References: <20200623083645.277342609@infradead.org>
- <20200623083721.512673481@infradead.org>
- <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
- <20200623152450.GM4817@hirez.programming.kicks-ass.net>
- <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
- <20200623163730.GA4800@hirez.programming.kicks-ass.net>
- <20200623175957.GA106514@elver.google.com>
- <20200623181232.GB4800@hirez.programming.kicks-ass.net>
- <20200623202404.GE2483@worktop.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200623202404.GE2483@worktop.programming.kicks-ass.net>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sHsZ5BwhzDqc2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 19:29:22 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05O934mM190109; Wed, 24 Jun 2020 05:29:13 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31uwysj68t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 05:29:13 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05O94VCs195280;
+ Wed, 24 Jun 2020 05:29:13 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31uwysj668-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 05:29:12 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05O9Q0lP028374;
+ Wed, 24 Jun 2020 09:29:09 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06fra.de.ibm.com with ESMTP id 31uuspr742-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 09:29:08 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05O9T6Xj57933914
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Jun 2020 09:29:06 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 62F6652059;
+ Wed, 24 Jun 2020 09:29:06 +0000 (GMT)
+Received: from srikart450.in.ibm.com (unknown [9.102.29.235])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A66C852057;
+ Wed, 24 Jun 2020 09:29:01 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v5 0/3] Offline memoryless cpuless node 0
+Date: Wed, 24 Jun 2020 14:58:43 +0530
+Message-Id: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-24_04:2020-06-24,
+ 2020-06-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ cotscore=-2147483648 mlxlogscore=999 spamscore=0 adultscore=0
+ clxscore=1011 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006240067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,123 +83,256 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- bigeasy@linutronix.de, x86@kernel.org, heiko.carstens@de.ibm.com,
- linux-kernel@vger.kernel.org, rostedt@goodmis.org, davem@davemloft.net,
- "Ahmed S. Darwish" <a.darwish@linutronix.de>, sparclinux@vger.kernel.org,
- linux@armlinux.org.uk, tglx@linutronix.de, will@kernel.org, mingo@kernel.org
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 23, 2020 at 10:24:04PM +0200, Peter Zijlstra wrote:
-> On Tue, Jun 23, 2020 at 08:12:32PM +0200, Peter Zijlstra wrote:
-> > Fair enough; I'll rip it all up and boot a KCSAN kernel, see what if
-> > anything happens.
-> 
-> OK, so the below patch doesn't seem to have any nasty recursion issues
-> here. The only 'problem' is that lockdep now sees report_lock can cause
-> deadlocks.
-> 
-> It is completely right about it too, but I don't suspect there's much we
-> can do about it, it's pretty much the standard printk() with scheduler
-> locks held report.
+Changelog v4:->v5:
+- rebased to v5.8-rc2
+link v4: http://lore.kernel.org/lkml/20200512132937.19295-1-srikar@linux.vnet.ibm.com/t/#u
 
-So I've been getting tons and tons of this:
+Changelog v3:->v4:
+- Resolved comments from Christopher.
+Link v3: http://lore.kernel.org/lkml/20200501031128.19584-1-srikar@linux.vnet.ibm.com/t/#u
 
-[   60.471348] ==================================================================
-[   60.479427] BUG: KCSAN: data-race in __rcu_read_lock / __rcu_read_unlock
-[   60.486909]
-[   60.488572] write (marked) to 0xffff88840fff1cf0 of 4 bytes by interrupt on cpu 1:
-[   60.497026]  __rcu_read_lock+0x37/0x60
-[   60.501214]  cpuacct_account_field+0x1b/0x170
-[   60.506081]  task_group_account_field+0x32/0x160
-[   60.511238]  account_system_time+0xe6/0x110
-[   60.515912]  update_process_times+0x1d/0xd0
-[   60.520585]  tick_sched_timer+0xfc/0x180
-[   60.524967]  __hrtimer_run_queues+0x271/0x440
-[   60.529832]  hrtimer_interrupt+0x222/0x670
-[   60.534409]  __sysvec_apic_timer_interrupt+0xb3/0x1a0
-[   60.540052]  asm_call_on_stack+0x12/0x20
-[   60.544434]  sysvec_apic_timer_interrupt+0xba/0x130
-[   60.549882]  asm_sysvec_apic_timer_interrupt+0x12/0x20
-[   60.555621]  delay_tsc+0x7d/0xe0
-[   60.559226]  kcsan_setup_watchpoint+0x292/0x4e0
-[   60.564284]  __rcu_read_unlock+0x73/0x2c0
-[   60.568763]  __unlock_page_memcg+0xda/0xf0
-[   60.573338]  unlock_page_memcg+0x32/0x40
-[   60.577721]  page_remove_rmap+0x5c/0x200
-[   60.582104]  unmap_page_range+0x83c/0xc10
-[   60.586582]  unmap_single_vma+0xb0/0x150
-[   60.590963]  unmap_vmas+0x81/0xe0
-[   60.594663]  exit_mmap+0x135/0x2b0
-[   60.598464]  __mmput+0x21/0x150
-[   60.601970]  mmput+0x2a/0x30
-[   60.605176]  exit_mm+0x2fc/0x350
-[   60.608780]  do_exit+0x372/0xff0
-[   60.612385]  do_group_exit+0x139/0x140
-[   60.616571]  __do_sys_exit_group+0xb/0x10
-[   60.621048]  __se_sys_exit_group+0xa/0x10
-[   60.625524]  __x64_sys_exit_group+0x1b/0x20
-[   60.630189]  do_syscall_64+0x6c/0xe0
-[   60.634182]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[   60.639820]
-[   60.641485] read to 0xffff88840fff1cf0 of 4 bytes by task 2430 on cpu 1:
-[   60.648969]  __rcu_read_unlock+0x73/0x2c0
-[   60.653446]  __unlock_page_memcg+0xda/0xf0
-[   60.658019]  unlock_page_memcg+0x32/0x40
-[   60.662400]  page_remove_rmap+0x5c/0x200
-[   60.666782]  unmap_page_range+0x83c/0xc10
-[   60.671259]  unmap_single_vma+0xb0/0x150
-[   60.675641]  unmap_vmas+0x81/0xe0
-[   60.679341]  exit_mmap+0x135/0x2b0
-[   60.683141]  __mmput+0x21/0x150
-[   60.686647]  mmput+0x2a/0x30
-[   60.689853]  exit_mm+0x2fc/0x350
-[   60.693458]  do_exit+0x372/0xff0
-[   60.697062]  do_group_exit+0x139/0x140
-[   60.701248]  __do_sys_exit_group+0xb/0x10
-[   60.705724]  __se_sys_exit_group+0xa/0x10
-[   60.710201]  __x64_sys_exit_group+0x1b/0x20
-[   60.714872]  do_syscall_64+0x6c/0xe0
-[   60.718864]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[   60.724503]
-[   60.726156] Reported by Kernel Concurrency Sanitizer on:
-[   60.732089] CPU: 1 PID: 2430 Comm: sshd Not tainted 5.8.0-rc2-00186-gb4ee11fe08b3-dirty #303
-[   60.741510] Hardware name: Intel Corporation S2600GZ/S2600GZ, BIOS SE5C600.86B.02.02.0002.122320131210 12/23/2013
-[   60.752957] ==================================================================
+Changelog v2:->v3:
+- Resolved comments from Gautham.
+Link v2: https://lore.kernel.org/linuxppc-dev/20200428093836.27190-1-srikar@linux.vnet.ibm.com/t/#u
 
-And I figured a quick way to get rid of that would be something like the
-below, seeing how volatile gets auto annotated... but that doesn't seem
-to actually work.
+Changelog v1:->v2:
+- Rebased to v5.7-rc3
+- Updated the changelog.
+Link v1: https://lore.kernel.org/linuxppc-dev/20200311110237.5731-1-srikar@linux.vnet.ibm.com/t/#u
 
-What am I missing?
+Linux kernel configured with CONFIG_NUMA on a system with multiple
+possible nodes, marks node 0 as online at boot. However in practice,
+there are systems which have node 0 as memoryless and cpuless.
 
+This can cause
+1. numa_balancing to be enabled on systems with only one online node.
+2. Existence of dummy (cpuless and memoryless) node which can confuse
+users/scripts looking at output of lscpu / numactl.
 
+This patchset wants to correct this anomaly.
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 352223664ebd..b08861118e1a 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -351,17 +351,17 @@ static int rcu_preempt_blocked_readers_cgp(struct rcu_node *rnp)
- 
- static void rcu_preempt_read_enter(void)
- {
--	current->rcu_read_lock_nesting++;
-+	(*(volatile int *)&current->rcu_read_lock_nesting)++;
- }
- 
- static int rcu_preempt_read_exit(void)
- {
--	return --current->rcu_read_lock_nesting;
-+	return --(*(volatile int *)&current->rcu_read_lock_nesting);
- }
- 
- static void rcu_preempt_depth_set(int val)
- {
--	current->rcu_read_lock_nesting = val;
-+	WRITE_ONCE(current->rcu_read_lock_nesting, val);
- }
- 
- /*
+This should only affect systems that have CONFIG_MEMORYLESS_NODES.
+Currently there are only 2 architectures ia64 and powerpc that have this
+config.
+
+Note: Patch 3 in this patch series depends on patches 1 and 2.
+Without patches 1 and 2, patch 3 might crash powerpc.
+
+v5.8-rc2
+ available: 2 nodes (0,2)
+ node 0 cpus:
+ node 0 size: 0 MB
+ node 0 free: 0 MB
+ node 2 cpus: 0 1 2 3 4 5 6 7
+ node 2 size: 32625 MB
+ node 2 free: 31490 MB
+ node distances:
+ node   0   2
+   0:  10  20
+   2:  20  10
+
+proc and sys files
+------------------
+ /sys/devices/system/node/online:            0,2
+ /proc/sys/kernel/numa_balancing:            1
+ /sys/devices/system/node/has_cpu:           2
+ /sys/devices/system/node/has_memory:        2
+ /sys/devices/system/node/has_normal_memory: 2
+ /sys/devices/system/node/possible:          0-31
+
+v5.8-rc2 + patches
+------------------
+ available: 1 nodes (2)
+ node 2 cpus: 0 1 2 3 4 5 6 7
+ node 2 size: 32625 MB
+ node 2 free: 31487 MB
+ node distances:
+ node   2
+   2:  10
+
+proc and sys files
+------------------
+/sys/devices/system/node/online:            2
+/proc/sys/kernel/numa_balancing:            0
+/sys/devices/system/node/has_cpu:           2
+/sys/devices/system/node/has_memory:        2
+/sys/devices/system/node/has_normal_memory: 2
+/sys/devices/system/node/possible:          0-31
+
+1. User space applications like Numactl, lscpu, that parse the sysfs tend to
+believe there is an extra online node. This tends to confuse users and
+applications. Other user space applications start believing that system was
+not able to use all the resources (i.e missing resources) or the system was
+not setup correctly.
+
+2. Also existence of dummy node also leads to inconsistent information. The
+number of online nodes is inconsistent with the information in the
+device-tree and resource-dump
+
+3. When the dummy node is present, single node non-Numa systems end up showing
+up as NUMA systems and numa_balancing gets enabled. This will mean we take
+the hit from the unnecessary numa hinting faults.
+
+On a machine with just one node with node number not being 0,
+the current setup will end up showing 2 online nodes. And when there are
+more than one online nodes, numa_balancing gets enabled.
+
+Without patch
+$ grep numa /proc/vmstat
+numa_hit 95179
+numa_miss 0
+numa_foreign 0
+numa_interleave 3764
+numa_local 95179
+numa_other 0
+numa_pte_updates 1206973                 <----------
+numa_huge_pte_updates 4654                 <----------
+numa_hint_faults 19560                 <----------
+numa_hint_faults_local 19560                 <----------
+numa_pages_migrated 0
+
+With patch
+$ grep numa /proc/vmstat
+numa_hit 322338756
+numa_miss 0
+numa_foreign 0
+numa_interleave 3790
+numa_local 322338756
+numa_other 0
+numa_pte_updates 0                 <----------
+numa_huge_pte_updates 0                 <----------
+numa_hint_faults 0                 <----------
+numa_hint_faults_local 0                 <----------
+numa_pages_migrated 0
+
+Here are 2 sample numa programs.
+
+numa01.sh is a set of 2 process each running threads as many as number of
+cpus;
+each thread doing 50 loops on 3GB process shared memory operations.
+
+numa02.sh is a single process with threads as many as number of cpus;
+each thread doing 800 loops on 32MB thread local memory operations.
+
+Testcase         Time:  Min      Max      Avg      StdDev
+./numa01.sh      Real:  149.62   149.66   149.64   0.02
+./numa01.sh      Sys:   3.21     3.71     3.46     0.25
+./numa01.sh      User:  4755.13  4758.15  4756.64  1.51
+./numa02.sh      Real:  24.98    25.02    25.00    0.02
+./numa02.sh      Sys:   0.51     0.59     0.55     0.04
+./numa02.sh      User:  790.28   790.88   790.58   0.30
+
+Testcase         Time:  Min      Max      Avg      StdDev  %Change
+./numa01.sh      Real:  149.44   149.46   149.45   0.01    0.127133%
+./numa01.sh      Sys:   0.71     0.89     0.80     0.09    332.5%
+./numa01.sh      User:  4754.19  4754.48  4754.33  0.15    0.0485873%
+./numa02.sh      Real:  24.97    24.98    24.98    0.00    0.0800641%
+./numa02.sh      Sys:   0.26     0.41     0.33     0.08    66.6667%
+./numa02.sh      User:  789.75   790.28   790.01   0.27    0.072151%
+
+numa01.sh
+param                   no_patch    with_patch  %Change
+-----                   ----------  ----------  -------
+numa_hint_faults        1131164     0           -100%
+numa_hint_faults_local  1131164     0           -100%
+numa_hit                213696      214244      0.256439%
+numa_local              213696      214244      0.256439%
+numa_pte_updates        1131294     0           -100%
+pgfault                 1380845     241424      -82.5162%
+pgmajfault              75          60          -20%
+
+Here are 2 sample numa programs.
+
+numa01.sh is a set of 2 process each running threads as many as number of
+cpus;
+each thread doing 50 loops on 3GB process shared memory operations.
+
+numa02.sh is a single process with threads as many as number of cpus;
+each thread doing 800 loops on 32MB thread local memory operations.
+
+Without patch
+-------------
+Testcase         Time:  Min      Max      Avg      StdDev
+./numa01.sh      Real:  149.62   149.66   149.64   0.02
+./numa01.sh      Sys:   3.21     3.71     3.46     0.25
+./numa01.sh      User:  4755.13  4758.15  4756.64  1.51
+./numa02.sh      Real:  24.98    25.02    25.00    0.02
+./numa02.sh      Sys:   0.51     0.59     0.55     0.04
+./numa02.sh      User:  790.28   790.88   790.58   0.30
+
+With patch
+-----------
+Testcase         Time:  Min      Max      Avg      StdDev  %Change
+./numa01.sh      Real:  149.44   149.46   149.45   0.01    0.127133%
+./numa01.sh      Sys:   0.71     0.89     0.80     0.09    332.5%
+./numa01.sh      User:  4754.19  4754.48  4754.33  0.15    0.0485873%
+./numa02.sh      Real:  24.97    24.98    24.98    0.00    0.0800641%
+./numa02.sh      Sys:   0.26     0.41     0.33     0.08    66.6667%
+./numa02.sh      User:  789.75   790.28   790.01   0.27    0.072151%
+
+numa01.sh
+param                   no_patch    with_patch  %Change
+-----                   ----------  ----------  -------
+numa_hint_faults        1131164     0           -100%
+numa_hint_faults_local  1131164     0           -100%
+numa_hit                213696      214244      0.256439%
+numa_local              213696      214244      0.256439%
+numa_pte_updates        1131294     0           -100%
+pgfault                 1380845     241424      -82.5162%
+pgmajfault              75          60          -20%
+
+numa02.sh
+param                   no_patch    with_patch  %Change
+-----                   ----------  ----------  -------
+numa_hint_faults        111878      0           -100%
+numa_hint_faults_local  111878      0           -100%
+numa_hit                41854       43220       3.26373%
+numa_local              41854       43220       3.26373%
+numa_pte_updates        113926      0           -100%
+pgfault                 163662      51210       -68.7099%
+pgmajfault              56          52          -7.14286%
+
+Observations:
+The real time and user time actually doesn't change much. However the system
+time changes to some extent. The reason being the number of numa hinting
+faults. With the patch we are not seeing the numa hinting faults.
+
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Christopher Lameter <cl@linux.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>
+
+Srikar Dronamraju (3):
+  powerpc/numa: Set numa_node for all possible cpus
+  powerpc/numa: Prefer node id queried from vphn
+  mm/page_alloc: Keep memoryless cpuless node 0 offline
+
+ arch/powerpc/mm/numa.c | 35 +++++++++++++++++++++++++----------
+ mm/page_alloc.c        |  4 +++-
+ 2 files changed, 28 insertions(+), 11 deletions(-)
+
+-- 
+2.18.1
 
