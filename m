@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7518F206C5E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 08:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96158206C65
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 08:33:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sCwL2cwczDqjR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 16:31:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sCy15QclzDqfS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 16:32:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
- helo=mail-qk1-x743.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PnIaqCxb; dkim-atps=neutral
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
+ header.s=20161025 header.b=I9ruBgD7; dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sCmQ1Cx7zDqWq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 16:24:38 +1000 (AEST)
-Received: by mail-qk1-x743.google.com with SMTP id r22so855178qke.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:24:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sCmT1HSgzDqTx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 16:24:41 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id i3so824525qtq.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jun 2020 23:24:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=N10+Pl+gOu4SRdVCuPEwIFjCanYEHvINmOUco6mnksM=;
- b=PnIaqCxbQhnFAmJ4SHRKyyXB3hXczKTrf+1hinuFIOaCleQEnhfbAoz1on6TOAbXsZ
- LRI7LFZj5eJIlJwL7gnzlu7t6b5KG7bJOLp7oQGRB6mXiahgt43va5x/3xLImJf6Odg0
- j3ey5JKaHxbk3sjtdci+KWcdFb5jL0UoeBGaIvU3+A+OkDLhR3TLrOVLRrcRaisc0M94
- fbJHxnTVuON0goVl25TLFsmkSBGI4f59s14Y0raqEflqEiqAeK6HhQGxK+lKWTYY9qQb
- TL7GOWQ87GoGhID9oHQHk3wxZyJJqAkc1CYhLCWvEF+jC3gMCY2Bia4j7YZ3Y9/ERU/y
- Tgdg==
+ bh=3h0KTMR9rrY+WXnWaCQphxLTyQkuBGaHlmGU+VwrxV0=;
+ b=I9ruBgD7pERXLviff6ATkAVtBywsITDmX7utLtD0yNx0W5312ifHN6SRRt2QfY29Vi
+ c0/UvEuaBpI5dWvZsdyIwKvBk+KGSrE/MtQf7XZydEwuOlwJfHbOx82CnNa8lUAPE4fG
+ BLSGIkJWy7FGk8B9va2o1mIHtc9XeSWYHAZVUGqIm4fkvJhHbFk+fYDdlMM5Yf31uUZB
+ 3cHsCLNhwpLSB9ZA92HIRfn/xGpaZJztuu8zJMNp4VBs9vqx8yKDQ0k3VrstcSYGmw34
+ Ef9K2WBZ/gS33sRgK4A0Ib7XtnuHP/qbnc2mb0t3VIe+mo/gcXj1XllT1QyjnyRIXMVp
+ gTAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=N10+Pl+gOu4SRdVCuPEwIFjCanYEHvINmOUco6mnksM=;
- b=NWeHtn6V7FLFrV6SPKhjeCQ+ZLKKQpRQdvFLoWxzcptI1SAWMR6eM7YzTmTca3DBVq
- iRL9uyNCq708AwmvmM4YrcG3tyfg7dWQyNBcyxOZVaN2j/DXJYqOkofdqjC3yeyAAxm4
- yKH+GB/SwiuqDtaRgNQ+/Sq3ouDxWqa/yCn5VFnWgww+tXsWJrWErjRQ6WuVMTlMt8mi
- p7k5qNJxwpHyPEEJNA+/LBaVS2VHjrFDmCwfAbeBPnecBaSB7UlyFGLHEOkO0FLgfveD
- QeAanoQc70HUmuonOuekQjYiduc6zCVZh5bBkKb5Hfypj34P9taJRgHxlLVENEFgFRBr
- wE8w==
-X-Gm-Message-State: AOAM5327Jdet88On+khHuXsODoYF1VQyL0U9jRnvou0XWmXqgUcbICAR
- MSLyHy8ymhES8WW71XCTOJY=
-X-Google-Smtp-Source: ABdhPJwxoT0vKhWBynRYyaDEfIsChaZUQLTNLN1fuHnEAOSZkkIRfg9zum2U1I9g7O/w+XwSq3L25Q==
-X-Received: by 2002:a37:4c0d:: with SMTP id z13mr12702783qka.170.1592979874849; 
- Tue, 23 Jun 2020 23:24:34 -0700 (PDT)
+ bh=3h0KTMR9rrY+WXnWaCQphxLTyQkuBGaHlmGU+VwrxV0=;
+ b=AqYcnBHjnJLUFbDF/I7xRUqfkWV99JDWOh86zOn2dJEFC8EzrVU5Mv7cF0Vs4Uq3TU
+ ZzxR5IBnMa24hH+8BaLo5xbpyWB+kSmNFLaEhNpp1tVmIymrrajyedp+e4/SxkvmR7Xp
+ kknTZdIuIfdJU/wq9BBLTtremcwYqPt5se0BNmw6FmQuZH9JSPQaaucnMUjNaiM18uc1
+ zA+tfYpnv5GWdbsWd9A8wdfAM1bCsViqJCP2sdMrzWEImyWJWJELHBRKC/iOOfvLQGMP
+ rQFvn8RDAlTnBdvuDQZYZ673LhQqK2pIh5ZkYzj95C2Jvu/17hKgN7+AQoewFQLCyDrm
+ 33XA==
+X-Gm-Message-State: AOAM530mubgxZEihtE3c6wwVQwrOXCmwIa2jZ49xAc+qc8XZ8u7G2CQE
+ 14QBDYrEo62KcohXBmY9cJo=
+X-Google-Smtp-Source: ABdhPJzKRz8npfnViE6IjSP51EsOWFHmBTAKpeXYkNOq2hRZy58E/HIu6AW+thOxNw8wKVPXNv2lwA==
+X-Received: by 2002:ac8:7587:: with SMTP id s7mr6494145qtq.304.1592979878403; 
+ Tue, 23 Jun 2020 23:24:38 -0700 (PDT)
 Received: from LeoBras.ibmuc.com (179-125-148-1.dynamic.desktop.com.br.
  [179.125.148.1])
- by smtp.gmail.com with ESMTPSA id n2sm2489727qtp.45.2020.06.23.23.24.31
+ by smtp.gmail.com with ESMTPSA id n2sm2489727qtp.45.2020.06.23.23.24.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jun 2020 23:24:34 -0700 (PDT)
+ Tue, 23 Jun 2020 23:24:37 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -65,10 +65,10 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Alexey Kardashevskiy <aik@ozlabs.ru>,
  Thiago Jung Bauermann <bauerman@linux.ibm.com>,
  Ram Pai <linuxram@us.ibm.com>
-Subject: [PATCH v2 3/6] powerpc/pseries/iommu: Move window-removing part of
- remove_ddw into remove_dma_window
-Date: Wed, 24 Jun 2020 03:24:08 -0300
-Message-Id: <20200624062411.367796-4-leobras.c@gmail.com>
+Subject: [PATCH v2 4/6] powerpc/pseries/iommu: Remove default DMA window
+ before creating DDW
+Date: Wed, 24 Jun 2020 03:24:09 -0300
+Message-Id: <20200624062411.367796-5-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20200624062411.367796-1-leobras.c@gmail.com>
 References: <20200624062411.367796-1-leobras.c@gmail.com>
@@ -90,86 +90,144 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the window-removing part of remove_ddw into a new function
-(remove_dma_window), so it can be used to remove other DMA windows.
+On LoPAR "DMA Window Manipulation Calls", it's recommended to remove the
+default DMA window for the device, before attempting to configure a DDW,
+in order to make the maximum resources available for the next DDW to be
+created.
 
-It's useful for removing DMA windows that don't create DIRECT64_PROPNAME
-property, like the default DMA window from the device, which uses
-"ibm,dma-window".
+This is a requirement for some devices to use DDW, given they only
+allow one DMA window.
+
+If setting up a new DDW fails anywhere after the removal of this
+default DMA window, it's needed to restore the default DMA window.
+For this, an implementation of ibm,reset-pe-dma-windows rtas call is
+needed:
+
+Platforms supporting the DDW option starting with LoPAR level 2.7 implement
+ibm,ddw-extensions. The first extension available (index 2) carries the
+token for ibm,reset-pe-dma-windows rtas call, which is used to restore
+the default DMA window for a device, if it has been deleted.
+
+It does so by resetting the TCE table allocation for the PE to it's
+boot time value, available in "ibm,dma-window" device tree node.
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 45 +++++++++++++++-----------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+ arch/powerpc/platforms/pseries/iommu.c | 70 ++++++++++++++++++++++----
+ 1 file changed, 61 insertions(+), 9 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 558e5441c355..a8840d9e1c35 100644
+index a8840d9e1c35..4fcf00016fb1 100644
 --- a/arch/powerpc/platforms/pseries/iommu.c
 +++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -776,25 +776,14 @@ static int __init disable_ddw_setup(char *str)
+@@ -1029,6 +1029,39 @@ static phys_addr_t ddw_memory_hotplug_max(void)
+ 	return max_addr;
+ }
  
- early_param("disable_ddw", disable_ddw_setup);
- 
--static void remove_ddw(struct device_node *np, bool remove_prop)
-+static void remove_dma_window(struct device_node *np, u32 *ddw_avail,
-+			      struct property *win)
- {
- 	struct dynamic_dma_window_prop *dwp;
--	struct property *win64;
--	u32 ddw_avail[DDW_APPLICABLE_SIZE];
- 	u64 liobn;
--	int ret = 0;
--
--	ret = of_property_read_u32_array(np, "ibm,ddw-applicable",
--					 &ddw_avail[0], DDW_APPLICABLE_SIZE);
--
--	win64 = of_find_property(np, DIRECT64_PROPNAME, NULL);
--	if (!win64)
--		return;
--
--	if (ret || win64->length < sizeof(*dwp))
--		goto delprop;
-+	int ret;
- 
--	dwp = win64->value;
-+	dwp = win->value;
- 	liobn = (u64)be32_to_cpu(dwp->liobn);
- 
- 	/* clear the whole window, note the arg is in kernel pages */
-@@ -816,10 +805,30 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
- 		pr_debug("%pOF: successfully removed direct window: rtas returned "
- 			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
- 			np, ret, ddw_avail[DDW_REMOVE_PE_DMA_WIN], liobn);
-+}
-+
-+static void remove_ddw(struct device_node *np, bool remove_prop)
++/*
++ * Platforms supporting the DDW option starting with LoPAR level 2.7 implement
++ * ibm,ddw-extensions, which carries the rtas token for
++ * ibm,reset-pe-dma-windows.
++ * That rtas-call can be used to restore the default DMA window for the device.
++ */
++static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
 +{
-+	struct property *win;
-+	u32 ddw_avail[DDW_APPLICABLE_SIZE];
-+	int ret = 0;
++	int ret;
++	u32 cfg_addr, ddw_ext[DDW_EXT_RESET_DMA_WIN + 1];
++	u64 buid;
++	struct device_node *dn;
++	struct pci_dn *pdn;
 +
-+	ret = of_property_read_u32_array(np, "ibm,ddw-applicable",
-+					 &ddw_avail[0], DDW_APPLICABLE_SIZE);
++	ret = of_property_read_u32_array(par_dn, "ibm,ddw-extensions",
++					 &ddw_ext[0], DDW_EXT_RESET_DMA_WIN + 1);
 +	if (ret)
 +		return;
 +
-+	win = of_find_property(np, DIRECT64_PROPNAME, NULL);
-+	if (!win)
-+		return;
++	dn = pci_device_to_OF_node(dev);
++	pdn = PCI_DN(dn);
++	buid = pdn->phb->buid;
++	cfg_addr = ((pdn->busno << 16) | (pdn->devfn << 8));
 +
-+	if (win->length >= sizeof(struct dynamic_dma_window_prop))
-+		remove_dma_window(np, ddw_avail, win);
++	ret = rtas_call(ddw_ext[DDW_EXT_RESET_DMA_WIN], 3, 1, NULL, cfg_addr,
++			BUID_HI(buid), BUID_LO(buid));
++	if (ret)
++		dev_info(&dev->dev,
++			 "ibm,reset-pe-dma-windows(%x) %x %x %x returned %d ",
++			 ddw_ext[1], cfg_addr, BUID_HI(buid), BUID_LO(buid),
++			 ret);
++}
 +
-+	if (!remove_prop)
-+		return;
+ /*
+  * If the PE supports dynamic dma windows, and there is space for a table
+  * that can map all pages in a linear offset, then setup such a table,
+@@ -1049,8 +1082,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	u64 dma_addr, max_addr;
+ 	struct device_node *dn;
+ 	u32 ddw_avail[DDW_APPLICABLE_SIZE];
++
+ 	struct direct_window *window;
+-	struct property *win64;
++	struct property *win64, *default_win = NULL, *ddw_ext = NULL;
+ 	struct dynamic_dma_window_prop *ddwprop;
+ 	struct failed_ddw_pdn *fpdn;
  
--delprop:
--	if (remove_prop)
--		ret = of_remove_property(np, win64);
-+	ret = of_remove_property(np, win);
+@@ -1085,7 +1119,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
  	if (ret)
- 		pr_warn("%pOF: failed to remove direct window property: %d\n",
- 			np, ret);
+ 		goto out_failed;
+ 
+-       /*
++	/*
+ 	 * Query if there is a second window of size to map the
+ 	 * whole partition.  Query returns number of windows, largest
+ 	 * block assigned to PE (partition endpoint), and two bitmasks
+@@ -1096,15 +1130,31 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	if (ret != 0)
+ 		goto out_failed;
+ 
++	/*
++	 * If there is no window available, remove the default DMA window,
++	 * if it's present. This will make all the resources available to the
++	 * new DDW window.
++	 * If anything fails after this, we need to restore it, so also check
++	 * for extensions presence.
++	 */
+ 	if (query.windows_available == 0) {
+-		/*
+-		 * no additional windows are available for this device.
+-		 * We might be able to reallocate the existing window,
+-		 * trading in for a larger page size.
+-		 */
+-		dev_dbg(&dev->dev, "no free dynamic windows");
+-		goto out_failed;
++		default_win = of_find_property(pdn, "ibm,dma-window", NULL);
++		ddw_ext = of_find_property(pdn, "ibm,ddw-extensions", NULL);
++		if (default_win && ddw_ext)
++			remove_dma_window(pdn, ddw_avail, default_win);
++
++		/* Query again, to check if the window is available */
++		ret = query_ddw(dev, ddw_avail, &query, pdn);
++		if (ret != 0)
++			goto out_failed;
++
++		if (query.windows_available == 0) {
++			/* no windows are available for this device. */
++			dev_dbg(&dev->dev, "no free dynamic windows");
++			goto out_failed;
++		}
+ 	}
++
+ 	if (query.page_size & 4) {
+ 		page_shift = 24; /* 16MB */
+ 	} else if (query.page_size & 2) {
+@@ -1194,6 +1244,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	kfree(win64);
+ 
+ out_failed:
++	if (default_win && ddw_ext)
++		reset_dma_window(dev, pdn);
+ 
+ 	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
+ 	if (!fpdn)
 -- 
 2.25.4
 
