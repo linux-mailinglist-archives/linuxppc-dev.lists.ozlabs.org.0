@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270D120723E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 13:37:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CD7207242
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 13:39:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sLj86N1kzDqgB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 21:37:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sLlP1hVdzDqMM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 21:39:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sLZK1TK2zDql8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 21:31:20 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05OB4iap054205; Wed, 24 Jun 2020 07:31:16 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31uwykncf6-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sLZQ1QSKzDqgP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 21:31:26 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05OB2gGD144153; Wed, 24 Jun 2020 07:31:20 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31uwyrws7k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jun 2020 07:31:15 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05OBU53v027408;
- Wed, 24 Jun 2020 11:31:14 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma02fra.de.ibm.com with ESMTP id 31uusk094a-1
+ Wed, 24 Jun 2020 07:31:19 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05OBVHY6025350;
+ Wed, 24 Jun 2020 11:31:17 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03fra.de.ibm.com with ESMTP id 31uusgg93x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 Jun 2020 11:31:13 +0000
+ Wed, 24 Jun 2020 11:31:17 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05OBVAjL54132744
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05OBTtgD66584894
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 24 Jun 2020 11:31:10 GMT
+ Wed, 24 Jun 2020 11:29:55 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC03C4C059;
- Wed, 24 Jun 2020 11:31:10 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5A1C64C044;
+ Wed, 24 Jun 2020 11:31:14 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 698434C058;
- Wed, 24 Jun 2020 11:31:07 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5A63E4C046;
+ Wed, 24 Jun 2020 11:31:11 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.43.241])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 24 Jun 2020 11:31:06 +0000 (GMT)
+ Wed, 24 Jun 2020 11:31:10 +0000 (GMT)
 From: Balamuruhan S <bala24@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH v2 2/6] powerpc/ppc-opcode: move ppc instruction encoding from
- test_emulate_step
-Date: Wed, 24 Jun 2020 17:00:34 +0530
-Message-Id: <20200624113038.908074-3-bala24@linux.ibm.com>
+Subject: [PATCH v2 3/6] powerpc/bpf_jit: reuse instruction macros from
+ ppc-opcode.h
+Date: Wed, 24 Jun 2020 17:00:35 +0530
+Message-Id: <20200624113038.908074-4-bala24@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200624113038.908074-1-bala24@linux.ibm.com>
 References: <20200624113038.908074-1-bala24@linux.ibm.com>
@@ -68,10 +68,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-24_05:2020-06-24,
  2020-06-24 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- bulkscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- suspectscore=1 impostorscore=0 cotscore=-2147483648 adultscore=0
- mlxlogscore=739 mlxscore=0 phishscore=0 classifier=spam adjust=0
+ suspectscore=1 spamscore=0
+ cotscore=-2147483648 mlxscore=0 phishscore=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=999 priorityscore=1501 malwarescore=0 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2006240077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -92,612 +92,228 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Few ppc instructions are encoded in test_emulate_step.c, consolidate
-them and use it from ppc-opcode.h
+remove duplicate macro definitions from bpf_jit.h and reuse the macros from
+ppc-opcode.h
 
 Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
 Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 Acked-by: Sandipan Das <sandipan@linux.ibm.com>
 ---
- arch/powerpc/include/asm/ppc-opcode.h |  18 +++
- arch/powerpc/lib/test_emulate_step.c  | 155 ++++++++++----------------
- 2 files changed, 74 insertions(+), 99 deletions(-)
+ arch/powerpc/net/bpf_jit.h        | 18 +-----------------
+ arch/powerpc/net/bpf_jit32.h      | 10 +++++-----
+ arch/powerpc/net/bpf_jit64.h      |  4 ++--
+ arch/powerpc/net/bpf_jit_comp.c   |  2 +-
+ arch/powerpc/net/bpf_jit_comp64.c | 20 ++++++++++----------
+ 5 files changed, 19 insertions(+), 35 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 360dc7d03a9b..c7d81bc473f0 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -76,6 +76,9 @@
- #define	__REGA0_R30	30
- #define	__REGA0_R31	31
+diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+index 55d4377ccfae..535d1de4dfee 100644
+--- a/arch/powerpc/net/bpf_jit.h
++++ b/arch/powerpc/net/bpf_jit.h
+@@ -11,6 +11,7 @@
+ #ifndef __ASSEMBLY__
  
-+#define IMM_L(i)               ((uintptr_t)(i) & 0xffff)
-+#define IMM_DS(i)              ((uintptr_t)(i) & 0xfffc)
-+
- /* opcode and xopcode for instructions */
- #define OP_TRAP 3
- #define OP_TRAP_64 2
-@@ -512,6 +515,21 @@
- 	(PPC_INST_VCMPEQUD | ___PPC_RT(vrt) | ___PPC_RA(vra) | ___PPC_RB(vrb) | __PPC_RC21)
- #define PPC_RAW_VCMPEQUB_RC(vrt, vra, vrb) \
- 	(PPC_INST_VCMPEQUB | ___PPC_RT(vrt) | ___PPC_RA(vra) | ___PPC_RB(vrb) | __PPC_RC21)
-+#define PPC_RAW_LD(r, base, i)		(PPC_INST_LD | ___PPC_RT(r) | ___PPC_RA(base) | IMM_DS(i))
-+#define PPC_RAW_LWZ(r, base, i)		(PPC_INST_LWZ | ___PPC_RT(r) | ___PPC_RA(base) | IMM_L(i))
-+#define PPC_RAW_LWZX(t, a, b)		(PPC_INST_LWZX | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_STD(r, base, i)		(PPC_INST_STD | ___PPC_RS(r) | ___PPC_RA(base) | IMM_DS(i))
-+#define PPC_RAW_STDCX(s, a, b)		(PPC_INST_STDCX | ___PPC_RS(s) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_LFSX(t, a, b)		(PPC_INST_LFSX | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_STFSX(s, a, b)		(PPC_INST_STFSX | ___PPC_RS(s) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_LFDX(t, a, b)		(PPC_INST_LFDX | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_STFDX(s, a, b)		(PPC_INST_STFDX | ___PPC_RS(s) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_LVX(t, a, b)		(PPC_INST_LVX | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_STVX(s, a, b)		(PPC_INST_STVX | ___PPC_RS(s) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_ADD(t, a, b)		(PPC_INST_ADD | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_ADD_DOT(t, a, b)	(PPC_INST_ADD | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | 0x1)
-+#define PPC_RAW_ADDC(t, a, b)		(PPC_INST_ADDC | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
-+#define PPC_RAW_ADDC_DOT(t, a, b)	(PPC_INST_ADDC | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | 0x1)
+ #include <asm/types.h>
++#include <asm/ppc-opcode.h>
  
- /* Deal with instructions that older assemblers aren't aware of */
- #define	PPC_CP_ABORT		stringify_in_c(.long PPC_INST_CP_ABORT)
-diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
-index 46af80279ebc..988c734e7370 100644
---- a/arch/powerpc/lib/test_emulate_step.c
-+++ b/arch/powerpc/lib/test_emulate_step.c
-@@ -13,49 +13,6 @@
- #include <asm/code-patching.h>
- #include <asm/inst.h>
- 
+ #ifdef PPC64_ELF_ABI_v1
+ #define FUNCTION_DESCR_SIZE	24
+@@ -26,7 +27,6 @@
+ #define IMM_H(i)		((uintptr_t)(i)>>16)
+ #define IMM_HA(i)		(((uintptr_t)(i)>>16) +			      \
+ 					(((uintptr_t)(i) & 0x8000) >> 15))
 -#define IMM_L(i)		((uintptr_t)(i) & 0xffff)
--#define IMM_DS(i)		((uintptr_t)(i) & 0xfffc)
--
--/*
-- * Defined with TEST_ prefix so it does not conflict with other
-- * definitions.
-- */
--#define TEST_LD(r, base, i)	ppc_inst(PPC_INST_LD | ___PPC_RT(r) |		\
--					___PPC_RA(base) | IMM_DS(i))
--#define TEST_LWZ(r, base, i)	ppc_inst(PPC_INST_LWZ | ___PPC_RT(r) |		\
--					___PPC_RA(base) | IMM_L(i))
--#define TEST_LWZX(t, a, b)	ppc_inst(PPC_INST_LWZX | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_STD(r, base, i)	ppc_inst(PPC_INST_STD | ___PPC_RS(r) |		\
--					___PPC_RA(base) | IMM_DS(i))
--#define TEST_LDARX(t, a, b, eh)	ppc_inst(PPC_INST_LDARX | ___PPC_RT(t) |	\
--					___PPC_RA(a) | ___PPC_RB(b) |	\
+ 
+ #define PLANT_INSTR(d, idx, instr)					      \
+ 	do { if (d) { (d)[idx] = instr; } idx++; } while (0)
+@@ -45,8 +45,6 @@
+ #define PPC_ADDIS(d, a, i)	EMIT(PPC_INST_ADDIS |			      \
+ 				     ___PPC_RT(d) | ___PPC_RA(a) | IMM_L(i))
+ #define PPC_LIS(r, i)		PPC_ADDIS(r, 0, i)
+-#define PPC_STD(r, base, i)	EMIT(PPC_INST_STD | ___PPC_RS(r) |	      \
+-				     ___PPC_RA(base) | ((i) & 0xfffc))
+ #define PPC_STDX(r, base, b)	EMIT(PPC_INST_STDX | ___PPC_RS(r) |	      \
+ 				     ___PPC_RA(base) | ___PPC_RB(b))
+ #define PPC_STDU(r, base, i)	EMIT(PPC_INST_STDU | ___PPC_RS(r) |	      \
+@@ -62,12 +60,8 @@
+ 
+ #define PPC_LBZ(r, base, i)	EMIT(PPC_INST_LBZ | ___PPC_RT(r) |	      \
+ 				     ___PPC_RA(base) | IMM_L(i))
+-#define PPC_LD(r, base, i)	EMIT(PPC_INST_LD | ___PPC_RT(r) |	      \
+-				     ___PPC_RA(base) | ((i) & 0xfffc))
+ #define PPC_LDX(r, base, b)	EMIT(PPC_INST_LDX | ___PPC_RT(r) |	      \
+ 				     ___PPC_RA(base) | ___PPC_RB(b))
+-#define PPC_LWZ(r, base, i)	EMIT(PPC_INST_LWZ | ___PPC_RT(r) |	      \
+-				     ___PPC_RA(base) | IMM_L(i))
+ #define PPC_LHZ(r, base, i)	EMIT(PPC_INST_LHZ | ___PPC_RT(r) |	      \
+ 				     ___PPC_RA(base) | IMM_L(i))
+ #define PPC_LHBRX(r, base, b)	EMIT(PPC_INST_LHBRX | ___PPC_RT(r) |	      \
+@@ -75,16 +69,8 @@
+ #define PPC_LDBRX(r, base, b)	EMIT(PPC_INST_LDBRX | ___PPC_RT(r) |	      \
+ 				     ___PPC_RA(base) | ___PPC_RB(b))
+ 
+-#define PPC_BPF_LDARX(t, a, b, eh) EMIT(PPC_INST_LDARX | ___PPC_RT(t) |	      \
+-					___PPC_RA(a) | ___PPC_RB(b) |	      \
 -					__PPC_EH(eh))
--#define TEST_STDCX(s, a, b)	ppc_inst(PPC_INST_STDCX | ___PPC_RS(s) |	\
+-#define PPC_BPF_LWARX(t, a, b, eh) EMIT(PPC_INST_LWARX | ___PPC_RT(t) |	      \
+-					___PPC_RA(a) | ___PPC_RB(b) |	      \
+-					__PPC_EH(eh))
+ #define PPC_BPF_STWCX(s, a, b)	EMIT(PPC_INST_STWCX | ___PPC_RS(s) |	      \
+ 					___PPC_RA(a) | ___PPC_RB(b))
+-#define PPC_BPF_STDCX(s, a, b)	EMIT(PPC_INST_STDCX | ___PPC_RS(s) |	      \
 -					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_LFSX(t, a, b)	ppc_inst(PPC_INST_LFSX | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_STFSX(s, a, b)	ppc_inst(PPC_INST_STFSX | ___PPC_RS(s) |	\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_LFDX(t, a, b)	ppc_inst(PPC_INST_LFDX | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_STFDX(s, a, b)	ppc_inst(PPC_INST_STFDX | ___PPC_RS(s) |	\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_LVX(t, a, b)	ppc_inst(PPC_INST_LVX | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_STVX(s, a, b)	ppc_inst(PPC_INST_STVX | ___PPC_RS(s) |		\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_LXVD2X(s, a, b)	ppc_inst(PPC_INST_LXVD2X | VSX_XX1((s), R##a, R##b))
--#define TEST_STXVD2X(s, a, b)	ppc_inst(PPC_INST_STXVD2X | VSX_XX1((s), R##a, R##b))
--#define TEST_ADD(t, a, b)	ppc_inst(PPC_INST_ADD | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_ADD_DOT(t, a, b)	ppc_inst(PPC_INST_ADD | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b) | 0x1)
--#define TEST_ADDC(t, a, b)	ppc_inst(PPC_INST_ADDC | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b))
--#define TEST_ADDC_DOT(t, a, b)	ppc_inst(PPC_INST_ADDC | ___PPC_RT(t) |		\
--					___PPC_RA(a) | ___PPC_RB(b) | 0x1)
--
- #define MAX_SUBTESTS	16
+ #define PPC_CMPWI(a, i)		EMIT(PPC_INST_CMPWI | ___PPC_RA(a) | IMM_L(i))
+ #define PPC_CMPDI(a, i)		EMIT(PPC_INST_CMPDI | ___PPC_RA(a) | IMM_L(i))
+ #define PPC_CMPW(a, b)		EMIT(PPC_INST_CMPW | ___PPC_RA(a) |	      \
+@@ -100,8 +86,6 @@
  
- #define IGNORE_GPR(n)	(0x1UL << (n))
-@@ -105,7 +62,7 @@ static void __init test_ld(void)
- 	regs.gpr[3] = (unsigned long) &a;
+ #define PPC_SUB(d, a, b)	EMIT(PPC_INST_SUB | ___PPC_RT(d) |	      \
+ 				     ___PPC_RB(a) | ___PPC_RA(b))
+-#define PPC_ADD(d, a, b)	EMIT(PPC_INST_ADD | ___PPC_RT(d) |	      \
+-				     ___PPC_RA(a) | ___PPC_RB(b))
+ #define PPC_MULD(d, a, b)	EMIT(PPC_INST_MULLD | ___PPC_RT(d) |	      \
+ 				     ___PPC_RA(a) | ___PPC_RB(b))
+ #define PPC_MULW(d, a, b)	EMIT(PPC_INST_MULLW | ___PPC_RT(d) |	      \
+diff --git a/arch/powerpc/net/bpf_jit32.h b/arch/powerpc/net/bpf_jit32.h
+index 4ec2a9f14f84..753c244a7cf9 100644
+--- a/arch/powerpc/net/bpf_jit32.h
++++ b/arch/powerpc/net/bpf_jit32.h
+@@ -76,13 +76,13 @@ DECLARE_LOAD_FUNC(sk_load_byte_msh);
+ 		else {	PPC_ADDIS(r, base, IMM_HA(i));			      \
+ 			PPC_LBZ(r, r, IMM_L(i)); } } while(0)
  
- 	/* ld r5, 0(r3) */
--	stepped = emulate_step(&regs, TEST_LD(5, 3, 0));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LD(5, 3, 0)));
+-#define PPC_LD_OFFS(r, base, i) do { if ((i) < 32768) PPC_LD(r, base, i);     \
++#define PPC_LD_OFFS(r, base, i) do { if ((i) < 32768) EMIT(PPC_RAW_LD(r, base, i));     \
+ 		else {	PPC_ADDIS(r, base, IMM_HA(i));			      \
+-			PPC_LD(r, r, IMM_L(i)); } } while(0)
++			EMIT(PPC_RAW_LD(r, r, IMM_L(i))); } } while(0)
  
- 	if (stepped == 1 && regs.gpr[5] == a)
- 		show_result("ld", "PASS");
-@@ -123,7 +80,7 @@ static void __init test_lwz(void)
- 	regs.gpr[3] = (unsigned long) &a;
+-#define PPC_LWZ_OFFS(r, base, i) do { if ((i) < 32768) PPC_LWZ(r, base, i);   \
++#define PPC_LWZ_OFFS(r, base, i) do { if ((i) < 32768) EMIT(PPC_RAW_LWZ(r, base, i));   \
+ 		else {	PPC_ADDIS(r, base, IMM_HA(i));			      \
+-			PPC_LWZ(r, r, IMM_L(i)); } } while(0)
++			EMIT(PPC_RAW_LWZ(r, r, IMM_L(i))); } } while(0)
  
- 	/* lwz r5, 0(r3) */
--	stepped = emulate_step(&regs, TEST_LWZ(5, 3, 0));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LWZ(5, 3, 0)));
+ #define PPC_LHZ_OFFS(r, base, i) do { if ((i) < 32768) PPC_LHZ(r, base, i);   \
+ 		else {	PPC_ADDIS(r, base, IMM_HA(i));			      \
+@@ -118,7 +118,7 @@ DECLARE_LOAD_FUNC(sk_load_byte_msh);
+ #define PPC_NTOHS_OFFS(r, base, i)	PPC_LHZ_OFFS(r, base, i)
+ #endif
  
- 	if (stepped == 1 && regs.gpr[5] == a)
- 		show_result("lwz", "PASS");
-@@ -143,7 +100,7 @@ static void __init test_lwzx(void)
- 	regs.gpr[5] = 0x8765;
+-#define PPC_BPF_LL(r, base, i) do { PPC_LWZ(r, base, i); } while(0)
++#define PPC_BPF_LL(r, base, i) do { EMIT(PPC_RAW_LWZ(r, base, i)); } while(0)
+ #define PPC_BPF_STL(r, base, i) do { PPC_STW(r, base, i); } while(0)
+ #define PPC_BPF_STLU(r, base, i) do { PPC_STWU(r, base, i); } while(0)
  
- 	/* lwzx r5, r3, r4 */
--	stepped = emulate_step(&regs, TEST_LWZX(5, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LWZX(5, 3, 4)));
- 	if (stepped == 1 && regs.gpr[5] == a[2])
- 		show_result("lwzx", "PASS");
- 	else
-@@ -161,7 +118,7 @@ static void __init test_std(void)
- 	regs.gpr[5] = 0x5678;
+diff --git a/arch/powerpc/net/bpf_jit64.h b/arch/powerpc/net/bpf_jit64.h
+index cf3a7e337f02..c144a3777158 100644
+--- a/arch/powerpc/net/bpf_jit64.h
++++ b/arch/powerpc/net/bpf_jit64.h
+@@ -73,14 +73,14 @@ static const int b2p[] = {
+ 					PPC_LI(b2p[TMP_REG_2], (i));	      \
+ 					PPC_LDX(r, base, b2p[TMP_REG_2]);     \
+ 				} else					      \
+-					PPC_LD(r, base, i);		      \
++					EMIT(PPC_RAW_LD(r, base, i));	      \
+ 				} while(0)
+ #define PPC_BPF_STL(r, base, i) do {					      \
+ 				if ((i) % 4) {				      \
+ 					PPC_LI(b2p[TMP_REG_2], (i));	      \
+ 					PPC_STDX(r, base, b2p[TMP_REG_2]);    \
+ 				} else					      \
+-					PPC_STD(r, base, i);		      \
++					EMIT(PPC_RAW_STD(r, base, i));	      \
+ 				} while(0)
+ #define PPC_BPF_STLU(r, base, i) do { PPC_STDU(r, base, i); } while(0)
  
- 	/* std r5, 0(r3) */
--	stepped = emulate_step(&regs, TEST_STD(5, 3, 0));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_STD(5, 3, 0)));
- 	if (stepped == 1 && regs.gpr[5] == a)
- 		show_result("std", "PASS");
- 	else
-@@ -186,7 +143,7 @@ static void __init test_ldarx_stdcx(void)
- 	regs.gpr[5] = 0x5678;
+diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+index 0acc9d5fb19e..abcf56c00be5 100644
+--- a/arch/powerpc/net/bpf_jit_comp.c
++++ b/arch/powerpc/net/bpf_jit_comp.c
+@@ -134,7 +134,7 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
+ 			/*** ALU ops ***/
+ 		case BPF_ALU | BPF_ADD | BPF_X: /* A += X; */
+ 			ctx->seen |= SEEN_XREG;
+-			PPC_ADD(r_A, r_A, r_X);
++			EMIT(PPC_RAW_ADD(r_A, r_A, r_X));
+ 			break;
+ 		case BPF_ALU | BPF_ADD | BPF_K: /* A += K; */
+ 			if (!K)
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index be3517ef0574..f721fbe6ca4d 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -239,7 +239,7 @@ static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32
+ 	 * if (index >= array->map.max_entries)
+ 	 *   goto out;
+ 	 */
+-	PPC_LWZ(b2p[TMP_REG_1], b2p_bpf_array, offsetof(struct bpf_array, map.max_entries));
++	EMIT(PPC_RAW_LWZ(b2p[TMP_REG_1], b2p_bpf_array, offsetof(struct bpf_array, map.max_entries)));
+ 	PPC_RLWINM(b2p_index, b2p_index, 0, 0, 31);
+ 	PPC_CMPLW(b2p_index, b2p[TMP_REG_1]);
+ 	PPC_BCC(COND_GE, out);
+@@ -260,7 +260,7 @@ static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32
  
- 	/* ldarx r5, r3, r4, 0 */
--	stepped = emulate_step(&regs, TEST_LDARX(5, 3, 4, 0));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LDARX(5, 3, 4, 0)));
+ 	/* prog = array->ptrs[index]; */
+ 	PPC_MULI(b2p[TMP_REG_1], b2p_index, 8);
+-	PPC_ADD(b2p[TMP_REG_1], b2p[TMP_REG_1], b2p_bpf_array);
++	EMIT(PPC_RAW_ADD(b2p[TMP_REG_1], b2p[TMP_REG_1], b2p_bpf_array));
+ 	PPC_BPF_LL(b2p[TMP_REG_1], b2p[TMP_REG_1], offsetof(struct bpf_array, ptrs));
  
  	/*
- 	 * Don't touch 'a' here. Touching 'a' can do Load/store
-@@ -204,7 +161,7 @@ static void __init test_ldarx_stdcx(void)
- 	regs.gpr[5] = 0x9ABC;
+@@ -340,7 +340,7 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
+ 		 */
+ 		case BPF_ALU | BPF_ADD | BPF_X: /* (u32) dst += (u32) src */
+ 		case BPF_ALU64 | BPF_ADD | BPF_X: /* dst += src */
+-			PPC_ADD(dst_reg, dst_reg, src_reg);
++			EMIT(PPC_RAW_ADD(dst_reg, dst_reg, src_reg));
+ 			goto bpf_alu32_trunc;
+ 		case BPF_ALU | BPF_SUB | BPF_X: /* (u32) dst -= (u32) src */
+ 		case BPF_ALU64 | BPF_SUB | BPF_X: /* dst -= src */
+@@ -357,7 +357,7 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
+ 					PPC_ADDI(dst_reg, dst_reg, IMM_L(imm));
+ 				else {
+ 					PPC_LI32(b2p[TMP_REG_1], imm);
+-					PPC_ADD(dst_reg, dst_reg, b2p[TMP_REG_1]);
++					EMIT(PPC_RAW_ADD(dst_reg, dst_reg, b2p[TMP_REG_1]));
+ 				}
+ 			}
+ 			goto bpf_alu32_trunc;
+@@ -689,9 +689,9 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
+ 			PPC_ADDI(b2p[TMP_REG_1], dst_reg, off);
+ 			tmp_idx = ctx->idx * 4;
+ 			/* load value from memory into TMP_REG_2 */
+-			PPC_BPF_LWARX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1], 0);
++			EMIT(PPC_RAW_LWARX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1], 0));
+ 			/* add value from src_reg into this */
+-			PPC_ADD(b2p[TMP_REG_2], b2p[TMP_REG_2], src_reg);
++			EMIT(PPC_RAW_ADD(b2p[TMP_REG_2], b2p[TMP_REG_2], src_reg));
+ 			/* store result back */
+ 			PPC_BPF_STWCX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1]);
+ 			/* we're done if this succeeded */
+@@ -701,9 +701,9 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
+ 		case BPF_STX | BPF_XADD | BPF_DW:
+ 			PPC_ADDI(b2p[TMP_REG_1], dst_reg, off);
+ 			tmp_idx = ctx->idx * 4;
+-			PPC_BPF_LDARX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1], 0);
+-			PPC_ADD(b2p[TMP_REG_2], b2p[TMP_REG_2], src_reg);
+-			PPC_BPF_STDCX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1]);
++			EMIT(PPC_RAW_LDARX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1], 0));
++			EMIT(PPC_RAW_ADD(b2p[TMP_REG_2], b2p[TMP_REG_2], src_reg));
++			EMIT(PPC_RAW_STDCX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1]));
+ 			PPC_BCC_SHORT(COND_NE, tmp_idx);
+ 			break;
  
- 	/* stdcx. r5, r3, r4 */
--	stepped = emulate_step(&regs, TEST_STDCX(5, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_STDCX(5, 3, 4)));
- 
- 	/*
- 	 * Two possible scenarios that indicates successful emulation
-@@ -244,7 +201,7 @@ static void __init test_lfsx_stfsx(void)
- 	regs.gpr[4] = 0;
- 
- 	/* lfsx frt10, r3, r4 */
--	stepped = emulate_step(&regs, TEST_LFSX(10, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LFSX(10, 3, 4)));
- 
- 	if (stepped == 1)
- 		show_result("lfsx", "PASS");
-@@ -257,7 +214,7 @@ static void __init test_lfsx_stfsx(void)
- 	c.a = 678.91;
- 
- 	/* stfsx frs10, r3, r4 */
--	stepped = emulate_step(&regs, TEST_STFSX(10, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_STFSX(10, 3, 4)));
- 
- 	if (stepped == 1 && c.b == cached_b)
- 		show_result("stfsx", "PASS");
-@@ -287,7 +244,7 @@ static void __init test_lfdx_stfdx(void)
- 	regs.gpr[4] = 0;
- 
- 	/* lfdx frt10, r3, r4 */
--	stepped = emulate_step(&regs, TEST_LFDX(10, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LFDX(10, 3, 4)));
- 
- 	if (stepped == 1)
- 		show_result("lfdx", "PASS");
-@@ -300,7 +257,7 @@ static void __init test_lfdx_stfdx(void)
- 	c.a = 987654.32;
- 
- 	/* stfdx frs10, r3, r4 */
--	stepped = emulate_step(&regs, TEST_STFDX(10, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_STFDX(10, 3, 4)));
- 
- 	if (stepped == 1 && c.b == cached_b)
- 		show_result("stfdx", "PASS");
-@@ -346,7 +303,7 @@ static void __init test_lvx_stvx(void)
- 	regs.gpr[4] = 0;
- 
- 	/* lvx vrt10, r3, r4 */
--	stepped = emulate_step(&regs, TEST_LVX(10, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LVX(10, 3, 4)));
- 
- 	if (stepped == 1)
- 		show_result("lvx", "PASS");
-@@ -362,7 +319,7 @@ static void __init test_lvx_stvx(void)
- 	c.b[3] = 498532;
- 
- 	/* stvx vrs10, r3, r4 */
--	stepped = emulate_step(&regs, TEST_STVX(10, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_STVX(10, 3, 4)));
- 
- 	if (stepped == 1 && cached_b[0] == c.b[0] && cached_b[1] == c.b[1] &&
- 	    cached_b[2] == c.b[2] && cached_b[3] == c.b[3])
-@@ -403,7 +360,7 @@ static void __init test_lxvd2x_stxvd2x(void)
- 	regs.gpr[4] = 0;
- 
- 	/* lxvd2x vsr39, r3, r4 */
--	stepped = emulate_step(&regs, TEST_LXVD2X(39, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_LXVD2X(39, R3, R4)));
- 
- 	if (stepped == 1 && cpu_has_feature(CPU_FTR_VSX)) {
- 		show_result("lxvd2x", "PASS");
-@@ -423,7 +380,7 @@ static void __init test_lxvd2x_stxvd2x(void)
- 	c.b[3] = 4;
- 
- 	/* stxvd2x vsr39, r3, r4 */
--	stepped = emulate_step(&regs, TEST_STXVD2X(39, 3, 4));
-+	stepped = emulate_step(&regs, ppc_inst(PPC_RAW_STXVD2X(39, R3, R4)));
- 
- 	if (stepped == 1 && cached_b[0] == c.b[0] && cached_b[1] == c.b[1] &&
- 	    cached_b[2] == c.b[2] && cached_b[3] == c.b[3] &&
-@@ -485,7 +442,7 @@ static struct compute_test compute_tests[] = {
- 		.subtests = {
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MIN",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MIN,
-@@ -493,7 +450,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MAX",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MAX,
-@@ -501,7 +458,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MAX, RB = LONG_MAX",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MAX,
- 					.gpr[22] = LONG_MAX,
-@@ -509,7 +466,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = ULONG_MAX",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = ULONG_MAX,
-@@ -517,7 +474,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = 0x1",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = 0x1,
-@@ -525,7 +482,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MIN",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MIN,
-@@ -533,7 +490,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MAX",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MAX,
-@@ -541,7 +498,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MAX, RB = INT_MAX",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MAX,
- 					.gpr[22] = INT_MAX,
-@@ -549,7 +506,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = UINT_MAX",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = UINT_MAX,
-@@ -557,7 +514,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = 0x1",
--				.instr = TEST_ADD(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = 0x1,
-@@ -571,7 +528,7 @@ static struct compute_test compute_tests[] = {
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MIN",
- 				.flags = IGNORE_CCR,
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MIN,
-@@ -579,7 +536,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MAX",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MAX,
-@@ -588,7 +545,7 @@ static struct compute_test compute_tests[] = {
- 			{
- 				.descr = "RA = LONG_MAX, RB = LONG_MAX",
- 				.flags = IGNORE_CCR,
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MAX,
- 					.gpr[22] = LONG_MAX,
-@@ -596,7 +553,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = ULONG_MAX",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = ULONG_MAX,
-@@ -604,7 +561,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = 0x1",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = 0x1,
-@@ -612,7 +569,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MIN",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MIN,
-@@ -620,7 +577,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MAX",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MAX,
-@@ -628,7 +585,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MAX, RB = INT_MAX",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MAX,
- 					.gpr[22] = INT_MAX,
-@@ -636,7 +593,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = UINT_MAX",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = UINT_MAX,
-@@ -644,7 +601,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = 0x1",
--				.instr = TEST_ADD_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADD_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = 0x1,
-@@ -657,7 +614,7 @@ static struct compute_test compute_tests[] = {
- 		.subtests = {
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MIN",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MIN,
-@@ -665,7 +622,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MAX",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MAX,
-@@ -673,7 +630,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MAX, RB = LONG_MAX",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MAX,
- 					.gpr[22] = LONG_MAX,
-@@ -681,7 +638,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = ULONG_MAX",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = ULONG_MAX,
-@@ -689,7 +646,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = 0x1",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = 0x1,
-@@ -697,7 +654,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MIN",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MIN,
-@@ -705,7 +662,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MAX",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MAX,
-@@ -713,7 +670,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MAX, RB = INT_MAX",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MAX,
- 					.gpr[22] = INT_MAX,
-@@ -721,7 +678,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = UINT_MAX",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = UINT_MAX,
-@@ -729,7 +686,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = 0x1",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = 0x1,
-@@ -737,7 +694,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MIN | INT_MIN, RB = LONG_MIN | INT_MIN",
--				.instr = TEST_ADDC(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN | (uint)INT_MIN,
- 					.gpr[22] = LONG_MIN | (uint)INT_MIN,
-@@ -751,7 +708,7 @@ static struct compute_test compute_tests[] = {
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MIN",
- 				.flags = IGNORE_CCR,
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MIN,
-@@ -759,7 +716,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MIN, RB = LONG_MAX",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN,
- 					.gpr[22] = LONG_MAX,
-@@ -768,7 +725,7 @@ static struct compute_test compute_tests[] = {
- 			{
- 				.descr = "RA = LONG_MAX, RB = LONG_MAX",
- 				.flags = IGNORE_CCR,
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MAX,
- 					.gpr[22] = LONG_MAX,
-@@ -776,7 +733,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = ULONG_MAX",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = ULONG_MAX,
-@@ -784,7 +741,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = ULONG_MAX, RB = 0x1",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = ULONG_MAX,
- 					.gpr[22] = 0x1,
-@@ -792,7 +749,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MIN",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MIN,
-@@ -800,7 +757,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MIN, RB = INT_MAX",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MIN,
- 					.gpr[22] = INT_MAX,
-@@ -808,7 +765,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = INT_MAX, RB = INT_MAX",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = INT_MAX,
- 					.gpr[22] = INT_MAX,
-@@ -816,7 +773,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = UINT_MAX",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = UINT_MAX,
-@@ -824,7 +781,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = UINT_MAX, RB = 0x1",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = UINT_MAX,
- 					.gpr[22] = 0x1,
-@@ -832,7 +789,7 @@ static struct compute_test compute_tests[] = {
- 			},
- 			{
- 				.descr = "RA = LONG_MIN | INT_MIN, RB = LONG_MIN | INT_MIN",
--				.instr = TEST_ADDC_DOT(20, 21, 22),
-+				.instr = ppc_inst(PPC_RAW_ADDC_DOT(20, 21, 22)),
- 				.regs = {
- 					.gpr[21] = LONG_MIN | (uint)INT_MIN,
- 					.gpr[22] = LONG_MIN | (uint)INT_MIN,
+@@ -724,7 +724,7 @@ static int bpf_jit_build_body(struct bpf_prog *fp, u32 *image,
+ 			break;
+ 		/* dst = *(u32 *)(ul) (src + off) */
+ 		case BPF_LDX | BPF_MEM | BPF_W:
+-			PPC_LWZ(dst_reg, src_reg, off);
++			EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
+ 			if (insn_is_zext(&insn[i + 1]))
+ 				addrs[++i] = ctx->idx * 4;
+ 			break;
 -- 
 2.24.1
 
