@@ -2,83 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E876207274
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 13:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F194207288
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 13:50:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sLwk42zkzDqnk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 21:47:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sM0M0q3XzDql8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 21:50:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::443;
- helo=mail-wr1-x443.google.com; envelope-from=elver@google.com;
+ smtp.mailfrom=de.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@de.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=PO3rDToo; dkim-atps=neutral
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
- [IPv6:2a00:1450:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=de.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sLcB1KFVzDqml
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 21:32:57 +1000 (AEST)
-Received: by mail-wr1-x443.google.com with SMTP id q5so1918588wru.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 04:32:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to
- :user-agent; bh=qt1v5KPwVtg9+e9cwfIoG4ufrY0z/DdC6WEwpkwGwRY=;
- b=PO3rDTooWldPb7m9fXQ004Kj2l49mgaYAD82B/2PTCqvIPWKGgDAUSUc3TjPSkrSk6
- 2HKmM9LxLqSy6eW6xalqb2WlfcofRUI7SkopBqxyeqPN5KFaP/b3GMnyB6Mvl968Yzo9
- M6nRd5g3iEaEMoCYpIUpcKUf54np6GeEwbpcRcPqp1p4xYHMISr0PCEsTZ5KqnufDx/9
- jqFAUMlfFQpiUe6kCE/qTNKZH0uM2JYP8ND3bwXWXqt0cU/n310GFc9WoYrnCWJymjua
- Ks86Qk2/C7smXDLuM9imntU/DrzpJjIf3MInM4A9HjB6SUX8GipQuezL36J4Y/YzfM79
- 0LeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to:user-agent;
- bh=qt1v5KPwVtg9+e9cwfIoG4ufrY0z/DdC6WEwpkwGwRY=;
- b=gyImkXbWX5fAGPTL6O9e1/96U4ETL5UC/EEHVkqqHMKmoIHNkN93jBArFRFwJpGgcY
- 5C/8XNsHlcYejzdiBZQi53ExsUdfXw847+Z/a8vnreySGaLzZIuzkOqQb+pbPnhZPFS9
- wGHX0IeX00VAAaaYrMIw7dK+0ldPhLnjkXFc4fF1vlsycOMlGJN1sSxJr6ymQnW+XXtj
- kWz7XMvX6gPsWZ5/NgjOff9BAnUXMpqE1TELPsAzSWPmPF6i3uHl2qBg20drdvg64Qpd
- 9jdPif1VO3TRi1kCTNb8asf4dFzDIO83QF8U3AqSIggzPiRfTg+ptWn35vntVFNowPGv
- V1zA==
-X-Gm-Message-State: AOAM533Drf46QMsPjpHk1LZ+vrurvLXpxgB97JhWGblBwWcRzk07xx2T
- b+DjS7z0uGSVXgLOZ7wLc0OU3w==
-X-Google-Smtp-Source: ABdhPJy/9BBSYnNE09ZOA9yfYLU2h8l9wONKCCYCzYanyMgrjnHC3enrn/8qL92u09xqSIsKnx4IKA==
-X-Received: by 2002:adf:c44d:: with SMTP id a13mr9380625wrg.205.1592998373687; 
- Wed, 24 Jun 2020 04:32:53 -0700 (PDT)
-Received: from elver.google.com ([100.105.32.75])
- by smtp.gmail.com with ESMTPSA id u84sm4305920wme.42.2020.06.24.04.32.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jun 2020 04:32:52 -0700 (PDT)
-Date: Wed, 24 Jun 2020 13:32:46 +0200
-From: Marco Elver <elver@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
- per-cpu variables
-Message-ID: <20200624113246.GA170324@elver.google.com>
-References: <20200623083645.277342609@infradead.org>
- <20200623083721.512673481@infradead.org>
- <20200623150031.GA2986783@debian-buster-darwi.lab.linutronix.de>
- <20200623152450.GM4817@hirez.programming.kicks-ass.net>
- <20200623161320.GA2996373@debian-buster-darwi.lab.linutronix.de>
- <20200623163730.GA4800@hirez.programming.kicks-ass.net>
- <20200623175957.GA106514@elver.google.com>
- <20200623181232.GB4800@hirez.programming.kicks-ass.net>
- <20200623202404.GE2483@worktop.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sLyd35HbzDqRC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 21:48:51 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05OBXQxR137219; Wed, 24 Jun 2020 07:48:18 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31ux02d77g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 07:48:18 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05OBXWRp137775;
+ Wed, 24 Jun 2020 07:48:16 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31ux02d75v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 07:48:16 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05OBkbc2026374;
+ Wed, 24 Jun 2020 11:48:13 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 31uururavg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Jun 2020 11:48:13 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05OBmAwx61079580
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Jun 2020 11:48:10 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6AFA3A405C;
+ Wed, 24 Jun 2020 11:48:10 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 45497A4054;
+ Wed, 24 Jun 2020 11:48:09 +0000 (GMT)
+Received: from thinkpad (unknown [9.171.4.225])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 24 Jun 2020 11:48:09 +0000 (GMT)
+Date: Wed, 24 Jun 2020 13:48:08 +0200
+From: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>, Anshuman Khandual
+ <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V3 0/4] mm/debug_vm_pgtable: Add some more tests
+Message-ID: <20200624134808.0c460862@thinkpad>
+In-Reply-To: <20200624110539.GC24934@oc3871087118.ibm.com>
+References: <1592192277-8421-1-git-send-email-anshuman.khandual@arm.com>
+ <70ddc7dd-b688-b73e-642a-6363178c8cdd@arm.com>
+ <20200624110539.GC24934@oc3871087118.ibm.com>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20200623202404.GE2483@worktop.programming.kicks-ass.net>
-User-Agent: Mutt/1.13.2 (2019-12-18)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-24_06:2020-06-24,
+ 2020-06-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1011
+ lowpriorityscore=0 phishscore=0 impostorscore=0 cotscore=-2147483648
+ bulkscore=0 adultscore=0 mlxlogscore=663 mlxscore=0 priorityscore=1501
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006240085
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,110 +94,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- paulmck@kernel.org, bigeasy@linutronix.de, x86@kernel.org,
- heiko.carstens@de.ibm.com, linux-kernel@vger.kernel.org, rostedt@goodmis.org,
- davem@davemloft.net, "Ahmed S. Darwish" <a.darwish@linutronix.de>,
- sparclinux@vger.kernel.org, linux@armlinux.org.uk, tglx@linutronix.de,
- will@kernel.org, mingo@kernel.org
+Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, "H. Peter
+ Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ ziy@nvidia.com, Catalin Marinas <catalin.marinas@arm.com>,
+ linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 23, 2020 at 10:24PM +0200, Peter Zijlstra wrote:
-> On Tue, Jun 23, 2020 at 08:12:32PM +0200, Peter Zijlstra wrote:
-> > Fair enough; I'll rip it all up and boot a KCSAN kernel, see what if
-> > anything happens.
->=20
-> OK, so the below patch doesn't seem to have any nasty recursion issues
-> here. The only 'problem' is that lockdep now sees report_lock can cause
-> deadlocks.
+On Wed, 24 Jun 2020 13:05:39 +0200
+Alexander Gordeev <agordeev@linux.ibm.com> wrote:
 
-Thanks, using non-raw now makes sense.
+> On Wed, Jun 24, 2020 at 08:43:10AM +0530, Anshuman Khandual wrote:
+> 
+> [...]
+> 
+> > Hello Gerald/Christophe/Vineet,
+> > 
+> > It would be really great if you could give this series a quick test
+> > on s390/ppc/arc platforms respectively. Thank you.
+> 
+> That worked for me with the default and debug s390 configurations.
+> Would you like to try with some particular options or combinations
+> of the options?
 
-> It is completely right about it too, but I don't suspect there's much we
-> can do about it, it's pretty much the standard printk() with scheduler
-> locks held report.
+It will be enabled automatically on all archs that set
+ARCH_HAS_DEBUG_VM_PGTABLE, which we do for s390 unconditionally.
+Also, DEBUG_VM has to be set, which we have only in the debug config.
+So only the s390 debug config will have it enabled, you can check
+dmesg for "debug_vm_pgtable" to see when / where it was run, and if it
+triggered any warnings.
 
-Right, I think we just have to tolerate the potential risk of deadlock
-until there is a way to make all the code that prints in print_report()
-scheduler-safe (that includes stack_trace_print()).
-
-Based on your suggested change to core.c, how about the below patch?
-Anything we've missed? If you think it's reasonable, please carry it
-with the IRQ state tracking changes.
-
-As far as I can tell there are no more warnings together with the other
-patch you sent to add '& LOCKDEP_RECURSION_MASK'.
-
-Thanks,
--- Marco
-
------- >8 ------
-
-=46rom: Marco Elver <elver@google.com>
-Date: Wed, 24 Jun 2020 11:23:22 +0200
-Subject: [PATCH] kcsan: Make KCSAN compatible with new IRQ state tracking
-
-The new IRQ state tracking code does not honor lockdep_off(), and as
-such we should again permit tracing by using non-raw functions in
-core.c. Update the lockdep_off() comment in report.c, to reflect the
-fact there is still a potential risk of deadlock due to using printk()
-=66rom scheduler code.
-
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Marco Elver <elver@google.com>
----
- kernel/kcsan/core.c   | 5 ++---
- kernel/kcsan/report.c | 9 +++++----
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/kernel/kcsan/core.c b/kernel/kcsan/core.c
-index 15f67949d11e..732623c30359 100644
---- a/kernel/kcsan/core.c
-+++ b/kernel/kcsan/core.c
-@@ -397,8 +397,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t=
- size, int type)
- 	}
-=20
- 	if (!kcsan_interrupt_watcher)
--		/* Use raw to avoid lockdep recursion via IRQ flags tracing. */
--		raw_local_irq_save(irq_flags);
-+		local_irq_save(irq_flags);
-=20
- 	watchpoint =3D insert_watchpoint((unsigned long)ptr, size, is_write);
- 	if (watchpoint =3D=3D NULL) {
-@@ -539,7 +538,7 @@ kcsan_setup_watchpoint(const volatile void *ptr, size_t=
- size, int type)
- 	kcsan_counter_dec(KCSAN_COUNTER_USED_WATCHPOINTS);
- out_unlock:
- 	if (!kcsan_interrupt_watcher)
--		raw_local_irq_restore(irq_flags);
-+		local_irq_restore(irq_flags);
- out:
- 	user_access_restore(ua_flags);
- }
-diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
-index ac5f8345bae9..6b2fb1a6d8cd 100644
---- a/kernel/kcsan/report.c
-+++ b/kernel/kcsan/report.c
-@@ -606,10 +606,11 @@ void kcsan_report(const volatile void *ptr, size_t si=
-ze, int access_type,
- 		goto out;
-=20
- 	/*
--	 * With TRACE_IRQFLAGS, lockdep's IRQ trace state becomes corrupted if
--	 * we do not turn off lockdep here; this could happen due to recursion
--	 * into lockdep via KCSAN if we detect a race in utilities used by
--	 * lockdep.
-+	 * Because we may generate reports when we're in scheduler code, the use
-+	 * of printk() could deadlock. Until such time that all printing code
-+	 * called in print_report() is scheduler-safe, accept the risk, and just
-+	 * get our message out. As such, also disable lockdep to hide the
-+	 * warning, and avoid disabling lockdep for the rest of the kernel.
- 	 */
- 	lockdep_off();
-=20
---=20
-2.27.0.111.gc72c7da667-goog
-=20
+I also checked with the v3 series, and it works fine for s390.
