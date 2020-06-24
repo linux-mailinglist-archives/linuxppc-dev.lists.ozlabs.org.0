@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3296207EA0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 23:33:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7F0207EAA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jun 2020 23:35:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sbx417PfzDqnx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 07:33:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sbzF4j0TzDqV5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 07:35:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=flex--brendanhiggins.bounces.google.com
- (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com;
- envelope-from=3c77zxg4kalwdtgpfcpjkiikpuiqqing.eqo@flex--brendanhiggins.bounces.google.com;
+ (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com;
+ envelope-from=3dl7zxg4kal0euhqgdqkljjlqvjrrjoh.frp@flex--brendanhiggins.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=j/kWNJMp; dkim-atps=neutral
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com
- [IPv6:2607:f8b0:4864:20::b4a])
+ header.s=20161025 header.b=eBb2r/O+; dkim-atps=neutral
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com
+ [IPv6:2607:f8b0:4864:20::b49])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sb8q4MrqzDqPj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 06:58:29 +1000 (AEST)
-Received: by mail-yb1-xb4a.google.com with SMTP id z7so3620213ybz.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 13:58:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sb8s2k3jzDqPj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 06:58:31 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id c3so3551656ybi.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jun 2020 13:58:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=ZQcLA3WWQzWhDh7XNic/G9qqCkpVYvgILX+rlRl11MM=;
- b=j/kWNJMpkLx+QCXq2SQxzFXE4HDX6KCmSJPXrZblzIllowutKkBsG1ud3ynRKeW8lJ
- MtI48a2Cpj4ziGJGkEDlnEQv6DyxH1ousx99m6BnZKWQj6+/LMpBSQfN3Z2bJMnOIIhA
- veEviOrcT/oF5/ldeqAc8VZut+QFQYvbmgweDJvMdfdtNxBA3C8QstHTAtCWJCFu/uEM
- g8XBJvmlW8ZgWrslgR4KbC9ZLSy7BQNUKbLrK1dtpNcacunnYBX6IN8LUDosSMZIIPFI
- SKEMPUUw5qzV4tY3UOeSc9MtEF27mtDWWzIJ/xKaLfYUcG1fAVOTQnmOwrBK/8eH1yD5
- LvGQ==
+ :cc; bh=/YfJhHqk1scz1aBXF0mupkQea8lbBQgP2jeC+IACUDE=;
+ b=eBb2r/O+3xD/ft1cWQIYq+lLT5MaZcDKCI7F68NCZy5mtkJDNhWzHGgMGNZjbp5vY2
+ NeciIBXPHqDHAr515OD+KEI2SwbSQA3wPry4syrluMYmbIYDoGubxlmgh9jyRlLOoHz5
+ p4aoDDsXGCW7wnWAlLUMV8zs3lliqsQjwHQ3f/IRxPoalCwAHzoMzbTu3F1aBupYM8jY
+ RJXyTQ3a1l5kZUWbyWsbEikRBkGpV5M+0D3Trh1EaZC6LuABuarRYjnjmK+YSshwXwQu
+ +pk7yF5eODqLsJrD/Gc4h/AznuIk8Jq2hwInTWrfIN5TI1VZdP1CxKJc8TVkKATdArhv
+ rkVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:in-reply-to:message-id:mime-version
  :references:subject:from:to:cc;
- bh=ZQcLA3WWQzWhDh7XNic/G9qqCkpVYvgILX+rlRl11MM=;
- b=NsPYGWO9Of7ZtM+VIa6ZQhMJTFR9dBBvw3XreoqZuP4YeuKcgwGDjuSrJGHxI4e2BI
- V+Wu5NxwvbeATD8FoVQYT8YXC6/BQ2oV3lAkavnbDkJuY5U41ZiF8WNTevtm/5JVyzpR
- FDXa1ajxv9hTKvkIPcCkW3mmBAWeTvvZrLnbF4PLFXF+gEQrKCcUUcq2pPtLcc8d3b1q
- pReiAcrcRK/T6v3QQ/Dg9t1RHk8fs9raTYPsCThjQg5l8/9VgT9QsO90OpnghM9QLNtx
- hz6VOuE78/o698h0soy71/0nC0ehdPB858+0HVrkugqH6+lg9X2V3CNCNLoQWNpcTCAy
- Yh+g==
-X-Gm-Message-State: AOAM532Kv3EZhgKtLmwQpdq5Z6lL8SQbzuFT3Can/93t8OnXkJCNmfIP
- tQx3BrGOFRLOygU0LJbKxeOu3SoOUxeCzexLQ7ymyA==
-X-Google-Smtp-Source: ABdhPJyhpPPbZya9wx2VzaMGagNQNdOzG9SvfIE26+f96tSAZOYI00iBbgj44mO45Hc8tO4IzqRsiRZjGUUWMQvf7cudgg==
-X-Received: by 2002:a5b:c8b:: with SMTP id i11mr45672710ybq.484.1593032307073; 
- Wed, 24 Jun 2020 13:58:27 -0700 (PDT)
-Date: Wed, 24 Jun 2020 13:55:49 -0700
+ bh=/YfJhHqk1scz1aBXF0mupkQea8lbBQgP2jeC+IACUDE=;
+ b=pQ3HHnH+xwvlwgvjOadOwa1EVhKuI7v1pd3WxX6OYmhQde/BDDDarRC/1sG0/kxiLg
+ 17H4lpvFLM4sUt/G1mFGA2KTxDiub5MJd08snZG44LW3lXzjQrhkCpH0GA6jvn8Z+4hm
+ HG8+yvQaHKinLXQGpgT9UCP0F4BwFB1bgmS2RDR9oO+QLNRYNm34PEJ/4nW4+OHOq7Od
+ 2vu3sKNtsGGuiEM5N5n+3rndZLYVEv5MxxLvJFTMWDFA15eR2w6pxsU3ax04lnwBE39i
+ T9KdA4cKRRZOoKltXfd9fn5XnbRmgNlraUXHsd5Xvfq2xdE/5HH5ti5Z66NPm3pjTjov
+ xMFg==
+X-Gm-Message-State: AOAM532DhrHTLDS4ZnYwXJI+J52TFguj4CO02QEcCOIaMLYgWlij6WzS
+ r/nwTMA4qNut/br1Tc6RJa0IcydiRye1k1PrHJNhSA==
+X-Google-Smtp-Source: ABdhPJyzMN1O9F20c44aUZ3Rj+xXWGPWk9fw0REl0xzDcZiFgklg99lb7/rTyyzMpJHoIh8oBhPbhqyjNv0vmkzqL5BxQQ==
+X-Received: by 2002:a25:2d63:: with SMTP id s35mr27292035ybe.367.1593032308955; 
+ Wed, 24 Jun 2020 13:58:28 -0700 (PDT)
+Date: Wed, 24 Jun 2020 13:55:50 -0700
 In-Reply-To: <20200624205550.215599-1-brendanhiggins@google.com>
-Message-Id: <20200624205550.215599-11-brendanhiggins@google.com>
+Message-Id: <20200624205550.215599-12-brendanhiggins@google.com>
 Mime-Version: 1.0
 References: <20200624205550.215599-1-brendanhiggins@google.com>
 X-Mailer: git-send-email 2.27.0.212.ge8ba1cc988-goog
-Subject: [PATCH v4 10/11] Documentation: Add kunit_shutdown to
- kernel-parameters.txt
+Subject: [PATCH v4 11/11] Documentation: kunit: add a brief blurb about
+ kunit_test_suite
 From: Brendan Higgins <brendanhiggins@google.com>
 To: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com, 
  arnd@arndb.de, keescook@chromium.org, skhan@linuxfoundation.org, 
@@ -92,34 +92,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add kunit_shutdown, an option to specify that the kernel shutsdown after
-running KUnit tests, to the kernel-parameters.txt documentation.
+Add a brief blurb saying how and when the kunit_test_suite() macro
+works to the usage documentation.
 
 Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/dev-tools/kunit/usage.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index fb95fad81c79a..e7d5eb7249e7f 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2183,6 +2183,14 @@
- 			0: force disabled
- 			1: force enabled
+diff --git a/Documentation/dev-tools/kunit/usage.rst b/Documentation/dev-tools/kunit/usage.rst
+index 3c3fe8b5feccf..961d3ea3ca19a 100644
+--- a/Documentation/dev-tools/kunit/usage.rst
++++ b/Documentation/dev-tools/kunit/usage.rst
+@@ -211,6 +211,11 @@ KUnit test framework.
+ .. note::
+    A test case will only be run if it is associated with a test suite.
  
-+	kunit_shutdown=[KERNEL UNIT TESTING FRAMEWORK] Shutdown kernel after
-+			running built-in tests. Tests configured as modules will
-+			not be run.
-+			Default:	(flag not present) don't shutdown
-+			poweroff:	poweroff the kernel after running tests
-+			halt:		halt the kernel after running tests
-+			reboot:		reboot the kernel after running tests
++``kunit_test_suite(...)`` is a macro which tells the linker to put the specified
++test suite in a special linker section so that it can be run by KUnit either
++after late_init, or when the test module is loaded (depending on whether the
++test was built in or not).
 +
- 	kvm.ignore_msrs=[KVM] Ignore guest accesses to unhandled MSRs.
- 			Default is 0 (don't ignore, but inject #GP)
+ For more information on these types of things see the :doc:`api/test`.
  
+ Isolating Behavior
 -- 
 2.27.0.212.ge8ba1cc988-goog
 
