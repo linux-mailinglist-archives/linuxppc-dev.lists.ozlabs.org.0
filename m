@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A49A20A01D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 029C020A02D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:43:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49t1LY4JMTzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:38:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49t1Rv548DzDqRg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:43:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,15 +19,15 @@ Received: from theia.8bytes.org (8bytes.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hN3yGDzDqlB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hP1NLfzDqr6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:53 +1000 (AEST)
 Received: by theia.8bytes.org (Postfix, from userid 1000)
- id 0044846A; Thu, 25 Jun 2020 15:08:38 +0200 (CEST)
+ id 5E1104CB; Thu, 25 Jun 2020 15:08:39 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 06/13] iommu/tegra: Use dev_iommu_priv_get/set()
-Date: Thu, 25 Jun 2020 15:08:29 +0200
-Message-Id: <20200625130836.1916-7-joro@8bytes.org>
+Subject: [PATCH 08/13] iommu/mediatek: Do no use dev->archdata.iommu
+Date: Thu, 25 Jun 2020 15:08:31 +0200
+Message-Id: <20200625130836.1916-9-joro@8bytes.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200625130836.1916-1-joro@8bytes.org>
 References: <20200625130836.1916-1-joro@8bytes.org>
@@ -64,81 +64,78 @@ Sender: "Linuxppc-dev"
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Remove the use of dev->archdata.iommu and use the private per-device
-pointer provided by IOMMU core code instead.
+The iommu private pointer is already used in the Mediatek IOMMU v1
+driver, so move the dma_iommu_mapping pointer into 'struct
+mtk_iommu_data' and do not use dev->archdata.iommu anymore.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- drivers/iommu/tegra-gart.c | 8 ++++----
- drivers/iommu/tegra-smmu.c | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/iommu/mtk_iommu.h    |  2 ++
+ drivers/iommu/mtk_iommu_v1.c | 10 ++++------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iommu/tegra-gart.c b/drivers/iommu/tegra-gart.c
-index 5fbdff6ff41a..fac720273889 100644
---- a/drivers/iommu/tegra-gart.c
-+++ b/drivers/iommu/tegra-gart.c
-@@ -113,8 +113,8 @@ static int gart_iommu_attach_dev(struct iommu_domain *domain,
+diff --git a/drivers/iommu/mtk_iommu.h b/drivers/iommu/mtk_iommu.h
+index ea949a324e33..1682406e98dc 100644
+--- a/drivers/iommu/mtk_iommu.h
++++ b/drivers/iommu/mtk_iommu.h
+@@ -62,6 +62,8 @@ struct mtk_iommu_data {
+ 	struct iommu_device		iommu;
+ 	const struct mtk_iommu_plat_data *plat_data;
  
- 	if (gart->active_domain && gart->active_domain != domain) {
- 		ret = -EBUSY;
--	} else if (dev->archdata.iommu != domain) {
--		dev->archdata.iommu = domain;
-+	} else if (dev_iommu_priv_get(dev) != domain) {
-+		dev_iommu_priv_set(dev, domain);
- 		gart->active_domain = domain;
- 		gart->active_devices++;
++	struct dma_iommu_mapping	*mapping; /* For mtk_iommu_v1.c */
++
+ 	struct list_head		list;
+ 	struct mtk_smi_larb_iommu	larb_imu[MTK_LARB_NR_MAX];
+ };
+diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
+index c9d79cff4d17..82ddfe9170d4 100644
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -269,7 +269,7 @@ static int mtk_iommu_attach_device(struct iommu_domain *domain,
+ 	int ret;
+ 
+ 	/* Only allow the domain created internally. */
+-	mtk_mapping = data->dev->archdata.iommu;
++	mtk_mapping = data->mapping;
+ 	if (mtk_mapping->domain != domain)
+ 		return 0;
+ 
+@@ -369,7 +369,6 @@ static int mtk_iommu_create_mapping(struct device *dev,
+ 	struct mtk_iommu_data *data;
+ 	struct platform_device *m4updev;
+ 	struct dma_iommu_mapping *mtk_mapping;
+-	struct device *m4udev;
+ 	int ret;
+ 
+ 	if (args->args_count != 1) {
+@@ -401,8 +400,7 @@ static int mtk_iommu_create_mapping(struct device *dev,
+ 		return ret;
+ 
+ 	data = dev_iommu_priv_get(dev);
+-	m4udev = data->dev;
+-	mtk_mapping = m4udev->archdata.iommu;
++	mtk_mapping = data->mapping;
+ 	if (!mtk_mapping) {
+ 		/* MTK iommu support 4GB iova address space. */
+ 		mtk_mapping = arm_iommu_create_mapping(&platform_bus_type,
+@@ -410,7 +408,7 @@ static int mtk_iommu_create_mapping(struct device *dev,
+ 		if (IS_ERR(mtk_mapping))
+ 			return PTR_ERR(mtk_mapping);
+ 
+-		m4udev->archdata.iommu = mtk_mapping;
++		data->mapping = mtk_mapping;
  	}
-@@ -131,8 +131,8 @@ static void gart_iommu_detach_dev(struct iommu_domain *domain,
  
- 	spin_lock(&gart->dom_lock);
+ 	return 0;
+@@ -459,7 +457,7 @@ static void mtk_iommu_probe_finalize(struct device *dev)
+ 	int err;
  
--	if (dev->archdata.iommu == domain) {
--		dev->archdata.iommu = NULL;
-+	if (dev_iommu_priv_get(dev) == domain) {
-+		dev_iommu_priv_set(dev, NULL);
+ 	data        = dev_iommu_priv_get(dev);
+-	mtk_mapping = data->dev->archdata.iommu;
++	mtk_mapping = data->mapping;
  
- 		if (--gart->active_devices == 0)
- 			gart->active_domain = NULL;
-diff --git a/drivers/iommu/tegra-smmu.c b/drivers/iommu/tegra-smmu.c
-index 7426b7666e2b..124c8848ab7e 100644
---- a/drivers/iommu/tegra-smmu.c
-+++ b/drivers/iommu/tegra-smmu.c
-@@ -465,7 +465,7 @@ static void tegra_smmu_as_unprepare(struct tegra_smmu *smmu,
- static int tegra_smmu_attach_dev(struct iommu_domain *domain,
- 				 struct device *dev)
- {
--	struct tegra_smmu *smmu = dev->archdata.iommu;
-+	struct tegra_smmu *smmu = dev_iommu_priv_get(dev);
- 	struct tegra_smmu_as *as = to_smmu_as(domain);
- 	struct device_node *np = dev->of_node;
- 	struct of_phandle_args args;
-@@ -780,7 +780,7 @@ static struct iommu_device *tegra_smmu_probe_device(struct device *dev)
- 			 * supported by the Linux kernel, so abort after the
- 			 * first match.
- 			 */
--			dev->archdata.iommu = smmu;
-+			dev_iommu_priv_set(dev, smmu);
- 
- 			break;
- 		}
-@@ -797,7 +797,7 @@ static struct iommu_device *tegra_smmu_probe_device(struct device *dev)
- 
- static void tegra_smmu_release_device(struct device *dev)
- {
--	dev->archdata.iommu = NULL;
-+	dev_iommu_priv_set(dev, NULL);
- }
- 
- static const struct tegra_smmu_group_soc *
-@@ -856,7 +856,7 @@ static struct iommu_group *tegra_smmu_group_get(struct tegra_smmu *smmu,
- static struct iommu_group *tegra_smmu_device_group(struct device *dev)
- {
- 	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
--	struct tegra_smmu *smmu = dev->archdata.iommu;
-+	struct tegra_smmu *smmu = dev_iommu_priv_get(dev);
- 	struct iommu_group *group;
- 
- 	group = tegra_smmu_group_get(smmu, fwspec->ids[0]);
+ 	err = arm_iommu_attach_device(dev, mtk_mapping);
+ 	if (err)
 -- 
 2.27.0
 
