@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029C020A02D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:43:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F2020A026
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:40:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49t1Rv548DzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:43:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49t1PC1HnwzDqtd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:40:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,15 +19,15 @@ Received: from theia.8bytes.org (8bytes.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hP1NLfzDqr6
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hP2wHrzDqrC
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:53 +1000 (AEST)
 Received: by theia.8bytes.org (Postfix, from userid 1000)
- id 5E1104CB; Thu, 25 Jun 2020 15:08:39 +0200 (CEST)
+ id 93AF64DE; Thu, 25 Jun 2020 15:08:39 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 08/13] iommu/mediatek: Do no use dev->archdata.iommu
-Date: Thu, 25 Jun 2020 15:08:31 +0200
-Message-Id: <20200625130836.1916-9-joro@8bytes.org>
+Subject: [PATCH 09/13] x86: Remove dev->archdata.iommu pointer
+Date: Thu, 25 Jun 2020 15:08:32 +0200
+Message-Id: <20200625130836.1916-10-joro@8bytes.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200625130836.1916-1-joro@8bytes.org>
 References: <20200625130836.1916-1-joro@8bytes.org>
@@ -64,78 +64,28 @@ Sender: "Linuxppc-dev"
 
 From: Joerg Roedel <jroedel@suse.de>
 
-The iommu private pointer is already used in the Mediatek IOMMU v1
-driver, so move the dma_iommu_mapping pointer into 'struct
-mtk_iommu_data' and do not use dev->archdata.iommu anymore.
+There are no users left, all drivers have been converted to use the
+per-device private pointer offered by IOMMU core.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- drivers/iommu/mtk_iommu.h    |  2 ++
- drivers/iommu/mtk_iommu_v1.c | 10 ++++------
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/device.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/iommu/mtk_iommu.h b/drivers/iommu/mtk_iommu.h
-index ea949a324e33..1682406e98dc 100644
---- a/drivers/iommu/mtk_iommu.h
-+++ b/drivers/iommu/mtk_iommu.h
-@@ -62,6 +62,8 @@ struct mtk_iommu_data {
- 	struct iommu_device		iommu;
- 	const struct mtk_iommu_plat_data *plat_data;
+diff --git a/arch/x86/include/asm/device.h b/arch/x86/include/asm/device.h
+index 49bd6cf3eec9..7c0a52ca2f4d 100644
+--- a/arch/x86/include/asm/device.h
++++ b/arch/x86/include/asm/device.h
+@@ -3,9 +3,6 @@
+ #define _ASM_X86_DEVICE_H
  
-+	struct dma_iommu_mapping	*mapping; /* For mtk_iommu_v1.c */
-+
- 	struct list_head		list;
- 	struct mtk_smi_larb_iommu	larb_imu[MTK_LARB_NR_MAX];
+ struct dev_archdata {
+-#ifdef CONFIG_IOMMU_API
+-	void *iommu; /* hook for IOMMU specific extension */
+-#endif
  };
-diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
-index c9d79cff4d17..82ddfe9170d4 100644
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -269,7 +269,7 @@ static int mtk_iommu_attach_device(struct iommu_domain *domain,
- 	int ret;
  
- 	/* Only allow the domain created internally. */
--	mtk_mapping = data->dev->archdata.iommu;
-+	mtk_mapping = data->mapping;
- 	if (mtk_mapping->domain != domain)
- 		return 0;
- 
-@@ -369,7 +369,6 @@ static int mtk_iommu_create_mapping(struct device *dev,
- 	struct mtk_iommu_data *data;
- 	struct platform_device *m4updev;
- 	struct dma_iommu_mapping *mtk_mapping;
--	struct device *m4udev;
- 	int ret;
- 
- 	if (args->args_count != 1) {
-@@ -401,8 +400,7 @@ static int mtk_iommu_create_mapping(struct device *dev,
- 		return ret;
- 
- 	data = dev_iommu_priv_get(dev);
--	m4udev = data->dev;
--	mtk_mapping = m4udev->archdata.iommu;
-+	mtk_mapping = data->mapping;
- 	if (!mtk_mapping) {
- 		/* MTK iommu support 4GB iova address space. */
- 		mtk_mapping = arm_iommu_create_mapping(&platform_bus_type,
-@@ -410,7 +408,7 @@ static int mtk_iommu_create_mapping(struct device *dev,
- 		if (IS_ERR(mtk_mapping))
- 			return PTR_ERR(mtk_mapping);
- 
--		m4udev->archdata.iommu = mtk_mapping;
-+		data->mapping = mtk_mapping;
- 	}
- 
- 	return 0;
-@@ -459,7 +457,7 @@ static void mtk_iommu_probe_finalize(struct device *dev)
- 	int err;
- 
- 	data        = dev_iommu_priv_get(dev);
--	mtk_mapping = data->dev->archdata.iommu;
-+	mtk_mapping = data->mapping;
- 
- 	err = arm_iommu_attach_device(dev, mtk_mapping);
- 	if (err)
+ struct pdev_archdata {
 -- 
 2.27.0
 
