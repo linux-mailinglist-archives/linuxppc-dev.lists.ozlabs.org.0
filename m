@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72EA20A037
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:45:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D1A20A045
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:48:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49t1Vt6fCrzDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:45:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49t1Yk2pRCzDqw0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:48:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,15 +19,15 @@ Received: from theia.8bytes.org (8bytes.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hP4MRdzDqrF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hR04PSzDqlB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:54 +1000 (AEST)
 Received: by theia.8bytes.org (Postfix, from userid 1000)
- id B928850C; Thu, 25 Jun 2020 15:08:39 +0200 (CEST)
+ id 2BC4960C; Thu, 25 Jun 2020 15:08:40 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 10/13] ia64: Remove dev->archdata.iommu pointer
-Date: Thu, 25 Jun 2020 15:08:33 +0200
-Message-Id: <20200625130836.1916-11-joro@8bytes.org>
+Subject: [PATCH 12/13] arm64: Remove dev->archdata.iommu pointer
+Date: Thu, 25 Jun 2020 15:08:35 +0200
+Message-Id: <20200625130836.1916-13-joro@8bytes.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200625130836.1916-1-joro@8bytes.org>
 References: <20200625130836.1916-1-joro@8bytes.org>
@@ -69,19 +69,19 @@ per-device private pointer offered by IOMMU core.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/ia64/include/asm/device.h | 3 ---
+ arch/arm64/include/asm/device.h | 3 ---
  1 file changed, 3 deletions(-)
 
-diff --git a/arch/ia64/include/asm/device.h b/arch/ia64/include/asm/device.h
-index 3eb397415381..918b198cd5bb 100644
---- a/arch/ia64/include/asm/device.h
-+++ b/arch/ia64/include/asm/device.h
+diff --git a/arch/arm64/include/asm/device.h b/arch/arm64/include/asm/device.h
+index 12b778d55342..996498751318 100644
+--- a/arch/arm64/include/asm/device.h
++++ b/arch/arm64/include/asm/device.h
 @@ -6,9 +6,6 @@
- #define _ASM_IA64_DEVICE_H
+ #define __ASM_DEVICE_H
  
  struct dev_archdata {
 -#ifdef CONFIG_IOMMU_API
--	void *iommu; /* hook for IOMMU specific extension */
+-	void *iommu;			/* private IOMMU data */
 -#endif
  };
  
