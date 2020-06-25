@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F069209A1D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 08:52:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1133209A1F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 08:54:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49srKy2Z9ZzDqgZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 16:52:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49srNM2nwkzDqlZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 16:54:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,44 +19,44 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49srBz2FG9zDqgS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 16:46:19 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49srC25YVHzDqgr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 16:46:22 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05P6Wlmj131987; Thu, 25 Jun 2020 02:46:14 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31uwymeufk-1
+ 05P6VXwf006701; Thu, 25 Jun 2020 02:46:18 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31ux00ermd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 02:46:14 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05P6eARQ002852;
- Thu, 25 Jun 2020 06:46:14 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04wdc.us.ibm.com with ESMTP id 31uury9tgj-1
+ Thu, 25 Jun 2020 02:46:17 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05P6e04V011007;
+ Thu, 25 Jun 2020 06:46:17 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma03dal.us.ibm.com with ESMTP id 31uurvv7w5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 06:46:13 +0000
+ Thu, 25 Jun 2020 06:46:17 +0000
 Received: from b03ledav004.gho.boulder.ibm.com
  (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05P6kCjL26870078
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05P6kETn9175322
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jun 2020 06:46:12 GMT
+ Thu, 25 Jun 2020 06:46:14 GMT
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B3CF27805F;
- Thu, 25 Jun 2020 06:46:12 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8F4ED7805E;
+ Thu, 25 Jun 2020 06:46:15 +0000 (GMT)
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 58BE878066;
- Thu, 25 Jun 2020 06:46:10 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 64DDB7805C;
+ Thu, 25 Jun 2020 06:46:13 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.47.233])
  by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 25 Jun 2020 06:46:09 +0000 (GMT)
+ Thu, 25 Jun 2020 06:46:13 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2 2/4] powerpc/mm/radix: Free PUD table when freeing pagetable
-Date: Thu, 25 Jun 2020 12:15:45 +0530
-Message-Id: <20200625064547.228448-3-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v2 3/4] powerpc/mm/radix: Remove split_kernel_mapping()
+Date: Thu, 25 Jun 2020 12:15:46 +0530
+Message-Id: <20200625064547.228448-4-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200625064547.228448-1-aneesh.kumar@linux.ibm.com>
 References: <20200625064547.228448-1-aneesh.kumar@linux.ibm.com>
@@ -67,10 +67,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-25_02:2020-06-24,
  2020-06-25 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- bulkscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- suspectscore=2 impostorscore=0 cotscore=-2147483648 adultscore=0
- mlxlogscore=914 mlxscore=0 phishscore=0 classifier=spam adjust=0
+ lowpriorityscore=0
+ clxscore=1015 cotscore=-2147483648 priorityscore=1501 adultscore=0
+ suspectscore=2 mlxscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
+ spamscore=0 malwarescore=0 impostorscore=0 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2006250035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -92,49 +92,186 @@ Sender: "Linuxppc-dev"
 
 From: Bharata B Rao <bharata@linux.ibm.com>
 
-remove_pagetable() isn't freeing PUD table. This causes memory
-leak during memory unplug. Fix this.
+We split the page table mapping on memory unplug if the
+linear range was mapped with huge page mapping (for ex: 1G)
+The page table splitting code has a few issues:
+
+1. Recursive locking
+--------------------
+Memory unplug path takes cpu_hotplug_lock and calls stop_machine()
+for splitting the mappings. However stop_machine() takes
+cpu_hotplug_lock again causing deadlock.
+
+2. BUG: sleeping function called from in_atomic() context
+---------------------------------------------------------
+Memory unplug path (remove_pagetable) takes init_mm.page_table_lock
+spinlock and later calls stop_machine() which does wait_for_completion()
+
+3. Bad unlock unbalance
+-----------------------
+Memory unplug path takes init_mm.page_table_lock spinlock and calls
+stop_machine(). The stop_machine thread function runs in a different
+thread context (migration thread) which tries to release and reaquire
+ptl. Releasing ptl from a different thread than which acquired it
+causes bad unlock unbalance.
+
+These problems can be avoided if we avoid mapping hot-plugged memory
+with 1G mapping, thereby removing the need for splitting them during
+unplug. The kernel always make sure the minimum unplug request is
+SUBSECTION_SIZE for device memory and SECTION_SIZE for regular memory.
+
+In preparation for such a change remove page table splitting support.
+
+This essentially is a revert of
+commit 4dd5f8a99e791 ("powerpc/mm/radix: Split linear mapping on hot-unplug")
 
 Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 95 +++++-------------------
+ 1 file changed, 19 insertions(+), 76 deletions(-)
 
 diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 80be96d3018f..af57604f295f 100644
+index af57604f295f..78ad11812e0d 100644
 --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
 +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -708,6 +708,21 @@ static void free_pmd_table(pmd_t *pmd_start, pud_t *pud)
- 	pud_clear(pud);
+@@ -15,7 +15,6 @@
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/string_helpers.h>
+-#include <linux/stop_machine.h>
+ 
+ #include <asm/pgtable.h>
+ #include <asm/pgalloc.h>
+@@ -723,32 +722,6 @@ static void free_pud_table(pud_t *pud_start, p4d_t *p4d)
+ 	p4d_clear(p4d);
  }
  
-+static void free_pud_table(pud_t *pud_start, p4d_t *p4d)
-+{
-+	pud_t *pud;
-+	int i;
-+
-+	for (i = 0; i < PTRS_PER_PUD; i++) {
-+		pud = pud_start + i;
-+		if (!pud_none(*pud))
-+			return;
-+	}
-+
-+	pud_free(&init_mm, pud_start);
-+	p4d_clear(p4d);
-+}
-+
- struct change_mapping_params {
- 	pte_t *pte;
- 	unsigned long start;
-@@ -882,6 +897,7 @@ static void __meminit remove_pagetable(unsigned long start, unsigned long end)
- 
- 		pud_base = (pud_t *)p4d_page_vaddr(*p4d);
- 		remove_pud_table(pud_base, addr, next);
-+		free_pud_table(pud_base, p4d);
+-struct change_mapping_params {
+-	pte_t *pte;
+-	unsigned long start;
+-	unsigned long end;
+-	unsigned long aligned_start;
+-	unsigned long aligned_end;
+-};
+-
+-static int __meminit stop_machine_change_mapping(void *data)
+-{
+-	struct change_mapping_params *params =
+-			(struct change_mapping_params *)data;
+-
+-	if (!data)
+-		return -1;
+-
+-	spin_unlock(&init_mm.page_table_lock);
+-	pte_clear(&init_mm, params->aligned_start, params->pte);
+-	create_physical_mapping(__pa(params->aligned_start),
+-				__pa(params->start), -1, PAGE_KERNEL);
+-	create_physical_mapping(__pa(params->end), __pa(params->aligned_end),
+-				-1, PAGE_KERNEL);
+-	spin_lock(&init_mm.page_table_lock);
+-	return 0;
+-}
+-
+ static void remove_pte_table(pte_t *pte_start, unsigned long addr,
+ 			     unsigned long end)
+ {
+@@ -777,52 +750,6 @@ static void remove_pte_table(pte_t *pte_start, unsigned long addr,
  	}
+ }
  
- 	spin_unlock(&init_mm.page_table_lock);
+-/*
+- * clear the pte and potentially split the mapping helper
+- */
+-static void __meminit split_kernel_mapping(unsigned long addr, unsigned long end,
+-				unsigned long size, pte_t *pte)
+-{
+-	unsigned long mask = ~(size - 1);
+-	unsigned long aligned_start = addr & mask;
+-	unsigned long aligned_end = addr + size;
+-	struct change_mapping_params params;
+-	bool split_region = false;
+-
+-	if ((end - addr) < size) {
+-		/*
+-		 * We're going to clear the PTE, but not flushed
+-		 * the mapping, time to remap and flush. The
+-		 * effects if visible outside the processor or
+-		 * if we are running in code close to the
+-		 * mapping we cleared, we are in trouble.
+-		 */
+-		if (overlaps_kernel_text(aligned_start, addr) ||
+-			overlaps_kernel_text(end, aligned_end)) {
+-			/*
+-			 * Hack, just return, don't pte_clear
+-			 */
+-			WARN_ONCE(1, "Linear mapping %lx->%lx overlaps kernel "
+-				  "text, not splitting\n", addr, end);
+-			return;
+-		}
+-		split_region = true;
+-	}
+-
+-	if (split_region) {
+-		params.pte = pte;
+-		params.start = addr;
+-		params.end = end;
+-		params.aligned_start = addr & ~(size - 1);
+-		params.aligned_end = min_t(unsigned long, aligned_end,
+-				(unsigned long)__va(memblock_end_of_DRAM()));
+-		stop_machine(stop_machine_change_mapping, &params, NULL);
+-		return;
+-	}
+-
+-	pte_clear(&init_mm, addr, pte);
+-}
+-
+ static void remove_pmd_table(pmd_t *pmd_start, unsigned long addr,
+ 			     unsigned long end)
+ {
+@@ -838,7 +765,12 @@ static void remove_pmd_table(pmd_t *pmd_start, unsigned long addr,
+ 			continue;
+ 
+ 		if (pmd_is_leaf(*pmd)) {
+-			split_kernel_mapping(addr, end, PMD_SIZE, (pte_t *)pmd);
++			if (!IS_ALIGNED(addr, PMD_SIZE) ||
++			    !IS_ALIGNED(next, PMD_SIZE)) {
++				WARN_ONCE(1, "%s: unaligned range\n", __func__);
++				continue;
++			}
++			pte_clear(&init_mm, addr, (pte_t *)pmd);
+ 			continue;
+ 		}
+ 
+@@ -863,7 +795,12 @@ static void remove_pud_table(pud_t *pud_start, unsigned long addr,
+ 			continue;
+ 
+ 		if (pud_is_leaf(*pud)) {
+-			split_kernel_mapping(addr, end, PUD_SIZE, (pte_t *)pud);
++			if (!IS_ALIGNED(addr, PUD_SIZE) ||
++			    !IS_ALIGNED(next, PUD_SIZE)) {
++				WARN_ONCE(1, "%s: unaligned range\n", __func__);
++				continue;
++			}
++			pte_clear(&init_mm, addr, (pte_t *)pud);
+ 			continue;
+ 		}
+ 
+@@ -891,7 +828,13 @@ static void __meminit remove_pagetable(unsigned long start, unsigned long end)
+ 			continue;
+ 
+ 		if (p4d_is_leaf(*p4d)) {
+-			split_kernel_mapping(addr, end, P4D_SIZE, (pte_t *)p4d);
++			if (!IS_ALIGNED(addr, P4D_SIZE) ||
++			    !IS_ALIGNED(next, P4D_SIZE)) {
++				WARN_ONCE(1, "%s: unaligned range\n", __func__);
++				continue;
++			}
++
++			pte_clear(&init_mm, addr, (pte_t *)pgd);
+ 			continue;
+ 		}
+ 
 -- 
 2.26.2
 
