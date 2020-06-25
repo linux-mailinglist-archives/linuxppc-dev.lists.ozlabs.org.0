@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F16B209FE8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8E320A017
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:36:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49t18R1d9jzDqg6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:29:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49t1Hq26sczDqvV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:36:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,15 +19,15 @@ Received: from theia.8bytes.org (8bytes.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hM5SfLzDqcJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hN6HdBzDqqW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:52 +1000 (AEST)
 Received: by theia.8bytes.org (Postfix, from userid 1000)
- id F0D5B5DF; Thu, 25 Jun 2020 15:08:39 +0200 (CEST)
+ id B92BC44A; Thu, 25 Jun 2020 15:08:38 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 11/13] arm: Remove dev->archdata.iommu pointer
-Date: Thu, 25 Jun 2020 15:08:34 +0200
-Message-Id: <20200625130836.1916-12-joro@8bytes.org>
+Subject: [PATCH 05/13] iommu/rockchip: Use dev_iommu_priv_get/set()
+Date: Thu, 25 Jun 2020 15:08:28 +0200
+Message-Id: <20200625130836.1916-6-joro@8bytes.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200625130836.1916-1-joro@8bytes.org>
 References: <20200625130836.1916-1-joro@8bytes.org>
@@ -64,28 +64,54 @@ Sender: "Linuxppc-dev"
 
 From: Joerg Roedel <jroedel@suse.de>
 
-There are no users left, all drivers have been converted to use the
-per-device private pointer offered by IOMMU core.
+Remove the use of dev->archdata.iommu and use the private per-device
+pointer provided by IOMMU core code instead.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/arm/include/asm/device.h | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/iommu/rockchip-iommu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/include/asm/device.h b/arch/arm/include/asm/device.h
-index c675bc0d5aa8..be666f58bf7a 100644
---- a/arch/arm/include/asm/device.h
-+++ b/arch/arm/include/asm/device.h
-@@ -9,9 +9,6 @@ struct dev_archdata {
- #ifdef CONFIG_DMABOUNCE
- 	struct dmabounce_device_info *dmabounce;
- #endif
--#ifdef CONFIG_IOMMU_API
--	void *iommu; /* private IOMMU data */
--#endif
- #ifdef CONFIG_ARM_DMA_USE_IOMMU
- 	struct dma_iommu_mapping	*mapping;
- #endif
+diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
+index d25c2486ca07..e5d86b7177de 100644
+--- a/drivers/iommu/rockchip-iommu.c
++++ b/drivers/iommu/rockchip-iommu.c
+@@ -836,7 +836,7 @@ static size_t rk_iommu_unmap(struct iommu_domain *domain, unsigned long _iova,
+ 
+ static struct rk_iommu *rk_iommu_from_dev(struct device *dev)
+ {
+-	struct rk_iommudata *data = dev->archdata.iommu;
++	struct rk_iommudata *data = dev_iommu_priv_get(dev);
+ 
+ 	return data ? data->iommu : NULL;
+ }
+@@ -1059,7 +1059,7 @@ static struct iommu_device *rk_iommu_probe_device(struct device *dev)
+ 	struct rk_iommudata *data;
+ 	struct rk_iommu *iommu;
+ 
+-	data = dev->archdata.iommu;
++	data = dev_iommu_priv_get(dev);
+ 	if (!data)
+ 		return ERR_PTR(-ENODEV);
+ 
+@@ -1073,7 +1073,7 @@ static struct iommu_device *rk_iommu_probe_device(struct device *dev)
+ 
+ static void rk_iommu_release_device(struct device *dev)
+ {
+-	struct rk_iommudata *data = dev->archdata.iommu;
++	struct rk_iommudata *data = dev_iommu_priv_get(dev);
+ 
+ 	device_link_del(data->link);
+ }
+@@ -1100,7 +1100,7 @@ static int rk_iommu_of_xlate(struct device *dev,
+ 	iommu_dev = of_find_device_by_node(args->np);
+ 
+ 	data->iommu = platform_get_drvdata(iommu_dev);
+-	dev->archdata.iommu = data;
++	dev_iommu_priv_set(dev, data);
+ 
+ 	platform_device_put(iommu_dev);
+ 
 -- 
 2.27.0
 
