@@ -1,79 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C57209D7F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 13:32:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECB8209D9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 13:37:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49syXx1BsVzDqrV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 21:32:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49syg273V0zDqs6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 21:37:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=viresh.kumar@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=L248HdTs; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49syWD217zzDqgf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 21:30:48 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05PB9MPd176927; Thu, 25 Jun 2020 07:30:40 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31vtt30kvx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 07:30:40 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05PBTgeD001319;
- Thu, 25 Jun 2020 11:30:39 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma02dal.us.ibm.com with ESMTP id 31uurt6d4w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 11:30:39 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05PBUaSD25362860
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jun 2020 11:30:36 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1B01C605A;
- Thu, 25 Jun 2020 11:30:37 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14ADEC6055;
- Thu, 25 Jun 2020 11:30:35 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.115.79])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 25 Jun 2020 11:30:35 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: Re: [PATCH v2 1/4] powerpc/mm/radix: Fix PTE/PMD fragment count for
- early page table mappings
-In-Reply-To: <20200625064547.228448-2-aneesh.kumar@linux.ibm.com>
-References: <20200625064547.228448-1-aneesh.kumar@linux.ibm.com>
- <20200625064547.228448-2-aneesh.kumar@linux.ibm.com>
-Date: Thu, 25 Jun 2020 17:00:33 +0530
-Message-ID: <87o8p7l6w6.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sydP2CHLzDqgZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 21:36:09 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id l6so113318pjq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 04:36:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=zQMqcazx04oPZQDkNalK3c+oZ7+4RMlmpEj0gizKox0=;
+ b=L248HdTsPVnj/dY7XKrltNkz4VYCOnOgsSQfRfZu/tPmRa0oZMbcjKF+5ejsPs/2Y1
+ NL5I8SsxCo24n66/lBXA+bygwjzf5iJTi/DZlzUczZbpR7wRK1iWGCbwRKOcb9cvc/f/
+ gJslRoo/GTy/cuYo1p55x5m4tK+urvm5yXU10mM1U1oaUKX14HbI3DdE3d16qXqww8Pp
+ K0YpNhy99bRpIj+9f5r7EgDls76+B/xn9bxjFPIbXXRc833qLbghfPmrba7L95Y3CKx8
+ Yjqh3hPP1F5kprbOpUPbOWSQTvlef3cYCeVh7vnXxZQYLEZRa1if4spadTWe2wiNiiiK
+ w8YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=zQMqcazx04oPZQDkNalK3c+oZ7+4RMlmpEj0gizKox0=;
+ b=A3tCDZB1KVOXp34vZNIg9g4ifleB2o53edTo/3RocieL2cmN9k27MhJZE0CWvQStRP
+ 2XRs6rgzdCFo1c/MGEg/NJnPG0TD4kmhjs536mZc3YyzQvAXmORwiM5FZPFPxQbyR4Rn
+ +o6G43sFJgpSbXY4UWLIZFP7tU0AKFw4ZPUg1+itiuSAumJ35wFIE3I7wqoahk2+GsH+
+ OxRUoKpQI2l7j1HuOek73/dhDxqNtn9FXeyyKptVoCzZuImSFfxeadw00YdXbb6TKjOb
+ sX1jRNMr8rrlS/dZKxz73KoWDaUOIJEeKxYQnNpmjiWbuxbSZQ7nEtgorgtgsq1mc+s4
+ lmSA==
+X-Gm-Message-State: AOAM530xq2310cJ1ZZ8N1wIOMadLCfL60Swhu4bBJ6DOFLB1jzdsPf31
+ nyCvE7AZAhoGrluWdfwJtNJCzQ==
+X-Google-Smtp-Source: ABdhPJwuUmK8E9MFP4gCexgTFH6CLEAZn2UkSkrEV9QFJ0/Po7aUxoQVoHBtPpVEHTgbwLK9Ms70Qg==
+X-Received: by 2002:a17:902:7787:: with SMTP id
+ o7mr9561302pll.327.1593084965635; 
+ Thu, 25 Jun 2020 04:36:05 -0700 (PDT)
+Received: from localhost ([122.172.111.76])
+ by smtp.gmail.com with ESMTPSA id r4sm19096550pgp.60.2020.06.25.04.36.04
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 25 Jun 2020 04:36:04 -0700 (PDT)
+Date: Thu, 25 Jun 2020 17:06:02 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Quentin Perret <qperret@google.com>
+Subject: Re: [PATCH v2 2/2] cpufreq: Specify default governor on command line
+Message-ID: <20200625113602.z2xrwebd2gngbww3@vireshk-i7>
+References: <20200623142138.209513-1-qperret@google.com>
+ <20200623142138.209513-3-qperret@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-25_04:2020-06-25,
- 2020-06-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- adultscore=0 phishscore=0 suspectscore=2 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 impostorscore=0 spamscore=0 cotscore=-2147483648
- clxscore=1015 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006250066
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200623142138.209513-3-qperret@google.com>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,97 +81,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bharata B Rao <bharata@linux.ibm.com>
+Cc: juri.lelli@redhat.com, kernel-team@android.com, vincent.guittot@linaro.org,
+ arnd@arndb.de, rafael@kernel.org, peterz@infradead.org,
+ adharmap@codeaurora.org, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, tkjos@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+After your last email (reply to my patch), I noticed a change which
+isn't required. :)
+
+On 23-06-20, 15:21, Quentin Perret wrote:
+> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> index 0128de3603df..4b1a5c0173cf 100644
+> --- a/drivers/cpufreq/cpufreq.c
+> +++ b/drivers/cpufreq/cpufreq.c
+> @@ -50,6 +50,9 @@ static LIST_HEAD(cpufreq_governor_list);
+>  #define for_each_governor(__governor)				\
+>  	list_for_each_entry(__governor, &cpufreq_governor_list, governor_list)
+>  
+> +static char cpufreq_param_governor[CPUFREQ_NAME_LEN];
+> +static struct cpufreq_governor *default_governor;
+> +
+>  /**
+>   * The "cpufreq driver" - the arch- or hardware-dependent low
+>   * level driver of CPUFreq support, and its spinlock. This lock
+> @@ -1055,7 +1058,6 @@ __weak struct cpufreq_governor *cpufreq_default_governor(void)
+>  
+>  static int cpufreq_init_policy(struct cpufreq_policy *policy)
+>  {
+> -	struct cpufreq_governor *def_gov = cpufreq_default_governor();
+>  	struct cpufreq_governor *gov = NULL;
+>  	unsigned int pol = CPUFREQ_POLICY_UNKNOWN;
+>  
+> @@ -1065,8 +1067,8 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
+>  		if (gov) {
+>  			pr_debug("Restoring governor %s for cpu %d\n",
+>  				 policy->governor->name, policy->cpu);
+> -		} else if (def_gov) {
+> -			gov = def_gov;
+> +		} else if (default_governor) {
+> +			gov = default_governor;
+>  		} else {
+>  			return -ENODATA;
+>  		}
 
 
-> Fixing this includes 3 parts:
->
-> - Re-walk the init_mm page tables from mem_init() and initialize
->   the PMD and PTE fragment count to 1.
-> - When freeing PUD, PMD and PTE page table pages, check explicitly
->   if they come from memblock and if so free then appropriately.
-> - When we do early memblock based allocation of PMD and PUD pages,
->   allocate in PAGE_SIZE granularity so that we are sure the
->   complete page is used as pagetable page.
->
-> Since we now do PAGE_SIZE allocations for both PUD table and
-> PMD table (Note that PTE table allocation is already of PAGE_SIZE),
-> we end up allocating more memory for the same amount of system RAM.
-> Here is a comparision of how much more we need for a 64T and 2G
-> system after this patch:
->
+> @@ -1074,8 +1076,8 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
+>  		/* Use the default policy if there is no last_policy. */
+>  		if (policy->last_policy) {
+>  			pol = policy->last_policy;
+> -		} else if (def_gov) {
+> -			pol = cpufreq_parse_policy(def_gov->name);
+> +		} else if (default_governor) {
+> +			pol = cpufreq_parse_policy(default_governor->name);
 
-Missed updating the commit message w.r.t page table fragments.  Updated
-one below.
+This change is not right IMO. This part handles the set-policy case,
+where there are no governors. Right now this code, for some reasons
+unknown to me, forcefully uses the default governor set to indicate
+the policy, which is not a great idea in my opinion TBH. This doesn't
+and shouldn't care about governor modules and should only be looking
+at strings instead of governor pointer.
 
-powerpc/mm/radix: Fix PTE/PMD fragment count for early page table mappings
+Rafael, I even think we should remove this code completely and just
+rely on what the driver has sent to us. Using the selected governor
+for set policy drivers is very confusing and also we shouldn't be
+forced to compiling any governor for the set-policy case.
 
-We can hit the following BUG_ON during memory unplug:
-
-kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:342!
-Oops: Exception in kernel mode, sig: 5 [#1]
-LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-NIP [c000000000093308] pmd_fragment_free+0x48/0xc0
-LR [c00000000147bfec] remove_pagetable+0x578/0x60c
-Call Trace:
-0xc000008050000000 (unreliable)
-remove_pagetable+0x384/0x60c
-radix__remove_section_mapping+0x18/0x2c
-remove_section_mapping+0x1c/0x3c
-arch_remove_memory+0x11c/0x180
-try_remove_memory+0x120/0x1b0
-__remove_memory+0x20/0x40
-dlpar_remove_lmb+0xc0/0x114
-dlpar_memory+0x8b0/0xb20
-handle_dlpar_errorlog+0xc0/0x190
-pseries_hp_work_fn+0x2c/0x60
-process_one_work+0x30c/0x810
-worker_thread+0x98/0x540
-kthread+0x1c4/0x1d0
-ret_from_kernel_thread+0x5c/0x74
-
-This occurs when unplug is attempted for such memory which has
-been mapped using memblock pages as part of early kernel page
-table setup. We wouldn't have initialized the PMD or PTE fragment
-count for those PMD or PTE pages.
-
-This can be fixed by allocating memory in PAGE_SIZE granularity
-during early page table allocation. This makes sure a specific
-page is not shared for another memblock allocation and we can
-free them correctly on removing page-table pages.
-
-Since we now do PAGE_SIZE allocations for both PUD table and
-PMD table (Note that PTE table allocation is already of PAGE_SIZE),
-we end up allocating more memory for the same amount of system RAM.
-Here is a comparision of how much more we need for a 64T and 2G
-system after this patch:
-
-1. 64T system
--------------
-64T RAM would need 64G for vmemmap with struct page size being 64B.
-
-128 PUD tables for 64T memory (1G mappings)
-1 PUD table and 64 PMD tables for 64G vmemmap (2M mappings)
-
-With default PUD[PMD]_TABLE_SIZE(4K), (128+1+64)*4K=772K
-With PAGE_SIZE(64K) table allocations, (128+1+64)*64K=12352K
-
-2. 2G system
-------------
-2G RAM would need 2M for vmemmap with struct page size being 64B.
-
-1 PUD table for 2G memory (1G mapping)
-1 PUD table and 1 PMD table for 2M vmemmap (2M mappings)
-
-With default PUD[PMD]_TABLE_SIZE(4K), (1+1+1)*4K=12K
-With new PAGE_SIZE(64K) table allocations, (1+1+1)*64K=192K
-
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-
--aneesh
+-- 
+viresh
