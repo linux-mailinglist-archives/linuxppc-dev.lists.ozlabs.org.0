@@ -1,57 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0ED209CE1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 12:30:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC267209D1F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 12:54:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sxB801p4zDqpg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 20:30:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sxjG6TxMzDqsX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 20:54:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
+ helo=mail-oi1-f194.google.com; envelope-from=rjwysocki@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
+ [209.85.167.194])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sx8N3k9lzDqkk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 20:29:20 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49sx876L9cz9vBfd;
- Thu, 25 Jun 2020 12:29:11 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id x9T-X4NdHZ7A; Thu, 25 Jun 2020 12:29:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49sx875VGWz9vBfc;
- Thu, 25 Jun 2020 12:29:11 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B9D98B7DB;
- Thu, 25 Jun 2020 12:29:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lY2QcFeMOyse; Thu, 25 Jun 2020 12:29:13 +0200 (CEST)
-Received: from [172.25.230.104] (po15451.idsi0.si.c-s.fr [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 457118B7D7;
- Thu, 25 Jun 2020 12:29:13 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: Warn about use of smt_snooze_delay
-To: Joel Stanley <joel@jms.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20200625100349.2408899-1-joel@jms.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <189c0339-da57-9df7-4774-4fe97db7ce52@csgroup.eu>
-Date: Thu, 25 Jun 2020 12:29:06 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49sxgd2Z70zDqnM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 20:52:59 +1000 (AEST)
+Received: by mail-oi1-f194.google.com with SMTP id l63so4527218oih.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 03:52:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=cwIdSXPUuU1uRqpvtJKtzstYQAUArlOMALUNp7co5jM=;
+ b=N9mdXTuek7+GdyiT6k2fTSDaNNd5dfWX1i404xZVKFaKrq2nwlvL0MkAH/rQeZsebb
+ caq/Yp/PQTpXrRnWKULqk86SCLXorNqXwNnN3VjFlEUsI6Ejarq47qX2VsfjQmz4wDqr
+ QktiH9m3gW+Ip9BE58OUvCqX9T+TbffGNYkz6cVDskkPoplCPVGRHSh+UuGj7N/+VOc1
+ qQIidybrpI6v/a75buA6kZEOkvxTdy0ZSXlf8ixMmH5NpxMVdsadV2SV7C0VhEQXCSk0
+ RC2XLxlXg7aRO3jTcZmPBV2oRUuQmK2Y+JLi4gWLOUXIFwztZ4b7s/ClS8XZvJS4FZDv
+ 0Hag==
+X-Gm-Message-State: AOAM531HR2IzhMP4iQ9Jf2+kFwMX4sSbtCjpDdu4zj04jaunePc1V8vS
+ ugMlidBMiVsfghttNQel4+0bA8aNY4u9pyoWCFs=
+X-Google-Smtp-Source: ABdhPJwRCQMnCB/bfuvmkARjDAhUHGU6ki0GfoTWamxo9Rq1xfFvWJi8TwqcHRaFJuXBeT1DMVCjbHvWJZL0Eu9jkFE=
+X-Received: by 2002:a54:4585:: with SMTP id z5mr1704626oib.110.1593082376670; 
+ Thu, 25 Jun 2020 03:52:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200625100349.2408899-1-joel@jms.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20200623142138.209513-1-qperret@google.com>
+ <20200623142138.209513-3-qperret@google.com>
+ <20200624055023.xofefhohf7wifme5@vireshk-i7>
+ <CAJZ5v0ja_rM7i=psW1HRyzEpW=8QwP2u9p+ihN3FS8_53bbxTQ@mail.gmail.com>
+ <20200624153259.GA2844@google.com>
+ <20200625085052.4ah4wbog3guj74v4@vireshk-i7>
+In-Reply-To: <20200625085052.4ah4wbog3guj74v4@vireshk-i7>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 25 Jun 2020 12:52:45 +0200
+Message-ID: <CAJZ5v0huMCZcqEkDw2KKp9RMBAU=rpex0zSAw_kK3CqjMyaibw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] cpufreq: Specify default governor on command line
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,100 +65,164 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.ibm.com
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ "Cc: Android Kernel" <kernel-team@android.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Linux PM <linux-pm@vger.kernel.org>, Quentin Perret <qperret@google.com>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, adharmap@codeaurora.org,
+ Todd Kjos <tkjos@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jun 25, 2020 at 10:50 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> On 24-06-20, 16:32, Quentin Perret wrote:
+> > Right, but I must admit that, looking at this more, I'm getting a bit
+> > confused with the overall locking for governors :/
+> >
+> > When in cpufreq_init_policy() we find a governor using
+> > find_governor(policy->last_governor), what guarantees this governor is
+> > not concurrently unregistered? That is, what guarantees this governor
+> > doesn't go away between that find_governor() call, and the subsequent
+> > call to try_module_get() in cpufreq_set_policy() down the line?
+> >
+> > Can we somewhat assume that whatever governor is referred to by
+> > policy->last_governor will have a non-null refcount? Or are the
+> > cpufreq_online() and cpufreq_unregister_governor() path mutually
+> > exclusive? Or is there something else?
+>
+> This should be sufficient to fix pending issues I believe. Based over your
+> patches.
 
+LGTM, but can you post it in a new thread to let Patchwork pick it up?
 
-Le 25/06/2020 à 12:03, Joel Stanley a écrit :
-> It's not done anything for a long time. Save the percpu variable, and
-> emit a warning to remind users to not expect it to do anything.
-
-Why not just drop the file entirely  if it is useless ?
-
-Christophe
-
-> 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> -------------------------8<-------------------------
+> From: Viresh Kumar <viresh.kumar@linaro.org>
+> Date: Thu, 25 Jun 2020 13:15:23 +0530
+> Subject: [PATCH] cpufreq: Fix locking issues with governors
+>
+> The locking around governors handling isn't adequate currently. The list
+> of governors should never be traversed without locking in place. Also we
+> must make sure the governor isn't removed while it is still referenced
+> by code.
+>
+> Reported-by: Quentin Perret <qperret@google.com>
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 > ---
->   arch/powerpc/kernel/sysfs.c | 41 +++++++++++++------------------------
->   1 file changed, 14 insertions(+), 27 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-> index 571b3259697e..530ae92bc46d 100644
-> --- a/arch/powerpc/kernel/sysfs.c
-> +++ b/arch/powerpc/kernel/sysfs.c
-> @@ -32,29 +32,25 @@
->   
->   static DEFINE_PER_CPU(struct cpu, cpu_devices);
->   
-> -/*
-> - * SMT snooze delay stuff, 64-bit only for now
-> - */
+>  drivers/cpufreq/cpufreq.c | 59 ++++++++++++++++++++++++---------------
+>  1 file changed, 36 insertions(+), 23 deletions(-)
+>
+> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> index 4b1a5c0173cf..dad6b85f4c89 100644
+> --- a/drivers/cpufreq/cpufreq.c
+> +++ b/drivers/cpufreq/cpufreq.c
+> @@ -624,6 +624,24 @@ static struct cpufreq_governor *find_governor(const char *str_governor)
+>         return NULL;
+>  }
+>
+> +static struct cpufreq_governor *get_governor(const char *str_governor)
+> +{
+> +       struct cpufreq_governor *t;
+> +
+> +       mutex_lock(&cpufreq_governor_mutex);
+> +       t = find_governor(str_governor);
+> +       if (!t)
+> +               goto unlock;
+> +
+> +       if (!try_module_get(t->owner))
+> +               t = NULL;
+> +
+> +unlock:
+> +       mutex_unlock(&cpufreq_governor_mutex);
+> +
+> +       return t;
+> +}
+> +
+>  static unsigned int cpufreq_parse_policy(char *str_governor)
+>  {
+>         if (!strncasecmp(str_governor, "performance", CPUFREQ_NAME_LEN))
+> @@ -643,28 +661,14 @@ static struct cpufreq_governor *cpufreq_parse_governor(char *str_governor)
+>  {
+>         struct cpufreq_governor *t;
+>
+> -       mutex_lock(&cpufreq_governor_mutex);
 > -
->   #ifdef CONFIG_PPC64
->   
-> -/* Time in microseconds we delay before sleeping in the idle loop */
-> -static DEFINE_PER_CPU(long, smt_snooze_delay) = { 100 };
-> +/*
-> + * Snooze delay has not been hooked up since 3fa8cad82b94 ("powerpc/pseries/cpuidle:
-> + * smt-snooze-delay cleanup.") and has been broken even longer. As was foretold in
-> + * 2014:
-> + *
-> + *  "ppc64_util currently utilises it. Once we fix ppc64_util, propose to clean
-> + *  up the kernel code."
-> + *
-> + * At some point in the future this code should be removed.
-> + */
->   
->   static ssize_t store_smt_snooze_delay(struct device *dev,
->   				      struct device_attribute *attr,
->   				      const char *buf,
->   				      size_t count)
->   {
-> -	struct cpu *cpu = container_of(dev, struct cpu, dev);
-> -	ssize_t ret;
-> -	long snooze;
+> -       t = find_governor(str_governor);
+> -       if (!t) {
+> -               int ret;
 > -
-> -	ret = sscanf(buf, "%ld", &snooze);
-> -	if (ret != 1)
-> -		return -EINVAL;
+> -               mutex_unlock(&cpufreq_governor_mutex);
 > -
-> -	per_cpu(smt_snooze_delay, cpu->dev.id) = snooze;
-> +	WARN_ON_ONCE("smt_snooze_delay sysfs file has no effect\n");
->   	return count;
->   }
->   
-> @@ -62,9 +58,9 @@ static ssize_t show_smt_snooze_delay(struct device *dev,
->   				     struct device_attribute *attr,
->   				     char *buf)
->   {
-> -	struct cpu *cpu = container_of(dev, struct cpu, dev);
-> +	WARN_ON_ONCE("smt_snooze_delay sysfs file has no effect\n");
->   
-> -	return sprintf(buf, "%ld\n", per_cpu(smt_snooze_delay, cpu->dev.id));
-> +	return sprintf(buf, "100\n");
->   }
->   
->   static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
-> @@ -72,16 +68,7 @@ static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
->   
->   static int __init setup_smt_snooze_delay(char *str)
->   {
-> -	unsigned int cpu;
-> -	long snooze;
+> -               ret = request_module("cpufreq_%s", str_governor);
+> -               if (ret)
+> -                       return NULL;
 > -
-> -	if (!cpu_has_feature(CPU_FTR_SMT))
-> -		return 1;
+> -               mutex_lock(&cpufreq_governor_mutex);
+> +       t = get_governor(str_governor);
+> +       if (t)
+> +               return t;
+>
+> -               t = find_governor(str_governor);
+> -       }
+> -       if (t && !try_module_get(t->owner))
+> -               t = NULL;
 > -
-> -	snooze = simple_strtol(str, NULL, 10);
-> -	for_each_possible_cpu(cpu)
-> -		per_cpu(smt_snooze_delay, cpu) = snooze;
-> -
-> +	WARN_ON_ONCE("smt-snooze-delay command line option has no effect\n");
->   	return 1;
->   }
->   __setup("smt-snooze-delay=", setup_smt_snooze_delay);
-> 
+> -       mutex_unlock(&cpufreq_governor_mutex);
+> +       if (request_module("cpufreq_%s", str_governor))
+> +               return NULL;
+>
+> -       return t;
+> +       return get_governor(str_governor);
+>  }
+>
+>  /**
+> @@ -818,12 +822,14 @@ static ssize_t show_scaling_available_governors(struct cpufreq_policy *policy,
+>                 goto out;
+>         }
+>
+> +       mutex_lock(&cpufreq_governor_mutex);
+>         for_each_governor(t) {
+>                 if (i >= (ssize_t) ((PAGE_SIZE / sizeof(char))
+>                     - (CPUFREQ_NAME_LEN + 2)))
+> -                       goto out;
+> +                       break;
+>                 i += scnprintf(&buf[i], CPUFREQ_NAME_PLEN, "%s ", t->name);
+>         }
+> +       mutex_unlock(&cpufreq_governor_mutex);
+>  out:
+>         i += sprintf(&buf[i], "\n");
+>         return i;
+> @@ -1060,11 +1066,14 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
+>  {
+>         struct cpufreq_governor *gov = NULL;
+>         unsigned int pol = CPUFREQ_POLICY_UNKNOWN;
+> +       bool put_governor = false;
+> +       int ret;
+>
+>         if (has_target()) {
+>                 /* Update policy governor to the one used before hotplug. */
+> -               gov = find_governor(policy->last_governor);
+> +               gov = get_governor(policy->last_governor);
+>                 if (gov) {
+> +                       put_governor = true;
+>                         pr_debug("Restoring governor %s for cpu %d\n",
+>                                  policy->governor->name, policy->cpu);
+>                 } else if (default_governor) {
+> @@ -1091,7 +1100,11 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
+>                         return -ENODATA;
+>         }
+>
+> -       return cpufreq_set_policy(policy, gov, pol);
+> +       ret = cpufreq_set_policy(policy, gov, pol);
+> +       if (put_governor)
+> +               module_put(gov->owner);
+> +
+> +       return ret;
+>  }
+>
+>  static int cpufreq_add_policy_cpu(struct cpufreq_policy *policy, unsigned int cpu)
