@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C9A209F62
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:13:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0352A209FB5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 15:23:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49t0nX5pYyzDqsb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:13:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49t11T1jvqzDqm9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 23:23:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,17 +17,17 @@ Authentication-Results: lists.ozlabs.org;
 Received: from theia.8bytes.org (8bytes.org
  [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hF53HyzDqdk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49t0hH6rxbzDqdk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 23:08:47 +1000 (AEST)
 Received: by theia.8bytes.org (Postfix, from userid 1000)
- id 5B68B3FA; Thu, 25 Jun 2020 15:08:38 +0200 (CEST)
+ id 821AE412; Thu, 25 Jun 2020 15:08:38 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 03/13] iommu/msm: Use dev_iommu_priv_get/set()
-Date: Thu, 25 Jun 2020 15:08:26 +0200
-Message-Id: <20200625130836.1916-4-joro@8bytes.org>
+Subject: [PATCH 04/13] iommu/omap: Use dev_iommu_priv_get/set()
+Date: Thu, 25 Jun 2020 15:08:27 +0200
+Message-Id: <20200625130836.1916-5-joro@8bytes.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200625130836.1916-1-joro@8bytes.org>
 References: <20200625130836.1916-1-joro@8bytes.org>
@@ -69,30 +69,100 @@ pointer provided by IOMMU core code instead.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- drivers/iommu/msm_iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/omap-iommu.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iommu/msm_iommu.c b/drivers/iommu/msm_iommu.c
-index 3d8a63555c25..f773cc85f311 100644
---- a/drivers/iommu/msm_iommu.c
-+++ b/drivers/iommu/msm_iommu.c
-@@ -593,14 +593,14 @@ static void insert_iommu_master(struct device *dev,
- 				struct msm_iommu_dev **iommu,
- 				struct of_phandle_args *spec)
+diff --git a/drivers/iommu/omap-iommu.c b/drivers/iommu/omap-iommu.c
+index c8282cc212cb..e84ead6fb234 100644
+--- a/drivers/iommu/omap-iommu.c
++++ b/drivers/iommu/omap-iommu.c
+@@ -71,7 +71,7 @@ static struct omap_iommu_domain *to_omap_domain(struct iommu_domain *dom)
+  **/
+ void omap_iommu_save_ctx(struct device *dev)
  {
--	struct msm_iommu_ctx_dev *master = dev->archdata.iommu;
-+	struct msm_iommu_ctx_dev *master = dev_iommu_priv_get(dev);
- 	int sid;
+-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
++	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+ 	struct omap_iommu *obj;
+ 	u32 *p;
+ 	int i;
+@@ -101,7 +101,7 @@ EXPORT_SYMBOL_GPL(omap_iommu_save_ctx);
+  **/
+ void omap_iommu_restore_ctx(struct device *dev)
+ {
+-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
++	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+ 	struct omap_iommu *obj;
+ 	u32 *p;
+ 	int i;
+@@ -1398,7 +1398,7 @@ static size_t omap_iommu_unmap(struct iommu_domain *domain, unsigned long da,
  
- 	if (list_empty(&(*iommu)->ctx_list)) {
- 		master = kzalloc(sizeof(*master), GFP_ATOMIC);
- 		master->of_node = dev->of_node;
- 		list_add(&master->list, &(*iommu)->ctx_list);
--		dev->archdata.iommu = master;
-+		dev_iommu_priv_set(dev, master);
+ static int omap_iommu_count(struct device *dev)
+ {
+-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
++	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+ 	int count = 0;
+ 
+ 	while (arch_data->iommu_dev) {
+@@ -1459,8 +1459,8 @@ static void omap_iommu_detach_fini(struct omap_iommu_domain *odomain)
+ static int
+ omap_iommu_attach_dev(struct iommu_domain *domain, struct device *dev)
+ {
++	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+ 	struct omap_iommu_domain *omap_domain = to_omap_domain(domain);
+-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
+ 	struct omap_iommu_device *iommu;
+ 	struct omap_iommu *oiommu;
+ 	int ret = 0;
+@@ -1524,7 +1524,7 @@ omap_iommu_attach_dev(struct iommu_domain *domain, struct device *dev)
+ static void _omap_iommu_detach_dev(struct omap_iommu_domain *omap_domain,
+ 				   struct device *dev)
+ {
+-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
++	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+ 	struct omap_iommu_device *iommu = omap_domain->iommus;
+ 	struct omap_iommu *oiommu;
+ 	int i;
+@@ -1650,7 +1650,7 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+ 	int num_iommus, i;
+ 
+ 	/*
+-	 * Allocate the archdata iommu structure for DT-based devices.
++	 * Allocate the per-device iommu structure for DT-based devices.
+ 	 *
+ 	 * TODO: Simplify this when removing non-DT support completely from the
+ 	 * IOMMU users.
+@@ -1698,7 +1698,7 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+ 		of_node_put(np);
  	}
  
- 	for (sid = 0; sid < master->num_mids; sid++)
+-	dev->archdata.iommu = arch_data;
++	dev_iommu_priv_set(dev, arch_data);
+ 
+ 	/*
+ 	 * use the first IOMMU alone for the sysfs device linking.
+@@ -1712,19 +1712,19 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
+ 
+ static void omap_iommu_release_device(struct device *dev)
+ {
+-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
++	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+ 
+ 	if (!dev->of_node || !arch_data)
+ 		return;
+ 
+-	dev->archdata.iommu = NULL;
++	dev_iommu_priv_set(dev, NULL);
+ 	kfree(arch_data);
+ 
+ }
+ 
+ static struct iommu_group *omap_iommu_device_group(struct device *dev)
+ {
+-	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
++	struct omap_iommu_arch_data *arch_data = dev_iommu_priv_get(dev);
+ 	struct iommu_group *group = ERR_PTR(-EINVAL);
+ 
+ 	if (!arch_data)
 -- 
 2.27.0
 
