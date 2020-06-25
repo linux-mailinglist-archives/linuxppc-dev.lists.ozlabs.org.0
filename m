@@ -2,16 +2,16 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20FBA20A376
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 18:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7066E20A6E6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 22:40:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49t5pP454wzDqwy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 02:59:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tBjD50S1zDqwy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 06:40:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=harish@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,58 +19,64 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49t5mL3mYDzDqt0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 02:57:38 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tBgb47xnzDqgr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 06:38:51 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05PGWf6E048385; Thu, 25 Jun 2020 12:57:32 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31vws8mv9f-1
+ 05PKXOdu102795; Thu, 25 Jun 2020 16:38:42 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31vxqkg4he-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 12:57:32 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05PGsiR7019319;
- Thu, 25 Jun 2020 16:57:30 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 31uus722dm-1
+ Thu, 25 Jun 2020 16:38:42 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05PKZi1K012651;
+ Thu, 25 Jun 2020 20:38:41 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02dal.us.ibm.com with ESMTP id 31uurtam63-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 16:57:30 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05PGvRQx29294692
+ Thu, 25 Jun 2020 20:38:41 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05PKcc829634114
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jun 2020 16:57:27 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 32D8F4C04A;
- Thu, 25 Jun 2020 16:57:27 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F09A4C046;
- Thu, 25 Jun 2020 16:57:26 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.77.198.211])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu, 25 Jun 2020 16:57:25 +0000 (GMT)
-From: Harish <harish@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] selftests/powerpc: Fix build issue with output directory
-Date: Thu, 25 Jun 2020 22:27:21 +0530
-Message-Id: <20200625165721.264904-1-harish@linux.ibm.com>
-X-Mailer: git-send-email 2.24.1
+ Thu, 25 Jun 2020 20:38:38 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 235F8BE054;
+ Thu, 25 Jun 2020 20:38:40 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 42ED8BE04F;
+ Thu, 25 Jun 2020 20:38:39 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.126.221])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 25 Jun 2020 20:38:39 +0000 (GMT)
+Subject: Re: [PATCH] powerpc: Warn about use of smt_snooze_delay
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Joel Stanley <joel@jms.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20200625100349.2408899-1-joel@jms.id.au>
+ <189c0339-da57-9df7-4774-4fe97db7ce52@csgroup.eu>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <76841047-89a0-d420-7526-f78fe9c35dad@linux.ibm.com>
+Date: Thu, 25 Jun 2020 13:38:38 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
+In-Reply-To: <189c0339-da57-9df7-4774-4fe97db7ce52@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-25_11:2020-06-25,
+ definitions=2020-06-25_16:2020-06-25,
  2020-06-25 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 clxscore=1015 cotscore=-2147483648 spamscore=0
- suspectscore=1 impostorscore=0 mlxscore=0 adultscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006250102
+ mlxscore=0 adultscore=0
+ bulkscore=0 phishscore=0 clxscore=1011 lowpriorityscore=0 mlxlogscore=999
+ malwarescore=0 impostorscore=0 priorityscore=1501 cotscore=-2147483648
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006250120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,52 +88,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Harish <harish@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: ego@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We use OUTPUT directory as TMPOUT for checking no-pie option. When
-building powerpc/ from selftests directory, the OUTPUT directory
-eventually points to powerpc/pmu/ebb/ and gets removed when
-checking for -no-pie option in try-run routine, subsequently build
-fails with the following
+On 6/25/20 3:29 AM, Christophe Leroy wrote:
+> 
+> 
+> Le 25/06/2020 à 12:03, Joel Stanley a écrit :
+>> It's not done anything for a long time. Save the percpu variable, and
+>> emit a warning to remind users to not expect it to do anything.
+> 
+> Why not just drop the file entirely  if it is useless ?
 
-$ make -C powerpc
-...
-...
-TARGET=ebb; BUILD_TARGET=$OUTPUT/$TARGET; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C $TARGET all
-make[2]: Entering directory '/home/linux-master/tools/testing/selftests/powerpc/pmu/ebb'
-make[2]: *** No rule to make target 'Makefile'.
-make[2]: Failed to remake makefile 'Makefile'.
-make[2]: *** No rule to make target 'ebb.c', needed by '/home/linux-master/tools/testing/selftests/powerpc/pmu/ebb/reg_access_test'.
-make[2]: *** No rule to make target 'ebb_handler.S', needed by '/home/linux-master/tools/testing/selftests/powerpc/pmu/ebb/reg_access_test'.
-make[2]: *** No rule to make target 'trace.c', needed by '/home/linux-master/tools/testing/selftests/powerpc/pmu/ebb/reg_access_test'.
-make[2]: *** No rule to make target 'busy_loop.S', needed by '/home/linux-master/tools/testing/selftests/powerpc/pmu/ebb/reg_access_test'.
-make[2]: Target 'all' not remade because of errors.
+Userspace tooling that hasn't learned its useless yet. Joel has also submitted a
+pull request for the ppc64_util tool in question to drop using this interface.
 
-Fix this by adding a suffix to the OUTPUT directory so that the
-failure is avoided
+-Tyrel
 
-Fixes: 9686813f6e9d ("selftests/powerpc: Fix try-run when source tree is not writable")
-Signed-off-by: Harish <harish@linux.ibm.com>
----
- tools/testing/selftests/powerpc/pmu/ebb/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/Makefile b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-index ca35dd8848b0..af3df79d8163 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/Makefile
-@@ -7,7 +7,7 @@ noarg:
- # The EBB handler is 64-bit code and everything links against it
- CFLAGS += -m64
- 
--TMPOUT = $(OUTPUT)/
-+TMPOUT = $(OUTPUT)/TMPDIR/
- # Toolchains may build PIE by default which breaks the assembly
- no-pie-option := $(call try-run, echo 'int main() { return 0; }' | \
-         $(CC) -Werror $(KBUILD_CPPFLAGS) $(CC_OPTION_CFLAGS) -no-pie -x c - -o "$$TMP", -no-pie)
--- 
-2.24.1
+> 
+> Christophe
+> 
+>>
+>> Signed-off-by: Joel Stanley <joel@jms.id.au>
+>> ---
+>>   arch/powerpc/kernel/sysfs.c | 41 +++++++++++++------------------------
+>>   1 file changed, 14 insertions(+), 27 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+>> index 571b3259697e..530ae92bc46d 100644
+>> --- a/arch/powerpc/kernel/sysfs.c
+>> +++ b/arch/powerpc/kernel/sysfs.c
+>> @@ -32,29 +32,25 @@
+>>     static DEFINE_PER_CPU(struct cpu, cpu_devices);
+>>   -/*
+>> - * SMT snooze delay stuff, 64-bit only for now
+>> - */
+>> -
+>>   #ifdef CONFIG_PPC64
+>>   -/* Time in microseconds we delay before sleeping in the idle loop */
+>> -static DEFINE_PER_CPU(long, smt_snooze_delay) = { 100 };
+>> +/*
+>> + * Snooze delay has not been hooked up since 3fa8cad82b94
+>> ("powerpc/pseries/cpuidle:
+>> + * smt-snooze-delay cleanup.") and has been broken even longer. As was
+>> foretold in
+>> + * 2014:
+>> + *
+>> + *  "ppc64_util currently utilises it. Once we fix ppc64_util, propose to clean
+>> + *  up the kernel code."
+>> + *
+>> + * At some point in the future this code should be removed.
+>> + */
+>>     static ssize_t store_smt_snooze_delay(struct device *dev,
+>>                         struct device_attribute *attr,
+>>                         const char *buf,
+>>                         size_t count)
+>>   {
+>> -    struct cpu *cpu = container_of(dev, struct cpu, dev);
+>> -    ssize_t ret;
+>> -    long snooze;
+>> -
+>> -    ret = sscanf(buf, "%ld", &snooze);
+>> -    if (ret != 1)
+>> -        return -EINVAL;
+>> -
+>> -    per_cpu(smt_snooze_delay, cpu->dev.id) = snooze;
+>> +    WARN_ON_ONCE("smt_snooze_delay sysfs file has no effect\n");
+>>       return count;
+>>   }
+>>   @@ -62,9 +58,9 @@ static ssize_t show_smt_snooze_delay(struct device *dev,
+>>                        struct device_attribute *attr,
+>>                        char *buf)
+>>   {
+>> -    struct cpu *cpu = container_of(dev, struct cpu, dev);
+>> +    WARN_ON_ONCE("smt_snooze_delay sysfs file has no effect\n");
+>>   -    return sprintf(buf, "%ld\n", per_cpu(smt_snooze_delay, cpu->dev.id));
+>> +    return sprintf(buf, "100\n");
+>>   }
+>>     static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
+>> @@ -72,16 +68,7 @@ static DEVICE_ATTR(smt_snooze_delay, 0644,
+>> show_smt_snooze_delay,
+>>     static int __init setup_smt_snooze_delay(char *str)
+>>   {
+>> -    unsigned int cpu;
+>> -    long snooze;
+>> -
+>> -    if (!cpu_has_feature(CPU_FTR_SMT))
+>> -        return 1;
+>> -
+>> -    snooze = simple_strtol(str, NULL, 10);
+>> -    for_each_possible_cpu(cpu)
+>> -        per_cpu(smt_snooze_delay, cpu) = snooze;
+>> -
+>> +    WARN_ON_ONCE("smt-snooze-delay command line option has no effect\n");
+>>       return 1;
+>>   }
+>>   __setup("smt-snooze-delay=", setup_smt_snooze_delay);
+>>
 
