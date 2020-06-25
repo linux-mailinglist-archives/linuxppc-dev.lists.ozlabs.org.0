@@ -1,82 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7066E20A6E6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 22:40:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B3A20A705
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 22:48:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tBjD50S1zDqwy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 06:40:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tBtw6g1PzDqww
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 06:48:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=fieldses.org (client-ip=2600:3c00:e000:2f7::1; helo=fieldses.org;
+ envelope-from=bfields@fieldses.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=fieldses.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=fieldses.org header.i=@fieldses.org header.a=rsa-sha256
+ header.s=default header.b=gj0MuGKT; dkim-atps=neutral
+X-Greylist: delayed 336 seconds by postgrey-1.36 at bilbo;
+ Fri, 26 Jun 2020 06:46:11 AEST
+Received: from fieldses.org (fieldses.org [IPv6:2600:3c00:e000:2f7::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tBgb47xnzDqgr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 06:38:51 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05PKXOdu102795; Thu, 25 Jun 2020 16:38:42 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31vxqkg4he-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 16:38:42 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05PKZi1K012651;
- Thu, 25 Jun 2020 20:38:41 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02dal.us.ibm.com with ESMTP id 31uurtam63-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jun 2020 20:38:41 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05PKcc829634114
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jun 2020 20:38:38 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 235F8BE054;
- Thu, 25 Jun 2020 20:38:40 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42ED8BE04F;
- Thu, 25 Jun 2020 20:38:39 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.126.221])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 25 Jun 2020 20:38:39 +0000 (GMT)
-Subject: Re: [PATCH] powerpc: Warn about use of smt_snooze_delay
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Joel Stanley <joel@jms.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20200625100349.2408899-1-joel@jms.id.au>
- <189c0339-da57-9df7-4774-4fe97db7ce52@csgroup.eu>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <76841047-89a0-d420-7526-f78fe9c35dad@linux.ibm.com>
-Date: Thu, 25 Jun 2020 13:38:38 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tBr31T4jzDqd7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 06:46:10 +1000 (AEST)
+Received: by fieldses.org (Postfix, from userid 2815)
+ id 1C8E879A1; Thu, 25 Jun 2020 16:40:29 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fieldses.org 1C8E879A1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fieldses.org;
+ s=default; t=1593117629;
+ bh=grAX8yggjJQZeEuTqT849+RECeUjWPrYL7L8CDwHWzM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=gj0MuGKTpqfBnugVSHAllzwtU32mbRNrz5LhpqXoB8FX/dI6FdoUiXA6zXnyorll9
+ J8Wg0vYTe1AOKJQyhZwkkl/QiRqNB70nQBPja5EppPVNzeFep+Z8g/ySzPNxVjIaPi
+ XVxnHn82AD79SvIa9xchcmtUWE/pnD9cata6TvZo=
+Date: Thu, 25 Jun 2020 16:40:29 -0400
+From: Bruce Fields <bfields@fieldses.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+Subject: Re: [PATCH v2] SUNRPC: Add missing definition of
+ ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
+Message-ID: <20200625204029.GD6605@fieldses.org>
+References: <9e9882a2fb57b6f9d98a0a5d8b6bf9cff9fcbd93.1592202173.git.christophe.leroy@csgroup.eu>
+ <733E4CAF-A9E5-491F-B0C7-69CA84E5DFA5@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <189c0339-da57-9df7-4774-4fe97db7ce52@csgroup.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-25_16:2020-06-25,
- 2020-06-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- bulkscore=0 phishscore=0 clxscore=1011 lowpriorityscore=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 priorityscore=1501 cotscore=-2147483648
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006250120
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <733E4CAF-A9E5-491F-B0C7-69CA84E5DFA5@oracle.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,103 +58,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.ibm.com
+Cc: Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+ netdev <netdev@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Trond Myklebust <trond.myklebust@hammerspace.com>,
+ Anna Schumaker <anna.schumaker@netapp.com>, Jakub Kicinski <kuba@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/25/20 3:29 AM, Christophe Leroy wrote:
+On Mon, Jun 15, 2020 at 08:33:40AM -0400, Chuck Lever wrote:
 > 
 > 
-> Le 25/06/2020 à 12:03, Joel Stanley a écrit :
->> It's not done anything for a long time. Save the percpu variable, and
->> emit a warning to remind users to not expect it to do anything.
+> > On Jun 15, 2020, at 2:25 AM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+> > 
+> > Even if that's only a warning, not including asm/cacheflush.h
+> > leads to svc_flush_bvec() being empty allthough powerpc defines
+> > ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE.
+> > 
+> >  CC      net/sunrpc/svcsock.o
+> > net/sunrpc/svcsock.c:227:5: warning: "ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE" is not defined [-Wundef]
+> > #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
+> >     ^
+> > 
+> > Include linux/highmem.h so that asm/cacheflush.h will be included.
+> > 
+> > Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Cc: Chuck Lever <chuck.lever@oracle.com>
+> > Fixes: ca07eda33e01 ("SUNRPC: Refactor svc_recvfrom()")
+> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > 
-> Why not just drop the file entirely  if it is useless ?
+> LGTM.
+> 
+> Acked-by: Chuck Lever <chuck.lever@oracle.com>
 
-Userspace tooling that hasn't learned its useless yet. Joel has also submitted a
-pull request for the ppc64_util tool in question to drop using this interface.
-
--Tyrel
-
-> 
-> Christophe
-> 
->>
->> Signed-off-by: Joel Stanley <joel@jms.id.au>
->> ---
->>   arch/powerpc/kernel/sysfs.c | 41 +++++++++++++------------------------
->>   1 file changed, 14 insertions(+), 27 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
->> index 571b3259697e..530ae92bc46d 100644
->> --- a/arch/powerpc/kernel/sysfs.c
->> +++ b/arch/powerpc/kernel/sysfs.c
->> @@ -32,29 +32,25 @@
->>     static DEFINE_PER_CPU(struct cpu, cpu_devices);
->>   -/*
->> - * SMT snooze delay stuff, 64-bit only for now
->> - */
->> -
->>   #ifdef CONFIG_PPC64
->>   -/* Time in microseconds we delay before sleeping in the idle loop */
->> -static DEFINE_PER_CPU(long, smt_snooze_delay) = { 100 };
->> +/*
->> + * Snooze delay has not been hooked up since 3fa8cad82b94
->> ("powerpc/pseries/cpuidle:
->> + * smt-snooze-delay cleanup.") and has been broken even longer. As was
->> foretold in
->> + * 2014:
->> + *
->> + *  "ppc64_util currently utilises it. Once we fix ppc64_util, propose to clean
->> + *  up the kernel code."
->> + *
->> + * At some point in the future this code should be removed.
->> + */
->>     static ssize_t store_smt_snooze_delay(struct device *dev,
->>                         struct device_attribute *attr,
->>                         const char *buf,
->>                         size_t count)
->>   {
->> -    struct cpu *cpu = container_of(dev, struct cpu, dev);
->> -    ssize_t ret;
->> -    long snooze;
->> -
->> -    ret = sscanf(buf, "%ld", &snooze);
->> -    if (ret != 1)
->> -        return -EINVAL;
->> -
->> -    per_cpu(smt_snooze_delay, cpu->dev.id) = snooze;
->> +    WARN_ON_ONCE("smt_snooze_delay sysfs file has no effect\n");
->>       return count;
->>   }
->>   @@ -62,9 +58,9 @@ static ssize_t show_smt_snooze_delay(struct device *dev,
->>                        struct device_attribute *attr,
->>                        char *buf)
->>   {
->> -    struct cpu *cpu = container_of(dev, struct cpu, dev);
->> +    WARN_ON_ONCE("smt_snooze_delay sysfs file has no effect\n");
->>   -    return sprintf(buf, "%ld\n", per_cpu(smt_snooze_delay, cpu->dev.id));
->> +    return sprintf(buf, "100\n");
->>   }
->>     static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
->> @@ -72,16 +68,7 @@ static DEVICE_ATTR(smt_snooze_delay, 0644,
->> show_smt_snooze_delay,
->>     static int __init setup_smt_snooze_delay(char *str)
->>   {
->> -    unsigned int cpu;
->> -    long snooze;
->> -
->> -    if (!cpu_has_feature(CPU_FTR_SMT))
->> -        return 1;
->> -
->> -    snooze = simple_strtol(str, NULL, 10);
->> -    for_each_possible_cpu(cpu)
->> -        per_cpu(smt_snooze_delay, cpu) = snooze;
->> -
->> +    WARN_ON_ONCE("smt-snooze-delay command line option has no effect\n");
->>       return 1;
->>   }
->>   __setup("smt-snooze-delay=", setup_smt_snooze_delay);
->>
-
+Thanks, applying for 5.8.--b.
