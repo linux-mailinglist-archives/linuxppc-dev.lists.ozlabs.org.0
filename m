@@ -1,74 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A23209B73
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 10:41:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1AF209B89
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 10:52:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49stlv5JWBzDqlZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 18:41:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49sv0f3362zDqm9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 18:52:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::542;
- helo=mail-ed1-x542.google.com; envelope-from=joel.stan@gmail.com;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=viresh.kumar@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=movOQeaG; dkim-atps=neutral
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=zwcL9Y65; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49stjZ6ny7zDqkX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 18:39:30 +1000 (AEST)
-Received: by mail-ed1-x542.google.com with SMTP id t21so3518728edr.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 01:39:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=knPtliwcot5N5At1mGwZ9m1E+XwC5jbJSjbHxedMECg=;
- b=movOQeaGutOa6q9thMN8ZraO6v4VdyA9FM8pu+UtoU1mi8sXZ9l+nEY09G4OhYBeG8
- o2I8o/PMvdFbCBkMwCAs0AEXndwzuD/HYNOLykRsnJ4Fc58u49SmCPmlpuC+piylSthN
- Ar8b5NwI4DMivCEBUb6vfjgA5mRDuYgBiBBo0=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49styq4dGSzDqkq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 18:50:57 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id cv18so356380pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 01:50:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=JEMoZdpFmrFhFcFBcdt9FFDGd+0A8OhsnWsQtV3mDFY=;
+ b=zwcL9Y65FiPLi2vjuyj40QyTUjgv3aeO4hIU2vSpY+ujIZWGaNlfkCfdnIbFsNxo0H
+ s2bxZH7BVoYdiRgMEO/Vg6ESWbMhb3nv/KAEMF1vtI/9xGSuo+SXo03llv+PmHWmUC8n
+ 2Fuh04JomaNSCobeuTTpqT4sCG7KY1xn0mKHLmWhjxI/XPEc/dehP6bUzCl0o7UY9Xxk
+ gP27jOnkzXmkF6VH+uuxfwPM1NkKvSVA28LRw3MgNoRtiU2Pfr7WPki43eagX+zgnSVT
+ PqOmYzAJqDo2V2tahpUFRzZbvkj5DnYF48KOvH3PCv7nYdSDRdi4B74G+fWo74pp9cMm
+ mZQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=knPtliwcot5N5At1mGwZ9m1E+XwC5jbJSjbHxedMECg=;
- b=YxqpgAivzE3fWQP/O3WSwSK257yHSYxaFbvfOeracRgXYP2y2kxRzZUhS0qZH8XbTS
- 5ImFIIn9IdVDIwbi2akZ3jKpdqQ0nAmkEFVEZ0rXmSfl6spafDY7Fnh41rL0v370tRdR
- HM5mbJZFtXbqxObFPxGxs8MlN1nRJ+S/aa7TyrbX8HP1GlTvncdLkdxGizbAe0LKo/H6
- qS74kD5cKVhBo3xrH+mr1zsNcI2gj6Q217zEzfdBvjh3ey/vq1Yq17w1u6JuWu46DOTn
- dNlXeB0woSVER2k4rvbeIy0J50Ssj6Qoke5O8if/X4j8F+WRSqKV/MleYArYN9utDHGG
- YJqQ==
-X-Gm-Message-State: AOAM532MlZC6toClPMA5KWIR/48n4luY53LPD6OoHDKHGrj2T59sioTJ
- 5Gbpbaybfi4Z5NKiH9p+swveQ8eVB6H4skpWk7Q=
-X-Google-Smtp-Source: ABdhPJyPQLpgHxd5w/+/WdO1Rr6K2x3LcdgiLXQsrbeM0k1gT2/a5db0/ecTK/5NhZr7XOPQKXjb6AnduT6s+asA66w=
-X-Received: by 2002:a05:6402:459:: with SMTP id
- p25mr30314307edw.383.1593074364477; 
- Thu, 25 Jun 2020 01:39:24 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=JEMoZdpFmrFhFcFBcdt9FFDGd+0A8OhsnWsQtV3mDFY=;
+ b=IIDsZGZhX0AF4MxXgi0iJQAUHUQUw1JVMit9v6fUiimAvk3Lw1mnYoMGHZS9n55gjl
+ kSBmQYOqP4jWtDNVNVXCnuhdXImc9/V1H+XJYpLSjjs0zoNSU45KPcRdq49labXfiYDm
+ TKwXLxin3q4eJ+lN6qShdRI8RIFtuSWXghB5j6aBp0zePK+CT4TLHrAhMpJpgUJun5Wd
+ RWifdajQCGrYGIig6/qkVornH/q0wTQSmWqert6qHkpZhYiAlkUS3YioZITiBa0w1jyK
+ Y8rLzK5t72n8DUtc9m5iAIw30nuGYz4XnYa7f5LKm6+5bQLjHWZ7MJl23dxefd6EfCgn
+ i8pA==
+X-Gm-Message-State: AOAM533MgOhVF0UCUi/iI5WQykw4IaWX9nI3UnwsqDPPIk1H8Aq6LYDZ
+ o6P7HFxtuC+7G28JSg6ztw+M9Q==
+X-Google-Smtp-Source: ABdhPJzHllegdQIG8KbY6WzYzQnZ64LxOSyUGGS4GTbuRzkA6CihktIRU3UyCCXiZkNESNztdGrrfg==
+X-Received: by 2002:a17:90a:74cb:: with SMTP id
+ p11mr2162481pjl.89.1593075055236; 
+ Thu, 25 Jun 2020 01:50:55 -0700 (PDT)
+Received: from localhost ([122.172.111.76])
+ by smtp.gmail.com with ESMTPSA id s9sm19347192pgo.22.2020.06.25.01.50.54
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 25 Jun 2020 01:50:54 -0700 (PDT)
+Date: Thu, 25 Jun 2020 14:20:52 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Quentin Perret <qperret@google.com>
+Subject: Re: [PATCH v2 2/2] cpufreq: Specify default governor on command line
+Message-ID: <20200625085052.4ah4wbog3guj74v4@vireshk-i7>
+References: <20200623142138.209513-1-qperret@google.com>
+ <20200623142138.209513-3-qperret@google.com>
+ <20200624055023.xofefhohf7wifme5@vireshk-i7>
+ <CAJZ5v0ja_rM7i=psW1HRyzEpW=8QwP2u9p+ihN3FS8_53bbxTQ@mail.gmail.com>
+ <20200624153259.GA2844@google.com>
 MIME-Version: 1.0
-References: <cover.1590079968.git.christophe.leroy@csgroup.eu>
- <8c593895e2cb57d232d85ce4d8c3a1aa7f0869cc.1590079968.git.christophe.leroy@csgroup.eu>
- <20200616002720.GA1307277@ubuntu-n2-xlarge-x86>
- <68503e5e-7456-b81c-e43d-27cb331a4b72@xilinx.com>
- <20200616181630.GA3403678@ubuntu-n2-xlarge-x86>
- <50fb2dd6-4e8f-a550-6eda-073beb86f2ff@xilinx.com>
- <87bllidmk4.fsf@mpe.ellerman.id.au> <878sgmdmcv.fsf@mpe.ellerman.id.au>
- <CAKwvOdnkcjLGay0jdQ77kHTmKhE56F9jvzh01XWwEE8rjbhLAA@mail.gmail.com>
- <87tuz9ci7e.fsf@mpe.ellerman.id.au>
- <20200618031622.GA195@Ryzen-9-3900X.localdomain>
- <87eeqbco82.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87eeqbco82.fsf@mpe.ellerman.id.au>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 25 Jun 2020 08:39:12 +0000
-Message-ID: <CACPK8XdCmDgHuJ=rvHzdr9Agu=2dGNoNh_WfVH=52mchffA2=w@mail.gmail.com>
-Subject: Re: [PATCH v5 01/13] powerpc: Remove Xilinx PPC405/PPC440 support
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200624153259.GA2844@google.com>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,63 +84,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Nick Desaulniers <ndesaulniers@google.com>,
- Michal Simek <michal.simek@xilinx.com>, LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ "Cc: Android Kernel" <kernel-team@android.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ adharmap@codeaurora.org, Linux PM <linux-pm@vger.kernel.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Todd Kjos <tkjos@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 19 Jun 2020 at 11:02, Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Nathan Chancellor <natechancellor@gmail.com> writes:
-> >> It's kind of nuts that the zImage points to some arbitrary image
-> >> depending on what's configured and the order of things in the Makefile.
-> >> But I'm not sure how we make it less nuts without risking breaking
-> >> people's existing setups.
-> >
-> > Hi Michael,
-> >
-> > For what it's worth, this is squared this away in terms of our CI by
-> > just building and booting the uImage directly, rather than implicitly
-> > using the zImage:
-> >
-> > https://github.com/ClangBuiltLinux/continuous-integration/pull/282
-> > https://github.com/ClangBuiltLinux/boot-utils/pull/22
->
-> Great.
->
-> > We were only using the zImage because that is what Joel Stanley intially
-> > set us up with when PowerPC 32-bit was added to our CI:
-> >
-> > https://github.com/ClangBuiltLinux/continuous-integration/pull/100
->
-> Ah, so Joel owes us all beers then ;)
+On 24-06-20, 16:32, Quentin Perret wrote:
+> Right, but I must admit that, looking at this more, I'm getting a bit
+> confused with the overall locking for governors :/
+> 
+> When in cpufreq_init_policy() we find a governor using
+> find_governor(policy->last_governor), what guarantees this governor is
+> not concurrently unregistered? That is, what guarantees this governor
+> doesn't go away between that find_governor() call, and the subsequent
+> call to try_module_get() in cpufreq_set_policy() down the line?
+> 
+> Can we somewhat assume that whatever governor is referred to by
+> policy->last_governor will have a non-null refcount? Or are the
+> cpufreq_online() and cpufreq_unregister_governor() path mutually
+> exclusive? Or is there something else?
 
-Hey, you owe me beers for finding broken machines!
+This should be sufficient to fix pending issues I believe. Based over your
+patches.
 
-This machine was picked from a vague discussion on an internal chat.
-The two requirements were that it would build, and boot in qemu.
+-- 
+viresh
 
-If there's a better supported 32 bit machine then we should switch the
-CI over. We don't want the Clang CI to be the only user and give the
-false impression that someone out there is still booting upstream
-kernels on it.
+-------------------------8<-------------------------
+From: Viresh Kumar <viresh.kumar@linaro.org>
+Date: Thu, 25 Jun 2020 13:15:23 +0530
+Subject: [PATCH] cpufreq: Fix locking issues with governors
 
-> > Admittedly, we really do not have many PowerPC experts in our
-> > organization so we are supporting it on a "best effort" basis, which
-> > often involves using whatever knowledge is floating around or can be
-> > gained from interactions such as this :) so thank you for that!
->
-> No worries. I definitely don't expect you folks to invest much effort in
-> powerpc, especially the old 32-bit stuff, so always happy to help debug
-> things, and really appreciate the testing you do.
+The locking around governors handling isn't adequate currently. The list
+of governors should never be traversed without locking in place. Also we
+must make sure the governor isn't removed while it is still referenced
+by code.
 
-+1
+Reported-by: Quentin Perret <qperret@google.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ drivers/cpufreq/cpufreq.c | 59 ++++++++++++++++++++++++---------------
+ 1 file changed, 36 insertions(+), 23 deletions(-)
 
-Cheers,
-
-Joel
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 4b1a5c0173cf..dad6b85f4c89 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -624,6 +624,24 @@ static struct cpufreq_governor *find_governor(const char *str_governor)
+ 	return NULL;
+ }
+ 
++static struct cpufreq_governor *get_governor(const char *str_governor)
++{
++	struct cpufreq_governor *t;
++
++	mutex_lock(&cpufreq_governor_mutex);
++	t = find_governor(str_governor);
++	if (!t)
++		goto unlock;
++
++	if (!try_module_get(t->owner))
++		t = NULL;
++
++unlock:
++	mutex_unlock(&cpufreq_governor_mutex);
++
++	return t;
++}
++
+ static unsigned int cpufreq_parse_policy(char *str_governor)
+ {
+ 	if (!strncasecmp(str_governor, "performance", CPUFREQ_NAME_LEN))
+@@ -643,28 +661,14 @@ static struct cpufreq_governor *cpufreq_parse_governor(char *str_governor)
+ {
+ 	struct cpufreq_governor *t;
+ 
+-	mutex_lock(&cpufreq_governor_mutex);
+-
+-	t = find_governor(str_governor);
+-	if (!t) {
+-		int ret;
+-
+-		mutex_unlock(&cpufreq_governor_mutex);
+-
+-		ret = request_module("cpufreq_%s", str_governor);
+-		if (ret)
+-			return NULL;
+-
+-		mutex_lock(&cpufreq_governor_mutex);
++	t = get_governor(str_governor);
++	if (t)
++		return t;
+ 
+-		t = find_governor(str_governor);
+-	}
+-	if (t && !try_module_get(t->owner))
+-		t = NULL;
+-
+-	mutex_unlock(&cpufreq_governor_mutex);
++	if (request_module("cpufreq_%s", str_governor))
++		return NULL;
+ 
+-	return t;
++	return get_governor(str_governor);
+ }
+ 
+ /**
+@@ -818,12 +822,14 @@ static ssize_t show_scaling_available_governors(struct cpufreq_policy *policy,
+ 		goto out;
+ 	}
+ 
++	mutex_lock(&cpufreq_governor_mutex);
+ 	for_each_governor(t) {
+ 		if (i >= (ssize_t) ((PAGE_SIZE / sizeof(char))
+ 		    - (CPUFREQ_NAME_LEN + 2)))
+-			goto out;
++			break;
+ 		i += scnprintf(&buf[i], CPUFREQ_NAME_PLEN, "%s ", t->name);
+ 	}
++	mutex_unlock(&cpufreq_governor_mutex);
+ out:
+ 	i += sprintf(&buf[i], "\n");
+ 	return i;
+@@ -1060,11 +1066,14 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
+ {
+ 	struct cpufreq_governor *gov = NULL;
+ 	unsigned int pol = CPUFREQ_POLICY_UNKNOWN;
++	bool put_governor = false;
++	int ret;
+ 
+ 	if (has_target()) {
+ 		/* Update policy governor to the one used before hotplug. */
+-		gov = find_governor(policy->last_governor);
++		gov = get_governor(policy->last_governor);
+ 		if (gov) {
++			put_governor = true;
+ 			pr_debug("Restoring governor %s for cpu %d\n",
+ 				 policy->governor->name, policy->cpu);
+ 		} else if (default_governor) {
+@@ -1091,7 +1100,11 @@ static int cpufreq_init_policy(struct cpufreq_policy *policy)
+ 			return -ENODATA;
+ 	}
+ 
+-	return cpufreq_set_policy(policy, gov, pol);
++	ret = cpufreq_set_policy(policy, gov, pol);
++	if (put_governor)
++		module_put(gov->owner);
++
++	return ret;
+ }
+ 
+ static int cpufreq_add_policy_cpu(struct cpufreq_policy *policy, unsigned int cpu)
