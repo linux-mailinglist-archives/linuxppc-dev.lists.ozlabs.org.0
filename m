@@ -2,63 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462102096AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 01:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F9F209815
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 03:13:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49sdx40LNtzDqGW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 09:03:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49shq3161DzDqcX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jun 2020 11:13:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.25;
- helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=N3n8DDOJ; 
- dkim-atps=neutral
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
- [85.215.255.25])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49sdvK695KzDqX1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 09:02:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1593039717;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=jNwJPgbXWSY5k3ONcpmWSpzVAtyG7kyzLOQfdxBIq78=;
- b=N3n8DDOJUmenEyBJtv9r756W7RX0vT/Xi5Rdd+1Eg7ZR+gFW5HVOQJPcn2mKF47xE9
- ++9v40/jRxIP/ih28DAfRWaXIVRlEZkvJ7JAuYAby8ZXnC13zzIwdjFqS140L+bFL3Xj
- XyynnQ6J3msOYU0BS/0BRVcYBLqEV/E6jKGT6j1fejlhXz1owKToeaYkfRlkGR+9POXQ
- FonlGgjdzrsuWHM6JMDIWbEQPOi3yVJhC3tpemd21vXJ900Sfe2Oy9ZSSX2z0oySDF3s
- gR+CDTfjv66oMlkA7/GpcvEWJhyxBvHajBGJj44qR+tP+qNfO1J874WUu+NDmx+b61Rq
- BNBA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgGJ0QV6eoJYgVI5+ZHl6Cxch0QSA=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:e17f:c1c2:dced:2bd3]
- by smtp.strato.de (RZmta 46.10.5 AUTH)
- with ESMTPSA id 60686ew5ON1q442
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Thu, 25 Jun 2020 01:01:52 +0200 (CEST)
-Subject: Re: FSL P5020/P5040: DPAA Ethernet issue with the latest Git kernel
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-References: <56DB95B8-5F42-4837-ABA0-7E580FE04B73@xenosoft.de>
- <20200624082352.GA24934@oc3871087118.ibm.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <004794fb-370c-c165-38e6-a451dc50c294@xenosoft.de>
-Date: Thu, 25 Jun 2020 01:01:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49shmc48hTzDqZj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 11:11:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=kJmcxXCW; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49shmb69B8z9s1x;
+ Thu, 25 Jun 2020 11:11:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1593047487;
+ bh=RQIyenxXQbHYMtHUjOJ2lug8ouzp2KuX35Kw7NZyeo8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=kJmcxXCWM8MFuc4Ml75Dgq+t4B7yQJ5nmGrgklDwpv0w5QyX/V4lmk9Ap6GOMt2nz
+ Rg9ldgciNUeufuQgv9E4KPsLVQZFfPXQUaCx/TvEjyPrXej+lJ74pmWWAC60ttgYUZ
+ oPtcxTpuHXFvG2fWsX0mT0PCI2J1fF9bj006Y7AFve7Aj4lhtT4ooNqncwxReBZqmO
+ hk//6Tojc4PkCLEgJUbEph3/qd2TbTF6MWqmyOdbAw3Fr5r08GRFFXA4CHBESNYm7L
+ RxZDT0brNuJsYc7nA/Q3adMSU7OncD+oa1+HzaeYOCZkSqRG88yQjheK1brq0sYV/D
+ cm86zTCQdng4g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries: Use doorbells even if XIVE is available
+In-Reply-To: <20200624134724.2343007-1-npiggin@gmail.com>
+References: <20200624134724.2343007-1-npiggin@gmail.com>
+Date: Thu, 25 Jun 2020 11:11:57 +1000
+Message-ID: <87r1u4aqzm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200624082352.GA24934@oc3871087118.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,64 +57,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: Anton Blanchard <anton@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 24 June 2020, at 10:23 am, Alexander Gordeev wrote:
-> On Sun, Jun 21, 2020 at 08:40:14AM +0200, Christian Zigotzky wrote:
->> Hello Alexander,
->>
->> The DPAA Ethernet doesn’t work anymore on our FSL P5020/P5040 boards [1] since the RC1 of kernel 5.8 [2].
->> We bisected last days [3] and found the problematic commit [4]. I was able to revert it [5]. After that the DPAA Ethernet works again. I created a patch for reverting the commit [5]. This patch works and I will use it for the RC2.
->> Could you please check your commit? [4]
-> Hi Christian,
+Nicholas Piggin <npiggin@gmail.com> writes:
+> KVM supports msgsndp in guests by trapping and emulating the
+> instruction, so it was decided to always use XIVE for IPIs if it is
+> available. However on PowerVM systems, msgsndp can be used and gives
+> better performance. On large systems, high XIVE interrupt rates can
+> have sub-linear scaling, and using msgsndp can reduce the load on
+> the interrupt controller.
 >
-> Could you please check if the kernel passes CONFIG_TEST_BITMAP self-test?
->
-> Thanks!
->
->> Thanks,
->> Christian
->>
->> [1] http://wiki.amiga.org/index.php?title=X5000
->> [2] https://forum.hyperion-entertainment.com/viewtopic.php?p=50885#p50885
->> [3] https://forum.hyperion-entertainment.com/viewtopic.php?p=50892#p50892
->> [4] lib: fix bitmap_parse() on 64-bit big endian archs: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=81c4f4d924d5d009b5ed785a3e22b18d0f7b831f
->> [5] https://forum.hyperion-entertainment.com/viewtopic.php?p=50982#p50982
->>
->>
-Hi Alexander,
+> So switch to using core local doorbells even if XIVE is available.
+> This reduces performance for KVM guests with an SMT topology by
+> about 50% for ping-pong context switching between SMT vCPUs.
 
-Thanks for your reply!
+You have to take explicit steps to configure KVM in that way with qemu.
+eg. "qemu .. -smp 8" will give you 8 SMT1 CPUs by default.
 
-I compiled a test kernel with the option "CONFIG_TEST_BITMAP=y" 
-yesterday. After that Skateman and I booted it and looked for the bitmap 
-tests with "dmesg | grep -i bitmap".
+> An option vector (or dt-cpu-ftrs) could be defined to disable msgsndp
+> to get KVM performance back.
 
-Results:
+Qemu/KVM populates /proc/device-tree/hypervisor, so we *could* look at
+that. Though adding PowerVM/KVM specific hacks is obviously a very
+slippery slope.
 
-FSL P5020:
+> diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
+> index 6891710833be..a737a2f87c67 100644
+> --- a/arch/powerpc/platforms/pseries/smp.c
+> +++ b/arch/powerpc/platforms/pseries/smp.c
+> @@ -188,13 +188,14 @@ static int pseries_smp_prepare_cpu(int cpu)
+>  	return 0;
+>  }
+>  
+> +static void  (*cause_ipi_offcore)(int cpu) __ro_after_init;
+> +
+>  static void smp_pseries_cause_ipi(int cpu)
 
-[    0.297756] test_bitmap: loaded.
-[    0.298113] test_bitmap: parselist: 14: input is '0-2047:128/256' OK, 
-Time: 562
-[    0.298142] test_bitmap: parselist_user: 14: input is 
-'0-2047:128/256' OK, Time: 761
-[    0.301553] test_bitmap: all 1663 tests passed
+This is static so the name could be more descriptive, it doesn't need
+the "smp_pseries" prefix.
 
-FSL P5040:
+>  {
+> -	/* POWER9 should not use this handler */
+>  	if (doorbell_try_core_ipi(cpu))
+>  		return;
 
-[    0.296563] test_bitmap: loaded.
-[    0.296894] test_bitmap: parselist: 14: input is '0-2047:128/256' OK, 
-Time: 540
-[    0.296920] test_bitmap: parselist_user: 14: input is 
-'0-2047:128/256' OK, Time: 680
-[    0.299994] test_bitmap: all 1663 tests passed
+Seems like it would be worth making that static inline so we can avoid
+the function call overhead.
 
-Thanks,
-Christian
+> -	icp_ops->cause_ipi(cpu);
+> +	cause_ipi_offcore(cpu);
+>  }
+>  
+>  static int pseries_cause_nmi_ipi(int cpu)
+> @@ -222,10 +223,7 @@ static __init void pSeries_smp_probe_xics(void)
+>  {
+>  	xics_smp_probe();
+>  
+> -	if (cpu_has_feature(CPU_FTR_DBELL) && !is_secure_guest())
+> -		smp_ops->cause_ipi = smp_pseries_cause_ipi;
+> -	else
+> -		smp_ops->cause_ipi = icp_ops->cause_ipi;
+> +	smp_ops->cause_ipi = icp_ops->cause_ipi;
+>  }
+>  
+>  static __init void pSeries_smp_probe(void)
+> @@ -238,6 +236,18 @@ static __init void pSeries_smp_probe(void)
+
+The comment just above here says:
+
+		/*
+		 * Don't use P9 doorbells when XIVE is enabled. IPIs
+		 * using MMIOs should be faster
+		 */
+>  		xive_smp_probe();
+
+Which is no longer true.
+
+>  	else
+>  		pSeries_smp_probe_xics();
+
+I think you should just fold this in, it would make the logic slightly
+easier to follow.
+
+> +	/*
+> +	 * KVM emulates doorbells by reading the instruction, which
+> +	 * can't be done if the guest is secure. If a secure guest
+> +	 * runs under PowerVM, it could use msgsndp but would need a
+> +	 * way to distinguish.
+> +	 */
+
+It's not clear what it needs to distinguish: That it's running under
+PowerVM and therefore *can* use msgsndp even though it's secure.
+
+Also the comment just talks about the is_secure_guest() test, which is
+not obvious on first reading.
+
+> +	if (cpu_has_feature(CPU_FTR_DBELL) &&
+> +	    cpu_has_feature(CPU_FTR_SMT) && !is_secure_guest()) {
+> +		cause_ipi_offcore = smp_ops->cause_ipi;
+> +		smp_ops->cause_ipi = smp_pseries_cause_ipi;
+> +	}
+
+Because we're at the tail of the function I think this would be clearer
+if it used early returns, eg:
+
+	// If the CPU doesn't have doorbells then we must use xics/xive
+	if (!cpu_has_feature(CPU_FTR_DBELL))
+        	return;
+
+	// If the CPU doesn't have SMT then doorbells don't help us
+	if (!cpu_has_feature(CPU_FTR_SMT))
+        	return;
+
+	// Secure guests can't use doorbells because ...
+	if (!is_secure_guest()
+        	return;
+
+	/*
+         * Otherwise we want to use doorbells for sibling threads and
+         * xics/xive for IPIs off the core, because it performs better
+         * on large systems ...
+         */
+        cause_ipi_offcore = smp_ops->cause_ipi;
+	smp_ops->cause_ipi = smp_pseries_cause_ipi;
+}
+
+
+cheers
