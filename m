@@ -2,74 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A3320B63D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 18:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC8020B789
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 19:48:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tjXh0vjczDqsZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 02:49:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tkrc4GkRzDqmh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 03:48:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=desnesn@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
+ helo=mail-qk1-x742.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=mASX7545; dkim-atps=neutral
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tjVs2hQKzDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 02:48:01 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05QGXamv064612; Fri, 26 Jun 2020 12:47:56 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31vxqmed8p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 12:47:56 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05QGigZh024356;
- Fri, 26 Jun 2020 16:47:55 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma02wdc.us.ibm.com with ESMTP id 31uus458hm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 16:47:55 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05QGlsU843844044
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Jun 2020 16:47:54 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8655AE05C;
- Fri, 26 Jun 2020 16:47:54 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6826AE062;
- Fri, 26 Jun 2020 16:47:53 +0000 (GMT)
-Received: from ibm.ibmuc.com (unknown [9.160.162.96])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 26 Jun 2020 16:47:53 +0000 (GMT)
-From: "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc: Purge extra count_pmc() calls of ebb
- selftests
-Date: Fri, 26 Jun 2020 13:47:37 -0300
-Message-Id: <20200626164737.21943-1-desnesn@linux.ibm.com>
-X-Mailer: git-send-email 2.21.3
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tkpx4RxNzDqKH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 03:47:04 +1000 (AEST)
+Received: by mail-qk1-x742.google.com with SMTP id f18so9569385qkh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 10:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=fkFi+jmw2zi2Bpb13lGdSVxVK1RDggY+07lZfXdmWkw=;
+ b=mASX7545832fQHYswKaLcmSKvWG5sESxf8V/lKsnex7qxLNKrW8ChdM8EzbqHrMlzJ
+ CZVhYF5Xm5uH7Ltj6RnzV+tAdkYpjTZ0wjvgtQ9aiSeP5EtObCl4mP0+UojhavKQFHPD
+ 0qDzZXnQ7iFoeUQJV+aPX9aEnx+jRrHjJbeh8MxIf0XqkdQJgTKab9jA0cQ1p2uPc3Eo
+ Z/XxvYy3pmPmreCjt0eucNJQJ+MwtnSPKSZQg53Ella+BGjUXW4TMXQPvL85q+OQbzDR
+ s+jFiL5cmZzL41LWRGuDtVX0B1q7DdTqoUeBRtcinH3WPAcL4OTX4u66uZP14vcUc5nd
+ 5G5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=fkFi+jmw2zi2Bpb13lGdSVxVK1RDggY+07lZfXdmWkw=;
+ b=Y8nrR/n5K1VSV2hS2E8YLepaLQTpK2NVd3u4TPw4Y4WwSqWTWDtEH+ryDR9N4PWPjv
+ MvCkPJDIYFfq1aa5PuEuWUbsdYFJLU3ktlIqMdqH5lnxqIgLnMj5ZKStoViRp9x+jjMU
+ ziafWE4eYA+p4kaNs5g86fpYzLGhEkqrbfYSlwzdQr14kLyx5ls3tE/anSHYtBxfK0rW
+ WAO+M63O5G7jYDom20bEe/NYL95A6ohPQO8HmCW07YwQh3lZmILKmxs46CE7gjYCHApY
+ wezpoZG1r0aZRd08IzzwzfGCUd5tQ448OfIzh8ZYx6tYGTxrSM98VTrChDfCgT8mwByD
+ 6GkA==
+X-Gm-Message-State: AOAM531wWG8KrRf1fKF7QEPvT85uYL99cGOGy7xTaeR6ZhVOfM707IjS
+ /ViTsZvbZMs9NWk/RWXhVJU=
+X-Google-Smtp-Source: ABdhPJzcWnNjR5+QzFD4mqwuojguwT3Xh2XT9wLDkREZn6Pv2pYj8gK8Nj52Eq9rql3WnO3X5yPBpw==
+X-Received: by 2002:a37:3d4:: with SMTP id 203mr3705422qkd.420.1593193619293; 
+ Fri, 26 Jun 2020 10:46:59 -0700 (PDT)
+Received: from LeoBras (200-236-242-115.dynamic.desktop.com.br.
+ [200.236.242.115])
+ by smtp.gmail.com with ESMTPSA id h185sm8257482qkf.85.2020.06.26.10.46.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Jun 2020 10:46:58 -0700 (PDT)
+Message-ID: <1069466fa3a373e92d9db18957674b1d9c6e9cf2.camel@gmail.com>
+Subject: Re: [PATCH v2 6/6] powerpc/pseries/iommu: Avoid errors when DDW
+ starts at 0x00
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Alexey
+ Kardashevskiy
+ <aik@ozlabs.ru>, Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
+ <linuxram@us.ibm.com>
+Date: Fri, 26 Jun 2020 14:46:46 -0300
+In-Reply-To: <20200624062411.367796-7-leobras.c@gmail.com>
+References: <20200624062411.367796-1-leobras.c@gmail.com>
+ <20200624062411.367796-7-leobras.c@gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-26_09:2020-06-26,
- 2020-06-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- bulkscore=0 phishscore=0 clxscore=1011 lowpriorityscore=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 priorityscore=1501 cotscore=-2147483648
- spamscore=0 suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006260116
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,199 +88,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: desnesn@linux.ibm.com, shuah@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-An extra count on ebb_state.stats.pmc_count[PMC_INDEX(pmc)] is being per-
-formed when count_pmc() is used to reset PMCs on a few selftests. This
-extra pmc_count can occasionally invalidate results, such as the ones from
-cycles_test shown hereafter. The ebb_check_count() failed with an above
-the upper limit error due to the extra value on ebb_state.stats.pmc_count.
+On Wed, 2020-06-24 at 03:24 -0300, Leonardo Bras wrote:
+> As of today, enable_ddw() will return a non-null DMA address if the
+> created DDW maps the whole partition. If the address is valid,
+> iommu_bypass_supported_pSeriesLP() will consider iommu bypass enabled.
+> 
+> This can cause some trouble if the DDW happens to start at 0x00.
+> 
+> Instead if checking if the address is non-null, check directly if
+> the DDW maps the whole partition, so it can bypass iommu.
+> 
+> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 
-Furthermore, this extra count is also indicated by extra PMC1 trace_log on
-the output of the cycle test (as well as on pmc56_overflow_test):
+This patch has a bug in it. I will rework it soon.
+Please keep reviewing patches 1-5.
 
-==========
-   ...
-   [21]: counter = 8
-   [22]: register SPRN_MMCR0 = 0x0000000080000080
-   [23]: register SPRN_PMC1  = 0x0000000080000004
-   [24]: counter = 9
-   [25]: register SPRN_MMCR0 = 0x0000000080000080
-   [26]: register SPRN_PMC1  = 0x0000000080000004
-   [27]: counter = 10
-   [28]: register SPRN_MMCR0 = 0x0000000080000080
-   [29]: register SPRN_PMC1  = 0x0000000080000004
->> [30]: register SPRN_PMC1  = 0x000000004000051e
-PMC1 count (0x280000546) above upper limit 0x2800003e8 (+0x15e)
-[FAIL] Test FAILED on line 52
-failure: cycles
-==========
-
-Signed-off-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
----
- .../selftests/powerpc/pmu/ebb/back_to_back_ebbs_test.c     | 2 --
- tools/testing/selftests/powerpc/pmu/ebb/cycles_test.c      | 2 --
- .../selftests/powerpc/pmu/ebb/cycles_with_freeze_test.c    | 2 --
- .../selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c     | 2 --
- tools/testing/selftests/powerpc/pmu/ebb/ebb.c              | 2 --
- .../selftests/powerpc/pmu/ebb/ebb_on_willing_child_test.c  | 2 --
- .../selftests/powerpc/pmu/ebb/lost_exception_test.c        | 1 -
- .../testing/selftests/powerpc/pmu/ebb/multi_counter_test.c | 7 -------
- .../selftests/powerpc/pmu/ebb/multi_ebb_procs_test.c       | 2 --
- .../testing/selftests/powerpc/pmu/ebb/pmae_handling_test.c | 2 --
- .../selftests/powerpc/pmu/ebb/pmc56_overflow_test.c        | 2 --
- 11 files changed, 26 deletions(-)
-
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/back_to_back_ebbs_test.c b/tools/testing/selftests/powerpc/pmu/ebb/back_to_back_ebbs_test.c
-index a2d7b0e3dca9..a26ac122c759 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/back_to_back_ebbs_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/back_to_back_ebbs_test.c
-@@ -91,8 +91,6 @@ int back_to_back_ebbs(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_ebb_state();
- 
- 	event_close(&event);
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/cycles_test.c b/tools/testing/selftests/powerpc/pmu/ebb/cycles_test.c
-index bc893813483e..bb9f587fa76e 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/cycles_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/cycles_test.c
-@@ -42,8 +42,6 @@ int cycles(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_ebb_state();
- 
- 	event_close(&event);
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_freeze_test.c b/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_freeze_test.c
-index dcd351d20328..9ae795ce314e 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_freeze_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_freeze_test.c
-@@ -99,8 +99,6 @@ int cycles_with_freeze(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_ebb_state();
- 
- 	printf("EBBs while frozen %d\n", ebbs_while_frozen);
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c b/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c
-index 94c99c12c0f2..4b45a2e70f62 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/cycles_with_mmcr2_test.c
-@@ -71,8 +71,6 @@ int cycles_with_mmcr2(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_ebb_state();
- 
- 	event_close(&event);
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/ebb.c b/tools/testing/selftests/powerpc/pmu/ebb/ebb.c
-index dfbc5c3ad52d..21537d6eb6b7 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/ebb.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/ebb.c
-@@ -396,8 +396,6 @@ int ebb_child(union pipe read_pipe, union pipe write_pipe)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_ebb_state();
- 
- 	event_close(&event);
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/ebb_on_willing_child_test.c b/tools/testing/selftests/powerpc/pmu/ebb/ebb_on_willing_child_test.c
-index ca2f7d729155..b208bf6ad58d 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/ebb_on_willing_child_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/ebb_on_willing_child_test.c
-@@ -38,8 +38,6 @@ static int victim_child(union pipe read_pipe, union pipe write_pipe)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_ebb_state();
- 
- 	FAIL_IF(ebb_state.stats.ebb_count == 0);
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/lost_exception_test.c b/tools/testing/selftests/powerpc/pmu/ebb/lost_exception_test.c
-index ac3e6e182614..ba2681a12cc7 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/lost_exception_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/lost_exception_test.c
-@@ -75,7 +75,6 @@ static int test_body(void)
- 	ebb_freeze_pmcs();
- 	ebb_global_disable();
- 
--	count_pmc(4, sample_period);
- 	mtspr(SPRN_PMC4, 0xdead);
- 
- 	dump_summary_ebb_state();
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/multi_counter_test.c b/tools/testing/selftests/powerpc/pmu/ebb/multi_counter_test.c
-index b8242e9d97d2..791d37ba327b 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/multi_counter_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/multi_counter_test.c
-@@ -70,13 +70,6 @@ int multi_counter(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--	count_pmc(2, sample_period);
--	count_pmc(3, sample_period);
--	count_pmc(4, sample_period);
--	count_pmc(5, sample_period);
--	count_pmc(6, sample_period);
--
- 	dump_ebb_state();
- 
- 	for (i = 0; i < 6; i++)
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/multi_ebb_procs_test.c b/tools/testing/selftests/powerpc/pmu/ebb/multi_ebb_procs_test.c
-index a05c0e18ded6..9b0f70d59702 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/multi_ebb_procs_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/multi_ebb_procs_test.c
-@@ -61,8 +61,6 @@ static int cycles_child(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_summary_ebb_state();
- 
- 	event_close(&event);
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/pmae_handling_test.c b/tools/testing/selftests/powerpc/pmu/ebb/pmae_handling_test.c
-index 153ebc92234f..2904c741e04e 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/pmae_handling_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/pmae_handling_test.c
-@@ -82,8 +82,6 @@ static int test_body(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(1, sample_period);
--
- 	dump_ebb_state();
- 
- 	if (mmcr0_mismatch)
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/pmc56_overflow_test.c b/tools/testing/selftests/powerpc/pmu/ebb/pmc56_overflow_test.c
-index eadad75ed7e6..b29f8ba22d1e 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/pmc56_overflow_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/pmc56_overflow_test.c
-@@ -76,8 +76,6 @@ int pmc56_overflow(void)
- 	ebb_global_disable();
- 	ebb_freeze_pmcs();
- 
--	count_pmc(2, sample_period);
--
- 	dump_ebb_state();
- 
- 	printf("PMC5/6 overflow %d\n", pmc56_overflowed);
--- 
-2.21.3
+Best regards,
+Leonardo
 
