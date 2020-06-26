@@ -2,100 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E489120B94C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 21:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 189F220BACE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 22:57:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tn2y11ymzDr6P
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 05:27:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tq2w1flzzDqP5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 06:57:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tmZm1rkVzDqx6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 05:06:40 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49tmZm0Q0Fz8t4p
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 05:06:40 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49tmZl5yTXz9sSc; Sat, 27 Jun 2020 05:06:39 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
+ helo=mail-qk1-x744.google.com; envelope-from=mopsfelder@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ZeA7cAyZ; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49tmZl1W8dz9sRk
- for <linuxppc-dev@ozlabs.org>; Sat, 27 Jun 2020 05:06:38 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05QJ29xT092624; Fri, 26 Jun 2020 15:06:29 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31wcbdvsee-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 15:06:28 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05QJ28sd092570;
- Fri, 26 Jun 2020 15:06:28 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31wcbdvsd2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 15:06:28 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05QJ1iSE003741;
- Fri, 26 Jun 2020 19:06:25 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 31uusjk8hd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 19:06:25 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05QJ537P20840884
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Jun 2020 19:05:03 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D31A1AE051;
- Fri, 26 Jun 2020 19:06:22 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BA594AE056;
- Fri, 26 Jun 2020 19:06:19 +0000 (GMT)
-Received: from hbathini.in.ibm.com (unknown [9.102.0.159])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 26 Jun 2020 19:06:19 +0000 (GMT)
-Subject: [PATCH 11/11] ppc64/kexec_file: add appropriate regions for memory
- reserve map
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>
-Date: Sat, 27 Jun 2020 00:36:18 +0530
-Message-ID: <159319837868.16351.14592923589220822484.stgit@hbathini.in.ibm.com>
-In-Reply-To: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
-References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
-User-Agent: StGit/0.17.1-dirty
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tq0Y6xVHzDr0V
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 06:55:39 +1000 (AEST)
+Received: by mail-qk1-x744.google.com with SMTP id c139so10028676qkg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 13:55:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=6V/8vcci/nVPA/EuCklZ3OJDmNJKHN6SRm7VyBhOyp0=;
+ b=ZeA7cAyZdCB5B4KH+9EOkTjj8aumffznSYKOLsXJMUNm0IQnfewMQyF7dYqhp3UtgS
+ 1D6i8YitslXrfN8QeQbNvqSzgfhjrWWmvnzTBzeS2HEJUH6echu8BjhG3wiE+9UueDH9
+ YrKX9ZNacIx2XdwFEgU7dGkXbs8owqAWJ4Wx4MCtxLoqCJ3E3HgAA/G1lWzT5SKurcM5
+ r4DNSqwFOd3080VQeP9LFURo097B/aiORmx55iVQM+JdyK+9Zf/qxCBf87PNEFVGynkQ
+ 1jiSDhu3U5QkOJB0BJgUcxXYHhq1UMF3yaoMLminMgwZKO/7lJv9isB55P7QIFbA6NVL
+ +q5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=6V/8vcci/nVPA/EuCklZ3OJDmNJKHN6SRm7VyBhOyp0=;
+ b=peQssf7aCDHPMiFhZqIXbrbLBeJGfGzUDWHTG8+aELQP4CHTMuB+5Id/auacH61otK
+ FdrLB6h+3N0U5i2dxp/HLj7iaede0mOTY4s70ee+wPXMwGx4LqUgZXB0hah1Mkncl2ju
+ QwM1Rks9PDIUbbvc+yR+3y3GAvs4T3wZ/dLTZHctsnqNLn3yxeDnMHcpzceEqcILHAwo
+ rDnFgSbROiGLQsVzB6weUfT45SqtY1axtaWTgf7HDS+O2uUoi0Z8ZrIAubjRRadPcc8/
+ LjQmprAM+xwXPxqopTMyjamwPeYOsiT9rvIqHUUiMSRQ1TNYxCIW7e/3rQsyhcKnVTJb
+ zMhg==
+X-Gm-Message-State: AOAM532VY+yfFVyYc6cPGKdQb70dBzpTLhWDyWCdn/NvoZtcdl+7IvYs
+ bTHs95vBOwhks+eSO+Og9Z0=
+X-Google-Smtp-Source: ABdhPJwFxEA5+mCo5gcgeGaUg4aJI1K2M0FtkE57rkR9AR/OeSnNWVNAEmUUpMC6sdCaW39glNF9fg==
+X-Received: by 2002:a37:b56:: with SMTP id 83mr4502966qkl.362.1593204934567;
+ Fri, 26 Jun 2020 13:55:34 -0700 (PDT)
+Received: from localhost ([2804:431:f724:6132:f7ad:3e5e:aea2:fd6e])
+ by smtp.gmail.com with ESMTPSA id r2sm9359478qtn.27.2020.06.26.13.55.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Jun 2020 13:55:33 -0700 (PDT)
+Date: Fri, 26 Jun 2020 17:55:30 -0300
+From: Murilo Opsfelder =?iso-8859-1?Q?Ara=FAjo?= <mopsfelder@gmail.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v2 1/3] powerpc/mm: Enable radix GTSE only if supported.
+Message-ID: <20200626205530.GA23269@kermit.br.ibm.com>
+References: <20200626131000.5207-1-bharata@linux.ibm.com>
+ <20200626131000.5207-2-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-26_10:2020-06-26,
- 2020-06-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0
- cotscore=-2147483648 bulkscore=0 impostorscore=0 malwarescore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999
- priorityscore=1501 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006260130
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200626131000.5207-2-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,126 +79,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
- Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Eric Biederman <ebiederm@xmission.com>
+Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While initrd, elfcorehdr and backup regions are already added to the
-reserve map, there are a few missing regions that need to be added to
-the memory reserve map. Add them here. And now that all the changes
-to load panic kernel are in place, claim likewise.
+Hi, Bharata.
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
- arch/powerpc/kexec/file_load_64.c |   61 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 56 insertions(+), 5 deletions(-)
+On Fri, Jun 26, 2020 at 06:39:58PM +0530, Bharata B Rao wrote:
+> Make GTSE an MMU feature and enable it by default for radix.
+> However for guest, conditionally enable it if hypervisor supports
+> it via OV5 vector. Let prom_init ask for radix GTSE only if the
+> support exists.
+>
+> Having GTSE as an MMU feature will make it easy to enable radix
+> without GTSE. Currently radix assumes GTSE is enabled by default.
+>
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/mmu.h    |  4 ++++
+>  arch/powerpc/kernel/dt_cpu_ftrs.c |  1 +
+>  arch/powerpc/kernel/prom_init.c   | 13 ++++++++-----
+>  arch/powerpc/mm/init_64.c         |  5 ++++-
+>  4 files changed, 17 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+> index f4ac25d4df05..884d51995934 100644
+> --- a/arch/powerpc/include/asm/mmu.h
+> +++ b/arch/powerpc/include/asm/mmu.h
+> @@ -28,6 +28,9 @@
+>   * Individual features below.
+>   */
+>
+> +/* Guest Translation Shootdown Enable */
+> +#define MMU_FTR_GTSE			ASM_CONST(0x00001000)
+> +
+>  /*
+>   * Support for 68 bit VA space. We added that from ISA 2.05
+>   */
+> @@ -173,6 +176,7 @@ enum {
+>  #endif
+>  #ifdef CONFIG_PPC_RADIX_MMU
+>  		MMU_FTR_TYPE_RADIX |
+> +		MMU_FTR_GTSE |
+>  #ifdef CONFIG_PPC_KUAP
+>  		MMU_FTR_RADIX_KUAP |
+>  #endif /* CONFIG_PPC_KUAP */
+> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> index a0edeb391e3e..ac650c233cd9 100644
+> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
+> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> @@ -336,6 +336,7 @@ static int __init feat_enable_mmu_radix(struct dt_cpu_feature *f)
+>  #ifdef CONFIG_PPC_RADIX_MMU
+>  	cur_cpu_spec->mmu_features |= MMU_FTR_TYPE_RADIX;
+>  	cur_cpu_spec->mmu_features |= MMU_FTRS_HASH_BASE;
+> +	cur_cpu_spec->mmu_features |= MMU_FTR_GTSE;
+>  	cur_cpu_spec->cpu_user_features |= PPC_FEATURE_HAS_MMU;
+>
+>  	return 1;
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index 90c604d00b7d..cbc605cfdec0 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -1336,12 +1336,15 @@ static void __init prom_check_platform_support(void)
+>  		}
+>  	}
+>
+> -	if (supported.radix_mmu && supported.radix_gtse &&
+> -	    IS_ENABLED(CONFIG_PPC_RADIX_MMU)) {
+> -		/* Radix preferred - but we require GTSE for now */
+> -		prom_debug("Asking for radix with GTSE\n");
+> +	if (supported.radix_mmu && IS_ENABLED(CONFIG_PPC_RADIX_MMU)) {
+> +		/* Radix preferred - Check if GTSE is also supported */
+> +		prom_debug("Asking for radix\n");
+>  		ibm_architecture_vec.vec5.mmu = OV5_FEAT(OV5_MMU_RADIX);
+> -		ibm_architecture_vec.vec5.radix_ext = OV5_FEAT(OV5_RADIX_GTSE);
+> +		if (supported.radix_gtse)
+> +			ibm_architecture_vec.vec5.radix_ext =
+> +					OV5_FEAT(OV5_RADIX_GTSE);
+> +		else
+> +			prom_debug("Radix GTSE isn't supported\n");
+>  	} else if (supported.hash_mmu) {
+>  		/* Default to hash mmu (if we can) */
+>  		prom_debug("Asking for hash\n");
+> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> index bc73abf0bc25..152aa0200cef 100644
+> --- a/arch/powerpc/mm/init_64.c
+> +++ b/arch/powerpc/mm/init_64.c
+> @@ -407,12 +407,15 @@ static void __init early_check_vec5(void)
+>  		if (!(vec5[OV5_INDX(OV5_RADIX_GTSE)] &
+>  						OV5_FEAT(OV5_RADIX_GTSE))) {
+>  			pr_warn("WARNING: Hypervisor doesn't support RADIX with GTSE\n");
+> -		}
+> +			cur_cpu_spec->mmu_features &= ~MMU_FTR_GTSE;
+> +		} else
+> +			cur_cpu_spec->mmu_features |= MMU_FTR_GTSE;
+>  		/* Do radix anyway - the hypervisor said we had to */
+>  		cur_cpu_spec->mmu_features |= MMU_FTR_TYPE_RADIX;
+>  	} else if (mmu_supported == OV5_FEAT(OV5_MMU_HASH)) {
+>  		/* Hypervisor only supports hash - disable radix */
+>  		cur_cpu_spec->mmu_features &= ~MMU_FTR_TYPE_RADIX;
+> +		cur_cpu_spec->mmu_features &= ~MMU_FTR_GTSE;
+>  	}
+>  }
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 58fc2d8..813453d 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -185,6 +185,38 @@ static int get_crash_memory_ranges(struct crash_mem **mem_ranges)
- }
- 
- /**
-+ * get_reserved_memory_ranges - Get reserve memory ranges. This list includes
-+ *                              memory regions that should be added to the
-+ *                              memory reserve map to ensure the region is
-+ *                              protected from any mischeif.
-+ * @mem_ranges:                 Range list to add the memory ranges to.
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+static int get_reserved_memory_ranges(struct crash_mem **mem_ranges)
-+{
-+	int ret;
-+
-+	ret = add_rtas_mem_range(mem_ranges, false);
-+	if (ret)
-+		goto out;
-+
-+	ret = add_opal_mem_range(mem_ranges, false);
-+	if (ret)
-+		goto out;
-+
-+	ret = add_tce_mem_ranges(mem_ranges);
-+	if (ret)
-+		goto out;
-+
-+	ret = add_reserved_ranges(mem_ranges);
-+out:
-+	if (ret)
-+		pr_err("Failed to setup reserved memory ranges\n");
-+	return ret;
-+}
-+
-+/**
-  * __locate_mem_hole_ppc64 - Tests if the memory hole between buf_min & buf_max
-  *                           is large enough for the buffer. If true, sets
-  *                           kbuf->mem to the buffer.
-@@ -1182,8 +1214,8 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
- 			unsigned long initrd_load_addr,
- 			unsigned long initrd_len, const char *cmdline)
- {
--	struct crash_mem *umem = NULL;
--	int chosen_node, ret;
-+	struct crash_mem *umem = NULL, *rmem = NULL;
-+	int i, chosen_node, ret;
- 
- 	/* Remove memory reservation for the current device tree. */
- 	ret = delete_fdt_mem_rsv(fdt, __pa(initial_boot_params),
-@@ -1229,6 +1261,24 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
- 		}
- 	}
- 
-+	/* Update memory reserve map */
-+	ret = get_reserved_memory_ranges(&rmem);
-+	if (ret)
-+		goto out;
-+
-+	for (i = 0; i < rmem->nr_ranges; i++) {
-+		u64 base, size;
-+
-+		base = rmem->ranges[i].start;
-+		size = rmem->ranges[i].end - base + 1;
-+		ret = fdt_add_mem_rsv(fdt, base, size);
-+		if (ret) {
-+			pr_err("Error updating memory reserve map: %s\n",
-+			       fdt_strerror(ret));
-+			goto out;
-+		}
-+	}
-+
- 	ret = setup_new_fdt(image, fdt, initrd_load_addr, initrd_len,
- 			    cmdline, &chosen_node);
- 	if (ret)
-@@ -1239,6 +1289,7 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
- 		pr_err("Failed to update device-tree with linux,booted-from-kexec\n");
- out:
- 	kfree(umem);
-+	kfree(rmem);
- 	return ret;
- }
- 
-@@ -1378,10 +1429,10 @@ int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
- 
- 		/* Get exclude memory ranges needed for setting up kdump segments */
- 		ret = get_exclude_memory_ranges(&(image->arch.exclude_ranges));
--		if (ret)
-+		if (ret) {
- 			pr_err("Failed to setup exclude memory ranges for buffer lookup\n");
--		/* Return this until all changes for panic kernel are in */
--		return -EOPNOTSUPP;
-+			return ret;
-+		}
- 	}
- 
- 	return kexec_image_probe_default(image, buf, buf_len);
+Is this a part of the code where mmu_clear_feature() cannot be used?
 
+I'm just curious to understand the difference of clearing
+cur_cpu_spec->mmu_features bits like above versus using
+mmu_clear_feature() function.
+
+--
+Murilo
