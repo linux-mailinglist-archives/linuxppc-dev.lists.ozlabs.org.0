@@ -1,71 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9ECE20BBC3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:42:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA3E20BBC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:44:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tr2D4sn9zDqrs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:42:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tr4J2JqvzDqys
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:44:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=brendanhiggins@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=Nvb+ggfc; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=TFElbCjp; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tqYl2GHHzDqkS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:20:59 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id d66so5154664pfd.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:20:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=3v+OF208XUrXXCW8iavBboKmEzUrVOLh/1qRIFYBNoU=;
- b=Nvb+ggfcnASyU5yhjpLMt6peljFaQfiHoHtcJLghh8SOevSBFghSaqeuZcJueBgfGg
- WZgC5DlW9UptaHMBha2Yi+d7BZxdIdIsRVIxr6sT/EGiBCa7riY2jk+3OoPm9Dm2cBgE
- Oe16AFCAHqXoIwIvcpbOh0WaehkQSk4CbVyto=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tqbQ4QlgzDqF7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:22:26 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id j12so5146233pfn.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:22:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=DPaM2QLp1Lnyo/tFOjZRrBK9GEiSK4tLpveqTF1QTWw=;
+ b=TFElbCjpLxOIFHGP0g+klWMfLi0l2Mun3MxomGTHA0v9jh/9cfSmaHKqFtA4RT6jRm
+ 4xzaHn3a057w+xMpnbwSdQNls0bvhcqTTFxuifRkxMCIho8BIk5JWH0r+EJJml6d8S5N
+ IsXJvYxj2SL3HF4o5D1uBwhALv9jY3C3tWulumPnGm8T4x7r1RmHVZS5Ug2DclvsP0xR
+ sFOIwsCxvF6aV1Nj1SOAJunuK7BRTUwezp0PPzwRLdniCcRaiK5RCcSn7cJhUKWnHoFm
+ wpmGYvCAqzTEprPMaK7A1ERbYa7IUuNMzW2ZkRudy2BcDJa9pWbc0YGeu0tzrYO4kW1e
+ IXcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=3v+OF208XUrXXCW8iavBboKmEzUrVOLh/1qRIFYBNoU=;
- b=I3A4gi8OqGXmolxlZEp3QvAh1GPIOa2pNEME7VxvVznuQquY4nYaFxRMuvIAsIhaTK
- 6JJwx5lxbTxAR1UkI3vyxj3ZNGSf1RkUMIK98tiO8bBHnKiaRbadaiWA0b57x0ze+56n
- CVaI/66M4ftlj28pjLEBa8wDAG7IzgJbokbucTNl3qJaxnlyUY7ga5+I7DDEcPw28PvV
- jph914s9spEM9rJu+apjWFwz/eTwOvlGIT6MbdpMrASIlqeEoy+AhuTMPiW2SXkmC8Y+
- GuNlQgtCuH2s9JaWtlhD564R2VUxwrsublxDLDtwEGBvjFqeHn1+2xwlYn4sekSPuAWB
- j1pQ==
-X-Gm-Message-State: AOAM533sYIXYeecW0MHTqA4CZFF0qivri890ITJJ65aA8nRY09cpqILq
- UTjAMq2nGqax0/c3a9RU5PMrwg==
-X-Google-Smtp-Source: ABdhPJwbIChL+NPgK/ZZynTiHBVtRn0Pm3+yrJJiDfCLTGOFZovkou+N1wtQIeNq/GeuCZhx4HWPUQ==
-X-Received: by 2002:aa7:9e09:: with SMTP id y9mr4461464pfq.314.1593206457324; 
- Fri, 26 Jun 2020 14:20:57 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id b71sm17221453pfb.125.2020.06.26.14.20.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jun 2020 14:20:56 -0700 (PDT)
-Date: Fri, 26 Jun 2020 14:20:55 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Brendan Higgins <brendanhiggins@google.com>
-Subject: Re: [PATCH v5 02/12] arch: arm64: add linker section for KUnit test
- suites
-Message-ID: <202006261420.02E8E62@keescook>
-References: <20200626210917.358969-1-brendanhiggins@google.com>
- <20200626210917.358969-3-brendanhiggins@google.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=DPaM2QLp1Lnyo/tFOjZRrBK9GEiSK4tLpveqTF1QTWw=;
+ b=jbMtjEWGlpyql/+mKeLz2YnwsMlTnYdRMu6cJ+LffzicwWnqBaY6q2HAAWLC2TFXXO
+ y1FgAOb6vRheVWxw2oV2V/3jXMSnE4gpl780yPnZlo8r4sDWQ9XP8YRM6zYY6SKct1KR
+ axkwtPhkn4Puge0OjbsJV506oqZN71bO/pMnpBkQ/KpKSmAwN12YHsK/zHIWbIYI3RMF
+ EZVbI/RHAY4pknh/N5jqnnhQurRdE7T2X7aMRlDJREsbagVbJhKdD9FquBoAfBRmCglH
+ QQHo4gs8hzpMAfgtDSpaZyh24VaD7rYkHnqlVOfnWOcnk189BJ3f1qAs28ye9/XlvMw2
+ ij3w==
+X-Gm-Message-State: AOAM532+zOYX5aYLc+emESCJjZw6be5w9A2XWJpA8iwqUUiTxKC7STX5
+ KyoaAM7+catCEVjdRVqWggX9Jbd6/Qu7vQzJrFWm2g==
+X-Google-Smtp-Source: ABdhPJxiKEYutNObsmIBYphNH4Rjrm9h5SZbvVD0vbhM3XAclfw4B+ryQw8//QlKHbH2sO6uKDOQuVwPIVH3OMEUjA0=
+X-Received: by 2002:a63:d501:: with SMTP id c1mr631501pgg.159.1593206542565;
+ Fri, 26 Jun 2020 14:22:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200626210917.358969-3-brendanhiggins@google.com>
+References: <20200626210917.358969-1-brendanhiggins@google.com>
+ <20200626210917.358969-2-brendanhiggins@google.com>
+ <202006261416.F4EAAE47E3@keescook>
+In-Reply-To: <202006261416.F4EAAE47E3@keescook>
+From: Brendan Higgins <brendanhiggins@google.com>
+Date: Fri, 26 Jun 2020 14:22:11 -0700
+Message-ID: <CAFd5g47vu5vmrXnS0sLu+hdC2HmYz7GY82sE8rhcHfNkuC1NRw@mail.gmail.com>
+Subject: Re: [PATCH v5 01/12] vmlinux.lds.h: add linker section for KUnit test
+ suites
+To: Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,52 +75,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, catalin.marinas@arm.com, jcmvbkbc@gmail.com,
- will@kernel.org, paulus@samba.org, linux-kselftest@vger.kernel.org,
- frowand.list@gmail.com, anton.ivanov@cambridgegreys.com,
- linux-arch@vger.kernel.org, richard@nod.at, rppt@linux.ibm.com,
- yzaikin@google.com, linux-xtensa@linux-xtensa.org, arnd@arndb.de,
- jdike@addtoit.com, linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- davidgow@google.com, skhan@linuxfoundation.org,
- linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com,
- chris@zankel.net, monstr@monstr.eu, sboyd@kernel.org,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org,
- alan.maguire@oracle.com, akpm@linux-foundation.org, logang@deltatee.com
+Cc: "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ catalin.marinas@arm.com, jcmvbkbc@gmail.com, will@kernel.org, paulus@samba.org,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-arch@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>, rppt@linux.ibm.com,
+ Iurii Zaikin <yzaikin@google.com>, linux-xtensa@linux-xtensa.org,
+ Arnd Bergmann <arnd@arndb.de>, Jeff Dike <jdike@addtoit.com>,
+ linux-um <linux-um@lists.infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ KUnit Development <kunit-dev@googlegroups.com>, chris@zankel.net,
+ monstr@monstr.eu, Stephen Boyd <sboyd@kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Alan Maguire <alan.maguire@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Logan Gunthorpe <logang@deltatee.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 26, 2020 at 02:09:07PM -0700, Brendan Higgins wrote:
-> Add a linker section to arm64 where KUnit can put references to its test
-> suites. This patch is an early step in transitioning to dispatching all
-> KUnit tests from a centralized executor rather than having each as its
-> own separate late_initcall.
-> 
-> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> ---
->  arch/arm64/kernel/vmlinux.lds.S | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-> index 6827da7f3aa54..a1cae9cc655d7 100644
-> --- a/arch/arm64/kernel/vmlinux.lds.S
-> +++ b/arch/arm64/kernel/vmlinux.lds.S
-> @@ -181,6 +181,9 @@ SECTIONS
->  		INIT_RAM_FS
->  		*(.init.rodata.* .init.bss)	/* from the EFI stub */
->  	}
-> +	.kunit_test_suites : {
-> +		KUNIT_TEST_SUITES
-> +	}
+On Fri, Jun 26, 2020 at 2:20 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> On Fri, Jun 26, 2020 at 02:09:06PM -0700, Brendan Higgins wrote:
+> > Add a linker section where KUnit can put references to its test suites.
+> > This patch is the first step in transitioning to dispatching all KUnit
+> > tests from a centralized executor rather than having each as its own
+> > separate late_initcall.
+> >
+> > Co-developed-by: Iurii Zaikin <yzaikin@google.com>
+> > Signed-off-by: Iurii Zaikin <yzaikin@google.com>
+> > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> > Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+> > ---
+> >  include/asm-generic/vmlinux.lds.h | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+> > index db600ef218d7d..4f9b036fc9616 100644
+> > --- a/include/asm-generic/vmlinux.lds.h
+> > +++ b/include/asm-generic/vmlinux.lds.h
+> > @@ -881,6 +881,13 @@
+> >               KEEP(*(.con_initcall.init))                             \
+> >               __con_initcall_end = .;
+> >
+> > +/* Alignment must be consistent with (kunit_suite *) in include/kunit/test.h */
+>
+> Nit on naming:
+>
+> > +#define KUNIT_TEST_SUITES                                            \
+>
+> I would call this KUNIT_TABLE to maintain the same names as other things
+> of this nature.
+>
+> > +             . = ALIGN(8);                                           \
+> > +             __kunit_suites_start = .;                               \
+> > +             KEEP(*(.kunit_test_suites))                             \
+> > +             __kunit_suites_end = .;
+> > +
+> >  #ifdef CONFIG_BLK_DEV_INITRD
+> >  #define INIT_RAM_FS                                                  \
+> >       . = ALIGN(4);                                                   \
+> > @@ -1056,6 +1063,7 @@
+> >               INIT_CALLS                                              \
+> >               CON_INITCALL                                            \
+> >               INIT_RAM_FS                                             \
+> > +             KUNIT_TEST_SUITES                                       \
+> >       }
+>
+> Nack: this must be in INIT_DATA, not in INIT_DATA_SECTION. Not all
+> architectures use the INIT_DATA_SECTION macro (e.g. arm64), but everything
+> uses INIT_DATA.
 
-See my reply to 01/12. Then this patch can be dropped. :)
+Oh, maybe that would eliminate the need for the other linkerscript
+patches? That would be nice.
 
->  	.exit.data : {
->  		EXIT_DATA
->  	}
-> -- 
-> 2.27.0.212.ge8ba1cc988-goog
-> 
-
--- 
-Kees Cook
+Alright, will fix.
