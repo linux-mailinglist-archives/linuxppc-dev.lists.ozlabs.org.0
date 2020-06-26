@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FCE20BB58
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:22:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E83A20BB63
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:24:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tqbB5slMzDqHP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:22:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tqdP176xzDr42
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:24:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=flex--brendanhiggins.bounces.google.com
- (client-ip=2607:f8b0:4864:20::f4a; helo=mail-qv1-xf4a.google.com;
- envelope-from=3dwt2xg4kakwndqzpmztussuzesaasxq.oay@flex--brendanhiggins.bounces.google.com;
+ (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com;
+ envelope-from=3emt2xg4kalesiveureyzxxzejxffxcv.tfd@flex--brendanhiggins.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=QoyX5QkL; dkim-atps=neutral
-Received: from mail-qv1-xf4a.google.com (mail-qv1-xf4a.google.com
- [IPv6:2607:f8b0:4864:20::f4a])
+ header.s=20161025 header.b=FaG6BPJO; dkim-atps=neutral
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com
+ [IPv6:2607:f8b0:4864:20::b49])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tqJk5pdYzDr1P
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:09:36 +1000 (AEST)
-Received: by mail-qv1-xf4a.google.com with SMTP id w18so7210775qvd.16
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:09:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tqJq5f98zDr0m
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:09:41 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id 186so10971568yby.19
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=hVa5/5YjHA4HA55L6gqApWSV/fHdhhYIjiCaFnqYV3g=;
- b=QoyX5QkLkeZufbY3DPWqVcx8p1G2Pf6aerfPyt2zQE/ujAwEYOP4MavORdpoC0kiKu
- EBTjnDggRXo0KQe45lMKlqgesoVoq2M/WZaVEKYilzw17KOXTZudXtu6crQek7qlLud6
- wgqfeApVUIS2o9DKhJa1hfmORSYPYOqHxCziPwrSa4G+57ASkLll7CukI9nktN3Owv9v
- NukYDAxu7zl52PVDoi+7jdhfKkThnizMJ68rg/tVzgIVSHiP3aAKWELQxmH03U/bRKpt
- 6Wgu+YeU85Wm8LsbzjbD34Ud+5/9JGpyI65sawIxfi18MEFZnvGjX41U/bIx6IVwD7H1
- RvYQ==
+ :cc; bh=0yqonjfzX9QxirGgFehpVVIaduO9UwtK5AmrI3GZ6yQ=;
+ b=FaG6BPJOXqjkyKLdRnfSYXHm4L0jMa167g8811Lc7KLLlCTrzx/EQhd2p1zEmN8PgZ
+ eB/39SbjyqN9BS8uPjwCNk7B5FsKAFwGTf1tuQeTrrcWg0NmPDwVVJs2OdysNF250ny5
+ VYaIvUovIyhI0P7CGnSMLOC4oR5g5U3C2mMCTEaBeRjRz4nSG9vfnZlX1rK6IaoepxUC
+ OETugj/DQlGSwMOcs9b8H9dJLwc6Tt/4GycvP67g10bX3dUOb3wTDg7Yur+2thuv7XMd
+ 8zfhI3HS7mzzji3B8LIE8DyWvvEPyzQNBqzsZvR7kNzhDpKtRNvWLOtXRNexo7z4c1j/
+ ay6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:in-reply-to:message-id:mime-version
  :references:subject:from:to:cc;
- bh=hVa5/5YjHA4HA55L6gqApWSV/fHdhhYIjiCaFnqYV3g=;
- b=nvwWbyf048Q1UMVwQiMeSWu6KMjwcBmOyHEX/qD6ou9O2TeNFB3G7xogOPMgdu/jRR
- EZzYySsPu9F+qssL1euhS84somHUzAH0rnYdcvOB3cgSqXD/98/bQO67qL9K3vawXqNy
- baOASl1m7W6q51uFwX/vbxO2bgqjbokA3wocYr2IU9htGS2MMmoxdOwcU0eC3k19LdSo
- avi3adLKI8ltisblJ6NPgyEF6R5JcaSZ4byew42W0wPaow1z0NevqepBEo07VUUI9PDl
- u9LcW3n2dvxYJn624LrPWgVH21g6FxlwAmQchl7ySK3z3ysckjg1/hYNihVWqaqjZTBY
- qW5Q==
-X-Gm-Message-State: AOAM532UnVOS2ViUviMkZ/iChzksCo5KHPYgfZypU8+Mu71lp0tKR7vU
- HzQT/D0e7Twy5NevqLT9hpf5qkDKNXVonVMCWRbAsg==
-X-Google-Smtp-Source: ABdhPJypYrK6iZse6cCSs4YnSv2AzXM6d8Vad2NCnBdBrfM4NUTiqCIXIvHzUdHQAv3Yb81UEf64dXgB2cs8yGqX9AXtcw==
-X-Received: by 2002:a0c:8e8c:: with SMTP id x12mr5032791qvb.55.1593205773222; 
- Fri, 26 Jun 2020 14:09:33 -0700 (PDT)
-Date: Fri, 26 Jun 2020 14:09:10 -0700
+ bh=0yqonjfzX9QxirGgFehpVVIaduO9UwtK5AmrI3GZ6yQ=;
+ b=GPp63hhuKgfoZLwIiggCi4S/DPSckxAbtC5V0+In1lh6cKcb8L0uktDya8NpIm8JVV
+ pesFkb/nPy11pey7NC1n5Yg+eYdUTWphXiCJe2Fvc+7TOI1dYJWQFSn1FHRRgGjwc3QM
+ pOsJbM2DVO5EDLVqUiZ1/VzyDHJs+i7bzJ8XiAtCvJABWIUJECoTolQEWQKh57yA94f0
+ Lm5ESWN21ZUIKlrb6WFjkDYc1miuy6vaRnL3cOq8MvQILpmOSoJS6W2rtRXGJ57+hK4B
+ UIbKyCyxM4Vp0aGm6fGO0dx4Mmp8rfylURi7YVWWMXxczNeaRnXSNhrPoOVknlWY40Dt
+ FoXw==
+X-Gm-Message-State: AOAM53161Mf8T/ScZEuXd55KbSbIMt1CneQKB0SLKC8hzcVqdOVRf28K
+ bIg+bQjUn9uK+LMIAWxTMstolZDbIR9rq7ibAG3MJQ==
+X-Google-Smtp-Source: ABdhPJxVflv3SCvp9JwoHo/UGnaxlb8CfXLJfB6dEMmcpSpa5wRtOC4xX2AOsngFm6ZmdW4ISlhdBDuYipqi7x98m3Pohg==
+X-Received: by 2002:a25:e8b:: with SMTP id 133mr8080620ybo.13.1593205778812;
+ Fri, 26 Jun 2020 14:09:38 -0700 (PDT)
+Date: Fri, 26 Jun 2020 14:09:13 -0700
 In-Reply-To: <20200626210917.358969-1-brendanhiggins@google.com>
-Message-Id: <20200626210917.358969-6-brendanhiggins@google.com>
+Message-Id: <20200626210917.358969-9-brendanhiggins@google.com>
 Mime-Version: 1.0
 References: <20200626210917.358969-1-brendanhiggins@google.com>
 X-Mailer: git-send-email 2.27.0.212.ge8ba1cc988-goog
-Subject: [PATCH v5 05/12] arch: um: add linker section for KUnit test suites
+Subject: [PATCH v5 08/12] init: main: add KUnit to kernel init
 From: Brendan Higgins <brendanhiggins@google.com>
 To: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com, 
  arnd@arndb.de, keescook@chromium.org, skhan@linuxfoundation.org, 
@@ -90,32 +90,81 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a linker section to UML where KUnit can put references to its test
-suites. This patch is an early step in transitioning to dispatching all
-KUnit tests from a centralized executor rather than having each as its
-own separate late_initcall.
+Remove KUnit from init calls entirely, instead call directly from
+kernel_init().
 
+Co-developed-by: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
 Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
 Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 ---
- arch/um/include/asm/common.lds.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/kunit/test.h | 9 +++++++++
+ init/main.c          | 4 ++++
+ lib/kunit/executor.c | 4 +---
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/include/asm/common.lds.S b/arch/um/include/asm/common.lds.S
-index eca6c452a41bd..9a9c97f45694c 100644
---- a/arch/um/include/asm/common.lds.S
-+++ b/arch/um/include/asm/common.lds.S
-@@ -52,6 +52,10 @@
- 	CON_INITCALL
-   }
+diff --git a/include/kunit/test.h b/include/kunit/test.h
+index f3e86c3953a2b..795039d9f1917 100644
+--- a/include/kunit/test.h
++++ b/include/kunit/test.h
+@@ -228,6 +228,15 @@ int __kunit_test_suites_init(struct kunit_suite * const * const suites);
  
-+  .kunit_test_suites : {
-+	KUNIT_TEST_SUITES
-+  }
+ void __kunit_test_suites_exit(struct kunit_suite **suites);
+ 
++#if IS_BUILTIN(CONFIG_KUNIT)
++int kunit_run_all_tests(void);
++#else
++static inline int kunit_run_all_tests(void)
++{
++	return 0;
++}
++#endif /* IS_BUILTIN(CONFIG_KUNIT) */
 +
-   .exitcall : {
- 	__exitcall_begin = .;
- 	*(.exitcall.exit)
+ /**
+  * kunit_test_suites() - used to register one or more &struct kunit_suite
+  *			 with KUnit.
+diff --git a/init/main.c b/init/main.c
+index 0ead83e86b5aa..d3101d8874dea 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -106,6 +106,8 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/initcall.h>
+ 
++#include <kunit/test.h>
++
+ static int kernel_init(void *);
+ 
+ extern void init_IRQ(void);
+@@ -1504,6 +1506,8 @@ static noinline void __init kernel_init_freeable(void)
+ 
+ 	do_basic_setup();
+ 
++	kunit_run_all_tests();
++
+ 	console_on_rootfs();
+ 
+ 	/*
+diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
+index 7015e7328dce7..4aab7f70a88c3 100644
+--- a/lib/kunit/executor.c
++++ b/lib/kunit/executor.c
+@@ -11,7 +11,7 @@ extern struct kunit_suite * const * const __kunit_suites_end[];
+ 
+ #if IS_BUILTIN(CONFIG_KUNIT)
+ 
+-static int kunit_run_all_tests(void)
++int kunit_run_all_tests(void)
+ {
+ 	struct kunit_suite * const * const *suites;
+ 
+@@ -23,6 +23,4 @@ static int kunit_run_all_tests(void)
+ 	return 0;
+ }
+ 
+-late_initcall(kunit_run_all_tests);
+-
+ #endif /* IS_BUILTIN(CONFIG_KUNIT) */
 -- 
 2.27.0.212.ge8ba1cc988-goog
 
