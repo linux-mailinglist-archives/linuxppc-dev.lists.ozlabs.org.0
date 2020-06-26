@@ -2,83 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6348A20AD83
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 09:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAD220AD8C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 09:49:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tTW86xhqzDr0w
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 17:47:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tTYd11YRzDr2h
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 17:49:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tTTD47V7zDqws
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 17:45:52 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05Q7XZTI161988; Fri, 26 Jun 2020 03:45:47 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ux04b7p3-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tTWj5bdZzDqx9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 17:48:01 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05Q7WwvQ124694; Fri, 26 Jun 2020 03:47:56 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31ux014y33-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 03:45:43 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05Q7dnSQ023977;
- Fri, 26 Jun 2020 07:45:26 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma02dal.us.ibm.com with ESMTP id 31uurtewu8-1
+ Fri, 26 Jun 2020 03:47:55 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05Q7XYj5127886;
+ Fri, 26 Jun 2020 03:47:55 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31ux014y2e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 07:45:26 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05Q7jNCZ7143812
+ Fri, 26 Jun 2020 03:47:55 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05Q7jXO0022312;
+ Fri, 26 Jun 2020 07:47:53 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 31uus52rn8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 07:47:53 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05Q7lp9k61735002
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Jun 2020 07:45:23 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E5E86A04F;
- Fri, 26 Jun 2020 07:45:25 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D94016A057;
- Fri, 26 Jun 2020 07:45:24 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.79.217.126])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 26 Jun 2020 07:45:24 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 3B8122E4AB5; Fri, 26 Jun 2020 13:15:21 +0530 (IST)
-Date: Fri, 26 Jun 2020 13:15:21 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: Re: [PATCH v2 2/2] powerpc/hv-24x7: Add sysfs files inside hv-24x7
- device to show cpumask
-Message-ID: <20200626074521.GA13159@in.ibm.com>
-References: <20200624101754.169612-1-kjain@linux.ibm.com>
- <20200624101754.169612-3-kjain@linux.ibm.com>
- <20200624105603.GD31972@in.ibm.com>
- <a6a626e6-22eb-f1c2-4356-dfe1caf8db46@linux.ibm.com>
+ Fri, 26 Jun 2020 07:47:51 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F76942047;
+ Fri, 26 Jun 2020 07:47:51 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B693D4204C;
+ Fri, 26 Jun 2020 07:47:49 +0000 (GMT)
+Received: from [9.199.51.116] (unknown [9.199.51.116])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 26 Jun 2020 07:47:49 +0000 (GMT)
+Subject: Re: [bug] LTP mmap03 stuck in page fault loop after c46241a370a6
+ ("powerpc/pkeys: Check vma before returning key fault error to the user")
+To: Jan Stancek <jstancek@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ sandipan@linux.ibm.com
+References: <2065283975.18780128.1593154755849.JavaMail.zimbra@redhat.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <ac99e243-0945-8be0-6ae4-73af29b7a199@linux.ibm.com>
+Date: Fri, 26 Jun 2020 13:17:48 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6a626e6-22eb-f1c2-4356-dfe1caf8db46@linux.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <2065283975.18780128.1593154755849.JavaMail.zimbra@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-26_04:2020-06-26,
  2020-06-26 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 impostorscore=0 cotscore=-2147483648
- bulkscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006260054
+ adultscore=0 suspectscore=0
+ clxscore=1015 bulkscore=0 cotscore=-2147483648 mlxlogscore=833
+ phishscore=0 mlxscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006260050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,61 +94,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: nathanl@linux.ibm.com, ego@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com,
- suka@us.ibm.com, anju@linux.vnet.ibm.com, Kajol Jain <kjain@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Rachel Sibley <rasibley@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 24, 2020 at 05:58:31PM +0530, Madhavan Srinivasan wrote:
-> 
-> 
-> On 6/24/20 4:26 PM, Gautham R Shenoy wrote:
-> >Hi Kajol,
-> >
-> >On Wed, Jun 24, 2020 at 03:47:54PM +0530, Kajol Jain wrote:
-> >>Patch here adds a cpumask attr to hv_24x7 pmu along with ABI documentation.
-> >>
-> >>command:# cat /sys/devices/hv_24x7/cpumask
-> >>0
-> >Since this sysfs interface is read-only, and the user cannot change
-> >the CPU which will be making the HCALLs to obtain the 24x7 counts,
-> >does the user even need to know if currently CPU X is the one which is
-> >going to make HCALLs to retrive the 24x7 counts ? Does it help in any
-> >kind of trouble-shooting ?
-> Primary use to expose the cpumask is for the perf tool.
-> Which has the capability to parse the driver sysfs folder
-> and understand the cpumask file. Having cpumask
-> file will reduce the number of perf commandline
-> parameters (will avoid "-C" option in the perf tool
-> command line). I can also notify the user which is
-> the current cpu used to retrieve the counter data.
+Hi Jan,
 
-Fair enough. Can we include this in the patch description ?
-
+On 6/26/20 12:29 PM, Jan Stancek wrote:
+> Hi,
 > 
-> >It would have made sense if the interface was read-write, since a user
-> >can set this to a CPU which is not running user applications. This
-> >would help in minimising jitter on those active CPUs running the user
-> >applications.
+> LTP mmap03 is getting stuck in page fault loop after commit
+>    c46241a370a6 ("powerpc/pkeys: Check vma before returning key fault error to the user")
 > 
-> With cpumask backed by hotplug
-> notifiers, enabling user write access to it will
-> complicate the code with more additional check.
-> CPU will come to play only if the user request for
-> counter data. If not, then there will be no HCALLs made
-> using the CPU.
-
-Well, I was wondering if you could make the interface writable because
-I couldn't think of the use of a read-only interface. With the
-perf-use case you have provided, I guess it makes sense. I am ok with
-it being a read-only interface.
-
+> System is ppc64le P9 lpar [1] running v5.8-rc2-34-g3e08a95294a4.
 > 
-> Maddy
+> Here's a minimized reproducer:
+> ------------------------- 8< -----------------------------
+> #include <fcntl.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <unistd.h>
+> #include <sys/mman.h>
+> 
+> int main(int ac, char **av)
+> {
+>          int page_sz = getpagesize();
+>          int fildes;
+>          char *addr;
+> 
+>          fildes = open("tempfile", O_WRONLY | O_CREAT, 0666);
+>          write(fildes, &fildes, sizeof(fildes));
+>          close(fildes);
+> 
+>          fildes = open("tempfile", O_RDONLY);
+>          unlink("tempfile");
+> 
+>          addr = mmap(0, page_sz, PROT_EXEC, MAP_FILE | MAP_PRIVATE, fildes, 0);
+> 
+>          printf("%d\n", *addr);
+>          return 0;
+> }
+> ------------------------- >8 -----------------------------
 
---
-Thanks and Regards
-gautham.
+Thanks for the report. This is execute only key where vma has the 
+implied read permission. So The patch do break this case. I will see how 
+best we can handle  PROT_EXEC and the multi threaded test that required 
+the change in the patch.
+
+
+-aneesh
