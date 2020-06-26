@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B3720BB38
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:14:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D36020BB39
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:15:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tqPt2mzrzDr2c
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:14:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tqRt44d4zDqkd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:15:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=flex--brendanhiggins.bounces.google.com
- (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com;
- envelope-from=3bwt2xg4kakqfvirherlmkkmrwksskpi.gsq@flex--brendanhiggins.bounces.google.com;
+ (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com;
+ envelope-from=3b2t2xg4kakyhxktjgtnommotymuumrk.ius@flex--brendanhiggins.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=WgNUMXd3; dkim-atps=neutral
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com
- [IPv6:2607:f8b0:4864:20::104a])
+ header.s=20161025 header.b=IYUk8Yqg; dkim-atps=neutral
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com
+ [IPv6:2607:f8b0:4864:20::549])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tqJW2C50zDr0p
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:09:28 +1000 (AEST)
-Received: by mail-pj1-x104a.google.com with SMTP id co8so7937173pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:09:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tqJX6v1lzDr0p
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:09:29 +1000 (AEST)
+Received: by mail-pg1-x549.google.com with SMTP id o34so7445069pgm.18
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:09:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=J3ivtuBCWWA6WF3YNE0hm8BpVh0hgAMk0icQw8PVzV4=;
- b=WgNUMXd3dwHqJrIjWBq++Q/Kq0iip5LEa8AI7ViQMO4xCI++syC/ViOkIloaOcHBde
- m/Hql1FmK7XKs8F2kR0tHTAMFWHmTmRKIUuCQqkFM0JarAdI3BykpLTyJ7b8s6h2hLdD
- 0qvYcqxCRm4XHMZnbIVv2mhVLC5jzqyzhDx1V5HzmG2WhGvdg13+1M0zkPlFZygPiX/x
- Mi+72a5chn6PjfdIaIcfOo8z0FUQPXMZUMwWWJyL4j+V4gSmYgMmBa99IuMRhURzFZkY
- CwNCkLlDhc4eW1rRjuEcrALlfILFa5AJqhQgkDoPV9GRFEpqNtzVD+KRztuFQ7mB+paG
- ULtA==
+ :cc; bh=9cJ18y40uUPYFZL7TN4SHcIdjwmkZDveAIhoXIvPo38=;
+ b=IYUk8YqgZgCYajUvAr7+TZpYM4MMks4ME5jJR4NVadGy4ZU8CwXELvDm9bauUFB3L6
+ MUcT96gdSqW5+5z/avFny8BX08RC9p8Y5njsdOPASFhovoAmh4OpguPdJDLxPdDlL8wH
+ sp8gBQ6KdTpddWyZpEu6zGrsSRpgYbXbK7x4cCxZRVANzDO3EjonaRvSwY1PXJroQJmj
+ 8ohKF8v+doy8LmpsmkdBSyq0EG3AEnmmfRs0Rb2q8rpSFPq3YC+AUHyHeWkgoGopcbJn
+ nBDwB0rz8Ui93SdomCLrCW+Ku6Fjn0SFklLb+6i/vy36pSSNMv/TbI0f696FLOb/W9s8
+ ZqGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:in-reply-to:message-id:mime-version
  :references:subject:from:to:cc;
- bh=J3ivtuBCWWA6WF3YNE0hm8BpVh0hgAMk0icQw8PVzV4=;
- b=Qn4nREzejH2GzodSErukHhV71h6NECZ+Q62mmyVCj+zjrgZIBlfRABI3xRYn2axKA+
- ouRNhPCINZ/KDxpCxYy04Mts61gl+GWwAwKGDR6srik8OivOCYev4bqN6GgOud6usg1r
- HCkH9dh+qKAMVG4V5eThHcuEdDFfCF87TvFTBz3587VuS2OJTMf/O0KGOeHeyJywEyEN
- ifva3/EuRzc9UlLAMtTUH80ix4GP9zjZ34fb07eyum8pLgjA5KyM/cZHQQZGOEG8SMcw
- lLBGb8F8tNAIXeagFeEE7S4qDpMbKQU+DmK3Y2md84iXmSA1krgZm/zPxhnh6PqJl112
- B0yw==
-X-Gm-Message-State: AOAM532Mb0HoUkf18RP5InSQZ/8Sm4iPbZjcUSWYhhfZgNMhiIaIOc2q
- mo2zxZJLCzNd2u6T1x+lvmu1Z31hb1eMppz+mahSgg==
-X-Google-Smtp-Source: ABdhPJyRryMOngRXWyo7Nk/HIoliWNzQOxasqOnm+O4DR7qeWVrVfGv1DfbeY3UB3YlKBNPdNWdcLph4S1CMJBqyAX4wRA==
-X-Received: by 2002:a17:90a:2a04:: with SMTP id
- i4mr5431363pjd.91.1593205765384; 
- Fri, 26 Jun 2020 14:09:25 -0700 (PDT)
-Date: Fri, 26 Jun 2020 14:09:06 -0700
+ bh=9cJ18y40uUPYFZL7TN4SHcIdjwmkZDveAIhoXIvPo38=;
+ b=PBMARAqq0jWHli/+MAyCd8NPm/FVxbWJAC9PCTEtSYXSzLz+ySvVxpTYl14fFskq25
+ 3SS6i7y+r6nEy5KqCAZuGgzJm2hUPIucynn4P3BnxOnemsKQARTyLocBKOUVSUmkXm/6
+ 9e1ei86IRHcTJpB7GKhAHUPxzX0+gftKrKIt+4vr3CKpE8SQBW1Ln/g/fbyjVf8I+tbw
+ RjsE7YWuN90lbRAPt/nkTSXbn8tNP00WPvCi8o72Y6wBOV2dZ7gIDmkIFwZpq7MUO2M1
+ 36GvTEr8y5FMH4F46Dfvxz2zBSnDO2+QCO8trxRiv5gPVaJL17hlOKkqeQ4UFbAsjHHP
+ lQJA==
+X-Gm-Message-State: AOAM532z9Jt/HR1ntl0O2Z10L6vVLIh4FAG3jNr62Mo+fVaxsf/4Xh09
+ HZH/6flwILnLdpH50jIpBIJCy3PtVuPHa3JqPavHBg==
+X-Google-Smtp-Source: ABdhPJzjvOtIhOG1aOdqb6LPRxa8gBDRx7iYFD1jkF8voJyCoykf8S53mwqKxZn9IwZNUt+dngOweMijabbbSnkBKS6K4A==
+X-Received: by 2002:a17:90a:70c6:: with SMTP id
+ a6mr5043991pjm.16.1593205767469; 
+ Fri, 26 Jun 2020 14:09:27 -0700 (PDT)
+Date: Fri, 26 Jun 2020 14:09:07 -0700
 In-Reply-To: <20200626210917.358969-1-brendanhiggins@google.com>
-Message-Id: <20200626210917.358969-2-brendanhiggins@google.com>
+Message-Id: <20200626210917.358969-3-brendanhiggins@google.com>
 Mime-Version: 1.0
 References: <20200626210917.358969-1-brendanhiggins@google.com>
 X-Mailer: git-send-email 2.27.0.212.ge8ba1cc988-goog
-Subject: [PATCH v5 01/12] vmlinux.lds.h: add linker section for KUnit test
- suites
+Subject: [PATCH v5 02/12] arch: arm64: add linker section for KUnit test suites
 From: Brendan Higgins <brendanhiggins@google.com>
 To: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com, 
  arnd@arndb.de, keescook@chromium.org, skhan@linuxfoundation.org, 
@@ -92,45 +91,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a linker section where KUnit can put references to its test suites.
-This patch is the first step in transitioning to dispatching all KUnit
-tests from a centralized executor rather than having each as its own
-separate late_initcall.
+Add a linker section to arm64 where KUnit can put references to its test
+suites. This patch is an early step in transitioning to dispatching all
+KUnit tests from a centralized executor rather than having each as its
+own separate late_initcall.
 
-Co-developed-by: Iurii Zaikin <yzaikin@google.com>
-Signed-off-by: Iurii Zaikin <yzaikin@google.com>
 Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 ---
- include/asm-generic/vmlinux.lds.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/kernel/vmlinux.lds.S | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index db600ef218d7d..4f9b036fc9616 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -881,6 +881,13 @@
- 		KEEP(*(.con_initcall.init))				\
- 		__con_initcall_end = .;
- 
-+/* Alignment must be consistent with (kunit_suite *) in include/kunit/test.h */
-+#define KUNIT_TEST_SUITES						\
-+		. = ALIGN(8);						\
-+		__kunit_suites_start = .;				\
-+		KEEP(*(.kunit_test_suites))				\
-+		__kunit_suites_end = .;
-+
- #ifdef CONFIG_BLK_DEV_INITRD
- #define INIT_RAM_FS							\
- 	. = ALIGN(4);							\
-@@ -1056,6 +1063,7 @@
- 		INIT_CALLS						\
- 		CON_INITCALL						\
- 		INIT_RAM_FS						\
-+		KUNIT_TEST_SUITES					\
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index 6827da7f3aa54..a1cae9cc655d7 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -181,6 +181,9 @@ SECTIONS
+ 		INIT_RAM_FS
+ 		*(.init.rodata.* .init.bss)	/* from the EFI stub */
  	}
- 
- #define BSS_SECTION(sbss_align, bss_align, stop_align)			\
++	.kunit_test_suites : {
++		KUNIT_TEST_SUITES
++	}
+ 	.exit.data : {
+ 		EXIT_DATA
+ 	}
 -- 
 2.27.0.212.ge8ba1cc988-goog
 
