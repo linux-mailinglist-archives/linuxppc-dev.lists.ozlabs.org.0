@@ -2,65 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B5620BB3E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB09A20BB47
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:20:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tqVX4DSLzDql2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:18:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tqXm14TxzDqm9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:20:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=flex--brendanhiggins.bounces.google.com
- (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com;
- envelope-from=3cwt2xg4kakgjzmvlivpqooqvaowwotm.kwu@flex--brendanhiggins.bounces.google.com;
+ (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com;
+ envelope-from=3c2t2xg4kakolboxnkxrsqqsxcqyyqvo.myw@flex--brendanhiggins.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=jebeIARZ; dkim-atps=neutral
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com
- [IPv6:2607:f8b0:4864:20::54a])
+ header.s=20161025 header.b=u6J8VuAH; dkim-atps=neutral
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com
+ [IPv6:2607:f8b0:4864:20::b49])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tqJd4dr0zDr1S
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:09:31 +1000 (AEST)
-Received: by mail-pg1-x54a.google.com with SMTP id x184so7448568pgb.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:09:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tqJh4HKXzDr1D
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:09:34 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id k127so6665849ybk.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:09:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=hiFp+uoptqOZ2rqi90LxI+MqGbDbXrg3yHQVzKDmQQ4=;
- b=jebeIARZ4MbpC/qohszlae0SxIiUjfS+aHdsgRsyl+nDoZ13dCApmFMyUJeVDOsHAY
- KIcGcHJ+1BS4bpjJljRbXhZa/cLiJQCxIz3INsZbN4Us+V8lP8TK5psKf814t/EGk6wE
- pXdYgr4IlD1bc5vMRTxWpR8bW/X9rqzObf6oG1rnxRKPcgwcVlXdkP64PXWb7NSXT5a6
- NEtpZlVx+hSr8lknL1TKy8c7BgSEPoFVGkkI3sTvx7LhXrKgu9GToCMGaLH+nZo8xo8H
- YHmDwLXC56KXjbSBDnypaQ9i4502TKmtFeLoqT6X6hTKa14dhV4gfc4ThT1/79Jdq8SS
- 8zLQ==
+ :cc; bh=0vYZtvNiMw5LFIFKa+iHi1yqO9mFLTJ7LRF4fjft6YQ=;
+ b=u6J8VuAHahXAYfZui4sfoaT0dsrVB0g/njRZ5MIakf/7bSZWFoZur8+vHZjZIgvkyd
+ rsiis3HuL4AzSgVfpTFGOsNv9/7tHGdL61VbY11KBuBRNquuaThfognGBSG6XDHhjVrh
+ liuTo+mvfU3D58KkhDomQtYXookl7U6ajEKfETHE1nWaRN0/gzOUI4z4bMwjPWQ6R2G4
+ zVR7MS6jsimbRTLQK965Ww+Cp//ng+4aqqoiGzs9geOb61x+qHK6AUxwcP2HuU1S8dLP
+ OEv3lAQzqQIPWit38K3OJmKJ+ONf/s2+d2jSKX83GtbI8ZYL+/awT6qOEcyz2uNC8LpH
+ kbaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:in-reply-to:message-id:mime-version
  :references:subject:from:to:cc;
- bh=hiFp+uoptqOZ2rqi90LxI+MqGbDbXrg3yHQVzKDmQQ4=;
- b=LcypTj6nLdLMAmgSTY7whaO9EL4KYa8nn7es0SVQgP1wp1RM9X03Mn7fkoCJ+VKPXI
- 1bifFU54dVfTaGN1SNOXx1kLXp0h7tpJM/vfiJ52302KD03KfMVofz68xdRc1tmBtqq9
- SbCNxTNC31s1rsKvAuzKGgJZRvLFLX5H1xI2ZPPTSUnxYNVywesOKlLAjqFaiGsoxiQ6
- pTpMXPWyePjR3d+zC1xVTP1n9crNX1o2mhpbteF4e39Q5X0KVDeWeLikTBCuglxWHxaH
- P/iuxmpiQ2F54TMGurRv350rECEIdHmPmI/jB7I4Fo/9BXqA/iSVLNSKwdNXhjPye7y2
- kmfw==
-X-Gm-Message-State: AOAM533EBMYLrwbd4+AW0FMWOKQ7TQ8h6zQyPqh3D/fbPHBjFt2ouW3D
- wt0c1V5Ox+Yxd8NCI5bW51R2IX5DMM4QxoiPmLE9OA==
-X-Google-Smtp-Source: ABdhPJxSwQ68iEnNXkgolra98q2cg2bDfdpdwE62xg8GhSSGsb9iaN0w7iVXuEbw7sVWlA1D/tARVHhauyHs3D3fWH+8JQ==
-X-Received: by 2002:a17:90a:f206:: with SMTP id
- bs6mr5554851pjb.48.1593205769580; 
- Fri, 26 Jun 2020 14:09:29 -0700 (PDT)
-Date: Fri, 26 Jun 2020 14:09:08 -0700
+ bh=0vYZtvNiMw5LFIFKa+iHi1yqO9mFLTJ7LRF4fjft6YQ=;
+ b=VnkF3RFWk5qcbe4BeJYpbgFwFA9qoCLIMU5/96/8Y/H2D+G0FefS5Bt4VdWdQ7m8fr
+ E8LRkgwTHwmNeMCOeCJ4d7g98pV+FLJIWf7CkftVhwNtE/JoBNZ50RuwyQhKBp9ThG6p
+ kVxKPLpMQZ8kcIWcnZueLjrm2S0h4HXRktJVHkLfANcnPkrGxZf4ut6UkdohescE9Tv0
+ c4xqjq+s5eHRhcBMDkN3G9pkhpa9pzfuawJPl+ttIE0wL7hqEDK/jk7mVsTEniSbCagd
+ aOzclubEvGdPx5S/m9XsrV3D8oORs4DZV2ekV6PdH6sV55jFi84xKMHCW1uydv5PEVb2
+ wjMQ==
+X-Gm-Message-State: AOAM532of4NE5evWFPMsDQ5GDNDjOjZKIass5KqY9PdiGXce7iiFmS2w
+ Y2IbgXLPW/KNnXI7k96DJcNzML4m97ue3YlCHtcvzw==
+X-Google-Smtp-Source: ABdhPJx4P+f9DA00o4x+xqsn5YNYZSrsnifEZc+MXGWM1Q+GQ6+KAVyhHfpoUwDaYub8VfOW5n9UfKxOSH6ZQNhne0KQ9w==
+X-Received: by 2002:a25:99c8:: with SMTP id q8mr7798153ybo.3.1593205771432;
+ Fri, 26 Jun 2020 14:09:31 -0700 (PDT)
+Date: Fri, 26 Jun 2020 14:09:09 -0700
 In-Reply-To: <20200626210917.358969-1-brendanhiggins@google.com>
-Message-Id: <20200626210917.358969-4-brendanhiggins@google.com>
+Message-Id: <20200626210917.358969-5-brendanhiggins@google.com>
 Mime-Version: 1.0
 References: <20200626210917.358969-1-brendanhiggins@google.com>
 X-Mailer: git-send-email 2.27.0.212.ge8ba1cc988-goog
-Subject: [PATCH v5 03/12] arch: microblaze: add linker section for KUnit test
+Subject: [PATCH v5 04/12] arch: powerpc: add linker section for KUnit test
  suites
 From: Brendan Higgins <brendanhiggins@google.com>
 To: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com, 
@@ -92,31 +91,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a linker section to microblaze where KUnit can put references to its
-test suites. This patch is an early step in transitioning to dispatching
-all KUnit tests from a centralized executor rather than having each as
-its own separate late_initcall.
+Add a linker section to powerpc where KUnit can put references to its test
+suites. This patch is an early step in transitioning to dispatching all
+KUnit tests from a centralized executor rather than having each as its
+own separate late_initcall.
 
 Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
 ---
- arch/microblaze/kernel/vmlinux.lds.S | 4 ++++
+ arch/powerpc/kernel/vmlinux.lds.S | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/arch/microblaze/kernel/vmlinux.lds.S b/arch/microblaze/kernel/vmlinux.lds.S
-index df07b3d06cd6b..4fc32f8979a60 100644
---- a/arch/microblaze/kernel/vmlinux.lds.S
-+++ b/arch/microblaze/kernel/vmlinux.lds.S
-@@ -128,6 +128,10 @@ SECTIONS {
- 
- 	__init_end = .;
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 326e113d2e456..0cc97dbfde0ad 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -202,6 +202,10 @@ SECTIONS
+ 		CON_INITCALL
+ 	}
  
 +	.kunit_test_suites : {
 +		KUNIT_TEST_SUITES
 +	}
 +
- 	.bss ALIGN (PAGE_SIZE) : AT(ADDR(.bss) - LOAD_OFFSET) {
- 		/* page aligned when MMU used */
- 		__bss_start = . ;
+ 	. = ALIGN(8);
+ 	__ftr_fixup : AT(ADDR(__ftr_fixup) - LOAD_OFFSET) {
+ 		__start___ftr_fixup = .;
 -- 
 2.27.0.212.ge8ba1cc988-goog
 
