@@ -2,54 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6049B20AD22
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 09:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6348A20AD83
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 09:47:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tT5n71KSzDqSv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 17:29:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tTW86xhqzDr0w
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 17:47:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.72.44; helo=9.mo173.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 9.mo173.mail-out.ovh.net (9.mo173.mail-out.ovh.net
- [46.105.72.44])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tT3b6fqfzDqv8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 17:27:07 +1000 (AEST)
-Received: from player734.ha.ovh.net (unknown [10.108.35.90])
- by mo173.mail-out.ovh.net (Postfix) with ESMTP id 71BC6143960
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 09:27:03 +0200 (CEST)
-Received: from kaod.org (lfbn-tou-1-921-245.w86-210.abo.wanadoo.fr
- [86.210.152.245]) (Authenticated sender: clg@kaod.org)
- by player734.ha.ovh.net (Postfix) with ESMTPSA id 4F79413A000E6;
- Fri, 26 Jun 2020 07:26:52 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass
- (GARM-95G0018ba46917-0696-40ce-8ee4-92facd6b3767,4AA08B4753365576F5C892DCFEC488B61DD07F5F)
- smtp.auth=clg@kaod.org
-Subject: Re: [PATCH] powerpc/pseries: Use doorbells even if XIVE is available
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200624134724.2343007-1-npiggin@gmail.com>
- <87r1u4aqzm.fsf@mpe.ellerman.id.au>
- <af42c250-cf4b-0815-c91c-9363445383e7@kaod.org>
-Message-ID: <d5aa6dea-0126-724d-2d1e-0726584a1dbd@kaod.org>
-Date: Fri, 26 Jun 2020 09:26:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tTTD47V7zDqws
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 17:45:52 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05Q7XZTI161988; Fri, 26 Jun 2020 03:45:47 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31ux04b7p3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 03:45:43 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05Q7dnSQ023977;
+ Fri, 26 Jun 2020 07:45:26 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02dal.us.ibm.com with ESMTP id 31uurtewu8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 07:45:26 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05Q7jNCZ7143812
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Jun 2020 07:45:23 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E5E86A04F;
+ Fri, 26 Jun 2020 07:45:25 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D94016A057;
+ Fri, 26 Jun 2020 07:45:24 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.79.217.126])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 26 Jun 2020 07:45:24 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 3B8122E4AB5; Fri, 26 Jun 2020 13:15:21 +0530 (IST)
+Date: Fri, 26 Jun 2020 13:15:21 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH v2 2/2] powerpc/hv-24x7: Add sysfs files inside hv-24x7
+ device to show cpumask
+Message-ID: <20200626074521.GA13159@in.ibm.com>
+References: <20200624101754.169612-1-kjain@linux.ibm.com>
+ <20200624101754.169612-3-kjain@linux.ibm.com>
+ <20200624105603.GD31972@in.ibm.com>
+ <a6a626e6-22eb-f1c2-4356-dfe1caf8db46@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <af42c250-cf4b-0815-c91c-9363445383e7@kaod.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 11765372554848930790
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudeltddguddulecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuhffvfhfkffgfgggjtgfgsehtjeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepheevheejjefhtedvueeghfeiffduleeijeehteeuvdfgheeikeevffeghfeviefhnecukfhppedtrddtrddtrddtpdekiedrvddutddrudehvddrvdegheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejfeegrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a6a626e6-22eb-f1c2-4356-dfe1caf8db46@linux.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-26_04:2020-06-26,
+ 2020-06-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015
+ lowpriorityscore=0 phishscore=0 impostorscore=0 cotscore=-2147483648
+ bulkscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006260054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,34 +90,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anton Blanchard <anton@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: nathanl@linux.ibm.com, ego@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com,
+ suka@us.ibm.com, anju@linux.vnet.ibm.com, Kajol Jain <kjain@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ ...  ]
-
->>> An option vector (or dt-cpu-ftrs) could be defined to disable msgsndp
->>> to get KVM performance back.
+On Wed, Jun 24, 2020 at 05:58:31PM +0530, Madhavan Srinivasan wrote:
 > 
-> An option vector would require a PAPR change. Unless the architecture 
-> reserves some bits for the implementation, but I don't think so. Same
-> for CAS.
 > 
->> Qemu/KVM populates /proc/device-tree/hypervisor, so we *could* look at
->> that. Though adding PowerVM/KVM specific hacks is obviously a very
->> slippery slope.
+> On 6/24/20 4:26 PM, Gautham R Shenoy wrote:
+> >Hi Kajol,
+> >
+> >On Wed, Jun 24, 2020 at 03:47:54PM +0530, Kajol Jain wrote:
+> >>Patch here adds a cpumask attr to hv_24x7 pmu along with ABI documentation.
+> >>
+> >>command:# cat /sys/devices/hv_24x7/cpumask
+> >>0
+> >Since this sysfs interface is read-only, and the user cannot change
+> >the CPU which will be making the HCALLs to obtain the 24x7 counts,
+> >does the user even need to know if currently CPU X is the one which is
+> >going to make HCALLs to retrive the 24x7 counts ? Does it help in any
+> >kind of trouble-shooting ?
+> Primary use to expose the cpumask is for the perf tool.
+> Which has the capability to parse the driver sysfs folder
+> and understand the cpumask file. Having cpumask
+> file will reduce the number of perf commandline
+> parameters (will avoid "-C" option in the perf tool
+> command line). I can also notify the user which is
+> the current cpu used to retrieve the counter data.
+
+Fair enough. Can we include this in the patch description ?
+
 > 
-> QEMU could advertise a property "emulated-msgsndp", or something similar, 
-> which would be interpreted by Linux as a CPU feature and taken into account 
-> when doing the IPIs.
+> >It would have made sense if the interface was read-write, since a user
+> >can set this to a CPU which is not running user applications. This
+> >would help in minimising jitter on those active CPUs running the user
+> >applications.
+> 
+> With cpumask backed by hotplug
+> notifiers, enabling user write access to it will
+> complicate the code with more additional check.
+> CPU will come to play only if the user request for
+> counter data. If not, then there will be no HCALLs made
+> using the CPU.
 
-This is really a PowerVM optimization. 
+Well, I was wondering if you could make the interface writable because
+I couldn't think of the use of a read-only interface. With the
+perf-use case you have provided, I guess it makes sense. I am ok with
+it being a read-only interface.
 
-> The CPU setup for XIVE needs a cleanup also. There is no need to allocate
-> interrupts for IPIs anymore in that case.
+> 
+> Maddy
 
-We need to keep these for the other cores. The XIVE layer is unchanged.
- 
-C. 
+--
+Thanks and Regards
+gautham.
