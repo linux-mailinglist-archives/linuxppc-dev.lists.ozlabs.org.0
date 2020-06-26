@@ -2,30 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C868D20AB7F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 06:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E7120AB82
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 06:52:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tPb02S2BzDqs6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 14:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tPd66SbjzDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 14:52:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tPTS4tjpzDqpC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:45:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tPTV2lZnzDqkK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:45:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49tPTS4P4lz9sSS; Fri, 26 Jun 2020 14:45:48 +1000 (AEST)
+ id 49tPTT4081z9sT8; Fri, 26 Jun 2020 14:45:49 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20200612043303.84894-1-aik@ozlabs.ru>
-References: <20200612043303.84894-1-aik@ozlabs.ru>
-Subject: Re: [PATCH kernel] powerpc/xive: Ignore kmemleak false positives
-Message-Id: <159314672639.1150869.12250930261017520195.b4-ty@ellerman.id.au>
-Date: Fri, 26 Jun 2020 14:45:48 +1000 (AEST)
+In-Reply-To: <20200617003835.48831-1-aik@ozlabs.ru>
+References: <20200617003835.48831-1-aik@ozlabs.ru>
+Subject: Re: [PATCH kernel v2] powerpc/powernv/ioda: Return correct error if
+ TCE level allocation failed
+Message-Id: <159314672700.1150869.1484657945979576951.b4-ty@ellerman.id.au>
+Date: Fri, 26 Jun 2020 14:45:49 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,24 +38,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 12 Jun 2020 14:33:03 +1000, Alexey Kardashevskiy wrote:
-> xive_native_provision_pages() allocates memory and passes the pointer to
-> OPAL so kmemleak cannot find the pointer usage in the kernel memory and
-> produces a false positive report (below) (even if the kernel did scan
-> OPAL memory, it is unable to deal with __pa() addresses anyway).
-> 
-> This silences the warning.
+On Wed, 17 Jun 2020 10:38:35 +1000, Alexey Kardashevskiy wrote:
+> The iommu_table_ops::xchg_no_kill() callback updates TCE. It is quite
+> possible that not entire table is allocated if it is huge and multilevel
+> so xchg may also allocate subtables. If failed, it returns H_HARDWARE
+> for failed allocation and H_TOO_HARD if it needs it but cannot do because
+> the alloc parameter is "false" (set when called with MMU=off to force
+> retry with MMU=on).
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/xive: Ignore kmemleak false positives
-      https://git.kernel.org/powerpc/c/f0993c839e95dd6c7f054a1015e693c87e33e4fb
+[1/1] powerpc/powernv/ioda: Return correct error if TCE level allocation failed
+      https://git.kernel.org/powerpc/c/5f202c1a1d429bee3ddab647711f181c72d157da
 
 cheers
