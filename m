@@ -2,45 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B962620AC64
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 08:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFD120ACAB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 09:00:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tRrH1r7rzDr1q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 16:32:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tSTM1VC5zDr0N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 17:00:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
- helo=fornost.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=jstancek@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gondor.apana.org.au
-Received: from fornost.hmeau.com (unknown [216.24.177.18])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tRpc2GvYzDqxX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 16:30:46 +1000 (AEST)
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
- by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
- id 1johrw-0004mR-T7; Fri, 26 Jun 2020 16:29:50 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation);
- Fri, 26 Jun 2020 16:29:48 +1000
-Date: Fri, 26 Jun 2020 16:29:48 +1000
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH] crypto: af_alg - Fix regression on empty requests
-Message-ID: <20200626062948.GA25285@gondor.apana.org.au>
-References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
- <20200622224920.GA4332@42.do-not-panic.com>
- <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
- <20200623064056.GA8121@gondor.apana.org.au>
- <20200623170217.GB150582@gmail.com>
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=LmAD1qyi; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=MDmsZXeR; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tSRh3TG8zDqxf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 16:59:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1593154761;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:  in-reply-to:in-reply-to; 
+ bh=aupLyG0sRMZZEEbarg6G9YjK+MT5+HL5pnYP2m3BwC4=;
+ b=LmAD1qyiYLfykN16Qk8aeUC+l6PfqXp8FSm0RTPdFxL1q1cEZWM78+nkj2G0yTMw7mdrML
+ 3zyqFgltNsRK4BaJGBJ1VIJ7B6NNNZfy7vTI0Rk1P4ZYE9NA+nV+vKx3uXyBcvlqRX85o3
+ kKC/HV2/JcTgErQD80Pcq7k1sWKv/X4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1593154762;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:  in-reply-to:in-reply-to; 
+ bh=aupLyG0sRMZZEEbarg6G9YjK+MT5+HL5pnYP2m3BwC4=;
+ b=MDmsZXeR2yt71oOifCUAGLXFyOTqAqfHiwhoFYaUkGdWOCSJ84T7NYPusQNUlJG8sccdAo
+ MIDAFnQmrGTKqjf1CJleQeO+lmpJq51dQarKgqNn01RslyoBKhh5gzKqta45QnswQOJvAS
+ MNEr05yXUbnqWTRP7LlVqy7D5iRke3M=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-174-CUUYw9UgMX6cwByuz4rMlg-1; Fri, 26 Jun 2020 02:59:17 -0400
+X-MC-Unique: CUUYw9UgMX6cwByuz4rMlg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4D769804003;
+ Fri, 26 Jun 2020 06:59:16 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3D73511CC28;
+ Fri, 26 Jun 2020 06:59:16 +0000 (UTC)
+Received: from zmail17.collab.prod.int.phx2.redhat.com
+ (zmail17.collab.prod.int.phx2.redhat.com [10.5.83.19])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id 1C8B618095FF;
+ Fri, 26 Jun 2020 06:59:15 +0000 (UTC)
+Date: Fri, 26 Jun 2020 02:59:15 -0400 (EDT)
+From: Jan Stancek <jstancek@redhat.com>
+To: linuxppc-dev@lists.ozlabs.org, aneesh.kumar@linux.ibm.com, 
+ sandipan@linux.ibm.com
+Message-ID: <2065283975.18780128.1593154755849.JavaMail.zimbra@redhat.com>
+In-Reply-To: <1402271372.18777802.1593153800272.JavaMail.zimbra@redhat.com>
+Subject: [bug] LTP mmap03 stuck in page fault loop after c46241a370a6
+ ("powerpc/pkeys: Check vma before returning key fault error to the user")
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200623170217.GB150582@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Originating-IP: [10.43.17.25, 10.4.195.19]
+Thread-Topic: LTP mmap03 stuck in page fault loop after c46241a370a6
+ ("powerpc/pkeys: Check vma before returning key fault error to the user")
+Thread-Index: uuN6Cg7MxKIh0nCENVpG+jh8K37ajQ==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,144 +92,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- Luis Chamberlain <mcgrof@kernel.org>, lkft-triage@lists.linaro.org,
- open list <linux-kernel@vger.kernel.org>, David Howells <dhowells@redhat.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
- linux-crypto@vger.kernel.org, chrubis <chrubis@suse.cz>,
- James Morris <jmorris@namei.org>, linuxppc-dev@lists.ozlabs.org,
- Jan Stancek <jstancek@redhat.com>, LTP List <ltp@lists.linux.it>,
- "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Rachel Sibley <rasibley@redhat.com>, Jan Stancek <jstancek@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 23, 2020 at 10:02:17AM -0700, Eric Biggers wrote:
->
-> The source code for the two failing AF_ALG tests is here:
-> 
-> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg02.c
-> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg05.c
-> 
-> They use read() and write(), not send() and recv().
-> 
-> af_alg02 uses read() to read from a "salsa20" request socket without writing
-> anything to it.  It is expected that this returns 0, i.e. that behaves like
-> encrypting an empty message.
-> 
-> af_alg05 uses write() to write 15 bytes to a "cbc(aes-generic)" request socket,
-> then read() to read 15 bytes.  It is expected that this fails with EINVAL, since
-> the length is not aligned to the AES block size (16 bytes).
+Hi,
 
-This patch should fix the regression:
+LTP mmap03 is getting stuck in page fault loop after commit
+  c46241a370a6 ("powerpc/pkeys: Check vma before returning key fault error to the user")
 
----8<---
-Some user-space programs rely on crypto requests that have no
-control metadata.  This broke when a check was added to require
-the presence of control metadata with the ctx->init flag.
+System is ppc64le P9 lpar [1] running v5.8-rc2-34-g3e08a95294a4.
 
-This patch fixes the regression by removing the ctx->init flag.
+Here's a minimized reproducer:
+------------------------- 8< -----------------------------
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/mman.h>
 
-This means that we do not distinguish the case of no metadata
-as opposed to an empty request.  IOW it is always assumed that
-if you call recv(2) before sending metadata that you are working
-with an empty request.
+int main(int ac, char **av)
+{
+        int page_sz = getpagesize();
+        int fildes;
+        char *addr;
 
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: f3c802a1f300 ("crypto: algif_aead - Only wake up when...")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+        fildes = open("tempfile", O_WRONLY | O_CREAT, 0666);
+        write(fildes, &fildes, sizeof(fildes));
+        close(fildes);
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 9fcb91ea10c4..2d391117c020 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -635,7 +635,6 @@ void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
- 
- 	if (!ctx->used)
- 		ctx->merge = 0;
--	ctx->init = ctx->more;
- }
- EXPORT_SYMBOL_GPL(af_alg_pull_tsgl);
- 
-@@ -757,8 +756,7 @@ int af_alg_wait_for_data(struct sock *sk, unsigned flags, unsigned min)
- 			break;
- 		timeout = MAX_SCHEDULE_TIMEOUT;
- 		if (sk_wait_event(sk, &timeout,
--				  ctx->init && (!ctx->more ||
--						(min && ctx->used >= min)),
-+				  !ctx->more || (min && ctx->used >= min),
- 				  &wait)) {
- 			err = 0;
- 			break;
-@@ -847,7 +845,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	}
- 
- 	lock_sock(sk);
--	if (ctx->init && (init || !ctx->more)) {
-+	if (!ctx->more && ctx->used) {
- 		err = -EINVAL;
- 		goto unlock;
- 	}
-@@ -858,7 +856,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 			memcpy(ctx->iv, con.iv->iv, ivsize);
- 
- 		ctx->aead_assoclen = con.aead_assoclen;
--		ctx->init = true;
- 	}
- 
- 	while (size) {
-diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
-index d48d2156e621..749fe42315be 100644
---- a/crypto/algif_aead.c
-+++ b/crypto/algif_aead.c
-@@ -106,7 +106,7 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
- 	size_t usedpages = 0;		/* [in]  RX bufs to be used from user */
- 	size_t processed = 0;		/* [in]  TX bufs to be consumed */
- 
--	if (!ctx->init || ctx->more) {
-+	if (ctx->more) {
- 		err = af_alg_wait_for_data(sk, flags, 0);
- 		if (err)
- 			return err;
-diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
-index a51ba22fef58..5b6fa5e8c00d 100644
---- a/crypto/algif_skcipher.c
-+++ b/crypto/algif_skcipher.c
-@@ -61,7 +61,7 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
- 	int err = 0;
- 	size_t len = 0;
- 
--	if (!ctx->init || (ctx->more && ctx->used < bs)) {
-+	if (ctx->more && ctx->used < bs) {
- 		err = af_alg_wait_for_data(sk, flags, bs);
- 		if (err)
- 			return err;
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index ee6412314f8f..08c087cc89d6 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -135,7 +135,6 @@ struct af_alg_async_req {
-  *			SG?
-  * @enc:		Cryptographic operation to be performed when
-  *			recvmsg is invoked.
-- * @init:		True if metadata has been sent.
-  * @len:		Length of memory allocated for this data structure.
-  */
- struct af_alg_ctx {
-@@ -152,7 +151,6 @@ struct af_alg_ctx {
- 	bool more;
- 	bool merge;
- 	bool enc;
--	bool init;
- 
- 	unsigned int len;
- };
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+        fildes = open("tempfile", O_RDONLY);
+        unlink("tempfile");
+
+        addr = mmap(0, page_sz, PROT_EXEC, MAP_FILE | MAP_PRIVATE, fildes, 0);
+
+        printf("%d\n", *addr);
+        return 0;
+}
+------------------------- >8 -----------------------------
+
+This would previously end quickly with segmentation fault, after
+commit c46241a370a6 test is stuck:
+
+# perf stat timeout 5 ./a.out
+
+ Performance counter stats for 'timeout 5 ./a.out':
+
+          5,001.74 msec task-clock                #    1.000 CPUs utilized
+                 9      context-switches          #    0.002 K/sec
+                 0      cpu-migrations            #    0.000 K/sec
+         3,094,893      page-faults               #    0.619 M/sec
+    18,940,869,512      cycles                    #    3.787 GHz                      (33.39%)
+     1,377,005,087      stalled-cycles-frontend   #    7.27% frontend cycles idle     (50.19%)
+    10,949,936,056      stalled-cycles-backend    #   57.81% backend cycles idle      (16.62%)
+    21,133,828,748      instructions              #    1.12  insn per cycle
+                                                  #    0.52  stalled cycles per insn  (33.22%)
+     4,395,016,137      branches                  #  878.698 M/sec                    (49.81%)
+       164,499,002      branch-misses             #    3.74% of all branches          (16.60%)
+
+       5.001237248 seconds time elapsed
+
+       0.321276000 seconds user
+       4.680772000 seconds sys
+
+
+access_pkey_error() in page fault handler now always seem to return false:
+
+  __do_page_fault
+    access_pkey_error(is_pkey: 1, is_exec: 0, is_write: 0)
+      arch_vma_access_permitted
+        pkey_access_permitted
+          if (!is_pkey_enabled(pkey))
+            return true
+      return false
+
+Regards,
+Jan
+
+[1]
+Architecture:                    ppc64le
+Byte Order:                      Little Endian
+CPU(s):                          8
+On-line CPU(s) list:             0-7
+Thread(s) per core:              8
+Core(s) per socket:              1
+Socket(s):                       1
+NUMA node(s):                    2
+Model:                           2.2 (pvr 004e 0202)
+Model name:                      POWER9 (architected), altivec supported
+Hypervisor vendor:               pHyp
+Virtualization type:             para
+L1d cache:                       32 KiB
+L1i cache:                       32 KiB
+NUMA node0 CPU(s):
+NUMA node1 CPU(s):               0-7
+Physical sockets:                2
+Physical chips:                  1
+Physical cores/chip:             8
+Vulnerability Itlb multihit:     Not affected
+Vulnerability L1tf:              Mitigation; RFI Flush, L1D private per thread
+Vulnerability Mds:               Not affected
+Vulnerability Meltdown:          Mitigation; RFI Flush, L1D private per thread
+Vulnerability Spec store bypass: Mitigation; Kernel entry/exit barrier (eieio)
+Vulnerability Spectre v1:        Mitigation; __user pointer sanitization, ori31 speculation barrier enabled
+Vulnerability Spectre v2:        Mitigation; Indirect branch cache disabled, Software link stack flush
+Vulnerability Srbds:             Not affected
+Vulnerability Tsx async abort:   Not affected
+
