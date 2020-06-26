@@ -2,84 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBAD20ADCB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 10:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F30B520AE3F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 10:11:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tTts6dPmzDr31
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 18:04:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tV2z2h8MzDqZQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 18:11:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::343;
+ helo=mail-wm1-x343.google.com; envelope-from=qperret@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=UrQ53aSA; dkim-atps=neutral
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tTs32xL5zDqx0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 18:03:03 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05Q82oEE052172; Fri, 26 Jun 2020 04:02:58 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ux04bp9t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 04:02:56 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05Q80Knp015187;
- Fri, 26 Jun 2020 08:02:42 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma04wdc.us.ibm.com with ESMTP id 31uuryjeys-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jun 2020 08:02:42 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05Q82dkN5702186
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Jun 2020 08:02:39 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CFDE1BE053;
- Fri, 26 Jun 2020 08:02:40 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1422FBE04F;
- Fri, 26 Jun 2020 08:02:37 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.52.29])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 26 Jun 2020 08:02:37 +0000 (GMT)
-Subject: Re: [PATCH v2 2/2] powerpc/hv-24x7: Add sysfs files inside hv-24x7
- device to show cpumask
-To: ego@linux.vnet.ibm.com, Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <20200624101754.169612-1-kjain@linux.ibm.com>
- <20200624101754.169612-3-kjain@linux.ibm.com>
- <20200624105603.GD31972@in.ibm.com>
- <a6a626e6-22eb-f1c2-4356-dfe1caf8db46@linux.ibm.com>
- <20200626074521.GA13159@in.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <6bc35fd9-33b8-0588-d645-02a59b589d04@linux.ibm.com>
-Date: Fri, 26 Jun 2020 13:32:36 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tV0Y0shyzDqZQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 18:09:32 +1000 (AEST)
+Received: by mail-wm1-x343.google.com with SMTP id q15so7955256wmj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 01:09:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=rbLxPkU5zn6HuEV/rtbUuP7BkhVC3DU9UZS2cCgUUqs=;
+ b=UrQ53aSAoNkLtJVEW6BDnSQ+6v0IYcarF2DEe3WeSNTvG7qhv/sVQjRNLftA1/WvTd
+ rNga5sYIc0HtDHBmVny1DPoauZqqRn8iO8KpontGuzATd0MHdoAWU2xr9Xj1OdEZFShN
+ YDyZbpxLiDck3HTKArsqvk3lNFCR9A3pAYLmA6qSCdm8CfqftPGBgmrcX9TEKwjrXI2N
+ 5hHn8+dFFTpVRNncH7Cjn1dfaEH2KxtiaeXc3itC4vpSwRpS8lfJSsx5i4+AdUM9twU8
+ 4t6q0s/b2Yh5yiyi4k3UnlXnyjPddkjPNH2OvXBekElzPhoJferFRvZJdJjRxutlfkZL
+ jeZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=rbLxPkU5zn6HuEV/rtbUuP7BkhVC3DU9UZS2cCgUUqs=;
+ b=dcnikZUjs6vMGZVHW2A6p5d6q4bbEo2Y/1YD2la3yQAIn4mFzFA26Hjhd1EEKueR/r
+ ciUlELwnlbf4WFNkiDTu7etVgIjKe+xutpI3x8f562aOF5Vn9YL3RD1IGLParhEN8yu7
+ +W14wqAS+Rhx/gnRUMXzUCzwN6KbPGWy9UQuMFNpbla+RfQLuKoylCW8wXCjmq52HmHo
+ A6kL9y+QmVKCnrXoJNl5u33Rag3tulOwgFT40j1fCSeupqwdnwxVWnhQ4dKnxnNw2++6
+ 3JbquV2uEZyIYyrF08pgp4WYrKoBYm02qvtocVkEZ2MsFPyglqiWiBD3J6g/Zujn75Qh
+ 6HXQ==
+X-Gm-Message-State: AOAM530l5t92cdPJDMQv3YqRDvVaP84Gb9ZhaKvk6dYbaFHyBSEUlnPP
+ VspGQvLOG94FGm69QOECGMZ3NA==
+X-Google-Smtp-Source: ABdhPJx1PfO/ReemODrB6fHZaYmkTV/XN0aLHdRmjz7wS+SEB2F1Yigl4vidu1EkS+IX0ywuZs+W1w==
+X-Received: by 2002:a1c:ed17:: with SMTP id l23mr2196788wmh.73.1593158968078; 
+ Fri, 26 Jun 2020 01:09:28 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
+ by smtp.gmail.com with ESMTPSA id d2sm35925710wrs.95.2020.06.26.01.09.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Jun 2020 01:09:27 -0700 (PDT)
+Date: Fri, 26 Jun 2020 09:09:24 +0100
+From: Quentin Perret <qperret@google.com>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [PATCH v2 2/2] cpufreq: Specify default governor on command line
+Message-ID: <20200626080924.GA281178@google.com>
+References: <20200623142138.209513-1-qperret@google.com>
+ <20200623142138.209513-3-qperret@google.com>
+ <20200626025346.z3g3ikdcin56gjlo@vireshk-i7>
 MIME-Version: 1.0
-In-Reply-To: <20200626074521.GA13159@in.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-26_04:2020-06-26,
- 2020-06-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 impostorscore=0 cotscore=-2147483648
- bulkscore=0 adultscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006260058
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200626025346.z3g3ikdcin56gjlo@vireshk-i7>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,69 +80,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, maddy@linux.vnet.ibm.com, suka@us.ibm.com,
- anju@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, kernel-team@android.com, vincent.guittot@linaro.org,
+ arnd@arndb.de, rafael@kernel.org, peterz@infradead.org,
+ adharmap@codeaurora.org, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, tkjos@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Friday 26 Jun 2020 at 08:23:46 (+0530), Viresh Kumar wrote:
+> On 23-06-20, 15:21, Quentin Perret wrote:
+> > @@ -2789,7 +2796,13 @@ static int __init cpufreq_core_init(void)
+> >  	cpufreq_global_kobject = kobject_create_and_add("cpufreq", &cpu_subsys.dev_root->kobj);
+> >  	BUG_ON(!cpufreq_global_kobject);
+> >  
+> > +	mutex_lock(&cpufreq_governor_mutex);
+> > +	if (!default_governor)
+> 
+> Also is this check really required ? The pointer will always be NULL
+> at this point, isn't it ?
 
+Not necessarily in this implementation -- the governors are registered
+at core_initcall time too, so I don't think we can assume any ordering
+there.
 
-On 6/26/20 1:15 PM, Gautham R Shenoy wrote:
-> On Wed, Jun 24, 2020 at 05:58:31PM +0530, Madhavan Srinivasan wrote:
->>
->>
->> On 6/24/20 4:26 PM, Gautham R Shenoy wrote:
->>> Hi Kajol,
->>>
->>> On Wed, Jun 24, 2020 at 03:47:54PM +0530, Kajol Jain wrote:
->>>> Patch here adds a cpumask attr to hv_24x7 pmu along with ABI documentation.
->>>>
->>>> command:# cat /sys/devices/hv_24x7/cpumask
->>>> 0
->>> Since this sysfs interface is read-only, and the user cannot change
->>> the CPU which will be making the HCALLs to obtain the 24x7 counts,
->>> does the user even need to know if currently CPU X is the one which is
->>> going to make HCALLs to retrive the 24x7 counts ? Does it help in any
->>> kind of trouble-shooting ?
->> Primary use to expose the cpumask is for the perf tool.
->> Which has the capability to parse the driver sysfs folder
->> and understand the cpumask file. Having cpumask
->> file will reduce the number of perf commandline
->> parameters (will avoid "-C" option in the perf tool
->> command line). I can also notify the user which is
->> the current cpu used to retrieve the counter data.
-> 
-> Fair enough. Can we include this in the patch description ?
+But it looks like your new version has fixed that by design, so I'll go
+look at it some more, and try it out.
 
-Sure will update in next version of patchset.
-
-Thanks,
-Kajol Jain
-
+Thanks for the help!
+Quentin
 > 
->>
->>> It would have made sense if the interface was read-write, since a user
->>> can set this to a CPU which is not running user applications. This
->>> would help in minimising jitter on those active CPUs running the user
->>> applications.
->>
->> With cpumask backed by hotplug
->> notifiers, enabling user write access to it will
->> complicate the code with more additional check.
->> CPU will come to play only if the user request for
->> counter data. If not, then there will be no HCALLs made
->> using the CPU.
+> > +		default_governor = cpufreq_default_governor();
+> > +	mutex_unlock(&cpufreq_governor_mutex);
+> > +
+> >  	return 0;
+> >  }
+> >  module_param(off, int, 0444);
+> > +module_param_string(default_governor, cpufreq_param_governor, CPUFREQ_NAME_LEN, 0444);
+> >  core_initcall(cpufreq_core_init);
+> > -- 
+> > 2.27.0.111.gc72c7da667-goog
 > 
-> Well, I was wondering if you could make the interface writable because
-> I couldn't think of the use of a read-only interface. With the
-> perf-use case you have provided, I guess it makes sense. I am ok with
-> it being a read-only interface.
-> 
->>
->> Maddy
-> 
-> --
-> Thanks and Regards
-> gautham.
-> 
+> -- 
+> viresh
