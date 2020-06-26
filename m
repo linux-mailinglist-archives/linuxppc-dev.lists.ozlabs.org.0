@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090B320BBCF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:45:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E17C320BBD3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:47:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tr6G30tszDr70
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:45:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tr8F6GJ9zDqJC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:47:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=brendanhiggins@google.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=V4+waQO8; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=ZHuV3n4N; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tqcL3f01zDr4M
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:23:14 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id bh7so4703234plb.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:23:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=CvJoXjPb3PppSXrTvZvJe33y7yc/YsOEYDjM/f5h460=;
- b=V4+waQO8b0iUP2RZw/9wwuSg1yJTxiHT0OF4g7SF9fKIzoFlXU6ot0auFw3DJDBR0p
- MbiGN8aOp87G0zacaSAFT7QrcUII1OlL5ZJdBCNbrfDgLWo8Xo07JOjx5OykYTd3bbuF
- qDCxZQPmgDAryI5UWavy9oWaqjeoKgoMhzprLtGpkwY4B7WeL/Z145HYp+Rdd1SoD8c6
- 3BJH7MM784WaQY5yKAj70FP0deHmf6UKu+Ay4aV4LdsxdfEIupTDZoN+0XY1PELwlMmu
- hhn1UVkn6JRYANDcsLxYRtknIt/x4emnPr4cN4nzAKmjLtv5/apaBUms8FL3Yc4BwsJs
- H47A==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tqlX1btCzDqsZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:29:28 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id 35so4735166ple.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:29:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=/Ga8k3mofod9gwPX4Z/kRgYwjmzbSSQT5mPWQ+iRr00=;
+ b=ZHuV3n4N2UyL/uEYmg3j+3S3u+0QqpFCQhDYVKkZw9LuOjYP1YSNslr8dnNrsBn9Dh
+ We7UamS+FEowQ2lOAMqm20z8L9ypztLNs429NEWOoxO6J0/qlK/WaTSFp6sTA+5zXJXt
+ QK39ZARTjmUwV0eEr/JQyzmixIHGUEqhvzyh0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=CvJoXjPb3PppSXrTvZvJe33y7yc/YsOEYDjM/f5h460=;
- b=jZaADU3vktxeo2T0YSi3k45dVS5hrQaoLIXkZdU1ul7rpHAGJJ/4Tf6t06EoLPF8lP
- CXIYHVm55UONdGzf3+3k2/SQNz0EbaJzB+DSPaXhDTfzg03MwjR2XAPWL7MamJAAEi+Y
- pj9l8hcFkoXDefTjilhq4yACd5Z13EigD+ZT/KOxk4lE/M7sq9Ilnonrxc3yy/5Rkp6j
- UJPrnA9hELq/SrnM4Rrg8Hn9kLeJ84AAaSj+63V1Z6If0DDLBf4ufy7uuyfInb9PLDjM
- HsJLhVrfPrbW8YJ9fUEvpUj2Y2cWXRNdfSEPsR51FystzpDV7UIIPqrWPDS5vFhZpX07
- 1xEg==
-X-Gm-Message-State: AOAM532OOqArGL2ADGkix4X8Klr6WrFSEPTWCUda1wUZk1B9JZ4mCAwJ
- gGXZIhUSc68MJIqpIpgB248Q5eydkTF0qcDEF/Gltg==
-X-Google-Smtp-Source: ABdhPJwAirQYhcHGLt1+JjXg5NVX+m/8Nr12fmbDVwUgoHtdJsK/GnGlRIvrgvOirMw8ViXfV6UFbIIy77mdcmwl2RU=
-X-Received: by 2002:a17:90a:6ac8:: with SMTP id
- b8mr5607777pjm.217.1593206591785; 
- Fri, 26 Jun 2020 14:23:11 -0700 (PDT)
-MIME-Version: 1.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=/Ga8k3mofod9gwPX4Z/kRgYwjmzbSSQT5mPWQ+iRr00=;
+ b=JntASyhqp8Ha8RceEY+SkN5XnCfePZvoBTo/E4TJ26f8PRrsllycVjGplhkfssZ/Nq
+ bC9xz7Nc6UVdyyPqOlFzk+cc04AN/u5pwrUafbCs8UsH3RIQ0ouEfTctK0ui6HPzh7rb
+ PES8AUHQ4fw+/M+Kd1HO8xqqhTo6v3vUdMDYhZVfzRmrqHPHyF4vEU4IC2aCqmsOxazL
+ VY5CGi+bYlvuDXUQBWLh7NkfAzO21PboeR9aFZnsW/Ds3a6o4OsEfyadZEo3upB1QjUa
+ beVgf/Q8vqCG1QER/SVHn2UjwbKW3OvHCPrVfbjUjS+7htcxkBV5h+P7daKAuC3reaTS
+ N+6g==
+X-Gm-Message-State: AOAM530ivevCqHZB4BrS/ju6OmBEVbhhUFYK0wfHWDYxC5G2GS6I6mW3
+ Ds0BD1ArvlcvxRi0fI8E+eHHXg==
+X-Google-Smtp-Source: ABdhPJwxwunBg3ErYOqng8+maceCSdLikNLQ8Egfp/C6bLTULFH4Wp7/OynACw0oVHkVmKrSUGo10g==
+X-Received: by 2002:a17:90a:4a6:: with SMTP id
+ g35mr5538400pjg.155.1593206964538; 
+ Fri, 26 Jun 2020 14:29:24 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id j19sm5623223pjy.40.2020.06.26.14.29.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Jun 2020 14:29:23 -0700 (PDT)
+Date: Fri, 26 Jun 2020 14:29:22 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Brendan Higgins <brendanhiggins@google.com>
+Subject: Re: [PATCH v5 07/12] kunit: test: create a single centralized
+ executor for all tests
+Message-ID: <202006261423.0BC9D830@keescook>
 References: <20200626210917.358969-1-brendanhiggins@google.com>
- <20200626210917.358969-3-brendanhiggins@google.com>
- <202006261420.02E8E62@keescook>
-In-Reply-To: <202006261420.02E8E62@keescook>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Fri, 26 Jun 2020 14:23:00 -0700
-Message-ID: <CAFd5g47ZKJHzseyZT73uYB+EpAkyfN+gBj5X8ufZVnD6eG19eQ@mail.gmail.com>
-Subject: Re: [PATCH v5 02/12] arch: arm64: add linker section for KUnit test
- suites
-To: Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+ <20200626210917.358969-8-brendanhiggins@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200626210917.358969-8-brendanhiggins@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,63 +78,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- catalin.marinas@arm.com, jcmvbkbc@gmail.com, will@kernel.org, paulus@samba.org,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Frank Rowand <frowand.list@gmail.com>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-arch@vger.kernel.org,
- Richard Weinberger <richard@nod.at>, rppt@linux.ibm.com,
- Iurii Zaikin <yzaikin@google.com>, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, Jeff Dike <jdike@addtoit.com>,
- linux-um <linux-um@lists.infradead.org>, linuxppc-dev@lists.ozlabs.org,
- David Gow <davidgow@google.com>, Shuah Khan <skhan@linuxfoundation.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- KUnit Development <kunit-dev@googlegroups.com>, chris@zankel.net,
- monstr@monstr.eu, Stephen Boyd <sboyd@kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Alan Maguire <alan.maguire@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Logan Gunthorpe <logang@deltatee.com>
+Cc: linux-doc@vger.kernel.org, catalin.marinas@arm.com, jcmvbkbc@gmail.com,
+ will@kernel.org, paulus@samba.org, linux-kselftest@vger.kernel.org,
+ frowand.list@gmail.com, anton.ivanov@cambridgegreys.com,
+ linux-arch@vger.kernel.org, richard@nod.at, rppt@linux.ibm.com,
+ yzaikin@google.com, linux-xtensa@linux-xtensa.org, arnd@arndb.de,
+ jdike@addtoit.com, linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ davidgow@google.com, skhan@linuxfoundation.org,
+ linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com,
+ chris@zankel.net, monstr@monstr.eu, sboyd@kernel.org,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org,
+ alan.maguire@oracle.com, akpm@linux-foundation.org, logang@deltatee.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 26, 2020 at 2:20 PM Kees Cook <keescook@chromium.org> wrote:
->
-> On Fri, Jun 26, 2020 at 02:09:07PM -0700, Brendan Higgins wrote:
-> > Add a linker section to arm64 where KUnit can put references to its test
-> > suites. This patch is an early step in transitioning to dispatching all
-> > KUnit tests from a centralized executor rather than having each as its
-> > own separate late_initcall.
-> >
-> > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> > ---
-> >  arch/arm64/kernel/vmlinux.lds.S | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-> > index 6827da7f3aa54..a1cae9cc655d7 100644
-> > --- a/arch/arm64/kernel/vmlinux.lds.S
-> > +++ b/arch/arm64/kernel/vmlinux.lds.S
-> > @@ -181,6 +181,9 @@ SECTIONS
-> >               INIT_RAM_FS
-> >               *(.init.rodata.* .init.bss)     /* from the EFI stub */
-> >       }
-> > +     .kunit_test_suites : {
-> > +             KUNIT_TEST_SUITES
-> > +     }
->
-> See my reply to 01/12. Then this patch can be dropped. :)
+On Fri, Jun 26, 2020 at 02:09:12PM -0700, Brendan Higgins wrote:
+> From: Alan Maguire <alan.maguire@oracle.com>
+> 
+> Add a centralized executor to dispatch tests rather than relying on
+> late_initcall to schedule each test suite separately. Centralized
+> execution is for built-in tests only; modules will execute tests when
+> loaded.
+> 
+> Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+> Co-developed-by: Iurii Zaikin <yzaikin@google.com>
+> Signed-off-by: Iurii Zaikin <yzaikin@google.com>
+> Co-developed-by: Brendan Higgins <brendanhiggins@google.com>
+> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+> ---
+>  include/kunit/test.h | 67 +++++++++++++++++++++++++++++---------------
+>  lib/kunit/Makefile   |  3 +-
+>  lib/kunit/executor.c | 28 ++++++++++++++++++
+>  lib/kunit/test.c     |  2 +-
+>  4 files changed, 76 insertions(+), 24 deletions(-)
+>  create mode 100644 lib/kunit/executor.c
+> 
+> diff --git a/include/kunit/test.h b/include/kunit/test.h
+> index 47e61e1d53370..f3e86c3953a2b 100644
+> --- a/include/kunit/test.h
+> +++ b/include/kunit/test.h
+> @@ -224,7 +224,7 @@ size_t kunit_suite_num_test_cases(struct kunit_suite *suite);
+>  unsigned int kunit_test_case_num(struct kunit_suite *suite,
+>  				 struct kunit_case *test_case);
+>  
+> -int __kunit_test_suites_init(struct kunit_suite **suites);
+> +int __kunit_test_suites_init(struct kunit_suite * const * const suites);
+>  
+>  void __kunit_test_suites_exit(struct kunit_suite **suites);
+>  
+> @@ -237,34 +237,57 @@ void __kunit_test_suites_exit(struct kunit_suite **suites);
+>   * Registers @suites_list with the test framework. See &struct kunit_suite for
+>   * more information.
+>   *
+> - * When builtin, KUnit tests are all run as late_initcalls; this means
+> - * that they cannot test anything where tests must run at a different init
+> - * phase. One significant restriction resulting from this is that KUnit
+> - * cannot reliably test anything that is initialize in the late_init phase;
+> - * another is that KUnit is useless to test things that need to be run in
+> - * an earlier init phase.
+> - *
+> - * An alternative is to build the tests as a module.  Because modules
+> - * do not support multiple late_initcall()s, we need to initialize an
+> - * array of suites for a module.
+> - *
+> - * TODO(brendanhiggins@google.com): Don't run all KUnit tests as
+> - * late_initcalls.  I have some future work planned to dispatch all KUnit
+> - * tests from the same place, and at the very least to do so after
+> - * everything else is definitely initialized.
+> + * If a test suite is built-in, module_init() gets translated into
+> + * an initcall which we don't want as the idea is that for builtins
+> + * the executor will manage execution.  So ensure we do not define
+> + * module_{init|exit} functions for the builtin case when registering
+> + * suites via kunit_test_suites() below.
+>   */
+> -#define kunit_test_suites(suites_list...)				\
+> -	static struct kunit_suite *suites[] = {suites_list, NULL};	\
+> -	static int kunit_test_suites_init(void)				\
+> +#ifdef MODULE
+> +#define kunit_test_suites_for_module(__suites)				\
+> +	static int __init kunit_test_suites_init(void)			\
+>  	{								\
+> -		return __kunit_test_suites_init(suites);		\
+> +		return __kunit_test_suites_init(__suites);		\
+>  	}								\
+> -	late_initcall(kunit_test_suites_init);				\
+> +	module_init(kunit_test_suites_init);				\
+> +									\
+>  	static void __exit kunit_test_suites_exit(void)			\
+>  	{								\
+> -		return __kunit_test_suites_exit(suites);		\
+> +		return __kunit_test_suites_exit(__suites);		\
+>  	}								\
+>  	module_exit(kunit_test_suites_exit)
+> +#else
+> +#define kunit_test_suites_for_module(__suites)
+> +#endif /* MODULE */
+> +
+> +#define __kunit_test_suites(unique_array, unique_suites, ...)		       \
+> +	static struct kunit_suite *unique_array[] = { __VA_ARGS__, NULL };     \
+> +	kunit_test_suites_for_module(unique_array);			       \
+> +	static struct kunit_suite **unique_suites			       \
+> +	__used __section(.kunit_test_suites) = unique_array
+> +
+> +/**
+> + * kunit_test_suites() - used to register one or more &struct kunit_suite
+> + *			 with KUnit.
+> + *
+> + * @suites: a statically allocated list of &struct kunit_suite.
+> + *
+> + * Registers @suites with the test framework. See &struct kunit_suite for
+> + * more information.
+> + *
+> + * When builtin,  KUnit tests are all run via executor; this is done
+> + * by placing the array of struct kunit_suite * in the .kunit_test_suites
+> + * ELF section.
+> + *
+> + * An alternative is to build the tests as a module.  Because modules do not
+> + * support multiple initcall()s, we need to initialize an array of suites for a
+> + * module.
+> + *
+> + */
+> +#define kunit_test_suites(...)						\
+> +	__kunit_test_suites(__UNIQUE_ID(array),				\
+> +			    __UNIQUE_ID(suites),			\
+> +			    __VA_ARGS__)
+>  
+>  #define kunit_test_suite(suite)	kunit_test_suites(&suite)
+>  
+> diff --git a/lib/kunit/Makefile b/lib/kunit/Makefile
+> index 724b94311ca36..c49f4ffb6273a 100644
+> --- a/lib/kunit/Makefile
+> +++ b/lib/kunit/Makefile
+> @@ -3,7 +3,8 @@ obj-$(CONFIG_KUNIT) +=			kunit.o
+>  kunit-objs +=				test.o \
+>  					string-stream.o \
+>  					assert.o \
+> -					try-catch.o
+> +					try-catch.o \
+> +					executor.o
+>  
+>  ifeq ($(CONFIG_KUNIT_DEBUGFS),y)
+>  kunit-objs +=				debugfs.o
+> diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
+> new file mode 100644
+> index 0000000000000..7015e7328dce7
+> --- /dev/null
+> +++ b/lib/kunit/executor.c
+> @@ -0,0 +1,28 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <kunit/test.h>
+> +
+> +/*
+> + * These symbols point to the .kunit_test_suites section and are defined in
+> + * include/asm-generic/vmlinux.lds.h, and consequently must be extern.
+> + */
+> +extern struct kunit_suite * const * const __kunit_suites_start[];
+> +extern struct kunit_suite * const * const __kunit_suites_end[];
 
-Sweet, presumably this one and others.
+I would expect these to be in include/asm-generic/sections.h but I guess
+it's not required.
 
-> >       .exit.data : {
-> >               EXIT_DATA
-> >       }
-> > --
-> > 2.27.0.212.ge8ba1cc988-goog
-> >
->
-> --
-> Kees Cook
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-- 
+Kees Cook
