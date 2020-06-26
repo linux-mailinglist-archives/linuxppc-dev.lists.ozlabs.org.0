@@ -1,67 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3E420ABC5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 07:19:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B962620AC64
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 08:32:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tQDD0LpjzDqwV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 15:19:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tRrH1r7rzDr1q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 16:32:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::144;
- helo=mail-il1-x144.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
+ helo=fornost.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Nf23Yopn; dkim-atps=neutral
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
- [IPv6:2607:f8b0:4864:20::144])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gondor.apana.org.au
+Received: from fornost.hmeau.com (unknown [216.24.177.18])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tPzg5bzJzDqpR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 15:08:31 +1000 (AEST)
-Received: by mail-il1-x144.google.com with SMTP id r12so198280ilh.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jun 2020 22:08:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+++5X0ok/USTU61EKWCP5dPyvgzHG4i1ZVAChxJGx3o=;
- b=Nf23YopnETE+lsG66cgbGnDcqqgRnlxshzu2iV5MZ/jZhMhgHSmTDICYbOA/r+joqD
- vnawen+CMLbcli01QiEV8XzYRZTlx+ElK98BPWbym06ggGOTfHaoYJQOAo8XXqzPMMtC
- Kf1Ltj7gIGQmDGu1pzDm+PAe40rWbwDoxabPFXJNakZvb9BTGannxbZLlz5xhcntuxZf
- kEUZAROB6Wr4HtaRrlYTayt8UjguoNw8CesSTCldwawCDLb7G82mxXBJrj3rn4fjN1UW
- Vw9lNWFPwr5FpjWJlzvYB2UyU8zszUzcCFCkoQENazOKuh3jTSai3jMh+lqhhh8EYOrt
- Zqkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+++5X0ok/USTU61EKWCP5dPyvgzHG4i1ZVAChxJGx3o=;
- b=kfn7yvfNLdL3vzIKWkeWSD0kZlvooEZgJjuk4b+G23ex7Wp9+GFML1ZXItD107+/Ci
- 9n+BPdOWI2UkybGDbtIsX5AaBsviHbLm5o2BtqEAxG9kiSodX6F0zO6dU/OAt4i5RbFM
- YlirtADD7BkgErnFwH17hJ1yq/FRKu4Ue82eUA/Qb9Gfgq1VOWzwz99gVNDzVBCl5iyA
- O8aSYBySTNuKilqZXK0IbLzFbjBaaW1as4ZkzmZHhFnlG3Vy79thwQ4KiTJzDtliQF+e
- eSAtYTkXckzN0FUAoH779+pLZjgnUOezoT036qcriByeHWb+mkv/NUhEP9uR6ZocmBct
- KPyA==
-X-Gm-Message-State: AOAM533C1i8xCB7W801ITVYbcswh5pDgfaZF46Do0atwQk8IGamqicuk
- 1dzAxu+wG7wff9cQlcAJBQ8lFKsxEZHq00G4igE=
-X-Google-Smtp-Source: ABdhPJwwiR+vv3sZjFX+cxG3iAxsMdcJD3N6BgyEp7DC+YefFYE7UBoqxqv/ORy1SPyYAshpA+8eIBaWTjDOTwaBtCI=
-X-Received: by 2002:a92:d1cd:: with SMTP id u13mr1451493ilg.258.1593148107771; 
- Thu, 25 Jun 2020 22:08:27 -0700 (PDT)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tRpc2GvYzDqxX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 16:30:46 +1000 (AEST)
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+ by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+ id 1johrw-0004mR-T7; Fri, 26 Jun 2020 16:29:50 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation);
+ Fri, 26 Jun 2020 16:29:48 +1000
+Date: Fri, 26 Jun 2020 16:29:48 +1000
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH] crypto: af_alg - Fix regression on empty requests
+Message-ID: <20200626062948.GA25285@gondor.apana.org.au>
+References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
+ <20200622224920.GA4332@42.do-not-panic.com>
+ <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
+ <20200623064056.GA8121@gondor.apana.org.au>
+ <20200623170217.GB150582@gmail.com>
 MIME-Version: 1.0
-References: <f81f645ba66b760c31f25014f03a0c3a4970f993.1592975969.git.sbobroff@linux.ibm.com>
-In-Reply-To: <f81f645ba66b760c31f25014f03a0c3a4970f993.1592975969.git.sbobroff@linux.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 26 Jun 2020 15:08:15 +1000
-Message-ID: <CAOSf1CH0s9uReOv9d_gpYp8mAXA0Wp09fKKZB_tbrvFH+LG-YQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/1] powerpc/eeh: Provide a unique ID for each EEH
- recovery
-To: Sam Bobroff <sbobroff@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200623170217.GB150582@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,140 +52,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, lkft-triage@lists.linaro.org,
+ open list <linux-kernel@vger.kernel.org>, David Howells <dhowells@redhat.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org, chrubis <chrubis@suse.cz>,
+ James Morris <jmorris@namei.org>, linuxppc-dev@lists.ozlabs.org,
+ Jan Stancek <jstancek@redhat.com>, LTP List <ltp@lists.linux.it>,
+ "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 24, 2020 at 3:20 PM Sam Bobroff <sbobroff@linux.ibm.com> wrote:
+On Tue, Jun 23, 2020 at 10:02:17AM -0700, Eric Biggers wrote:
 >
-> Give a unique ID to each recovery event, to ease log parsing and
-> prepare for parallel recovery.
->
-> Also add some new messages with a very simple format that may be
-> useful to log-parsers.
->
-> Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
-> ---
-> This patch should be applied on top of my recent(ish) set:
-> "powerpc/eeh: Synchronization for safety".
+> The source code for the two failing AF_ALG tests is here:
+> 
+> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg02.c
+> https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/crypto/af_alg05.c
+> 
+> They use read() and write(), not send() and recv().
+> 
+> af_alg02 uses read() to read from a "salsa20" request socket without writing
+> anything to it.  It is expected that this returns 0, i.e. that behaves like
+> encrypting an empty message.
+> 
+> af_alg05 uses write() to write 15 bytes to a "cbc(aes-generic)" request socket,
+> then read() to read 15 bytes.  It is expected that this fails with EINVAL, since
+> the length is not aligned to the AES block size (16 bytes).
 
-If you're going to do a respin I'd post these as a single series and
-rebase it on mainline. There's a bit of drift.
+This patch should fix the regression:
 
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index 68e6dfa526a5..54f921ff7621 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -197,7 +197,8 @@ EXPORT_SYMBOL_GPL(eeh_recovery_must_be_locked);
->   * for the indicated PCI device, and puts them into a buffer
->   * for RTAS error logging.
->   */
-> -static size_t eeh_dump_dev_log(struct eeh_dev *edev, char *buf, size_t len)
-> +static size_t eeh_dump_dev_log(unsigned int event_id, struct eeh_dev *edev,
-> +                              char *buf, size_t len)
+---8<---
+Some user-space programs rely on crypto requests that have no
+control metadata.  This broke when a check was added to require
+the presence of control metadata with the ctx->init flag.
 
-If we're going to pass around some event context then IMO we should
-pass around the eeh_event itself rather than just an ID number. That
-would give us somewhere to put any extra per-event context (such as
-the saved stacktrace) rather than dumping it into eeh_pe.
+This patch fixes the regression by removing the ctx->init flag.
 
-We'd probably have to fix the "special" events so they're signalled by
-some means other than a NULL event pointer.
+This means that we do not distinguish the case of no metadata
+as opposed to an empty request.  IOW it is always assumed that
+if you call recv(2) before sending metadata that you are working
+with an empty request.
 
-*snip*
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: f3c802a1f300 ("crypto: algif_aead - Only wake up when...")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-
-> @@ -280,19 +283,26 @@ static void eeh_pe_report_pdev(struct pci_dev *pdev, eeh_report_fn fn,
->                 driver = eeh_pcid_get(pdev);
->
->                 if (!driver)
-> -                       pci_info(pdev, "no driver");
-> +                       pci_info(pdev, "EEH(%u): no driver", event_id);
->                 else if (!driver->err_handler)
-> -                       pci_info(pdev, "driver not EEH aware");
-> +                       pci_info(pdev, "EEH(%u): driver not EEH aware", event_id);
->                 else if (late)
-> -                       pci_info(pdev, "driver bound too late");
-> +                       pci_info(pdev, "EEH(%u): driver bound too late", event_id);
->                 else {
-> -                       new_result = fn(pdev, driver);
-
-> +                       pr_warn("EEH(%u): EVENT=HANDLER_CALL DEVICE=%04x:%02x:%02x.%x DRIVER='%s' HANDLER='%s'\n",
-
-WHY ARE WE YELLING
-
-
-
-
-> @@ -579,7 +598,8 @@ static void *eeh_add_virt_device(struct eeh_dev *edev)
->   * lock is dropped (which it must be in order to take the PCI rescan/remove
->   * lock without risking a deadlock).
->   */
-> -static void eeh_rmv_device(struct pci_dev *pdev, void *userdata)
-> +static void eeh_rmv_device(unsigned int event_id,
-> +                          struct pci_dev *pdev, void *userdata)
->  {
->         struct eeh_dev *edev;
->         struct pci_driver *driver;
-> @@ -588,8 +608,8 @@ static void eeh_rmv_device(struct pci_dev *pdev, void *userdata)
->
->         edev = pci_dev_to_eeh_dev(pdev);
->         if (!edev) {
-> -               pci_warn(pdev, "EEH: Device removed during processing (#%d)\n",
-> -                        __LINE__);
-> +               pci_warn(pdev, "EEH(%u): Device removed during processing (#%d)\n",
-> +                        event_id, __LINE__);
-
-It's already there, but what's with the __LINE__ ?
-
-> diff --git a/arch/powerpc/kernel/eeh_event.c b/arch/powerpc/kernel/eeh_event.c
-> index a7a8dc182efb..bd38d6fe5449 100644
-> --- a/arch/powerpc/kernel/eeh_event.c
-> +++ b/arch/powerpc/kernel/eeh_event.c
-> @@ -26,6 +26,9 @@ static DEFINE_SPINLOCK(eeh_eventlist_lock);
->  static DECLARE_COMPLETION(eeh_eventlist_event);
->  static LIST_HEAD(eeh_eventlist);
->
-
-> +/* Event ID 0 is reserved for special events */
-> +static atomic_t eeh_event_id = ATOMIC_INIT(1);
-> +
-
-I don't think using zero for all special events is a good idea.
-Special events are just events that are detected by the EEH
-notification interrupt. Unlike the MMIO / config space detection
-mechanism we don't have any device or PE context available in the
-interrupt handler so the work of figuring out where the error came
-from is punted to the recovery thread.
-
-IMO this function probably shouldn't be calling
-eeh_handle_normal_event() at all. Instead it should queue a new
-eeh_event (with a unique ID) for each error it finds. That way
-handling a "special" event just consists of scanning for which PHB /
-PE is currently broken and the actual recovery path is identical. If
-we switched to using a threaded IRQ handler (which can block) for the
-EEH notification interrupts we could probably kill off special events
-entirely.
-
-> @@ -1338,7 +1367,7 @@ void eeh_handle_special_event(void)
->                 if (rc == EEH_NEXT_ERR_FROZEN_PE ||
->                     rc == EEH_NEXT_ERR_FENCED_PHB) {
->                         eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
-> -                       eeh_handle_normal_event(pe);
-> +                       eeh_handle_normal_event(0, pe);
-
-I think that needs to be a unique ID even if we keep this function
-calling eeh_handle_normal_event() directly.
-
->                 } else {
->                         eeh_for_each_pe(pe, tmp_pe)
->                                 eeh_pe_for_each_dev(tmp_pe, edev, tmp_edev)
-> @@ -1347,7 +1376,7 @@ void eeh_handle_special_event(void)
->                         /* Notify all devices to be down */
->                         eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
->                         eeh_set_channel_state(pe, pci_channel_io_perm_failure);
-> -                       eeh_pe_report(
-> +                       eeh_pe_report(0,
->                                 "error_detected(permanent failure)", pe,
->                                 eeh_report_failure, NULL);
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 9fcb91ea10c4..2d391117c020 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -635,7 +635,6 @@ void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst,
+ 
+ 	if (!ctx->used)
+ 		ctx->merge = 0;
+-	ctx->init = ctx->more;
+ }
+ EXPORT_SYMBOL_GPL(af_alg_pull_tsgl);
+ 
+@@ -757,8 +756,7 @@ int af_alg_wait_for_data(struct sock *sk, unsigned flags, unsigned min)
+ 			break;
+ 		timeout = MAX_SCHEDULE_TIMEOUT;
+ 		if (sk_wait_event(sk, &timeout,
+-				  ctx->init && (!ctx->more ||
+-						(min && ctx->used >= min)),
++				  !ctx->more || (min && ctx->used >= min),
+ 				  &wait)) {
+ 			err = 0;
+ 			break;
+@@ -847,7 +845,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	}
+ 
+ 	lock_sock(sk);
+-	if (ctx->init && (init || !ctx->more)) {
++	if (!ctx->more && ctx->used) {
+ 		err = -EINVAL;
+ 		goto unlock;
+ 	}
+@@ -858,7 +856,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 			memcpy(ctx->iv, con.iv->iv, ivsize);
+ 
+ 		ctx->aead_assoclen = con.aead_assoclen;
+-		ctx->init = true;
+ 	}
+ 
+ 	while (size) {
+diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
+index d48d2156e621..749fe42315be 100644
+--- a/crypto/algif_aead.c
++++ b/crypto/algif_aead.c
+@@ -106,7 +106,7 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	size_t usedpages = 0;		/* [in]  RX bufs to be used from user */
+ 	size_t processed = 0;		/* [in]  TX bufs to be consumed */
+ 
+-	if (!ctx->init || ctx->more) {
++	if (ctx->more) {
+ 		err = af_alg_wait_for_data(sk, flags, 0);
+ 		if (err)
+ 			return err;
+diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
+index a51ba22fef58..5b6fa5e8c00d 100644
+--- a/crypto/algif_skcipher.c
++++ b/crypto/algif_skcipher.c
+@@ -61,7 +61,7 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	int err = 0;
+ 	size_t len = 0;
+ 
+-	if (!ctx->init || (ctx->more && ctx->used < bs)) {
++	if (ctx->more && ctx->used < bs) {
+ 		err = af_alg_wait_for_data(sk, flags, bs);
+ 		if (err)
+ 			return err;
+diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
+index ee6412314f8f..08c087cc89d6 100644
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -135,7 +135,6 @@ struct af_alg_async_req {
+  *			SG?
+  * @enc:		Cryptographic operation to be performed when
+  *			recvmsg is invoked.
+- * @init:		True if metadata has been sent.
+  * @len:		Length of memory allocated for this data structure.
+  */
+ struct af_alg_ctx {
+@@ -152,7 +151,6 @@ struct af_alg_ctx {
+ 	bool more;
+ 	bool merge;
+ 	bool enc;
+-	bool init;
+ 
+ 	unsigned int len;
+ };
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
