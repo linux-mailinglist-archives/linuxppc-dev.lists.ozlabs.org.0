@@ -2,69 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F44120BBFF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9385820BCB1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 00:38:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49trLx2HPdzDr7H
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 07:56:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tsHV2xmqzDqGg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 08:38:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=peterx@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
+ dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=VIGOIHNE; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=RIpITbH7; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=RIpITbH7; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49trGM0ddCzDqCB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:52:42 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id g67so4618523pgc.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 14:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=Q757IDXyRukGvX5SZOHlJdoHJ/1n6S14vTGyo4zvXBQ=;
- b=VIGOIHNEEU9j/QBCfkBjGdBcqAkDVMSPH2V6E9pYYKa7w0oI1NtGdugkcB6s2J7djs
- DSZ85QWa+gMBeGdBreMiRKvPJcdHicHe0ZZZe3JPNlhdZodj/p1tvl8Xip3Cc2IPrr+s
- lsiie+VLCThaSSaloZS5eYhO67RiKTuNXrYns=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tsDt1jxfzDr3P
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 08:36:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1593210987;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
+ b=RIpITbH7svrXy+/T6dgKE+cCoViK5yC/1koVCu/dySZw08mSAxf5pkXUPDeNLdm0eGE2SJ
+ ab7qrMpHwIttHMUXWCSf0TYtC4gH3+1nDgb9ZzI8psAHUATKEMrDVdQ/kC2tHAXm5eHI5O
+ lqeGu5vk7PcufeqoYPdtZE2y01Z7a2U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1593210987;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
+ b=RIpITbH7svrXy+/T6dgKE+cCoViK5yC/1koVCu/dySZw08mSAxf5pkXUPDeNLdm0eGE2SJ
+ ab7qrMpHwIttHMUXWCSf0TYtC4gH3+1nDgb9ZzI8psAHUATKEMrDVdQ/kC2tHAXm5eHI5O
+ lqeGu5vk7PcufeqoYPdtZE2y01Z7a2U=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-170-PfLjrXlENRKz-A5S70LfEw-1; Fri, 26 Jun 2020 18:36:25 -0400
+X-MC-Unique: PfLjrXlENRKz-A5S70LfEw-1
+Received: by mail-qv1-f71.google.com with SMTP id y36so7340561qvf.21
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 15:36:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Q757IDXyRukGvX5SZOHlJdoHJ/1n6S14vTGyo4zvXBQ=;
- b=kYFyF1zWMCaIrLm/4rsBQn+HIHXDA2wWfvNhb/4eygi1m6AqJYQkDoHDd4TXLybokF
- /NLdUVV/PSwGTLjO8EDx7WZ0H/JL6AcVcLwOaKKuVGRj84ZTnEPfVCLevpH6LGK0WSi+
- 64ldv/fQzjVYsecfyNU+ZZplkFtD+QsJ6GZqdYqU6fz9SZ+UAW/NZsIn+3dOSClFQRKv
- 8QvaeHLJwLyxs85uZn9YBjhtd+d850N7eTzKZEXk0VyaJGU67fPNPb6jFCkYJLNwyFJe
- rEsqQbJpbJgmt8mWa/XtGB+Zb1vCmNXY54129/JuvCr6emvR3j/yJvlUBmML4Rb7wtZd
- GuqQ==
-X-Gm-Message-State: AOAM533BJBK+8lKDRMs74ErWngef7x9HjMnlzx8SXEtUL10x0qEK4jCx
- sLS9eu2/o1h1zbl92DGZXWtlHA==
-X-Google-Smtp-Source: ABdhPJxjew6vuVd8xK7z4Or0D8mu7tCMflIKF0q/SKBZ2je3Uo1yszhe7quUG/VVVAWRTDES/M5wNg==
-X-Received: by 2002:a62:ea0b:: with SMTP id t11mr4824646pfh.276.1593208359728; 
- Fri, 26 Jun 2020 14:52:39 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id o16sm23597011pgg.57.2020.06.26.14.52.38
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=8qSToaPYAxy41TNCcRoZVJZv9P7/HBXlbwWJ2Rk2g+I=;
+ b=g3FRtT0/YiWIAtGyp1V4PJE3K+CQ8Q6tnmkkND89lHmWJ9hcvANxitVxgKJr6UfoQx
+ jjIcD9Wka5A11RyrEHUiktJvzrGGfQ4EPrJfTIa1gZ9suDNU3yFpMRWF1MpQf47rdkMa
+ UfaWHBqvRcB8hx9Kr26MoUf6XdCoqna7m8K8b6aoG/owfHrctUhioEbwv8fhSqFctMdM
+ 24QntjC7OiFDZe/717CA6RxKJ/kbA/139LOM2+HJ+B4tGS1xSFjJt3Ht9HEFfgeHnsba
+ 7sHJMWnnZi7oKiahMQSeGClBDaWCkLlbP3XUfZXenGS3rytmf/Mq6tmqIkeljXP6dlFc
+ mlRg==
+X-Gm-Message-State: AOAM533/KBZ5CkMjrZ3KZEYrSsDjr6Zr52pokr3YDcBpVQzTdRH/dMkl
+ 0TqDCWtep77Air2lqynCibG9+udOr/V/AGJyYsOFcnHiIcJlwt3ngqgB+d63PM/9mJAMwJmB+EE
+ 6FKKQocpb2ay73bipZMxqFrP93w==
+X-Received: by 2002:a37:dcc3:: with SMTP id v186mr4839647qki.393.1593210985274; 
+ Fri, 26 Jun 2020 15:36:25 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxCBCcJ2UOlHKiOErZOy/wQGbA8OVSFmjMRFnS3kp8IUFptdYH3jiRcE+pFBOUD78E2vWdkxQ==
+X-Received: by 2002:a37:dcc3:: with SMTP id v186mr4839619qki.393.1593210984950; 
+ Fri, 26 Jun 2020 15:36:24 -0700 (PDT)
+Received: from xz-x1.redhat.com ([2607:9880:19c0:32::2])
+ by smtp.gmail.com with ESMTPSA id p125sm9108324qke.78.2020.06.26.15.36.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jun 2020 14:52:38 -0700 (PDT)
-Date: Fri, 26 Jun 2020 14:52:37 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Brendan Higgins <brendanhiggins@google.com>
-Subject: Re: [PATCH v5 00/12] kunit: create a centralized executor to
- dispatch all KUnit tests
-Message-ID: <202006261442.5C245709@keescook>
-References: <20200626210917.358969-1-brendanhiggins@google.com>
+ Fri, 26 Jun 2020 15:36:24 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 16/26] mm/powerpc: Use general page fault accounting
+Date: Fri, 26 Jun 2020 18:36:22 -0400
+Message-Id: <20200626223622.199765-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200626223130.199227-1-peterx@redhat.com>
+References: <20200626223130.199227-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200626210917.358969-1-brendanhiggins@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,41 +101,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, catalin.marinas@arm.com, jcmvbkbc@gmail.com,
- will@kernel.org, paulus@samba.org, linux-kselftest@vger.kernel.org,
- frowand.list@gmail.com, anton.ivanov@cambridgegreys.com,
- linux-arch@vger.kernel.org, richard@nod.at, rppt@linux.ibm.com,
- yzaikin@google.com, linux-xtensa@linux-xtensa.org, arnd@arndb.de,
- jdike@addtoit.com, linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- davidgow@google.com, skhan@linuxfoundation.org,
- linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com,
- chris@zankel.net, monstr@monstr.eu, sboyd@kernel.org,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org,
- alan.maguire@oracle.com, akpm@linux-foundation.org, logang@deltatee.com
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Peter Xu <peterx@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 26, 2020 at 02:09:05PM -0700, Brendan Higgins wrote:
-> This patchset adds a centralized executor to dispatch tests rather than
-> relying on late_initcall to schedule each test suite separately along
-> with a couple of new features that depend on it.
+Use the general page fault accounting by passing regs into handle_mm_fault().
 
-So, the new section looks fine to me (modulo the INIT_DATA change). The
-plumbing to start the tests, though, I think is redundant. Why not just
-add a sysctl that starts all known tests?
+CC: Michael Ellerman <mpe@ellerman.id.au>
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+CC: Paul Mackerras <paulus@samba.org>
+CC: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ arch/powerpc/mm/fault.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-That way you don't need the plumbing into init/main.c, and you can have
-a mode where builtin tests can be started on a fully booted system too.
-
-i.e. boot with "sysctl.kernel.kunit=start" or when fully booted with
-"echo start > /proc/sys/kernel/kunit"
-
-And instead of the kunit-specific halt/reboot stuff, how about moving
-/proc/sysrq-trigger into /proc/sys instead? Then you (or anything) could
-do:
-
-sysctl.kernel.kunit=start sysctl.kernel.sysrq-trigger=b
-
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 992b10c3761c..e325d13efaf5 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -563,7 +563,7 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	 * make sure we exit gracefully rather than endlessly redo
+ 	 * the fault.
+ 	 */
+-	fault = handle_mm_fault(vma, address, flags, NULL);
++	fault = handle_mm_fault(vma, address, flags, regs);
+ 
+ #ifdef CONFIG_PPC_MEM_KEYS
+ 	/*
+@@ -604,14 +604,9 @@ static int __do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	/*
+ 	 * Major/minor page fault accounting.
+ 	 */
+-	if (major) {
+-		current->maj_flt++;
+-		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MAJ, 1, regs, address);
++	if (major)
+ 		cmo_account_page_fault();
+-	} else {
+-		current->min_flt++;
+-		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MIN, 1, regs, address);
+-	}
++
+ 	return 0;
+ }
+ NOKPROBE_SYMBOL(__do_page_fault);
 -- 
-Kees Cook
+2.26.2
+
