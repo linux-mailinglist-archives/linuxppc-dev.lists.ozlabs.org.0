@@ -2,55 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EB820B122
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 14:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D17FB20B23A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 15:12:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tbJh6PMJzDqth
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 22:08:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tckM6flkzDqs3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 23:12:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.228; helo=12.mo6.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 15001 seconds by postgrey-1.36 at bilbo;
- Fri, 26 Jun 2020 22:07:03 AEST
-Received: from 12.mo6.mail-out.ovh.net (12.mo6.mail-out.ovh.net
- [178.32.125.228])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tbGb4TZdzDqsl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 22:06:59 +1000 (AEST)
-Received: from player756.ha.ovh.net (unknown [10.110.103.115])
- by mo6.mail-out.ovh.net (Postfix) with ESMTP id 8D595218CC2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 09:17:22 +0200 (CEST)
-Received: from kaod.org (lfbn-tou-1-921-245.w86-210.abo.wanadoo.fr
- [86.210.152.245]) (Authenticated sender: clg@kaod.org)
- by player756.ha.ovh.net (Postfix) with ESMTPSA id 0027712EEB1AF;
- Fri, 26 Jun 2020 07:17:15 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass
- (GARM-96R001f0536dcc-a957-40ab-ace5-65216a80c849,
- 4AA08B4753365576F5C892DCFEC488B61DD07F5F) smtp.auth=clg@kaod.org
-Subject: Re: [PATCH] powerpc/pseries: Use doorbells even if XIVE is available
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200624134724.2343007-1-npiggin@gmail.com>
- <87r1u4aqzm.fsf@mpe.ellerman.id.au>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <af42c250-cf4b-0815-c91c-9363445383e7@kaod.org>
-Date: Fri, 26 Jun 2020 09:17:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tcgY53SLzDqsD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 23:10:17 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05QD15bX141460; Fri, 26 Jun 2020 09:10:10 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31vvkyej18-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 09:10:09 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05QD1jPb146106;
+ Fri, 26 Jun 2020 09:10:09 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31vvkyej01-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 09:10:09 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05QCxcHF015056;
+ Fri, 26 Jun 2020 13:10:07 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma02fra.de.ibm.com with ESMTP id 31uusk1frg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 13:10:07 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05QD8jhV50790872
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Jun 2020 13:08:45 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 49F7EA4065;
+ Fri, 26 Jun 2020 13:10:04 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 198B6A405F;
+ Fri, 26 Jun 2020 13:10:03 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.199.37.181])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 26 Jun 2020 13:10:02 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 0/3] Off-load TLB invalidations to host for !GTSE
+Date: Fri, 26 Jun 2020 18:39:57 +0530
+Message-Id: <20200626131000.5207-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-In-Reply-To: <87r1u4aqzm.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 11601835593903410150
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudeltddguddujecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgsehtjeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhephfffgeelfeejudevuedvvdeigeduteetveffhfffudeggfegleeljeeuieefuedvnecukfhppedtrddtrddtrddtpdekiedrvddutddrudehvddrvdegheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejheeirdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-26_06:2020-06-26,
+ 2020-06-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ clxscore=1015 bulkscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 cotscore=-2147483648
+ spamscore=0 mlxlogscore=999 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006260088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,156 +90,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anton Blanchard <anton@linux.ibm.com>, kvm-ppc@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: aneesh.kumar@linux.ibm.com, Bharata B Rao <bharata@linux.ibm.com>,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Adding David, 
+Hypervisor may choose not to enable Guest Translation Shootdown Enable
+(GTSE) option for the guest. When GTSE isn't ON, the guest OS isn't
+permitted to use instructions like tblie and tlbsync directly, but is
+expected to make hypervisor calls to get the TLB flushed.
 
-On 6/25/20 3:11 AM, Michael Ellerman wrote:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> KVM supports msgsndp in guests by trapping and emulating the
->> instruction, so it was decided to always use XIVE for IPIs if it is
->> available. However on PowerVM systems, msgsndp can be used and gives
->> better performance. On large systems, high XIVE interrupt rates can
->> have sub-linear scaling, and using msgsndp can reduce the load on
->> the interrupt controller.
->>
->> So switch to using core local doorbells even if XIVE is available.
->> This reduces performance for KVM guests with an SMT topology by
->> about 50% for ping-pong context switching between SMT vCPUs.
-> 
-> You have to take explicit steps to configure KVM in that way with qemu.
-> eg. "qemu .. -smp 8" will give you 8 SMT1 CPUs by default.
-> 
->> An option vector (or dt-cpu-ftrs) could be defined to disable msgsndp
->> to get KVM performance back.
+This series enables the TLB flush routines in the radix code to
+off-load TLB flushing to hypervisor via the newly proposed hcall
+H_RPT_INVALIDATE. 
 
-An option vector would require a PAPR change. Unless the architecture 
-reserves some bits for the implementation, but I don't think so. Same
-for CAS.
+To easily check the availability of GTSE, it is made an MMU feature.
+The OV5 handling and H_REGISTER_PROC_TBL hcall are changed to
+handle GTSE as an optionally available feature and to not assume GTSE
+when radix support is available.
 
-> Qemu/KVM populates /proc/device-tree/hypervisor, so we *could* look at
-> that. Though adding PowerVM/KVM specific hacks is obviously a very
-> slippery slope.
+The actual hcall implementation for KVM isn't included in this
+patchset and will be posted separately.
 
-QEMU could advertise a property "emulated-msgsndp", or something similar, 
-which would be interpreted by Linux as a CPU feature and taken into account 
-when doing the IPIs.
+Changes in v2
+=============
+- Dropped the patch that added H_RPT_INVALIDATE calls for the nested
+  case. This patch will be posted separately along with KVM hcall
+  implementation.
+- Merged first two patches
+- A few cleanups
+- Rebased to powerpc/next
 
-The CPU setup for XIVE needs a cleanup also. There is no need to allocate
-interrupts for IPIs anymore in that case.
+v1: https://lore.kernel.org/linuxppc-dev/20200618160930.26324-1-bharata@linux.ibm.com/
 
-Thanks,
+H_RPT_INVALIDATE
+================
+Syntax:
+int64   /* H_Success: Return code on successful completion */
+        /* H_Busy - repeat the call with the same */
+        /* H_Parameter, H_P2, H_P3, H_P4, H_P5 : Invalid parameters */
+        hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate RPT translation lookaside information */
+              uint64 pid,       /* PID/LPID to invalidate */
+              uint64 target,    /* Invalidation target */
+              uint64 type,      /* Type of lookaside information */
+              uint64 pageSizes,     /* Page sizes */
+              uint64 start,     /* Start of Effective Address (EA) range (inclusive) */
+              uint64 end)       /* End of EA range (exclusive) */
 
-C. 
+Invalidation targets (target)
+-----------------------------
+Core MMU        0x01 /* All virtual processors in the partition */
+Core local MMU  0x02 /* Current virtual processor */
+Nest MMU        0x04 /* All nest/accelerator agents in use by the partition */
 
+A combination of the above can be specified, except core and core local.
 
-> 
->> diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
->> index 6891710833be..a737a2f87c67 100644
->> --- a/arch/powerpc/platforms/pseries/smp.c
->> +++ b/arch/powerpc/platforms/pseries/smp.c
->> @@ -188,13 +188,14 @@ static int pseries_smp_prepare_cpu(int cpu)
->>  	return 0;
->>  }
->>  
->> +static void  (*cause_ipi_offcore)(int cpu) __ro_after_init;
->> +
->>  static void smp_pseries_cause_ipi(int cpu)
-> 
-> This is static so the name could be more descriptive, it doesn't need
-> the "smp_pseries" prefix.
-> 
->>  {
->> -	/* POWER9 should not use this handler */
->>  	if (doorbell_try_core_ipi(cpu))
->>  		return;
-> 
-> Seems like it would be worth making that static inline so we can avoid
-> the function call overhead.
-> 
->> -	icp_ops->cause_ipi(cpu);
->> +	cause_ipi_offcore(cpu);
->>  }
->>  
->>  static int pseries_cause_nmi_ipi(int cpu)
->> @@ -222,10 +223,7 @@ static __init void pSeries_smp_probe_xics(void)
->>  {
->>  	xics_smp_probe();
->>  
->> -	if (cpu_has_feature(CPU_FTR_DBELL) && !is_secure_guest())
->> -		smp_ops->cause_ipi = smp_pseries_cause_ipi;
->> -	else
->> -		smp_ops->cause_ipi = icp_ops->cause_ipi;
->> +	smp_ops->cause_ipi = icp_ops->cause_ipi;
->>  }
->>  
->>  static __init void pSeries_smp_probe(void)
->> @@ -238,6 +236,18 @@ static __init void pSeries_smp_probe(void)
-> 
-> The comment just above here says:
-> 
-> 		/*
-> 		 * Don't use P9 doorbells when XIVE is enabled. IPIs
-> 		 * using MMIOs should be faster
-> 		 */
->>  		xive_smp_probe();
-> 
-> Which is no longer true.
-> 
->>  	else
->>  		pSeries_smp_probe_xics();
-> 
-> I think you should just fold this in, it would make the logic slightly
-> easier to follow.
-> 
->> +	/*
->> +	 * KVM emulates doorbells by reading the instruction, which
->> +	 * can't be done if the guest is secure. If a secure guest
->> +	 * runs under PowerVM, it could use msgsndp but would need a
->> +	 * way to distinguish.
->> +	 */
-> 
-> It's not clear what it needs to distinguish: That it's running under
-> PowerVM and therefore *can* use msgsndp even though it's secure.
-> 
-> Also the comment just talks about the is_secure_guest() test, which is
-> not obvious on first reading.
-> 
->> +	if (cpu_has_feature(CPU_FTR_DBELL) &&
->> +	    cpu_has_feature(CPU_FTR_SMT) && !is_secure_guest()) {
->> +		cause_ipi_offcore = smp_ops->cause_ipi;
->> +		smp_ops->cause_ipi = smp_pseries_cause_ipi;
->> +	}
-> 
-> Because we're at the tail of the function I think this would be clearer
-> if it used early returns, eg:
-> 
-> 	// If the CPU doesn't have doorbells then we must use xics/xive
-> 	if (!cpu_has_feature(CPU_FTR_DBELL))
->         	return;
-> 
-> 	// If the CPU doesn't have SMT then doorbells don't help us
-> 	if (!cpu_has_feature(CPU_FTR_SMT))
->         	return;
-> 
-> 	// Secure guests can't use doorbells because ...
-> 	if (!is_secure_guest()
->         	return;
-> 
-> 	/*
->          * Otherwise we want to use doorbells for sibling threads and
->          * xics/xive for IPIs off the core, because it performs better
->          * on large systems ...
->          */
->         cause_ipi_offcore = smp_ops->cause_ipi;
-> 	smp_ops->cause_ipi = smp_pseries_cause_ipi;
-> }
-> 
-> 
-> cheers
-> 
+Type of translation to invalidate (type)
+---------------------------------------
+NESTED       0x0001  /* Invalidate nested guest partition-scope */
+TLB          0x0002  /* Invalidate TLB */
+PWC          0x0004  /* Invalidate Page Walk Cache */
+PRT          0x0008  /* Invalidate Process Table Entries if NESTED is clear */
+PAT          0x0008  /* Invalidate Partition Table Entries if NESTED is set */
+
+A combination of the above can be specified.
+
+Page size mask (pageSizes)
+--------------------------
+4K              0x01
+64K             0x02
+2M              0x04
+1G              0x08
+All sizes       (-1UL)
+
+A combination of the above can be specified.
+All page sizes can be selected with -1.
+
+Semantics: Invalidate radix tree lookaside information
+           matching the parameters given.
+* Return H_P2, H_P3 or H_P4 if target, type, or pageSizes parameters are
+  different from the defined values.
+* Return H_PARAMETER if NESTED is set and pid is not a valid nested
+  LPID allocated to this partition
+* Return H_P5 if (start, end) doesn't form a valid range. Start and end
+  should be a valid Quadrant address and  end > start.
+* Return H_NotSupported if the partition is not in running in radix
+  translation mode.
+* May invalidate more translation information than requested.
+* If start = 0 and end = -1, set the range to cover all valid addresses.
+  Else start and end should be aligned to 4kB (lower 11 bits clear).
+* If NESTED is clear, then invalidate process scoped lookaside information.
+  Else pid specifies a nested LPID, and the invalidation is performed
+  on nested guest partition table and nested guest partition scope real
+  addresses.
+* If pid = 0 and NESTED is clear, then valid addresses are quadrant 3 and
+  quadrant 0 spaces, Else valid addresses are quadrant 0.
+* Pages which are fully covered by the range are to be invalidated.
+  Those which are partially covered are considered outside invalidation
+  range, which allows a caller to optimally invalidate ranges that may
+  contain mixed page sizes.
+* Return H_SUCCESS on success.
+
+Bharata B Rao (2):
+  powerpc/mm: Enable radix GTSE only if supported.
+  powerpc/pseries: H_REGISTER_PROC_TBL should ask for GTSE only if
+    enabled
+
+Nicholas Piggin (1):
+  powerpc/mm/book3s64/radix: Off-load TLB invalidations to host when
+    !GTSE
+
+ .../include/asm/book3s/64/tlbflush-radix.h    | 15 ++++
+ arch/powerpc/include/asm/hvcall.h             | 34 +++++++-
+ arch/powerpc/include/asm/mmu.h                |  4 +
+ arch/powerpc/include/asm/plpar_wrappers.h     | 50 +++++++++++
+ arch/powerpc/kernel/dt_cpu_ftrs.c             |  1 +
+ arch/powerpc/kernel/prom_init.c               | 13 +--
+ arch/powerpc/mm/book3s64/radix_tlb.c          | 82 +++++++++++++++++--
+ arch/powerpc/mm/init_64.c                     |  5 +-
+ arch/powerpc/platforms/pseries/lpar.c         |  8 +-
+ 9 files changed, 195 insertions(+), 17 deletions(-)
+
+-- 
+2.21.3
 
