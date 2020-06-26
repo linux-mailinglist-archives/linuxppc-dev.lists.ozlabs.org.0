@@ -2,49 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C335D20B8AF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 20:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 144B720B90C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jun 2020 21:07:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49tmHg0N8czDqtQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 04:53:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49tmbt3hTQzDqnx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 05:07:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tmXk1ZsgzDqvN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 05:04:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=n790PbLz; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49tmXk167bz8t5m
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 05:04:54 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49tmXj6C9yz9sRR; Sat, 27 Jun 2020 05:04:53 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tmFz24NtzDq7d
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 04:52:06 +1000 (AEST)
-Received: from localhost (mobile-166-170-222-206.mycingular.net
- [166.170.222.206])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id EDAD02075A;
- Fri, 26 Jun 2020 18:52:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1593197524;
- bh=E5ZeGIaQ4TvxmK01qXTN6ia+aVwiHoFFaYZso3L47YA=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=n790PbLzROZKWoZhFf+3iV0hWLyb/W4bEQ791+kAAwLaVp5omcjYgtmZzdRV/vQeO
- QC8lhrpHholCaSmgheL1iCtiGerP/zLk6/3Qqyo8gLLZtwT+jHx0pydM3LZfATP8MY
- GQG89aRpEKi6nyQJjU12vDJcIx8SPa8rhTc3PTCw=
-Date: Fri, 26 Jun 2020 13:52:02 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: refactormyself@gmail.com
-Subject: Re: [PATCH 0/8 v2] PCI: Align return values of PCIe capability and
- PCI accessors
-Message-ID: <20200626185202.GA2923565@bjorn-Precision-5520>
+ by ozlabs.org (Postfix) with ESMTPS id 49tmXh6JSWz9sQt
+ for <linuxppc-dev@ozlabs.org>; Sat, 27 Jun 2020 05:04:52 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05QJ3LYT042837; Fri, 26 Jun 2020 15:04:43 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31wjekr456-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 15:04:43 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05QJ3Q82043212;
+ Fri, 26 Jun 2020 15:04:43 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31wjekr442-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 15:04:42 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05QJ0iJp013024;
+ Fri, 26 Jun 2020 19:04:40 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 31uus53cgt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jun 2020 19:04:40 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05QJ3Ib565339788
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Jun 2020 19:03:18 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD17BA405C;
+ Fri, 26 Jun 2020 19:04:37 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A91AAA4054;
+ Fri, 26 Jun 2020 19:04:34 +0000 (GMT)
+Received: from hbathini.in.ibm.com (unknown [9.102.0.159])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 26 Jun 2020 19:04:34 +0000 (GMT)
+Subject: [PATCH 00/11] ppc64: enable kdump support for kexec_file_load syscall
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>
+Date: Sat, 27 Jun 2020 00:34:33 +0530
+Message-ID: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200615073225.24061-1-refactormyself@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-26_10:2020-06-26,
+ 2020-06-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 bulkscore=0
+ cotscore=-2147483648 mlxscore=0 clxscore=1011 lowpriorityscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006260134
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,242 +105,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Don Brace <don.brace@microsemi.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
- Mike Marciniszyn <mike.marciniszyn@intel.com>, linux-scsi@vger.kernel.org,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
- linux-pci@vger.kernel.org, Dennis Dalessandro <dennis.dalessandro@intel.com>,
- esc.storagedev@microsemi.com, Doug Ledford <dledford@redhat.com>,
- linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
- Vinod Koul <vkoul@kernel.org>, Oliver O'Halloran <oohall@gmail.com>,
- skhan@linuxfoundation.org, bjorn@helgaas.com, linuxppc-dev@lists.ozlabs.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- linux-kernel-mentees@lists.linuxfoundation.org
+Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
+ Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 15, 2020 at 09:32:17AM +0200, refactormyself@gmail.com wrote:
-> From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
-> 
-> 
-> PATCH 1/8 to 7/8:
-> PCIBIOS_ error codes have positive values and they are passed down the
-> call heirarchy from accessors. For functions which are meant to return
-> only a negative value on failure, passing on this value is a bug.
-> To mitigate this, call pcibios_err_to_errno() before passing on return
-> value from PCIe capability accessors call heirarchy. This function
-> converts any positive PCIBIOS_ error codes to negative generic error
-> values.
-> 
-> PATCH 8/8:
-> The PCIe capability accessors can return 0, -EINVAL, or any PCIBIOS_ error
-> code. The pci accessor on the other hand can only return 0 or any PCIBIOS_
-> error code.This inconsistency among these accessor makes it harder for
-> callers to check for errors.
-> Return PCIBIOS_BAD_REGISTER_NUMBER instead of -EINVAL in all PCIe
-> capability accessors.
-> 
-> MERGING:
-> These may all be merged via the PCI tree, since it is a collection of
-> similar fixes. This way they all get merged at once.
-> 
-> Version 2:
-> * cc to maintainers and mailing lists
-> * Edit the Subject to conform with previous style
-> * reorder "Signed by" and "Suggested by"
-> * made spelling corrections
-> * fixed redundant initialisation in PATCH 3/8
-> * include missing call to pcibios_err_to_errno() in PATCH 6/8 and 7/8
-> 
-> 
-> Bolarinwa Olayemi Saheed (8):
->   dmaengine: ioatdma: Convert PCIBIOS_* errors to generic -E* errors
->   IB/hfi1: Convert PCIBIOS_* errors to generic -E* errors
->   IB/hfi1: Convert PCIBIOS_* errors to generic -E* errors
->   PCI: Convert PCIBIOS_* errors to generic -E* errors
->   scsi: smartpqi: Convert PCIBIOS_* errors to generic -E* errors
->   PCI/AER: Convert PCIBIOS_* errors to generic -E* errors
->   PCI/AER: Convert PCIBIOS_* errors to generic -E* errors
->   PCI: Align return values of PCIe capability and PCI accessorss
-> 
->  drivers/dma/ioat/init.c               |  4 ++--
->  drivers/infiniband/hw/hfi1/pcie.c     | 18 +++++++++++++-----
->  drivers/pci/access.c                  |  8 ++++----
->  drivers/pci/pci.c                     | 10 ++++++++--
->  drivers/pci/pcie/aer.c                | 12 ++++++++++--
->  drivers/scsi/smartpqi/smartpqi_init.c |  6 +++++-
->  6 files changed, 42 insertions(+), 16 deletions(-)
+This patch series enables kdump support for kexec_file_load system
+call (kexec -s -p) on PPC64. The changes are inspired from kexec-tools
+code but heavily modified for kernel consumption. There is scope to
+expand purgatory to verify sha digest but tried to keep purgatory
+changes minimal in the interest of this series.
 
-Since these are really fixing a single PCI API problem, not individual
-driver-related problems, I squashed the pcibios_err_to_errno() patches
-together (except IB/hfi1, since Jason will take those separately) and
-applied them to pci/misc, thanks!
+The first patch adds a weak arch_kexec_add_buffer function to override
+locate memory hole logic suiting arch needs. There are some special
+regions in ppc64 which should be avoided while loading buffer & there
+are multiple callers to kexec_add_buffer making it too complicated to
+maintain range sanity and using generic lookup at the same time.
 
-The squashed patch as applied is:
+The second patch marks ppc64 specific code within arch/powerpc/kexec
+and arch/powerpc/purgatory to make the subsequent code changes easy
+to understand.
 
-commit d20df83b66cc ("PCI: Convert PCIe capability PCIBIOS errors to errno")
-Author: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
-Date:   Mon Jun 15 09:32:18 2020 +0200
+The next patch adds helper function to setup different memory ranges
+needed for loading kdump kernel, booting into it and exporting the
+crashing kernel's elfcore.
 
-    PCI: Convert PCIe capability PCIBIOS errors to errno
-    
-    The PCI config accessors (pci_read_config_word(), et al) return
-    PCIBIOS_SUCCESSFUL (zero) or positive error values like
-    PCIBIOS_FUNC_NOT_SUPPORTED.
-    
-    The PCIe capability accessors (pcie_capability_read_word(), et al)
-    similarly return PCIBIOS errors, but some callers assume they return
-    generic errno values like -EINVAL.
-    
-    For example, the Myri-10G probe function returns a positive PCIBIOS error
-    if the pcie_capability_clear_and_set_word() in pcie_set_readrq() fails:
-    
-      myri10ge_probe
-        status = pcie_set_readrq
-          return pcie_capability_clear_and_set_word
-        if (status)
-          return status
-    
-    A positive return from a PCI driver probe function would cause a "Driver
-    probe function unexpectedly returned" warning from local_pci_probe()
-    instead of the desired probe failure.
-    
-    Convert PCIBIOS errors to generic errno for all callers of:
-    
-      pcie_capability_read_word
-      pcie_capability_read_dword
-      pcie_capability_write_word
-      pcie_capability_write_dword
-      pcie_capability_set_word
-      pcie_capability_set_dword
-      pcie_capability_clear_word
-      pcie_capability_clear_dword
-      pcie_capability_clear_and_set_word
-      pcie_capability_clear_and_set_dword
-    
-    that check the return code for anything other than zero.
-    
-    [bhelgaas: commit log, squash together]
-    Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
-    Link: https://lore.kernel.org/r/20200615073225.24061-1-refactormyself@gmail.com
-    Signed-off-by: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
-    Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+The fourth patch overrides arch_kexec_add_buffer to locate memory
+hole for kdump segments by accounting for the special memory regions,
+referred to as excluded memory ranges, and calls __kexec_add_buffer
+with kbuf->mem set to skip the generic locate memory hole lookup.
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 58d13564f88b..9a6a9ec3cf48 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1195,13 +1195,13 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 	/* disable relaxed ordering */
- 	err = pcie_capability_read_word(pdev, IOAT_DEVCTRL_OFFSET, &val16);
- 	if (err)
--		return err;
-+		return pcibios_err_to_errno(err);
- 
- 	/* clear relaxed ordering enable */
- 	val16 &= ~IOAT_DEVCTRL_ROE;
- 	err = pcie_capability_write_word(pdev, IOAT_DEVCTRL_OFFSET, val16);
- 	if (err)
--		return err;
-+		return pcibios_err_to_errno(err);
- 
- 	if (ioat_dma->cap & IOAT_CAP_DPS)
- 		writeb(ioat_pending_level + 1,
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index ce096272f52b..45c51aff9c03 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5688,6 +5688,7 @@ EXPORT_SYMBOL(pcie_get_readrq);
- int pcie_set_readrq(struct pci_dev *dev, int rq)
- {
- 	u16 v;
-+	int ret;
- 
- 	if (rq < 128 || rq > 4096 || !is_power_of_2(rq))
- 		return -EINVAL;
-@@ -5706,8 +5707,10 @@ int pcie_set_readrq(struct pci_dev *dev, int rq)
- 
- 	v = (ffs(rq) - 8) << 12;
- 
--	return pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
-+	ret = pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
- 						  PCI_EXP_DEVCTL_READRQ, v);
-+
-+	return pcibios_err_to_errno(ret);
- }
- EXPORT_SYMBOL(pcie_set_readrq);
- 
-@@ -5738,6 +5741,7 @@ EXPORT_SYMBOL(pcie_get_mps);
- int pcie_set_mps(struct pci_dev *dev, int mps)
- {
- 	u16 v;
-+	int ret;
- 
- 	if (mps < 128 || mps > 4096 || !is_power_of_2(mps))
- 		return -EINVAL;
-@@ -5747,8 +5751,10 @@ int pcie_set_mps(struct pci_dev *dev, int mps)
- 		return -EINVAL;
- 	v <<= 5;
- 
--	return pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
-+	ret = pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
- 						  PCI_EXP_DEVCTL_PAYLOAD, v);
-+
-+	return pcibios_err_to_errno(ret);
- }
- EXPORT_SYMBOL(pcie_set_mps);
- 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 3acf56683915..2dbc1fd2910b 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -224,20 +224,25 @@ int pcie_aer_is_native(struct pci_dev *dev)
- 
- int pci_enable_pcie_error_reporting(struct pci_dev *dev)
- {
-+	int rc;
-+
- 	if (!pcie_aer_is_native(dev))
- 		return -EIO;
- 
--	return pcie_capability_set_word(dev, PCI_EXP_DEVCTL, PCI_EXP_AER_FLAGS);
-+	rc = pcie_capability_set_word(dev, PCI_EXP_DEVCTL, PCI_EXP_AER_FLAGS);
-+	return pcibios_err_to_errno(rc);
- }
- EXPORT_SYMBOL_GPL(pci_enable_pcie_error_reporting);
- 
- int pci_disable_pcie_error_reporting(struct pci_dev *dev)
- {
-+	int rc;
-+
- 	if (!pcie_aer_is_native(dev))
- 		return -EIO;
- 
--	return pcie_capability_clear_word(dev, PCI_EXP_DEVCTL,
--					  PCI_EXP_AER_FLAGS);
-+	rc = pcie_capability_clear_word(dev, PCI_EXP_DEVCTL, PCI_EXP_AER_FLAGS);
-+	return pcibios_err_to_errno(rc);
- }
- EXPORT_SYMBOL_GPL(pci_disable_pcie_error_reporting);
- 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index cd157f11eb22..bd38c8cea56e 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -7423,8 +7423,12 @@ static int pqi_ctrl_init_resume(struct pqi_ctrl_info *ctrl_info)
- static inline int pqi_set_pcie_completion_timeout(struct pci_dev *pci_dev,
- 	u16 timeout)
- {
--	return pcie_capability_clear_and_set_word(pci_dev, PCI_EXP_DEVCTL2,
-+	int rc;
-+
-+	rc = pcie_capability_clear_and_set_word(pci_dev, PCI_EXP_DEVCTL2,
- 		PCI_EXP_DEVCTL2_COMP_TIMEOUT, timeout);
-+
-+	return pcibios_err_to_errno(rc);
- }
- 
- static int pqi_pci_init(struct pqi_ctrl_info *ctrl_info)
+The fifth patch moves walk_drmem_lmbs() out of .init section with
+a few changes to reuse it for setting up kdump kernel's usable memory
+ranges. The next patch uses walk_drmem_lmbs() to look up the LMBs
+and set linux,drconf-usable-memory & linux,usable-memory properties
+in order to restrict kdump kernel's memory usage.
 
+The seventh patch adds relocation support for the purgatory. Patch 8
+helps setup the stack for the purgatory. The next patch setups up
+backup region as a segment while loading kdump kernel and teaches
+purgatory to copy it from source to destination.
+
+Patch 10 builds the elfcore header for the running kernel & passes
+the info to kdump kernel via "elfcorehdr=" parameter to export as
+/proc/vmcore file. The last patch sets up the memory reserve map
+for the kexec kernel and also claims kdump support as all the
+necessary changes are added.
+
+Tested the changes successfully on P8, P9 lpars & an OpenPOWER box.
+
+---
+
+Hari Bathini (11):
+      kexec_file: allow archs to handle special regions while locating memory hole
+      powerpc/kexec_file: mark PPC64 specific code
+      powerpc/kexec_file: add helper functions for getting memory ranges
+      ppc64/kexec_file: avoid stomping memory used by special regions
+      powerpc/drmem: make lmb walk a bit more flexible
+      ppc64/kexec_file: restrict memory usage of kdump kernel
+      ppc64/kexec_file: add support to relocate purgatory
+      ppc64/kexec_file: setup the stack for purgatory
+      ppc64/kexec_file: setup backup region for kdump kernel
+      ppc64/kexec_file: prepare elfcore header for crashing kernel
+      ppc64/kexec_file: add appropriate regions for memory reserve map
+
+
+ arch/powerpc/include/asm/crashdump-ppc64.h |   15 
+ arch/powerpc/include/asm/drmem.h           |    9 
+ arch/powerpc/include/asm/kexec.h           |   35 +
+ arch/powerpc/include/asm/kexec_ranges.h    |   18 
+ arch/powerpc/kernel/prom.c                 |   13 
+ arch/powerpc/kexec/Makefile                |    2 
+ arch/powerpc/kexec/elf_64.c                |   35 +
+ arch/powerpc/kexec/file_load.c             |   78 +
+ arch/powerpc/kexec/file_load_64.c          | 1461 ++++++++++++++++++++++++++++
+ arch/powerpc/kexec/ranges.c                |  387 +++++++
+ arch/powerpc/mm/drmem.c                    |   87 +-
+ arch/powerpc/mm/numa.c                     |   13 
+ arch/powerpc/purgatory/Makefile            |   28 -
+ arch/powerpc/purgatory/purgatory_64.c      |   35 +
+ arch/powerpc/purgatory/trampoline.S        |  117 --
+ arch/powerpc/purgatory/trampoline_64.S     |  153 +++
+ include/linux/kexec.h                      |    5 
+ kernel/kexec_file.c                        |   37 +
+ 18 files changed, 2327 insertions(+), 201 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/crashdump-ppc64.h
+ create mode 100644 arch/powerpc/include/asm/kexec_ranges.h
+ create mode 100644 arch/powerpc/kexec/file_load_64.c
+ create mode 100644 arch/powerpc/kexec/ranges.c
+ create mode 100644 arch/powerpc/purgatory/purgatory_64.c
+ delete mode 100644 arch/powerpc/purgatory/trampoline.S
+ create mode 100644 arch/powerpc/purgatory/trampoline_64.S
 
