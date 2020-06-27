@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EE320BE4B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 06:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E58B020BE4C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 06:33:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49v16c3sSfzDr73
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 14:31:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49v18S1q46zDr7f
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 14:33:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f42;
- helo=mail-qv1-xf42.google.com; envelope-from=green.hu@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f41;
+ helo=mail-qv1-xf41.google.com; envelope-from=green.hu@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gGSSgpkE; dkim-atps=neutral
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com
- [IPv6:2607:f8b0:4864:20::f42])
+ header.s=20161025 header.b=MvHmB7Co; dkim-atps=neutral
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com
+ [IPv6:2607:f8b0:4864:20::f41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49tzDw0FLlzDqHY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 13:06:51 +1000 (AEST)
-Received: by mail-qv1-xf42.google.com with SMTP id el4so1313363qvb.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 20:06:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49tzKN3kSczDr0m
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 13:10:48 +1000 (AEST)
+Received: by mail-qv1-xf41.google.com with SMTP id u8so5383433qvj.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jun 2020 20:10:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
  :cc:content-transfer-encoding;
- bh=+vuS6c1B6RhJf/Wc0BlkKUed8Ad7RKtG6ySIxBvmEW4=;
- b=gGSSgpkEGydgQhXoMv3qlsLt5mrlAk1v4a9rb3qIZhmM949nYvicKoTtRuPavC2CPS
- 4gqA1cK6C7En4OrR24pSzu/xs4Q8Gi1+rCDB936ZFtDq7qeIhGdqLhX3QVnpV1gh8i9r
- Yr+oBV7orOZer/ucN8JKx+INZnGVhvWI3lJGYoToY83TNPCD/UDAOaXkBbXLVet7FzJU
- YdFda7nN//WQKfslSPDlW95hAsPb2mC0SvZh10iM7adIharPZOJYAapANRg5t3Qkk2Sr
- ISnw9Cflf3OgJKj3vsBG2CTZKXRPGRjLof1FkbQqiDaWgHWLcla93tfKhCRAOkB8QJ9C
- IkQQ==
+ bh=IWhrpNY7xlqQrJKXws+NUUAMsOukm6peWOP/1HXT+b4=;
+ b=MvHmB7CoXy8gFuXApv7yepl4fB6XWMduaQXMKkjexs6EBNoy44PIkasc3jHMBHyJiB
+ yxhBEyUIGz1mFKbiIW6Z6EVd1zN/3Om0ihcv2ZANU5T+fKLc38RiOEMGb2NgLL5H2DD8
+ OkB0BKIcQ/hDyBhfRFCjDdgXX8QI/AoUglp4db/HlBTqkns/GK0vXrsUHCz9NIsJk+m2
+ nZR6Zm85U5R5uVuhs5vdAsSF5PQz1O80d6Jklao8cWiVNAQ2Ra92qBBpXdeW65qnyGC2
+ sizqjgIfQkQ+2ORhFs1lzaiFQCzDiaFP4uMUVTuiHqAQXpqsGfwYed6SZTkTzqXki18K
+ Lteg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc:content-transfer-encoding;
- bh=+vuS6c1B6RhJf/Wc0BlkKUed8Ad7RKtG6ySIxBvmEW4=;
- b=QBYlNEXnS7V4OjBOMe30YbcMtYrufeo8Y26mRU0zhxKCHAS8NBrqVKd6FEuYlRJaOp
- MQM8JB0xbiOuQ4g7TqkAe8sY9kYAsrRT3QPiP0DcS4bmTCgDGXA0zp+L41/eePwoxMte
- 2jgGYxWTE6HXGvjF6dqvcLo7XBxpweKimaYGNejubScy1U6GGrnMH0AgR56hqkko6FVm
- ohg2XFqehZuMXdFv4uIm9+gadfpHOxmrY93MlJwO4LkMs6F6WNvCKqeyLHhq2tNHUzDo
- Q5eR53ou1zy84Nsce73R1tscFRkS5+zRGjMsLFE+ccLzeVdFmTrhJgxkVQ8HAO5zSi9g
- en5w==
-X-Gm-Message-State: AOAM5305Gq20sypEA73i/Cwl0YsoqWXTEMie0TX9zr8yPjoNwq2CfNHG
- GgTyd6lPcDgOgaKC99XxdzlcNRvaLpDfuHWTIM0=
-X-Google-Smtp-Source: ABdhPJxYyEJ7kBLOC8G+2pCCNUUQ5BD2x0Y5L6IFg/2fsP6u4dRXqSou/wb4e51wB+OOq8JrNYw66PMvbKNI3NbZUFA=
-X-Received: by 2002:a0c:fe01:: with SMTP id x1mr5934189qvr.246.1593227207936; 
- Fri, 26 Jun 2020 20:06:47 -0700 (PDT)
+ bh=IWhrpNY7xlqQrJKXws+NUUAMsOukm6peWOP/1HXT+b4=;
+ b=JxOwRFsgbiXshclS6lVlyybIYWf/dAe0OSd4U81+zvbEbHUKEZI2JzGGhsbt0QuxG3
+ Yg94Z/nyb5sCx5RcUvGMTTZ9mo+9sIt371ErHuec/dGrtY+sbIVmk6MfH5QqpEKsKzxh
+ T3Qqm6+qr0e+mb0UoS1+t+9I4aZS8I5CKF4pTi0dwXl3OXk7caFP/g5zL9Cgq+nBJgvO
+ uMgbb3paWmihRvd1Q048ebYyz0if3jF/jJTBuuxneHSbSWKORxcK96l/HwWFNv3DRP0C
+ V/et1Q7FXCO6rP51f0hCjHeSq4smBzwXBKLgaZE87m0A/tI8I/nuf0RuqRTx0oE7OoJW
+ 9IWA==
+X-Gm-Message-State: AOAM530G5/txDAmI4SzP+pmLnWZBuX9OyljhGoOgIW/Ma42Ffd/+eFoH
+ PfB5FFuBWuVoFSeT+1BqHHXwAWJQhcJCrEyqag0=
+X-Google-Smtp-Source: ABdhPJyp9Jehi5+JPZEhH13jMa9eG8B8riQx365j3HWzuOFxMhgSO2ctkHEAU9vFA2IzNhq1RyqN2yxKJtpbp4PLly4=
+X-Received: by 2002:a0c:bda0:: with SMTP id n32mr6333372qvg.164.1593227445009; 
+ Fri, 26 Jun 2020 20:10:45 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200622234326.906346-1-christian.brauner@ubuntu.com>
- <20200622234326.906346-17-christian.brauner@ubuntu.com>
-In-Reply-To: <20200622234326.906346-17-christian.brauner@ubuntu.com>
+ <20200622234326.906346-18-christian.brauner@ubuntu.com>
+In-Reply-To: <20200622234326.906346-18-christian.brauner@ubuntu.com>
 From: Greentime Hu <green.hu@gmail.com>
-Date: Sat, 27 Jun 2020 11:06:08 +0800
-Message-ID: <CAEbi=3f3o5jS7zZDo50Vq857mS9n9kDsxkseGKrWshmmp3q5wA@mail.gmail.com>
-Subject: Re: [PATCH 16/17] arch: remove HAVE_COPY_THREAD_TLS
+Date: Sat, 27 Jun 2020 11:10:05 +0800
+Message-ID: <CAEbi=3fbt_3DBEMhWUKY04KNxR=Xv0zesFGrJJDnx5D-8KUaaw@mail.gmail.com>
+Subject: Re: [PATCH 17/17] arch: rename copy_thread_tls() back to copy_thread()
 To: Christian Brauner <christian.brauner@ubuntu.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -77,27 +77,27 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org,
  "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
- sparclinux <sparclinux@vger.kernel.org>, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
  Anton Ivanov <anton.ivanov@cambridgegreys.com>,
  Jonas Bonn <jonas@southpole.se>, linux-s390 <linux-s390@vger.kernel.org>,
  linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
  Brian Cain <bcain@codeaurora.org>, linux-xtensa@linux-xtensa.org,
  Helge Deller <deller@gmx.de>, x86@kernel.org,
  Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Mike Rapoport <rppt@linux.ibm.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
  Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
- Mark Salter <msalter@redhat.com>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
- Fenghua Yu <fenghua.yu@intel.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Mark Salter <msalter@redhat.com>, linux-csky@vger.kernel.org,
+ Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
+ uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
  Jeff Dike <jdike@addtoit.com>, linux-alpha@vger.kernel.org,
  linux-um@lists.infradead.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
@@ -107,9 +107,10 @@ Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
  Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>,
  Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
  Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
- Richard Henderson <rth@twiddle.net>, Michal Simek <monstr@monstr.eu>,
- Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Nick Hu <nickhu@andestech.com>, Vineet Gupta <vgupta@synopsys.com>,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  openrisc@lists.librecores.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Richard Weinberger <richard@nod.at>, Paul Mackerras <paulus@samba.org>,
@@ -120,17 +121,15 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Christian Brauner <christian.brauner@ubuntu.com> =E6=96=BC 2020=E5=B9=B46=
-=E6=9C=8823=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8A=E5=8D=887:46=E5=AF=AB=E9=
+=E6=9C=8823=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8A=E5=8D=887:58=E5=AF=AB=E9=
 =81=93=EF=BC=9A
 >
-> All architectures support copy_thread_tls() now, so remove the legacy
-> copy_thread() function and the HAVE_COPY_THREAD_TLS config option. Everyo=
-ne
-> uses the same process creation calling convention based on
-> copy_thread_tls() and struct kernel_clone_args. This will make it easier =
-to
-> maintain the core process creation code under kernel/, simplifies the
-> callpaths and makes the identical for all architectures.
+> Now that HAVE_COPY_THREAD_TLS has been removed, rename copy_thread_tls()
+> back simply copy_thread(). It's a simpler name, and doesn't imply that on=
+ly
+> tls is copied here. This finishes an outstanding chunk of internal proces=
+s
+> creation work since we've added clone3().
 >
 > Cc: Richard Henderson <rth@twiddle.net>
 > Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
@@ -164,8 +163,6 @@ to
 > Cc: Paul Walmsley <paul.walmsley@sifive.com>
 > Cc: Palmer Dabbelt <palmer@dabbelt.com>
 > Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
 > Cc: Christian Borntraeger <borntraeger@de.ibm.com>
 > Cc: Rich Felker <dalias@libc.org>
 > Cc: "David S. Miller" <davem@davemloft.net>
@@ -176,13 +173,15 @@ to
 > Cc: Thomas Gleixner <tglx@linutronix.de>
 > Cc: Ingo Molnar <mingo@redhat.com>
 > Cc: x86@kernel.org
-> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Chris Zankel <chris@zankel.net>
+> Cc: Max Filippov <jcmvbkbc@gmail.com>
 > Cc: Kees Cook <keescook@chromium.org>
-> Cc: Mike Rapoport <rppt@linux.ibm.com>
-> Cc: "Matthew Wilcox
+> Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 > Cc: Al Viro <viro@zeniv.linux.org.uk>
-> Cc: linux-kernel@vger.kernel.org
 > Cc: linux-alpha@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
 > Cc: linux-snps-arc@lists.infradead.org
 > Cc: linux-arm-kernel@lists.infradead.org
 > Cc: linux-c6x-dev@linux-c6x.org
@@ -202,18 +201,54 @@ to
 > Cc: linux-um@lists.infradead.org
 > Cc: linux-xtensa@linux-xtensa.org
 > Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+> ---
+>  arch/alpha/kernel/process.c      | 2 +-
+>  arch/arc/kernel/process.c        | 2 +-
+>  arch/arm/kernel/process.c        | 2 +-
+>  arch/arm64/kernel/process.c      | 2 +-
+>  arch/c6x/kernel/process.c        | 2 +-
+>  arch/csky/kernel/process.c       | 2 +-
+>  arch/h8300/kernel/process.c      | 2 +-
+>  arch/hexagon/kernel/process.c    | 2 +-
+>  arch/ia64/kernel/process.c       | 4 ++--
+>  arch/m68k/kernel/process.c       | 2 +-
+>  arch/microblaze/kernel/process.c | 2 +-
+>  arch/mips/kernel/process.c       | 2 +-
+>  arch/nds32/kernel/process.c      | 2 +-
+>  arch/nios2/kernel/process.c      | 2 +-
+>  arch/openrisc/kernel/process.c   | 4 ++--
+>  arch/parisc/kernel/process.c     | 2 +-
+>  arch/powerpc/kernel/process.c    | 2 +-
+>  arch/riscv/kernel/process.c      | 2 +-
+>  arch/s390/kernel/process.c       | 2 +-
+>  arch/sh/kernel/process_32.c      | 2 +-
+>  arch/sparc/kernel/process.c      | 6 +++---
+>  arch/sparc/kernel/process_32.c   | 2 +-
+>  arch/sparc/kernel/process_64.c   | 2 +-
+>  arch/um/kernel/process.c         | 2 +-
+>  arch/unicore32/kernel/process.c  | 2 +-
+>  arch/x86/kernel/process.c        | 2 +-
+>  arch/x86/kernel/unwind_frame.c   | 2 +-
+>  arch/xtensa/kernel/process.c     | 2 +-
+>  include/linux/sched/task.h       | 2 +-
+>  kernel/fork.c                    | 2 +-
+>  30 files changed, 34 insertions(+), 34 deletions(-)
+>
 > [...]
-> diff --git a/arch/nds32/Kconfig b/arch/nds32/Kconfig
-> index 7b6eaca81cce..e30298e99e1b 100644
-> --- a/arch/nds32/Kconfig
-> +++ b/arch/nds32/Kconfig
-> @@ -48,7 +48,6 @@ config NDS32
->         select HAVE_FUNCTION_GRAPH_TRACER
->         select HAVE_FTRACE_MCOUNT_RECORD
->         select HAVE_DYNAMIC_FTRACE
-> -       select HAVE_COPY_THREAD_TLS
->         help
->           Andes(nds32) Linux support.
+> diff --git a/arch/nds32/kernel/process.c b/arch/nds32/kernel/process.c
+> index 7dbb1bf64165..1020e2c6dcd8 100644
+> --- a/arch/nds32/kernel/process.c
+> +++ b/arch/nds32/kernel/process.c
+> @@ -149,7 +149,7 @@ void flush_thread(void)
+>  DEFINE_PER_CPU(struct task_struct *, __entry_task);
+>
+>  asmlinkage void ret_from_fork(void) __asm__("ret_from_fork");
+> -int copy_thread_tls(unsigned long clone_flags, unsigned long stack_start=
+,
+> +int copy_thread(unsigned long clone_flags, unsigned long stack_start,
+>                     unsigned long stk_sz, struct task_struct *p,
+>                     unsigned long tls)
+>  {
 
 Hi Christian, Thank you.
 Acked-by: Greentime Hu <green.hu@gmail.com>
