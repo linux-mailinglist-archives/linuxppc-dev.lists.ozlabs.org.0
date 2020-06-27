@@ -2,74 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71B920C2A6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 17:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD2B20C2A8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 17:16:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49vHLW6xrYzDrF1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 01:12:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49vHQz4k7czDqvP
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 01:16:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
- helo=mail-wm1-x341.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32b;
+ helo=mail-wm1-x32b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IIkYsAjs; dkim-atps=neutral
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
+ header.s=20161025 header.b=GDfnQLNC; dkim-atps=neutral
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com
+ [IPv6:2a00:1450:4864:20::32b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49vH3b3gGYzDr0v
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 00:59:55 +1000 (AEST)
-Received: by mail-wm1-x341.google.com with SMTP id f139so12006155wmf.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 07:59:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49vH9C049FzDrCT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 01:04:46 +1000 (AEST)
+Received: by mail-wm1-x32b.google.com with SMTP id u26so10775871wmn.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 08:04:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=wdLyniBgRhGvcPSWodPXRkUHWf+cL8Zwo2freFFNrwY=;
- b=IIkYsAjs3O8Ze+lMtA++914lTKyOOZhWrKkOhgqTuhbnpF7w/G14n70dx5d5tYLx5O
- F5EZ211rUkkGtQnxien32nXYqn+01OgW2HIO9imS/oQHQsMsFw3gTzJtYyNdqO4T6EHU
- AWTGh5/yqV8ZAukEgARp8jbVbzXop593ZxYQLU2tCz8ekmGPXyKg7kQj6ymOpX5wCCY0
- a342V7SQU2QElOO3EZLVUGo0f4o11n2znPTyMhlp/15Q607qErTD/waVa4bh/mjBtP8N
- AimFSFh/IQwKr1hSoeY4xVENXCCrEMbxjjPbU3NTOWaMiS9yos7v5cM26oYxGVr8gfCZ
- sOug==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Awl2+Dc84pQS8EzxldlSJeEwx2uf/L+aZYvfx6Px2Ys=;
+ b=GDfnQLNCjBrdUZQ8qkyI7bF7evpAV+G5A2n0GySEIkc6XcnUmURExoJ8n/6u7TqhWu
+ H4BmcQPWlR2afJdhBNTX71eh5V77xt2/pYQGdsW6xrXEv21F2gkKjL+uT53h8nU46Yj7
+ K9OzUCGyUIvIPOir3LueFvDgZW301eFX8/Js4kGKdPNy8Ci/BxQpTujVCPYCOmhhJR3r
+ +HPGKMXVUerIe/JSZLBKi5Bauqx0IZDux5A7DBsKTjZ4ST5xaf2W0br4YyAM3R6S2KYv
+ 8Vy+niBw05j4FslzlWxSwJmvFfcN4vWt3xXz6wtc0Z+lKjhRlc6RKGEm0TK/xo+EINn3
+ Kurw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=wdLyniBgRhGvcPSWodPXRkUHWf+cL8Zwo2freFFNrwY=;
- b=GuymyGL0NIMAJqnbIhyNC4L1C5P/qHbAHb9FQ2wix+lqfZoVopIoa6TC2qW96Fgfgt
- gxWZmwbLloVKkJWuuA4cgDA2R0fTRbCSRHIe3NB0ep6V+CbVjKWOzLpY0A3k23OEjzwS
- 4dK5slMx4JgSc9c+li2yP/iyl8YnXiusD0zCxUOsJBbiMAz3E4b/sHpjCQ0uVk4wo0rd
- /QOMqadgrHjOdDWWM2xrBhjmL9QfpCcKFXNqV8xSnFBL0aDxSs+LLp3HAKWzXxwxxI/C
- 7zRcn0ReKaSSylv8yNHb/cvrK9zImwERCU6Wkrh51sN39GKRszAT2EzluPB9cCuWCMjp
- PQ5Q==
-X-Gm-Message-State: AOAM530z2TQKakb2f5xXwpUCbqQMJXHl3bOOMsHpemJoDZ7NPOhga8uF
- F12Oi/qfre2KghkZxLSRn2U=
-X-Google-Smtp-Source: ABdhPJz6dCmPxPqY/YqnbJ1xaKiGwByNa14CTNgluVJnQPt++a+zuNhtzKRgCuOAyVxwBCTGC0xnEQ==
-X-Received: by 2002:a1c:f608:: with SMTP id w8mr8306425wmc.78.1593269985454;
- Sat, 27 Jun 2020 07:59:45 -0700 (PDT)
-Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id l132sm21512156wmf.6.2020.06.27.07.59.43
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Awl2+Dc84pQS8EzxldlSJeEwx2uf/L+aZYvfx6Px2Ys=;
+ b=Q+mjFJZOADjYuVo2zohNeEcj5XvT43P6axxFGpYKnNQG1q7IlNStojpJJBeIVElWXv
+ /M+QnGsIONsVrlcAIIyh3MT58jaFEuZypbuH2FzU636Yr1ShdWKvb+zY4DcKc2ebhM5n
+ BGTLo9CEASp5vdn+au6cLSklzbTve6WYizqm8904KXsz3m8ObIXMVC/SY279XXRq5iTQ
+ +sWRGQp3a0E8SuGZP84t0qvr9Y9rIk0m4K0cEzY+QI9v84HKl73rQU2nS7tWnBKecnbw
+ fG3b5EUKK6ViYKqLcJ/cdB0qmAvahnvQAXbg8jBanfKMoQfOtAVQF+yRpzDMJNperwk/
+ BHdg==
+X-Gm-Message-State: AOAM532pfVSSKqHkCjYrw89GYi5xbt5i0/rEO4fxtTVcO+pC5sZv+iIq
+ jMqEQolNlWuxrYzLIPE8vLiDpUOX
+X-Google-Smtp-Source: ABdhPJydYKhNv8V62RpFGbSQwGzEQ0A4XVBchhpf8civ1Im7u8WD89P9Zo0bs0VKz6JDlh/ly07ckg==
+X-Received: by 2002:a1c:7e94:: with SMTP id z142mr8458109wmc.124.1593270281597; 
+ Sat, 27 Jun 2020 08:04:41 -0700 (PDT)
+Received: from bobo.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id d132sm21722029wmd.35.2020.06.27.08.04.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jun 2020 07:59:44 -0700 (PDT)
-Date: Sun, 28 Jun 2020 00:59:37 +1000
+ Sat, 27 Jun 2020 08:04:41 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/pseries: Use doorbells even if XIVE is available
-To: =?iso-8859-1?q?C=E9dric?= Le Goater <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <20200624134724.2343007-1-npiggin@gmail.com>
- <87r1u4aqzm.fsf@mpe.ellerman.id.au>
- <af42c250-cf4b-0815-c91c-9363445383e7@kaod.org>
-In-Reply-To: <af42c250-cf4b-0815-c91c-9363445383e7@kaod.org>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/3] powerpc/pseries: IPI doorbell improvements
+Date: Sun, 28 Jun 2020 01:04:25 +1000
+Message-Id: <20200627150428.2525192-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Message-Id: <1593269745.ooncxk6m0x.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,56 +76,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anton Blanchard <anton@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+Cc: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
+ Anton Blanchard <anton@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from C=C3=A9dric Le Goater's message of June 26, 2020 5:17 pm:
-> Adding David,=20
->=20
-> On 6/25/20 3:11 AM, Michael Ellerman wrote:
->> Nicholas Piggin <npiggin@gmail.com> writes:
->>> KVM supports msgsndp in guests by trapping and emulating the
->>> instruction, so it was decided to always use XIVE for IPIs if it is
->>> available. However on PowerVM systems, msgsndp can be used and gives
->>> better performance. On large systems, high XIVE interrupt rates can
->>> have sub-linear scaling, and using msgsndp can reduce the load on
->>> the interrupt controller.
->>>
->>> So switch to using core local doorbells even if XIVE is available.
->>> This reduces performance for KVM guests with an SMT topology by
->>> about 50% for ping-pong context switching between SMT vCPUs.
->>=20
->> You have to take explicit steps to configure KVM in that way with qemu.
->> eg. "qemu .. -smp 8" will give you 8 SMT1 CPUs by default.
->>=20
->>> An option vector (or dt-cpu-ftrs) could be defined to disable msgsndp
->>> to get KVM performance back.
->=20
-> An option vector would require a PAPR change. Unless the architecture=20
-> reserves some bits for the implementation, but I don't think so. Same
-> for CAS.
->=20
->> Qemu/KVM populates /proc/device-tree/hypervisor, so we *could* look at
->> that. Though adding PowerVM/KVM specific hacks is obviously a very
->> slippery slope.
->=20
-> QEMU could advertise a property "emulated-msgsndp", or something similar,=
-=20
-> which would be interpreted by Linux as a CPU feature and taken into accou=
-nt=20
-> when doing the IPIs.
-
-What I'm going to do is detect KVM here (we already have a KVM detection
-test using that dt property). The IPI setup code already has KVM hacks=20
-in it, so I don't really see the problem with puting them behind a KVM
-test.
-
-I think doing cpu ftrs or some specific entry for msgsndp in particular
-is the right way to go, but in the interests of making existing KVM work
-I'll do this.
+Thanks for the review, I think I incorporated all your comments, I
+also did add KVM detection which avoids introducing a performance
+regression.
 
 Thanks,
 Nick
+
+Nicholas Piggin (3):
+  powerpc: inline doorbell sending functions
+  powerpc/pseries: Use doorbells even if XIVE is available
+  powerpc/pseries: Add KVM guest doorbell restrictions
+
+ arch/powerpc/include/asm/dbell.h          | 59 +++++++++++++++++++--
+ arch/powerpc/include/asm/firmware.h       |  2 +
+ arch/powerpc/include/asm/kvm_para.h       | 26 ++--------
+ arch/powerpc/kernel/dbell.c               | 55 --------------------
+ arch/powerpc/platforms/pseries/firmware.c | 14 +++++
+ arch/powerpc/platforms/pseries/smp.c      | 62 ++++++++++++++++-------
+ 6 files changed, 119 insertions(+), 99 deletions(-)
+
+-- 
+2.23.0
+
