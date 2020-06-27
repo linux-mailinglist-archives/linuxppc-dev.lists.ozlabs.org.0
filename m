@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CA420BFBE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 09:36:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C483520BFD9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 09:40:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49v5DB1hc9zDqZT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 17:36:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49v5J067K2zDqGk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 17:40:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=casper.20170209 header.b=Hmv49r3C; 
+ header.a=rsa-sha256 header.s=casper.20170209 header.b=XI6CndVI; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49v51f6Wg0zDqb1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 17:27:34 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49v51l3y3WzDqSJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 17:27:39 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=e+EEFqv4wjvmMJMr72kiOJnRNTJBptkSbMiAtyzJmZo=; b=Hmv49r3CEmsDSDP480cNnzfK7w
- M3s1BcGA2mZQSaWszed4Or9AOiEvLo8iLCVA3H3ujoq11ZE2F99oFhzdrm//HZOUjmgSMMBeGtDL1
- 7s4Kzo7/uoC3XaP+SzZEOcJKGplMLmqVKpk4aca1P7/gqFa+WORKj4gGb/NPXrZq+xS9QnikFae3r
- mQO19SpH9RxLFYE9PXwB3oebJuuv96VGrSxqqxREQDu/tieO9Xbo2JhxReFnbbjdoAK9oKyYnaalL
- SS6ASKKcYEsdBf+vdTxbvasr8eRWFmEeqzzVzuSsv/Eset4BUpWV5lzPXVIwRvWHCPpQ1vnzNIiTq
- dcPumu1w==;
+ bh=6JtQFSFZNuHNYVW/hbRiOl0cmjzNgKOe7nvuIEAqZOM=; b=XI6CndVIJXMc32UDFraE+/6BDg
+ kgds46nEXHDzwZqAki7Xb/CkKeJmq+gVJ2JvzJ+lQCBP0sos5RAoQ3vxfhbkC+HV9yZJWF5cYmSlt
+ yJzPIZc1/FtkoJpBFgLIg6cR0UZEiIYy/d3lp4NDmonFbNY45srXYi70rr1817pjw+ECoDyEWFE4i
+ RWKBBRkhhsWXJwaX4Gee6Ibaxv79W68lBh2leHgVD/F2uOHmizhBuO1H84Aq4FfnyBZUyjmrpaLul
+ AfaqHFl5sBzlXCSXZ33BEukRpaDWm9lpNdx9d5FLRiYJSgKkNbGtmyNGWh24+udriGn3MVst9oeaO
+ S4UZ/j6g==;
 Received: from [2001:4bb8:184:76e3:595:ba65:ae56:65a6] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jp5FD-0006X9-8n; Sat, 27 Jun 2020 07:27:24 +0000
+ id 1jp5FG-0006XG-3J; Sat, 27 Jun 2020 07:27:27 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 3/5] exec: cleanup the count() function
-Date: Sat, 27 Jun 2020 09:27:02 +0200
-Message-Id: <20200627072704.2447163-4-hch@lst.de>
+Subject: [PATCH 4/5] exec: split prepare_arg_pages
+Date: Sat, 27 Jun 2020 09:27:03 +0200
+Message-Id: <20200627072704.2447163-5-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200627072704.2447163-1-hch@lst.de>
 References: <20200627072704.2447163-1-hch@lst.de>
@@ -73,52 +73,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove the max argument as it is hard wired to MAX_ARG_STRINGS, and
-give the function a slightly less generic name.
+Move counting the arguments and enviroment variables out of
+prepare_arg_pages and rename the rest of the function to check_arg_limit.
+This prepares for a version of do_execvat that takes kernel pointers.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/exec.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/exec.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/fs/exec.c b/fs/exec.c
-index 4e5db0e35797a5..a5d91f8b1341d5 100644
+index a5d91f8b1341d5..34781db6bf6889 100644
 --- a/fs/exec.c
 +++ b/fs/exec.c
-@@ -407,9 +407,9 @@ get_user_arg_ptr(const char __user *const __user *argv, int nr)
+@@ -435,20 +435,10 @@ static int count_strings(const char __user *const __user *argv)
+ 	return i;
  }
  
- /*
-- * count() counts the number of strings in array ARGV.
-+ * count_strings() counts the number of strings in array ARGV.
-  */
--static int count(const char __user *const __user *argv, int max)
-+static int count_strings(const char __user *const __user *argv)
- {
- 	int i = 0;
- 
-@@ -423,7 +423,7 @@ static int count(const char __user *const __user *argv, int max)
- 			if (IS_ERR(p))
- 				return -EFAULT;
- 
--			if (i >= max)
-+			if (i >= MAX_ARG_STRINGS)
- 				return -E2BIG;
- 			++i;
- 
-@@ -441,11 +441,11 @@ static int prepare_arg_pages(struct linux_binprm *bprm,
+-static int prepare_arg_pages(struct linux_binprm *bprm,
+-		const char __user *const __user *argv,
+-		const char __user *const __user *envp)
++static int check_arg_limit(struct linux_binprm *bprm)
  {
  	unsigned long limit, ptr_size;
  
--	bprm->argc = count(argv, MAX_ARG_STRINGS);
-+	bprm->argc = count_strings(argv);
- 	if (bprm->argc < 0)
- 		return bprm->argc;
+-	bprm->argc = count_strings(argv);
+-	if (bprm->argc < 0)
+-		return bprm->argc;
+-
+-	bprm->envc = count_strings(envp);
+-	if (bprm->envc < 0)
+-		return bprm->envc;
+-
+ 	/*
+ 	 * Limit to 1/4 of the max stack size or 3/4 of _STK_LIM
+ 	 * (whichever is smaller) for the argv+env strings.
+@@ -1886,7 +1876,19 @@ int do_execveat(int fd, struct filename *filename,
+ 	if (retval)
+ 		goto out_unmark;
  
--	bprm->envc = count(envp, MAX_ARG_STRINGS);
+-	retval = prepare_arg_pages(bprm, argv, envp);
++	bprm->argc = count_strings(argv);
++	if (bprm->argc < 0) {
++		retval = bprm->argc;
++		goto out;
++	}
++
 +	bprm->envc = count_strings(envp);
- 	if (bprm->envc < 0)
- 		return bprm->envc;
++	if (bprm->envc < 0) {
++		retval = bprm->envc;
++		goto out;
++	}
++
++	retval = check_arg_limit(bprm);
+ 	if (retval < 0)
+ 		goto out;
  
 -- 
 2.26.2
