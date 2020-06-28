@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DD220C630
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 06:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DA920C5F5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 06:39:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49vdQG0GVtzDr7G
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 14:47:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49vdFZ2zYFzDqXM
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 14:39:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,16 +17,17 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=telegraphics.com.au
 Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
  [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49vd4P25vKzDr0p
+ by lists.ozlabs.org (Postfix) with ESMTP id 49vd4N4PbyzDr0p
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 14:31:48 +1000 (AEST)
 Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
- id 4625629708; Sun, 28 Jun 2020 00:31:44 -0400 (EDT)
+ id B339B2970D; Sun, 28 Jun 2020 00:31:44 -0400 (EDT)
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Message-Id: <0253194363af4426f9788796811a6a29fb87c713.1593318192.git.fthain@telegraphics.com.au>
+Message-Id: <779551219a11b19e574dfcd87e4ef60af08c4fc3.1593318192.git.fthain@telegraphics.com.au>
 In-Reply-To: <cover.1593318192.git.fthain@telegraphics.com.au>
 References: <cover.1593318192.git.fthain@telegraphics.com.au>
 From: Finn Thain <fthain@telegraphics.com.au>
-Subject: [PATCH 4/9] macintosh/via-macii: Remove read_done state
+Subject: [PATCH 6/9] macintosh/via-macii: Use bool type for reading_reply
+ variable
 Date: Sun, 28 Jun 2020 14:23:12 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -47,140 +48,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The driver state machine may enter the 'read_done' state when leaving the
-'idle' or 'reading' state. This transition is pointless, as is the extra
-interrupt it requires. The interrupt is produced by the transceiver
-(even when it has no data to send) because an extra EVEN/ODD toggle
-was signalled by the driver. Drop the extra state to simplify the code.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2") # v5.0+
 Tested-by: Stan Johnson <userm57@yahoo.com>
 Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 ---
- drivers/macintosh/via-macii.c | 70 ++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 42 deletions(-)
+ drivers/macintosh/via-macii.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
-index 6a5cd7de05baf..d29c87943ca46 100644
+index 8d5ef77b4a435..e143ddb81de34 100644
 --- a/drivers/macintosh/via-macii.c
 +++ b/drivers/macintosh/via-macii.c
-@@ -110,7 +110,6 @@ static enum macii_state {
- 	idle,
- 	sending,
- 	reading,
--	read_done,
- } macii_state;
+@@ -116,7 +116,7 @@ static struct adb_request *current_req; /* first request struct in the queue */
+ static struct adb_request *last_req;     /* last request struct in the queue */
+ static unsigned char reply_buf[16];        /* storage for autopolled replies */
+ static unsigned char *reply_ptr;     /* next byte in reply_buf or req->reply */
+-static int reading_reply;        /* store reply in reply_buf else req->reply */
++static bool reading_reply;       /* store reply in reply_buf else req->reply */
+ static int data_index;      /* index of the next byte to send from req->data */
+ static int reply_len; /* number of bytes received in reply_buf or req->reply */
+ static int status;          /* VIA's ADB status bits captured upon interrupt */
+@@ -394,7 +394,7 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
+ 		WARN_ON((status & ST_MASK) != ST_IDLE);
  
- static struct adb_request *current_req; /* first request struct in the queue */
-@@ -411,8 +410,8 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
- 			reply_len = 1;
- 		} else {
- 			/* bus timeout */
--			macii_state = read_done;
- 			reply_len = 0;
-+			break;
- 		}
+ 		reply_ptr = reply_buf;
+-		reading_reply = 0;
++		reading_reply = false;
  
- 		/* set ADB state = even for first data byte */
-@@ -471,20 +470,6 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
- 				current_req = req->next;
- 				if (req->done)
- 					(*req->done)(req);
--
--				if (!current_req)
--					macii_queue_poll();
--
--				if (current_req && macii_state == idle)
--					macii_start();
--
--				if (macii_state == idle) {
--					/* reset to shift in */
--					via[ACR] &= ~SR_OUT;
--					x = via[SR];
--					/* set ADB state idle - might get SRQ */
--					via[B] = (via[B] & ~ST_MASK) | ST_IDLE;
--				}
- 				break;
- 			}
- 		} else {
-@@ -511,12 +496,28 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
- 			} else if (status == ST_ODD && reply_len == 2) {
- 				srq_asserted = true;
- 			} else {
--				macii_state = read_done;
-+				macii_state = idle;
-+
-+				if (bus_timeout)
-+					reply_len = 0;
-+
-+				if (reading_reply) {
-+					struct adb_request *req = current_req;
-+
-+					req->reply_len = reply_len;
-+
-+					req->complete = 1;
-+					current_req = req->next;
-+					if (req->done)
-+						(*req->done)(req);
-+				} else if (reply_len && autopoll_devs) {
-+					adb_input(reply_buf, reply_len, 0);
-+				}
-+				break;
- 			}
- 		}
+ 		bus_timeout = false;
+ 		srq_asserted = false;
+@@ -442,7 +442,7 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
+ 			 */
+ 			macii_state = reading;
  
--		if (macii_state == reading &&
--		    reply_len < ARRAY_SIZE(reply_buf)) {
-+		if (reply_len < ARRAY_SIZE(reply_buf)) {
- 			reply_ptr++;
- 			*reply_ptr = x;
- 			reply_len++;
-@@ -526,37 +527,22 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
- 		via[B] ^= ST_MASK;
- 		break;
- 
--	case read_done:
--		x = via[SR];
--
--		if (bus_timeout)
--			reply_len = 0;
--
--		if (reading_reply) {
 -			reading_reply = 0;
--			req = current_req;
--			req->reply_len = reply_len;
--			req->complete = 1;
--			current_req = req->next;
--			if (req->done)
--				(*req->done)(req);
--		} else if (reply_len && autopoll_devs)
--			adb_input(reply_buf, reply_len, 0);
--
--		macii_state = idle;
-+	default:
-+		break;
-+	}
++			reading_reply = false;
+ 			reply_ptr = reply_buf;
+ 			*reply_ptr = last_talk_cmd;
+ 			reply_len = 1;
+@@ -456,7 +456,7 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
+ 			if (req->reply_expected) {
+ 				macii_state = reading;
  
-+	if (macii_state == idle) {
- 		if (!current_req)
- 			macii_queue_poll();
+-				reading_reply = 1;
++				reading_reply = true;
+ 				reply_ptr = req->reply;
+ 				*reply_ptr = req->data[1];
+ 				reply_len = 1;
+@@ -466,7 +466,7 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
+ 			} else if ((req->data[1] & OP_MASK) == TALK) {
+ 				macii_state = reading;
  
- 		if (current_req)
- 			macii_start();
- 
--		if (macii_state == idle)
-+		if (macii_state == idle) {
-+			via[ACR] &= ~SR_OUT;
-+			x = via[SR];
- 			via[B] = (via[B] & ~ST_MASK) | ST_IDLE;
--		break;
--
--	default:
--		break;
-+		}
- 	}
- 
- 	local_irq_restore(flags);
+-				reading_reply = 0;
++				reading_reply = false;
+ 				reply_ptr = reply_buf;
+ 				*reply_ptr = req->data[1];
+ 				reply_len = 1;
 -- 
 2.26.2
 
