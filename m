@@ -1,54 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D669E20C546
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 03:54:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9D620C55D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 04:16:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49vYZb0rYlzDr4r
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 11:54:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49vZ4j5XbSzDrBm
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 12:16:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49vZ2v0pF9zDqZG
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 12:15:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.76;
- helo=conuserg-09.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=ahJ3uto2; 
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=MxH8pyMw; 
  dkim-atps=neutral
-Received: from conuserg-09.nifty.com (conuserg-09.nifty.com [210.131.2.76])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49vZ2t5FSQz9Ch2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 12:15:18 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49vZ2t4cgyz9sQt; Sun, 28 Jun 2020 12:15:18 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=piliu@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=MxH8pyMw; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49vYXv47NJzDqwm
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 11:52:46 +1000 (AEST)
-Received: from oscar.flets-west.jp (softbank126090202047.bbtec.net
- [126.90.202.47]) (authenticated)
- by conuserg-09.nifty.com with ESMTP id 05S1oixP004742;
- Sun, 28 Jun 2020 10:50:44 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com 05S1oixP004742
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1593309045;
- bh=hkY77VUGXSYac7YbrIkUecBgq7WORaGieZmySJIL5UA=;
- h=From:To:Cc:Subject:Date:From;
- b=ahJ3uto2fhcnzsnIdLNU74S4vUyrlAQ4RsoPaFq9zt9MQ9rNbQLVQSS7jxeu5Q8si
- hZ34tVZRnliSC5lwB2mp+XhuUvw+20+ogpJbv2SrSVGwLunHSwliobc980NNYxgtNV
- 7KoTg5pXNDlDue+Qw95dB65tKTenO+yJoYpKMjA+pouECDFfbNgi/Gl3GphBAEx2jt
- JIId1nbEsdrcgnMp1nLu2y0LwNlkZ7F/kd88h+53l3Wy2U7beVZi9x+0lCqdPuAiyn
- xq4P1+iR/S7vXT/ZdlGa6TQaScQErK5xw4F96tYA3UgjBxvfSj1llEDfgf/+ZBEQh9
- WQo1lz/K7CrLw==
-X-Nifty-SrcIP: [126.90.202.47]
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Subject: [PATCH] kbuild: introduce ccflags-remove-y and asflags-remove-y
-Date: Sun, 28 Jun 2020 10:50:41 +0900
-Message-Id: <20200628015041.1000002-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.25.1
+ by ozlabs.org (Postfix) with ESMTPS id 49vZ2s5FNfz9s6w
+ for <linuxppc-dev@ozlabs.org>; Sun, 28 Jun 2020 12:15:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1593310511;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lHkgXPvbueXVaPuDj59YhQ91Y40VbEgtT/Lr+w0Uch8=;
+ b=MxH8pyMwyJGdCXLWpSktzkLwyjXWU4xFvrksqBHhW1rbchRvV2Uk54Eq2nHCjJ6YFHgizn
+ YykcN24VQIzcPkCbR5q9gQ2+5XX+AJYsg9ksCo9P2hUZCm53//ekoye5Ktr3VJVbOMYN4C
+ niaiYnEL9YLcmv2QlH28BAPENOLUUlc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-265-PAXJtsQhO8aJIB4xBY0o4Q-1; Sat, 27 Jun 2020 22:15:00 -0400
+X-MC-Unique: PAXJtsQhO8aJIB4xBY0o4Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A0AB98015F0;
+ Sun, 28 Jun 2020 02:14:57 +0000 (UTC)
+Received: from [10.72.8.17] (ovpn-8-17.pek2.redhat.com [10.72.8.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2030E5C662;
+ Sun, 28 Jun 2020 02:14:47 +0000 (UTC)
+Subject: Re: [PATCH 04/11] ppc64/kexec_file: avoid stomping memory used by
+ special regions
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
+ <159319831192.16351.17443438699302756548.stgit@hbathini.in.ibm.com>
+From: piliu <piliu@redhat.com>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <9cfda789-0747-a67a-b825-5ea6f15099b8@redhat.com>
+Date: Sun, 28 Jun 2020 10:14:43 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <159319831192.16351.17443438699302756548.stgit@hbathini.in.ibm.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,134 +95,454 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
- Masahiro Yamada <masahiroy@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Sami Tolvanen <samitolvanen@google.com>,
- Rich Felker <dalias@libc.org>, linux-arm-kernel@lists.infradead.org
+Cc: Kexec-ml <kexec@lists.infradead.org>, Petr Tesarik <ptesarik@suse.cz>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CFLAGS_REMOVE_<file>.o works per object, that is, there is no
-convenient way to filter out flags for every object in a directory.
+Hi Hari,
 
-Add ccflags-remove-y and asflags-remove-y to make it easily.
+After a quick through for this series, I have a few question/comment on
+this patch for the time being. Pls see comment inline.
 
-Use ccflags-remove-y to clean up some Makefiles.
+On 06/27/2020 03:05 AM, Hari Bathini wrote:
+> crashkernel region could have an overlap with special memory regions
+> like  opal, rtas, tce-table & such. These regions are referred to as
+> exclude memory ranges. Setup this ranges during image probe in order
+> to avoid them while finding the buffer for different kdump segments.
+> Implement kexec_locate_mem_hole_ppc64() that locates a memory hole
+> accounting for these ranges. Also, override arch_kexec_add_buffer()
+> to locate a memory hole & later call __kexec_add_buffer() function
+> with kbuf->mem set to skip the generic locate memory hole lookup.
+> 
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/crashdump-ppc64.h |   10 +
+>  arch/powerpc/include/asm/kexec.h           |    7 -
+>  arch/powerpc/kexec/elf_64.c                |    7 +
+>  arch/powerpc/kexec/file_load_64.c          |  292 ++++++++++++++++++++++++++++
+>  4 files changed, 312 insertions(+), 4 deletions(-)
+>  create mode 100644 arch/powerpc/include/asm/crashdump-ppc64.h
+> 
+> diff --git a/arch/powerpc/include/asm/crashdump-ppc64.h b/arch/powerpc/include/asm/crashdump-ppc64.h
+> new file mode 100644
+> index 0000000..3596c25
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/crashdump-ppc64.h
+> @@ -0,0 +1,10 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +#ifndef _ARCH_POWERPC_KEXEC_CRASHDUMP_PPC64_H
+> +#define _ARCH_POWERPC_KEXEC_CRASHDUMP_PPC64_H
+> +
+> +/* min & max addresses for kdump load segments */
+> +#define KDUMP_BUF_MIN		(crashk_res.start)
+> +#define KDUMP_BUF_MAX		((crashk_res.end < ppc64_rma_size) ? \
+> +				 crashk_res.end : (ppc64_rma_size - 1))
+> +
+> +#endif /* __ARCH_POWERPC_KEXEC_CRASHDUMP_PPC64_H */
+> diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+> index 7008ea1..bf47a01 100644
+> --- a/arch/powerpc/include/asm/kexec.h
+> +++ b/arch/powerpc/include/asm/kexec.h
+> @@ -100,14 +100,16 @@ void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_co
+>  #ifdef CONFIG_KEXEC_FILE
+>  extern const struct kexec_file_ops kexec_elf64_ops;
+>  
+> -#ifdef CONFIG_IMA_KEXEC
+>  #define ARCH_HAS_KIMAGE_ARCH
+>  
+>  struct kimage_arch {
+> +	struct crash_mem *exclude_ranges;
+> +
+> +#ifdef CONFIG_IMA_KEXEC
+>  	phys_addr_t ima_buffer_addr;
+>  	size_t ima_buffer_size;
+> -};
+>  #endif
+> +};
+>  
+>  int setup_purgatory(struct kimage *image, const void *slave_code,
+>  		    const void *fdt, unsigned long kernel_load_addr,
+> @@ -125,6 +127,7 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>  			unsigned long initrd_load_addr,
+>  			unsigned long initrd_len, const char *cmdline);
+>  #endif /* CONFIG_PPC64 */
+> +
+>  #endif /* CONFIG_KEXEC_FILE */
+>  
+>  #else /* !CONFIG_KEXEC_CORE */
+> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+> index 23ad04c..c695f94 100644
+> --- a/arch/powerpc/kexec/elf_64.c
+> +++ b/arch/powerpc/kexec/elf_64.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/of_fdt.h>
+>  #include <linux/slab.h>
+>  #include <linux/types.h>
+> +#include <asm/crashdump-ppc64.h>
+>  
+>  static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  			unsigned long kernel_len, char *initrd,
+> @@ -46,6 +47,12 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  	if (ret)
+>  		goto out;
+>  
+> +	if (image->type == KEXEC_TYPE_CRASH) {
+> +		/* min & max buffer values for kdump case */
+> +		kbuf.buf_min = pbuf.buf_min = KDUMP_BUF_MIN;
+> +		kbuf.buf_max = pbuf.buf_max = KDUMP_BUF_MAX;
+> +	}
+> +
+>  	ret = kexec_elf_load(image, &ehdr, &elf_info, &kbuf, &kernel_load_addr);
+>  	if (ret)
+>  		goto out;
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index e6bff960..f1d7160 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -17,6 +17,8 @@
+>  #include <linux/kexec.h>
+>  #include <linux/of_fdt.h>
+>  #include <linux/libfdt.h>
+> +#include <asm/kexec_ranges.h>
+> +#include <asm/crashdump-ppc64.h>
+>  
+>  const struct kexec_file_ops * const kexec_file_loaders[] = {
+>  	&kexec_elf64_ops,
+> @@ -24,6 +26,247 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
+>  };
+>  
+>  /**
+> + * get_exclude_memory_ranges - Get exclude memory ranges. This list includes
+> + *                             regions like opal/rtas, tce-table, initrd,
+> + *                             kernel, htab which should be avoided while
+> + *                             setting up kexec load segments.
+> + * @mem_ranges:                Range list to add the memory ranges to.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int get_exclude_memory_ranges(struct crash_mem **mem_ranges)
+Is it needed? See the comment below.
+> +{
+> +	int ret;
+> +
+> +	ret = add_tce_mem_ranges(mem_ranges);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_initrd_mem_range(mem_ranges);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_htab_mem_range(mem_ranges);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_kernel_mem_range(mem_ranges);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_rtas_mem_range(mem_ranges, false);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_opal_mem_range(mem_ranges, false);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_reserved_ranges(mem_ranges);
+> +	if (ret)
+> +		goto out;
+> +
+> +	/* exclude memory ranges should be sorted for easy lookup */
+> +	sort_memory_ranges(*mem_ranges);
+> +out:
+> +	if (ret)
+> +		pr_err("Failed to setup exclude memory ranges\n");
+> +	return ret;
+> +}
+> +
+> +/**
+> + * __locate_mem_hole_ppc64 - Tests if the memory hole between buf_min & buf_max
+> + *                           is large enough for the buffer. If true, sets
+> + *                           kbuf->mem to the buffer.
+> + * @kbuf:                    Buffer contents and memory parameters.
+> + * @buf_min:                 Minimum address for the buffer.
+> + * @buf_max:                 Maximum address for the buffer.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int __locate_mem_hole_ppc64(struct kexec_buf *kbuf,
+> +				   u64 buf_min, u64 buf_max)
+> +{
+> +	int ret = -EADDRNOTAVAIL;
+> +
+> +	buf_min = ALIGN(buf_min, kbuf->buf_align);
+> +
+> +	if (buf_min < buf_max &&
+> +	    (buf_max - buf_min + 1) >= kbuf->memsz) {
+> +		/*
+> +		 * Suitable memory range found. Set kbuf->mem here to skip
+> +		 * locate memory hole routine in __kexec_add_buffer() call.
+> +		 */
+> +		ret = 0;
+> +		if (kbuf->top_down)
+> +			kbuf->mem = ALIGN_DOWN(buf_max - kbuf->memsz + 1,
+> +					       kbuf->buf_align);
+> +		else
+> +			kbuf->mem = buf_min;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * locate_mem_hole_top_down_ppc64 - Skip special memory regions to find a
+> + *                                  suitable buffer with top down approach.
+> + * @kbuf:                           Buffer contents and memory parameters.
+> + * @buf_min:                        Minimum address for the buffer.
+> + * @buf_max:                        Maximum address for the buffer.
+> + * @emem:                           Exclude memory ranges.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int locate_mem_hole_top_down_ppc64(struct kexec_buf *kbuf,
+> +					  u64 buf_min, u64 buf_max,
+> +					  const struct crash_mem *emem)
+> +{
+> +	int i, ret = 0, err = -EADDRNOTAVAIL;
+> +	u64 start, end, tmin, tmax;
+> +
+> +	tmax = buf_max;
+> +	for (i = (emem->nr_ranges - 1); i >= 0; i--) {
+> +		start = emem->ranges[i].start;
+> +		end = emem->ranges[i].end;
+> +
+> +		if (start > tmax)
+> +			continue;
+> +
+> +		if (end < tmax) {
+> +			tmin = (end < buf_min ? buf_min : end + 1);
+> +			ret = __locate_mem_hole_ppc64(kbuf, tmin, tmax);
+> +			if (!ret)
+> +				return 0;
+> +		}
+> +
+> +		tmax = start - 1;
+> +
+> +		if (tmax < buf_min) {
+> +			ret = err;
+> +			break;
+> +		}
+> +		ret = 0;
+> +	}
+> +
+> +	if (!ret) {
+> +		tmin = buf_min;
+> +		ret = __locate_mem_hole_ppc64(kbuf, tmin, tmax);
+> +	}
+> +	return ret;
+> +}
+> +
+> +/**
+> + * locate_mem_hole_bottom_up_ppc64 - Skip special memory regions to find a
+> + *                                   suitable buffer with bottom up approach.
+> + * @kbuf:                            Buffer contents and memory parameters.
+> + * @buf_min:                         Minimum address for the buffer.
+> + * @buf_max:                         Maximum address for the buffer.
+> + * @emem:                            Exclude memory ranges.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int locate_mem_hole_bottom_up_ppc64(struct kexec_buf *kbuf,
+> +					   u64 buf_min, u64 buf_max,
+> +					   const struct crash_mem *emem)
+> +{
+> +	int i, ret = 0, err = -EADDRNOTAVAIL;
+> +	u64 start, end, tmin, tmax;
+> +
+> +	tmin = buf_min;
+> +	for (i = 0; i < emem->nr_ranges; i++) {
+> +		start = emem->ranges[i].start;
+> +		end = emem->ranges[i].end;
+> +
+> +		if (end < tmin)
+> +			continue;
+> +
+> +		if (start > tmin) {
+> +			tmax = (start > buf_max ? buf_max : start - 1);
+> +			ret = __locate_mem_hole_ppc64(kbuf, tmin, tmax);
+> +			if (!ret)
+> +				return 0;
+> +		}
+> +
+> +		tmin = end + 1;
+> +
+> +		if (tmin > buf_max) {
+> +			ret = err;
+> +			break;
+> +		}
+> +		ret = 0;
+> +	}
+> +
+> +	if (!ret) {
+> +		tmax = buf_max;
+> +		ret = __locate_mem_hole_ppc64(kbuf, tmin, tmax);
+> +	}
+> +	return ret;
+> +}
+> +
+> +/**
+> + * kexec_locate_mem_hole_ppc64 - Skip special memory regions like rtas,
+> + *                               tce-table, opal, reserved-ranges & such
+> + *                               (exclude memory ranges) as they can't be
+> + *                               used for kexec segment buffer. Use buf_min
+> + *                               & buf_max fields in kexec_buf structure to
+> + *                               skip regions. Sets kbuf->mem when a
+> + *                               suitable memory hole is found.
+> + * @kbuf:                        Buffer contents and memory parameters.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int kexec_locate_mem_hole_ppc64(struct kexec_buf *kbuf)
+> +{
+> +	struct crash_mem **emem;
+> +	u64 buf_min, buf_max;
+> +	int ret;
+> +
+> +	/*
+> +	 * Use the locate_mem_hole logic in kexec_add_buffer() for regular
+> +	 * kexec_file_load syscall
+> +	 */
+> +	if (kbuf->image->type != KEXEC_TYPE_CRASH)
+> +		return 0;
+Can the ranges overlap [crashk_res.start, crashk_res.end]?  Otherwise
+there is no requirement for @exclude_ranges.
 
-Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
 
- arch/arm/boot/compressed/Makefile | 6 +-----
- arch/powerpc/xmon/Makefile        | 3 +--
- arch/sh/boot/compressed/Makefile  | 5 +----
- kernel/trace/Makefile             | 4 ++--
- lib/Makefile                      | 5 +----
- scripts/Makefile.lib              | 4 ++--
- 6 files changed, 8 insertions(+), 19 deletions(-)
+I guess you have a design for future. If not true, then it is better to
+fold the condition "if (kbuf->image->type != KEXEC_TYPE_CRASH)" into the
+caller and rename this function to better distinguish use cases between
+kexec and kdump
 
-diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
-index 00602a6fba04..3d5691b23951 100644
---- a/arch/arm/boot/compressed/Makefile
-+++ b/arch/arm/boot/compressed/Makefile
-@@ -103,13 +103,9 @@ clean-files += piggy_data lib1funcs.S ashldi3.S bswapsdi2.S hyp-stub.S
- 
- KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
- 
--ifeq ($(CONFIG_FUNCTION_TRACER),y)
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
--endif
--
- ccflags-y := -fpic $(call cc-option,-mno-single-pic-base,) -fno-builtin \
- 	     -I$(obj) $(DISABLE_ARM_SSP_PER_TASK_PLUGIN)
-+ccflags-remove-$(CONFIG_FUNCTION_TRACER) += -pg
- asflags-y := -DZIMAGE
- 
- # Supply kernel BSS size to the decompressor via a linker symbol.
-diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-index 89c76ca35640..55cbcdd88ac0 100644
---- a/arch/powerpc/xmon/Makefile
-+++ b/arch/powerpc/xmon/Makefile
-@@ -7,8 +7,7 @@ UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- 
- # Disable ftrace for the entire directory
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
-+ccflags-remove-y += $(CC_FLAGS_FTRACE)
- 
- ifdef CONFIG_CC_IS_CLANG
- # clang stores addresses on the stack causing the frame size to blow
-diff --git a/arch/sh/boot/compressed/Makefile b/arch/sh/boot/compressed/Makefile
-index ad0e2403e56f..589d2d8a573d 100644
---- a/arch/sh/boot/compressed/Makefile
-+++ b/arch/sh/boot/compressed/Makefile
-@@ -28,10 +28,7 @@ IMAGE_OFFSET	:= $(shell /bin/bash -c 'printf "0x%08x" \
- 			$(CONFIG_BOOT_LINK_OFFSET)]')
- endif
- 
--ifeq ($(CONFIG_MCOUNT),y)
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst -pg, , $(ORIG_CFLAGS))
--endif
-+ccflags-remove-$(CONFIG_MCOUNT) += -pg
- 
- LDFLAGS_vmlinux := --oformat $(ld-bfd) -Ttext $(IMAGE_OFFSET) -e startup \
- 		   -T $(obj)/../../kernel/vmlinux.lds
-diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
-index 6575bb0a0434..7492844a8b1b 100644
---- a/kernel/trace/Makefile
-+++ b/kernel/trace/Makefile
-@@ -2,9 +2,9 @@
- 
- # Do not instrument the tracer itself:
- 
-+ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
-+
- ifdef CONFIG_FUNCTION_TRACER
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
- 
- # Avoid recursion due to instrumentation.
- KCSAN_SANITIZE := n
-diff --git a/lib/Makefile b/lib/Makefile
-index b1c42c10073b..b2ed4beddd68 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -3,10 +3,7 @@
- # Makefile for some libs needed in the kernel.
- #
- 
--ifdef CONFIG_FUNCTION_TRACER
--ORIG_CFLAGS := $(KBUILD_CFLAGS)
--KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
--endif
-+ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
- 
- # These files are disabled because they produce lots of non-interesting and/or
- # flaky coverage that is not a function of syscall inputs. For example,
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 99ac59c59826..5da420f13f9b 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -113,10 +113,10 @@ modfile_flags  = -DKBUILD_MODFILE=$(call stringify,$(modfile))
- 
- orig_c_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) \
-                  $(ccflags-y) $(CFLAGS_$(target-stem).o)
--_c_flags       = $(filter-out $(CFLAGS_REMOVE_$(target-stem).o), $(orig_c_flags))
-+_c_flags       = $(filter-out $(ccflags-remove-y) $(CFLAGS_REMOVE_$(target-stem).o), $(orig_c_flags))
- orig_a_flags   = $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) \
-                  $(asflags-y) $(AFLAGS_$(target-stem).o)
--_a_flags       = $(filter-out $(AFLAGS_REMOVE_$(target-stem).o), $(orig_a_flags))
-+_a_flags       = $(filter-out $(asflags-remove-y) $(AFLAGS_REMOVE_$(target-stem).o), $(orig_a_flags))
- _cpp_flags     = $(KBUILD_CPPFLAGS) $(cppflags-y) $(CPPFLAGS_$(target-stem).lds)
- 
- #
--- 
-2.25.1
+Thanks,
+Pingfan
+> +
+> +	/* Look up the exclude ranges list while locating the memory hole */
+> +	emem = &(kbuf->image->arch.exclude_ranges);
+> +	if (!(*emem) || ((*emem)->nr_ranges == 0)) {
+> +		pr_warn("No exclude range list. Using the default locate mem hole method\n");
+> +		return 0;
+> +	}
+> +
+> +	/* Ensure minimum alignment needed for segments. */
+> +	kbuf->memsz = ALIGN(kbuf->memsz, PAGE_SIZE);
+> +	kbuf->buf_align = max(kbuf->buf_align, PAGE_SIZE);
+> +
+> +	/* Segments for kdump kernel should be within crashkernel region */
+> +	buf_min = (kbuf->buf_min < crashk_res.start ?
+> +		   crashk_res.start : kbuf->buf_min);
+> +	buf_max = (kbuf->buf_max > crashk_res.end ?
+> +		   crashk_res.end : kbuf->buf_max);
+> +
+> +	if (buf_min > buf_max) {
+> +		pr_err("Invalid buffer min and/or max values\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (kbuf->top_down)
+> +		ret = locate_mem_hole_top_down_ppc64(kbuf, buf_min, buf_max,
+> +						     *emem);
+> +	else
+> +		ret = locate_mem_hole_bottom_up_ppc64(kbuf, buf_min, buf_max,
+> +						      *emem);
+> +
+> +	/* Add the buffer allocated to the exclude list for the next lookup */
+> +	if (!ret) {
+> +		add_mem_range(emem, kbuf->mem, kbuf->memsz);
+> +		sort_memory_ranges(*emem);
+> +	}
+> +	return ret;
+> +}
+> +
+> +/**
+>   * setup_purgatory_ppc64 - initialize PPC64 specific purgatory's global
+>   *                         variables and call setup_purgatory() to initialize
+>   *                         common global variable.
+> @@ -89,6 +332,29 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>  }
+>  
+>  /**
+> + * arch_kexec_add_buffer - Locate memory hole before calling kexec_add_buffer().
+> + *                         All kexec_add_buffer() callers should use this
+> + *                         function instead.
+> + * @kbuf:                  Buffer contents and memory parameters.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +int arch_kexec_add_buffer(struct kexec_buf *kbuf)
+> +{
+> +	int ret;
+> +
+> +	ret = kexec_locate_mem_hole_ppc64(kbuf);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = __kexec_add_buffer(kbuf);
+> +out:
+> +	if (ret)
+> +		pr_err("Failed to add buffer of size %lu\n", kbuf->memsz);
+> +	return ret;
+> +}
+> +
+> +/**
+>   * arch_kexec_kernel_image_probe - Does additional handling needed to setup
+>   *                                 kexec segments.
+>   * @image:                         kexec image being loaded.
+> @@ -100,9 +366,31 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>  int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
+>  				  unsigned long buf_len)
+>  {
+> -	/* We don't support crash kernels yet. */
+> -	if (image->type == KEXEC_TYPE_CRASH)
+> +	if (image->type == KEXEC_TYPE_CRASH) {
+> +		int ret;
+> +
+> +		/* Get exclude memory ranges needed for setting up kdump segments */
+> +		ret = get_exclude_memory_ranges(&(image->arch.exclude_ranges));
+> +		if (ret)
+> +			pr_err("Failed to setup exclude memory ranges for buffer lookup\n");
+> +		/* Return this until all changes for panic kernel are in */
+>  		return -EOPNOTSUPP;
+> +	}
+>  
+>  	return kexec_image_probe_default(image, buf, buf_len);
+>  }
+> +
+> +/**
+> + * arch_kimage_file_post_load_cleanup - Frees up all the allocations done
+> + *                                      while loading the image.
+> + * @image:                              kexec image being loaded.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +int arch_kimage_file_post_load_cleanup(struct kimage *image)
+> +{
+> +	kfree(image->arch.exclude_ranges);
+> +	image->arch.exclude_ranges = NULL;
+> +
+> +	return kexec_image_post_load_cleanup_default(image);
+> +}
+> 
+> 
+> _______________________________________________
+> kexec mailing list
+> kexec@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kexec
+> 
 
