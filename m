@@ -1,73 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A2220C45A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jun 2020 23:25:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0941320C540
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 03:47:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49vRcX4007zDr9S
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 07:25:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49vYQk27nmzDrCM
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 11:47:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=shorne@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=KrOHe2Al; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49vRZV1FZpzDr9C
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 07:23:43 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id e9so6555724pgo.9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jun 2020 14:23:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=mizxgkzS/h5RAiTRnXHHAMYgNZSKy87tz0psMUuXu0c=;
- b=KrOHe2AlaGQ7tV28Vl9qyOQ0elfd8r//wq4xzvB5xDb5jWlg6mXfsKxabi0zi9yPbE
- a3CGp38U8cqw2mebqkt6TnvwzPA6E6KEcgpIj8HCQ1rHyHT3QVxyrownujSHvkYTCVSa
- Gy95rzA2weVyQoDCaBGwSARvG5wXI2h42LYwK1iUZUWKUYeZG14+sFo/aPCYLw2NwZJj
- nBqydL7WFvWCAVkBuzJ2gva+wATslrp9imqMIKL3E0H/YMoAyiaNhBbjIsjfeCv51DOd
- WRdGRRQ8YZYlJSkPBIPY8Mf5k8q0bkdsr138mWgQL9YfzyKrJwEngJSJT/C0ZJyP38ue
- p6eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=mizxgkzS/h5RAiTRnXHHAMYgNZSKy87tz0psMUuXu0c=;
- b=mEmCWv8bxZSqV792kRRaB3HlfZhl4k48izUxFH2+2CUsk86Dl88fWRWtz9Fq6ZZu4H
- 0S/wfHxYPQEy2v6YpQfOghwSFwMyG4vfyt1Jw6ff0MBEMrdJUEA643WtnZIfH2ZCXEx7
- f8HXRonOOTIOu3yFItvb9HCa5caJDT0C/dRbwc3/3jR0QV9aFt+zOLN+hkk7RBx2dC3d
- dYRVSrInPff8mYwD/xVsbboI4Y3VJMUI+VtIpsXKtO+o3eeaYs55DcDQvju1BOkm0p7G
- mH9mP/I4XB7udfDWLoxj4KLpLr5xC9qe5P15mQsNF4Nqq4u5Kob46QCfsJa1lEsRf3wE
- tLsg==
-X-Gm-Message-State: AOAM532cnCp9TUpa2nQ39pnjQOsynCH9VO0qCrCC5fhY4VLKqmTVI94e
- SaCPvXW+9s+qTNv7Jx4WkPA=
-X-Google-Smtp-Source: ABdhPJyLzAtm2TextcgHnw6pDE2t7RidtLOm1t9FNzgTafND17DEExqOaKhxKo2F07v49LSV9JtDbQ==
-X-Received: by 2002:a62:e305:: with SMTP id g5mr8523544pfh.115.1593293018476; 
- Sat, 27 Jun 2020 14:23:38 -0700 (PDT)
-Received: from localhost (g2.222-224-226.ppp.wakwak.ne.jp. [222.224.226.2])
- by smtp.gmail.com with ESMTPSA id mw5sm15217406pjb.27.2020.06.27.14.23.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jun 2020 14:23:37 -0700 (PDT)
-Date: Sun, 28 Jun 2020 06:23:35 +0900
-From: Stafford Horne <shorne@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 2/8] opeinrisc: switch to generic version of pte allocation
-Message-ID: <20200627212335.GJ1401039@lianli.shorne-pla.net>
-References: <20200627143453.31835-1-rppt@kernel.org>
- <20200627143453.31835-3-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49vYM93DhBzDr7N
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 11:44:16 +1000 (AEST)
+IronPort-SDR: 7BV90lvujnDTRqlkCOmnKZq5Y5crRusGu4AmUWWAzC4bknOTfLnY3g+TZ71+SVYQNmKmJ3x1xA
+ CtSagqfLj34w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9665"; a="133195937"
+X-IronPort-AV: E=Sophos;i="5.75,289,1589266800"; d="scan'208";a="133195937"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2020 18:44:11 -0700
+IronPort-SDR: wWYHZYoQCXBGJFMZM33LbNeoERLxskknExAHCqU1CxhCRRHSBnHqt5AygcP4+4MRKGGvBMGUlG
+ iNyGWsfQDwZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,289,1589266800"; d="scan'208";a="302703972"
+Received: from lkp-server01.sh.intel.com (HELO 538b5e3c8319) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 27 Jun 2020 18:44:10 -0700
+Received: from kbuild by 538b5e3c8319 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jpMMb-000334-QP; Sun, 28 Jun 2020 01:44:09 +0000
+Date: Sun, 28 Jun 2020 09:43:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 896066aa0685af3434637998b76218c2045142a8
+Message-ID: <5ef7f5d4.w/4m/5Is9iO7pAgo%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200627143453.31835-3-rppt@kernel.org>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,38 +58,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, linux-csky@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- linux-hexagon@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- Andy Lutomirski <luto@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jun 27, 2020 at 05:34:47PM +0300, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Replace pte_alloc_one(), pte_free() and pte_free_kernel() with the generic
-> implementation. The only actual functional change is the addition of
-> __GFP_ACCOUT for the allocation of the user page tables.
-> 
-> The pte_alloc_one_kernel() is kept back because its implementation on
-> openrisc is different than the generic one.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: 896066aa0685af3434637998b76218c2045142a8  selftests/powerpc: Fix build failure in ebb tests
 
-Thank's for this.
+elapsed time: 2777m
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+configs tested: 159
+configs skipped: 7
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arc                     haps_hs_smp_defconfig
+s390                             allyesconfig
+powerpc                          g5_defconfig
+mips                        jmr3927_defconfig
+sh                           se7751_defconfig
+arm                       imx_v6_v7_defconfig
+arm                            xcep_defconfig
+arm                      pxa255-idp_defconfig
+arm                          tango4_defconfig
+arm                         cm_x300_defconfig
+sh                         microdev_defconfig
+m68k                             allmodconfig
+powerpc                       ppc64_defconfig
+arm                             pxa_defconfig
+arm                         lpc18xx_defconfig
+mips                           ip27_defconfig
+arm                     eseries_pxa_defconfig
+mips                      loongson3_defconfig
+m68k                             alldefconfig
+nios2                         10m50_defconfig
+mips                     decstation_defconfig
+arm                       versatile_defconfig
+mips                          ath25_defconfig
+mips                        nlm_xlp_defconfig
+sparc                            allyesconfig
+arm                       netwinder_defconfig
+mips                    maltaup_xpa_defconfig
+powerpc                    gamecube_defconfig
+h8300                       h8s-sim_defconfig
+sh                          landisk_defconfig
+sh                          kfr2r09_defconfig
+mips                  maltasmvp_eva_defconfig
+sh                         apsh4a3a_defconfig
+openrisc                    or1ksim_defconfig
+i386                             alldefconfig
+sh                           se7724_defconfig
+mips                     loongson1b_defconfig
+nds32                             allnoconfig
+parisc                            allnoconfig
+arm                            lart_defconfig
+mips                           jazz_defconfig
+x86_64                           alldefconfig
+arm                         s3c2410_defconfig
+powerpc                     mpc512x_defconfig
+openrisc                 simple_smp_defconfig
+sh                           cayman_defconfig
+arm                         bcm2835_defconfig
+sh                  sh7785lcr_32bit_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20200624
+x86_64               randconfig-a002-20200624
+x86_64               randconfig-a003-20200624
+x86_64               randconfig-a005-20200624
+x86_64               randconfig-a001-20200624
+x86_64               randconfig-a006-20200624
+x86_64               randconfig-a002-20200628
+x86_64               randconfig-a004-20200628
+x86_64               randconfig-a003-20200628
+x86_64               randconfig-a005-20200628
+x86_64               randconfig-a001-20200628
+x86_64               randconfig-a006-20200628
+i386                 randconfig-a002-20200624
+i386                 randconfig-a006-20200624
+i386                 randconfig-a003-20200624
+i386                 randconfig-a001-20200624
+i386                 randconfig-a005-20200624
+i386                 randconfig-a004-20200624
+i386                 randconfig-a006-20200628
+i386                 randconfig-a002-20200628
+i386                 randconfig-a003-20200628
+i386                 randconfig-a001-20200628
+i386                 randconfig-a005-20200628
+i386                 randconfig-a004-20200628
+i386                 randconfig-a013-20200624
+i386                 randconfig-a016-20200624
+i386                 randconfig-a012-20200624
+i386                 randconfig-a014-20200624
+i386                 randconfig-a011-20200624
+i386                 randconfig-a015-20200624
+i386                 randconfig-a013-20200628
+i386                 randconfig-a016-20200628
+i386                 randconfig-a014-20200628
+i386                 randconfig-a012-20200628
+i386                 randconfig-a015-20200628
+i386                 randconfig-a011-20200628
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                                  defconfig
+um                               allyesconfig
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
