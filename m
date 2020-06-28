@@ -1,52 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3BD20C6B4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 09:12:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5228120C8EE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 18:13:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49vhdy6XBTzDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Jun 2020 17:12:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49vwfQ5wH6zDqsG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 02:13:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=UyijhxBt; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49vhc20SvzzDqlW
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Jun 2020 17:10:57 +1000 (AEST)
-Received: from kernel.org (unknown [87.71.40.38])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3D65920775;
- Sun, 28 Jun 2020 07:10:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1593328255;
- bh=yK/mmEcayAp4K1SoJVYgv0KctiM5CGqsdRXbo6D8DTo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=UyijhxBtiPImkMHKkSGIyXWOBHqIqoPqHi03HWzaGBbmBhYKOSRUunGTmaRWc4Gjn
- 2TMA+ldpEEnMFu0kFYBgT1B2G/Iqyrdp18UacvMYdOXnb2Y4yh/FSazt4w3nUe/3UB
- VKf4vf+8Dah0/sxlNf+Z75XPskzsJ/8NsyHkTS2A=
-Date: Sun, 28 Jun 2020 10:10:44 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 4/8] asm-generic: pgalloc: provide generic
- pmd_alloc_one() and pmd_free_one()
-Message-ID: <20200628071044.GC576120@kernel.org>
-References: <20200627143453.31835-1-rppt@kernel.org>
- <20200627143453.31835-5-rppt@kernel.org>
- <20200627190304.GG25039@casper.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49vwcT5bSXzDqP6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 02:12:09 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05SG39VW175324; Sun, 28 Jun 2020 12:11:59 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31x2m7xatx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 28 Jun 2020 12:11:59 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05SG7eIj031558;
+ Sun, 28 Jun 2020 16:11:57 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma05fra.de.ibm.com with ESMTP id 31wwr88net-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 28 Jun 2020 16:11:56 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05SGBrks35586218
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 28 Jun 2020 16:11:53 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D0528A4053;
+ Sun, 28 Jun 2020 16:11:53 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AA88BA4040;
+ Sun, 28 Jun 2020 16:11:51 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.85.74.221])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Sun, 28 Jun 2020 16:11:51 +0000 (GMT)
+Date: Sun, 28 Jun 2020 21:41:49 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: Re: [PATCH v3 0/4] Migrate non-migrated pages of a SVM.
+Message-ID: <20200628161149.GA27215@in.ibm.com>
+References: <1592606622-29884-1-git-send-email-linuxram@us.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200627190304.GG25039@casper.infradead.org>
+In-Reply-To: <1592606622-29884-1-git-send-email-linuxram@us.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-28_11:2020-06-26,
+ 2020-06-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=1 mlxlogscore=943
+ phishscore=0 bulkscore=0 mlxscore=0 priorityscore=1501
+ cotscore=-2147483648 clxscore=1015 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006280120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,62 +84,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, linux-csky@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- linux-hexagon@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- Andy Lutomirski <luto@kernel.org>, Stafford Horne <shorne@gmail.com>,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Reply-To: bharata@linux.ibm.com
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jun 27, 2020 at 08:03:04PM +0100, Matthew Wilcox wrote:
-> On Sat, Jun 27, 2020 at 05:34:49PM +0300, Mike Rapoport wrote:
-> > More elaborate versions on arm64 and x86 account memory for the user page
-> > tables and call to pgtable_pmd_page_ctor() as the part of PMD page
-> > initialization.
-> > 
-> > Move the arm64 version to include/asm-generic/pgalloc.h and use the generic
-> > version on several architectures.
-> > 
-> > The pgtable_pmd_page_ctor() is a NOP when ARCH_ENABLE_SPLIT_PMD_PTLOCK is
-> > not enabled, so there is no functional change for most architectures except
-> > of the addition of __GFP_ACCOUNT for allocation of user page tables.
+On Fri, Jun 19, 2020 at 03:43:38PM -0700, Ram Pai wrote:
+> The time taken to switch a VM to Secure-VM, increases by the size of the VM.  A
+> 100GB VM takes about 7minutes. This is unacceptable.  This linear increase is
+> caused by a suboptimal behavior by the Ultravisor and the Hypervisor.  The
+> Ultravisor unnecessarily migrates all the GFN of the VM from normal-memory to
+> secure-memory. It has to just migrate the necessary and sufficient GFNs.
 > 
-> Thanks for including this line; it reminded me that we're not setting
-> the PageTable flag on the page, nor accounting it to the zone page stats.
-> Hope you don't mind me tagging a patch to do that on as 9/8.
+> However when the optimization is incorporated in the Ultravisor, the Hypervisor
+> starts misbehaving. The Hypervisor has a inbuilt assumption that the Ultravisor
+> will explicitly request to migrate, each and every GFN of the VM. If only
+> necessary and sufficient GFNs are requested for migration, the Hypervisor
+> continues to manage the remaining GFNs as normal GFNs. This leads of memory
+> corruption, manifested consistently when the SVM reboots.
 > 
-> We could also do with a pud_page_[cd]tor and maybe even p4d/pgd versions.
-> But that brings me to the next question -- could/should some of this
-> be moved over to asm-generic/pgalloc.h?  The ctor/dtor aren't called
-> from anywhere else, and there's value to reducing the total amount of
-> code in mm.h, but then there's also value to keeping all the ifdef
-> ARCH_ENABLE_SPLIT_PMD_PTLOCK code together too.  So I'm a bit torn.
-> What do you think?
+> The same is true, when a memory slot is hotplugged into a SVM. The Hypervisor
+> expects the ultravisor to request migration of all GFNs to secure-GFN.  But at
+> the same time, the hypervisor is unable to handle any H_SVM_PAGE_IN requests
+> from the Ultravisor, done in the context of UV_REGISTER_MEM_SLOT ucall.  This
+> problem manifests as random errors in the SVM, when a memory-slot is
+> hotplugged.
+> 
+> This patch series automatically migrates the non-migrated pages of a SVM,
+>      and thus solves the problem.
 
-There are arhcitectures that don't use asm-generic/pgalloc.h but rather
-have their own, sometimes completely different, versoins of these
-funcitons.
+So this is what I understand as the objective of this patchset:
 
-I've tried adding linux/pgalloc.h, but I've ended up with contradicting
-need to include asm/pgalloc.h before the generic code for some
-architecures or after the generic code for others :)
+1. Getting all the pages into the secure memory right when the guest
+   transitions into secure mode is expensive. Ultravisor wants to just get
+   the necessary and sufficient pages in and put the onus on the Hypervisor
+   to mark the remaining pages (w/o actual page-in) as secure during
+   H_SVM_INIT_DONE.
+2. During H_SVM_INIT_DONE, you want a way to differentiate the pages that
+   are already secure from the pages that are shared and that are paged-out.
+   For this you are introducing all these new states in HV.
 
-I think let's leave it in mm.h for now, maybe after several more cleaups
-we could do better.
+UV knows about the shared GFNs and maintains the state of the same. Hence
+let HV send all the pages (minus already secured pages) via H_SVM_PAGE_IN
+and if UV finds any shared pages in them, let it fail the uv-page-in call.
+Then HV can fail the migration for it  and the page continues to remain
+shared. With this, you don't need to maintain a state for secured GFN in HV.
 
--- 
-Sincerely yours,
-Mike.
+In the unlikely case of sending a paged-out page to UV during
+H_SVM_INIT_DONE, let the page-in succeed and HV will fault on it again
+if required. With this, you don't need a state in HV to identify a
+paged-out-but-encrypted state.
+
+Doesn't the above work? If so, we can avoid all those extra states
+in HV. That way HV can continue to differentiate only between two types
+of pages: secure and not-secure. The rest of the states (shared,
+paged-out-encrypted) actually belong to SVM/UV and let UV take care of
+them.
+
+Or did I miss something?
+
+Regards,
+Bharata.
