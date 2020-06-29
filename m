@@ -1,122 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A69920CD19
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 10:02:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057A320CD2C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 10:11:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wKhw0VBWzDqWJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 18:02:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wKvZ5B0TzDqXL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 18:11:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=samsung.com (client-ip=210.118.77.11;
- helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256
- header.s=mail20170921 header.b=s6EBXoym; 
- dkim-atps=neutral
-X-Greylist: delayed 513 seconds by postgrey-1.36 at bilbo;
- Mon, 29 Jun 2020 18:00:28 AEST
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com
- [210.118.77.11])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wKfh0dz7zDqTM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 18:00:26 +1000 (AEST)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
- by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
- 20200629075143euoutp01f0f39ed3e9987b337606ea2cea564c5d~c9GnogEET0891208912euoutp01B
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 07:51:43 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
- 20200629075143euoutp01f0f39ed3e9987b337606ea2cea564c5d~c9GnogEET0891208912euoutp01B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1593417103;
- bh=dQ9Doz3UBs0xgD6IFLX1j1JQ9wXrq3erbykFtgNQuDY=;
- h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
- b=s6EBXoymUWh9R+b1KtkNXgxwspIJxNs1VFHDgdhYWFeOHzFCRC8u46/Zm6PSfE90Y
- GVJDflUobNNHFng+q6WlyYuTXrfESnjJb0irk0vdcPQ6X3kBEjS8+QLq/0HUrfTobM
- LcGKLwYcnQ9Mz40qqpfl6izB0v8nAVKZbT4P161E=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
- eucas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20200629075143eucas1p118ab028a0335d12e8906b9ce64d4253e~c9GnHwKVj3253332533eucas1p1t;
- Mon, 29 Jun 2020 07:51:43 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
- eusmges1new.samsung.com (EUCPMTA) with SMTP id 91.C1.06456.F8D99FE5; Mon, 29
- Jun 2020 08:51:43 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
- eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
- 20200629075142eucas1p1d1cf615c77342a874310bfc853b3ed5d~c9GmlEi_T3259232592eucas1p1t;
- Mon, 29 Jun 2020 07:51:42 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
- eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20200629075142eusmtrp1fb024f39aa4ea00e14ad66a0ec1cc68c~c9GmkFrfa2414324143eusmtrp17;
- Mon, 29 Jun 2020 07:51:42 +0000 (GMT)
-X-AuditID: cbfec7f2-809ff70000001938-4c-5ef99d8f1bb6
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
- eusmgms1.samsung.com (EUCPMTA) with SMTP id CB.6A.06314.E8D99FE5; Mon, 29
- Jun 2020 08:51:42 +0100 (BST)
-Received: from [106.210.88.143] (unknown [106.210.88.143]) by
- eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
- 20200629075141eusmtip1660c2664e074b9ed3be926930118c382~c9GlPVr7z1159711597eusmtip1P;
- Mon, 29 Jun 2020 07:51:41 +0000 (GMT)
-Subject: Re: [PATCH 01/13] iommu/exynos: Use dev_iommu_priv_get/set()
-To: Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <f69cc934-1fcc-c311-7bc0-22472befa796@samsung.com>
-Date: Mon, 29 Jun 2020 09:51:41 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49wKsY0Gf2zDqKh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 18:09:50 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BD271FB;
+ Mon, 29 Jun 2020 01:09:48 -0700 (PDT)
+Received: from [10.163.83.176] (unknown [10.163.83.176])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F0F113F71E;
+ Mon, 29 Jun 2020 01:09:38 -0700 (PDT)
+Subject: Re: [PATCH V3 2/4] mm/debug_vm_pgtable: Add tests validating advanced
+ arch page table helpers
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-mm@kvack.org
+References: <1592192277-8421-1-git-send-email-anshuman.khandual@arm.com>
+ <1592192277-8421-3-git-send-email-anshuman.khandual@arm.com>
+ <6da177e6-9219-9ccf-a402-f4293c7564f7@csgroup.eu>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <bdea0704-11a5-aab3-c9ce-a9e388394836@arm.com>
+Date: Mon, 29 Jun 2020 13:39:28 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20200625130836.1916-2-joro@8bytes.org>
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <6da177e6-9219-9ccf-a402-f4293c7564f7@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa1CMYRid97vtt7HNZ0WPywyzLjM0SbnM6zImt5nXH6N/BsXim0KF/eQ+
- SrJYK2UH2a215VKapRSbbSQt2qmUtDMrJkIxomhCinFp+0L/znPOeeY5Z+bhaXUFN5rfFL9D
- 1MVrYzWcH+Oo7K0LPpnVGzXd2OaPT9RVUbg4/SaHO5MP0/jTZSPCvx3pNE6/YqKx/sxC/Pv1
- BxZb0oopbCufh3M9BQiXZVP4mKVQgU3VWRQuavGyuPPoRxZ7SjM57DpdhvCPb79YnJwyA99I
- cnHYfv+CApebvQrcW2plcHv9CwanNM3CPYUtbPgY0lphpYjdakfE431Mk5y2JIaUddsY4jQ/
- V5DivKnkwu02ihjbU1hSlH+MIyXdL1lirYogzcfdFCm+mEhMjbmIPMrIRisCVvnN3yjGbtop
- 6kIWrPOL6bxvobcdDNpt0bdQSShtggEpeRBmQm2ngzMgP14t5CHIrzpIycMXBOXJhQPKZwT2
- 5mzF35XUslRWFnIROHK6kTx8QnDdeYT1uYYLS6G05CTlwwHCEnjS41H4TLSQp4Bq6x3kEzgh
- FAwdBs6HVcICeJdS348ZYRK8zahlfHiEEAmpl2wDnmFQda61n1f2xbja1NJ/jBbGQUlHJi3j
- QHjWer6/BAhHlNBcUcnKuZdAdoMXyXg4vHffGOgzFmpMRkZeOITgVd1VhTwYEXiSMwY25kFT
- 3fe+GHzfiSlQUBoi0wtB//A946NB8IfGjmFyCH845ThLy7QKjurVsnsymN3X/p2tqG+g05DG
- PKiaeVAd86A65v93bYjJR4FighQXLUqh8eKuaZI2TkqIj562YWtcEep77Jpf7q5b6GvDehcS
- eKQZqgp/3BOlZrU7pT1xLgQ8rQlQLaqtiVKrNmr37BV1W9fqEmJFyYXG8IwmUDUjpy1SLURr
- d4hbRHGbqPurUrxydBK6Fbbvdm3UxyzT9g32598b17zq8VpCEsUTy7AmyKC03A0OCD/zqHrm
- 3NUrl77l7mb9GH8vZooeZr85UDlq/37n4tc5EY6Rc9CVUzZdr2p+cFrY2hE/nxS8GzqnXZ04
- yT2kqKv6+HJ+NnnZ+hVNfBC2MjPykvNB0GbJGTzZG7L56Z3QLg0jxWhDp9I6SfsHQHazEtQD
- AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRTH+d3HHtbiNpV+WGAsemB17c5sP/OBlcGvqCiCiB7q0ouLnIvd
- KdkfukRFrcwlmU1d2ssMeznTUpc4e7DCUgfrgZmlhFGmGU1F0Zwa+N+Hc76fwzlwJKTcSftJ
- jicZeH2SOlEh8qJeT778tD6/bCx6Q9f9AHT+jYNAVtMjERrKyCLR4K1zAE3VmUhkqiokUXbR
- FjT19QeNSgqsBCpvDkWVzvsA2SoIlFvyQIwKX5URqKbXRaOhnF80cjaUipD9kg2g8ZFJGmVk
- BqFao12Eqp9dF6Nms0uMxhosFPrZ3k2hzK5gNPqgl45civtaLASutlQD7HR1kPjadyOFbe5y
- Cj8xfxJj6+0AfL3pO4HP/cykcc2dXBGud/fQ2OLYhz+ffUlg6410XPi+EuC3xRVgr88hNkyv
- SzbwyzU6wRCuOMwhJcuFIFa5MYTlglRHNyuDFYERYfF84vEUXh8YEctqhp6VkCfPrD1Vkt1L
- GEHBijwglUBmI8y35dN5wEsiZ24CaP57QTzbWAYdRUZ6lr3hhCtPNBsaAHBgeBB4Gt7MdthQ
- f4HwsA8TBd+NOsWeEMlUi2F7f+Wc8RDAP7WTM4aI4WDegGeUVCJjImB/ZvsMU8xK+K24jfKw
- L3MUurtr5zKLoeNK30xdOr3r3a7emZVIZhO0WL+Qs+wP6wdK53gJ/Nh3lSgAcvM83TxPMc9T
- zPOUckDdAT58sqBN0AocK6i1QnJSAhun09aA6YeqezFmfQw6H+63A0YCFAtlkR2j0XJanSKk
- au0ASkiFj2xr2+touSxenXqa1+ti9MmJvGAHwdPHmUg/3zjd9HsmGWK4YE6FQjhVkCpoE1Is
- keUwLUfkTILawJ/g+ZO8/r9HSKR+RnAxbFfjsYvbNNHxu9urfD+sZsMrUsZVS/vTmka0Jz7a
- XPee35CvKftc725tdQ92p6c2h6w76K98bvIuim3p2UcXb3EsWomlX7L6Dvjv0IgWRLW4OidS
- OrOVByOz7OyiU1FVO28nXN6ZMf60oOhFG8GuKvyNGtPWgtCePTEVqcOWOAUlaNRcAKkX1P8A
- S4B8M2YDAAA=
-X-CMS-MailID: 20200629075142eucas1p1d1cf615c77342a874310bfc853b3ed5d
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe
-References: <20200625130836.1916-1-joro@8bytes.org>
- <CGME20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe@eucas1p2.samsung.com>
- <20200625130836.1916-2-joro@8bytes.org>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,155 +51,379 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
- David Airlie <airlied@linux.ie>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Thierry Reding <thierry.reding@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Will Deacon <will@kernel.org>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Fenghua Yu <fenghua.yu@intel.com>,
- Joerg Roedel <jroedel@suse.de>, intel-gfx@lists.freedesktop.org,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- linux-arm-kernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Daniel Vetter <daniel@ffwll.ch>, David Woodhouse <dwmw2@infradead.org>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, ziy@nvidia.com,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, gerald.schaefer@de.ibm.com,
+ christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25.06.2020 15:08, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
->
-> Remove the use of dev->archdata.iommu and use the private per-device
-> pointer provided by IOMMU core code instead.
->
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> ---
->   drivers/iommu/exynos-iommu.c                  | 20 +++++++++----------
->   .../media/platform/s5p-mfc/s5p_mfc_iommu.h    |  4 +++-
->   2 files changed, 13 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/iommu/exynos-iommu.c b/drivers/iommu/exynos-iommu.c
-> index 60c8a56e4a3f..6a9b67302369 100644
-> --- a/drivers/iommu/exynos-iommu.c
-> +++ b/drivers/iommu/exynos-iommu.c
-> @@ -173,7 +173,7 @@ static u32 lv2ent_offset(sysmmu_iova_t iova)
->   #define REG_V5_FAULT_AR_VA	0x070
->   #define REG_V5_FAULT_AW_VA	0x080
->   
-> -#define has_sysmmu(dev)		(dev->archdata.iommu != NULL)
-> +#define has_sysmmu(dev)		(dev_iommu_priv_get(dev) != NULL)
->   
->   static struct device *dma_dev;
->   static struct kmem_cache *lv2table_kmem_cache;
-> @@ -226,7 +226,7 @@ static const struct sysmmu_fault_info sysmmu_v5_faults[] = {
->   };
->   
->   /*
-> - * This structure is attached to dev.archdata.iommu of the master device
-> + * This structure is attached to dev->iommu->priv of the master device
->    * on device add, contains a list of SYSMMU controllers defined by device tree,
->    * which are bound to given master device. It is usually referenced by 'owner'
->    * pointer.
-> @@ -670,7 +670,7 @@ static int __maybe_unused exynos_sysmmu_suspend(struct device *dev)
->   	struct device *master = data->master;
->   
->   	if (master) {
-> -		struct exynos_iommu_owner *owner = master->archdata.iommu;
-> +		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
->   
->   		mutex_lock(&owner->rpm_lock);
->   		if (data->domain) {
-> @@ -688,7 +688,7 @@ static int __maybe_unused exynos_sysmmu_resume(struct device *dev)
->   	struct device *master = data->master;
->   
->   	if (master) {
-> -		struct exynos_iommu_owner *owner = master->archdata.iommu;
-> +		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
->   
->   		mutex_lock(&owner->rpm_lock);
->   		if (data->domain) {
-> @@ -837,8 +837,8 @@ static void exynos_iommu_domain_free(struct iommu_domain *iommu_domain)
->   static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
->   				    struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
->   	struct exynos_iommu_domain *domain = to_exynos_domain(iommu_domain);
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
->   	struct sysmmu_drvdata *data, *next;
->   	unsigned long flags;
-> @@ -875,8 +875,8 @@ static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
->   static int exynos_iommu_attach_device(struct iommu_domain *iommu_domain,
->   				   struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
->   	struct exynos_iommu_domain *domain = to_exynos_domain(iommu_domain);
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data;
->   	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
->   	unsigned long flags;
-> @@ -1237,7 +1237,7 @@ static phys_addr_t exynos_iommu_iova_to_phys(struct iommu_domain *iommu_domain,
->   
->   static struct iommu_device *exynos_iommu_probe_device(struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data;
->   
->   	if (!has_sysmmu(dev))
-> @@ -1263,7 +1263,7 @@ static struct iommu_device *exynos_iommu_probe_device(struct device *dev)
->   
->   static void exynos_iommu_release_device(struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data;
->   
->   	if (!has_sysmmu(dev))
-> @@ -1287,8 +1287,8 @@ static void exynos_iommu_release_device(struct device *dev)
->   static int exynos_iommu_of_xlate(struct device *dev,
->   				 struct of_phandle_args *spec)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
->   	struct platform_device *sysmmu = of_find_device_by_node(spec->np);
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data, *entry;
->   
->   	if (!sysmmu)
-> @@ -1305,7 +1305,7 @@ static int exynos_iommu_of_xlate(struct device *dev,
->   
->   		INIT_LIST_HEAD(&owner->controllers);
->   		mutex_init(&owner->rpm_lock);
-> -		dev->archdata.iommu = owner;
-> +		dev_iommu_priv_set(dev, owner);
->   	}
->   
->   	list_for_each_entry(entry, &owner->controllers, owner_node)
-> diff --git a/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h b/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
-> index 152a713fff78..1a32266b7ddc 100644
-> --- a/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
-> +++ b/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
-> @@ -9,9 +9,11 @@
->   
->   #if defined(CONFIG_EXYNOS_IOMMU)
->   
-> +#include <linux/iommu.h>
-> +
->   static inline bool exynos_is_iommu_available(struct device *dev)
->   {
-> -	return dev->archdata.iommu != NULL;
-> +	return dev_iommu_priv_get(dev) != NULL;
->   }
->   
->   #else
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+On 06/27/2020 12:48 PM, Christophe Leroy wrote:
+> Le 15/06/2020 à 05:37, Anshuman Khandual a écrit :
+>> This adds new tests validating for these following arch advanced page table
+>> helpers. These tests create and test specific mapping types at various page
+>> table levels.
+>>
+>> 1. pxxp_set_wrprotect()
+>> 2. pxxp_get_and_clear()
+>> 3. pxxp_set_access_flags()
+>> 4. pxxp_get_and_clear_full()
+>> 5. pxxp_test_and_clear_young()
+>> 6. pxx_leaf()
+>> 7. pxx_set_huge()
+>> 8. pxx_(clear|mk)_savedwrite()
+>> 9. huge_pxxp_xxx()
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Mike Rapoport <rppt@linux.ibm.com>
+>> Cc: Vineet Gupta <vgupta@synopsys.com>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+>> Cc: Vasily Gorbik <gor@linux.ibm.com>
+>> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Borislav Petkov <bp@alien8.de>
+>> Cc: "H. Peter Anvin" <hpa@zytor.com>
+>> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+>> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>> Cc: linux-snps-arc@lists.infradead.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: linux-s390@vger.kernel.org
+>> Cc: linux-riscv@lists.infradead.org
+>> Cc: x86@kernel.org
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-arch@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>>   mm/debug_vm_pgtable.c | 306 ++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 306 insertions(+)
+>>
+>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>> index ffa163d4c63c..e3f9f8317a98 100644
+>> --- a/mm/debug_vm_pgtable.c
+>> +++ b/mm/debug_vm_pgtable.c
+>> @@ -21,6 +21,7 @@
+>>   #include <linux/module.h>
+>>   #include <linux/pfn_t.h>
+>>   #include <linux/printk.h>
+>> +#include <linux/pgtable.h>
+>>   #include <linux/random.h>
+>>   #include <linux/spinlock.h>
+>>   #include <linux/swap.h>
+>> @@ -28,6 +29,7 @@
+>>   #include <linux/start_kernel.h>
+>>   #include <linux/sched/mm.h>
+>>   #include <asm/pgalloc.h>
+>> +#include <asm/tlbflush.h>
+>>     #define VMFLAGS    (VM_READ|VM_WRITE|VM_EXEC)
+>>   @@ -55,6 +57,54 @@ static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
+>>       WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte))));
+>>   }
+>>   +static void __init pte_advanced_tests(struct mm_struct *mm,
+>> +            struct vm_area_struct *vma, pte_t *ptep,
+>> +            unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+>> +{
+>> +    pte_t pte = pfn_pte(pfn, prot);
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_set_wrprotect(mm, vaddr, ptep);
+>> +    pte = READ_ONCE(*ptep);
+> 
+> same
+> 
+>> +    WARN_ON(pte_write(pte));
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_get_and_clear(mm, vaddr, ptep);
+>> +    pte = READ_ONCE(*ptep);
+> 
+> same
+> 
+>> +    WARN_ON(!pte_none(pte));
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    pte = pte_wrprotect(pte);
+>> +    pte = pte_mkclean(pte);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    pte = pte_mkwrite(pte);
+>> +    pte = pte_mkdirty(pte);
+>> +    ptep_set_access_flags(vma, vaddr, ptep, pte, 1);
+>> +    pte = READ_ONCE(*ptep);
+> 
+> same
+> 
+>> +    WARN_ON(!(pte_write(pte) && pte_dirty(pte)));
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_get_and_clear_full(mm, vaddr, ptep, 1);
+>> +    pte = READ_ONCE(*ptep);
+> 
+> same
+> 
+>> +    WARN_ON(!pte_none(pte));
+>> +
+>> +    pte = pte_mkyoung(pte);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_test_and_clear_young(vma, vaddr, ptep);
+>> +    pte = READ_ONCE(*ptep);
+> 
+> same
+> 
+>> +    WARN_ON(pte_young(pte));
+>> +}
+>> +
+>> +static void __init pte_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pte_t pte = pfn_pte(pfn, prot);
+>> +
+>> +    WARN_ON(!pte_savedwrite(pte_mk_savedwrite(pte_clear_savedwrite(pte))));
+>> +    WARN_ON(pte_savedwrite(pte_clear_savedwrite(pte_mk_savedwrite(pte))));
+>> +}
+>>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>   static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+>>   {
+>> @@ -77,6 +127,89 @@ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+>>       WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
+>>   }
+>>   +static void __init pmd_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pmd_t *pmdp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+>> +{
+>> +    pmd_t pmd = pfn_pmd(pfn, prot);
+>> +
+>> +    if (!has_transparent_hugepage())
+>> +        return;
+>> +
+>> +    /* Align the address wrt HPAGE_PMD_SIZE */
+>> +    vaddr = (vaddr & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE;
+>> +
+>> +    pmd = pfn_pmd(pfn, prot);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_set_wrprotect(mm, vaddr, pmdp);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(pmd_write(pmd));
+>> +
+>> +    pmd = pfn_pmd(pfn, prot);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_huge_get_and_clear(mm, vaddr, pmdp);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!pmd_none(pmd));
+>> +
+>> +    pmd = pfn_pmd(pfn, prot);
+>> +    pmd = pmd_wrprotect(pmd);
+>> +    pmd = pmd_mkclean(pmd);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmd = pmd_mkwrite(pmd);
+>> +    pmd = pmd_mkdirty(pmd);
+>> +    pmdp_set_access_flags(vma, vaddr, pmdp, pmd, 1);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!(pmd_write(pmd) && pmd_dirty(pmd)));
+>> +
+>> +    pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_huge_get_and_clear_full(vma, vaddr, pmdp, 1);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!pmd_none(pmd));
+>> +
+>> +    pmd = pmd_mkyoung(pmd);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_test_and_clear_young(vma, vaddr, pmdp);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(pmd_young(pmd));
+>> +}
+>> +
+>> +static void __init pmd_leaf_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pmd_t pmd = pfn_pmd(pfn, prot);
+>> +
+>> +    /*
+>> +     * PMD based THP is a leaf entry.
+>> +     */
+>> +    pmd = pmd_mkhuge(pmd);
+>> +    WARN_ON(!pmd_leaf(pmd));
+>> +}
+>> +
+>> +static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pmd_t pmd;
+>> +
+>> +    if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+>> +        return;
+>> +    /*
+>> +     * X86 defined pmd_set_huge() verifies that the given
+>> +     * PMD is not a populated non-leaf entry.
+>> +     */
+>> +    WRITE_ONCE(*pmdp, __pmd(0));
+>> +    WARN_ON(!pmd_set_huge(pmdp, __pfn_to_phys(pfn), prot));
+>> +    WARN_ON(!pmd_clear_huge(pmdp));
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!pmd_none(pmd));
+>> +}
+>> +
+>> +static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pmd_t pmd = pfn_pmd(pfn, prot);
+>> +
+>> +    WARN_ON(!pmd_savedwrite(pmd_mk_savedwrite(pmd_clear_savedwrite(pmd))));
+>> +    WARN_ON(pmd_savedwrite(pmd_clear_savedwrite(pmd_mk_savedwrite(pmd))));
+>> +}
+>> +
+>>   #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>   static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+>>   {
+>> @@ -100,12 +233,115 @@ static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+>>        */
+>>       WARN_ON(!pud_bad(pud_mkhuge(pud)));
+>>   }
+>> +
+>> +static void pud_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pud_t *pudp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+>> +{
+>> +    pud_t pud = pfn_pud(pfn, prot);
+>> +
+>> +    if (!has_transparent_hugepage())
+>> +        return;
+>> +
+>> +    /* Align the address wrt HPAGE_PUD_SIZE */
+>> +    vaddr = (vaddr & HPAGE_PUD_MASK) + HPAGE_PUD_SIZE;
+>> +
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_set_wrprotect(mm, vaddr, pudp);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(pud_write(pud));
+>> +
+>> +#ifndef __PAGETABLE_PMD_FOLDED
+>> +    pud = pfn_pud(pfn, prot);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_huge_get_and_clear(mm, vaddr, pudp);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!pud_none(pud));
+>> +
+>> +    pud = pfn_pud(pfn, prot);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_huge_get_and_clear_full(mm, vaddr, pudp, 1);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!pud_none(pud));
+>> +#endif /* __PAGETABLE_PMD_FOLDED */
+>> +    pud = pfn_pud(pfn, prot);
+>> +    pud = pud_wrprotect(pud);
+>> +    pud = pud_mkclean(pud);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pud = pud_mkwrite(pud);
+>> +    pud = pud_mkdirty(pud);
+>> +    pudp_set_access_flags(vma, vaddr, pudp, pud, 1);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!(pud_write(pud) && pud_dirty(pud)));
+>> +
+>> +    pud = pud_mkyoung(pud);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_test_and_clear_young(vma, vaddr, pudp);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(pud_young(pud));
+>> +}
+>> +
+>> +static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pud_t pud = pfn_pud(pfn, prot);
+>> +
+>> +    /*
+>> +     * PUD based THP is a leaf entry.
+>> +     */
+>> +    pud = pud_mkhuge(pud);
+>> +    WARN_ON(!pud_leaf(pud));
+>> +}
+>> +
+>> +static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pud_t pud;
+>> +
+>> +    if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+>> +        return;
+>> +    /*
+>> +     * X86 defined pud_set_huge() verifies that the given
+>> +     * PUD is not a populated non-leaf entry.
+>> +     */
+>> +    WRITE_ONCE(*pudp, __pud(0));
+>> +    WARN_ON(!pud_set_huge(pudp, __pfn_to_phys(pfn), prot));
+>> +    WARN_ON(!pud_clear_huge(pudp));
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!pud_none(pud));
+>> +}
+>>   #else  /* !CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+>>   static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void pud_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pud_t *pudp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+>> +{
+>> +}
+>> +static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +}
+>>   #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+>>   #else  /* !CONFIG_TRANSPARENT_HUGEPAGE */
+>>   static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>>   static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pmd_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pmd_t *pmdp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+>> +{
+>> +}
+>> +static void __init pud_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pud_t *pudp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+>> +{
+>> +}
+>> +static void __init pmd_leaf_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +}
+>> +static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +}
+>> +static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot) { }
+>>   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>>     static void __init p4d_basic_tests(unsigned long pfn, pgprot_t prot)
+>> @@ -495,8 +731,56 @@ static void __init hugetlb_basic_tests(unsigned long pfn, pgprot_t prot)
+>>       WARN_ON(!pte_huge(pte_mkhuge(pte)));
+>>   #endif /* CONFIG_ARCH_WANT_GENERAL_HUGETLB */
+>>   }
+>> +
+>> +static void __init hugetlb_advanced_tests(struct mm_struct *mm,
+>> +                      struct vm_area_struct *vma,
+>> +                      pte_t *ptep, unsigned long pfn,
+>> +                      unsigned long vaddr, pgprot_t prot)
+>> +{
+>> +    struct page *page = pfn_to_page(pfn);
+>> +    pte_t pte = READ_ONCE(*ptep);
+> 
+> Remplace with ptep_get() to avoid build failure on powerpc 8xx.
 
+Sure, will replace all open PTE pointer accesses with ptep_get().
