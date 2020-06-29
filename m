@@ -1,73 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B7E20CD2F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 10:13:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B986E20CD36
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 10:17:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wKxQ5f1hzDqNy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 18:13:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wL2P3JMxzDqLw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 18:17:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::441;
- helo=mail-wr1-x441.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FAcvVXK/; dkim-atps=neutral
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wKvb2wc0zDqTV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 18:11:38 +1000 (AEST)
-Received: by mail-wr1-x441.google.com with SMTP id b6so15536425wrs.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 01:11:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:date:in-reply-to:references:user-agent
- :mime-version:content-transfer-encoding;
- bh=MsyOug1zdvZ7RhqVcjIp2iACjFkfk1iI7+Y6+Z0p3Wo=;
- b=FAcvVXK/7FyTj5u7BKWPMbbUJcp/he1eqAP5X/t8UQM5RLNpFBXGhz56VZNQIapStn
- +Esq5e5VwBuEkJ+khthTYFfl0xFOCExVAWXXDmhf5RsbObu5PU6XckeHe2/flAN/BCrp
- sVtEXqfZrz0N32WRA21vrRQ3Jgd5iBhn9+H0FlobSo8mm+yhtCEa8eNWNhycmYfDhg9w
- yAQ6rDstVte0VGC0UH0dngXAbXm3McyuhWRWUAIG6T55UdBBpfjnsH1jCHdIiprhT6H3
- z3DlzVPQYN4CArksdImwpFntjb0cz5kpHxwvKWBFXXNvzBM+HfHeu45mCFN4+TIssGbx
- hDNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=MsyOug1zdvZ7RhqVcjIp2iACjFkfk1iI7+Y6+Z0p3Wo=;
- b=j8i+O2lkCSAQfe4E0ikbdemnTopPLGeKfEQhqpS5Twxbzz70Bl/Xrmu0gggtbRfF6y
- TkmZMLVjSXAneHYnHJ4ndY7fQctmw43sB5EN7Skp8RrBkZC+xxpeaABk8N/L1dnEYGWL
- CJFWnQZmfPsYjZQFAPPht9GNxfCzfCJzA7YwBJRN6OS9YqU8jWcbFFzJKHbKh22SVGYN
- No6mNeAd3Tp+wUXShWjKX5sejaf6hInOAk/X19XpuvKpLMiVYRyqsOxJJiTqXmuk9iNi
- qeIo6sJ5ZQau3oWhSqLopbtyFva8/jkOoOx2T6+bJSnoixrkyBw2mUU8W83pDW6lcwq6
- av5w==
-X-Gm-Message-State: AOAM531U0osM8cZ53MgYtjrF+9XqOvX0ikDdyDgnBuiRRgpS2K29xL37
- tKpOw7a3QMnagNKlmmNJliY=
-X-Google-Smtp-Source: ABdhPJw2u/Bl4pHRE1LLRF40h1mTMkfEy46AGpaQvHUQ85je78+PAAu//qZjfhCb+KnOKMlbAPb01Q==
-X-Received: by 2002:adf:eecf:: with SMTP id a15mr15888750wrp.83.1593418293765; 
- Mon, 29 Jun 2020 01:11:33 -0700 (PDT)
-Received: from 192-168-1-18.tpgi.com.au ([61.69.149.112])
- by smtp.googlemail.com with ESMTPSA id 26sm25470487wmj.25.2020.06.29.01.11.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jun 2020 01:11:33 -0700 (PDT)
-Message-ID: <d591c24c2a469cb8ddc0c52e0cad93f347e1008b.camel@gmail.com>
-Subject: Re: [PATCH RFC 1/1] powerpc/eeh: Synchronization for safety
-From: Oliver O'Halloran <oohall@gmail.com>
-To: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Mon, 29 Jun 2020 18:11:27 +1000
-In-Reply-To: <049418257caa232ca3e27ee8cbab9b4ff38b11aa.1585550388.git.sbobroff@linux.ibm.com>
-References: <049418257caa232ca3e27ee8cbab9b4ff38b11aa.1585550388.git.sbobroff@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49wL0d3MXZzDqDd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 18:16:00 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9498131B;
+ Mon, 29 Jun 2020 01:15:58 -0700 (PDT)
+Received: from [10.163.83.176] (unknown [10.163.83.176])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CA863F71E;
+ Mon, 29 Jun 2020 01:15:47 -0700 (PDT)
+Subject: Re: [PATCH V3 2/4] mm/debug_vm_pgtable: Add tests validating advanced
+ arch page table helpers
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-mm@kvack.org
+References: <1592192277-8421-1-git-send-email-anshuman.khandual@arm.com>
+ <1592192277-8421-3-git-send-email-anshuman.khandual@arm.com>
+ <4da41eee-5ce0-2a5e-40eb-4424655b3489@csgroup.eu>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <1a6138ca-40b0-5076-2f09-4ce6b7ee8d36@arm.com>
+Date: Mon, 29 Jun 2020 13:45:37 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <4da41eee-5ce0-2a5e-40eb-4424655b3489@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,278 +51,358 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ gerald.schaefer@de.ibm.com, ziy@nvidia.com,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2020-03-30 at 17:39 +1100, Sam Bobroff wrote:
-> There is currently little synchronization between EEH error detection
-> (eeh_dev_check_failure()), EEH error recovery
-> (eeh_handle_{normal,special}_event()) and the PCI subsystem (device
-> addition and removal), and so there are race conditions that lead to
-> crashes (often access to free'd memory or LIST_POISON).
+
+
+On 06/27/2020 12:56 PM, Christophe Leroy wrote:
 > 
-> However, a solution must consider:
-> - EEH error detection can occur in interrupt context, which prevents
-> the use of a mutex.
-> - EEH recovery may need to sleep, which prevents the use of a spinlock.
-> - EEH recovery uses PCI operations that may require the PCI
-> rescan/remove lock and/or device lock to be held
-> - PCI operations may hold the rescan/remove and/or device lock when
-> calling into EEH functions.
-> - Device driver callbacks may perform arbitrary PCI operations
-> during recovery, including device removal.
 > 
-> In this patch the existing mutex and spinlock are combined with the
-> EEH_PE_RECOVERING flag to provide some assurances that are then used
-> to reduce the race conditions.
+> Le 15/06/2020 à 05:37, Anshuman Khandual a écrit :
+>> This adds new tests validating for these following arch advanced page table
+>> helpers. These tests create and test specific mapping types at various page
+>> table levels.
+>>
+>> 1. pxxp_set_wrprotect()
+>> 2. pxxp_get_and_clear()
+>> 3. pxxp_set_access_flags()
+>> 4. pxxp_get_and_clear_full()
+>> 5. pxxp_test_and_clear_young()
+>> 6. pxx_leaf()
+>> 7. pxx_set_huge()
+>> 8. pxx_(clear|mk)_savedwrite()
+>> 9. huge_pxxp_xxx()
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Mike Rapoport <rppt@linux.ibm.com>
+>> Cc: Vineet Gupta <vgupta@synopsys.com>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+>> Cc: Vasily Gorbik <gor@linux.ibm.com>
+>> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Borislav Petkov <bp@alien8.de>
+>> Cc: "H. Peter Anvin" <hpa@zytor.com>
+>> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+>> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+>> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>> Cc: linux-snps-arc@lists.infradead.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: linux-s390@vger.kernel.org
+>> Cc: linux-riscv@lists.infradead.org
+>> Cc: x86@kernel.org
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-arch@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>>   mm/debug_vm_pgtable.c | 306 ++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 306 insertions(+)
+>>
+>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>> index ffa163d4c63c..e3f9f8317a98 100644
+>> --- a/mm/debug_vm_pgtable.c
+>> +++ b/mm/debug_vm_pgtable.c
+>> @@ -21,6 +21,7 @@
+>>   #include <linux/module.h>
+>>   #include <linux/pfn_t.h>
+>>   #include <linux/printk.h>
+>> +#include <linux/pgtable.h>
+>>   #include <linux/random.h>
+>>   #include <linux/spinlock.h>
+>>   #include <linux/swap.h>
+>> @@ -28,6 +29,7 @@
+>>   #include <linux/start_kernel.h>
+>>   #include <linux/sched/mm.h>
+>>   #include <asm/pgalloc.h>
+>> +#include <asm/tlbflush.h>
+>>     #define VMFLAGS    (VM_READ|VM_WRITE|VM_EXEC)
+>>   @@ -55,6 +57,54 @@ static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
+>>       WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte))));
+>>   }
+>>   +static void __init pte_advanced_tests(struct mm_struct *mm,
+>> +            struct vm_area_struct *vma, pte_t *ptep,
+>> +            unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+> 
+> Align args properly.
+> 
+>> +{
+>> +    pte_t pte = pfn_pte(pfn, prot);
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_set_wrprotect(mm, vaddr, ptep);
+>> +    pte = READ_ONCE(*ptep);
+>> +    WARN_ON(pte_write(pte));
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_get_and_clear(mm, vaddr, ptep);
+>> +    pte = READ_ONCE(*ptep);
+>> +    WARN_ON(!pte_none(pte));
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    pte = pte_wrprotect(pte);
+>> +    pte = pte_mkclean(pte);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    pte = pte_mkwrite(pte);
+>> +    pte = pte_mkdirty(pte);
+>> +    ptep_set_access_flags(vma, vaddr, ptep, pte, 1);
+>> +    pte = READ_ONCE(*ptep);
+>> +    WARN_ON(!(pte_write(pte) && pte_dirty(pte)));
+>> +
+>> +    pte = pfn_pte(pfn, prot);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_get_and_clear_full(mm, vaddr, ptep, 1);
+>> +    pte = READ_ONCE(*ptep);
+>> +    WARN_ON(!pte_none(pte));
+>> +
+>> +    pte = pte_mkyoung(pte);
+>> +    set_pte_at(mm, vaddr, ptep, pte);
+>> +    ptep_test_and_clear_young(vma, vaddr, ptep);
+>> +    pte = READ_ONCE(*ptep);
+>> +    WARN_ON(pte_young(pte));
+>> +}
+>> +
+>> +static void __init pte_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pte_t pte = pfn_pte(pfn, prot);
+>> +
+>> +    WARN_ON(!pte_savedwrite(pte_mk_savedwrite(pte_clear_savedwrite(pte))));
+>> +    WARN_ON(pte_savedwrite(pte_clear_savedwrite(pte_mk_savedwrite(pte))));
+>> +}
+>>   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>   static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+>>   {
+>> @@ -77,6 +127,89 @@ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
+>>       WARN_ON(!pmd_bad(pmd_mkhuge(pmd)));
+>>   }
+>>   +static void __init pmd_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pmd_t *pmdp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+> 
+> Align args properly
+> 
+>> +{
+>> +    pmd_t pmd = pfn_pmd(pfn, prot);
+>> +
+>> +    if (!has_transparent_hugepage())
+>> +        return;
+>> +
+>> +    /* Align the address wrt HPAGE_PMD_SIZE */
+>> +    vaddr = (vaddr & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE;
+>> +
+>> +    pmd = pfn_pmd(pfn, prot);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_set_wrprotect(mm, vaddr, pmdp);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(pmd_write(pmd));
+>> +
+>> +    pmd = pfn_pmd(pfn, prot);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_huge_get_and_clear(mm, vaddr, pmdp);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!pmd_none(pmd));
+>> +
+>> +    pmd = pfn_pmd(pfn, prot);
+>> +    pmd = pmd_wrprotect(pmd);
+>> +    pmd = pmd_mkclean(pmd);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmd = pmd_mkwrite(pmd);
+>> +    pmd = pmd_mkdirty(pmd);
+>> +    pmdp_set_access_flags(vma, vaddr, pmdp, pmd, 1);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!(pmd_write(pmd) && pmd_dirty(pmd)));
+>> +
+>> +    pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_huge_get_and_clear_full(vma, vaddr, pmdp, 1);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!pmd_none(pmd));
+>> +
+>> +    pmd = pmd_mkyoung(pmd);
+>> +    set_pmd_at(mm, vaddr, pmdp, pmd);
+>> +    pmdp_test_and_clear_young(vma, vaddr, pmdp);
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(pmd_young(pmd));
+>> +}
+>> +
+>> +static void __init pmd_leaf_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pmd_t pmd = pfn_pmd(pfn, prot);
+>> +
+>> +    /*
+>> +     * PMD based THP is a leaf entry.
+>> +     */
+>> +    pmd = pmd_mkhuge(pmd);
+>> +    WARN_ON(!pmd_leaf(pmd));
+>> +}
+>> +
+>> +static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pmd_t pmd;
+>> +
+>> +    if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+>> +        return;
+>> +    /*
+>> +     * X86 defined pmd_set_huge() verifies that the given
+>> +     * PMD is not a populated non-leaf entry.
+>> +     */
+>> +    WRITE_ONCE(*pmdp, __pmd(0));
+>> +    WARN_ON(!pmd_set_huge(pmdp, __pfn_to_phys(pfn), prot));
+>> +    WARN_ON(!pmd_clear_huge(pmdp));
+>> +    pmd = READ_ONCE(*pmdp);
+>> +    WARN_ON(!pmd_none(pmd));
+>> +}
+>> +
+>> +static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pmd_t pmd = pfn_pmd(pfn, prot);
+>> +
+>> +    WARN_ON(!pmd_savedwrite(pmd_mk_savedwrite(pmd_clear_savedwrite(pmd))));
+>> +    WARN_ON(pmd_savedwrite(pmd_clear_savedwrite(pmd_mk_savedwrite(pmd))));
+>> +}
+>> +
+>>   #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>   static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+>>   {
+>> @@ -100,12 +233,115 @@ static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot)
+>>        */
+>>       WARN_ON(!pud_bad(pud_mkhuge(pud)));
+>>   }
+>> +
+>> +static void pud_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pud_t *pudp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+> 
+> Align args properly
+> 
+>> +{
+>> +    pud_t pud = pfn_pud(pfn, prot);
+>> +
+>> +    if (!has_transparent_hugepage())
+>> +        return;
+>> +
+>> +    /* Align the address wrt HPAGE_PUD_SIZE */
+>> +    vaddr = (vaddr & HPAGE_PUD_MASK) + HPAGE_PUD_SIZE;
+>> +
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_set_wrprotect(mm, vaddr, pudp);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(pud_write(pud));
+>> +
+>> +#ifndef __PAGETABLE_PMD_FOLDED
+>> +    pud = pfn_pud(pfn, prot);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_huge_get_and_clear(mm, vaddr, pudp);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!pud_none(pud));
+>> +
+>> +    pud = pfn_pud(pfn, prot);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_huge_get_and_clear_full(mm, vaddr, pudp, 1);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!pud_none(pud));
+>> +#endif /* __PAGETABLE_PMD_FOLDED */
+>> +    pud = pfn_pud(pfn, prot);
+>> +    pud = pud_wrprotect(pud);
+>> +    pud = pud_mkclean(pud);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pud = pud_mkwrite(pud);
+>> +    pud = pud_mkdirty(pud);
+>> +    pudp_set_access_flags(vma, vaddr, pudp, pud, 1);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!(pud_write(pud) && pud_dirty(pud)));
+>> +
+>> +    pud = pud_mkyoung(pud);
+>> +    set_pud_at(mm, vaddr, pudp, pud);
+>> +    pudp_test_and_clear_young(vma, vaddr, pudp);
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(pud_young(pud));
+>> +}
+>> +
+>> +static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pud_t pud = pfn_pud(pfn, prot);
+>> +
+>> +    /*
+>> +     * PUD based THP is a leaf entry.
+>> +     */
+>> +    pud = pud_mkhuge(pud);
+>> +    WARN_ON(!pud_leaf(pud));
+>> +}
+>> +
+>> +static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +    pud_t pud;
+>> +
+>> +    if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+>> +        return;
+>> +    /*
+>> +     * X86 defined pud_set_huge() verifies that the given
+>> +     * PUD is not a populated non-leaf entry.
+>> +     */
+>> +    WRITE_ONCE(*pudp, __pud(0));
+>> +    WARN_ON(!pud_set_huge(pudp, __pfn_to_phys(pfn), prot));
+>> +    WARN_ON(!pud_clear_huge(pudp));
+>> +    pud = READ_ONCE(*pudp);
+>> +    WARN_ON(!pud_none(pud));
+>> +}
+>>   #else  /* !CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+>>   static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void pud_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pud_t *pudp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+> 
+> Align args properly
+> 
+>> +{
+>> +}
+>> +static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
+>> +{
+>> +}
+>>   #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+>>   #else  /* !CONFIG_TRANSPARENT_HUGEPAGE */
+>>   static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>>   static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>> +static void __init pmd_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pmd_t *pmdp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+> 
+> Align args properly
+> 
+>> +{
+>> +}
+>> +static void __init pud_advanced_tests(struct mm_struct *mm,
+>> +        struct vm_area_struct *vma, pud_t *pudp,
+>> +        unsigned long pfn, unsigned long vaddr, pgprot_t prot)
+> 
+> Align args properly
+> 
 
-> The fields to be protected are the ones that provide the structure
-> of the trees of struct eeh_pe that are held for each PHB: the parent
-> pointer and child lists and the list of struct eeh_dev, as well as
-> the pe and pdev pointers within struct eeh_dev.
-
-This needs to be explicitly documented in the source tree. Preferably
-next to the fields they protect in eeh_pe and eeh_dev.
-
-
-> - I'm not aware of any outstanding problems with the set, but I've kept it RFC
->   for now becuase I'm looking for comments on the general strategy and
->   direction -- is this a good way to achieve some safety?
-
-The two-locks idea seems like the sort of thing that's easy to screw up
-and it's not really obvious what it's doing or why. Half the problem
-with EEH is that it doesn't really make sense unless you spend far too
-much time gazing into that abyss and this isn't really improving
-matters IMO.
-
-The main driver seems to be the desire to dereference edev->pe from
-eeh_dev_check_failure(), but... why? The way it works is technically
-broken as-is since it relies on eeh_ops->get_state() correctly
-reporting the PE state. That's the same function that we have that 300s
-wait hack for in the recovery thread (makes you wonder what platforms
-actually need that...)
-
-We've spoken in the past about having eeh_dev_check_failure() punt the
-work of checking PE states into the event handler thread. I think we'd
-get more milage out of that idea rather than doing the two-locks thing.
-Is there some other situation besides eeh_dev_check_failure() being
-called from interrupt context that makes the spinlock necessary?
-
-
-> - Good places to review carefully would be eeh_pe_report_pdev() and
->   eeh_reset_device().
-
-> - The mutex and spinlock need better names. Suggestions welcome.
-
-eeh_dev_mutex should just be eeh_pe_tree_mutex, or similar. If you
-really think the two locks idea is the way to go then
-eeh_pe_tree_spinlock would make sense too. If we're going to have two
-locks covering the same things then their names should be similar.
-
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index 12c248a16527..30acae0d10e5 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -108,11 +108,26 @@ bool eeh_debugfs_no_recover;
->  /* Platform dependent EEH operations */
->  struct eeh_ops *eeh_ops = NULL;
->  
-> -/* Lock to avoid races due to multiple reports of an error */
-> +/*
-> + * confirm_error_lock and eeh_dev_mutex are used together to provide
-> + * safety during EEH operations.
-> + *
-> + * Generally, the spinlock is used in error detection where it's not possible
-> + * to use a mutex or where there is potential to deadlock with the mutex, and
-> + * the mutex is used during recovery and other PCI related operations. One must
-> + * be held when reading and both must be held when making changes to the
-> + * protected fields: eeh_pe.parent, child_list, child, edevs and eeh_dev.pe,
-> + * .pdev.
-> + *
-> + * Lock ordering:
-> + * - the PCI rescan/remove mutex (see pci_lock_rescan_remove())
-> + * - the struct device lock (see device_lock())
-> + * - the eeh_dev_mutex mutex (see eeh_recovery_lock())
-> + * - the confirm_error_lock spinlock (see eeh_serialize_lock())
-> + * - the eeh_eventlist_lock spinlock
-> + */
-
-I can't make sense of this list. I probably don't need to take the pci
-rescan lock before taking the eeh event list lock, or vis-a-vis, but
-that's what it's suggesting.
-
-I'm guessing there's two seperate orderings here?
-
-
-> @@ -1323,7 +1368,11 @@ void eeh_remove_device(struct pci_dev *dev)
->  	 * for the VF EEH device.
->  	 */
->  	edev->in_error = false;
-> +	/* Both locks are required to make changes */
-> +	eeh_recovery_must_be_locked();
-> +	eeh_serialize_lock(&flags);
->  	dev->dev.archdata.edev = NULL;
-> +	eeh_serialize_unlock(flags);
-
-So pci_dev->dev.archdata.edev is also covered by eeh_serialize_lock()?
-
-
-> +struct pci_dev **pdev_cache_list_create(struct eeh_pe *root)
->  {
->  	struct eeh_pe *pe;
->  	struct eeh_dev *edev, *tmp;
-> +	struct pci_dev **pdevs;
-> +	int i, n;
-> +
-> +	n = 0;
-> +	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp) {
-> +		if (edev->pdev)
-> +			n++;
-> +	}
-> +	pdevs = kmalloc(sizeof(*pdevs) * (n + 1), GFP_KERNEL);
-> +	if (WARN_ON_ONCE(!pdevs))
-> +		return NULL;
-> +	i = 0;
-> +	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp) {
-> +		if (i < n) {
-> +			get_device(&edev->pdev->dev);
-> +			pdevs[i++] = edev->pdev;
-> +		}
-> +	}
-> +	if (WARN_ON_ONCE(i < n))
-> +		n = i;
-> +	pdevs[n] = NULL; /* terminator */
-> +	return pdevs;
-> +}
-> +
-> +static void pdev_cache_list_destroy(struct pci_dev **pdevs)
-> +{
-> +	struct pci_dev **pdevp;
-> +
-> +	for (pdevp = pdevs; pdevp && *pdevp; pdevp++)
-> +		put_device(&(*pdevp)->dev);
-> +	kfree(pdevs);
-> +}
-> +
-> +static void eeh_pe_report(const char *name, struct eeh_pe *root,
-> +			  eeh_report_fn fn, enum pci_ers_result *result)
-> +{
-> +	struct pci_dev **pdevs, **pdevp;
->  
->  	pr_info("EEH: Beginning: '%s'\n", name);
-> -	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp)
-> -		eeh_pe_report_edev(edev, fn, result);
-> +	/*
-> +	 * It would be convenient to continue to hold the recovery lock here
-> +	 * but driver callbacks can take a very long time or never return at
-> +	 * all.
-> +	 */
-> +	pdevs = pdev_cache_list_create(root);
-> +	for (pdevp = pdevs; pdevp && *pdevp; pdevp++) {
-> +		/*
-> +		 * NOTE! eeh_recovery_lock() is released briefly
-> +		 * in eeh_pe_report_pdev()
-> +		 */
-> +		eeh_pe_report_pdev(*pdevp, fn, result);
-> +	}
-> +	pdev_cache_list_destroy(pdevs);
-
-So the cache stuff is taking a ref to all the pci_devs under that PE. I
-assume that's to keep the eeh_dev->pdev pointer valid for the whole
-time we don't have the recovery_lock held? I don't really see why we
-need to care though since we're not holding a reference to the pdev
-itself and the removal should happen while we're in the driver
-callback. Is this a hold over from when the eeh_dev would be removed
-with the pci_dev was released?
-
-> @@ -477,17 +554,44 @@ static void *eeh_add_virt_device(struct eeh_dev *edev)
->  	}
->  
->  #ifdef CONFIG_PCI_IOV
-> -	pci_iov_add_virtfn(edev->physfn, eeh_dev_to_pdn(edev)->vf_index);
-> +	{
-> +		struct pci_dev *physfn = edev->physfn;
-> +		int vf_index = eeh_dev_to_pdn(edev)->vf_index;
-> +
-> +		get_device(&physfn->dev);
-> +		eeh_recovery_unlock();
-> +		/*
-> +		 * This PCI operation will call back into EEH code where the
-> +		 * recovery lock will be acquired, so it must be released here,
-> +		 * first:
-> +		 */
-> +		pci_iov_add_virtfn(physfn, vf_index);
-> +		put_device(&physfn->dev);
-> +		eeh_recovery_lock();
-> +	}
->  #endif
->  	return NULL;
->  }
->  
-> -static void eeh_rmv_device(struct eeh_dev *edev, void *userdata)
-> +/*
-> + * It's important that this function take a pdev as a parameter, because they
-> + * are protected by a reference count. An edev could be lost when the recovery
-> + * lock is dropped (which it must be in order to take the PCI rescan/remove
-> + * lock without risking a deadlock).
-
-Same comments as above. Even if an edev goes away does it matter? The
-remove will be handled by code that properly handles the locking. Also
-with the change that moved eeh_remove_device() from the
-pcibios_release_device() into the bus removal notifier this won't stop
-the eeh_dev from being removed.
-
-
-> @@ -1118,6 +1273,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
->   * Called when an EEH event is detected but can't be narrowed down to a
->   * specific PE.  Iterates through possible failures and handles them as
->   * necessary.
-> + * XXX TODO Needs to be checked sync work
-
-stale comment or is it fine?
-
-
-> @@ -445,6 +474,9 @@ int eeh_add_to_parent_pe(struct eeh_dev *edev)
->  	}
->  	pe->parent = parent;
->  
-> +	if (parent->state & EEH_PE_RECOVERING)
-> +		pe->state |= EEH_PE_RECOVERING;
-> +
-
-What's actually required to hit this case? All I can think of is
-discovering a new bridge during a post-reset rescan. A new brige would
-mean a new PE would be allocated for the downstream bus.
-
-> @@ -141,13 +144,21 @@ static ssize_t pnv_eeh_ei_write(struct file *filp,
->  	if (ret != 5)
->  		return -EINVAL;
->  
-> +	/*
-> +	 * Use the spinlock rather than the mutex so that errors can be
-> +	 * injected during slow recovery operations (for testing).
-> +	 */
-> +	eeh_serialize_lock(&flags);
->  	/* Retrieve PE */
->  	pe = eeh_pe_get(hose, pe_no, 0);
-> -	if (!pe)
-> +	if (!pe) {
-> +		eeh_serialize_unlock(flags);
->  		return -ENODEV;
-> +	}
->  
->  	/* Do error injection */
->  	ret = eeh_ops->err_inject(pe, type, func, addr, mask);
-> +	eeh_serialize_unlock(flags);
->  	return ret < 0 ? ret : count;
->  }
-
-We could probably make this just look at the powernv phb state directly
-and avoid touching the eeh_pe at all. The only bit of the eeh_pe that
-we care about is the pe number which the user already provided.
-
-I suppose we care about validating that the PE is in use, but it might
-be useful to allow unused PEs to be injected into. That would help with
-testing errors during device probe, etc.
-
+Sure, will fix the arguments alignment in the above mentioned places.
