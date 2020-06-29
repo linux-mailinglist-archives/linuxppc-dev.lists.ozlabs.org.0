@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BC520D5E5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:59:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BECA20D5DD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:56:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wdcX0gxszDqbx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 05:59:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wdXt1TknzDqNB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 05:56:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=casper.20170209 header.b=Ge8U7tfk; 
+ header.a=rsa-sha256 header.s=casper.20170209 header.b=fZK4xo8+; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wdB61spTzDqYS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:40:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wdB60b2NzDqY1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:40:12 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=mXzFKc+c1347jb3Dn9ppL+M5YgGcOuGfnfqDijAsZ3Y=; b=Ge8U7tfkj6TJq59wba22lmgv3c
- aAemZb5IgwaUNQOae1JEUBdtcswQzq0bY+RkjL+cTiX7JQaRw0wKApdyej6KuRrwQcPRWgxraeMMA
- TRAiHmd4zKY6MICuQtRpDg7hYKpnFjf/7DtIwALc7xQoNLa9rD29+80j1LO021MhBvPwrXo28MZ1f
- ZI3vQ/ibrnOyTsGvTDFTwfsRSh+F2rdsCBmlwhrLDzZmWqXRXzrWeZZDt82bL0P7uOtvcTvpY3l6s
- 9SSEQXyks5o5YtnDn26Su7A+VbDq23m/m3Y7zWk8dcBd8mM3rtP2IpU7gNAZDnqWBedx63nIA1Il2
- GyzjCyLQ==;
+ bh=8L8p6UbF45RVD9lwh+Y9njbbxbDNtEWDlp4D4BAc300=; b=fZK4xo8+3EiAVx4FIVtuNf4vAv
+ zm4KGc7qiZkEK9LKiarRfAqvPpqWgTHtvE1QlHbQB0NZU32yOFMr/MNwB/ae5o6r8J1k0LS9KcWAk
+ y7NYBsiVmRRcp2FQitQb40ThskDUPPDmDPYJLe8Pz2HzRaKfT30JREsrdWRxrkBie92FmSraPeTrJ
+ 5gSeTgEBrq4yvaPEIhmxj824T815wc+cDodRF3igQSRVwj8EWofccCOa9w/2vYmArzZqDITwIfqs4
+ 88J/ODZsBaLBKHJTA5Q+FqqqW0H41wxD+2jejtdQOMfQBGUmjLZbPCuBmTM01I2o9gUYysjfD3sm2
+ QnEgqUIA==;
 Received: from [2001:4bb8:184:76e3:fcca:c8dc:a4bf:12fa] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jpzdB-0004Ez-KW; Mon, 29 Jun 2020 19:39:54 +0000
+ id 1jpzdI-0004Gf-PC; Mon, 29 Jun 2020 19:40:01 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 02/20] simdisk: stop using ->queuedata
-Date: Mon, 29 Jun 2020 21:39:29 +0200
-Message-Id: <20200629193947.2705954-3-hch@lst.de>
+Subject: [PATCH 06/20] rsxx: stop using ->queuedata
+Date: Mon, 29 Jun 2020 21:39:33 +0200
+Message-Id: <20200629193947.2705954-7-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200629193947.2705954-1-hch@lst.de>
 References: <20200629193947.2705954-1-hch@lst.de>
@@ -77,31 +77,39 @@ field.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/xtensa/platforms/iss/simdisk.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/block/rsxx/dev.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/xtensa/platforms/iss/simdisk.c b/arch/xtensa/platforms/iss/simdisk.c
-index 49322b66cda931..31b5020077a059 100644
---- a/arch/xtensa/platforms/iss/simdisk.c
-+++ b/arch/xtensa/platforms/iss/simdisk.c
-@@ -103,7 +103,7 @@ static void simdisk_transfer(struct simdisk *dev, unsigned long sector,
+diff --git a/drivers/block/rsxx/dev.c b/drivers/block/rsxx/dev.c
+index 3ba07ab30c84f5..6a4d8d26e32cbd 100644
+--- a/drivers/block/rsxx/dev.c
++++ b/drivers/block/rsxx/dev.c
+@@ -119,7 +119,7 @@ static void bio_dma_done_cb(struct rsxx_cardinfo *card,
  
- static blk_qc_t simdisk_make_request(struct request_queue *q, struct bio *bio)
+ static blk_qc_t rsxx_make_request(struct request_queue *q, struct bio *bio)
  {
--	struct simdisk *dev = q->queuedata;
-+	struct simdisk *dev = bio->bi_disk->private_data;
- 	struct bio_vec bvec;
- 	struct bvec_iter iter;
- 	sector_t sector = bio->bi_iter.bi_sector;
-@@ -273,8 +273,6 @@ static int __init simdisk_setup(struct simdisk *dev, int which,
- 		goto out_alloc_queue;
+-	struct rsxx_cardinfo *card = q->queuedata;
++	struct rsxx_cardinfo *card = bio->bi_disk->private_data;
+ 	struct rsxx_bio_meta *bio_meta;
+ 	blk_status_t st = BLK_STS_IOERR;
+ 
+@@ -267,8 +267,6 @@ int rsxx_setup_dev(struct rsxx_cardinfo *card)
+ 		card->queue->limits.discard_alignment   = RSXX_HW_BLK_SIZE;
  	}
  
--	dev->queue->queuedata = dev;
+-	card->queue->queuedata = card;
 -
- 	dev->gd = alloc_disk(SIMDISK_MINORS);
- 	if (dev->gd == NULL) {
- 		pr_err("alloc_disk failed\n");
+ 	snprintf(card->gendisk->disk_name, sizeof(card->gendisk->disk_name),
+ 		 "rsxx%d", card->disk_id);
+ 	card->gendisk->major = card->major;
+@@ -289,7 +287,6 @@ void rsxx_destroy_dev(struct rsxx_cardinfo *card)
+ 	card->gendisk = NULL;
+ 
+ 	blk_cleanup_queue(card->queue);
+-	card->queue->queuedata = NULL;
+ 	unregister_blkdev(card->major, DRIVER_NAME);
+ }
+ 
 -- 
 2.26.2
 
