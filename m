@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA3520D5ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 22:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731FA20DC67
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 22:17:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wdj13JhCzDqc9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 06:03:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wf1455LQzDq6l
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 06:17:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=casper.20170209 header.b=O9wCb3jp; 
+ header.a=rsa-sha256 header.s=casper.20170209 header.b=oq4DxXRy; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wdB609KwzDqWX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:40:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wdBB1ZtszDqWl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:40:17 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=x/Lapiju/RCIeWIuz3o8sd6pkgFSKFSdWu2H7EUGYIE=; b=O9wCb3jp0iCF1CzuvdGMrrLzoB
- hUmM9g2VqtcNKR8cGfEwWvKwAuWyep1dCkN1TGIV6QFphRYIt2ecSV1/ZQtbW+fS7r3iCmyAbN5me
- x371kR78nTdJ8F38UoZxUFoO+t2KRh7aPoJEcdv3emVhv+ywJ1JWZOU4zoGpuqprHCnoiyUOgRPKp
- 4frQBv8ziD+bikS/0M0ZAvAvo4amoKm9b9JV2ml9PXsCnOZjCsh8saZP7ylX/hR6jVbLLYLpMldWs
- Kx8wmm37ZbimiGJQEhj6VYGKYeoaROtCQL/LkVXhbVLbE7JrAyT+OD1jFrH6yRio4V89SD6rsVIUg
- qU3nOTnQ==;
+ bh=KKN2Rzx949H+NoG0kbydbtU4p/7MhBgkwEQu/fGRZVo=; b=oq4DxXRygnkoBpVqu4ShnFx67a
+ pJSZTPl/8bQB6t5SbLzEq7GEtk7yVppnDQoMDkwlIASlkU5Gv3TVvPrB44rfw3eqnI/6/46THwVdz
+ bpj2LW1dF9GjmaqLsSZnWCGOiWCgne+0b3/wk5CW3PxduJhQZcvYQZkZnB44cjXI3RV8EqpdASKu/
+ RkLdLy683AjRfxZt01zPKBwDhf+S1bMB3O91CxDduFf+rpctsL9V3FYWiqw0E6KmkpHgdogcoq/bv
+ FM6mYXGlxSu8Yj3wFLmkB7cMQ6vzzc2fkWPIa1S/y8ELqgdqrW/IuX4PrQsWtaDG8vRqd88y0uRuj
+ 7Jl9LgYQ==;
 Received: from [2001:4bb8:184:76e3:fcca:c8dc:a4bf:12fa] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jpzdG-0004Fv-Mp; Mon, 29 Jun 2020 19:39:59 +0000
+ id 1jpzdN-0004Ju-WF; Mon, 29 Jun 2020 19:40:06 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 05/20] ps3vram: stop using ->queuedata
-Date: Mon, 29 Jun 2020 21:39:32 +0200
-Message-Id: <20200629193947.2705954-6-hch@lst.de>
+Subject: [PATCH 10/20] dm: stop using ->queuedata
+Date: Mon, 29 Jun 2020 21:39:37 +0200
+Message-Id: <20200629193947.2705954-11-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200629193947.2705954-1-hch@lst.de>
 References: <20200629193947.2705954-1-hch@lst.de>
@@ -77,30 +77,30 @@ field.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/block/ps3vram.c | 3 +--
+ drivers/md/dm.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/block/ps3vram.c b/drivers/block/ps3vram.c
-index 821d4d8b1d763e..5a1d1d137c7248 100644
---- a/drivers/block/ps3vram.c
-+++ b/drivers/block/ps3vram.c
-@@ -587,7 +587,7 @@ static struct bio *ps3vram_do_bio(struct ps3_system_bus_device *dev,
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index e44473fe0f4873..c8d91f271c272e 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1789,7 +1789,7 @@ static blk_qc_t dm_process_bio(struct mapped_device *md,
  
- static blk_qc_t ps3vram_make_request(struct request_queue *q, struct bio *bio)
+ static blk_qc_t dm_make_request(struct request_queue *q, struct bio *bio)
  {
--	struct ps3_system_bus_device *dev = q->queuedata;
-+	struct ps3_system_bus_device *dev = bio->bi_disk->private_data;
- 	struct ps3vram_priv *priv = ps3_system_bus_get_drvdata(dev);
- 	int busy;
+-	struct mapped_device *md = q->queuedata;
++	struct mapped_device *md = bio->bi_disk->private_data;
+ 	blk_qc_t ret = BLK_QC_T_NONE;
+ 	int srcu_idx;
+ 	struct dm_table *map;
+@@ -1995,7 +1995,6 @@ static struct mapped_device *alloc_dev(int minor)
+ 	md->queue = blk_alloc_queue(dm_make_request, numa_node_id);
+ 	if (!md->queue)
+ 		goto bad;
+-	md->queue->queuedata = md;
  
-@@ -745,7 +745,6 @@ static int ps3vram_probe(struct ps3_system_bus_device *dev)
- 	}
- 
- 	priv->queue = queue;
--	queue->queuedata = dev;
- 	blk_queue_max_segments(queue, BLK_MAX_SEGMENTS);
- 	blk_queue_max_segment_size(queue, BLK_MAX_SEGMENT_SIZE);
- 	blk_queue_max_hw_sectors(queue, BLK_SAFE_MAX_SECTORS);
+ 	md->disk = alloc_disk_node(1, md->numa_node_id);
+ 	if (!md->disk)
 -- 
 2.26.2
 
