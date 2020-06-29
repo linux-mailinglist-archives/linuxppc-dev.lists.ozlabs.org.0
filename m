@@ -2,56 +2,104 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE8220CE45
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 13:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF2520CE66
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 13:58:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wQYX3nSSzDqNm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:41:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wQx454xlzDqT6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:58:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wQWg6YmtzDqMg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:39:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wQvC1ZjhzDqJT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:56:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49wQWg5Dgyz8tWB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:39:43 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49wQvB52B9z8t9r
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:56:38 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 49wQWg4bdfz9sSF; Mon, 29 Jun 2020 21:39:43 +1000 (AEST)
+ id 49wQvB4bX1z9sQt; Mon, 29 Jun 2020 21:56:38 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=ptesarik@suse.cz;
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49wQWf6lK9z9sQt
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Jun 2020 21:39:42 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id 4DCA4AD6A;
- Mon, 29 Jun 2020 11:39:38 +0000 (UTC)
-Date: Mon, 29 Jun 2020 13:39:33 +0200
-From: Petr Tesarik <ptesarik@suse.cz>
-To: Hari Bathini <hbathini@linux.ibm.com>
+ by ozlabs.org (Postfix) with ESMTPS id 49wQv963mzz9sRk
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Jun 2020 21:56:37 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05TBZdHO132225; Mon, 29 Jun 2020 07:56:33 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31ydk8w3p2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jun 2020 07:56:32 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05TBaD7B135261;
+ Mon, 29 Jun 2020 07:56:32 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31ydk8w3mh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jun 2020 07:56:32 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05TBpvef012283;
+ Mon, 29 Jun 2020 11:56:30 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06ams.nl.ibm.com with ESMTP id 31wwch25f9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jun 2020 11:56:29 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05TBt7MH63045990
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Jun 2020 11:55:07 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25FDAAE04D;
+ Mon, 29 Jun 2020 11:56:27 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B7209AE055;
+ Mon, 29 Jun 2020 11:56:24 +0000 (GMT)
+Received: from [9.102.22.29] (unknown [9.102.22.29])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 29 Jun 2020 11:56:24 +0000 (GMT)
 Subject: Re: [PATCH 01/11] kexec_file: allow archs to handle special regions
  while locating memory hole
-Message-ID: <20200629133933.0787f562@ezekiel.suse.cz>
-In-Reply-To: <159319828304.16351.6990340111766605842.stgit@hbathini.in.ibm.com>
+To: Petr Tesarik <ptesarik@suse.cz>
 References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
  <159319828304.16351.6990340111766605842.stgit@hbathini.in.ibm.com>
-Organization: SUSE Linux, s.r.o.
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+ <20200629133933.0787f562@ezekiel.suse.cz>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Message-ID: <7981ae61-26c6-000c-9ee4-382dab3eecab@linux.ibm.com>
+Date: Mon, 29 Jun 2020 17:26:23 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9"; protocol="application/pgp-signature"
+In-Reply-To: <20200629133933.0787f562@ezekiel.suse.cz>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-29_11:2020-06-29,
+ 2020-06-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=859 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 malwarescore=0 cotscore=-2147483648
+ impostorscore=0 spamscore=0 priorityscore=1501 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006290079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,158 +111,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
  Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
  lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
  Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Eric Biederman <ebiederm@xmission.com>
+ Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Petr,
 
-Hi Hari,
+On 29/06/20 5:09 pm, Petr Tesarik wrote:
+> Hi Hari,
+> 
+> is there any good reason to add two more functions with a very similar
+> name to an existing function? AFAICS all you need is a way to call a
+> PPC64-specific function from within kexec_add_buffer (PATCH 4/11), so
+> you could add something like this:
+> 
+> int __weak arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
+> {
+> 	return 0;
+> }
+> 
+> Call this function from kexec_add_buffer where appropriate and then
+> override it for PPC64 (it roughly corresponds to your
+> kexec_locate_mem_hole_ppc64() from PATCH 4/11).
+> 
+> FWIW it would make it easier for me to follow the resulting code.
 
-is there any good reason to add two more functions with a very similar
-name to an existing function? AFAICS all you need is a way to call a
-PPC64-specific function from within kexec_add_buffer (PATCH 4/11), so
-you could add something like this:
+Right, Petr.
 
-int __weak arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
-{
-	return 0;
-}
+I was trying out a few things before I ended up with what I sent here.
+Bu yeah.. I did realize arch_kexec_locate_mem_hole() would have been better
+after sending out v1. Will take care of that in v2.
 
-Call this function from kexec_add_buffer where appropriate and then
-override it for PPC64 (it roughly corresponds to your
-kexec_locate_mem_hole_ppc64() from PATCH 4/11).
-
-FWIW it would make it easier for me to follow the resulting code.
-
-Petr T
-
-On Sat, 27 Jun 2020 00:34:43 +0530
-Hari Bathini <hbathini@linux.ibm.com> wrote:
-
-> Some archs can have special memory regions, within the given memory
-> range, which can't be used for the buffer in a kexec segment. As
-> kexec_add_buffer() function is being called from generic code as well,
-> add weak arch_kexec_add_buffer definition for archs to override & take
-> care of special regions before trying to locate a memory hole.
->=20
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  include/linux/kexec.h |    5 +++++
->  kernel/kexec_file.c   |   37 +++++++++++++++++++++++++++++++++----
->  2 files changed, 38 insertions(+), 4 deletions(-)
->=20
-> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-> index 1776eb2..1237682 100644
-> --- a/include/linux/kexec.h
-> +++ b/include/linux/kexec.h
-> @@ -195,6 +195,11 @@ int __weak arch_kexec_apply_relocations(struct purga=
-tory_info *pi,
->  					const Elf_Shdr *relsec,
->  					const Elf_Shdr *symtab);
-> =20
-> +extern int arch_kexec_add_buffer(struct kexec_buf *kbuf);
-> +
-> +/* arch_kexec_add_buffer calls this when it is ready */
-> +extern int __kexec_add_buffer(struct kexec_buf *kbuf);
-> +
->  extern int kexec_add_buffer(struct kexec_buf *kbuf);
->  int kexec_locate_mem_hole(struct kexec_buf *kbuf);
-> =20
-> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-> index bb05fd5..a0b4f7f 100644
-> --- a/kernel/kexec_file.c
-> +++ b/kernel/kexec_file.c
-> @@ -669,10 +669,6 @@ int kexec_locate_mem_hole(struct kexec_buf *kbuf)
->   */
->  int kexec_add_buffer(struct kexec_buf *kbuf)
->  {
-> -
-> -	struct kexec_segment *ksegment;
-> -	int ret;
-> -
->  	/* Currently adding segment this way is allowed only in file mode */
->  	if (!kbuf->image->file_mode)
->  		return -EINVAL;
-> @@ -696,6 +692,25 @@ int kexec_add_buffer(struct kexec_buf *kbuf)
->  	kbuf->memsz =3D ALIGN(kbuf->memsz, PAGE_SIZE);
->  	kbuf->buf_align =3D max(kbuf->buf_align, PAGE_SIZE);
-> =20
-> +	return arch_kexec_add_buffer(kbuf);
-> +}
-> +
-> +/**
-> + * __kexec_add_buffer - arch_kexec_add_buffer would call this function a=
-fter
-> + *                      updating kbuf, to place a buffer in a kexec segm=
-ent.
-> + * @kbuf:               Buffer contents and memory parameters.
-> + *
-> + * This function assumes that kexec_mutex is held.
-> + * On successful return, @kbuf->mem will have the physical address of
-> + * the buffer in memory.
-> + *
-> + * Return: 0 on success, negative errno on error.
-> + */
-> +int __kexec_add_buffer(struct kexec_buf *kbuf)
-> +{
-> +	struct kexec_segment *ksegment;
-> +	int ret;
-> +
->  	/* Walk the RAM ranges and allocate a suitable range for the buffer */
->  	ret =3D kexec_locate_mem_hole(kbuf);
->  	if (ret)
-> @@ -711,6 +726,20 @@ int kexec_add_buffer(struct kexec_buf *kbuf)
->  	return 0;
->  }
-> =20
-> +/**
-> + * arch_kexec_add_buffer - Some archs have memory regions within the giv=
-en
-> + *                         range that can't be used to place a kexec seg=
-ment.
-> + *                         Such archs can override this function to take=
- care
-> + *                         of them before trying to locate the memory ho=
-le.
-> + * @kbuf:                  Buffer contents and memory parameters.
-> + *
-> + * Return: 0 on success, negative errno on error.
-> + */
-> +int __weak arch_kexec_add_buffer(struct kexec_buf *kbuf)
-> +{
-> +	return __kexec_add_buffer(kbuf);
-> +}
-> +
->  /* Calculate and store the digest of segments */
->  static int kexec_calculate_store_digests(struct kimage *image)
->  {
->=20
-
-
---Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9
-Content-Type: application/pgp-signature
-Content-Description: Digitální podpis OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEHl2YIZkIo5VO2MxYqlA7ya4PR6cFAl750vUACgkQqlA7ya4P
-R6dpTAf/dLQ6L45/sKP4CXfNn4HbDkmtImkYe5MjG/bvbhQrgLZxll54L0YT2bt/
-Xml4Bam2sLd761+VlBcJaQXLojyENgxLEpyAN2XXCFW+8YSipIRrpvmX8RrP+Szr
-PbYupPmCs8Y7GS6iptYE8nASFVQJm4JS4h/HZCsyUcZUpe+lrlM2BkO42FP+X8L9
-KdDubtEyyyWzwXx1PWpfq+I5IDIVKaIaCvXBeOp8OIjnHE4mtRcnMfahD2TBg3LM
-2ga/b4txkwuVkrnVuBaAjMmcK95nlth5oc0NFGMvyoLFUiS48fHYhwFWn7gYQW54
-08VDEBmerlqmS/Qvkym6ERI2MsuC6A==
-=M+ug
------END PGP SIGNATURE-----
-
---Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9--
+Thanks
+Hari
