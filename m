@@ -1,52 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6681A20CE06
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 12:56:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D87420CE1D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 13:17:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wPYy514bzDqTj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 20:56:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wQ1X6s68zDqMd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:17:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wPXF1MzlzDqN5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 20:55:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=YiHYnDoc; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49wPX01jWzz9s6w;
- Mon, 29 Jun 2020 20:54:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1593428108;
- bh=Ikj+QFFobl8b3GOszRTI8T5Tvh6wpN/NDrkClHklAgw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=YiHYnDocf/5avJ1oQV/ZaHBo/5KnMj7//ysZQFYyI4CFWIs0UV549pLr1FezSCW5R
- 7XD/bwKDSUl4GAlnxg7+l0dw4qYA4xFJR/p0JjqRrWAn2c6piTAq/Kf99cWgxRb+Vr
- ch+9DPfW5GFlugwK8NDTwdtqvhOtAXApFXREB/EMHOgHMLm6ivU0YJfIMjJPJ40xpN
- kv2gGSe40lRU0VLBuIWAsbpJHfD2vQ8cVfDbiLUGCL8LADDRAfzAvbVmxjxe8KYph/
- C0DoRs93QcEpGuelY5DIvGvYXit7Ov60w25mPElZgJuSxb+KyRGJmW1byOAeC/UHQf
- AIm77bM9c7www==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org
-Subject: Re: [PATCH 13/13] powerpc/dma: Remove dev->archdata.iommu_domain
-In-Reply-To: <20200625130836.1916-14-joro@8bytes.org>
-References: <20200625130836.1916-1-joro@8bytes.org>
- <20200625130836.1916-14-joro@8bytes.org>
-Date: Mon, 29 Jun 2020 20:57:07 +1000
-Message-ID: <87bll287i4.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wPzh1QHTzDqSM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:15:25 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49wPzP5LWHz9tyrG;
+ Mon, 29 Jun 2020 13:15:13 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id OXuXuozMG7Iv; Mon, 29 Jun 2020 13:15:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49wPzP4K8pz9tyqw;
+ Mon, 29 Jun 2020 13:15:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 35C818B79E;
+ Mon, 29 Jun 2020 13:15:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 9LehT2Iwe4Is; Mon, 29 Jun 2020 13:15:20 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.105])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0AFBA8B799;
+ Mon, 29 Jun 2020 13:15:20 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id C32AF65B29; Mon, 29 Jun 2020 11:15:19 +0000 (UTC)
+Message-Id: <cover.1593428200.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 0/6] powerpc/32s: Allocate modules outside of vmalloc space
+ for STRICT_KERNEL_RWX
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 29 Jun 2020 11:15:19 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,56 +60,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
- David Airlie <airlied@linux.ie>, Catalin Marinas <catalin.marinas@arm.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Thierry Reding <thierry.reding@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Fenghua Yu <fenghua.yu@intel.com>,
- Joerg Roedel <jroedel@suse.de>, intel-gfx@lists.freedesktop.org,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- linux-arm-kernel@lists.infradead.org, Tony Luck <tony.luck@intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Daniel Vetter <daniel@ffwll.ch>, David Woodhouse <dwmw2@infradead.org>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Joerg Roedel <joro@8bytes.org> writes:
-> From: Joerg Roedel <jroedel@suse.de>
->
-> There are no users left, so remove the pointer and save some memory.
->
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
-> ---
->  arch/powerpc/include/asm/device.h | 3 ---
->  1 file changed, 3 deletions(-)
+On book3s32 (hash), exec protection is set per 256Mb segments with NX bit.
+Instead of clearing NX bit on vmalloc space when CONFIG_MODULES is selected,
+allocate modules in a dedicated segment (0xb0000000-0xbfffffff by default).
+This allows to keep exec protection on vmalloc space while allowing exec
+on modules.
 
-It's a little hard to confirm there are no users left just with grep,
-but I think you've got them all, and the compiler should tell us if
-you've missed any.
+v2:
+- Removed the two patches that fix ptdump. Will submitted independently
+- Only changing the user/kernel boundary for PPC32 now.
+- Reordered the patches inside the series.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Christophe Leroy (6):
+  powerpc/lib: Prepare code-patching for modules allocated outside
+    vmalloc space
+  powerpc: Use MODULES_VADDR if defined
+  powerpc/32s: Only leave NX unset on segments used for modules
+  powerpc/32: Set user/kernel boundary at TASK_SIZE instead of
+    PAGE_OFFSET
+  powerpc/32s: Kernel space starts at TASK_SIZE
+  powerpc/32s: Use dedicated segment for modules with STRICT_KERNEL_RWX
 
-cheers
+ arch/powerpc/Kconfig                         |  1 +
+ arch/powerpc/include/asm/book3s/32/pgtable.h | 15 +++++----------
+ arch/powerpc/include/asm/page.h              |  4 +++-
+ arch/powerpc/kernel/head_32.S                | 12 ++++++------
+ arch/powerpc/kernel/module.c                 | 11 +++++++++++
+ arch/powerpc/lib/code-patching.c             |  2 +-
+ arch/powerpc/mm/book3s32/hash_low.S          |  2 +-
+ arch/powerpc/mm/book3s32/mmu.c               | 17 ++++++++++++++---
+ arch/powerpc/mm/kasan/kasan_init_32.c        |  6 ++++++
+ arch/powerpc/mm/ptdump/ptdump.c              | 16 ++++++++++++++--
+ 10 files changed, 62 insertions(+), 24 deletions(-)
 
-> diff --git a/arch/powerpc/include/asm/device.h b/arch/powerpc/include/asm/device.h
-> index 266542769e4b..1bc595213338 100644
-> --- a/arch/powerpc/include/asm/device.h
-> +++ b/arch/powerpc/include/asm/device.h
-> @@ -34,9 +34,6 @@ struct dev_archdata {
->  	struct iommu_table	*iommu_table_base;
->  #endif
->  
-> -#ifdef CONFIG_IOMMU_API
-> -	void			*iommu_domain;
-> -#endif
->  #ifdef CONFIG_PPC64
->  	struct pci_dn		*pci_data;
->  #endif
-> -- 
-> 2.27.0
+-- 
+2.25.0
+
