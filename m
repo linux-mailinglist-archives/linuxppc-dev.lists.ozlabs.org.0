@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7191920DAA8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 22:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A83D20D744
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 22:07:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wdx56wP0zDqcS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 06:14:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wdn36F9rzDqND
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 06:07:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=casper.20170209 header.b=nX6H72rw; 
+ header.a=rsa-sha256 header.s=casper.20170209 header.b=Z5WuTv+D; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wdB61FtjzDqYP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:40:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wdB70smLzDqYb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:40:14 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=U8tCb4h17a0rL+ZZdq18PAV+yDbvWsH96GC5gLr1vuc=; b=nX6H72rwNYY0Uodz17aYP0bvqk
- 9gSPPIErWrLN9tgBHhvIIJkOaKgVsJo4ToReNXQeJGEcFnMtOneeM9lvCktfvClRYHDtNElRZj2F6
- 8v+5TR40P7wF9sVI6FNZgxu5kOa2TO9rd1Tk/CVbrQpxDd6MTudpLktSUdh658nMTs0t6pbT8L0DU
- oLPd3ny9KNPaRYcpjp5BKqZJvHEO/AQA8V3gJ3oEvuI02EACAolGm1l5wddF6nve0W3P8jOwehhxt
- HUK/Vlvd1nnX1ZKXj4mHlQgYSZ/JMOLFPBM2+5fH9Dc8Y+nLWvs6b4VA5Ugvca4/Jx5cC4ko7Xilx
- 7KEB9k7g==;
+ bh=nyRpegl2g2GPLIzpDQmlwzdY5HJ2Dd3E7fu8tgbKXsw=; b=Z5WuTv+Do9WG6OUJCMBSyCZ2b5
+ O1p4C2SSN/f3xWFbYtIwxeNfomJ8ZEq0SyrbzjwwaJ7XajjWQqbg6ne0HqOCf09DYkGBZuLJ26GaA
+ G4PKscydGqFZq4vsVbnE1rTpc8Bo2tVVSK4F1kmA58blASqI3DWTdKKd47m0N+FAS6pL0AtHMv1O6
+ IpIMByc9LvubnMGH0kyT3l4+R6otGS/DYqbaIdQnK858+Ds+y29BSNTq2oK2idVCG0GRGtireJqdx
+ k6us9hxnXU0NJXpEDVxEYAA+aWE9bCfkF1cFo2a5rw/CqXimrtjmiB9oiY72NmNc0pENv/evP4NX4
+ 7YEoQNww==;
 Received: from [2001:4bb8:184:76e3:fcca:c8dc:a4bf:12fa] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jpzd9-0004Eg-CR; Mon, 29 Jun 2020 19:39:52 +0000
+ id 1jpzdD-0004F6-7d; Mon, 29 Jun 2020 19:39:55 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 01/20] nfblock: stop using ->queuedata
-Date: Mon, 29 Jun 2020 21:39:28 +0200
-Message-Id: <20200629193947.2705954-2-hch@lst.de>
+Subject: [PATCH 03/20] drbd: stop using ->queuedata
+Date: Mon, 29 Jun 2020 21:39:30 +0200
+Message-Id: <20200629193947.2705954-4-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200629193947.2705954-1-hch@lst.de>
 References: <20200629193947.2705954-1-hch@lst.de>
@@ -77,30 +77,35 @@ field.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/m68k/emu/nfblock.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/block/drbd/drbd_main.c | 1 -
+ drivers/block/drbd/drbd_req.c  | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/m68k/emu/nfblock.c b/arch/m68k/emu/nfblock.c
-index c3a630440512e9..87e8b1700acd28 100644
---- a/arch/m68k/emu/nfblock.c
-+++ b/arch/m68k/emu/nfblock.c
-@@ -61,7 +61,7 @@ struct nfhd_device {
+diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
+index 45fbd526c453bc..26f4e0aa7393b4 100644
+--- a/drivers/block/drbd/drbd_main.c
++++ b/drivers/block/drbd/drbd_main.c
+@@ -2805,7 +2805,6 @@ enum drbd_ret_code drbd_create_device(struct drbd_config_context *adm_ctx, unsig
+ 	if (!q)
+ 		goto out_no_q;
+ 	device->rq_queue = q;
+-	q->queuedata   = device;
  
- static blk_qc_t nfhd_make_request(struct request_queue *queue, struct bio *bio)
+ 	disk = alloc_disk(1);
+ 	if (!disk)
+diff --git a/drivers/block/drbd/drbd_req.c b/drivers/block/drbd/drbd_req.c
+index c80a2f1c3c2a73..3f09b2ab977822 100644
+--- a/drivers/block/drbd/drbd_req.c
++++ b/drivers/block/drbd/drbd_req.c
+@@ -1595,7 +1595,7 @@ void do_submit(struct work_struct *ws)
+ 
+ blk_qc_t drbd_make_request(struct request_queue *q, struct bio *bio)
  {
--	struct nfhd_device *dev = queue->queuedata;
-+	struct nfhd_device *dev = bio->bi_disk->private_data;
- 	struct bio_vec bvec;
- 	struct bvec_iter iter;
- 	int dir, len, shift;
-@@ -122,7 +122,6 @@ static int __init nfhd_init_one(int id, u32 blocks, u32 bsize)
- 	if (dev->queue == NULL)
- 		goto free_dev;
+-	struct drbd_device *device = (struct drbd_device *) q->queuedata;
++	struct drbd_device *device = bio->bi_disk->private_data;
+ 	unsigned long start_jif;
  
--	dev->queue->queuedata = dev;
- 	blk_queue_logical_block_size(dev->queue, bsize);
- 
- 	dev->disk = alloc_disk(16);
+ 	blk_queue_split(q, &bio);
 -- 
 2.26.2
 
