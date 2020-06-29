@@ -2,104 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF2520CE66
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 13:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3901420CED2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 15:29:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wQx454xlzDqT6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:58:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wSy54mfFzDqR5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 23:29:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wQvC1ZjhzDqJT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:56:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49wQvB52B9z8t9r
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:56:38 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49wQvB4bX1z9sQt; Mon, 29 Jun 2020 21:56:38 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=htejun@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=QBzWW384; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49wQv963mzz9sRk
- for <linuxppc-dev@ozlabs.org>; Mon, 29 Jun 2020 21:56:37 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05TBZdHO132225; Mon, 29 Jun 2020 07:56:33 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ydk8w3p2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jun 2020 07:56:32 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05TBaD7B135261;
- Mon, 29 Jun 2020 07:56:32 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ydk8w3mh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jun 2020 07:56:32 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05TBpvef012283;
- Mon, 29 Jun 2020 11:56:30 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 31wwch25f9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jun 2020 11:56:29 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05TBt7MH63045990
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Jun 2020 11:55:07 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25FDAAE04D;
- Mon, 29 Jun 2020 11:56:27 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B7209AE055;
- Mon, 29 Jun 2020 11:56:24 +0000 (GMT)
-Received: from [9.102.22.29] (unknown [9.102.22.29])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 29 Jun 2020 11:56:24 +0000 (GMT)
-Subject: Re: [PATCH 01/11] kexec_file: allow archs to handle special regions
- while locating memory hole
-To: Petr Tesarik <ptesarik@suse.cz>
-References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
- <159319828304.16351.6990340111766605842.stgit@hbathini.in.ibm.com>
- <20200629133933.0787f562@ezekiel.suse.cz>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Message-ID: <7981ae61-26c6-000c-9ee4-382dab3eecab@linux.ibm.com>
-Date: Mon, 29 Jun 2020 17:26:23 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wSvD2QdPzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 23:26:45 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id b4so15151071qkn.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 06:26:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=Fv6NdtXx3UPrY1o8G//J65B2AQrLdpFXjYCPaB28XJ4=;
+ b=QBzWW384u9OvX1+fUOwtaycCV0CJ52SJrLmeisPsJZT2MkXib64D2XgXjqcZCQ1gHl
+ VVu6OQvl/n/P/cFGz+Y239ImO9US3hFSEeQQSI5WIhYOPb1nHd81Jq7x2ACxzYcZqO3f
+ rLJ28xCiUZOXEYFrnGDxxGpJOfRtblGiZqRXRShP77fsVblavOYIR7oY6VRiui1qJcA+
+ OZtZ5c+W9enbTMpXOzJxOU0ZujiE4c1Z4fh/bM2ZhQLI9HKB26PM8zSfNddnnqsR4UB1
+ Zl71fUJVG3JgmZqfzmK8dCNaJmRQwy1Gd+9Zgogqc+w0moLNTMSkoa4ZjhTPzhat8xqh
+ bruw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=Fv6NdtXx3UPrY1o8G//J65B2AQrLdpFXjYCPaB28XJ4=;
+ b=IucT1zkCU2Xw1xJ2M5pvVZGXoTPaXPUlGPdFnHP4d3liwLjVzPWm+j2zarcJKNVxmY
+ SbXzZ0AGZJWrUFrF0mskwGBjbs+KzoZuyl9Xp9sDI5r/SVoJmKrCSj9r6Fy/qi2sS/1+
+ AGWjqplQyFv1gBUlEVR3mZemGG09Q5jguYT2GLCtyb5WO7EIO6T+UD7ZgEBWkzcc0lbD
+ sHo2HxWGKD1Gm5I79FHPy6swPgwtqzCVL1zIaqokhZ9G+F4u1C5GE2IqVcavJbDrTdhj
+ aggylo+sRkl3KpNbvIiRdjBSG8xs85wiWlULQ5TiW/Dy3QrQloikr11ekoRA1Ii2vcRB
+ 6Wnw==
+X-Gm-Message-State: AOAM533i7G1cx830VUHdyGRrC1g6V3nBsu73/6k01V9iH0u3+SgM5dUz
+ t6ggU9JrvaxE9VsHROC2zSM=
+X-Google-Smtp-Source: ABdhPJyJSE7L2+zg2wyGl3Bgq/O+Nn9UDXROVlpMVeIyC6cjvIPEgQ+STEsV8Ezdk9o2oieugBEbSQ==
+X-Received: by 2002:a37:47d1:: with SMTP id
+ u200mr15401369qka.142.1593437200182; 
+ Mon, 29 Jun 2020 06:26:40 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:480::1:26be])
+ by smtp.gmail.com with ESMTPSA id o15sm16871725qko.67.2020.06.29.06.26.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Jun 2020 06:26:39 -0700 (PDT)
+Date: Mon, 29 Jun 2020 09:26:38 -0400
+From: Tejun Heo <tj@kernel.org>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/3] powerpc/cacheinfo: Use cpumap_print to print cpumap
+Message-ID: <20200629132638.GF13061@mtj.duckdns.org>
+References: <20200629103703.4538-1-srikar@linux.vnet.ibm.com>
+ <20200629103703.4538-2-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200629133933.0787f562@ezekiel.suse.cz>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-29_11:2020-06-29,
- 2020-06-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- suspectscore=0 adultscore=0 mlxlogscore=859 lowpriorityscore=0
- clxscore=1015 bulkscore=0 malwarescore=0 cotscore=-2147483648
- impostorscore=0 spamscore=0 priorityscore=1501 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006290079
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200629103703.4538-2-srikar@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,43 +80,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Petr,
-
-On 29/06/20 5:09 pm, Petr Tesarik wrote:
-> Hi Hari,
+On Mon, Jun 29, 2020 at 04:07:01PM +0530, Srikar Dronamraju wrote:
+> Tejun Heo had modified shared_cpu_map_show to use scnprintf instead of
+> cpumap_print during support for *pb[l] format.
+> Refer commit 0c118b7bd09a ("powerpc: use %*pb[l] to print bitmaps including
+> cpumasks and nodemasks")
 > 
-> is there any good reason to add two more functions with a very similar
-> name to an existing function? AFAICS all you need is a way to call a
-> PPC64-specific function from within kexec_add_buffer (PATCH 4/11), so
-> you could add something like this:
+> cpumap_print_to_pagebuf is a standard function to print cpumap.  With
+> commit 9cf79d115f0d ("bitmap: remove explicit newline handling using
+> scnprintf format string"), there is no need to print explicit newline and
+> trailing null character. cpumap_print_to_pagebuf internally uses
+> scnprintf. Hence replace scnprintf with cpumap_print_to_pagebuf.
 > 
-> int __weak arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
-> {
-> 	return 0;
-> }
+> Note: shared_cpu_map_show in drivers/base/cacheinfo.c already uses
+> cpumap_print_to_pagebuf.
 > 
-> Call this function from kexec_add_buffer where appropriate and then
-> override it for PPC64 (it roughly corresponds to your
-> kexec_locate_mem_hole_ppc64() from PATCH 4/11).
+> Before this patch
+> # cat /sys/devices/system/cpu0/cache/index1/shared_cpu_map
+> 00ff
 > 
-> FWIW it would make it easier for me to follow the resulting code.
+> #
+> 		(Notice the extra blank line).
+> 
+> After this patch
+> # cat /sys/devices/system/cpu0/cache/index1/shared_cpu_map
+> 00ff
+> #
+> 
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-Right, Petr.
+Acked-by: Tejun Heo <tj@kernel.org>
 
-I was trying out a few things before I ended up with what I sent here.
-Bu yeah.. I did realize arch_kexec_locate_mem_hole() would have been better
-after sending out v1. Will take care of that in v2.
+Thanks.
 
-Thanks
-Hari
+-- 
+tejun
