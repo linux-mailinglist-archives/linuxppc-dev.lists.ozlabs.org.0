@@ -2,45 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445B720CF57
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 17:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB9C20CFC9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 17:45:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wW8Y59fWzDqLh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 01:08:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wWzC5P5qzDqVr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 01:45:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=linux.com (client-ip=3.19.106.255; helo=gentwo.org;
- envelope-from=cl@linux.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.com
-X-Greylist: delayed 490 seconds by postgrey-1.36 at bilbo;
- Tue, 30 Jun 2020 01:06:54 AEST
-Received: from gentwo.org (gentwo.org [3.19.106.255])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
+ [209.85.210.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wW6k1ksxzDqT5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 01:06:54 +1000 (AEST)
-Received: by gentwo.org (Postfix, from userid 1002)
- id 2B0E33FF4E; Mon, 29 Jun 2020 14:58:40 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by gentwo.org (Postfix) with ESMTP id 291103EA72;
- Mon, 29 Jun 2020 14:58:40 +0000 (UTC)
-Date: Mon, 29 Jun 2020 14:58:40 +0000 (UTC)
-From: Christopher Lameter <cl@linux.com>
-X-X-Sender: cl@www.lameter.com
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
- offline
-In-Reply-To: <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
-Message-ID: <alpine.DEB.2.22.394.2006291456550.27163@www.lameter.com>
-References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
- <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wWvC37qKzDqMy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 01:41:57 +1000 (AEST)
+Received: by mail-ot1-f65.google.com with SMTP id t18so3122230otq.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 08:41:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=18DuSBZeLijFT5byeb07kqFnxpD8Og5k3o71uVKMsdg=;
+ b=XEk5HeXIzr5fM/8ak6FNptUai4VhSfxsKbHWwPm04mGRFbBr7bnjeyUGhnLsOWHYJ+
+ o5o7AZ218Sk3flFNEL4A76iV18QSFDg8j5AyN+9dFy3GSNwx9YbWz+7WOWZiGi0FkZzu
+ dS3jXaEjKiu4njpUtcGzbSNOkNutnoZAkdH9BrLER+5TgWBksL7RPwHTeGtoXj7NqazQ
+ RrcYrI9uw+u/ZjRBC75xhpjwD6LjjQ3Dm+TsmeiyqYLftHmR5bdEqocZvCzyCMRqd/Eq
+ wM9edRIQrVHJ/ZKHqh7DhVH66olsMCL/6AFMEhlglQ9vzf4jUUEkdlVZLDnUTFr/etwV
+ KFBA==
+X-Gm-Message-State: AOAM533YUpuxozeuD5QLPSx7UUKa9CPlXyZ4BdMeVrtBeAUdkkUmjn3A
+ jMMU3jWlhWzPYnQXrQTfM012abfElVJIlTkvFRQ=
+X-Google-Smtp-Source: ABdhPJyfGDnofAtWY6Vq9zQSiEjHHywgsNVHJzUbnOYeAK8rSOSVeLQNZQAOcMed2+/KO3c+bzP8Q5CiqDzs7aUNX9g=
+X-Received: by 2002:a05:6830:1451:: with SMTP id
+ w17mr1238896otp.250.1593445314725; 
+ Mon, 29 Jun 2020 08:41:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20200627143453.31835-1-rppt@kernel.org>
+ <20200627143453.31835-2-rppt@kernel.org>
+In-Reply-To: <20200627143453.31835-2-rppt@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 29 Jun 2020 17:41:43 +0200
+Message-ID: <CAMuHMdUOrrrtKuhtWJvzKNNLXY1fx+Ym1oXGN2J_CZ7RqByGHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm: remove unneeded includes of <asm/pgalloc.h>
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,28 +61,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
- David Hildenbrand <david@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Vlastimil Babka <vbabka@suse.cz>
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, linux-csky@vger.kernel.org,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+ arcml <linux-snps-arc@lists.infradead.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, linux-s390 <linux-s390@vger.kernel.org>,
+ linux-um <linux-um@lists.infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Openrisc <openrisc@lists.librecores.org>, Andy Lutomirski <luto@kernel.org>,
+ Stafford Horne <shorne@gmail.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Parisc List <linux-parisc@vger.kernel.org>, Linux MM <linux-mm@kvack.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 24 Jun 2020, Srikar Dronamraju wrote:
+On Sat, Jun 27, 2020 at 4:35 PM Mike Rapoport <rppt@kernel.org> wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> In the most cases <asm/pgalloc.h> header is required only for allocations
+> of page table memory. Most of the .c files that include that header do not
+> use symbols declared in <asm/pgalloc.h> and do not require that header.
+>
+> As for the other header files that used to include <asm/pgalloc.h>, it is
+> possible to move that include into the .c file that actually uses symbols
+> from <asm/pgalloc.h> and drop the include from the header file.
+>
+> The process was somewhat automated using
+>
+>         sed -i -E '/[<"]asm\/pgalloc\.h/d' \
+>                 $(grep -L -w -f /tmp/xx \
+>                         $(git grep -E -l '[<"]asm/pgalloc\.h'))
+>
+> where /tmp/xx contains all the symbols defined in
+> arch/*/include/asm/pgalloc.h.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 
-> Currently Linux kernel with CONFIG_NUMA on a system with multiple
-> possible nodes, marks node 0 as online at boot.  However in practice,
-> there are systems which have node 0 as memoryless and cpuless.
+For the m68k part:
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Maybe add something to explain why you are not simply mapping the
-existing memory to NUMA node 0 which is after all just a numbering scheme
-used by the kernel and can be used arbitrarily?
+Gr{oetje,eeting}s,
 
-This could be seen more as a bug in the arch code during the setup of NUMA
-nodes. The two nodes are created by the firmwware / bootstrap code after
-all. Just do not do it?
+                        Geert
 
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
