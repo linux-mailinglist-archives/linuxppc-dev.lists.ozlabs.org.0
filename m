@@ -2,81 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BDD20CF2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 16:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB84620CF34
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 16:40:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wVRW052TzDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 00:36:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wVWd6ZMLzDqX9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 00:39:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wTbn2WRDzDqHS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 23:58:29 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05TDaQ3A012548; Mon, 29 Jun 2020 09:58:20 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31xkqjp577-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jun 2020 09:58:09 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05TDiZaY045886;
- Mon, 29 Jun 2020 09:57:52 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31xkqjp50f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jun 2020 09:57:52 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05TDsVLB017950;
- Mon, 29 Jun 2020 13:57:40 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma03wdc.us.ibm.com with ESMTP id 31wwr87r4u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jun 2020 13:57:40 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05TDvelr54002086
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Jun 2020 13:57:40 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4464BAE062;
- Mon, 29 Jun 2020 13:57:40 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14129AE05C;
- Mon, 29 Jun 2020 13:57:37 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.77.197.62])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 29 Jun 2020 13:57:36 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- linux-nvdimm@lists.01.org, dan.j.williams@intel.com
-Subject: [PATCH v6 0/8] Support new pmem flush and sync instructions for POWER
-Date: Mon, 29 Jun 2020 19:27:14 +0530
-Message-Id: <20200629135722.73558-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-29_11:2020-06-29,
- 2020-06-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 bulkscore=0
- mlxscore=0 adultscore=0 clxscore=1015 phishscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 suspectscore=0 cotscore=-2147483648
- spamscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006290091
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wTsm3hzVzDqBW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 00:10:35 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 70AA02010B8;
+ Mon, 29 Jun 2020 16:10:31 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AF2862010AB;
+ Mon, 29 Jun 2020 16:10:26 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id D0415402E7;
+ Mon, 29 Jun 2020 22:10:20 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com
+Subject: [PATCH] ASoC: fsl_asrc: Add an option to select internal ratio mode
+Date: Mon, 29 Jun 2020 21:58:35 +0800
+Message-Id: <1593439115-19282-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,71 +51,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, Jeff Moyer <jmoyer@redhat.com>, msuchanek@suse.de,
- oohall@gmail.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch series enables the usage os new pmem flush and sync instructions on POWER
-architecture. POWER10 introduces two new variants of dcbf instructions (dcbstps and dcbfps)
-that can be used to write modified locations back to persistent storage. Additionally,
-POWER10 also introduce phwsync and plwsync which can be used to establish order of these
-writes to persistent storage.
-    
-This series exposes these instructions to the rest of the kernel. The existing
-dcbf and hwsync instructions in P8 and P9 are adequate to enable appropriate
-synchronization with OpenCAPI-hosted persistent storage. Hence the new instructions
-are added as a variant of the old ones that old hardware won't differentiate.
+The ASRC not only supports ideal ratio mode, but also supports
+internal ratio mode.
 
-On POWER10, pmem devices will be represented by a different device tree compat
-strings. This ensures that older kernels won't initialize pmem devices on POWER10.
+For internal rato mode, the rate of clock source should be divided
+with no remainder by sample rate, otherwise there is sound
+distortion.
 
-With this:
-1) vPMEM continues to work since it is a volatile region. That 
-doesn't need any flush instructions.
+Add function fsl_asrc_select_clk() to find proper clock source for
+internal ratio mode, if the clock source is available then internal
+ratio mode will be selected.
 
-2) pmdk and other user applications get updated to use new instructions
-and updated packages are made available to all distributions
+With change, the ideal ratio mode is not the only option for user.
 
-3) On newer hardware, the device will appear with a new compat string. 
-Hence older distributions won't initialize pmem on newer hardware.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_asrc.c | 58 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 56 insertions(+), 2 deletions(-)
 
-Changes from v5:
-* Drop CONFIG_ARCH_MAP_SYNC_DISABLE and related changes
-
-Changes from V4:
-* Add namespace specific sychronous fault control.
-
-Changes from V3:
-* Add new compat string to be used for the device.
-* Use arch_pmem_flush_barrier() in dm-writecache.
-
-Aneesh Kumar K.V (8):
-  powerpc/pmem: Restrict papr_scm to P8 and above.
-  powerpc/pmem: Add new instructions for persistent storage and sync
-  powerpc/pmem: Add flush routines using new pmem store and sync
-    instruction
-  libnvdimm/nvdimm/flush: Allow architecture to override the flush
-    barrier
-  powerpc/pmem/of_pmem: Update of_pmem to use the new barrier
-    instruction.
-  powerpc/pmem: Avoid the barrier in flush routines
-  powerpc/pmem: Add WARN_ONCE to catch the wrong usage of pmem flush
-    functions.
-  powerpc/pmem: Initialize pmem device on newer hardware
-
- arch/powerpc/include/asm/cacheflush.h     | 10 +++++
- arch/powerpc/include/asm/ppc-opcode.h     | 12 ++++++
- arch/powerpc/lib/pmem.c                   | 46 +++++++++++++++++++++--
- arch/powerpc/platforms/pseries/papr_scm.c | 14 +++++++
- arch/powerpc/platforms/pseries/pmem.c     |  6 +++
- drivers/md/dm-writecache.c                |  2 +-
- drivers/nvdimm/of_pmem.c                  |  1 +
- drivers/nvdimm/region_devs.c              |  8 ++--
- include/asm-generic/cacheflush.h          |  4 ++
- 9 files changed, 94 insertions(+), 9 deletions(-)
-
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index 95f6a9617b0b..fcafc8ecb131 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -582,11 +582,59 @@ static int fsl_asrc_dai_startup(struct snd_pcm_substream *substream,
+ 			SNDRV_PCM_HW_PARAM_RATE, &fsl_asrc_rate_constraints);
+ }
+ 
++/**
++ * Select proper clock source for internal ratio mode
++ */
++static int fsl_asrc_select_clk(struct fsl_asrc_priv *asrc_priv,
++			       struct fsl_asrc_pair *pair,
++			       int in_rate,
++			       int out_rate)
++{
++	struct fsl_asrc_pair_priv *pair_priv = pair->private;
++	struct asrc_config *config = pair_priv->config;
++	int rate[2], select_clk[2]; /* Array size 2 means IN and OUT */
++	int clk_rate, clk_index;
++	int i = 0, j = 0;
++	bool clk_sel[2];
++
++	rate[0] = in_rate;
++	rate[1] = out_rate;
++
++	/* Select proper clock source for internal ratio mode */
++	for (j = 0; j < 2; j++) {
++		for (i = 0; i < ASRC_CLK_MAP_LEN; i++) {
++			clk_index = asrc_priv->clk_map[j][i];
++			clk_rate = clk_get_rate(asrc_priv->asrck_clk[clk_index]);
++			if (clk_rate != 0 && (clk_rate / rate[j]) <= 1024 &&
++			    (clk_rate % rate[j]) == 0)
++				break;
++		}
++
++		if (i == ASRC_CLK_MAP_LEN) {
++			select_clk[j] = OUTCLK_ASRCK1_CLK;
++			clk_sel[j] = false;
++		} else {
++			select_clk[j] = i;
++			clk_sel[j] = true;
++		}
++	}
++
++	/* Switch to ideal ratio mode if there is no proper clock source */
++	if (!clk_sel[IN] || !clk_sel[OUT])
++		select_clk[IN] = INCLK_NONE;
++
++	config->inclk = select_clk[IN];
++	config->outclk = select_clk[OUT];
++
++	return 0;
++}
++
+ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+ 				  struct snd_pcm_hw_params *params,
+ 				  struct snd_soc_dai *dai)
+ {
+ 	struct fsl_asrc *asrc = snd_soc_dai_get_drvdata(dai);
++	struct fsl_asrc_priv *asrc_priv = asrc->private;
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+ 	struct fsl_asrc_pair *pair = runtime->private_data;
+ 	struct fsl_asrc_pair_priv *pair_priv = pair->private;
+@@ -605,8 +653,6 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+ 
+ 	config.pair = pair->index;
+ 	config.channel_num = channels;
+-	config.inclk = INCLK_NONE;
+-	config.outclk = OUTCLK_ASRCK1_CLK;
+ 
+ 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 		config.input_format   = params_format(params);
+@@ -620,6 +666,14 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+ 		config.output_sample_rate = rate;
+ 	}
+ 
++	ret = fsl_asrc_select_clk(asrc_priv, pair,
++				  config.input_sample_rate,
++				  config.output_sample_rate);
++	if (ret) {
++		dev_err(dai->dev, "fail to select clock\n");
++		return ret;
++	}
++
+ 	ret = fsl_asrc_config_pair(pair, false);
+ 	if (ret) {
+ 		dev_err(dai->dev, "fail to config asrc pair\n");
 -- 
-2.26.2
+2.21.0
 
