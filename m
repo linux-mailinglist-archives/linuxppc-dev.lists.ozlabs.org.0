@@ -1,57 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053F120CE40
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 13:32:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE8220CE45
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 13:41:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wQMl2Lw9zDqLP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:32:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wQYX3nSSzDqNm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:41:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wQCX2VW6zDqK9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:25:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jzBEmPbg; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49wQCW3yNVz9sQt;
- Mon, 29 Jun 2020 21:25:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1593429943;
- bh=pSTHi4uumjVhxL7qDBBa05Rp89rWlxnW6GHpxYpiXr0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jzBEmPbgoMv1WRUMc1FsFxPn/gU6MvXKvrNIJbtGGT5InxJUAOLu6ZDO2+BTMaqIn
- JC8HU/A36uUdR7Ymd5NDURBejUGCYllRJ310rma5lh+slaGo1SWt5AlrdIEGpAwi9S
- HFz8gxdtwL9DN3RuV7DbPulniA/WauUQYvvhSkNMoO8zoPs1Iq2MKP+7XpcruiB4KV
- 86C20NUDBXvNDTUm45k2+vDeQ1xsmpgs4dSumXim/uXvf3uPQ+oFsBjlJfWW+0tM0C
- jK9U9Pp4ZjGY8MP/ne8NELBkc77XU4CU+0YImw/qHdpEAyc6Q1lW2KggFXj7VLiKX7
- OVrhUDO4aHLHQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com,
- segher@kernel.crashing.org
-Subject: Re: [PATCH v2] powerpc/uaccess: Use flexible addressing with
- __put_user()/__get_user()
-In-Reply-To: <7b916759-1683-b4df-0d4b-b04b3fcd9a02@csgroup.eu>
-References: <c2addbd9d76212242d3d8554a2f7ff849fb08b85.1587040754.git.christophe.leroy@c-s.fr>
- <7b916759-1683-b4df-0d4b-b04b3fcd9a02@csgroup.eu>
-Date: Mon, 29 Jun 2020 21:27:56 +1000
-Message-ID: <878sg6862r.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wQWg6YmtzDqMg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:39:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49wQWg5Dgyz8tWB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 21:39:43 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49wQWg4bdfz9sSF; Mon, 29 Jun 2020 21:39:43 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=ptesarik@suse.cz;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 49wQWf6lK9z9sQt
+ for <linuxppc-dev@ozlabs.org>; Mon, 29 Jun 2020 21:39:42 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 4DCA4AD6A;
+ Mon, 29 Jun 2020 11:39:38 +0000 (UTC)
+Date: Mon, 29 Jun 2020 13:39:33 +0200
+From: Petr Tesarik <ptesarik@suse.cz>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH 01/11] kexec_file: allow archs to handle special regions
+ while locating memory hole
+Message-ID: <20200629133933.0787f562@ezekiel.suse.cz>
+In-Reply-To: <159319828304.16351.6990340111766605842.stgit@hbathini.in.ibm.com>
+References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
+ <159319828304.16351.6990340111766605842.stgit@hbathini.in.ibm.com>
+Organization: SUSE Linux, s.r.o.
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9"; protocol="application/pgp-signature"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,242 +63,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Hi Michael,
->
-> I see this patch is marked as "defered" in patchwork, but I can't see=20
-> any related discussion. Is it normal ?
+--Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Because it uses the "m<>" constraint which didn't work on GCC 4.6.
+Hi Hari,
 
-https://github.com/linuxppc/issues/issues/297
+is there any good reason to add two more functions with a very similar
+name to an existing function? AFAICS all you need is a way to call a
+PPC64-specific function from within kexec_add_buffer (PATCH 4/11), so
+you could add something like this:
 
-So we should be able to pick it up for v5.9 hopefully.
+int __weak arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
+{
+	return 0;
+}
 
-cheers
+Call this function from kexec_add_buffer where appropriate and then
+override it for PPC64 (it roughly corresponds to your
+kexec_locate_mem_hole_ppc64() from PATCH 4/11).
+
+FWIW it would make it easier for me to follow the resulting code.
+
+Petr T
+
+On Sat, 27 Jun 2020 00:34:43 +0530
+Hari Bathini <hbathini@linux.ibm.com> wrote:
+
+> Some archs can have special memory regions, within the given memory
+> range, which can't be used for the buffer in a kexec segment. As
+> kexec_add_buffer() function is being called from generic code as well,
+> add weak arch_kexec_add_buffer definition for archs to override & take
+> care of special regions before trying to locate a memory hole.
+>=20
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  include/linux/kexec.h |    5 +++++
+>  kernel/kexec_file.c   |   37 +++++++++++++++++++++++++++++++++----
+>  2 files changed, 38 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+> index 1776eb2..1237682 100644
+> --- a/include/linux/kexec.h
+> +++ b/include/linux/kexec.h
+> @@ -195,6 +195,11 @@ int __weak arch_kexec_apply_relocations(struct purga=
+tory_info *pi,
+>  					const Elf_Shdr *relsec,
+>  					const Elf_Shdr *symtab);
+> =20
+> +extern int arch_kexec_add_buffer(struct kexec_buf *kbuf);
+> +
+> +/* arch_kexec_add_buffer calls this when it is ready */
+> +extern int __kexec_add_buffer(struct kexec_buf *kbuf);
+> +
+>  extern int kexec_add_buffer(struct kexec_buf *kbuf);
+>  int kexec_locate_mem_hole(struct kexec_buf *kbuf);
+> =20
+> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+> index bb05fd5..a0b4f7f 100644
+> --- a/kernel/kexec_file.c
+> +++ b/kernel/kexec_file.c
+> @@ -669,10 +669,6 @@ int kexec_locate_mem_hole(struct kexec_buf *kbuf)
+>   */
+>  int kexec_add_buffer(struct kexec_buf *kbuf)
+>  {
+> -
+> -	struct kexec_segment *ksegment;
+> -	int ret;
+> -
+>  	/* Currently adding segment this way is allowed only in file mode */
+>  	if (!kbuf->image->file_mode)
+>  		return -EINVAL;
+> @@ -696,6 +692,25 @@ int kexec_add_buffer(struct kexec_buf *kbuf)
+>  	kbuf->memsz =3D ALIGN(kbuf->memsz, PAGE_SIZE);
+>  	kbuf->buf_align =3D max(kbuf->buf_align, PAGE_SIZE);
+> =20
+> +	return arch_kexec_add_buffer(kbuf);
+> +}
+> +
+> +/**
+> + * __kexec_add_buffer - arch_kexec_add_buffer would call this function a=
+fter
+> + *                      updating kbuf, to place a buffer in a kexec segm=
+ent.
+> + * @kbuf:               Buffer contents and memory parameters.
+> + *
+> + * This function assumes that kexec_mutex is held.
+> + * On successful return, @kbuf->mem will have the physical address of
+> + * the buffer in memory.
+> + *
+> + * Return: 0 on success, negative errno on error.
+> + */
+> +int __kexec_add_buffer(struct kexec_buf *kbuf)
+> +{
+> +	struct kexec_segment *ksegment;
+> +	int ret;
+> +
+>  	/* Walk the RAM ranges and allocate a suitable range for the buffer */
+>  	ret =3D kexec_locate_mem_hole(kbuf);
+>  	if (ret)
+> @@ -711,6 +726,20 @@ int kexec_add_buffer(struct kexec_buf *kbuf)
+>  	return 0;
+>  }
+> =20
+> +/**
+> + * arch_kexec_add_buffer - Some archs have memory regions within the giv=
+en
+> + *                         range that can't be used to place a kexec seg=
+ment.
+> + *                         Such archs can override this function to take=
+ care
+> + *                         of them before trying to locate the memory ho=
+le.
+> + * @kbuf:                  Buffer contents and memory parameters.
+> + *
+> + * Return: 0 on success, negative errno on error.
+> + */
+> +int __weak arch_kexec_add_buffer(struct kexec_buf *kbuf)
+> +{
+> +	return __kexec_add_buffer(kbuf);
+> +}
+> +
+>  /* Calculate and store the digest of segments */
+>  static int kexec_calculate_store_digests(struct kimage *image)
+>  {
+>=20
 
 
-> Le 16/04/2020 =C3=A0 14:39, Christophe Leroy a =C3=A9crit=C2=A0:
->> At the time being, __put_user()/__get_user() and friends only use
->> D-form addressing, with 0 offset. Ex:
->>=20
->> 	lwz	reg1, 0(reg2)
->>=20
->> Give the compiler the opportunity to use other adressing modes
->> whenever possible, to get more optimised code.
->>=20
->> Hereunder is a small exemple:
->>=20
->> struct test {
->> 	u32 item1;
->> 	u16 item2;
->> 	u8 item3;
->> 	u64 item4;
->> };
->>=20
->> int set_test_user(struct test __user *from, struct test __user *to)
->> {
->> 	int err;
->> 	u32 item1;
->> 	u16 item2;
->> 	u8 item3;
->> 	u64 item4;
->>=20
->> 	err =3D __get_user(item1, &from->item1);
->> 	err |=3D __get_user(item2, &from->item2);
->> 	err |=3D __get_user(item3, &from->item3);
->> 	err |=3D __get_user(item4, &from->item4);
->>=20
->> 	err |=3D __put_user(item1, &to->item1);
->> 	err |=3D __put_user(item2, &to->item2);
->> 	err |=3D __put_user(item3, &to->item3);
->> 	err |=3D __put_user(item4, &to->item4);
->>=20
->> 	return err;
->> }
->>=20
->> Before the patch:
->>=20
->> 00000df0 <set_test_user>:
->>   df0:	94 21 ff f0 	stwu    r1,-16(r1)
->>   df4:	39 40 00 00 	li      r10,0
->>   df8:	93 c1 00 08 	stw     r30,8(r1)
->>   dfc:	93 e1 00 0c 	stw     r31,12(r1)
->>   e00:	7d 49 53 78 	mr      r9,r10
->>   e04:	80 a3 00 00 	lwz     r5,0(r3)
->>   e08:	38 e3 00 04 	addi    r7,r3,4
->>   e0c:	7d 46 53 78 	mr      r6,r10
->>   e10:	a0 e7 00 00 	lhz     r7,0(r7)
->>   e14:	7d 29 33 78 	or      r9,r9,r6
->>   e18:	39 03 00 06 	addi    r8,r3,6
->>   e1c:	7d 46 53 78 	mr      r6,r10
->>   e20:	89 08 00 00 	lbz     r8,0(r8)
->>   e24:	7d 29 33 78 	or      r9,r9,r6
->>   e28:	38 63 00 08 	addi    r3,r3,8
->>   e2c:	7d 46 53 78 	mr      r6,r10
->>   e30:	83 c3 00 00 	lwz     r30,0(r3)
->>   e34:	83 e3 00 04 	lwz     r31,4(r3)
->>   e38:	7d 29 33 78 	or      r9,r9,r6
->>   e3c:	7d 43 53 78 	mr      r3,r10
->>   e40:	90 a4 00 00 	stw     r5,0(r4)
->>   e44:	7d 29 1b 78 	or      r9,r9,r3
->>   e48:	38 c4 00 04 	addi    r6,r4,4
->>   e4c:	7d 43 53 78 	mr      r3,r10
->>   e50:	b0 e6 00 00 	sth     r7,0(r6)
->>   e54:	7d 29 1b 78 	or      r9,r9,r3
->>   e58:	38 e4 00 06 	addi    r7,r4,6
->>   e5c:	7d 43 53 78 	mr      r3,r10
->>   e60:	99 07 00 00 	stb     r8,0(r7)
->>   e64:	7d 23 1b 78 	or      r3,r9,r3
->>   e68:	38 84 00 08 	addi    r4,r4,8
->>   e6c:	93 c4 00 00 	stw     r30,0(r4)
->>   e70:	93 e4 00 04 	stw     r31,4(r4)
->>   e74:	7c 63 53 78 	or      r3,r3,r10
->>   e78:	83 c1 00 08 	lwz     r30,8(r1)
->>   e7c:	83 e1 00 0c 	lwz     r31,12(r1)
->>   e80:	38 21 00 10 	addi    r1,r1,16
->>   e84:	4e 80 00 20 	blr
->>=20
->> After the patch:
->>=20
->> 00000dbc <set_test_user>:
->>   dbc:	39 40 00 00 	li      r10,0
->>   dc0:	7d 49 53 78 	mr      r9,r10
->>   dc4:	80 03 00 00 	lwz     r0,0(r3)
->>   dc8:	7d 48 53 78 	mr      r8,r10
->>   dcc:	a1 63 00 04 	lhz     r11,4(r3)
->>   dd0:	7d 29 43 78 	or      r9,r9,r8
->>   dd4:	7d 48 53 78 	mr      r8,r10
->>   dd8:	88 a3 00 06 	lbz     r5,6(r3)
->>   ddc:	7d 29 43 78 	or      r9,r9,r8
->>   de0:	7d 48 53 78 	mr      r8,r10
->>   de4:	80 c3 00 08 	lwz     r6,8(r3)
->>   de8:	80 e3 00 0c 	lwz     r7,12(r3)
->>   dec:	7d 29 43 78 	or      r9,r9,r8
->>   df0:	7d 43 53 78 	mr      r3,r10
->>   df4:	90 04 00 00 	stw     r0,0(r4)
->>   df8:	7d 29 1b 78 	or      r9,r9,r3
->>   dfc:	7d 43 53 78 	mr      r3,r10
->>   e00:	b1 64 00 04 	sth     r11,4(r4)
->>   e04:	7d 29 1b 78 	or      r9,r9,r3
->>   e08:	7d 43 53 78 	mr      r3,r10
->>   e0c:	98 a4 00 06 	stb     r5,6(r4)
->>   e10:	7d 23 1b 78 	or      r3,r9,r3
->>   e14:	90 c4 00 08 	stw     r6,8(r4)
->>   e18:	90 e4 00 0c 	stw     r7,12(r4)
->>   e1c:	7c 63 53 78 	or      r3,r3,r10
->>   e20:	4e 80 00 20 	blr
->>=20
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
->> ---
->> v2:
->> - Added <> modifier in __put_user_asm() and __get_user_asm()
->> - Removed %U2 in __put_user_asm2() and __get_user_asm2()
->> - Reworded the commit log
->> ---
->>   arch/powerpc/include/asm/uaccess.h | 28 ++++++++++++++--------------
->>   1 file changed, 14 insertions(+), 14 deletions(-)
->>=20
->> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/a=
-sm/uaccess.h
->> index 7c811442b607..9365b59495a2 100644
->> --- a/arch/powerpc/include/asm/uaccess.h
->> +++ b/arch/powerpc/include/asm/uaccess.h
->> @@ -114,7 +114,7 @@ extern long __put_user_bad(void);
->>    */
->>   #define __put_user_asm(x, addr, err, op)			\
->>   	__asm__ __volatile__(					\
->> -		"1:	" op " %1,0(%2)	# put_user\n"		\
->> +		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
->>   		"2:\n"						\
->>   		".section .fixup,\"ax\"\n"			\
->>   		"3:	li %0,%3\n"				\
->> @@ -122,7 +122,7 @@ extern long __put_user_bad(void);
->>   		".previous\n"					\
->>   		EX_TABLE(1b, 3b)				\
->>   		: "=3Dr" (err)					\
->> -		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
->> +		: "r" (x), "m<>" (*addr), "i" (-EFAULT), "0" (err))
->>=20=20=20
->>   #ifdef __powerpc64__
->>   #define __put_user_asm2(x, ptr, retval)				\
->> @@ -130,8 +130,8 @@ extern long __put_user_bad(void);
->>   #else /* __powerpc64__ */
->>   #define __put_user_asm2(x, addr, err)				\
->>   	__asm__ __volatile__(					\
->> -		"1:	stw %1,0(%2)\n"				\
->> -		"2:	stw %1+1,4(%2)\n"			\
->> +		"1:	stw%X2 %1,%2\n"			\
->> +		"2:	stw%X2 %L1,%L2\n"			\
->>   		"3:\n"						\
->>   		".section .fixup,\"ax\"\n"			\
->>   		"4:	li %0,%3\n"				\
->> @@ -140,7 +140,7 @@ extern long __put_user_bad(void);
->>   		EX_TABLE(1b, 4b)				\
->>   		EX_TABLE(2b, 4b)				\
->>   		: "=3Dr" (err)					\
->> -		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
->> +		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
->>   #endif /* __powerpc64__ */
->>=20=20=20
->>   #define __put_user_size_allowed(x, ptr, size, retval)		\
->> @@ -260,7 +260,7 @@ extern long __get_user_bad(void);
->>=20=20=20
->>   #define __get_user_asm(x, addr, err, op)		\
->>   	__asm__ __volatile__(				\
->> -		"1:	"op" %1,0(%2)	# get_user\n"	\
->> +		"1:	"op"%U2%X2 %1, %2	# get_user\n"	\
->>   		"2:\n"					\
->>   		".section .fixup,\"ax\"\n"		\
->>   		"3:	li %0,%3\n"			\
->> @@ -269,7 +269,7 @@ extern long __get_user_bad(void);
->>   		".previous\n"				\
->>   		EX_TABLE(1b, 3b)			\
->>   		: "=3Dr" (err), "=3Dr" (x)			\
->> -		: "b" (addr), "i" (-EFAULT), "0" (err))
->> +		: "m<>" (*addr), "i" (-EFAULT), "0" (err))
->>=20=20=20
->>   #ifdef __powerpc64__
->>   #define __get_user_asm2(x, addr, err)			\
->> @@ -277,8 +277,8 @@ extern long __get_user_bad(void);
->>   #else /* __powerpc64__ */
->>   #define __get_user_asm2(x, addr, err)			\
->>   	__asm__ __volatile__(				\
->> -		"1:	lwz %1,0(%2)\n"			\
->> -		"2:	lwz %1+1,4(%2)\n"		\
->> +		"1:	lwz%X2 %1, %2\n"			\
->> +		"2:	lwz%X2 %L1, %L2\n"		\
->>   		"3:\n"					\
->>   		".section .fixup,\"ax\"\n"		\
->>   		"4:	li %0,%3\n"			\
->> @@ -289,7 +289,7 @@ extern long __get_user_bad(void);
->>   		EX_TABLE(1b, 4b)			\
->>   		EX_TABLE(2b, 4b)			\
->>   		: "=3Dr" (err), "=3D&r" (x)			\
->> -		: "b" (addr), "i" (-EFAULT), "0" (err))
->> +		: "m" (*addr), "i" (-EFAULT), "0" (err))
->>   #endif /* __powerpc64__ */
->>=20=20=20
->>   #define __get_user_size_allowed(x, ptr, size, retval)		\
->> @@ -299,10 +299,10 @@ do {								\
->>   	if (size > sizeof(x))					\
->>   		(x) =3D __get_user_bad();				\
->>   	switch (size) {						\
->> -	case 1: __get_user_asm(x, ptr, retval, "lbz"); break;	\
->> -	case 2: __get_user_asm(x, ptr, retval, "lhz"); break;	\
->> -	case 4: __get_user_asm(x, ptr, retval, "lwz"); break;	\
->> -	case 8: __get_user_asm2(x, ptr, retval);  break;	\
->> +	case 1: __get_user_asm(x, (u8 __user *)ptr, retval, "lbz"); break;	\
->> +	case 2: __get_user_asm(x, (u16 __user *)ptr, retval, "lhz"); break;	\
->> +	case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break;	\
->> +	case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;	\
->>   	default: (x) =3D __get_user_bad();			\
->>   	}							\
->>   } while (0)
->>=20
+--Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9
+Content-Type: application/pgp-signature
+Content-Description: Digitální podpis OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEHl2YIZkIo5VO2MxYqlA7ya4PR6cFAl750vUACgkQqlA7ya4P
+R6dpTAf/dLQ6L45/sKP4CXfNn4HbDkmtImkYe5MjG/bvbhQrgLZxll54L0YT2bt/
+Xml4Bam2sLd761+VlBcJaQXLojyENgxLEpyAN2XXCFW+8YSipIRrpvmX8RrP+Szr
+PbYupPmCs8Y7GS6iptYE8nASFVQJm4JS4h/HZCsyUcZUpe+lrlM2BkO42FP+X8L9
+KdDubtEyyyWzwXx1PWpfq+I5IDIVKaIaCvXBeOp8OIjnHE4mtRcnMfahD2TBg3LM
+2ga/b4txkwuVkrnVuBaAjMmcK95nlth5oc0NFGMvyoLFUiS48fHYhwFWn7gYQW54
+08VDEBmerlqmS/Qvkym6ERI2MsuC6A==
+=M+ug
+-----END PGP SIGNATURE-----
+
+--Sig_/D5Q_Btj.Z_5nJ6kJU141Zr9--
