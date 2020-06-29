@@ -2,73 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7902820D583
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84A620D58D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 21:30:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wcvC0CM6zDqXY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 05:27:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wczK2k6KzDqY1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 05:30:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rJockAN7; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wcrD0VljzDqXt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:24:41 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id q90so7657285pjh.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 12:24:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=9dKxVJjlaX8jxkeSh8T6e6YHQEcdayiIxfyFI+zqbOE=;
- b=rJockAN73JAGXobfkev1y93WYQunULGBKvkHTFKad7D/eGF6tMmDd+MraUFMuEk8ni
- uXbBn82EgTam3bfIUAMR/28dBeHDZ2Ju1ZhDVGhwDN9bLMd5ab7IeRqJMfACaETguWjG
- ydJZCKge5IZiRZi904cCLfh2TZuu6KY7ZhfNqBlHwNWPwI9tE1If8SAcbqLmottXPj2z
- dUzUTfjA2PoZRb1dYCcN7cbsFQ9P9PZ563y0ZDe94rzLrXbX9u3EhaD2a4MOmnplChLU
- xAtkHqY2Rt2UHA/D4yO4QtII2iv+pNwVnQmpL1QrBEoRA9UAfEiXm+JN7Dmtiu4oV4ev
- 944A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=9dKxVJjlaX8jxkeSh8T6e6YHQEcdayiIxfyFI+zqbOE=;
- b=qE5RWEd3+1gTtDY5IfQxG+QfK1NijG57ivYgWGyhJ7iBzrQFF2bwcKzT3sQ0U9Z0I2
- bTkpJkFSGN7APWJGT0Mx1v/Zxh1rU+NLkxrDpjUUTMdyKJ126DMxR4V0s4mLpGdP2Y9b
- 92ouDXcoQsNKlel3tjA4phxtr9zeFX1+Odyl7hFJ0DS0MqbYcEoehvHIDWLp0cY+b6+v
- k7sPHmJwuxlcZBDzLfmiUj+D0HGqgwwfmwP0dEO66xDu5wWrPzE7X0Xt54zm+3bkh7DF
- Qrd/KHkGyf1T9GMb0n4c+PaVdOmrHHz8b63w1rXzLQMPgtVAEiAPuio5NEBF2mPDZWFl
- bCNg==
-X-Gm-Message-State: AOAM533YqlUlgqVOdNn/2aOMx4PIU9x2OjWtqN99FMWdmYQCCv+Hxpul
- RCyPpRk2BSl2FlDYsrrgLik=
-X-Google-Smtp-Source: ABdhPJw2NTojIOVe1N+k9d1UhrBCtTCNAURgml2u7637EWsRsIvR4dZARYK0e7VEMzNZsiIfyPManQ==
-X-Received: by 2002:a17:90b:698:: with SMTP id
- m24mr4120032pjz.15.1593458677861; 
- Mon, 29 Jun 2020 12:24:37 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id y8sm278658pju.49.2020.06.29.12.24.37
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 29 Jun 2020 12:24:37 -0700 (PDT)
-Date: Mon, 29 Jun 2020 12:24:03 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Refine regcache usage with pm runtime
-Message-ID: <20200629192402.GA27967@Asurada-Nvidia>
-References: <1593412953-10897-1-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wcs52RSczDqYb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 05:25:29 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05TJ3Xeg043662; Mon, 29 Jun 2020 15:25:21 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31x1rv25u3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jun 2020 15:25:21 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05TJJpVY014429;
+ Mon, 29 Jun 2020 19:25:19 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma05fra.de.ibm.com with ESMTP id 31wwr899kq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jun 2020 19:25:18 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05TJPGgg11010472
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Jun 2020 19:25:16 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F198C42041;
+ Mon, 29 Jun 2020 19:25:15 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 29F4042047;
+ Mon, 29 Jun 2020 19:25:13 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.163.34.71])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 29 Jun 2020 19:25:12 +0000 (GMT)
+Date: Mon, 29 Jun 2020 12:25:10 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v3 0/4] Migrate non-migrated pages of a SVM.
+Message-ID: <20200629192510.GD6772@oc0525413822.ibm.com>
+References: <1592606622-29884-1-git-send-email-linuxram@us.ibm.com>
+ <20200628161149.GA27215@in.ibm.com>
+ <20200629015330.GC27215@in.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1593412953-10897-1-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200629015330.GC27215@in.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-06-29_21:2020-06-29,
+ 2020-06-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ cotscore=-2147483648 lowpriorityscore=0 phishscore=0 spamscore=0
+ bulkscore=0 adultscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
+ malwarescore=0 mlxscore=0 impostorscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006290120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,20 +86,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, perex@perex.cz,
- broonie@kernel.org, festevam@gmail.com, linux-kernel@vger.kernel.org
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 29, 2020 at 02:42:33PM +0800, Shengjiu Wang wrote:
-> When there is dedicated power domain bound with device, after probing
-> the power will be disabled, then registers are not accessible in
-> fsl_sai_dai_probe(), so regcache only need to be enabled in end of
-> probe() and regcache_mark_dirty should be moved to pm runtime resume
-> callback function.
+On Mon, Jun 29, 2020 at 07:23:30AM +0530, Bharata B Rao wrote:
+> On Sun, Jun 28, 2020 at 09:41:53PM +0530, Bharata B Rao wrote:
+> > On Fri, Jun 19, 2020 at 03:43:38PM -0700, Ram Pai wrote:
+> > > The time taken to switch a VM to Secure-VM, increases by the size of the VM.  A
+> > > 100GB VM takes about 7minutes. This is unacceptable.  This linear increase is
+> > > caused by a suboptimal behavior by the Ultravisor and the Hypervisor.  The
+> > > Ultravisor unnecessarily migrates all the GFN of the VM from normal-memory to
+> > > secure-memory. It has to just migrate the necessary and sufficient GFNs.
+> > > 
+> > > However when the optimization is incorporated in the Ultravisor, the Hypervisor
+> > > starts misbehaving. The Hypervisor has a inbuilt assumption that the Ultravisor
+> > > will explicitly request to migrate, each and every GFN of the VM. If only
+> > > necessary and sufficient GFNs are requested for migration, the Hypervisor
+> > > continues to manage the remaining GFNs as normal GFNs. This leads of memory
+> > > corruption, manifested consistently when the SVM reboots.
+> > > 
+> > > The same is true, when a memory slot is hotplugged into a SVM. The Hypervisor
+> > > expects the ultravisor to request migration of all GFNs to secure-GFN.  But at
+> > > the same time, the hypervisor is unable to handle any H_SVM_PAGE_IN requests
+> > > from the Ultravisor, done in the context of UV_REGISTER_MEM_SLOT ucall.  This
+> > > problem manifests as random errors in the SVM, when a memory-slot is
+> > > hotplugged.
+> > > 
+> > > This patch series automatically migrates the non-migrated pages of a SVM,
+> > >      and thus solves the problem.
+> > 
+> > So this is what I understand as the objective of this patchset:
+> > 
+> > 1. Getting all the pages into the secure memory right when the guest
+> >    transitions into secure mode is expensive. Ultravisor wants to just get
+> >    the necessary and sufficient pages in and put the onus on the Hypervisor
+> >    to mark the remaining pages (w/o actual page-in) as secure during
+> >    H_SVM_INIT_DONE.
+> > 2. During H_SVM_INIT_DONE, you want a way to differentiate the pages that
+> >    are already secure from the pages that are shared and that are paged-out.
+> >    For this you are introducing all these new states in HV.
+> > 
+> > UV knows about the shared GFNs and maintains the state of the same. Hence
+> > let HV send all the pages (minus already secured pages) via H_SVM_PAGE_IN
+> > and if UV finds any shared pages in them, let it fail the uv-page-in call.
+> > Then HV can fail the migration for it  and the page continues to remain
+> > shared. With this, you don't need to maintain a state for secured GFN in HV.
+> > 
+> > In the unlikely case of sending a paged-out page to UV during
+> > H_SVM_INIT_DONE, let the page-in succeed and HV will fault on it again
+> > if required. With this, you don't need a state in HV to identify a
+> > paged-out-but-encrypted state.
+> > 
+> > Doesn't the above work?
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> I see that you want to infact skip the uv-page-in calls from H_SVM_INIT_DONE.
+> So that would need the extra states in HV which you are proposing here.
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+Yes. I want to skip to speed up the overall ESM switch.
+
+RP
