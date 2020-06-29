@@ -1,52 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090D520CFF4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 18:02:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AE820D00A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jun 2020 18:11:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wXMB1LJszDqYC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 02:02:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wXYP1MHPzDqXX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 02:11:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Ve2Rt8tV; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wXHW4rwQzDqRv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 01:59:35 +1000 (AEST)
-Received: from kernel.org (unknown [87.71.40.38])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5E93025581;
- Mon, 29 Jun 2020 15:59:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1593446372;
- bh=O/nZ0BxK4nESVxMtlEZ3aR9HUzEjAJ3vpNzo90oK+Gw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Ve2Rt8tVmffLLnlIRt4m0+FLkplbTh12wsmkxiiXh2shMIztHBj9/nk/f9S/ai5jU
- 3BFQpw5Dz/XZFCZs/y8ymsBDt+3vvNo/l/kVYqcYBemM5Bac+QbcUhusbQGI9QlPev
- vYsxGXmlFAgYBNiTAVuThytC5RkEIP2ptiiEd7Jg=
-Date: Mon, 29 Jun 2020 18:59:20 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH 4/8] asm-generic: pgalloc: provide generic
- pmd_alloc_one() and pmd_free_one()
-Message-ID: <20200629155920.GD1492837@kernel.org>
-References: <20200627143453.31835-1-rppt@kernel.org>
- <20200627143453.31835-5-rppt@kernel.org>
- <20200627190304.GG25039@casper.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wXWG12mjzDqTF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 02:09:45 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id CD266ACDB;
+ Mon, 29 Jun 2020 16:09:41 +0000 (UTC)
+Date: Mon, 29 Jun 2020 18:09:40 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v6 6/8] powerpc/pmem: Avoid the barrier in flush routines
+Message-ID: <20200629160940.GU21462@kitsune.suse.cz>
+References: <20200629135722.73558-1-aneesh.kumar@linux.ibm.com>
+ <20200629135722.73558-7-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200627190304.GG25039@casper.infradead.org>
+In-Reply-To: <20200629135722.73558-7-aneesh.kumar@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,54 +47,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, linux-csky@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- linux-hexagon@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- Andy Lutomirski <luto@kernel.org>, Stafford Horne <shorne@gmail.com>,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Jan Kara <jack@suse.cz>, linux-nvdimm@lists.01.org,
+ Jeff Moyer <jmoyer@redhat.com>, oohall@gmail.com, dan.j.williams@intel.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jun 27, 2020 at 08:03:04PM +0100, Matthew Wilcox wrote:
-> On Sat, Jun 27, 2020 at 05:34:49PM +0300, Mike Rapoport wrote:
-> > More elaborate versions on arm64 and x86 account memory for the user page
-> > tables and call to pgtable_pmd_page_ctor() as the part of PMD page
-> > initialization.
-> > 
-> > Move the arm64 version to include/asm-generic/pgalloc.h and use the generic
-> > version on several architectures.
-> > 
-> > The pgtable_pmd_page_ctor() is a NOP when ARCH_ENABLE_SPLIT_PMD_PTLOCK is
-> > not enabled, so there is no functional change for most architectures except
-> > of the addition of __GFP_ACCOUNT for allocation of user page tables.
+Hello,
+
+On Mon, Jun 29, 2020 at 07:27:20PM +0530, Aneesh Kumar K.V wrote:
+> nvdimm expect the flush routines to just mark the cache clean. The barrier
+> that mark the store globally visible is done in nvdimm_flush().
 > 
-> Thanks for including this line; it reminded me that we're not setting
-> the PageTable flag on the page, nor accounting it to the zone page stats.
-> Hope you don't mind me tagging a patch to do that on as 9/8.
+> Update the papr_scm driver to a simplified nvdim_flush callback that do
+> only the required barrier.
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/lib/pmem.c                   |  6 ------
+>  arch/powerpc/platforms/pseries/papr_scm.c | 13 +++++++++++++
+>  2 files changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
+> index 5a61aaeb6930..21210fa676e5 100644
+> --- a/arch/powerpc/lib/pmem.c
+> +++ b/arch/powerpc/lib/pmem.c
+> @@ -19,9 +19,6 @@ static inline void __clean_pmem_range(unsigned long start, unsigned long stop)
+>  
+>  	for (i = 0; i < size >> shift; i++, addr += bytes)
+>  		asm volatile(PPC_DCBSTPS(%0, %1): :"i"(0), "r"(addr): "memory");
+> -
+> -
+> -	asm volatile(PPC_PHWSYNC ::: "memory");
+>  }
+>  
+>  static inline void __flush_pmem_range(unsigned long start, unsigned long stop)
+> @@ -34,9 +31,6 @@ static inline void __flush_pmem_range(unsigned long start, unsigned long stop)
+>  
+>  	for (i = 0; i < size >> shift; i++, addr += bytes)
+>  		asm volatile(PPC_DCBFPS(%0, %1): :"i"(0), "r"(addr): "memory");
+> -
+> -
+> -	asm volatile(PPC_PHWSYNC ::: "memory");
+>  }
+>  
+>  static inline void clean_pmem_range(unsigned long start, unsigned long stop)
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 9c569078a09f..9a9a0766f8b6 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -630,6 +630,18 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>  
+>  	return 0;
+>  }
+> +/*
+> + * We have made sure the pmem writes are done such that before calling this
+> + * all the caches are flushed/clean. We use dcbf/dcbfps to ensure this. Here
+> + * we just need to add the necessary barrier to make sure the above flushes
+> + * are have updated persistent storage before any data access or data transfer
+> + * caused by subsequent instructions is initiated.
+> + */
+> +static int papr_scm_flush_sync(struct nd_region *nd_region, struct bio *bio)
+> +{
+> +	arch_pmem_flush_barrier();
+> +	return 0;
+> +}
+>  
+>  static ssize_t flags_show(struct device *dev,
+>  			  struct device_attribute *attr, char *buf)
+> @@ -743,6 +755,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+>  	ndr_desc.mapping = &mapping;
+>  	ndr_desc.num_mappings = 1;
+>  	ndr_desc.nd_set = &p->nd_set;
+> +	ndr_desc.flush = papr_scm_flush_sync;
 
-We also never set PageTable flag for early page tables and for the page
-tables allocated directly with get_free_page(), e.g PTI, KASAN.
+AFAICT currently the only device that implements flush is virtio_pmem.
+How does the nfit driver get away without implementing flush?
+Also the flush takes arguments that are completely unused but a user of
+the pmem region must assume they are used, and call flush() on the
+region rather than arch_pmem_flush_barrier() directly.  This may not
+work well with md as discussed with earlier iteration of the patchest.
 
-> We could also do with a pud_page_[cd]tor and maybe even p4d/pgd versions.
-> But that brings me to the next question -- could/should some of this
-> be moved over to asm-generic/pgalloc.h?  The ctor/dtor aren't called
-> from anywhere else, and there's value to reducing the total amount of
-> code in mm.h, but then there's also value to keeping all the ifdef
-> ARCH_ENABLE_SPLIT_PMD_PTLOCK code together too.  So I'm a bit torn.
-> What do you think?
+Thanks
 
--- 
-Sincerely yours,
-Mike.
+Michal
