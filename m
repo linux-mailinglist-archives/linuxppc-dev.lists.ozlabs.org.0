@@ -1,92 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D6120F03A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 10:15:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4C220F079
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 10:27:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wxx93zRgzDqk5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 18:15:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wyCs09FWzDqZm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 18:27:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wxvK4kG0zDqgl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 18:13:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wy9z0xYLzDqjb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 18:26:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=BXvz/3eW; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49wxvK0Zg1z8tWK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 18:13:33 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49wxvK0LFNz9sRN; Tue, 30 Jun 2020 18:13:33 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=piliu@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=BXvz/3eW; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49wxvJ3WFFz9sR4
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Jun 2020 18:13:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1593504805;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HTOMqbVijE1+7ERZjjkGYdaILglmW0FhOih0WPQ8e80=;
- b=BXvz/3eWoVLFAUlxK/4+/YEANc72Wv8V9RRPWkKuXPLIYi4c1DORJ65AtgCZRO6uRgDYt2
- a0q6gbSXjLVctAJ3goMfY4pU3+vw4mRCa9gMmkZum14DwNzPYB9qI1NrgA0dULvD+/10u5
- cXzyiJC20C3tNSKordwZoUw/S12yZD4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-452-loft5Z2bOUSG5zxBFP8RYQ-1; Tue, 30 Jun 2020 04:13:17 -0400
-X-MC-Unique: loft5Z2bOUSG5zxBFP8RYQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C44311883623;
- Tue, 30 Jun 2020 08:13:15 +0000 (UTC)
-Received: from [10.72.8.19] (ovpn-8-19.pek2.redhat.com [10.72.8.19])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7197860BF3;
- Tue, 30 Jun 2020 08:13:07 +0000 (UTC)
-Subject: Re: [PATCH 04/11] ppc64/kexec_file: avoid stomping memory used by
- special regions
-To: Hari Bathini <hbathini@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
- <159319831192.16351.17443438699302756548.stgit@hbathini.in.ibm.com>
- <9cfda789-0747-a67a-b825-5ea6f15099b8@redhat.com>
- <f745de42-297e-6eed-d25b-ea21d6000dc5@linux.ibm.com>
- <283fc181-2331-7c2f-db66-5e02e5ffb2e4@redhat.com>
- <cca6a693-a77f-885e-8ccc-967953f53800@linux.ibm.com>
-From: piliu <piliu@redhat.com>
-Message-ID: <aa6d91e7-b7c2-0e46-f446-a065d2db4b52@redhat.com>
-Date: Tue, 30 Jun 2020 16:13:04 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=Bdc3UNQK; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 49wy9y650Xz9sR4; Tue, 30 Jun 2020 18:26:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1593505574; bh=JbOYm2XV+atwgocCfiD7EFquDxzd1zUoFHSLuxojxvc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Bdc3UNQK5NBUOHQw7ss2AdD1micdJVbavu7gcDloFI6Lljs882WfVaYGdVz7ngIAe
+ xmHIVLcG94NVEWkPQ1vDB8onPqrXXUpTeT8GhRb6MCYyPKWtx57TQnbBD1/VxVSrYk
+ zQGWAO4bKpQvA/ujp7IKZ03uHWF6UTqCR0zOUJ/ReS+HsnFaF7gxgL/l1uTWEQgW5W
+ HiNTPahpWc+Qq/V8vT+2Uwdwt0/3QF8TiY06RsGH9eJyN1rEWjT71YmnnPLjid1vgq
+ qM/K+7sCsQzDn46HdQkNuciK+JnHkNq4xgr33zBdaaM2St8vHGPmmtI1h545uOiFj4
+ tvnam+sbO41LA==
+Date: Tue, 30 Jun 2020 18:26:07 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 3/3] powerpc/pseries: Add KVM guest doorbell restrictions
+Message-ID: <20200630082607.GB618342@thinks.paulus.ozlabs.org>
+References: <20200627150428.2525192-1-npiggin@gmail.com>
+ <20200627150428.2525192-4-npiggin@gmail.com>
+ <20200630022713.GA618342@thinks.paulus.ozlabs.org>
+ <1593495049.cacw882re0.astroid@bobo.none>
 MIME-Version: 1.0
-In-Reply-To: <cca6a693-a77f-885e-8ccc-967953f53800@linux.ibm.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1593495049.cacw882re0.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,81 +55,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kexec-ml <kexec@lists.infradead.org>, Petr Tesarik <ptesarik@suse.cz>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
+Cc: kvm-ppc@vger.kernel.org, Anton Blanchard <anton@linux.ibm.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Jun 30, 2020 at 03:35:08PM +1000, Nicholas Piggin wrote:
+> Excerpts from Paul Mackerras's message of June 30, 2020 12:27 pm:
+> > On Sun, Jun 28, 2020 at 01:04:28AM +1000, Nicholas Piggin wrote:
+> >> KVM guests have certain restrictions and performance quirks when
+> >> using doorbells. This patch tests for KVM environment in doorbell
+> >> setup, and optimises IPI performance:
+> >> 
+> >>  - PowerVM guests may now use doorbells even if they are secure.
+> >> 
+> >>  - KVM guests no longer use doorbells if XIVE is available.
+> > 
+> > It seems, from the fact that you completely remove
+> > kvm_para_available(), that you perhaps haven't tried building with
+> > CONFIG_KVM_GUEST=y.
+> 
+> It's still there and builds:
 
+OK, good, I missed that.
 
-On 06/30/2020 02:10 PM, Hari Bathini wrote:
+> static inline int kvm_para_available(void)
+> {
+>         return IS_ENABLED(CONFIG_KVM_GUEST) && is_kvm_guest();
+> }
 > 
+> but...
 > 
-> On 30/06/20 9:00 am, piliu wrote:
->>
->>
->> On 06/29/2020 01:55 PM, Hari Bathini wrote:
->>>
->>>
->>> On 28/06/20 7:44 am, piliu wrote:
->>>> Hi Hari,
->>>
->>> Hi Pingfan,
->>>
->>>>
->>>> After a quick through for this series, I have a few question/comment on
->>>> this patch for the time being. Pls see comment inline.
->>>>
->>>> On 06/27/2020 03:05 AM, Hari Bathini wrote:
->>>>> crashkernel region could have an overlap with special memory regions
->>>>> like  opal, rtas, tce-table & such. These regions are referred to as
->>>>> exclude memory ranges. Setup this ranges during image probe in order
->>>>> to avoid them while finding the buffer for different kdump segments.
->>>
->>> [...]
->>>
->>>>> +	/*
->>>>> +	 * Use the locate_mem_hole logic in kexec_add_buffer() for regular
->>>>> +	 * kexec_file_load syscall
->>>>> +	 */
->>>>> +	if (kbuf->image->type != KEXEC_TYPE_CRASH)
->>>>> +		return 0;
->>>> Can the ranges overlap [crashk_res.start, crashk_res.end]?  Otherwise
->>>> there is no requirement for @exclude_ranges.
->>>
->>> The ranges like rtas, opal are loaded by f/w. They almost always overlap with
->>> crashkernel region. So, @exclude_ranges is required to support kdump.
->> f/w passes rtas/opal as service, then must f/w mark these ranges as
->> fdt_reserved_mem in order to make kernel aware not to use these ranges?
+> > Somewhat confusingly, that option is not used or
+> > needed when building for a PAPR guest (i.e. the "pseries" platform)
+> > but is used on non-IBM platforms using the "epapr" hypervisor
+> > interface.
 > 
-> It does. Actually, reserve_map + reserved-ranges are reserved as soon as
-> memblock allocator is ready but not before crashkernel reservation.
-> Check early_reserve_mem() call in kernel/prom.c
-> 
->> Otherwise kernel memory allocation besides kdump can also overwrite
->> these ranges.> 
->> Hmm, revisiting reserve_crashkernel(). It seems not to take any reserved
->> memory into consider except kernel text. Could it work based on memblock
->> allocator?
-> 
-> So, kdump could possibly overwrite these regions which is why an exclude
-> range list is needed. Same thing was done in kexec-tools as well.
-OK, got it.
+> ... is_kvm_guest() returns false on !PSERIES now.
 
-Thanks,
-Pingfan
-> 
-> Thanks
-> Hari
-> 
-> _______________________________________________
-> kexec mailing list
-> kexec@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/kexec
-> 
+And therefore kvm_para_available() returns false on all the platforms
+where the code that depends on it could actually be used.
 
+It's not correct to assume that !PSERIES means not a KVM guest.
+
+> Not intended
+> to break EPAPR. I'm not sure of a good way to share this between
+> EPAPR and PSERIES, I might just make a copy of it but I'll see.
+
+OK, so you're doing a new version?
+
+Regards,
+Paul.
