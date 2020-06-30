@@ -1,74 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B7320EB31
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 04:00:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2511A20EB39
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 04:02:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wncf0CZSzDqg3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 12:00:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wngJ0CpTzDqJW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 12:02:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::444;
- helo=mail-wr1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::442;
+ helo=mail-wr1-x442.google.com; envelope-from=joel.stan@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=jms.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dFbydKyQ; dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
+ header.s=20161025 header.b=LB2Y8MLt; dkim-atps=neutral
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wnZp4XBhzDqL0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 11:58:42 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id z15so7225554wrl.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 18:58:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wncB0yfBzDqgj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 11:59:53 +1000 (AEST)
+Received: by mail-wr1-x442.google.com with SMTP id z15so7226949wrl.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 18:59:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=k6wRh3ytme3gPSlALKJl6wuK0hUmcexe6Z7bwnzkD9I=;
- b=dFbydKyQLV5QX3J4VY9869CPSiZaD228wHrj0M2Z2D8yRuWI9THsp+7kDikYjL6saL
- OGdEcktIGk/kF9VZj+84bJ2awzhsNdRjflSsUNxCPQl4mniXAOAV8XSDgigJ3xHFA87m
- JE8kDhWuc0rQKPSwYLy7SrvQqiVUScaeRo4jnlantr5w6ThKvGm8KLn951bzxyt5uIk4
- jE/qFpSZGKzuHFz2jwQ3LrRpHkQb+1ZoF7sPUHf78rq9w5M83a1on9Bf9LWWUcLrK0+6
- GpFnhzDIBxAdxGNEK33hh8FSWXh9yxabxEXGEhxXd1kU7IZwsAjaNxHLFXhv7KOQHHuM
- 37Uw==
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=E8duhiUCiqFmcUkMK29eJJFiPET89diObOD3QWIrfFw=;
+ b=LB2Y8MLtwC+2NYPZyP7S+TA+WOZ8S5TYHwx6XBQPi7y3GZ+MJPPEVrugx01gEsQEDH
+ zpwkPbaAwyYyhvkl4dFvvjSNZtGcRRxJBc9ke7tsENDqsdEdTZz0yjQ2NJjyGQjyoKtp
+ oHQUTpo3c/qcJtr9xYURIL/FT4a0iBoLj+d0ATYDAPFclbnRW0IwUjc5zl9GX/G2dDJO
+ i4ZF4W0FVvcmHemHhmo95a9Q0Q81JLai1EBDvoo3HQx+hen3qk+i496gvnKumbiHLS0i
+ SwT/bdMrWnLXgSvifir8WABRdHk4DX9AABecsIzcRQ03XeaBw0GVBg+m9uwwQU1Z+r4n
+ +N9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=k6wRh3ytme3gPSlALKJl6wuK0hUmcexe6Z7bwnzkD9I=;
- b=TwlFHfbu7V40ZMNR/VJvsThkHOCsBXU9jc37hLVKZsUmITRea/f4SV5n6mRa03sIib
- dB430F6UxdUqQz6qdlAQ5u4Tpd4ibqVOTAYBeO/U6aYgz1ig8HgCIAKpBt2WyOn2juNJ
- EUQM8OewdWSvP+yERd9uOhqglv6zxGT+msZkucqhjfd8bD9+NHarp+WB1PZkD/kxTeBB
- uh+VNa2qYO+PgO0egRGkjgFHzLK3TIwP0bAfo85VcYUPi2lxZlZqMYMQ29AAF9XWHxVK
- cre599x2yr1saMRIQ8UKuO4MlrWrOWQaLYEhPmE7b9Tn8NNo2oGcB8SbZWq8dekKbTTF
- LeTA==
-X-Gm-Message-State: AOAM533bj8tRb24hTKU5dkvq3w8r76hSvQv7CTRNMelcMdYSjktu0ef6
- NJa/DRVeyWm4MvUrSJDhWw2hZq7m
-X-Google-Smtp-Source: ABdhPJxu7q0WxuSIpUAdZqmDn2LZ96oyRft2Mpcbf6AUyK05/ie1YP8kwX/ibQJEGKtCZqLJfmov/A==
-X-Received: by 2002:adf:f34f:: with SMTP id e15mr19723464wrp.415.1593482318118; 
- Mon, 29 Jun 2020 18:58:38 -0700 (PDT)
-Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id a15sm2011397wrh.54.2020.06.29.18.58.36
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=E8duhiUCiqFmcUkMK29eJJFiPET89diObOD3QWIrfFw=;
+ b=QcYPnmky/p3r/s4zkjNIeQSvmFY9YaKbmRVWATzgPgPqrLuwwFGfJN3itDW2SrFXVl
+ lguvc1HAhEsOnY3Whysbf/xIvAqS2WvYvI7rY1d0IRpdxXt+rJQWOA3m3tU0hSnPLnGL
+ XFFA9P+3kRrK7Ya0NrleKAJjCspGlcJV4lVPFxMod3dsIiDZFqYkNitgIB1SemR2D0nH
+ 6ro4Wjx2VA352SZG55OYbZOl9xm3qNtuuONGkCpGvq+2Hv07BLhUheMsqt8AFIIoe70v
+ 9LuFudxpiSgAgPCrK0XNp28+3R5FG3Z7HJroluQjMkoKqTBXnKQ0OpXVH88gfVvY8zrc
+ gDBQ==
+X-Gm-Message-State: AOAM531oCwS704j6wkL2DAxqxfha/XANqES5UVLaRAt4jaHKa1WsCcSw
+ 6KTIz9xgvoFyOV78x/J1eXqM/4vlEl4=
+X-Google-Smtp-Source: ABdhPJw9hKxdQQLtZsJYcHM7YRSKGzGwVD1qUzsNIHZOOySZxXeqmBmt/Amp1H+Ob7jPX1TMTZGKzg==
+X-Received: by 2002:adf:8b50:: with SMTP id v16mr20428772wra.188.1593482388879; 
+ Mon, 29 Jun 2020 18:59:48 -0700 (PDT)
+Received: from localhost.localdomain ([45.124.203.15])
+ by smtp.gmail.com with ESMTPSA id f12sm1757505wrw.53.2020.06.29.18.59.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jun 2020 18:58:37 -0700 (PDT)
-Date: Tue, 30 Jun 2020 11:58:30 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/3] powerpc: inline doorbell sending functions
-To: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20200627150428.2525192-2-npiggin@gmail.com>
- <202006280326.fcRFUNzs%lkp@intel.com> <87zh8l7318.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87zh8l7318.fsf@mpe.ellerman.id.au>
+ Mon, 29 Jun 2020 18:59:48 -0700 (PDT)
+From: Joel Stanley <joel@jms.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc: Warn about use of smt_snooze_delay
+Date: Tue, 30 Jun 2020 11:29:35 +0930
+Message-Id: <20200630015935.2675676-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Message-Id: <1593482195.vpy5eylip3.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,75 +76,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, Anton Blanchard <anton@linux.ibm.com>,
- =?iso-8859-1?q?C=E9dric?= Le Goater <clg@kaod.org>, kvm-ppc@vger.kernel.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of June 30, 2020 11:31 am:
-> kernel test robot <lkp@intel.com> writes:
->> Hi Nicholas,
->>
->> I love your patch! Yet something to improve:
->>
->> [auto build test ERROR on powerpc/next]
->> [also build test ERROR on scottwood/next v5.8-rc2 next-20200626]
->> [cannot apply to kvm-ppc/kvm-ppc-next]
->> [If your patch is applied to the wrong git tree, kindly drop us a note.
->> And when submitting patch, we suggest to use  as documented in
->> https://git-scm.com/docs/git-format-patch]
->>
->> url:    https://github.com/0day-ci/linux/commits/Nicholas-Piggin/powerpc=
--pseries-IPI-doorbell-improvements/20200627-230544
->> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.gi=
-t next
->> config: powerpc-randconfig-c003-20200628 (attached as .config)
->> compiler: powerpc64-linux-gcc (GCC) 9.3.0
->=20
->> If you fix the issue, kindly add following tag as appropriate
->> Reported-by: kernel test robot <lkp@intel.com>
->>
->> All error/warnings (new ones prefixed by >>):
->>
->>    In file included from arch/powerpc/kernel/asm-offsets.c:38:
->>    arch/powerpc/include/asm/dbell.h: In function 'doorbell_global_ipi':
->>>> arch/powerpc/include/asm/dbell.h:114:12: error: implicit declaration o=
-f function 'get_hard_smp_processor_id'; did you mean 'raw_smp_processor_id'=
-? [-Werror=3Dimplicit-function-declaration]
->>      114 |  u32 tag =3D get_hard_smp_processor_id(cpu);
->>          |            ^~~~~~~~~~~~~~~~~~~~~~~~~
->>          |            raw_smp_processor_id
->>    arch/powerpc/include/asm/dbell.h: In function 'doorbell_try_core_ipi'=
-:
->>>> arch/powerpc/include/asm/dbell.h:146:28: error: implicit declaration o=
-f function 'cpu_sibling_mask'; did you mean 'cpu_online_mask'? [-Werror=3Di=
-mplicit-function-declaration]
->>      146 |  if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
->>          |                            ^~~~~~~~~~~~~~~~
->>          |                            cpu_online_mask
->>>> arch/powerpc/include/asm/dbell.h:146:28: warning: passing argument 2 o=
-f 'cpumask_test_cpu' makes pointer from integer without a cast [-Wint-conve=
-rsion]
->>      146 |  if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
->>          |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~
->=20
-> Seems like CONFIG_SMP=3Dn is probably the root cause.
->=20
-> You could try including asm/smp.h, but good chance that will lead to
-> header soup.
+It's not done anything for a long time. Save the percpu variable, and
+emit a warning to remind users to not expect it to do anything.
 
-Possibly. dbell.h shouldn't be included by much, but maybe it gets
-dragged in.
+Fixes: 3fa8cad82b94 ("powerpc/pseries/cpuidle: smt-snooze-delay cleanup.")
+Cc: stable@vger.kernel.org # v3.14
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+--
+v2:
+ Use pr_warn instead of WARN
+ Reword and print proccess name with pid in message
+ Leave CPU_FTR_SMT test in
+ Add Fixes line
 
->=20
-> Other option would be to wrap the whole lot in #ifdef CONFIG_SMP?
+mpe, if you don't agree then feel free to drop the cc stable.
 
-Yeah that might be a better idea.
+Testing 'ppc64_cpu --smt=off' on a 24 core / 4 SMT system it's quite noisy
+as the online/offline loop that ppc64_cpu runs is slow.
 
-I'll fix it up and repost if there's no strong objections to
-the KVM detection bit.
+This could be fixed by open coding pr_warn_ratelimit with the ratelimit
+parameters tweaked if someone was concerned. I'll leave that to someone
+else as a future enhancement.
 
-Thanks,
-Nick
+[  237.642088][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642175][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642261][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642345][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642430][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642516][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642625][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642709][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642793][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  237.642878][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264030][ T1197] store_smt_snooze_delay: 14 callbacks suppressed
+[  254.264033][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264048][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264062][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264075][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264089][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264103][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264116][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264130][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264143][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+[  254.264157][ T1197] ppc64_cpu (1197) used unsupported smt_snooze_delay, this has no effect
+
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+ arch/powerpc/kernel/sysfs.c | 41 +++++++++++++++----------------------
+ 1 file changed, 16 insertions(+), 25 deletions(-)
+
+diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+index 571b3259697e..ba6d4cee19ef 100644
+--- a/arch/powerpc/kernel/sysfs.c
++++ b/arch/powerpc/kernel/sysfs.c
+@@ -32,29 +32,26 @@
+ 
+ static DEFINE_PER_CPU(struct cpu, cpu_devices);
+ 
+-/*
+- * SMT snooze delay stuff, 64-bit only for now
+- */
+-
+ #ifdef CONFIG_PPC64
+ 
+-/* Time in microseconds we delay before sleeping in the idle loop */
+-static DEFINE_PER_CPU(long, smt_snooze_delay) = { 100 };
++/*
++ * Snooze delay has not been hooked up since 3fa8cad82b94 ("powerpc/pseries/cpuidle:
++ * smt-snooze-delay cleanup.") and has been broken even longer. As was foretold in
++ * 2014:
++ *
++ *  "ppc64_util currently utilises it. Once we fix ppc64_util, propose to clean
++ *  up the kernel code."
++ *
++ * At some point in the future this code should be removed.
++ */
+ 
+ static ssize_t store_smt_snooze_delay(struct device *dev,
+ 				      struct device_attribute *attr,
+ 				      const char *buf,
+ 				      size_t count)
+ {
+-	struct cpu *cpu = container_of(dev, struct cpu, dev);
+-	ssize_t ret;
+-	long snooze;
+-
+-	ret = sscanf(buf, "%ld", &snooze);
+-	if (ret != 1)
+-		return -EINVAL;
+-
+-	per_cpu(smt_snooze_delay, cpu->dev.id) = snooze;
++	pr_warn_ratelimited("%s (%d) used unsupported smt_snooze_delay, this has no effect\n",
++			    current->comm, current->pid);
+ 	return count;
+ }
+ 
+@@ -62,9 +59,9 @@ static ssize_t show_smt_snooze_delay(struct device *dev,
+ 				     struct device_attribute *attr,
+ 				     char *buf)
+ {
+-	struct cpu *cpu = container_of(dev, struct cpu, dev);
+-
+-	return sprintf(buf, "%ld\n", per_cpu(smt_snooze_delay, cpu->dev.id));
++	pr_warn_ratelimited("%s (%d) used unsupported smt_snooze_delay, this has no effect\n",
++			    current->comm, current->pid);
++	return sprintf(buf, "100\n");
+ }
+ 
+ static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
+@@ -72,16 +69,10 @@ static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
+ 
+ static int __init setup_smt_snooze_delay(char *str)
+ {
+-	unsigned int cpu;
+-	long snooze;
+-
+ 	if (!cpu_has_feature(CPU_FTR_SMT))
+ 		return 1;
+ 
+-	snooze = simple_strtol(str, NULL, 10);
+-	for_each_possible_cpu(cpu)
+-		per_cpu(smt_snooze_delay, cpu) = snooze;
+-
++	pr_warn("smt-snooze-delay command line option has no effect\n");
+ 	return 1;
+ }
+ __setup("smt-snooze-delay=", setup_smt_snooze_delay);
+-- 
+2.27.0
+
