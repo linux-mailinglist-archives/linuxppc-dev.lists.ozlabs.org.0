@@ -2,90 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA52A20EC04
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 05:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5392420EC3F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 05:55:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wqg56QLZzDqWK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 13:32:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wr9j4yBgzDqjW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 13:55:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wqd54McczDqf1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 13:30:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=RWjfdY4y; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49wqd537vZz8tWN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 13:30:49 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49wqd51m7rz9sRW; Tue, 30 Jun 2020 13:30:49 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=piliu@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=RWjfdY4y; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49wqd43x37z9sRN
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Jun 2020 13:30:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1593487842;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=B5CWu0YTtNLLeEFzddhpFxvlgHTZraP4ByG++eJey7I=;
- b=RWjfdY4yK324yov9xbcOKEU51QM8VZDG2vlc2xYUx1IbVBvRonNg/NIrVZVDmWJOM/tOuW
- NbkcD42ky3l3KH0xKreBtuiQdfAd8u7sBggnh9BasMDCTqi2QBk6vY70TVXO2ZhkDYDwOn
- g68PioJER2NtWIw/LMGenGuJUXfctfA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-502-MtJI14wRPq6V8I8u-UWGKg-1; Mon, 29 Jun 2020 23:30:40 -0400
-X-MC-Unique: MtJI14wRPq6V8I8u-UWGKg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4F9911009600;
- Tue, 30 Jun 2020 03:30:38 +0000 (UTC)
-Received: from [10.72.8.19] (ovpn-8-19.pek2.redhat.com [10.72.8.19])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1917160BF3;
- Tue, 30 Jun 2020 03:30:29 +0000 (UTC)
-Subject: Re: [PATCH 04/11] ppc64/kexec_file: avoid stomping memory used by
- special regions
-To: Hari Bathini <hbathini@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
- <159319831192.16351.17443438699302756548.stgit@hbathini.in.ibm.com>
- <9cfda789-0747-a67a-b825-5ea6f15099b8@redhat.com>
- <f745de42-297e-6eed-d25b-ea21d6000dc5@linux.ibm.com>
-From: piliu <piliu@redhat.com>
-X-Enigmail-Draft-Status: N1110
-Message-ID: <283fc181-2331-7c2f-db66-5e02e5ffb2e4@redhat.com>
-Date: Tue, 30 Jun 2020 11:30:26 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49wr7t2PvczDqcn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 13:54:00 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2739030E;
+ Mon, 29 Jun 2020 20:53:58 -0700 (PDT)
+Received: from [10.163.84.101] (unknown [10.163.84.101])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5EE3D3F73C;
+ Mon, 29 Jun 2020 20:53:47 -0700 (PDT)
+Subject: Re: [PATCH V3 0/4] mm/debug_vm_pgtable: Add some more tests
+To: linux-mm@kvack.org
+References: <1592192277-8421-1-git-send-email-anshuman.khandual@arm.com>
+ <70ddc7dd-b688-b73e-642a-6363178c8cdd@arm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <1ed72a76-9f20-0169-4c16-c1d8808690eb@arm.com>
+Date: Tue, 30 Jun 2020 09:23:35 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <f745de42-297e-6eed-d25b-ea21d6000dc5@linux.ibm.com>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <70ddc7dd-b688-b73e-642a-6363178c8cdd@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,70 +49,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kexec-ml <kexec@lists.infradead.org>, Petr Tesarik <ptesarik@suse.cz>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
+Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, ziy@nvidia.com,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <Vineet.Gupta1@synopsys.com>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, gerald.schaefer@de.ibm.com,
+ christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Qian Cai <cai@lca.pw>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 06/29/2020 01:55 PM, Hari Bathini wrote:
+On 06/24/2020 08:43 AM, Anshuman Khandual wrote:
 > 
 > 
-> On 28/06/20 7:44 am, piliu wrote:
->> Hi Hari,
-> 
-> Hi Pingfan,
-> 
+> On 06/15/2020 09:07 AM, Anshuman Khandual wrote:
+>> This series adds some more arch page table helper validation tests which
+>> are related to core and advanced memory functions. This also creates a
+>> documentation, enlisting expected semantics for all page table helpers as
+>> suggested by Mike Rapoport previously (https://lkml.org/lkml/2020/1/30/40).
 >>
->> After a quick through for this series, I have a few question/comment on
->> this patch for the time being. Pls see comment inline.
+>> There are many TRANSPARENT_HUGEPAGE and ARCH_HAS_TRANSPARENT_HUGEPAGE_PUD
+>> ifdefs scattered across the test. But consolidating all the fallback stubs
+>> is not very straight forward because ARCH_HAS_TRANSPARENT_HUGEPAGE_PUD is
+>> not explicitly dependent on ARCH_HAS_TRANSPARENT_HUGEPAGE.
 >>
->> On 06/27/2020 03:05 AM, Hari Bathini wrote:
->>> crashkernel region could have an overlap with special memory regions
->>> like  opal, rtas, tce-table & such. These regions are referred to as
->>> exclude memory ranges. Setup this ranges during image probe in order
->>> to avoid them while finding the buffer for different kdump segments.
+>> Tested on arm64, x86 platforms but only build tested on all other enabled
+>> platforms through ARCH_HAS_DEBUG_VM_PGTABLE i.e powerpc, arc, s390. The
+>> following failure on arm64 still exists which was mentioned previously. It
+>> will be fixed with the upcoming THP migration on arm64 enablement series.
+>>
+>> WARNING .... mm/debug_vm_pgtable.c:860 debug_vm_pgtable+0x940/0xa54
+>> WARN_ON(!pmd_present(pmd_mkinvalid(pmd_mkhuge(pmd))))
+>>
+>> This series is based on v5.8-rc1.
+>>
+>> Changes in V3:
+>>
+>> - Replaced HAVE_ARCH_SOFT_DIRTY with MEM_SOFT_DIRTY
+>> - Added HAVE_ARCH_HUGE_VMAP checks in pxx_huge_tests() per Gerald
+>> - Updated documentation for pmd_thp_tests() per Zi Yan
+>> - Replaced READ_ONCE() with huge_ptep_get() per Gerald
+>> - Added pte_mkhuge() and masking with PMD_MASK per Gerald
+>> - Replaced pte_same() with holding pfn check in pxx_swap_tests()
+>> - Added documentation for all (#ifdef #else #endif) per Gerald
+>> - Updated pmd_protnone_tests() per Gerald
+>> - Updated HugeTLB PTE creation in hugetlb_advanced_tests() per Gerald
+>> - Replaced [pmd|pud]_mknotpresent() with [pmd|pud]_mkinvalid()
+>> - Added has_transparent_hugepage() check for PMD and PUD tests
+>> - Added a patch which debug prints all individual tests being executed
+>> - Updated documentation for renamed [pmd|pud]_mkinvalid() helpers
 > 
-> [...]
+> Hello Gerald/Christophe/Vineet,
 > 
->>> +	/*
->>> +	 * Use the locate_mem_hole logic in kexec_add_buffer() for regular
->>> +	 * kexec_file_load syscall
->>> +	 */
->>> +	if (kbuf->image->type != KEXEC_TYPE_CRASH)
->>> +		return 0;
->> Can the ranges overlap [crashk_res.start, crashk_res.end]?  Otherwise
->> there is no requirement for @exclude_ranges.
-> 
-> The ranges like rtas, opal are loaded by f/w. They almost always overlap with
-> crashkernel region. So, @exclude_ranges is required to support kdump.
-f/w passes rtas/opal as service, then must f/w mark these ranges as
-fdt_reserved_mem in order to make kernel aware not to use these ranges?
-Otherwise kernel memory allocation besides kdump can also overwrite
-these ranges.
+> It would be really great if you could give this series a quick test
+> on s390/ppc/arc platforms respectively. Thank you.
 
-Hmm, revisiting reserve_crashkernel(). It seems not to take any reserved
-memory into consider except kernel text. Could it work based on memblock
-allocator?
-
-Thanks,
-Pingfan
-> 
->> I guess you have a design for future. If not true, then it is better to
->> fold the condition "if (kbuf->image->type != KEXEC_TYPE_CRASH)" into the
->> caller and rename this function to better distinguish use cases between
->> kexec and kdump
-> 
-> Yeah, this condition will be folded. I have a follow-up patch for that explaining
-> why kexec case should also be folded. Will try to add that to this series for v2.
-> 
-> Thanks
-> Hari
-> 
-
+Thanks Alexander, Gerald and Christophe for testing this out on s390
+and ppc32 platforms. Probably Vineet and Qian (any other volunteers)
+could help us with arc and ppc64 platforms, which I would appreciate.
