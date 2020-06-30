@@ -2,91 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E15620F17B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 11:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3A220F1DD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 11:42:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wzR74GDfzDqXl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 19:22:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wztQ6FF4zDqmj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 19:42:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wzP437D7zDqdc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 19:20:56 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05U92HgL045577; Tue, 30 Jun 2020 05:20:41 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31ybnut460-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 05:20:41 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05U92OqP046379;
- Tue, 30 Jun 2020 05:20:40 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31ybnut459-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 05:20:40 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05U9Gun0008352;
- Tue, 30 Jun 2020 09:20:39 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06fra.de.ibm.com with ESMTP id 31wwcgsm4s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 09:20:38 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05U9JGwg57475430
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Jun 2020 09:19:16 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 981E04C052;
- Tue, 30 Jun 2020 09:20:36 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9777A4C04A;
- Tue, 30 Jun 2020 09:20:34 +0000 (GMT)
-Received: from [9.199.48.28] (unknown [9.199.48.28])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 30 Jun 2020 09:20:34 +0000 (GMT)
-Subject: Re: [PATCH v6 6/8] powerpc/pmem: Avoid the barrier in flush routines
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
- Dan Williams <dan.j.williams@intel.com>
-References: <20200629135722.73558-1-aneesh.kumar@linux.ibm.com>
- <20200629135722.73558-7-aneesh.kumar@linux.ibm.com>
- <20200629160940.GU21462@kitsune.suse.cz> <87lfk5hahc.fsf@linux.ibm.com>
- <CAPcyv4hEV=Ps=t=3qsFq3Ob1jzf=ptoZmYTDkgr8D_G0op8uvQ@mail.gmail.com>
- <20200630085413.GW21462@kitsune.suse.cz>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <9204289b-2274-b5c1-2cd5-8ed5ce28efb4@linux.ibm.com>
-Date: Tue, 30 Jun 2020 14:50:33 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wzrf07lkzDqfW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 19:41:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=ObiET+eN9wPISA69yMBAjLsRR+NFaZ4l0xk8JBk7804=; b=YxYVnapPrNLDtKA1tIbiaacSX5
+ ZAYioY8ULLtGnawpbkokHrxzK+nUrSkEF0L09yUL8NLcQdrEpxv7PMoMmS6qf8unE1c5M2AhC0TU/
+ 1cY7d/vUPxWxB+SRzRxgdSjYXnTbXUlhczgIMZvS/cInvnmDeoIcS1G7ikHH+rj+PlXkDbwFuoUHz
+ tb8903egHL1o5Nbw6dvVBCBkcCfRA/qz/W3unSbaTs7QP3ecC/6V1h9WMCbcQl+hJUBbYW39j0KHw
+ JD+4egP8OPWq0pUvcxFGGKFFx2ano6jdwqVG+BFTkOahPzwI+V6dH/FmiFRYeplwMXqNG4jjxVX8p
+ UC+CT2mg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jqCka-0004MK-9L; Tue, 30 Jun 2020 09:40:24 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 835593013E5;
+ Tue, 30 Jun 2020 11:40:19 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 703772147FFB9; Tue, 30 Jun 2020 11:40:19 +0200 (CEST)
+Date: Tue, 30 Jun 2020 11:40:19 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Ahmed S. Darwish" <a.darwish@linutronix.de>
+Subject: Re: [PATCH v4 7/8] lockdep: Change hardirq{s_enabled,_context} to
+ per-cpu variables
+Message-ID: <20200630094019.GL4800@hirez.programming.kicks-ass.net>
+References: <20200623083645.277342609@infradead.org>
+ <20200623083721.512673481@infradead.org>
+ <20200630055939.GA3676007@debian-buster-darwi.lab.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20200630085413.GW21462@kitsune.suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-06-30_02:2020-06-30,
- 2020-06-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
- clxscore=1015 impostorscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006300062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200630055939.GA3676007@debian-buster-darwi.lab.linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,121 +68,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ bigeasy@linutronix.de, x86@kernel.org, heiko.carstens@de.ibm.com,
+ linux-kernel@vger.kernel.org, rostedt@goodmis.org, davem@davemloft.net,
+ sparclinux@vger.kernel.org, linux@armlinux.org.uk, tglx@linutronix.de,
+ will@kernel.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/30/20 2:24 PM, Michal Suchánek wrote:
-> On Mon, Jun 29, 2020 at 06:50:15PM -0700, Dan Williams wrote:
->> On Mon, Jun 29, 2020 at 1:41 PM Aneesh Kumar K.V
->> <aneesh.kumar@linux.ibm.com> wrote:
->>>
->>> Michal Suchánek <msuchanek@suse.de> writes:
->>>
->>>> Hello,
->>>>
->>>> On Mon, Jun 29, 2020 at 07:27:20PM +0530, Aneesh Kumar K.V wrote:
->>>>> nvdimm expect the flush routines to just mark the cache clean. The barrier
->>>>> that mark the store globally visible is done in nvdimm_flush().
->>>>>
->>>>> Update the papr_scm driver to a simplified nvdim_flush callback that do
->>>>> only the required barrier.
->>>>>
->>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>>> ---
->>>>>   arch/powerpc/lib/pmem.c                   |  6 ------
->>>>>   arch/powerpc/platforms/pseries/papr_scm.c | 13 +++++++++++++
->>>>>   2 files changed, 13 insertions(+), 6 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
->>>>> index 5a61aaeb6930..21210fa676e5 100644
->>>>> --- a/arch/powerpc/lib/pmem.c
->>>>> +++ b/arch/powerpc/lib/pmem.c
->>>>> @@ -19,9 +19,6 @@ static inline void __clean_pmem_range(unsigned long start, unsigned long stop)
->>>>>
->>>>>       for (i = 0; i < size >> shift; i++, addr += bytes)
->>>>>               asm volatile(PPC_DCBSTPS(%0, %1): :"i"(0), "r"(addr): "memory");
->>>>> -
->>>>> -
->>>>> -    asm volatile(PPC_PHWSYNC ::: "memory");
->>>>>   }
->>>>>
->>>>>   static inline void __flush_pmem_range(unsigned long start, unsigned long stop)
->>>>> @@ -34,9 +31,6 @@ static inline void __flush_pmem_range(unsigned long start, unsigned long stop)
->>>>>
->>>>>       for (i = 0; i < size >> shift; i++, addr += bytes)
->>>>>               asm volatile(PPC_DCBFPS(%0, %1): :"i"(0), "r"(addr): "memory");
->>>>> -
->>>>> -
->>>>> -    asm volatile(PPC_PHWSYNC ::: "memory");
->>>>>   }
->>>>>
->>>>>   static inline void clean_pmem_range(unsigned long start, unsigned long stop)
->>>>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> index 9c569078a09f..9a9a0766f8b6 100644
->>>>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> @@ -630,6 +630,18 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
->>>>>
->>>>>       return 0;
->>>>>   }
->>>>> +/*
->>>>> + * We have made sure the pmem writes are done such that before calling this
->>>>> + * all the caches are flushed/clean. We use dcbf/dcbfps to ensure this. Here
->>>>> + * we just need to add the necessary barrier to make sure the above flushes
->>>>> + * are have updated persistent storage before any data access or data transfer
->>>>> + * caused by subsequent instructions is initiated.
->>>>> + */
->>>>> +static int papr_scm_flush_sync(struct nd_region *nd_region, struct bio *bio)
->>>>> +{
->>>>> +    arch_pmem_flush_barrier();
->>>>> +    return 0;
->>>>> +}
->>>>>
->>>>>   static ssize_t flags_show(struct device *dev,
->>>>>                         struct device_attribute *attr, char *buf)
->>>>> @@ -743,6 +755,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->>>>>       ndr_desc.mapping = &mapping;
->>>>>       ndr_desc.num_mappings = 1;
->>>>>       ndr_desc.nd_set = &p->nd_set;
->>>>> +    ndr_desc.flush = papr_scm_flush_sync;
->>>>
->>>> AFAICT currently the only device that implements flush is virtio_pmem.
->>>> How does the nfit driver get away without implementing flush?
->>>
->>> generic_nvdimm_flush does the required barrier for nfit. The reason for
->>> adding ndr_desc.flush call back for papr_scm was to avoid the usage
->>> of iomem based deep flushing (ndr_region_data.flush_wpq) which is not
->>> supported by papr_scm.
->>>
->>> BTW we do return NULL for ndrd_get_flush_wpq() on power. So the upstream
->>> code also does the same thing, but in a different way.
->>>
->>>
->>>> Also the flush takes arguments that are completely unused but a user of
->>>> the pmem region must assume they are used, and call flush() on the
->>>> region rather than arch_pmem_flush_barrier() directly.
->>>
->>> The bio argument can help a pmem driver to do range based flushing in
->>> case of pmem_make_request. If bio is null then we must assume a full
->>> device flush.
->>
->> The bio argument isn't for range based flushing, it is for flush
->> operations that need to complete asynchronously.
-> How does the block layer determine that the pmem device needs
-> asynchronous fushing?
+On Tue, Jun 30, 2020 at 07:59:39AM +0200, Ahmed S. Darwish wrote:
+> Peter Zijlstra wrote:
 > 
-
-	set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
-	
-and dax_synchronous(dev)
-
-> The flush() was designed for the purpose with the bio argument and only
-> virtio_pmem which is fulshed asynchronously used it. Now that papr_scm
-> resuses it fir different purpose how do you tell?
+> ...
 > 
+> > -#define lockdep_assert_irqs_disabled()	do {			\
+> > -		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
+> > -			  current->hardirqs_enabled,			\
+> > -			  "IRQs not disabled as expected\n");		\
+> > -	} while (0)
+> 
+> ...
+> 
+> > +#define lockdep_assert_irqs_disabled()				\
+> > +do {									\
+> > +	WARN_ON_ONCE(debug_locks && this_cpu_read(hardirqs_enabled));	\
+> > +} while (0)
+> 
+> I think it would be nice to keep the "IRQs not disabled as expected"
+> message. It makes the lockdep splat much more readable.
+> 
+> This is similarly the case for the v3 lockdep preemption macros:
+> 
+>   https://lkml.kernel.org/r/20200630054452.3675847-5-a.darwish@linutronix.de
+> 
+> I did not add a message though to get in-sync with the IRQ macros above.
 
--aneesh
+Hurmph.. the file:line output of a splat is usually all I look at, also
+__WARN_printf() generates such atrocious crap code that try and not use
+it.
+
+I suppose I should do a __WARN_str() or something, but then people are
+unlikely to want to use that, too much variation etc. :/
+
+Cursed if you do, cursed if you don't.
