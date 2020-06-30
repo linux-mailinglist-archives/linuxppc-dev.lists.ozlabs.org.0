@@ -1,81 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D560820F6F6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 16:18:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F93420F742
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 16:30:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49x60362WqzDqZw
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 00:18:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49x6GJ2y7WzDqqK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 00:30:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::62f;
- helo=mail-pl1-x62f.google.com; envelope-from=axboe@kernel.dk;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::241;
+ helo=mail-lj1-x241.google.com; envelope-from=festevam@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kernel.dk
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel-dk.20150623.gappssmtp.com
- header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=NpTXHg4e; dkim-atps=neutral
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
- [IPv6:2607:f8b0:4864:20::62f])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ok0vl9Ax; dkim-atps=neutral
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49x5XJ3mw4zDqF1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 23:57:36 +1000 (AEST)
-Received: by mail-pl1-x62f.google.com with SMTP id u9so4898426pls.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 06:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=kernel-dk.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=6WoGClip/9lIMADlW96b66URAMpf8agavloV0J0+6z0=;
- b=NpTXHg4eLKIDB3B017yOQCnwb3dBSkBllVoAHChdp1FGoCyQ19eq1VXevMLSrM/lhD
- bQk0yrTpC1Irq2MNTGh49jfpD7zqgiVbJtqJYeruoqyJ31uUsOmkXd433JMWP+NtSVov
- ZzGBWe4xhNJRj47E5aARYY/9uUmyXWiWjg1l6pljN4nXRLoWQN1OJ6HHzWlN6uNS1Lvc
- bcrSTvkHyH7MDnkYvBu1O0JOQIAWVJgUutILN7WG8Di8qKlewR28Ariy+ojttBxfAl/B
- FxzoT9uIuyEQaP+UAHq4/tgN7PJVGPmfXaxyS6AW/qEEAuiLEhHfUD+LyDQfCVGwqwpj
- 3wAg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49x5rV0LZkzDqpJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 00:11:34 +1000 (AEST)
+Received: by mail-lj1-x241.google.com with SMTP id h22so15592864lji.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 07:11:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=KaJ8A/mtp7tiazUWqWYM9IFm5G1Nvqs2cqWvKn5WT8o=;
+ b=ok0vl9AxjEtaqLYePLsNsU1F7UuQ/mCyacTbBucXkiBM5MoPdlgeD8vCjscO6H/YoO
+ g1Y3tdvyyEKK9q2yfyRX9/W8woqV+6qqe1GPTYjJkO9URBKyG+2vC45bHjhFP+Sighy2
+ dcI8F8s5Vfo8GRj3oMeByIZH7a/604pe6LCm/s6p1IQsq5+qrX/E6xr9jj/E9WES9Zng
+ GiWCiezZOrh0uh1CoZcuMKEdEiqSdgeXf23b5DujkEjlrgSSWrX93szxwsGoC+pad/wM
+ 3rIglYZoPvhcbPpRVHCSSeoloCgm6pd895s39sP/y8I08clro7W8b/Nj6lHf1jboCDy2
+ 6uag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=6WoGClip/9lIMADlW96b66URAMpf8agavloV0J0+6z0=;
- b=c/xBee37D+qdYcn/nUSxnNikRJUvwjis0NOSUa6H7oX6UauUBosk/6KejhoBBMIQP4
- vDYP1DeYCoawlfNA4om/KUm54EX77i9sjVJA8d0ywR+sgQlbRf5aX2fLHqcFJT3TySnO
- lqfPS/udX/tIbVGlLq/VgAZLAeF6PA5we4yJvCi1W+3MHrSN5nsAQ/77w9jcVJDRVQy9
- vLrkMAufTvKTchx9lMEgjMybCyDlLFg8WqmnqWTCBe28KLcEReJcHsxaNmPl5WMVlEdF
- qoyvZIBrgyTIiNGun6N5Y8sFmqBYBuXeT/BeMDbn+5wuhDxsw33bT6goEfCJcqhEzAe3
- oi5g==
-X-Gm-Message-State: AOAM531peO9LWP3xv0w/WV+oPYXTuvnYiQ2341T62ouOGii1jVdeDmAM
- w8IGooMPOxU5TfsUPTd3TKaBsA==
-X-Google-Smtp-Source: ABdhPJxkJrJtaSOyTXzA8zW0V7qLT6cuFQyL+FUGsc5/cLMGVxoMFOJShXuR+F2LWbUj8PAuD022LQ==
-X-Received: by 2002:a17:90a:ec13:: with SMTP id
- l19mr20004827pjy.81.1593525452289; 
- Tue, 30 Jun 2020 06:57:32 -0700 (PDT)
-Received: from ?IPv6:2605:e000:100e:8c61:4113:50ea:3eb3:a39b?
- ([2605:e000:100e:8c61:4113:50ea:3eb3:a39b])
- by smtp.gmail.com with ESMTPSA id m140sm2896019pfd.195.2020.06.30.06.57.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Jun 2020 06:57:31 -0700 (PDT)
-Subject: Re: rename ->make_request_fn and move it to the
- block_device_operations
-To: Christoph Hellwig <hch@lst.de>
-References: <20200629193947.2705954-1-hch@lst.de>
-From: Jens Axboe <axboe@kernel.dk>
-Message-ID: <bd1443c0-be37-115b-1110-df6f0e661a50@kernel.dk>
-Date: Tue, 30 Jun 2020 07:57:29 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=KaJ8A/mtp7tiazUWqWYM9IFm5G1Nvqs2cqWvKn5WT8o=;
+ b=KNAW18By0S+5914zqlES5/stsYPaTnkGdomZSy5RXKoikGXIBX/BMd1xPK0xyZSNKq
+ JGgBkAI69RxJ5RDwJ5lEyLaYZPrgH58dZ5eVGvHifDccDG45OYEd/SCDeMQa0vfkyUdp
+ qdc64nFFtbJ4zY4cpROPZzwBpTbmZ9+2ULawe5Fh4eqX1h79cqBdrqkRI6mROMhtWZRN
+ McMSdfQ3uAhd96CZij45IH1CoDhyeAhp2Y3F0IT+qZiOd6cOztrrlH5dCOgIHhMTJZHy
+ T4Mqr2u8rNFE8SqQuseQHOtruDH1sBr9BHsfzf2YsHweN5+q6MFXLoOjlgat32baxjmu
+ SSLA==
+X-Gm-Message-State: AOAM531FBNeLoIZV693qY+XEfDRHlYHcTyXhpB3iLLAA5P1w+ncZ//1B
+ HSUOQE/IFS7Z0R0KdzQ6wNyBO31iTpZhxXU703c=
+X-Google-Smtp-Source: ABdhPJz5MIpXGlHgP1fvLS1Lh6z16GezmdUmGLLPMdcG9JOfzkS5KaVN414xdFAZLh68lRYnPXjkaFaK/PAFHUS7YMU=
+X-Received: by 2002:a2e:880e:: with SMTP id x14mr978719ljh.218.1593526288891; 
+ Tue, 30 Jun 2020 07:11:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200629193947.2705954-1-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <1593525367-23221-1-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1593525367-23221-1-git-send-email-shengjiu.wang@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 30 Jun 2020 11:11:17 -0300
+Message-ID: <CAOMZO5CZ2NhbFJJj8OAeJonA--ZfbfUWqhWCYRqeJE_v8QdKFQ@mail.gmail.com>
+Subject: Re: [PATCH v3] ASoC: fsl_asrc: Add an option to select internal ratio
+ mode
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,26 +73,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, dm-devel@redhat.com,
- linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linuxppc-dev@lists.ozlabs.org, drbd-dev@lists.linbit.com
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/29/20 1:39 PM, Christoph Hellwig wrote:
-> Hi Jens,
-> 
-> this series moves the make_request_fn method into block_device_operations
-> with the much more descriptive ->submit_bio name.  It then also gives
-> generic_make_request a more descriptive name, and further optimize the
-> path to issue to blk-mq, removing the need for the direct_make_request
-> bypass.
+On Tue, Jun 30, 2020 at 11:07 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+>
+> The ASRC not only supports ideal ratio mode, but also supports
+> internal ratio mode.
+>
+> For internal rato mode, the rate of clock source should be divided
+> with no remainder by sample rate, otherwise there is sound
+> distortion.
+>
+> Add function fsl_asrc_select_clk() to find proper clock source for
+> internal ratio mode, if the clock source is available then internal
+> ratio mode will be selected.
+>
+> With change, the ideal ratio mode is not the only option for user.
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Looks good to me, and it's a nice cleanup as well. Applied.
-
--- 
-Jens Axboe
-
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
