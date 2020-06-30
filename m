@@ -1,94 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E36720EFEF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 09:55:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D6120F03A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 10:15:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wxV62HcszDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 17:55:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wxx93zRgzDqk5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 18:15:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wxvK4kG0zDqgl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 18:13:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=BXvz/3eW; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49wxvK0Zg1z8tWK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 18:13:33 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49wxvK0LFNz9sRN; Tue, 30 Jun 2020 18:13:33 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=piliu@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=BXvz/3eW; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wxSW41xlzDqgL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 17:53:47 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05U7WAqF111998; Tue, 30 Jun 2020 03:53:38 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31ycg3ec3x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 03:53:38 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05U7WU0U114181;
- Tue, 30 Jun 2020 03:53:38 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31ycg3ec35-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 03:53:37 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05U7nof4032633;
- Tue, 30 Jun 2020 07:53:36 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03fra.de.ibm.com with ESMTP id 31wwr89jss-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 07:53:35 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05U7rXG061210900
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Jun 2020 07:53:33 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 732B04C04A;
- Tue, 30 Jun 2020 07:53:33 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8465C4C050;
- Tue, 30 Jun 2020 07:53:31 +0000 (GMT)
-Received: from [9.199.48.28] (unknown [9.199.48.28])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 30 Jun 2020 07:53:31 +0000 (GMT)
-Subject: Re: [PATCH updated] libnvdimm/nvdimm/flush: Allow architecture to
- override the flush barrier
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20200629135722.73558-5-aneesh.kumar@linux.ibm.com>
- <20200629202901.83516-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hgjH4We9Th2oir3NxpJEhFuLnQeCrF8auwNfF+5av8jQ@mail.gmail.com>
- <87imf9gn9w.fsf@linux.ibm.com>
- <CAPcyv4hbECX+7cvX+eT97jvDFUTjQbUEqExZKpV_moDWMFzJ6A@mail.gmail.com>
- <03cf6d12-544f-154d-18da-a6cd204998ee@linux.ibm.com>
-Message-ID: <9f5de2ca-1877-979c-c7e8-a7434f1c5670@linux.ibm.com>
-Date: Tue, 30 Jun 2020 13:23:30 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by ozlabs.org (Postfix) with ESMTPS id 49wxvJ3WFFz9sR4
+ for <linuxppc-dev@ozlabs.org>; Tue, 30 Jun 2020 18:13:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1593504805;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HTOMqbVijE1+7ERZjjkGYdaILglmW0FhOih0WPQ8e80=;
+ b=BXvz/3eWoVLFAUlxK/4+/YEANc72Wv8V9RRPWkKuXPLIYi4c1DORJ65AtgCZRO6uRgDYt2
+ a0q6gbSXjLVctAJ3goMfY4pU3+vw4mRCa9gMmkZum14DwNzPYB9qI1NrgA0dULvD+/10u5
+ cXzyiJC20C3tNSKordwZoUw/S12yZD4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-452-loft5Z2bOUSG5zxBFP8RYQ-1; Tue, 30 Jun 2020 04:13:17 -0400
+X-MC-Unique: loft5Z2bOUSG5zxBFP8RYQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C44311883623;
+ Tue, 30 Jun 2020 08:13:15 +0000 (UTC)
+Received: from [10.72.8.19] (ovpn-8-19.pek2.redhat.com [10.72.8.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7197860BF3;
+ Tue, 30 Jun 2020 08:13:07 +0000 (UTC)
+Subject: Re: [PATCH 04/11] ppc64/kexec_file: avoid stomping memory used by
+ special regions
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
+ <159319831192.16351.17443438699302756548.stgit@hbathini.in.ibm.com>
+ <9cfda789-0747-a67a-b825-5ea6f15099b8@redhat.com>
+ <f745de42-297e-6eed-d25b-ea21d6000dc5@linux.ibm.com>
+ <283fc181-2331-7c2f-db66-5e02e5ffb2e4@redhat.com>
+ <cca6a693-a77f-885e-8ccc-967953f53800@linux.ibm.com>
+From: piliu <piliu@redhat.com>
+Message-ID: <aa6d91e7-b7c2-0e46-f446-a065d2db4b52@redhat.com>
+Date: Tue, 30 Jun 2020 16:13:04 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-In-Reply-To: <03cf6d12-544f-154d-18da-a6cd204998ee@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-06-30_01:2020-06-30,
- 2020-06-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- mlxlogscore=999 priorityscore=1501 suspectscore=0 clxscore=1015
- adultscore=0 malwarescore=0 cotscore=-2147483648 spamscore=0
- impostorscore=0 lowpriorityscore=0 phishscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006300049
+In-Reply-To: <cca6a693-a77f-885e-8ccc-967953f53800@linux.ibm.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,136 +98,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
- =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Kexec-ml <kexec@lists.infradead.org>, Petr Tesarik <ptesarik@suse.cz>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/30/20 12:52 PM, Aneesh Kumar K.V wrote:
-> On 6/30/20 12:36 PM, Dan Williams wrote:
->> On Mon, Jun 29, 2020 at 10:02 PM Aneesh Kumar K.V
->> <aneesh.kumar@linux.ibm.com> wrote:
+
+
+On 06/30/2020 02:10 PM, Hari Bathini wrote:
+> 
+> 
+> On 30/06/20 9:00 am, piliu wrote:
+>>
+>>
+>> On 06/29/2020 01:55 PM, Hari Bathini wrote:
 >>>
->>> Dan Williams <dan.j.williams@intel.com> writes:
 >>>
->>>> On Mon, Jun 29, 2020 at 1:29 PM Aneesh Kumar K.V
->>>> <aneesh.kumar@linux.ibm.com> wrote:
->>>>>
->>>>> Architectures like ppc64 provide persistent memory specific barriers
->>>>> that will ensure that all stores for which the modifications are
->>>>> written to persistent storage by preceding dcbfps and dcbstps
->>>>> instructions have updated persistent storage before any data
->>>>> access or data transfer caused by subsequent instructions is 
->>>>> initiated.
->>>>> This is in addition to the ordering done by wmb()
->>>>>
->>>>> Update nvdimm core such that architecture can use barriers other than
->>>>> wmb to ensure all previous writes are architecturally visible for
->>>>> the platform buffer flush.
->>>>>
->>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>>> ---
->>>>>   drivers/md/dm-writecache.c   | 2 +-
->>>>>   drivers/nvdimm/region_devs.c | 8 ++++----
->>>>>   include/linux/libnvdimm.h    | 4 ++++
->>>>>   3 files changed, 9 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/drivers/md/dm-writecache.c b/drivers/md/dm-writecache.c
->>>>> index 74f3c506f084..8c6b6dce64e2 100644
->>>>> --- a/drivers/md/dm-writecache.c
->>>>> +++ b/drivers/md/dm-writecache.c
->>>>> @@ -536,7 +536,7 @@ static void ssd_commit_superblock(struct 
->>>>> dm_writecache *wc)
->>>>>   static void writecache_commit_flushed(struct dm_writecache *wc, 
->>>>> bool wait_for_ios)
->>>>>   {
->>>>>          if (WC_MODE_PMEM(wc))
->>>>> -               wmb();
->>>>> +               arch_pmem_flush_barrier();
->>>>>          else
->>>>>                  ssd_commit_flushed(wc, wait_for_ios);
->>>>>   }
->>>>> diff --git a/drivers/nvdimm/region_devs.c 
->>>>> b/drivers/nvdimm/region_devs.c
->>>>> index 4502f9c4708d..b308ad09b63d 100644
->>>>> --- a/drivers/nvdimm/region_devs.c
->>>>> +++ b/drivers/nvdimm/region_devs.c
->>>>> @@ -1206,13 +1206,13 @@ int generic_nvdimm_flush(struct nd_region 
->>>>> *nd_region)
->>>>>          idx = this_cpu_add_return(flush_idx, hash_32(current->pid 
->>>>> + idx, 8));
->>>>>
->>>>>          /*
->>>>> -        * The first wmb() is needed to 'sfence' all previous writes
->>>>> -        * such that they are architecturally visible for the platform
->>>>> -        * buffer flush.  Note that we've already arranged for pmem
->>>>> +        * The first arch_pmem_flush_barrier() is needed to 
->>>>> 'sfence' all
->>>>> +        * previous writes such that they are architecturally 
->>>>> visible for
->>>>> +        * the platform buffer flush. Note that we've already 
->>>>> arranged for pmem
->>>>>           * writes to avoid the cache via memcpy_flushcache().  The 
->>>>> final
->>>>>           * wmb() ensures ordering for the NVDIMM flush write.
->>>>>           */
->>>>> -       wmb();
->>>>> +       arch_pmem_flush_barrier();
->>>>>          for (i = 0; i < nd_region->ndr_mappings; i++)
->>>>>                  if (ndrd_get_flush_wpq(ndrd, i, 0))
->>>>>                          writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
->>>>> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
->>>>> index 18da4059be09..66f6c65bd789 100644
->>>>> --- a/include/linux/libnvdimm.h
->>>>> +++ b/include/linux/libnvdimm.h
->>>>> @@ -286,4 +286,8 @@ static inline void arch_invalidate_pmem(void 
->>>>> *addr, size_t size)
->>>>>   }
->>>>>   #endif
->>>>>
->>>>> +#ifndef arch_pmem_flush_barrier
->>>>> +#define arch_pmem_flush_barrier() wmb()
->>>>> +#endif
+>>> On 28/06/20 7:44 am, piliu wrote:
+>>>> Hi Hari,
+>>>
+>>> Hi Pingfan,
+>>>
 >>>>
->>>> I think it is out of place to define this in libnvdimm.h and it is odd
->>>> to give it such a long name. The other pmem api helpers like
->>>> arch_wb_cache_pmem() and arch_invalidate_pmem() are function calls for
->>>> libnvdimm driver operations, this barrier is just an instruction and
->>>> is closer to wmb() than the pmem api routine.
+>>>> After a quick through for this series, I have a few question/comment on
+>>>> this patch for the time being. Pls see comment inline.
 >>>>
->>>> Since it is a store fence for pmem, so let's just call it pmem_wmb()
->>>> and define the generic version in include/linux/compiler.h. It should
->>>> probably also be documented alongside dma_wmb() in
->>>> Documentation/memory-barriers.txt about why code would use it over
->>>> wmb(), and why a symmetric pmem_rmb() is not needed.
+>>>> On 06/27/2020 03:05 AM, Hari Bathini wrote:
+>>>>> crashkernel region could have an overlap with special memory regions
+>>>>> like  opal, rtas, tce-table & such. These regions are referred to as
+>>>>> exclude memory ranges. Setup this ranges during image probe in order
+>>>>> to avoid them while finding the buffer for different kdump segments.
 >>>
->>> How about the below? I used pmem_barrier() instead of pmem_wmb().
->>
->> Why? A barrier() is a bi-directional ordering mechanic for reads and
->> writes, and the proposed semantics mechanism only orders writes +
->> persistence. Otherwise the default fallback to wmb() on archs that
->> don't override it does not make sense.
->>
->>> I
->>> guess we wanted this to order() any data access not jus the following
->>> stores to persistent storage?
->>
->> Why?
->>
->>> W.r.t why a symmetric pmem_rmb() is not
->>> needed I was not sure how to explain that. Are you suggesting to explain
->>> why a read/load from persistent storage don't want to wait for
->>> pmem_barrier() ?
->>
->> I would expect that the explanation is that a typical rmb() is
->> sufficient and that there is nothing pmem specific semantic for read
->> ordering for pmem vs normal read-barrier semantics.
->>
+>>> [...]
+>>>
+>>>>> +	/*
+>>>>> +	 * Use the locate_mem_hole logic in kexec_add_buffer() for regular
+>>>>> +	 * kexec_file_load syscall
+>>>>> +	 */
+>>>>> +	if (kbuf->image->type != KEXEC_TYPE_CRASH)
+>>>>> +		return 0;
+>>>> Can the ranges overlap [crashk_res.start, crashk_res.end]?  Otherwise
+>>>> there is no requirement for @exclude_ranges.
+>>>
+>>> The ranges like rtas, opal are loaded by f/w. They almost always overlap with
+>>> crashkernel region. So, @exclude_ranges is required to support kdump.
+>> f/w passes rtas/opal as service, then must f/w mark these ranges as
+>> fdt_reserved_mem in order to make kernel aware not to use these ranges?
+> 
+> It does. Actually, reserve_map + reserved-ranges are reserved as soon as
+> memblock allocator is ready but not before crashkernel reservation.
+> Check early_reserve_mem() call in kernel/prom.c
+> 
+>> Otherwise kernel memory allocation besides kdump can also overwrite
+>> these ranges.> 
+>> Hmm, revisiting reserve_crashkernel(). It seems not to take any reserved
+>> memory into consider except kernel text. Could it work based on memblock
+>> allocator?
+> 
+> So, kdump could possibly overwrite these regions which is why an exclude
+> range list is needed. Same thing was done in kexec-tools as well.
+OK, got it.
 
-Should that be rmb()? A smp_rmb() would suffice right?
+Thanks,
+Pingfan
+> 
+> Thanks
+> Hari
+> 
+> _______________________________________________
+> kexec mailing list
+> kexec@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kexec
+> 
 
-
--aneesh
