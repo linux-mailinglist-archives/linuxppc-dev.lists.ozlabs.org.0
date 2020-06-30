@@ -2,67 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE1020ED98
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 07:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1059720ED9B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 07:36:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wtM54KSdzDqkp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 15:33:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wtQP5PKgzDqlK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 15:36:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
- helo=mail-qt1-x843.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=H/Y2LEm0; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
+ header.s=20161025 header.b=GXVYAQau; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wtJM2g2YzDqjc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 15:31:30 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id h23so14756704qtr.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 22:31:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wtNk25hMzDqM9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 15:35:18 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id d4so9406887pgk.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 22:35:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=RQ4+/e636DjU53ZutFkneDCxV7N9AiA63WewmD4xQRo=;
- b=H/Y2LEm0lur0oZA8cMF+qOfMdmDEufwHt8gopg4rg6MJFdWZkdZjG5EJjRH3nfkJDF
- DKMJqCadNNnqvKBtaN3rHZkQVyKtfXSz4U90upgH1YbAExNl/mdq46fT9HMq7Wd9JQjY
- 0kx7V1ODrnNe93ASuiXATDjIk8RNPyGXqBDgrrEwUKHITq9bmkpjSfcpBWjJi6o7mR8L
- MFMgZGfxkogIeoUm2AsGug0PM1LeGfBhG4P9xC3agZ0WkGRyLxJiPRPKjl4nIW5pjQSM
- M4+K92DwUmXuiwAOKUFqO0Vf1wnCac1Gynjv5OLh30l+ftlAydyu9xSZj5WJGqxFcfXS
- o46g==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=s00P0DjaGSC7vdiXdVQwK+g6WJ0VNDWILQPhUuEX0K4=;
+ b=GXVYAQau0kxqZWFt//4uddyCAlpqvNlXjO+K74nVM0iUlZr7FuGDsSTvDbOCYtISE8
+ +yV7mTNtOmeKqrpuVpTvV4SKFPF8MkWUoyWIJ1oMqAPxpyv/8zHdyMDq24/w7ti3/KDn
+ upoEKvmXXxSFPbiQWEcpGxJoq1RZJtxVLsqWSW3cJA2zWP1SOQjheciySIH7kQaYJgUb
+ HQEdluIniVpZG36Zp4lmjRqcfUIxnDlTpp4e5wlpyTyVigCzP5qKlJHQvroAVW03l6iw
+ u6G4MAUpkctI/VTUi+suuncsB8bg7YAqwQtdQuiYC1EYjutl/iJe+TQWe46AyxJVIX4r
+ xwtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=RQ4+/e636DjU53ZutFkneDCxV7N9AiA63WewmD4xQRo=;
- b=doZylhZOf6jUalL1aozM7Zg3UsR1nYGyFl8z0s6XovmhVNR6SbnOIju2dybkhjd1KN
- 1TPCCyiHVlbb3o2dIFpBW/UhyVJ7nARHFodzesGR4HBCzx0t8HpHMbGMH1nhQ3bEbyX/
- KHBu8I7yp9cNWuw37efCLGxmorn11+1v4nTK94QLP5ExAUVP48IbgB1OtTgKSRsjO5jy
- mIC/XEf/vdOKh010Wb8RB2qkF0jTGO5r8EQnGU8NGZJU61einUZvWL3nVlHlEF+B8NM7
- jzn36jJZ8y5+33nm5RP5MezNVEMBhch9kdeQZTz4Vl3LYWBKYCxNXNMTJ/1b7M6ar6Ys
- ChCg==
-X-Gm-Message-State: AOAM531GN/YLXbnwrOpCoqP4Rj+8ERLsjSkdDg2h7DnIVehn/0BVHr2c
- ixkPV+cVVAvggO6DresoKbASobePXxKmLiJtHTA=
-X-Google-Smtp-Source: ABdhPJw/wlWIPyYhzzU13zpDaxH5qYo/b+CmHKJa4nXgPZmta/pNIYYI8YVXbPlxwfzKQtXmUfA37/tLflAUu6/Nsac=
-X-Received: by 2002:ac8:33d7:: with SMTP id d23mr19287396qtb.204.1593495086854; 
- Mon, 29 Jun 2020 22:31:26 -0700 (PDT)
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=s00P0DjaGSC7vdiXdVQwK+g6WJ0VNDWILQPhUuEX0K4=;
+ b=MjBWLb635cc6wltS0Nq5BCwuPF4JjwAm55DcypFqVe2FFFyI3RMqUY4BpAFI5J4cjO
+ YGe6kcM4WWf6rR8soI9HyfZta8dLKHDspDyqp6+MQEckGXdVFOkMiWpUqKj7uLDcwGL4
+ e2qg/1nd8fqwZT1F91N3IYa16mIm8r/Cr3J4wWL627kViZ/HJBEQwxcQlLN/kXsIp3/j
+ 6B8KEolDBpT2WicaYfk35HmyFHHEGe/lyR83i6k9ISqsgvViYAWEuIWUIN+UlS7V9Ha+
+ di1m0LEpm5I9flYi9FzUEphRkh+i19q7ZtWHRnHQVQrPw7LL2RY61hR//45nV+kwyAmu
+ kOdA==
+X-Gm-Message-State: AOAM531hL1OsuCYA7sdS3pnG9bB2IqP3+ZZ6Wm7iZ0ODTulhruM8leuT
+ zDm3j2Ztu7TpgiEW7YR6giWm+4Ve
+X-Google-Smtp-Source: ABdhPJzHwwNeTokySopi+E1W3pQs42+38f8CKWP93EMiZw3DeA3Fdk/LyfS5+OPvl5Fa/XvAz29zdA==
+X-Received: by 2002:a63:aa42:: with SMTP id x2mr13017666pgo.361.1593495314689; 
+ Mon, 29 Jun 2020 22:35:14 -0700 (PDT)
+Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id c12sm1292038pfn.162.2020.06.29.22.35.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Jun 2020 22:35:13 -0700 (PDT)
+Date: Tue, 30 Jun 2020 15:35:08 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 3/3] powerpc/pseries: Add KVM guest doorbell restrictions
+To: Paul Mackerras <paulus@ozlabs.org>
+References: <20200627150428.2525192-1-npiggin@gmail.com>
+ <20200627150428.2525192-4-npiggin@gmail.com>
+ <20200630022713.GA618342@thinks.paulus.ozlabs.org>
+In-Reply-To: <20200630022713.GA618342@thinks.paulus.ozlabs.org>
 MIME-Version: 1.0
-References: <1593439115-19282-1-git-send-email-shengjiu.wang@nxp.com>
- <20200629200813.GB27967@Asurada-Nvidia>
-In-Reply-To: <20200629200813.GB27967@Asurada-Nvidia>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 30 Jun 2020 13:31:15 +0800
-Message-ID: <CAA+D8APOd2MxO08nnK9UE03bMj25fyMfMnF-neBzdyoykbjAKA@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_asrc: Add an option to select internal ratio
- mode
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <1593495049.cacw882re0.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,96 +80,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: kvm-ppc@vger.kernel.org, Anton Blanchard <anton@linux.ibm.com>,
+ =?iso-8859-1?q?C=E9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 30, 2020 at 4:09 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> On Mon, Jun 29, 2020 at 09:58:35PM +0800, Shengjiu Wang wrote:
-> > The ASRC not only supports ideal ratio mode, but also supports
-> > internal ratio mode.
-> >
-> > For internal rato mode, the rate of clock source should be divided
-> > with no remainder by sample rate, otherwise there is sound
-> > distortion.
-> >
-> > Add function fsl_asrc_select_clk() to find proper clock source for
-> > internal ratio mode, if the clock source is available then internal
-> > ratio mode will be selected.
-> >
-> > With change, the ideal ratio mode is not the only option for user.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
->
-> > +static int fsl_asrc_select_clk(struct fsl_asrc_priv *asrc_priv,
-> > +                            struct fsl_asrc_pair *pair,
-> > +                            int in_rate,
-> > +                            int out_rate)
-> > +{
-> > +     struct fsl_asrc_pair_priv *pair_priv = pair->private;
-> > +     struct asrc_config *config = pair_priv->config;
-> > +     int rate[2], select_clk[2]; /* Array size 2 means IN and OUT */
-> > +     int clk_rate, clk_index;
-> > +     int i = 0, j = 0;
-> > +     bool clk_sel[2];
-> > +
-> > +     rate[0] = in_rate;
-> > +     rate[1] = out_rate;
-> > +
-> > +     /* Select proper clock source for internal ratio mode */
-> > +     for (j = 0; j < 2; j++) {
-> > +             for (i = 0; i < ASRC_CLK_MAP_LEN; i++) {
-> > +                     clk_index = asrc_priv->clk_map[j][i];
-> > +                     clk_rate = clk_get_rate(asrc_priv->asrck_clk[clk_index]);
->
-> +                       /* Only match a perfect clock source with no remainder */
->
-> > +                     if (clk_rate != 0 && (clk_rate / rate[j]) <= 1024 &&
-> > +                         (clk_rate % rate[j]) == 0)
-> > +                             break;
-> > +             }
-> > +
-> > +             if (i == ASRC_CLK_MAP_LEN) {
-> > +                     select_clk[j] = OUTCLK_ASRCK1_CLK;
-> > +                     clk_sel[j] = false;
-> > +             } else {
-> > +                     select_clk[j] = i;
-> > +                     clk_sel[j] = true;
-> > +             }
-> > +     }
-> > +
-> > +     /* Switch to ideal ratio mode if there is no proper clock source */
-> > +     if (!clk_sel[IN] || !clk_sel[OUT])
-> > +             select_clk[IN] = INCLK_NONE;
->
-> Could get rid of clk_set:
->
->         for (j) {
->                 for (i) {
->                         if (match)
->                                 break;
->                 }
->
->                 clk[j] = i;
->         }
->
->         if (clk[IN] == ASRC_CLK_MAP_LEN || clk[OUT] == ASRC_CLK_MAP_LEN)
->
-> And it only overrides clk[IN] setting but leaving clk[OUT] to
-> to the searching result. This means that clk[OUT] may be using
-> a clock source other than OUTCLK_ASRCK1_CLK if sel[IN] happens
-> to be false while sel[OUT] happens to be true. Not sure if it
-> is intended...but I feel it would probably be safer to use the
-> previous settings: INCLK_NONE + OUTCLK_ASRCK1_CLK?
+Excerpts from Paul Mackerras's message of June 30, 2020 12:27 pm:
+> On Sun, Jun 28, 2020 at 01:04:28AM +1000, Nicholas Piggin wrote:
+>> KVM guests have certain restrictions and performance quirks when
+>> using doorbells. This patch tests for KVM environment in doorbell
+>> setup, and optimises IPI performance:
+>>=20
+>>  - PowerVM guests may now use doorbells even if they are secure.
+>>=20
+>>  - KVM guests no longer use doorbells if XIVE is available.
+>=20
+> It seems, from the fact that you completely remove
+> kvm_para_available(), that you perhaps haven't tried building with
+> CONFIG_KVM_GUEST=3Dy.
 
-ok, will update the patch.
+It's still there and builds:
 
-best regards
-wang shengjiu
+static inline int kvm_para_available(void)
+{
+        return IS_ENABLED(CONFIG_KVM_GUEST) && is_kvm_guest();
+}
+
+but...
+
+> Somewhat confusingly, that option is not used or
+> needed when building for a PAPR guest (i.e. the "pseries" platform)
+> but is used on non-IBM platforms using the "epapr" hypervisor
+> interface.
+
+... is_kvm_guest() returns false on !PSERIES now. Not intended
+to break EPAPR. I'm not sure of a good way to share this between
+EPAPR and PSERIES, I might just make a copy of it but I'll see.
+
+Thanks,
+Nick
