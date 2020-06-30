@@ -1,73 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D0620F706
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 16:21:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1055020F6CC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 16:09:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49x64J5xNKzDqc8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 00:21:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49x5pW2NtHzDq7d
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 00:09:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::343;
- helo=mail-wm1-x343.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::342;
+ helo=mail-wm1-x342.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=TTWz3kQi; dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
+ header.s=google header.b=UCptlGP8; dkim-atps=neutral
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
+ [IPv6:2a00:1450:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49x5Yr4SrNzDqTq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 23:58:56 +1000 (AEST)
-Received: by mail-wm1-x343.google.com with SMTP id o8so18921977wmh.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 06:58:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49x5Wh4y3fzDqGX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 23:57:03 +1000 (AEST)
+Received: by mail-wm1-x342.google.com with SMTP id 22so18923348wmg.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 06:57:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=wkBklcgolThuSqx2B9FGDRJ2fQUF+10AbLJBzITnPbk=;
- b=TTWz3kQiTzBuca298CfBMS58ag+bVWHWFEQdNDu9C1/PN/lY6EyJ+tgg5gFUVnhl5Y
- jlXcfraF1hxROmd3FRyUNLm3DWxMTagFU4Jzmxrjk03uYoJMBVmM50Fk17nCcENFff7l
- VpuFlVFptef5rsjSkbqRJOg16a9ZddGY/Btdr7e/BdQ435+Gu0zF9saFRJFU/VsYtbjH
- aKf4HahUOxW6bcYHyRwiuaWGgH2XQvgiqQzDVvnQVmDgZG7nM4/L3LYwLg8waw2y+3xB
- 1TlptulEwTSHjHG+aEC0qopP/o3e/sb+oK7NvFdiJXhd6uEI6ECNffztfSwHOK5IumFc
- orCg==
+ bh=NnszQP2mk8a9Zq/MXSfFAa0Z6TG4Q6FByatEINovmEo=;
+ b=UCptlGP89mz89UrYfXQefNW8+e4ZQEEx97tpWiKPBMfS4wNL0irneBp0jrTF9ByhBp
+ r3sH1OSHEMiwFz/5r7EkY9kOTSEF5j3ZoqwRqWJb8vbVNW1skrkKsOZTP5gEp9oREz8g
+ AbeUF9AZHhUcmH/ZNDNbXyX/tcNDJePdqaFSBzXZh+af/Hh0ljo857xNngaLb/5M6uvM
+ FDyUkltnD8NJFywjYlMdE/rEgEs1gwt7Lotc5q/rX00mU0keywb2yCIfDaovLph8enxA
+ OTfjHeNk1H1rosvo8UqtJ7TZT8tY+d+i9r5YkK3hUsAjwQZILkkV5knsYgiZKcO7geQh
+ 9ulA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=wkBklcgolThuSqx2B9FGDRJ2fQUF+10AbLJBzITnPbk=;
- b=ZqeiopbLYiyLT1sQ86H2DLJJH0ZzKtSR6m0Dt3qCrYX3boDqXPMISfG8nUDaf2gnC2
- pun5jv1/G3XLizEsO+0kxytTTdzpw11tkCGDD7ONzMIBmf2uJlZFWP6o6OgYpboEJy55
- l/+lro8ePAzihQ2VryHKh3a/f1QwH3Y9F5uKgMMw8HSp6Gv03dZko3Lx2QLJSbRIekCd
- F5LgFH2Fl7RtMjaPkj8mi7+R4VJ5M0xOK7LFJTqaoYqSR4N9BmWvhRxLRd4RWdHY1ZTR
- EBIuma+UB3OBGWquptHGPBaUgBaXI61yZZOPPVPjjJOgS7n9rnFRWPjH6EiD4kspzXgE
- alFw==
-X-Gm-Message-State: AOAM533pJ66RccPUxXswJPt0cfwnB0K4Gr73e1d0py4sw59zOU1b17mG
- CuvUqlg7xgHyyr+qmxihS4g8tAMklqM=
-X-Google-Smtp-Source: ABdhPJxrpKuIXyZ4jZXgdzGC5pflyyO+oF9AqHsNWY4gxzEb6UyNUUElbKvxkAnL54GMA/mXFAjShQ==
-X-Received: by 2002:a1c:1b90:: with SMTP id b138mr21475735wmb.21.1593525103867; 
- Tue, 30 Jun 2020 06:51:43 -0700 (PDT)
+ bh=NnszQP2mk8a9Zq/MXSfFAa0Z6TG4Q6FByatEINovmEo=;
+ b=W/PWKrbfSC7oV2v6xbSofAOVpCZJPBZCYxDg7Z6GaiAlNeVa0+nHr7WH4PHgN2rz8T
+ DqBM+w+B+QWT7v48gBvcWRw4Zi1ux2BwzxQCggu79F0FOCEBrTRNaPyZx0e9HeTbkFx1
+ 82w9a/9sPX8wMOHdI/hBQp90g5iLpPJeSVzEVdJMA4AdcLA0zpo9m5qyFsojwRnqionZ
+ Xc0bMi34ut68REwb2ylEyQQTCl6EjoXguE0GhST0lPeSJyMPmVGMphC4QlTzzXWDwZKv
+ 9I9jwMh5XZnD7HSPE+KnmkZWEfbUQYYkY1sxDX9S6SIAckLKz0/3Mk1X24sJHkDewE6f
+ rqMQ==
+X-Gm-Message-State: AOAM531tMooQ8pgiJe53/aW94+lP7+h5Hs+NaufpltKTGVb0p/LJLY6h
+ NhXLUlw//wSr0kDtjpwH6UPxb/acxew=
+X-Google-Smtp-Source: ABdhPJxAVcr7BMBgpDdFrMsgoyDTsXOxDXBRszKa7Wa69xRKWCYbNprLZlHUJCgW8CUodbxVKwRxlA==
+X-Received: by 2002:a1c:ed17:: with SMTP id l23mr21535111wmh.175.1593525106136; 
+ Tue, 30 Jun 2020 06:51:46 -0700 (PDT)
 Received: from localhost.localdomain ([2.27.35.144])
- by smtp.gmail.com with ESMTPSA id t4sm3876746wmf.4.2020.06.30.06.51.42
+ by smtp.gmail.com with ESMTPSA id t4sm3876746wmf.4.2020.06.30.06.51.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jun 2020 06:51:43 -0700 (PDT)
+ Tue, 30 Jun 2020 06:51:45 -0700 (PDT)
 From: Lee Jones <lee.jones@linaro.org>
 To: arnd@arndb.de,
 	gregkh@linuxfoundation.org
-Subject: [PATCH 28/30] misc: ocxl: config: Provide correct formatting to
- function headers
-Date: Tue, 30 Jun 2020 14:51:08 +0100
-Message-Id: <20200630135110.2236389-29-lee.jones@linaro.org>
+Subject: [PATCH 30/30] misc: cxl: flash: Remove unused pointer
+Date: Tue, 30 Jun 2020 14:51:10 +0100
+Message-Id: <20200630135110.2236389-31-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200630135110.2236389-1-lee.jones@linaro.org>
 References: <20200630135110.2236389-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,65 +87,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A nice attempt was made to provide kerneldoc headers for
-read_template_version() and read_afu_lpc_memory_info() however,
-the provided formatting does not match what is expected by
-kerneldoc.
+The DRC index pointer us updated on an OPCODE_ADD, but never
+actually read.  Remove the used pointer and shift up OPCODE_ADD
+to group with OPCODE_DELETE which also provides a noop.
 
-Fixes the following W=1 warnings:
+Fixes the following W=1 kernel build warning:
 
- drivers/misc/ocxl/config.c:286: warning: Function parameter or member 'dev' not described in 'read_template_version'
- drivers/misc/ocxl/config.c:286: warning: Function parameter or member 'fn' not described in 'read_template_version'
- drivers/misc/ocxl/config.c:286: warning: Function parameter or member 'len' not described in 'read_template_version'
- drivers/misc/ocxl/config.c:286: warning: Function parameter or member 'version' not described in 'read_template_version'
- drivers/misc/ocxl/config.c:489: warning: Function parameter or member 'dev' not described in 'read_afu_lpc_memory_info'
- drivers/misc/ocxl/config.c:489: warning: Function parameter or member 'fn' not described in 'read_afu_lpc_memory_info'
- drivers/misc/ocxl/config.c:489: warning: Function parameter or member 'afu' not described in 'read_afu_lpc_memory_info'
+ drivers/misc/cxl/flash.c: In function ‘update_devicetree’:
+ drivers/misc/cxl/flash.c:178:16: warning: variable ‘drc_index’ set but not used [-Wunused-but-set-variable]
+ 178 | __be32 *data, drc_index, phandle;
+ | ^~~~~~~~~
 
 Cc: Frederic Barrat <fbarrat@linux.ibm.com>
 Cc: Andrew Donnellan <ajd@linux.ibm.com>
 Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/misc/ocxl/config.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/misc/cxl/flash.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index c8e19bfb5ef90..e3b99a39d207e 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -273,11 +273,11 @@ static int read_afu_info(struct pci_dev *dev, struct ocxl_fn_config *fn,
- }
+diff --git a/drivers/misc/cxl/flash.c b/drivers/misc/cxl/flash.c
+index cb9cca35a2263..24e3dfcc91a74 100644
+--- a/drivers/misc/cxl/flash.c
++++ b/drivers/misc/cxl/flash.c
+@@ -175,7 +175,7 @@ static int update_devicetree(struct cxl *adapter, s32 scope)
+ 	struct update_nodes_workarea *unwa;
+ 	u32 action, node_count;
+ 	int token, rc, i;
+-	__be32 *data, drc_index, phandle;
++	__be32 *data, phandle;
+ 	char *buf;
  
- /**
-- * Read the template version from the AFU
-- * dev: the device for the AFU
-- * fn: the AFU offsets
-- * len: outputs the template length
-- * version: outputs the major<<8,minor version
-+ * read_template_version - Read the template version from the AFU
-+ * @dev: the device for the AFU
-+ * @fn: the AFU offsets
-+ * @len: outputs the template length
-+ * @version: outputs the major<<8,minor version
-  *
-  * Returns 0 on success, negative on failure
-  */
-@@ -476,10 +476,10 @@ static int validate_afu(struct pci_dev *dev, struct ocxl_afu_config *afu)
- }
+ 	token = rtas_token("ibm,update-nodes");
+@@ -206,15 +206,12 @@ static int update_devicetree(struct cxl *adapter, s32 scope)
  
- /**
-- * Populate AFU metadata regarding LPC memory
-- * dev: the device for the AFU
-- * fn: the AFU offsets
-- * afu: the AFU struct to populate the LPC metadata into
-+ * read_afu_lpc_memory_info - Populate AFU metadata regarding LPC memory
-+ * @dev: the device for the AFU
-+ * @fn: the AFU offsets
-+ * @afu: the AFU struct to populate the LPC metadata into
-  *
-  * Returns 0 on success, negative on failure
-  */
+ 				switch (action) {
+ 				case OPCODE_DELETE:
++				case OPCODE_ADD:
+ 					/* nothing to do */
+ 					break;
+ 				case OPCODE_UPDATE:
+ 					update_node(phandle, scope);
+ 					break;
+-				case OPCODE_ADD:
+-					/* nothing to do, just move pointer */
+-					drc_index = *data++;
+-					break;
+ 				}
+ 			}
+ 		}
 -- 
 2.25.1
 
