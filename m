@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA4820EDE4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 07:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E94D20EDEA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 07:58:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wtqk3798zDqkR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 15:55:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wtvf6HJNzDqWd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 15:58:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,45 +19,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wtnl69YqzDqbD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 15:53:31 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wtnq0msdzDqZm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 15:53:34 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05U5VjrV167974; Tue, 30 Jun 2020 01:53:27 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31ydk9r7ck-1
+ 05U5bcQQ048986; Tue, 30 Jun 2020 01:53:30 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31y3xd44gy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 01:53:26 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05U5aejN016690;
- Tue, 30 Jun 2020 05:53:24 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06fra.de.ibm.com with ESMTP id 31wwcgsh33-1
+ Tue, 30 Jun 2020 01:53:30 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05U5jlXJ009293;
+ Tue, 30 Jun 2020 05:53:28 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 31wwr8ba44-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 05:53:24 +0000
+ Tue, 30 Jun 2020 05:53:28 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05U5rLLS46334060
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05U5rPmm53019074
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Jun 2020 05:53:21 GMT
+ Tue, 30 Jun 2020 05:53:25 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 41575AE04D;
- Tue, 30 Jun 2020 05:53:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0DC7AAE051;
+ Tue, 30 Jun 2020 05:53:25 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14726AE045;
- Tue, 30 Jun 2020 05:53:18 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 11C75AE04D;
+ Tue, 30 Jun 2020 05:53:22 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.47.9])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 30 Jun 2020 05:53:17 +0000 (GMT)
+ Tue, 30 Jun 2020 05:53:21 +0000 (GMT)
 From: Balamuruhan S <bala24@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH 1/4] powerpc/sstep: support new VSX vector paired storage
- access instructions
-Date: Tue, 30 Jun 2020 11:23:04 +0530
-Message-Id: <20200630055307.1154135-2-bala24@linux.ibm.com>
+Subject: [PATCH 2/4] powerpc/sstep: support emulation for vsx vector paired
+ storage access instructions
+Date: Tue, 30 Jun 2020 11:23:05 +0530
+Message-Id: <20200630055307.1154135-3-bala24@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200630055307.1154135-1-bala24@linux.ibm.com>
 References: <20200630055307.1154135-1-bala24@linux.ibm.com>
@@ -68,12 +68,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-06-29_21:2020-06-29,
  2020-06-29 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- suspectscore=1 adultscore=0 mlxlogscore=999 lowpriorityscore=0
- clxscore=1015 bulkscore=0 malwarescore=0 cotscore=-2147483648
- impostorscore=0 spamscore=0 priorityscore=1501 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006300037
+ mlxscore=0 suspectscore=1
+ cotscore=-2147483648 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ spamscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006300042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,112 +91,168 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VSX Vector Paired instructions loads/stores an octword (32 bytes)
-from/to storage into two sequential VSRs. Add `analyse_instr()` support
-to these new instructions,
-        * Load VSX Vector Paired (lxvp)
-        * Load VSX Vector Paired Indexed (lxvpx)
-        * Prefixed Load VSX Vector Paired (plxvp)
-        * Store VSX Vector Paired (stxvp)
-        * Store VSX Vector Paired Indexed (stxvpx)
-        * Prefixed Store VSX Vector Paired (pstxvp)
+add emulate_step() changes to support vsx vector paired storage
+access instructions that provides octword operands loads/stores
+between storage and set of 64 Vector Scalar Registers (VSRs).
 
 Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
 ---
- arch/powerpc/lib/sstep.c | 44 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ arch/powerpc/include/asm/sstep.h |  2 +-
+ arch/powerpc/lib/sstep.c         | 58 +++++++++++++++++++++++++++-----
+ 2 files changed, 50 insertions(+), 10 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
+index 3b01c69a44aa..a6c0b299bcc9 100644
+--- a/arch/powerpc/include/asm/sstep.h
++++ b/arch/powerpc/include/asm/sstep.h
+@@ -126,7 +126,7 @@ union vsx_reg {
+ 	unsigned long d[2];
+ 	float	fp[4];
+ 	double	dp[2];
+-	__vector128 v;
++	__vector128 v[2];
+ };
+ 
+ /*
 diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 5abe98216dc2..c92890e71ca7 100644
+index c92890e71ca7..74c730cae7d8 100644
 --- a/arch/powerpc/lib/sstep.c
 +++ b/arch/powerpc/lib/sstep.c
-@@ -31,6 +31,10 @@ extern char system_call_common[];
- #define XER_OV32	0x00080000U
- #define XER_CA32	0x00040000U
- 
-+#ifdef CONFIG_VSX
-+#define VSX_REGISTER_XTP(rd)   ((((rd) & 1) << 5) | ((rd) & 0xfe))
-+#endif
+@@ -279,6 +279,19 @@ static nokprobe_inline void do_byte_reverse(void *ptr, int nb)
+ 		up[1] = tmp;
+ 		break;
+ 	}
++	case 32: {
++		unsigned long *up = (unsigned long *)ptr;
++		unsigned long tmp;
 +
- #ifdef CONFIG_PPC_FPU
- /*
-  * Functions in ldstfp.S
-@@ -2382,6 +2386,13 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			op->vsx_flags = VSX_SPLAT;
- 			break;
- 
-+		case 333:       /* lxvpx */
-+			op->reg = VSX_REGISTER_XTP(rd);
-+			op->type = MKOP(LOAD_VSX, 0, 32);
-+			op->element_size = 32;
-+			op->vsx_flags = VSX_CHECK_VEC;
-+			break;
-+
- 		case 364:	/* lxvwsx */
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 4);
-@@ -2410,6 +2421,12 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 				VSX_CHECK_VEC;
- 			break;
- 		}
-+		case 461:       /* stxvpx */
-+			op->reg = VSX_REGISTER_XTP(rd);
-+			op->type = MKOP(STORE_VSX, 0, 32);
-+			op->element_size = 32;
-+			op->vsx_flags = VSX_CHECK_VEC;
-+			break;
- 		case 524:	/* lxsspx */
- 			op->reg = rd | ((word & 1) << 5);
- 			op->type = MKOP(LOAD_VSX, 0, 4);
-@@ -2651,6 +2668,21 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- #endif
- 
- #ifdef CONFIG_VSX
-+	case 6:
-+		op->ea = dqform_ea(word, regs);
-+		op->reg = VSX_REGISTER_XTP(rd);
-+		op->element_size = 32;
-+		op->vsx_flags = VSX_CHECK_VEC;
-+		switch (word & 0xf) {
-+		case 0:         /* lxvp */
-+			op->type = MKOP(LOAD_VSX, 0, 32);
-+			break;
-+		case 1:         /* stxvp */
-+			op->type = MKOP(STORE_VSX, 0, 32);
-+			break;
-+		}
++		tmp = byterev_8(up[0]);
++		up[0] = byterev_8(up[3]);
++		up[3] = tmp;
++		tmp = byterev_8(up[2]);
++		up[2] = byterev_8(up[1]);
++		up[1] = tmp;
 +		break;
++	}
 +
- 	case 61:	/* stfdp, lxv, stxsd, stxssp, stxv */
- 		switch (word & 7) {
- 		case 0:		/* stfdp with LSB of DS field = 0 */
-@@ -2779,12 +2811,24 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 			case 57:	/* pld */
- 				op->type = MKOP(LOAD, PREFIXED, 8);
- 				break;
-+			case 58:        /* plxvp */
-+				op->reg = VSX_REGISTER_XTP(rd);
-+				op->type = MKOP(LOAD_VSX, PREFIXED, 32);
-+				op->element_size = 32;
-+				op->vsx_flags = VSX_CHECK_VEC;
-+				break;
- 			case 60:        /* stq */
- 				op->type = MKOP(STORE, PREFIXED, 16);
- 				break;
- 			case 61:	/* pstd */
- 				op->type = MKOP(STORE, PREFIXED, 8);
- 				break;
-+			case 62:        /* pstxvp */
-+				op->reg = VSX_REGISTER_XTP(rd);
-+				op->type = MKOP(STORE_VSX, PREFIXED, 32);
-+				op->element_size = 32;
-+				op->vsx_flags = VSX_CHECK_VEC;
-+				break;
- 			}
- 			break;
- 		case 1: /* Type 01 Eight-Byte Register-to-Register */
-
-base-commit: 64677779e8962c20b580b471790fe42367750599
+ #endif
+ 	default:
+ 		WARN_ON_ONCE(1);
+@@ -709,6 +722,8 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 	reg->d[0] = reg->d[1] = 0;
+ 
+ 	switch (op->element_size) {
++	case 32:
++		/* [p]lxvp[x] or [p]stxvp[x] */
+ 	case 16:
+ 		/* whole vector; lxv[x] or lxvl[l] */
+ 		if (size == 0)
+@@ -717,7 +732,7 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		if (IS_LE && (op->vsx_flags & VSX_LDLEFT))
+ 			rev = !rev;
+ 		if (rev)
+-			do_byte_reverse(reg, 16);
++			do_byte_reverse(reg, size);
+ 		break;
+ 	case 8:
+ 		/* scalar loads, lxvd2x, lxvdsx */
+@@ -793,6 +808,22 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 	size = GETSIZE(op->type);
+ 
+ 	switch (op->element_size) {
++	case 32:
++		/* [p]lxvp[x] or [p]stxvp[x] */
++		if (size == 0)
++			break;
++		if (IS_LE && (op->vsx_flags & VSX_LDLEFT))
++			rev = !rev;
++		if (rev) {
++			/* reverse 32 bytes */
++			buf.d[0] = byterev_8(reg->d[3]);
++			buf.d[1] = byterev_8(reg->d[2]);
++			buf.d[2] = byterev_8(reg->d[1]);
++			buf.d[3] = byterev_8(reg->d[0]);
++			reg = &buf;
++		}
++		memcpy(mem, reg, size);
++		break;
+ 	case 16:
+ 		/* stxv, stxvx, stxvl, stxvll */
+ 		if (size == 0)
+@@ -861,28 +892,33 @@ static nokprobe_inline int do_vsx_load(struct instruction_op *op,
+ 				       bool cross_endian)
+ {
+ 	int reg = op->reg;
+-	u8 mem[16];
++	int i, nr_vsx_regs;
++	u8 mem[32];
+ 	union vsx_reg buf;
+ 	int size = GETSIZE(op->type);
+ 
+ 	if (!address_ok(regs, ea, size) || copy_mem_in(mem, ea, size, regs))
+ 		return -EFAULT;
+ 
++	nr_vsx_regs = size / sizeof(__vector128);
+ 	emulate_vsx_load(op, &buf, mem, cross_endian);
+ 	preempt_disable();
+ 	if (reg < 32) {
+ 		/* FP regs + extensions */
+ 		if (regs->msr & MSR_FP) {
+-			load_vsrn(reg, &buf);
++			for (i = 0; i < nr_vsx_regs; i++)
++				load_vsrn(reg + i, &buf.v[i]);
+ 		} else {
+ 			current->thread.fp_state.fpr[reg][0] = buf.d[0];
+ 			current->thread.fp_state.fpr[reg][1] = buf.d[1];
+ 		}
+ 	} else {
+ 		if (regs->msr & MSR_VEC)
+-			load_vsrn(reg, &buf);
++			for (i = 0; i < nr_vsx_regs; i++)
++				load_vsrn(reg + i, &buf.v[i]);
++
+ 		else
+-			current->thread.vr_state.vr[reg - 32] = buf.v;
++			current->thread.vr_state.vr[reg - 32] = buf.v[0];
+ 	}
+ 	preempt_enable();
+ 	return 0;
+@@ -893,27 +929,31 @@ static nokprobe_inline int do_vsx_store(struct instruction_op *op,
+ 					bool cross_endian)
+ {
+ 	int reg = op->reg;
+-	u8 mem[16];
++	int i, nr_vsx_regs;
++	u8 mem[32];
+ 	union vsx_reg buf;
+ 	int size = GETSIZE(op->type);
+ 
+ 	if (!address_ok(regs, ea, size))
+ 		return -EFAULT;
+ 
++	nr_vsx_regs = size / sizeof(__vector128);
+ 	preempt_disable();
+ 	if (reg < 32) {
+ 		/* FP regs + extensions */
+ 		if (regs->msr & MSR_FP) {
+-			store_vsrn(reg, &buf);
++			for (i = 0; i < nr_vsx_regs; i++)
++				store_vsrn(reg + i, &buf.v[i]);
+ 		} else {
+ 			buf.d[0] = current->thread.fp_state.fpr[reg][0];
+ 			buf.d[1] = current->thread.fp_state.fpr[reg][1];
+ 		}
+ 	} else {
+ 		if (regs->msr & MSR_VEC)
+-			store_vsrn(reg, &buf);
++			for (i = 0; i < nr_vsx_regs; i++)
++				store_vsrn(reg + i, &buf.v[i]);
+ 		else
+-			buf.v = current->thread.vr_state.vr[reg - 32];
++			buf.v[0] = current->thread.vr_state.vr[reg - 32];
+ 	}
+ 	preempt_enable();
+ 	emulate_vsx_store(op, &buf, mem, cross_endian);
 -- 
 2.24.1
 
