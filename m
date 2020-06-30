@@ -2,74 +2,138 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABEF720FCEF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 21:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8159F20FDE2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 22:42:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xFHr6kwYzDqQ3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 05:47:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xGWn1p1SzDqsL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 06:42:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::643;
- helo=mail-ej1-x643.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=203.18.50.4; helo=nat-hk.nvidia.com;
+ envelope-from=jgg@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=t0+UuWJ3; dkim-atps=neutral
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
- [IPv6:2a00:1450:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.a=rsa-sha256
+ header.s=n1 header.b=HsMARRVI; dkim-atps=neutral
+X-Greylist: delayed 310 seconds by postgrey-1.36 at bilbo;
+ Wed, 01 Jul 2020 02:29:53 AEST
+Received: from nat-hk.nvidia.com (nat-hk.nvidia.com [203.18.50.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xFGD3ThGzDqkc
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 05:45:47 +1000 (AEST)
-Received: by mail-ej1-x643.google.com with SMTP id dp18so21834403ejc.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 12:45:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=qgx3IljQ5BIRlO4yBxZfoSES89T9T1+0rBYxa3AAvLM=;
- b=t0+UuWJ3hcB+YWsKOOBhSVmTSNzUldxsOxO8O0AnhZdpKk17xSwTbMukThuqybSmoS
- wPM9nDtRNNdaJZ9seKmg9WnnQIiG7+fm1ayOY/be0nmyli1ZCQpZBccV92DQjl+8S8x2
- CUQr0bxWU2o3O8hdNe/koalYIo4rtFz3bbftAS9vVB01TtpP+/Wmnd7/iTYdy8px6HBx
- GtZkEPaWLfRlFTzTh9gPxl6TdwuhmcukLic6t3NYXM1dX81E7IUk5cHkuExmv+CQjLgV
- ts5n/JMcHe/o+W339xE0TAxWtC/nWceBfqa7uQRoWYD2Vueouei+JJWjRbVCXLC7scDr
- fUFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=qgx3IljQ5BIRlO4yBxZfoSES89T9T1+0rBYxa3AAvLM=;
- b=Jl67zko7rM3itIjeOpoykF9DltsHXYkIREv2Cnw3zc6xCsHPJhFEEZXNQmKXk4FTB2
- kVzZSv9WUxFdWHhylZKca8h1ARVZVCGjNQVgJ8IZlEngLK7mX/rj7Ah1Yo+hCSaEjqum
- 3cvluyNOpyEgiUQzm5zzyqZznjRcTEuSKcQBC5yME+4tBDGio8xzs4Ys5OYW/HKZup8h
- 2wwXCnIrOrt536xD1wuJyCMUBmeJ3LSbaURkWMO0Cb5Ngg+eX2sbgtrVjubQrq7QKPBf
- zL4AHGWOBs1R+v4iZwcjFhz/Vjx4coV4an3FVF8XMQ+XeEDy1Zgve4PMfjwUO7WW5EiC
- jM/w==
-X-Gm-Message-State: AOAM530bOdWsJVeIhEBhzzoSyxr5lBWBI9ynpoZciLaVCikdwSqhrWMp
- 6L3afvtourIy1MHHfdGRRpF8xZ43F0QRuox+kZfoTw==
-X-Google-Smtp-Source: ABdhPJyKl5EaEcTsTZ/D0hFYWRXDjmf8oBZd9cVwaYLp8hZe/lL/LJhRswILklwWIM5NrBKglrfm4H83B027mbEdiDg=
-X-Received: by 2002:a17:906:da0f:: with SMTP id
- fi15mr19190809ejb.237.1593546341192; 
- Tue, 30 Jun 2020 12:45:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49x8w122KzzDq7j
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 02:29:52 +1000 (AEST)
+Received: from hkpgpgate102.nvidia.com (Not Verified[10.18.92.77]) by
+ nat-hk.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5efb67400000>; Wed, 01 Jul 2020 00:24:32 +0800
+Received: from HKMAIL104.nvidia.com ([10.18.16.13])
+ by hkpgpgate102.nvidia.com (PGP Universal service);
+ Tue, 30 Jun 2020 09:24:32 -0700
+X-PGP-Universal: processed;
+ by hkpgpgate102.nvidia.com on Tue, 30 Jun 2020 09:24:32 -0700
+Received: from HKMAIL103.nvidia.com (10.18.16.12) by HKMAIL104.nvidia.com
+ (10.18.16.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 30 Jun
+ 2020 16:24:29 +0000
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.108)
+ by HKMAIL103.nvidia.com (10.18.16.12) with Microsoft SMTP Server (TLS) id
+ 15.0.1473.3 via Frontend Transport; Tue, 30 Jun 2020 16:24:29 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CcPJsECZHGK9YklLcuvlrPJAa1fBLxBO34FmABzLbZGt2MfNPp34/TI4OBlKF23Lu8syoU5Gb4fSHE13WW4F6SL7zCMUJIzij7XUt9UXgsQpAFw3vj/Qk4Fq55uqCzxYZD/hXxRKGzlAdW6Y8piEgrUUSZAPzkS98RDER1xQhFnJjW6jv2P/mqvZuxnYuT72xiA6Bvk3IoIpIGEG4z46E685+6wF4rH1XVx97p4xDW5A74vVIuT/eORyACh87SvaEsOZi/xHLNTbwnGwo3OCP3dpRAbLuT+hOypmaM+cXybDiflIIW4u+d7gwHCF4R234aIWiMrXVFP/Q97svBNxDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Tf2dhcL9+eo1RGk9caIfOU3fOhh/3KtsfCSJI4l1GHw=;
+ b=K0DerbL9pLea0HuE0J896jSYDpAeL0ghQGBt4wAgXZsyQwH68K02qasZmt02oiULGXfxcbhh1gtK7UJKoC6IwpR+hKBGUkHfNWkfp5NARAC1Yc3cZ59KDsahvqWJzHQ78DcFmj2rR1Q5IY6EXb8R030muNtUKfFE722tM2EOJANxOY7+0/86u4IVF4e4MmwSGN704YXxylVbyDtojuxR2Ay+fFKYYiXyvWU0qfTGGYvUpdqlmqFEtphDxgjGCZKFUJJnqTWokSyCt1qv7rAIYmNzugjz/LkqS5wrzbh4/vs3lopuSe5pTtbKRg12DsHpWA2qkZL1DygJZF0d5m/d6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com (2603:10b6:5:14a::12)
+ by DM5PR12MB1148.namprd12.prod.outlook.com (2603:10b6:3:74::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3131.24; Tue, 30 Jun
+ 2020 16:24:27 +0000
+Received: from DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1d53:7cb4:c3d7:2b54]) by DM6PR12MB3834.namprd12.prod.outlook.com
+ ([fe80::1d53:7cb4:c3d7:2b54%6]) with mapi id 15.20.3131.027; Tue, 30 Jun 2020
+ 16:24:27 +0000
+Date: Tue, 30 Jun 2020 13:24:25 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: <refactormyself@gmail.com>
+Subject: Re: [PATCH 0/8 v2] PCI: Align return values of PCIe capability and
+ PCI accessors
+Message-ID: <20200630162425.GA442499@nvidia.com>
+References: <20200615073225.24061-1-refactormyself@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20200615073225.24061-1-refactormyself@gmail.com>
+X-ClientProxiedBy: YT1PR01CA0101.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2c::10) To DM6PR12MB3834.namprd12.prod.outlook.com
+ (2603:10b6:5:14a::12)
 MIME-Version: 1.0
-References: <20200629135722.73558-1-aneesh.kumar@linux.ibm.com>
- <20200629135722.73558-7-aneesh.kumar@linux.ibm.com>
- <20200629160940.GU21462@kitsune.suse.cz>
- <87lfk5hahc.fsf@linux.ibm.com>
- <CAPcyv4hEV=Ps=t=3qsFq3Ob1jzf=ptoZmYTDkgr8D_G0op8uvQ@mail.gmail.com>
- <20200630085413.GW21462@kitsune.suse.cz>
- <9204289b-2274-b5c1-2cd5-8ed5ce28efb4@linux.ibm.com>
-In-Reply-To: <9204289b-2274-b5c1-2cd5-8ed5ce28efb4@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 30 Jun 2020 12:45:30 -0700
-Message-ID: <CAPcyv4gHHjifQcLMdVgo9CyixHxe6OkCYdQ7Jfu2YB7tBqpDNg@mail.gmail.com>
-Subject: Re: [PATCH v6 6/8] powerpc/pmem: Avoid the barrier in flush routines
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from mlx.ziepe.ca (206.223.160.26) by
+ YT1PR01CA0101.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:2c::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3131.21 via Frontend Transport; Tue, 30 Jun 2020 16:24:26 +0000
+Received: from jgg by mlx with local (Exim 4.93)	(envelope-from
+ <jgg@nvidia.com>)	id 1jqJ3Z-001r7m-BT; Tue, 30 Jun 2020 13:24:25 -0300
+X-Originating-IP: [206.223.160.26]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 2a534225-7b32-49c4-4a37-08d81d120ebc
+X-MS-TrafficTypeDiagnostic: DM5PR12MB1148:
+X-Microsoft-Antispam-PRVS: <DM5PR12MB1148183C60C0FC008ED7B4DEC26F0@DM5PR12MB1148.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2089;
+X-Forefront-PRVS: 0450A714CB
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3XPA2mmporxd5D9lQSVd/w3UNdpOTkYAyDeRptOQ+3mdoGdmGzeaXYEED+RoOa61P3nzZIpgI9sEW4ClSwxU1wbAkpTbvQBgv5CR0hG2CHA9zaJIN0pNPb5Gjv4JtWPuTVl9L+pbiiVI0wiTo6+oiWYyNuvrbDCJ7GU62o1wOXL9fbBYDjtVIxVaNjinuSxqJSq0g6VDGYBk4ZXJ4bJlM56JYZErSXmclCAlX2z8xLjrSv4x/NUs/0cmxCWM0YaN4JPlju9dIBiIxqWxBOPcZ/mPAXsO5BU2mbQIfM20I7I+LhxH1vezIiWyAZXWBOtayVIs36DedBsEyc8IzUecV1WJ5iydhq+Dmbir6aXZP7pNprziQy+rA3VahyYi5ozE
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB3834.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFTY:;
+ SFS:(4636009)(366004)(39860400002)(396003)(346002)(136003)(376002)(426003)(54906003)(36756003)(478600001)(186003)(316002)(26005)(33656002)(2906002)(4326008)(5660300002)(66476007)(8676002)(558084003)(7416002)(66556008)(2616005)(9746002)(9786002)(1076003)(8936002)(66946007)(6916009)(86362001)(27376004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData: 09afyx1Vygn3DWQT3nHWI32fN/JAaWD8eJvQYVH8FzN4Q19YhTtvuTGhY39r6AKCfvmkaISzbTyGlrSrdpEm9p3sla5Cm54NTJCnLlrvTvrxsTSzqpMw2WKBZKAPvHScEKKZXS1v3H7/BgAvLD2TmX/tBCuc9/hfxSbX/tD8a3HcjfOfQDOjQUE49cRPAHhP31mun1sp2SpSjCIYWGZE0irwMIAg1Kzp+BeZkjiGUNlLuGw9eh26BQp4TDcdDTXuVLUU70rR59TVtZLWATNziJ5AOkxcCxHN6qxJiJTJha2PtMfa4DGSbL6eeaj2gU0FPqxJ9Tx6Bfu8N14zdZR4YKtPJeBfTFp3RpDGL/JtglcCF3IhH226mQ0ThHv1d2e7a9p+VS2y/X1CJBS7sL0KCXgBEzA7//z0C24j9rjbJi2sJJ8Zf/iTcGUfCu1eYcSpLzzWURdJzmlw6Z7mBXMO7oKQx17JCV/sAE2gAsyToN0F7ySURKn3U0wOj+NVjGCd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a534225-7b32-49c4-4a37-08d81d120ebc
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3834.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2020 16:24:27.0560 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sZyulziyqRoJ09NgMW8dgaI5LP0LWmkpbCsYy5hVK+28abFou1qeF8SSXD7eXi89
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1148
+X-OriginatorOrg: Nvidia.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1593534272; bh=Tf2dhcL9+eo1RGk9caIfOU3fOhh/3KtsfCSJI4l1GHw=;
+ h=X-PGP-Universal:ARC-Seal:ARC-Message-Signature:
+ ARC-Authentication-Results:Authentication-Results:Date:From:To:CC:
+ Subject:Message-ID:References:Content-Type:Content-Disposition:
+ In-Reply-To:X-ClientProxiedBy:MIME-Version:
+ X-MS-Exchange-MessageSentRepresentingType:X-Originating-IP:
+ X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id:
+ X-MS-TrafficTypeDiagnostic:X-Microsoft-Antispam-PRVS:
+ X-MS-Oob-TLC-OOBClassifiers:X-Forefront-PRVS:
+ X-MS-Exchange-SenderADCheck:X-Microsoft-Antispam:
+ X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+ X-MS-Exchange-AntiSpam-MessageData:
+ X-MS-Exchange-CrossTenant-Network-Message-Id:
+ X-MS-Exchange-CrossTenant-AuthSource:
+ X-MS-Exchange-CrossTenant-AuthAs:
+ X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+ X-MS-Exchange-CrossTenant-FromEntityHeader:
+ X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+ X-MS-Exchange-CrossTenant-UserPrincipalName:
+ X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+ b=HsMARRVIdCuTSSBs8zmFYQOvzWCzbfgbyUub6vj2coY0KL3H8860ywhgI2ULPBE2d
+ J9bc+8RjX7OLtatIXGW+oQJG2kqpd0T7WH79D9Js68fH/poAGD42OLKJEsATvRVTAU
+ Rh/E+i/elKdbNWvq0P1YT+Sb49BKv3DbMxhsdEw8XT0daEiIzD2cbh2mru2a7T8G5D
+ 8QOFxtNUGBMKubvCACV8N6o8WrS55d2rpwv0uM4Lt/A+UanxXYI/uAResytJ/G5S9u
+ TT9nWmInsNgmwm71mLDLztCIF7GhacpIDFc7uw6hYHysRFDvDY1gWGpJoj/ZiPA3UI
+ 93tIOuis4aCnQ==
+X-Mailman-Approved-At: Wed, 01 Jul 2020 06:41:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,71 +145,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
- =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Don Brace <don.brace@microsemi.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ Mike Marciniszyn <mike.marciniszyn@intel.com>, linux-scsi@vger.kernel.org,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, linux-rdma@vger.kernel.org,
+ linux-pci@vger.kernel.org, Dennis Dalessandro <dennis.dalessandro@intel.com>,
+ esc.storagedev@microsemi.com, Doug Ledford <dledford@redhat.com>,
+ linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+ Vinod Koul <vkoul@kernel.org>, helgaas@kernel.org, skhan@linuxfoundation.org,
+ bjorn@helgaas.com, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 30, 2020 at 2:21 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
-[..]
-> >> The bio argument isn't for range based flushing, it is for flush
-> >> operations that need to complete asynchronously.
-> > How does the block layer determine that the pmem device needs
-> > asynchronous fushing?
-> >
->
->         set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
->
-> and dax_synchronous(dev)
+On Mon, Jun 15, 2020 at 09:32:17AM +0200, refactormyself@gmail.com wrote:
+> Bolarinwa Olayemi Saheed (8):
+>   IB/hfi1: Convert PCIBIOS_* errors to generic -E* errors
+>   IB/hfi1: Convert PCIBIOS_* errors to generic -E* errors
 
-Yes, but I think it is overkill to have an indirect function call just
-for a single instruction.
+Applied to rdma for-next thanks
 
-How about something like this instead, to share a common pmem_wmb()
-across x86 and powerpc.
-
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index 20ff30c2ab93..b14009060c83 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -1180,6 +1180,13 @@ int nvdimm_flush(struct nd_region *nd_region,
-struct bio *bio)
- {
-        int rc = 0;
-
-+       /*
-+        * pmem_wmb() is needed to 'sfence' all previous writes such
-+        * that they are architecturally visible for the platform buffer
-+        * flush.
-+        */
-+       pmem_wmb();
-+
-        if (!nd_region->flush)
-                rc = generic_nvdimm_flush(nd_region);
-        else {
-@@ -1206,17 +1213,14 @@ int generic_nvdimm_flush(struct nd_region *nd_region)
-        idx = this_cpu_add_return(flush_idx, hash_32(current->pid + idx, 8));
-
-        /*
--        * The first wmb() is needed to 'sfence' all previous writes
--        * such that they are architecturally visible for the platform
--        * buffer flush.  Note that we've already arranged for pmem
--        * writes to avoid the cache via memcpy_flushcache().  The final
--        * wmb() ensures ordering for the NVDIMM flush write.
-+        * Note that we've already arranged for pmem writes to avoid the
-+        * cache via memcpy_flushcache().  The final wmb() ensures
-+        * ordering for the NVDIMM flush write.
-         */
--       wmb();
-        for (i = 0; i < nd_region->ndr_mappings; i++)
-                if (ndrd_get_flush_wpq(ndrd, i, 0))
-                        writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
--       wmb();
-+       pmem_wmb();
-
-        return 0;
- }
+Jason
