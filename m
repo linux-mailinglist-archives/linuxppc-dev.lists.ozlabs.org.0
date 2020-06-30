@@ -2,64 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BF020EB53
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 04:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EAF20EB77
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 04:28:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49wnsK4cNnzDqWG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 12:11:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49wpFM73GSzDqgj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 12:28:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.83;
- helo=conssluserg-04.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=l6KYDX7G; 
- dkim-atps=neutral
-Received: from conssluserg-04.nifty.com (conssluserg-04.nifty.com
- [210.131.2.83])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49wnq21CgXzDqQl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 12:09:17 +1000 (AEST)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com
- [209.85.222.42]) (authenticated)
- by conssluserg-04.nifty.com with ESMTP id 05U28if7005911
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 11:08:44 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 05U28if7005911
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1593482924;
- bh=8N9eJ+P9q8UjGmkozh+JC0/G8Gi+VtjTGyH41GDG7qQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=l6KYDX7G5ObLLfZj346w6gRgrZASvzN9gF1kXQ7tuLqs/E6GqGGa543lO5Zz1ihTr
- WAEsJuTasumlWfr8l25KCf+0QqeLzmY2Z9ozZYiApvo6gf5GN1V9tqyfgSAyidLrLk
- vcJM5dgy9vpP739goBqxXVID4T3ruz6OZ9xe6PhU2xAxsPHBO3avZGXg/LTpqdiJdU
- qn7VlIYfnGe0uTzHptFEuU5OT8A0oHwpDETFuO2hCWfaoyrE0sX/n/Rm5hP9rLk213
- 5GUS3XQpe20HhqW5rcGQ9acsqnRMKYjNxXHcqwD9dqXT1g3cRZTpCsehy4Kdm1RFES
- qN6eHzJbi9Htw==
-X-Nifty-SrcIP: [209.85.222.42]
-Received: by mail-ua1-f42.google.com with SMTP id l12so1251434uak.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jun 2020 19:08:44 -0700 (PDT)
-X-Gm-Message-State: AOAM533zeWfXH1iy3Zvsrev0RkQaSu6UGbVyJxsI8+Cm4QCaiPvvzbRq
- USjpQ6y6eY2t8BPovuFRoSWraz11P+qFCG72+XI=
-X-Google-Smtp-Source: ABdhPJzcTgvLU2AmkLENvHvRyD/efC2ONPJPB6N+NNMxQ+AWnRagsj4cZe5ewXyAh5Ardq+OWABinNwy06jhD+SST0c=
-X-Received: by 2002:a9f:2204:: with SMTP id 4mr13210692uad.40.1593482923565;
- Mon, 29 Jun 2020 19:08:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49wpCp53WhzDqKv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 12:27:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=HAPr1ft0; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 49wpCp1LFCz9sRk; Tue, 30 Jun 2020 12:27:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1593484038; bh=NFM6COCoADkJtON3c24Vv6dFmjtqhT4V6y1+lHPgb0g=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=HAPr1ft04WysSZiADOMjCalamrA2adoBIwdiJ0pp2KzZhZVSmLmTsuGjLjCxYggFr
+ q8DiWs7T4bJs329eLGZx7d4U281mnCNHKeyrctNhSGtBnj0cJJj3Wz/N+aRJgkhIRu
+ JBgeZ5EjOYIewS9wFaYJPP3pfL/Hf3OlIUuppXCgR/9evzKx+xtCIXquNUwyrChwok
+ GH4YJkNpGXJG8FwvzktyPgLLPWFLDU/I3eNGgS0/Hy69HTMtLrxCq+wrcr4PiLe3AF
+ GGr0iHUJyQSKRDXJtsbxCJW04BzXYtzeyv0Hdw3MeOCelCh9ZQ3eEpNYjWT7ic5gaB
+ xPvLycUUxw1Vw==
+Date: Tue, 30 Jun 2020 12:27:13 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 3/3] powerpc/pseries: Add KVM guest doorbell restrictions
+Message-ID: <20200630022713.GA618342@thinks.paulus.ozlabs.org>
+References: <20200627150428.2525192-1-npiggin@gmail.com>
+ <20200627150428.2525192-4-npiggin@gmail.com>
 MIME-Version: 1.0
-References: <20200628015041.1000002-1-masahiroy@kernel.org>
- <87imfa8le0.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87imfa8le0.fsf@mpe.ellerman.id.au>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 30 Jun 2020 11:08:07 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATusciypBJ4dYZcyrugdi_rXEV_s=zxAehDxsX+Sd5z4g@mail.gmail.com>
-Message-ID: <CAK7LNATusciypBJ4dYZcyrugdi_rXEV_s=zxAehDxsX+Sd5z4g@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: introduce ccflags-remove-y and asflags-remove-y
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200627150428.2525192-4-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,90 +53,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Russell King <linux@armlinux.org.uk>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Sami Tolvanen <samitolvanen@google.com>,
- Rich Felker <dalias@libc.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: kvm-ppc@vger.kernel.org, Anton Blanchard <anton@linux.ibm.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 29, 2020 at 2:55 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Masahiro Yamada <masahiroy@kernel.org> writes:
-> > CFLAGS_REMOVE_<file>.o works per object, that is, there is no
-> > convenient way to filter out flags for every object in a directory.
-> >
-> > Add ccflags-remove-y and asflags-remove-y to make it easily.
-> >
-> > Use ccflags-remove-y to clean up some Makefiles.
-> >
-> > Suggested-by: Sami Tolvanen <samitolvanen@google.com>
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> > ---
-> >
-> >  arch/arm/boot/compressed/Makefile | 6 +-----
-> >  arch/powerpc/xmon/Makefile        | 3 +--
-> >  arch/sh/boot/compressed/Makefile  | 5 +----
-> >  kernel/trace/Makefile             | 4 ++--
-> >  lib/Makefile                      | 5 +----
-> >  scripts/Makefile.lib              | 4 ++--
-> >  6 files changed, 8 insertions(+), 19 deletions(-)
-> >
-> > diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-> > index 89c76ca35640..55cbcdd88ac0 100644
-> > --- a/arch/powerpc/xmon/Makefile
-> > +++ b/arch/powerpc/xmon/Makefile
-> > @@ -7,8 +7,7 @@ UBSAN_SANITIZE := n
-> >  KASAN_SANITIZE := n
-> >
-> >  # Disable ftrace for the entire directory
-> > -ORIG_CFLAGS := $(KBUILD_CFLAGS)
-> > -KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
-> > +ccflags-remove-y += $(CC_FLAGS_FTRACE)
->
-> This could be:
->
-> ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
->
-> Similar to kernel/trace/Makefile below.
+On Sun, Jun 28, 2020 at 01:04:28AM +1000, Nicholas Piggin wrote:
+> KVM guests have certain restrictions and performance quirks when
+> using doorbells. This patch tests for KVM environment in doorbell
+> setup, and optimises IPI performance:
+> 
+>  - PowerVM guests may now use doorbells even if they are secure.
+> 
+>  - KVM guests no longer use doorbells if XIVE is available.
 
+It seems, from the fact that you completely remove
+kvm_para_available(), that you perhaps haven't tried building with
+CONFIG_KVM_GUEST=y.  Somewhat confusingly, that option is not used or
+needed when building for a PAPR guest (i.e. the "pseries" platform)
+but is used on non-IBM platforms using the "epapr" hypervisor
+interface.
 
-I fixed it up, and applied to linux-kbuild.
-Thanks.
+If you did intend to remove support for the epapr hypervisor interface
+then that should have been talked about in the commit message (and
+would I expect be controversial).
 
+So NAK on the kvm_para_available() removal.
 
-> I don't mind though.
->
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
->
-> cheers
->
-> > diff --git a/kernel/trace/Makefile b/kernel/trace/Makefile
-> > index 6575bb0a0434..7492844a8b1b 100644
-> > --- a/kernel/trace/Makefile
-> > +++ b/kernel/trace/Makefile
-> > @@ -2,9 +2,9 @@
-> >
-> >  # Do not instrument the tracer itself:
-> >
-> > +ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
-> > +
-> >  ifdef CONFIG_FUNCTION_TRACER
-> > -ORIG_CFLAGS := $(KBUILD_CFLAGS)
-> > -KBUILD_CFLAGS = $(subst $(CC_FLAGS_FTRACE),,$(ORIG_CFLAGS))
-> >
-> >  # Avoid recursion due to instrumentation.
-> >  KCSAN_SANITIZE := n
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+Paul.
