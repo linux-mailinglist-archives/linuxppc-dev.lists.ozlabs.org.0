@@ -2,83 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBEE20FBA9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 20:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D89DF20FBEB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 20:40:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xCR231t0zDqlD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 04:23:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xCpf6CyZzDqnK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 04:40:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=axboe@kernel.dk;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
+ envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel-dk.20150623.gappssmtp.com
- header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=hwnoVOlq; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
+ [209.85.210.67])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xCPN3Q6GzDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 04:21:59 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id x11so8788445plo.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 11:21:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=kernel-dk.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=9nMjhxRG610D6xAYb4aZ5VRp2i+EwPdQw1qks+ZgrLU=;
- b=hwnoVOlqAmU5zhHyPngbwhlN1yE0Rso1wSEH5Cjpo1eHOGtwX+AR6fF4SKm61iSSaU
- xiq7Si+fCLVLBMD4J7QWGIGpRMN22P7LkDW6XHYnqvsHwEiKJn/e7f4zxe/RH81FYZzf
- 6Qah7lhZ47GF32wkEdApitqRosxk7IcYLclUVGOXkeLM+pP0S9zvuPgq8PcNplpKOkyE
- awjP1mt8uhAMtNOYRMd+Y1yvSZf+ZepFpwCbSYGQZlgNrN664rZd2V1H/xVqglgX5aPU
- phGafx1o9DcWQXNw7D5cKE9cBpAhM0fImNVpDBnmceKAdk/tkJjCm50uuW5RXHV8UW9k
- l/Ww==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xCmx21w7zDqPC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 04:38:55 +1000 (AEST)
+Received: by mail-ot1-f67.google.com with SMTP id k15so19195810otp.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 11:38:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=9nMjhxRG610D6xAYb4aZ5VRp2i+EwPdQw1qks+ZgrLU=;
- b=Kcr4fdV9waKM4JuK36b7kmLHCKry2IFAwPhyzpWvpXbkUd7+EQQ56RxGuXC8rPWAEA
- nHd/WS8u7ols+cpJsB5WnFElAcyJ1EDEePDEvFVcOg7dUFOim763Q28o7zaAtJpwhDfu
- swtCxcgybBPOzldCWhxg3sVjXcVAv/wL8feIJe8KjIXJLlzfAIlLco2SCFL9kdsNlMTQ
- GgnCpGO/N2KEtqFVAReZzlFsz4on/QEyGXw/lMnLck29B773edvjTknWx2gEnQnuFvJc
- MXI562RTOdnrsLVlfU8T3P+TWiDxNweJoo6n4zOth7Lr4YD68L3pc9HJ/ipEqPtkZPru
- UThA==
-X-Gm-Message-State: AOAM532w/dtP93Nn2ThvSPp9nv7RB9nN2k/2duszmxJSHDWavZZ3eXXh
- 2oFZzEg57+tAV7YG2cl+f9/4iA==
-X-Google-Smtp-Source: ABdhPJx1eVZzUauHavuDMn/utz58o2Sp76o2c6uyFezmO+u8oFk4qpnRUZKKvG8yetkSCycNIsxDcg==
-X-Received: by 2002:a17:90a:7409:: with SMTP id
- a9mr23663497pjg.107.1593541316394; 
- Tue, 30 Jun 2020 11:21:56 -0700 (PDT)
-Received: from ?IPv6:2605:e000:100e:8c61:4113:50ea:3eb3:a39b?
- ([2605:e000:100e:8c61:4113:50ea:3eb3:a39b])
- by smtp.gmail.com with ESMTPSA id 10sm3244047pfx.136.2020.06.30.11.21.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Jun 2020 11:21:55 -0700 (PDT)
-Subject: Re: rename ->make_request_fn and move it to the
- block_device_operations
-To: Christoph Hellwig <hch@lst.de>
-References: <20200629193947.2705954-1-hch@lst.de>
- <bd1443c0-be37-115b-1110-df6f0e661a50@kernel.dk>
- <6ddbe343-0fc2-58c8-3726-c4ba9952994f@kernel.dk>
- <20200630181928.GA7853@lst.de>
-From: Jens Axboe <axboe@kernel.dk>
-Message-ID: <f173ab34-53c4-0316-f755-240f00cc7075@kernel.dk>
-Date: Tue, 30 Jun 2020 12:21:53 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=U4CE/0puyHhDFR+hvTXHPqKihS4zRWzdZIBdwpMjjPI=;
+ b=c2qL0C/nu1Dzm1iT5P929S03uKZ1tssmhRrR+wibZVw4k58P5SE3EJrOP0EmYyL1Oy
+ We+z8io46slq16Jw5ecGIorrNttsV0AbTse67afCc687wboU9vAKEAqsiJwefkXI57Qq
+ 4k+MBox89W+WzDZsw7IRnDWttlM3PeTOL689CUmlXD2oDnUpNnQhHF+wiXE92SpcuDlS
+ vr0cWgkkllyGy2WSHv24KVcyKydhIal1wqigttiSlUJsud6LG8ZVI7R7hu6P8MTMLVQk
+ oicCbn54OWt1hO6tZxaIkUeTshoH0PKqOsqKUsfO4OuPXzpXi3rQkS1OwuEOnh2L4doW
+ DXsw==
+X-Gm-Message-State: AOAM533YDp260wa1nRKnG5yzsTZ2SMYowpl24h1PlamufeFoWzTl8iJd
+ WhCGpgzG8gpfme7GcCgx0EbXBkaFnv+32nu6Sww=
+X-Google-Smtp-Source: ABdhPJySOGPpCYIMPEpa4NqaFUumrZMT0Y1q+t1uhnyYXYD7Q0zC+lTmDJBQPsveJWJkDKW5dW8oyRZX6fbr/yadk7A=
+X-Received: by 2002:a9d:1c82:: with SMTP id l2mr1714092ota.167.1593542332362; 
+ Tue, 30 Jun 2020 11:38:52 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200630181928.GA7853@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <cover.1593418662.git.viresh.kumar@linaro.org>
+In-Reply-To: <cover.1593418662.git.viresh.kumar@linaro.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 30 Jun 2020 20:38:41 +0200
+Message-ID: <CAJZ5v0jmYDmSRX4UkXGH7HrnrRX-9ZGF6G-Z2LQuVyTWMp8eww@mail.gmail.com>
+Subject: Re: [PATCH V4 0/3] cpufreq: Allow default governor on cmdline and fix
+ locking issues
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,39 +60,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, linux-s390@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-nvdimm@lists.01.org,
- dm-devel@redhat.com, linux-nvme@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
- linux-bcache@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- drbd-dev@lists.linbit.com
+Cc: Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jonathan Corbet <corbet@lwn.net>,
+ Peter Zijlstra <peterz@infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, adharmap@codeaurora.org,
+ Linux PM <linux-pm@vger.kernel.org>, Rafael Wysocki <rjw@rjwysocki.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Quentin Perret <qperret@google.com>,
+ Ben Segall <bsegall@google.com>, Ingo Molnar <mingo@redhat.com>,
+ Mel Gorman <mgorman@suse.de>, "Cc: Android Kernel" <kernel-team@android.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Todd Kjos <tkjos@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/30/20 12:19 PM, Christoph Hellwig wrote:
-> On Tue, Jun 30, 2020 at 09:43:31AM -0600, Jens Axboe wrote:
->> On 6/30/20 7:57 AM, Jens Axboe wrote:
->>> On 6/29/20 1:39 PM, Christoph Hellwig wrote:
->>>> Hi Jens,
->>>>
->>>> this series moves the make_request_fn method into block_device_operations
->>>> with the much more descriptive ->submit_bio name.  It then also gives
->>>> generic_make_request a more descriptive name, and further optimize the
->>>> path to issue to blk-mq, removing the need for the direct_make_request
->>>> bypass.
->>>
->>> Looks good to me, and it's a nice cleanup as well. Applied.
->>
->> Dropped, insta-crashes with dm:
-> 
-> Hmm.  Can you send me what is at "submit_bio_noacct+0x1f6" from gdb?
-> Or your .config?
+On Mon, Jun 29, 2020 at 10:58 PM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>
+> Hi,
+>
+> I have picked Quentin's series over my patch, modified both and tested.
+>
+> V3->V4:
+> - Do __module_get() for cpufreq_default_governor() case as well and get
+>   rid of an extra variable.
+> - Use a single character array, default_governor, instead of two of them.
+>
+> V2->V3:
+> - default_governor is a string now and we don't set it on governor
+>   registration or unregistration anymore.
+> - Fixed locking issues in cpufreq_init_policy().
+>
+> --
+> Viresh
+>
+> Original cover letter fro Quentin:
+>
+> This series enables users of prebuilt kernels (e.g. distro kernels) to
+> specify their CPUfreq governor of choice using the kernel command line,
+> instead of having to wait for the system to fully boot to userspace to
+> switch using the sysfs interface. This is helpful for 2 reasons:
+>   1. users get to choose the governor that runs during the actual boot;
+>   2. it simplifies the userspace boot procedure a bit (one less thing to
+>      worry about).
+>
+> To enable this, the first patch moves all governor init calls to
+> core_initcall, to make sure they are registered by the time the drivers
+> probe. This should be relatively low impact as registering a governor
+> is a simple procedure (it gets added to a llist), and all governors
+> already load at core_initcall anyway when they're set as the default
+> in Kconfig. This also allows to clean-up the governors' init/exit code,
+> and reduces boilerplate.
+>
+> The second patch introduces the new command line parameter, inspired by
+> its cpuidle counterpart. More details can be found in the respective
+> patch headers.
+>
+> Changes in v2:
+>  - added Viresh's ack to patch 01
+>  - moved the assignment of 'default_governor' in patch 02 to the governor
+>    registration path instead of the driver registration (Viresh)
+>
+> Quentin Perret (2):
+>   cpufreq: Register governors at core_initcall
+>   cpufreq: Specify default governor on command line
+>
+> Viresh Kumar (1):
+>   cpufreq: Fix locking issues with governors
+>
+>  .../admin-guide/kernel-parameters.txt         |  5 ++
+>  Documentation/admin-guide/pm/cpufreq.rst      |  6 +-
+>  .../platforms/cell/cpufreq_spudemand.c        | 26 +-----
+>  drivers/cpufreq/cpufreq.c                     | 87 ++++++++++++-------
+>  drivers/cpufreq/cpufreq_conservative.c        | 22 ++---
+>  drivers/cpufreq/cpufreq_ondemand.c            | 24 ++---
+>  drivers/cpufreq/cpufreq_performance.c         | 14 +--
+>  drivers/cpufreq/cpufreq_powersave.c           | 18 +---
+>  drivers/cpufreq/cpufreq_userspace.c           | 18 +---
+>  include/linux/cpufreq.h                       | 14 +++
+>  kernel/sched/cpufreq_schedutil.c              |  6 +-
+>  11 files changed, 100 insertions(+), 140 deletions(-)
+>
+> --
 
-I'd have to apply and compile again. But it's a bad RIP, so I'm guessing
-it's ->submit_bio == NULL. Let me know if you really need it, and I can
-re-generate the OOPS and have the vmlinux too.
-
--- 
-Jens Axboe
-
+All three patches applied as 5.9 material, thanks!
