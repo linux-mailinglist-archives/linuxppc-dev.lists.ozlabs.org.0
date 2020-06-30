@@ -1,90 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DCF20F506
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 14:50:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3382820F5BE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 15:34:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49x42t5WrqzDqVB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 22:50:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49x51P5gwvzDqnW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 23:34:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=uewoGiRO; dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49x40l2s7PzDqTC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 22:48:39 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05UCXQcM132804; Tue, 30 Jun 2020 08:48:34 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32042ekgdw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 08:48:33 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05UCXp2e135823;
- Tue, 30 Jun 2020 08:48:33 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32042ekgdc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 08:48:33 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05UCe7pp011736;
- Tue, 30 Jun 2020 12:48:32 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04dal.us.ibm.com with ESMTP id 31wwr8wwb1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Jun 2020 12:48:32 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05UCmVKK25231770
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Jun 2020 12:48:31 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E9B67805C;
- Tue, 30 Jun 2020 12:48:31 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 72ADC7805F;
- Tue, 30 Jun 2020 12:48:27 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.45.4])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 30 Jun 2020 12:48:26 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH updated] libnvdimm/nvdimm/flush: Allow architecture to
- override the flush barrier
-In-Reply-To: <03cf6d12-544f-154d-18da-a6cd204998ee@linux.ibm.com>
-References: <20200629135722.73558-5-aneesh.kumar@linux.ibm.com>
- <20200629202901.83516-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hgjH4We9Th2oir3NxpJEhFuLnQeCrF8auwNfF+5av8jQ@mail.gmail.com>
- <87imf9gn9w.fsf@linux.ibm.com>
- <CAPcyv4hbECX+7cvX+eT97jvDFUTjQbUEqExZKpV_moDWMFzJ6A@mail.gmail.com>
- <03cf6d12-544f-154d-18da-a6cd204998ee@linux.ibm.com>
-Date: Tue, 30 Jun 2020 18:18:24 +0530
-Message-ID: <871rlwhg87.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49x4xq5R4NzDqfv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 23:31:11 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id h23so15573166qtr.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 06:31:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=GrXmMzhrfpzqEnud4K6uwivgEJVrHc8/GZLkP2z6bGw=;
+ b=uewoGiROevRWGxnXkAJqkTKhBwCX3F01qbv8NnE285I74F2oy/ioesvxP5bb2T6UyH
+ tK4BUrjPZkT3l4FbvbPaBf+QFdlQHVs49OU+NBHS5cw7kQdRDjj8TN+6Gadcxk8Etx8Y
+ mITwoEduSsKLQKCp7zgxCWsrBXbxgsqL/mf3ojHw1E7V9C9dC+UNfLld+VnHi6emvQUr
+ zrJR18Di74bbcPB1YeeSAbCaT63eDCDQfdtc9W1jY8beAKws1KKSVXXJJU+SI/OlHNan
+ 3jNsvQruSMsuQm29+GuAeqJv/nsrMBVdIqQNzT9jhXOL4G4G/0y50BvIVFp5xgTTz6QO
+ ORbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=GrXmMzhrfpzqEnud4K6uwivgEJVrHc8/GZLkP2z6bGw=;
+ b=ZQZZtgn34Sk+e39TpNdnpAzFzzTboqYUVL+H3yM7KSZ9b/w9SKSR3ipWPGlhutZN1/
+ qk5oWylU4bC/nPVnlqWEYniUuN2+2oT9EM8HswUW02GKmn5gYpezw6yGRwjQlJqtWg6p
+ g3JjcD9wotdADLJKdWVyl8XmZuM80qDw4zOpNDO9noxaumGU3hilhvoRXUUyeJfuYTHS
+ hFCvKwNlzb8YKn6OEcnCXHlv5ak2u/aOWZb2HEJBAARU5Rg8j3YCgD/AQE3n+715rDd0
+ jWDgWprZsByY0rzupTgzaH0aTYveAaLcm8wah+z3JlCBBHZz97znsTT8YDj/K1cOEqTo
+ DLjA==
+X-Gm-Message-State: AOAM532jpYO1LwgYasfKEZstdB/LGmkd9T+T1CrqT2u7n5X+MNRmguqM
+ lKCG5SFsVl316tP+nxQIJLyMAamSkC89DLmHXGY=
+X-Google-Smtp-Source: ABdhPJzbw0kxobiFSnBJYHLfEBJRiSlARc+7whjl3exLQbRiQRZccm04A+6k1vp0Q3HVYgqQUwCYSu/yQFTxlTOddSo=
+X-Received: by 2002:ac8:4316:: with SMTP id z22mr20775262qtm.121.1593523867006; 
+ Tue, 30 Jun 2020 06:31:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-06-30_06:2020-06-30,
- 2020-06-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0
- adultscore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
- cotscore=-2147483648 spamscore=0 phishscore=0 mlxscore=0 suspectscore=0
- impostorscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006300090
+References: <1593439115-19282-1-git-send-email-shengjiu.wang@nxp.com>
+ <CAOMZO5DRv4jkHsCkAmwV4BC1tO3O1nNdZgctMcorgK0WCA86tw@mail.gmail.com>
+In-Reply-To: <CAOMZO5DRv4jkHsCkAmwV4BC1tO3O1nNdZgctMcorgK0WCA86tw@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 30 Jun 2020 21:30:55 +0800
+Message-ID: <CAA+D8AO5iGZjJ8MHhG=zfyu+N5JO0PnvcHYY+3BEY0Lz5xyxKg@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_asrc: Add an option to select internal ratio
+ mode
+To: Fabio Estevam <festevam@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,122 +74,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
- Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, Takashi Iwai <tiwai@suse.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Jun 30, 2020 at 8:38 PM Fabio Estevam <festevam@gmail.com> wrote:
+>
+> Hi Shengjiu,
+>
+> On Mon, Jun 29, 2020 at 11:10 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+>
+> > +/**
+>
+> "/**" notation may confuse 'make htmldocs". Since this is a single
+> line comment you could do:
+>
+> /* Select proper clock source for internal ratio mode */
+>
+>
+> > + * Select proper clock source for internal ratio mode
+> > + */
+> > +static int fsl_asrc_select_clk(struct fsl_asrc_priv *asrc_priv,
+> > +                              struct fsl_asrc_pair *pair,
+> > +                              int in_rate,
+> > +                              int out_rate)
+> > +{
+> > +       struct fsl_asrc_pair_priv *pair_priv = pair->private;
+> > +       struct asrc_config *config = pair_priv->config;
+> > +       int rate[2], select_clk[2]; /* Array size 2 means IN and OUT */
+> > +       int clk_rate, clk_index;
+> > +       int i = 0, j = 0;
+> > +       bool clk_sel[2];
+> > +
+> > +       rate[0] = in_rate;
+> > +       rate[1] = out_rate;
+> > +
+> > +       /* Select proper clock source for internal ratio mode */
+> > +       for (j = 0; j < 2; j++) {
+> > +               for (i = 0; i < ASRC_CLK_MAP_LEN; i++) {
+> > +                       clk_index = asrc_priv->clk_map[j][i];
+> > +                       clk_rate = clk_get_rate(asrc_priv->asrck_clk[clk_index]);
+> > +                       if (clk_rate != 0 && (clk_rate / rate[j]) <= 1024 &&
+> > +                           (clk_rate % rate[j]) == 0)
+> > +                               break;
+> > +               }
+> > +
+> > +               if (i == ASRC_CLK_MAP_LEN) {
+> > +                       select_clk[j] = OUTCLK_ASRCK1_CLK;
+> > +                       clk_sel[j] = false;
+> > +               } else {
+> > +                       select_clk[j] = i;
+> > +                       clk_sel[j] = true;
+> > +               }
+> > +       }
+> > +
+> > +       /* Switch to ideal ratio mode if there is no proper clock source */
+> > +       if (!clk_sel[IN] || !clk_sel[OUT])
+> > +               select_clk[IN] = INCLK_NONE;
+> > +
+> > +       config->inclk = select_clk[IN];
+> > +       config->outclk = select_clk[OUT];
+> > +
+> > +       return 0;
+>
+> This new function always returns 0. Should it be converted to 'void'
+> type instead?
+>
+> > +       ret = fsl_asrc_select_clk(asrc_priv, pair,
+> > +                                 config.input_sample_rate,
+> > +                                 config.output_sample_rate);
+> > +       if (ret) {
+> > +               dev_err(dai->dev, "fail to select clock\n");
+>
+> fsl_asrc_select_clk() does not return error, so you could skip the
+> error checking.
 
-Update patch. 
+ok, will update the patch
 
-From 1e6aa6c4182e14ec5d6bf878ae44c3f69ebff745 Mon Sep 17 00:00:00 2001
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Tue, 12 May 2020 20:58:33 +0530
-Subject: [PATCH] libnvdimm/nvdimm/flush: Allow architecture to override the
- flush barrier
-
-Architectures like ppc64 provide persistent memory specific barriers
-that will ensure that all stores for which the modifications are
-written to persistent storage by preceding dcbfps and dcbstps
-instructions have updated persistent storage before any data
-access or data transfer caused by subsequent instructions is initiated.
-This is in addition to the ordering done by wmb()
-
-Update nvdimm core such that architecture can use barriers other than
-wmb to ensure all previous writes are architecturally visible for
-the platform buffer flush.
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- Documentation/memory-barriers.txt | 14 ++++++++++++++
- drivers/md/dm-writecache.c        |  2 +-
- drivers/nvdimm/region_devs.c      |  8 ++++----
- include/asm-generic/barrier.h     | 10 ++++++++++
- 4 files changed, 29 insertions(+), 5 deletions(-)
-
-diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
-index eaabc3134294..340273a6b18e 100644
---- a/Documentation/memory-barriers.txt
-+++ b/Documentation/memory-barriers.txt
-@@ -1935,6 +1935,20 @@ There are some more advanced barrier functions:
-      relaxed I/O accessors and the Documentation/DMA-API.txt file for more
-      information on consistent memory.
- 
-+ (*) pmem_wmb();
-+
-+     This is for use with persistent memory to ensure that stores for which
-+     modifications are written to persistent storage have updated the persistent
-+     storage.
-+
-+     For example, after a non-temporal write to pmem region, we use pmem_wmb()
-+     to ensures that stores have updated the persistent storage. This ensures
-+     that stores have updated persistent storage before any data access or
-+     data transfer caused by subsequent instructions is initiated. This is
-+     in addition to the ordering done by wmb().
-+
-+     For load from persistent memory, existing read memory barriers are sufficient
-+     to ensure read ordering.
- 
- ===============================
- IMPLICIT KERNEL MEMORY BARRIERS
-diff --git a/drivers/md/dm-writecache.c b/drivers/md/dm-writecache.c
-index 74f3c506f084..00534fa4a384 100644
---- a/drivers/md/dm-writecache.c
-+++ b/drivers/md/dm-writecache.c
-@@ -536,7 +536,7 @@ static void ssd_commit_superblock(struct dm_writecache *wc)
- static void writecache_commit_flushed(struct dm_writecache *wc, bool wait_for_ios)
- {
- 	if (WC_MODE_PMEM(wc))
--		wmb();
-+		pmem_wmb();
- 	else
- 		ssd_commit_flushed(wc, wait_for_ios);
- }
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index 4502f9c4708d..2333b290bdcf 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -1206,13 +1206,13 @@ int generic_nvdimm_flush(struct nd_region *nd_region)
- 	idx = this_cpu_add_return(flush_idx, hash_32(current->pid + idx, 8));
- 
- 	/*
--	 * The first wmb() is needed to 'sfence' all previous writes
--	 * such that they are architecturally visible for the platform
--	 * buffer flush.  Note that we've already arranged for pmem
-+	 * The first arch_pmem_flush_barrier() is needed to 'sfence' all
-+	 * previous writes such that they are architecturally visible for
-+	 * the platform buffer flush. Note that we've already arranged for pmem
- 	 * writes to avoid the cache via memcpy_flushcache().  The final
- 	 * wmb() ensures ordering for the NVDIMM flush write.
- 	 */
--	wmb();
-+	pmem_wmb();
- 	for (i = 0; i < nd_region->ndr_mappings; i++)
- 		if (ndrd_get_flush_wpq(ndrd, i, 0))
- 			writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
-diff --git a/include/asm-generic/barrier.h b/include/asm-generic/barrier.h
-index 2eacaf7d62f6..879d68faec1d 100644
---- a/include/asm-generic/barrier.h
-+++ b/include/asm-generic/barrier.h
-@@ -257,5 +257,15 @@ do {									\
- })
- #endif
- 
-+/*
-+ * pmem_barrier() ensures that all stores for which the modification
-+ * are written to persistent storage by preceding instructions have
-+ * updated persistent storage before any data  access or data transfer
-+ * caused by subsequent instructions is initiated.
-+ */
-+#ifndef pmem_wmb
-+#define pmem_wmb()	wmb()
-+#endif
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* __ASM_GENERIC_BARRIER_H */
--- 
-2.26.2
-
+best regards
+wang shengjiu
