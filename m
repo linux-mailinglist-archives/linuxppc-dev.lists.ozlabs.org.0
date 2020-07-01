@@ -2,72 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DD7210346
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 07:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E92CD210348
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 07:25:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xV581LBNzDqly
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 15:23:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xV7D5pzvzDqcj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 15:25:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::1043; helo=mail-pj1-x1043.google.com;
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
  envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=fossix-org.20150623.gappssmtp.com
  header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=JyOIDVWT; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20150623 header.b=DvRcDYTC; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xV3Q5sKGzDqSj
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 15:22:21 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id h22so10535381pjf.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 22:22:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xV3W3F96zDqSm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 15:22:31 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id g67so10221027pgc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 22:22:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=JwzS/oVv9S6l1kcjEkWV8SvZAflWcaMFizOPAE3TmCo=;
- b=JyOIDVWT+r+Rz06fqljLh6v2um5m92lM3YdGmC5N/gy+22d2QyHvK729z1+7mtB5kl
- RMSvo9EVuXd/tjBYp6G/ALcAmx638OzSpIyEefA+7ETAbxlTTrNOxV6fE75QbshONw6x
- vzy4/4gUjGG9xttuf3OdPqucn/3MkUsP1oludjeVXI9SKZEMEMUVPDk3SCSgZDjkqaNW
- YEecOlB9KX1sjsPDP2GRSefOq5OKEcPocLBk+cyBY3UmneXgVXYehGHu3CE+D4vgkMoC
- gJyrD5wIkv0byLjUpgdEEqzMD9e7cvjKOkUt5jFxD6hXObvlAjKy5smG7nMDQ/gaN2V1
- Lrow==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=6y8xaEb9LV894Ycksw6hTuNBMRoBhwg8g7vq7evkHOI=;
+ b=DvRcDYTC+utSLrz1zG50Sw2J6E/hqfYA5l953a1xdVoLqzdF97mvnJ08LgfjWteg0b
+ gxRxrZHfTc8VwDLezY+xwpmD38HWjnIgXcx9wthBG6libmHo3Nh71Sxfj6iELO8/5jBa
+ QDlN4aXgB7NZlBucOa4/HYDqSvAY/C5duh4zsgUrBAEjwuLg9EENyJ12ccXh15WIm7W9
+ LN54iAo9fsisK7qmrYWk/DjwoYt6fHmKHjkAFyk8zWiVdcR5V4Ip7uf/R8Q2Lu1jHIL3
+ Wses30i6O8lOM0F2eCTIkm0kVaX6PZuoOEnr/mXPVHwfDrhTSnViQ9qXcp5DRyK22pB0
+ BlJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=JwzS/oVv9S6l1kcjEkWV8SvZAflWcaMFizOPAE3TmCo=;
- b=Y8SgjhD0M6wvixbbyhjhmhGBHVM7+QIQTCxhrJ7L7WIi4QoCdj8UNUaqthqHr0Wuel
- z1emq8EPfUoxQ60u2szJp3m3pwnycESIH48bKhX69Nd+2nyP+yyj3aV/xPLXX+QkBIrP
- OcgFW7F9iF5u3hOe0djxYqXpGLW2QrGJ0uEVVIbz4B0NskPdQZmANPYmiDc0TkupnQ6X
- fjnj9ohlIEvksFMKQIlUcmFWfWJy5HZbZ5i3U8nJmgRS48qQddlOnPXXrix7skFWi8Vw
- mUohfA5NJ6x4M+9TpHXQBGaqZ5e9kRY8kxH5u8Ykfy1DurV4LBayBi6rdmVjP8AytcLW
- 6gOA==
-X-Gm-Message-State: AOAM531+w8R8uhDy0496uujvtPxZq/dOumN74E7PxDHIBMt9ex3UnV6C
- PygGbMWdXOgYxS9O9CjSAzjd3w==
-X-Google-Smtp-Source: ABdhPJyPvCUSmPdUlq+wotyfFaC/k7YHm0LZFMOAHDDVtTmGsZtEAgEW49GFsVCFCVD+Y8HkRN4cDA==
-X-Received: by 2002:a17:90a:778c:: with SMTP id
- v12mr26412331pjk.34.1593580938600; 
- Tue, 30 Jun 2020 22:22:18 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=6y8xaEb9LV894Ycksw6hTuNBMRoBhwg8g7vq7evkHOI=;
+ b=mLX+zHhVh8y1U74dyVN0VL+jEEyoth4aildw5bfJRrO0fucgmMhb9oFyMuNYq4jYPg
+ 1PWbwpAxECLMmC+conyT0ggQbXTlu9QCHY3DF7OEIPAokJXf/dqjWXh/qM6zmkOuhJT6
+ GG0vJr9w/ha0ioblE9nJtIZKcGpFZGgfywM7vSPbo3ZE3L+e/HhKFduD317yy678L6mg
+ GhGHFHWXIPrz1vExhDKcfta39rlQQQ5ui4IqfC81HEtIgdwEzEWZnk65sk5hxDB7pjNF
+ 6usnHgZDYEVOJTrpvfORqCdk27lU2YaxcXsAYp+uDlb4aAfG9lbkNM9B2W+/nUuOyBki
+ aRdQ==
+X-Gm-Message-State: AOAM533LL/ysybDI1yJJZ4jkqc6bFDdjhPNtbGnaUdTil8/FaI2BWxYm
+ RPXOQB1ho+sysdSi4hGcwwvX2w==
+X-Google-Smtp-Source: ABdhPJxOH8F/609SPn8UR8vF/lH4dcC50iab7INb56JNeZk7w+e1yAkB2EZw1QLxDKictLTeEsyZVA==
+X-Received: by 2002:a63:b255:: with SMTP id t21mr9352045pgo.78.1593580948782; 
+ Tue, 30 Jun 2020 22:22:28 -0700 (PDT)
 Received: from santosiv.in.ibm.com.com ([203.223.190.240])
- by smtp.gmail.com with ESMTPSA id y80sm4375201pfb.165.2020.06.30.22.22.15
+ by smtp.gmail.com with ESMTPSA id y80sm4375201pfb.165.2020.06.30.22.22.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jun 2020 22:22:17 -0700 (PDT)
+ Tue, 30 Jun 2020 22:22:28 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: <stable@vger.kernel.org>,
 	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 1/2] powerpc/mmu_gather: enable RCU_TABLE_FREE even for !SMP
- case
-Date: Wed,  1 Jul 2020 10:51:46 +0530
-Message-Id: <20200701052147.1698510-1-santosh@fossix.org>
+Subject: [PATCH 2/2] mm/mmu_gather: invalidate TLB correctly on batch
+ allocation failure and flush
+Date: Wed,  1 Jul 2020 10:51:47 +0530
+Message-Id: <20200701052147.1698510-2-santosh@fossix.org>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200701052147.1698510-1-santosh@fossix.org>
+References: <20200701052147.1698510-1-santosh@fossix.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,160 +82,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Greg KH <greg@kroah.com>,
- Santosh Sivaraj <santosh@fossix.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>, Santosh Sivaraj <santosh@fossix.org>,
+ Peter Zijlstra <peterz@infradead.org>, Greg KH <greg@kroah.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 12e4d53f3f04e81f9e83d6fc10edc7314ab9f6b9 upstream
+commit 0ed1325967ab5f7a4549a2641c6ebe115f76e228 upstream
 
-The TLB flush optimisation (a46cc7a90f: powerpc/mm/radix: Improve TLB/PWC
-flushes) may result in random memory corruption.
+Architectures for which we have hardware walkers of Linux page table
+should flush TLB on mmu gather batch allocation failures and batch flush.
+Some architectures like POWER supports multiple translation modes (hash
+and radix) and in the case of POWER only radix translation mode needs the
+above TLBI.  This is because for hash translation mode kernel wants to
+avoid this extra flush since there are no hardware walkers of linux page
+table.  With radix translation, the hardware also walks linux page table
+and with that, kernel needs to make sure to TLB invalidate page walk cache
+before page table pages are freed.
 
-On any SMP system, freeing page directories should observe the exact same
-order as normal page freeing:
+More details in commit d86564a2f085 ("mm/tlb, x86/mm: Support invalidating
+TLB caches for RCU_TABLE_FREE")
 
- 1) unhook page/directory
- 2) TLB invalidate
- 3) free page/directory
+The changes to sparc are to make sure we keep the old behavior since we
+are now removing HAVE_RCU_TABLE_INVALIDATE.  The default value for
+tlb_needs_table_invalidate is to always force an invalidate and sparc can
+avoid the table invalidate.  Hence we define tlb_needs_table_invalidate to
+false for sparc architecture.
 
-Without this, any concurrent page-table walk could end up with a
-Use-after-Free.  This is esp.  trivial for anything that has software
-page-table walkers (HAVE_FAST_GUP / software TLB fill) or the hardware
-caches partial page-walks (ie.  caches page directories).
-
-Even on UP this might give issues since mmu_gather is preemptible these
-days.  An interrupt or preempted task accessing user pages might stumble
-into the free page if the hardware caches page directories.
-
-!SMP case is right now broken for radix translation w.r.t page walk
-cache flush.  We can get interrupted in between page table free and
-that would imply we have page walk cache entries pointing to tables
-which got freed already.  Michael said "both our platforms that run on
-Power9 force SMP on in Kconfig, so the !SMP case is unlikely to be a
-problem for anyone in practice, unless they've hacked their kernel to
-build it !SMP."
-
-Link: http://lkml.kernel.org/r/20200116064531.483522-2-aneesh.kumar@linux.ibm.com
+Link: http://lkml.kernel.org/r/20200116064531.483522-3-aneesh.kumar@linux.ibm.com
+Fixes: a46cc7a90fd8 ("powerpc/mm/radix: Improve TLB/PWC flushes")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: <stable@vger.kernel.org> # 4.19
+Cc: <stable@vger.kernel.org>  # 4.19
 Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 ---
- arch/powerpc/Kconfig                         | 2 +-
- arch/powerpc/include/asm/book3s/32/pgalloc.h | 8 --------
- arch/powerpc/include/asm/book3s/64/pgalloc.h | 2 --
- arch/powerpc/include/asm/nohash/32/pgalloc.h | 8 --------
- arch/powerpc/mm/pgtable-book3s64.c           | 7 -------
- 5 files changed, 1 insertion(+), 26 deletions(-)
+ arch/Kconfig                    |  3 ---
+ arch/powerpc/include/asm/tlb.h  | 11 +++++++++++
+ arch/sparc/include/asm/tlb_64.h |  9 +++++++++
+ include/asm-generic/tlb.h       | 15 +++++++++++++++
+ mm/memory.c                     | 16 ++++++++--------
+ 5 files changed, 43 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index f38d153d25861..4863fc0dd945a 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -215,7 +215,7 @@ config PPC
- 	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
--	select HAVE_RCU_TABLE_FREE		if SMP
-+	select HAVE_RCU_TABLE_FREE
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE		if PPC64 && CPU_LITTLE_ENDIAN
- 	select HAVE_SYSCALL_TRACEPOINTS
-diff --git a/arch/powerpc/include/asm/book3s/32/pgalloc.h b/arch/powerpc/include/asm/book3s/32/pgalloc.h
-index 82e44b1a00ae9..79ba3fbb512e3 100644
---- a/arch/powerpc/include/asm/book3s/32/pgalloc.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgalloc.h
-@@ -110,7 +110,6 @@ static inline void pgtable_free(void *table, unsigned index_size)
- #define check_pgt_cache()	do { } while (0)
- #define get_hugepd_cache_index(x)  (x)
+diff --git a/arch/Kconfig b/arch/Kconfig
+index a336548487e69..3abbdb0cea447 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -363,9 +363,6 @@ config HAVE_ARCH_JUMP_LABEL
+ config HAVE_RCU_TABLE_FREE
+ 	bool
  
--#ifdef CONFIG_SMP
- static inline void pgtable_free_tlb(struct mmu_gather *tlb,
- 				    void *table, int shift)
+-config HAVE_RCU_TABLE_INVALIDATE
+-	bool
+-
+ config ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	bool
+ 
+diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
+index f0e571b2dc7c8..63418275f402e 100644
+--- a/arch/powerpc/include/asm/tlb.h
++++ b/arch/powerpc/include/asm/tlb.h
+@@ -30,6 +30,17 @@
+ #define tlb_remove_check_page_size_change tlb_remove_check_page_size_change
+ 
+ extern void tlb_flush(struct mmu_gather *tlb);
++/*
++ * book3s:
++ * Hash does not use the linux page-tables, so we can avoid
++ * the TLB invalidate for page-table freeing, Radix otoh does use the
++ * page-tables and needs the TLBI.
++ *
++ * nohash:
++ * We still do TLB invalidate in the __pte_free_tlb routine before we
++ * add the page table pages to mmu gather table batch.
++ */
++#define tlb_needs_table_invalidate()	radix_enabled()
+ 
+ /* Get the generic bits... */
+ #include <asm-generic/tlb.h>
+diff --git a/arch/sparc/include/asm/tlb_64.h b/arch/sparc/include/asm/tlb_64.h
+index a2f3fa61ee36a..8cb8f3833239a 100644
+--- a/arch/sparc/include/asm/tlb_64.h
++++ b/arch/sparc/include/asm/tlb_64.h
+@@ -28,6 +28,15 @@ void flush_tlb_pending(void);
+ #define __tlb_remove_tlb_entry(tlb, ptep, address) do { } while (0)
+ #define tlb_flush(tlb)	flush_tlb_pending()
+ 
++/*
++ * SPARC64's hardware TLB fill does not use the Linux page-tables
++ * and therefore we don't need a TLBI when freeing page-table pages.
++ */
++
++#ifdef CONFIG_HAVE_RCU_TABLE_FREE
++#define tlb_needs_table_invalidate()	(false)
++#endif
++
+ #include <asm-generic/tlb.h>
+ 
+ #endif /* _SPARC64_TLB_H */
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index b3353e21f3b3e..92dcfd01e0ee4 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -61,8 +61,23 @@ struct mmu_table_batch {
+ extern void tlb_table_flush(struct mmu_gather *tlb);
+ extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
+ 
++/*
++ * This allows an architecture that does not use the linux page-tables for
++ * hardware to skip the TLBI when freeing page tables.
++ */
++#ifndef tlb_needs_table_invalidate
++#define tlb_needs_table_invalidate() (true)
+ #endif
+ 
++#else
++
++#ifdef tlb_needs_table_invalidate
++#error tlb_needs_table_invalidate() requires HAVE_RCU_TABLE_FREE
++#endif
++
++#endif /* CONFIG_HAVE_RCU_TABLE_FREE */
++
++
+ /*
+  * If we can't allocate a page to make a big batch of page pointers
+  * to work on, then just handle a few from the on-stack structure.
+diff --git a/mm/memory.c b/mm/memory.c
+index bbf0cc4066c84..7656714c9b7c4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -325,14 +325,14 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_
+  */
+ static inline void tlb_table_invalidate(struct mmu_gather *tlb)
  {
-@@ -127,13 +126,6 @@ static inline void __tlb_remove_table(void *_table)
- 
- 	pgtable_free(table, shift);
- }
--#else
--static inline void pgtable_free_tlb(struct mmu_gather *tlb,
--				    void *table, int shift)
--{
--	pgtable_free(table, shift);
--}
+-#ifdef CONFIG_HAVE_RCU_TABLE_INVALIDATE
+-	/*
+-	 * Invalidate page-table caches used by hardware walkers. Then we still
+-	 * need to RCU-sched wait while freeing the pages because software
+-	 * walkers can still be in-flight.
+-	 */
+-	tlb_flush_mmu_tlbonly(tlb);
 -#endif
- 
- static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
- 				  unsigned long address)
-diff --git a/arch/powerpc/include/asm/book3s/64/pgalloc.h b/arch/powerpc/include/asm/book3s/64/pgalloc.h
-index f9019b579903a..1013c02142139 100644
---- a/arch/powerpc/include/asm/book3s/64/pgalloc.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgalloc.h
-@@ -47,9 +47,7 @@ extern pmd_t *pmd_fragment_alloc(struct mm_struct *, unsigned long);
- extern void pte_fragment_free(unsigned long *, int);
- extern void pmd_fragment_free(unsigned long *);
- extern void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int shift);
--#ifdef CONFIG_SMP
- extern void __tlb_remove_table(void *_table);
--#endif
- 
- static inline pgd_t *radix__pgd_alloc(struct mm_struct *mm)
- {
-diff --git a/arch/powerpc/include/asm/nohash/32/pgalloc.h b/arch/powerpc/include/asm/nohash/32/pgalloc.h
-index 8825953c225b2..96eed46d56842 100644
---- a/arch/powerpc/include/asm/nohash/32/pgalloc.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgalloc.h
-@@ -111,7 +111,6 @@ static inline void pgtable_free(void *table, unsigned index_size)
- #define check_pgt_cache()	do { } while (0)
- #define get_hugepd_cache_index(x)	(x)
- 
--#ifdef CONFIG_SMP
- static inline void pgtable_free_tlb(struct mmu_gather *tlb,
- 				    void *table, int shift)
- {
-@@ -128,13 +127,6 @@ static inline void __tlb_remove_table(void *_table)
- 
- 	pgtable_free(table, shift);
- }
--#else
--static inline void pgtable_free_tlb(struct mmu_gather *tlb,
--				    void *table, int shift)
--{
--	pgtable_free(table, shift);
--}
--#endif
- 
- static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
- 				  unsigned long address)
-diff --git a/arch/powerpc/mm/pgtable-book3s64.c b/arch/powerpc/mm/pgtable-book3s64.c
-index 297db665d953c..5b4e9fd8990c2 100644
---- a/arch/powerpc/mm/pgtable-book3s64.c
-+++ b/arch/powerpc/mm/pgtable-book3s64.c
-@@ -432,7 +432,6 @@ static inline void pgtable_free(void *table, int index)
- 	}
++	if (tlb_needs_table_invalidate()) {
++		/*
++		 * Invalidate page-table caches used by hardware walkers. Then
++		 * we still need to RCU-sched wait while freeing the pages
++		 * because software walkers can still be in-flight.
++		 */
++		tlb_flush_mmu_tlbonly(tlb);
++	}
  }
  
--#ifdef CONFIG_SMP
- void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int index)
- {
- 	unsigned long pgf = (unsigned long)table;
-@@ -449,12 +448,6 @@ void __tlb_remove_table(void *_table)
- 
- 	return pgtable_free(table, index);
- }
--#else
--void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int index)
--{
--	return pgtable_free(table, index);
--}
--#endif
- 
- #ifdef CONFIG_PROC_FS
- atomic_long_t direct_pages_count[MMU_PAGE_COUNT];
+ static void tlb_remove_table_smp_sync(void *arg)
 -- 
 2.26.2
 
