@@ -2,60 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB14E21069E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 10:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E24E92107DD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 11:18:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xZWf4q73zDqnG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 18:43:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xbHY5m2TzDqSR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 19:18:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.67; helo=mail-ej1-f67.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+501e1de201b53739768b+6156+infradead.org+hch@casper.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com
- [209.85.218.67])
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=QNVRM5re; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xZTr4FgWzDqWQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 18:42:05 +1000 (AEST)
-Received: by mail-ej1-f67.google.com with SMTP id rk21so23669019ejb.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 01:42:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=T9r9uXsGnf7xodRslPWJHaDGCw+J+NI5LCDeJSYGRKk=;
- b=nwLR0Nh1f69uXZLDOiPdsO7kPbQd/YIEQ02FEpWtD58bC0dkcze6lprxdJkgXoUHWp
- PrC34N2UgcX6eFXrQhQBhGBf/G6Vj5ZU92z9/9SBydQRqZKrlgtplfo3zGDOIm2K6vHT
- GsPCCaEIkcjEXMyYteuhPJ9EsdQlgSQgfFKSVvL2sela0E5eJw5b+nS6sVTw3DS4Kqau
- s2AQ98jwAEpr6gZvIkqqRWIXjainm+swQIryPuqmu9rJJaSyoyz6FYEPCClBMXNBRsvJ
- 0Px6HQiu76fM4pF2FT1iitP/21OHx/j8Uqab7TCF0cMIvBa2DVUkLgIJQipk/8K3ofjI
- o0HQ==
-X-Gm-Message-State: AOAM530diUi0blsVZ4Ht3d3+JbbLwdz/N3rpOGdfQqvg7Le9wG4HEcYL
- HyKKs3YRdibqHlmE7kXdpwg=
-X-Google-Smtp-Source: ABdhPJyMVlYQgrE7cLMl4gjP0T0O//dKmjL8Y5w1eARBxVyjaPD/C6BUoqOwtCjSXGmrBV01flxkow==
-X-Received: by 2002:a17:906:abd6:: with SMTP id
- kq22mr22915729ejb.458.1593592922127; 
- Wed, 01 Jul 2020 01:42:02 -0700 (PDT)
-Received: from localhost (ip-37-188-168-3.eurotel.cz. [37.188.168.3])
- by smtp.gmail.com with ESMTPSA id b4sm5387790edx.96.2020.07.01.01.42.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Jul 2020 01:42:01 -0700 (PDT)
-Date: Wed, 1 Jul 2020 10:42:00 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
- offline
-Message-ID: <20200701084200.GN2369@dhcp22.suse.cz>
-References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
- <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xZtb5nlxzDqqY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 19:00:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=NewiNZRcUdxKIYqGEwecM2/TYLTpV46Y4ANOh3AaYeY=; b=QNVRM5re/f5qDCO18Ck/0VAKzH
+ wSFtEOqRYRAr2bGYSrHkREAU4zNfXQfT7bHNCQ642gEiZ/kD2oIal+/v8s+/P9dhOIWy3R0yRohCO
+ 1rlRel/VN1zwvxCbPcrdSCwjnFAJ76DOEFzjdw8gocpKGPw9hTrlqhEXUS6jKUXBJi+aCMwwqAMKe
+ 2f20Vv7rUmHhXPpFgitTXcvrBCtCToFm2VVMUejE0AlRtmsGalyDZbcSj4MUlnywB8y4rCRgOUyXf
+ uHSD35Uugs7TKYbgEQzDDD/u88xlT4LzBhG3iAS0DjZuD4LH5lXU/zccIkKtU6gfC8EQ7iU6739gJ
+ g3f6e3JA==;
+Received: from [2001:4bb8:184:76e3:ea38:596b:3e9e:422a] (helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jqYar-00087G-2E; Wed, 01 Jul 2020 08:59:49 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Jens Axboe <axboe@kernel.dk>
+Subject: rename ->make_request_fn and move it to the block_device_operations v2
+Date: Wed,  1 Jul 2020 10:59:27 +0200
+Message-Id: <20200701085947.3354405-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,159 +61,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, dm-devel@redhat.com,
+ linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linuxppc-dev@lists.ozlabs.org, drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Jens,
 
-On Wed 24-06-20 14:58:46, Srikar Dronamraju wrote:
-> Currently Linux kernel with CONFIG_NUMA on a system with multiple
-> possible nodes, marks node 0 as online at boot.  However in practice,
-> there are systems which have node 0 as memoryless and cpuless.
-> 
-> This can cause numa_balancing to be enabled on systems with only one node
-> with memory and CPUs. The existence of this dummy node which is cpuless and
-> memoryless node can confuse users/scripts looking at output of lscpu /
-> numactl.
-> 
-> By marking, N_ONLINE as NODE_MASK_NONE, lets stop assuming that Node 0 is
-> always online.
-> 
-> v5.8-rc2
->  available: 2 nodes (0,2)
->  node 0 cpus:
->  node 0 size: 0 MB
->  node 0 free: 0 MB
->  node 2 cpus: 0 1 2 3 4 5 6 7
->  node 2 size: 32625 MB
->  node 2 free: 31490 MB
->  node distances:
->  node   0   2
->    0:  10  20
->    2:  20  10
-> 
-> proc and sys files
-> ------------------
->  /sys/devices/system/node/online:            0,2
->  /proc/sys/kernel/numa_balancing:            1
->  /sys/devices/system/node/has_cpu:           2
->  /sys/devices/system/node/has_memory:        2
->  /sys/devices/system/node/has_normal_memory: 2
->  /sys/devices/system/node/possible:          0-31
-> 
-> v5.8-rc2 + patch
-> ------------------
->  available: 1 nodes (2)
->  node 2 cpus: 0 1 2 3 4 5 6 7
->  node 2 size: 32625 MB
->  node 2 free: 31487 MB
->  node distances:
->  node   2
->    2:  10
-> 
-> proc and sys files
-> ------------------
-> /sys/devices/system/node/online:            2
-> /proc/sys/kernel/numa_balancing:            0
-> /sys/devices/system/node/has_cpu:           2
-> /sys/devices/system/node/has_memory:        2
-> /sys/devices/system/node/has_normal_memory: 2
-> /sys/devices/system/node/possible:          0-31
-> 
-> Note: On Powerpc, cpu_to_node of possible but not present cpus would
-> previously return 0. Hence this commit depends on commit ("powerpc/numa: Set
-> numa_node for all possible cpus") and commit ("powerpc/numa: Prefer node id
-> queried from vphn"). Without the 2 commits, Powerpc system might crash.
-> 
-> 1. User space applications like Numactl, lscpu, that parse the sysfs tend to
-> believe there is an extra online node. This tends to confuse users and
-> applications. Other user space applications start believing that system was
-> not able to use all the resources (i.e missing resources) or the system was
-> not setup correctly.
-> 
-> 2. Also existence of dummy node also leads to inconsistent information. The
-> number of online nodes is inconsistent with the information in the
-> device-tree and resource-dump
-> 
-> 3. When the dummy node is present, single node non-Numa systems end up showing
-> up as NUMA systems and numa_balancing gets enabled. This will mean we take
-> the hit from the unnecessary numa hinting faults.
+this series moves the make_request_fn method into block_device_operations
+with the much more descriptive ->submit_bio name.  It then also gives
+generic_make_request a more descriptive name, and further optimize the
+path to issue to blk-mq, removing the need for the direct_make_request
+bypass.
 
-I have to say that I dislike the node online/offline state and directly
-exporting that to the userspace. Users should only care whether the node
-has memory/cpus. Numa nodes can be online without any memory. Just
-offline all the present memory blocks but do not physically hot remove
-them and you are in the same situation. If users are confused by an
-output of tools like numactl -H then those could be updated and hide
-nodes without any memory&cpus.
+Changes since v1:
+ - fix a null pointer dereference when dispatching from bio to request
+   based drivers
+ - clean up a few more comments
 
-The autonuma problem sounds interesting but again this patch doesn't
-really solve the underlying problem because I strongly suspect that the
-problem is still there when a numa node gets all its memory offline as
-mentioned above.
-
-While I completely agree that making node 0 special is wrong, I have
-still hard time to review this very simply looking patch because all the
-numa initialization is so spread around that this might just blow up
-at unexpected places. IIRC we have discussed testing in the previous
-version and David has provided a way to emulate these configurations
-on x86. Did you manage to use those instruction for additional testing
-on other than ppc architectures?
-
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: "Kirill A. Shutemov" <kirill@shutemov.name>
-> Cc: Christopher Lameter <cl@linux.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
-> Changelog v4:->v5:
-> - rebased to v5.8-rc2
-> link v4: http://lore.kernel.org/lkml/20200512132937.19295-1-srikar@linux.vnet.ibm.com/t/#u
-> 
-> Changelog v1:->v2:
-> - Rebased to v5.7-rc3
-> Link v2: https://lore.kernel.org/linuxppc-dev/20200428093836.27190-1-srikar@linux.vnet.ibm.com/t/#u
-> 
->  mm/page_alloc.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 48eb0f1410d4..5187664558e1 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -117,8 +117,10 @@ EXPORT_SYMBOL(latent_entropy);
->   */
->  nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
->  	[N_POSSIBLE] = NODE_MASK_ALL,
-> +#ifdef CONFIG_NUMA
-> +	[N_ONLINE] = NODE_MASK_NONE,
-> +#else
->  	[N_ONLINE] = { { [0] = 1UL } },
-> -#ifndef CONFIG_NUMA
->  	[N_NORMAL_MEMORY] = { { [0] = 1UL } },
->  #ifdef CONFIG_HIGHMEM
->  	[N_HIGH_MEMORY] = { { [0] = 1UL } },
-> -- 
-> 2.18.1
-> 
-
--- 
-Michal Hocko
-SUSE Labs
+Diffstat:
+ Documentation/block/biodoc.rst                    |    2 
+ Documentation/block/writeback_cache_control.rst   |    2 
+ Documentation/fault-injection/fault-injection.rst |    2 
+ Documentation/trace/ftrace.rst                    |    4 
+ arch/m68k/emu/nfblock.c                           |    8 
+ arch/xtensa/platforms/iss/simdisk.c               |    9 
+ block/bio.c                                       |   14 -
+ block/blk-cgroup.c                                |    2 
+ block/blk-core.c                                  |  255 +++++++++-------------
+ block/blk-crypto-fallback.c                       |    2 
+ block/blk-crypto.c                                |    2 
+ block/blk-merge.c                                 |   23 -
+ block/blk-mq.c                                    |   12 -
+ block/blk-throttle.c                              |    4 
+ block/blk.h                                       |    5 
+ block/bounce.c                                    |    2 
+ drivers/block/brd.c                               |    5 
+ drivers/block/drbd/drbd_int.h                     |    8 
+ drivers/block/drbd/drbd_main.c                    |   12 -
+ drivers/block/drbd/drbd_receiver.c                |    2 
+ drivers/block/drbd/drbd_req.c                     |    8 
+ drivers/block/drbd/drbd_worker.c                  |    2 
+ drivers/block/null_blk_main.c                     |   19 +
+ drivers/block/pktcdvd.c                           |   15 -
+ drivers/block/ps3vram.c                           |   20 -
+ drivers/block/rsxx/dev.c                          |   14 -
+ drivers/block/umem.c                              |   11 
+ drivers/block/zram/zram_drv.c                     |   14 -
+ drivers/lightnvm/core.c                           |    8 
+ drivers/lightnvm/pblk-init.c                      |   16 -
+ drivers/lightnvm/pblk-read.c                      |    2 
+ drivers/md/bcache/bcache.h                        |    2 
+ drivers/md/bcache/btree.c                         |    2 
+ drivers/md/bcache/request.c                       |   11 
+ drivers/md/bcache/request.h                       |    4 
+ drivers/md/bcache/super.c                         |   24 +-
+ drivers/md/dm-cache-target.c                      |    6 
+ drivers/md/dm-clone-target.c                      |   10 
+ drivers/md/dm-crypt.c                             |    6 
+ drivers/md/dm-delay.c                             |    2 
+ drivers/md/dm-era-target.c                        |    2 
+ drivers/md/dm-integrity.c                         |    4 
+ drivers/md/dm-mpath.c                             |    2 
+ drivers/md/dm-raid1.c                             |    2 
+ drivers/md/dm-snap-persistent.c                   |    2 
+ drivers/md/dm-snap.c                              |    6 
+ drivers/md/dm-thin.c                              |    4 
+ drivers/md/dm-verity-target.c                     |    2 
+ drivers/md/dm-writecache.c                        |    2 
+ drivers/md/dm-zoned-target.c                      |    2 
+ drivers/md/dm.c                                   |   41 +--
+ drivers/md/md-faulty.c                            |    4 
+ drivers/md/md-linear.c                            |    4 
+ drivers/md/md-multipath.c                         |    4 
+ drivers/md/md.c                                   |    7 
+ drivers/md/raid0.c                                |    8 
+ drivers/md/raid1.c                                |   14 -
+ drivers/md/raid10.c                               |   28 +-
+ drivers/md/raid5.c                                |   10 
+ drivers/nvdimm/blk.c                              |    5 
+ drivers/nvdimm/btt.c                              |    5 
+ drivers/nvdimm/pmem.c                             |    5 
+ drivers/nvme/host/core.c                          |    1 
+ drivers/nvme/host/multipath.c                     |   18 -
+ drivers/nvme/host/nvme.h                          |    1 
+ drivers/s390/block/dcssblk.c                      |   11 
+ drivers/s390/block/xpram.c                        |    8 
+ fs/buffer.c                                       |    5 
+ include/linux/blk-mq.h                            |    2 
+ include/linux/blkdev.h                            |   12 -
+ include/linux/lightnvm.h                          |    3 
+ 71 files changed, 387 insertions(+), 408 deletions(-)
