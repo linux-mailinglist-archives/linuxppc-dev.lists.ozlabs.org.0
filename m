@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EE72107BB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 11:12:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472B721074D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 11:03:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xb8M44r6zDqVk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 19:12:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xZy0298fzDqrq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 19:03:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=CalUSBbj; 
+ header.s=casper.20170209 header.b=hAcTP892; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xZtb0XqpzDqq7
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 19:00:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xZtc2rkgzDqrC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 19:00:08 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=h+zTEp6W7EJyyCCOp/IKx6w4eJjLDZBSmAu+cD30b/M=; b=CalUSBbjHhqEFYSwjrf91po0Aj
- 2mtO3oUaBojx0m2g/BAyWJsMP3tiGWKJQ4vdeXV0J6l5yzw1NPped+yx7kKzY6UfiQmVeJG/2MoTJ
- CYmg79UM86ns6N5mu5W6MnFamxsohRNH0sjaU4F6tJ4fblYSvvNMmfCDS4T+HS7eNQZl2q7hNqIQ5
- kkM2CycE35Ez7Sj+87Mt3qKansh5lZtDVRHPVjrfWPp+4YHr5Zu0gljaa/iu5Zw+3mTQck2BXZSux
- Cr38RtHFy7pPcMkr2BrcGymI1OyaSqMtHmRY1010j+qOHwmiZKbAqO8Z2kyswVFO5T7VkCePn5yyV
- UOFpvqJg==;
+ bh=t6BqkN6Yxn/8o7GWQerTXSXZiT8M8tft7EnhoW3IIiE=; b=hAcTP892NCCovzX2RpSmkixMog
+ HbSnGhzmiEi7CnPF5n2sxdgakapG2OHqqw5H6XKqc+ghl6qYzfNMLDnMaO1cBG69NDChGRSYU+UOH
+ hQeiL/X6/qDLMAZoZHKVKkAKNRq83YhtRRPLSYV7C+e3TxLyt4WbCjNMs1CVf+mzmrs6yA0IRGK/a
+ 68kq/4RTXTzlT/aia1gZYh618fXe7Lfwpp2DSJuejMw4sErcKJz3WQY2UbphgLA0imC8+URm/7LX4
+ 1GYzzIg3zotDYqxd8qFVl4y4yd3DRKsYQunww+RsVy9GpkXOhrWRpW52iSzbH5TZxIHTdqsBscTPV
+ u324UHxA==;
 Received: from [2001:4bb8:184:76e3:ea38:596b:3e9e:422a] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jqYb1-00088r-0A; Wed, 01 Jul 2020 08:59:59 +0000
+ id 1jqYb2-00089D-BO; Wed, 01 Jul 2020 09:00:00 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 07/20] umem: stop using ->queuedata
-Date: Wed,  1 Jul 2020 10:59:34 +0200
-Message-Id: <20200701085947.3354405-8-hch@lst.de>
+Subject: [PATCH 08/20] zram: stop using ->queuedata
+Date: Wed,  1 Jul 2020 10:59:35 +0200
+Message-Id: <20200701085947.3354405-9-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200701085947.3354405-1-hch@lst.de>
 References: <20200701085947.3354405-1-hch@lst.de>
@@ -77,30 +77,29 @@ field.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/block/umem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/zram/zram_drv.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/block/umem.c b/drivers/block/umem.c
-index 1e2aa5ae27963c..5498f1cf36b3fe 100644
---- a/drivers/block/umem.c
-+++ b/drivers/block/umem.c
-@@ -521,7 +521,8 @@ static int mm_check_plugged(struct cardinfo *card)
- 
- static blk_qc_t mm_make_request(struct request_queue *q, struct bio *bio)
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 6e2ad90b17a376..0564e3f384089e 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1586,7 +1586,7 @@ static void __zram_make_request(struct zram *zram, struct bio *bio)
+  */
+ static blk_qc_t zram_make_request(struct request_queue *queue, struct bio *bio)
  {
--	struct cardinfo *card = q->queuedata;
-+	struct cardinfo *card = bio->bi_disk->private_data;
-+
- 	pr_debug("mm_make_request %llu %u\n",
- 		 (unsigned long long)bio->bi_iter.bi_sector,
- 		 bio->bi_iter.bi_size);
-@@ -888,7 +889,6 @@ static int mm_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	card->queue = blk_alloc_queue(mm_make_request, NUMA_NO_NODE);
- 	if (!card->queue)
- 		goto failed_alloc;
--	card->queue->queuedata = card;
+-	struct zram *zram = queue->queuedata;
++	struct zram *zram = bio->bi_disk->private_data;
  
- 	tasklet_init(&card->tasklet, process_page, (unsigned long)card);
+ 	if (!valid_io_request(zram, bio->bi_iter.bi_sector,
+ 					bio->bi_iter.bi_size)) {
+@@ -1912,7 +1912,6 @@ static int zram_add(void)
+ 	zram->disk->first_minor = device_id;
+ 	zram->disk->fops = &zram_devops;
+ 	zram->disk->queue = queue;
+-	zram->disk->queue->queuedata = zram;
+ 	zram->disk->private_data = zram;
+ 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
  
 -- 
 2.26.2
