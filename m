@@ -2,156 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE8D2105DF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 10:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B162105E9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 10:11:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xYkN6s64zDqcx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 18:07:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xYp06fCgzDqc3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 18:11:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=qF6D3W0J; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xYfs1KMczDqbv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 18:04:51 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id j19so4450145pgm.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 01:04:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=ymhgZtaUIrmVtHlQWVVd0pisUV4Sdjq2wDsGEJHNXrk=;
- b=qF6D3W0JWMmr2qztabi9w7e/wOeol+S2DyjKS6/y7Y4CETJCsOWH7jUDn5XhMdtDgX
- iOWMlimcJhrR/9Gmf7gER002203RuG8z2SkCqq6gXQCnzdebl1ypzjrldAP9108dzgVd
- 1SQZWQrK8L+F5NAGgrYVViTh3p0xLDkBcKc02oo12y+pvX1uQgeLunZS195ocoLIdG6H
- r4ZlVAcIzX5GVgb4etTqaw2FfPf+6u0s1jaULuq5vwINsm7bA7iOa7R+tPILIcLTXD6Q
- QIjsTXWwnzLCoA7FakuFKurL/JauAlZTVAbomFoZpwQVK8gs9fw3M2WE4Asd4GF0S9at
- oVCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=ymhgZtaUIrmVtHlQWVVd0pisUV4Sdjq2wDsGEJHNXrk=;
- b=WGkZ11k9iC6axygh1XmGx3f6ms0gFWuqWaxBrZIqre6vdU5OgiDMQSrwnanwGxN/H0
- GvClRrcElG4t2nKVczG3CShHChw/NNDNN/Y9eDNL7byMh72KlblX+cH+8XPXdUhWQ3/+
- s+mQYwDP2KP4pbNyMmJpFl+e+PDDHdV029VrN1Tx6F7rxsRZZNoqnyZiUIhJbVhcFAAj
- 8jcxvkBL310y5B0WTcpXsOSESoITpqczs7VIx6RKIU/n3rszC2rjxJRa5EI48Pjg7YjP
- t1Zn3cWSt5ZIBYJ7EfmXrOxz0r0H4IOIX1vL88jLr8BtTJUQTrXMu3MWHPwMsXyrhciA
- ze9w==
-X-Gm-Message-State: AOAM530z/COeelTF5zzhTiOOsAyPkBf4SWeV/X9OfgJE2VmyrG+s/BC+
- hJLuAOoDd3VJpR1BuJmUE/gpvQ==
-X-Google-Smtp-Source: ABdhPJywD3WCB84ZFmS/FulfmNmp759Tc1PPYo+lFYLH7VpN/zNgL/cJauraY0g5jW99Bs5d4YQG8Q==
-X-Received: by 2002:a63:5644:: with SMTP id g4mr17997117pgm.381.1593590687754; 
- Wed, 01 Jul 2020 01:04:47 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id j17sm4629523pgn.87.2020.07.01.01.04.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Jul 2020 01:04:46 -0700 (PDT)
-Subject: Re: [PATCH v2 6/6] powerpc/pseries/iommu: Avoid errors when DDW
- starts at 0x00
-To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
-References: <20200624062411.367796-1-leobras.c@gmail.com>
- <20200624062411.367796-7-leobras.c@gmail.com>
- <1069466fa3a373e92d9db18957674b1d9c6e9cf2.camel@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <76047748-9ddd-5ba3-fe4d-85c7c08bd521@ozlabs.ru>
-Date: Wed, 1 Jul 2020 18:04:41 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xYkB52gZzDqcX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 18:07:44 +1000 (AEST)
+IronPort-SDR: RBHQFWVS5xRzI7j/96Fjb0pb/eppTe/VGfsh4b6Zx4c01edvFRd8G8xB7J6nMdRkQ/OGZsyyR0
+ LHAVfGyhzn6w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9668"; a="126598505"
+X-IronPort-AV: E=Sophos;i="5.75,299,1589266800"; d="scan'208";a="126598505"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2020 01:07:41 -0700
+IronPort-SDR: UP356pxWzHogu5hlzDMFliE+HsZSP/7J/mHy+1XjqG7ZnoXr0iofKpOZniziC0QqUzNOF+mTRf
+ YbguJIkbXIKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,299,1589266800"; d="scan'208";a="265336556"
+Received: from lkp-server01.sh.intel.com (HELO 28879958b202) ([10.239.97.150])
+ by fmsmga007.fm.intel.com with ESMTP; 01 Jul 2020 01:07:39 -0700
+Received: from kbuild by 28879958b202 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jqXmN-0002mE-AA; Wed, 01 Jul 2020 08:07:39 +0000
+Date: Wed, 01 Jul 2020 16:07:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 19ab500edb5d6020010caba48ce3b4ce4182ab63
+Message-ID: <5efc4440.2pCT1L1Cnk5Vrvhe%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <1069466fa3a373e92d9db18957674b1d9c6e9cf2.camel@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -164,40 +58,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: 19ab500edb5d6020010caba48ce3b4ce4182ab63  powerpc/mm/pkeys: Make pkey access check work on execute_only_key
 
+elapsed time: 2625m
 
-On 27/06/2020 03:46, Leonardo Bras wrote:
-> On Wed, 2020-06-24 at 03:24 -0300, Leonardo Bras wrote:
->> As of today, enable_ddw() will return a non-null DMA address if the
->> created DDW maps the whole partition. If the address is valid,
->> iommu_bypass_supported_pSeriesLP() will consider iommu bypass enabled.
->>
->> This can cause some trouble if the DDW happens to start at 0x00.
->>
->> Instead if checking if the address is non-null, check directly if
->> the DDW maps the whole partition, so it can bypass iommu.
->>
->> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> 
-> This patch has a bug in it. I will rework it soon.
+configs tested: 163
+configs skipped: 11
 
-I'd rather suggest this:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20180725095032.2196-2-aik@ozlabs.ru/
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+mips                         tb0287_defconfig
+powerpc                  mpc866_ads_defconfig
+mips                      pistachio_defconfig
+sparc64                          allyesconfig
+arm                         s3c6400_defconfig
+mips                      malta_kvm_defconfig
+powerpc                    mvme5100_defconfig
+arm                         s3c2410_defconfig
+microblaze                          defconfig
+mips                           mtx1_defconfig
+arm                         orion5x_defconfig
+mips                        bcm63xx_defconfig
+riscv                    nommu_k210_defconfig
+i386                             alldefconfig
+mips                        vocore2_defconfig
+um                             i386_defconfig
+mips                        maltaup_defconfig
+m68k                          multi_defconfig
+m68k                                defconfig
+sh                      rts7751r2d1_defconfig
+arm                           viper_defconfig
+powerpc                      ppc44x_defconfig
+sh                           se7724_defconfig
+mips                      pic32mzda_defconfig
+arm                            pleb_defconfig
+arm                             ezx_defconfig
+xtensa                       common_defconfig
+mips                       capcella_defconfig
+arm                         lpc32xx_defconfig
+arm                       versatile_defconfig
+xtensa                          iss_defconfig
+sh                        sh7785lcr_defconfig
+mips                   sb1250_swarm_defconfig
+mips                           gcw0_defconfig
+mips                     decstation_defconfig
+sparc                            allyesconfig
+arc                        nsim_700_defconfig
+mips                       rbtx49xx_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+arc                              allyesconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20200630
+i386                 randconfig-a003-20200630
+i386                 randconfig-a002-20200630
+i386                 randconfig-a004-20200630
+i386                 randconfig-a005-20200630
+i386                 randconfig-a006-20200630
+i386                 randconfig-a002-20200701
+i386                 randconfig-a001-20200701
+i386                 randconfig-a006-20200701
+i386                 randconfig-a005-20200701
+i386                 randconfig-a004-20200701
+i386                 randconfig-a003-20200701
+i386                 randconfig-a006-20200629
+i386                 randconfig-a002-20200629
+i386                 randconfig-a003-20200629
+i386                 randconfig-a001-20200629
+i386                 randconfig-a005-20200629
+i386                 randconfig-a004-20200629
+x86_64               randconfig-a011-20200629
+x86_64               randconfig-a012-20200629
+x86_64               randconfig-a013-20200629
+x86_64               randconfig-a014-20200629
+x86_64               randconfig-a015-20200629
+x86_64               randconfig-a016-20200629
+x86_64               randconfig-a011-20200630
+x86_64               randconfig-a014-20200630
+x86_64               randconfig-a013-20200630
+x86_64               randconfig-a015-20200630
+x86_64               randconfig-a016-20200630
+x86_64               randconfig-a012-20200630
+i386                 randconfig-a011-20200630
+i386                 randconfig-a016-20200630
+i386                 randconfig-a015-20200630
+i386                 randconfig-a012-20200630
+i386                 randconfig-a014-20200630
+i386                 randconfig-a013-20200630
+i386                 randconfig-a013-20200629
+i386                 randconfig-a016-20200629
+i386                 randconfig-a014-20200629
+i386                 randconfig-a012-20200629
+i386                 randconfig-a015-20200629
+i386                 randconfig-a011-20200629
+i386                 randconfig-a011-20200701
+i386                 randconfig-a015-20200701
+i386                 randconfig-a014-20200701
+i386                 randconfig-a016-20200701
+i386                 randconfig-a012-20200701
+i386                 randconfig-a013-20200701
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                                  defconfig
+um                               allyesconfig
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
 
-Although it does not look like you are actually going to have windows
-starting at 0. Thanks,
-
-> Please keep reviewing patches 1-5.
-> 
-> Best regards,
-> Leonardo
-> 
-
--- 
-Alexey
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
