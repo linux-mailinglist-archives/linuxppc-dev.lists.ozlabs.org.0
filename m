@@ -1,117 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A2421132B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 21:02:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3965C2113E3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 21:50:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xrF03cPKzDqsN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 05:01:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xsJl34PDzDqvH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 05:50:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xrC96wjqzDqSD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 05:00:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f41;
+ helo=mail-qv1-xf41.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=eTIZ8mQ5; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49xrC93MxVz9CvX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 05:00:21 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49xrC92pfkz9sDX; Thu,  2 Jul 2020 05:00:21 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=infinera.com (client-ip=40.107.220.86;
- helo=nam11-co1-obe.outbound.protection.outlook.com;
- envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=eTIZ8mQ5; 
- dkim-atps=neutral
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2086.outbound.protection.outlook.com [40.107.220.86])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=hAB+GTQQ; dkim-atps=neutral
+Received: from mail-qv1-xf41.google.com (mail-qv1-xf41.google.com
+ [IPv6:2607:f8b0:4864:20::f41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49xrC76Jwgz9sR4
- for <linuxppc-dev@ozlabs.org>; Thu,  2 Jul 2020 05:00:18 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YUGfOuruM7kstgLtCpHp5PjDeL0OsVxXLEEGuLs/B0k8LO7gMH1JJtK4mR1H6hsh3dDoIzoNMFuDa53xqAp/vrD0xhHrbddaNmg8XmwIdapZfiHVF+1JA2+I6noWoxWx4QF7OXLUKRCzmfCaFHGubCb1yEeL9ayFZRn/qmA5iP0iOPgsNG3t5ERkBF3xFnXC4v8CgIW2unl1z7ZEgxlEF7tNyhzXJ1LDKZQPzt6h6EYY7RgDuHMyfOT9RtGAKy1QEScKmp+hT1ryRZgIrIgdjSsC+J0zgkXugImnKV02I6AcOEiBwSrDeftukpX0OZzBWBZhsrXU6DKqG6HK0oD0hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EiONRZI5sfs1eT/kR6O3LaapfgxolQOoaklFmzqeJvE=;
- b=ftNAyDJwdIFv10NIczr7xxuDitpMgJPidUYJrKn1YyCyv0PIEO9y+YxtyuFdlam9nK2JQJLI5Lh9GgUCegSgq3xWXtnv90vPlGbf94GTtgc45+rNUTrea9cE5I70lxt8QrDWWJ2GFUJSRyPj9w9OdstFMwC4BsyeTbXscg3AYp1NNECiEDXITmvvDu2vLRBPf8gqpPPkHmHNU9wGEBvEKnTzh+9W+aEaVafYHL8znZVSDgfyHAYUNYchPfh+Skbqjw2z4fTWb04Gk3VsY09sH780offw0hSzcL9vHhXStNMumbrqgOFAP2TZbWyooLsvZog84U9TrkLEG5H1NRkJ4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
- dkim=pass header.d=infinera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EiONRZI5sfs1eT/kR6O3LaapfgxolQOoaklFmzqeJvE=;
- b=eTIZ8mQ5a8xvS6siZNbdaC4JmN4G9ktAfFW3RqC/x54DV7NOclCTjXPYpYGXSNk+/qb4gcApgzcAdH2MB62aew0M8EFAv+LuGjWPgWyBlgjXd8KVLKgR4q5hO4K7ATGYlfo9Kg6+l/isit4PuuEgYmBgGwC5wJ9xqFoAKSygLqk=
-Received: from MWHPR1001MB2190.namprd10.prod.outlook.com
- (2603:10b6:301:2e::20) by MWHPR1001MB2189.namprd10.prod.outlook.com
- (2603:10b6:301:36::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.21; Wed, 1 Jul
- 2020 19:00:11 +0000
-Received: from MWHPR1001MB2190.namprd10.prod.outlook.com
- ([fe80::b439:ba0:98d6:c2d1]) by MWHPR1001MB2190.namprd10.prod.outlook.com
- ([fe80::b439:ba0:98d6:c2d1%5]) with mapi id 15.20.3153.023; Wed, 1 Jul 2020
- 19:00:11 +0000
-From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-To: "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
-Subject: Memory:  880608K/983040K  .... 36896K reserved ?
-Thread-Topic: Memory:  880608K/983040K  .... 36896K reserved ?
-Thread-Index: AQHWT9nYdrAV3GgFb0iej/lsd9LC/g==
-Date: Wed, 1 Jul 2020 19:00:10 +0000
-Message-ID: <a598dcaea9e62379c74d1d78083d92898373c4de.camel@infinera.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.36.3 
-authentication-results: ozlabs.org; dkim=none (message not signed)
- header.d=none;ozlabs.org; dmarc=none action=none header.from=infinera.com;
-x-originating-ip: [88.131.87.201]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 707ad7e5-568a-4bbb-8cc9-08d81df0fb49
-x-ms-traffictypediagnostic: MWHPR1001MB2189:
-x-microsoft-antispam-prvs: <MWHPR1001MB2189C5B98473EFFD24669655F46C0@MWHPR1001MB2189.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5236;
-x-forefront-prvs: 04519BA941
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: l8oKcF463vJh3Z31SGzid79uepnyyIlgRUpd9niu6bQkX+LJzRQvLAVTW7e70LihioFZKkVdlFgP+0vJLkALXoQDeK1tb39Oxch3PH8BfvpQVN5Fs7wo839zzrS5IMdcBS0bjm0OOI1Ol+Ni0mgKaEbu5d0ma1XnLREuRHZ8wYn+OqHYYfiWJwNFNlEL68NR6hXBRpdQ2P2FwMQJl4830GssihhC4CSouzucNV9Sj+0Tx0cvdkjpS88nvGcTt27Yx6DVPRS6o9ysNKQbN/4xPpAmbk3kBEP2k+EwmY4DY5rm7hElTl93t/8o/jf8O5MPRZVGDszJ2PPExWhItVUe4A==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MWHPR1001MB2190.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFTY:;
- SFS:(4636009)(396003)(136003)(376002)(39860400002)(346002)(366004)(2616005)(8676002)(8936002)(64756008)(66556008)(66476007)(66946007)(558084003)(76116006)(91956017)(66446008)(6506007)(478600001)(316002)(6916009)(86362001)(26005)(5660300002)(6512007)(6486002)(71200400001)(186003)(2906002)(36756003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: paTh4i+H+kcn/8kQ/b/MLob6CWFT0efxsHBM0oh4vw5MdYp3JUYBs5xHwSTiEfUSwmzD5VtHUIQRxOkO2KT8fCZzUOKXNnjXVPJPwMQoTKrWYQ+u5gFCbRP8XiRS87LfKKt82dCYHiMPgr9WD3/8XiYA6LRm18IZr3cy1Oi9YyG1O1DswE2wDjnzveJNlKB3kqW6e4zUMYSsaORauz5PZDnFRSwjFu2kPhkRcIUHi7ZmTcrW8SHuZAqdMbCiMaXsT51gcoQVytDHl8EcdVM27r4JK71mV3CBixXYd+859w/tOr6it/uWFNcQCPoZgiWDP4FAi22SvksNiuUC4FY9zB4mKvisIQgHurRvCUeIK3i7M3YlqFC6RsS900BZQRROAecbeLJ92Tlko5epQCWH+uz68aaBMHFgEul7M7pWeDCbDpU9ZM8dWxdPwJsKYz8m3YB3f6j3T0WRb3yMaHzBlz8p1zqskA4kw3M3d0jdDtQ=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <416627BA00DFE74183AAF609AF8890CB@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xsH136CSzDqP1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 05:48:43 +1000 (AEST)
+Received: by mail-qv1-xf41.google.com with SMTP id m8so7369647qvk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 12:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=F+zOFzzQGW/IWyDrMNDLzgC5H7MP7fwCTcrqfKVNTg0=;
+ b=hAB+GTQQpCETbZHenGH6duyUbioG5Ol2dwra3/38/gHPTbyAbAV7nUnZbVUx5fMvho
+ h8+oMgHOyI99Z/nhFr/rJ0LNqmcphzEyvGGQ2kiTpp0sbRbEOxVgqSf5o3eWsG0nhNxW
+ EpJTGxVXVYg+bbLDPcpoVC1SNXTDWD4LXyx6x5mVWXZAUS/ANs6NuJKPMel22+yl8GL2
+ q4vewjCVRa0u0fdX+Bnb6PHbR1pXGnanPvI9/a20/NtsLfrZIVaDTcEXq87BpzUFmYIX
+ 5thhjuQHDEgz+CmG3bKc9gsPmjUg+a/gzqZM/ki0NiEnxfBsKyQzWt122XUS1rfpsZql
+ 0/9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=F+zOFzzQGW/IWyDrMNDLzgC5H7MP7fwCTcrqfKVNTg0=;
+ b=n4kS2pGBjZNxVp6yPURVR1pWQR1kjeWcWNGXIleuIlIsq8j0/H6KyglnpZhtdw1qKm
+ ebpNrcZLLmCKLyBIz0kAxIaLW2L+UdFZDDHyU+j3aYSBfH4RhnQExkls1wF9kPcbZcVJ
+ H76xhJ6fZ0sbOVVyUjiB/0d2Rv1ebPRwpmylVVnanAxnR4xvn8NP2TkVcgxbWdVPGyMr
+ XvBTFJYK7ZfDIpEBT+ygVl6lPKw2wDs7VpjXIrJ8IeYiHQBgqZISzRIWJdKZj+eikk54
+ s3QicpaI77OU++xxBmCNwmOw1tDUi0LklNnf/pAHXZT4S8dgnyaiVHpuIm80UkgJ0D+1
+ 5GLA==
+X-Gm-Message-State: AOAM532ABjt3LhMVvQG0dgsC8w6pT5Mdnl2kB6JWK8i2Sz0rjajAityO
+ +XZFrjHK/62BfBN6liJBZJQ=
+X-Google-Smtp-Source: ABdhPJzU5xygkbKHsZhoN0wv1tTdnJ1PHu+l27Lo6dgQ/TjIwGafcKr1iso828lWlwcx1YtbiPZ+lg==
+X-Received: by 2002:a05:6214:7a5:: with SMTP id
+ v5mr25679250qvz.22.1593632920004; 
+ Wed, 01 Jul 2020 12:48:40 -0700 (PDT)
+Received: from LeoBras (200-236-245-17.dynamic.desktop.com.br.
+ [200.236.245.17])
+ by smtp.gmail.com with ESMTPSA id w77sm6653841qka.34.2020.07.01.12.48.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Jul 2020 12:48:39 -0700 (PDT)
+Message-ID: <42e7174bf60227caee4d1c353235e42b90305632.camel@gmail.com>
+Subject: Re: [PATCH v2 4/6] powerpc/pseries/iommu: Remove default DMA window
+ before creating DDW
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Thiago Jung Bauermann
+ <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
+Date: Wed, 01 Jul 2020 16:48:33 -0300
+In-Reply-To: <e00340a3-1070-a787-5acc-0bfc37f73dff@ozlabs.ru>
+References: <20200624062411.367796-1-leobras.c@gmail.com>
+ <20200624062411.367796-5-leobras.c@gmail.com>
+ <e00340a3-1070-a787-5acc-0bfc37f73dff@ozlabs.ru>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-X-OriginatorOrg: infinera.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2190.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 707ad7e5-568a-4bbb-8cc9-08d81df0fb49
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2020 19:00:11.6820 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sHfsev2qDJRiZv89vbHYaMs5Mfo2CPj0QUO4UsX9U/E9YqiW8fy9rNIm1cWP9TVeLmR0jUQBFNMYbJDLsdWhbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR1001MB2189
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,12 +89,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SSBjYW5ub3QgZmlndXJlIG91dCBob3cgdGhlIHh4eEsgcmVzZXJ2ZWQgaXRlbSB3b3JrcyBpbjoN
-CiBNZW1vcnk6IDg4MDYwOEsvOTgzMDQwSyBhdmFpbGFibGUgKDk1MzJLIGtlcm5lbCBjb2RlLCAx
-MTA0SyByd2RhdGEsIDMzNDhLIHJvZGF0YSwgMTA4OEsgaW5pdCwgMTIwMUsgYnNzLCAzNjg5Nksg
-cmVzZXJ2ZWQgLi4uDQoNCklzIHRoZXJlIGEgd2F5IHRvIHR1bmUobG93ZXIgaXQpIHRoaXMgbWVt
-b3J5Pw0KDQogSm9ja2UNCg==
+On Wed, 2020-07-01 at 18:17 +1000, Alexey Kardashevskiy wrote:
+> 
+> On 24/06/2020 16:24, Leonardo Bras wrote:
+> > On LoPAR "DMA Window Manipulation Calls", it's recommended to remove the
+> > default DMA window for the device, before attempting to configure a DDW,
+> > in order to make the maximum resources available for the next DDW to be
+> > created.
+> > 
+> > This is a requirement for some devices to use DDW, given they only
+> > allow one DMA window.
+> 
+> Devices never know about these windows, it is purely PHB's side of
+> things. A device can access any address on the bus, the bus can generate
+> an exception if there is no window behind the address OR some other
+> device's MMIO. We could actually create a second window in addition to
+> the first one and allocate bus addresses from both, we just simplifying
+> this by merging two separate non-adjacent windows into one.
+
+That's interesting, I was not aware of this. 
+I will try to improve this commit message with this info.
+Thanks for sharing!
+
+> > > > If setting up a new DDW fails anywhere after the removal of this
+> > default DMA window, it's needed to restore the default DMA window.
+> > For this, an implementation of ibm,reset-pe-dma-windows rtas call is
+> > needed:
+> > 
+> > Platforms supporting the DDW option starting with LoPAR level 2.7 implement
+> > ibm,ddw-extensions. The first extension available (index 2) carries the
+> > token for ibm,reset-pe-dma-windows rtas call, which is used to restore
+> > the default DMA window for a device, if it has been deleted.
+> > 
+> > It does so by resetting the TCE table allocation for the PE to it's
+> > boot time value, available in "ibm,dma-window" device tree node.
+> > 
+> > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> > ---
+> >  arch/powerpc/platforms/pseries/iommu.c | 70 ++++++++++++++++++++++----
+> >  1 file changed, 61 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> > index a8840d9e1c35..4fcf00016fb1 100644
+> > --- a/arch/powerpc/platforms/pseries/iommu.c
+> > +++ b/arch/powerpc/platforms/pseries/iommu.c
+> > @@ -1029,6 +1029,39 @@ static phys_addr_t ddw_memory_hotplug_max(void)
+> >  	return max_addr;
+> >  }
+> >  
+> > +/*
+> > + * Platforms supporting the DDW option starting with LoPAR level 2.7 implement
+> > + * ibm,ddw-extensions, which carries the rtas token for
+> > + * ibm,reset-pe-dma-windows.
+> > + * That rtas-call can be used to restore the default DMA window for the device.
+> > + */
+> > +static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+> > +{
+> > +	int ret;
+> > +	u32 cfg_addr, ddw_ext[DDW_EXT_RESET_DMA_WIN + 1];
+> > +	u64 buid;
+> > +	struct device_node *dn;
+> > +	struct pci_dn *pdn;
+> > +
+> > +	ret = of_property_read_u32_array(par_dn, "ibm,ddw-extensions",
+> > +					 &ddw_ext[0], DDW_EXT_RESET_DMA_WIN + 1);
+> > +	if (ret)
+> > +		return;
+> > +
+> > +	dn = pci_device_to_OF_node(dev);
+> > +	pdn = PCI_DN(dn);
+> > +	buid = pdn->phb->buid;
+> > +	cfg_addr = ((pdn->busno << 16) | (pdn->devfn << 8));
+> > +
+> > +	ret = rtas_call(ddw_ext[DDW_EXT_RESET_DMA_WIN], 3, 1, NULL, cfg_addr,
+> > +			BUID_HI(buid), BUID_LO(buid));
+> > +	if (ret)
+> > +		dev_info(&dev->dev,
+> > +			 "ibm,reset-pe-dma-windows(%x) %x %x %x returned %d ",
+> > +			 ddw_ext[1], cfg_addr, BUID_HI(buid), BUID_LO(buid),
+> 
+> s/ddw_ext[1]/ddw_ext[DDW_EXT_RESET_DMA_WIN]/
+
+Good catch! I missed this one.
+
+> 
+> 
+> > +			 ret);
+> > +}
+> > +
+> >  /*
+> >   * If the PE supports dynamic dma windows, and there is space for a table
+> >   * that can map all pages in a linear offset, then setup such a table,
+> > @@ -1049,8 +1082,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+> >  	u64 dma_addr, max_addr;
+> >  	struct device_node *dn;
+> >  	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+> > +
+> 
+> Unrelated new empty line.
+
+Fixed!
+
+> 
+> 
+> >  	struct direct_window *window;
+> > -	struct property *win64;
+> > +	struct property *win64, *default_win = NULL, *ddw_ext = NULL;
+> >  	struct dynamic_dma_window_prop *ddwprop;
+> >  	struct failed_ddw_pdn *fpdn;
+> >  
+> > @@ -1085,7 +1119,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+> >  	if (ret)
+> >  		goto out_failed;
+> >  
+> > -       /*
+> > +	/*
+> >  	 * Query if there is a second window of size to map the
+> >  	 * whole partition.  Query returns number of windows, largest
+> >  	 * block assigned to PE (partition endpoint), and two bitmasks
+> > @@ -1096,15 +1130,31 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+> >  	if (ret != 0)
+> >  		goto out_failed;
+> >  
+> > +	/*
+> > +	 * If there is no window available, remove the default DMA window,
+> > +	 * if it's present. This will make all the resources available to the
+> > +	 * new DDW window.
+> > +	 * If anything fails after this, we need to restore it, so also check
+> > +	 * for extensions presence.
+> > +	 */
+> >  	if (query.windows_available == 0) {
+> 
+> Does phyp really always advertise 0 windows for these VFs? What is in
+> the largest_available_block when windows_available==0?
+
+For this VF, it always advertise 0 windows before removing the default
+DMA window. The largest available block size is the same as after the
+removal (256GB). The only value that changes after removal is the
+number of available windows. Here some debug prints:
+
+[    3.473149] mlx5_core 4005:01:00.0: ibm,query-pe-dma-windows(53)
+10000 8000000 29004005 returned 0
+[    3.473162] mlx5_core 4005:01:00.0: windows_available = 0,
+largest_block = 400000, page_size = 3, migration_capable = 3
+[    3.473332] mlx5_core 4005:01:00.0: ibm,query-pe-dma-windows(53)
+10000 8000000 29004005 returned 0
+[    3.473345] mlx5_core 4005:01:00.0: windows_available = 1,
+largest_block = 400000, page_size = 3, migration_capable = 3
+
+> 
+> 
+> > -		/*
+> > -		 * no additional windows are available for this device.
+> > -		 * We might be able to reallocate the existing window,
+> > -		 * trading in for a larger page size.
+> > -		 */
+> > -		dev_dbg(&dev->dev, "no free dynamic windows");
+> > -		goto out_failed;
+> > +		default_win = of_find_property(pdn, "ibm,dma-window", NULL);
+> > +		ddw_ext = of_find_property(pdn, "ibm,ddw-extensions", NULL);
+> > +		if (default_win && ddw_ext)
+> > +			remove_dma_window(pdn, ddw_avail, default_win);
+> > +
+> > +		/* Query again, to check if the window is available */
+> > +		ret = query_ddw(dev, ddw_avail, &query, pdn);
+> > +		if (ret != 0)
+> > +			goto out_failed;
+> > +
+> > +		if (query.windows_available == 0) {
+> > +			/* no windows are available for this device. */
+> > +			dev_dbg(&dev->dev, "no free dynamic windows");
+> > +			goto out_failed;
+> > +		}
+> >  	}
+> > +
+> 
+> Unrelated new empty line. Thanks,
+Fixed!
+Thank you!
+
+> 
+> >  	if (query.page_size & 4) {
+> >  		page_shift = 24; /* 16MB */
+> >  	} else if (query.page_size & 2) {
+> > @@ -1194,6 +1244,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+> >  	kfree(win64);
+> >  
+> >  out_failed:
+> > +	if (default_win && ddw_ext)
+> > +		reset_dma_window(dev, pdn);
+> >  
+> >  	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
+> >  	if (!fpdn)
+> > 
+
