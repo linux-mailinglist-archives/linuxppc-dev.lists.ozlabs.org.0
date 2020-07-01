@@ -1,69 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160C8210A52
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 13:33:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17589210AFC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 14:24:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xfH45kdnzDr39
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 21:33:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xgQB40nXzDr0r
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 22:24:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.67; helo=mail-ej1-f67.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=XZwglFBP; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=XZwglFBP; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com
+ [209.85.218.67])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xfDs2M97zDr2r
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 21:31:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1593603066;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=7cAEZ0VUk04rqXCh5EEKOgMEkG2PuKnDXKZqj/gtn1g=;
- b=XZwglFBPOHkAwNOfZGauqeL23DIDXWtWvPfGUd3PGKCSe/kVabVXF0qws86+O+8f2EQ/6F
- sLft1LHR8aUFsEFAS/69R+sy8+X3iOxXVHruiOXFceqR7wcYn13DopoSfvpeAmu3CSoNry
- 9hE0ZOVVv/GePVyP/tNW+McxnnZubOo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1593603066;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=7cAEZ0VUk04rqXCh5EEKOgMEkG2PuKnDXKZqj/gtn1g=;
- b=XZwglFBPOHkAwNOfZGauqeL23DIDXWtWvPfGUd3PGKCSe/kVabVXF0qws86+O+8f2EQ/6F
- sLft1LHR8aUFsEFAS/69R+sy8+X3iOxXVHruiOXFceqR7wcYn13DopoSfvpeAmu3CSoNry
- 9hE0ZOVVv/GePVyP/tNW+McxnnZubOo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-343-wCTosYe2O8Wa42tj-lYTiw-1; Wed, 01 Jul 2020 07:31:02 -0400
-X-MC-Unique: wCTosYe2O8Wa42tj-lYTiw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9C71C107ACCA;
- Wed,  1 Jul 2020 11:31:00 +0000 (UTC)
-Received: from [10.36.112.52] (ovpn-112-52.ams2.redhat.com [10.36.112.52])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D7CDD5C1D0;
- Wed,  1 Jul 2020 11:30:57 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xgLj0nLnzDq5t
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 22:21:16 +1000 (AEST)
+Received: by mail-ej1-f67.google.com with SMTP id p20so24324884ejd.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 05:21:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=/b+RUGrUg/ntsSCxKL5s82gEiDaQbG8Ituvi60lGYAk=;
+ b=bFAwn89CBFoPTqxO4FWLhW5zPZqSGELVXo1sA6EWCwvnLxsAcqSjaWdPSHJXMnVKKb
+ uDF7SSBqPwRqzu7rCf0pjnny1LmtGCKE8LT8/3xGQslhTnQGnLinbq6C4X9L5Tf5QuA7
+ efnTNFoOjFvP1itDGb/8H+8GxGXMbg3N3gZYvii7F4LKiCqDhh8kxo58d7gdE0n0P+ol
+ nyX/RcfJ9Iro8dZXGK2aH6sUmAZ5tS2oF5y3WabDJ17lI17piQZiAgJp/+OfNwkBXyzD
+ Hn4x3vJH0xOU2sdik6OKCO6Z17ejbvzuPXqLA185hLvZw/TsRWheXTMWh509vCcsyv02
+ Hj5g==
+X-Gm-Message-State: AOAM531vFX6+rqKxt63KPM00QvWjTKBm6BfiYP4KCcAU599tPlbDxeq2
+ pTrf+0svrVin2jnsayHK6Wg=
+X-Google-Smtp-Source: ABdhPJwM754Glk3zEURKp6Dq0/LYW01GCSOKp40qjwm++RUI94oVQJQMVXVZpTlIQFzY4qbxuk1WUA==
+X-Received: by 2002:a17:906:1a54:: with SMTP id
+ j20mr22242582ejf.455.1593606072668; 
+ Wed, 01 Jul 2020 05:21:12 -0700 (PDT)
+Received: from localhost (ip-37-188-168-3.eurotel.cz. [37.188.168.3])
+ by smtp.gmail.com with ESMTPSA id di20sm6311781edb.26.2020.07.01.05.21.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Jul 2020 05:21:11 -0700 (PDT)
+Date: Wed, 1 Jul 2020 14:21:10 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: David Hildenbrand <david@redhat.com>
 Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
  offline
-From: David Hildenbrand <david@redhat.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Message-ID: <20200701122110.GT2369@dhcp22.suse.cz>
 References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
  <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
  <20200701084200.GN2369@dhcp22.suse.cz>
@@ -71,60 +57,11 @@ References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
  <184102af-ecf2-c834-db46-173ab2e66f51@redhat.com>
  <20200701110145.GC17918@linux.vnet.ibm.com>
  <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
-Date: Wed, 1 Jul 2020 13:30:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,91 +74,94 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
  Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, Mel Gorman <mgorman@suse.de>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
+ linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01.07.20 13:06, David Hildenbrand wrote:
-> On 01.07.20 13:01, Srikar Dronamraju wrote:
->> * David Hildenbrand <david@redhat.com> [2020-07-01 12:15:54]:
->>
->>> On 01.07.20 12:04, Srikar Dronamraju wrote:
->>>> * Michal Hocko <mhocko@kernel.org> [2020-07-01 10:42:00]:
->>>>
->>>>>
->>>>>>
->>>>>> 2. Also existence of dummy node also leads to inconsistent information. The
->>>>>> number of online nodes is inconsistent with the information in the
->>>>>> device-tree and resource-dump
->>>>>>
->>>>>> 3. When the dummy node is present, single node non-Numa systems end up showing
->>>>>> up as NUMA systems and numa_balancing gets enabled. This will mean we take
->>>>>> the hit from the unnecessary numa hinting faults.
->>>>>
->>>>> I have to say that I dislike the node online/offline state and directly
->>>>> exporting that to the userspace. Users should only care whether the node
->>>>> has memory/cpus. Numa nodes can be online without any memory. Just
->>>>> offline all the present memory blocks but do not physically hot remove
->>>>> them and you are in the same situation. If users are confused by an
->>>>> output of tools like numactl -H then those could be updated and hide
->>>>> nodes without any memory&cpus.
->>>>>
->>>>> The autonuma problem sounds interesting but again this patch doesn't
->>>>> really solve the underlying problem because I strongly suspect that the
->>>>> problem is still there when a numa node gets all its memory offline as
->>>>> mentioned above.
->>>>>
->>>>> While I completely agree that making node 0 special is wrong, I have
->>>>> still hard time to review this very simply looking patch because all the
->>>>> numa initialization is so spread around that this might just blow up
->>>>> at unexpected places. IIRC we have discussed testing in the previous
->>>>> version and David has provided a way to emulate these configurations
->>>>> on x86. Did you manage to use those instruction for additional testing
->>>>> on other than ppc architectures?
->>>>>
->>>>
->>>> I have tried all the steps that David mentioned and reported back at
->>>> https://lore.kernel.org/lkml/20200511174731.GD1961@linux.vnet.ibm.com/t/#u
->>>>
->>>> As a summary, David's steps are still not creating a memoryless/cpuless on
->>>> x86 VM.
->>>
->>> Now, that is wrong. You get a memoryless/cpuless node, which is *not
->>> online*. Once you hotplug some memory, it will switch online. Once you
->>> remove memory, it will switch back offline.
->>>
->>
->> Let me clarify, we are looking for a node 0 which is cpuless/memoryless at
->> boot.  The code in question tries to handle a cpuless/memoryless node 0 at
->> boot.
+On Wed 01-07-20 13:30:57, David Hildenbrand wrote:
+> On 01.07.20 13:06, David Hildenbrand wrote:
+> > On 01.07.20 13:01, Srikar Dronamraju wrote:
+> >> * David Hildenbrand <david@redhat.com> [2020-07-01 12:15:54]:
+> >>
+> >>> On 01.07.20 12:04, Srikar Dronamraju wrote:
+> >>>> * Michal Hocko <mhocko@kernel.org> [2020-07-01 10:42:00]:
+> >>>>
+> >>>>>
+> >>>>>>
+> >>>>>> 2. Also existence of dummy node also leads to inconsistent information. The
+> >>>>>> number of online nodes is inconsistent with the information in the
+> >>>>>> device-tree and resource-dump
+> >>>>>>
+> >>>>>> 3. When the dummy node is present, single node non-Numa systems end up showing
+> >>>>>> up as NUMA systems and numa_balancing gets enabled. This will mean we take
+> >>>>>> the hit from the unnecessary numa hinting faults.
+> >>>>>
+> >>>>> I have to say that I dislike the node online/offline state and directly
+> >>>>> exporting that to the userspace. Users should only care whether the node
+> >>>>> has memory/cpus. Numa nodes can be online without any memory. Just
+> >>>>> offline all the present memory blocks but do not physically hot remove
+> >>>>> them and you are in the same situation. If users are confused by an
+> >>>>> output of tools like numactl -H then those could be updated and hide
+> >>>>> nodes without any memory&cpus.
+> >>>>>
+> >>>>> The autonuma problem sounds interesting but again this patch doesn't
+> >>>>> really solve the underlying problem because I strongly suspect that the
+> >>>>> problem is still there when a numa node gets all its memory offline as
+> >>>>> mentioned above.
+
+I would really appreciate a feedback to these two as well.
+
+> >>>>> While I completely agree that making node 0 special is wrong, I have
+> >>>>> still hard time to review this very simply looking patch because all the
+> >>>>> numa initialization is so spread around that this might just blow up
+> >>>>> at unexpected places. IIRC we have discussed testing in the previous
+> >>>>> version and David has provided a way to emulate these configurations
+> >>>>> on x86. Did you manage to use those instruction for additional testing
+> >>>>> on other than ppc architectures?
+> >>>>>
+> >>>>
+> >>>> I have tried all the steps that David mentioned and reported back at
+> >>>> https://lore.kernel.org/lkml/20200511174731.GD1961@linux.vnet.ibm.com/t/#u
+> >>>>
+> >>>> As a summary, David's steps are still not creating a memoryless/cpuless on
+> >>>> x86 VM.
+> >>>
+> >>> Now, that is wrong. You get a memoryless/cpuless node, which is *not
+> >>> online*. Once you hotplug some memory, it will switch online. Once you
+> >>> remove memory, it will switch back offline.
+> >>>
+> >>
+> >> Let me clarify, we are looking for a node 0 which is cpuless/memoryless at
+> >> boot.  The code in question tries to handle a cpuless/memoryless node 0 at
+> >> boot.
+> > 
+> > I was just correcting your statement, because it was wrong.
+> > 
+> > Could be that x86 code maps PXM 1 to node 0 because PXM 1 does neither
+> > have CPUs nor memory. That would imply that we can, in fact, never have
+> > node 0 offline during boot.
+> > 
 > 
-> I was just correcting your statement, because it was wrong.
+> Yep, looks like it.
 > 
-> Could be that x86 code maps PXM 1 to node 0 because PXM 1 does neither
-> have CPUs nor memory. That would imply that we can, in fact, never have
-> node 0 offline during boot.
-> 
+> [    0.009726] SRAT: PXM 1 -> APIC 0x00 -> Node 0
+> [    0.009727] SRAT: PXM 1 -> APIC 0x01 -> Node 0
+> [    0.009727] SRAT: PXM 1 -> APIC 0x02 -> Node 0
+> [    0.009728] SRAT: PXM 1 -> APIC 0x03 -> Node 0
+> [    0.009731] ACPI: SRAT: Node 0 PXM 1 [mem 0x00000000-0x0009ffff]
+> [    0.009732] ACPI: SRAT: Node 0 PXM 1 [mem 0x00100000-0xbfffffff]
+> [    0.009733] ACPI: SRAT: Node 0 PXM 1 [mem 0x100000000-0x13fffffff]
 
-Yep, looks like it.
+This begs a question whether ppc can do the same thing?
 
-[    0.009726] SRAT: PXM 1 -> APIC 0x00 -> Node 0
-[    0.009727] SRAT: PXM 1 -> APIC 0x01 -> Node 0
-[    0.009727] SRAT: PXM 1 -> APIC 0x02 -> Node 0
-[    0.009728] SRAT: PXM 1 -> APIC 0x03 -> Node 0
-[    0.009731] ACPI: SRAT: Node 0 PXM 1 [mem 0x00000000-0x0009ffff]
-[    0.009732] ACPI: SRAT: Node 0 PXM 1 [mem 0x00100000-0xbfffffff]
-[    0.009733] ACPI: SRAT: Node 0 PXM 1 [mem 0x100000000-0x13fffffff]
-
-
-
+I would swear that we've had x86 system with node 0 but I cannot really
+find it and it is possible that it was not x86 after all...
 -- 
-Thanks,
-
-David / dhildenb
-
+Michal Hocko
+SUSE Labs
