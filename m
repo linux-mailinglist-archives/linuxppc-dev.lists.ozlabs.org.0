@@ -2,62 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92C2210AFF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 14:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35221210B5F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 14:56:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xgSq44gwzDqd9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 22:26:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xh7h2l3zzDr3l
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 22:56:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.218.66; helo=mail-ej1-f66.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com
- [209.85.218.66])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xgPp4WLlzDqmh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 22:23:58 +1000 (AEST)
-Received: by mail-ej1-f66.google.com with SMTP id dp18so24382133ejc.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 05:23:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=EguftjtGqWh5VAdFTqBrZSaGbeDOMAHvC0KwPTJHn/U=;
- b=E8nvUlAiCgIxxOURfX0ToyAcPvtv8fErr2JaXd6AkLzg9v6SN/gk2OcO0XB0e073ln
- /WRqvH/I7IFr0vXwxPtNREBkivPsrrWYXv1/I4YJM8v6IDXmHL9ng5t5iMmL37Jku4FG
- F9C7UT7lDamJD13PTOkxhUjkznTf5v4sgOlW3dX6LjVgA+/I2WdWLdnW2tE2gsQlMKQR
- /Qq5GLyio4H1BhzWnHG+xA6qN+Yb/WSc14TuKYtbSlrwFnzTStGvQP9qcMqmtRsSSLws
- 8RbrpgFMmkBGxy3qf/ym3Mx7DADEpDFs/aYuXDEPsisipxiYseh7EgnlVR5LinMT6c2N
- nvkA==
-X-Gm-Message-State: AOAM532LICPhQdDXeP/Rvt+R+C4JmSbrKleoMDca50St9kx5loEH5cMc
- VUbvxM1QqfZRsKqS4TXxH9w=
-X-Google-Smtp-Source: ABdhPJy/WXxww9ppUfxQzV+W46iCW3wMVCFfGKiry/c38Bk6UeJk9x0MK1Dyt9SBwv8ixfZZXNWBfQ==
-X-Received: by 2002:a17:906:284e:: with SMTP id
- s14mr21684652ejc.498.1593606235211; 
- Wed, 01 Jul 2020 05:23:55 -0700 (PDT)
-Received: from localhost (ip-37-188-168-3.eurotel.cz. [37.188.168.3])
- by smtp.gmail.com with ESMTPSA id q3sm2881770eds.41.2020.07.01.05.23.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Jul 2020 05:23:54 -0700 (PDT)
-Date: Wed, 1 Jul 2020 14:23:53 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
- offline
-Message-ID: <20200701122353.GU2369@dhcp22.suse.cz>
-References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
- <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
- <alpine.DEB.2.22.394.2006291456550.27163@www.lameter.com>
- <20200630040125.GA31617@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xh4P2FzczDqvP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 22:53:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Z2hcAuh5; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49xh4N6Tjbz8tZ6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 22:53:56 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49xh4N5Wqtz9sTY; Wed,  1 Jul 2020 22:53:56 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=piliu@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Z2hcAuh5; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 49xh4N0h2Gz9sTV
+ for <linuxppc-dev@ozlabs.org>; Wed,  1 Jul 2020 22:53:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1593608033;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ylks6ZC4AGq74KjZ8OmBYSrj4mT7YR7HWbuFUZxGUUk=;
+ b=Z2hcAuh5S1d+NzeYJ57I4yR1CWN8N/+ZOOEZNlGCYuklhQbDInoPPtGaOfYZQw0CDt/lsX
+ /uYsob+kXwayzXRO7uzVwOiG2lLnabQe6kqURoqh/JPW7LJJzLZhDrN0yC7fUTinTzrs+4
+ mNGGkkvwh8Dp6lTJPrfH5ax26ScwhfI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-344-c3-vNlfMNbWRmerX0_OETA-1; Wed, 01 Jul 2020 08:53:49 -0400
+X-MC-Unique: c3-vNlfMNbWRmerX0_OETA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CD95DBFC1;
+ Wed,  1 Jul 2020 12:53:47 +0000 (UTC)
+Received: from [10.72.8.21] (ovpn-8-21.pek2.redhat.com [10.72.8.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A72A10013C0;
+ Wed,  1 Jul 2020 12:53:37 +0000 (UTC)
+Subject: Re: [PATCH 04/11] ppc64/kexec_file: avoid stomping memory used by
+ special regions
+To: Dave Young <dyoung@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>
+References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
+ <159319831192.16351.17443438699302756548.stgit@hbathini.in.ibm.com>
+ <20200701074012.GA4496@dhcp-128-65.nay.redhat.com>
+From: piliu <piliu@redhat.com>
+X-Enigmail-Draft-Status: N1110
+Message-ID: <bc8fe308-5ce9-1ca6-c832-7c3a75a732d2@redhat.com>
+Date: Wed, 1 Jul 2020 20:53:35 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200630040125.GA31617@linux.vnet.ibm.com>
+In-Reply-To: <20200701074012.GA4496@dhcp-128-65.nay.redhat.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,42 +94,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
- Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Kexec-ml <kexec@lists.infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 30-06-20 09:31:25, Srikar Dronamraju wrote:
-> * Christopher Lameter <cl@linux.com> [2020-06-29 14:58:40]:
-> 
-> > On Wed, 24 Jun 2020, Srikar Dronamraju wrote:
-> > 
-> > > Currently Linux kernel with CONFIG_NUMA on a system with multiple
-> > > possible nodes, marks node 0 as online at boot.  However in practice,
-> > > there are systems which have node 0 as memoryless and cpuless.
-> > 
-> > Maybe add something to explain why you are not simply mapping the
-> > existing memory to NUMA node 0 which is after all just a numbering scheme
-> > used by the kernel and can be used arbitrarily?
-> > 
-> 
-> I thought Michal Hocko already gave a clear picture on why mapping is a bad
-> idea. https://lore.kernel.org/lkml/20200316085425.GB11482@dhcp22.suse.cz/t/#u
-> Are you suggesting that we add that as part of the changelog?
 
-Well, I was not aware x86 already does renumber. So there is a certain
-precendence. As I've said I do not really like that but this is what
-already is happening. If renumbering is not an option then just handle
-that in the ppc code explicitly. Generic solution would be preferable of
-course but as I've said it is really hard to check for correctness and
-potential subtle issues.
 
--- 
-Michal Hocko
-SUSE Labs
+On 07/01/2020 03:40 PM, Dave Young wrote:
+> Hi Hari,
+> On 06/27/20 at 12:35am, Hari Bathini wrote:
+>> crashkernel region could have an overlap with special memory regions
+>> like  opal, rtas, tce-table & such. These regions are referred to as
+>> exclude memory ranges. Setup this ranges during image probe in order
+>> to avoid them while finding the buffer for different kdump segments.
+>> Implement kexec_locate_mem_hole_ppc64() that locates a memory hole
+>> accounting for these ranges. Also, override arch_kexec_add_buffer()
+>> to locate a memory hole & later call __kexec_add_buffer() function
+>> with kbuf->mem set to skip the generic locate memory hole lookup.
+>>
+>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>> ---
+>>  arch/powerpc/include/asm/crashdump-ppc64.h |   10 +
+>>  arch/powerpc/include/asm/kexec.h           |    7 -
+>>  arch/powerpc/kexec/elf_64.c                |    7 +
+>>  arch/powerpc/kexec/file_load_64.c          |  292 ++++++++++++++++++++++++++++
+>>  4 files changed, 312 insertions(+), 4 deletions(-)
+>>  create mode 100644 arch/powerpc/include/asm/crashdump-ppc64.h
+>>
+> [snip]
+>>  /**
+>> + * get_exclude_memory_ranges - Get exclude memory ranges. This list includes
+>> + *                             regions like opal/rtas, tce-table, initrd,
+>> + *                             kernel, htab which should be avoided while
+>> + *                             setting up kexec load segments.
+>> + * @mem_ranges:                Range list to add the memory ranges to.
+>> + *
+>> + * Returns 0 on success, negative errno on error.
+>> + */
+>> +static int get_exclude_memory_ranges(struct crash_mem **mem_ranges)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = add_tce_mem_ranges(mem_ranges);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = add_initrd_mem_range(mem_ranges);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = add_htab_mem_range(mem_ranges);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = add_kernel_mem_range(mem_ranges);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = add_rtas_mem_range(mem_ranges, false);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = add_opal_mem_range(mem_ranges, false);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	ret = add_reserved_ranges(mem_ranges);
+>> +	if (ret)
+>> +		goto out;
+>> +
+>> +	/* exclude memory ranges should be sorted for easy lookup */
+>> +	sort_memory_ranges(*mem_ranges);
+>> +out:
+>> +	if (ret)
+>> +		pr_err("Failed to setup exclude memory ranges\n");
+>> +	return ret;
+>> +}
+> 
+> I'm confused about the "overlap with crashkernel memory", does that mean
+> those normal kernel used memory could be put in crashkernel reserved
+> memory range?  If so why can't just skip those areas while crashkernel
+> doing the reservation?
+I raised the same question in another mail. As Hari's answer, "kexec -p"
+skips these ranges in user space. And the same logic should be done in
+"kexec -s -p"
+
+Regards,
+Pingfan
+
