@@ -2,85 +2,157 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B9B210583
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 09:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE8D2105DF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 10:07:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xYQY3jfMzDqgL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 17:54:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xYkN6s64zDqcx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 18:07:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=qF6D3W0J; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xYGW3TgRzDqg8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 17:47:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=QVzKMrrX; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49xYGV72bMz8tX8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 17:47:14 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49xYGV6NCsz9sTY; Wed,  1 Jul 2020 17:47:14 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=dyoung@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=QVzKMrrX; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49xYGV2K4fz9sTT
- for <linuxppc-dev@ozlabs.org>; Wed,  1 Jul 2020 17:47:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1593589631;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=k0tbbv2fepFy6ZwkJj/rSA//He2y/6egv4GB/rgFFdc=;
- b=QVzKMrrXm/Fb3CAFPguJZw066pnKM6uTaU1spuyiGoRn7K3Vn0yuPEZfzDmEWj1PIGPRPx
- T+myXSIKHY101PKeqNf9p7mqyn9gOnrDVjtgLdmlP5vHmXOGaW1pMebdZJXPrdJPklNGLF
- chFN2e+ozVSNALyTDuCQlKUtsmyxEgY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-25-EYag6ONJPzizDK3-Oe3Y8g-1; Wed, 01 Jul 2020 03:47:09 -0400
-X-MC-Unique: EYag6ONJPzizDK3-Oe3Y8g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EAE60107ACCA;
- Wed,  1 Jul 2020 07:47:07 +0000 (UTC)
-Received: from dhcp-128-65.nay.redhat.com (ovpn-12-207.pek2.redhat.com
- [10.72.12.207])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D1E93B3A7E;
- Wed,  1 Jul 2020 07:47:02 +0000 (UTC)
-Date: Wed, 1 Jul 2020 15:46:59 +0800
-From: Dave Young <dyoung@redhat.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH 01/11] kexec_file: allow archs to handle special regions
- while locating memory hole
-Message-ID: <20200701074659.GA3878@dhcp-128-65.nay.redhat.com>
-References: <159319825403.16351.7253978047621755765.stgit@hbathini.in.ibm.com>
- <159319828304.16351.6990340111766605842.stgit@hbathini.in.ibm.com>
- <20200629133933.0787f562@ezekiel.suse.cz>
- <7981ae61-26c6-000c-9ee4-382dab3eecab@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xYfs1KMczDqbv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 18:04:51 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id j19so4450145pgm.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 01:04:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=ymhgZtaUIrmVtHlQWVVd0pisUV4Sdjq2wDsGEJHNXrk=;
+ b=qF6D3W0JWMmr2qztabi9w7e/wOeol+S2DyjKS6/y7Y4CETJCsOWH7jUDn5XhMdtDgX
+ iOWMlimcJhrR/9Gmf7gER002203RuG8z2SkCqq6gXQCnzdebl1ypzjrldAP9108dzgVd
+ 1SQZWQrK8L+F5NAGgrYVViTh3p0xLDkBcKc02oo12y+pvX1uQgeLunZS195ocoLIdG6H
+ r4ZlVAcIzX5GVgb4etTqaw2FfPf+6u0s1jaULuq5vwINsm7bA7iOa7R+tPILIcLTXD6Q
+ QIjsTXWwnzLCoA7FakuFKurL/JauAlZTVAbomFoZpwQVK8gs9fw3M2WE4Asd4GF0S9at
+ oVCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=ymhgZtaUIrmVtHlQWVVd0pisUV4Sdjq2wDsGEJHNXrk=;
+ b=WGkZ11k9iC6axygh1XmGx3f6ms0gFWuqWaxBrZIqre6vdU5OgiDMQSrwnanwGxN/H0
+ GvClRrcElG4t2nKVczG3CShHChw/NNDNN/Y9eDNL7byMh72KlblX+cH+8XPXdUhWQ3/+
+ s+mQYwDP2KP4pbNyMmJpFl+e+PDDHdV029VrN1Tx6F7rxsRZZNoqnyZiUIhJbVhcFAAj
+ 8jcxvkBL310y5B0WTcpXsOSESoITpqczs7VIx6RKIU/n3rszC2rjxJRa5EI48Pjg7YjP
+ t1Zn3cWSt5ZIBYJ7EfmXrOxz0r0H4IOIX1vL88jLr8BtTJUQTrXMu3MWHPwMsXyrhciA
+ ze9w==
+X-Gm-Message-State: AOAM530z/COeelTF5zzhTiOOsAyPkBf4SWeV/X9OfgJE2VmyrG+s/BC+
+ hJLuAOoDd3VJpR1BuJmUE/gpvQ==
+X-Google-Smtp-Source: ABdhPJywD3WCB84ZFmS/FulfmNmp759Tc1PPYo+lFYLH7VpN/zNgL/cJauraY0g5jW99Bs5d4YQG8Q==
+X-Received: by 2002:a63:5644:: with SMTP id g4mr17997117pgm.381.1593590687754; 
+ Wed, 01 Jul 2020 01:04:47 -0700 (PDT)
+Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
+ [124.171.83.152])
+ by smtp.gmail.com with ESMTPSA id j17sm4629523pgn.87.2020.07.01.01.04.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 Jul 2020 01:04:46 -0700 (PDT)
+Subject: Re: [PATCH v2 6/6] powerpc/pseries/iommu: Avoid errors when DDW
+ starts at 0x00
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
+References: <20200624062411.367796-1-leobras.c@gmail.com>
+ <20200624062411.367796-7-leobras.c@gmail.com>
+ <1069466fa3a373e92d9db18957674b1d9c6e9cf2.camel@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <76047748-9ddd-5ba3-fe4d-85c7c08bd521@ozlabs.ru>
+Date: Wed, 1 Jul 2020 18:04:41 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7981ae61-26c6-000c-9ee4-382dab3eecab@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+In-Reply-To: <1069466fa3a373e92d9db18957674b1d9c6e9cf2.camel@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,53 +164,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Petr Tesarik <ptesarik@suse.cz>,
- Kexec-ml <kexec@lists.infradead.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Eric Biederman <ebiederm@xmission.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06/29/20 at 05:26pm, Hari Bathini wrote:
-> Hi Petr,
+
+
+On 27/06/2020 03:46, Leonardo Bras wrote:
+> On Wed, 2020-06-24 at 03:24 -0300, Leonardo Bras wrote:
+>> As of today, enable_ddw() will return a non-null DMA address if the
+>> created DDW maps the whole partition. If the address is valid,
+>> iommu_bypass_supported_pSeriesLP() will consider iommu bypass enabled.
+>>
+>> This can cause some trouble if the DDW happens to start at 0x00.
+>>
+>> Instead if checking if the address is non-null, check directly if
+>> the DDW maps the whole partition, so it can bypass iommu.
+>>
+>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 > 
-> On 29/06/20 5:09 pm, Petr Tesarik wrote:
-> > Hi Hari,
-> > 
-> > is there any good reason to add two more functions with a very similar
-> > name to an existing function? AFAICS all you need is a way to call a
-> > PPC64-specific function from within kexec_add_buffer (PATCH 4/11), so
-> > you could add something like this:
-> > 
-> > int __weak arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
-> > {
-> > 	return 0;
-> > }
-> > 
-> > Call this function from kexec_add_buffer where appropriate and then
-> > override it for PPC64 (it roughly corresponds to your
-> > kexec_locate_mem_hole_ppc64() from PATCH 4/11).
-> > 
-> > FWIW it would make it easier for me to follow the resulting code.
+> This patch has a bug in it. I will rework it soon.
+
+I'd rather suggest this:
+
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20180725095032.2196-2-aik@ozlabs.ru/
+
+Although it does not look like you are actually going to have windows
+starting at 0. Thanks,
+
+> Please keep reviewing patches 1-5.
 > 
-> Right, Petr.
+> Best regards,
+> Leonardo
 > 
-> I was trying out a few things before I ended up with what I sent here.
-> Bu yeah.. I did realize arch_kexec_locate_mem_hole() would have been better
-> after sending out v1. Will take care of that in v2.
 
-Another way is use arch private function to locate mem hole, then set
-kbuf->mem, and then call kexec_add_buf, it will skip the common locate
-hole function.
-
-But other than that I have some confusion about those excluded ranges.
-Replied a question to patch 4.
-
-Thanks
-Dave
-
+-- 
+Alexey
