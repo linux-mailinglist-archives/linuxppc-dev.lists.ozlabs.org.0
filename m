@@ -2,48 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2D320FE99
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jun 2020 23:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16A121025E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 05:10:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xHLq4t3vzDqnB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 07:20:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xR7f16BXzDqnx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 13:10:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 49xHK81XMZzDqRv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 07:18:35 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 05ULIIPG003747;
- Tue, 30 Jun 2020 16:18:18 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 05ULIHW0003746;
- Tue, 30 Jun 2020 16:18:17 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 30 Jun 2020 16:18:17 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] powerpc/uaccess: Use flexible addressing with
- __put_user()/__get_user()
-Message-ID: <20200630211817.GZ3598@gate.crashing.org>
-References: <c2addbd9d76212242d3d8554a2f7ff849fb08b85.1587040754.git.christophe.leroy@c-s.fr>
- <7b916759-1683-b4df-0d4b-b04b3fcd9a02@csgroup.eu>
- <878sg6862r.fsf@mpe.ellerman.id.au> <875zb98i5a.fsf@mpe.ellerman.id.au>
- <311c3471-cad7-72d5-a5e6-04cf892c5e41@csgroup.eu>
- <20200630163324.GW3598@gate.crashing.org>
- <f8819fa4-94e3-4bf9-4b60-c57d2804e529@csgroup.eu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f8819fa4-94e3-4bf9-4b60-c57d2804e529@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xR5q3MVwzDqlh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 13:09:19 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06133MeD089383; Tue, 30 Jun 2020 23:09:12 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32083f0dc5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Jun 2020 23:09:12 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 061340tk091798;
+ Tue, 30 Jun 2020 23:09:12 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32083f0db3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Jun 2020 23:09:11 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06134gCO020898;
+ Wed, 1 Jul 2020 03:09:09 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma01fra.de.ibm.com with ESMTP id 31wyyatm5r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Jul 2020 03:09:09 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0613972p41746660
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 1 Jul 2020 03:09:07 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 14FC2A4057;
+ Wed,  1 Jul 2020 03:09:07 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 22851A4053;
+ Wed,  1 Jul 2020 03:09:05 +0000 (GMT)
+Received: from [9.79.220.179] (unknown [9.79.220.179])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  1 Jul 2020 03:09:04 +0000 (GMT)
+Subject: Re: [PATCH v6 6/8] powerpc/pmem: Avoid the barrier in flush routines
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20200629135722.73558-1-aneesh.kumar@linux.ibm.com>
+ <20200629135722.73558-7-aneesh.kumar@linux.ibm.com>
+ <20200629160940.GU21462@kitsune.suse.cz> <87lfk5hahc.fsf@linux.ibm.com>
+ <CAPcyv4hEV=Ps=t=3qsFq3Ob1jzf=ptoZmYTDkgr8D_G0op8uvQ@mail.gmail.com>
+ <20200630085413.GW21462@kitsune.suse.cz>
+ <9204289b-2274-b5c1-2cd5-8ed5ce28efb4@linux.ibm.com>
+ <CAPcyv4gHHjifQcLMdVgo9CyixHxe6OkCYdQ7Jfu2YB7tBqpDNg@mail.gmail.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <4a7bf5c8-a5c7-4292-c7ad-89bcefd7b22d@linux.ibm.com>
+Date: Wed, 1 Jul 2020 08:39:03 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4gHHjifQcLMdVgo9CyixHxe6OkCYdQ7Jfu2YB7tBqpDNg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-01_01:2020-07-01,
+ 2020-06-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ cotscore=-2147483648
+ impostorscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=897 suspectscore=0 bulkscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007010019
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,82 +100,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
+ =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi again,
-
-Thanks for your work so far!
-
-On Tue, Jun 30, 2020 at 06:53:39PM +0000, Christophe Leroy wrote:
-> On 06/30/2020 04:33 PM, Segher Boessenkool wrote:
-> >>>+ make -s CC=powerpc64-linux-gnu-gcc -j 160
-> >>>In file included from /linux/include/linux/uaccess.h:11:0,
-> >>>                  from /linux/include/linux/sched/task.h:11,
-> >>>                  from /linux/include/linux/sched/signal.h:9,
-> >>>                  from /linux/include/linux/rcuwait.h:6,
-> >>>                  from /linux/include/linux/percpu-rwsem.h:7,
-> >>>                  from /linux/include/linux/fs.h:33,
-> >>>                  from /linux/include/linux/huge_mm.h:8,
-> >>>                  from /linux/include/linux/mm.h:675,
-> >>>                  from /linux/arch/powerpc/kernel/signal_32.c:17:
-> >>>/linux/arch/powerpc/kernel/signal_32.c: In function
-> >>>'save_user_regs.isra.14.constprop':
-> >>>/linux/arch/powerpc/include/asm/uaccess.h:161:2: error: 'asm' operand has
-> >>>impossible constraints
-> >>>   __asm__ __volatile__(     \
-> >>>   ^
-> >>>/linux/arch/powerpc/include/asm/uaccess.h:197:12: note: in expansion of
-> >>>macro '__put_user_asm'
-> >>>     case 4: __put_user_asm(x, ptr, retval, "stw"); break; \
-> >>>             ^
-> >>>/linux/arch/powerpc/include/asm/uaccess.h:206:2: note: in expansion of
-> >>>macro '__put_user_size_allowed'
-> >>>   __put_user_size_allowed(x, ptr, size, retval);  \
-> >>>   ^
-> >>>/linux/arch/powerpc/include/asm/uaccess.h:220:2: note: in expansion of
-> >>>macro '__put_user_size'
-> >>>   __put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
-> >>>   ^
-> >>>/linux/arch/powerpc/include/asm/uaccess.h:96:2: note: in expansion of
-> >>>macro '__put_user_nocheck'
-> >>>   __put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
-> >>>   ^
-> >>>/linux/arch/powerpc/kernel/signal_32.c:120:7: note: in expansion of macro
-> >>>'__put_user'
-> >>>    if (__put_user((unsigned int)gregs[i], &frame->mc_gregs[i]))
-> >>>        ^
-> >
-> >Can we see what that was after the macro jungle?  Like, the actual
-> >preprocessed code?
+On 7/1/20 1:15 AM, Dan Williams wrote:
+> On Tue, Jun 30, 2020 at 2:21 AM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+> [..]
+>>>> The bio argument isn't for range based flushing, it is for flush
+>>>> operations that need to complete asynchronously.
+>>> How does the block layer determine that the pmem device needs
+>>> asynchronous fushing?
+>>>
+>>
+>>          set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
+>>
+>> and dax_synchronous(dev)
 > 
-> Sorry for previous misunderstanding
+> Yes, but I think it is overkill to have an indirect function call just
+> for a single instruction.
 > 
-> Here is the code:
+> How about something like this instead, to share a common pmem_wmb()
+> across x86 and powerpc.
 > 
-> #define __put_user_asm(x, addr, err, op)			\
-> 	__asm__ __volatile__(					\
-> 		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
-> 		"2:\n"						\
-> 		".section .fixup,\"ax\"\n"			\
-> 		"3:	li %0,%3\n"				\
-> 		"	b 2b\n"					\
-> 		".previous\n"					\
-> 		EX_TABLE(1b, 3b)				\
-> 		: "=r" (err)					\
-> 		: "r" (x), "m<>" (*addr), "i" (-EFAULT), "0" (err))
+> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+> index 20ff30c2ab93..b14009060c83 100644
+> --- a/drivers/nvdimm/region_devs.c
+> +++ b/drivers/nvdimm/region_devs.c
+> @@ -1180,6 +1180,13 @@ int nvdimm_flush(struct nd_region *nd_region,
+> struct bio *bio)
+>   {
+>          int rc = 0;
+> 
+> +       /*
+> +        * pmem_wmb() is needed to 'sfence' all previous writes such
+> +        * that they are architecturally visible for the platform buffer
+> +        * flush.
+> +        */
+> +       pmem_wmb();
+> +
+>          if (!nd_region->flush)
+>                  rc = generic_nvdimm_flush(nd_region);
+>          else {
+> @@ -1206,17 +1213,14 @@ int generic_nvdimm_flush(struct nd_region *nd_region)
+>          idx = this_cpu_add_return(flush_idx, hash_32(current->pid + idx, 8));
+> 
+>          /*
+> -        * The first wmb() is needed to 'sfence' all previous writes
+> -        * such that they are architecturally visible for the platform
+> -        * buffer flush.  Note that we've already arranged for pmem
+> -        * writes to avoid the cache via memcpy_flushcache().  The final
+> -        * wmb() ensures ordering for the NVDIMM flush write.
+> +        * Note that we've already arranged for pmem writes to avoid the
+> +        * cache via memcpy_flushcache().  The final wmb() ensures
+> +        * ordering for the NVDIMM flush write.
+>           */
+> -       wmb();
 
-Yeah I don't see it.  I'll have to look at compiler debug dumps, but I
-don't have any working 4.9 around, and I cannot reproduce this with
-either older or newer compilers.
 
-It is complainig that constrain_operands just does not work *at all* on
-this "m<>" constraint apparently, which doesn't make much sense.
+The series already convert this to pmem_wmb().
 
-I'll try later when I have more time, sorry :-/
+>          for (i = 0; i < nd_region->ndr_mappings; i++)
+>                  if (ndrd_get_flush_wpq(ndrd, i, 0))
+>                          writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
+> -       wmb();
+> +       pmem_wmb();
 
 
-Segher
+Should this be pmem_wmb()? This is ordering the above writeq() right?
+
+> 
+>          return 0;
+>   }
+> 
+
+This still results in two pmem_wmb() on platforms that doesn't have 
+flush_wpq. I was trying to avoid that by adding a nd_region->flush call 
+back.
+
+-aneesh
