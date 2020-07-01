@@ -2,85 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA7A210528
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 09:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93698210543
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 09:46:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xY4V3Kx0zDqB5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 17:38:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xYF45YxvzDqFt
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 17:45:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=lPh75AsL; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xXly2gXjzDqjX
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 17:24:14 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06172k1b135899; Wed, 1 Jul 2020 03:24:07 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32041en8te-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Jul 2020 03:24:06 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06172w0S136458;
- Wed, 1 Jul 2020 03:24:04 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32041en8ms-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Jul 2020 03:24:03 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0617EvUb008800;
- Wed, 1 Jul 2020 07:23:55 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma02wdc.us.ibm.com with ESMTP id 31wwr8x76e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Jul 2020 07:23:55 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0617NsgG49283470
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 Jul 2020 07:23:54 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6A8DE13605E;
- Wed,  1 Jul 2020 07:23:54 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0DB51136060;
- Wed,  1 Jul 2020 07:23:51 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.79.220.179])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  1 Jul 2020 07:23:50 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- linux-nvdimm@lists.01.org, dan.j.williams@intel.com
-Subject: [PATCH v7 7/7] powerpc/pmem: Initialize pmem device on newer hardware
-Date: Wed,  1 Jul 2020 12:52:35 +0530
-Message-Id: <20200701072235.223558-8-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200701072235.223558-1-aneesh.kumar@linux.ibm.com>
-References: <20200701072235.223558-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xXpq2gNczDqjZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 17:26:42 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id cv18so5074262pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 00:26:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=45+p9qFF6DBDwyHUNuh+QjqxoDwCR18zLYMQyIvcnBo=;
+ b=lPh75AsLe9G9ybYhjZkjxk6QZlN5KZi2Q8aPMoLW9Ib/96WKvOA7So89gFbDEC3bE5
+ JOKqxdj2ALsDZ6EcXBy0GV8uHce1Z4Czt+mgdSXsSqj7fSz1JneQ5uy4AqU3+V16rITM
+ ZLb7InkKLW/bcOCCrap2HkSIAyN8eOR+TUS/CjUa5aqqk8jc7LPW0/wcG2/i8EJVXEdB
+ 45x2gXb9pEnb8/V88ZXNEcV8bB3102hgj55xRN//hJf5Og1dGK9V9aBsf9yzce/mCOSh
+ 5+EWSa7MP31xaWZoBwNrPqxFoCN4Uz3oq4twHWXYbRAYD5eE275bvRTuyBSE8XK7RX5h
+ 8zBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=45+p9qFF6DBDwyHUNuh+QjqxoDwCR18zLYMQyIvcnBo=;
+ b=Wll+mRRSeUBTwmYoZUla9DpqJJBXq90ue89Nds82pQ62UPQHiCA6TsfDMZ2+2qk42g
+ u385Ao97yu4K/pY4ihQbI3ckf2IKzuplfnwtpWw1icu8PDVj35GWKD/M5dhrCHee7bYy
+ KEBmMxy9a4t+2iO8YRFEaOboYOMc8UzhR+wpd9NtskwMeNMeakNrHJ1O06O5cImKSgaF
+ ECph3GROsxNoYwOHjiUp9IdjpTUKKrux4L75p/OwZABxP+JCV2KrqFVqC1QApVaR3XJQ
+ +c61fa5SViZh2LHM6FkjGd048+Sm/4wliMMGiVfvyYE1s7cH1PaM3nOZhUVqTt22/CcO
+ zraA==
+X-Gm-Message-State: AOAM531MacEGCROTcjGA2XOAU4eFNwPUHWSGni5Kk+ozDuj2RJZJr9Yx
+ q7WUMch8MydWPuoOK90h340=
+X-Google-Smtp-Source: ABdhPJytyFDyN/TwGZv+qVxhehOYWwLSsXhJW1Lqzbm2SjT/TlbF2UwIIvovKzYRSIAv1g/v1ARpMA==
+X-Received: by 2002:a17:90a:d581:: with SMTP id
+ v1mr26662363pju.33.1593588399632; 
+ Wed, 01 Jul 2020 00:26:39 -0700 (PDT)
+Received: from Asurada (c-73-162-191-63.hsd1.ca.comcast.net. [73.162.191.63])
+ by smtp.gmail.com with ESMTPSA id
+ o12sm5123633pfu.188.2020.07.01.00.26.38
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 01 Jul 2020 00:26:39 -0700 (PDT)
+Date: Wed, 1 Jul 2020 00:26:28 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v3] ASoC: fsl_asrc: Add an option to select internal
+ ratio mode
+Message-ID: <20200701072628.GA9868@Asurada>
+References: <1593525367-23221-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-01_03:2020-07-01,
- 2020-07-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 spamscore=0 mlxscore=0 suspectscore=0 adultscore=0
- clxscore=1015 phishscore=0 lowpriorityscore=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 cotscore=-2147483648 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2007010050
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1593525367-23221-1-git-send-email-shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.5.22 (2013-10-16)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,52 +82,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, Jeff Moyer <jmoyer@redhat.com>, msuchanek@suse.de,
- oohall@gmail.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With kernel now supporting new pmem flush/sync instructions, we can now
-enable the kernel to initialize the device. On P10 these devices would
-appear with a new compatible string. For PAPR device we have
+On Tue, Jun 30, 2020 at 09:56:07PM +0800, Shengjiu Wang wrote:
+> The ASRC not only supports ideal ratio mode, but also supports
+> internal ratio mode.
+> 
+> For internal rato mode, the rate of clock source should be divided
+> with no remainder by sample rate, otherwise there is sound
+> distortion.
+> 
+> Add function fsl_asrc_select_clk() to find proper clock source for
+> internal ratio mode, if the clock source is available then internal
+> ratio mode will be selected.
+> 
+> With change, the ideal ratio mode is not the only option for user.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-compatible       "ibm,pmemory-v2"
-
-and for OF pmem device we have
-
-compatible       "pmem-region-v2"
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/papr_scm.c | 1 +
- drivers/nvdimm/of_pmem.c                  | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 9c569078a09f..66c19c0fe566 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -876,6 +876,7 @@ static int papr_scm_remove(struct platform_device *pdev)
- 
- static const struct of_device_id papr_scm_match[] = {
- 	{ .compatible = "ibm,pmemory" },
-+	{ .compatible = "ibm,pmemory-v2" },
- 	{ },
- };
- 
-diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-index 6826a274a1f1..10dbdcdfb9ce 100644
---- a/drivers/nvdimm/of_pmem.c
-+++ b/drivers/nvdimm/of_pmem.c
-@@ -90,6 +90,7 @@ static int of_pmem_region_remove(struct platform_device *pdev)
- 
- static const struct of_device_id of_pmem_region_match[] = {
- 	{ .compatible = "pmem-region" },
-+	{ .compatible = "pmem-region-v2" },
- 	{ },
- };
- 
--- 
-2.26.2
-
+Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
