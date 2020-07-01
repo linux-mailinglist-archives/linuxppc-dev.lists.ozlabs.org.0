@@ -2,47 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A702115FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 00:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4CD2116CE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 01:50:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xwnp41TjzDqlh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 08:27:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xyf20XyvzDqmq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 09:50:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::741;
+ helo=mail-qk1-x741.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ybfuOJs9; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=cCk0GG/Q; dkim-atps=neutral
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
+ [IPv6:2607:f8b0:4864:20::741])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xwj12VqczDql9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 08:23:01 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B3347207E8;
- Wed,  1 Jul 2020 22:22:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1593642178;
- bh=qR6b0seueX1BWelGymIepBrH7Jm0QvYZYSibZfidNYw=;
- h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
- b=ybfuOJs9Vmbfe4ObII/sYSTuo+YClxTRqYIrdBxAyiM0aJd4f3dszsnJI5I2cS56c
- Io6TIbicvRPVE0epumlQ9rhyFeaw+fmO7gcxFUwM8n8nrDNpcxmYhwms3XbZeiEbPF
- OSZG1Xp5CZASNqiARSsBmmzvNZ6MkkU0192ooJp0=
-Date: Wed, 01 Jul 2020 23:22:56 +0100
-From: Mark Brown <broonie@kernel.org>
-To: perex@perex.cz, alsa-devel@alsa-project.org, tiwai@suse.com,
- Xiubo.Lee@gmail.com, timur@kernel.org, festevam@gmail.com,
- nicoleotsuka@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1593412953-10897-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1593412953-10897-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Refine regcache usage with pm runtime
-Message-Id: <159364215573.10630.10167601683932305726.b4-ty@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xycC0gndzDqHx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 09:48:57 +1000 (AEST)
+Received: by mail-qk1-x741.google.com with SMTP id e13so24019294qkg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 16:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=eWwA839IZ7dq+a29DyXkGmi7dM/v2sHdleLj59LsJvo=;
+ b=cCk0GG/Q7j5pgcUJbgaej4solO6bRP1anrWSbOb2EYkbaZxCNkvsDaDv+4+ZfzrJgg
+ 9cRPJ7yZcVHRhpJwVBBhCE78Dsp3GtXcAfbi2u4jI9ICI+w/S2PSRBa0a8wqjsNmesHr
+ 7nZsYNfFsiCfc8U/j+55Mva2CqSs8RBxMIG21YNs5+84XsEvvCYKimHcVF2fm+/uJgdJ
+ UeLbcYiM27bjGQJ4in7VrEE3JRyVCpaBPx38oTX3zzO7Vv6N/cveyCLl+eKkSxcR2zPU
+ GF7Tj4oXuiboudPqmevExnWWH24HrJ8XtJndBXodVjlPyATj1F8NLcMnKnN//QUX3FgJ
+ Dpdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=eWwA839IZ7dq+a29DyXkGmi7dM/v2sHdleLj59LsJvo=;
+ b=Z7nFuCF691mycvdVq2Glk4uhKJxbx8/Pk79mXwpwryt95GPSJbkvTyfkZeMV7D28vW
+ tMtaTrwuznrAgVssbkGjBWUy+ieBXU5e0ceD9+PRli/Q1BsfAC60j3WqgCMFYqYyjn+M
+ kAhlWfULOQyF6nehFKIhVuWxD2GvkF3P7Q6Gagt9GFkL6tO4P76smcuMCrQWlqPjZqun
+ zPFVlMuy95zL++sJKBXKSrd6FU7Qhx/WI/Ku0qUCzqX4k7aF7nt9ehpLR5yO9WeyaKaJ
+ gAF8xDSWSSLPcAwoS8m+FCXtah4B8q5aK0qGMHaijC+9Xqr/8/u3l5p85m69ueQQ1O7D
+ OgFA==
+X-Gm-Message-State: AOAM531wzyDZwd8LOEyulRLmVh7nZ7azVPF4omEZyT/hFAJMYdMxd02m
+ PAmCzYnH37R17jIG9zL0Lho=
+X-Google-Smtp-Source: ABdhPJw0PQ7LdCWGBl5gstq7lsFeqHSpDXcjrWbUSpr7dI7hbWVIEH2haZKhZCeGWOEo3FhVCBQSqg==
+X-Received: by 2002:a37:f71e:: with SMTP id q30mr26753981qkj.68.1593647332002; 
+ Wed, 01 Jul 2020 16:48:52 -0700 (PDT)
+Received: from LeoBras (200-236-245-17.dynamic.desktop.com.br.
+ [200.236.245.17])
+ by smtp.gmail.com with ESMTPSA id j16sm6708518qtp.92.2020.07.01.16.48.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Jul 2020 16:48:51 -0700 (PDT)
+Message-ID: <0c3de45dfb612745aa2ee4126b3935303d8e8704.camel@gmail.com>
+Subject: Re: [PATCH v2 5/6] powerpc/pseries/iommu: Make use of DDW even if
+ it does not map the partition
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Thiago Jung Bauermann
+ <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
+Date: Wed, 01 Jul 2020 20:48:42 -0300
+In-Reply-To: <0e8bcc38614ec80c7816c07dd4dc70854c2b901d.camel@gmail.com>
+References: <20200624062411.367796-1-leobras.c@gmail.com>
+ <20200624062411.367796-6-leobras.c@gmail.com>
+ <18df09c0-ef83-a0d8-1143-1cb4d50bf6b7@ozlabs.ru>
+ <0e8bcc38614ec80c7816c07dd4dc70854c2b901d.camel@gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,37 +94,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 29 Jun 2020 14:42:33 +0800, Shengjiu Wang wrote:
-> When there is dedicated power domain bound with device, after probing
-> the power will be disabled, then registers are not accessible in
-> fsl_sai_dai_probe(), so regcache only need to be enabled in end of
-> probe() and regcache_mark_dirty should be moved to pm runtime resume
-> callback function.
+On Wed, 2020-07-01 at 16:57 -0300, Leonardo Bras wrote:
+> > It is not necessarily "direct" anymore as the name suggests, you may
+> > want to change that. DMA64_PROPNAME, may be. Thanks,
+> > 
+> 
+> Yeah, you are right.
+> I will change this for next version, also changing the string name to
+> reflect this.
+> 
+> -#define DIRECT64_PROPNAME "linux,direct64-ddr-window-info"
+> +#define DMA64_PROPNAME "linux,dma64-ddr-window-info"
+> 
+> Is that ok?
+> 
+> Thank you for helping!
 
-Applied to
+In fact, there is a lot of places in this file where it's called direct
+window. Should I replace everything?
+Should it be in a separated patch?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Best regards,
+Leonardo
 
-Thanks!
-
-[1/1] ASoC: fsl_sai: Refine regcache usage with pm runtime
-      commit: d8d702e19e997cf3f172487e0659d0e68aa5ede5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
