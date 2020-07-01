@@ -1,51 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2B2210903
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 12:12:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E81210908
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 12:14:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xcVY61rFzDr7d
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 20:12:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xcXP0DsGzDqtK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 20:14:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xbpZ3cvgzDr0f
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 19:41:41 +1000 (AEST)
-IronPort-SDR: NUq2zfrjEPakJvt+bQ4jEmJfDLYNj5MW/i9pt22/EuXgVxPNAd/G+iXDAGutIW2AloZ0WUaZEc
- WlVcA3PpXHAw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9668"; a="146522979"
-X-IronPort-AV: E=Sophos;i="5.75,299,1589266800"; d="scan'208";a="146522979"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2020 02:41:33 -0700
-IronPort-SDR: rYwlHjHDb56q1Bl0UwYJ+/PEZhy+EgCMV+bbzUPrqqDAM+rZoXoFuXq0vjvekwrZRNsi3Cv9JF
- p+EPtTtSLl4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,299,1589266800"; d="scan'208";a="281545133"
-Received: from lkp-server01.sh.intel.com (HELO 28879958b202) ([10.239.97.150])
- by orsmga006.jf.intel.com with ESMTP; 01 Jul 2020 02:41:32 -0700
-Received: from kbuild by 28879958b202 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1jqZFD-0002tO-Gg; Wed, 01 Jul 2020 09:41:31 +0000
-Date: Wed, 01 Jul 2020 17:40:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 3c0356e8994ed88e5234897c0ffee4188f8b9287
-Message-ID: <5efc59f6.msgPmo3oKlCDuTwR%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xcKV6QSMzDr0m
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 20:05:02 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 061A3D4U112370; Wed, 1 Jul 2020 06:04:50 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320pjt3us7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Jul 2020 06:04:50 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 061A3D0h112394;
+ Wed, 1 Jul 2020 06:04:49 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320pjt3ur9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Jul 2020 06:04:49 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0619qH6v009168;
+ Wed, 1 Jul 2020 10:04:47 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 31wwch4dq2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Jul 2020 10:04:47 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 061A4jmi26673334
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 1 Jul 2020 10:04:45 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7B1615205A;
+ Wed,  1 Jul 2020 10:04:45 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id D50F65204E;
+ Wed,  1 Jul 2020 10:04:42 +0000 (GMT)
+Date: Wed, 1 Jul 2020 15:34:42 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200701100442.GB17918@linux.vnet.ibm.com>
+References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
+ <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
+ <20200701084200.GN2369@dhcp22.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200701084200.GN2369@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-01_04:2020-07-01,
+ 2020-07-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 clxscore=1015
+ suspectscore=0 mlxscore=0 adultscore=0 impostorscore=0
+ cotscore=-2147483648 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 bulkscore=0 phishscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007010069
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,121 +92,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: 3c0356e8994ed88e5234897c0ffee4188f8b9287  Automatic merge of 'master', 'next' and 'fixes' (2020-06-30 22:07)
+* Michal Hocko <mhocko@kernel.org> [2020-07-01 10:42:00]:
 
-elapsed time: 1282m
+> 
+> > 
+> > 2. Also existence of dummy node also leads to inconsistent information. The
+> > number of online nodes is inconsistent with the information in the
+> > device-tree and resource-dump
+> > 
+> > 3. When the dummy node is present, single node non-Numa systems end up showing
+> > up as NUMA systems and numa_balancing gets enabled. This will mean we take
+> > the hit from the unnecessary numa hinting faults.
+> 
+> I have to say that I dislike the node online/offline state and directly
+> exporting that to the userspace. Users should only care whether the node
+> has memory/cpus. Numa nodes can be online without any memory. Just
+> offline all the present memory blocks but do not physically hot remove
+> them and you are in the same situation. If users are confused by an
+> output of tools like numactl -H then those could be updated and hide
+> nodes without any memory&cpus.
+> 
+> The autonuma problem sounds interesting but again this patch doesn't
+> really solve the underlying problem because I strongly suspect that the
+> problem is still there when a numa node gets all its memory offline as
+> mentioned above.
+> 
+> While I completely agree that making node 0 special is wrong, I have
+> still hard time to review this very simply looking patch because all the
+> numa initialization is so spread around that this might just blow up
+> at unexpected places. IIRC we have discussed testing in the previous
+> version and David has provided a way to emulate these configurations
+> on x86. Did you manage to use those instruction for additional testing
+> on other than ppc architectures?
+> 
 
-configs tested: 98
-configs skipped: 1
+I have tried all the steps that David mentioned and reported back at
+https://lore.kernel.org/lkml/20200511174731.GD1961@linux.vnet.ibm.com/t/#u
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+As a summary, David's steps are still not creating a memoryless/cpuless on
+x86 VM. I have tried booting with Numa/non-numa on all the x86 machines that
+I could get to.
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20200630
-i386                 randconfig-a003-20200630
-i386                 randconfig-a002-20200630
-i386                 randconfig-a004-20200630
-i386                 randconfig-a005-20200630
-i386                 randconfig-a006-20200630
-x86_64               randconfig-a011-20200630
-x86_64               randconfig-a014-20200630
-x86_64               randconfig-a013-20200630
-x86_64               randconfig-a015-20200630
-x86_64               randconfig-a016-20200630
-x86_64               randconfig-a012-20200630
-i386                 randconfig-a011-20200630
-i386                 randconfig-a016-20200630
-i386                 randconfig-a015-20200630
-i386                 randconfig-a012-20200630
-i386                 randconfig-a014-20200630
-i386                 randconfig-a013-20200630
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Thanks and Regards
+Srikar Dronamraju
