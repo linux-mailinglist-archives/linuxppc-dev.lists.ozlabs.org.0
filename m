@@ -2,76 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A160C210339
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 07:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DD7210346
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 07:23:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xTp323sDzDqpB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 15:10:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xV581LBNzDqly
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jul 2020 15:23:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::644;
- helo=mail-ej1-x644.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ spf=none (no SPF record) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::1043; helo=mail-pj1-x1043.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=fossix.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=odRJ1geK; dkim-atps=neutral
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
- [IPv6:2a00:1450:4864:20::644])
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=JyOIDVWT; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xTm83jFQzDqJH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 15:09:03 +1000 (AEST)
-Received: by mail-ej1-x644.google.com with SMTP id ga4so23055168ejb.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 22:09:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xV3Q5sKGzDqSj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jul 2020 15:22:21 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id h22so10535381pjf.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jun 2020 22:22:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=jsHporRflsSRBonyyCx9KMzLNZb5MKP0RDdeZPzTvew=;
- b=odRJ1geKdCr/so3QsY4B8TGj56/Srlu/ti+PE9rh3/JHMvnyVBG5rOxeHPmd2ffloP
- nEI4qJXYBdSbwZk+oh0v6Vc1MvSu/eEybSc2hrnDANuP3FLxgff7Uy+9M8coTj7uQalx
- A8kVfM3dpBpY5BjJ7t3UK7Rf4vabwOfmj3t0Xfr9qRkGjqcM7NmLtjs7J+YaQUxfayVb
- /toHGxYlIRKe+FJ+7ZjG+Y7VKEgcuzsvoLelDK0KdGXbT4PHPCh0ERdKgJY7ZvPqFNtj
- 7qjw+wPxkOmiS45d82AyPBGwUgiymUrMrMgNVgYZI8D5vy1ZLxAcf/qqfPj2Nn1JHzfn
- ZIQA==
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=JwzS/oVv9S6l1kcjEkWV8SvZAflWcaMFizOPAE3TmCo=;
+ b=JyOIDVWT+r+Rz06fqljLh6v2um5m92lM3YdGmC5N/gy+22d2QyHvK729z1+7mtB5kl
+ RMSvo9EVuXd/tjBYp6G/ALcAmx638OzSpIyEefA+7ETAbxlTTrNOxV6fE75QbshONw6x
+ vzy4/4gUjGG9xttuf3OdPqucn/3MkUsP1oludjeVXI9SKZEMEMUVPDk3SCSgZDjkqaNW
+ YEecOlB9KX1sjsPDP2GRSefOq5OKEcPocLBk+cyBY3UmneXgVXYehGHu3CE+D4vgkMoC
+ gJyrD5wIkv0byLjUpgdEEqzMD9e7cvjKOkUt5jFxD6hXObvlAjKy5smG7nMDQ/gaN2V1
+ Lrow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=jsHporRflsSRBonyyCx9KMzLNZb5MKP0RDdeZPzTvew=;
- b=loSq9NKz/w2wxaqKM1ahW+dhESQrFb4I8cED4QNHopeDlFzu+melAbZUcBQepbbhPz
- PqnycSLdF36jUFnPpHziGiBpPU+viMj3Cf2YiCBXp75ojFrfbtHwhyLhDztdMCMJJL3K
- saKdmcaEalwy83UaFNQy4nvejX3CvHAE885DMfKT2yaIouPQVJ7gdsmBqIbc4Ag6lktM
- /VAGZsA3gz+5jvSQ1n9cY7VIttQ6w49VxDjfnBm2XMIXNoCqqrHyBM26Yx9noWELjTDU
- LB9xD4cFDZXLI9VlU5VIy/IpME8pDch9r2GkSm9R8TLcteqDEK6BH3eUzO6YrWduYQnI
- I6Fw==
-X-Gm-Message-State: AOAM533z8tUxKXYG72+TSffDXUkNiWH5gPiCzAJeeIpFVQN+CuT4bMzi
- LzWRN11Ci0bhmvp1XTirGwr7fz4XgmE9Xd/HbAA9mw==
-X-Google-Smtp-Source: ABdhPJwJOUTc68//QiDCG08PMgx7ieaUctYogS8mUX7/cGgUdFfY8MKvtQb1iznwXD5atkhWEeKYCcb5XLNiqxnpLPQ=
-X-Received: by 2002:a17:907:20af:: with SMTP id
- pw15mr22296111ejb.204.1593580139878; 
- Tue, 30 Jun 2020 22:08:59 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=JwzS/oVv9S6l1kcjEkWV8SvZAflWcaMFizOPAE3TmCo=;
+ b=Y8SgjhD0M6wvixbbyhjhmhGBHVM7+QIQTCxhrJ7L7WIi4QoCdj8UNUaqthqHr0Wuel
+ z1emq8EPfUoxQ60u2szJp3m3pwnycESIH48bKhX69Nd+2nyP+yyj3aV/xPLXX+QkBIrP
+ OcgFW7F9iF5u3hOe0djxYqXpGLW2QrGJ0uEVVIbz4B0NskPdQZmANPYmiDc0TkupnQ6X
+ fjnj9ohlIEvksFMKQIlUcmFWfWJy5HZbZ5i3U8nJmgRS48qQddlOnPXXrix7skFWi8Vw
+ mUohfA5NJ6x4M+9TpHXQBGaqZ5e9kRY8kxH5u8Ykfy1DurV4LBayBi6rdmVjP8AytcLW
+ 6gOA==
+X-Gm-Message-State: AOAM531+w8R8uhDy0496uujvtPxZq/dOumN74E7PxDHIBMt9ex3UnV6C
+ PygGbMWdXOgYxS9O9CjSAzjd3w==
+X-Google-Smtp-Source: ABdhPJyPvCUSmPdUlq+wotyfFaC/k7YHm0LZFMOAHDDVtTmGsZtEAgEW49GFsVCFCVD+Y8HkRN4cDA==
+X-Received: by 2002:a17:90a:778c:: with SMTP id
+ v12mr26412331pjk.34.1593580938600; 
+ Tue, 30 Jun 2020 22:22:18 -0700 (PDT)
+Received: from santosiv.in.ibm.com.com ([203.223.190.240])
+ by smtp.gmail.com with ESMTPSA id y80sm4375201pfb.165.2020.06.30.22.22.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Jun 2020 22:22:17 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: <stable@vger.kernel.org>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH 1/2] powerpc/mmu_gather: enable RCU_TABLE_FREE even for !SMP
+ case
+Date: Wed,  1 Jul 2020 10:51:46 +0530
+Message-Id: <20200701052147.1698510-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200629135722.73558-1-aneesh.kumar@linux.ibm.com>
- <20200629135722.73558-7-aneesh.kumar@linux.ibm.com>
- <20200629160940.GU21462@kitsune.suse.cz>
- <87lfk5hahc.fsf@linux.ibm.com>
- <CAPcyv4hEV=Ps=t=3qsFq3Ob1jzf=ptoZmYTDkgr8D_G0op8uvQ@mail.gmail.com>
- <20200630085413.GW21462@kitsune.suse.cz>
- <9204289b-2274-b5c1-2cd5-8ed5ce28efb4@linux.ibm.com>
- <CAPcyv4gHHjifQcLMdVgo9CyixHxe6OkCYdQ7Jfu2YB7tBqpDNg@mail.gmail.com>
- <4a7bf5c8-a5c7-4292-c7ad-89bcefd7b22d@linux.ibm.com>
-In-Reply-To: <4a7bf5c8-a5c7-4292-c7ad-89bcefd7b22d@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 30 Jun 2020 22:08:48 -0700
-Message-ID: <CAPcyv4jHy=jQVdfFJTN=o3=wgCeLXd3Q29e+qoMUtZDA9KWZGw@mail.gmail.com>
-Subject: Re: [PATCH v6 6/8] powerpc/pmem: Avoid the barrier in flush routines
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,95 +81,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
- =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Sasha Levin <sashal@kernel.org>, Greg KH <greg@kroah.com>,
+ Santosh Sivaraj <santosh@fossix.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 30, 2020 at 8:09 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 7/1/20 1:15 AM, Dan Williams wrote:
-> > On Tue, Jun 30, 2020 at 2:21 AM Aneesh Kumar K.V
-> > <aneesh.kumar@linux.ibm.com> wrote:
-> > [..]
-> >>>> The bio argument isn't for range based flushing, it is for flush
-> >>>> operations that need to complete asynchronously.
-> >>> How does the block layer determine that the pmem device needs
-> >>> asynchronous fushing?
-> >>>
-> >>
-> >>          set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
-> >>
-> >> and dax_synchronous(dev)
-> >
-> > Yes, but I think it is overkill to have an indirect function call just
-> > for a single instruction.
-> >
-> > How about something like this instead, to share a common pmem_wmb()
-> > across x86 and powerpc.
-> >
-> > diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-> > index 20ff30c2ab93..b14009060c83 100644
-> > --- a/drivers/nvdimm/region_devs.c
-> > +++ b/drivers/nvdimm/region_devs.c
-> > @@ -1180,6 +1180,13 @@ int nvdimm_flush(struct nd_region *nd_region,
-> > struct bio *bio)
-> >   {
-> >          int rc = 0;
-> >
-> > +       /*
-> > +        * pmem_wmb() is needed to 'sfence' all previous writes such
-> > +        * that they are architecturally visible for the platform buffer
-> > +        * flush.
-> > +        */
-> > +       pmem_wmb();
-> > +
-> >          if (!nd_region->flush)
-> >                  rc = generic_nvdimm_flush(nd_region);
-> >          else {
-> > @@ -1206,17 +1213,14 @@ int generic_nvdimm_flush(struct nd_region *nd_region)
-> >          idx = this_cpu_add_return(flush_idx, hash_32(current->pid + idx, 8));
-> >
-> >          /*
-> > -        * The first wmb() is needed to 'sfence' all previous writes
-> > -        * such that they are architecturally visible for the platform
-> > -        * buffer flush.  Note that we've already arranged for pmem
-> > -        * writes to avoid the cache via memcpy_flushcache().  The final
-> > -        * wmb() ensures ordering for the NVDIMM flush write.
-> > +        * Note that we've already arranged for pmem writes to avoid the
-> > +        * cache via memcpy_flushcache().  The final wmb() ensures
-> > +        * ordering for the NVDIMM flush write.
-> >           */
-> > -       wmb();
->
->
-> The series already convert this to pmem_wmb().
->
-> >          for (i = 0; i < nd_region->ndr_mappings; i++)
-> >                  if (ndrd_get_flush_wpq(ndrd, i, 0))
-> >                          writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
-> > -       wmb();
-> > +       pmem_wmb();
->
->
-> Should this be pmem_wmb()? This is ordering the above writeq() right?
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 
-Correct, this can just be wmb().
+commit 12e4d53f3f04e81f9e83d6fc10edc7314ab9f6b9 upstream
 
->
-> >
-> >          return 0;
-> >   }
-> >
->
-> This still results in two pmem_wmb() on platforms that doesn't have
-> flush_wpq. I was trying to avoid that by adding a nd_region->flush call
-> back.
+The TLB flush optimisation (a46cc7a90f: powerpc/mm/radix: Improve TLB/PWC
+flushes) may result in random memory corruption.
 
-How about skip or exit early out of generic_nvdimm_flush if
-ndrd->flush_wpq is NULL? That still saves an indirect branch at the
-cost of another conditional, but that should still be worth it.
+On any SMP system, freeing page directories should observe the exact same
+order as normal page freeing:
+
+ 1) unhook page/directory
+ 2) TLB invalidate
+ 3) free page/directory
+
+Without this, any concurrent page-table walk could end up with a
+Use-after-Free.  This is esp.  trivial for anything that has software
+page-table walkers (HAVE_FAST_GUP / software TLB fill) or the hardware
+caches partial page-walks (ie.  caches page directories).
+
+Even on UP this might give issues since mmu_gather is preemptible these
+days.  An interrupt or preempted task accessing user pages might stumble
+into the free page if the hardware caches page directories.
+
+!SMP case is right now broken for radix translation w.r.t page walk
+cache flush.  We can get interrupted in between page table free and
+that would imply we have page walk cache entries pointing to tables
+which got freed already.  Michael said "both our platforms that run on
+Power9 force SMP on in Kconfig, so the !SMP case is unlikely to be a
+problem for anyone in practice, unless they've hacked their kernel to
+build it !SMP."
+
+Link: http://lkml.kernel.org/r/20200116064531.483522-2-aneesh.kumar@linux.ibm.com
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: <stable@vger.kernel.org> # 4.19
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+---
+ arch/powerpc/Kconfig                         | 2 +-
+ arch/powerpc/include/asm/book3s/32/pgalloc.h | 8 --------
+ arch/powerpc/include/asm/book3s/64/pgalloc.h | 2 --
+ arch/powerpc/include/asm/nohash/32/pgalloc.h | 8 --------
+ arch/powerpc/mm/pgtable-book3s64.c           | 7 -------
+ 5 files changed, 1 insertion(+), 26 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f38d153d25861..4863fc0dd945a 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -215,7 +215,7 @@ config PPC
+ 	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
+-	select HAVE_RCU_TABLE_FREE		if SMP
++	select HAVE_RCU_TABLE_FREE
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RELIABLE_STACKTRACE		if PPC64 && CPU_LITTLE_ENDIAN
+ 	select HAVE_SYSCALL_TRACEPOINTS
+diff --git a/arch/powerpc/include/asm/book3s/32/pgalloc.h b/arch/powerpc/include/asm/book3s/32/pgalloc.h
+index 82e44b1a00ae9..79ba3fbb512e3 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgalloc.h
++++ b/arch/powerpc/include/asm/book3s/32/pgalloc.h
+@@ -110,7 +110,6 @@ static inline void pgtable_free(void *table, unsigned index_size)
+ #define check_pgt_cache()	do { } while (0)
+ #define get_hugepd_cache_index(x)  (x)
+ 
+-#ifdef CONFIG_SMP
+ static inline void pgtable_free_tlb(struct mmu_gather *tlb,
+ 				    void *table, int shift)
+ {
+@@ -127,13 +126,6 @@ static inline void __tlb_remove_table(void *_table)
+ 
+ 	pgtable_free(table, shift);
+ }
+-#else
+-static inline void pgtable_free_tlb(struct mmu_gather *tlb,
+-				    void *table, int shift)
+-{
+-	pgtable_free(table, shift);
+-}
+-#endif
+ 
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
+ 				  unsigned long address)
+diff --git a/arch/powerpc/include/asm/book3s/64/pgalloc.h b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+index f9019b579903a..1013c02142139 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgalloc.h
++++ b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+@@ -47,9 +47,7 @@ extern pmd_t *pmd_fragment_alloc(struct mm_struct *, unsigned long);
+ extern void pte_fragment_free(unsigned long *, int);
+ extern void pmd_fragment_free(unsigned long *);
+ extern void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int shift);
+-#ifdef CONFIG_SMP
+ extern void __tlb_remove_table(void *_table);
+-#endif
+ 
+ static inline pgd_t *radix__pgd_alloc(struct mm_struct *mm)
+ {
+diff --git a/arch/powerpc/include/asm/nohash/32/pgalloc.h b/arch/powerpc/include/asm/nohash/32/pgalloc.h
+index 8825953c225b2..96eed46d56842 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgalloc.h
++++ b/arch/powerpc/include/asm/nohash/32/pgalloc.h
+@@ -111,7 +111,6 @@ static inline void pgtable_free(void *table, unsigned index_size)
+ #define check_pgt_cache()	do { } while (0)
+ #define get_hugepd_cache_index(x)	(x)
+ 
+-#ifdef CONFIG_SMP
+ static inline void pgtable_free_tlb(struct mmu_gather *tlb,
+ 				    void *table, int shift)
+ {
+@@ -128,13 +127,6 @@ static inline void __tlb_remove_table(void *_table)
+ 
+ 	pgtable_free(table, shift);
+ }
+-#else
+-static inline void pgtable_free_tlb(struct mmu_gather *tlb,
+-				    void *table, int shift)
+-{
+-	pgtable_free(table, shift);
+-}
+-#endif
+ 
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
+ 				  unsigned long address)
+diff --git a/arch/powerpc/mm/pgtable-book3s64.c b/arch/powerpc/mm/pgtable-book3s64.c
+index 297db665d953c..5b4e9fd8990c2 100644
+--- a/arch/powerpc/mm/pgtable-book3s64.c
++++ b/arch/powerpc/mm/pgtable-book3s64.c
+@@ -432,7 +432,6 @@ static inline void pgtable_free(void *table, int index)
+ 	}
+ }
+ 
+-#ifdef CONFIG_SMP
+ void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int index)
+ {
+ 	unsigned long pgf = (unsigned long)table;
+@@ -449,12 +448,6 @@ void __tlb_remove_table(void *_table)
+ 
+ 	return pgtable_free(table, index);
+ }
+-#else
+-void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int index)
+-{
+-	return pgtable_free(table, index);
+-}
+-#endif
+ 
+ #ifdef CONFIG_PROC_FS
+ atomic_long_t direct_pages_count[MMU_PAGE_COUNT];
+-- 
+2.26.2
+
