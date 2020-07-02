@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2E521171A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 02:20:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B2421171D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 02:23:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xzJ72sszzDqPw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 10:20:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xzMX64NmzDqcy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 10:23:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=D+ZU8wve; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ header.s=20150623 header.b=CF3qIbJf; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xzGH4FVgzDqMX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 10:18:30 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id d4so12547903pgk.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 17:18:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xzKr2SmZzDqMX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 10:21:36 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id u185so9680796pfu.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 17:21:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=HyC3wfaKDwIkN5ljsKiAJ13Ve0kbqXFjUZFkbdF61hU=;
- b=D+ZU8wve3t26pQj++RBu2jqqCMQu2CFBw08iCHE/N0Bj42QHNWL/NzXWEWfpXMs49N
- PMGw7qBaHbbmSmEOHm2sYZBcJ04n5go2gBPbCa9qSJ1V8O7/jwQ1DhLPGwi6fvRAvPQ5
- xhm3RT9R54FMg0ru8jsDNfDcsnCRW+dTZEfW5zzpt6bmeio+ep9WxB0rUwA05LAKRxV+
- vYvpbq/E9MmNhn50cL8u5Y01P8zf4JRLKamVBVzZz0UAf+8zF3c5syFLXaxTPavtpUlg
- gjAXtJQgNiFHEgkVXnZkGTPXEJ9AZOzU/wcYbLy8TwlXBCqDgA17v4IGcLBsph57qyiz
- L/Mw==
+ bh=k99gD3j7cM4HAZSuy9QSQGjxGmBLc6aQoot8esmutPc=;
+ b=CF3qIbJfDfAohFhgfYfN8GU+6dBzIVUj2PgDAz9T0F4kjQkH9AXDhhmMr0Z8TUkSKT
+ 1ts8S8cDlzU+pyTKAv/w2oX61wzZAONUEdKO9Gq2hVZ6nquCl6oj2LPv6OCU8OooeCRt
+ 8hwhecNVwUmr0K6WUtlRfvnRigRJhX9SOIwYgwr1Pz7OdTHtncoHWM65Leqh+RL5zjpi
+ M7toRvKnGsJOe36fk5lSna/qkb2CpKqH8cwXuc+gUORyW7clOiwCEeRjL5CWQLvAUm72
+ PDdCZkG4rVIOJTs2lYUdWA+SjTDoDEFJNF+3iUS4daxC7gh+inMWz6Ahy6uvGKGabB/0
+ uLyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=HyC3wfaKDwIkN5ljsKiAJ13Ve0kbqXFjUZFkbdF61hU=;
- b=qxQFw1Q3Q8uU+EE2nzAPyBGW6+8sUVZXKfAkgJDwax/Es39btp/fVzajYnQEFWtkk+
- VwgRMjnqUiwoXAhR897w1LLC1Kr8XAiwg5qzviXSCuV6CBSePyo/6vuCRVX9qwZ+4cQ3
- a/6JA3WdIkGd8j/d9Edwuy1HOuYrAyuZBCOPlI+a5iDUI3z9tnYofgPE5RVyCAzma3Hb
- q9SuhRZft8xK1eDGOXgx1e6XOcynoBaAPNoXMk2e3nMlGfn656Hm1bNODtukkbiKrpfx
- WTlYGNNrHdT+DDyxNx5MUq8gqX6vjto/L4zEm28DRRt9+vArpBNc7aXcCLVaShyVbXYM
- uGGQ==
-X-Gm-Message-State: AOAM530Vk9vsdqXmAIW1gTqRnfV8djiH355NrGLYE8Duqnb1rSzZfnDm
- FOBmaxTSj0GKE9OUduM6wMe9/w==
-X-Google-Smtp-Source: ABdhPJyV4RxWnDRhvJ713rA+505bvT+0d1DT8bNYCHh0r1gIardublOisgQ4tHuoyQ5kalh6UbXpaw==
-X-Received: by 2002:aa7:859a:: with SMTP id w26mr24805308pfn.10.1593649107283; 
- Wed, 01 Jul 2020 17:18:27 -0700 (PDT)
+ bh=k99gD3j7cM4HAZSuy9QSQGjxGmBLc6aQoot8esmutPc=;
+ b=hcCoo7GyfdNf3wXxq123FX4qzkJRT26Na4ET0gPVyOqFqbEGXCWNwvJhyn8hUsvTG9
+ A8Qhy0yJwFkIpyLS2DvA1RA4pptF6AsZo9CgskcbbnhiSld7yTVjB0azu7nI+IecakMw
+ ZusQ7MA90sh4lw1Z50pOMp5euaM5XvljpAOeIDl4bG6IuQxYD2yPovXXqMirHykm7sJG
+ atn1W+P39dTjJZPy+nIADuFyOfp4I3VeGBEZurvbcgnce2ZY9bzhqHp0HI2XGCCR7C8q
+ 6p9w42+XSS4PP/WK1TsQs8DQ1k3diK8ZnlN4UOZoSh77tB28gF2ivUuvlq0WXDR+j9mg
+ IhMA==
+X-Gm-Message-State: AOAM531IKXds83KjQEfaLBDGDt9QT0tfDoer/DWhbzsQSdlbgyAec4B7
+ FSygEItCJ4TwV3oR9XT/Vxuyuw==
+X-Google-Smtp-Source: ABdhPJzTqcBkjb+2/a5POyhPYfSKVs3IIczgXXts2cx/g9avpzbANzKqLV0SP0r4WuYlt7OK5WwAcQ==
+X-Received: by 2002:aa7:970a:: with SMTP id a10mr12072810pfg.319.1593649293437; 
+ Wed, 01 Jul 2020 17:21:33 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id e3sm3414393pjv.47.2020.07.01.17.18.23
+ by smtp.gmail.com with ESMTPSA id q1sm7452908pfk.132.2020.07.01.17.21.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Jul 2020 17:18:26 -0700 (PDT)
-Subject: Re: [PATCH v2 2/6] powerpc/pseries/iommu: Update call to
- ibm,query-pe-dma-windows
+ Wed, 01 Jul 2020 17:21:32 -0700 (PDT)
+Subject: Re: [PATCH v2 1/6] powerpc/pseries/iommu: Create defines for
+ operations in ibm,ddw-applicable
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
 References: <20200624062411.367796-1-leobras.c@gmail.com>
- <20200624062411.367796-3-leobras.c@gmail.com>
- <5411e8a1-02a3-1287-40bf-ccc9db7a4f88@ozlabs.ru>
- <fbcbc7eb298930195b7146221dc1eded6bf556e4.camel@gmail.com>
+ <20200624062411.367796-2-leobras.c@gmail.com>
+ <b0caaaa0-14c9-51de-bb92-5be8ccaa418d@ozlabs.ru>
+ <01443a2f1d58a595ddff03fd14fd56f4c26171bf.camel@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -145,12 +145,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <47ad4907-5f63-56e1-2985-a7a7f4d0ba35@ozlabs.ru>
-Date: Thu, 2 Jul 2020 10:18:21 +1000
+Message-ID: <a884da45-7778-95cf-d65b-a6c82d2024a7@ozlabs.ru>
+Date: Thu, 2 Jul 2020 10:21:27 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <fbcbc7eb298930195b7146221dc1eded6bf556e4.camel@gmail.com>
+In-Reply-To: <01443a2f1d58a595ddff03fd14fd56f4c26171bf.camel@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -172,86 +172,50 @@ Sender: "Linuxppc-dev"
 
 
 
-On 02/07/2020 00:04, Leonardo Bras wrote:
-> On Wed, 2020-07-01 at 18:17 +1000, Alexey Kardashevskiy wrote:
+On 01/07/2020 23:28, Leonardo Bras wrote:
+> On Wed, 2020-07-01 at 18:16 +1000, Alexey Kardashevskiy wrote:
 >>
->>> +#define DDW_EXT_SIZE		0
->>> +#define DDW_EXT_RESET_DMA_WIN	1
->>> +#define DDW_EXT_QUERY_OUT_SIZE	2
->>
->> #define DDW_EXT_LAST (DDW_EXT_QUERY_OUT_SIZE + 1)
->> ...
->>
->>
->>> +
->>>  static struct iommu_table_group *iommu_pseries_alloc_group(int node)
->>>  {
->>>  	struct iommu_table_group *table_group;
->>> @@ -339,7 +343,7 @@ struct direct_window {
->>>  /* Dynamic DMA Window support */
->>>  struct ddw_query_response {
->>>  	u32 windows_available;
->>> -	u32 largest_available_block;
->>> +	u64 largest_available_block;
->>>  	u32 page_size;
->>>  	u32 migration_capable;
->>>  };
->>> @@ -875,13 +879,29 @@ static int find_existing_ddw_windows(void)
->>>  machine_arch_initcall(pseries, find_existing_ddw_windows);
+>> On 24/06/2020 16:24, Leonardo Bras wrote:
+>>> Create defines to help handling ibm,ddw-applicable values, avoiding
+>>> confusion about the index of given operations.
+>>>
+>>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+>>> ---
+>>>  arch/powerpc/platforms/pseries/iommu.c | 40 +++++++++++++++-----------
+>>>  1 file changed, 23 insertions(+), 17 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>>> index 6d47b4a3ce39..68d2aa9c71a8 100644
+>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>> @@ -39,6 +39,11 @@
 >>>  
->>>  static int query_ddw(struct pci_dev *dev, const u32 *ddw_avail,
->>> -			struct ddw_query_response *query)
->>> +		     struct ddw_query_response *query,
->>> +		     struct device_node *parent)
->>>  {
->>>  	struct device_node *dn;
->>>  	struct pci_dn *pdn;
->>> -	u32 cfg_addr;
->>> +	u32 cfg_addr, query_out[5], ddw_ext[DDW_EXT_QUERY_OUT_SIZE + 1];
+>>>  #include "pseries.h"
+>>>  
+>>> +#define DDW_QUERY_PE_DMA_WIN	0
+>>> +#define DDW_CREATE_PE_DMA_WIN	1
+>>> +#define DDW_REMOVE_PE_DMA_WIN	2
+>>> +#define DDW_APPLICABLE_SIZE	3
 >>
->> ... and use DDW_EXT_LAST here.
-> 
-> Because of the growing nature of ddw-extensions, I intentionally let
-> this be (DDW_EXT_QUERY_OUT_SIZE + 1). If we create a DDW_EXT_LAST, it
-> will be incremented in the future if more extensions come to exist.
-> 
-> I mean, I previously saw no reason for allocating space for extensions
-> after the desired one, as they won't be used here.
-
-Ah, my bad, you're right.
-
-
-> 
+>> #define DDW_APPLICABLE_SIZE  (DDW_REMOVE_PE_DMA_WIN + 1)
 >>
->>
->>>  	u64 buid;
->>> -	int ret;
->>> +	int ret, out_sz;
->>> +
->>> +	/*
->>> +	 * From LoPAR level 2.8, "ibm,ddw-extensions" index 3 can rule how many
->>> +	 * output parameters ibm,query-pe-dma-windows will have, ranging from
->>> +	 * 5 to 6.
->>> +	 */
->>> +
->>> +	ret = of_property_read_u32_array(parent, "ibm,ddw-extensions",
->>> +					 &ddw_ext[0],
->>> +					 DDW_EXT_QUERY_OUT_SIZE + 1);
+>> thanks,
 > 
-> In this case, I made sure not to cross (DDW_EXT_QUERY_OUT_SIZE + 1)
-> while reading the extensions from the property.
+> Thanks for the feedback!
+> About this (and patch #2), would it be better to use enum ?
+> enum {
+> 	DDW_QUERY_PE_DMA_WIN,
+> 	DDW_CREATE_PE_DMA_WIN,
+> 	DDW_REMOVE_PE_DMA_WIN,
 > 
-> What do you think about it? 
+> 	DDW_APPLICABLE_SIZE
+> }
+> IMO, it looks better than all the defines before.
+> 
+> What do you think?
 
-I think you want something like:
-
-static inline int ddw_read_ext(const struct device_node *np, int extnum,
-u32 *ret)
-{
-retun of_property_read_u32_index(np, "ibm,ddw-extensions", extnum + 1, ret);
-}
-
-These "+1"'s all over the place are confusing.
+No, not really, these come from a binary interface so the reader of this
+cares about absolute numbers and rather wants to see them explicitly.
 
 
 -- 
