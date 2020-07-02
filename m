@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D003F212D1B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 21:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CF5212D16
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 21:25:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ySlR6y4PzDqPF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 05:26:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ySjV5PXZzDqV5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 05:25:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,29 +18,29 @@ Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ySdh70flzDqLc
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ySdh73YGzDqLj
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:22:00 +1000 (AEST)
-IronPort-SDR: klOkhxg/as02HxKlCbBQorQ6AO4dHXskpsW4Jef6RNWCIzLiT400YuOFwacgbT2jmf9zdO0Rvr
- HZazAXe6Viig==
-X-IronPort-AV: E=McAfee;i="6000,8403,9670"; a="147015718"
-X-IronPort-AV: E=Sophos;i="5.75,305,1589266800"; d="scan'208";a="147015718"
+IronPort-SDR: loZzt+SCJSQERJku5kWx5PlCI/IZZci2GkdEDqfEgmSBC9vN+cVrWLddS+MupXP1XxYrAnHVT0
+ ukcnOCOCNjcg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9670"; a="147015729"
+X-IronPort-AV: E=Sophos;i="5.75,305,1589266800"; d="scan'208";a="147015729"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2020 12:21:56 -0700
-IronPort-SDR: 6OjvD23UP84IymI1Eg3XIOo4iHMZS45yBUSzHrmHf1EBCQ0bK3xxVoyJdVmINb5RhnWKNzD3hN
- U18IDw47Xx7A==
-X-IronPort-AV: E=Sophos;i="5.75,305,1589266800"; d="scan'208";a="304345268"
+ 02 Jul 2020 12:21:58 -0700
+IronPort-SDR: i3oRHcmPBT82bLG9COiew6nDKoIzPpGO6/4tCOuGasscx8IKZ/JXKgGKLXaTK4feUDR8CZNolH
+ ejHREWfSnrKA==
+X-IronPort-AV: E=Sophos;i="5.75,305,1589266800"; d="scan'208";a="304345288"
 Received: from dhprice-mobl1.amr.corp.intel.com (HELO
  pbossart-mobl3.amr.corp.intel.com) ([10.254.75.219])
  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2020 12:21:54 -0700
+ 02 Jul 2020 12:21:56 -0700
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 To: alsa-devel@alsa-project.org
-Subject: [PATCH v2 2/6] ASoC: fsl: fsl_ssi: fix kernel-doc
-Date: Thu,  2 Jul 2020 14:21:37 -0500
-Message-Id: <20200702192141.168018-3-pierre-louis.bossart@linux.intel.com>
+Subject: [PATCH v2 3/6] ASoC: fsl: fsl-asoc-card: fix kernel-doc
+Date: Thu,  2 Jul 2020 14:21:38 -0500
+Message-Id: <20200702192141.168018-4-pierre-louis.bossart@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200702192141.168018-1-pierre-louis.bossart@linux.intel.com>
 References: <20200702192141.168018-1-pierre-louis.bossart@linux.intel.com>
@@ -69,221 +69,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix W=1 warnings. The kernel-doc support is partial, add more
-descriptions and follow proper syntax
+Fix W=1 warnings. Kernel-doc syntax was not properly used.
 
 Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 ---
- sound/soc/fsl/fsl_ssi.c | 70 ++++++++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 26 deletions(-)
+ sound/soc/fsl/fsl-asoc-card.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
-index 1a2fa7f18142..7ec80b240563 100644
---- a/sound/soc/fsl/fsl_ssi.c
-+++ b/sound/soc/fsl/fsl_ssi.c
-@@ -203,12 +203,10 @@ struct fsl_ssi_soc_data {
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 57ea1b072326..faac6ce9a82c 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -33,8 +33,7 @@
+ #define DAI_FMT_BASE (SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF)
+ 
+ /**
+- * CODEC private data
+- *
++ * struct codec_priv - CODEC private data
+  * @mclk_freq: Clock rate of MCLK
+  * @mclk_id: MCLK (or main clock) id for set_sysclk()
+  * @fll_id: FLL (or secordary clock) id for set_sysclk()
+@@ -48,11 +47,10 @@ struct codec_priv {
  };
  
  /**
-- * fsl_ssi: per-SSI private data
+- * CPU private data
 - *
-+ * struct fsl_ssi - per-SSI private data
-  * @regs: Pointer to the regmap registers
-  * @irq: IRQ of this SSI
-  * @cpu_dai_drv: CPU DAI driver for this device
-- *
-  * @dai_fmt: DAI configuration this device is currently used with
-  * @streams: Mask of current active streams: BIT(TX) and BIT(RX)
-  * @i2s_net: I2S and Network mode configurations of SCR register
-@@ -221,38 +219,29 @@ struct fsl_ssi_soc_data {
-  * @slot_width: Width of each DAI slot
-  * @slots: Number of slots
-  * @regvals: Specific RX/TX register settings
-- *
-  * @clk: Clock source to access register
-  * @baudclk: Clock source to generate bit and frame-sync clocks
-  * @baudclk_streams: Active streams that are using baudclk
-- *
-  * @regcache_sfcsr: Cache sfcsr register value during suspend and resume
-  * @regcache_sacnt: Cache sacnt register value during suspend and resume
-- *
-  * @dma_params_tx: DMA transmit parameters
-  * @dma_params_rx: DMA receive parameters
-  * @ssi_phys: physical address of the SSI registers
-- *
-  * @fiq_params: FIQ stream filtering parameters
-- *
-  * @card_pdev: Platform_device pointer to register a sound card for PowerPC or
-  *             to register a CODEC platform device for AC97
-  * @card_name: Platform_device name to register a sound card for PowerPC or
-  *             to register a CODEC platform device for AC97
-  * @card_idx: The index of SSI to register a sound card for PowerPC or
-  *            to register a CODEC platform device for AC97
-- *
-  * @dbg_stats: Debugging statistics
-- *
-  * @soc: SoC specific data
-  * @dev: Pointer to &pdev->dev
-- *
-  * @fifo_watermark: The FIFO watermark setting. Notifies DMA when there are
-  *                  @fifo_watermark or fewer words in TX fifo or
-  *                  @fifo_watermark or more empty words in RX fifo.
-  * @dma_maxburst: Max number of words to transfer in one go. So far,
-  *                this is always the same as fifo_watermark.
-- *
-  * @ac97_reg_lock: Mutex lock to serialize AC97 register access operations
-  */
- struct fsl_ssi {
-@@ -374,7 +363,9 @@ static bool fsl_ssi_is_i2s_cbm_cfs(struct fsl_ssi *ssi)
- }
- 
- /**
-- * Interrupt handler to gather states
-+ * fsl_ssi_irq - Interrupt handler to gather states
-+ * @irq: irq number
-+ * @dev_id: context
-  */
- static irqreturn_t fsl_ssi_isr(int irq, void *dev_id)
- {
-@@ -395,7 +386,10 @@ static irqreturn_t fsl_ssi_isr(int irq, void *dev_id)
- }
- 
- /**
-- * Set SCR, SIER, STCR and SRCR registers with cached values in regvals
-+ * fsl_ssi_config_enable - Set SCR, SIER, STCR and SRCR registers with
-+ * cached values in regvals
-+ * @ssi: SSI context
-+ * @tx: direction
+- * @sysclk_freq[2]: SYSCLK rates for set_sysclk()
+- * @sysclk_dir[2]: SYSCLK directions for set_sysclk()
+- * @sysclk_id[2]: SYSCLK ids for set_sysclk()
++ * struct cpu_priv - CPU private data
++ * @sysclk_freq: SYSCLK rates for set_sysclk()
++ * @sysclk_dir: SYSCLK directions for set_sysclk()
++ * @sysclk_id: SYSCLK ids for set_sysclk()
+  * @slot_width: Slot width of each frame
   *
-  * Notes:
-  * 1) For offline_config SoCs, enable all necessary bits of both streams
-@@ -474,7 +468,7 @@ static void fsl_ssi_config_enable(struct fsl_ssi *ssi, bool tx)
- 	ssi->streams |= BIT(dir);
- }
- 
--/**
-+/*
-  * Exclude bits that are used by the opposite stream
-  *
-  * When both streams are active, disabling some bits for the current stream
-@@ -495,7 +489,10 @@ static void fsl_ssi_config_enable(struct fsl_ssi *ssi, bool tx)
- 	((vals) & _ssi_xor_shared_bits(vals, avals, aactive))
- 
- /**
-- * Unset SCR, SIER, STCR and SRCR registers with cached values in regvals
-+ * fsl_ssi_config_disable - Unset SCR, SIER, STCR and SRCR registers
-+ * with cached values in regvals
-+ * @ssi: SSI context
-+ * @tx: direction
-  *
-  * Notes:
-  * 1) For offline_config SoCs, to avoid online reconfigurations, disable all
-@@ -577,7 +574,9 @@ static void fsl_ssi_tx_ac97_saccst_setup(struct fsl_ssi *ssi)
- }
- 
- /**
-- * Cache critical bits of SIER, SRCR, STCR and SCR to later set them safely
-+ * fsl_ssi_setup_regvals - Cache critical bits of SIER, SRCR, STCR and
-+ * SCR to later set them safely
-+ * @ssi: SSI context
-  */
- static void fsl_ssi_setup_regvals(struct fsl_ssi *ssi)
- {
-@@ -661,9 +660,12 @@ static void fsl_ssi_shutdown(struct snd_pcm_substream *substream,
- }
- 
- /**
-- * Configure Digital Audio Interface bit clock
-+ * fsl_ssi_set_bclk - Configure Digital Audio Interface bit clock
-+ * @substream: ASoC substream
-+ * @dai: pointer to DAI
-+ * @hw_params: pointers to hw_params
-  *
-- * Note: This function can be only called when using SSI as DAI master
-+ * Notes: This function can be only called when using SSI as DAI master
-  *
-  * Quick instruction for parameters:
-  * freq: Output BCLK frequency = samplerate * slots * slot_width
-@@ -782,7 +784,10 @@ static int fsl_ssi_set_bclk(struct snd_pcm_substream *substream,
- }
- 
- /**
-- * Configure SSI based on PCM hardware parameters
-+ * fsl_ssi_hw_params - Configure SSI based on PCM hardware parameters
-+ * @substream: ASoC substream
-+ * @hw_params: pointers to hw_params
-+ * @dai: pointer to DAI
-  *
-  * Notes:
-  * 1) SxCCR.WL bits are critical bits that require SSI to be temporarily
-@@ -997,7 +1002,9 @@ static int _fsl_ssi_set_dai_fmt(struct fsl_ssi *ssi, unsigned int fmt)
- }
- 
- /**
-- * Configure Digital Audio Interface (DAI) Format
-+ * fsl_ssi_set_dai_fmt - Configure Digital Audio Interface (DAI) Format
-+ * @dai: pointer to DAI
-+ * @fmt: format mask
-  */
- static int fsl_ssi_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- {
-@@ -1011,7 +1018,12 @@ static int fsl_ssi_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- }
- 
- /**
-- * Set TDM slot number and slot width
-+ * fsl_ssi_set_dai_tdm_slot - Set TDM slot number and slot width
-+ * @dai: pointer to DAI
-+ * @tx_mask: mask for TX
-+ * @rx_mask: mask for RX
-+ * @slots: number of slots
-+ * @slot_width: number of bits per slot
-  */
- static int fsl_ssi_set_dai_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask,
- 				    u32 rx_mask, int slots, int slot_width)
-@@ -1055,7 +1067,10 @@ static int fsl_ssi_set_dai_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask,
- }
- 
- /**
-- * Start or stop SSI and corresponding DMA transaction.
-+ * fsl_ssi_trigger - Start or stop SSI and corresponding DMA transaction.
-+ * @substream: ASoC substream
-+ * @cmd: trigger command
-+ * @dai: pointer to DAI
-  *
-  * The DMA channel is in external master start and pause mode, which
-  * means the SSI completely controls the flow of data.
-@@ -1239,7 +1254,8 @@ static struct snd_ac97_bus_ops fsl_ssi_ac97_ops = {
+  * Note: [1] for tx and [0] for rx
+@@ -65,9 +63,8 @@ struct cpu_priv {
  };
  
  /**
-- * Initialize SSI registers
-+ * fsl_ssi_hw_init - Initialize SSI registers
-+ * @ssi: SSI context
-  */
- static int fsl_ssi_hw_init(struct fsl_ssi *ssi)
- {
-@@ -1268,7 +1284,8 @@ static int fsl_ssi_hw_init(struct fsl_ssi *ssi)
- }
+- * Freescale Generic ASOC card private data
+- *
+- * @dai_link[3]: DAI link structure including normal one and DPCM link
++ * struct fsl_asoc_card_priv - Freescale Generic ASOC card private data
++ * @dai_link: DAI link structure including normal one and DPCM link
+  * @pdev: platform device pointer
+  * @codec_priv: CODEC private data
+  * @cpu_priv: CPU private data
+@@ -94,8 +91,8 @@ struct fsl_asoc_card_priv {
+ 	char name[32];
+ };
  
- /**
-- * Clear SSI registers
-+ * fsl_ssi_hw_clean - Clear SSI registers
-+ * @ssi: SSI context
-  */
- static void fsl_ssi_hw_clean(struct fsl_ssi *ssi)
- {
-@@ -1285,7 +1302,8 @@ static void fsl_ssi_hw_clean(struct fsl_ssi *ssi)
- 		regmap_update_bits(ssi->regs, REG_SSI_SCR, SSI_SCR_SSIEN, 0);
- 	}
- }
 -/**
-+
+- * This dapm route map exsits for DPCM link only.
 +/*
-  * Make every character in a string lower-case
-  */
- static void make_lowercase(char *s)
++ * This dapm route map exits for DPCM link only.
+  * The other routes shall go through Device Tree.
+  *
+  * Note: keep all ASRC routes in the second half
 -- 
 2.25.1
 
