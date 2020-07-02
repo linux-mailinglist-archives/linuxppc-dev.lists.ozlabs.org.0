@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B2421171D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 02:23:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA996211722
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 02:27:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xzMX64NmzDqcy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 10:23:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49xzSl5bBNzDqZS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 10:27:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=CF3qIbJf; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20150623 header.b=uyHygEaA; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xzKr2SmZzDqMX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 10:21:36 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id u185so9680796pfu.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 17:21:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xzQk46dZzDqCl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 10:25:50 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id gc9so5154936pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 17:25:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=k99gD3j7cM4HAZSuy9QSQGjxGmBLc6aQoot8esmutPc=;
- b=CF3qIbJfDfAohFhgfYfN8GU+6dBzIVUj2PgDAz9T0F4kjQkH9AXDhhmMr0Z8TUkSKT
- 1ts8S8cDlzU+pyTKAv/w2oX61wzZAONUEdKO9Gq2hVZ6nquCl6oj2LPv6OCU8OooeCRt
- 8hwhecNVwUmr0K6WUtlRfvnRigRJhX9SOIwYgwr1Pz7OdTHtncoHWM65Leqh+RL5zjpi
- M7toRvKnGsJOe36fk5lSna/qkb2CpKqH8cwXuc+gUORyW7clOiwCEeRjL5CWQLvAUm72
- PDdCZkG4rVIOJTs2lYUdWA+SjTDoDEFJNF+3iUS4daxC7gh+inMWz6Ahy6uvGKGabB/0
- uLyA==
+ bh=GiOiIEreHai68qndeky21ibubr5pF9HK5Dtgwh5kAUo=;
+ b=uyHygEaAKTObiG0zFxV7a31D8FMziPZ1iUbzLv+GkJzSatoobsaUXCbrVNGjxWj0zb
+ lQsdBsnuWzEkK/dzaI2VM5Ojq2GpJfZ5U1GiX6rGjU2vXoqlm6JLUOneKh8C8KEVegcv
+ sxiyaEH1UPbA/APiH/DxVfYxAf3QUx9g/2Prb/+RiNGbfjzM8h7jqVgROTdpiQdRfhum
+ DAc3BwurN7NWwZ1wflEzWjf+yC4ZwoH9UeUReWQV5jhUBgf4H6cyxCBWVnMDs4fhCpq4
+ yRaewT4sKyDRZ2S4MShlcZghX3LMgg799DAEi9dtu3D/T7U/L9cCk/pqZ1rEmbfxVkMR
+ TAwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=k99gD3j7cM4HAZSuy9QSQGjxGmBLc6aQoot8esmutPc=;
- b=hcCoo7GyfdNf3wXxq123FX4qzkJRT26Na4ET0gPVyOqFqbEGXCWNwvJhyn8hUsvTG9
- A8Qhy0yJwFkIpyLS2DvA1RA4pptF6AsZo9CgskcbbnhiSld7yTVjB0azu7nI+IecakMw
- ZusQ7MA90sh4lw1Z50pOMp5euaM5XvljpAOeIDl4bG6IuQxYD2yPovXXqMirHykm7sJG
- atn1W+P39dTjJZPy+nIADuFyOfp4I3VeGBEZurvbcgnce2ZY9bzhqHp0HI2XGCCR7C8q
- 6p9w42+XSS4PP/WK1TsQs8DQ1k3diK8ZnlN4UOZoSh77tB28gF2ivUuvlq0WXDR+j9mg
- IhMA==
-X-Gm-Message-State: AOAM531IKXds83KjQEfaLBDGDt9QT0tfDoer/DWhbzsQSdlbgyAec4B7
- FSygEItCJ4TwV3oR9XT/Vxuyuw==
-X-Google-Smtp-Source: ABdhPJzTqcBkjb+2/a5POyhPYfSKVs3IIczgXXts2cx/g9avpzbANzKqLV0SP0r4WuYlt7OK5WwAcQ==
-X-Received: by 2002:aa7:970a:: with SMTP id a10mr12072810pfg.319.1593649293437; 
- Wed, 01 Jul 2020 17:21:33 -0700 (PDT)
+ bh=GiOiIEreHai68qndeky21ibubr5pF9HK5Dtgwh5kAUo=;
+ b=BgNOTB8AsIZMt/XlCQXCTww38UKst4LYS0sQnkHGlh21GDkiEypO/B1ql1t27qMlpn
+ srPIH4kHp4gR5imTAqZ6fOEbIweqGFw5sp16LCyTjknJnRnP7tMBErs1pJ+4uxM/Zz7I
+ qGHB90XpXQ6+ZP6dzHHFNndi6U3CjU7GPI9YH4njwiELQii0vLwsFlumY6rmVpNDa5qM
+ Oeuczb4tTcvOnezWkUU9a3Na6eAIfz262QNNv74Z1uXEW+PDhioaLwxvMA1dNeZgQ+PK
+ G0nCdsODHxhMbuvStU+3t2jk+x9layzZHAfyEvycWV783uXnfUIpJfb6LwFKW5u1I0OH
+ EIGg==
+X-Gm-Message-State: AOAM532+X18I+q0RtOLt5x+ry7WlzjB8iANargpr8aidhLX5n+l5GsCD
+ 0MnibfcVnXxr5Av5nMFIRR4LUg==
+X-Google-Smtp-Source: ABdhPJzHl4EnT9TB5i2KhQDNGRu369jdjci6JzB858wWBTY3siZFFliJqOAdrrZskngsHGT3Uyx7Wg==
+X-Received: by 2002:a17:90a:1544:: with SMTP id
+ y4mr29916282pja.130.1593649546466; 
+ Wed, 01 Jul 2020 17:25:46 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id q1sm7452908pfk.132.2020.07.01.17.21.29
+ by smtp.gmail.com with ESMTPSA id w29sm6837901pfq.128.2020.07.01.17.25.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Jul 2020 17:21:32 -0700 (PDT)
-Subject: Re: [PATCH v2 1/6] powerpc/pseries/iommu: Create defines for
- operations in ibm,ddw-applicable
+ Wed, 01 Jul 2020 17:25:45 -0700 (PDT)
+Subject: Re: [PATCH v2 4/6] powerpc/pseries/iommu: Remove default DMA window
+ before creating DDW
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
 References: <20200624062411.367796-1-leobras.c@gmail.com>
- <20200624062411.367796-2-leobras.c@gmail.com>
- <b0caaaa0-14c9-51de-bb92-5be8ccaa418d@ozlabs.ru>
- <01443a2f1d58a595ddff03fd14fd56f4c26171bf.camel@gmail.com>
+ <20200624062411.367796-5-leobras.c@gmail.com>
+ <e00340a3-1070-a787-5acc-0bfc37f73dff@ozlabs.ru>
+ <42e7174bf60227caee4d1c353235e42b90305632.camel@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -145,12 +146,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <a884da45-7778-95cf-d65b-a6c82d2024a7@ozlabs.ru>
-Date: Thu, 2 Jul 2020 10:21:27 +1000
+Message-ID: <fa5ab90d-dc00-4b28-28e1-432720d4b614@ozlabs.ru>
+Date: Thu, 2 Jul 2020 10:25:41 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <01443a2f1d58a595ddff03fd14fd56f4c26171bf.camel@gmail.com>
+In-Reply-To: <42e7174bf60227caee4d1c353235e42b90305632.camel@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -172,51 +173,210 @@ Sender: "Linuxppc-dev"
 
 
 
-On 01/07/2020 23:28, Leonardo Bras wrote:
-> On Wed, 2020-07-01 at 18:16 +1000, Alexey Kardashevskiy wrote:
+On 02/07/2020 05:48, Leonardo Bras wrote:
+> On Wed, 2020-07-01 at 18:17 +1000, Alexey Kardashevskiy wrote:
 >>
 >> On 24/06/2020 16:24, Leonardo Bras wrote:
->>> Create defines to help handling ibm,ddw-applicable values, avoiding
->>> confusion about the index of given operations.
+>>> On LoPAR "DMA Window Manipulation Calls", it's recommended to remove the
+>>> default DMA window for the device, before attempting to configure a DDW,
+>>> in order to make the maximum resources available for the next DDW to be
+>>> created.
+>>>
+>>> This is a requirement for some devices to use DDW, given they only
+>>> allow one DMA window.
+>>
+>> Devices never know about these windows, it is purely PHB's side of
+>> things. A device can access any address on the bus, the bus can generate
+>> an exception if there is no window behind the address OR some other
+>> device's MMIO. We could actually create a second window in addition to
+>> the first one and allocate bus addresses from both, we just simplifying
+>> this by merging two separate non-adjacent windows into one.
+> 
+> That's interesting, I was not aware of this. 
+> I will try to improve this commit message with this info.
+> Thanks for sharing!
+> 
+>>>>> If setting up a new DDW fails anywhere after the removal of this
+>>> default DMA window, it's needed to restore the default DMA window.
+>>> For this, an implementation of ibm,reset-pe-dma-windows rtas call is
+>>> needed:
+>>>
+>>> Platforms supporting the DDW option starting with LoPAR level 2.7 implement
+>>> ibm,ddw-extensions. The first extension available (index 2) carries the
+>>> token for ibm,reset-pe-dma-windows rtas call, which is used to restore
+>>> the default DMA window for a device, if it has been deleted.
+>>>
+>>> It does so by resetting the TCE table allocation for the PE to it's
+>>> boot time value, available in "ibm,dma-window" device tree node.
 >>>
 >>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 >>> ---
->>>  arch/powerpc/platforms/pseries/iommu.c | 40 +++++++++++++++-----------
->>>  1 file changed, 23 insertions(+), 17 deletions(-)
+>>>  arch/powerpc/platforms/pseries/iommu.c | 70 ++++++++++++++++++++++----
+>>>  1 file changed, 61 insertions(+), 9 deletions(-)
 >>>
 >>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
->>> index 6d47b4a3ce39..68d2aa9c71a8 100644
+>>> index a8840d9e1c35..4fcf00016fb1 100644
 >>> --- a/arch/powerpc/platforms/pseries/iommu.c
 >>> +++ b/arch/powerpc/platforms/pseries/iommu.c
->>> @@ -39,6 +39,11 @@
+>>> @@ -1029,6 +1029,39 @@ static phys_addr_t ddw_memory_hotplug_max(void)
+>>>  	return max_addr;
+>>>  }
 >>>  
->>>  #include "pseries.h"
+>>> +/*
+>>> + * Platforms supporting the DDW option starting with LoPAR level 2.7 implement
+>>> + * ibm,ddw-extensions, which carries the rtas token for
+>>> + * ibm,reset-pe-dma-windows.
+>>> + * That rtas-call can be used to restore the default DMA window for the device.
+>>> + */
+>>> +static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+>>> +{
+>>> +	int ret;
+>>> +	u32 cfg_addr, ddw_ext[DDW_EXT_RESET_DMA_WIN + 1];
+>>> +	u64 buid;
+>>> +	struct device_node *dn;
+>>> +	struct pci_dn *pdn;
+>>> +
+>>> +	ret = of_property_read_u32_array(par_dn, "ibm,ddw-extensions",
+>>> +					 &ddw_ext[0], DDW_EXT_RESET_DMA_WIN + 1);
+>>> +	if (ret)
+>>> +		return;
+>>> +
+>>> +	dn = pci_device_to_OF_node(dev);
+>>> +	pdn = PCI_DN(dn);
+>>> +	buid = pdn->phb->buid;
+>>> +	cfg_addr = ((pdn->busno << 16) | (pdn->devfn << 8));
+>>> +
+>>> +	ret = rtas_call(ddw_ext[DDW_EXT_RESET_DMA_WIN], 3, 1, NULL, cfg_addr,
+>>> +			BUID_HI(buid), BUID_LO(buid));
+>>> +	if (ret)
+>>> +		dev_info(&dev->dev,
+>>> +			 "ibm,reset-pe-dma-windows(%x) %x %x %x returned %d ",
+>>> +			 ddw_ext[1], cfg_addr, BUID_HI(buid), BUID_LO(buid),
+>>
+>> s/ddw_ext[1]/ddw_ext[DDW_EXT_RESET_DMA_WIN]/
+> 
+> Good catch! I missed this one.
+> 
+>>
+>>
+>>> +			 ret);
+>>> +}
+>>> +
+>>>  /*
+>>>   * If the PE supports dynamic dma windows, and there is space for a table
+>>>   * that can map all pages in a linear offset, then setup such a table,
+>>> @@ -1049,8 +1082,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  	u64 dma_addr, max_addr;
+>>>  	struct device_node *dn;
+>>>  	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+>>> +
+>>
+>> Unrelated new empty line.
+> 
+> Fixed!
+> 
+>>
+>>
+>>>  	struct direct_window *window;
+>>> -	struct property *win64;
+>>> +	struct property *win64, *default_win = NULL, *ddw_ext = NULL;
+>>>  	struct dynamic_dma_window_prop *ddwprop;
+>>>  	struct failed_ddw_pdn *fpdn;
 >>>  
->>> +#define DDW_QUERY_PE_DMA_WIN	0
->>> +#define DDW_CREATE_PE_DMA_WIN	1
->>> +#define DDW_REMOVE_PE_DMA_WIN	2
->>> +#define DDW_APPLICABLE_SIZE	3
+>>> @@ -1085,7 +1119,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  	if (ret)
+>>>  		goto out_failed;
+>>>  
+>>> -       /*
+>>> +	/*
+>>>  	 * Query if there is a second window of size to map the
+>>>  	 * whole partition.  Query returns number of windows, largest
+>>>  	 * block assigned to PE (partition endpoint), and two bitmasks
+>>> @@ -1096,15 +1130,31 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  	if (ret != 0)
+>>>  		goto out_failed;
+>>>  
+>>> +	/*
+>>> +	 * If there is no window available, remove the default DMA window,
+>>> +	 * if it's present. This will make all the resources available to the
+>>> +	 * new DDW window.
+>>> +	 * If anything fails after this, we need to restore it, so also check
+>>> +	 * for extensions presence.
+>>> +	 */
+>>>  	if (query.windows_available == 0) {
 >>
->> #define DDW_APPLICABLE_SIZE  (DDW_REMOVE_PE_DMA_WIN + 1)
+>> Does phyp really always advertise 0 windows for these VFs? What is in
+>> the largest_available_block when windows_available==0?
+> 
+> For this VF, it always advertise 0 windows before removing the default
+> DMA window. The largest available block size is the same as after the
+> removal (256GB). The only value that changes after removal is the
+> number of available windows. Here some debug prints:
+
+> 
+> [    3.473149] mlx5_core 4005:01:00.0: ibm,query-pe-dma-windows(53)
+> 10000 8000000 29004005 returned 0
+> [    3.473162] mlx5_core 4005:01:00.0: windows_available = 0,
+> largest_block = 400000, page_size = 3, migration_capable = 3
+> [    3.473332] mlx5_core 4005:01:00.0: ibm,query-pe-dma-windows(53)
+> 10000 8000000 29004005 returned 0
+> [    3.473345] mlx5_core 4005:01:00.0: windows_available = 1,
+> largest_block = 400000, page_size = 3, migration_capable = 3
+
+
+
+Ah, I see, thanks for the info. Ok, they really do not want us to have 2
+windows. Oh well.
+
+
+
+> 
 >>
->> thanks,
+>>
+>>> -		/*
+>>> -		 * no additional windows are available for this device.
+>>> -		 * We might be able to reallocate the existing window,
+>>> -		 * trading in for a larger page size.
+>>> -		 */
+>>> -		dev_dbg(&dev->dev, "no free dynamic windows");
+>>> -		goto out_failed;
+>>> +		default_win = of_find_property(pdn, "ibm,dma-window", NULL);
+>>> +		ddw_ext = of_find_property(pdn, "ibm,ddw-extensions", NULL);
+>>> +		if (default_win && ddw_ext)
+>>> +			remove_dma_window(pdn, ddw_avail, default_win);
+>>> +
+>>> +		/* Query again, to check if the window is available */
+>>> +		ret = query_ddw(dev, ddw_avail, &query, pdn);
+>>> +		if (ret != 0)
+>>> +			goto out_failed;
+>>> +
+>>> +		if (query.windows_available == 0) {
+>>> +			/* no windows are available for this device. */
+>>> +			dev_dbg(&dev->dev, "no free dynamic windows");
+>>> +			goto out_failed;
+>>> +		}
+>>>  	}
+>>> +
+>>
+>> Unrelated new empty line. Thanks,
+> Fixed!
+> Thank you!
 > 
-> Thanks for the feedback!
-> About this (and patch #2), would it be better to use enum ?
-> enum {
-> 	DDW_QUERY_PE_DMA_WIN,
-> 	DDW_CREATE_PE_DMA_WIN,
-> 	DDW_REMOVE_PE_DMA_WIN,
+>>
+>>>  	if (query.page_size & 4) {
+>>>  		page_shift = 24; /* 16MB */
+>>>  	} else if (query.page_size & 2) {
+>>> @@ -1194,6 +1244,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  	kfree(win64);
+>>>  
+>>>  out_failed:
+>>> +	if (default_win && ddw_ext)
+>>> +		reset_dma_window(dev, pdn);
+>>>  
+>>>  	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
+>>>  	if (!fpdn)
+>>>
 > 
-> 	DDW_APPLICABLE_SIZE
-> }
-> IMO, it looks better than all the defines before.
-> 
-> What do you think?
-
-No, not really, these come from a binary interface so the reader of this
-cares about absolute numbers and rather wants to see them explicitly.
-
 
 -- 
 Alexey
