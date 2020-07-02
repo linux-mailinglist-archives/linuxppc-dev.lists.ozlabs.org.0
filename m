@@ -2,82 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558C1211BFE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 08:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89042211C20
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 08:46:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49y7Yc34MqzDqLB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 16:32:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49y7sj08vVzDqTd
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 16:46:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49y7Ml0lmLzDqM4
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 16:23:46 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06265fN2120331; Thu, 2 Jul 2020 02:23:44 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49y7qY6gR0zDqqD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 16:44:25 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0626W4fT082159; Thu, 2 Jul 2020 02:44:17 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320wmp2je5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Jul 2020 02:44:16 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0626fftQ118902;
+ Thu, 2 Jul 2020 02:44:16 -0400
 Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 320s3yv3dh-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320wmp2jdg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 02:23:44 -0400
+ Thu, 02 Jul 2020 02:44:16 -0400
 Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0626NggL012800;
- Thu, 2 Jul 2020 06:23:42 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 31wwch5b7c-1
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0626aPZb016144;
+ Thu, 2 Jul 2020 06:44:13 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 31wwch5bu7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 06:23:42 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0626MgwA57999794
+ Thu, 02 Jul 2020 06:44:13 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0626iBVI58196136
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Jul 2020 06:22:42 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9812C4C044;
- Thu,  2 Jul 2020 06:22:42 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6730F4C04A;
- Thu,  2 Jul 2020 06:22:40 +0000 (GMT)
-Received: from [9.85.81.233] (unknown [9.85.81.233])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu,  2 Jul 2020 06:22:40 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Message-Id: <9692404F-A567-479B-BF9B-3624E71639FB@linux.vnet.ibm.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_CD3873F7-2EA2-4365-9C84-3F96807D1A85"
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [PATCH v2 02/10] KVM: PPC: Book3S HV: Save/restore new PMU
- registers
-Date: Thu, 2 Jul 2020 11:52:37 +0530
-In-Reply-To: <20200701111158.GA694641@thinks.paulus.ozlabs.org>
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <1593595262-1433-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1593595262-1433-3-git-send-email-atrajeev@linux.vnet.ibm.com>
- <20200701111158.GA694641@thinks.paulus.ozlabs.org>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
+ Thu, 2 Jul 2020 06:44:11 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 43DC45204F;
+ Thu,  2 Jul 2020 06:44:11 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id C8DD352052;
+ Thu,  2 Jul 2020 06:44:08 +0000 (GMT)
+Date: Thu, 2 Jul 2020 12:14:08 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200702064408.GD17918@linux.vnet.ibm.com>
+References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
+ <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
+ <20200701084200.GN2369@dhcp22.suse.cz>
+ <20200701100442.GB17918@linux.vnet.ibm.com>
+ <184102af-ecf2-c834-db46-173ab2e66f51@redhat.com>
+ <20200701110145.GC17918@linux.vnet.ibm.com>
+ <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
+ <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
+ <20200701122110.GT2369@dhcp22.suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200701122110.GT2369@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-02_02:2020-07-01,
  2020-07-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 adultscore=0 mlxlogscore=999 lowpriorityscore=0
- cotscore=-2147483648 impostorscore=0 suspectscore=0 phishscore=0
- mlxscore=0 clxscore=1011 malwarescore=0 bulkscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ malwarescore=0
+ impostorscore=0 adultscore=0 cotscore=-2147483648 suspectscore=0
+ phishscore=0 priorityscore=1501 mlxscore=0 spamscore=0 bulkscore=0
+ mlxlogscore=999 lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2007020046
-X-Mailman-Approved-At: Thu, 02 Jul 2020 16:30:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,223 +98,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Michal Hocko <mhocko@kernel.org> [2020-07-01 14:21:10]:
 
---Apple-Mail=_CD3873F7-2EA2-4365-9C84-3F96807D1A85
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+> > >>>>>>
+> > >>>>>> 2. Also existence of dummy node also leads to inconsistent information. The
+> > >>>>>> number of online nodes is inconsistent with the information in the
+> > >>>>>> device-tree and resource-dump
+> > >>>>>>
+> > >>>>>> 3. When the dummy node is present, single node non-Numa systems end up showing
+> > >>>>>> up as NUMA systems and numa_balancing gets enabled. This will mean we take
+> > >>>>>> the hit from the unnecessary numa hinting faults.
+> > >>>>>
+> > >>>>> I have to say that I dislike the node online/offline state and directly
+> > >>>>> exporting that to the userspace. Users should only care whether the node
+> > >>>>> has memory/cpus. Numa nodes can be online without any memory. Just
+> > >>>>> offline all the present memory blocks but do not physically hot remove
+> > >>>>> them and you are in the same situation. If users are confused by an
+> > >>>>> output of tools like numactl -H then those could be updated and hide
+> > >>>>> nodes without any memory&cpus.
+> > >>>>>
+> > >>>>> The autonuma problem sounds interesting but again this patch doesn't
+> > >>>>> really solve the underlying problem because I strongly suspect that the
+> > >>>>> problem is still there when a numa node gets all its memory offline as
+> > >>>>> mentioned above.
+> 
+> I would really appreciate a feedback to these two as well.
 
+1. Its not just numactl that's to be fixed but all tools/utilities that
+depend on /sys/devices/system/node/online. Are we saying to not rely/believe
+in the output given by the kernel but do further verification?  
 
+Also how would the user space differentiate between the case where the
+Kernel missed marking a node as offline to the case where the memory was
+offlined on a cpuless node but node wasn't offline?.
 
-> On 01-Jul-2020, at 4:41 PM, Paul Mackerras <paulus@ozlabs.org> wrote:
->=20
-> On Wed, Jul 01, 2020 at 05:20:54AM -0400, Athira Rajeev wrote:
->> PowerISA v3.1 has added new performance monitoring unit (PMU)
->> special purpose registers (SPRs). They are
->>=20
->> Monitor Mode Control Register 3 (MMCR3)
->> Sampled Instruction Event Register A (SIER2)
->> Sampled Instruction Event Register B (SIER3)
->>=20
->> Patch addes support to save/restore these new
->> SPRs while entering/exiting guest.
->=20
-> This mostly looks reasonable, at a quick glance at least, but I am
-> puzzled by two of the changes you are making.  See below.
->=20
->> diff --git a/arch/powerpc/kvm/book3s_hv.c =
-b/arch/powerpc/kvm/book3s_hv.c
->> index 6bf66649..c265800 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -1698,7 +1698,8 @@ static int kvmppc_get_one_reg_hv(struct =
-kvm_vcpu *vcpu, u64 id,
->> 		*val =3D get_reg_val(id, vcpu->arch.sdar);
->> 		break;
->> 	case KVM_REG_PPC_SIER:
->> -		*val =3D get_reg_val(id, vcpu->arch.sier);
->> +		i =3D id - KVM_REG_PPC_SIER;
->> +		*val =3D get_reg_val(id, vcpu->arch.sier[i]);
->=20
-> This is inside a switch (id) statement, so here we know that id is
-> KVM_REG_PPC_SIER.  In other words i will always be zero, so what is
-> the point of doing the subtraction?
->=20
->> 		break;
->> 	case KVM_REG_PPC_IAMR:
->> 		*val =3D get_reg_val(id, vcpu->arch.iamr);
->> @@ -1919,7 +1920,8 @@ static int kvmppc_set_one_reg_hv(struct =
-kvm_vcpu *vcpu, u64 id,
->> 		vcpu->arch.sdar =3D set_reg_val(id, *val);
->> 		break;
->> 	case KVM_REG_PPC_SIER:
->> -		vcpu->arch.sier =3D set_reg_val(id, *val);
->> +		i =3D id - KVM_REG_PPC_SIER;
->> +		vcpu->arch.sier[i] =3D set_reg_val(id, *val);
->=20
-> Same comment here.
+2. Regarding the autonuma, the case of offline memory is user/admin driven,
+so if there is a performance hit, its something that's driven by his
+user/admin actions. Also how often do we see users offline complete memory
+of cpuless node on a 2 node system?
 
-Hi Paul,
+> 
+> > [    0.009726] SRAT: PXM 1 -> APIC 0x00 -> Node 0
+> > [    0.009727] SRAT: PXM 1 -> APIC 0x01 -> Node 0
+> > [    0.009727] SRAT: PXM 1 -> APIC 0x02 -> Node 0
+> > [    0.009728] SRAT: PXM 1 -> APIC 0x03 -> Node 0
+> > [    0.009731] ACPI: SRAT: Node 0 PXM 1 [mem 0x00000000-0x0009ffff]
+> > [    0.009732] ACPI: SRAT: Node 0 PXM 1 [mem 0x00100000-0xbfffffff]
+> > [    0.009733] ACPI: SRAT: Node 0 PXM 1 [mem 0x100000000-0x13fffffff]
+> 
+> This begs a question whether ppc can do the same thing?
 
-Thanks for reviewing the patch. Yes, true that currently `id` will be =
-zero since it is only KVM_REG_PPC_SIER. I have kept the subtraction here =
-considering that there will be addition of new registers to switch case.=20=
+Certainly ppc can be made to adapt to this situation but that would be a
+workaround. Do we have a reason why we think node 0 is unique and special?
+If yes can we document it so that in future also people know why we consider
+node 0 to be special. I do understand the *fear of the unknown* but when we
+are unable to theoretically or practically come up a case, then it may
+probably be better we hit the situation to understand what that unknown is?
 
-ex: case KVM_REG_PPC_SIER..KVM_REG_PPC_SIER3
+> I would swear that we've had x86 system with node 0 but I cannot really
+> find it and it is possible that it was not x86 after all...
 
->=20
-> I think that new defines for the new registers will need to be added
-> to arch/powerpc/include/uapi/asm/kvm.h and
-> Documentation/virt/kvm/api.rst, and then new cases will need to be
-> added to these switch statements.
-
-Yes, New registers are not yet added to kvm.h=20
-I will address these comments and include changes for =
-arch/powerpc/include/uapi/asm/kvm.h and Documentation/virt/kvm/api.rst =
-in the
-next version.
-
->=20
-> By the way, please cc kvm-ppc@vger.kernel.org and kvm@vger.kernel.org
-> on KVM patches.
-
-Sure, will include KVM mailing list in the next version
-
-Thanks
-Athira=20
->=20
-> Paul.
-
-
---Apple-Mail=_CD3873F7-2EA2-4365-9C84-3F96807D1A85
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=us-ascii
-
-<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
-charset=3Dus-ascii"></head><body style=3D"word-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><br =
-class=3D""><div><br class=3D""><blockquote type=3D"cite" class=3D""><div =
-class=3D"">On 01-Jul-2020, at 4:41 PM, Paul Mackerras &lt;<a =
-href=3D"mailto:paulus@ozlabs.org" class=3D"">paulus@ozlabs.org</a>&gt; =
-wrote:</div><br class=3D"Apple-interchange-newline"><div class=3D""><div =
-class=3D"">On Wed, Jul 01, 2020 at 05:20:54AM -0400, Athira Rajeev =
-wrote:<br class=3D""><blockquote type=3D"cite" class=3D"">PowerISA v3.1 =
-has added new performance monitoring unit (PMU)<br class=3D"">special =
-purpose registers (SPRs). They are<br class=3D""><br class=3D"">Monitor =
-Mode Control Register 3 (MMCR3)<br class=3D"">Sampled Instruction Event =
-Register A (SIER2)<br class=3D"">Sampled Instruction Event Register B =
-(SIER3)<br class=3D""><br class=3D"">Patch addes support to save/restore =
-these new<br class=3D"">SPRs while entering/exiting guest.<br =
-class=3D""></blockquote><br class=3D"">This mostly looks reasonable, at =
-a quick glance at least, but I am<br class=3D"">puzzled by two of the =
-changes you are making. &nbsp;See below.<br class=3D""><br =
-class=3D""><blockquote type=3D"cite" class=3D"">diff --git =
-a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c<br =
-class=3D"">index 6bf66649..c265800 100644<br class=3D"">--- =
-a/arch/powerpc/kvm/book3s_hv.c<br class=3D"">+++ =
-b/arch/powerpc/kvm/book3s_hv.c<br class=3D"">@@ -1698,7 +1698,8 @@ =
-static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,<br =
-class=3D""> <span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>*val =3D get_reg_val(id, vcpu-&gt;arch.sdar);<br class=3D""> =
-<span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>break;<br class=3D""> <span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>case KVM_REG_PPC_SIER:<br =
-class=3D"">-<span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>*val =3D get_reg_val(id, vcpu-&gt;arch.sier);<br class=3D"">+<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i =3D id =
-- KVM_REG_PPC_SIER;<br class=3D"">+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>*val =3D get_reg_val(id, =
-vcpu-&gt;arch.sier[i]);<br class=3D""></blockquote><br class=3D"">This =
-is inside a switch (id) statement, so here we know that id is<br =
-class=3D"">KVM_REG_PPC_SIER. &nbsp;In other words i will always be zero, =
-so what is<br class=3D"">the point of doing the subtraction?<br =
-class=3D""><br class=3D""><blockquote type=3D"cite" class=3D""> <span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>break;<br =
-class=3D""> <span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>case KVM_REG_PPC_IAMR:<br class=3D""> <span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>*val =3D =
-get_reg_val(id, vcpu-&gt;arch.iamr);<br class=3D"">@@ -1919,7 +1920,8 @@ =
-static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,<br =
-class=3D""> <span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>vcpu-&gt;arch.sdar =3D set_reg_val(id, *val);<br class=3D""> =
-<span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>break;<br class=3D""> <span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>case KVM_REG_PPC_SIER:<br =
-class=3D"">-<span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>vcpu-&gt;arch.sier =3D set_reg_val(id, *val);<br class=3D"">+<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i =3D id =
-- KVM_REG_PPC_SIER;<br class=3D"">+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>vcpu-&gt;arch.sier[i] =3D =
-set_reg_val(id, *val);<br class=3D""></blockquote><br class=3D"">Same =
-comment here.<br class=3D""></div></div></blockquote><div><br =
-class=3D""></div><div style=3D"margin: 0px; font-stretch: normal; =
-line-height: normal; font-family: &quot;Helvetica Neue&quot;;" =
-class=3D"">Hi Paul,</div><div style=3D"margin: 0px; font-stretch: =
-normal; line-height: normal; font-family: &quot;Helvetica Neue&quot;; =
-min-height: 14px;" class=3D""><br class=3D""></div><div style=3D"margin: =
-0px; font-stretch: normal; line-height: normal; font-family: =
-&quot;Helvetica Neue&quot;;" class=3D"">Thanks for reviewing the patch. =
-Yes, true that currently `id` will be zero since it is only =
-KVM_REG_PPC_SIER. I have kept the subtraction here considering that =
-there will be addition of new registers to switch case.&nbsp;</div><div =
-style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
-font-family: &quot;Helvetica Neue&quot;;" class=3D"">ex: case =
-KVM_REG_PPC_SIER..KVM_REG_PPC_SIER3</div><div style=3D"margin: 0px; =
-font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
-Neue&quot;;" class=3D""><br class=3D""></div><blockquote type=3D"cite" =
-class=3D""><div class=3D""><div class=3D""><br class=3D"">I think that =
-new defines for the new registers will need to be added<br class=3D"">to =
-arch/powerpc/include/uapi/asm/kvm.h and<br =
-class=3D"">Documentation/virt/kvm/api.rst, and then new cases will need =
-to be<br class=3D"">added to these switch statements.<br =
-class=3D""></div></div></blockquote><div><br class=3D""></div><div =
-style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
-font-family: &quot;Helvetica Neue&quot;;" class=3D"">Yes, New registers =
-are not yet added to kvm.h&nbsp;</div><div style=3D"margin: 0px; =
-font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
-Neue&quot;;" class=3D"">I will address these comments and include =
-changes for arch/powerpc/include/uapi/asm/kvm.h and =
-Documentation/virt/kvm/api.rst in the</div><div style=3D"margin: 0px; =
-font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
-Neue&quot;;" class=3D"">next version.</div><div style=3D"margin: 0px; =
-font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
-Neue&quot;;" class=3D""><br class=3D""></div><blockquote type=3D"cite" =
-class=3D""><div class=3D""><div class=3D""><br class=3D"">By the way, =
-please cc <a href=3D"mailto:kvm-ppc@vger.kernel.org" =
-class=3D"">kvm-ppc@vger.kernel.org</a> and <a =
-href=3D"mailto:kvm@vger.kernel.org" class=3D"">kvm@vger.kernel.org</a><br =
-class=3D"">on KVM patches.<br class=3D""></div></div></blockquote><div><br=
- class=3D""></div><span style=3D"caret-color: rgb(0, 0, 0); color: =
-rgb(0, 0, 0); font-family: &quot;Helvetica Neue&quot;;" class=3D"">Sure, =
-will include KVM mailing list in the next version</span></div><div><font =
-color=3D"#000000" face=3D"Helvetica Neue" class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0);" class=3D""><br =
-class=3D""></span></font></div><div><font color=3D"#000000" =
-face=3D"Helvetica Neue" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0);" class=3D"">Thanks</span></font></div><div><font color=3D"#000000" =
-face=3D"Helvetica Neue" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0);" class=3D"">Athira&nbsp;<br class=3D""></span></font><blockquote =
-type=3D"cite" class=3D""><div class=3D""><div class=3D""><br =
-class=3D"">Paul.<br class=3D""></div></div></blockquote></div><br =
-class=3D""></body></html>=
-
---Apple-Mail=_CD3873F7-2EA2-4365-9C84-3F96807D1A85--
-
+-- 
+Thanks and Regards
+Srikar Dronamraju
