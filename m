@@ -2,92 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13840212FAD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5724421302A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 01:35:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yYD42k6GzDrHp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 08:48:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yZGC2HJfzDr2d
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 09:35:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e3e3;
- helo=bhuna.collabora.co.uk; envelope-from=arnaud.ferraris@collabora.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=collabora.com
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=WXOmB+la; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yMRy6CySzDqRq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 01:28:13 +1000 (AEST)
-Received: from [IPv6:2a01:e35:2fb5:1510:315a:ecf0:6250:a3ed] (unknown
- [IPv6:2a01:e35:2fb5:1510:315a:ecf0:6250:a3ed])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: aferraris)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id DF3732A5F5D;
- Thu,  2 Jul 2020 16:28:05 +0100 (BST)
-Subject: Re: [PATCH 1/2] dt-bindings: sound: fsl-asoc-card: add new compatible
- for I2S slave
-To: Mark Brown <broonie@kernel.org>
-References: <20200702141114.232688-1-arnaud.ferraris@collabora.com>
- <20200702141114.232688-2-arnaud.ferraris@collabora.com>
- <20200702143145.GG4483@sirena.org.uk>
-From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
- 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
- xZQG6fKWuIur3RI=
-Message-ID: <5de5ea5b-0716-8ed1-28b0-9ad3da7a2d47@collabora.com>
-Date: Thu, 2 Jul 2020 17:28:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yZDM6SFnzDr1Z
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 09:33:55 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id j12so13185371pfn.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jul 2020 16:33:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=fUYfVen9cqRB51w5KZNlqoOpdLWt3zbZ3CTAyfz1D2Y=;
+ b=WXOmB+laruYWjVYY7+d7igGpbBKIDyJ1gVq9lsoG2iWrLwX86IHtdo850j0FmY3L01
+ +Qt+WA+RPAidtTQlNgd0W00mM9unQmuKec9kt+ubxF3F2A3TdozBpQ2V8Ou5NlS2pGN0
+ fylGwUH1rA1uBf6HQvq+uHrG3DXkrQXbdGiHk3jrRjU3YbDm5ljD0xivM7QRRgAHKxFy
+ w6MmGvo/3PvP4jZQwWSiza71yHyd5AWbHgpj6WUCgEMxJhrznfGrbDPeyL8XpBPfYelR
+ EC1wkbwXzg9vKdl5ng+8pAbwv3Z0EjTvmm45or44rABuYqWUZ0z0Y2S9JBlr1960+Myo
+ zgFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=fUYfVen9cqRB51w5KZNlqoOpdLWt3zbZ3CTAyfz1D2Y=;
+ b=l0BernBw5zSiELl2t6QF1xpuBfDZg7xGs7uTCBsYf64vSJ5bXMYe1Tb6+9w5xaNhpJ
+ PsJW5l1P0tOtRDzHJlE5TFC81gfcgV7c0bS9xV737ErYDcC50FCqQfjxzXUBVDJ4gr+9
+ /q/sOYrMJDHqBg+5sg2M4j7qqiczHLt8GtlaxEY0xUy/hAC6CXH2f2I/vfm7QecAn9gL
+ NdY7IKoOqLKSxSOSONRICFF0qmOFlB1Vp2lX8LmGpUWnxYIUKwpUJHcw1k0AljmkwulQ
+ h183CEI8M/REq+358VYybKop6onPk2mLVCw04NbmCHQRzoK/P/e+5akgUVzzNqhCsoVk
+ N9Jg==
+X-Gm-Message-State: AOAM530sSSFelPoKZa3LdlmXrKICHGlKoRrlpZjwsd/N3J1C3AFPGWa4
+ NLQwHkApB6ZobRuCL+YDwr+OeDRa
+X-Google-Smtp-Source: ABdhPJy4tfau/DWLzT0++LhP/i1vF09VBYyw7dOM8CHXPc2doy9jBnNjPCojEni8mmNzeEKY/qbmDw==
+X-Received: by 2002:a63:29c8:: with SMTP id
+ p191mr27523041pgp.333.1593732831548; 
+ Thu, 02 Jul 2020 16:33:51 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id v15sm9707345pgo.15.2020.07.02.16.33.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Jul 2020 16:33:51 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/powernv: machine check handler for POWER10
+Date: Fri,  3 Jul 2020 09:33:43 +1000
+Message-Id: <20200702233343.1128026-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20200702143145.GG4483@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 03 Jul 2020 08:28:34 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,34 +77,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Rob Herring <robh+dt@kernel.org>, kernel@collabora.com,
- Fabio Estevam <festevam@gmail.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mark,
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/mce.h    |  1 +
+ arch/powerpc/kernel/dt_cpu_ftrs.c | 10 ++++
+ arch/powerpc/kernel/mce.c         |  1 +
+ arch/powerpc/kernel/mce_power.c   | 84 +++++++++++++++++++++++++++++++
+ 4 files changed, 96 insertions(+)
 
-Le 02/07/2020 à 16:31, Mark Brown a écrit :
-> On Thu, Jul 02, 2020 at 04:11:14PM +0200, Arnaud Ferraris wrote:
->> fsl-asoc-card currently doesn't support generic codecs with the SoC
->> acting as I2S slave.
->>
->> This commit adds a new `fsl,imx-audio-i2s-slave` for this use-case, as
->> well as the following mandatory properties:
-> 
-> Why require that the CODEC be clock master here - why not make this
-> configurable, reusing the properties from the generic and audio graph
-> cards?
+diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+index 376a395daf32..30b5b03fb11d 100644
+--- a/arch/powerpc/include/asm/mce.h
++++ b/arch/powerpc/include/asm/mce.h
+@@ -86,6 +86,7 @@ enum MCE_TlbErrorType {
+ enum MCE_UserErrorType {
+ 	MCE_USER_ERROR_INDETERMINATE = 0,
+ 	MCE_USER_ERROR_TLBIE = 1,
++	MCE_USER_ERROR_SCV = 2,
+ };
+ 
+ enum MCE_RaErrorType {
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 3a409517c031..12cec6919a1a 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -67,6 +67,7 @@ struct dt_cpu_feature {
+ 
+ extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
+ extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
++extern long __machine_check_early_realmode_p10(struct pt_regs *regs);
+ 
+ static int hv_mode;
+ 
+@@ -450,6 +451,14 @@ static int __init feat_enable_pmu_power9(struct dt_cpu_feature *f)
+ 	return 1;
+ }
+ 
++static int __init feat_enable_mce_power10(struct dt_cpu_feature *f)
++{
++	cur_cpu_spec->platform = "power10";
++	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p10;
++
++	return 1;
++}
++
+ static int __init feat_enable_tm(struct dt_cpu_feature *f)
+ {
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+@@ -638,6 +647,7 @@ static struct dt_cpu_feature_match __initdata
+ 	{"group-start-register", feat_enable, 0},
+ 	{"pc-relative-addressing", feat_enable, 0},
+ 	{"machine-check-power9", feat_enable_mce_power9, 0},
++	{"machine-check-power10", feat_enable_mce_power10, 0},
+ 	{"performance-monitor-power9", feat_enable_pmu_power9, 0},
+ 	{"event-based-branch-v3", feat_enable, 0},
+ 	{"random-number-generator", feat_enable, 0},
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index fd90c0eda229..4f96f3c24797 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -370,6 +370,7 @@ void machine_check_print_event_info(struct machine_check_event *evt,
+ 	static const char *mc_user_types[] = {
+ 		"Indeterminate",
+ 		"tlbie(l) invalid",
++		"scv invalid",
+ 	};
+ 	static const char *mc_ra_types[] = {
+ 		"Indeterminate",
+diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
+index c3b522bff9b4..b7e173754a2e 100644
+--- a/arch/powerpc/kernel/mce_power.c
++++ b/arch/powerpc/kernel/mce_power.c
+@@ -243,6 +243,45 @@ static const struct mce_ierror_table mce_p9_ierror_table[] = {
+   MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
+ { 0, 0, 0, 0, 0, 0, 0 } };
+ 
++static const struct mce_ierror_table mce_p10_ierror_table[] = {
++{ 0x00000000081c0000, 0x0000000000040000, true,
++  MCE_ERROR_TYPE_UE,  MCE_UE_ERROR_IFETCH, MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
++{ 0x00000000081c0000, 0x0000000000080000, true,
++  MCE_ERROR_TYPE_SLB, MCE_SLB_ERROR_PARITY, MCE_ECLASS_HARD_INDETERMINATE,
++  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
++{ 0x00000000081c0000, 0x00000000000c0000, true,
++  MCE_ERROR_TYPE_SLB, MCE_SLB_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
++  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
++{ 0x00000000081c0000, 0x0000000000100000, true,
++  MCE_ERROR_TYPE_ERAT, MCE_ERAT_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
++  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
++{ 0x00000000081c0000, 0x0000000000140000, true,
++  MCE_ERROR_TYPE_TLB, MCE_TLB_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
++  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
++{ 0x00000000081c0000, 0x0000000000180000, true,
++  MCE_ERROR_TYPE_UE,  MCE_UE_ERROR_PAGE_TABLE_WALK_IFETCH, MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
++{ 0x00000000081c0000, 0x00000000001c0000, true,
++  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_IFETCH_FOREIGN, MCE_ECLASS_SOFTWARE,
++  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
++{ 0x00000000081c0000, 0x0000000008080000, true,
++  MCE_ERROR_TYPE_USER,MCE_USER_ERROR_SCV, MCE_ECLASS_SOFTWARE,
++  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
++{ 0x00000000081c0000, 0x00000000080c0000, true,
++  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_IFETCH, MCE_ECLASS_SOFTWARE,
++  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
++{ 0x00000000081c0000, 0x0000000008100000, true,
++  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_PAGE_TABLE_WALK_IFETCH, MCE_ECLASS_SOFTWARE,
++  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
++{ 0x00000000081c0000, 0x0000000008140000, false,
++  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_STORE, MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,  MCE_SEV_FATAL, false }, /* ASYNC is fatal */
++{ 0x00000000081c0000, 0x00000000081c0000, true, MCE_ECLASS_HARDWARE,
++  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_PAGE_TABLE_WALK_IFETCH_FOREIGN,
++  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
++{ 0, 0, 0, 0, 0, 0, 0 } };
++
+ struct mce_derror_table {
+ 	unsigned long dsisr_value;
+ 	bool dar_valid; /* dar is a valid indicator of faulting address */
+@@ -361,6 +400,46 @@ static const struct mce_derror_table mce_p9_derror_table[] = {
+   MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
+ { 0, false, 0, 0, 0, 0, 0 } };
+ 
++static const struct mce_derror_table mce_p10_derror_table[] = {
++{ 0x00008000, false,
++  MCE_ERROR_TYPE_UE,   MCE_UE_ERROR_LOAD_STORE, MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
++{ 0x00004000, true,
++  MCE_ERROR_TYPE_UE,   MCE_UE_ERROR_PAGE_TABLE_WALK_LOAD_STORE,
++  MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
++{ 0x00000800, true,
++  MCE_ERROR_TYPE_ERAT, MCE_ERAT_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
++  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
++{ 0x00000400, true,
++  MCE_ERROR_TYPE_TLB,  MCE_TLB_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
++  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
++{ 0x00000200, false,
++  MCE_ERROR_TYPE_USER, MCE_USER_ERROR_TLBIE, MCE_ECLASS_SOFTWARE,
++  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
++{ 0x00000080, true,
++  MCE_ERROR_TYPE_SLB,  MCE_SLB_ERROR_MULTIHIT,	/* Before PARITY */
++  MCE_ECLASS_SOFT_INDETERMINATE,
++  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
++{ 0x00000100, true,
++  MCE_ERROR_TYPE_SLB,  MCE_SLB_ERROR_PARITY, MCE_ECLASS_HARD_INDETERMINATE,
++  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
++{ 0x00000040, true,
++  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_LOAD, MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
++{ 0x00000020, false,
++  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_PAGE_TABLE_WALK_LOAD_STORE,
++  MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
++{ 0x00000010, false,
++  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_PAGE_TABLE_WALK_LOAD_STORE_FOREIGN,
++  MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
++{ 0x00000008, false,
++  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_LOAD_STORE_FOREIGN, MCE_ECLASS_HARDWARE,
++  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
++{ 0, false, 0, 0, 0, 0, 0 } };
++
+ static int mce_find_instr_ea_and_phys(struct pt_regs *regs, uint64_t *addr,
+ 					uint64_t *phys_addr)
+ {
+@@ -657,3 +736,8 @@ long __machine_check_early_realmode_p9(struct pt_regs *regs)
+ 
+ 	return mce_handle_error(regs, mce_p9_derror_table, mce_p9_ierror_table);
+ }
++
++long __machine_check_early_realmode_p10(struct pt_regs *regs)
++{
++	return mce_handle_error(regs, mce_p10_derror_table, mce_p10_ierror_table);
++}
+-- 
+2.23.0
 
-This is partly because I'm not sure how to do it (yet), but mostly
-because I don't have the hardware to test this (the 2 CODECs present on
-my only i.MX6 board are both clock master)
-
-Regards,
-Arnaud
