@@ -2,85 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23E921176A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 02:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D665D211773
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 02:51:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49xzxD3l6rzDqpR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 10:48:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49y00Y0z9GzDqk8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 10:51:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UZ3i4lz4; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49xzvC2Yc7zDqXC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 10:47:01 +1000 (AEST)
-Received: by mail-qk1-x742.google.com with SMTP id b185so13527198qkg.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 17:47:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=QkFpAqHIEwjnDZzlaTT8UYrxvp33BFcnJrcQL30nIPA=;
- b=UZ3i4lz4YGIqh8LxR98d8rkht9xMQ0quD9UlveG9LZH2vjLD9qj3oSfRuxQwi6SgW7
- 7KjIBPlRzgQVKjuRbeNPX/dSjtoRbW+wR3qT+me1d1SKHMec7LFbkT/nwJurndd8wtFx
- h0wvGYiX3LSAhqfKBXk7+Xk7a5fEYYAiZrzY3XwmyBtM0RuCPU7B2ir2r1gn6Iwa+gAn
- Xz8woox1ZNCq0tr25hZygYEW1QHbGoSF07QYS0GBCZKXt98E8b53isIUMePGv3wuyrcw
- mlQwAPuiu7B/VH2K/rnFVDFq9P/xaMWdWLPTfrqCF6EX2XOV2n2XoVZfjVNEnEQcZ6iq
- SIbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=QkFpAqHIEwjnDZzlaTT8UYrxvp33BFcnJrcQL30nIPA=;
- b=kj3Au1P0VRYk3+R/FyahegygBJA6Bd7BA1dE6o5Cuyxfyp6MS3rBkVVlgx00r9SITS
- uIDkEj2/0VuSrAlDfKXMsgLkZbxIuyRFYH2MtBmUqyCS16oyuHaxRDL+pk0svb+A1sd0
- Em/GpTlAsvriWwvn8iwoAKTKKIbwbp1IONY3ndHrat1C2dqGVvi6XyX7VM8aNyHNwirm
- fWHXdQzz6QBLrOsHzO4wCfE0nOBYaeZqMfkD29BG8chIFrXraBNhLgbtK8ofria1kl9x
- IQgLPB60xbWpHa91LcD4XPn2GemBYCbEa1jNpN7XFJYD3+BvphbWVLjJHC7Z3XTwcvTh
- S7QA==
-X-Gm-Message-State: AOAM532Dju9vf1+/rBs0CfOhYqDUAs5ou5AlhhEau9Kt5okuTx4IgLBU
- 5xCUF3Lnr/MIOON1UgSudBk=
-X-Google-Smtp-Source: ABdhPJwM0hUcN8GwxMqMSwDdQ+uVuPc9qd1xHZ8avHfJ4mP4hIDMt0ZTFiItRktTT17lKMzeGATKWA==
-X-Received: by 2002:a37:b206:: with SMTP id b6mr28062822qkf.22.1593650819671; 
- Wed, 01 Jul 2020 17:46:59 -0700 (PDT)
-Received: from LeoBras (200-236-245-17.dynamic.desktop.com.br.
- [200.236.245.17])
- by smtp.gmail.com with ESMTPSA id q32sm7306960qte.31.2020.07.01.17.46.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Jul 2020 17:46:59 -0700 (PDT)
-Message-ID: <6ed28aedbad029f107721e2ea4701e5b05233dd9.camel@gmail.com>
-Subject: Re: [PATCH v2 1/6] powerpc/pseries/iommu: Create defines for
- operations in ibm,ddw-applicable
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Thiago Jung Bauermann
- <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
-Date: Wed, 01 Jul 2020 21:46:54 -0300
-In-Reply-To: <0d3ee444-f528-673e-48f9-633138398543@ozlabs.ru>
-References: <20200624062411.367796-1-leobras.c@gmail.com>
- <20200624062411.367796-2-leobras.c@gmail.com>
- <b0caaaa0-14c9-51de-bb92-5be8ccaa418d@ozlabs.ru>
- <01443a2f1d58a595ddff03fd14fd56f4c26171bf.camel@gmail.com>
- <a884da45-7778-95cf-d65b-a6c82d2024a7@ozlabs.ru>
- <f1f0563dae4c81620b53bcc258f2960a7948a583.camel@gmail.com>
- <0d3ee444-f528-673e-48f9-633138398543@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49xzyg60wYzDqXR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 10:50:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=TV/s7SwR; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49xzyg1Tkwz9sRN; Thu,  2 Jul 2020 10:50:03 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49xzyg00yBz9sQt;
+ Thu,  2 Jul 2020 10:50:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1593651003;
+ bh=tghBpeUpVINCwtUmSl/NQWv8E/Z1QkKXA55tz9AjbQI=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=TV/s7SwRAIeAm4eY55KN6G3Xey1ukp48LLrLtLrp4gFKdMppdf2fTfHLBIpd4i/XS
+ a6hWc0SoW7n3AcN+j2/uWVHR5GBJFeQk2DstBlfRWvlhiGzk+iupQLJxfNSPW2OGWs
+ uyQ4GBNyNs4VT+MXRlUpagJhSSi7E0YgMq9iK9XpbE2E+voxXC/Gtf8BUxA09MDBJ6
+ mZnZzWmaBa+ZS0I6OT6lErMhJCLtug+yjyvnGp2dRRpHzMAT3uMLnRKtvdDXMK/8AI
+ lHiv6/zwfTS7QLPTAQBtYCSCP9TadKzSudZ227mZmiuwDzaqoEhGb0+nYGs61zxkrU
+ bgjKyjojZukSg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
+ "linuxppc-dev\@ozlabs.org" <linuxppc-dev@ozlabs.org>
+Subject: Re: Memory:  880608K/983040K  .... 36896K reserved ?
+In-Reply-To: <a598dcaea9e62379c74d1d78083d92898373c4de.camel@infinera.com>
+References: <a598dcaea9e62379c74d1d78083d92898373c4de.camel@infinera.com>
+Date: Thu, 02 Jul 2020 10:52:15 +1000
+Message-ID: <87tuyq7n7k.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,19 +61,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-07-02 at 10:43 +1000, Alexey Kardashevskiy wrote:
-> > Or should one stick to #define in this case?
-> 
-> imho a matter of taste but after some grepping it feels like #define is
-> mostly used which does not mean it is a good idea. Keep it enum and see
-> if it passed mpe's filter :)
+Joakim Tjernlund <Joakim.Tjernlund@infinera.com> writes:
+> I cannot figure out how the xxxK reserved item works in:
+>  Memory: 880608K/983040K available (9532K kernel code, 1104K rwdata, 3348K rodata, 1088K init, 1201K bss, 36896K reserved ...
 
-Good idea :)
+It's calculated as:
 
-Thanks !
+	(physpages - totalram_pages() - totalcma_pages)
 
+The naming is a bit historical I guess.
+
+But roughly physpages is the total number of pages of RAM we think exist
+in the system.
+
+totalram_pages() is the total number of pages that have been freed to
+the buddy allocator.
+
+totalcma_pages is pages used by CMA which is probably 0 for you.
+
+So the amount "reserved" is the memory that hasn't been freed to the
+buddy allocator by memblock.
+
+You should be able to see it in debugfs:
+
+# cat /sys/kernel/debug/memblock/reserved 
+   0: 0x0000000000000000..0x0000000002b40e57
+   1: 0x0000000002b41000..0x0000000002b413ff
+   2: 0x0000000002b50000..0x0000000002baffff
+   3: 0x000000000a910000..0x000000000e93ffff
+   4: 0x000000000fe80000..0x000000000fe9ffff
+   5: 0x000000000feac000..0x000000000ffebfff
+   6: 0x000000000ffed400..0x000000000ffed7ff
+   7: 0x000000000ffeda80..0x000000000ffeebff
+   8: 0x000000000ffeee80..0x000000000ffeffff
+   9: 0x000000000fff0280..0x000000000fff13ff
+   ...
+
+> Is there a way to tune(lower it) this memory?
+
+Some or most of those reserved regions will be things your firmware told
+you to reserve, so you need to work out what each region is. They might
+be firmware things, or even holes in RAM, you need to dig deeper to find
+out what is what.
+
+cheers
