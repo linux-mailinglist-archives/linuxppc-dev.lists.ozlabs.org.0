@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFFB212F92
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C278212F95
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:38:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yXyr055HzDqcY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 08:37:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yY0c3ztCzDqbW
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 08:38:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,24 +15,22 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=collabora.com
-X-Greylist: delayed 643 seconds by postgrey-1.36 at bilbo;
- Fri, 03 Jul 2020 00:23:09 AEST
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yL0s1bVrzDqND
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 00:23:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yL0t4bM2zDqNf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 00:23:10 +1000 (AEST)
 Received: from xps.home (unknown [IPv6:2a01:e35:2fb5:1510:315a:ecf0:6250:a3ed])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested) (Authenticated sender: aferraris)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id B97AB2A1D11;
- Thu,  2 Jul 2020 15:23:04 +0100 (BST)
+ by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 3489A2A5C36;
+ Thu,  2 Jul 2020 15:23:07 +0100 (BST)
 From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
 To: 
-Subject: [PATCH 1/4] dt-bindings: sound: fsl,
- asrc: add properties to select in/out clocks
-Date: Thu,  2 Jul 2020 16:22:32 +0200
-Message-Id: <20200702142235.235869-2-arnaud.ferraris@collabora.com>
+Subject: [PATCH 2/4] ASoC: fsl_asrc: allow using arbitrary input and output
+ clocks
+Date: Thu,  2 Jul 2020 16:22:33 +0200
+Message-Id: <20200702142235.235869-3-arnaud.ferraris@collabora.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200702142235.235869-1-arnaud.ferraris@collabora.com>
 References: <20200702142235.235869-1-arnaud.ferraris@collabora.com>
@@ -62,42 +60,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ASRC peripheral accepts a wide range of input and output clocks, but
-no mechanism exists at the moment to define those as they are currently
-hardcoded in the driver.
+fsl_asrc currently uses hardcoded input and output clocks, preventing
+its use for anything other than S/PDIF output.
 
-This commit adds new properties allowing selection of arbitrary input
-and output clocks.
+This patch adds the ability to select any clock as input or output (by
+using new DT properties), making it possible to use this peripheral in a
+more advanced way.
 
 Signed-off-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
 ---
- Documentation/devicetree/bindings/sound/fsl,asrc.txt | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/soc/fsl/fsl_asrc.c        | 18 ++++++++++++++++--
+ sound/soc/fsl/fsl_asrc_common.h |  3 +++
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl,asrc.txt b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-index 998b4c8a7f78..e26ce9bad617 100644
---- a/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-+++ b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-@@ -55,6 +55,12 @@ Optional properties:
- 			  Ends, which can replace the fsl,asrc-width.
- 			  The value is 2 (S16_LE), or 6 (S24_LE).
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index 95f6a9617b0b..75df220e4b51 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -605,8 +605,8 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
  
-+   - fsl,asrc-input-clock	: Input clock ID, defaults to INCLK_NONE
-+				  (see enum asrc_inclk in fsl_asrc.h)
-+
-+   - fsl,asrc-output-clock	: Output clock ID, defaults to OUTCLK_ASRCK1_CLK
-+				  (see enum asrc_outclk in fsl_asrc.h)
-+
- Example:
+ 	config.pair = pair->index;
+ 	config.channel_num = channels;
+-	config.inclk = INCLK_NONE;
+-	config.outclk = OUTCLK_ASRCK1_CLK;
++	config.inclk = asrc->inclk;
++	config.outclk = asrc->outclk;
  
- asrc: asrc@2034000 {
-@@ -77,4 +83,6 @@ asrc: asrc@2034000 {
- 		"txa", "txb", "txc";
- 	fsl,asrc-rate  = <48000>;
- 	fsl,asrc-width = <16>;
-+	fsl,asrc-input-clock = <0x3>;
-+	fsl,asrc-output-clock = <0xf>;
- };
+ 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 		config.input_format   = params_format(params);
+@@ -1067,6 +1067,20 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+ 
+ 	asrc->channel_avail = 10;
+ 
++	ret = of_property_read_u32(np, "fsl,asrc-input-clock",
++				   &asrc->inclk);
++	if (ret) {
++		dev_info(&pdev->dev, "no input clock specified, using none\n");
++		asrc->inclk = INCLK_NONE;
++	}
++
++	ret = of_property_read_u32(np, "fsl,asrc-output-clock",
++				   &asrc->outclk);
++	if (ret) {
++		dev_info(&pdev->dev, "no output clock specified, using default\n");
++		asrc->outclk = OUTCLK_ASRCK1_CLK;
++	}
++
+ 	ret = of_property_read_u32(np, "fsl,asrc-rate",
+ 				   &asrc->asrc_rate);
+ 	if (ret) {
+diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_common.h
+index 7e1c13ca37f1..1468878fbaca 100644
+--- a/sound/soc/fsl/fsl_asrc_common.h
++++ b/sound/soc/fsl/fsl_asrc_common.h
+@@ -89,6 +89,9 @@ struct fsl_asrc {
+ 	struct fsl_asrc_pair *pair[PAIR_CTX_NUM];
+ 	unsigned int channel_avail;
+ 
++	enum asrc_inclk inclk;
++	enum asrc_outclk outclk;
++
+ 	int asrc_rate;
+ 	snd_pcm_format_t asrc_format;
+ 	bool use_edma;
 -- 
 2.27.0
 
