@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132EC211D8C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 09:54:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D3A211D92
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 09:56:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49y9N43JdmzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 17:54:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49y9QT39f1zDqTg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 17:56:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,52 +17,52 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=n2X2tl2t; dkim-atps=neutral
+ header.s=20161025 header.b=PCTOgeyX; dkim-atps=neutral
 Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
  [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49y9G52qMYzDqKl
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 17:49:01 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id cm21so2762350pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jul 2020 00:49:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49y9GB1dWtzDqKl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 17:49:06 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id o22so7113983pjw.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jul 2020 00:49:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=p3+TUO0b9VV9VdTNyuHlA2h8v8EGxg7Uc2Jzn7JHwh8=;
- b=n2X2tl2t1Z2jMbL8ftjNC8UfbtwIZAGcSuTp5qN1FvmOYuwgjX5KnJtALwmUyd5wHW
- HuWBDqPjKQ3jhWx7H0ve063UAbqIvU5T7BGPTxwObqeD3U77dQibTYtK7uFzOozjPGfj
- bqB8JF4dxa4GjyuRRMYu5EMlwn3xeK0QOSdBMDCvw8FDXDVxaVEpDX8z3F6bD427EoFk
- NGrFGc4CXku52XHrp65RvqF6vcc9sga6E2Jes0IIyw6uUSeZxHAJK37keYVe0X3ky8Ft
- 4wfJ8U29IEzSKtDV/aWIswgU/itkss0JJydb1Xz5o6YooNXTyY/jjqd8bfdVUb1nuhum
- iHnQ==
+ bh=fa9T6PNML2/xkl0bGh/Ztj2VCHxJI+rGnDXzulQp9g4=;
+ b=PCTOgeyXmxCRHqkPbdWbNCD5RF4HWZdbQyTIojx6EjkOEWF+8/wPlG+BElrR7+YXPZ
+ sLjTHouTQD0P60dVOilWpe+9ScH0g0t3DQfrJjVACgVsaQop6YHakwMXx0bTb/i9Kpyr
+ IfE7/orhNh+x85icci2L+rRczXIMxKvjeObHUliBHpTheYNK4UHn2US9x2BpsMUNug+I
+ EusvpjUPF/4LJKVp6u8AbSLcPZwrmIIEF3Y1b5zCKSh3qKcVdNqSh8SeyDBvoKorJgff
+ xdbFqgnTG+Pi2peG6cNEYSMF+oKs2l5g3Bon66SblCaVCGRP5jxZmJeOVkncsl3jVmza
+ hxSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=p3+TUO0b9VV9VdTNyuHlA2h8v8EGxg7Uc2Jzn7JHwh8=;
- b=Y5gRxc+boITbJomSaQxm3+WnBZnxIDJ95lo91iW31VlFR8fmUCeR6Dh+diNubOB8qJ
- DsvKLGcJ0Mhn11Rk5eiGBqOvmTpn+Y0LRsQWGTvnNf7xcHKQSBHdlISy7ls7eSqhT1mJ
- ZFdFK2zIZK22sdAKx6pjkfCh0czr5vzMF6TEsrrJUq6+FrqCh4iLwWSOLVZt1d0x4VoL
- I+0DvlvYmEOuya6G499nKY22ERioq2oDz8oaQAgwXlF02zQ2x6yCaLTE5FTOlH2FjvSN
- z9SKV7mbYrqeXytBs5s80qfllMKwF1FWpBDSnM0RFJXeGAkJl4z1ABv9hSDuaby9g4q0
- 6Fig==
-X-Gm-Message-State: AOAM530IZiG5anYfWb0qVewAwZWCokD+h5Mktg2RzUQtWJUVuHzu/hcq
- 7O8NImyGuXpfxntPUPiz3Y8=
-X-Google-Smtp-Source: ABdhPJyrX8ZqLoSxDfScS/c0oudlkWwFEh6ZwhILTvmdjNw4QT7UUZQ1EYJPbV20RtW1fhoz7YmYKg==
-X-Received: by 2002:a17:902:b205:: with SMTP id
- t5mr13521549plr.7.1593676139118; 
- Thu, 02 Jul 2020 00:48:59 -0700 (PDT)
+ bh=fa9T6PNML2/xkl0bGh/Ztj2VCHxJI+rGnDXzulQp9g4=;
+ b=mEV53sDFgc0Gb7PldosSu5T4kY4FoZqgJ+a717vTZG1hTjfEglptvJZMjV77T/jWR+
+ i7mvieAZMdzCs4SsL2lvJ7mEP/xZ5yI7TXh40hkj0FVTFe3VhkJq8hzzP8qsE1PNUpTN
+ hX8/0d5PY4MQd1E/K0DL2eHLXhXgcc+F7dY74dwqhHbY2Gl8InD8DTwAdU6WUUrk/D6o
+ bylVnLiu5Aew0OBAl8SJgXezKog+JJP2Hx3O6ocrfzE8amhAv/fEvT8mvdrgQs19tU95
+ o+f3tIxTiThTuVWWUNdIIBwnhGqXlC29KbqGrErCiEH91aHxGgh7EUZVHSBchXKbA+DF
+ mIDQ==
+X-Gm-Message-State: AOAM531puh+gDdnMFdi7PtoyvwZ/oaHgvn/ZepDzr0FfNIQ4j2sE69Nr
+ jpMQF80jjrd2D56R/n0b0Av7U5wb
+X-Google-Smtp-Source: ABdhPJz0DrYb1pN7ZPb0vDXXXEcS0FJvLihL6IDzUc7haMlJV7H/L6XRfoSOyJ9cS7kxACtRgiESpQ==
+X-Received: by 2002:a17:90a:950c:: with SMTP id
+ t12mr32900004pjo.173.1593676144195; 
+ Thu, 02 Jul 2020 00:49:04 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id 17sm6001953pfv.16.2020.07.02.00.48.54
+ by smtp.gmail.com with ESMTPSA id 17sm6001953pfv.16.2020.07.02.00.48.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jul 2020 00:48:58 -0700 (PDT)
+ Thu, 02 Jul 2020 00:49:03 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: 
-Subject: [PATCH 1/8] powerpc/powernv: must include hvcall.h to get PAPR defines
-Date: Thu,  2 Jul 2020 17:48:32 +1000
-Message-Id: <20200702074839.1057733-2-npiggin@gmail.com>
+Subject: [PATCH 2/8] powerpc/pseries: use smp_rmb() in H_CONFER spin yield
+Date: Thu,  2 Jul 2020 17:48:33 +1000
+Message-Id: <20200702074839.1057733-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200702074839.1057733-1-npiggin@gmail.com>
 References: <20200702074839.1057733-1-npiggin@gmail.com>
@@ -89,26 +89,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-An include goes away in future patches which breaks compilation
-without this.
+There is no need for rmb(), this allows faster lwsync here.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/powernv/pci-ioda-tce.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/lib/locks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda-tce.c b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
-index f923359d8afc..8eba6ece7808 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda-tce.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
-@@ -15,6 +15,7 @@
- 
- #include <asm/iommu.h>
- #include <asm/tce.h>
-+#include <asm/hvcall.h> /* share error returns with PAPR */
- #include "pci.h"
- 
- unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb)
+diff --git a/arch/powerpc/lib/locks.c b/arch/powerpc/lib/locks.c
+index 6440d5943c00..47a530de733e 100644
+--- a/arch/powerpc/lib/locks.c
++++ b/arch/powerpc/lib/locks.c
+@@ -30,7 +30,7 @@ void splpar_spin_yield(arch_spinlock_t *lock)
+ 	yield_count = be32_to_cpu(lppaca_of(holder_cpu).yield_count);
+ 	if ((yield_count & 1) == 0)
+ 		return;		/* virtual cpu is currently running */
+-	rmb();
++	smp_rmb();
+ 	if (lock->slock != lock_value)
+ 		return;		/* something has changed */
+ 	plpar_hcall_norets(H_CONFER,
+@@ -56,7 +56,7 @@ void splpar_rw_yield(arch_rwlock_t *rw)
+ 	yield_count = be32_to_cpu(lppaca_of(holder_cpu).yield_count);
+ 	if ((yield_count & 1) == 0)
+ 		return;		/* virtual cpu is currently running */
+-	rmb();
++	smp_rmb();
+ 	if (rw->lock != lock_value)
+ 		return;		/* something has changed */
+ 	plpar_hcall_norets(H_CONFER,
 -- 
 2.23.0
 
