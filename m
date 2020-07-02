@@ -1,42 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384282125D1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 16:13:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F512125FC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 16:19:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yKnY5kvjzDqw9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:13:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yKwL3CQPzDqww
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:19:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yKgN1RL9zDqGT
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 00:08:00 +1000 (AEST)
-Received: from gaia (unknown [95.146.230.158])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id F272720780;
- Thu,  2 Jul 2020 14:07:54 +0000 (UTC)
-Date: Thu, 2 Jul 2020 15:07:52 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V3 (RESEND) 2/3] mm/sparsemem: Enable vmem_altmap support
- in vmemmap_alloc_block_buf()
-Message-ID: <20200702140752.GF22241@gaia>
-References: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
- <1592442930-9380-3-git-send-email-anshuman.khandual@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1592442930-9380-3-git-send-email-anshuman.khandual@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yKj62gkjzDqS4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 00:09:27 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49yKhw2X8Vz9v2n7;
+ Thu,  2 Jul 2020 16:09:20 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HJdxPeFBxBME; Thu,  2 Jul 2020 16:09:20 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49yKhw0zKlz9v2mV;
+ Thu,  2 Jul 2020 16:09:20 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A37A8B9A0;
+ Thu,  2 Jul 2020 16:09:22 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id COv8UasKhlrn; Thu,  2 Jul 2020 16:09:22 +0200 (CEST)
+Received: from po16052vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [10.25.210.22])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0711D8B99A;
+ Thu,  2 Jul 2020 16:09:22 +0200 (CEST)
+Received: by po16052vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id EA79665B6E; Thu,  2 Jul 2020 14:09:21 +0000 (UTC)
+Message-Id: <261923c075d1cb49d02493685e8585d4ea2a5197.1593698951.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] docs: powerpc: Clarify book3s/32 MMU families
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ corbet@lwn.net
+Date: Thu,  2 Jul 2020 14:09:21 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,64 +60,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 18, 2020 at 06:45:29AM +0530, Anshuman Khandual wrote:
-> There are many instances where vmemap allocation is often switched between
-> regular memory and device memory just based on whether altmap is available
-> or not. vmemmap_alloc_block_buf() is used in various platforms to allocate
-> vmemmap mappings. Lets also enable it to handle altmap based device memory
-> allocation along with existing regular memory allocations. This will help
-> in avoiding the altmap based allocation switch in many places.
-> 
-> While here also implement a regular memory allocation fallback mechanism
-> when the first preferred device memory allocation fails. This will ensure
-> preserving the existing semantics on powerpc platform. To summarize there
-> are three different methods to call vmemmap_alloc_block_buf().
-> 
-> (., NULL,   false) /* Allocate from system RAM */
-> (., altmap, false) /* Allocate from altmap without any fallback */
-> (., altmap, true)  /* Allocate from altmap with fallback (system RAM) */
-[...]
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index bc73abf0bc25..01e25b56eccb 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -225,12 +225,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->  		 * fall back to system memory if the altmap allocation fail.
->  		 */
->  		if (altmap && !altmap_cross_boundary(altmap, start, page_size)) {
-> -			p = altmap_alloc_block_buf(page_size, altmap);
-> -			if (!p)
-> -				pr_debug("altmap block allocation failed, falling back to system memory");
-> +			p = vmemmap_alloc_block_buf(page_size, node,
-> +						    altmap, true);
-> +		} else {
-> +			p = vmemmap_alloc_block_buf(page_size, node,
-> +						    NULL, false);
->  		}
-> -		if (!p)
-> -			p = vmemmap_alloc_block_buf(page_size, node);
->  		if (!p)
->  			return -ENOMEM;
+Documentation wrongly tells that book3s/32 CPU have hash MMU.
 
-Is the fallback argument actually necessary. It may be cleaner to just
-leave the code as is with the choice between altmap and NULL. If an arch
-needs a fallback (only powerpc), they have the fallback in place
-already. I don't see the powerpc code any better after this change.
+603 and e300 core only have software loaded TLB.
 
-I'm fine with the altmap argument though.
+755, 7450 family and e600 core have both hash MMU and software loaded
+TLB. This can be selected by setting a bit in HID2 (755) or
+HID0 (others). At the time being this is not supported by the kernel.
 
+Make this explicit in the documentation.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ Documentation/powerpc/cpu_families.rst | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/powerpc/cpu_families.rst b/Documentation/powerpc/cpu_families.rst
+index 1e063c5440c3..9b84e045e713 100644
+--- a/Documentation/powerpc/cpu_families.rst
++++ b/Documentation/powerpc/cpu_families.rst
+@@ -9,7 +9,9 @@ and are supported by arch/powerpc.
+ Book3S (aka sPAPR)
+ ------------------
+ 
+-- Hash MMU
++- Hash MMU (except 603 and e300)
++- Software loaded TLB (603 and e300)
++- Selectable Software loaded TLB in addition to hash MMU (755, 7450, e600)
+ - Mix of 32 & 64 bit::
+ 
+    +--------------+                 +----------------+
+@@ -24,9 +26,9 @@ Book3S (aka sPAPR)
+           |                                 |
+           |                                 |
+           v                                 v
+-   +--------------+                 +----------------+      +-------+
+-   |     604      |                 |    750 (G3)    | ---> | 750CX |
+-   +--------------+                 +----------------+      +-------+
++   +--------------+    +-----+      +----------------+      +-------+
++   |     604      |    | 755 | <--- |    750 (G3)    | ---> | 750CX |
++   +--------------+    +-----+      +----------------+      +-------+
+           |                                 |                   |
+           |                                 |                   |
+           v                                 v                   v
 -- 
-Catalin
+2.25.0
+
