@@ -1,53 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED326212171
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 12:37:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EE2212174
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 12:39:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yF0T020MzDqwh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 20:37:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yF2r72gJzDqwm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 20:39:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=zx19RhhC; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=gKLSXxs5; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yDxs75jxzDqcx
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 20:35:13 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AFF482073E;
- Thu,  2 Jul 2020 10:35:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1593686111;
- bh=e2d7EoUGfBMQ8iAjxxfS9uLE6JsRVlpFYnf0i0i/9QQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=zx19RhhCYndjeyr3Ntyuk/b/dG1YRNEW2u11qyAF1MnPiVC3uoqkfkflQnUQ20Q/V
- BRTJ4Go1k5kA4mHEeVWUTjblN4KXUh4EbOTxrozGkgaGXWwXaH767ODZtDY1/VBx5m
- Bh2iVabMtfwri5eKLtL7CGst/N2IPX3sUadygBbk=
-Date: Thu, 2 Jul 2020 11:35:06 +0100
-From: Will Deacon <will@kernel.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 5/8] powerpc/64s: implement queued spinlocks and rwlocks
-Message-ID: <20200702103506.GA16418@willie-the-truck>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yDzV3mwnzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 20:36:38 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id 207so12181314pfu.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jul 2020 03:36:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=zjqH5OyJ0uNgtW+k6QC+tgZu9cOQCPtDoHSfO1sMDg4=;
+ b=gKLSXxs5Xi0ffOI4xaSGtq2l4qx855x5dafTHDq9WcXO7TQYplArFpssod2qR5iroc
+ Z//J/E+Jxf2dWCBbYKBHXFVD+w+CXtshhKTHJdbD/O3iC89Fj08aafiZCVEJF2cOTrNE
+ 4O5RqYQhri/vkSqkCRh9y8WiBO96ojL+4z4rqkLZXntWV5WAPiQZgcI1l0fnRFTFW50B
+ rnTXdlfNOfTTwQ8ZKKGlQmHh4n8MfQVtn/MOtzbdTacVyDrkzZeO+Bdvyer8wuGkuL/S
+ WC2gdd9tZnGshLR1E2a6JkZgt2oEw8jXurog9U4CI9OV0MLCeiLynDz8keltOuHYW5qY
+ QHew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=zjqH5OyJ0uNgtW+k6QC+tgZu9cOQCPtDoHSfO1sMDg4=;
+ b=qJ5DD+xlOWM+AgV+Wwv0fFgDTTadki8TxeURS2be7CCluRO4Vya5ceKMoemvRUgSjB
+ FUsiTWItNxEaKiPso2VFeQ7eGBRM+8ne4FDEfuAi/9L4SNfPzI4yLMY4vsPO+fNEYZ4F
+ /7k6bKGc268FPScgu5mUZ+bZK0Y3bdp32Ry83c/2QTwXi7m9I6bsEFaVQ6aeOnYnTmC0
+ Y2jmT9N3gaCL6hVoGZFNBVhgms1O0mJUNsUecutgbC7ka/FMycBOfo/S4+uzrMZyaWni
+ yCmyuOujIrBYJyTSSdxLZ+CMAQooADwxMacKwUMUrv5s7jp1eY72JIL8Zmg8EvaPJLtY
+ ZVDQ==
+X-Gm-Message-State: AOAM530Gu6EcODgwn4FzwhDdTPd/5SaLfRpO9heRHnA52o5wfKFPc3p2
+ tiqpcZZOCSxCSw2roTpo7KE=
+X-Google-Smtp-Source: ABdhPJzDNFrzM9gHS1aXVkfvYMpILRrQRmwBPh5wcimghMwI/lqsx8PhEr//gfgskebXTyEDOTJ33g==
+X-Received: by 2002:a63:8f18:: with SMTP id n24mr23072639pgd.432.1593686193761; 
+ Thu, 02 Jul 2020 03:36:33 -0700 (PDT)
+Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id i128sm8838706pfe.74.2020.07.02.03.36.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Jul 2020 03:36:33 -0700 (PDT)
+Date: Thu, 02 Jul 2020 20:36:27 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/8] powerpc/pseries: use smp_rmb() in H_CONFER spin yield
+To: Peter Zijlstra <peterz@infradead.org>
 References: <20200702074839.1057733-1-npiggin@gmail.com>
- <20200702074839.1057733-6-npiggin@gmail.com>
- <20200702080219.GB16113@willie-the-truck>
- <1593685459.r2tfxtfdp6.astroid@bobo.none>
+ <20200702074839.1057733-3-npiggin@gmail.com>
+ <20200702082840.GC4781@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200702082840.GC4781@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1593685459.r2tfxtfdp6.astroid@bobo.none>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-Id: <1593685552.uh4kepm08t.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,7 +80,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
  Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
  kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
  Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
@@ -68,41 +89,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 02, 2020 at 08:25:43PM +1000, Nicholas Piggin wrote:
-> Excerpts from Will Deacon's message of July 2, 2020 6:02 pm:
-> > On Thu, Jul 02, 2020 at 05:48:36PM +1000, Nicholas Piggin wrote:
-> >> diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-> >> new file mode 100644
-> >> index 000000000000..f84da77b6bb7
-> >> --- /dev/null
-> >> +++ b/arch/powerpc/include/asm/qspinlock.h
-> >> @@ -0,0 +1,20 @@
-> >> +/* SPDX-License-Identifier: GPL-2.0 */
-> >> +#ifndef _ASM_POWERPC_QSPINLOCK_H
-> >> +#define _ASM_POWERPC_QSPINLOCK_H
-> >> +
-> >> +#include <asm-generic/qspinlock_types.h>
-> >> +
-> >> +#define _Q_PENDING_LOOPS	(1 << 9) /* not tuned */
-> >> +
-> >> +#define smp_mb__after_spinlock()   smp_mb()
-> >> +
-> >> +static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
-> >> +{
-> >> +	smp_mb();
-> >> +	return atomic_read(&lock->val);
-> >> +}
-> > 
-> > Why do you need the smp_mb() here?
-> 
-> A long and sad tale that ends here 51d7d5205d338
-> 
-> Should probably at least refer to that commit from here, since this one 
-> is not going to git blame back there. I'll add something.
+Excerpts from Peter Zijlstra's message of July 2, 2020 6:28 pm:
+> On Thu, Jul 02, 2020 at 05:48:33PM +1000, Nicholas Piggin wrote:
+>> There is no need for rmb(), this allows faster lwsync here.
+>=20
+> Since you determined this; I'm thinking you actually understand the
+> ordering here. How about recording this understanding in a comment?
+>=20
+> Also, should the lock->slock load not use READ_ONCE() ?
 
-Is this still an issue, though?
+Yeah, good point. Maybe I'll drop it from this series, doesn't really=20
+belong I just saw the cleanup and didn't want to forget it.
 
-See 38b850a73034 (where we added a similar barrier on arm64) and then
-c6f5d02b6a0f (where we removed it).
+We we just ordering the two loads in this function, and !SMP isn't a=20
+concern (i.e., no issues of !SMP guest on SMP HV), but yeah fixing
+the lack of comment is warranted, thanks.
 
-Will
+Thanks,
+Nick
