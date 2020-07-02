@@ -1,48 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CCB211AAA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 05:35:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D6F211BE5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 08:17:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49y3d63y4JzDqtp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 13:35:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49y7DD3lcCzDqvj
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 16:17:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
- helo=fornost.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gondor.apana.org.au
-Received: from fornost.hmeau.com (helcar.hmeau.com [216.24.177.18])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49y3bN0cwmzDqlD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 13:33:34 +1000 (AEST)
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
- by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
- id 1jqpxV-0008AS-FA; Thu, 02 Jul 2020 13:32:22 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation);
- Thu, 02 Jul 2020 13:32:21 +1000
-Date: Thu, 2 Jul 2020 13:32:21 +1000
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: [v2 PATCH] crypto: af_alg - Fix regression on empty requests
-Message-ID: <20200702033221.GA19367@gondor.apana.org.au>
-References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
- <20200622224920.GA4332@42.do-not-panic.com>
- <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
- <20200623064056.GA8121@gondor.apana.org.au>
- <20200623170217.GB150582@gmail.com>
- <20200626062948.GA25285@gondor.apana.org.au>
- <CA+G9fYutuU55iL_6Qrk3oG3iq-37PaxvtA4KnEQHuLH9YpH-QA@mail.gmail.com>
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=song@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=yItMbcct; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49y79L5BmPzDqtR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 16:14:46 +1000 (AEST)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com
+ [209.85.208.178])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 47A0420A8B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 06:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1593670483;
+ bh=TRjOq0ioBsI/lLgnqh3WHyq3NuAIqhAPdkGT9KrgKH8=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=yItMbcctXfs5o3K3a0Uwam0VmikvvsUcR4rDa/JwGQwZB8Uz/Yhp2jGzCMiYmIUEm
+ 4zPuCUnKKcbVFIxEfBWBqPKPHn5qsYIgU9hyGcq8vCgJNY75/6RU7God1Ttp8qeL9G
+ H4psw2naqAuo1p/prO5iO6oUyZzGm17MB9ZSYIN4=
+Received: by mail-lj1-f178.google.com with SMTP id t25so25646097lji.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 23:14:43 -0700 (PDT)
+X-Gm-Message-State: AOAM532CtwtB4WvD3ATT1vhmbkLnnZb3PuKQ8CwOgWuzJsl3M6tsJz9S
+ Nlkis1iTL8Nzg9YJ1HVctGS/pIdq9W+aX+FOb3s=
+X-Google-Smtp-Source: ABdhPJyW7ZQG/gxodV+UBsSp8muv8lWxec/bTY9tvW0qqCeZQo8oSQL9G2bg+h67AMeeX8NyXrYP1bqMgId6X08X7/E=
+X-Received: by 2002:a2e:88c6:: with SMTP id a6mr11256607ljk.27.1593670481513; 
+ Wed, 01 Jul 2020 23:14:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYutuU55iL_6Qrk3oG3iq-37PaxvtA4KnEQHuLH9YpH-QA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200701085947.3354405-1-hch@lst.de>
+ <20200701085947.3354405-13-hch@lst.de>
+In-Reply-To: <20200701085947.3354405-13-hch@lst.de>
+From: Song Liu <song@kernel.org>
+Date: Wed, 1 Jul 2020 23:14:30 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW5=055Eo-b3fjC_b-nJz-fg1FGwy_aqrNNtHm-U8vut-A@mail.gmail.com>
+Message-ID: <CAPhsuW5=055Eo-b3fjC_b-nJz-fg1FGwy_aqrNNtHm-U8vut-A@mail.gmail.com>
+Subject: Re: [PATCH 12/20] block: remove the request_queue argument from
+ blk_queue_split
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,86 +65,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- David Howells <dhowells@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- Luis Chamberlain <mcgrof@kernel.org>, lkft-triage@lists.linaro.org,
- open list <linux-kernel@vger.kernel.org>, Eric Biggers <ebiggers@kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- chrubis <chrubis@suse.cz>, linux- stable <stable@vger.kernel.org>,
- James Morris <jmorris@namei.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Jan Stancek <jstancek@redhat.com>, LTP List <ltp@lists.linux.it>,
- "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
+ linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-nvme@lists.infradead.org,
+ open list <linux-kernel@vger.kernel.org>,
+ linux-raid <linux-raid@vger.kernel.org>, dm-devel@redhat.com,
+ linux-bcache@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 30, 2020 at 02:18:11PM +0530, Naresh Kamboju wrote:
-> 
-> Since we are on this subject,
-> LTP af_alg02  test case fails on stable 4.9 and stable 4.4
-> This is not a regression because the test case has been failing from
-> the beginning.
-> 
-> Is this test case expected to fail on stable 4.9 and 4.4 ?
-> or any chance to fix this on these older branches ?
-> 
-> Test output:
-> af_alg02.c:52: BROK: Timed out while reading from request socket.
-> 
-> ref:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-4.9-oe/build/v4.9.228-191-g082e807235d7/testrun/2884917/suite/ltp-crypto-tests/test/af_alg02/history/
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-4.9-oe/build/v4.9.228-191-g082e807235d7/testrun/2884606/suite/ltp-crypto-tests/test/af_alg02/log
+On Wed, Jul 1, 2020 at 2:02 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> The queue can be trivially derived from the bio, so pass one less
+> argument.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+[...]
+>  drivers/md/md.c               |  2 +-
 
-Actually this test really is broken.  Even though empty requests
-are legal, they should never be done with no write(2) at all.
-Because this fundamentally breaks the use of a blocking read(2)
-to wait for more data.
-
-Granted this has been broken since 2017 but I'm not going to
-reintroduce this just because of a broken test case.
-
-So please either remove af_alg02 or fix it by adding a control
-message through sendmsg(2).
-
-Thanks,
-
----8<---
-Some user-space programs rely on crypto requests that have no
-control metadata.  This broke when a check was added to require
-the presence of control metadata with the ctx->init flag.
-
-This patch fixes the regression by setting ctx->init as long as
-one sendmsg(2) has been made, with or without a control message.
-
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: f3c802a1f300 ("crypto: algif_aead - Only wake up when...")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 9fcb91ea10c41..5882ed46f1adb 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -851,6 +851,7 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 		err = -EINVAL;
- 		goto unlock;
- 	}
-+	ctx->init = true;
- 
- 	if (init) {
- 		ctx->enc = enc;
-@@ -858,7 +859,6 @@ int af_alg_sendmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 			memcpy(ctx->iv, con.iv->iv, ivsize);
- 
- 		ctx->aead_assoclen = con.aead_assoclen;
--		ctx->init = true;
- 	}
- 
- 	while (size) {
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+For md.c:
+Acked-by: Song Liu <song@kernel.org>
