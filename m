@@ -1,56 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572D0212864
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 17:46:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8752128E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 18:03:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yMs519hbzDqRY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 01:46:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yNDQ16JTzDqtv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 02:03:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::242;
+ helo=mail-lj1-x242.google.com; envelope-from=naresh.kamboju@linaro.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=uXPoXcMN; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=KwW+/U9f; dkim-atps=neutral
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yMm46KM2zDqMv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 01:42:12 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5A6AB208B8;
- Thu,  2 Jul 2020 15:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1593704530;
- bh=3KFnK04vEi7SoR61rRMArD9b+BR7w1+k2R0YFZiePIs=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=uXPoXcMNttT4jMn3+4BYmyeU01d4W2Mwcu1xJ7hI/S7P7RDqiNSek7TOZGa01uyLt
- URHmF5er8VNTpSNU52TEL/qkdUTT7kai/UGGQpku5+C/5aqPwntmUilLbQXqKC7Lbx
- PYdK7osKLzpwAWRFGK8g2ISveoUzKfhXMwmkJV8I=
-Date: Thu, 2 Jul 2020 16:42:07 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Subject: Re: [PATCH 1/2] dt-bindings: sound: fsl-asoc-card: add new
- compatible for I2S slave
-Message-ID: <20200702154207.GK4483@sirena.org.uk>
-References: <20200702141114.232688-1-arnaud.ferraris@collabora.com>
- <20200702141114.232688-2-arnaud.ferraris@collabora.com>
- <20200702143145.GG4483@sirena.org.uk>
- <5de5ea5b-0716-8ed1-28b0-9ad3da7a2d47@collabora.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yN0c4QLjzDqNn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 01:53:03 +1000 (AEST)
+Received: by mail-lj1-x242.google.com with SMTP id f8so20587140ljc.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jul 2020 08:53:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=X1hZZYHT2jx0soQwDY2Nw4ZNux9TK2TS4ou5sFWlySY=;
+ b=KwW+/U9fkM+srFlFPvkKz4V3jEnKIKH8ygaroNt4YXgCxeue/VrdTKoJwmcn9oXIVs
+ 4DY0ZVk34mPlw7u4KLu6rGjhvnrQL6/lofTS76CSIpt1KUwe2M3VISdDz83TvG8iTXSI
+ W47Pw8OTk/hC0zb2MZaQ1r596h7N8T5A23JSQkaU9RWiYgGd5Xav7JwLesO4IqMIFUZL
+ 2VuieIxaw/GaR9iMUF6CkG5lHBbOPJgWIfkSCxXHB48wkXOO7uuaIH8G93d6r33rKKeJ
+ p2LG1w2EFwjJvNEP/726kUUAmMNBPXMl5+BvhQTxMO/S6XCBw/1QqIdNdExANIirUL/4
+ +A/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=X1hZZYHT2jx0soQwDY2Nw4ZNux9TK2TS4ou5sFWlySY=;
+ b=Zmje4tfMweucakt7DcvVEhKhb67ZrFBL8Uzs6ZiyBTBGtc32KBKmFO5rK4vSoNjfdm
+ ZkSPA5Pg4SLKF33dRsfwhe4OME+tqOkza3VEz0h47Pejm/dev/47xUtkglzyrEKxtQRU
+ Ph087rZLvPOpsVnq5rY0teP7qa1j931Xb09xzaGjUpv0PRsNn2iT0W7krv2Lrno1eKhg
+ awUvSKnr/BJopAy3m2ka56PDZfRODszwO6cspbyR6Nd3RnK5f6eXjWWvRYj1OM1kf6j4
+ yeWzeAgO9b83WX0sOQ+yZwHRZAJgLYnEe22QgMgw/CYIgfjPeHKobJzv90oxrtjTYI/u
+ uhXg==
+X-Gm-Message-State: AOAM533xaa5XgmiwYPjQEIYmQF1i2fkvwVdiUSZPzFKr4CTkCOvtDdrw
+ z9JzZUecHLJThngg+Owe5DriNuNNKbL7O4PTdIdiCw==
+X-Google-Smtp-Source: ABdhPJz3ABkPWjkv8L0FIiK+Kjjg6BO4eaaimJnKQo1xzAYZPxzmmzDpXVUF4bLDPypwEcFJ8kmLmaUrHoL1B8Z52PM=
+X-Received: by 2002:a2e:b88c:: with SMTP id r12mr16463205ljp.266.1593705177353; 
+ Thu, 02 Jul 2020 08:52:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="2feizKym29CxAecD"
-Content-Disposition: inline
-In-Reply-To: <5de5ea5b-0716-8ed1-28b0-9ad3da7a2d47@collabora.com>
-X-Cookie: I'm rated PG-34!!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200629193947.2705954-1-hch@lst.de>
+ <20200629193947.2705954-19-hch@lst.de>
+ <20200702141001.GA3834@lca.pw> <20200702151453.GA1799@lst.de>
+In-Reply-To: <20200702151453.GA1799@lst.de>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 2 Jul 2020 21:22:46 +0530
+Message-ID: <CA+G9fYv6DfJB=DeQFVptAuaVv1Ng-BK0fRHgFZ=DNzymu8LVvw@mail.gmail.com>
+Subject: Re: [PATCH 18/20] block: refator submit_bio_noacct
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,52 +74,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Rob Herring <robh+dt@kernel.org>, kernel@collabora.com,
- Fabio Estevam <festevam@gmail.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
+ linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org,
+ Alexander Potapenko <glider@google.com>, linux-m68k@lists.linux-m68k.org,
+ linux-nvme@lists.infradead.org, open list <linux-kernel@vger.kernel.org>,
+ linux-raid@vger.kernel.org, dm-devel@redhat.com, Qian Cai <cai@lca.pw>,
+ kasan-dev@googlegroups.com, Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ linux-bcache@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Dmitry Vyukov <dvyukov@google.com>, drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, 2 Jul 2020 at 20:45, Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Thu, Jul 02, 2020 at 10:10:10AM -0400, Qian Cai wrote:
+> > On Mon, Jun 29, 2020 at 09:39:45PM +0200, Christoph Hellwig wrote:
+> > > Split out a __submit_bio_noacct helper for the actual de-recursion
+> > > algorithm, and simplify the loop by using a continue when we can't
+> > > enter the queue for a bio.
+> > >
+> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> >
+> > Reverting this commit and its dependencies,
+> >
+> > 5a6c35f9af41 block: remove direct_make_request
+> > ff93ea0ce763 block: shortcut __submit_bio_noacct for blk-mq drivers
+> >
+> > fixed the stack-out-of-bounds during boot,
+> >
+> > https://lore.kernel.org/linux-block/000000000000bcdeaa05a97280e4@google.com/
+>
+> Yikes.  bio_alloc_bioset pokes into bio_list[1] in a totally
+> undocumented way.  But even with that the problem should only show
+> up with "block: shortcut __submit_bio_noacct for blk-mq drivers".
+>
+> Can you try this patch?
 
---2feizKym29CxAecD
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied your patch on top of linux-next 20200702 and tested on
+arm64 and x86_64 devices and the reported BUG fixed.
 
-On Thu, Jul 02, 2020 at 05:28:03PM +0200, Arnaud Ferraris wrote:
-> Le 02/07/2020 =E0 16:31, Mark Brown a =E9crit=A0:
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
 
-> > Why require that the CODEC be clock master here - why not make this
-> > configurable, reusing the properties from the generic and audio graph
-> > cards?
+>
+> diff --git a/block/blk-core.c b/block/blk-core.c
+> index bf882b8d84450c..9f1bf8658b611a 100644
+> --- a/block/blk-core.c
+> +++ b/block/blk-core.c
+> @@ -1155,11 +1155,10 @@ static blk_qc_t __submit_bio_noacct(struct bio *bio)
+>  static blk_qc_t __submit_bio_noacct_mq(struct bio *bio)
+>  {
+>         struct gendisk *disk = bio->bi_disk;
+> -       struct bio_list bio_list;
+> +       struct bio_list bio_list[2] = { };
+>         blk_qc_t ret = BLK_QC_T_NONE;
+>
+> -       bio_list_init(&bio_list);
+> -       current->bio_list = &bio_list;
+> +       current->bio_list = bio_list;
+>
+>         do {
+>                 WARN_ON_ONCE(bio->bi_disk != disk);
+> @@ -1174,7 +1173,7 @@ static blk_qc_t __submit_bio_noacct_mq(struct bio *bio)
+>                 }
+>
+>                 ret = blk_mq_submit_bio(bio);
+> -       } while ((bio = bio_list_pop(&bio_list)));
+> +       } while ((bio = bio_list_pop(&bio_list[0])));
+>
+>         current->bio_list = NULL;
+>         return ret;
 
-> This is partly because I'm not sure how to do it (yet), but mostly
-> because I don't have the hardware to test this (the 2 CODECs present on
-> my only i.MX6 board are both clock master)
+ref:
+https://lkft.validation.linaro.org/scheduler/job/1538359#L288
+https://lkft.validation.linaro.org/scheduler/job/1538360#L572
 
-Take a look at what the generic cards are doing, it's a library function=20
-asoc_simple_parse_daifmt().  It's not the end of the world if you can't
-test it properly - if it turns out it's buggy somehow someone can always
-fix the code later but an ABI is an ABI so we can't change it.
 
---2feizKym29CxAecD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7+AE4ACgkQJNaLcl1U
-h9BYwQf+LRu606rmfYnqmbLMDcS82XnfLlMQpCccSxt5qRFkxPvsZqA1zoQUrt0n
-o8061rU3fHuwt17/Mp4D0SbC4g9EGRIon64yUii1nqoPIHEgYWVQ+F7sOPTKVKD5
-Z3LD+zP06AyjJxRDJ4+4pHRWpzQL2jxziBsxgQdp4W5mfU6fV3x5BvqdN1chcOPa
-TmgXdbKXfoR1Q/HIaU0CH2PVjh94BZqRRMPs5++X7xDcCUCsYUY6GW+GS1tEXQPj
-IdJ2Rgmt3M0273RzUlFQX8+akH03BBTlIJ8eCUYIp4H8dedN5w/2eXqjIOUIMnsT
-zv1pY4Ufcdm6Uzc6A47isxUHlg565Q==
-=K6iJ
------END PGP SIGNATURE-----
-
---2feizKym29CxAecD--
+- Naresh
