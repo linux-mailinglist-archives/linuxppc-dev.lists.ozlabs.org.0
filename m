@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E50212F85
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6A5212F8A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:32:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yXpx30X1zDqbh
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 08:30:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yXs70Cz1zDr5R
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 08:32:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,29 +15,29 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=collabora.com
-X-Greylist: delayed 559 seconds by postgrey-1.36 at bilbo;
- Fri, 03 Jul 2020 00:21:45 AEST
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
  [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yKzF6FD8zDqND
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 00:21:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yKzG4jSWzDqWN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 00:21:44 +1000 (AEST)
 Received: from xps.home (unknown [IPv6:2a01:e35:2fb5:1510:315a:ecf0:6250:a3ed])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested) (Authenticated sender: aferraris)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id D7F002A5EC2;
- Thu,  2 Jul 2020 15:12:17 +0100 (BST)
+ by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 8C01F2A5EC3;
+ Thu,  2 Jul 2020 15:12:18 +0100 (BST)
 From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
 To: 
-Subject: [PATCH 0/2] ASoC: fsl-asoc-card: add support for generic codecs
-Date: Thu,  2 Jul 2020 16:11:13 +0200
-Message-Id: <20200702141114.232688-1-arnaud.ferraris@collabora.com>
+Subject: [PATCH 1/2] dt-bindings: sound: fsl-asoc-card: add new compatible for
+ I2S slave
+Date: Thu,  2 Jul 2020 16:11:14 +0200
+Message-Id: <20200702141114.232688-2-arnaud.ferraris@collabora.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200702141114.232688-1-arnaud.ferraris@collabora.com>
+References: <20200702141114.232688-1-arnaud.ferraris@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 03 Jul 2020 08:28:33 +1000
+X-Mailman-Approved-At: Fri, 03 Jul 2020 08:28:34 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,19 +60,64 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-fsl-asoc-card currently only works with AC97 or a selection of codecs,
-although the hardware is capable of more.
+fsl-asoc-card currently doesn't support generic codecs with the SoC
+acting as I2S slave.
 
-Supporting generic codecs when acting as I2S slave (codec is master)
-would be useful, especially when using Bluetooth audio, as these are
-generally simple I2S devices not controlled by the sound subsystem.
+This commit adds a new `fsl,imx-audio-i2s-slave` for this use-case, as
+well as the following mandatory properties:
+- `audio-codec-dai-name` for specifying the codec DAI to be used
+- `audio-slot-width`
 
-This will allow using simple/dummy codecs along with ASRC.
+Signed-off-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+---
+ .../bindings/sound/fsl-asoc-card.txt          | 23 ++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-Arnaud Ferraris (2):
-  dt-bindings: sound: fsl-asoc-card: add new compatible for I2S slave
-  ASoC: fsl-asoc-card: add support for generic I2S slave use-case
+diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
+index 133d7e14a4d0..694a138df462 100644
+--- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
++++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
+@@ -22,6 +22,8 @@ Note: The card is initially designed for those sound cards who use AC'97, I2S
+ The compatible list for this generic sound card currently:
+  "fsl,imx-audio-ac97"
+ 
++ "fsl,imx-audio-i2s-slave"
++
+  "fsl,imx-audio-cs42888"
+ 
+  "fsl,imx-audio-cs427x"
+@@ -75,7 +77,13 @@ Optional unless SSI is selected as a CPU DAI:
+ 
+   - mux-ext-port	: The external port of the i.MX audio muxer
+ 
+-Example:
++Optional unless compatible is "fsl,imx-audio-i2s-slave":
++
++  - audio-codec-dai-name: The name of the DAI provided by the codec
++
++  - audio-slot-width	: The audio sample format
++
++Examples:
+ sound-cs42888 {
+ 	compatible = "fsl,imx-audio-cs42888";
+ 	model = "cs42888-audio";
+@@ -96,3 +104,16 @@ sound-cs42888 {
+ 		"AIN2L", "Line In Jack",
+ 		"AIN2R", "Line In Jack";
+ };
++
++sound-bluetooth {
++	compatible = "fsl,imx-audio-i2s-slave";
++	audio-cpu = <&ssi1>;
++	audio-codec = <&codec_bluetooth>;
++	audio-codec-dai-name = "bt-sco-pcm-wb";
++	audio-slot-width = <16>;
++	audio-routing =
++		"RX", "Mic Jack",
++		"Headphone Jack", "TX";
++	mux-int-port = <1>;
++	mux-ext-port = <4>;
++};
+-- 
+2.27.0
 
- Documentation/devicetree/bindings/sound/fsl-asoc-card.txt | 23 ++++++++++++++++++++++-
- sound/soc/fsl/fsl-asoc-card.c                             | 46 +++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 57 insertions(+), 12 deletions(-)
