@@ -2,81 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480E1212670
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 16:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20B621279B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 17:18:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yLM91w8HzDqLc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 00:39:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yMF74hBzzDqZj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 01:18:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yLJ211yqzDqHk
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 00:36:17 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 062EVfNR093878; Thu, 2 Jul 2020 10:36:10 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 320s23bmnw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 10:36:10 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 062EYwEO032766;
- Thu, 2 Jul 2020 14:36:09 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02wdc.us.ibm.com with ESMTP id 31wwr98xyr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 14:36:09 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 062Ea8fw49938872
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Jul 2020 14:36:08 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A76E6BE04F;
- Thu,  2 Jul 2020 14:36:08 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 04FBBBE054;
- Thu,  2 Jul 2020 14:36:08 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.85.74.114])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  2 Jul 2020 14:36:07 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 1A3BD2E4AB8; Thu,  2 Jul 2020 20:06:04 +0530 (IST)
-Date: Thu, 2 Jul 2020 20:06:04 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Kajol Jain <kjain@linux.ibm.com>
-Subject: Re: [PATCH v3 2/2] powerpc/hv-24x7: Add sysfs files inside hv-24x7
- device to show cpumask
-Message-ID: <20200702143603.GD31710@in.ibm.com>
-References: <20200626102824.270923-1-kjain@linux.ibm.com>
- <20200626102824.270923-3-kjain@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yM8k38hbzDqSg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 01:15:00 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 9DA8768B05; Thu,  2 Jul 2020 17:14:53 +0200 (CEST)
+Date: Thu, 2 Jul 2020 17:14:53 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Qian Cai <cai@lca.pw>
+Subject: Re: [PATCH 18/20] block: refator submit_bio_noacct
+Message-ID: <20200702151453.GA1799@lst.de>
+References: <20200629193947.2705954-1-hch@lst.de>
+ <20200629193947.2705954-19-hch@lst.de> <20200702141001.GA3834@lca.pw>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200626102824.270923-3-kjain@linux.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-02_08:2020-07-02,
- 2020-07-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- cotscore=-2147483648 spamscore=0 mlxscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007020100
+In-Reply-To: <20200702141001.GA3834@lca.pw>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,131 +45,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: nathanl@linux.ibm.com, ego@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com,
- suka@us.ibm.com, anju@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
+ linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-nvme@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, dm-devel@redhat.com,
+ Alexander Potapenko <glider@google.com>, kasan-dev@googlegroups.com,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>, linux-bcache@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ Dmitry Vyukov <dvyukov@google.com>, drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 26, 2020 at 03:58:24PM +0530, Kajol Jain wrote:
-> Patch here adds a cpumask attr to hv_24x7 pmu along with ABI documentation.
+On Thu, Jul 02, 2020 at 10:10:10AM -0400, Qian Cai wrote:
+> On Mon, Jun 29, 2020 at 09:39:45PM +0200, Christoph Hellwig wrote:
+> > Split out a __submit_bio_noacct helper for the actual de-recursion
+> > algorithm, and simplify the loop by using a continue when we can't
+> > enter the queue for a bio.
+> > 
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > 
-> Primary use to expose the cpumask is for the perf tool which has the
-> capability to parse the driver sysfs folder and understand the
-> cpumask file. Having cpumask file will reduce the number of perf command
-> line parameters (will avoid "-C" option in the perf tool
-> command line). It can also notify the user which is
-> the current cpu used to retrieve the counter data.
+> Reverting this commit and its dependencies,
 > 
-> command:# cat /sys/devices/hv_24x7/cpumask
-> 0
+> 5a6c35f9af41 block: remove direct_make_request
+> ff93ea0ce763 block: shortcut __submit_bio_noacct for blk-mq drivers
 > 
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> fixed the stack-out-of-bounds during boot,
+> 
+> https://lore.kernel.org/linux-block/000000000000bcdeaa05a97280e4@google.com/
 
-This patch looks good to me.
+Yikes.  bio_alloc_bioset pokes into bio_list[1] in a totally
+undocumented way.  But even with that the problem should only show
+up with "block: shortcut __submit_bio_noacct for blk-mq drivers".
 
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+Can you try this patch?
 
-> ---
->  .../sysfs-bus-event_source-devices-hv_24x7    |  7 ++++
->  arch/powerpc/perf/hv-24x7.c                   | 36 +++++++++++++++++--
->  2 files changed, 41 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7 b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
-> index e8698afcd952..f9dd3755b049 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
-> +++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_24x7
-> @@ -43,6 +43,13 @@ Description:	read only
->  		This sysfs interface exposes the number of cores per chip
->  		present in the system.
-> 
-> +What:		/sys/devices/hv_24x7/cpumask
-> +Date:		June 2020
-> +Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-> +Description:	read only
-> +		This sysfs file exposes the cpumask which is designated to make
-> +		HCALLs to retrieve hv-24x7 pmu event counter data.
-> +
->  What:		/sys/bus/event_source/devices/hv_24x7/event_descs/<event-name>
->  Date:		February 2014
->  Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-> index ce4739e2b407..3c699612d29f 100644
-> --- a/arch/powerpc/perf/hv-24x7.c
-> +++ b/arch/powerpc/perf/hv-24x7.c
-> @@ -448,6 +448,12 @@ static ssize_t device_show_string(struct device *dev,
->  	return sprintf(buf, "%s\n", (char *)d->var);
->  }
-> 
-> +static ssize_t cpumask_get_attr(struct device *dev,
-> +				struct device_attribute *attr, char *buf)
-> +{
-> +	return cpumap_print_to_pagebuf(true, buf, &hv_24x7_cpumask);
-> +}
-> +
->  static ssize_t sockets_show(struct device *dev,
->  			    struct device_attribute *attr, char *buf)
->  {
-> @@ -1116,6 +1122,17 @@ static DEVICE_ATTR_RO(sockets);
->  static DEVICE_ATTR_RO(chipspersocket);
->  static DEVICE_ATTR_RO(coresperchip);
-> 
-> +static DEVICE_ATTR(cpumask, S_IRUGO, cpumask_get_attr, NULL);
-> +
-> +static struct attribute *cpumask_attrs[] = {
-> +	&dev_attr_cpumask.attr,
-> +	NULL,
-> +};
-> +
-> +static struct attribute_group cpumask_attr_group = {
-> +	.attrs = cpumask_attrs,
-> +};
-> +
->  static struct bin_attribute *if_bin_attrs[] = {
->  	&bin_attr_catalog,
->  	NULL,
-> @@ -1143,6 +1160,11 @@ static const struct attribute_group *attr_groups[] = {
->  	&event_desc_group,
->  	&event_long_desc_group,
->  	&if_group,
-> +	/*
-> +	 * This NULL is a placeholder for the cpumask attr which will update
-> +	 * onlyif cpuhotplug registration is successful
-> +	 */
-> +	NULL,
->  	NULL,
->  };
-> 
-> @@ -1683,7 +1705,7 @@ static int hv_24x7_cpu_hotplug_init(void)
-> 
->  static int hv_24x7_init(void)
->  {
-> -	int r;
-> +	int r, i = -1;
->  	unsigned long hret;
->  	struct hv_perf_caps caps;
-> 
-> @@ -1727,8 +1749,18 @@ static int hv_24x7_init(void)
-> 
->  	/* init cpuhotplug */
->  	r = hv_24x7_cpu_hotplug_init();
-> -	if (r)
-> +	if (r) {
->  		pr_err("hv_24x7: CPU hotplug init failed\n");
-> +	} else {
-> +		/*
-> +		 * Cpu hotplug init is successful, add the
-> +		 * cpumask file as part of pmu attr group and
-> +		 * assign it to very first NULL location.
-> +		 */
-> +		while (attr_groups[++i])
-> +			/* nothing */;
-> +		attr_groups[i] = &cpumask_attr_group;
-> +	}
-> 
->  	r = perf_pmu_register(&h_24x7_pmu, h_24x7_pmu.name, -1);
->  	if (r)
-> -- 
-> 2.18.2
-> 
+diff --git a/block/blk-core.c b/block/blk-core.c
+index bf882b8d84450c..9f1bf8658b611a 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -1155,11 +1155,10 @@ static blk_qc_t __submit_bio_noacct(struct bio *bio)
+ static blk_qc_t __submit_bio_noacct_mq(struct bio *bio)
+ {
+ 	struct gendisk *disk = bio->bi_disk;
+-	struct bio_list bio_list;
++	struct bio_list bio_list[2] = { };
+ 	blk_qc_t ret = BLK_QC_T_NONE;
+ 
+-	bio_list_init(&bio_list);
+-	current->bio_list = &bio_list;
++	current->bio_list = bio_list;
+ 
+ 	do {
+ 		WARN_ON_ONCE(bio->bi_disk != disk);
+@@ -1174,7 +1173,7 @@ static blk_qc_t __submit_bio_noacct_mq(struct bio *bio)
+ 		}
+ 
+ 		ret = blk_mq_submit_bio(bio);
+-	} while ((bio = bio_list_pop(&bio_list)));
++	} while ((bio = bio_list_pop(&bio_list[0])));
+ 
+ 	current->bio_list = NULL;
+ 	return ret;
