@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26C8212DAF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 22:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAD1212DB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 22:16:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yTpD5dSJzDqWj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 06:14:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yTrD0PtpzDqND
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 06:16:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yTPp6S6GzDqtQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:56:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yTQ702WbzDr5n
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:57:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49yTPp3W42z8tZ0
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:56:46 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49yTQ652lVz8tZ0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:57:02 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 49yTPp1STXz9sRW; Fri,  3 Jul 2020 05:56:46 +1000 (AEST)
+ id 49yTQ62l1Gz9sRW; Fri,  3 Jul 2020 05:57:02 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
@@ -33,53 +33,53 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49yTPn4LgHz9sPF
- for <linuxppc-dev@ozlabs.org>; Fri,  3 Jul 2020 05:56:45 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 49yTQ56Q4nz9sPF
+ for <linuxppc-dev@ozlabs.org>; Fri,  3 Jul 2020 05:57:01 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 062JXUFC151795; Thu, 2 Jul 2020 15:56:38 -0400
+ 062J2Amf084065; Thu, 2 Jul 2020 15:56:55 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3212ats5u7-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 320wfgt6h0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 15:56:38 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 062JsKs3055175;
- Thu, 2 Jul 2020 15:56:38 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3212ats5tm-1
+ Thu, 02 Jul 2020 15:56:54 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 062JbcmK042620;
+ Thu, 2 Jul 2020 15:56:54 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 320wfgt6g3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 15:56:38 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 062Jte34008079;
- Thu, 2 Jul 2020 19:56:35 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04fra.de.ibm.com with ESMTP id 31wwr831ws-1
+ Thu, 02 Jul 2020 15:56:53 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 062JtjY2013726;
+ Thu, 2 Jul 2020 19:56:51 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma04ams.nl.ibm.com with ESMTP id 31wwr8egpu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 19:56:35 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 062JuWRt56819762
+ Thu, 02 Jul 2020 19:56:51 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 062Julrb39125066
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Jul 2020 19:56:32 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB77411C04C;
- Thu,  2 Jul 2020 19:56:31 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74EA511C050;
- Thu,  2 Jul 2020 19:56:28 +0000 (GMT)
+ Thu, 2 Jul 2020 19:56:47 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 85F8FAE04D;
+ Thu,  2 Jul 2020 19:56:47 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 652D2AE055;
+ Thu,  2 Jul 2020 19:56:44 +0000 (GMT)
 Received: from hbathini.in.ibm.com (unknown [9.102.21.221])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  2 Jul 2020 19:56:28 +0000 (GMT)
-Subject: [PATCH v2 09/12] ppc64/kexec_file: setup backup region for kdump
- kernel
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  2 Jul 2020 19:56:44 +0000 (GMT)
+Subject: [PATCH v2 10/12] ppc64/kexec_file: prepare elfcore header for
+ crashing kernel
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Andrew Morton <akpm@linux-foundation.org>
-Date: Fri, 03 Jul 2020 01:26:27 +0530
-Message-ID: <159371977962.21555.13082885278172514176.stgit@hbathini.in.ibm.com>
+Date: Fri, 03 Jul 2020 01:26:43 +0530
+Message-ID: <159371979723.21555.9519023181134650934.stgit@hbathini.in.ibm.com>
 In-Reply-To: <159371956443.21555.18251597651350106920.stgit@hbathini.in.ibm.com>
 References: <159371956443.21555.18251597651350106920.stgit@hbathini.in.ibm.com>
 User-Agent: StGit/0.17.1-dirty
@@ -91,11 +91,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-02_09:2020-07-02,
  2020-07-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- cotscore=-2147483648
- spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
- mlxlogscore=999 suspectscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007020132
+ phishscore=0 clxscore=1015
+ suspectscore=2 impostorscore=0 mlxlogscore=999 cotscore=-2147483648
+ adultscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ mlxscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2007020125
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,406 +107,382 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Pingfan Liu <piliu@redhat.com>,
- Kexec-ml <kexec@lists.infradead.org>, Petr Tesarik <ptesarik@suse.cz>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
- Dave Young <dyoung@redhat.com>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
+ Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
  Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Though kdump kernel boots from loaded address, the first 64K bytes
-of it is copied down to real 0. So, setup a backup region to copy
-the first 64K bytes of crashed kernel, in purgatory, before booting
-into kdump kernel. Also, update reserve map with backup region and
-crashed kernel's memory to avoid kdump kernel from accidentially
-using that memory.
+Prepare elf headers for the crashing kernel's core file using
+crash_prepare_elf64_headers() and pass on this info to kdump
+kernel by updating its command line with elfcorehdr parameter.
+Also, add elfcorehdr location to reserve map to avoid it from
+being stomped on while booting.
 
-Reported-by: kernel test robot <lkp@intel.com>
-[lkp: In v1, purgatory() declaration was missing]
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
 
 Changes in v2:
-* Check if backup region is available before branching out. This is
-  to keep `kexec -l -s` flow as before as much as possible. This would
-  eventually change with more testing and addition of sha256 digest
-  verification support.
-* Fixed missing prototype for purgatory() as reported by lkp.
-  lkp report for reference:
-    - https://lore.kernel.org/patchwork/patch/1264423/
+* Tried merging adjacent memory ranges on hitting maximum ranges limit
+  to reduce reallocations for memory ranges and also, minimize PT_LOAD
+  segments for elfcore.
+* Updated add_rtas_mem_range() & add_opal_mem_range() callsites based on
+  the new prototype for these functions.
 
 
- arch/powerpc/include/asm/crashdump-ppc64.h |    5 +
- arch/powerpc/include/asm/kexec.h           |    7 ++
- arch/powerpc/include/asm/purgatory.h       |   11 +++
- arch/powerpc/kexec/elf_64.c                |    9 +++
- arch/powerpc/kexec/file_load_64.c          |   95 ++++++++++++++++++++++++++++
- arch/powerpc/purgatory/Makefile            |   28 ++++++++
- arch/powerpc/purgatory/purgatory_64.c      |   36 +++++++++++
- arch/powerpc/purgatory/trampoline_64.S     |   28 +++++++-
- 8 files changed, 211 insertions(+), 8 deletions(-)
- create mode 100644 arch/powerpc/include/asm/purgatory.h
- create mode 100644 arch/powerpc/purgatory/purgatory_64.c
+ arch/powerpc/include/asm/kexec.h  |    6 +
+ arch/powerpc/kexec/elf_64.c       |   12 ++
+ arch/powerpc/kexec/file_load.c    |   49 ++++++++++
+ arch/powerpc/kexec/file_load_64.c |  181 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 248 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/crashdump-ppc64.h b/arch/powerpc/include/asm/crashdump-ppc64.h
-index 90deb46..fcc5fce 100644
---- a/arch/powerpc/include/asm/crashdump-ppc64.h
-+++ b/arch/powerpc/include/asm/crashdump-ppc64.h
-@@ -2,6 +2,11 @@
- #ifndef _ASM_POWERPC_CRASHDUMP_PPC64_H
- #define _ASM_POWERPC_CRASHDUMP_PPC64_H
- 
-+/* Backup region - first 64K bytes of System RAM. */
-+#define BACKUP_SRC_START	0
-+#define BACKUP_SRC_END		0xffff
-+#define BACKUP_SRC_SIZE		(BACKUP_SRC_END - BACKUP_SRC_START + 1)
-+
- /* min & max addresses for kdump load segments */
- #define KDUMP_BUF_MIN		(crashk_res.start)
- #define KDUMP_BUF_MAX		((crashk_res.end < ppc64_rma_size) ? \
 diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index e78cd0a..037cf2b 100644
+index 037cf2b..8b0a6d6 100644
 --- a/arch/powerpc/include/asm/kexec.h
 +++ b/arch/powerpc/include/asm/kexec.h
-@@ -109,6 +109,9 @@ extern const struct kexec_file_ops kexec_elf64_ops;
- struct kimage_arch {
- 	struct crash_mem *exclude_ranges;
+@@ -112,12 +112,18 @@ struct kimage_arch {
+ 	unsigned long backup_start;
+ 	void *backup_buf;
  
-+	unsigned long backup_start;
-+	void *backup_buf;
++	unsigned long elfcorehdr_addr;
++	unsigned long elf_headers_sz;
++	void *elf_headers;
 +
  #ifdef CONFIG_IMA_KEXEC
  	phys_addr_t ima_buffer_addr;
  	size_t ima_buffer_size;
-@@ -124,6 +127,10 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
- int delete_fdt_mem_rsv(void *fdt, unsigned long start, unsigned long size);
+ #endif
+ };
  
- #ifdef CONFIG_PPC64
-+struct kexec_buf;
-+
-+int load_crashdump_segments_ppc64(struct kimage *image,
-+				  struct kexec_buf *kbuf);
- int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
- 			  const void *fdt, unsigned long kernel_load_addr,
- 			  unsigned long fdt_load_addr);
-diff --git a/arch/powerpc/include/asm/purgatory.h b/arch/powerpc/include/asm/purgatory.h
-new file mode 100644
-index 0000000..076d150
---- /dev/null
-+++ b/arch/powerpc/include/asm/purgatory.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _ASM_POWERPC_PURGATORY_H
-+#define _ASM_POWERPC_PURGATORY_H
-+
-+#ifndef __ASSEMBLY__
-+#include <linux/purgatory.h>
-+
-+void purgatory(void);
-+#endif	/* __ASSEMBLY__ */
-+
-+#endif /* _ASM_POWERPC_PURGATORY_H */
++char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
++			  unsigned long cmdline_len);
+ int setup_purgatory(struct kimage *image, const void *slave_code,
+ 		    const void *fdt, unsigned long kernel_load_addr,
+ 		    unsigned long fdt_load_addr);
 diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index c695f94..4838b42 100644
+index 4838b42..40a028c 100644
 --- a/arch/powerpc/kexec/elf_64.c
 +++ b/arch/powerpc/kexec/elf_64.c
-@@ -67,6 +67,15 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 
- 	pr_debug("Loaded purgatory at 0x%lx\n", pbuf.mem);
- 
-+	/* Setup additional segments needed for panic kernel */
-+	if (image->type == KEXEC_TYPE_CRASH) {
-+		ret = load_crashdump_segments_ppc64(image, &kbuf);
-+		if (ret) {
-+			pr_err("Failed to load kdump kernel segments\n");
+@@ -36,6 +36,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 	void *fdt;
+ 	const void *slave_code;
+ 	struct elfhdr ehdr;
++	char *modified_cmdline = NULL;
+ 	struct kexec_elf_info elf_info;
+ 	struct kexec_buf kbuf = { .image = image, .buf_min = 0,
+ 				  .buf_max = ppc64_rma_size };
+@@ -74,6 +75,16 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 			pr_err("Failed to load kdump kernel segments\n");
+ 			goto out;
+ 		}
++
++		/* Setup cmdline for kdump kernel case */
++		modified_cmdline = setup_kdump_cmdline(image, cmdline,
++						       cmdline_len);
++		if (!modified_cmdline) {
++			pr_err("Setting up cmdline for kdump kernel failed\n");
++			ret = -EINVAL;
 +			goto out;
++		}
++		cmdline = modified_cmdline;
+ 	}
+ 
+ 	if (initrd != NULL) {
+@@ -130,6 +141,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 		pr_err("Error setting up the purgatory.\n");
+ 
+ out:
++	kfree(modified_cmdline);
+ 	kexec_free_elf_info(&elf_info);
+ 
+ 	/* Make kimage_file_post_load_cleanup free the fdt buffer for us. */
+diff --git a/arch/powerpc/kexec/file_load.c b/arch/powerpc/kexec/file_load.c
+index 99a2c4d..2e74992 100644
+--- a/arch/powerpc/kexec/file_load.c
++++ b/arch/powerpc/kexec/file_load.c
+@@ -17,11 +17,46 @@
+ #include <linux/slab.h>
+ #include <linux/kexec.h>
+ #include <linux/libfdt.h>
++#include <asm/setup.h>
+ #include <asm/ima.h>
+ 
+ #define SLAVE_CODE_SIZE		256	/* First 0x100 bytes */
+ 
+ /**
++ * setup_kdump_cmdline - Prepend "elfcorehdr=<addr> " to command line
++ *                       of kdump kernel for exporting the core.
++ * @image:               Kexec image
++ * @cmdline:             Command line parameters to update.
++ * @cmdline_len:         Length of the cmdline parameters.
++ *
++ * kdump segment must be setup before calling this function.
++ *
++ * Returns new cmdline buffer for kdump kernel on success, NULL otherwise.
++ */
++char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
++			  unsigned long cmdline_len)
++{
++	int elfcorehdr_strlen;
++	char *cmdline_ptr;
++
++	cmdline_ptr = kzalloc(COMMAND_LINE_SIZE, GFP_KERNEL);
++	if (!cmdline_ptr)
++		return NULL;
++
++	elfcorehdr_strlen = sprintf(cmdline_ptr, "elfcorehdr=0x%lx ",
++				    image->arch.elfcorehdr_addr);
++
++	if (elfcorehdr_strlen + cmdline_len > COMMAND_LINE_SIZE) {
++		pr_err("Appending elfcorehdr=<addr> exceeds cmdline size\n");
++		kfree(cmdline_ptr);
++		return NULL;
++	}
++
++	memcpy(cmdline_ptr + elfcorehdr_strlen, cmdline, cmdline_len);
++	return cmdline_ptr;
++}
++
++/**
+  * setup_purgatory - initialize the purgatory's global variables
+  * @image:		kexec image.
+  * @slave_code:		Slave code for the purgatory.
+@@ -215,6 +250,20 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
+ 		}
+ 	}
+ 
++	if (image->type == KEXEC_TYPE_CRASH) {
++		/*
++		 * Avoid elfcorehdr from being stomped on in kdump kernel by
++		 * setting up memory reserve map.
++		 */
++		ret = fdt_add_mem_rsv(fdt, image->arch.elfcorehdr_addr,
++				      image->arch.elf_headers_sz);
++		if (ret) {
++			pr_err("Error reserving elfcorehdr memory: %s\n",
++			       fdt_strerror(ret));
++			goto err;
 +		}
 +	}
 +
- 	if (initrd != NULL) {
- 		kbuf.buffer = initrd;
- 		kbuf.bufsz = kbuf.memsz = initrd_len;
+ 	ret = setup_ima_buffer(image, fdt, chosen_node);
+ 	if (ret) {
+ 		pr_err("Error setting up the new device tree.\n");
 diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index f06dcf1..f91530e 100644
+index f91530e..6f895fa 100644
 --- a/arch/powerpc/kexec/file_load_64.c
 +++ b/arch/powerpc/kexec/file_load_64.c
-@@ -20,6 +20,7 @@
- #include <linux/of_device.h>
- #include <linux/memblock.h>
- #include <linux/slab.h>
-+#include <linux/vmalloc.h>
- #include <asm/types.h>
- #include <asm/drmem.h>
- #include <asm/kexec_ranges.h>
-@@ -858,6 +859,69 @@ static int kexec_do_relocs_ppc64(unsigned long my_r2, const Elf_Sym *sym,
+@@ -122,6 +122,77 @@ static int get_usable_memory_ranges(struct crash_mem **mem_ranges)
  }
  
  /**
-+ * load_backup_segment - Initialize backup segment of crashing kernel.
-+ * @image:               Kexec image.
-+ * @kbuf:                Buffer contents and memory parameters.
++ * get_crash_memory_ranges - Get crash memory ranges. This list includes
++ *                           first/crashing kernel's memory regions that
++ *                           would be exported via an elfcore.
++ * @mem_ranges:              Range list to add the memory ranges to.
 + *
 + * Returns 0 on success, negative errno on error.
 + */
-+static int load_backup_segment(struct kimage *image, struct kexec_buf *kbuf)
++static int get_crash_memory_ranges(struct crash_mem **mem_ranges)
 +{
-+	void *buf;
++	struct memblock_region *reg;
++	struct crash_mem *tmem;
 +	int ret;
 +
-+	/* Setup a segment for backup region */
-+	buf = vzalloc(BACKUP_SRC_SIZE);
-+	if (!buf)
-+		return -ENOMEM;
++	for_each_memblock(memory, reg) {
++		u64 base, size;
 +
-+	/*
-+	 * A source buffer has no meaning for backup region as data will
-+	 * be copied from backup source, after crash, in the purgatory.
-+	 * But as load segment code doesn't recognize such segments,
-+	 * setup a dummy source buffer to keep it happy for now.
-+	 */
-+	kbuf->buffer = buf;
++		base = (u64)reg->base;
++		size = (u64)reg->size;
++
++		/* Skip backup memory region, which needs a separate entry */
++		if (base == BACKUP_SRC_START) {
++			if (size > BACKUP_SRC_SIZE) {
++				base = BACKUP_SRC_END + 1;
++				size -= BACKUP_SRC_SIZE;
++			} else
++				continue;
++		}
++
++		ret = add_mem_range(mem_ranges, base, size);
++		if (ret)
++			goto out;
++
++		/* Try merging adjacent ranges before reallocation attempt */
++		if ((*mem_ranges)->nr_ranges == (*mem_ranges)->max_nr_ranges)
++			sort_memory_ranges(*mem_ranges, true);
++	}
++
++	/* Reallocate memory ranges if there is no space to split ranges */
++	tmem = *mem_ranges;
++	if (tmem && (tmem->nr_ranges == tmem->max_nr_ranges)) {
++		tmem = realloc_mem_ranges(mem_ranges);
++		if (!tmem)
++			goto out;
++	}
++
++	/* Exclude crashkernel region */
++	ret = crash_exclude_mem_range(tmem, crashk_res.start, crashk_res.end);
++	if (ret)
++		goto out;
++
++	ret = add_rtas_mem_range(mem_ranges);
++	if (ret)
++		goto out;
++
++	ret = add_opal_mem_range(mem_ranges);
++	if (ret)
++		goto out;
++
++	/* create a separate program header for the backup region */
++	ret = add_mem_range(mem_ranges, BACKUP_SRC_START, BACKUP_SRC_SIZE);
++	if (ret)
++		goto out;
++
++	sort_memory_ranges(*mem_ranges, false);
++out:
++	if (ret)
++		pr_err("Failed to setup crash memory ranges\n");
++	return ret;
++}
++
++/**
+  * __locate_mem_hole_top_down - Looks top down for a large enough memory hole
+  *                              in the memory regions between buf_min & buf_max
+  *                              for the buffer. If found, sets kbuf->mem.
+@@ -898,6 +969,103 @@ static int load_backup_segment(struct kimage *image, struct kexec_buf *kbuf)
+ }
+ 
+ /**
++ * update_backup_region_phdr - Update backup region's offset for the core to
++ *                             export the region appropriately.
++ * @image:                     Kexec image.
++ * @ehdr:                      ELF core header.
++ *
++ * Assumes an exclusive program header is setup for the backup region
++ * in the ELF headers
++ *
++ * Returns nothing.
++ */
++static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
++{
++	Elf64_Phdr *phdr;
++	unsigned int i;
++
++	phdr = (Elf64_Phdr *)(ehdr + 1);
++	for (i = 0; i < ehdr->e_phnum; i++) {
++		if (phdr->p_paddr == BACKUP_SRC_START) {
++			phdr->p_offset = image->arch.backup_start;
++			pr_debug("Backup region offset updated to 0x%lx\n",
++				 image->arch.backup_start);
++			return;
++		}
++	}
++}
++
++/**
++ * prepare_elf_headers - Prepare headers for the elfcore to be exported as
++ *                       /proc/vmcore by the kdump kernel.
++ * @image:               Kexec image.
++ * @cmem:                Crash memory ranges to be exported via elfcore.
++ * @addr:                Vmalloc'd memory allocated by crash_prepare_elf64_headers
++ *                       to prepare the elf headers.
++ * @sz:                  Size of the vmalloc'd memory allocated.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++static int prepare_elf_headers(struct kimage *image, struct crash_mem *cmem,
++			       void **addr, unsigned long *sz)
++{
++	int ret;
++
++	ret = crash_prepare_elf64_headers(cmem, false, addr, sz);
++
++	/* Fix the offset for backup region in the ELF header */
++	if (!ret)
++		update_backup_region_phdr(image, *addr);
++
++	return ret;
++}
++
++/**
++ * load_elfcorehdr_segment - Setup crash memory ranges and initialize elfcorehdr
++ *                           segment needed to load kdump kernel.
++ * @image:                   Kexec image.
++ * @kbuf:                    Buffer contents and memory parameters.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
++{
++	struct crash_mem *cmem = NULL;
++	unsigned long headers_sz;
++	void *headers = NULL;
++	int ret;
++
++	ret = get_crash_memory_ranges(&cmem);
++	if (ret)
++		goto out;
++
++	/* Setup elfcorehdr segment */
++	ret = prepare_elf_headers(image, cmem, &headers, &headers_sz);
++	if (ret) {
++		pr_err("Failed to prepare elf headers for the core\n");
++		goto out;
++	}
++
++	kbuf->buffer = headers;
 +	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
-+	kbuf->bufsz = kbuf->memsz = BACKUP_SRC_SIZE;
++	kbuf->bufsz = kbuf->memsz = headers_sz;
 +	kbuf->top_down = false;
 +
 +	ret = kexec_add_buffer(kbuf);
 +	if (ret) {
-+		vfree(buf);
-+		return ret;
-+	}
-+
-+	image->arch.backup_buf = buf;
-+	image->arch.backup_start = kbuf->mem;
-+	return 0;
-+}
-+
-+/**
-+ * load_crashdump_segments_ppc64 - Initialize the additional segements needed
-+ *                                 to load kdump kernel.
-+ * @image:                         Kexec image.
-+ * @kbuf:                          Buffer contents and memory parameters.
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+int load_crashdump_segments_ppc64(struct kimage *image,
-+				  struct kexec_buf *kbuf)
-+{
-+	int ret;
-+
-+	/* Load backup segment - first 64K bytes of the crashing kernel */
-+	ret = load_backup_segment(image, kbuf);
-+	if (ret) {
-+		pr_err("Failed to load backup segment\n");
-+		return ret;
-+	}
-+	pr_debug("Loaded the backup region at 0x%lx\n", kbuf->mem);
-+
-+	return 0;
-+}
-+
-+/**
-  * setup_purgatory_ppc64 - initialize PPC64 specific purgatory's global
-  *                         variables and call setup_purgatory() to initialize
-  *                         common global variable.
-@@ -898,6 +962,14 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
- 			goto out;
- 	}
- 
-+	/* Tell purgatory where to look for backup region */
-+	ret = kexec_purgatory_get_set_symbol(image, "backup_start",
-+					     &image->arch.backup_start,
-+					     sizeof(image->arch.backup_start),
-+					     false);
-+	if (ret)
++		vfree(headers);
 +		goto out;
-+
- 	/* Setup the stack top */
- 	stack_buf = kexec_purgatory_get_symbol_addr(image, "stack_buf");
- 	if (!stack_buf)
-@@ -966,7 +1038,7 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
- 
- 	/*
- 	 * Restrict memory usage for kdump kernel by setting up
--	 * usable memory ranges.
-+	 * usable memory ranges and memory reserve map.
- 	 */
- 	if (image->type == KEXEC_TYPE_CRASH) {
- 		ret = get_usable_memory_ranges(&umem);
-@@ -978,6 +1050,24 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
- 			pr_err("Error setting up usable-memory property for kdump kernel\n");
- 			goto out;
- 		}
-+
-+		ret = fdt_add_mem_rsv(fdt, BACKUP_SRC_START + BACKUP_SRC_SIZE,
-+				      crashk_res.start - BACKUP_SRC_SIZE);
-+		if (ret) {
-+			pr_err("Error reserving crash memory: %s\n",
-+			       fdt_strerror(ret));
-+			goto out;
-+		}
 +	}
 +
-+	if (image->arch.backup_start) {
-+		ret = fdt_add_mem_rsv(fdt, image->arch.backup_start,
-+				      BACKUP_SRC_SIZE);
-+		if (ret) {
-+			pr_err("Error reserving memory for backup: %s\n",
-+			       fdt_strerror(ret));
-+			goto out;
-+		}
++	image->arch.elfcorehdr_addr = kbuf->mem;
++	image->arch.elf_headers_sz = headers_sz;
++	image->arch.elf_headers = headers;
++out:
++	kfree(cmem);
++	return ret;
++}
++
++/**
+  * load_crashdump_segments_ppc64 - Initialize the additional segements needed
+  *                                 to load kdump kernel.
+  * @image:                         Kexec image.
+@@ -918,6 +1086,15 @@ int load_crashdump_segments_ppc64(struct kimage *image,
  	}
+ 	pr_debug("Loaded the backup region at 0x%lx\n", kbuf->mem);
  
- 	ret = setup_new_fdt(image, fdt, initrd_load_addr, initrd_len,
-@@ -1188,5 +1278,8 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
- 	kfree(image->arch.exclude_ranges);
- 	image->arch.exclude_ranges = NULL;
++	/* Load elfcorehdr segment - to export crashing kernel's vmcore */
++	ret = load_elfcorehdr_segment(image, kbuf);
++	if (ret) {
++		pr_err("Failed to load elfcorehdr segment\n");
++		return ret;
++	}
++	pr_debug("Loaded elf core header at 0x%lx, bufsz=0x%lx memsz=0x%lx\n",
++		 image->arch.elfcorehdr_addr, kbuf->bufsz, kbuf->memsz);
++
+ 	return 0;
+ }
  
-+	vfree(image->arch.backup_buf);
-+	image->arch.backup_buf = NULL;
+@@ -1281,5 +1458,9 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image)
+ 	vfree(image->arch.backup_buf);
+ 	image->arch.backup_buf = NULL;
+ 
++	vfree(image->arch.elf_headers);
++	image->arch.elf_headers = NULL;
++	image->arch.elf_headers_sz = 0;
 +
  	return kexec_image_post_load_cleanup_default(image);
  }
-diff --git a/arch/powerpc/purgatory/Makefile b/arch/powerpc/purgatory/Makefile
-index 348f5958..a494413 100644
---- a/arch/powerpc/purgatory/Makefile
-+++ b/arch/powerpc/purgatory/Makefile
-@@ -2,13 +2,37 @@
- 
- KASAN_SANITIZE := n
- 
--targets += trampoline_$(BITS).o purgatory.ro kexec-purgatory.c
-+purgatory-y := purgatory_$(BITS).o trampoline_$(BITS).o
-+
-+targets += $(purgatory-y)
-+PURGATORY_OBJS = $(addprefix $(obj)/,$(purgatory-y))
- 
- LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined
-+targets += purgatory.ro
-+
-+PURGATORY_CFLAGS_REMOVE :=
-+
-+# Default KBUILD_CFLAGS can have -pg option set when FUNCTION_TRACE is
-+# enabled leaving some undefined symbols like _mcount in purgatory.
-+ifdef CONFIG_FUNCTION_TRACER
-+PURGATORY_CFLAGS_REMOVE			+= $(CC_FLAGS_FTRACE)
-+endif
-+
-+ifdef CONFIG_STACKPROTECTOR
-+PURGATORY_CFLAGS_REMOVE		+= -fstack-protector
-+endif
- 
--$(obj)/purgatory.ro: $(obj)/trampoline_$(BITS).o FORCE
-+ifdef CONFIG_STACKPROTECTOR_STRONG
-+PURGATORY_CFLAGS_REMOVE		+= -fstack-protector-strong
-+endif
-+
-+CFLAGS_REMOVE_purgatory_$(BITS).o	+= $(PURGATORY_CFLAGS_REMOVE)
-+
-+$(obj)/purgatory.ro: $(PURGATORY_OBJS) FORCE
- 		$(call if_changed,ld)
- 
-+targets += kexec-purgatory.c
-+
- quiet_cmd_bin2c = BIN2C   $@
-       cmd_bin2c = $(objtree)/scripts/bin2c kexec_purgatory < $< > $@
- 
-diff --git a/arch/powerpc/purgatory/purgatory_64.c b/arch/powerpc/purgatory/purgatory_64.c
-new file mode 100644
-index 0000000..1eca74c
---- /dev/null
-+++ b/arch/powerpc/purgatory/purgatory_64.c
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * purgatory: Runs between two kernels
-+ *
-+ * Copyright 2020, Hari Bathini, IBM Corporation.
-+ */
-+
-+#include <asm/purgatory.h>
-+#include <asm/crashdump-ppc64.h>
-+
-+extern unsigned long backup_start;
-+
-+static void *__memcpy(void *dest, const void *src, unsigned long n)
-+{
-+	unsigned long i;
-+	unsigned char *d;
-+	const unsigned char *s;
-+
-+	d = dest;
-+	s = src;
-+	for (i = 0; i < n; i++)
-+		d[i] = s[i];
-+
-+	return dest;
-+}
-+
-+void purgatory(void)
-+{
-+	void *dest, *src;
-+
-+	src = (void *)BACKUP_SRC_START;
-+	if (backup_start) {
-+		dest = (void *)backup_start;
-+		__memcpy(dest, src, BACKUP_SRC_SIZE);
-+	}
-+}
-diff --git a/arch/powerpc/purgatory/trampoline_64.S b/arch/powerpc/purgatory/trampoline_64.S
-index 83e93b7..ef808d3 100644
---- a/arch/powerpc/purgatory/trampoline_64.S
-+++ b/arch/powerpc/purgatory/trampoline_64.S
-@@ -44,11 +44,6 @@ master:
- 	mr	%r17,%r3	/* save cpu id to r17 */
- 	mr	%r15,%r4	/* save physical address in reg15 */
- 
--	or	%r3,%r3,%r3	/* ok now to high priority, lets boot */
--	lis	%r6,0x1
--	mtctr	%r6		/* delay a bit for slaves to catch up */
--	bdnz	.		/* before we overwrite 0-100 again */
--
- 	bl	0f		/* Work out where we're running */
- 0:	mflr	%r18
- 
-@@ -56,6 +51,24 @@ master:
- 
- 	ld	%r1,(stack - 0b)(%r18)		/* setup stack */
- 
-+	/* Branch out to copy backup region, if required. */
-+	ld	%r12,(backup_start - 0b)(%r18)
-+	cmpdi	%cr0,%r12,0
-+	beq	80f
-+
-+	subi	%r1,%r1,112
-+#if defined(_CALL_ELF) && _CALL_ELF == 2
-+	bl	purgatory
-+#else
-+	bl	.purgatory
-+#endif
-+	nop
-+80:
-+	or	%r3,%r3,%r3	/* ok now to high priority, lets boot */
-+	lis	%r6,0x1
-+	mtctr	%r6		/* delay a bit for slaves to catch up */
-+	bdnz	.		/* before we overwrite 0-100 again */
-+
- 	/* load device-tree address */
- 	ld	%r3, (dt_offset - 0b)(%r18)
- 	mr	%r16,%r3	/* save dt address in reg16 */
-@@ -112,6 +125,11 @@ dt_offset:
- 	.8byte  0x0
- 	.size dt_offset, . - dt_offset
- 
-+	.balign 8
-+	.globl backup_start
-+backup_start:
-+	.8byte  0x0
-+	.size backup_start, . - backup_start
- 
- 	.balign 8
- 	.globl my_toc
 
