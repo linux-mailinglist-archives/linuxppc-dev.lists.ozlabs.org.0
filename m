@@ -2,77 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612942122FC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 14:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CB121246C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 15:19:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yH514dVYzDqCg
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 22:11:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yJZp03cnzDqxf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 23:18:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=dyoung@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=HZxP3k9u; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=HZxP3k9u; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yH2g18QvzDqTP
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 22:09:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1593691764;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xHNyDKxONfk5ZuiA6wqr2UGhxhodt5B2XvkEDH0Vso4=;
- b=HZxP3k9ub8vQ+tpDXODmOLjuRnxELGNzKuWJazvm7FjrxJLbJivR115oSMwPI7AKBtqBBl
- SWwmhHF7ClyVTZ7wR3wbesgsf5K2ewf4asVYvxajLtfiLESAjbc6hHLaan+/Jsm3iiWdhA
- Ri9gjsoxCqqZ9z+3mTROdCP+i3Z4LbE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1593691764;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xHNyDKxONfk5ZuiA6wqr2UGhxhodt5B2XvkEDH0Vso4=;
- b=HZxP3k9ub8vQ+tpDXODmOLjuRnxELGNzKuWJazvm7FjrxJLbJivR115oSMwPI7AKBtqBBl
- SWwmhHF7ClyVTZ7wR3wbesgsf5K2ewf4asVYvxajLtfiLESAjbc6hHLaan+/Jsm3iiWdhA
- Ri9gjsoxCqqZ9z+3mTROdCP+i3Z4LbE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-322-zAl8HdTEN3u_pbMtHfe0Qg-1; Thu, 02 Jul 2020 08:09:20 -0400
-X-MC-Unique: zAl8HdTEN3u_pbMtHfe0Qg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F407F18CA26C;
- Thu,  2 Jul 2020 12:09:16 +0000 (UTC)
-Received: from dhcp-128-65.nay.redhat.com (ovpn-13-96.pek2.redhat.com
- [10.72.13.96])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CD4245C1D0;
- Thu,  2 Jul 2020 12:08:58 +0000 (UTC)
-Date: Thu, 2 Jul 2020 20:08:55 +0800
-From: Dave Young <dyoung@redhat.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH v6 1/2] crash_core, vmcoreinfo: Append 'MAX_PHYSMEM_BITS'
- to vmcoreinfo
-Message-ID: <20200702120855.GD21026@dhcp-128-65.nay.redhat.com>
-References: <1589395957-24628-1-git-send-email-bhsharma@redhat.com>
- <1589395957-24628-2-git-send-email-bhsharma@redhat.com>
- <20200702110003.GC22241@gaia>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200702110003.GC22241@gaia>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yJXL124pzDqxf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 23:16:49 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 062D3lp6092955; Thu, 2 Jul 2020 09:16:44 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320xaywgu4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Jul 2020 09:16:44 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 062D44iY094400;
+ Thu, 2 Jul 2020 09:16:44 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320xaywgt8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Jul 2020 09:16:44 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 062DATCh027107;
+ Thu, 2 Jul 2020 13:16:42 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma05fra.de.ibm.com with ESMTP id 31wwr8avt7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Jul 2020 13:16:42 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 062DGekB11927982
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Jul 2020 13:16:40 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 289084C04E;
+ Thu,  2 Jul 2020 13:16:40 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 26D524C044;
+ Thu,  2 Jul 2020 13:16:39 +0000 (GMT)
+Received: from [9.85.87.208] (unknown [9.85.87.208])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  2 Jul 2020 13:16:38 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.14\))
+Subject: Re: [powerpc][next-20200701] Hung task timeouts during regression
+ test runs
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <20200702115216.GF2452799@T590>
+Date: Thu, 2 Jul 2020 18:46:38 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <16B5C41B-2078-4259-9942-6642F713788E@linux.vnet.ibm.com>
+References: <CDAB3931-FAAD-443A-A9CD-362E527043A1@linux.vnet.ibm.com>
+ <20200702115216.GF2452799@T590>
+To: Ming Lei <ming.lei@redhat.com>
+X-Mailer: Apple Mail (2.3445.104.14)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-02_08:2020-07-02,
+ 2020-07-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0
+ cotscore=-2147483648 suspectscore=0 impostorscore=0 priorityscore=1501
+ mlxscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 spamscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007020094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,44 +95,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
- Bhupesh Sharma <bhsharma@redhat.com>, x86@kernel.org,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- Boris Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, bhupesh.linux@gmail.com,
- Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- linux-arm-kernel@lists.infradead.org, Dave Anderson <anderson@redhat.com>
+Cc: linux-block@vger.kernel.org, axboe@kernel.dk,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Catalin,
-On 07/02/20 at 12:00pm, Catalin Marinas wrote:
-> On Thu, May 14, 2020 at 12:22:36AM +0530, Bhupesh Sharma wrote:
-> > diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-> > index 9f1557b98468..18175687133a 100644
-> > --- a/kernel/crash_core.c
-> > +++ b/kernel/crash_core.c
-> > @@ -413,6 +413,7 @@ static int __init crash_save_vmcoreinfo_init(void)
-> >  	VMCOREINFO_LENGTH(mem_section, NR_SECTION_ROOTS);
-> >  	VMCOREINFO_STRUCT_SIZE(mem_section);
-> >  	VMCOREINFO_OFFSET(mem_section, section_mem_map);
-> > +	VMCOREINFO_NUMBER(MAX_PHYSMEM_BITS);
-> >  #endif
-> >  	VMCOREINFO_STRUCT_SIZE(page);
-> >  	VMCOREINFO_STRUCT_SIZE(pglist_data);
-> 
-> I can queue this patch via the arm64 tree (together with the second one)
-> but I'd like an ack from the kernel/crash_core.c maintainers. They don't
-> seem to have been cc'ed either (only the kexec list).
 
-For the VMCOREINFO part, I'm fine with the changes, but since I do not
-understand the arm64 pieces so I would like to leave to arm64 people to
-review.  If arm64 bits are good enough, feel free to add:
 
-Acked-by: Dave Young <dyoung@redhat.com>
+> On 02-Jul-2020, at 5:22 PM, Ming Lei <ming.lei@redhat.com> wrote:
+>=20
+> On Thu, Jul 02, 2020 at 04:53:04PM +0530, Sachin Sant wrote:
+>> Starting with linux-next 20200701 release I am observing automated =
+regressions
+>> tests taking longer time to complete. A test which took 10 minutes =
+with next-20200630
+>> took more than 60 minutes against next-20200701.=20
+>>=20
+>> Following hung task timeout messages were seen during these runs
+>>=20
+>> [ 1718.848351]       Not tainted 5.8.0-rc3-next-20200701-autotest #1
+>> [ 1718.848356] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" =
+disables this message.
+>> [ 1718.848362] NetworkManager  D    0  2626      1 0x00040080
+>> [ 1718.848367] Call Trace:
+>> [ 1718.848374] [c0000008b0f6b8f0] [c000000000c6d558] =
+schedule+0x78/0x130 (unreliable)
+>> [ 1718.848382] [c0000008b0f6bad0] [c00000000001b070] =
+__switch_to+0x2e0/0x480
+>> [ 1718.848388] [c0000008b0f6bb30] [c000000000c6ce9c] =
+__schedule+0x2cc/0x910
+>> [ 1718.848394] [c0000008b0f6bc10] [c000000000c6d558] =
+schedule+0x78/0x130
+>> [ 1718.848401] [c0000008b0f6bc40] [c0000000005d5a64] =
+jbd2_log_wait_commit+0xd4/0x1a0
+>> [ 1718.848408] [c0000008b0f6bcc0] [c00000000055fb6c] =
+ext4_sync_file+0x1cc/0x480
+>> [ 1718.848415] [c0000008b0f6bd20] [c000000000493530] =
+vfs_fsync_range+0x70/0xf0
+>> [ 1718.848421] [c0000008b0f6bd60] [c000000000493638] =
+do_fsync+0x58/0xd0
+>> [ 1718.848427] [c0000008b0f6bda0] [c0000000004936d8] =
+sys_fsync+0x28/0x40
+>> [ 1718.848433] [c0000008b0f6bdc0] [c000000000035e28] =
+system_call_exception+0xf8/0x1c0
+>> [ 1718.848440] [c0000008b0f6be20] [c00000000000ca70] =
+system_call_common+0xf0/0x278
+>>=20
+>> Comparing next-20200630 with next-20200701 one possible candidate =
+seems to
+>> be following commit:
+>>=20
+>> commit 37f4a24c2469a10a4c16c641671bd766e276cf9f
+>>    blk-mq: centralise related handling into blk_mq_get_driver_tag
+>>=20
+>> Reverting this commit allows the test to complete in 10 minutes.
+>=20
+> Hello,
+>=20
+> Thanks for the report.
+>=20
+> Please try the following fix:
+>=20
+> https://lore.kernel.org/linux-block/20200702062041.GC2452799@T590/raw
+
+The fix works for me.
+
+Tested-by : Sachin Sant <sachinp@linux.vnet.ibm.com>
 
 Thanks
-Dave
+-Sachin
+
+>=20
+>=20
+> Thanks,
+> Ming
 
