@@ -2,69 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A654B211A5A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 04:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2EE211A62
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 05:00:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49y2n05WbrzDqsv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 12:56:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49y2sF4h4HzDqSR
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 13:00:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=axtens.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=l8Hhhj8s; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=google header.b=ZP48jJgv; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49y2kW6Z55zDqsR
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 12:54:43 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id gc9so5295640pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 19:54:43 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49y2kZ6JjGzDqsQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jul 2020 12:54:46 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id j1so11866718pfe.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jul 2020 19:54:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=jEAbvp0NcKYXLPlKcCam8GQvvafUBgcVOJIj099LJII=;
- b=l8Hhhj8syHtUNp+VamGkuO605PBoNs6uw34vpgDBxugaKXT2I1bsRT706gUgLeQb93
- UcvGY5rWgmysWYXpcfJjpd+Qx7bW15hiJuKELfz6TgFbM3YM7SvlWHzFwk/bZKsj/mWj
- SWSx61IQHNmJ2LbwV6MWAFY0GnBISyORFGlkc=
+ bh=D4Q7wlnC9uinQAfoiYOmKAt3GyYnF0nwS1m28sSQDUo=;
+ b=ZP48jJgvWkI9Wmfys6LSUGRJKCAuUvIJ1CenCS7q4/qaZMUpIwAmGMeKJPT2wS0Wmy
+ yQ4JtPRu7jJcldH2+IBxwZ7U8Dmekr3AiJj8akIHRdks0YXPwYaZJa5DOKZilVmzJlCP
+ F/rL62iMEdh++SSXvJq21IJPk/pF89qIJJacE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=jEAbvp0NcKYXLPlKcCam8GQvvafUBgcVOJIj099LJII=;
- b=JZAKcc5ppSbvXPaudX11IEuRay0fqhVG7+D0eq4Uy7FuBv45aw5/zLevqCI0ZxcaGt
- sA0xmXbh6t/ADc9Rp8dJYMDOsZM3rX9ssiv17OEvS/EtucjusvQifV/CagP7DlzXC+bq
- 0Sze2lTMYz02v/SQkhZGPcRTrKbDPiROmnEJnqe73Dr/tFrK2s976SrjhpswYle0wLpX
- SoAdsl5UHuCjaTtk7STLDdVVCsCNwJ0oznYWvgAi1s0jlYgFMTrQD7J7wIhnqxWtjuUH
- torPih6VehZopHzZFP+RxSdUzCmGrhdfkWB9Kgs80hERBACYiAwtS58g4ZbP8hPYL8jr
- kK4A==
-X-Gm-Message-State: AOAM533+DyI+FvXQZhQfgIG3qkuKug/uzq7YvD3CwV4FZA0j+qgK580p
- G1nbvX3kE31s3qpYB7T1gB7dHw==
-X-Google-Smtp-Source: ABdhPJzHgVpfPFDfS8EwmQPaJdUfflOkSYb9QRnPNc4+/66KDIKNgnGl0dQ7GbTywsipCv35/i6xsA==
-X-Received: by 2002:a17:90a:bb84:: with SMTP id
- v4mr20987849pjr.162.1593658480672; 
- Wed, 01 Jul 2020 19:54:40 -0700 (PDT)
+ bh=D4Q7wlnC9uinQAfoiYOmKAt3GyYnF0nwS1m28sSQDUo=;
+ b=mkCd+7h/9afCu5YTlKAd+2Kw3ro13IzUqAn6YvX8ptrdvcHcXwnTErpZAYAYlZTDaS
+ BpPraZ2MoAQ+eI876DaZRiu+Agg0a8rrt+lp/W86wKmRjW1sh7Dgkz07YA2zMXbdNWmB
+ 9ANJvnV/evWBSKAcJJgL+cnOyewkmlB5pzvgvZN2o/DJ6YUgC9srrAY8YnYrxL3Q4UbF
+ F7FERRYYXS/OToj+IyMdNUXwvlbH7Oal+3EqZD61Q6hKiYBXTOAPuHxojG+qZRD1QvPf
+ d1/an/xThQNiIVWDMDKc4DZF3q0z/K7ZYO2Lu4IgPY3NV1jnft1aFhT2wD4Bq39qsg4s
+ d82A==
+X-Gm-Message-State: AOAM5332yLEoBAuJSzN6Dt93mt8ukYgGpgcRYZKMYOYLxZPGO4W5LE/w
+ e9xiXgU5ufpa4Yq5sP2pLRTKUw==
+X-Google-Smtp-Source: ABdhPJyDd94QLnAKxB+F6OzOYld27r7l1OjUzszJAvVmLhfM9lYgzLjnElqe0vUfemvYhf3Y3Zpv8g==
+X-Received: by 2002:a63:20d:: with SMTP id 13mr22820110pgc.166.1593658484159; 
+ Wed, 01 Jul 2020 19:54:44 -0700 (PDT)
 Received: from localhost
  (2001-44b8-1113-6700-3c80-6152-10ca-83bc.static.ipv6.internode.on.net.
  [2001:44b8:1113:6700:3c80:6152:10ca:83bc])
- by smtp.gmail.com with ESMTPSA id 140sm7127309pfz.154.2020.07.01.19.54.39
+ by smtp.gmail.com with ESMTPSA id h6sm7031275pfo.123.2020.07.01.19.54.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Jul 2020 19:54:40 -0700 (PDT)
+ Wed, 01 Jul 2020 19:54:43 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
  christophe.leroy@c-s.fr, aneesh.kumar@linux.ibm.com, bsingharora@gmail.com
-Subject: [PATCH v8 1/4] kasan: define and use MAX_PTRS_PER_* for early shadow
- tables
-Date: Thu,  2 Jul 2020 12:54:29 +1000
-Message-Id: <20200702025432.16912-2-dja@axtens.net>
+Subject: [PATCH v8 2/4] kasan: Document support on 32-bit powerpc
+Date: Thu,  2 Jul 2020 12:54:30 +1000
+Message-Id: <20200702025432.16912-3-dja@axtens.net>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200702025432.16912-1-dja@axtens.net>
 References: <20200702025432.16912-1-dja@axtens.net>
@@ -86,88 +84,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc has a variable number of PTRS_PER_*, set at runtime based
-on the MMU that the kernel is booted under.
+KASAN is supported on 32-bit powerpc and the docs should reflect this.
 
-This means the PTRS_PER_* are no longer constants, and therefore
-breaks the build.
-
-Define default MAX_PTRS_PER_*s in the same style as MAX_PTRS_PER_P4D.
-As KASAN is the only user at the moment, just define them in the kasan
-header, and have them default to PTRS_PER_* unless overridden in arch
-code.
+Document s390 support while we're at it.
 
 Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Suggested-by: Balbir Singh <bsingharora@gmail.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Reviewed-by: Balbir Singh <bsingharora@gmail.com>
 Signed-off-by: Daniel Axtens <dja@axtens.net>
 ---
- include/linux/kasan.h | 18 +++++++++++++++---
- mm/kasan/init.c       |  6 +++---
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ Documentation/dev-tools/kasan.rst |  7 +++++--
+ Documentation/powerpc/kasan.txt   | 12 ++++++++++++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/powerpc/kasan.txt
 
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 82522e996c76..b6f94952333b 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -14,10 +14,22 @@ struct task_struct;
- #include <linux/pgtable.h>
- #include <asm/kasan.h>
+diff --git a/Documentation/dev-tools/kasan.rst b/Documentation/dev-tools/kasan.rst
+index c652d740735d..554cbee1d240 100644
+--- a/Documentation/dev-tools/kasan.rst
++++ b/Documentation/dev-tools/kasan.rst
+@@ -22,7 +22,8 @@ global variables yet.
+ Tag-based KASAN is only supported in Clang and requires version 7.0.0 or later.
  
-+#ifndef MAX_PTRS_PER_PTE
-+#define MAX_PTRS_PER_PTE PTRS_PER_PTE
-+#endif
-+
-+#ifndef MAX_PTRS_PER_PMD
-+#define MAX_PTRS_PER_PMD PTRS_PER_PMD
-+#endif
-+
-+#ifndef MAX_PTRS_PER_PUD
-+#define MAX_PTRS_PER_PUD PTRS_PER_PUD
-+#endif
-+
- extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
--extern pte_t kasan_early_shadow_pte[PTRS_PER_PTE];
--extern pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD];
--extern pud_t kasan_early_shadow_pud[PTRS_PER_PUD];
-+extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE];
-+extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
-+extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
- extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
+ Currently generic KASAN is supported for the x86_64, arm64, xtensa, s390 and
+-riscv architectures, and tag-based KASAN is supported only for arm64.
++riscv architectures. It is also supported on 32-bit powerpc kernels. Tag-based
++KASAN is supported only on arm64.
  
- int kasan_populate_early_shadow(const void *shadow_start,
-diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-index fe6be0be1f76..42bca3d27db8 100644
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -46,7 +46,7 @@ static inline bool kasan_p4d_table(pgd_t pgd)
- }
- #endif
- #if CONFIG_PGTABLE_LEVELS > 3
--pud_t kasan_early_shadow_pud[PTRS_PER_PUD] __page_aligned_bss;
-+pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD] __page_aligned_bss;
- static inline bool kasan_pud_table(p4d_t p4d)
- {
- 	return p4d_page(p4d) == virt_to_page(lm_alias(kasan_early_shadow_pud));
-@@ -58,7 +58,7 @@ static inline bool kasan_pud_table(p4d_t p4d)
- }
- #endif
- #if CONFIG_PGTABLE_LEVELS > 2
--pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD] __page_aligned_bss;
-+pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD] __page_aligned_bss;
- static inline bool kasan_pmd_table(pud_t pud)
- {
- 	return pud_page(pud) == virt_to_page(lm_alias(kasan_early_shadow_pmd));
-@@ -69,7 +69,7 @@ static inline bool kasan_pmd_table(pud_t pud)
- 	return false;
- }
- #endif
--pte_t kasan_early_shadow_pte[PTRS_PER_PTE] __page_aligned_bss;
-+pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE] __page_aligned_bss;
+ Usage
+ -----
+@@ -255,7 +256,9 @@ CONFIG_KASAN_VMALLOC
+ ~~~~~~~~~~~~~~~~~~~~
  
- static inline bool kasan_pte_table(pmd_t pmd)
- {
+ With ``CONFIG_KASAN_VMALLOC``, KASAN can cover vmalloc space at the
+-cost of greater memory usage. Currently this is only supported on x86.
++cost of greater memory usage. Currently this supported on x86, s390
++and 32-bit powerpc. It is optional, except on 32-bit powerpc kernels
++with module support, where it is required.
+ 
+ This works by hooking into vmalloc and vmap, and dynamically
+ allocating real shadow memory to back the mappings.
+diff --git a/Documentation/powerpc/kasan.txt b/Documentation/powerpc/kasan.txt
+new file mode 100644
+index 000000000000..26bb0e8bb18c
+--- /dev/null
++++ b/Documentation/powerpc/kasan.txt
+@@ -0,0 +1,12 @@
++KASAN is supported on powerpc on 32-bit only.
++
++32 bit support
++==============
++
++KASAN is supported on both hash and nohash MMUs on 32-bit.
++
++The shadow area sits at the top of the kernel virtual memory space above the
++fixmap area and occupies one eighth of the total kernel virtual memory space.
++
++Instrumentation of the vmalloc area is optional, unless built with modules,
++in which case it is required.
 -- 
 2.25.1
 
