@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45EF212D85
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 22:01:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B9C212D86
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jul 2020 22:02:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yTVm4C8lzDr6P
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 06:01:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yTXs1cTjzDqx9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 06:02:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yTMZ00KJzDr1P
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:54:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yTMq6K3DzDr1x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:55:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49yTMY2rM6z8tY6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:54:49 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49yTMq0xksz9Cv8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 05:55:03 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 49yTMY0K8nz9sSJ; Fri,  3 Jul 2020 05:54:49 +1000 (AEST)
+ id 49yTMp7366z9sRk; Fri,  3 Jul 2020 05:55:02 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
@@ -33,52 +33,53 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49yTMX2zj2z9sRk
- for <linuxppc-dev@ozlabs.org>; Fri,  3 Jul 2020 05:54:48 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 49yTMp2hl7z9sRW
+ for <linuxppc-dev@ozlabs.org>; Fri,  3 Jul 2020 05:55:02 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 062JVFxx121208; Thu, 2 Jul 2020 15:54:41 -0400
+ 062JWcNN182887; Thu, 2 Jul 2020 15:54:57 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 320s8cbq8q-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320t3gt5fu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 15:54:41 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 062JgUes174854;
- Thu, 2 Jul 2020 15:54:40 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 320s8cbq78-1
+ Thu, 02 Jul 2020 15:54:56 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 062JX4v5184191;
+ Thu, 2 Jul 2020 15:54:56 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 320t3gt5fb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 15:54:40 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 062JkfAe023804;
- Thu, 2 Jul 2020 19:54:38 GMT
+ Thu, 02 Jul 2020 15:54:56 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 062JlRAx005300;
+ Thu, 2 Jul 2020 19:54:54 GMT
 Received: from b06cxnps4074.portsmouth.uk.ibm.com
  (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03fra.de.ibm.com with ESMTP id 31wwr8b1un-1
+ by ppma06fra.de.ibm.com with ESMTP id 31wwcgu1kf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Jul 2020 19:54:38 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
+ Thu, 02 Jul 2020 19:54:54 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
  by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 062JsYBa61145242
+ 062JsoH838666266
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Jul 2020 19:54:34 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 84E6B4C040;
- Thu,  2 Jul 2020 19:54:34 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 378F04C046;
- Thu,  2 Jul 2020 19:54:31 +0000 (GMT)
+ Thu, 2 Jul 2020 19:54:50 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9E0C7A405C;
+ Thu,  2 Jul 2020 19:54:50 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 495E3A405B;
+ Thu,  2 Jul 2020 19:54:47 +0000 (GMT)
 Received: from hbathini.in.ibm.com (unknown [9.102.21.221])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  2 Jul 2020 19:54:30 +0000 (GMT)
-Subject: [PATCH v2 02/12] powerpc/kexec_file: mark PPC64 specific code
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  2 Jul 2020 19:54:47 +0000 (GMT)
+Subject: [PATCH v2 03/12] powerpc/kexec_file: add helper functions for
+ getting memory ranges
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Andrew Morton <akpm@linux-foundation.org>
-Date: Fri, 03 Jul 2020 01:24:30 +0530
-Message-ID: <159371966340.21555.11937124937064648539.stgit@hbathini.in.ibm.com>
+Date: Fri, 03 Jul 2020 01:24:46 +0530
+Message-ID: <159371967978.21555.12417790020041922468.stgit@hbathini.in.ibm.com>
 In-Reply-To: <159371956443.21555.18251597651350106920.stgit@hbathini.in.ibm.com>
 References: <159371956443.21555.18251597651350106920.stgit@hbathini.in.ibm.com>
 User-Agent: StGit/0.17.1-dirty
@@ -90,11 +91,12 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-02_09:2020-07-02,
  2020-07-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- suspectscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 bulkscore=0
- spamscore=0 mlxlogscore=999 cotscore=-2147483648 adultscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007020129
+ lowpriorityscore=0
+ malwarescore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
+ cotscore=-2147483648 adultscore=0 phishscore=0 clxscore=1015 mlxscore=0
+ priorityscore=1501 spamscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007020129
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,188 +119,90 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some of the kexec_file_load code isn't PPC64 specific. Move PPC64
-specific code from kexec/file_load.c to kexec/file_load_64.c. Also,
-rename purgatory/trampoline.S to purgatory/trampoline_64.S in the
-same spirit.
+In kexec case, the kernel to be loaded uses the same memory layout as
+the running kernel. So, passing on the DT of the running kernel would
+be good enough.
+
+But in case of kdump, different memory ranges are needed to manage
+loading the kdump kernel, booting into it and exporting the elfcore
+of the crashing kernel. The ranges are exlude memory ranges, usable
+memory ranges, reserved memory ranges and crash memory ranges.
+
+Exclude memory ranges specify the list of memory ranges to avoid while
+loading kdump segments. Usable memory ranges list the memory ranges
+that could be used for booting kdump kernel. Reserved memory ranges
+list the memory regions for the loading kernel's reserve map. Crash
+memory ranges list the memory ranges to be exported as the crashing
+kernel's elfcore.
+
+Add helper functions for setting up the above mentioned memory ranges.
+This helpers facilitate in understanding the subsequent changes better
+and make it easy to setup the different memory ranges listed above, as
+and when appropriate.
 
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
 
 Changes in v2:
-* No changes.
+* Added an option to merge ranges while sorting to minimize reallocations
+  for memory ranges list.
+* Dropped within_crashkernel option for add_opal_mem_range() &
+  add_rtas_mem_range() as it is not really needed.
 
 
- arch/powerpc/include/asm/kexec.h       |   11 +++
- arch/powerpc/kexec/Makefile            |    2 -
- arch/powerpc/kexec/elf_64.c            |    7 +-
- arch/powerpc/kexec/file_load.c         |   37 ++--------
- arch/powerpc/kexec/file_load_64.c      |  108 ++++++++++++++++++++++++++++++
- arch/powerpc/purgatory/Makefile        |    4 +
- arch/powerpc/purgatory/trampoline.S    |  117 --------------------------------
- arch/powerpc/purgatory/trampoline_64.S |  117 ++++++++++++++++++++++++++++++++
- 8 files changed, 248 insertions(+), 155 deletions(-)
- create mode 100644 arch/powerpc/kexec/file_load_64.c
- delete mode 100644 arch/powerpc/purgatory/trampoline.S
- create mode 100644 arch/powerpc/purgatory/trampoline_64.S
+ arch/powerpc/include/asm/kexec_ranges.h |   18 +
+ arch/powerpc/kexec/Makefile             |    2 
+ arch/powerpc/kexec/ranges.c             |  397 +++++++++++++++++++++++++++++++
+ 3 files changed, 416 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/kexec_ranges.h
+ create mode 100644 arch/powerpc/kexec/ranges.c
 
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index c684768..7008ea1 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -114,8 +114,17 @@ int setup_purgatory(struct kimage *image, const void *slave_code,
- 		    unsigned long fdt_load_addr);
- int setup_new_fdt(const struct kimage *image, void *fdt,
- 		  unsigned long initrd_load_addr, unsigned long initrd_len,
--		  const char *cmdline);
-+		  const char *cmdline, int *node);
- int delete_fdt_mem_rsv(void *fdt, unsigned long start, unsigned long size);
+diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
+new file mode 100644
+index 0000000..799dc40
+--- /dev/null
++++ b/arch/powerpc/include/asm/kexec_ranges.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_POWERPC_KEXEC_RANGES_H
++#define _ASM_POWERPC_KEXEC_RANGES_H
 +
-+#ifdef CONFIG_PPC64
-+int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
-+			  const void *fdt, unsigned long kernel_load_addr,
-+			  unsigned long fdt_load_addr);
-+int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
-+			unsigned long initrd_load_addr,
-+			unsigned long initrd_len, const char *cmdline);
-+#endif /* CONFIG_PPC64 */
- #endif /* CONFIG_KEXEC_FILE */
- 
- #else /* !CONFIG_KEXEC_CORE */
++#define MEM_RANGE_CHUNK_SZ		2048	/* Memory ranges size chunk */
++
++struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges);
++int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
++int add_tce_mem_ranges(struct crash_mem **mem_ranges);
++int add_initrd_mem_range(struct crash_mem **mem_ranges);
++int add_htab_mem_range(struct crash_mem **mem_ranges);
++int add_kernel_mem_range(struct crash_mem **mem_ranges);
++int add_rtas_mem_range(struct crash_mem **mem_ranges);
++int add_opal_mem_range(struct crash_mem **mem_ranges);
++int add_reserved_ranges(struct crash_mem **mem_ranges);
++void sort_memory_ranges(struct crash_mem *mrngs, bool merge);
++
++#endif /* _ASM_POWERPC_KEXEC_RANGES_H */
 diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
-index 86380c6..67c3553 100644
+index 67c3553..4aff684 100644
 --- a/arch/powerpc/kexec/Makefile
 +++ b/arch/powerpc/kexec/Makefile
 @@ -7,7 +7,7 @@ obj-y				+= core.o crash.o core_$(BITS).o
  
  obj-$(CONFIG_PPC32)		+= relocate_32.o
  
--obj-$(CONFIG_KEXEC_FILE)	+= file_load.o elf_$(BITS).o
-+obj-$(CONFIG_KEXEC_FILE)	+= file_load.o file_load_$(BITS).o elf_$(BITS).o
+-obj-$(CONFIG_KEXEC_FILE)	+= file_load.o file_load_$(BITS).o elf_$(BITS).o
++obj-$(CONFIG_KEXEC_FILE)	+= file_load.o ranges.o file_load_$(BITS).o elf_$(BITS).o
  
  ifdef CONFIG_HAVE_IMA_KEXEC
  ifdef CONFIG_IMA
-diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index 3072fd6..23ad04c 100644
---- a/arch/powerpc/kexec/elf_64.c
-+++ b/arch/powerpc/kexec/elf_64.c
-@@ -88,7 +88,8 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 		goto out;
- 	}
- 
--	ret = setup_new_fdt(image, fdt, initrd_load_addr, initrd_len, cmdline);
-+	ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
-+				  initrd_len, cmdline);
- 	if (ret)
- 		goto out;
- 
-@@ -107,8 +108,8 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	pr_debug("Loaded device tree at 0x%lx\n", fdt_load_addr);
- 
- 	slave_code = elf_info.buffer + elf_info.proghdrs[0].p_offset;
--	ret = setup_purgatory(image, slave_code, fdt, kernel_load_addr,
--			      fdt_load_addr);
-+	ret = setup_purgatory_ppc64(image, slave_code, fdt, kernel_load_addr,
-+				    fdt_load_addr);
- 	if (ret)
- 		pr_err("Error setting up the purgatory.\n");
- 
-diff --git a/arch/powerpc/kexec/file_load.c b/arch/powerpc/kexec/file_load.c
-index 143c917..99a2c4d 100644
---- a/arch/powerpc/kexec/file_load.c
-+++ b/arch/powerpc/kexec/file_load.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * ppc64 code to implement the kexec_file_load syscall
-+ * powerpc code to implement the kexec_file_load syscall
-  *
-  * Copyright (C) 2004  Adam Litke (agl@us.ibm.com)
-  * Copyright (C) 2004  IBM Corp.
-@@ -16,26 +16,10 @@
- 
- #include <linux/slab.h>
- #include <linux/kexec.h>
--#include <linux/of_fdt.h>
- #include <linux/libfdt.h>
- #include <asm/ima.h>
- 
--#define SLAVE_CODE_SIZE		256
--
--const struct kexec_file_ops * const kexec_file_loaders[] = {
--	&kexec_elf64_ops,
--	NULL
--};
--
--int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
--				  unsigned long buf_len)
--{
--	/* We don't support crash kernels yet. */
--	if (image->type == KEXEC_TYPE_CRASH)
--		return -EOPNOTSUPP;
--
--	return kexec_image_probe_default(image, buf, buf_len);
--}
-+#define SLAVE_CODE_SIZE		256	/* First 0x100 bytes */
- 
- /**
-  * setup_purgatory - initialize the purgatory's global variables
-@@ -127,24 +111,17 @@ int delete_fdt_mem_rsv(void *fdt, unsigned long start, unsigned long size)
-  * @initrd_len:		Size of the next initrd, or 0 if there will be none.
-  * @cmdline:		Command line for the next kernel, or NULL if there will
-  *			be none.
-+ * @chosen_node:        Set this output parameter to chosen_node.
-  *
-  * Return: 0 on success, or negative errno on error.
-  */
- int setup_new_fdt(const struct kimage *image, void *fdt,
- 		  unsigned long initrd_load_addr, unsigned long initrd_len,
--		  const char *cmdline)
-+		  const char *cmdline, int *node)
- {
- 	int ret, chosen_node;
- 	const void *prop;
- 
--	/* Remove memory reservation for the current device tree. */
--	ret = delete_fdt_mem_rsv(fdt, __pa(initial_boot_params),
--				 fdt_totalsize(initial_boot_params));
--	if (ret == 0)
--		pr_debug("Removed old device tree reservation.\n");
--	else if (ret != -ENOENT)
--		return ret;
--
- 	chosen_node = fdt_path_offset(fdt, "/chosen");
- 	if (chosen_node == -FDT_ERR_NOTFOUND) {
- 		chosen_node = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"),
-@@ -157,6 +134,8 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
- 		pr_err("Malformed device tree: error reading /chosen.\n");
- 		return -EINVAL;
- 	}
-+	if (node)
-+		*node = chosen_node;
- 
- 	/* Did we boot using an initrd? */
- 	prop = fdt_getprop(fdt, chosen_node, "linux,initrd-start", NULL);
-@@ -242,10 +221,6 @@ int setup_new_fdt(const struct kimage *image, void *fdt,
- 		return ret;
- 	}
- 
--	ret = fdt_setprop(fdt, chosen_node, "linux,booted-from-kexec", NULL, 0);
--	if (ret)
--		goto err;
--
- 	return 0;
- 
- err:
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
 new file mode 100644
-index 0000000..e6bff960
+index 0000000..a704819
 --- /dev/null
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -0,0 +1,108 @@
++++ b/arch/powerpc/kexec/ranges.c
+@@ -0,0 +1,397 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * ppc64 code to implement the kexec_file_load syscall
++ * powerpc code to implement the kexec_file_load syscall
 + *
 + * Copyright (C) 2004  Adam Litke (agl@us.ibm.com)
 + * Copyright (C) 2004  IBM Corp.
@@ -307,365 +211,390 @@ index 0000000..e6bff960
 + * Copyright (C) 2006  Mohan Kumar M (mohan@in.ibm.com)
 + * Copyright (C) 2020  IBM Corporation
 + *
-+ * Based on kexec-tools' kexec-ppc64.c, kexec-elf-rel-ppc64.c, fs2dt.c.
++ * Based on kexec-tools' kexec-ppc64.c, fs2dt.c.
 + * Heavily modified for the kernel by
 + * Hari Bathini <hbathini@linux.ibm.com>.
 + */
 +
 +#include <linux/kexec.h>
-+#include <linux/of_fdt.h>
-+#include <linux/libfdt.h>
-+
-+const struct kexec_file_ops * const kexec_file_loaders[] = {
-+	&kexec_elf64_ops,
-+	NULL
-+};
++#include <linux/of_device.h>
++#include <linux/slab.h>
++#include <asm/sections.h>
++#include <asm/kexec_ranges.h>
 +
 +/**
-+ * setup_purgatory_ppc64 - initialize PPC64 specific purgatory's global
-+ *                         variables and call setup_purgatory() to initialize
-+ *                         common global variable.
-+ * @image:                 kexec image.
-+ * @slave_code:            Slave code for the purgatory.
-+ * @fdt:                   Flattened device tree for the next kernel.
-+ * @kernel_load_addr:      Address where the kernel is loaded.
-+ * @fdt_load_addr:         Address where the flattened device tree is loaded.
++ * get_max_nr_ranges - Get the max no. of ranges crash_mem structure
++ *                     could hold, given the size allocated for it.
++ * @size:              Allocation size of crash_mem structure.
++ *
++ * Returns the maximum no. of ranges.
++ */
++static inline unsigned int get_max_nr_ranges(size_t size)
++{
++	return ((size - sizeof(struct crash_mem)) /
++		sizeof(struct crash_mem_range));
++}
++
++/**
++ * get_mem_rngs_size - Get the allocated size of mrngs based on
++ *                     max_nr_ranges and chunk size.
++ * @mrngs:             Memory ranges.
++ *
++ * Returns the maximum no. of ranges.
++ */
++static inline size_t get_mem_rngs_size(struct crash_mem *mrngs)
++{
++	size_t size;
++
++	if (!mrngs)
++		return 0;
++
++	size = (sizeof(struct crash_mem) +
++		(mrngs->max_nr_ranges * sizeof(struct crash_mem_range)));
++
++	/*
++	 * Memory is allocated in size multiple of MEM_RANGE_CHUNK_SZ.
++	 * So, align to get the actual length.
++	 */
++	return ALIGN(size, MEM_RANGE_CHUNK_SZ);
++}
++
++/**
++ * __add_mem_range - add a memory range to memory ranges list.
++ * @mem_ranges:      Range list to add the memory range to.
++ * @base:            Base address of the range to add.
++ * @size:            Size of the memory range to add.
++ *
++ * (Re)allocates memory, if needed.
 + *
 + * Returns 0 on success, negative errno on error.
 + */
-+int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
-+			  const void *fdt, unsigned long kernel_load_addr,
-+			  unsigned long fdt_load_addr)
++static int __add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
++{
++	struct crash_mem *mrngs = *mem_ranges;
++
++	if ((mrngs == NULL) || (mrngs->nr_ranges == mrngs->max_nr_ranges)) {
++		mrngs = realloc_mem_ranges(mem_ranges);
++		if (!mrngs)
++			return -ENOMEM;
++	}
++
++	mrngs->ranges[mrngs->nr_ranges].start = base;
++	mrngs->ranges[mrngs->nr_ranges].end = base + size - 1;
++	mrngs->nr_ranges++;
++	return 0;
++}
++
++/**
++ * __merge_memory_ranges - Merges the given memory ranges list.
++ * @mem_ranges:            Range list to merge.
++ *
++ * Assumes a sorted range list.
++ *
++ * Returns nothing.
++ */
++static void __merge_memory_ranges(struct crash_mem *mrngs)
++{
++	struct crash_mem_range *rngs;
++	int i, idx;
++
++	if (!mrngs)
++		return;
++
++	idx = 0;
++	rngs = &mrngs->ranges[0];
++	for (i = 1; i < mrngs->nr_ranges; i++) {
++		if (rngs[i].start <= (rngs[i-1].end + 1))
++			rngs[idx].end = rngs[i].end;
++		else {
++			idx++;
++			if (i == idx)
++				continue;
++
++			rngs[idx] = rngs[i];
++		}
++	}
++	mrngs->nr_ranges = idx + 1;
++}
++
++/**
++ * realloc_mem_ranges - reallocate mem_ranges with size incremented
++ *                      by MEM_RANGE_CHUNK_SZ. Frees up the old memory,
++ *                      if memory allocation fails.
++ * @mem_ranges:         Memory ranges to reallocate.
++ *
++ * Returns pointer to reallocated memory on success, NULL otherwise.
++ */
++struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges)
++{
++	struct crash_mem *mrngs = *mem_ranges;
++	unsigned int nr_ranges;
++	size_t size;
++
++	size = get_mem_rngs_size(mrngs);
++	nr_ranges = mrngs ? mrngs->nr_ranges : 0;
++
++	size += MEM_RANGE_CHUNK_SZ;
++	mrngs = krealloc(*mem_ranges, size, GFP_KERNEL);
++	if (!mrngs) {
++		kfree(*mem_ranges);
++		*mem_ranges = NULL;
++		return NULL;
++	}
++
++	mrngs->nr_ranges = nr_ranges;
++	mrngs->max_nr_ranges = get_max_nr_ranges(size);
++	*mem_ranges = mrngs;
++
++	return mrngs;
++}
++
++/**
++ * add_mem_range - Updates existing memory range, if there is an overlap.
++ *                 Else, adds a new memory range.
++ * @mem_ranges:    Range list to add the memory range to.
++ * @base:          Base address of the range to add.
++ * @size:          Size of the memory range to add.
++ *
++ * (Re)allocates memory, if needed.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
++{
++	struct crash_mem *mrngs = *mem_ranges;
++	u64 mstart, mend, end;
++	unsigned int i;
++
++	if (!size)
++		return 0;
++
++	end = base + size - 1;
++
++	if ((mrngs == NULL) || (mrngs->nr_ranges == 0))
++		return __add_mem_range(mem_ranges, base, size);
++
++	for (i = 0; i < mrngs->nr_ranges; i++) {
++		mstart = mrngs->ranges[i].start;
++		mend = mrngs->ranges[i].end;
++		if (base < mend && end > mstart) {
++			if (base < mstart)
++				mrngs->ranges[i].start = base;
++			if (end > mend)
++				mrngs->ranges[i].end = end;
++			return 0;
++		}
++	}
++
++	return __add_mem_range(mem_ranges, base, size);
++}
++
++/**
++ * add_tce_mem_ranges - Adds tce-table range to the given memory ranges list.
++ * @mem_ranges:         Range list to add the memory range(s) to.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int add_tce_mem_ranges(struct crash_mem **mem_ranges)
++{
++	struct device_node *dn;
++	int ret;
++
++	for_each_node_by_type(dn, "pci") {
++		u64 base;
++		u32 size;
++
++		ret = of_property_read_u64(dn, "linux,tce-base", &base);
++		ret |= of_property_read_u32(dn, "linux,tce-size", &size);
++		if (!ret)
++			continue;
++
++		ret = add_mem_range(mem_ranges, base, size);
++		if (ret)
++			break;
++	}
++
++	return ret;
++}
++
++/**
++ * add_initrd_mem_range - Adds initrd range to the given memory ranges list,
++ *                        if the initrd was retained.
++ * @mem_ranges:           Range list to add the memory range to.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int add_initrd_mem_range(struct crash_mem **mem_ranges)
++{
++	u64 base, end;
++	int ret = 0;
++	char *str;
++
++	/* This range means something only if initrd was retained */
++	str = strstr(saved_command_line, "retain_initrd");
++	if (!str)
++		return 0;
++
++	ret = of_property_read_u64(of_chosen, "linux,initrd-start", &base);
++	ret |= of_property_read_u64(of_chosen, "linux,initrd-end", &end);
++	if (!ret)
++		ret = add_mem_range(mem_ranges, base, end - base + 1);
++	return ret;
++}
++
++/**
++ * add_htab_mem_range - Adds htab range to the given memory ranges list,
++ *                      if it exists
++ * @mem_ranges:         Range list to add the memory range to.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int add_htab_mem_range(struct crash_mem **mem_ranges)
++{
++#ifdef CONFIG_PPC_BOOK3S_64
++	int ret;
++
++	if (!htab_address)
++		return 0;
++
++	ret = add_mem_range(mem_ranges, __pa(htab_address), htab_size_bytes);
++	return ret;
++#else
++	return 0;
++#endif
++}
++
++/**
++ * add_kernel_mem_range - Adds kernel text region to the given
++ *                        memory ranges list.
++ * @mem_ranges:           Range list to add the memory range to.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int add_kernel_mem_range(struct crash_mem **mem_ranges)
 +{
 +	int ret;
 +
-+	ret = setup_purgatory(image, slave_code, fdt, kernel_load_addr,
-+			      fdt_load_addr);
-+	if (ret)
-+		pr_err("Failed to setup purgatory symbols");
++	ret = add_mem_range(mem_ranges, 0, __pa(_end));
 +	return ret;
 +}
 +
 +/**
-+ * setup_new_fdt_ppc64 - Update the flattend device-tree of the kernel
-+ *                       being loaded.
-+ * @image:               kexec image being loaded.
-+ * @fdt:                 Flattened device tree for the next kernel.
-+ * @initrd_load_addr:    Address where the next initrd will be loaded.
-+ * @initrd_len:          Size of the next initrd, or 0 if there will be none.
-+ * @cmdline:             Command line for the next kernel, or NULL if there will
-+ *                       be none.
++ * add_rtas_mem_range - Adds RTAS region to the given memory ranges list.
++ * @mem_ranges:         Range list to add the memory range to.
 + *
 + * Returns 0 on success, negative errno on error.
 + */
-+int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
-+			unsigned long initrd_load_addr,
-+			unsigned long initrd_len, const char *cmdline)
++int add_rtas_mem_range(struct crash_mem **mem_ranges)
 +{
-+	int chosen_node, ret;
++	struct device_node *dn;
++	int ret = 0;
 +
-+	/* Remove memory reservation for the current device tree. */
-+	ret = delete_fdt_mem_rsv(fdt, __pa(initial_boot_params),
-+				 fdt_totalsize(initial_boot_params));
-+	if (ret == 0)
-+		pr_debug("Removed old device tree reservation.\n");
-+	else if (ret != -ENOENT) {
-+		pr_err("Failed to remove old device-tree reservation.\n");
-+		return ret;
++	dn = of_find_node_by_path("/rtas");
++	if (dn) {
++		u32 base, size;
++
++		ret = of_property_read_u32(dn, "linux,rtas-base", &base);
++		ret |= of_property_read_u32(dn, "rtas-size", &size);
++		if (ret)
++			return ret;
++
++		ret = add_mem_range(mem_ranges, base, size);
++	}
++	return ret;
++}
++
++/**
++ * add_opal_mem_range - Adds OPAL region to the given memory ranges list.
++ * @mem_ranges:         Range list to add the memory range to.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int add_opal_mem_range(struct crash_mem **mem_ranges)
++{
++	struct device_node *dn;
++	int ret = 0;
++
++	dn = of_find_node_by_path("/ibm,opal");
++	if (dn) {
++		u64 base, size;
++
++		ret = of_property_read_u64(dn, "opal-base-address", &base);
++		ret |= of_property_read_u64(dn, "opal-runtime-size", &size);
++		if (ret)
++			return ret;
++
++		ret = add_mem_range(mem_ranges, base, size);
++	}
++	return ret;
++}
++
++/**
++ * add_reserved_ranges - Adds "/reserved-ranges" regions exported by f/w
++ *                       to the given memory ranges list.
++ * @mem_ranges:          Range list to add the memory ranges to.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int add_reserved_ranges(struct crash_mem **mem_ranges)
++{
++	int i, len, ret = 0;
++	const __be32 *prop;
++
++	prop = of_get_property(of_root, "reserved-ranges", &len);
++	if (!prop)
++		return 0;
++
++	/*
++	 * Each reserved range is an (address,size) pair, 2 cells each,
++	 * totalling 4 cells per range.
++	 */
++	for (i = 0; i < len / (sizeof(*prop) * 4); i++) {
++		u64 base, size;
++
++		base = of_read_number(prop + (i * 4) + 0, 2);
++		size = of_read_number(prop + (i * 4) + 2, 2);
++
++		ret = add_mem_range(mem_ranges, base, size);
++		if (ret)
++			break;
 +	}
 +
-+	ret = setup_new_fdt(image, fdt, initrd_load_addr, initrd_len,
-+			    cmdline, &chosen_node);
-+	if (ret)
-+		return ret;
-+
-+	ret = fdt_setprop(fdt, chosen_node, "linux,booted-from-kexec", NULL, 0);
-+	if (ret)
-+		pr_err("Failed to update device-tree with linux,booted-from-kexec\n");
-+
 +	return ret;
 +}
 +
 +/**
-+ * arch_kexec_kernel_image_probe - Does additional handling needed to setup
-+ *                                 kexec segments.
-+ * @image:                         kexec image being loaded.
-+ * @buf:                           Buffer pointing to elf data.
-+ * @buf_len:                       Length of the buffer.
++ * sort_memory_ranges - Sorts the given memory ranges list.
++ * @mem_ranges:         Range list to sort.
++ * @merge:              If true, merge the list after sorting.
 + *
-+ * Returns 0 on success, negative errno on error.
++ * Returns nothing.
 + */
-+int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
-+				  unsigned long buf_len)
++void sort_memory_ranges(struct crash_mem *mrngs, bool merge)
 +{
-+	/* We don't support crash kernels yet. */
-+	if (image->type == KEXEC_TYPE_CRASH)
-+		return -EOPNOTSUPP;
++	struct crash_mem_range *rngs;
++	struct crash_mem_range rng;
++	int i, j, idx;
 +
-+	return kexec_image_probe_default(image, buf, buf_len);
++	if (!mrngs)
++		return;
++
++	/* Sort the ranges in-place */
++	rngs = &mrngs->ranges[0];
++	for (i = 0; i < mrngs->nr_ranges; i++) {
++		idx = i;
++		for (j = (i + 1); j < mrngs->nr_ranges; j++) {
++			if (rngs[idx].start > rngs[j].start)
++				idx = j;
++		}
++		if (idx != i) {
++			rng = rngs[idx];
++			rngs[idx] = rngs[i];
++			rngs[i] = rng;
++		}
++	}
++
++	if (merge)
++		__merge_memory_ranges(mrngs);
 +}
-diff --git a/arch/powerpc/purgatory/Makefile b/arch/powerpc/purgatory/Makefile
-index 7c6d8b1..348f5958 100644
---- a/arch/powerpc/purgatory/Makefile
-+++ b/arch/powerpc/purgatory/Makefile
-@@ -2,11 +2,11 @@
- 
- KASAN_SANITIZE := n
- 
--targets += trampoline.o purgatory.ro kexec-purgatory.c
-+targets += trampoline_$(BITS).o purgatory.ro kexec-purgatory.c
- 
- LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined
- 
--$(obj)/purgatory.ro: $(obj)/trampoline.o FORCE
-+$(obj)/purgatory.ro: $(obj)/trampoline_$(BITS).o FORCE
- 		$(call if_changed,ld)
- 
- quiet_cmd_bin2c = BIN2C   $@
-diff --git a/arch/powerpc/purgatory/trampoline.S b/arch/powerpc/purgatory/trampoline.S
-deleted file mode 100644
-index a5a83c3..0000000
---- a/arch/powerpc/purgatory/trampoline.S
-+++ /dev/null
-@@ -1,117 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * kexec trampoline
-- *
-- * Based on code taken from kexec-tools and kexec-lite.
-- *
-- * Copyright (C) 2004 - 2005, Milton D Miller II, IBM Corporation
-- * Copyright (C) 2006, Mohan Kumar M, IBM Corporation
-- * Copyright (C) 2013, Anton Blanchard, IBM Corporation
-- */
--
--#include <asm/asm-compat.h>
--
--	.machine ppc64
--	.balign 256
--	.globl purgatory_start
--purgatory_start:
--	b	master
--
--	/* ABI: possible run_at_load flag at 0x5c */
--	.org purgatory_start + 0x5c
--	.globl run_at_load
--run_at_load:
--	.long 0
--	.size run_at_load, . - run_at_load
--
--	/* ABI: slaves start at 60 with r3=phys */
--	.org purgatory_start + 0x60
--slave:
--	b .
--	/* ABI: end of copied region */
--	.org purgatory_start + 0x100
--	.size purgatory_start, . - purgatory_start
--
--/*
-- * The above 0x100 bytes at purgatory_start are replaced with the
-- * code from the kernel (or next stage) by setup_purgatory().
-- */
--
--master:
--	or	%r1,%r1,%r1	/* low priority to let other threads catchup */
--	isync
--	mr	%r17,%r3	/* save cpu id to r17 */
--	mr	%r15,%r4	/* save physical address in reg15 */
--
--	or	%r3,%r3,%r3	/* ok now to high priority, lets boot */
--	lis	%r6,0x1
--	mtctr	%r6		/* delay a bit for slaves to catch up */
--	bdnz	.		/* before we overwrite 0-100 again */
--
--	bl	0f		/* Work out where we're running */
--0:	mflr	%r18
--
--	/* load device-tree address */
--	ld	%r3, (dt_offset - 0b)(%r18)
--	mr	%r16,%r3	/* save dt address in reg16 */
--	li	%r4,20
--	LWZX_BE	%r6,%r3,%r4	/* fetch __be32 version number at byte 20 */
--	cmpwi	%cr0,%r6,2	/* v2 or later? */
--	blt	1f
--	li	%r4,28
--	STWX_BE	%r17,%r3,%r4	/* Store my cpu as __be32 at byte 28 */
--1:
--	/* load the kernel address */
--	ld	%r4,(kernel - 0b)(%r18)
--
--	/* load the run_at_load flag */
--	/* possibly patched by kexec */
--	ld	%r6,(run_at_load - 0b)(%r18)
--	/* and patch it into the kernel */
--	stw	%r6,(0x5c)(%r4)
--
--	mr	%r3,%r16	/* restore dt address */
--
--	li	%r5,0		/* r5 will be 0 for kernel */
--
--	mfmsr	%r11
--	andi.	%r10,%r11,1	/* test MSR_LE */
--	bne	.Little_endian
--
--	mtctr	%r4		/* prepare branch to */
--	bctr			/* start kernel */
--
--.Little_endian:
--	mtsrr0	%r4		/* prepare branch to */
--
--	clrrdi	%r11,%r11,1	/* clear MSR_LE */
--	mtsrr1	%r11
--
--	rfid			/* update MSR and start kernel */
--
--
--	.balign 8
--	.globl kernel
--kernel:
--	.8byte  0x0
--	.size kernel, . - kernel
--
--	.balign 8
--	.globl dt_offset
--dt_offset:
--	.8byte  0x0
--	.size dt_offset, . - dt_offset
--
--
--	.data
--	.balign 8
--.globl purgatory_sha256_digest
--purgatory_sha256_digest:
--	.skip	32
--	.size purgatory_sha256_digest, . - purgatory_sha256_digest
--
--	.balign 8
--.globl purgatory_sha_regions
--purgatory_sha_regions:
--	.skip	8 * 2 * 16
--	.size purgatory_sha_regions, . - purgatory_sha_regions
-diff --git a/arch/powerpc/purgatory/trampoline_64.S b/arch/powerpc/purgatory/trampoline_64.S
-new file mode 100644
-index 0000000..a5a83c3
---- /dev/null
-+++ b/arch/powerpc/purgatory/trampoline_64.S
-@@ -0,0 +1,117 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * kexec trampoline
-+ *
-+ * Based on code taken from kexec-tools and kexec-lite.
-+ *
-+ * Copyright (C) 2004 - 2005, Milton D Miller II, IBM Corporation
-+ * Copyright (C) 2006, Mohan Kumar M, IBM Corporation
-+ * Copyright (C) 2013, Anton Blanchard, IBM Corporation
-+ */
-+
-+#include <asm/asm-compat.h>
-+
-+	.machine ppc64
-+	.balign 256
-+	.globl purgatory_start
-+purgatory_start:
-+	b	master
-+
-+	/* ABI: possible run_at_load flag at 0x5c */
-+	.org purgatory_start + 0x5c
-+	.globl run_at_load
-+run_at_load:
-+	.long 0
-+	.size run_at_load, . - run_at_load
-+
-+	/* ABI: slaves start at 60 with r3=phys */
-+	.org purgatory_start + 0x60
-+slave:
-+	b .
-+	/* ABI: end of copied region */
-+	.org purgatory_start + 0x100
-+	.size purgatory_start, . - purgatory_start
-+
-+/*
-+ * The above 0x100 bytes at purgatory_start are replaced with the
-+ * code from the kernel (or next stage) by setup_purgatory().
-+ */
-+
-+master:
-+	or	%r1,%r1,%r1	/* low priority to let other threads catchup */
-+	isync
-+	mr	%r17,%r3	/* save cpu id to r17 */
-+	mr	%r15,%r4	/* save physical address in reg15 */
-+
-+	or	%r3,%r3,%r3	/* ok now to high priority, lets boot */
-+	lis	%r6,0x1
-+	mtctr	%r6		/* delay a bit for slaves to catch up */
-+	bdnz	.		/* before we overwrite 0-100 again */
-+
-+	bl	0f		/* Work out where we're running */
-+0:	mflr	%r18
-+
-+	/* load device-tree address */
-+	ld	%r3, (dt_offset - 0b)(%r18)
-+	mr	%r16,%r3	/* save dt address in reg16 */
-+	li	%r4,20
-+	LWZX_BE	%r6,%r3,%r4	/* fetch __be32 version number at byte 20 */
-+	cmpwi	%cr0,%r6,2	/* v2 or later? */
-+	blt	1f
-+	li	%r4,28
-+	STWX_BE	%r17,%r3,%r4	/* Store my cpu as __be32 at byte 28 */
-+1:
-+	/* load the kernel address */
-+	ld	%r4,(kernel - 0b)(%r18)
-+
-+	/* load the run_at_load flag */
-+	/* possibly patched by kexec */
-+	ld	%r6,(run_at_load - 0b)(%r18)
-+	/* and patch it into the kernel */
-+	stw	%r6,(0x5c)(%r4)
-+
-+	mr	%r3,%r16	/* restore dt address */
-+
-+	li	%r5,0		/* r5 will be 0 for kernel */
-+
-+	mfmsr	%r11
-+	andi.	%r10,%r11,1	/* test MSR_LE */
-+	bne	.Little_endian
-+
-+	mtctr	%r4		/* prepare branch to */
-+	bctr			/* start kernel */
-+
-+.Little_endian:
-+	mtsrr0	%r4		/* prepare branch to */
-+
-+	clrrdi	%r11,%r11,1	/* clear MSR_LE */
-+	mtsrr1	%r11
-+
-+	rfid			/* update MSR and start kernel */
-+
-+
-+	.balign 8
-+	.globl kernel
-+kernel:
-+	.8byte  0x0
-+	.size kernel, . - kernel
-+
-+	.balign 8
-+	.globl dt_offset
-+dt_offset:
-+	.8byte  0x0
-+	.size dt_offset, . - dt_offset
-+
-+
-+	.data
-+	.balign 8
-+.globl purgatory_sha256_digest
-+purgatory_sha256_digest:
-+	.skip	32
-+	.size purgatory_sha256_digest, . - purgatory_sha256_digest
-+
-+	.balign 8
-+.globl purgatory_sha_regions
-+purgatory_sha_regions:
-+	.skip	8 * 2 * 16
-+	.size purgatory_sha_regions, . - purgatory_sha_regions
 
