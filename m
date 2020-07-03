@@ -1,73 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96B621358B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 09:53:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA27213758
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 11:12:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ynJb1dQNzDrHn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 17:53:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yq3N1HlrzDqwL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 19:12:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tUMVPFF4; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ymwd6lkDzDr7V
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 17:36:01 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id e8so14731527pgc.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jul 2020 00:36:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=kvRCd9PLGVjMWPK2r0TpbnS9leKQS2B3nkKMRCX0GBc=;
- b=tUMVPFF4vP2G4/hgBKCTYJMF+Rw+SPYAjVXhxPe0fKu026bXGY5X+I5s+FA04mZq6a
- Et0nP5rO88tHymCo1NOQQ/W/kJDXtP6UaLNrJgLJXf8JIfg9yGsu8i0ZSFQwVqPFYkBX
- Wb6Vj1fQ2w43tn7SzVOKglgLx7emY1FiLNKNQIKSKfEbs73HUANA4nkFZ70EQNdNBHgB
- kLu3aQQ0XiLbZOQRXQm1V4GyCEOvfFXXsND1+pAzYPksxSg2lNgJiEO8xDchGcWp3HaT
- 604/CxpVjNs6i0Fkg797X4y1Q+H9nLZnDzhhVAcrw64zCjA8NYJr7L1Gl1Wek4A7IMtT
- ackg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=kvRCd9PLGVjMWPK2r0TpbnS9leKQS2B3nkKMRCX0GBc=;
- b=H05dVPsPJZHi8VTq7yLlJwBlVnRQxY+rCdMdav2uwTchBP/fbxLFH5noBKChRHfvDq
- v1kzV1g7eZf7b0ja6/faAFecTgux7VV62WaM72XMb335/GhV81wtE4W4FK4JCLF6Rvxc
- yiW12WL6ysLKEl9q16M9h5PPiNfq1Fd/dH5P1RnBLxK1D0C/xmR45Br2PH1JZNkGL/Ox
- 9uecAebAj5Nfnz3sE7au4YY5Z6/ksNSkt7gfUyDuQ2DloioMYkJMNFuAJjMa7Qp1+olC
- qqEupnCyBw+MksOr9pe6y+bAk8mTiRU/um7sNJ/eJJEbZ3h7opSFpoQ/lriEjgRd3wdZ
- PF7w==
-X-Gm-Message-State: AOAM5300oPLnXTH9YL1WWVFShuSEbZX7d846nAXN5D2SMw0Q6ye6nWwK
- ki2pWjYJIZiP4JkvO4rnC2s=
-X-Google-Smtp-Source: ABdhPJwRaPz9pu4t64jQMYoToKXv30O7t7kk9YVbA5y1a5jnOvLY5hddEayNHp5CZ6Ie32+ngdqn2w==
-X-Received: by 2002:a62:1c13:: with SMTP id c19mr17009102pfc.52.1593761759369; 
- Fri, 03 Jul 2020 00:35:59 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id y7sm10218499pgk.93.2020.07.03.00.35.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Jul 2020 00:35:59 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: 
-Subject: [PATCH v2 6/6] powerpc/qspinlock: optimised atomic_try_cmpxchg_lock
- that adds the lock hint
-Date: Fri,  3 Jul 2020 17:35:16 +1000
-Message-Id: <20200703073516.1354108-7-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200703073516.1354108-1-npiggin@gmail.com>
-References: <20200703073516.1354108-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yq1G3191zDrCG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 19:10:10 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 8D1E3ADE4;
+ Fri,  3 Jul 2020 09:10:03 +0000 (UTC)
+Date: Fri, 3 Jul 2020 11:10:01 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200703091001.GJ21462@kitsune.suse.cz>
+References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
+ <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
+ <20200701084200.GN2369@dhcp22.suse.cz>
+ <20200701100442.GB17918@linux.vnet.ibm.com>
+ <184102af-ecf2-c834-db46-173ab2e66f51@redhat.com>
+ <20200701110145.GC17918@linux.vnet.ibm.com>
+ <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
+ <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
+ <20200701122110.GT2369@dhcp22.suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200701122110.GT2369@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,78 +55,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev@lists.ozlabs.org, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- virtualization@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
- kvm-ppc@vger.kernel.org, Waiman Long <longman@redhat.com>,
- Will Deacon <will@kernel.org>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This brings the behaviour of the uncontended fast path back to
-roughly equivalent to simple spinlocks -- a single atomic op with
-lock hint.
+On Wed, Jul 01, 2020 at 02:21:10PM +0200, Michal Hocko wrote:
+> On Wed 01-07-20 13:30:57, David Hildenbrand wrote:
+> > On 01.07.20 13:06, David Hildenbrand wrote:
+> > > On 01.07.20 13:01, Srikar Dronamraju wrote:
+> > >> * David Hildenbrand <david@redhat.com> [2020-07-01 12:15:54]:
+> > >>
+> > >>> On 01.07.20 12:04, Srikar Dronamraju wrote:
+> > >>>> * Michal Hocko <mhocko@kernel.org> [2020-07-01 10:42:00]:
+> > >>>>
+> > >>>>>
+> > >>>>>>
+> > >>>>>> 2. Also existence of dummy node also leads to inconsistent information. The
+> > >>>>>> number of online nodes is inconsistent with the information in the
+> > >>>>>> device-tree and resource-dump
+> > >>>>>>
+> > >>>>>> 3. When the dummy node is present, single node non-Numa systems end up showing
+> > >>>>>> up as NUMA systems and numa_balancing gets enabled. This will mean we take
+> > >>>>>> the hit from the unnecessary numa hinting faults.
+> > >>>>>
+> > >>>>> I have to say that I dislike the node online/offline state and directly
+> > >>>>> exporting that to the userspace. Users should only care whether the node
+> > >>>>> has memory/cpus. Numa nodes can be online without any memory. Just
+> > >>>>> offline all the present memory blocks but do not physically hot remove
+> > >>>>> them and you are in the same situation. If users are confused by an
+> > >>>>> output of tools like numactl -H then those could be updated and hide
+> > >>>>> nodes without any memory&cpus.
+> > >>>>>
+> > >>>>> The autonuma problem sounds interesting but again this patch doesn't
+> > >>>>> really solve the underlying problem because I strongly suspect that the
+> > >>>>> problem is still there when a numa node gets all its memory offline as
+> > >>>>> mentioned above.
+> 
+> I would really appreciate a feedback to these two as well.
+> 
+> > >>>>> While I completely agree that making node 0 special is wrong, I have
+> > >>>>> still hard time to review this very simply looking patch because all the
+> > >>>>> numa initialization is so spread around that this might just blow up
+> > >>>>> at unexpected places. IIRC we have discussed testing in the previous
+> > >>>>> version and David has provided a way to emulate these configurations
+> > >>>>> on x86. Did you manage to use those instruction for additional testing
+> > >>>>> on other than ppc architectures?
+> > >>>>>
+> > >>>>
+> > >>>> I have tried all the steps that David mentioned and reported back at
+> > >>>> https://lore.kernel.org/lkml/20200511174731.GD1961@linux.vnet.ibm.com/t/#u
+> > >>>>
+> > >>>> As a summary, David's steps are still not creating a memoryless/cpuless on
+> > >>>> x86 VM.
+> > >>>
+> > >>> Now, that is wrong. You get a memoryless/cpuless node, which is *not
+> > >>> online*. Once you hotplug some memory, it will switch online. Once you
+> > >>> remove memory, it will switch back offline.
+> > >>>
+> > >>
+> > >> Let me clarify, we are looking for a node 0 which is cpuless/memoryless at
+> > >> boot.  The code in question tries to handle a cpuless/memoryless node 0 at
+> > >> boot.
+> > > 
+> > > I was just correcting your statement, because it was wrong.
+> > > 
+> > > Could be that x86 code maps PXM 1 to node 0 because PXM 1 does neither
+> > > have CPUs nor memory. That would imply that we can, in fact, never have
+> > > node 0 offline during boot.
+> > > 
+> > 
+> > Yep, looks like it.
+> > 
+> > [    0.009726] SRAT: PXM 1 -> APIC 0x00 -> Node 0
+> > [    0.009727] SRAT: PXM 1 -> APIC 0x01 -> Node 0
+> > [    0.009727] SRAT: PXM 1 -> APIC 0x02 -> Node 0
+> > [    0.009728] SRAT: PXM 1 -> APIC 0x03 -> Node 0
+> > [    0.009731] ACPI: SRAT: Node 0 PXM 1 [mem 0x00000000-0x0009ffff]
+> > [    0.009732] ACPI: SRAT: Node 0 PXM 1 [mem 0x00100000-0xbfffffff]
+> > [    0.009733] ACPI: SRAT: Node 0 PXM 1 [mem 0x100000000-0x13fffffff]
+> 
+> This begs a question whether ppc can do the same thing?
+Or x86 stop doing it so that you can see on what node you are running?
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/atomic.h    | 28 ++++++++++++++++++++++++++++
- arch/powerpc/include/asm/qspinlock.h |  2 +-
- 2 files changed, 29 insertions(+), 1 deletion(-)
+What's the point of this indirection other than another way of avoiding
+empty node 0?
 
-diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-index 498785ffc25f..f6a3d145ffb7 100644
---- a/arch/powerpc/include/asm/atomic.h
-+++ b/arch/powerpc/include/asm/atomic.h
-@@ -193,6 +193,34 @@ static __inline__ int atomic_dec_return_relaxed(atomic_t *v)
- #define atomic_xchg(v, new) (xchg(&((v)->counter), new))
- #define atomic_xchg_relaxed(v, new) xchg_relaxed(&((v)->counter), (new))
- 
-+/*
-+ * Don't want to override the generic atomic_try_cmpxchg_acquire, because
-+ * we add a lock hint to the lwarx, which may not be wanted for the
-+ * _acquire case (and is not used by the other _acquire variants so it
-+ * would be a surprise).
-+ */
-+static __always_inline bool
-+atomic_try_cmpxchg_lock(atomic_t *v, int *old, int new)
-+{
-+	int r, o = *old;
-+
-+	__asm__ __volatile__ (
-+"1:\t"	PPC_LWARX(%0,0,%2,1) "	# atomic_try_cmpxchg_acquire	\n"
-+"	cmpw	0,%0,%3							\n"
-+"	bne-	2f							\n"
-+"	stwcx.	%4,0,%2							\n"
-+"	bne-	1b							\n"
-+"\t"	PPC_ACQUIRE_BARRIER "						\n"
-+"2:									\n"
-+	: "=&r" (r), "+m" (v->counter)
-+	: "r" (&v->counter), "r" (o), "r" (new)
-+	: "cr0", "memory");
-+
-+	if (unlikely(r != o))
-+		*old = r;
-+	return likely(r == o);
-+}
-+
- /**
-  * atomic_fetch_add_unless - add unless the number is a given value
-  * @v: pointer of type atomic_t
-diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-index 0960a0de2467..beb6aa4628e7 100644
---- a/arch/powerpc/include/asm/qspinlock.h
-+++ b/arch/powerpc/include/asm/qspinlock.h
-@@ -26,7 +26,7 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
- {
- 	u32 val = 0;
- 
--	if (likely(atomic_try_cmpxchg_acquire(&lock->val, &val, _Q_LOCKED_VAL)))
-+	if (likely(atomic_try_cmpxchg_lock(&lock->val, &val, _Q_LOCKED_VAL)))
- 		return;
- 
- 	queued_spin_lock_slowpath(lock, val);
--- 
-2.23.0
+Thanks
 
+Michal
