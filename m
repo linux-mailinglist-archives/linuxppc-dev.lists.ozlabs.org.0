@@ -2,54 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0AC2138BD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 12:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1B92138E4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 12:46:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ys4d0NV3zDqS1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 20:43:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ys8X6j6qzDr0r
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 20:46:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ys2V6lc3zDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 20:41:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=R6OndPXL; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49ys2R4MTvz9sQt;
- Fri,  3 Jul 2020 20:41:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1593772881;
- bh=ouQdbcbhXEsmtXFYa0vga5m4RkRqU+lSip6svPkAoWE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=R6OndPXLKtiDiQ1Yg6qZjpgHLC6/QS2AlJZYtOzMgFSeYNh6Sx3B0ltJCzh7sjte5
- WiiVS0RAL5X390ALRNp7CDkU1RVQeSH9Wca2ibJ08WXyPDBnyYO+Gxoy56H8T0H24A
- F6WMbq5RKm4waWWNoG6ZJkS8Z04QD4Qfen0kPPO+o9GKjqMlrQM4oL+Hip9uWVFMld
- UPez+VVedhg6+MIFlsUQ+LqzA6fjTMk4Lbg8v+KsyVDGxyvtiP2F5mRej5ntf0lZ9k
- 3JqKlIL/mXbyppKeQNjGxRorukCOGXpRzvqKB7CGr+jE5Hsx4Z3fp9XtqzVesL+Bm3
- JD0xFqCJG+Szw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V3 (RESEND) 2/3] mm/sparsemem: Enable vmem_altmap support
- in vmemmap_alloc_block_buf()
-In-Reply-To: <20200702140752.GF22241@gaia>
-References: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
- <1592442930-9380-3-git-send-email-anshuman.khandual@arm.com>
- <20200702140752.GF22241@gaia>
-Date: Fri, 03 Jul 2020 20:43:33 +1000
-Message-ID: <87blkw7uay.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ys6K4sBmzDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 20:44:41 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 063AXcPd092690; Fri, 3 Jul 2020 06:44:37 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 322144k7ut-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Jul 2020 06:44:37 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 063AXeMr092825;
+ Fri, 3 Jul 2020 06:44:36 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 322144k7u0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Jul 2020 06:44:36 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 063AdpZG017768;
+ Fri, 3 Jul 2020 10:44:34 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 31wwr8f6n3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Jul 2020 10:44:34 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 063AiVhg62063040
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Jul 2020 10:44:31 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5D0C6AE056;
+ Fri,  3 Jul 2020 10:44:31 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 04717AE053;
+ Fri,  3 Jul 2020 10:44:30 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.77.194.246])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Jul 2020 10:44:29 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v0 0/2] Use H_RPT_INVALIDATE for nested guest
+Date: Fri,  3 Jul 2020 16:14:18 +0530
+Message-Id: <20200703104420.21349-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-03_03:2020-07-02,
+ 2020-07-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 cotscore=-2147483648
+ suspectscore=0 adultscore=0 phishscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007030071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,63 +90,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: aneesh.kumar@linux.ibm.com, Bharata B Rao <bharata@linux.ibm.com>,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
-> On Thu, Jun 18, 2020 at 06:45:29AM +0530, Anshuman Khandual wrote:
->> There are many instances where vmemap allocation is often switched between
->> regular memory and device memory just based on whether altmap is available
->> or not. vmemmap_alloc_block_buf() is used in various platforms to allocate
->> vmemmap mappings. Lets also enable it to handle altmap based device memory
->> allocation along with existing regular memory allocations. This will help
->> in avoiding the altmap based allocation switch in many places.
->> 
->> While here also implement a regular memory allocation fallback mechanism
->> when the first preferred device memory allocation fails. This will ensure
->> preserving the existing semantics on powerpc platform. To summarize there
->> are three different methods to call vmemmap_alloc_block_buf().
->> 
->> (., NULL,   false) /* Allocate from system RAM */
->> (., altmap, false) /* Allocate from altmap without any fallback */
->> (., altmap, true)  /* Allocate from altmap with fallback (system RAM) */
-> [...]
->> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
->> index bc73abf0bc25..01e25b56eccb 100644
->> --- a/arch/powerpc/mm/init_64.c
->> +++ b/arch/powerpc/mm/init_64.c
->> @@ -225,12 +225,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>  		 * fall back to system memory if the altmap allocation fail.
->>  		 */
->>  		if (altmap && !altmap_cross_boundary(altmap, start, page_size)) {
->> -			p = altmap_alloc_block_buf(page_size, altmap);
->> -			if (!p)
->> -				pr_debug("altmap block allocation failed, falling back to system memory");
->> +			p = vmemmap_alloc_block_buf(page_size, node,
->> +						    altmap, true);
->> +		} else {
->> +			p = vmemmap_alloc_block_buf(page_size, node,
->> +						    NULL, false);
->>  		}
->> -		if (!p)
->> -			p = vmemmap_alloc_block_buf(page_size, node);
->>  		if (!p)
->>  			return -ENOMEM;
->
-> Is the fallback argument actually necessary. It may be cleaner to just
-> leave the code as is with the choice between altmap and NULL. If an arch
-> needs a fallback (only powerpc), they have the fallback in place
-> already. I don't see the powerpc code any better after this change.
+This patchset adds support for the new hcall H_RPT_INVALIDATE
+(currently handles nested case only) and replaces the nested tlb flush
+calls with this new hcall if the support for the same exists.
 
-Yeah I agree.
+This applies on top of "[PATCH v3 0/3] Off-load TLB invalidations to host
+for !GTSE" patchset that was posted at:
 
-cheers
+https://lore.kernel.org/linuxppc-dev/20200703053608.12884-1-bharata@linux.ibm.com/T/#t
+
+H_RPT_INVALIDATE
+================
+Syntax:
+int64   /* H_Success: Return code on successful completion */
+        /* H_Busy - repeat the call with the same */
+        /* H_Parameter, H_P2, H_P3, H_P4, H_P5 : Invalid parameters */
+        hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate RPT translation lookaside information */
+              uint64 pid,       /* PID/LPID to invalidate */
+              uint64 target,    /* Invalidation target */
+              uint64 type,      /* Type of lookaside information */
+              uint64 pageSizes,     /* Page sizes */
+              uint64 start,     /* Start of Effective Address (EA) range (inclusive) */
+              uint64 end)       /* End of EA range (exclusive) */
+
+Invalidation targets (target)
+-----------------------------
+Core MMU        0x01 /* All virtual processors in the partition */
+Core local MMU  0x02 /* Current virtual processor */
+Nest MMU        0x04 /* All nest/accelerator agents in use by the partition */
+
+A combination of the above can be specified, except core and core local.
+
+Type of translation to invalidate (type)
+---------------------------------------
+NESTED       0x0001  /* Invalidate nested guest partition-scope */
+TLB          0x0002  /* Invalidate TLB */
+PWC          0x0004  /* Invalidate Page Walk Cache */
+PRT          0x0008  /* Invalidate Process Table Entries if NESTED is clear */
+PAT          0x0008  /* Invalidate Partition Table Entries if NESTED is set */
+
+A combination of the above can be specified.
+
+Page size mask (pageSizes)
+--------------------------
+4K              0x01
+64K             0x02
+2M              0x04
+1G              0x08
+All sizes       (-1UL)
+
+A combination of the above can be specified.
+All page sizes can be selected with -1.
+
+Semantics: Invalidate radix tree lookaside information
+           matching the parameters given.
+* Return H_P2, H_P3 or H_P4 if target, type, or pageSizes parameters are
+  different from the defined values.
+* Return H_PARAMETER if NESTED is set and pid is not a valid nested
+  LPID allocated to this partition
+* Return H_P5 if (start, end) doesn't form a valid range. Start and end
+  should be a valid Quadrant address and  end > start.
+* Return H_NotSupported if the partition is not in running in radix
+  translation mode.
+* May invalidate more translation information than requested.
+* If start = 0 and end = -1, set the range to cover all valid addresses.
+  Else start and end should be aligned to 4kB (lower 11 bits clear).
+* If NESTED is clear, then invalidate process scoped lookaside information.
+  Else pid specifies a nested LPID, and the invalidation is performed
+  on nested guest partition table and nested guest partition scope real
+  addresses.
+* If pid = 0 and NESTED is clear, then valid addresses are quadrant 3 and
+  quadrant 0 spaces, Else valid addresses are quadrant 0.
+* Pages which are fully covered by the range are to be invalidated.
+  Those which are partially covered are considered outside invalidation
+  range, which allows a caller to optimally invalidate ranges that may
+  contain mixed page sizes.
+* Return H_SUCCESS on success.
+
+Bharata B Rao (2):
+  KVM: PPC: Book3S HV: Add support for H_RPT_INVALIDATE (nested case
+    only)
+  KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
+
+ Documentation/virt/kvm/api.rst                |  17 +++
+ .../include/asm/book3s/64/tlbflush-radix.h    |  18 +++
+ arch/powerpc/include/asm/firmware.h           |   4 +-
+ arch/powerpc/include/asm/kvm_book3s.h         |   3 +
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |  26 ++++-
+ arch/powerpc/kvm/book3s_hv.c                  |  32 ++++++
+ arch/powerpc/kvm/book3s_hv_nested.c           | 107 +++++++++++++++++-
+ arch/powerpc/kvm/powerpc.c                    |   3 +
+ arch/powerpc/mm/book3s64/radix_tlb.c          |   4 -
+ arch/powerpc/platforms/pseries/firmware.c     |   1 +
+ include/uapi/linux/kvm.h                      |   1 +
+ 11 files changed, 204 insertions(+), 12 deletions(-)
+
+-- 
+2.21.3
+
