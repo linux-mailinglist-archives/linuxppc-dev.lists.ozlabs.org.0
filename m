@@ -1,92 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2418F213A90
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 15:02:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72854213B23
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 15:38:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yw8s38XnzDqX6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 23:02:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ywyr1fmFzDqwT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 23:38:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.193;
+ helo=mail-pf1-f193.google.com; envelope-from=mcgrof@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com
+ [209.85.210.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yw635XDTzDrGG
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 22:59:39 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 063CUb5E062981; Fri, 3 Jul 2020 08:58:31 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 321cve9ke5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Jul 2020 08:58:30 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 063CWM5N068303;
- Fri, 3 Jul 2020 08:58:30 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 321cve9kdg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Jul 2020 08:58:30 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 063CkiGd024370;
- Fri, 3 Jul 2020 12:58:28 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 31wwch6tw9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Jul 2020 12:58:28 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 063CwQNW63176796
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 3 Jul 2020 12:58:26 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73BE052051;
- Fri,  3 Jul 2020 12:58:26 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id DDCCA5204E;
- Fri,  3 Jul 2020 12:58:23 +0000 (GMT)
-Date: Fri, 3 Jul 2020 18:28:23 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michal Hocko <mhocko@kernel.org>
-Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
- offline
-Message-ID: <20200703125823.GA26243@linux.vnet.ibm.com>
-References: <20200701084200.GN2369@dhcp22.suse.cz>
- <20200701100442.GB17918@linux.vnet.ibm.com>
- <184102af-ecf2-c834-db46-173ab2e66f51@redhat.com>
- <20200701110145.GC17918@linux.vnet.ibm.com>
- <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
- <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
- <20200701122110.GT2369@dhcp22.suse.cz>
- <20200703091001.GJ21462@kitsune.suse.cz>
- <20200703092414.GR18446@dhcp22.suse.cz>
- <20200703105944.GS18446@dhcp22.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yww60l4hzDrDn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 23:36:03 +1000 (AEST)
+Received: by mail-pf1-f193.google.com with SMTP id a14so9429964pfi.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jul 2020 06:36:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=T5rcVRIkgD/btpU3eP+kPgBcl/ql3dV8wsHC9ym85fc=;
+ b=hYh2/9rNOzpTEiVr/ozwlWHIfBmIOZRFvp4Y3tf6RyS0TKyJEOHKNRfLndNhyyWFER
+ Ahk3XfV8F5Rr+nGeoWAKa+RVX/4azQVadxo+QcNXwPwrpdgydfgD+GsgO/2AyyxeY56a
+ 8lxkXGnUBZsI93GYtAqwGcfFyZ1bbTg2sJVGouj/kB6QxlnjGIleesFf9L+weojHI9Wb
+ PZDsc9+9itMDmL7Di89SJuxdoqNRZJXtcFvgX7xvyGyXPy9Bgj5svgzL9sEUdF0jbWX+
+ oMvyPAd/xkYfxqMVUI7m+n33DWZGJyYHJhoi7a4mmFyJTwV1pfAa1+ZAz4zmRJwzZV79
+ XkhQ==
+X-Gm-Message-State: AOAM530nS14cAsc4Xb3kYfR2QBIa8Iz23DbJvv/dYj8X+TlhlY4mOIMr
+ s98a/sEiBXFsTmNrXpYyy9M=
+X-Google-Smtp-Source: ABdhPJzpEuquvHuz9dy6BTpylDSjUJQBr0XwgRqlpSIxXVt6avNzJ3DHhTKXkfB0Cil4QhB/QzoeTw==
+X-Received: by 2002:a65:640c:: with SMTP id a12mr28887324pgv.88.1593783360171; 
+ Fri, 03 Jul 2020 06:36:00 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+ by smtp.gmail.com with ESMTPSA id m16sm12805082pfd.101.2020.07.03.06.35.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Jul 2020 06:35:58 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+ id 1885F40945; Fri,  3 Jul 2020 13:35:58 +0000 (UTC)
+Date: Fri, 3 Jul 2020 13:35:58 +0000
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [v2 PATCH] crypto: af_alg - Fix regression on empty requests
+Message-ID: <20200703133558.GX4332@42.do-not-panic.com>
+References: <CA+G9fYvHFs5Yx8TnT6VavtfjMN8QLPuXg6us-dXVJqUUt68adA@mail.gmail.com>
+ <20200622224920.GA4332@42.do-not-panic.com>
+ <CA+G9fYsXDZUspc5OyfqrGZn=k=2uRiGzWY_aPePK2C_kZ+dYGQ@mail.gmail.com>
+ <20200623064056.GA8121@gondor.apana.org.au>
+ <20200623170217.GB150582@gmail.com>
+ <20200626062948.GA25285@gondor.apana.org.au>
+ <CA+G9fYutuU55iL_6Qrk3oG3iq-37PaxvtA4KnEQHuLH9YpH-QA@mail.gmail.com>
+ <20200702033221.GA19367@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200703105944.GS18446@dhcp22.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-03_06:2020-07-02,
- 2020-07-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0 clxscore=1011
- bulkscore=0 malwarescore=0 adultscore=0 mlxscore=0 cotscore=-2147483648
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007030086
+In-Reply-To: <20200702033221.GA19367@gondor.apana.org.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,61 +74,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, Mel Gorman <mgorman@suse.de>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Such?nek <msuchanek@suse.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ David Howells <dhowells@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
+ James Morris <jmorris@namei.org>, Eric Biggers <ebiggers@kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+ Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ chrubis <chrubis@suse.cz>, linux- stable <stable@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Jan Stancek <jstancek@redhat.com>, LTP List <ltp@lists.linux.it>,
+ "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Michal Hocko <mhocko@kernel.org> [2020-07-03 12:59:44]:
-
-> > Honestly, I do not have any idea. I've traced it down to
-> > Author: Andi Kleen <ak@suse.de>
-> > Date:   Tue Jan 11 15:35:48 2005 -0800
+On Thu, Jul 02, 2020 at 01:32:21PM +1000, Herbert Xu wrote:
+> On Tue, Jun 30, 2020 at 02:18:11PM +0530, Naresh Kamboju wrote:
 > > 
-> >     [PATCH] x86_64: Fix ACPI SRAT NUMA parsing
+> > Since we are on this subject,
+> > LTP af_alg02  test case fails on stable 4.9 and stable 4.4
+> > This is not a regression because the test case has been failing from
+> > the beginning.
 > > 
-> >     Fix fallout from the recent nodemask_t changes. The node ids assigned
-> >     in the SRAT parser were off by one.
+> > Is this test case expected to fail on stable 4.9 and 4.4 ?
+> > or any chance to fix this on these older branches ?
 > > 
-> >     I added a new first_unset_node() function to nodemask.h to allocate
-> >     IDs sanely.
+> > Test output:
+> > af_alg02.c:52: BROK: Timed out while reading from request socket.
 > > 
-> >     Signed-off-by: Andi Kleen <ak@suse.de>
-> >     Signed-off-by: Linus Torvalds <torvalds@osdl.org>
-> > 
-> > which doesn't really tell all that much. The historical baggage and a
-> > long term behavior which is not really trivial to fix I suspect.
+> > ref:
+> > https://qa-reports.linaro.org/lkft/linux-stable-rc-4.9-oe/build/v4.9.228-191-g082e807235d7/testrun/2884917/suite/ltp-crypto-tests/test/af_alg02/history/
+> > https://qa-reports.linaro.org/lkft/linux-stable-rc-4.9-oe/build/v4.9.228-191-g082e807235d7/testrun/2884606/suite/ltp-crypto-tests/test/af_alg02/log
 > 
-> Thinking about this some more, this logic makes some sense afterall.
-> Especially in the world without memory hotplug which was very likely the
-> case back then. It is much better to have compact node mask rather than
-> sparse one. After all node numbers shouldn't really matter as long as
-> you have a clear mapping to the HW. I am not sure we export that
-> information (except for the kernel ring buffer) though.
-> 
-> The memory hotplug changes that somehow because you can hotremove numa
-> nodes and therefore make the nodemask sparse but that is not a common
-> case. I am not sure what would happen if a completely new node was added
-> and its corresponding node was already used by the renumbered one
-> though. It would likely conflate the two I am afraid. But I am not sure
-> this is really possible with x86 and a lack of a bug report would
-> suggest that nobody is doing that at least.
-> 
+> Actually this test really is broken.
 
-JFYI,
-Satheesh copied in this mailchain had opened a bug a year on crash with vcpu
-hotplug on memoryless node. 
+FWIW the patch "umh: fix processed error when UMH_WAIT_PROC is used" was
+dropped from linux-next for now as it was missing checking for signals.
+I'll be open coding iall checks for each UMH_WAIT_PROC callers next. Its
+not clear if this was the issue with this test case, but figured I'd let
+you know.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=202187
-
--- 
-Thanks and Regards
-Srikar Dronamraju
+  Luis
