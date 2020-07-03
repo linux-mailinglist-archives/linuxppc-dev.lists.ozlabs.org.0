@@ -2,92 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E9D21379C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 11:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 857132137A6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 11:27:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yqMC175TzDrF1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 19:25:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49yqPP3kttzDqS1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 19:27:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
- helo=bhuna.collabora.co.uk; envelope-from=arnaud.ferraris@collabora.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.68; helo=mail-ej1-f68.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=collabora.com
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yqK65V9QzDrCN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 19:23:53 +1000 (AEST)
-Received: from [IPv6:2a01:e35:2fb5:1510:1d94:e6f1:f819:f29f] (unknown
- [IPv6:2a01:e35:2fb5:1510:1d94:e6f1:f819:f29f])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: aferraris)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 7F7042A62F5;
- Fri,  3 Jul 2020 10:23:48 +0100 (BST)
-Subject: Re: [PATCH 1/2] dt-bindings: sound: fsl-asoc-card: add new compatible
- for I2S slave
-To: Mark Brown <broonie@kernel.org>
-References: <20200702141114.232688-1-arnaud.ferraris@collabora.com>
- <20200702141114.232688-2-arnaud.ferraris@collabora.com>
- <20200702143145.GG4483@sirena.org.uk>
- <5de5ea5b-0716-8ed1-28b0-9ad3da7a2d47@collabora.com>
- <20200702154207.GK4483@sirena.org.uk>
-From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
- 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
- xZQG6fKWuIur3RI=
-Message-ID: <fe4e71b2-2304-647d-f737-dd7e8f2e0657@collabora.com>
-Date: Fri, 3 Jul 2020 11:23:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com
+ [209.85.218.68])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yqKf0gySzDrCt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 19:24:21 +1000 (AEST)
+Received: by mail-ej1-f68.google.com with SMTP id dr13so33496088ejc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jul 2020 02:24:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=iJLZm8Njvb3Yiim6wQvrOQ/ONlV8hDDQOYhn9693iq0=;
+ b=q/JJoNXv76dms/Y6ZY8JCE2fTmmssBoksYRdEK1dumMTlbfTkPZLR0lqk8iy2ehDEM
+ XYU9xIbBkuXnu0Y6Pkovelf99rzEuiX+tYlqpwQ+x87V4wjKvih4eUNucEM9/Y1plPTc
+ 6eWX9afKeZnsyGhQBlzLgRWk2kHMsytR5y06Ac9KuuLYvrYSxcyWMl3RaP9zLyiLpr6l
+ JwGzxKodb6JU6L6ZJ6ClC521CozWOnp2jcKhTuxp/1wmPh1b6YGNs4GRUecbvbEpniVT
+ L0OuVjaBgbzRqS3NoDcX1fhd5B6mDjuv4LogKr5bcdC9UKDzmEqo5uIc8PtrnV4mb3KE
+ V/Fg==
+X-Gm-Message-State: AOAM533igFec2gCIvJCn7sacAlRO/2jHG2suIMQNy6RSh9nWw4m62j+Z
+ b2m4gAk58zwN3AOMTgstHLg=
+X-Google-Smtp-Source: ABdhPJyX1uiNEPa1jrkIIqpxN7mzlISZmIk00tNVQd8wc47hHS0KLZLdKRBE9Qshpnx67YsqYHV2vQ==
+X-Received: by 2002:a17:906:19c7:: with SMTP id
+ h7mr30603847ejd.403.1593768257301; 
+ Fri, 03 Jul 2020 02:24:17 -0700 (PDT)
+Received: from localhost (ip-37-188-168-3.eurotel.cz. [37.188.168.3])
+ by smtp.gmail.com with ESMTPSA id i10sm11795002edx.42.2020.07.03.02.24.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Jul 2020 02:24:16 -0700 (PDT)
+Date: Fri, 3 Jul 2020 11:24:14 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200703092414.GR18446@dhcp22.suse.cz>
+References: <20200624092846.9194-1-srikar@linux.vnet.ibm.com>
+ <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
+ <20200701084200.GN2369@dhcp22.suse.cz>
+ <20200701100442.GB17918@linux.vnet.ibm.com>
+ <184102af-ecf2-c834-db46-173ab2e66f51@redhat.com>
+ <20200701110145.GC17918@linux.vnet.ibm.com>
+ <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
+ <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
+ <20200701122110.GT2369@dhcp22.suse.cz>
+ <20200703091001.GJ21462@kitsune.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20200702154207.GK4483@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200703091001.GJ21462@kitsune.suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,37 +75,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Rob Herring <robh+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- kernel@collabora.com, linuxppc-dev@lists.ozlabs.org
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+[Cc Andi]
 
+On Fri 03-07-20 11:10:01, Michal Suchanek wrote:
+> On Wed, Jul 01, 2020 at 02:21:10PM +0200, Michal Hocko wrote:
+> > On Wed 01-07-20 13:30:57, David Hildenbrand wrote:
+[...]
+> > > Yep, looks like it.
+> > > 
+> > > [    0.009726] SRAT: PXM 1 -> APIC 0x00 -> Node 0
+> > > [    0.009727] SRAT: PXM 1 -> APIC 0x01 -> Node 0
+> > > [    0.009727] SRAT: PXM 1 -> APIC 0x02 -> Node 0
+> > > [    0.009728] SRAT: PXM 1 -> APIC 0x03 -> Node 0
+> > > [    0.009731] ACPI: SRAT: Node 0 PXM 1 [mem 0x00000000-0x0009ffff]
+> > > [    0.009732] ACPI: SRAT: Node 0 PXM 1 [mem 0x00100000-0xbfffffff]
+> > > [    0.009733] ACPI: SRAT: Node 0 PXM 1 [mem 0x100000000-0x13fffffff]
+> > 
+> > This begs a question whether ppc can do the same thing?
+> Or x86 stop doing it so that you can see on what node you are running?
+> 
+> What's the point of this indirection other than another way of avoiding
+> empty node 0?
 
-Le 02/07/2020 à 17:42, Mark Brown a écrit :
-> On Thu, Jul 02, 2020 at 05:28:03PM +0200, Arnaud Ferraris wrote:
->> Le 02/07/2020 à 16:31, Mark Brown a écrit :
-> 
->>> Why require that the CODEC be clock master here - why not make this
->>> configurable, reusing the properties from the generic and audio graph
->>> cards?
-> 
->> This is partly because I'm not sure how to do it (yet), but mostly
->> because I don't have the hardware to test this (the 2 CODECs present on
->> my only i.MX6 board are both clock master)
-> 
-> Take a look at what the generic cards are doing, it's a library function 
-> asoc_simple_parse_daifmt().  It's not the end of the world if you can't
-> test it properly - if it turns out it's buggy somehow someone can always
-> fix the code later but an ABI is an ABI so we can't change it.
-> 
+Honestly, I do not have any idea. I've traced it down to
+Author: Andi Kleen <ak@suse.de>
+Date:   Tue Jan 11 15:35:48 2005 -0800
 
-Thanks for the hints, I'll look into it.
+    [PATCH] x86_64: Fix ACPI SRAT NUMA parsing
 
-Regards,
-Arnaud
+    Fix fallout from the recent nodemask_t changes. The node ids assigned
+    in the SRAT parser were off by one.
+
+    I added a new first_unset_node() function to nodemask.h to allocate
+    IDs sanely.
+
+    Signed-off-by: Andi Kleen <ak@suse.de>
+    Signed-off-by: Linus Torvalds <torvalds@osdl.org>
+
+which doesn't really tell all that much. The historical baggage and a
+long term behavior which is not really trivial to fix I suspect.
+-- 
+Michal Hocko
+SUSE Labs
