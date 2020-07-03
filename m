@@ -1,71 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5724421302A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 01:35:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DC921306A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 02:17:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yZGC2HJfzDr2d
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 09:35:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ybBP3NDfzDrC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 10:17:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=WXOmB+la; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ header.s=20161025 header.b=LSEdiF8O; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yZDM6SFnzDr1Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 09:33:55 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id j12so13185371pfn.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jul 2020 16:33:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49yb8d126zzDr8t
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 10:15:44 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id o22so8142684pjw.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jul 2020 17:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=fUYfVen9cqRB51w5KZNlqoOpdLWt3zbZ3CTAyfz1D2Y=;
- b=WXOmB+laruYWjVYY7+d7igGpbBKIDyJ1gVq9lsoG2iWrLwX86IHtdo850j0FmY3L01
- +Qt+WA+RPAidtTQlNgd0W00mM9unQmuKec9kt+ubxF3F2A3TdozBpQ2V8Ou5NlS2pGN0
- fylGwUH1rA1uBf6HQvq+uHrG3DXkrQXbdGiHk3jrRjU3YbDm5ljD0xivM7QRRgAHKxFy
- w6MmGvo/3PvP4jZQwWSiza71yHyd5AWbHgpj6WUCgEMxJhrznfGrbDPeyL8XpBPfYelR
- EC1wkbwXzg9vKdl5ng+8pAbwv3Z0EjTvmm45or44rABuYqWUZ0z0Y2S9JBlr1960+Myo
- zgFQ==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=nuJRvdB0NXvVZz7pZcV4N1oDW2dnoBAuVAW0OAoXK2w=;
+ b=LSEdiF8O8c0k36FJz+J/p1Xm+032fT22eON16GPFoOrZL6GDx9jPsHusIL7FEU0XAV
+ lLDoHY9NSZfpcd5oNSgz7AXGqRLd1dfAW9ad86/buGeCa4uTE/vU9OPIKwfaZyBXfnsJ
+ uG05dXYdVlfndLY83LDfB7lzK6ZqRQP5RvYyTLEoAscx9LtDbk1kTfrj/Cwbbvqz6uxW
+ IUIYgXT0pd0DwhOqvL6wEv82lwldnFjq8WUAnvh0BthjGb+v++4h6R72lTgxl5Ir5SPV
+ KaijBTzwUbf0D6ex6rU/rFRlvvyVHMSFetaS1LKZRTYt3D1mhdMNSiJCFStkUNFQKfnS
+ w0+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=fUYfVen9cqRB51w5KZNlqoOpdLWt3zbZ3CTAyfz1D2Y=;
- b=l0BernBw5zSiELl2t6QF1xpuBfDZg7xGs7uTCBsYf64vSJ5bXMYe1Tb6+9w5xaNhpJ
- PsJW5l1P0tOtRDzHJlE5TFC81gfcgV7c0bS9xV737ErYDcC50FCqQfjxzXUBVDJ4gr+9
- /q/sOYrMJDHqBg+5sg2M4j7qqiczHLt8GtlaxEY0xUy/hAC6CXH2f2I/vfm7QecAn9gL
- NdY7IKoOqLKSxSOSONRICFF0qmOFlB1Vp2lX8LmGpUWnxYIUKwpUJHcw1k0AljmkwulQ
- h183CEI8M/REq+358VYybKop6onPk2mLVCw04NbmCHQRzoK/P/e+5akgUVzzNqhCsoVk
- N9Jg==
-X-Gm-Message-State: AOAM530sSSFelPoKZa3LdlmXrKICHGlKoRrlpZjwsd/N3J1C3AFPGWa4
- NLQwHkApB6ZobRuCL+YDwr+OeDRa
-X-Google-Smtp-Source: ABdhPJy4tfau/DWLzT0++LhP/i1vF09VBYyw7dOM8CHXPc2doy9jBnNjPCojEni8mmNzeEKY/qbmDw==
-X-Received: by 2002:a63:29c8:: with SMTP id
- p191mr27523041pgp.333.1593732831548; 
- Thu, 02 Jul 2020 16:33:51 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id v15sm9707345pgo.15.2020.07.02.16.33.49
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=nuJRvdB0NXvVZz7pZcV4N1oDW2dnoBAuVAW0OAoXK2w=;
+ b=jbRu74ao4ABf15u0rUqmgrJVqgAjSopRFwbBodPZNJxEocZ1tWSA+ukHXQaZlXDfyH
+ JLNgHRCwokHhN6daQoVU3w90kTOaOx/5wJ1Cmj0RL67XRVcnGh6LzVVWC63dEcmiiSeB
+ LjUUPZNZayxUkI2HoyV8mJm36682rH+U6prbv8AWuDXrlmyt0exlilZDV85iIEqgc0Wk
+ grHW67f0clQuTA3kciFvaFajhM6DQCZXKO/+ImDMGufrTkkqO3eHxFwqCnwtRCEPH/bN
+ Y9zVDbl8I/cJXh2ODUuyGjOoFRQfsHD0ML3AFiXpWI92YhZtJNkczCb+0x2JdQqzDBt5
+ ZQOQ==
+X-Gm-Message-State: AOAM5314Aopbq0aa6ho8nF9KHH0o0ru4by8Rpy+rpIuG41DOfLqB+fuL
+ obWMvLid0QoAZtoGadGZ9Yk=
+X-Google-Smtp-Source: ABdhPJzVARbnUoiUECgH/rt6gF7oxr/jO/Or3UFnEeEEE5zO8Q2uC+eAackVR4Z456AOo0TJ+H99Rw==
+X-Received: by 2002:a17:902:b78a:: with SMTP id
+ e10mr28875186pls.34.1593735341316; 
+ Thu, 02 Jul 2020 17:15:41 -0700 (PDT)
+Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id b11sm10202251pfr.179.2020.07.02.17.15.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Jul 2020 16:33:51 -0700 (PDT)
+ Thu, 02 Jul 2020 17:15:40 -0700 (PDT)
+Date: Fri, 03 Jul 2020 10:15:34 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/powernv: machine check handler for POWER10
-Date: Fri,  3 Jul 2020 09:33:43 +1000
-Message-Id: <20200702233343.1128026-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+Subject: Re: [PATCH v2 4/4] mm/vmalloc: Hugepage vmalloc mappings
+To: linux-mm@kvack.org, Zefan Li <lizefan@huawei.com>
+References: <20200413125303.423864-1-npiggin@gmail.com>
+ <20200413125303.423864-5-npiggin@gmail.com>
+ <d148f86c-b27b-63fb-31d2-35b8f52ec540@huawei.com>
+In-Reply-To: <d148f86c-b27b-63fb-31d2-35b8f52ec540@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1593735251.svr5r5cxle.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,185 +81,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ =?iso-8859-1?q?Borislav=0A?= Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ =?iso-8859-1?q?Thomas=0A?= Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/mce.h    |  1 +
- arch/powerpc/kernel/dt_cpu_ftrs.c | 10 ++++
- arch/powerpc/kernel/mce.c         |  1 +
- arch/powerpc/kernel/mce_power.c   | 84 +++++++++++++++++++++++++++++++
- 4 files changed, 96 insertions(+)
+Excerpts from Zefan Li's message of July 1, 2020 5:10 pm:
+>>  static void *__vmalloc_node(unsigned long size, unsigned long align,
+>> -			    gfp_t gfp_mask, pgprot_t prot,
+>> -			    int node, const void *caller);
+>> +			gfp_t gfp_mask, pgprot_t prot, unsigned long vm_flags,
+>> +			int node, const void *caller);
+>>  static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask=
+,
+>> -				 pgprot_t prot, int node)
+>> +				 pgprot_t prot, unsigned int page_shift,
+>> +				 int node)
+>>  {
+>>  	struct page **pages;
+>> +	unsigned long addr =3D (unsigned long)area->addr;
+>> +	unsigned long size =3D get_vm_area_size(area);
+>> +	unsigned int page_order =3D page_shift - PAGE_SHIFT;
+>>  	unsigned int nr_pages, array_size, i;
+>>  	const gfp_t nested_gfp =3D (gfp_mask & GFP_RECLAIM_MASK) | __GFP_ZERO;
+>>  	const gfp_t alloc_mask =3D gfp_mask | __GFP_NOWARN;
+>>  	const gfp_t highmem_mask =3D (gfp_mask & (GFP_DMA | GFP_DMA32)) ?
+>> -					0 :
+>> -					__GFP_HIGHMEM;
+>> +					0 : __GFP_HIGHMEM;
+>> =20
+>> -	nr_pages =3D get_vm_area_size(area) >> PAGE_SHIFT;
+>> +	nr_pages =3D size >> page_shift;
+>=20
+> while try out this patchset, we encountered a BUG_ON in account_kernel_st=
+ack()
+> in kernel/fork.c.
+>=20
+> BUG_ON(vm->nr_pages !=3D THREAD_SIZE / PAGE_SIZE);
+>=20
+> which obviously should be updated accordingly.
 
-diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
-index 376a395daf32..30b5b03fb11d 100644
---- a/arch/powerpc/include/asm/mce.h
-+++ b/arch/powerpc/include/asm/mce.h
-@@ -86,6 +86,7 @@ enum MCE_TlbErrorType {
- enum MCE_UserErrorType {
- 	MCE_USER_ERROR_INDETERMINATE = 0,
- 	MCE_USER_ERROR_TLBIE = 1,
-+	MCE_USER_ERROR_SCV = 2,
- };
- 
- enum MCE_RaErrorType {
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 3a409517c031..12cec6919a1a 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -67,6 +67,7 @@ struct dt_cpu_feature {
- 
- extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
- extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
-+extern long __machine_check_early_realmode_p10(struct pt_regs *regs);
- 
- static int hv_mode;
- 
-@@ -450,6 +451,14 @@ static int __init feat_enable_pmu_power9(struct dt_cpu_feature *f)
- 	return 1;
- }
- 
-+static int __init feat_enable_mce_power10(struct dt_cpu_feature *f)
-+{
-+	cur_cpu_spec->platform = "power10";
-+	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p10;
-+
-+	return 1;
-+}
-+
- static int __init feat_enable_tm(struct dt_cpu_feature *f)
- {
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-@@ -638,6 +647,7 @@ static struct dt_cpu_feature_match __initdata
- 	{"group-start-register", feat_enable, 0},
- 	{"pc-relative-addressing", feat_enable, 0},
- 	{"machine-check-power9", feat_enable_mce_power9, 0},
-+	{"machine-check-power10", feat_enable_mce_power10, 0},
- 	{"performance-monitor-power9", feat_enable_pmu_power9, 0},
- 	{"event-based-branch-v3", feat_enable, 0},
- 	{"random-number-generator", feat_enable, 0},
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index fd90c0eda229..4f96f3c24797 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -370,6 +370,7 @@ void machine_check_print_event_info(struct machine_check_event *evt,
- 	static const char *mc_user_types[] = {
- 		"Indeterminate",
- 		"tlbie(l) invalid",
-+		"scv invalid",
- 	};
- 	static const char *mc_ra_types[] = {
- 		"Indeterminate",
-diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
-index c3b522bff9b4..b7e173754a2e 100644
---- a/arch/powerpc/kernel/mce_power.c
-+++ b/arch/powerpc/kernel/mce_power.c
-@@ -243,6 +243,45 @@ static const struct mce_ierror_table mce_p9_ierror_table[] = {
-   MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
- { 0, 0, 0, 0, 0, 0, 0 } };
- 
-+static const struct mce_ierror_table mce_p10_ierror_table[] = {
-+{ 0x00000000081c0000, 0x0000000000040000, true,
-+  MCE_ERROR_TYPE_UE,  MCE_UE_ERROR_IFETCH, MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
-+{ 0x00000000081c0000, 0x0000000000080000, true,
-+  MCE_ERROR_TYPE_SLB, MCE_SLB_ERROR_PARITY, MCE_ECLASS_HARD_INDETERMINATE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
-+{ 0x00000000081c0000, 0x00000000000c0000, true,
-+  MCE_ERROR_TYPE_SLB, MCE_SLB_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
-+{ 0x00000000081c0000, 0x0000000000100000, true,
-+  MCE_ERROR_TYPE_ERAT, MCE_ERAT_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
-+{ 0x00000000081c0000, 0x0000000000140000, true,
-+  MCE_ERROR_TYPE_TLB, MCE_TLB_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
-+{ 0x00000000081c0000, 0x0000000000180000, true,
-+  MCE_ERROR_TYPE_UE,  MCE_UE_ERROR_PAGE_TABLE_WALK_IFETCH, MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
-+{ 0x00000000081c0000, 0x00000000001c0000, true,
-+  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_IFETCH_FOREIGN, MCE_ECLASS_SOFTWARE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
-+{ 0x00000000081c0000, 0x0000000008080000, true,
-+  MCE_ERROR_TYPE_USER,MCE_USER_ERROR_SCV, MCE_ECLASS_SOFTWARE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_WARNING, true },
-+{ 0x00000000081c0000, 0x00000000080c0000, true,
-+  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_IFETCH, MCE_ECLASS_SOFTWARE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
-+{ 0x00000000081c0000, 0x0000000008100000, true,
-+  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_PAGE_TABLE_WALK_IFETCH, MCE_ECLASS_SOFTWARE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
-+{ 0x00000000081c0000, 0x0000000008140000, false,
-+  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_STORE, MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,  MCE_SEV_FATAL, false }, /* ASYNC is fatal */
-+{ 0x00000000081c0000, 0x00000000081c0000, true, MCE_ECLASS_HARDWARE,
-+  MCE_ERROR_TYPE_RA,  MCE_RA_ERROR_PAGE_TABLE_WALK_IFETCH_FOREIGN,
-+  MCE_INITIATOR_CPU,  MCE_SEV_SEVERE, true },
-+{ 0, 0, 0, 0, 0, 0, 0 } };
-+
- struct mce_derror_table {
- 	unsigned long dsisr_value;
- 	bool dar_valid; /* dar is a valid indicator of faulting address */
-@@ -361,6 +400,46 @@ static const struct mce_derror_table mce_p9_derror_table[] = {
-   MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
- { 0, false, 0, 0, 0, 0, 0 } };
- 
-+static const struct mce_derror_table mce_p10_derror_table[] = {
-+{ 0x00008000, false,
-+  MCE_ERROR_TYPE_UE,   MCE_UE_ERROR_LOAD_STORE, MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
-+{ 0x00004000, true,
-+  MCE_ERROR_TYPE_UE,   MCE_UE_ERROR_PAGE_TABLE_WALK_LOAD_STORE,
-+  MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
-+{ 0x00000800, true,
-+  MCE_ERROR_TYPE_ERAT, MCE_ERAT_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
-+{ 0x00000400, true,
-+  MCE_ERROR_TYPE_TLB,  MCE_TLB_ERROR_MULTIHIT, MCE_ECLASS_SOFT_INDETERMINATE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
-+{ 0x00000200, false,
-+  MCE_ERROR_TYPE_USER, MCE_USER_ERROR_TLBIE, MCE_ECLASS_SOFTWARE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
-+{ 0x00000080, true,
-+  MCE_ERROR_TYPE_SLB,  MCE_SLB_ERROR_MULTIHIT,	/* Before PARITY */
-+  MCE_ECLASS_SOFT_INDETERMINATE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_WARNING, true },
-+{ 0x00000100, true,
-+  MCE_ERROR_TYPE_SLB,  MCE_SLB_ERROR_PARITY, MCE_ECLASS_HARD_INDETERMINATE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
-+{ 0x00000040, true,
-+  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_LOAD, MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
-+{ 0x00000020, false,
-+  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_PAGE_TABLE_WALK_LOAD_STORE,
-+  MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
-+{ 0x00000010, false,
-+  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_PAGE_TABLE_WALK_LOAD_STORE_FOREIGN,
-+  MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
-+{ 0x00000008, false,
-+  MCE_ERROR_TYPE_RA,   MCE_RA_ERROR_LOAD_STORE_FOREIGN, MCE_ECLASS_HARDWARE,
-+  MCE_INITIATOR_CPU,   MCE_SEV_SEVERE, true },
-+{ 0, false, 0, 0, 0, 0, 0 } };
-+
- static int mce_find_instr_ea_and_phys(struct pt_regs *regs, uint64_t *addr,
- 					uint64_t *phys_addr)
- {
-@@ -657,3 +736,8 @@ long __machine_check_early_realmode_p9(struct pt_regs *regs)
- 
- 	return mce_handle_error(regs, mce_p9_derror_table, mce_p9_ierror_table);
- }
-+
-+long __machine_check_early_realmode_p10(struct pt_regs *regs)
-+{
-+	return mce_handle_error(regs, mce_p10_derror_table, mce_p10_ierror_table);
-+}
--- 
-2.23.0
+Thanks for finding that. We may have to change this around a bit so=20
+nr_pages still appears to be in PAGE_SIZE units for anybody looking.
 
+Thanks,
+Nick
