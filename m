@@ -2,88 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FAA2137D3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 11:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0AC2138BD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 12:43:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yqhL27RFzDr4h
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 19:40:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ys4d0NV3zDqS1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 20:43:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
- helo=bhuna.collabora.co.uk; envelope-from=arnaud.ferraris@collabora.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=collabora.com
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49yqfK6Sk3zDqT1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 19:38:49 +1000 (AEST)
-Received: from [IPv6:2a01:e35:2fb5:1510:1d94:e6f1:f819:f29f] (unknown
- [IPv6:2a01:e35:2fb5:1510:1d94:e6f1:f819:f29f])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: aferraris)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 9571D2A066E;
- Fri,  3 Jul 2020 10:38:46 +0100 (BST)
-Subject: Re: [PATCH 0/4] ASoC: fsl_asrc: allow selecting arbitrary clocks
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-References: <20200702142235.235869-1-arnaud.ferraris@collabora.com>
- <20200702184226.GA23935@Asurada-Nvidia>
-From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
- 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
- xZQG6fKWuIur3RI=
-Message-ID: <3f39a0bb-a766-f646-28b3-a51cf9983c6b@collabora.com>
-Date: Fri, 3 Jul 2020 11:38:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ys2V6lc3zDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 20:41:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=R6OndPXL; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49ys2R4MTvz9sQt;
+ Fri,  3 Jul 2020 20:41:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1593772881;
+ bh=ouQdbcbhXEsmtXFYa0vga5m4RkRqU+lSip6svPkAoWE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=R6OndPXLKtiDiQ1Yg6qZjpgHLC6/QS2AlJZYtOzMgFSeYNh6Sx3B0ltJCzh7sjte5
+ WiiVS0RAL5X390ALRNp7CDkU1RVQeSH9Wca2ibJ08WXyPDBnyYO+Gxoy56H8T0H24A
+ F6WMbq5RKm4waWWNoG6ZJkS8Z04QD4Qfen0kPPO+o9GKjqMlrQM4oL+Hip9uWVFMld
+ UPez+VVedhg6+MIFlsUQ+LqzA6fjTMk4Lbg8v+KsyVDGxyvtiP2F5mRej5ntf0lZ9k
+ 3JqKlIL/mXbyppKeQNjGxRorukCOGXpRzvqKB7CGr+jE5Hsx4Z3fp9XtqzVesL+Bm3
+ JD0xFqCJG+Szw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V3 (RESEND) 2/3] mm/sparsemem: Enable vmem_altmap support
+ in vmemmap_alloc_block_buf()
+In-Reply-To: <20200702140752.GF22241@gaia>
+References: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
+ <1592442930-9380-3-git-send-email-anshuman.khandual@arm.com>
+ <20200702140752.GF22241@gaia>
+Date: Fri, 03 Jul 2020 20:43:33 +1000
+Message-ID: <87blkw7uay.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200702184226.GA23935@Asurada-Nvidia>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,34 +61,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
- Rob Herring <robh+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- kernel@collabora.com, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nic,
+Catalin Marinas <catalin.marinas@arm.com> writes:
+> On Thu, Jun 18, 2020 at 06:45:29AM +0530, Anshuman Khandual wrote:
+>> There are many instances where vmemap allocation is often switched between
+>> regular memory and device memory just based on whether altmap is available
+>> or not. vmemmap_alloc_block_buf() is used in various platforms to allocate
+>> vmemmap mappings. Lets also enable it to handle altmap based device memory
+>> allocation along with existing regular memory allocations. This will help
+>> in avoiding the altmap based allocation switch in many places.
+>> 
+>> While here also implement a regular memory allocation fallback mechanism
+>> when the first preferred device memory allocation fails. This will ensure
+>> preserving the existing semantics on powerpc platform. To summarize there
+>> are three different methods to call vmemmap_alloc_block_buf().
+>> 
+>> (., NULL,   false) /* Allocate from system RAM */
+>> (., altmap, false) /* Allocate from altmap without any fallback */
+>> (., altmap, true)  /* Allocate from altmap with fallback (system RAM) */
+> [...]
+>> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+>> index bc73abf0bc25..01e25b56eccb 100644
+>> --- a/arch/powerpc/mm/init_64.c
+>> +++ b/arch/powerpc/mm/init_64.c
+>> @@ -225,12 +225,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>>  		 * fall back to system memory if the altmap allocation fail.
+>>  		 */
+>>  		if (altmap && !altmap_cross_boundary(altmap, start, page_size)) {
+>> -			p = altmap_alloc_block_buf(page_size, altmap);
+>> -			if (!p)
+>> -				pr_debug("altmap block allocation failed, falling back to system memory");
+>> +			p = vmemmap_alloc_block_buf(page_size, node,
+>> +						    altmap, true);
+>> +		} else {
+>> +			p = vmemmap_alloc_block_buf(page_size, node,
+>> +						    NULL, false);
+>>  		}
+>> -		if (!p)
+>> -			p = vmemmap_alloc_block_buf(page_size, node);
+>>  		if (!p)
+>>  			return -ENOMEM;
+>
+> Is the fallback argument actually necessary. It may be cleaner to just
+> leave the code as is with the choice between altmap and NULL. If an arch
+> needs a fallback (only powerpc), they have the fallback in place
+> already. I don't see the powerpc code any better after this change.
 
-Le 02/07/2020 à 20:42, Nicolin Chen a écrit :
-> Hi Arnaud,
-> 
-> On Thu, Jul 02, 2020 at 04:22:31PM +0200, Arnaud Ferraris wrote:
->> The current ASRC driver hardcodes the input and output clocks used for
->> sample rate conversions. In order to allow greater flexibility and to
->> cover more use cases, it would be preferable to select the clocks using
->> device-tree properties.
-> 
-> We recent just merged a new change that auto-selecting internal
-> clocks based on sample rates as the first option -- ideal ratio
-> mode is the fallback mode now. Please refer to:
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20200702&id=d0250cf4f2abfbea64ed247230f08f5ae23979f0
+Yeah I agree.
 
-That looks interesting, thanks for pointing this out!
-I'll rebase and see how it works for my use-case, will keep you informed.
-
-Regards,
-Arnaud
+cheers
