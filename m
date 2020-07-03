@@ -1,56 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FDE2138F6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 12:52:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110E6213905
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 13:01:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ysHp532lzDqVb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 20:52:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ysTt1LjHzDql9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 21:01:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.66; helo=mail-ej1-f66.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com
+ [209.85.218.66])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ysDF54wRzDqgF
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 20:49:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jE5FAgWT; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49ysDD0gdYz9sSy;
- Fri,  3 Jul 2020 20:49:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1593773388;
- bh=RfcGFiZqerkVV2+Xy8mk+CmXEwgXM5XeAEZk9tVyLEo=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jE5FAgWTrhkfhhz6BYzecTvfdbDagKlkEWrYP3L0gbYhUVcSmlNc1lC6f2ixexXfj
- QMnhT3le4DAgIHjrdKH22ewB074mqgaY+h4/qPtQCqXxPj1aL8oLqf9cRSSFg+ZpER
- kOBkntxdcz0tYKdN5N9tEC3tWly5GI/no1ixwSUH2ll5U30V57HbQBu863Xoilh+tH
- faLA8P2ykdWIk2tfZCnjGNmZvES09DuT2hr7WHCNOOgcbnej88JykIeo5CrGmWKVP4
- mhpmHq+ygewJ07zs3nF7tn1T8SdxHp2Y2ozRdDw+CH0ePoLytwGYkTSssCCGuyHwKH
- P9M8prScLig4Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 5/8] powerpc/64s: implement queued spinlocks and rwlocks
-In-Reply-To: <1593686722.w9psaqk7yp.astroid@bobo.none>
-References: <20200702074839.1057733-1-npiggin@gmail.com>
- <20200702074839.1057733-6-npiggin@gmail.com>
- <20200702080219.GB16113@willie-the-truck>
- <1593685459.r2tfxtfdp6.astroid@bobo.none>
- <20200702103506.GA16418@willie-the-truck>
- <1593686722.w9psaqk7yp.astroid@bobo.none>
-Date: Fri, 03 Jul 2020 20:52:02 +1000
-Message-ID: <878sg07twt.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ysRp53KwzDr10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 20:59:50 +1000 (AEST)
+Received: by mail-ej1-f66.google.com with SMTP id y10so33717497eje.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jul 2020 03:59:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=9tKvM8/Cn/mYaxCxuR2xX8QmwiS4Do3drIeD4weqF7o=;
+ b=qApJe5pndC5d1IgqZgvosAIZHVGxxSFPDyqE49v4x2sdbx5SppuCRBtTknNH6Fjbo4
+ mmv1wOHcXwOp5YTVlwLyUMk1srOnVkACH9SH7Oj8/+/b7s1paHIyZRvyXpgOxtpnkNda
+ q1p4qUogPSOTMZS9D2aNjGrjPw8hru3Q3WSQZl1Eiw4Pba4dgE6YiO1fwvywJD76HUVV
+ FEF4yUDk0ae1iLrS8pUCGzU2LKQIOQFXhMBVD5MgbsYmA49WOYe8UqSH85jd7B+iDuye
+ wnb6d4RHhuaYF9qgCmpnuAgy4AIPbm1ldiaeH1kyW9c+zeGwAcGMjDav9O8GK2miMUSu
+ VXdQ==
+X-Gm-Message-State: AOAM531j+bNK+GW1mSL4BMTJSUu41ikRSxFxc/lWtNd1/gytFhgHlLDN
+ aLLXQAJNTPsyGZl7BhnBZL4=
+X-Google-Smtp-Source: ABdhPJypIBHztAW8b+oDXuc7i+rhK7i5IE4n3HBr9g6Z6wErcGVZfAUXJOhB8s0xROyaS+ZgyulOcA==
+X-Received: by 2002:a17:906:f911:: with SMTP id
+ lc17mr32750815ejb.330.1593773987079; 
+ Fri, 03 Jul 2020 03:59:47 -0700 (PDT)
+Received: from localhost (ip-37-188-168-3.eurotel.cz. [37.188.168.3])
+ by smtp.gmail.com with ESMTPSA id m13sm9140663ejc.1.2020.07.03.03.59.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Jul 2020 03:59:46 -0700 (PDT)
+Date: Fri, 3 Jul 2020 12:59:44 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200703105944.GS18446@dhcp22.suse.cz>
+References: <20200624092846.9194-4-srikar@linux.vnet.ibm.com>
+ <20200701084200.GN2369@dhcp22.suse.cz>
+ <20200701100442.GB17918@linux.vnet.ibm.com>
+ <184102af-ecf2-c834-db46-173ab2e66f51@redhat.com>
+ <20200701110145.GC17918@linux.vnet.ibm.com>
+ <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
+ <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
+ <20200701122110.GT2369@dhcp22.suse.cz>
+ <20200703091001.GJ21462@kitsune.suse.cz>
+ <20200703092414.GR18446@dhcp22.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200703092414.GR18446@dhcp22.suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,63 +75,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Excerpts from Will Deacon's message of July 2, 2020 8:35 pm:
->> On Thu, Jul 02, 2020 at 08:25:43PM +1000, Nicholas Piggin wrote:
->>> Excerpts from Will Deacon's message of July 2, 2020 6:02 pm:
->>> > On Thu, Jul 02, 2020 at 05:48:36PM +1000, Nicholas Piggin wrote:
->>> >> diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
->>> >> new file mode 100644
->>> >> index 000000000000..f84da77b6bb7
->>> >> --- /dev/null
->>> >> +++ b/arch/powerpc/include/asm/qspinlock.h
->>> >> @@ -0,0 +1,20 @@
->>> >> +/* SPDX-License-Identifier: GPL-2.0 */
->>> >> +#ifndef _ASM_POWERPC_QSPINLOCK_H
->>> >> +#define _ASM_POWERPC_QSPINLOCK_H
->>> >> +
->>> >> +#include <asm-generic/qspinlock_types.h>
->>> >> +
->>> >> +#define _Q_PENDING_LOOPS	(1 << 9) /* not tuned */
->>> >> +
->>> >> +#define smp_mb__after_spinlock()   smp_mb()
->>> >> +
->>> >> +static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
->>> >> +{
->>> >> +	smp_mb();
->>> >> +	return atomic_read(&lock->val);
->>> >> +}
->>> > 
->>> > Why do you need the smp_mb() here?
->>> 
->>> A long and sad tale that ends here 51d7d5205d338
->>> 
->>> Should probably at least refer to that commit from here, since this one 
->>> is not going to git blame back there. I'll add something.
->> 
->> Is this still an issue, though?
->> 
->> See 38b850a73034 (where we added a similar barrier on arm64) and then
->> c6f5d02b6a0f (where we removed it).
->> 
->
-> Oh nice, I didn't know that went away. Thanks for the heads up.
+On Fri 03-07-20 11:24:17, Michal Hocko wrote:
+> [Cc Andi]
+> 
+> On Fri 03-07-20 11:10:01, Michal Suchanek wrote:
+> > On Wed, Jul 01, 2020 at 02:21:10PM +0200, Michal Hocko wrote:
+> > > On Wed 01-07-20 13:30:57, David Hildenbrand wrote:
+> [...]
+> > > > Yep, looks like it.
+> > > > 
+> > > > [    0.009726] SRAT: PXM 1 -> APIC 0x00 -> Node 0
+> > > > [    0.009727] SRAT: PXM 1 -> APIC 0x01 -> Node 0
+> > > > [    0.009727] SRAT: PXM 1 -> APIC 0x02 -> Node 0
+> > > > [    0.009728] SRAT: PXM 1 -> APIC 0x03 -> Node 0
+> > > > [    0.009731] ACPI: SRAT: Node 0 PXM 1 [mem 0x00000000-0x0009ffff]
+> > > > [    0.009732] ACPI: SRAT: Node 0 PXM 1 [mem 0x00100000-0xbfffffff]
+> > > > [    0.009733] ACPI: SRAT: Node 0 PXM 1 [mem 0x100000000-0x13fffffff]
+> > > 
+> > > This begs a question whether ppc can do the same thing?
+> > Or x86 stop doing it so that you can see on what node you are running?
+> > 
+> > What's the point of this indirection other than another way of avoiding
+> > empty node 0?
+> 
+> Honestly, I do not have any idea. I've traced it down to
+> Author: Andi Kleen <ak@suse.de>
+> Date:   Tue Jan 11 15:35:48 2005 -0800
+> 
+>     [PATCH] x86_64: Fix ACPI SRAT NUMA parsing
+> 
+>     Fix fallout from the recent nodemask_t changes. The node ids assigned
+>     in the SRAT parser were off by one.
+> 
+>     I added a new first_unset_node() function to nodemask.h to allocate
+>     IDs sanely.
+> 
+>     Signed-off-by: Andi Kleen <ak@suse.de>
+>     Signed-off-by: Linus Torvalds <torvalds@osdl.org>
+> 
+> which doesn't really tell all that much. The historical baggage and a
+> long term behavior which is not really trivial to fix I suspect.
 
-Argh! I spent so much time chasing that damn bug in the ipc code.
+Thinking about this some more, this logic makes some sense afterall.
+Especially in the world without memory hotplug which was very likely the
+case back then. It is much better to have compact node mask rather than
+sparse one. After all node numbers shouldn't really matter as long as
+you have a clear mapping to the HW. I am not sure we export that
+information (except for the kernel ring buffer) though.
 
-> I'm going to say I'm too scared to remove it while changing the
-> spinlock algorithm, but I'll open an issue and we should look at 
-> removing it.
+The memory hotplug changes that somehow because you can hotremove numa
+nodes and therefore make the nodemask sparse but that is not a common
+case. I am not sure what would happen if a completely new node was added
+and its corresponding node was already used by the renumbered one
+though. It would likely conflate the two I am afraid. But I am not sure
+this is really possible with x86 and a lack of a bug report would
+suggest that nobody is doing that at least.
 
-Sounds good.
-
-cheers
+-- 
+Michal Hocko
+SUSE Labs
