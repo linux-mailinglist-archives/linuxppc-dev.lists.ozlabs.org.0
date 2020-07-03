@@ -2,44 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3884213443
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 08:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 091EA213457
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 08:40:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49yldx0MlczDqyk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 16:38:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ylh06mlYzDqxq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jul 2020 16:40:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 49ylWT36v7zDqwT
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 16:32:35 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ADD9431B;
- Thu,  2 Jul 2020 23:32:32 -0700 (PDT)
-Received: from [10.163.85.168] (unknown [10.163.85.168])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B20083F73C;
- Thu,  2 Jul 2020 23:32:27 -0700 (PDT)
-Subject: Re: [PATCH V3 (RESEND) 2/3] mm/sparsemem: Enable vmem_altmap support
- in vmemmap_alloc_block_buf()
-To: Catalin Marinas <catalin.marinas@arm.com>
-References: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
- <1592442930-9380-3-git-send-email-anshuman.khandual@arm.com>
- <20200702140752.GF22241@gaia>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <ef468b16-ca28-7d5d-c5fc-eb2e31de5e03@arm.com>
-Date: Fri, 3 Jul 2020 12:02:11 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=anju@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ylcS2mQGzDqxL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jul 2020 16:36:53 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0636XbE3059879; Fri, 3 Jul 2020 02:36:47 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3212au5g92-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Jul 2020 02:36:47 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0636aiqN010220;
+ Fri, 3 Jul 2020 06:36:44 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma02fra.de.ibm.com with ESMTP id 31wwr7u9vc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Jul 2020 06:36:44 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0636agl947251456
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Jul 2020 06:36:42 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 786EB11C05C;
+ Fri,  3 Jul 2020 06:36:42 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DC78411C058;
+ Fri,  3 Jul 2020 06:36:40 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.85.87.150])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Jul 2020 06:36:40 +0000 (GMT)
+From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Add kernel support for new MSR[HV PR] bits in
+ trace-imc.
+Date: Fri,  3 Jul 2020 12:06:26 +0530
+Message-Id: <20200703063626.1412544-1-anju@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-In-Reply-To: <20200702140752.GF22241@gaia>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-03_02:2020-07-02,
+ 2020-07-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ cotscore=-2147483648
+ spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1011 phishscore=0
+ mlxlogscore=999 suspectscore=1 lowpriorityscore=0 mlxscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2007030048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,68 +82,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ anju@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+IMC trace-mode record has MSR[HV PR] bits added in the third DW. 
+These bits can be used to set the cpumode for the instruction pointer
+captured in each sample.                                                                  
+                                                                           
+Add support in kernel to use these bits to set the cpumode for         
+each sample.                                                               
+                                                                           
+Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+---
+ arch/powerpc/include/asm/imc-pmu.h |  5 +++++
+ arch/powerpc/perf/imc-pmu.c        | 29 ++++++++++++++++++++++++-----
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/imc-pmu.h b/arch/powerpc/include/asm/imc-pmu.h
+index 4da4fcba0684..4f897993b710 100644
+--- a/arch/powerpc/include/asm/imc-pmu.h
++++ b/arch/powerpc/include/asm/imc-pmu.h
+@@ -99,6 +99,11 @@ struct trace_imc_data {
+  */
+ #define IMC_TRACE_RECORD_TB1_MASK      0x3ffffffffffULL
+ 
++/*
++ * Bit 0:1 in third DW of IMC trace record
++ * specifies the MSR[HV PR] values.
++ */
++#define IMC_TRACE_RECORD_VAL_HVPR(x)	((x) >> 62)
+ 
+ /*
+  * Device tree parser code detects IMC pmu support and
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index cb50a9e1fd2d..310922fed9eb 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -1178,11 +1178,30 @@ static int trace_imc_prepare_sample(struct trace_imc_data *mem,
+ 	header->size = sizeof(*header) + event->header_size;
+ 	header->misc = 0;
+ 
+-	if (is_kernel_addr(data->ip))
+-		header->misc |= PERF_RECORD_MISC_KERNEL;
+-	else
+-		header->misc |= PERF_RECORD_MISC_USER;
+-
++	if (cpu_has_feature(CPU_FTRS_POWER9)) {
++		if (is_kernel_addr(data->ip))
++			header->misc |= PERF_RECORD_MISC_KERNEL;
++		else
++			header->misc |= PERF_RECORD_MISC_USER;
++	} else {
++		switch (IMC_TRACE_RECORD_VAL_HVPR(mem->val)) {
++		case 0:/* when MSR HV and PR not set in the trace-record */
++			header->misc |= PERF_RECORD_MISC_GUEST_KERNEL;
++			break;
++		case 1: /* MSR HV is 0 and PR is 1 */
++			header->misc |= PERF_RECORD_MISC_GUEST_USER;
++			break;
++		case 2: /* MSR Hv is 1 and PR is 0 */
++			header->misc |= PERF_RECORD_MISC_HYPERVISOR;
++			break;
++		case 3: /* MSR HV is 1 and PR is 1 */
++			header->misc |= PERF_RECORD_MISC_USER;
++			break;
++		default:
++			pr_info("IMC: Unable to set the flag based on MSR bits\n");
++			break;
++		}
++	}
+ 	perf_event_header__init_id(header, data, event);
+ 
+ 	return 0;
+-- 
+2.25.4
 
-On 07/02/2020 07:37 PM, Catalin Marinas wrote:
-> On Thu, Jun 18, 2020 at 06:45:29AM +0530, Anshuman Khandual wrote:
->> There are many instances where vmemap allocation is often switched between
->> regular memory and device memory just based on whether altmap is available
->> or not. vmemmap_alloc_block_buf() is used in various platforms to allocate
->> vmemmap mappings. Lets also enable it to handle altmap based device memory
->> allocation along with existing regular memory allocations. This will help
->> in avoiding the altmap based allocation switch in many places.
->>
->> While here also implement a regular memory allocation fallback mechanism
->> when the first preferred device memory allocation fails. This will ensure
->> preserving the existing semantics on powerpc platform. To summarize there
->> are three different methods to call vmemmap_alloc_block_buf().
->>
->> (., NULL,   false) /* Allocate from system RAM */
->> (., altmap, false) /* Allocate from altmap without any fallback */
->> (., altmap, true)  /* Allocate from altmap with fallback (system RAM) */
-> [...]
->> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
->> index bc73abf0bc25..01e25b56eccb 100644
->> --- a/arch/powerpc/mm/init_64.c
->> +++ b/arch/powerpc/mm/init_64.c
->> @@ -225,12 +225,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>  		 * fall back to system memory if the altmap allocation fail.
->>  		 */
->>  		if (altmap && !altmap_cross_boundary(altmap, start, page_size)) {
->> -			p = altmap_alloc_block_buf(page_size, altmap);
->> -			if (!p)
->> -				pr_debug("altmap block allocation failed, falling back to system memory");
->> +			p = vmemmap_alloc_block_buf(page_size, node,
->> +						    altmap, true);
->> +		} else {
->> +			p = vmemmap_alloc_block_buf(page_size, node,
->> +						    NULL, false);
->>  		}
->> -		if (!p)
->> -			p = vmemmap_alloc_block_buf(page_size, node);
->>  		if (!p)
->>  			return -ENOMEM;
-> 
-> Is the fallback argument actually necessary. It may be cleaner to just
-> leave the code as is with the choice between altmap and NULL. If an arch
-> needs a fallback (only powerpc), they have the fallback in place
-> already. I don't see the powerpc code any better after this change.
-> 
-> I'm fine with the altmap argument though.
-
-Okay. Will drop 'fallback' from vmemmap_alloc_block_buf() and update the
-callers. There will also be a single change in the subsequent patch i.e
-vmemmap_alloc_block_buf(PMD_SIZE, node, altmap).
