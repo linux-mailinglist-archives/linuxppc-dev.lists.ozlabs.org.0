@@ -1,88 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104D42147A2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jul 2020 19:13:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3502214856
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jul 2020 21:19:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49zdgt4Y9XzDqT1
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 03:12:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49zhTj3gY9zDr5y
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 05:19:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49zdcy4yVwzDr4g
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 03:10:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49zdcy1wVHz9Cll
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 03:10:26 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49zdcy04T3z9sQt; Sun,  5 Jul 2020 03:10:26 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=none (no SPF record) smtp.mailfrom=ubuntu.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ubuntu.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49zdcx2GQqz9sDX;
- Sun,  5 Jul 2020 03:10:24 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 064H1CVw181054; Sat, 4 Jul 2020 13:10:21 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 322kcw1ybu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 04 Jul 2020 13:10:20 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 064H676w014967;
- Sat, 4 Jul 2020 17:10:19 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma02fra.de.ibm.com with ESMTP id 322hd80hkh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 04 Jul 2020 17:10:19 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 064H7fO965077590
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 4 Jul 2020 17:07:41 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A9C6AA404D;
- Sat,  4 Jul 2020 17:09:01 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A2C7A4040;
- Sat,  4 Jul 2020 17:09:00 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.65.197.207])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sat,  4 Jul 2020 17:09:00 +0000 (GMT)
-From: Nayna Jain <nayna@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/pseries: detect secure and trusted boot state of the
- system.
-Date: Sat,  4 Jul 2020 13:08:55 -0400
-Message-Id: <1593882535-21368-1-git-send-email-nayna@linux.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-04_12:2020-07-02,
- 2020-07-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=1
- spamscore=0 cotscore=-2147483648 mlxlogscore=791 mlxscore=0 malwarescore=0
- clxscore=1011 bulkscore=0 phishscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007040119
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49zcKV4SZTzDqKr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 02:11:58 +1000 (AEST)
+Received: from ip5f5af08c.dynamic.kabel-deutschland.de ([95.90.240.140]
+ helo=wittgenstein) by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <christian.brauner@ubuntu.com>)
+ id 1jrkkL-0000nq-Fg; Sat, 04 Jul 2020 16:10:33 +0000
+Date: Sat, 4 Jul 2020 18:10:31 +0200
+From: Christian Brauner <christian.brauner@ubuntu.com>
+To: Stafford Horne <shorne@gmail.com>, Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 17/17] arch: rename copy_thread_tls() back to copy_thread()
+Message-ID: <20200704161031.lcln4ez6yehgffgq@wittgenstein>
+References: <20200622234326.906346-1-christian.brauner@ubuntu.com>
+ <20200622234326.906346-18-christian.brauner@ubuntu.com>
+ <20200625211749.GH1401039@lianli.shorne-pla.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200625211749.GH1401039@lianli.shorne-pla.net>
+X-Mailman-Approved-At: Sun, 05 Jul 2020 05:17:02 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,83 +50,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Brian Cain <bcain@codeaurora.org>, linux-xtensa@linux-xtensa.org,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
+ Mark Salter <msalter@redhat.com>, Matt Turner <mattst88@gmail.com>,
+ linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
+ Fenghua Yu <fenghua.yu@intel.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ linux-csky@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
+ linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
+ linux-m68k@lists.linux-m68k.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ openrisc@lists.librecores.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Weinberger <richard@nod.at>, Paul Mackerras <paulus@samba.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "David S. Miller" <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The device-tree property to check secure and trusted boot state is
-different for guests(pseries) compared to baremetal(powernv).
+On Fri, Jun 26, 2020 at 06:17:49AM +0900, Stafford Horne wrote:
+> On Tue, Jun 23, 2020 at 01:43:26AM +0200, Christian Brauner wrote:
+> 
+> > diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
+> > index d7010e72450c..19045a3efb8a 100644
+> > --- a/arch/openrisc/kernel/process.c
+> > +++ b/arch/openrisc/kernel/process.c
+> > @@ -116,7 +116,7 @@ void release_thread(struct task_struct *dead_task)
+> >  extern asmlinkage void ret_from_fork(void);
+> >  
+> >  /*
+> > - * copy_thread_tls
+> > + * copy_thread
+> >   * @clone_flags: flags
+> >   * @usp: user stack pointer or fn for kernel thread
+> >   * @arg: arg to fn for kernel thread; always NULL for userspace thread
+> > @@ -147,7 +147,7 @@ extern asmlinkage void ret_from_fork(void);
+> >   */
+> >  
+> >  int
+> > -copy_thread_tls(unsigned long clone_flags, unsigned long usp,
+> > +copy_thread(unsigned long clone_flags, unsigned long usp,
+> >  		unsigned long arg, struct task_struct *p, unsigned long tls)
+> >  {
+> 
+> For the OpenRISC bit.
+> 
+> Acked-by: Stafford Horne <shorne@gmail.com>
+> 
+> Also, I would agree with what Kees mentioned about aligning the parameters.
+> Sure that would be more work but it would be appreciated.
 
-This patch updates the existing is_ppc_secureboot_enabled() and
-is_ppc_trustedboot_enabled() function to add support for pseries.
+Sure, this is a mechanical change. I'll update the individual patches to account for that.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
----
- arch/powerpc/kernel/secure_boot.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
-index 4b982324d368..43fc6607c7a5 100644
---- a/arch/powerpc/kernel/secure_boot.c
-+++ b/arch/powerpc/kernel/secure_boot.c
-@@ -6,6 +6,7 @@
- #include <linux/types.h>
- #include <linux/of.h>
- #include <asm/secure_boot.h>
-+#include <asm/machdep.h>
- 
- static struct device_node *get_ppc_fw_sb_node(void)
- {
-@@ -23,11 +24,20 @@ bool is_ppc_secureboot_enabled(void)
- {
- 	struct device_node *node;
- 	bool enabled = false;
-+	const u32 *secureboot;
- 
--	node = get_ppc_fw_sb_node();
--	enabled = of_property_read_bool(node, "os-secureboot-enforcing");
-+	if (machine_is(powernv)) {
-+		node = get_ppc_fw_sb_node();
-+		enabled =
-+		    of_property_read_bool(node, "os-secureboot-enforcing");
-+		of_node_put(node);
-+	}
- 
--	of_node_put(node);
-+	if (machine_is(pseries)) {
-+		secureboot = of_get_property(of_root, "ibm,secure-boot", NULL);
-+		if (secureboot)
-+			enabled = (*secureboot > 1) ? true : false;
-+	}
- 
- 	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
- 
-@@ -38,11 +48,20 @@ bool is_ppc_trustedboot_enabled(void)
- {
- 	struct device_node *node;
- 	bool enabled = false;
-+	const u32 *trustedboot;
- 
--	node = get_ppc_fw_sb_node();
--	enabled = of_property_read_bool(node, "trusted-enabled");
-+	if (machine_is(powernv)) {
-+		node = get_ppc_fw_sb_node();
-+		enabled = of_property_read_bool(node, "trusted-enabled");
-+		of_node_put(node);
-+	}
- 
--	of_node_put(node);
-+	if (machine_is(pseries)) {
-+		trustedboot =
-+		    of_get_property(of_root, "ibm,trusted-boot", NULL);
-+		if (trustedboot)
-+			enabled = (*trustedboot > 0) ? true : false;
-+	}
- 
- 	pr_info("Trusted boot mode %s\n", enabled ? "enabled" : "disabled");
- 
--- 
-2.18.1
-
+Thanks!
+Christian
