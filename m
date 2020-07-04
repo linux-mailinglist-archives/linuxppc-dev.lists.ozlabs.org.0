@@ -1,49 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4100D214627
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jul 2020 15:34:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B742921478E
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jul 2020 18:52:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49zXqr3HhMzDr8t
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jul 2020 23:34:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49zdCx0tHRzDqVH
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 02:52:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49zXld4CfRzDr7q
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Jul 2020 23:30:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=YYtFOD02; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49zXlZ64Rcz9sQt;
- Sat,  4 Jul 2020 23:30:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1593869451;
- bh=kl3Szk98khoM6Tava7Ark0liKf7Bf/9XtdkjUx8UehE=;
- h=From:To:Cc:Subject:Date:From;
- b=YYtFOD02SJ+Z95vV0SU0mcnzuEcEXFtst9RCGHimsC2xBczbeQEGppOxEc2vo5/Cg
- qWKV11xIQD1fPXyjr0RAFNrri0LyoK3evnjAI21c6hfG7CTEP3ZtwNR76mN59xqppo
- y/y4oznH/CTmardWUfbWCa0VuZxtfkMISeoPmXcwC2iTbmgOJuT4wZ+zGP7vL9mcvC
- p+kIXmoN3e75YjhaPE20GOJMDtK5CLFencgoSAbu+14/lOr61bMgrxwnAc0Y8mdQCL
- PekNEixvhO7L6O/DTA411VM75pAMzxToyg2bF52YsAm924wzMwyeuaamyUQlQUmm7X
- +/fb8zUUwl/VQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.8-5 tag
-Date: Sat, 04 Jul 2020 23:33:05 +1000
-Message-ID: <87366776cu.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49zd8n4gjlzDqYt
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 02:49:24 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49zd8X45wzz9tyNd;
+ Sat,  4 Jul 2020 18:49:16 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6A-LboEen77o; Sat,  4 Jul 2020 18:49:16 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49zd8X2Py1z9tyNc;
+ Sat,  4 Jul 2020 18:49:16 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9C8698B780;
+ Sat,  4 Jul 2020 18:49:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id LdNBUEYla3iI; Sat,  4 Jul 2020 18:49:18 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D6ACD8B75B;
+ Sat,  4 Jul 2020 18:49:17 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Looking for guidance for porting home made audio driver to ASoC/FSL
+To: Qiang Zhao <qiang.zhao@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Li Yang <leoyang.li@nxp.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Message-ID: <d27d50d0-f99a-7702-4175-79281b06ad8c@csgroup.eu>
+Date: Sat, 4 Jul 2020 18:49:07 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,60 +68,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: TIGE Jean-Paul <jean-paul.tige@csgroup.eu>,
+ "F. TRINH THAI" <florent.trinh-thai@csgroup.eu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Hello
 
-Hi Linus,
+I'm looking for guidance for porting a home made audio driver to 
+ASoC/FSL on a custom board.
 
-Please pull some more powerpc fixes for 5.8:
+The board has an MPC8321 freescale/NXP cpu. The board has a TDM bus 
+connected to one of the cpu TDM port. On that TDM bus, there are three 
+IDT 821034 quad codecs (PCM G.711) and an E1 chip that carries IP over E1.
 
-The following changes since commit 896066aa0685af3434637998b76218c2045142a8:
+Today, there is a home made audio driver providing raw read/write 
+devices plus an home made WAN HDLC driver for the E1.
 
-  selftests/powerpc: Fix build failure in ebb tests (2020-06-26 12:53:09 +1000)
+The CPU Quicc Engine (QE) is configured to connect the TDM port to one 
+UCC. QUICC Multi-Channel Controller (QMC) is used to distribute E1 
+timeslots to the HDLC driver and each of the 12 codec timeslots to the 
+audio driver. (The QMC is able to manage two types of channels: 
+transparent and HDLC).
 
-are available in the git repository at:
+We would like to make all this more standard and port it to use ALSA 
+ASoC for the audio part, and the Freescale Quicc Engine HDLC. As of 
+today, the Freescale QE HDLC wan driver uses the UCC directly, it 
+doesn't interface through the QMC. And the FSL ASoC drivers seem to 
+neither handle QE TDM via QE QMC nor QE UCC.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.8-5
+We are thinking about adding a QE QMC layer in driver/soc/fsl/ which 
+would more or less present to the consumer the same kind of API as the 
+FSL UCC layer, and enhance the WAN FSL HDLC driver to be able to use 
+that new layer.
 
-for you to fetch changes up to 19ab500edb5d6020010caba48ce3b4ce4182ab63:
+For the ALSA ASoC part, could some parts of existing FSL ASoC drivers be 
+re-used of would we have to start implementing an ASoC from scratch ?
 
-  powerpc/mm/pkeys: Make pkey access check work on execute_only_key (2020-06-29 16:17:02 +1000)
+Any recommendation and/or guidance would be welcomed and appreciated.
 
-- ------------------------------------------------------------------
-powerpc fixes for 5.8 #5
-
-One fix for a regression in our pkey handling, which exhibits as PROT_EXEC
-mappings taking continuous page faults.
-
-Thanks to:
-  Jan Stancek, Aneesh Kumar K.V.
-
-- ------------------------------------------------------------------
-Aneesh Kumar K.V (1):
-      powerpc/mm/pkeys: Make pkey access check work on execute_only_key
-
-
- arch/powerpc/mm/book3s64/pkeys.c | 3 ---
- 1 file changed, 3 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl8AhNcACgkQUevqPMjh
-pYCpbw//Zuq2ibM2b4lIEYCxCeI1gh1owthd6fHAmRKLV190CTy5LlXjc/Qr1uNg
-gnW5H4+/8LC9wlN+ypzm2/ZGr4GfFEZTbodXm40uF8iT06pb3arULB1Tu3YcScpE
-8mwLSE4oz8rqq7f/jGc6u3Ozwr47KkiSfCRKNMIVOCGQMg6nwPLO+sbWjfwSv0W6
-pi+GE+GVWe5sEyftWoO+s2FMELX1O6vOvaQId0H8JqKI/FXCGYZzHJ/SWjMx7rJ9
-VJYqLOuuHp8diw4PYsfUoxKQc/uDT0EswloaDcYwi1bQu9XzgbSP1QHA15bwVBCh
-uqT/+CpZN8adjWk+vHeEeJurqCYf4gkAwaT4NJFA3oQIMvV7eVEoGgUj0ssjTSAd
-8qudKtBkQauXMaPXD9arN389mW45Zfzg0O313lvXr5HEWAg3vrMtLTaBTxFuMwnt
-+REfBTJTS9S2hPcn2w2vK9SNOL5PAt/cTg/z7ekuw9gvDdX10ahyF1X2AQbtKN5U
-tSBH74b1eR8dlg3jcvmWtRbFCvWtZRZVVQN5RzNgVz0J5cLuyLuDIlr6eVhxGzwo
-OwjO/wmTmwbyJwpvg/zNhs4leKUlp3s0JYmKswYUx/rWdnqzpOmPseb1YkGujN7Z
-iSIO0CPhAkQGXrdh6USuQ+ed5QhDp72NoKZUY+F4XQz+j7mH3iU=
-=PJ8Y
------END PGP SIGNATURE-----
+Thanks in advance
+Christophe
