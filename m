@@ -1,44 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3502214856
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jul 2020 21:19:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CF521498D
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 03:48:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49zhTj3gY9zDr5y
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 05:19:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49zs761gwyzDqvW
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 11:48:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ubuntu.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=christian.brauner@ubuntu.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ubuntu.com
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49zcKV4SZTzDqKr
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 02:11:58 +1000 (AEST)
-Received: from ip5f5af08c.dynamic.kabel-deutschland.de ([95.90.240.140]
- helo=wittgenstein) by youngberry.canonical.com with esmtpsa
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
- (envelope-from <christian.brauner@ubuntu.com>)
- id 1jrkkL-0000nq-Fg; Sat, 04 Jul 2020 16:10:33 +0000
-Date: Sat, 4 Jul 2020 18:10:31 +0200
-From: Christian Brauner <christian.brauner@ubuntu.com>
-To: Stafford Horne <shorne@gmail.com>, Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 17/17] arch: rename copy_thread_tls() back to copy_thread()
-Message-ID: <20200704161031.lcln4ez6yehgffgq@wittgenstein>
-References: <20200622234326.906346-1-christian.brauner@ubuntu.com>
- <20200622234326.906346-18-christian.brauner@ubuntu.com>
- <20200625211749.GH1401039@lianli.shorne-pla.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49zs5043xSzDqdm
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 11:46:53 +1000 (AEST)
+IronPort-SDR: pivwcQ66DhWOMa/yn4v6s+D1XWi5QddBUYx5pf4CBql2MfQbyrw1dp8Ju0HUJly4W8DLZKK8R+
+ 7iy59LMvRvAA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9672"; a="134741379"
+X-IronPort-AV: E=Sophos;i="5.75,314,1589266800"; d="scan'208";a="134741379"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2020 18:46:49 -0700
+IronPort-SDR: a8Yz7woWQZ5VGbSI83hc+GShstSCLkTZJN9FEmwd74OIXwklBCofprC7CBfw9R/7qDqynZdmE+
+ vyjHgTa2W9TA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,314,1589266800"; d="scan'208";a="426712614"
+Received: from lkp-server01.sh.intel.com (HELO 6dc8ab148a5d) ([10.239.97.150])
+ by orsmga004.jf.intel.com with ESMTP; 04 Jul 2020 18:46:48 -0700
+Received: from kbuild by 6dc8ab148a5d with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jrtjz-0001Vt-F7; Sun, 05 Jul 2020 01:46:47 +0000
+Date: Sun, 05 Jul 2020 09:46:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 4e2b445b4e0a7186f3bb58b7741c59770fb0b9ad
+Message-ID: <5f0130e0.Y38hFXe9XedB8DWv%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200625211749.GH1401039@lianli.shorne-pla.net>
-X-Mailman-Approved-At: Sun, 05 Jul 2020 05:17:02 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,80 +57,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- Brian Cain <bcain@codeaurora.org>, linux-xtensa@linux-xtensa.org,
- Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
- Mark Salter <msalter@redhat.com>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
- Fenghua Yu <fenghua.yu@intel.com>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-csky@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, Aurelien Jacquiot <jacquiot.aurelien@gmail.com>,
- linux-m68k@lists.linux-m68k.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
- Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- openrisc@lists.librecores.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Richard Weinberger <richard@nod.at>, Paul Mackerras <paulus@samba.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 26, 2020 at 06:17:49AM +0900, Stafford Horne wrote:
-> On Tue, Jun 23, 2020 at 01:43:26AM +0200, Christian Brauner wrote:
-> 
-> > diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
-> > index d7010e72450c..19045a3efb8a 100644
-> > --- a/arch/openrisc/kernel/process.c
-> > +++ b/arch/openrisc/kernel/process.c
-> > @@ -116,7 +116,7 @@ void release_thread(struct task_struct *dead_task)
-> >  extern asmlinkage void ret_from_fork(void);
-> >  
-> >  /*
-> > - * copy_thread_tls
-> > + * copy_thread
-> >   * @clone_flags: flags
-> >   * @usp: user stack pointer or fn for kernel thread
-> >   * @arg: arg to fn for kernel thread; always NULL for userspace thread
-> > @@ -147,7 +147,7 @@ extern asmlinkage void ret_from_fork(void);
-> >   */
-> >  
-> >  int
-> > -copy_thread_tls(unsigned long clone_flags, unsigned long usp,
-> > +copy_thread(unsigned long clone_flags, unsigned long usp,
-> >  		unsigned long arg, struct task_struct *p, unsigned long tls)
-> >  {
-> 
-> For the OpenRISC bit.
-> 
-> Acked-by: Stafford Horne <shorne@gmail.com>
-> 
-> Also, I would agree with what Kees mentioned about aligning the parameters.
-> Sure that would be more work but it would be appreciated.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 4e2b445b4e0a7186f3bb58b7741c59770fb0b9ad  Automatic merge of 'master', 'next' and 'fixes' (2020-07-04 23:16)
 
-Sure, this is a mechanical change. I'll update the individual patches to account for that.
+elapsed time: 740m
 
-Thanks!
-Christian
+configs tested: 170
+configs skipped: 16
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+mips                           ip28_defconfig
+powerpc                     pq2fads_defconfig
+arm                         at91_dt_defconfig
+sh                           cayman_defconfig
+arm                       aspeed_g4_defconfig
+m68k                         amcore_defconfig
+arc                             nps_defconfig
+arm                        trizeps4_defconfig
+microblaze                    nommu_defconfig
+mips                           ip27_defconfig
+sh                         apsh4a3a_defconfig
+arc                 nsimosci_hs_smp_defconfig
+sh                            titan_defconfig
+powerpc                     skiroot_defconfig
+sh                          rsk7264_defconfig
+sh                          r7780mp_defconfig
+sh                        sh7757lcr_defconfig
+m68k                       m5475evb_defconfig
+arm                         s5pv210_defconfig
+arm                        vexpress_defconfig
+arm                         lpc32xx_defconfig
+s390                                defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                  mpc885_ads_defconfig
+arm                   milbeaut_m10v_defconfig
+sh                        dreamcast_defconfig
+openrisc                    or1ksim_defconfig
+arm                          pxa3xx_defconfig
+m68k                             alldefconfig
+arc                      axs103_smp_defconfig
+ia64                          tiger_defconfig
+arm                         vf610m4_defconfig
+h8300                     edosk2674_defconfig
+mips                        jmr3927_defconfig
+arm                         nhk8815_defconfig
+arm                             pxa_defconfig
+powerpc                      mgcoge_defconfig
+sh                           se7705_defconfig
+arc                        vdk_hs38_defconfig
+parisc                           alldefconfig
+powerpc                      ppc6xx_defconfig
+arm                          imote2_defconfig
+arm                         bcm2835_defconfig
+sparc                            alldefconfig
+arm                           viper_defconfig
+arm                         orion5x_defconfig
+m68k                          multi_defconfig
+arm                       imx_v4_v5_defconfig
+arm                             rpc_defconfig
+arm                         mv78xx0_defconfig
+arm                         socfpga_defconfig
+h8300                               defconfig
+mips                            e55_defconfig
+mips                           xway_defconfig
+ia64                              allnoconfig
+arm                          tango4_defconfig
+sh                            shmin_defconfig
+nios2                         10m50_defconfig
+powerpc                          alldefconfig
+arm                           stm32_defconfig
+arc                            hsdk_defconfig
+mips                         tb0219_defconfig
+powerpc                  storcenter_defconfig
+m68k                       m5249evb_defconfig
+sh                          r7785rp_defconfig
+arm                      footbridge_defconfig
+arm                          badge4_defconfig
+mips                           gcw0_defconfig
+nios2                         3c120_defconfig
+c6x                        evmc6678_defconfig
+sh                   sh7770_generic_defconfig
+arm                              zx_defconfig
+sparc64                          allmodconfig
+microblaze                        allnoconfig
+parisc                generic-64bit_defconfig
+mips                 decstation_r4k_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+i386                 randconfig-a002-20200701
+i386                 randconfig-a001-20200701
+i386                 randconfig-a006-20200701
+i386                 randconfig-a005-20200701
+i386                 randconfig-a004-20200701
+i386                 randconfig-a003-20200701
+x86_64               randconfig-a012-20200701
+x86_64               randconfig-a016-20200701
+x86_64               randconfig-a014-20200701
+x86_64               randconfig-a011-20200701
+x86_64               randconfig-a015-20200701
+x86_64               randconfig-a013-20200701
+i386                 randconfig-a011-20200702
+i386                 randconfig-a014-20200702
+i386                 randconfig-a015-20200702
+i386                 randconfig-a016-20200702
+i386                 randconfig-a012-20200702
+i386                 randconfig-a013-20200702
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
