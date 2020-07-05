@@ -2,54 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410F2214C78
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 14:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2482D214CCB
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 15:39:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B07t76s25zDqRJ
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 22:53:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B08tS6fzzzDqRc
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jul 2020 23:38:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=bgzh=aq=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=BM8c7GPc; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B07pL5b1SzDqSr
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 22:50:18 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B08qQ42qWzDqWr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jul 2020 23:36:17 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id j18so36371500wmi.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jul 2020 06:36:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=N1ClIyt3BvwxUJzyMG+CpDYXUXYxKceAdq5APlxmJJk=;
+ b=BM8c7GPc1hon/3haCnsvSydzwjg9vYRFPH3yOnBbgjHhzGjZi+Ec/QTt39kDo/kUsp
+ otLRuTSKGz5vyeDEIh7t0tqeyDhJ0qLzsf13igU7Tj5krwfeba2N6nw9PllHwWhZHW09
+ SD/B7Qgn5qj/DH5BMoP3TwliabTUjjcqJLmPiUjUnMdL/ikpDfUD11jzGewT3wJGvPMb
+ Itt9KNPqbpYchBFvbxypikB6ev3SY0AToqB9ofMVc+c4SjpOzF1Nq+WIER4PVumsWJLQ
+ aypqkyF0l8UzTy2dmIvJAN/9rM5Vz6p/H6dQekcobFVlwMaYt+XKmYnoahrmpLh6GTuH
+ k87g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=N1ClIyt3BvwxUJzyMG+CpDYXUXYxKceAdq5APlxmJJk=;
+ b=s3GnWoO1Lv8Ol2mpWIlS61CW1586uNe1/JaTu9jjW/6bCG2YmLc3BVZVQJfe/sdZOg
+ 6k61BADWlgIDX6/xv67gTozdAACM8R24tSJYABuar9Lhcu3cpFuiLCcg0WFDZQn11+OP
+ U3G3qEl6Ykx13uBV1jnp112EtzrY2+1xidJMfDSwtl+errqgTg7R540lIwgzM4RVLoSA
+ nIyAvT+yg9TAqxuETTYCD6e2DsyixZr/2KiTnE6vxLp8RvaKGTvL6DKA5samrHzAj9zJ
+ UGm4AVyUbp9ztwBR0cTco/rd6b15vsx9b86mDPq4Vsidf1D8I3p56kzF0VPKrcOK1G0V
+ 6uqg==
+X-Gm-Message-State: AOAM5306z6+EJLXtY8YM2FT2fOZFQhats4Xk4g5z+ersm9V78RgRhI+O
+ SkCQSiiKk0vBodyclKtEaJwGfKcC0KM=
+X-Google-Smtp-Source: ABdhPJwYshGnGK0tsWVV6FfpZy0Na9INvpizu1VwBnXB7MCSI/4jRtU5XUe+F/7NwMD+jnOI/yMc0g==
+X-Received: by 2002:a1c:bc8a:: with SMTP id m132mr43112216wmf.1.1593956170356; 
+ Sun, 05 Jul 2020 06:36:10 -0700 (PDT)
+Received: from localhost.ibm.com ([202.168.17.49])
+ by smtp.gmail.com with ESMTPSA id m9sm19457903wml.45.2020.07.05.06.36.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 05 Jul 2020 06:36:09 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 208197] OF: /pci@f2000000/mac-io@17/gpio@50/...: could not find
- phandle
-Date: Sun, 05 Jul 2020 12:50:15 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-208197-206035-TeZpcpwCHo@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-208197-206035@https.bugzilla.kernel.org/>
-References: <bug-208197-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+Subject: [PATCH 1/2] powerpc/powernv: Make pnv_pci_sriov_enable() and friends
+ static
+Date: Sun,  5 Jul 2020 23:35:56 +1000
+Message-Id: <20200705133557.443607-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,47 +77,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Oliver O'Halloran <oohall@gmail.com>, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D208197
+The kernel test robot noticed these are non-static which causes Clang to
+print some warnings. These are called via ppc_md function pointers so
+there's no need for them to be non-static.
 
---- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 290097
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D290097&action=3Dedit
-bisect.log
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+ arch/powerpc/platforms/powernv/pci-ioda.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Did a bisect but got quite some skips due to the system not finishing booti=
-ng.
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 73a63efcf855..c2d46d28114b 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1490,7 +1490,7 @@ static void pnv_ioda_release_vf_PE(struct pci_dev *pdev)
+ 	}
+ }
+ 
+-void pnv_pci_sriov_disable(struct pci_dev *pdev)
++static void pnv_pci_sriov_disable(struct pci_dev *pdev)
+ {
+ 	struct pci_bus        *bus;
+ 	struct pci_controller *hose;
+@@ -1600,7 +1600,7 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+ 	}
+ }
+ 
+-int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
++static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+ {
+ 	struct pci_bus        *bus;
+ 	struct pci_controller *hose;
+@@ -1715,7 +1715,7 @@ int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+ 	return ret;
+ }
+ 
+-int pnv_pcibios_sriov_disable(struct pci_dev *pdev)
++static int pnv_pcibios_sriov_disable(struct pci_dev *pdev)
+ {
+ 	pnv_pci_sriov_disable(pdev);
+ 
+@@ -1724,7 +1724,7 @@ int pnv_pcibios_sriov_disable(struct pci_dev *pdev)
+ 	return 0;
+ }
+ 
+-int pnv_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
++static int pnv_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+ {
+ 	/* Allocate PCI data */
+ 	add_sriov_vf_pdns(pdev);
+-- 
+2.26.2
 
- # git bisect skip | tee -a ~/bisect02.log
-There are only 'skip'ped commits left to test.
-The first bad commit could be any of:
-388bcc6ecc609fca1b4920de7dc3806c98ec535e
-48ebea5026d692c5ab0a7d303f0fe1f8ba046e0f
-c78c31b374a68be79cb4a03ef5b6c187f034e903
-c8be6af9ef16cf44d690fc227a0d2dd7a526ef05
-eb7fbc9fb1185a7f89adeb2de724c2c96ff608e9
-42926ac3cd50937346c23c0005817264af4357a7
-baf1d9c182935e88aab08701b0a0b22871117fe0
-5f5377eaddfc24e5d7562e588d0ff84f9264d7c1
-96fa72ffb2155dba9ba8c5d282a1ff19ed32f177
-716a7a25969003d82ab738179c3f1068a120ed11
-fbc35b45f9f6a971341b9462c6e94c257e779fb5
-45bb08de65b418959313593f527c619e102c2d57
-93d2e4322aa74c1ad1e8c2160608eb9a960d69ff
-69b07ee33eb12a505d55e3e716fc7452496b9041
-fefcfc968723caf93318613a08e1f3ad07a6154f
-0f605db5bdd42edfbfcac36acaf8f72cfe9ce774
-c82c83c330654c5639960ebc3dabbae53c43f79e
-114dbb4fa7c4053a51964d112e2851e818e085c6
-55623260bb33e2ab849af76edf2253bc04cb241f
-2cd38fd15e4ebcfe917a443734820269f8b5ba2b
-ab7c1e163b525316a870a494dd4ea196e7a6c455
-f7d8f3f092d001f8d91552d2697643e727694942
-Keine bin=C3=A4re Suche mehr m=C3=B6glich!
-
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
