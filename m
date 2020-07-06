@@ -1,83 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40D8215435
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 10:53:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BDF21545B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 11:08:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B0fVq1mQXzDqYV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 18:53:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B0frN2td6zDqYM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 19:08:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B0fpq4mVXzDqXP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 19:07:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Y7psF8sm; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B0fpq49M7z8tWg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 19:07:31 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4B0fpq3nP1z9sSd; Mon,  6 Jul 2020 19:07:31 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=dyoung@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Y7psF8sm; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B0fQf3TX8zDqdn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 18:50:02 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0668YSI8138762; Mon, 6 Jul 2020 04:49:57 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 322pakud65-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 04:49:57 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0668aKgK027249;
- Mon, 6 Jul 2020 08:49:55 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 322hd7t2u3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 08:49:55 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0668nrap61800610
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Jul 2020 08:49:53 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B6DF42049;
- Mon,  6 Jul 2020 08:49:53 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 128264203F;
- Mon,  6 Jul 2020 08:49:52 +0000 (GMT)
-Received: from [9.85.98.83] (unknown [9.85.98.83])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  6 Jul 2020 08:49:51 +0000 (GMT)
-Subject: Re: [PATCH v5 15/26] powerpc/book3s64/pkeys: Use execute_pkey_disable
- static key
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
- <20200619135850.47155-16-aneesh.kumar@linux.ibm.com>
- <87mu4d5cu8.fsf@mpe.ellerman.id.au>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <c0fe685c-9cd7-4c9c-ae65-da5f107938ae@linux.ibm.com>
-Date: Mon, 6 Jul 2020 14:19:51 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by ozlabs.org (Postfix) with ESMTPS id 4B0fpp6y6Qz9sSn
+ for <linuxppc-dev@ozlabs.org>; Mon,  6 Jul 2020 19:07:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594026445;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=SShJmXGA7atFqGfnITwSEtZ2LmnJMbZjAOdugmKURLE=;
+ b=Y7psF8smG7XWsqqJ+CygKBMKRHELM9S0LoWnhlwyTILY6NLe3swpKJv20F66V7JnVrb11q
+ aR5uWlp9QKdZ6BbWS72+osgU2Gstf1+LM6rYXMUOlFakYgDQtXRfBdvu4O7V1XSKE8eRu6
+ xvcBQxJMOoap9QUXSuzgXYYTei7dxgY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-193-Zi_68QkjPGSL8uxCZHp9gw-1; Mon, 06 Jul 2020 05:07:20 -0400
+X-MC-Unique: Zi_68QkjPGSL8uxCZHp9gw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5970118A0724;
+ Mon,  6 Jul 2020 09:07:18 +0000 (UTC)
+Received: from dhcp-128-65.nay.redhat.com (ovpn-12-78.pek2.redhat.com
+ [10.72.12.78])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A26BD60BF3;
+ Mon,  6 Jul 2020 09:07:10 +0000 (UTC)
+Date: Mon, 6 Jul 2020 17:07:07 +0800
+From: Dave Young <dyoung@redhat.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v2 01/12] kexec_file: allow archs to handle special
+ regions while locating memory hole
+Message-ID: <20200706090707.GA9048@dhcp-128-65.nay.redhat.com>
+References: <159371956443.21555.18251597651350106920.stgit@hbathini.in.ibm.com>
+ <159371964681.21555.573193508667543223.stgit@hbathini.in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <87mu4d5cu8.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-06_04:2020-07-06,
- 2020-07-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- cotscore=-2147483648 lowpriorityscore=0 phishscore=0 priorityscore=1501
- suspectscore=2 mlxlogscore=999 adultscore=0 clxscore=1015 malwarescore=0
- mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007060064
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <159371964681.21555.573193508667543223.stgit@hbathini.in.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,113 +90,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, bauerman@linux.ibm.com
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ kernel test robot <lkp@intel.com>, Pingfan Liu <piliu@redhat.com>,
+ Kexec-ml <kexec@lists.infradead.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Petr Tesarik <ptesarik@suse.cz>,
+ lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Mimi Zohar <zohar@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vivek Goyal <vgoyal@redhat.com>,
+ Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/6/20 12:50 PM, Michael Ellerman wrote:
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->> Use execute_pkey_disabled static key to check for execute key support instead
->> of pkey_disabled.
->>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>   arch/powerpc/include/asm/pkeys.h | 10 +---------
->>   arch/powerpc/mm/book3s64/pkeys.c |  5 ++++-
->>   2 files changed, 5 insertions(+), 10 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
->> index 47c81d41ea9a..09fbaa409ac4 100644
->> --- a/arch/powerpc/include/asm/pkeys.h
->> +++ b/arch/powerpc/include/asm/pkeys.h
->> @@ -126,15 +126,7 @@ static inline int mm_pkey_free(struct mm_struct *mm, int pkey)
->>    * Try to dedicate one of the protection keys to be used as an
->>    * execute-only protection key.
->>    */
->> -extern int __execute_only_pkey(struct mm_struct *mm);
->> -static inline int execute_only_pkey(struct mm_struct *mm)
->> -{
->> -	if (static_branch_likely(&pkey_disabled))
->> -		return -1;
->> -
->> -	return __execute_only_pkey(mm);
->> -}
->> -
->> +extern int execute_only_pkey(struct mm_struct *mm);
->>   extern int __arch_override_mprotect_pkey(struct vm_area_struct *vma,
->>   					 int prot, int pkey);
->>   static inline int arch_override_mprotect_pkey(struct vm_area_struct *vma,
->> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
->> index bbba9c601e14..fed4f159011b 100644
->> --- a/arch/powerpc/mm/book3s64/pkeys.c
->> +++ b/arch/powerpc/mm/book3s64/pkeys.c
->> @@ -345,8 +345,11 @@ void thread_pkey_regs_init(struct thread_struct *thread)
->>   	write_uamor(default_uamor);
->>   }
->>   
->> -int __execute_only_pkey(struct mm_struct *mm)
->> +int execute_only_pkey(struct mm_struct *mm)
->>   {
->> +	if (static_branch_likely(&execute_pkey_disabled))
->> +		return -1;
->> +
->>   	return mm->context.execute_only_pkey;
->>   }
+On 07/03/20 at 01:24am, Hari Bathini wrote:
+> Some architectures may have special memory regions, within the given
+> memory range, which can't be used for the buffer in a kexec segment.
+> Implement weak arch_kexec_locate_mem_hole() definition which arch code
+> may override, to take care of special regions, while trying to locate
+> a memory hole.
 > 
-> That adds the overhead of a function call, but then uses a static_key to
-> avoid an easy to predict branch, which seems like a bad tradeoff. And
-> it's not a performance critical path AFAICS.
+> Also, add the missing declarations for arch overridable functions and
+> and drop the __weak descriptors in the declarations to avoid non-weak
+> definitions from becoming weak.
 > 
-> Anyway this seems unnecessary:
+> Reported-by: kernel test robot <lkp@intel.com>
+> [lkp: In v1, arch_kimage_file_post_load_cleanup() declaration was missing]
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
 > 
-> pkey_early_init_devtree()
-> {
-> 	...
-> 	if (unlikely(max_pkey <= execute_only_key)) {
-> 		/*
-> 		 * Insufficient number of keys to support
-> 		 * execute only key. Mark it unavailable.
-> 		 */
-> 		execute_only_key = -1;
-> 
-> void pkey_mm_init(struct mm_struct *mm)
-> {
-> 	...
-> 	mm->context.execute_only_pkey = execute_only_key;
-> }
+> Changes in v2:
+> * Introduced arch_kexec_locate_mem_hole() for override and dropped
+>   weak arch_kexec_add_buffer().
+> * Dropped __weak identifier for arch overridable functions.
+> * Fixed the missing declaration for arch_kimage_file_post_load_cleanup()
+>   reported by lkp. lkp report for reference:
+>     - https://lore.kernel.org/patchwork/patch/1264418/
 > 
 > 
-> ie. Can't it just be:
+>  include/linux/kexec.h |   29 ++++++++++++++++++-----------
+>  kernel/kexec_file.c   |   16 ++++++++++++++--
+>  2 files changed, 32 insertions(+), 13 deletions(-)
 > 
-> static inline int execute_only_pkey(struct mm_struct *mm)
-> {
-> 	return mm->context.execute_only_pkey;
-> }
+> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+> index ea67910..9e93bef 100644
+> --- a/include/linux/kexec.h
+> +++ b/include/linux/kexec.h
+> @@ -183,17 +183,24 @@ int kexec_purgatory_get_set_symbol(struct kimage *image, const char *name,
+>  				   bool get_value);
+>  void *kexec_purgatory_get_symbol_addr(struct kimage *image, const char *name);
+>  
+> -int __weak arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
+> -					 unsigned long buf_len);
+> -void * __weak arch_kexec_kernel_image_load(struct kimage *image);
+> -int __weak arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+> -					    Elf_Shdr *section,
+> -					    const Elf_Shdr *relsec,
+> -					    const Elf_Shdr *symtab);
+> -int __weak arch_kexec_apply_relocations(struct purgatory_info *pi,
+> -					Elf_Shdr *section,
+> -					const Elf_Shdr *relsec,
+> -					const Elf_Shdr *symtab);
+> +/* Architectures may override the below functions */
+> +int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
+> +				  unsigned long buf_len);
+> +void *arch_kexec_kernel_image_load(struct kimage *image);
+> +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+> +				     Elf_Shdr *section,
+> +				     const Elf_Shdr *relsec,
+> +				     const Elf_Shdr *symtab);
+> +int arch_kexec_apply_relocations(struct purgatory_info *pi,
+> +				 Elf_Shdr *section,
+> +				 const Elf_Shdr *relsec,
+> +				 const Elf_Shdr *symtab);
+> +int arch_kimage_file_post_load_cleanup(struct kimage *image);
+> +#ifdef CONFIG_KEXEC_SIG
+> +int arch_kexec_kernel_verify_sig(struct kimage *image, void *buf,
+> +				 unsigned long buf_len);
+> +#endif
+> +int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf);
+>  
+>  extern int kexec_add_buffer(struct kexec_buf *kbuf);
+>  int kexec_locate_mem_hole(struct kexec_buf *kbuf);
+> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+> index 09cc78d..e89912d 100644
+> --- a/kernel/kexec_file.c
+> +++ b/kernel/kexec_file.c
+> @@ -636,6 +636,19 @@ int kexec_locate_mem_hole(struct kexec_buf *kbuf)
+>  }
+>  
+>  /**
+> + * arch_kexec_locate_mem_hole - Find free memory to place the segments.
+> + * @kbuf:                       Parameters for the memory search.
+> + *
+> + * On success, kbuf->mem will have the start address of the memory region found.
+> + *
+> + * Return: 0 on success, negative errno on error.
+> + */
+> +int __weak arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
+> +{
+> +	return kexec_locate_mem_hole(kbuf);
+> +}
+> +
+> +/**
+>   * kexec_add_buffer - place a buffer in a kexec segment
+>   * @kbuf:	Buffer contents and memory parameters.
+>   *
+> @@ -647,7 +660,6 @@ int kexec_locate_mem_hole(struct kexec_buf *kbuf)
+>   */
+>  int kexec_add_buffer(struct kexec_buf *kbuf)
+>  {
+> -
+>  	struct kexec_segment *ksegment;
+>  	int ret;
+>  
+> @@ -675,7 +687,7 @@ int kexec_add_buffer(struct kexec_buf *kbuf)
+>  	kbuf->buf_align = max(kbuf->buf_align, PAGE_SIZE);
+>  
+>  	/* Walk the RAM ranges and allocate a suitable range for the buffer */
+> -	ret = kexec_locate_mem_hole(kbuf);
+> +	ret = arch_kexec_locate_mem_hole(kbuf);
+>  	if (ret)
+>  		return ret;
+>  
 > 
 
-ok updated with
+Acked-by: Dave Young <dyoung@redhat.com>
 
-modified   arch/powerpc/mm/book3s64/pkeys.c
-@@ -151,7 +151,7 @@ void __init pkey_early_init_devtree(void)
-  	max_pkey = pkeys_total;
-  #endif
+Thanks
+Dave
 
--	if (unlikely(max_pkey <= execute_only_key)) {
-+	if (unlikely(max_pkey <= execute_only_key) || 
-!pkey_execute_disable_supported) {
-  		/*
-  		 * Insufficient number of keys to support
-  		 * execute only key. Mark it unavailable.
-@@ -368,9 +368,6 @@ int __arch_set_user_pkey_access(struct task_struct 
-*tsk, int pkey,
-
-  int execute_only_pkey(struct mm_struct *mm)
-  {
--	if (static_branch_likely(&execute_pkey_disabled))
--		return -1;
--
-  	return mm->context.execute_only_pkey;
-  }
-
--aneesh
