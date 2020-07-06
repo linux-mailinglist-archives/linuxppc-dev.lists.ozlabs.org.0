@@ -1,73 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC4421508D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 02:33:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0884C215091
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 02:43:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B0RP65jxzzDqYJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 10:32:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B0Rd66ZbwzDqBd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 10:43:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZChIgkEh; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20161025 header.b=UCrT/AKd; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B0RKz1szHzDqXZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 10:30:14 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id md7so1105538pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jul 2020 17:30:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B0RZd25y9zDqWy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 10:41:12 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id t15so1846807pjq.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jul 2020 17:41:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=SiLUZ4upHaLyrogPRVRHW5icqN9xUKW8UG99tlD0o1w=;
- b=ZChIgkEh86/XjbL568B54v/+xUqg8dRxDHfP0F2txCazr/ay2G0gwdJ8PQfDaOYadl
- RSBC7AxSAzzk+5hNHcDCmTEf87pIkaz9EdJiV1gBnhrpwODw1O8kNb+gIWfEZib6R/nv
- 3EBIhvq3HVyNAEtEpgNNV/sU5imC6rVyAYWyIuNC0TshQKJK7xOW0Nal4bQcIfLuW4E7
- xs/i78gs7bVGourp3tbhKRy66izcSw5q4f+joq28W1GbjqFSVVLQpuW66DMg1Eg6bcG1
- 8i5+R2ZYW++2vXO4ov6gCxPcQDVxqLw0wYVi6qNiWXxB4MacdGFgBV+2F+WkPs13xaWm
- g2Qw==
+ bh=cCvI0uFaQ+Y+K+p5Wsfh1TUO93oB6Wv7/jPK9z10HWU=;
+ b=UCrT/AKdM1iQJMN6nX2dtqriLppLii22ib+BBFaChtcXXTLZddx/55/JPBSbxmuMtY
+ zFNDgW0YglaiJiG6t2aZst/ymQVImYxPCRDESr5Is5yyJzUQpDUE81FoC+gMyLSGgxCC
+ 46AWA17UACP3GhVs9mrRn/C1XsyUVlUt6wuae8qe/zXgDlrbolQlG4WUpFr8zhWVxJdH
+ GxBx8kVyqxzF7qNnNTWPgRLKQQBDXBV5xKRz7LumbQoERBCwjEB2O2lQYT4h6P+HcnqL
+ JjI9mFzHzXJg6IqiplQK3FtIhEHDkM6TwD8DCggsDBU7SlrYzxG57Ot6AYEfYhpav1Cl
+ qX3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=SiLUZ4upHaLyrogPRVRHW5icqN9xUKW8UG99tlD0o1w=;
- b=g3ssFkNliyj2IWyBJHWJPQkoyvtjmJ//3FxV1t3i54JUEWHXsvzXRn7Hm4iVYttdc9
- xaQFMUk4MPROLhM52cexf6azHAnNlg+wA7vXw45euAedgjY4kU1dAA1SbUTRGLfAbpuO
- FCwrZqLrPTTIlTgvCKnBmGfh9dkANdsw0bcqp+RKUxhAVZRgBRRRyWD3CUE/ORNyVSIW
- 8DA9LwMzvA3oWx1gdqI+IAuHoMY41/twmMANuOTxzV9rtuAd2jPlPDyoOvFE6Tjcx17N
- +SB5fJ9/QMc2QgSUOIWZ1vGgkD5x+/OoUmj34FWwBp4H00lUZqsp4tShk96OLyFFjEu1
- i1mA==
-X-Gm-Message-State: AOAM530N1ITA+4f6se+Lo3SL5U+Bj4mkshtu0CTnKB7xIdCxEoYbM53Q
- WYZuFOWb0IzDjZ5/sDPK0Aw=
-X-Google-Smtp-Source: ABdhPJyswqCW+lIyGMKfHWg+k/xcX0xp3O7ypSRKMWd1CxCr9iuV5ZKPGSUPZi+UcDnz9fiQ/+enbg==
-X-Received: by 2002:a17:90a:89:: with SMTP id a9mr5354677pja.171.1593995411484; 
- Sun, 05 Jul 2020 17:30:11 -0700 (PDT)
+ bh=cCvI0uFaQ+Y+K+p5Wsfh1TUO93oB6Wv7/jPK9z10HWU=;
+ b=BdsCE0B4ZVm4n+6eP5SAA+W9pNWBx17MEIj0iLYAV9WN80IHzdHyytttTCLtuBa3UD
+ aChM7TndbFNPW8ItK9b0VVL/hXGdAqunmqlf6/wpLCOPqqj3fP/U8QPu+1bf8k/xZXiw
+ NuMoVJggBHo8X4w9XZ19QyFx0kuRPByi6PRdpQmLesfCWPo611FPmo8FbUZvY5ULB5vY
+ aZF2sdjqGoqNJ9xCE/vl+lb71AeNgvaKMN7W2rcskH5l0YiUYsyqm9oZmuTtiCfpqwS7
+ MHe7nVb0xFHJAHuF/pj9IYiKzYV4zyTU7A2eAmXaEg3+92Zjgm9Ymxr0MMruGfslaRDu
+ YrlA==
+X-Gm-Message-State: AOAM533qD1ZzjCALG2wQJYWetIKA3IKIvcmCEilouV/+P8Yw+73dVewP
+ 5NayGMDX7sgXJ4Sogw9/Jw7xUqsS
+X-Google-Smtp-Source: ABdhPJw+TUfkM+2f173c7J2EnG5NN6h1rmvUbRmLgspBdtNx55xTXJEI/uWfETxl/exbbP+iZND4qg==
+X-Received: by 2002:a17:902:b093:: with SMTP id
+ p19mr5955238plr.161.1593996069710; 
+ Sun, 05 Jul 2020 17:41:09 -0700 (PDT)
 Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id x10sm17583932pfp.80.2020.07.05.17.30.10
+ by smtp.gmail.com with ESMTPSA id w64sm16980153pgd.67.2020.07.05.17.41.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Jul 2020 17:30:10 -0700 (PDT)
-Date: Mon, 06 Jul 2020 10:30:05 +1000
+ Sun, 05 Jul 2020 17:41:09 -0700 (PDT)
+Date: Mon, 06 Jul 2020 10:41:03 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 5/6] powerpc/pseries: implement paravirt qspinlocks for
- SPLPAR
-To: Waiman Long <longman@redhat.com>
-References: <20200703073516.1354108-1-npiggin@gmail.com>
- <20200703073516.1354108-6-npiggin@gmail.com>
- <81d9981b-8a20-729c-b861-c7229e40bb65@redhat.com>
-In-Reply-To: <81d9981b-8a20-729c-b861-c7229e40bb65@redhat.com>
+Subject: Re: Using Firefox hangs system
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>, Paul Menzel
+ <pmenzel@molgen.mpg.de>
+References: <673619a2-74d7-105b-dacb-bec15bc37872@molgen.mpg.de>
+ <2a86d85d-b51d-52c5-f84f-efea5a0ca628@molgen.mpg.de>
+In-Reply-To: <2a86d85d-b51d-52c5-f84f-efea5a0ca628@molgen.mpg.de>
 MIME-Version: 1.0
-Message-Id: <1593994632.syt8hwimv9.astroid@bobo.none>
+Message-Id: <1593995628.78zg3dfzk8.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,142 +82,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- virtualization@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Waiman Long's message of July 6, 2020 5:00 am:
-> On 7/3/20 3:35 AM, Nicholas Piggin wrote:
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   arch/powerpc/include/asm/paravirt.h           | 28 ++++++++++
->>   arch/powerpc/include/asm/qspinlock.h          | 55 +++++++++++++++++++
->>   arch/powerpc/include/asm/qspinlock_paravirt.h |  5 ++
->>   arch/powerpc/platforms/pseries/Kconfig        |  5 ++
->>   arch/powerpc/platforms/pseries/setup.c        |  6 +-
->>   include/asm-generic/qspinlock.h               |  2 +
->>   6 files changed, 100 insertions(+), 1 deletion(-)
->>   create mode 100644 arch/powerpc/include/asm/qspinlock_paravirt.h
->>
->> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/=
-asm/paravirt.h
->> index 7a8546660a63..f2d51f929cf5 100644
->> --- a/arch/powerpc/include/asm/paravirt.h
->> +++ b/arch/powerpc/include/asm/paravirt.h
->> @@ -29,6 +29,16 @@ static inline void yield_to_preempted(int cpu, u32 yi=
-eld_count)
->>   {
->>   	plpar_hcall_norets(H_CONFER, get_hard_smp_processor_id(cpu), yield_co=
-unt);
->>   }
->> +
->> +static inline void prod_cpu(int cpu)
->> +{
->> +	plpar_hcall_norets(H_PROD, get_hard_smp_processor_id(cpu));
->> +}
->> +
->> +static inline void yield_to_any(void)
->> +{
->> +	plpar_hcall_norets(H_CONFER, -1, 0);
->> +}
->>   #else
->>   static inline bool is_shared_processor(void)
->>   {
->> @@ -45,6 +55,19 @@ static inline void yield_to_preempted(int cpu, u32 yi=
-eld_count)
->>   {
->>   	___bad_yield_to_preempted(); /* This would be a bug */
->>   }
->> +
->> +extern void ___bad_yield_to_any(void);
->> +static inline void yield_to_any(void)
->> +{
->> +	___bad_yield_to_any(); /* This would be a bug */
->> +}
->> +
->> +extern void ___bad_prod_cpu(void);
->> +static inline void prod_cpu(int cpu)
->> +{
->> +	___bad_prod_cpu(); /* This would be a bug */
->> +}
->> +
->>   #endif
->>  =20
->>   #define vcpu_is_preempted vcpu_is_preempted
->> @@ -57,5 +80,10 @@ static inline bool vcpu_is_preempted(int cpu)
->>   	return false;
->>   }
->>  =20
->> +static inline bool pv_is_native_spin_unlock(void)
->> +{
->> +     return !is_shared_processor();
->> +}
->> +
->>   #endif /* __KERNEL__ */
->>   #endif /* __ASM_PARAVIRT_H */
->> diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include=
-/asm/qspinlock.h
->> index c49e33e24edd..0960a0de2467 100644
->> --- a/arch/powerpc/include/asm/qspinlock.h
->> +++ b/arch/powerpc/include/asm/qspinlock.h
->> @@ -3,9 +3,36 @@
->>   #define _ASM_POWERPC_QSPINLOCK_H
->>  =20
->>   #include <asm-generic/qspinlock_types.h>
->> +#include <asm/paravirt.h>
->>  =20
->>   #define _Q_PENDING_LOOPS	(1 << 9) /* not tuned */
->>  =20
->> +#ifdef CONFIG_PARAVIRT_SPINLOCKS
->> +extern void native_queued_spin_lock_slowpath(struct qspinlock *lock, u3=
-2 val);
->> +extern void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 =
-val);
->> +
->> +static __always_inline void queued_spin_lock_slowpath(struct qspinlock =
-*lock, u32 val)
->> +{
->> +	if (!is_shared_processor())
->> +		native_queued_spin_lock_slowpath(lock, val);
->> +	else
->> +		__pv_queued_spin_lock_slowpath(lock, val);
->> +}
+Excerpts from Paul Menzel's message of July 5, 2020 8:30 pm:
+> [Removed Rafael from CC]
 >=20
-> In a previous mail, I said that:
+> Dear Linux folks,
+>=20
+>=20
+> Am 05.07.20 um 11:22 schrieb Paul Menzel:
+>=20
+>> With an IBM S822LC with Ubuntu 20.04, after updating to Firefox 78.0,=20
+>> using Firefox seems to hang the system. This happened with self-built=20
+>> Linux 5.7-rc5+ and now with 5.8-rc3+.
+>>=20
+>> (At least I believe the Firefox update is causing this.)
+>>=20
+>> Log in is impossible, and using the Serial over LAN over IPMI shows the=20
+>> messages below.
+>>=20
+>>> [ 2620.579187] watchdog: BUG: soft lockup - CPU#125 stuck for 22s!=20
+>>> [swapper/125:0]
+>>> [ 2620.579378] Modules linked in: tcp_diag inet_diag unix_diag=20
+>>> xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4=20
+>>> xt_tcpudp ip6table_mangle ip6table_nat iptable_mangle iptable_nat=20
+>>> nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink=20
+>>> ip6table_filter ip6_tables iptable_filter bridge stp llc overlay xfs=20
+>>> kvm_hv kvm joydev binfmt_misc uas usb_storage vmx_crypto ofpart=20
+>>> cmdlinepart bnx2x powernv_flash mtd mdio crct10dif_vpmsum at24=20
+>>> ibmpowernv ipmi_powernv ipmi_devintf powernv_rng ipmi_msghandler=20
+>>> opal_prd sch_fq_codel parport_pc nfsd ppdev lp auth_rpcgss nfs_acl=20
+>>> parport lockd grace sunrpc ip_tables x_tables autofs4 btrfs=20
+>>> blake2b_generic libcrc32c xor zstd_compress raid6_pq input_leds=20
+>>> mac_hid hid_generic ast drm_vram_helper drm_ttm_helper i2c_algo_bit=20
+>>> ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops drm=20
+>>> drm_panel_orientation_quirks ahci libahci usbhid hid crc32c_vpmsum=20
+>>> uio_pdrv_genirq uio
+>>> [ 2620.579537] CPU: 125 PID: 0 Comm: swapper/125 Tainted: G=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 D=20
+>>> W=C2=A0=C2=A0=C2=A0 L=C2=A0=C2=A0=C2=A0 5.8.0-rc3+ #1
+>>> [ 2620.579552] NIP:=C2=A0 c0000000010dad38 LR: c0000000010dad30 CTR:=20
+>>> c000000000237830
+>>> [ 2620.579568] REGS: c00000ffcb8c7600 TRAP: 0900=C2=A0=C2=A0 Tainted: G=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 D=20
+>>> W=C2=A0=C2=A0=C2=A0 L=C2=A0=C2=A0=C2=A0=C2=A0 (5.8.0-rc3+)
+>>> [ 2620.579582] MSR:=C2=A0 9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>=C2=
+=A0 CR:=20
+>>> 44004228=C2=A0 XER: 00000000
+>>> [ 2620.579599] CFAR: c0000000010dad44 IRQMASK: 0 [ 2620.579599] GPR00:=20
+>>> c00000000023718c c00000ffcb8c7890 c000000001f9a900 0000000000000000 [=20
+>>> 2620.579599] GPR04: c000000001fce438 0000000000000078 000000010008c1f2=20
+>>> 0000000000000000 [ 2620.579599] GPR08: 000000ffd96a0000=20
+>>> 0000000080000087 0000000000000000 c000000001fd25e0 [ 2620.579599]=20
+>>> GPR12: 0000000000004400 c00000ffff72f680 c000000001ea36d8=20
+>>> c00000ffcb859800 [ 2620.579599] GPR16: c00000000166c880=20
+>>> c0000000016f8e00 000000000000000a c00000ffcb859800 [ 2620.579599]=20
+>>> GPR20: 0000000000000100 c00000000166c918 c000000001fd21e8=20
+>>> c00000ffcb859800 [ 2620.579599] GPR24: 000000ffd96a0000=20
+>>> c000000001d44b80 c000000001d53780 0000000000000008 [ 2620.579599]=20
+>>> GPR28: c000000001fd21e0 0000000000000001 0000000000000000=20
+>>> c000000001d44b80 [ 2620.579711] NIP [c0000000010dad38]=20
+>>> _raw_spin_lock_irqsave+0x98/0x120
+>>> [ 2620.579724] LR [c0000000010dad30] _raw_spin_lock_irqsave+0x90/0x120
+>>> [ 2620.579737] Call Trace:
+>>> [ 2620.579746] [c00000ffcb8c7890] [c0000000013c84a0]=20
+>>> ncsi_ops+0x209f50/0x2dc1d8 (unreliable)
+>>> [ 2620.579763] [c00000ffcb8c78d0] [c00000000023718c] rcu_core+0xfc/0x7a=
+0
+>>> [ 2620.579777] [c00000ffcb8c7970] [c0000000010db81c]=20
+>>> __do_softirq+0x17c/0x534
+>>> [ 2620.579791] [c00000ffcb8c7aa0] [c0000000001786f4] irq_exit+0xd4/0x13=
+0
+>>> [ 2620.579805] [c00000ffcb8c7ad0] [c000000000025eec]=20
+>>> timer_interrupt+0x13c/0x370
+>>> [ 2620.579821] [c00000ffcb8c7b40] [c0000000000165c0]=20
+>>> replay_soft_interrupts+0x320/0x3f0
+>>> [ 2620.579837] [c00000ffcb8c7d30] [c0000000000166d8]=20
+>>> arch_local_irq_restore+0x48/0xa0
+>>> [ 2620.579853] [c00000ffcb8c7d50] [c000000000de2fe0]=20
+>>> cpuidle_enter_state+0x100/0x780
 
-Hey, yeah I read that right after sending the series out. Thanks for the=20
-thorough review.
+[snip]
 
-> You may need to match the use of __pv_queued_spin_lock_slowpath() with=20
-> the corresponding __pv_queued_spin_unlock(), e.g.
+>>=20
+>> I have to warm reset the system to get it working again.
 >=20
-> #define queued_spin_unlock queued_spin_unlock
-> static inline queued_spin_unlock(struct qspinlock *lock)
-> {
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!is_shared_processor())
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 smp_store_release(&lock->locked, 0);
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 else
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 __pv_queued_spin_unlock(lock);
-> }
->=20
-> Otherwise, pv_kick() will never be called.
->=20
-> Maybe PowerPC HMT is different that the shared cpus can still process=20
-> instruction, though slower, that cpu kicking like what was done in kvm=20
-> is not really necessary. If that is the case, I think we should document=20
-> that.
+> I am unable to reproduce this with Ubuntu=E2=80=99s Linux
 
-It does stop dispatch, but it will wake up by itself after all other=20
-vCPUs have had a chance to dispatch. I will re-test with the fix in
-place and see if there's any significant performance differences.
+Okay, not sure what that would be from, looks like RCU perhaps. Anyway=20
+if it comes up again, let us know.
+
+> With Linux 5.8-rc3+, I got now the beginning of the Linux messages.
+>=20
+>> [  572.253008] Oops: Exception in kernel mode, sig: 5 [#1]
+>> [  572.253198] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA Pow=
+erNV
+>> [  572.253232] Modules linked in: tcp_diag inet_diag unix_diag xt_CHECKS=
+UM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp ip6table_=
+mangle ip6table_nat iptable_mangle iptable_nat nf_nat nf_conntrack nf_defra=
+g_ipv6 nf_defrag_ipv4 nf_tables nfnetlink ip6table_filter ip6_tables iptabl=
+e_filter bridge stp llc overlay xfs kvm_hv kvm binfmt_misc joydev uas usb_s=
+torage vmx_crypto bnx2x crct10dif_vpmsum ofpart cmdlinepart powernv_flash m=
+td mdio ibmpowernv at24 ipmi_powernv ipmi_devintf ipmi_msghandler opal_prd =
+powernv_rng sch_fq_codel parport_pc ppdev lp nfsd parport auth_rpcgss nfs_a=
+cl lockd grace sunrpc ip_tables x_tables autofs4 btrfs blake2b_generic libc=
+rc32c xor zstd_compress raid6_pq input_leds mac_hid hid_generic ast drm_vra=
+m_helper drm_ttm_helper i2c_algo_bit ttm drm_kms_helper syscopyarea sysfill=
+rect sysimgblt fb_sys_fops drm ahci drm_panel_orientation_quirks libahci us=
+bhid hid crc32c_vpmsum uio_pdrv_genirq uio
+>> [  572.253639] CPU: 4 PID: 6728 Comm: Web Content Not tainted 5.8.0-rc3+=
+ #1
+>> [  572.253659] NIP:  c00000000000ff5c LR: c00000000001a8f8 CTR: c0000000=
+001d5f00
+>> [  572.253835] REGS: c000007f31f0f420 TRAP: 1500   Not tainted  (5.8.0-r=
+c3+)
+>> [  572.253854] MSR:  900000000290b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,L=
+E>  CR: 28c48482  XER: 20000000
+>> [  572.253888] CFAR: c00000000000fecc IRQMASK: 1=20
+>> [  572.253888] GPR00: c00000000001b228 c000007f31f0f6b0 c000000001f9a900=
+ c000007f351544d0=20
+>> [  572.253888] GPR04: 0000000000000000 c000007f31f0fe90 c000007f351544f0=
+ c000007f32e522b0=20
+>> [  572.253888] GPR08: 0000000000000000 0000000000002000 9000000000009033=
+ c000007fbcd85800=20
+>> [  572.253888] GPR12: 0000000000008800 c000007fffffb680 0000000000000005=
+ 0000000000000004=20
+>> [  572.253888] GPR16: c000007f35153800 c000007f35154130 0000000000000005=
+ 0000000000000001=20
+>> [  572.253888] GPR20: 0000000000000024 c000007f32e51e68 c000007f35154028=
+ 0000007fd8da0000=20
+>> [  572.253888] GPR24: 0000007fd8da0000 c000007f351544d0 c000007e9a4024d0=
+ c000000001665f18=20
+>> [  572.253888] GPR28: c000007f351544d0 c000007f35153800 900000000290f033=
+ c000007f35153800=20
+>> [  572.254079] NIP [c00000000000ff5c] save_fpu+0xa8/0x2ac
+>> [  572.254098] LR [c00000000001a8f8] __giveup_fpu+0x28/0x80
+>> [  572.254114] Call Trace:
+>> [  572.254128] [c000007f31f0f6b0] [c000007f35153980] 0xc000007f35153980 =
+(unreliable)
+>> [  572.254156] [c000007f31f0f6e0] [c00000000001b228] giveup_all+0x128/0x=
+150
+>> [  572.254327] [c000007f31f0f710] [c00000000001c124] __switch_to+0x104/0=
+x490
+>> [  572.254352] [c000007f31f0f770] [c0000000010d2e34] __schedule+0x2e4/0x=
+a10
+>> [  572.254374] [c000007f31f0f840] [c0000000010d35d4] schedule+0x74/0x140
+>> [  572.254397] [c000007f31f0f870] [c0000000010d9478] schedule_timeout+0x=
+358/0x5d0
+>> [  572.254424] [c000007f31f0f980] [c0000000010d5638] wait_for_completion=
++0xc8/0x210
+>> [  572.254451] [c000007f31f0fa00] [c000000000608ed4] do_coredump+0x3a4/0=
+xd60
+>> [  572.254625] [c000007f31f0fba0] [c00000000018d1cc] get_signal+0x1dc/0x=
+d00
+>> [  572.254648] [c000007f31f0fcc0] [c00000000001f088] do_notify_resume+0x=
+158/0x450
+>> [  572.254672] [c000007f31f0fda0] [c000000000037d04] interrupt_exit_user=
+_prepare+0x1c4/0x230
+>> [  572.254699] [c000007f31f0fe20] [c00000000000f2b4] interrupt_return+0x=
+14/0x1c0
+>> [  572.254720] Instruction dump:
+>> [  572.254882] dae60170 db060180 db260190 db4601a0 db6601b0 db8601c0 dba=
+601d0 dbc601e0=20
+>> [  572.254912] dbe601f0 48000204 38800000 f0000250 <7c062798> f0000250 3=
+8800010 f0210a50=20
+>> [  572.254946] ---[ end trace ba4452ee5c77d58e ]---
+>=20
+> Please find all the messages attached.
+
+"Oops: Exception in kernel mode, sig: 5 [#1]"
+
+Unfortunately it's a very poor error message. I think it is a 0x1500=20
+exception triggering in the kernel FP register saving. Do you have the
+CONFIG_PPC_DENORMALISATION config option set?
 
 Thanks,
 Nick
-
