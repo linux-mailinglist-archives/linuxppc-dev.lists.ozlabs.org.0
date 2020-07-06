@@ -1,95 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675DC2151F4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 06:56:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61081215222
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 07:22:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B0YDp5Ly4zDqgC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 14:56:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B0Ypc3FRYzDqkT
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 15:22:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B0Y6R6svTzDqMy
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 14:50:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B0Y6Q1jQGz9D05
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 14:50:38 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4B0Y6P4dYmz9sSd; Mon,  6 Jul 2020 14:50:37 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=huntbag@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B0Y6P0m5Vz9sPF;
- Mon,  6 Jul 2020 14:50:36 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06643puX143928; Mon, 6 Jul 2020 00:50:35 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 322paknbgf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 00:50:35 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0664oYHc105610;
- Mon, 6 Jul 2020 00:50:34 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 322paknbft-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 00:50:34 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0664nrj2018940;
- Mon, 6 Jul 2020 04:50:32 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03ams.nl.ibm.com with ESMTP id 322hd7svf2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 04:50:32 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0664oT7758851572
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Jul 2020 04:50:29 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A1B17A405F;
- Mon,  6 Jul 2020 04:50:29 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1EDCCA4054;
- Mon,  6 Jul 2020 04:50:28 +0000 (GMT)
-Received: from bostonp9.aus.stglabs.ibm.com (unknown [9.3.23.179])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  6 Jul 2020 04:50:27 +0000 (GMT)
-From: Abhishek Goel <huntbag@linux.vnet.ibm.com>
-To: linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC v2 1/2] powerpc/powernv : Add support for pre-entry and
- post-exit of stop state using OPAL V4 OS services
-Date: Sun,  5 Jul 2020 23:50:00 -0500
-Message-Id: <20200706045001.77039-1-huntbag@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.17.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-06_02:2020-07-02,
- 2020-07-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- cotscore=-2147483648 lowpriorityscore=0 phishscore=0 priorityscore=1501
- suspectscore=0 mlxlogscore=979 adultscore=0 clxscore=1011 malwarescore=0
- mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007060032
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B0Yn03zvxzDqfX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 15:20:32 +1000 (AEST)
+Received: from [192.168.178.35] (unknown [94.134.88.164])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 42A1E201A3C32;
+ Mon,  6 Jul 2020 07:20:26 +0200 (CEST)
+Subject: Re: Using Firefox hangs system
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+References: <673619a2-74d7-105b-dacb-bec15bc37872@molgen.mpg.de>
+ <2a86d85d-b51d-52c5-f84f-efea5a0ca628@molgen.mpg.de>
+ <1593995628.78zg3dfzk8.astroid@bobo.none>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Message-ID: <de2c9ccd-a078-a2ca-e7c7-13a1032cbda3@molgen.mpg.de>
+Date: Mon, 6 Jul 2020 07:20:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <1593995628.78zg3dfzk8.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,136 +52,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, npiggin@gmail.com,
- oohall@gmail.com, psampat@linux.ibm.com,
- Abhishek Goel <huntbag@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch provides kernel framework fro opal support of save restore
-of sprs in idle stop loop. Opal support for stop states is needed to
-selectively enable stop states or to introduce a quirk quickly in case
-a buggy stop state is present.
+Dear Nicholas,
 
-We make a opal call from kernel if firmware-stop-support for stop
-states is present and enabled. All the quirks for pre-entry of stop
-state is handled inside opal. A call from opal is made into kernel
-where we execute stop afer saving of NVGPRs.
-After waking up from 0x100 vector in kernel, we enter back into opal.
-All the quirks in post exit path, if any, are then handled in opal,
-from where we return successfully back to kernel.
 
-Signed-off-by: Abhishek Goel <huntbag@linux.vnet.ibm.com>
----
-v1->v2 : Rebased the patch on Nick's Opal V4 OS patchset
+Thank you for the quick response.
 
- arch/powerpc/include/asm/opal-api.h        |  4 +++-
- arch/powerpc/include/asm/opal.h            |  1 +
- arch/powerpc/platforms/powernv/idle.c      | 12 ++++++++++++
- arch/powerpc/platforms/powernv/opal-call.c |  1 +
- arch/powerpc/platforms/powernv/opal.c      | 15 +++++++++++++++
- 5 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-index 97c5e5423827..437b6937685d 100644
---- a/arch/powerpc/include/asm/opal-api.h
-+++ b/arch/powerpc/include/asm/opal-api.h
-@@ -219,7 +219,8 @@
- #define OPAL_REPORT_TRAP			183
- #define OPAL_FIND_VM_AREA			184
- #define OPAL_REGISTER_OS_OPS			185
--#define OPAL_LAST				185
-+#define OPAL_CPU_IDLE				186
-+#define OPAL_LAST				186
- 
- #define QUIESCE_HOLD			1 /* Spin all calls at entry */
- #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
-@@ -1207,6 +1208,7 @@ struct opal_os_ops {
- 	__be64  os_printf; /* void printf(int32_t level, const char *str) */
- 	__be64  os_vm_map; /* int64_t os_vm_map(uint64_t ea, uint64_t pa, uint64_t flags) */
- 	__be64  os_vm_unmap; /* void os_vm_unmap(uint64_t ea) */
-+	__be64  os_idle_stop; /* void os_idle_stop(uint64_t srr1_addr, uint64_t psscr) */
- };
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
-index 09985b7718b3..1774c056acb8 100644
---- a/arch/powerpc/include/asm/opal.h
-+++ b/arch/powerpc/include/asm/opal.h
-@@ -407,6 +407,7 @@ void opal_sensor_groups_init(void);
- 
- int64_t opal_find_vm_area(uint64_t addr, struct opal_vm_area *opal_vm_area);
- int64_t opal_register_os_ops(struct opal_os_ops *ops, uint64_t size);
-+int64_t opal_cpu_idle(uint64_t srr1_addr, uint64_t psscr);
- 
- #endif /* __ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 78599bca66c2..3afd4293f729 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -805,6 +805,18 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
- 	return srr1;
- }
- 
-+static unsigned long power9_firmware_idle_stop(unsigned long psscr, bool mmu_on)
-+{
-+	unsigned long srr1;
-+	int rc;
-+
-+	rc = opal_cpu_idle(cpu_to_be64(&srr1), (uint64_t) psscr);
-+
-+	if (mmu_on)
-+		mtmsr(MSR_KERNEL);
-+	return srr1;
-+}
-+
- #ifdef CONFIG_HOTPLUG_CPU
- static unsigned long power9_offline_stop(unsigned long psscr)
- {
-diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
-index 11f419e76059..79076ca2de03 100644
---- a/arch/powerpc/platforms/powernv/opal-call.c
-+++ b/arch/powerpc/platforms/powernv/opal-call.c
-@@ -351,3 +351,4 @@ OPAL_CALL(opal_sym_to_addr,			OPAL_SYM_TO_ADDR);
- OPAL_CALL(opal_report_trap,			OPAL_REPORT_TRAP);
- OPAL_CALL(opal_find_vm_area,			OPAL_FIND_VM_AREA);
- OPAL_CALL(opal_register_os_ops,			OPAL_REGISTER_OS_OPS);
-+OPAL_CALL(opal_cpu_idle,			OPAL_CPU_IDLE);
-diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-index 93b9afaf33b3..1fbf7065f918 100644
---- a/arch/powerpc/platforms/powernv/opal.c
-+++ b/arch/powerpc/platforms/powernv/opal.c
-@@ -1150,6 +1150,20 @@ static void os_vm_unmap(uint64_t ea)
- 	local_flush_tlb_mm(mm);
- }
- 
-+int64_t os_idle_stop(uint64_t srr1_addr, uint64_t psscr)
-+{
-+	/*
-+	 * For lite state which does not lose even GPRS we call
-+	 * idle_stop_noloss while for all other states we call
-+	 * idle_stop_mayloss. Saving and restoration of other additional
-+	 * SPRs if required is handled in OPAL. All the quirks are also
-+	 * handled in OPAL.
-+	 */
-+	if (!(psscr & (PSSCR_EC|PSSCR_ESL)))
-+		return isa300_idle_stop_noloss(psscr);
-+	return isa300_idle_stop_mayloss(psscr);
-+}
-+
- static int __init opal_init_mm(void)
- {
- 	struct mm_struct *mm;
-@@ -1231,6 +1245,7 @@ static int __init opal_init_early(void)
- 		opal_os_ops.os_printf = cpu_to_be64(&os_printf);
- 		opal_os_ops.os_vm_map = cpu_to_be64(&os_vm_map);
- 		opal_os_ops.os_vm_unmap = cpu_to_be64(&os_vm_unmap);
-+		opal_os_ops.os_idle_stop = cpu_to_be64(&os_idle_stop);
- 		if (opal_register_os_ops(&opal_os_ops, sizeof(opal_os_ops))) {
- 			pr_warn("OPAL register OS ops failed, firmware will run in v3 mode.\n");
- 		} else {
--- 
-2.17.1
+Am 06.07.20 um 02:41 schrieb Nicholas Piggin:
+> Excerpts from Paul Menzel's message of July 5, 2020 8:30 pm:
 
+>> Am 05.07.20 um 11:22 schrieb Paul Menzel:
+>>
+>>> With an IBM S822LC with Ubuntu 20.04, after updating to Firefox 78.0,
+>>> using Firefox seems to hang the system. This happened with self-built
+>>> Linux 5.7-rc5+ and now with 5.8-rc3+.
+>>>
+>>> (At least I believe the Firefox update is causing this.)
+>>>
+>>> Log in is impossible, and using the Serial over LAN over IPMI shows the
+>>> messages below.
+>>>
+>>>> [ 2620.579187] watchdog: BUG: soft lockup - CPU#125 stuck for 22s!
+>>>> [swapper/125:0]
+>>>> [ 2620.579378] Modules linked in: tcp_diag inet_diag unix_diag
+>>>> xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4
+>>>> xt_tcpudp ip6table_mangle ip6table_nat iptable_mangle iptable_nat
+>>>> nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink
+>>>> ip6table_filter ip6_tables iptable_filter bridge stp llc overlay xfs
+>>>> kvm_hv kvm joydev binfmt_misc uas usb_storage vmx_crypto ofpart
+>>>> cmdlinepart bnx2x powernv_flash mtd mdio crct10dif_vpmsum at24
+>>>> ibmpowernv ipmi_powernv ipmi_devintf powernv_rng ipmi_msghandler
+>>>> opal_prd sch_fq_codel parport_pc nfsd ppdev lp auth_rpcgss nfs_acl
+>>>> parport lockd grace sunrpc ip_tables x_tables autofs4 btrfs
+>>>> blake2b_generic libcrc32c xor zstd_compress raid6_pq input_leds
+>>>> mac_hid hid_generic ast drm_vram_helper drm_ttm_helper i2c_algo_bit
+>>>> ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops drm
+>>>> drm_panel_orientation_quirks ahci libahci usbhid hid crc32c_vpmsum
+>>>> uio_pdrv_genirq uio
+>>>> [ 2620.579537] CPU: 125 PID: 0 Comm: swapper/125 Tainted: G      D
+>>>> W    L    5.8.0-rc3+ #1
+>>>> [ 2620.579552] NIP:  c0000000010dad38 LR: c0000000010dad30 CTR:
+>>>> c000000000237830
+>>>> [ 2620.579568] REGS: c00000ffcb8c7600 TRAP: 0900   Tainted: G      D
+>>>> W    L     (5.8.0-rc3+)
+>>>> [ 2620.579582] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR:
+>>>> 44004228  XER: 00000000
+>>>> [ 2620.579599] CFAR: c0000000010dad44 IRQMASK: 0 [ 2620.579599] GPR00:
+>>>> c00000000023718c c00000ffcb8c7890 c000000001f9a900 0000000000000000 [
+>>>> 2620.579599] GPR04: c000000001fce438 0000000000000078 000000010008c1f2
+>>>> 0000000000000000 [ 2620.579599] GPR08: 000000ffd96a0000
+>>>> 0000000080000087 0000000000000000 c000000001fd25e0 [ 2620.579599]
+>>>> GPR12: 0000000000004400 c00000ffff72f680 c000000001ea36d8
+>>>> c00000ffcb859800 [ 2620.579599] GPR16: c00000000166c880
+>>>> c0000000016f8e00 000000000000000a c00000ffcb859800 [ 2620.579599]
+>>>> GPR20: 0000000000000100 c00000000166c918 c000000001fd21e8
+>>>> c00000ffcb859800 [ 2620.579599] GPR24: 000000ffd96a0000
+>>>> c000000001d44b80 c000000001d53780 0000000000000008 [ 2620.579599]
+>>>> GPR28: c000000001fd21e0 0000000000000001 0000000000000000
+>>>> c000000001d44b80 [ 2620.579711] NIP [c0000000010dad38]
+>>>> _raw_spin_lock_irqsave+0x98/0x120
+>>>> [ 2620.579724] LR [c0000000010dad30] _raw_spin_lock_irqsave+0x90/0x120
+>>>> [ 2620.579737] Call Trace:
+>>>> [ 2620.579746] [c00000ffcb8c7890] [c0000000013c84a0]
+>>>> ncsi_ops+0x209f50/0x2dc1d8 (unreliable)
+>>>> [ 2620.579763] [c00000ffcb8c78d0] [c00000000023718c] rcu_core+0xfc/0x7a0
+>>>> [ 2620.579777] [c00000ffcb8c7970] [c0000000010db81c]
+>>>> __do_softirq+0x17c/0x534
+>>>> [ 2620.579791] [c00000ffcb8c7aa0] [c0000000001786f4] irq_exit+0xd4/0x130
+>>>> [ 2620.579805] [c00000ffcb8c7ad0] [c000000000025eec]
+>>>> timer_interrupt+0x13c/0x370
+>>>> [ 2620.579821] [c00000ffcb8c7b40] [c0000000000165c0]
+>>>> replay_soft_interrupts+0x320/0x3f0
+>>>> [ 2620.579837] [c00000ffcb8c7d30] [c0000000000166d8]
+>>>> arch_local_irq_restore+0x48/0xa0
+>>>> [ 2620.579853] [c00000ffcb8c7d50] [c000000000de2fe0]
+>>>> cpuidle_enter_state+0x100/0x780
+> 
+> [snip]
+> 
+>>> I have to warm reset the system to get it working again.
+>>
+>> I am unable to reproduce this with Ubuntu’s Linux
+> 
+> Okay, not sure what that would be from, looks like RCU perhaps. Anyway
+> if it comes up again, let us know.
+
+Ah, it’s a different trace. I think it’s just an effect of the first 
+error (as below), as some CPUs lock up. I wasn’t able to capture the 
+start of the trace above. In the attachment for the hang *below* you can 
+also see
+
+     [  664.705193] watchdog: BUG: soft lockup - CPU#134 stuck for 26s! 
+[swapper/134:0]
+
+after the first Oops.
+
+>> With Linux 5.8-rc3+, I got now the beginning of the Linux messages.
+>>
+>>> [  572.253008] Oops: Exception in kernel mode, sig: 5 [#1]
+>>> [  572.253198] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
+>>> [  572.253232] Modules linked in: tcp_diag inet_diag unix_diag xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp ip6table_mangle ip6table_nat iptable_mangle iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink ip6table_filter ip6_tables iptable_filter bridge stp llc overlay xfs kvm_hv kvm binfmt_misc joydev uas usb_storage vmx_crypto bnx2x crct10dif_vpmsum ofpart cmdlinepart powernv_flash mtd mdio ibmpowernv at24 ipmi_powernv ipmi_devintf ipmi_msghandler opal_prd powernv_rng sch_fq_codel parport_pc ppdev lp nfsd parport auth_rpcgss nfs_acl lockd grace sunrpc ip_tables x_tables autofs4 btrfs blake2b_generic libcrc32c xor zstd_compress raid6_pq input_leds mac_hid hid_generic ast drm_vram_helper drm_ttm_helper i2c_algo_bit ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops drm ahci drm_panel_orientation_quirks libahci usbhid hid crc32c_vpmsum uio_pdrv_genirq uio
+>>> [  572.253639] CPU: 4 PID: 6728 Comm: Web Content Not tainted 5.8.0-rc3+ #1
+>>> [  572.253659] NIP:  c00000000000ff5c LR: c00000000001a8f8 CTR: c0000000001d5f00
+>>> [  572.253835] REGS: c000007f31f0f420 TRAP: 1500   Not tainted  (5.8.0-rc3+)
+>>> [  572.253854] MSR:  900000000290b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28c48482  XER: 20000000
+>>> [  572.253888] CFAR: c00000000000fecc IRQMASK: 1
+>>> [  572.253888] GPR00: c00000000001b228 c000007f31f0f6b0 c000000001f9a900 c000007f351544d0
+>>> [  572.253888] GPR04: 0000000000000000 c000007f31f0fe90 c000007f351544f0 c000007f32e522b0
+>>> [  572.253888] GPR08: 0000000000000000 0000000000002000 9000000000009033 c000007fbcd85800
+>>> [  572.253888] GPR12: 0000000000008800 c000007fffffb680 0000000000000005 0000000000000004
+>>> [  572.253888] GPR16: c000007f35153800 c000007f35154130 0000000000000005 0000000000000001
+>>> [  572.253888] GPR20: 0000000000000024 c000007f32e51e68 c000007f35154028 0000007fd8da0000
+>>> [  572.253888] GPR24: 0000007fd8da0000 c000007f351544d0 c000007e9a4024d0 c000000001665f18
+>>> [  572.253888] GPR28: c000007f351544d0 c000007f35153800 900000000290f033 c000007f35153800
+>>> [  572.254079] NIP [c00000000000ff5c] save_fpu+0xa8/0x2ac
+>>> [  572.254098] LR [c00000000001a8f8] __giveup_fpu+0x28/0x80
+>>> [  572.254114] Call Trace:
+>>> [  572.254128] [c000007f31f0f6b0] [c000007f35153980] 0xc000007f35153980 (unreliable)
+>>> [  572.254156] [c000007f31f0f6e0] [c00000000001b228] giveup_all+0x128/0x150
+>>> [  572.254327] [c000007f31f0f710] [c00000000001c124] __switch_to+0x104/0x490
+>>> [  572.254352] [c000007f31f0f770] [c0000000010d2e34] __schedule+0x2e4/0xa10
+>>> [  572.254374] [c000007f31f0f840] [c0000000010d35d4] schedule+0x74/0x140
+>>> [  572.254397] [c000007f31f0f870] [c0000000010d9478] schedule_timeout+0x358/0x5d0
+>>> [  572.254424] [c000007f31f0f980] [c0000000010d5638] wait_for_completion+0xc8/0x210
+>>> [  572.254451] [c000007f31f0fa00] [c000000000608ed4] do_coredump+0x3a4/0xd60
+>>> [  572.254625] [c000007f31f0fba0] [c00000000018d1cc] get_signal+0x1dc/0xd00
+>>> [  572.254648] [c000007f31f0fcc0] [c00000000001f088] do_notify_resume+0x158/0x450
+>>> [  572.254672] [c000007f31f0fda0] [c000000000037d04] interrupt_exit_user_prepare+0x1c4/0x230
+>>> [  572.254699] [c000007f31f0fe20] [c00000000000f2b4] interrupt_return+0x14/0x1c0
+>>> [  572.254720] Instruction dump:
+>>> [  572.254882] dae60170 db060180 db260190 db4601a0 db6601b0 db8601c0 dba601d0 dbc601e0
+>>> [  572.254912] dbe601f0 48000204 38800000 f0000250 <7c062798> f0000250 38800010 f0210a50
+>>> [  572.254946] ---[ end trace ba4452ee5c77d58e ]---
+>>
+>> Please find all the messages attached.
+> 
+> "Oops: Exception in kernel mode, sig: 5 [#1]"
+> 
+> Unfortunately it's a very poor error message. I think it is a 0x1500
+> exception triggering in the kernel FP register saving. Do you have the
+> CONFIG_PPC_DENORMALISATION config option set?
+
+Yes, as it’s set in the Ubuntu Linux kernel configuration, I have it set 
+too.
+
+     $ grep DENORMALI /boot/config-*
+     /boot/config-4.15.0-23-generic:CONFIG_PPC_DENORMALISATION=y
+     /boot/config-5.4.0-40-generic:CONFIG_PPC_DENORMALISATION=y
+     /boot/config-5.7.0-rc5+:CONFIG_PPC_DENORMALISATION=y
+     /boot/config-5.8.0-rc3+:CONFIG_PPC_DENORMALISATION=y
+
+
+Kind regards,
+
+Paul
