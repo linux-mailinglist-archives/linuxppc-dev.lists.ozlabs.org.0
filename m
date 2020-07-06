@@ -2,83 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA48215CDD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 19:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95404215E21
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 20:17:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B0sk62BVNzDqc9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 03:19:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B0v1Z50DszDqfd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 04:17:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.83;
+ helo=conssluserg-04.nifty.com; envelope-from=masahiroy@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=Go6ByYbk; 
+ dkim-atps=neutral
+Received: from conssluserg-04.nifty.com (conssluserg-04.nifty.com
+ [210.131.2.83])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B0shN0pbMzDqZC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 03:17:39 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 066H2AiG061347; Mon, 6 Jul 2020 13:17:34 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 322nun7qv5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 13:17:33 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 066HFjFg013367;
- Mon, 6 Jul 2020 17:17:31 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 322hd7thmc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 17:17:31 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 066HHSQj65929238
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Jul 2020 17:17:29 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCEA011C052;
- Mon,  6 Jul 2020 17:17:28 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EEFBE11C050;
- Mon,  6 Jul 2020 17:17:27 +0000 (GMT)
-Received: from [9.102.1.18] (unknown [9.102.1.18])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  6 Jul 2020 17:17:27 +0000 (GMT)
-Subject: Re: [PATCH v5 13/26] powerpc/book3s64/pkeys: Enable MMU_FTR_PKEY
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
- <20200619135850.47155-14-aneesh.kumar@linux.ibm.com>
- <878sfw6b7v.fsf@mpe.ellerman.id.au>
- <cddb4987-860f-f4be-43b0-f164031f9f6a@linux.ibm.com>
-Message-ID: <6fa2a91d-c11c-2be4-2057-15f86d4dd39c@linux.ibm.com>
-Date: Mon, 6 Jul 2020 22:47:27 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B0tzc1Q8WzDqYJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 04:15:55 +1000 (AEST)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com
+ [209.85.222.43]) (authenticated)
+ by conssluserg-04.nifty.com with ESMTP id 066IFHo7005118
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Jul 2020 03:15:18 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 066IFHo7005118
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1594059318;
+ bh=Q+48gTKGnNNAyaZpkSljO3/+f87VrYhlKUVJ5FKjmdQ=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=Go6ByYbk3w6ZqfzY+bcPEPfdQfjSDMmaa6f7z4KGrPRgiJJhVvFX0zG/wdRmgZlNg
+ fJTpHeNu8RVg7HoRCqN2GZxiXEZp2S76ErzL9nr07q+JH7oEhnOp3qzCLAiRsYRgzW
+ 4sXuqhEX3EHJGIPC2K90ZNZVGxta6AAY3nLwwqnKU5AiXTqseg+g4DmWdA+ju4NdX/
+ u3rtdKZRVojNvHpJbD5nmIHE4eTRwzZPmoVxbN7MZ3KlsszTCjUdjsMIZlEJR5waRC
+ kQvyoW3byTZEbBTB0DnuSKMXAvEpdAs1vEuIS1owDD0UyqTFxLJqTS0J5glaKV+nk/
+ UG3FkSjjPkTqQ==
+X-Nifty-SrcIP: [209.85.222.43]
+Received: by mail-ua1-f43.google.com with SMTP id l18so5122996uad.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jul 2020 11:15:17 -0700 (PDT)
+X-Gm-Message-State: AOAM531PBUOvgR+oDV+ZBJ81PJ7Q+NoM2/69rAl8oQ1VpzD1ZXCdTu3N
+ w/NjZquovl9no99EjOJDK7WeCtjp0Zo9vMFHe5g=
+X-Google-Smtp-Source: ABdhPJzoaiAwOpILAwYbp3vbz8/vfjd18YvPHG7eMlv5+34w/dyjTF009kfyXsQdMimrRPhduooTnxiTT2c1jqAYb+8=
+X-Received: by 2002:ab0:21c6:: with SMTP id u6mr18691153uan.109.1594059316651; 
+ Mon, 06 Jul 2020 11:15:16 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <cddb4987-860f-f4be-43b0-f164031f9f6a@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-06_15:2020-07-06,
- 2020-07-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0
- cotscore=-2147483648 lowpriorityscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=856 bulkscore=0
- malwarescore=0 phishscore=0 adultscore=0 spamscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2007060120
+References: <20200628015041.1000002-1-masahiroy@kernel.org>
+ <87imfa8le0.fsf@mpe.ellerman.id.au>
+ <CAK7LNATusciypBJ4dYZcyrugdi_rXEV_s=zxAehDxsX+Sd5z4g@mail.gmail.com>
+ <CADYN=9JnzPC6Ja9s3_01k-CDTSuxKBMRdrqU5rqp0xw1r9XpRw@mail.gmail.com>
+In-Reply-To: <CADYN=9JnzPC6Ja9s3_01k-CDTSuxKBMRdrqU5rqp0xw1r9XpRw@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 7 Jul 2020 03:14:40 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARg_B+tcbduBzrh2_Q3dwk_XxDcaw+sMTwsMOxNYM7hnQ@mail.gmail.com>
+Message-ID: <CAK7LNARg_B+tcbduBzrh2_Q3dwk_XxDcaw+sMTwsMOxNYM7hnQ@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: introduce ccflags-remove-y and asflags-remove-y
+To: Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,61 +73,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, bauerman@linux.ibm.com
+Cc: Michal Marek <michal.lkml@markovi.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Russell King <linux@armlinux.org.uk>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Rich Felker <dalias@libc.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Anders,
 
->>
->>>           /*
->>>            * Let's assume 32 pkeys on P8 bare metal, if its not 
->>> defined by device
->>>            * tree. We make this exception since skiboot forgot to 
->>> expose this
->>>            * property on power8.
->>>            */
->>>           if (!firmware_has_feature(FW_FEATURE_LPAR) &&
->>> -            cpu_has_feature(CPU_FTRS_POWER8))
->>> +            early_cpu_has_feature(CPU_FTRS_POWER8))
->>>               pkeys_total = 32;
->>
->> That's not how cpu_has_feature() works, we'll need to fix that.
->>
->> cheers
->>
-> 
-> I did a separate patch to handle that which switch the above to
-> 
->          /*
->           * Let's assume 32 pkeys on P8/P9 bare metal, if its not 
-> defined by device
->           * tree. We make this exception since skiboot forgot to expose 
-> this
->           * property on power8/9.
->           */
->          if (!firmware_has_feature(FW_FEATURE_LPAR) &&
->              (early_cpu_has_feature(CPU_FTR_ARCH_207S) ||
->               early_cpu_has_feature(CPU_FTR_ARCH_300)))
->              pkeys_total = 32;
-> 
+On Mon, Jul 6, 2020 at 8:24 PM Anders Roxell <anders.roxell@linaro.org> wrote:
+>
+
+> The full log can be found here [1].
+>
+> Without this patch for  'trace_selftest_dynamic' for instance, CC_FLAGS_FTRACE
+> was removed from kernel/trace/*, and then added back to
+> kernel/trace/trace_selftest_dynamic.
+> While with this patch it looks like we add the flag (even though it is
+> already there), and then
+> removes the flag for all files in kernel/trace/* .
 
 
-We should do a PVR check here i guess.
+You are right.
+
+I will drop this patch,
+and send v2.
 
 
-	ret = of_scan_flat_dt(dt_scan_storage_keys, &pkeys_total);
-	if (ret == 0) {
-
-		/*
-		 * Let's assume 32 pkeys on P8/P9 bare metal, if its not defined by device
-		 * tree. We make this exception since skiboot forgot to expose this
-		 * property on power8/9.
-		 */
-		if (!firmware_has_feature(FW_FEATURE_LPAR) &&
-		    (pvr_version_is(PVR_POWER8) || pvr_version_is(PVR_POWER9)))
-			pkeys_total = 32;
-	}
+Thank you.
 
 
--aneesh
+
+
+-- 
+Best Regards
+Masahiro Yamada
