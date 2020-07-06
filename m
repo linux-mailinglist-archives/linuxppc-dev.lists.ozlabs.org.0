@@ -1,73 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF532152C2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 08:41:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816A02152D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 09:04:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B0bZf1DyvzDqjl
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 16:41:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B0c4K0X5VzDqjx
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 17:04:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B0bXz61t1zDqbc
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 16:40:19 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0666VOxM102852; Mon, 6 Jul 2020 02:40:13 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 322nxwysb0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 02:40:13 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0666FGa5015484;
- Mon, 6 Jul 2020 06:40:11 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04fra.de.ibm.com with ESMTP id 322hd7s05j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 06:40:11 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0666e87K55246962
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Jul 2020 06:40:08 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE38C4C046;
- Mon,  6 Jul 2020 06:40:07 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 552074C04A;
- Mon,  6 Jul 2020 06:40:06 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.102.3.252])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  6 Jul 2020 06:40:06 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/numa: Restrict possible nodes based on platform
-Date: Mon,  6 Jul 2020 12:10:02 +0530
-Message-Id: <20200706064002.14848-1-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.17.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-06_03:2020-07-06,
- 2020-07-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- adultscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 suspectscore=2
- clxscore=1011 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007060049
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B0c2X067lzDqLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 17:02:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=YePjvUcz; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B0c2W4pxpz9sDX;
+ Mon,  6 Jul 2020 17:02:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594018947;
+ bh=W+eGqg/7z6WFw/rQ5tJzg+7Dp/iEy7W8uSEBXQ4Znyo=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=YePjvUczpyxtkOp9F4ppDsgTXWlGhf+BdF58fpqAjs5f9OWvUkjT/yawVg84faA7m
+ TC9LDhmVXaG31I2eu+69nVlS2FdllwKR9prWSY89WDjl/yCnDwZyl+liaq2Ux5QtaA
+ uQNzlE3t4N1ZuwgF7+o3TXMPPUwNWfMZqt6fgiVScROYMv6avpV/CdC01DSyy8pw2g
+ qJTOtxWXMkOn8Mx7Uiz3i4OQKWBPKbgli1IGkEunKtW8QalHEHm7zXMoPiNBF2dlS8
+ VIzo0NRsV9c6a9SxUryhNTepmtHIiB8eTxLlhM14KGXGPcFt+ru6mDgZWR6jVgHg81
+ IAdrWE72mNolw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 10/26] powerpc/book3s64/pkeys: Convert pkey_total to
+ max_pkey
+In-Reply-To: <20200619135850.47155-11-aneesh.kumar@linux.ibm.com>
+References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
+ <20200619135850.47155-11-aneesh.kumar@linux.ibm.com>
+Date: Mon, 06 Jul 2020 17:04:39 +1000
+Message-ID: <87tuyl5dko.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,109 +60,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Bharata B Rao <bharata@linux.ibm.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxram@us.ibm.com,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As per PAPR, there are 2 device tree property
-ibm,max-associativity-domains (which defines the maximum number of
-domains that the firmware i.e PowerVM can support) and
-ibm,current-associativity-domains (which defines the maximum number of
-domains that the platform can support). Value of
-ibm,max-associativity-domains property is always greater than or equal
-to ibm,current-associativity-domains property.
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> max_pkey now represents max key value that userspace can allocate.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/pkeys.h |  7 +++++--
+>  arch/powerpc/mm/book3s64/pkeys.c | 14 +++++++-------
+>  2 files changed, 12 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
+> index 75d2a2c19c04..652bad7334f3 100644
+> --- a/arch/powerpc/include/asm/pkeys.h
+> +++ b/arch/powerpc/include/asm/pkeys.h
+> @@ -12,7 +12,7 @@
+>  #include <asm/firmware.h>
+>  
+>  DECLARE_STATIC_KEY_FALSE(pkey_disabled);
+> -extern int pkeys_total; /* total pkeys as per device tree */
+> +extern int max_pkey;
+>  extern u32 initial_allocation_mask; /*  bits set for the initially allocated keys */
+>  extern u32 reserved_allocation_mask; /* bits set for reserved keys */
+>  
+> @@ -44,7 +44,10 @@ static inline int vma_pkey(struct vm_area_struct *vma)
+>  	return (vma->vm_flags & ARCH_VM_PKEY_FLAGS) >> VM_PKEY_SHIFT;
+>  }
+>  
+> -#define arch_max_pkey() pkeys_total
+> +static inline int arch_max_pkey(void)
+> +{
+> +	return max_pkey;
+> +}
 
-Powerpc currently uses ibm,max-associativity-domains  property while
-setting the possible number of nodes. This is currently set at 32.
-However the possible number of nodes for a platform may be significantly
-less. Hence set the possible number of nodes based on
-ibm,current-associativity-domains property.
+If pkeys_total = 32 then max_pkey = 31.
 
-$ lsprop /proc/device-tree/rtas/ibm,*associ*-domains
-/proc/device-tree/rtas/ibm,current-associativity-domains
-		 00000005 00000001 00000002 00000002 00000002 00000010
-/proc/device-tree/rtas/ibm,max-associativity-domains
-		 00000005 00000001 00000008 00000020 00000020 00000100
+So we can't just substitute one for the other. ie. arch_max_pkey() must
+have been wrong, or it is wrong now.
 
-$ cat /sys/devices/system/node/possible ##Before patch
-0-31
+> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+> index 87d882a9aaf2..a4d7287082a8 100644
+> --- a/arch/powerpc/mm/book3s64/pkeys.c
+> +++ b/arch/powerpc/mm/book3s64/pkeys.c
+> @@ -14,7 +14,7 @@
+>  
+>  DEFINE_STATIC_KEY_FALSE(pkey_disabled);
+>  DEFINE_STATIC_KEY_FALSE(execute_pkey_disabled);
+> -int  pkeys_total;		/* Total pkeys as per device tree */
+> +int  max_pkey;			/* Maximum key value supported */
+>  u32  initial_allocation_mask;   /* Bits set for the initially allocated keys */
+>  /*
+>   *  Keys marked in the reservation list cannot be allocated by  userspace
+> @@ -84,7 +84,7 @@ static int scan_pkey_feature(void)
+>  
+>  static int pkey_initialize(void)
+>  {
+> -	int os_reserved, i;
+> +	int pkeys_total, i;
+>  
+>  	/*
+>  	 * We define PKEY_DISABLE_EXECUTE in addition to the arch-neutral
+> @@ -122,12 +122,12 @@ static int pkey_initialize(void)
+>  	 * The OS can manage only 8 pkeys due to its inability to represent them
+>  	 * in the Linux 4K PTE. Mark all other keys reserved.
+>  	 */
+> -	os_reserved = pkeys_total - 8;
+> +	max_pkey = min(8, pkeys_total);
 
-$ cat /sys/devices/system/node/possible ##After patch
-0-1
+Shouldn't it be 7 ?
 
-Note the maximum nodes this platform can support is only 2 but the
-possible nodes is set to 32.
+>  #else
+> -	os_reserved = 0;
+> +	max_pkey = pkeys_total;
+>  #endif
+>  
+> -	if (unlikely((pkeys_total - os_reserved) <= execute_only_key)) {
+> +	if (unlikely(max_pkey <= execute_only_key)) {
 
-This is important because lot of kernel and user space code allocate
-structures for all possible nodes leading to a lot of memory that is
-allocated but not used.
+Isn't that an off-by-one now?
 
-I ran a simple experiment to create and destroy 100 memory cgroups on
-boot on a 8 node machine (Power8 Alpine).
+This is one-off boot time code, there's no need to clutter it with
+unlikely.
 
-Before patch
-free -k at boot
-              total        used        free      shared  buff/cache   available
-Mem:      523498176     4106816   518820608       22272      570752   516606720
-Swap:       4194240           0     4194240
+>  		/*
+>  		 * Insufficient number of keys to support
+>  		 * execute only key. Mark it unavailable.
+> @@ -174,10 +174,10 @@ static int pkey_initialize(void)
+>  	default_uamor &= ~(0x3ul << pkeyshift(1));
+>  
+>  	/*
+> -	 * Prevent the usage of OS reserved the keys. Update UAMOR
+> +	 * Prevent the usage of OS reserved keys. Update UAMOR
+>  	 * for those keys.
+>  	 */
+> -	for (i = (pkeys_total - os_reserved); i < pkeys_total; i++) {
+> +	for (i = max_pkey; i < pkeys_total; i++) {
 
-free -k after creating 100 memory cgroups
-              total        used        free      shared  buff/cache   available
-Mem:      523498176     4628416   518246464       22336      623296   516058688
-Swap:       4194240           0     4194240
+Another off-by-one? Shouldn't we start from max_pkey + 1 ?
 
-free -k after destroying 100 memory cgroups
-              total        used        free      shared  buff/cache   available
-Mem:      523498176     4697408   518173760       22400      627008   515987904
-Swap:       4194240           0     4194240
+>  		reserved_allocation_mask |= (0x1 << i);
+>  		default_uamor &= ~(0x3ul << pkeyshift(i));
+>  	}
 
-After patch
-free -k at boot
-              total        used        free      shared  buff/cache   available
-Mem:      523498176     3969472   518933888       22272      594816   516731776
-Swap:       4194240           0     4194240
-
-free -k after creating 100 memory cgroups
-              total        used        free      shared  buff/cache   available
-Mem:      523498176     4181888   518676096       22208      640192   516496448
-Swap:       4194240           0     4194240
-
-free -k after destroying 100 memory cgroups
-              total        used        free      shared  buff/cache   available
-Mem:      523498176     4232320   518619904       22272      645952   516443264
-Swap:       4194240           0     4194240
-
-Observations:
-Fixed kernel takes 137344 kb (4106816-3969472) less to boot.
-Fixed kernel takes 309184 kb (4628416-4181888-137344) less to create 100 memcgs.
-
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Anton Blanchard <anton@ozlabs.org>
-Cc: Bharata B Rao <bharata@linux.ibm.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
----
- arch/powerpc/mm/numa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 9fcf2d195830..3d55cef1a2dc 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -897,7 +897,7 @@ static void __init find_possible_nodes(void)
- 		return;
- 
- 	if (of_property_read_u32_index(rtas,
--				"ibm,max-associativity-domains",
-+				"ibm,current-associativity-domains",
- 				min_common_depth, &numnodes))
- 		goto out;
- 
--- 
-2.18.2
-
+cheers
