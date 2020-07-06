@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E732151D7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 06:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A478C2151D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 06:48:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B0Y0t4nFnzDqTd
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 14:45:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B0Y3L7563zDqC7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 14:47:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
- helo=mail-wm1-x341.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::343;
+ helo=mail-wm1-x343.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=j6IY8Rk0; dkim-atps=neutral
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
+ header.s=20161025 header.b=GZVWqJqD; dkim-atps=neutral
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B0Xnt5cWtzDqcc
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 14:36:18 +1000 (AEST)
-Received: by mail-wm1-x341.google.com with SMTP id w3so27973397wmi.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jul 2020 21:36:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B0Xp12vjPzDqSy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 14:36:25 +1000 (AEST)
+Received: by mail-wm1-x343.google.com with SMTP id g10so14801126wmc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jul 2020 21:36:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=qAjwhVmi7cXYyrcgTshEaU64UV7iDeQvtF4CQCRQOIA=;
- b=j6IY8Rk0l2kZ9V6bPbYFE3dgy3cWKRAhnZrdpapSkjFtfaFF/VDIiJx7WvLsLe/7Om
- czeGXECzjvvgKJbsZoY5WrhdNqtzgXQQI28eTXH7l0xO7ftSxDlC3cAwh1Znut9trpJC
- NH5yUM2AuSIKZGzkX+afPwlfmqWsnZO2mdPkm0DfAX+jr/J2jJjH3hTsrWiWK2XyjNMd
- Oluf8PeK1KKHz824rICvAyFAiMHuo3QD2OEOb4Kss28zzXO4qBis7qVL2shRtd/CW4d5
- jNirXSd5UYzXya8k0VAuDRJy/9aRxDN2/ro09JIOUMIpnmehbyDMTfruTdKf6qwG1mkb
- tqUg==
+ bh=eFtOhPa6UPKbbzo3u5/AEsgh8vOwpk1J+kW2CjfhlPc=;
+ b=GZVWqJqDnvPt0m/ywH4ec2mSr4AXEvnGlkCVGnG20TxuxQwdpvE31up4OGSkls1qOo
+ IgtnVwOwJutJvf2GXZkxhpEakr8p+lbnKX/OhqN4/MFx7YxGxBfHzz0SjvYqo3ob1WCa
+ nYd6LBHhfUKz2SqDrVLe+9beX6dXmigINLPitUlNSnOPbSsm2Gk7uZ1AY/2J3OFpoOdU
+ a7/WFOUGawfnF3GMH3e3Ggj56N0Aq8MyTb15rK9OsVX6cYgR/TLJpi9RKYN/MPNukom6
+ 7Yy5/FI+3E3oTHE2VkYAdM9O7fRZjySbLmG4loRlVi2QLUTfiNM5t7bfvkTxPoqY9O5S
+ aOnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=qAjwhVmi7cXYyrcgTshEaU64UV7iDeQvtF4CQCRQOIA=;
- b=V8BB8X5j6jZnvDGvVGAoxiQ++KDe2rGkVpX++GAFOx1+BoAZucqTztIEdyC1ytrPgf
- DOxvfkNnrNAUikujf1uK8Ws9RCkXKNUxqkOX+/b9zQKUNulxHmy409I9SgFk5pbjY1DP
- xnv9KitPfm1W5vzg2xIkoDHMrPLm5CCADYuhQIsvMhNlrhMbZjuZmFBp81hVTQ9ayCLa
- Y12W9gzrhR5qmL61OLG/q/nscwcsUuAcn00u8+Yr+l5RM5DD/BR1VaW2xhYlAnMyOo1L
- flqZgBfq5Vza9aYq8jCc4KJj+35vArymuLLCwVfmXn5iOisfX15tjiotiQxMfs21Qor2
- NNMw==
-X-Gm-Message-State: AOAM530T9kYMPaAB+8DGMbFBGRv5inO7uunsqlOPgMuoF4gzbG+10kjP
- HI5BhnDilXQyDLFEWkOAJ8ax+Da8
-X-Google-Smtp-Source: ABdhPJwTeiPPSnkuCSlat5ePJOON53Vw2+uUpuZbetlhX9t8vi5LhOvMd7QHi9jBk9bAcLb69aeXuA==
-X-Received: by 2002:a1c:48d:: with SMTP id 135mr49005749wme.102.1594010175902; 
- Sun, 05 Jul 2020 21:36:15 -0700 (PDT)
+ bh=eFtOhPa6UPKbbzo3u5/AEsgh8vOwpk1J+kW2CjfhlPc=;
+ b=nOPa0Wpo7RV4gZiyDgK89rksYyxHV/d46QeghT8uBdbis5y54bLQuTobZ2CFyzpR1v
+ LdNqVCvH7MWQEtAMY0EApB3xUw+JgYr1WRoM1atZzG2LfkdDZZ7er/aRTRl74GedKlVY
+ CEZhTXds7SX0fTMkf/CvdAClDIoiCWHNRPP30eaZ8vAjlA0EaEOVpjnT4SNxcfXtgNQw
+ ZLUUvbJiYuHqtTV1twFDY0auqMkfkWGyxiFAlEa9e+2dQVINjRde2I1MrLPLi6qRGgOm
+ RP1KC+I9mLFRolwTqlyDgzPl4FsdSlcwgtw6WLXvTHmaMusgHB1QOsk1UaUk0/5I2Hnu
+ ZZXg==
+X-Gm-Message-State: AOAM53065wtOIAtnro1sNDz4p57oypsM2IDZ5ztAzgqEFHoVvE44ciKs
+ X9NoCvoL51VARz7lbHlrPVghG/MW
+X-Google-Smtp-Source: ABdhPJxeZ0m8MAEwenuHNIIMBNLfG2x8/jkCtcATFVbQAnJEi6JvrVWN82YAkx52xf9gORD1ssU3aw==
+X-Received: by 2002:a1c:9e4c:: with SMTP id h73mr40259343wme.177.1594010181430; 
+ Sun, 05 Jul 2020 21:36:21 -0700 (PDT)
 Received: from bobo.ibm.com (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id r10sm22202309wrm.17.2020.07.05.21.36.10
+ by smtp.gmail.com with ESMTPSA id r10sm22202309wrm.17.2020.07.05.21.36.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Jul 2020 21:36:15 -0700 (PDT)
+ Sun, 05 Jul 2020 21:36:21 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 4/6] powerpc/64s: implement queued spinlocks and rwlocks
-Date: Mon,  6 Jul 2020 14:35:38 +1000
-Message-Id: <20200706043540.1563616-5-npiggin@gmail.com>
+Subject: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks for
+ SPLPAR
+Date: Mon,  6 Jul 2020 14:35:39 +1000
+Message-Id: <20200706043540.1563616-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200706043540.1563616-1-npiggin@gmail.com>
 References: <20200706043540.1563616-1-npiggin@gmail.com>
@@ -87,169 +88,226 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These have shown significantly improved performance and fairness when
-spinlock contention is moderate to high on very large systems.
-
- [ Numbers hopefully forthcoming after more testing, but initial
-   results look good ]
-
-Thanks to the fast path, single threaded performance is not noticably
-hurt.
-
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig                      | 13 ++++++++++++
- arch/powerpc/include/asm/Kbuild           |  2 ++
- arch/powerpc/include/asm/qspinlock.h      | 25 +++++++++++++++++++++++
- arch/powerpc/include/asm/spinlock.h       |  5 +++++
- arch/powerpc/include/asm/spinlock_types.h |  5 +++++
- arch/powerpc/lib/Makefile                 |  3 +++
- include/asm-generic/qspinlock.h           |  2 ++
- 7 files changed, 55 insertions(+)
- create mode 100644 arch/powerpc/include/asm/qspinlock.h
+ arch/powerpc/include/asm/paravirt.h           | 28 ++++++++
+ arch/powerpc/include/asm/qspinlock.h          | 66 +++++++++++++++++++
+ arch/powerpc/include/asm/qspinlock_paravirt.h |  7 ++
+ arch/powerpc/platforms/pseries/Kconfig        |  5 ++
+ arch/powerpc/platforms/pseries/setup.c        |  6 +-
+ include/asm-generic/qspinlock.h               |  2 +
+ 6 files changed, 113 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/qspinlock_paravirt.h
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 24ac85c868db..17663ea57697 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -146,6 +146,8 @@ config PPC
- 	select ARCH_SUPPORTS_ATOMIC_RMW
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
-+	select ARCH_USE_QUEUED_RWLOCKS		if PPC_QUEUED_SPINLOCKS
-+	select ARCH_USE_QUEUED_SPINLOCKS	if PPC_QUEUED_SPINLOCKS
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select ARCH_WEAK_RELEASE_ACQUIRE
- 	select BINFMT_ELF
-@@ -492,6 +494,17 @@ config HOTPLUG_CPU
- 
- 	  Say N if you are unsure.
- 
-+config PPC_QUEUED_SPINLOCKS
-+	bool "Queued spinlocks"
-+	depends on SMP
-+	default "y" if PPC_BOOK3S_64
-+	help
-+	  Say Y here to use to use queued spinlocks which are more complex
-+	  but give better salability and fairness on large SMP and NUMA
-+	  systems.
+diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+index 7a8546660a63..f2d51f929cf5 100644
+--- a/arch/powerpc/include/asm/paravirt.h
++++ b/arch/powerpc/include/asm/paravirt.h
+@@ -29,6 +29,16 @@ static inline void yield_to_preempted(int cpu, u32 yield_count)
+ {
+ 	plpar_hcall_norets(H_CONFER, get_hard_smp_processor_id(cpu), yield_count);
+ }
 +
-+	  If unsure, say "Y" if you have lots of cores, otherwise "N".
-+
- config ARCH_CPU_PROBE_RELEASE
- 	def_bool y
- 	depends on HOTPLUG_CPU
-diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
-index dadbcf3a0b1e..1dd8b6adff5e 100644
---- a/arch/powerpc/include/asm/Kbuild
-+++ b/arch/powerpc/include/asm/Kbuild
-@@ -6,5 +6,7 @@ generated-y += syscall_table_spu.h
- generic-y += export.h
- generic-y += local64.h
- generic-y += mcs_spinlock.h
-+generic-y += qrwlock.h
-+generic-y += qspinlock.h
- generic-y += vtime.h
- generic-y += early_ioremap.h
-diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-new file mode 100644
-index 000000000000..c49e33e24edd
---- /dev/null
-+++ b/arch/powerpc/include/asm/qspinlock.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_POWERPC_QSPINLOCK_H
-+#define _ASM_POWERPC_QSPINLOCK_H
-+
-+#include <asm-generic/qspinlock_types.h>
-+
-+#define _Q_PENDING_LOOPS	(1 << 9) /* not tuned */
-+
-+#define smp_mb__after_spinlock()   smp_mb()
-+
-+static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
++static inline void prod_cpu(int cpu)
 +{
-+	/*
-+	 * This barrier was added to simple spinlocks by commit 51d7d5205d338,
-+	 * but it should now be possible to remove it, asm arm64 has done with
-+	 * commit c6f5d02b6a0f.
-+	 */
-+	smp_mb();
-+	return atomic_read(&lock->val);
++	plpar_hcall_norets(H_PROD, get_hard_smp_processor_id(cpu));
 +}
-+#define queued_spin_is_locked queued_spin_is_locked
 +
-+#include <asm-generic/qspinlock.h>
++static inline void yield_to_any(void)
++{
++	plpar_hcall_norets(H_CONFER, -1, 0);
++}
+ #else
+ static inline bool is_shared_processor(void)
+ {
+@@ -45,6 +55,19 @@ static inline void yield_to_preempted(int cpu, u32 yield_count)
+ {
+ 	___bad_yield_to_preempted(); /* This would be a bug */
+ }
 +
-+#endif /* _ASM_POWERPC_QSPINLOCK_H */
-diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
-index 21357fe05fe0..434615f1d761 100644
---- a/arch/powerpc/include/asm/spinlock.h
-+++ b/arch/powerpc/include/asm/spinlock.h
-@@ -3,7 +3,12 @@
- #define __ASM_SPINLOCK_H
- #ifdef __KERNEL__
++extern void ___bad_yield_to_any(void);
++static inline void yield_to_any(void)
++{
++	___bad_yield_to_any(); /* This would be a bug */
++}
++
++extern void ___bad_prod_cpu(void);
++static inline void prod_cpu(int cpu)
++{
++	___bad_prod_cpu(); /* This would be a bug */
++}
++
+ #endif
  
-+#ifdef CONFIG_PPC_QUEUED_SPINLOCKS
-+#include <asm/qspinlock.h>
-+#include <asm/qrwlock.h>
-+#else
- #include <asm/simple_spinlock.h>
-+#endif
+ #define vcpu_is_preempted vcpu_is_preempted
+@@ -57,5 +80,10 @@ static inline bool vcpu_is_preempted(int cpu)
+ 	return false;
+ }
  
++static inline bool pv_is_native_spin_unlock(void)
++{
++     return !is_shared_processor();
++}
++
  #endif /* __KERNEL__ */
- #endif /* __ASM_SPINLOCK_H */
-diff --git a/arch/powerpc/include/asm/spinlock_types.h b/arch/powerpc/include/asm/spinlock_types.h
-index 3906f52dae65..c5d742f18021 100644
---- a/arch/powerpc/include/asm/spinlock_types.h
-+++ b/arch/powerpc/include/asm/spinlock_types.h
-@@ -6,6 +6,11 @@
- # error "please don't include this file directly"
- #endif
- 
-+#ifdef CONFIG_PPC_QUEUED_SPINLOCKS
-+#include <asm-generic/qspinlock_types.h>
-+#include <asm-generic/qrwlock_types.h>
-+#else
- #include <asm/simple_spinlock_types.h>
-+#endif
- 
- #endif
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 5e994cda8e40..d66a645503eb 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -41,7 +41,10 @@ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
- obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
- 	   memcpy_64.o memcpy_mcsafe_64.o
- 
-+ifndef CONFIG_PPC_QUEUED_SPINLOCKS
- obj64-$(CONFIG_SMP)	+= locks.o
-+endif
-+
- obj64-$(CONFIG_ALTIVEC)	+= vmx-helper.o
- obj64-$(CONFIG_KPROBES_SANITY_TEST)	+= test_emulate_step.o \
- 					   test_emulate_step_exec_instr.o
-diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-index fde943d180e0..fb0a814d4395 100644
---- a/include/asm-generic/qspinlock.h
-+++ b/include/asm-generic/qspinlock.h
-@@ -12,6 +12,7 @@
+ #endif /* __ASM_PARAVIRT_H */
+diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
+index c49e33e24edd..f5066f00a08c 100644
+--- a/arch/powerpc/include/asm/qspinlock.h
++++ b/arch/powerpc/include/asm/qspinlock.h
+@@ -3,9 +3,47 @@
+ #define _ASM_POWERPC_QSPINLOCK_H
  
  #include <asm-generic/qspinlock_types.h>
++#include <asm/paravirt.h>
  
-+#ifndef queued_spin_is_locked
+ #define _Q_PENDING_LOOPS	(1 << 9) /* not tuned */
+ 
++#ifdef CONFIG_PARAVIRT_SPINLOCKS
++extern void native_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
++extern void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
++extern void __pv_queued_spin_unlock(struct qspinlock *lock);
++
++static __always_inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
++{
++	if (!is_shared_processor())
++		native_queued_spin_lock_slowpath(lock, val);
++	else
++		__pv_queued_spin_lock_slowpath(lock, val);
++}
++
++#define queued_spin_unlock queued_spin_unlock
++static inline void queued_spin_unlock(struct qspinlock *lock)
++{
++	if (!is_shared_processor())
++		smp_store_release(&lock->locked, 0);
++	else
++		__pv_queued_spin_unlock(lock);
++}
++
++#else
++extern void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
++#endif
++
++static __always_inline void queued_spin_lock(struct qspinlock *lock)
++{
++	u32 val = 0;
++
++	if (likely(atomic_try_cmpxchg_acquire(&lock->val, &val, _Q_LOCKED_VAL)))
++		return;
++
++	queued_spin_lock_slowpath(lock, val);
++}
++#define queued_spin_lock queued_spin_lock
++
+ #define smp_mb__after_spinlock()   smp_mb()
+ 
+ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
+@@ -20,6 +58,34 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
+ }
+ #define queued_spin_is_locked queued_spin_is_locked
+ 
++#ifdef CONFIG_PARAVIRT_SPINLOCKS
++#define SPIN_THRESHOLD (1<<15) /* not tuned */
++
++static __always_inline void pv_wait(u8 *ptr, u8 val)
++{
++	if (*ptr != val)
++		return;
++	yield_to_any();
++	/*
++	 * We could pass in a CPU here if waiting in the queue and yield to
++	 * the previous CPU in the queue.
++	 */
++}
++
++static __always_inline void pv_kick(int cpu)
++{
++	prod_cpu(cpu);
++}
++
++extern void __pv_init_lock_hash(void);
++
++static inline void pv_spinlocks_init(void)
++{
++	__pv_init_lock_hash();
++}
++
++#endif
++
+ #include <asm-generic/qspinlock.h>
+ 
+ #endif /* _ASM_POWERPC_QSPINLOCK_H */
+diff --git a/arch/powerpc/include/asm/qspinlock_paravirt.h b/arch/powerpc/include/asm/qspinlock_paravirt.h
+new file mode 100644
+index 000000000000..750d1b5e0202
+--- /dev/null
++++ b/arch/powerpc/include/asm/qspinlock_paravirt.h
+@@ -0,0 +1,7 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef __ASM_QSPINLOCK_PARAVIRT_H
++#define __ASM_QSPINLOCK_PARAVIRT_H
++
++EXPORT_SYMBOL(__pv_queued_spin_unlock);
++
++#endif /* __ASM_QSPINLOCK_PARAVIRT_H */
+diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+index 24c18362e5ea..756e727b383f 100644
+--- a/arch/powerpc/platforms/pseries/Kconfig
++++ b/arch/powerpc/platforms/pseries/Kconfig
+@@ -25,9 +25,14 @@ config PPC_PSERIES
+ 	select SWIOTLB
+ 	default y
+ 
++config PARAVIRT_SPINLOCKS
++	bool
++	default n
++
+ config PPC_SPLPAR
+ 	depends on PPC_PSERIES
+ 	bool "Support for shared-processor logical partitions"
++	select PARAVIRT_SPINLOCKS if PPC_QUEUED_SPINLOCKS
+ 	help
+ 	  Enabling this option will make the kernel run more efficiently
+ 	  on logically-partitioned pSeries systems which use shared
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 2db8469e475f..747a203d9453 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -771,8 +771,12 @@ static void __init pSeries_setup_arch(void)
+ 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
+ 		vpa_init(boot_cpuid);
+ 
+-		if (lppaca_shared_proc(get_lppaca()))
++		if (lppaca_shared_proc(get_lppaca())) {
+ 			static_branch_enable(&shared_processor);
++#ifdef CONFIG_PARAVIRT_SPINLOCKS
++			pv_spinlocks_init();
++#endif
++		}
+ 
+ 		ppc_md.power_save = pseries_lpar_idle;
+ 		ppc_md.enable_pmcs = pseries_lpar_enable_pmcs;
+diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
+index fb0a814d4395..38ca14e79a86 100644
+--- a/include/asm-generic/qspinlock.h
++++ b/include/asm-generic/qspinlock.h
+@@ -69,6 +69,7 @@ static __always_inline int queued_spin_trylock(struct qspinlock *lock)
+ 
+ extern void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
+ 
++#ifndef queued_spin_lock
  /**
-  * queued_spin_is_locked - is the spinlock locked?
+  * queued_spin_lock - acquire a queued spinlock
   * @lock: Pointer to queued spinlock structure
-@@ -25,6 +26,7 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
- 	 */
- 	return atomic_read(&lock->val);
+@@ -82,6 +83,7 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
+ 
+ 	queued_spin_lock_slowpath(lock, val);
  }
 +#endif
  
+ #ifndef queued_spin_unlock
  /**
-  * queued_spin_value_unlocked - is the spinlock structure unlocked?
 -- 
 2.23.0
 
