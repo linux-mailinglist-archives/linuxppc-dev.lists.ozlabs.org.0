@@ -2,84 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755A121570A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 14:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D19215740
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 14:29:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B0krL4JJVzDqVn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 22:09:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B0lJ12p33zDqZl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jul 2020 22:29:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B0kpT06SdzDqZP
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 22:07:28 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 066C1pg7073550; Mon, 6 Jul 2020 08:06:44 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 322pam0w1k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 08:06:44 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 066C2E8T075760;
- Mon, 6 Jul 2020 08:06:44 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 322pam0vyt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 08:06:43 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 066C5hZZ016297;
- Mon, 6 Jul 2020 12:06:41 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03ams.nl.ibm.com with ESMTP id 322hd7t93r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 06 Jul 2020 12:06:40 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 066C6cD056754260
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 6 Jul 2020 12:06:38 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 07A6E4C044;
- Mon,  6 Jul 2020 12:06:38 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0AEA84C040;
- Mon,  6 Jul 2020 12:06:36 +0000 (GMT)
-Received: from oc3871087118.ibm.com (unknown [9.145.151.4])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon,  6 Jul 2020 12:06:35 +0000 (GMT)
-Date: Mon, 6 Jul 2020 14:06:34 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V4 0/4] mm/debug_vm_pgtable: Add some more tests
-Message-ID: <20200706120633.GA32473@oc3871087118.ibm.com>
-References: <1593996516-7186-1-git-send-email-anshuman.khandual@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B0lFR2vJnzDqWl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jul 2020 22:27:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=KZs6kSCM; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B0lFP5nj1z9sDX;
+ Mon,  6 Jul 2020 22:27:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594038442;
+ bh=lXQ/a/hPj1/PDI3RxQ0AeOGOt1x90mEDDwiBIayzRWM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=KZs6kSCMdSJjYCMi77zoeehD1Set8N2KfnS722UPWxaVs5auvmtpwRmEWbOHZW1Cu
+ tkUy3Ge5QsMvvpjV1SlRWolTttBrSEHLRUCOiQ/5jZSylkclQ+LRkj8D5onBEvaBBs
+ yEx0tUIzCwzu12MSN3W4Kj7l7qOoxXLozD0RuATMe+l8BTVNvrV7zCzvxy7ZO9S6SN
+ RFKn+RXH0raT+oP9rM59hVAORmee/ErJq1MAQooiRLjJUd+TS5Bp5+XafRiJom+/SR
+ ftjG+xn087gzulvkRXnhOqpPalMieGIi9yB5rZ79fJD3ZV+eJwyDCeDaNjsfFZFcvM
+ KM+uqfJ0uSKiQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 18/26] powerpc/book3s64/keys/kuap: Reset AMR/IAMR
+ values on kexec
+In-Reply-To: <20200619135850.47155-19-aneesh.kumar@linux.ibm.com>
+References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
+ <20200619135850.47155-19-aneesh.kumar@linux.ibm.com>
+Date: Mon, 06 Jul 2020 22:29:33 +1000
+Message-ID: <87h7uk6d3m.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1593996516-7186-1-git-send-email-anshuman.khandual@arm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-06_09:2020-07-06,
- 2020-07-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- cotscore=-2147483648 lowpriorityscore=0 phishscore=0 priorityscore=1501
- suspectscore=0 mlxlogscore=929 adultscore=0 clxscore=1015 malwarescore=0
- mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2007060090
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,33 +60,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxram@us.ibm.com,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 06, 2020 at 06:18:32AM +0530, Anshuman Khandual wrote:
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> As we kexec across kernels that use AMR/IAMR for different purposes
+> we need to ensure that new kernels get kexec'd with a reset value
+> of AMR/IAMR. For ex: the new kernel can use key 0 for kernel mapping and the old
+> AMR value prevents access to key 0.
+>
+> This patch also removes reset if IAMR and AMOR in kexec_sequence. Reset of AMOR
+> is not needed and the IAMR reset is partial (it doesn't do the reset
+> on secondary cpus) and is redundant with this patch.
 
-[...]
+I like the idea of cleaning this stuff up.
 
-> Tested on arm64, x86 platforms but only build tested on all other enabled
-> platforms through ARCH_HAS_DEBUG_VM_PGTABLE i.e powerpc, arc, s390. The
+But I think tying it into kup/kuep/kuap and the MMU features and ifdefs
+and so on is overly complicated.
 
-Sorry for missing to test earlier. Works for me on s390. Also, tried with
-few relevant config options to set/unset.
+We should just have eg:
 
-Thanks!
+void reset_sprs(void)
+{
+	if (early_cpu_has_feature(CPU_FTR_ARCH_206)) {
+        	mtspr(SPRN_AMR, 0);
+        	mtspr(SPRN_UAMOR, 0);
+        }
+
+	if (early_cpu_has_feature(CPU_FTR_ARCH_207S)) {
+        	mtspr(SPRN_IAMR, 0);
+        }
+}
+
+And call that from the kexec paths.
+
+cheers
+
+> diff --git a/arch/powerpc/include/asm/book3s/64/kup-radix.h b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> index 3ee1ec60be84..c57063c35833 100644
+> --- a/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> @@ -180,6 +180,26 @@ static inline unsigned long kuap_get_and_check_amr(void)
+>  }
+>  #endif /* CONFIG_PPC_KUAP */
+>  
+> +#define reset_kuap reset_kuap
+> +static inline void reset_kuap(void)
+> +{
+> +	if (mmu_has_feature(MMU_FTR_RADIX_KUAP)) {
+> +		mtspr(SPRN_AMR, 0);
+> +		/*  Do we need isync()? We are going via a kexec reset */
+> +		isync();
+> +	}
+> +}
+> +
+> +#define reset_kuep reset_kuep
+> +static inline void reset_kuep(void)
+> +{
+> +	if (mmu_has_feature(MMU_FTR_KUEP)) {
+> +		mtspr(SPRN_IAMR, 0);
+> +		/*  Do we need isync()? We are going via a kexec reset */
+> +		isync();
+> +	}
+> +}
+> +
+>  #endif /* __ASSEMBLY__ */
+>  
+>  #endif /* _ASM_POWERPC_BOOK3S_64_KUP_RADIX_H */
+> diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+> index c745ee41ad66..4dc23a706910 100644
+> --- a/arch/powerpc/include/asm/kup.h
+> +++ b/arch/powerpc/include/asm/kup.h
+> @@ -113,6 +113,20 @@ static inline void prevent_current_write_to_user(void)
+>  	prevent_user_access(NULL, NULL, ~0UL, KUAP_CURRENT_WRITE);
+>  }
+>  
+> +#ifndef reset_kuap
+> +#define reset_kuap reset_kuap
+> +static inline void reset_kuap(void)
+> +{
+> +}
+> +#endif
+> +
+> +#ifndef reset_kuep
+> +#define reset_kuep reset_kuep
+> +static inline void reset_kuep(void)
+> +{
+> +}
+> +#endif
+> +
+>  #endif /* !__ASSEMBLY__ */
+>  
+>  #endif /* _ASM_POWERPC_KUAP_H_ */
+> diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+> index 1864605eca29..7bb46ad98207 100644
+> --- a/arch/powerpc/kernel/misc_64.S
+> +++ b/arch/powerpc/kernel/misc_64.S
+> @@ -413,20 +413,6 @@ _GLOBAL(kexec_sequence)
+>  	li	r0,0
+>  	std	r0,16(r1)
+>  
+> -BEGIN_FTR_SECTION
+> -	/*
+> -	 * This is the best time to turn AMR/IAMR off.
+> -	 * key 0 is used in radix for supervisor<->user
+> -	 * protection, but on hash key 0 is reserved
+> -	 * ideally we want to enter with a clean state.
+> -	 * NOTE, we rely on r0 being 0 from above.
+> -	 */
+> -	mtspr	SPRN_IAMR,r0
+> -BEGIN_FTR_SECTION_NESTED(42)
+> -	mtspr	SPRN_AMOR,r0
+> -END_FTR_SECTION_NESTED_IFSET(CPU_FTR_HVMODE, 42)
+> -END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+> -
+>  	/* save regs for local vars on new stack.
+>  	 * yes, we won't go back, but ...
+>  	 */
+> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+> index b4184092172a..a124715f33ea 100644
+> --- a/arch/powerpc/kexec/core_64.c
+> +++ b/arch/powerpc/kexec/core_64.c
+> @@ -152,6 +152,9 @@ static void kexec_smp_down(void *arg)
+>  	if (ppc_md.kexec_cpu_down)
+>  		ppc_md.kexec_cpu_down(0, 1);
+>  
+> +	reset_kuap();
+> +	reset_kuep();
+> +
+>  	kexec_smp_wait();
+>  	/* NOTREACHED */
+>  }
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> index c58ad1049909..9673f4b74c9a 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -165,6 +165,9 @@ void mmu_cleanup_all(void)
+>  		radix__mmu_cleanup_all();
+>  	else if (mmu_hash_ops.hpte_clear_all)
+>  		mmu_hash_ops.hpte_clear_all();
+> +
+> +	reset_kuap();
+> +	reset_kuep();
+>  }
+>  
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+> -- 
+> 2.26.2
