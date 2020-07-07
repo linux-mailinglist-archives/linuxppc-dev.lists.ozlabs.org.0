@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74856217609
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B292175E3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:07:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Vqq5J5kzDqyj
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:11:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Vl2070MzDqQd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:07:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,34 +17,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=E8lX9mtc; 
+ header.s=casper.20170209 header.b=sxkrQiQd; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1VjL6Mg4zDqnF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:05:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vj12MZyzDqft
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:05:25 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=RqyRnPkRTOc/R3lqbrT2rduELR3dheWkm530I4YPdjk=; b=E8lX9mtcOkU5sxWkqKrby7vT6X
- 5ObbPzq0n/nZnOwOYtF74Cr7SN3yxm514gKhyVaZUUUjtlTaQ0itgsX3nHoswyVD4UmaTgA//RkGd
- hvfDxg4ilL1ditN2h4e6MpEaTh9+uZVLLCmflEb+QJrpazHWc68oCEnKKXgAJXcdVvONPVASRYIRN
- xckpp0j/x86CuDTrXA76oJ0NvGhgewWZ4YuxJQviNJ7QaorsSgE9nl8/3+iiJJrloP4tyqaY/qsEx
- jfcCDtiWAugmrDCXyC4rQ8aU+XxnprdVwqmDNbWpGNcYSxbzkCwNQMWACuWFTIkIAg5fIK3u/Gqmy
- FVlYQHfw==;
+ bh=Uy8yJX+vppiMsr/LbFCCYFmBCFPFPsjcjKfD38DWB7A=; b=sxkrQiQdnrmXTHTrkBRYk3GyhK
+ 3MoKQhb+VfxX97H4vExjQgOEnyoL1sepIe7MXNHtQG2tERYABfleZ69U31o9ImVgu60K3fIqLAIW6
+ ZeDojpK29hd5agAoqQDfiJnK3d6GUED5cwgc+KqUiL5I1+s9/hQCwifXsOzC762dw39q7YyZ2+cGh
+ 1vVFdfUD1M5yzAdj/r5cYonsIqgMyL1DyCq+CYPlpT0axL3Ozj+O9LQa+9b6lQq2q3J3Em28VHhlZ
+ g6v4Snc4M3hPk/gQB1VHQhx1uCTpN3rM8cxq2bHB3+Ty+Yf7e1ywWOO/booRcPiuYmsyfxSxUi+0O
+ NJslNOhA==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsrxO-0004JY-HM; Tue, 07 Jul 2020 18:04:39 +0000
+ id 1jsrxZ-0004JY-4V; Tue, 07 Jul 2020 18:04:49 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 01/20] Documentation: numaperf: eliminate duplicated word
-Date: Tue,  7 Jul 2020 11:03:55 -0700
-Message-Id: <20200707180414.10467-2-rdunlap@infradead.org>
+Subject: [PATCH 02/20] Documentation: block: eliminate duplicated word
+Date: Tue,  7 Jul 2020 11:03:56 -0700
+Message-Id: <20200707180414.10467-3-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -98,25 +98,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the duplicated word "not".
+Change the doubled word "the" to "to the".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: linux-mm@vger.kernel.org
-Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org
 ---
- Documentation/admin-guide/mm/numaperf.rst |    2 +-
+ Documentation/block/pr.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-5.8-rc3.orig/Documentation/admin-guide/mm/numaperf.rst
-+++ linux-5.8-rc3/Documentation/admin-guide/mm/numaperf.rst
-@@ -129,7 +129,7 @@ will create the following directory::
+--- linux-next-20200701.orig/Documentation/block/pr.rst
++++ linux-next-20200701/Documentation/block/pr.rst
+@@ -9,7 +9,7 @@ access to block devices to specific init
+ setup.
  
- 	/sys/devices/system/node/nodeX/memory_side_cache/
+ This document gives a general overview of the support ioctl commands.
+-For a more detailed reference please refer the the SCSI Primary
++For a more detailed reference please refer to the SCSI Primary
+ Commands standard, specifically the section on Reservations and the
+ "PERSISTENT RESERVE IN" and "PERSISTENT RESERVE OUT" commands.
  
--If that directory is not present, the system either does not not provide
-+If that directory is not present, the system either does not provide
- a memory-side cache, or that information is not accessible to the kernel.
- 
- The attributes for each level of cache is provided under its cache
