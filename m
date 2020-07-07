@@ -1,73 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D374D216610
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 07:58:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2BD216626
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 08:04:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1BZL6j7HzDqkD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 15:58:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Bj84R4qzDqW6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 16:04:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PDoHvPLx; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1BXn636qzDqGm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 15:57:13 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id d194so16121761pga.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jul 2020 22:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=I7ns89tYStKSD19MEHznyG2I9XSfuUkGKtpU/r5MMac=;
- b=PDoHvPLxNl6TaF6PxvEjhtHK8f4JDz/IfWer/E1UJubzsbNLxzT7qZt1VpGsjA5ZKf
- eNpJQ995yfHQzT7jv59geBsJ6xN1reEX4Bk0eQRaZP89L0yz7bhxQfhv8pmhq0Von0oW
- f7KUtjSv/p+roRH7gJm10UCz5d32YK4AdVoNfDi4gc7MgSjHxrWGt6oI4s4qFEfNnW1Z
- dDzbVG7MfDKvZs5afxztEsaDNlwmiN96s4+aPiTnfI5w16SKqSCJAG58cbc/MEe5roCM
- pL98oqdNzB6kMRypLiGnKY8LcS8OP2a/Y2pvipFvK4GX73hdO99Jcq99JWm8Mp7mY12i
- gnnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=I7ns89tYStKSD19MEHznyG2I9XSfuUkGKtpU/r5MMac=;
- b=k4kdW8HASVKpaKBM54a8UCYree1o8aYV3h/bQMn9BQYrrGbc6zEzswLXShbJ4L4ZT+
- r9ToaKEE/EY2/p7qz2EmsVwKt7mGXAocwBbloWxPrkX0FKswB/k5FCLB1lxhPu0FswaM
- 60CsGRptxsJPG/w9iGSlROh7KCMN4e8x0JC68n275m3kJ9vwJpTyLmN8pafQQi1vdEhx
- TCv7IYZt8PAVn0jGFdxBxPPq8jZvKxoLF6YrC+i3exGbzxaLQzhSWqYsSvZ3TDcKjiju
- x1pUgcNWrDchunW6/1DCFGCnWdotip2V0SA2IoIQg/czBG/bn8Sq/ejLXDqi6glRQt7c
- u52w==
-X-Gm-Message-State: AOAM532idfYg0N3LDulrhl6+Nl6gdGfCcfL6eNnBdIpTtdRmiKnwHtz0
- tPH0cvxPRBwSWO8ImHD+fz4+Xm9G
-X-Google-Smtp-Source: ABdhPJzgoP//jHra6cbNRfSfL58k0z7LGnKGSFV6r4z5xdDumbyO9o0SKdBgLzyJp/37ixgJbLb9wA==
-X-Received: by 2002:a65:6246:: with SMTP id q6mr43272321pgv.133.1594101431561; 
- Mon, 06 Jul 2020 22:57:11 -0700 (PDT)
-Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id u74sm21211889pgc.58.2020.07.06.22.57.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Jul 2020 22:57:11 -0700 (PDT)
-Date: Tue, 07 Jul 2020 15:57:06 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 0/6] powerpc: queued spinlocks and rwlocks
-To: linuxppc-dev@lists.ozlabs.org, Waiman Long <longman@redhat.com>
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
-In-Reply-To: <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1BgS67sqzDqN7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 16:03:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=LPNcA6N4; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1BgS49vxz9sRK;
+ Tue,  7 Jul 2020 16:03:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594101780;
+ bh=QrWrYVgYa6g2YypBfv/Bu7EVXUobhl9H1qywtuJPCq8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=LPNcA6N49XUNnsqlxoVSwNSfK24RlwmLDJIiVjCIXMwl0iGFLODYOCtYcaZbyZvMC
+ Wnyqshl6DG+BUyzJO1VqjHoIHBE1jZAKgKUbyMymaNzioFIlNz8TQOoTXsgqIjYqFV
+ HywyGRz1IOt070vUcVvuCce7rXwAQF7J1mtYbAuCUOr7zzuBpc6ZRD4SKmWUCniNMb
+ 37QtgVlmgz/lJQETUb1SQlhVDnFEVvUGtu10HQk36G+U0gw1SEd+V4DsoDuHNASU3r
+ ts119N7Y8p7qHNCvEs2fdwg7OYk2HGdcqBwtv0HwdyjM1Pe5TeXB2qgliogGzGpf5+
+ 6hU9RauOpZkXg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 23/26] powerpc/book3s64/kuap: Move UAMOR setup to key
+ init function
+In-Reply-To: <20200619135850.47155-24-aneesh.kumar@linux.ibm.com>
+References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
+ <20200619135850.47155-24-aneesh.kumar@linux.ibm.com>
+Date: Tue, 07 Jul 2020 16:05:15 +1000
+Message-ID: <87fta35084.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1594101082.hfq9x5yact.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,138 +60,242 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxram@us.ibm.com,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Waiman Long's message of July 7, 2020 4:39 am:
-> On 7/6/20 12:35 AM, Nicholas Piggin wrote:
->> v3 is updated to use __pv_queued_spin_unlock, noticed by Waiman (thank y=
-ou).
->>
->> Thanks,
->> Nick
->>
->> Nicholas Piggin (6):
->>    powerpc/powernv: must include hvcall.h to get PAPR defines
->>    powerpc/pseries: move some PAPR paravirt functions to their own file
->>    powerpc: move spinlock implementation to simple_spinlock
->>    powerpc/64s: implement queued spinlocks and rwlocks
->>    powerpc/pseries: implement paravirt qspinlocks for SPLPAR
->>    powerpc/qspinlock: optimised atomic_try_cmpxchg_lock that adds the
->>      lock hint
->>
->>   arch/powerpc/Kconfig                          |  13 +
->>   arch/powerpc/include/asm/Kbuild               |   2 +
->>   arch/powerpc/include/asm/atomic.h             |  28 ++
->>   arch/powerpc/include/asm/paravirt.h           |  89 +++++
->>   arch/powerpc/include/asm/qspinlock.h          |  91 ++++++
->>   arch/powerpc/include/asm/qspinlock_paravirt.h |   7 +
->>   arch/powerpc/include/asm/simple_spinlock.h    | 292 +++++++++++++++++
->>   .../include/asm/simple_spinlock_types.h       |  21 ++
->>   arch/powerpc/include/asm/spinlock.h           | 308 +-----------------
->>   arch/powerpc/include/asm/spinlock_types.h     |  17 +-
->>   arch/powerpc/lib/Makefile                     |   3 +
->>   arch/powerpc/lib/locks.c                      |  12 +-
->>   arch/powerpc/platforms/powernv/pci-ioda-tce.c |   1 +
->>   arch/powerpc/platforms/pseries/Kconfig        |   5 +
->>   arch/powerpc/platforms/pseries/setup.c        |   6 +-
->>   include/asm-generic/qspinlock.h               |   4 +
->>   16 files changed, 577 insertions(+), 322 deletions(-)
->>   create mode 100644 arch/powerpc/include/asm/paravirt.h
->>   create mode 100644 arch/powerpc/include/asm/qspinlock.h
->>   create mode 100644 arch/powerpc/include/asm/qspinlock_paravirt.h
->>   create mode 100644 arch/powerpc/include/asm/simple_spinlock.h
->>   create mode 100644 arch/powerpc/include/asm/simple_spinlock_types.h
->>
-> This patch looks OK to me.
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> UAMOR values are not application-specific.
 
-Thanks for reviewing and testing.
+It used to be, that's worth mentioning.
 
-> I had run some microbenchmark on powerpc system with or w/o the patch.
->=20
-> On a 2-socket 160-thread SMT4 POWER9 system (not virtualized):
->=20
-> 5.8.0-rc4
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Running locktest with spinlock [runtime =3D 10s, load =3D 1]
-> Threads =3D 160, Min/Mean/Max =3D 77,665/90,153/106,895
-> Threads =3D 160, Total Rate =3D 1,441,759 op/s; Percpu Rate =3D 9,011 op/=
-s
->=20
-> Running locktest with rwlock [runtime =3D 10s, r% =3D 50%, load =3D 1]
-> Threads =3D 160, Min/Mean/Max =3D 47,879/53,807/63,689
-> Threads =3D 160, Total Rate =3D 860,192 op/s; Percpu Rate =3D 5,376 op/s
->=20
-> Running locktest with spinlock [runtime =3D 10s, load =3D 1]
-> Threads =3D 80, Min/Mean/Max =3D 242,907/319,514/463,161
-> Threads =3D 80, Total Rate =3D 2,555 kop/s; Percpu Rate =3D 32 kop/s
->=20
-> Running locktest with rwlock [runtime =3D 10s, r% =3D 50%, load =3D 1]
-> Threads =3D 80, Min/Mean/Max =3D 146,161/187,474/259,270
-> Threads =3D 80, Total Rate =3D 1,498 kop/s; Percpu Rate =3D 19 kop/s
->=20
-> Running locktest with spinlock [runtime =3D 10s, load =3D 1]
-> Threads =3D 40, Min/Mean/Max =3D 646,639/1,000,817/1,455,205
-> Threads =3D 40, Total Rate =3D 4,001 kop/s; Percpu Rate =3D 100 kop/s
->=20
-> Running locktest with rwlock [runtime =3D 10s, r% =3D 50%, load =3D 1]
-> Threads =3D 40, Min/Mean/Max =3D 402,165/597,132/814,555
-> Threads =3D 40, Total Rate =3D 2,388 kop/s; Percpu Rate =3D 60 kop/s
->=20
-> 5.8.0-rc4-qlock+
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Running locktest with spinlock [runtime =3D 10s, load =3D 1]
-> Threads =3D 160, Min/Mean/Max =3D 123,835/124,580/124,587
-> Threads =3D 160, Total Rate =3D 1,992 kop/s; Percpu Rate =3D 12 kop/s
->=20
-> Running locktest with rwlock [runtime =3D 10s, r% =3D 50%, load =3D 1]
-> Threads =3D 160, Min/Mean/Max =3D 254,210/264,714/276,784
-> Threads =3D 160, Total Rate =3D 4,231 kop/s; Percpu Rate =3D 26 kop/s
->=20
-> Running locktest with spinlock [runtime =3D 10s, load =3D 1]
-> Threads =3D 80, Min/Mean/Max =3D 599,715/603,397/603,450
-> Threads =3D 80, Total Rate =3D 4,825 kop/s; Percpu Rate =3D 60 kop/s
->=20
-> Running locktest with rwlock [runtime =3D 10s, r% =3D 50%, load =3D 1]
-> Threads =3D 80, Min/Mean/Max =3D 492,687/525,224/567,456
-> Threads =3D 80, Total Rate =3D 4,199 kop/s; Percpu Rate =3D 52 kop/s
->=20
-> Running locktest with spinlock [runtime =3D 10s, load =3D 1]
-> Threads =3D 40, Min/Mean/Max =3D 1,325,623/1,325,628/1,325,636
-> Threads =3D 40, Total Rate =3D 5,299 kop/s; Percpu Rate =3D 132 kop/s
->=20
-> Running locktest with rwlock [runtime =3D 10s, r% =3D 50%, load =3D 1]
-> Threads =3D 40, Min/Mean/Max =3D 1,249,731/1,292,977/1,342,815
-> Threads =3D 40, Total Rate =3D 5,168 kop/s; Percpu Rate =3D 129 kop/s
->=20
-> On systems on large number of cpus, qspinlock lock is faster and more fai=
-r.
->=20
-> With some tuning, we may be able to squeeze out more performance.
+> The kernel initializes its value based on different reserved keys.
+> Remove the thread-specific UAMOR value and don't switch the UAMOR on
+> context switch.
+>
+> Move UAMOR initialization to key initialization code. Now that
+> KUAP/KUEP feature depends on PPC_MEM_KEYS, we can start to consolidate
+> all register initialization to keys init.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/book3s/64/kup.h |  2 ++
+>  arch/powerpc/include/asm/processor.h     |  1 -
+>  arch/powerpc/kernel/ptrace/ptrace-view.c | 17 ++++++++----
+>  arch/powerpc/kernel/smp.c                |  5 ++++
+>  arch/powerpc/mm/book3s64/pkeys.c         | 35 ++++++++++++++----------
+>  5 files changed, 39 insertions(+), 21 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
+> index 3a0e138d2735..942594745dfa 100644
+> --- a/arch/powerpc/include/asm/book3s/64/kup.h
+> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
+> @@ -67,6 +67,8 @@
+>  #include <asm/mmu.h>
+>  #include <asm/ptrace.h>
+>  
+> +extern u64 default_uamor;
+> +
+>  static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
+>  {
+>  	if (mmu_has_feature(MMU_FTR_KUAP) && unlikely(regs->kuap != amr)) {
+> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+> index 52a67835057a..6ac12168f1fe 100644
+> --- a/arch/powerpc/include/asm/processor.h
+> +++ b/arch/powerpc/include/asm/processor.h
+> @@ -237,7 +237,6 @@ struct thread_struct {
+>  #ifdef CONFIG_PPC_MEM_KEYS
+>  	unsigned long	amr;
+>  	unsigned long	iamr;
+> -	unsigned long	uamor;
+>  #endif
+>  #ifdef CONFIG_KVM_BOOK3S_32_HANDLER
+>  	void*		kvm_shadow_vcpu; /* KVM internal data */
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
+> index caeb5822a8f4..689711eb018a 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-view.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
+> @@ -488,14 +488,22 @@ static int pkey_active(struct task_struct *target, const struct user_regset *reg
+>  static int pkey_get(struct task_struct *target, const struct user_regset *regset,
+>  		    unsigned int pos, unsigned int count, void *kbuf, void __user *ubuf)
+>  {
+> +	int ret;
+> +
+>  	BUILD_BUG_ON(TSO(amr) + sizeof(unsigned long) != TSO(iamr));
+> -	BUILD_BUG_ON(TSO(iamr) + sizeof(unsigned long) != TSO(uamor));
+>  
+>  	if (!arch_pkeys_enabled())
+>  		return -ENODEV;
+>  
+> -	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, &target->thread.amr,
+> -				   0, ELF_NPKEY * sizeof(unsigned long));
+> +	ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &target->thread.amr,
+> +				  0, 2 * sizeof(unsigned long));
+> +	if (ret)
+> +		goto err_out;
 
-Yes, powerpc could certainly get more performance out of the slow
-paths, and then there are a few parameters to tune.
+Why not just return?
 
-We don't have a good alternate patching for function calls yet, but
-that would be something to do for native vs pv.
+> +
+> +	ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &default_uamor,
+> +				  2 * sizeof(unsigned long), 3 * sizeof(unsigned long));
+> +err_out:
+> +	return ret;
+>  }
+>  
+>  static int pkey_set(struct task_struct *target, const struct user_regset *regset,
+> @@ -518,8 +526,7 @@ static int pkey_set(struct task_struct *target, const struct user_regset *regset
+>  		return ret;
+>  
+>  	/* UAMOR determines which bits of the AMR can be set from userspace. */
+> -	target->thread.amr = (new_amr & target->thread.uamor) |
+> -			     (target->thread.amr & ~target->thread.uamor);
+> +	target->thread.amr = (new_amr & default_uamor) | (target->thread.amr & ~default_uamor);
 
-And then there seem to be one or two tunable parameters we could
-experiment with.
+That comment could explain better why we are bothering to mask with ~default_uamor.
 
-The paravirt locks may need a bit more tuning. Some simple testing
-under KVM shows we might be a bit slower in some cases. Whether this
-is fairness or something else I'm not sure. The current simple pv
-spinlock code can do a directed yield to the lock holder CPU, whereas=20
-the pv qspl here just does a general yield. I think we might actually
-be able to change that to also support directed yield. Though I'm
-not sure if this is actually the cause of the slowdown yet.
+>  	return 0;
+>  }
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index c820c95162ff..eec40082599f 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -59,6 +59,7 @@
+>  #include <asm/asm-prototypes.h>
+>  #include <asm/cpu_has_feature.h>
+>  #include <asm/ftrace.h>
+> +#include <asm/kup.h>
+>  
+>  #ifdef DEBUG
+>  #include <asm/udbg.h>
+> @@ -1256,6 +1257,10 @@ void start_secondary(void *unused)
+>  	mmgrab(&init_mm);
+>  	current->active_mm = &init_mm;
+>  
+> +#ifdef CONFIG_PPC_MEM_KEYS
+> +	mtspr(SPRN_UAMOR, default_uamor);
+> +#endif
 
-Thanks,
-Nick
+That's 1) not very pretty and 2) risks blowing up on other CPUs.
+
+It should at least go in early_init_mmu_secondary().
+
+>  	smp_store_cpu_info(cpu);
+>  	set_dec(tb_ticks_per_jiffy);
+>  	preempt_disable();
+> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+> index aeecc8b8e11c..3f3593f85358 100644
+> --- a/arch/powerpc/mm/book3s64/pkeys.c
+> +++ b/arch/powerpc/mm/book3s64/pkeys.c
+> @@ -24,7 +24,7 @@ static u32  initial_allocation_mask;   /* Bits set for the initially allocated k
+>  static u64 default_amr;
+>  static u64 default_iamr;
+>  /* Allow all keys to be modified by default */
+> -static u64 default_uamor = ~0x0UL;
+> +u64 default_uamor = ~0x0UL;
+
+__ro_after_init?
+
+>  /*
+>   * Key used to implement PROT_EXEC mmap. Denies READ/WRITE
+>   * We pick key 2 because 0 is special key and 1 is reserved as per ISA.
+> @@ -113,8 +113,16 @@ void __init pkey_early_init_devtree(void)
+>  	/* scan the device tree for pkey feature */
+>  	pkeys_total = scan_pkey_feature();
+>  	if (!pkeys_total) {
+> -		/* No support for pkey. Mark it disabled */
+> -		return;
+> +		/*
+> +		 * No key support but on radix we can use key 0
+> +		 * to implement kuap.
+> +		 */
+> +		if (early_radix_enabled())
+> +			/*
+> +			 * Make sure userspace can't change the AMR
+> +			 */
+> +			default_uamor = 0;
+> +		goto err_out;
+
+Would be cleaner if you inverted that. ie. initialise to 0 and then set
+to ~0x0UL when you detect pkeys.
+
+>  	}
+>  
+>  	cur_cpu_spec->mmu_features |= MMU_FTR_PKEY;
+> @@ -197,6 +205,12 @@ void __init pkey_early_init_devtree(void)
+>  	initial_allocation_mask |= reserved_allocation_mask;
+>  
+>  	pr_info("Enabling Memory keys with max key count %d", max_pkey);
+> +err_out:
+
+It's not "err" out if the OK path goes via here. That's just "out".
+
+> +	/*
+> +	 * Setup uamor on boot cpu
+> +	 */
+> +	mtspr(SPRN_UAMOR, default_uamor);
+> +
+>  	return;
+>  }
+>  
+> @@ -232,8 +246,9 @@ void __init setup_kuap(bool disabled)
+>  		cur_cpu_spec->mmu_features |= MMU_FTR_KUAP;
+>  	}
+>  
+> -	/* Make sure userspace can't change the AMR */
+> -	mtspr(SPRN_UAMOR, 0);
+
+Why not just leave it there. It's extra insurance and it's good
+documentation.
+
+> +	/*
+> +	 * Set the default kernel AMR values on all cpus.
+> +	 */
+>  	mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
+>  	isync();
+>  }
+> @@ -278,11 +293,6 @@ static inline u64 read_uamor(void)
+>  	return mfspr(SPRN_UAMOR);
+>  }
+>  
+> -static inline void write_uamor(u64 value)
+> -{
+> -	mtspr(SPRN_UAMOR, value);
+> -}
+> -
+>  static bool is_pkey_enabled(int pkey)
+>  {
+>  	u64 uamor = read_uamor();
+> @@ -353,7 +363,6 @@ void thread_pkey_regs_save(struct thread_struct *thread)
+>  	 */
+>  	thread->amr = read_amr();
+>  	thread->iamr = read_iamr();
+> -	thread->uamor = read_uamor();
+>  }
+>  
+>  void thread_pkey_regs_restore(struct thread_struct *new_thread,
+> @@ -366,8 +375,6 @@ void thread_pkey_regs_restore(struct thread_struct *new_thread,
+>  		write_amr(new_thread->amr);
+>  	if (old_thread->iamr != new_thread->iamr)
+>  		write_iamr(new_thread->iamr);
+> -	if (old_thread->uamor != new_thread->uamor)
+> -		write_uamor(new_thread->uamor);
+>  }
+>  
+>  void thread_pkey_regs_init(struct thread_struct *thread)
+> @@ -377,11 +384,9 @@ void thread_pkey_regs_init(struct thread_struct *thread)
+>  
+>  	thread->amr   = default_amr;
+>  	thread->iamr  = default_iamr;
+> -	thread->uamor = default_uamor;
+>  
+>  	write_amr(default_amr);
+>  	write_iamr(default_iamr);
+> -	write_uamor(default_uamor);
+>  }
+>  
+>  int execute_only_pkey(struct mm_struct *mm)
+
+cheers
