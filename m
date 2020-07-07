@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178042176D1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:34:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590F52176DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:36:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WLq07H3zDr09
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:34:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WP445stzDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:36:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=hcwO0h7e; 
+ header.s=casper.20170209 header.b=gllBHkH4; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1VlZ1JDdzDqsL
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1VlZ1CPczDqnr
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:07:37 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=2/YCmGUemc+wOLv/5ELjphBnftis9IDqZDEkf1/jsf8=; b=hcwO0h7eMdRn9rDomQi8lZ2Jrt
- q36N6MZo2lW8v7E1Yeq8vm3UNGtKd+ocnn7uw5lP/6ZL+JzqoWMaG3AVp9D7qDEvJwM17EcJwr1tq
- ZFSR5pOZCCS3pNGN84VQRedpoe9ILutFjXP4bdiscjJUsJrjJRVtFdUsqUYDpSeVYg4EwKahPkPoB
- l7uCqz8UDA8OxxqevReZFv4r5hnxo/JZ6Ht/1CaFRFMaQ57vC6S8bGZuvqlendpdSVVu+4swXZTjV
- jBNoOaJy3LAUWQ3ckl1KJkwWIwEyRZXnp6/F1QjXAt5ykADI/MuwSUOu+3Fl6FD8F14DIgOGfgCft
- uL0V1V+A==;
+ bh=GK3KFML4MxD5gHuavmBx6F3vOAf3v6AFw7esO0+/EUc=; b=gllBHkH4lvcDqqVtERqT1cTaJt
+ 5B01vgWc1X6miMUc6A421VUkZRzHfhwsGkXukEFjFJR6BzVcublNEyRF5c0+6QvOc8oq6+2TOFBqc
+ bNZHAZzqTN4uqIsa4n5RiIorKiEAwRj22qXpe5JEFBtU5jxQTePkCW+3NRPFmFcGiIzK43CS6ksij
+ AHTfJeRS2Fg+A0eMNDAH+CK2unEMTsk92balEkUFd1GAAiPD247hFJhfCdOiDgfFSWxfHtsgbg1me
+ py40gAIHuf0xSl4mVeVjcNjBKTc8kdjHDEjaY9oBQMN2XoOzBuMEFkxxyYS3o1XEia770z2srexDp
+ YjFBVR9Q==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsrzU-0004JY-Dh; Tue, 07 Jul 2020 18:06:48 +0000
+ id 1jsrzf-0004JY-8g; Tue, 07 Jul 2020 18:06:59 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 13/20] Documentation: mips/ingenic-tcu: eliminate duplicated
+Subject: [PATCH 14/20] Documentation: misc/xilinx_sdfec: eliminate duplicated
  word
-Date: Tue,  7 Jul 2020 11:04:07 -0700
-Message-Id: <20200707180414.10467-14-rdunlap@infradead.org>
+Date: Tue,  7 Jul 2020 11:04:08 -0700
+Message-Id: <20200707180414.10467-15-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -99,26 +99,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the doubled word "to".
+Drop the doubled word "the".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
+Cc: Derek Kiernan <derek.kiernan@xilinx.com>
+Cc: Dragan Cvetic <dragan.cvetic@xilinx.com>
 ---
- Documentation/mips/ingenic-tcu.rst |    2 +-
+ Documentation/misc-devices/xilinx_sdfec.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/mips/ingenic-tcu.rst
-+++ linux-next-20200701/Documentation/mips/ingenic-tcu.rst
-@@ -5,7 +5,7 @@ Ingenic JZ47xx SoCs Timer/Counter Unit h
- ===============================================
+--- linux-next-20200701.orig/Documentation/misc-devices/xilinx_sdfec.rst
++++ linux-next-20200701/Documentation/misc-devices/xilinx_sdfec.rst
+@@ -78,7 +78,7 @@ application interfaces:
+   - open: Implements restriction that only a single file descriptor can be open per SD-FEC instance at any time
+   - release: Allows another file descriptor to be open, that is after current file descriptor is closed
+   - poll: Provides a method to monitor for SD-FEC Error events
+-  - unlocked_ioctl: Provides the the following ioctl commands that allows the application configure the SD-FEC core:
++  - unlocked_ioctl: Provides the following ioctl commands that allows the application configure the SD-FEC core:
  
- The Timer/Counter Unit (TCU) in Ingenic JZ47xx SoCs is a multi-function
--hardware block. It features up to to eight channels, that can be used as
-+hardware block. It features up to eight channels, that can be used as
- counters, timers, or PWM.
- 
- - JZ4725B, JZ4750, JZ4755 only have six TCU channels. The other SoCs all
+ 		- :c:macro:`XSDFEC_START_DEV`
+ 		- :c:macro:`XSDFEC_STOP_DEV`
