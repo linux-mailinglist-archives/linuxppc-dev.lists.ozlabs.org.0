@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B0E216A65
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 12:34:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 128BE216A7B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 12:37:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Jj44DpNzDqnF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:34:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Jmf51HnzDqBb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:37:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,52 +17,51 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=qrsas+PZ; dkim-atps=neutral
+ header.s=google header.b=akr9Zsp1; dkim-atps=neutral
 Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
  [IPv6:2a00:1450:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1JJZ1Dy5zDq8F
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 20:17:01 +1000 (AEST)
-Received: by mail-wr1-x441.google.com with SMTP id j4so42132002wrp.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jul 2020 03:17:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1JJZ43bvzDq8F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 20:17:02 +1000 (AEST)
+Received: by mail-wr1-x441.google.com with SMTP id q5so44517587wru.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jul 2020 03:17:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=HXwAK5e9O3NfsiXPR7kk8AeqU5Nw2ls4PmOWf/vu7lg=;
- b=qrsas+PZEhVKEED/gwuG+M3fvZFc9iTyVZ9kC/kfAQJtySYFhAXFVpKKKmyVPzJsef
- fCJFw/7CBzrR/D0H4Ibl8ook5vPEI7nkN6UMPeetQWBt4M+Kx0Tquh3FeHQKe+00wO+m
- GqDseXgUs910Lbr6v6S1qDkgnl8n1Y7UIIuytj30iKNt1AOZABZ9LymxXsaWj6zDFYGe
- XI8qHYoQ/wOSdxtGcESFe8ZYMktICg66e53gTSweXye36XFgFl6kw5awQcpN8EpYSN23
- 8sMm+Tp30g9gUcdoX30JFTNJlS2oJp3wB6d8NA/Z4UGG+OpYufSxlq2WEns0mrZb6qvR
- vMcw==
+ bh=YsokizqvcQrYmRK4XFUw9AfpZPmtx9CnTkzjsD5Kh2w=;
+ b=akr9Zsp1R9zCusMjYHj20g4bdfxR2yvSbDS3HgPMMiM7U4jS+e7z+EtZ2c1Ikm6qSJ
+ j50t7qj6FEzIYazt1dQ/z2GMn07rEoyth5ncNZ/VBMThxjPl38ULcQKS+uBtxBd5UUbN
+ 2fYZzTWY2o1yX4Xhk//N/CTDnmLeaX8+cCylsZtWLK3/gQLvTJFa0lwDJgeuQCumUB+m
+ Pg2eQBVR27X5w1MuozculYRrSsmF0Iw/Vd7LE93nW7MdOJGe4VWoDyqRQyyWGfpn/LK6
+ LqMF5Thu9gPLoKx5rUeWRdJkOngDQOols03IREwRd6KxBITISTpO+Bmta9r6mlF8pD7W
+ OmmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=HXwAK5e9O3NfsiXPR7kk8AeqU5Nw2ls4PmOWf/vu7lg=;
- b=FjnMyySAqPDduOoc8VrxZzF/AWLuDeqR8zdU+IrP6fkJ0aR/XScFccchHfmKWw/Gra
- u1eeLiPQkcq0tPN+IFVRI8jU7Qf5pF1sy70W+kCsderByJ1J+YsRWP+nuiApfriQ5gFK
- T3f8wiYXC8G7saGB5XYxvVYQxgylih763546sbl+i3QNcMkK2kdfDRq9ON6laTWQ/w/l
- x9LsWityifw7NJ03PFsJxvo8n2zNUheuWNvoqkyjBdYvayHdMG0PSKTdLkbFMrZBH/jP
- /+9wTVUqOczVTmmh6vGwb+T/+dfzGotNgjlNlCuP57m/EvwDXJoWorte5EUJzn6CVssT
- wGcw==
-X-Gm-Message-State: AOAM530lpirxDppakyQkNLrcl4Sz3n+sUmaHMEF1sPIV5nPgKeozLK+r
- qLT/76qCCj9FJBVx8zxD+mHP2g==
-X-Google-Smtp-Source: ABdhPJw+rbiTfjvaZjvfOEvXP2PwVD2bXCDT7mTpQWEQuNXSkRYtQLVPb8Dx6k7fktqcFGcvxY+9RA==
-X-Received: by 2002:a5d:6802:: with SMTP id w2mr51092373wru.88.1594117018607; 
- Tue, 07 Jul 2020 03:16:58 -0700 (PDT)
+ bh=YsokizqvcQrYmRK4XFUw9AfpZPmtx9CnTkzjsD5Kh2w=;
+ b=NCMGbxBBSjS9L7v5FllxVnzjn/IWbotJ5mfICSJxMym290D63S/tPQqUG5x+OGu5Qg
+ Ddf/Hakl9VPDixp3YhAvNoKKCCI8jcVPM9Tb108a6Q6tyFhIexozL9uLLTG30dlwikSy
+ RMYv0fVaNYkZd5JGesKX+KwjsmExnght8CzOk/T6wpd6Nz9/SAc5Vnxw7ZCdDF0ow1yA
+ GCxTb7vao+gpBMMqcxk6WGzQYvNe8LhLgV8RIGDZWRRtC9WocbW6UU/CED1YL0Xh9VZv
+ rcY+Oy1g8QvxikulSyaIrnINHxl/3bvq6kNr2QEc6FpjqHP0E6Ld/214tuA29bWqFB3q
+ prXw==
+X-Gm-Message-State: AOAM531ALpDyHk3frcwXNEdB/JXw/zCVUVE63euEACpRtJWznNvCigL8
+ sotjkECj97bLbu8AODg5p0O3RA==
+X-Google-Smtp-Source: ABdhPJyokynAsMCJ9KP59ioOQmggRgChTfyTqf7FPi5nBCxf7ckHFkFUgqw78HQEefo5rpFgheVoXQ==
+X-Received: by 2002:adf:f20a:: with SMTP id p10mr56349271wro.41.1594117019816; 
+ Tue, 07 Jul 2020 03:16:59 -0700 (PDT)
 Received: from localhost.localdomain ([2.27.35.206])
- by smtp.gmail.com with ESMTPSA id z8sm469409wmg.39.2020.07.07.03.16.57
+ by smtp.gmail.com with ESMTPSA id z8sm469409wmg.39.2020.07.07.03.16.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Jul 2020 03:16:58 -0700 (PDT)
+ Tue, 07 Jul 2020 03:16:59 -0700 (PDT)
 From: Lee Jones <lee.jones@linaro.org>
 To: broonie@kernel.org, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com
-Subject: [PATCH 08/28] ASoC: fsl: fsl_spdif: Update 'struct fsl_spdif_priv's
- descriptions
-Date: Tue,  7 Jul 2020 11:16:22 +0100
-Message-Id: <20200707101642.1747944-9-lee.jones@linaro.org>
+Subject: [PATCH 09/28] ASoC: fsl: fsl_esai: Fix a bunch of kerneldoc issues
+Date: Tue,  7 Jul 2020 11:16:23 +0100
+Message-Id: <20200707101642.1747944-10-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200707101642.1747944-1-lee.jones@linaro.org>
 References: <20200707101642.1747944-1-lee.jones@linaro.org>
@@ -79,61 +78,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vladimir Barinov <vbarinov@embeddedalley.com>, alsa-devel@alsa-project.org,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>,
- Lee Jones <lee.jones@linaro.org>, linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Lee Jones <lee.jones@linaro.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Two descriptions for 'soc' and 'regcache_srpc' were missing.  Add them.
+Struct headers require a 'struct $NAME' title, all function parameters
+require a description and need to be in the format '@.*:', else the
+checker gets confused.  Also demote one kerneldoc header where no effort
+was made to document any of the function's params.
 
 Fixes the following W=1 kernel build warning(s):
 
- sound/soc/fsl/fsl_spdif.c:125: warning: Function parameter or member 'soc' not described in 'fsl_spdif_priv'
- sound/soc/fsl/fsl_spdif.c:125: warning: Function parameter or member 'regcache_srpc' not described in 'fsl_spdif_priv'
+ sound/soc/fsl/fsl_esai.c:30: warning: cannot understand function prototype: 'struct fsl_esai_soc_data '
+ sound/soc/fsl/fsl_esai.c:61: warning: cannot understand function prototype: 'struct fsl_esai '
+ sound/soc/fsl/fsl_esai.c:170: warning: Function parameter or member 'dai' not described in 'fsl_esai_divisor_cal'
+ sound/soc/fsl/fsl_esai.c:265: warning: Function parameter or member 'dai' not described in 'fsl_esai_set_dai_sysclk'
+ sound/soc/fsl/fsl_esai.c:265: warning: Function parameter or member 'clk_id' not described in 'fsl_esai_set_dai_sysclk'
+ sound/soc/fsl/fsl_esai.c:265: warning: Function parameter or member 'freq' not described in 'fsl_esai_set_dai_sysclk'
+ sound/soc/fsl/fsl_esai.c:265: warning: Function parameter or member 'dir' not described in 'fsl_esai_set_dai_sysclk'
+ sound/soc/fsl/fsl_esai.c:265: warning: Excess function parameter 'Parameters' description in 'fsl_esai_set_dai_sysclk'
+ sound/soc/fsl/fsl_esai.c:364: warning: Function parameter or member 'dai' not described in 'fsl_esai_set_bclk'
+ sound/soc/fsl/fsl_esai.c:364: warning: Function parameter or member 'tx' not described in 'fsl_esai_set_bclk'
+ sound/soc/fsl/fsl_esai.c:364: warning: Function parameter or member 'freq' not described in 'fsl_esai_set_bclk'
 
 Cc: Timur Tabi <timur@kernel.org>
 Cc: Nicolin Chen <nicoleotsuka@gmail.com>
 Cc: Xiubo Li <Xiubo.Lee@gmail.com>
 Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Vladimir Barinov <vbarinov@embeddedalley.com>
 Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- sound/soc/fsl/fsl_spdif.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_esai.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 7aa3bdec5b6b5..f0b2375a9246f 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -83,6 +83,7 @@ struct spdif_mixer_control {
+diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
+index cbcb70d6f8c83..bb3c405df623c 100644
+--- a/sound/soc/fsl/fsl_esai.c
++++ b/sound/soc/fsl/fsl_esai.c
+@@ -22,7 +22,7 @@
+ 				SNDRV_PCM_FMTBIT_S24_LE)
+ 
  /**
-  * struct fsl_spdif_priv - Freescale SPDIF private data
+- * fsl_esai_soc_data: soc specific data
++ * struct fsl_esai_soc_data - soc specific data
   *
-+ * @soc: SoC specific data
-  * @fsl_spdif_control: SPDIF control data
-  * @cpu_dai_drv: cpu dai driver
-  * @pdev: platform device pointer
-@@ -100,6 +101,7 @@ struct spdif_mixer_control {
-  * @spbaclk: SPBA clock (optional, depending on SoC design)
-  * @dma_params_tx: DMA parameters for transmit channel
-  * @dma_params_rx: DMA parameters for receive channel
-+ * @regcache_srpc: regcache for SRPC
-  */
- struct fsl_spdif_priv {
- 	const struct fsl_spdif_soc_data *soc;
-@@ -120,7 +122,6 @@ struct fsl_spdif_priv {
- 	struct clk *spbaclk;
- 	struct snd_dmaengine_dai_dma_data dma_params_tx;
- 	struct snd_dmaengine_dai_dma_data dma_params_rx;
--	/* regcache for SRPC */
- 	u32 regcache_srpc;
+  * @imx: for imx platform
+  * @reset_at_xrun: flags for enable reset operaton
+@@ -33,7 +33,7 @@ struct fsl_esai_soc_data {
  };
  
+ /**
+- * fsl_esai: ESAI private data
++ * struct fsl_esai - ESAI private data
+  *
+  * @dma_params_rx: DMA parameters for receive channel
+  * @dma_params_tx: DMA parameters for transmit channel
+@@ -160,10 +160,11 @@ static irqreturn_t esai_isr(int irq, void *devid)
+  * This function is used to calculate the divisors of psr, pm, fp and it is
+  * supposed to be called in set_dai_sysclk() and set_bclk().
+  *
++ * @dai: SoC DAI
++ * @tx: current setting is for playback or capture
+  * @ratio: desired overall ratio for the paticipating dividers
+  * @usefp: for HCK setting, there is no need to set fp divider
+  * @fp: bypass other dividers by setting fp directly if fp != 0
+- * @tx: current setting is for playback or capture
+  */
+ static int fsl_esai_divisor_cal(struct snd_soc_dai *dai, bool tx, u32 ratio,
+ 				bool usefp, u32 fp)
+@@ -252,11 +253,11 @@ static int fsl_esai_divisor_cal(struct snd_soc_dai *dai, bool tx, u32 ratio,
+ /**
+  * This function mainly configures the clock frequency of MCLK (HCKT/HCKR)
+  *
+- * @Parameters:
+- * clk_id: The clock source of HCKT/HCKR
++ * @dai: SoC DAI
++ * @clk_id: The clock source of HCKT/HCKR
+  *	  (Input from outside; output from inside, FSYS or EXTAL)
+- * freq: The required clock rate of HCKT/HCKR
+- * dir: The clock direction of HCKT/HCKR
++ * @freq: The required clock rate of HCKT/HCKR
++ * @dir: The clock direction of HCKT/HCKR
+  *
+  * Note: If the direction is input, we do not care about clk_id.
+  */
+@@ -357,7 +358,7 @@ static int fsl_esai_set_dai_sysclk(struct snd_soc_dai *dai, int clk_id,
+ 	return 0;
+ }
+ 
+-/**
++/*
+  * This function configures the related dividers according to the bclk rate
+  */
+ static int fsl_esai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
 -- 
 2.25.1
 
