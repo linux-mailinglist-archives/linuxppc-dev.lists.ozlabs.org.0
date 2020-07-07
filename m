@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB99D21634D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 03:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DEB21634E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 03:25:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B14Rc06fgzDqQ3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 11:22:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B14WY6h6JzDqY1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 11:25:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B14PP6R6wzDqXT
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 11:20:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B14Tt6m19zDqR3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 11:24:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=b1r4GCmk; 
+ header.a=rsa-sha256 header.s=201909 header.b=msuwGaLw; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B14PP3qqgz9sRK;
- Tue,  7 Jul 2020 11:20:25 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B14Tt4rS5z9sR4;
+ Tue,  7 Jul 2020 11:24:18 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594084825;
- bh=htLTgyRbtWDb4qK/aFnhp3EA2jkU8TNdwrGJKkifA2o=;
+ s=201909; t=1594085058;
+ bh=YEZVcBtOSHSdo7GkRm5XobNyiw3pBUS9p90hf0qtESY=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=b1r4GCmk22rhJwFCIQVDUg2JUxyjUDZk+mZlIVdkIIks/RREkSayOiAUrrsC+HnjF
- naYLmEB63+qR93Vn2zX8OtlzLMff0y2rEnBFH0l04xc6GEK5YVYqXeXuafdymmGpDa
- 4hO83UTCKHgB5Dk2dEe1/KvwqLpWTEUQ784ePne7Xo35VkF9dtSUhDh44j/Bza5TkO
- cDerVm8ytAN2tDZl77sg/QawPvi9j7jfyBBpEBX8ycxIVVUJh6FK3QK9cBVYht3CYI
- CnfgzfXW1BC+9Wxq62i5Px8ySp2tzdvuTrmdhqtfff6Qzi+hMH8ULrva9ZECFraHnU
- iZKRKtJWIdMsg==
+ b=msuwGaLwYX1lfvaGVEluTBb8bjOkN1vEh5asdj5wV1KY0yZ+3BnL+300tuSyfhUw5
+ H3UsOwklipCxObsFRvCnuDkcOXn5vvdL2o9d2qCC4DDXgj9+xaUc3c2yvOCc31s74z
+ 59GBkz01Fwgn0zBAWOqkOTD7ZzmVCGBF12yLdIGbWAqXje7FLnD3NHp7dESNte0HuS
+ ATG6Yp0R7Ox019T/DpTig7rijUi5f0sTWE9k4MfRRNYh4suUoyFL8nNDVR8Ae59n8G
+ oPs9bPKf3j/ap3uv0xOZA8bjPXO2zq+IVCYttqHsKnrJwc2cOcLgn/2opvSeJZN/r2
+ xXb6b3Wx4g2Yw==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 19/26] powerpc/book3s64/kuap: Move KUAP related
- function outside radix
-In-Reply-To: <d09d0150-860a-1e6a-1d4a-01ae8d7e97b9@linux.ibm.com>
+Subject: Re: [PATCH v5 10/26] powerpc/book3s64/pkeys: Convert pkey_total to
+ max_pkey
+In-Reply-To: <15527f2f-1b50-2ff2-3e05-b03dec985391@linux.ibm.com>
 References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
- <20200619135850.47155-20-aneesh.kumar@linux.ibm.com>
- <87eepo6cjm.fsf@mpe.ellerman.id.au>
- <d09d0150-860a-1e6a-1d4a-01ae8d7e97b9@linux.ibm.com>
-Date: Tue, 07 Jul 2020 11:22:40 +1000
-Message-ID: <87tuyk3yqn.fsf@mpe.ellerman.id.au>
+ <20200619135850.47155-11-aneesh.kumar@linux.ibm.com>
+ <87tuyl5dko.fsf@mpe.ellerman.id.au>
+ <15527f2f-1b50-2ff2-3e05-b03dec985391@linux.ibm.com>
+Date: Tue, 07 Jul 2020 11:26:33 +1000
+Message-ID: <87r1to3yk6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -68,64 +68,130 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> On 7/6/20 6:11 PM, Michael Ellerman wrote:
+> On 7/6/20 12:34 PM, Michael Ellerman wrote:
 >> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->>> The next set of patches adds support for kuap with hash translation.
->> 
->> That's no longer true of this series.
->> 
->>> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
->>> index 0d72c0246052..e93b65a0e6e7 100644
->>> --- a/arch/powerpc/mm/book3s64/pkeys.c
->>> +++ b/arch/powerpc/mm/book3s64/pkeys.c
->>> @@ -199,6 +200,24 @@ void __init pkey_early_init_devtree(void)
->>>   	return;
->>>   }
->>>   
->>> +#ifdef CONFIG_PPC_KUAP
->>> +void __init setup_kuap(bool disabled)
->>> +{
->>> +	if (disabled || !early_radix_enabled())
->>> +		return;
->>> +
->>> +	if (smp_processor_id() == boot_cpuid) {
->>> +		pr_info("Activating Kernel Userspace Access Prevention\n");
->>> +		cur_cpu_spec->mmu_features |= MMU_FTR_RADIX_KUAP;
->>> +	}
->>> +
->>> +	/* Make sure userspace can't change the AMR */
->>> +	mtspr(SPRN_UAMOR, 0);
->>> +	mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
->>> +	isync();
->>> +}
->>> +#endif
->> 
->> This makes this code depend on CONFIG_PPC_MEM_KEYS=y, which it didn't
->> used to.
->> 
->> That risks breaking people's existing .configs, if they have
->> PPC_MEM_KEYS=n they will now lose KUAP.
->> 
->> And I'm not convinced the two features should be tied together, at least
->> at the user-visible Kconfig level.
+>>> max_pkey now represents max key value that userspace can allocate.
+>>>
 >
-> That simplifies the addition of hash kuap a lot. Especially in the 
-> exception entry and return paths.  I did try to consider them as 
-> independent options. But then the feature fixup in asm code gets 
-> unnecessarily complicated. Also the UAMOR handling also get complicated.
+> I guess commit message is confusing.
 
-Yep. I'm OK if most of the code is enabled for either/both options, but
-I think the user-visible options should not depend on each other.
+And the name.
 
-So something like:
-
-config PPC_PKEY
-	def_bool y
-        depends on PPC_MEM_KEYS || PPC_KUAP
-
-And then the low-level code is guarded by PPC_PKEY.
-
-Or we just say that making MEM_KEYS configurable is not worth the
-added complexity and turn it on always.
+If it's called max_pkey then it should be the maximum allowed pkey
+value.
 
 cheers
+
+
+>>> diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
+>>> index 75d2a2c19c04..652bad7334f3 100644
+>>> --- a/arch/powerpc/include/asm/pkeys.h
+>>> +++ b/arch/powerpc/include/asm/pkeys.h
+>>> @@ -12,7 +12,7 @@
+>>>   #include <asm/firmware.h>
+>>>   
+>>>   DECLARE_STATIC_KEY_FALSE(pkey_disabled);
+>>> -extern int pkeys_total; /* total pkeys as per device tree */
+>>> +extern int max_pkey;
+>>>   extern u32 initial_allocation_mask; /*  bits set for the initially allocated keys */
+>>>   extern u32 reserved_allocation_mask; /* bits set for reserved keys */
+>>>   
+>>> @@ -44,7 +44,10 @@ static inline int vma_pkey(struct vm_area_struct *vma)
+>>>   	return (vma->vm_flags & ARCH_VM_PKEY_FLAGS) >> VM_PKEY_SHIFT;
+>>>   }
+>>>   
+>>> -#define arch_max_pkey() pkeys_total
+>>> +static inline int arch_max_pkey(void)
+>>> +{
+>>> +	return max_pkey;
+>>> +}
+>> 
+>> If pkeys_total = 32 then max_pkey = 31.
+>
+> we have
+>
+> #ifdef CONFIG_PPC_4K_PAGES
+> 	/*
+> 	 * The OS can manage only 8 pkeys due to its inability to represent them
+> 	 * in the Linux 4K PTE. Mark all other keys reserved.
+> 	 */
+> 	max_pkey = min(8, pkeys_total);
+> #else
+> 	max_pkey = pkeys_total;
+> #endif
+>
+> so it is 32.
+>
+>> 
+>> So we can't just substitute one for the other. ie. arch_max_pkey() must
+>> have been wrong, or it is wrong now.
+>> 
+>>> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+>>> index 87d882a9aaf2..a4d7287082a8 100644
+>>> --- a/arch/powerpc/mm/book3s64/pkeys.c
+>>> +++ b/arch/powerpc/mm/book3s64/pkeys.c
+>>> @@ -14,7 +14,7 @@
+>>>   
+>>>   DEFINE_STATIC_KEY_FALSE(pkey_disabled);
+>>>   DEFINE_STATIC_KEY_FALSE(execute_pkey_disabled);
+>>> -int  pkeys_total;		/* Total pkeys as per device tree */
+>>> +int  max_pkey;			/* Maximum key value supported */
+>>>   u32  initial_allocation_mask;   /* Bits set for the initially allocated keys */
+>>>   /*
+>>>    *  Keys marked in the reservation list cannot be allocated by  userspace
+>>> @@ -84,7 +84,7 @@ static int scan_pkey_feature(void)
+>>>   
+>>>   static int pkey_initialize(void)
+>>>   {
+>>> -	int os_reserved, i;
+>>> +	int pkeys_total, i;
+>>>   
+>>>   	/*
+>>>   	 * We define PKEY_DISABLE_EXECUTE in addition to the arch-neutral
+>>> @@ -122,12 +122,12 @@ static int pkey_initialize(void)
+>>>   	 * The OS can manage only 8 pkeys due to its inability to represent them
+>>>   	 * in the Linux 4K PTE. Mark all other keys reserved.
+>>>   	 */
+>>> -	os_reserved = pkeys_total - 8;
+>>> +	max_pkey = min(8, pkeys_total);
+>> 
+>> Shouldn't it be 7 ?
+>> 
+>>>   #else
+>>> -	os_reserved = 0;
+>>> +	max_pkey = pkeys_total;
+>>>   #endif
+>>>   
+>>> -	if (unlikely((pkeys_total - os_reserved) <= execute_only_key)) {
+>>> +	if (unlikely(max_pkey <= execute_only_key)) {
+>> 
+>> Isn't that an off-by-one now?
+>> 
+>> This is one-off boot time code, there's no need to clutter it with
+>> unlikely.
+>> 
+>>>   		/*
+>>>   		 * Insufficient number of keys to support
+>>>   		 * execute only key. Mark it unavailable.
+>>> @@ -174,10 +174,10 @@ static int pkey_initialize(void)
+>>>   	default_uamor &= ~(0x3ul << pkeyshift(1));
+>>>   
+>>>   	/*
+>>> -	 * Prevent the usage of OS reserved the keys. Update UAMOR
+>>> +	 * Prevent the usage of OS reserved keys. Update UAMOR
+>>>   	 * for those keys.
+>>>   	 */
+>>> -	for (i = (pkeys_total - os_reserved); i < pkeys_total; i++) {
+>>> +	for (i = max_pkey; i < pkeys_total; i++) {
+>> 
+>> Another off-by-one? Shouldn't we start from max_pkey + 1 ?
+>> 
+>>>   		reserved_allocation_mask |= (0x1 << i);
+>>>   		default_uamor &= ~(0x3ul << pkeyshift(i));
+>>>   	}
+>> 
+>
+> It is the commit message. It is max pkey such that userspace can 
+> allocate 0 - maxp_pkey -1.
+>
+> -aneesh
