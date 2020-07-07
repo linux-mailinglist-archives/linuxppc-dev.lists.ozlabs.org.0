@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590F52176DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920062176E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:38:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WP445stzDqQt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:36:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WQz3TwvzDqx5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:38:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=gllBHkH4; 
+ header.s=casper.20170209 header.b=irAVrD/f; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1VlZ1CPczDqnr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:07:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vlj6Z8XzDqsL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:07:45 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=GK3KFML4MxD5gHuavmBx6F3vOAf3v6AFw7esO0+/EUc=; b=gllBHkH4lvcDqqVtERqT1cTaJt
- 5B01vgWc1X6miMUc6A421VUkZRzHfhwsGkXukEFjFJR6BzVcublNEyRF5c0+6QvOc8oq6+2TOFBqc
- bNZHAZzqTN4uqIsa4n5RiIorKiEAwRj22qXpe5JEFBtU5jxQTePkCW+3NRPFmFcGiIzK43CS6ksij
- AHTfJeRS2Fg+A0eMNDAH+CK2unEMTsk92balEkUFd1GAAiPD247hFJhfCdOiDgfFSWxfHtsgbg1me
- py40gAIHuf0xSl4mVeVjcNjBKTc8kdjHDEjaY9oBQMN2XoOzBuMEFkxxyYS3o1XEia770z2srexDp
- YjFBVR9Q==;
+ bh=mPS72WgNYkKywllLGpTOm1li0E5rJutzPsTWs0NA3MU=; b=irAVrD/fzbik6cd0AMxD/aALiP
+ BnVWmuEH0TDL7mcrAZT9ozsymcEnjv6430h369oAEGC1S55lQxuH58cQCCVhxuC9QNc28hYGGmMFz
+ h7/ZY5whyhiatpbN6vpz9TRUfmhRYrzgnes7yY6SGqS0XQgk84ic4jfYJgRzwpKCTIcx6PayaQqic
+ kDH1a7oS/i+vpknni2Fs43lWnDBGUTz8KIU8fYjmUExyXFBuj6Iukq0c5sYSLCgzGnlMFMu5NaohS
+ GMORhffy08BY2VsbPREx+iBLWl3V/w3hMa4PBmGDkW8wE6ObTNCactvdX6It9H4VAtfcdoB5mkSMC
+ 1pLgQqoA==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsrzf-0004JY-8g; Tue, 07 Jul 2020 18:06:59 +0000
+ id 1jsrzp-0004JY-Si; Tue, 07 Jul 2020 18:07:10 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 14/20] Documentation: misc/xilinx_sdfec: eliminate duplicated
+Subject: [PATCH 15/20] Documentation: powerpc/vas-api: eliminate duplicated
  word
-Date: Tue,  7 Jul 2020 11:04:08 -0700
-Message-Id: <20200707180414.10467-15-rdunlap@infradead.org>
+Date: Tue,  7 Jul 2020 11:04:09 -0700
+Message-Id: <20200707180414.10467-16-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -104,20 +104,22 @@ Drop the doubled word "the".
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: Derek Kiernan <derek.kiernan@xilinx.com>
-Cc: Dragan Cvetic <dragan.cvetic@xilinx.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 ---
- Documentation/misc-devices/xilinx_sdfec.rst |    2 +-
+ Documentation/powerpc/vas-api.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/misc-devices/xilinx_sdfec.rst
-+++ linux-next-20200701/Documentation/misc-devices/xilinx_sdfec.rst
-@@ -78,7 +78,7 @@ application interfaces:
-   - open: Implements restriction that only a single file descriptor can be open per SD-FEC instance at any time
-   - release: Allows another file descriptor to be open, that is after current file descriptor is closed
-   - poll: Provides a method to monitor for SD-FEC Error events
--  - unlocked_ioctl: Provides the the following ioctl commands that allows the application configure the SD-FEC core:
-+  - unlocked_ioctl: Provides the following ioctl commands that allows the application configure the SD-FEC core:
+--- linux-next-20200701.orig/Documentation/powerpc/vas-api.rst
++++ linux-next-20200701/Documentation/powerpc/vas-api.rst
+@@ -43,7 +43,7 @@ engine for this process. Once a connecti
+ should use the mmap() system call to map the hardware address of engine's
+ request queue into the application's virtual address space.
  
- 		- :c:macro:`XSDFEC_START_DEV`
- 		- :c:macro:`XSDFEC_STOP_DEV`
+-The application can then submit one or more requests to the the engine by
++The application can then submit one or more requests to the engine by
+ using copy/paste instructions and pasting the CRBs to the virtual address
+ (aka paste_address) returned by mmap(). User space can close the
+ established connection or send window by closing the file descriptior
