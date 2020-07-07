@@ -2,65 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06E52167D0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 09:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B83B21687D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 10:43:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1F7k4NB4zDqn2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 17:54:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1GDy6gvzzDqnn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 18:43:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=AJjTWI5x; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.164])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1F5m6pp9zDqkL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 17:52:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1594108341;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=qNfwcH9LfWaclr0Jyq7Q1GHfpiAsj+fNTGwreOU0xXU=;
- b=AJjTWI5xRtbFrrOkTGJsxweWxwWQvbttWvcZDsxgbokS2EE6St49iqBjhh+A/A0y0I
- y3fQuvAiumukjq3o3gigYRwwI7oTeApIB3DzYxZcF7oiAI0eUlGQWz5Uvz1920owjgUi
- dKpOZ4C1DsI9N+AZo9Sv5f9rRIeCTievbCBHWeDCGWp1t15WMT+0geOC/dhW311QwKTy
- 1KR3t6LhzneyTF7eexAuHFNfv1Gw63i4AECgwLpXCivCyGADquvShsFD4Ft+DJ7AGu9k
- aGTdCF93X4ezsyA3478+Y4pgxK/p8y38frAr3iou2QM17pwWh1RnXJdmXmvyy0o+xFXf
- TeuA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
- by smtp.strato.de (RZmta 46.10.5 AUTH)
- with ESMTPSA id 60686ew677qGleO
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 7 Jul 2020 09:52:16 +0200 (CEST)
-Subject: Re: FSL P5020/P5040: DPAA Ethernet issue with the latest Git kernel
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-References: <56DB95B8-5F42-4837-ABA0-7E580FE04B73@xenosoft.de>
- <20200624082352.GA24934@oc3871087118.ibm.com>
- <004794fb-370c-c165-38e6-a451dc50c294@xenosoft.de>
- <20200625102223.GA3646@oc3871087118.ibm.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <4a08422d-86aa-ebb5-40a6-4e20467f5240@xenosoft.de>
-Date: Tue, 7 Jul 2020 09:52:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1GCH6Yw5zDqXP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 18:42:19 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0678VQlG141009; Tue, 7 Jul 2020 04:42:10 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 324ffdsevf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jul 2020 04:42:09 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0678fWfv024016;
+ Tue, 7 Jul 2020 08:42:08 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 322hd7smex-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jul 2020 08:42:07 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0678g5wJ7406056
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Jul 2020 08:42:05 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B38F52051;
+ Tue,  7 Jul 2020 08:42:05 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D171352063;
+ Tue,  7 Jul 2020 08:42:03 +0000 (GMT)
+Date: Tue, 7 Jul 2020 14:12:03 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/numa: Restrict possible nodes based on platform
+Message-ID: <20200707084203.GC874@linux.vnet.ibm.com>
+References: <20200706064002.14848-1-srikar@linux.vnet.ibm.com>
+ <87lfjv5352.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200625102223.GA3646@oc3871087118.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+In-Reply-To: <87lfjv5352.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-07_05:2020-07-07,
+ 2020-07-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015
+ impostorscore=0 cotscore=-2147483648 malwarescore=0 mlxscore=0
+ adultscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501 bulkscore=0
+ phishscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2007070062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,65 +83,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- Madalin Bucur <madalin.bucur@oss.nxp.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
+ Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25 June 2020 at 12:22 pm, Alexander Gordeev wrote:
-> On Thu, Jun 25, 2020 at 01:01:52AM +0200, Christian Zigotzky wrote:
-> [...]
->> I compiled a test kernel with the option "CONFIG_TEST_BITMAP=y"
->> yesterday. After that Skateman and I booted it and looked for the
->> bitmap tests with "dmesg | grep -i bitmap".
->>
->> Results:
->>
->> FSL P5020:
->>
->> [    0.297756] test_bitmap: loaded.
->> [    0.298113] test_bitmap: parselist: 14: input is '0-2047:128/256'
->> OK, Time: 562
->> [    0.298142] test_bitmap: parselist_user: 14: input is
->> '0-2047:128/256' OK, Time: 761
->> [    0.301553] test_bitmap: all 1663 tests passed
->>
->> FSL P5040:
->>
->> [    0.296563] test_bitmap: loaded.
->> [    0.296894] test_bitmap: parselist: 14: input is '0-2047:128/256'
->> OK, Time: 540
->> [    0.296920] test_bitmap: parselist_user: 14: input is
->> '0-2047:128/256' OK, Time: 680
->> [    0.299994] test_bitmap: all 1663 tests passed
-> Thanks for the test! So it works as expected.
->
-> I would suggest to compare what is going on on the device probing
-> with and without the bisected commit.
->
-> There seems to be MAC and PHY mode initialization issue that might
-> resulted from the bitmap format change.
->
-> I put Madalin and Sascha on CC as they have done some works on
-> this part recently.
->
-> Thanks!
->
+* Michael Ellerman <mpe@ellerman.id.au> [2020-07-07 15:02:17]:
 
-Hi All,
+> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> > As per PAPR, there are 2 device tree property
+> > ibm,max-associativity-domains (which defines the maximum number of
+> > domains that the firmware i.e PowerVM can support) and
+> > ibm,current-associativity-domains (which defines the maximum number of
+> > domains that the platform can support). Value of
+> > ibm,max-associativity-domains property is always greater than or equal
+> > to ibm,current-associativity-domains property.
+> 
+> Where is it documented?
+> 
+> It's definitely not in LoPAPR.
+> 
 
-The issue still exists [1] so we still need the dpaa patch [2]. Could 
-you please check the problematic commit [3]?
+https://openpowerfoundation.org/wp-content/uploads/2020/07/LoPAR-20200611.pdf
+Page number 833.
 
-Thanks,
-Christian
+which says 
+ibm,current-associativity-domains”
+	property name to define the current number of associativity
+	domains for this platform.
+	prop-encoded-array: An associativity list such that all values are
+	the number of unique values that the current platform supports
+	in that location. The associativity list consisting of a number of
+	entries integer (N) encoded as with encode-int followed by N
+	integers encoded as with encode-int each representing current
+	number of unique associativity domains the platform supports at
+	that level.
 
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=50885#p50885
-[2] https://forum.hyperion-entertainment.com/viewtopic.php?p=50982#p50982
-[3] https://forum.hyperion-entertainment.com/viewtopic.php?p=50980#p50980
+> > Powerpc currently uses ibm,max-associativity-domains  property while
+> > setting the possible number of nodes. This is currently set at 32.
+> > However the possible number of nodes for a platform may be significantly
+> > less. Hence set the possible number of nodes based on
+> > ibm,current-associativity-domains property.
+> >
+> > $ lsprop /proc/device-tree/rtas/ibm,*associ*-domains
+> > /proc/device-tree/rtas/ibm,current-associativity-domains
+> > 		 00000005 00000001 00000002 00000002 00000002 00000010
+> > /proc/device-tree/rtas/ibm,max-associativity-domains
+> > 		 00000005 00000001 00000008 00000020 00000020 00000100
+> >
+> > $ cat /sys/devices/system/node/possible ##Before patch
+> > 0-31
+> >
+> > $ cat /sys/devices/system/node/possible ##After patch
+> > 0-1
+> >
+> > Note the maximum nodes this platform can support is only 2 but the
+> > possible nodes is set to 32.
+> 
+> But what about LPM to a system with more nodes?
+> 
+
+I have very less info on LPM, so I checked with Nathan Lynch before posting
+and as per Nathan in the current design of LPM, Linux wouldn't use the new
+node numbers. 
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
