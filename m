@@ -2,74 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E52216606
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 07:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 165FA216608
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 07:55:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1BRK6cj7zDqX0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 15:52:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1BVt1GQXzDqkk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 15:55:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=aC4U6ZGs; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1BPm1J54zDqW8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 15:51:06 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id x8so15404290plm.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jul 2020 22:51:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=2kPoQO29du6cgYs8wxDy3HydqPoXeUts+rFxoRwvPJ4=;
- b=aC4U6ZGsZUqBz0cWyJxxDDtTiTOjiRRceLssFNvfZVaY6XZ4ahnmh/PWv+zNuf1rG1
- RuIW6sAQLqwYBuidcRZ1HWNwtIt//yvHT15YUMJpu4ViYxTnmxvQJ6mnOnmbbQL0NRKB
- HLVOe98Qp4XwhEu8ZC1qCi2LiON8RrdPy+Me0RZTNidr7XSUy9lpi1ZtkNjxT7JLr2+r
- WYtLfjsdu2giWHeh0UvzEKJBqulTCwDXRXu0aATOoILRBWWLa2Kw+VSzQiWx6gk5S8XS
- nWgnfWl0+w0uiXWBBA+87l+1KIB6YneN+kBCLEn7yAHRoDucikloxmlP6NuDEkiiPVB3
- WCyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=2kPoQO29du6cgYs8wxDy3HydqPoXeUts+rFxoRwvPJ4=;
- b=rpRYn85EGbrZq8xqY69HOTUlGZCB6wi3gwrK60LLHv0VYASxwnPmBto/lT4j2Pzpm3
- tX+dOF7fj11NmNSSWIzt7i/edokqkIgUiU7Bg6FTH1jVf1NskOzUxjfHaSW560u5Yckg
- EbwqwW6poJnsfT1paAXQFz4W7bKnYiiadycPou7pCIhE0qne+fdU+XYG1T/XhAJkICMc
- OckLzB6D1jQ/aGdRnRdhZUVJ+8Tf9sro5vH5qBtnj1ihVrp03aTaaBUp5AXms0H54x8I
- vlYPi7z+Ar+Tz0pEIgxucTUOrGVOH0TlO77neca87KebiZ64QjpqV6E9FiUCwdyp6Jpl
- Qqiw==
-X-Gm-Message-State: AOAM531UIgzxX5CC53XhGHb5yvYi4dGCqqbT/Z4u56HZ7qkS3CuoAM/d
- /862gxDz9Mm2dvd2UjtaJ5w=
-X-Google-Smtp-Source: ABdhPJx5sV3WSX9SPDMPLTTp0JD9NeJpZpmsKSEOC5s58MfiKeX/NZr+y8YbdNnAg4Rw+uGx8QDvFQ==
-X-Received: by 2002:a17:902:8546:: with SMTP id
- d6mr44592437plo.220.1594101063222; 
- Mon, 06 Jul 2020 22:51:03 -0700 (PDT)
-Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
- by smtp.gmail.com with ESMTPSA id c14sm20858247pfj.82.2020.07.06.22.51.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Jul 2020 22:51:02 -0700 (PDT)
-Date: Tue, 07 Jul 2020 15:50:57 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
-References: <20200706021822.1515189-1-npiggin@gmail.com>
- <cf10b0bc-de79-1b2b-8355-fc7bbeec47c3@csgroup.eu>
-In-Reply-To: <cf10b0bc-de79-1b2b-8355-fc7bbeec47c3@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1BTH270kzDq7F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 15:54:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ZU1MiFyw; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4B1BTH0YP4z9sRW; Tue,  7 Jul 2020 15:54:11 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1BTG6KPlz9sRK;
+ Tue,  7 Jul 2020 15:54:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594101250;
+ bh=dFrZ+0efWYOYHgXiMK1uk2eQYcabkTFSFgIIyIQw8Cg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=ZU1MiFywrRDiER1DUFYS1QBvdn0qEDg8F9y9yhYvzQ1JMApO3IHE9TrKlACTZyNs1
+ HpH9gR6reQu4MnGI4ropbeJ+iEBNc+7nFqUbt8blrFOUdPjOPn/x8G1I1F1yd1yzkj
+ /C8oCKyBYgZVNQWrpLJ+sVFYmvueyroa7RcaKZNplXHAFwjsrBGg5ogMKDR2SIrKWI
+ O0DPiuM5sDflxRBtuA51Fat4hiFfNHPXShw4GKCIa98Av6FMtpeFO1uBxOpaa+zgWM
+ HefE//3D0vqdohrB5Cbp+6M0AHmHRu8xcUFr7qfCSkHbNa70Qo+WaiRsPh8VsoSRqy
+ FKLhc/snKUqyw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries: detect secure and trusted boot state of
+ the system.
+In-Reply-To: <1593882535-21368-1-git-send-email-nayna@linux.ibm.com>
+References: <1593882535-21368-1-git-send-email-nayna@linux.ibm.com>
+Date: Tue, 07 Jul 2020 15:56:23 +1000
+Message-ID: <87imez50mw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1594098302.nadnq2txti.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,53 +61,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of July 6, 2020 7:53 pm:
->=20
->=20
-> Le 06/07/2020 =C3=A0 04:18, Nicholas Piggin a =C3=A9crit=C2=A0:
->> diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/inc=
-lude/asm/exception-64s.h
->> index 47bd4ea0837d..b88cb3a989b6 100644
->> --- a/arch/powerpc/include/asm/exception-64s.h
->> +++ b/arch/powerpc/include/asm/exception-64s.h
->> @@ -68,6 +68,10 @@
->>    *
->>    * The nop instructions allow us to insert one or more instructions to=
- flush the
->>    * L1-D cache when returning to userspace or a guest.
->> + *
->> + * powerpc relies on return from interrupt/syscall being context synchr=
-onising
->> + * (which hrfid, rfid, and rfscv are) to support ARCH_HAS_MEMBARRIER_SY=
-NC_CORE
->> + * without additional additional synchronisation instructions.
->=20
-> This file is dedicated to BOOK3S/64. What about other ones ?
->=20
-> On 32 bits, this is also valid as 'rfi' is also context synchronising,=20
-> but then why just add some comment in exception-64s.h and only there ?
+Nayna Jain <nayna@linux.ibm.com> writes:
+> The device-tree property to check secure and trusted boot state is
+> different for guests(pseries) compared to baremetal(powernv).
+>
+> This patch updates the existing is_ppc_secureboot_enabled() and
+> is_ppc_trustedboot_enabled() function to add support for pseries.
+>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/secure_boot.c | 31 +++++++++++++++++++++++++------
+>  1 file changed, 25 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+> index 4b982324d368..43fc6607c7a5 100644
+> --- a/arch/powerpc/kernel/secure_boot.c
+> +++ b/arch/powerpc/kernel/secure_boot.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/types.h>
+>  #include <linux/of.h>
+>  #include <asm/secure_boot.h>
+> +#include <asm/machdep.h>
+>  
+>  static struct device_node *get_ppc_fw_sb_node(void)
+>  {
+> @@ -23,11 +24,20 @@ bool is_ppc_secureboot_enabled(void)
+>  {
+>  	struct device_node *node;
+>  	bool enabled = false;
+> +	const u32 *secureboot;
+>  
+> -	node = get_ppc_fw_sb_node();
+> -	enabled = of_property_read_bool(node, "os-secureboot-enforcing");
+> +	if (machine_is(powernv)) {
+> +		node = get_ppc_fw_sb_node();
+> +		enabled =
+> +		    of_property_read_bool(node, "os-secureboot-enforcing");
+> +		of_node_put(node);
+> +	}
 
-Yeah you're right, I basically wanted to keep a note there just in case,
-because it's possible we would get a less synchronising return (maybe
-unlikely with meltdown) or even return from a kernel interrupt using a
-something faster (e.g., bctar if we don't use tar register in the kernel
-anywhere).
+We generally try to avoid adding new machine_is() checks if we can.
 
-So I wonder where to add the note, entry_32.S and 64e.h as well?
+In a case like this I think you can just check for both properties
+regardless of what platform you're on.
+  
+> -	of_node_put(node);
+> +	if (machine_is(pseries)) {
+> +		secureboot = of_get_property(of_root, "ibm,secure-boot", NULL);
+> +		if (secureboot)
+> +			enabled = (*secureboot > 1) ? true : false;
+> +	}
 
-I should actually change the comment for 64-bit because soft masked=20
-interrupt replay is an interesting case. I thought it was okay (because=20
-the IPI would cause a hard interrupt which does do the rfi) but that=20
-should at least be written. The context synchronisation happens before
-the Linux IPI function is called, but for the purpose of membarrier I=20
-think that is okay (the membarrier just needs to have caused a memory
-barrier + context synchronistaion by the time it has done).
+Please don't use of_get_property() in new code. Use one of the properly
+typed accessors that handles endian conversion for you.
 
-Thanks,
-Nick
+cheers
