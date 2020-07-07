@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E720217693
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4510B2176A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:26:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1W4s2prTzDqtY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:22:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1W9R4Ml2zDr13
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:26:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,34 +17,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=OQFeo3ag; 
+ header.s=casper.20170209 header.b=uuz7HtSB; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vk91l4dzDqxg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vkp73vWzDqgP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:58 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=3MXCz5n944OUWtN7L6ZR0Zd5nlp06oEeDxmjjhzssic=; b=OQFeo3ag5lXCLGC6k9UcAyRTb4
- /Q9gq9VkvMyptGfnXC6dr+8JSy8ey2aDpG9sKw8/XAfOgDmpnd6qTid+/ugED4x5OOPzHMdLzx+SK
- dqY30Bng10xRd6zB9Ud/723dGs8bV5RivA8Fqf6mlcxMGYAjkRnyqb64LTymY4WWmIGfQMb+g7tbf
- 1Nvgd079VjOwEFQV9e9K4S8zCL3GPFRNIHxgKWhGYWtertC9Gu+JXvm0x/W13WIxEa7QGjlIZtpUw
- 0odQYtrKVQCg05Qb7aTrpj2UazL5KowW91DuGBTfDEzWTK/rP22BxDGWjOxY24jtI7iq0EB8DidkR
- aHXEivPA==;
+ bh=n0r3AeJBdJxrkDj2u02K2i7+nW9Oe1yMWegqEZLyJYA=; b=uuz7HtSBptzUF27iBREMdSAt/K
+ jfqJyCiVvgKlk9ybByqRGqvz3SwIk8OhwWGYyebsPQyiZHV1dnlEZ5iCS8LFdwrQlrxxamCtUD4p+
+ 9AW48pApfvdRO6OgxOdYCEVDYwMmAIdkIPgj4Q9uXPW9Z82cidbTJj2IkTlgE6eQqIxLRahVyPOsx
+ JNaImE3V1R4jXAei4SIfKfLSbHOQbPehn9XqQfa84PTiCT2c0czIRdbHQTHtwoAsPoskeV+1f0TjF
+ eevgAL4lPl5KDDTGkrpVnGbvdcEheR6NwmxP4l7PP2ltq4bov7OhlHCrx8NO2IEJzqEVlWVqhi0wL
+ 2Bi9Jd2A==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsryR-0004JY-57; Tue, 07 Jul 2020 18:05:43 +0000
+ id 1jsryc-0004JY-0j; Tue, 07 Jul 2020 18:05:54 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 07/20] Documentation: gpu/drm-uapi: eliminate duplicated word
-Date: Tue,  7 Jul 2020 11:04:01 -0700
-Message-Id: <20200707180414.10467-8-rdunlap@infradead.org>
+Subject: [PATCH 08/20] Documentation: hid/intel-ish-hid: eliminate duplicated
+ word
+Date: Tue,  7 Jul 2020 11:04:02 -0700
+Message-Id: <20200707180414.10467-9-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -98,26 +99,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the doubled word "when".
+Drop the doubled word "the".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: David Airlie <airlied@linux.ie>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: linux-input@vger.kernel.org
 ---
- Documentation/gpu/drm-uapi.rst |    2 +-
+ Documentation/hid/intel-ish-hid.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/gpu/drm-uapi.rst
-+++ linux-next-20200701/Documentation/gpu/drm-uapi.rst
-@@ -195,7 +195,7 @@ ENOSPC:
- EPERM/EACCES:
-         Returned for an operation that is valid, but needs more privileges.
-         E.g. root-only or much more common, DRM master-only operations return
--        this when when called by unpriviledged clients. There's no clear
-+        this when called by unpriviledged clients. There's no clear
-         difference between EACCES and EPERM.
+--- linux-next-20200701.orig/Documentation/hid/intel-ish-hid.rst
++++ linux-next-20200701/Documentation/hid/intel-ish-hid.rst
+@@ -235,7 +235,7 @@ There can be multiple sensor clients and
  
- ENODEV:
+ To ease in implantation and allow independent driver handle each client
+ this transport layer takes advantage of Linux Bus driver model. Each
+-client is registered as device on the the transport bus (ishtp bus).
++client is registered as device on the transport bus (ishtp bus).
+ 
+ Enumeration sequence of messages:
+ 
