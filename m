@@ -1,63 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1510521777B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 21:05:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C4A217784
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 21:06:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1X1t02BJzDqvx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 05:05:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1X3x4077zDqJQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 05:06:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=bootlin.com (client-ip=217.70.183.201;
+ helo=relay8-d.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=bootlin.com
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Wzz1th9zDqq5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 05:03:24 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4B1Wzs0LHJz9tyY5;
- Tue,  7 Jul 2020 21:03:21 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id nLDw_LnQf98w; Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4B1Wzr64nMz9tyXt;
- Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DACD28B7ED;
- Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id EqsTOoR54YIs; Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 51A3A8B7D7;
- Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc/uaccess: Use flexible addressing with
- __put_user()/__get_user()
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, npiggin@gmail.com,
- segher@kernel.crashing.org
-References: <c2addbd9d76212242d3d8554a2f7ff849fb08b85.1587040754.git.christophe.leroy@c-s.fr>
- <7b916759-1683-b4df-0d4b-b04b3fcd9a02@csgroup.eu>
- <878sg6862r.fsf@mpe.ellerman.id.au> <875zb98i5a.fsf@mpe.ellerman.id.au>
- <8b751738-a9d1-8f55-8f9b-9264c8ac7ed8@csgroup.eu>
-Message-ID: <faa6759a-8188-104b-a9f9-a5ff3b060cfa@csgroup.eu>
-Date: Tue, 7 Jul 2020 21:02:58 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1X0w0B0LzDqyP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 05:04:13 +1000 (AEST)
+X-Originating-IP: 91.224.148.103
+Received: from localhost.localdomain (unknown [91.224.148.103])
+ (Authenticated sender: miquel.raynal@bootlin.com)
+ by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id CC41B1BF208;
+ Tue,  7 Jul 2020 19:04:04 +0000 (UTC)
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>,
+ Anton Vorontsov <anton@enomsg.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, linux-mtd@lists.infradead.org
+Subject: Re: [PATCH 10/10] dt-bindings: mtd: fsl-upm-nand: Deprecate
+ chip-delay and fsl, upm-wait-flags
+Date: Tue,  7 Jul 2020 21:04:03 +0200
+Message-Id: <20200707190403.10856-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200603134922.1352340-11-boris.brezillon@collabora.com>
+References: 
 MIME-Version: 1.0
-In-Reply-To: <8b751738-a9d1-8f55-8f9b-9264c8ac7ed8@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: da151e3458c825fa9d57c2db6e37748166e4d129
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,42 +52,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+ Tudor Ambarus <tudor.ambarus@microchip.com>,
+ Richard Weinberger <richard@nod.at>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 07/07/2020 à 14:44, Christophe Leroy a écrit :
+On Wed, 2020-06-03 at 13:49:22 UTC, Boris Brezillon wrote:
+> Those properties are no longer parsed by the driver which is being passed
+> those information by the core now. Let's deprecate them.
 > 
-> 
-> Le 30/06/2020 à 03:19, Michael Ellerman a écrit :
->> Michael Ellerman <mpe@ellerman.id.au> writes:
->>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>>> Hi Michael,
->>>>
->>>> I see this patch is marked as "defered" in patchwork, but I can't see
->>>> any related discussion. Is it normal ?
->>>
->>> Because it uses the "m<>" constraint which didn't work on GCC 4.6.
->>>
->>> https://github.com/linuxppc/issues/issues/297
->>>
->>> So we should be able to pick it up for v5.9 hopefully.
->>
->> It seems to break the build with the kernel.org 4.9.4 compiler and
->> corenet64_smp_defconfig:
-> 
-> Most likely a GCC bug ?
-> 
-> It seems the problem vanishes with patch 
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/173de3b659fa3a5f126a0eb170522cccd909950f.1594125164.git.christophe.leroy@csgroup.eu/ 
-> 
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 
-Same kind of issue in signal_64.c now.
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
 
-The following patch fixes it: 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/810bd8840ef990a200f58c9dea9abe767ca02a3a.1594146723.git.christophe.leroy@csgroup.eu/
-
-Christophe
+Miquel
