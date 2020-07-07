@@ -2,61 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37812165E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 07:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1E62165ED
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 07:38:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1B172RgdzDqlh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 15:33:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1B724yfczDqbC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 15:38:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=mediatek.com (client-ip=210.61.82.184;
- helo=mailgw02.mediatek.com; envelope-from=chinwen.chang@mediatek.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=mediatek.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=mediatek.com header.i=@mediatek.com header.a=rsa-sha256
- header.s=dk header.b=HZrNFt0Q; dkim-atps=neutral
-Received: from mailgw02.mediatek.com (mailgw02.mediatek.com [210.61.82.184])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B19zX2Q4qzDqQd
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 15:31:48 +1000 (AEST)
-X-UUID: cfbde1c3c24641f794aedd704777a07c-20200707
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID;
- bh=QHbkWGB6AYr/otqaU50brYqQUJizQSU9qyIN4GtkzDg=; 
- b=HZrNFt0QpmEcTcwk3dctytFB7Ysd1tNRcGOL5AYYCkhG8TSg+4ioB81h9L/VtfD6ebSde7vh7uN55RH6AoewtEzlFBFgyWVXIvcF6wcbjkce9sDzFpKY/f1q8FMqSvr0D29ZHSP3IKjlqT9CufY8SsyVy+pFN3NPe2nkpjevOIA=;
-X-UUID: cfbde1c3c24641f794aedd704777a07c-20200707
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
- (envelope-from <chinwen.chang@mediatek.com>)
- (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
- with ESMTP id 1227173683; Tue, 07 Jul 2020 13:31:42 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 7 Jul 2020 13:31:36 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 7 Jul 2020 13:31:36 +0800
-Message-ID: <1594099897.30360.58.camel@mtkswgap22>
-Subject: Re: [PATCH v12 00/31] Speculative page faults
-From: Chinwen Chang <chinwen.chang@mediatek.com>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Date: Tue, 7 Jul 2020 13:31:37 +0800
-In-Reply-To: <490c0811-50cd-0802-2cbc-9c031ef309f6@linux.ibm.com>
-References: <20190416134522.17540-1-ldufour@linux.ibm.com>
- <20190606065129.d5s3534p23twksgp@haiyan.sh.intel.com>
- <3d3cefa2-0ebb-e86d-b060-7ba67c48a59f@linux.ibm.com>
- <1c412ebe-c213-ee67-d261-c70ddcd34b79@linux.ibm.com>
- <20190620081945.hwj6ruqddefnxg6z@haiyan.sh.intel.com>
- <1594027500.30360.32.camel@mtkswgap22>
- <490c0811-50cd-0802-2cbc-9c031ef309f6@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1B5R4Cg9zDqD0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 15:36:59 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0675WJ6b145359; Tue, 7 Jul 2020 01:36:53 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 324bfgj46d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jul 2020 01:36:53 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0675C4Ql016961;
+ Tue, 7 Jul 2020 05:36:51 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 322h1g9g9s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jul 2020 05:36:51 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0675amfr459082
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Jul 2020 05:36:48 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27CBCAE051;
+ Tue,  7 Jul 2020 05:36:48 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 55C3AAE045;
+ Tue,  7 Jul 2020 05:36:46 +0000 (GMT)
+Received: from [9.199.49.227] (unknown [9.199.49.227])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Jul 2020 05:36:46 +0000 (GMT)
+Subject: Re: [PATCH v3 1/2] powerpc/perf/hv-24x7: Add cpu hotplug support
+To: Michael Ellerman <mpe@ellerman.id.au>, Kajol Jain <kjain@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20200626102824.270923-1-kjain@linux.ibm.com>
+ <20200626102824.270923-2-kjain@linux.ibm.com>
+ <87zh8d5oab.fsf@mpe.ellerman.id.au>
+ <3b45d050-c27a-e5e7-8649-924910f5b01b@linux.ibm.com>
+ <87o8or53fh.fsf@mpe.ellerman.id.au>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Message-ID: <2fdf823e-a13e-d9b2-ad03-38bd9917c644@linux.ibm.com>
+Date: Tue, 7 Jul 2020 11:06:45 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-X-TM-SNTS-SMTP: BD21DAF844DD646E121434B7D084E5A7BA97FF2EEB9E645A621535C561C7DB242000:8
-X-MTK: N
-Content-Transfer-Encoding: base64
+In-Reply-To: <87o8or53fh.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-07_02:2020-07-07,
+ 2020-07-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxlogscore=999
+ impostorscore=0 malwarescore=0 clxscore=1015 spamscore=0
+ cotscore=-2147483648 suspectscore=0 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007070038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,79 +92,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jack@suse.cz, sergey.senozhatsky.work@gmail.com, peterz@infradead.org,
- Will Deacon <will.deacon@arm.com>, mhocko@kernel.org, linux-mm@kvack.org,
- paulus@samba.org, Punit Agrawal <punitagrawal@gmail.com>, hpa@zytor.com,
- Michel Lespinasse <walken@google.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>, Andrea
- Arcangeli <aarcange@redhat.com>, ak@linux.intel.com,
- Minchan Kim <minchan@kernel.org>, aneesh.kumar@linux.ibm.com, x86@kernel.org,
- Matthew Wilcox <willy@infradead.org>,
- Daniel Jordan <daniel.m.jordan@oracle.com>, Ingo Molnar <mingo@redhat.com>,
- zhong jiang <zhongjiang@huawei.com>, David Rientjes <rientjes@google.com>,
- paulmck@linux.vnet.ibm.com, npiggin@gmail.com, sj38.park@gmail.com, Jerome
- Glisse <jglisse@redhat.com>, dave@stgolabs.net, kemi.wang@intel.com,
- kirill@shutemov.name, Thomas
- Gleixner <tglx@linutronix.de>, Haiyan Song <haiyanx.song@intel.com>,
- Ganesh Mahendran <opensource.ganesh@gmail.com>,
- Yang Shi <yang.shi@linux.alibaba.com>, Mike Rapoport <rppt@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>, miles.chen@mediatek.com,
- vinayak menon <vinayakm.list@gmail.com>, akpm@linux-foundation.org,
- Tim Chen <tim.c.chen@linux.intel.com>, haren@linux.vnet.ibm.com
+Cc: nathanl@linux.ibm.com, ego@linux.vnet.ibm.com, suka@us.ibm.com,
+ maddy@linux.vnet.ibm.com, anju@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gTW9uLCAyMDIwLTA3LTA2IGF0IDE0OjI3ICswMjAwLCBMYXVyZW50IER1Zm91ciB3cm90ZToN
-Cj4gTGUgMDYvMDcvMjAyMCDDoCAxMToyNSwgQ2hpbndlbiBDaGFuZyBhIMOpY3JpdCA6DQo+ID4g
-T24gVGh1LCAyMDE5LTA2LTIwIGF0IDE2OjE5ICswODAwLCBIYWl5YW4gU29uZyB3cm90ZToNCj4g
-Pj4gSGkgTGF1cmVudCwNCj4gPj4NCj4gPj4gSSBkb3dubG9hZGVkIHlvdXIgc2NyaXB0IGFuZCBy
-dW4gaXQgb24gSW50ZWwgMnMgc2t5bGFrZSBwbGF0Zm9ybSB3aXRoIHNwZi12MTIgcGF0Y2gNCj4g
-Pj4gc2VyaWFscy4NCj4gPj4NCj4gPj4gSGVyZSBhdHRhY2hlZCB0aGUgb3V0cHV0IHJlc3VsdHMg
-b2YgdGhpcyBzY3JpcHQuDQo+ID4+DQo+ID4+IFRoZSBmb2xsb3dpbmcgY29tcGFyaXNvbiByZXN1
-bHQgaXMgc3RhdGlzdGljcyBmcm9tIHRoZSBzY3JpcHQgb3V0cHV0cy4NCj4gPj4NCj4gPj4gYSku
-IEVuYWJsZSBUSFANCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgU1BGXzAgICAgICAgICAgY2hhbmdlICAgICAgIFNQRl8xDQo+ID4+IHdpbGwtaXQtc2Nh
-bGUucGFnZV9mYXVsdDIucGVyX3RocmVhZF9vcHMgICAgMjY2NDE5MC44ICAgICAgLTExLjclICAg
-ICAgIDIzNTM2MzcuNg0KPiA+PiB3aWxsLWl0LXNjYWxlLnBhZ2VfZmF1bHQzLnBlcl90aHJlYWRf
-b3BzICAgIDQ0ODAwMjcuMiAgICAgIC0xNC43JSAgICAgICAzODE5MzMxLjkNCj4gPj4NCj4gPj4N
-Cj4gPj4gYikuIERpc2FibGUgVEhQDQo+ID4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIFNQRl8wICAgICAgICAgICBjaGFuZ2UgICAgICBTUEZfMQ0KPiA+PiB3
-aWxsLWl0LXNjYWxlLnBhZ2VfZmF1bHQyLnBlcl90aHJlYWRfb3BzICAgIDI2NTMyNjAuNyAgICAg
-ICAtMTAlICAgICAgICAyMzg1MTY1LjgNCj4gPj4gd2lsbC1pdC1zY2FsZS5wYWdlX2ZhdWx0My5w
-ZXJfdGhyZWFkX29wcyAgICA0NDM2MzMwLjEgICAgICAgLTEyLjQlICAgICAgMzg4NjczNC4yDQo+
-ID4+DQo+ID4+DQo+ID4+IFRoYW5rcywNCj4gPj4gSGFpeWFuIFNvbmcNCj4gPj4NCj4gPj4NCj4g
-Pj4gT24gRnJpLCBKdW4gMTQsIDIwMTkgYXQgMTA6NDQ6NDdBTSArMDIwMCwgTGF1cmVudCBEdWZv
-dXIgd3JvdGU6DQo+ID4+PiBMZSAxNC8wNi8yMDE5IMOgIDEwOjM3LCBMYXVyZW50IER1Zm91ciBh
-IMOpY3JpdCA6DQo+ID4+Pj4gUGxlYXNlIGZpbmQgYXR0YWNoZWQgdGhlIHNjcmlwdCBJIHJ1biB0
-byBnZXQgdGhlc2UgbnVtYmVycy4NCj4gPj4+PiBUaGlzIHdvdWxkIGJlIG5pY2UgaWYgeW91IGNv
-dWxkIGdpdmUgaXQgYSB0cnkgb24geW91ciB2aWN0aW0gbm9kZSBhbmQgc2hhcmUgdGhlIHJlc3Vs
-dC4NCj4gPj4+DQo+ID4+PiBTb3VuZHMgdGhhdCB0aGUgSW50ZWwgbWFpbCBmaXRlcmluZyBzeXN0
-ZW0gZG9lc24ndCBsaWtlIHRoZSBhdHRhY2hlZCBzaGVsbCBzY3JpcHQuDQo+ID4+PiBQbGVhc2Ug
-ZmluZCBpdCB0aGVyZTogaHR0cHM6Ly91cmxkZWZlbnNlLmNvbS92My9fX2h0dHBzOi8vZ2lzdC5n
-aXRodWIuY29tL2xkdTQvYTVjYzFhOTNmMjkzMTA4ZWEzODdkNDNkNWQ1ZTdmNDRfXzshIUNUUk5L
-QTl3TWcwQVJidyEwbHV4MkZNQ2JJRnhGRWw4MjRDZFN1U1FxVDBJVldzdnlVcWZEVkpORVZiOWdU
-V3lSbHRtN2NwUFpnNzBOX1hoWG1NWiQgDQo+ID4+Pg0KPiA+Pj4gVGhhbmtzLA0KPiA+Pj4gTGF1
-cmVudC4NCj4gPj4+DQo+ID4gDQo+ID4gSGkgTGF1cmVudCwNCj4gPiANCj4gPiBXZSBtZXJnZWQg
-U1BGIHYxMSBhbmQgc29tZSBwYXRjaGVzIGZyb20gdjEyIGludG8gb3VyIHBsYXRmb3Jtcy4gQWZ0
-ZXINCj4gPiBzZXZlcmFsIGV4cGVyaW1lbnRzLCB3ZSBvYnNlcnZlZCBTUEYgaGFzIG9idmlvdXMg
-aW1wcm92ZW1lbnRzIG9uIHRoZQ0KPiA+IGxhdW5jaCB0aW1lIG9mIGFwcGxpY2F0aW9ucywgZXNw
-ZWNpYWxseSBmb3IgdGhvc2UgaGlnaC1UTFAgb25lcywNCj4gPiANCj4gPiAjIGxhdW5jaCB0aW1l
-IG9mIGFwcGxpY2F0aW9ucyhzKToNCj4gPiANCj4gPiBwYWNrYWdlICAgICAgICAgICB2ZXJzaW9u
-ICAgICAgdy8gU1BGICAgICAgdy9vIFNQRiAgICAgIGltcHJvdmUoJSkNCj4gPiAtLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0N
-Cj4gPiBCYWlkdSBtYXBzICAgICAgICAxMC4xMy4zICAgICAgMC44ODcgICAgICAgMC45OCAgICAg
-ICAgIDkuNDkNCj4gPiBUYW9iYW8gICAgICAgICAgICA4LjQuMC4zNSAgICAgMS4yMjcgICAgICAg
-MS4yOTMgICAgICAgIDUuMTANCj4gPiBNZWl0dWFuICAgICAgICAgICA5LjEyLjQwMSAgICAgMS4x
-MDcgICAgICAgMS41NDMgICAgICAgIDI4LjI2DQo+ID4gV2VDaGF0ICAgICAgICAgICAgNy4wLjMg
-ICAgICAgIDIuMzUzICAgICAgIDIuNjggICAgICAgICAxMi4yMA0KPiA+IEhvbm9yIG9mIEtpbmdz
-ICAgIDEuNDMuMS42ICAgICA2LjYzICAgICAgICA2LjcxMyAgICAgICAgMS4yNA0KPiANCj4gVGhh
-dCdzIGdyZWF0IG5ld3MsIHRoYW5rcyBmb3IgcmVwb3J0aW5nIHRoaXMhDQo+IA0KPiA+IA0KPiA+
-IEJ5IHRoZSB3YXksIHdlIGhhdmUgdmVyaWZpZWQgb3VyIHBsYXRmb3JtcyB3aXRoIHRob3NlIHBh
-dGNoZXMgYW5kDQo+ID4gYWNoaWV2ZWQgdGhlIGdvYWwgb2YgbWFzcyBwcm9kdWN0aW9uLg0KPiAN
-Cj4gQW5vdGhlciBnb29kIG5ld3MhDQo+IEZvciBteSBpbmZvcm1hdGlvbiwgd2hhdCBpcyB5b3Vy
-IHRhcmdldGVkIGhhcmR3YXJlPw0KPiANCj4gQ2hlZXJzLA0KPiBMYXVyZW50Lg0KDQpIaSBMYXVy
-ZW50LA0KDQpPdXIgdGFyZ2V0ZWQgaGFyZHdhcmUgYmVsb25ncyB0byBBUk02NCBtdWx0aS1jb3Jl
-IHNlcmllcy4NCg0KVGhhbmtzLg0KQ2hpbndlbg0KPiANCg0K
+
+
+On 7/7/20 10:26 AM, Michael Ellerman wrote:
+> Madhavan Srinivasan <maddy@linux.ibm.com> writes:
+>> On 7/6/20 8:43 AM, Michael Ellerman wrote:
+>>> Kajol Jain <kjain@linux.ibm.com> writes:
+>>>> Patch here adds cpu hotplug functions to hv_24x7 pmu.
+>>>> A new cpuhp_state "CPUHP_AP_PERF_POWERPC_HV_24x7_ONLINE" enum
+>>>> is added.
+>>>>
+>>>> The online callback function updates the cpumask only if its
+>>>> empty. As the primary intention of adding hotplug support
+>>>> is to designate a CPU to make HCALL to collect the
+>>>> counter data.
+>>>>
+>>>> The offline function test and clear corresponding cpu in a cpumask
+>>>> and update cpumask to any other active cpu.
+>>>>
+>>>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>>>> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+>>>> ---
+>>>>    arch/powerpc/perf/hv-24x7.c | 45 +++++++++++++++++++++++++++++++++++++
+>>>>    include/linux/cpuhotplug.h  |  1 +
+>>>>    2 files changed, 46 insertions(+)
+>>>>
+>>>> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+>>>> index db213eb7cb02..ce4739e2b407 100644
+>>>> --- a/arch/powerpc/perf/hv-24x7.c
+>>>> +++ b/arch/powerpc/perf/hv-24x7.c
+>>>> @@ -31,6 +31,8 @@ static int interface_version;
+>>>>    /* Whether we have to aggregate result data for some domains. */
+>>>>    static bool aggregate_result_elements;
+>>>>    
+>>>> +static cpumask_t hv_24x7_cpumask;
+>>>> +
+>>>>    static bool domain_is_valid(unsigned domain)
+>>>>    {
+>>>>    	switch (domain) {
+>>>> @@ -1641,6 +1643,44 @@ static struct pmu h_24x7_pmu = {
+>>>>    	.capabilities = PERF_PMU_CAP_NO_EXCLUDE,
+>>>>    };
+>>>>    
+>>>> +static int ppc_hv_24x7_cpu_online(unsigned int cpu)
+>>>> +{
+>>>> +	/* Make this CPU the designated target for counter collection */
+>>> The comment implies every newly onlined CPU will become the target, but
+>>> actually it's only the first onlined CPU.
+>>>
+>>> So I think the comment needs updating, or you could just drop the
+>>> comment, I think the code is fairly clear by itself.
+>>>
+>>>> +	if (cpumask_empty(&hv_24x7_cpumask))
+>>>> +		cpumask_set_cpu(cpu, &hv_24x7_cpumask);
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static int ppc_hv_24x7_cpu_offline(unsigned int cpu)
+>>>> +{
+>>>> +	int target = -1;
+>>> No need to initialise target, you assign to it unconditionally below.
+>>>
+>>>> +	/* Check if exiting cpu is used for collecting 24x7 events */
+>>>> +	if (!cpumask_test_and_clear_cpu(cpu, &hv_24x7_cpumask))
+>>>> +		return 0;
+>>>> +
+>>>> +	/* Find a new cpu to collect 24x7 events */
+>>>> +	target = cpumask_last(cpu_active_mask);
+>>> Any reason to use cpumask_last() vs cpumask_first(), or a randomly
+>>> chosen CPU?
+>>>
+>>>> +	if (target < 0 || target >= nr_cpu_ids)
+>>>> +		return -1;
+>>>> +
+>>>> +	/* Migrate 24x7 events to the new target */
+>>>> +	cpumask_set_cpu(target, &hv_24x7_cpumask);
+>>>> +	perf_pmu_migrate_context(&h_24x7_pmu, cpu, target);
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static int hv_24x7_cpu_hotplug_init(void)
+>>>> +{
+>>>> +	return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_HV_24x7_ONLINE,
+>>>> +			  "perf/powerpc/hv_24x7:online",
+>>>> +			  ppc_hv_24x7_cpu_online,
+>>>> +			  ppc_hv_24x7_cpu_offline);
+>>>> +}
+>>>> +
+>>>>    static int hv_24x7_init(void)
+>>>>    {
+>>>>    	int r;
+>>>> @@ -1685,6 +1725,11 @@ static int hv_24x7_init(void)
+>>>>    	if (r)
+>>>>    		return r;
+>>>>    
+>>>> +	/* init cpuhotplug */
+>>>> +	r = hv_24x7_cpu_hotplug_init();
+>>>> +	if (r)
+>>>> +		pr_err("hv_24x7: CPU hotplug init failed\n");
+>>>> +
+>>> The hotplug initialisation shouldn't fail unless something is badly
+>>> wrong. I think you should just fail initialisation of the entire PMU if
+>>> that happens, which will make the error handling in the next patch much
+>>> simpler.
+>> We  did fail the PMU registration on failure of the hotplug
+>> code (and yes error handling is much simpler), but on internal
+>> review/discussion,
+>> what came up was that, hv_24x7 PMU will still be usable without
+>> the hotplug code (with "-C" option to perf tool command line).
+> In theory yes.
+>
+> But in reality no one will ever test that case, so the code will easily
+> bit rot.
+>
+> Even if it doesn't bit rot, you've now created another state the system
+> can legally be in (hotplug init failed but PMU still probed), which you
+> have to test, document & support.
+>
+> If the hotplug init fails then something is badly wrong, the best thing
+> we can do is bail on the PMU initialisation and hope the rest of the
+> system boots OK.
+
+Yep agreed. Thanks for the comments mpe
+
+Maddy
+
+>
+> cheers
 
