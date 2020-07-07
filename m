@@ -2,66 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AA4216388
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 03:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDF8216398
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 04:08:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B157N3ps5zDqg7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 11:53:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B15Sd3xQmzDqgx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 12:08:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=shengjiu.wang@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JOfLIPJL; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B155Z3lwrzDqJh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 11:51:46 +1000 (AEST)
-Received: by mail-qk1-x742.google.com with SMTP id l6so36817016qkc.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jul 2020 18:51:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=qx/C0isL60DPbKTPxrph0kJVnu1AM2M66vCo2gvDUxo=;
- b=JOfLIPJL+2nxndCtc9jPaSJdkd+AmzkyaD1JzoVZhJb34tgPdJuaPVJbdhGbbmlot1
- nP0PCUA2MnDCVjOTzLofNt5MbSHBNXQxCZtyBJJABBz2HfoEZbvQdmxYmb7leoUTt+DX
- hLzm1z/RZbt8s91F2R4d+0vl+3C0GK31Catd+BJ3duwE76ybY8oTZisVGdhKSxuv+eQJ
- HnaAvpjQGIkO0c1lLMZNsMXGcVW/f8n8D9tDW/DKceRkvWp9rTl9lqt0AOwOMH3hp17c
- g+nXeOpHlQsh/gG9W0Nkmgnc6EpRs9y15S8Up7ybEJLf3nOF7TMorGn6XpoLBKi0AF8+
- vY4Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B15Qm0R5zzDqRJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 12:06:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=YwcARj7v; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B15Ql6Ndzz8t4p
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 12:06:39 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4B15Ql60cMz9sRf; Tue,  7 Jul 2020 12:06:39 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=YwcARj7v; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4B15Ql3yHBz9sRR
+ for <linuxppc-dev@ozlabs.org>; Tue,  7 Jul 2020 12:06:38 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id t11so12888192pfq.11
+ for <linuxppc-dev@ozlabs.org>; Mon, 06 Jul 2020 19:06:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=ufAMLYZ5uV6bHta35HYJH1XfzcRlJb5HFWlT4qXEYfo=;
+ b=YwcARj7v1GayRBLXaoyXzW79MNuNWyyF5vyLq1cIB7n9Y3VhKk3KvpBJF0dJ/fGjWG
+ Y2vIYLCAwyATgtfbWA+BrcFEyx7ttSCb2IDdkfYIBwFNYc6GSEetLR/sKHvbA2hgK3qI
+ HSd+WUnLi00yppS1fmG+Jf7N1PukSZK6ulkDg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=qx/C0isL60DPbKTPxrph0kJVnu1AM2M66vCo2gvDUxo=;
- b=shnMY9Aqj9wqa8iQBmmKTjgP1OLuiO6IOZPdhAfE0kB6c+bqItRnlAANRcBXCCm6U5
- BtcWEpaZO5D0Z0S4wZlhC/GMZ/s1NlrZKpExBuyEP5G0hL6cwekkzuU1ZIw+IkXhBsXL
- xd7VZToUWYx7tG/G/jRY/xOXImOPpXb9LIa5F2StwRt9xckEqTPKT/ldGfi2BUcoM1PH
- yM8yHiF6w4EEaQA9AkpSaFRb9ZW3W3i4fskzt9SbzHz1YDQ1NZDwvFIfUjG33zUvaU28
- c4fNYAVZXEYLTqjSizu5yHtSXXSdgehJi2Vvpq5qnKoL+UtWmlGsTcnHGD/EBTITuFQV
- QxBQ==
-X-Gm-Message-State: AOAM532nNfMZDysLWdMjJZfejiTlddwQ+AiambfUkwYYutKQEeo+stwn
- FWatwiHTxodPHaZG4A3UT00lf3wRgFwe0rXXYI4=
-X-Google-Smtp-Source: ABdhPJxbdu1UR0UwC4VJ18/+W8RImTA2mJWd60dbnKAprt4YwcWVw4xJ/jqDfQmncoedyIwf0fGD5hIXQ2ivhdVou/E=
-X-Received: by 2002:a37:bcb:: with SMTP id 194mr51351661qkl.103.1594086702672; 
- Mon, 06 Jul 2020 18:51:42 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=ufAMLYZ5uV6bHta35HYJH1XfzcRlJb5HFWlT4qXEYfo=;
+ b=Y7oWCw+XI4QGZ4Sh36f2o5V8whMCpMk5VHCwuBfv/zUtz8eQjPxvZw4Y10JdtYMm3B
+ jUJsBMnYZvqyJYjCKYjRyxeI2BSX4zavsWf6hHsLI7OKxLAvsEksZunW4XP4D1QLXrKL
+ bvtdBIo/NAkPMCUejLneqcP9nE+xpZimcqXbpgsEaVT8nEy/57EeUQ/Fyj0OSTPjWdMH
+ ecAzdZYM6Npio4hywcnIxItYnoZKP5/2sAsA/fB6j09fDcdJATv6VxYen8Aa59unxIxn
+ NCpwTF5pYS1QlbKY9ONXICxCZausz9wMUpfOHz8wrmN36I6zX8cQxx/C09iMOI4TKUrg
+ 79rA==
+X-Gm-Message-State: AOAM533V4ZIxUZfeviVBwzd/YCTSJq5d/gqO8H9VfxHkhyp/770bVhAJ
+ A8XyKVSWNT23qdkTLnVtTSiMvQ==
+X-Google-Smtp-Source: ABdhPJzLFy1WJWtquEz3mBN0TcABoY5qRw+cnTVC6hS+qEfcSZKtVrJWb+JBCTwkkizgqQEp5HWd9A==
+X-Received: by 2002:a63:182:: with SMTP id 124mr40086924pgb.288.1594087595729; 
+ Mon, 06 Jul 2020 19:06:35 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-1113-6700-4ddf-cfaf-3be5-4008.static.ipv6.internode.on.net.
+ [2001:44b8:1113:6700:4ddf:cfaf:3be5:4008])
+ by smtp.gmail.com with ESMTPSA id g9sm19308737pfm.151.2020.07.06.19.06.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Jul 2020 19:06:35 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries: detect secure and trusted boot state of
+ the system.
+In-Reply-To: <1593882535-21368-1-git-send-email-nayna@linux.ibm.com>
+References: <1593882535-21368-1-git-send-email-nayna@linux.ibm.com>
+Date: Tue, 07 Jul 2020 12:06:32 +1000
+Message-ID: <87a70c3wpj.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-References: <20200702193102.25282-1-nicoleotsuka@gmail.com>
-In-Reply-To: <20200702193102.25282-1-nicoleotsuka@gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 7 Jul 2020 09:51:31 +0800
-Message-ID: <CAA+D8AMMKKDyPXXN0790LswNh_sOfUUDVw5PiMoLB-U4qX8G9w@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Add Shengjiu to reviewer list of
- sound/soc/fsl
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,49 +93,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Li.Xiubo@freescale.com,
- Shengjiu Wang <shengjiu.wang@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- timur@tabi.org, linux-kernel <linux-kernel@vger.kernel.org>,
- Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 3, 2020 at 3:33 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> Add Shengjiu who's actively working on the latest fsl/nxp audio drivers.
->
-> Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-> Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
-> To Shengjiu, please ack if you feel okay with this (your email address too).
+Thanks Nayna!
 
-Thanks Nicolin for nominating me as a reviewer.
+I'm hoping to get better public documentation for this soon as it's not
+documented in a public PAPR yet.
 
-I'd like to use my gmail address "shengjiu.wang@gmail.com".
-with this then
+Until then:
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+The values of ibm,secure-boot under PowerVM are:
 
-best regards
-wang shengjiu
+ 0 - disabled
+ 
+ 1 - audit mode only. This patch ignores this value for Linux, which I
+     think is the appropriate thing to do.
 
->
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 496fd4eafb68..54aab083bb88 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6956,6 +6956,7 @@ M:        Timur Tabi <timur@kernel.org>
->  M:     Nicolin Chen <nicoleotsuka@gmail.com>
->  M:     Xiubo Li <Xiubo.Lee@gmail.com>
->  R:     Fabio Estevam <festevam@gmail.com>
-> +R:     Shengjiu Wang <shengjiu.wang@nxp.com>
->  L:     alsa-devel@alsa-project.org (moderated for non-subscribers)
->  L:     linuxppc-dev@lists.ozlabs.org
->  S:     Maintained
-> --
-> 2.17.1
->
+ 2 - enabled and enforcing
+
+ 3-9 - enabled, OS-defined behaviour. In this patch we map all these
+       values to enabled and enforcing. Again I think this is the
+       appropriate thing to do.
+
+ibm,trusted-boot isn't published by a current PowerVM LPAR but will be
+published in future. (Currently, trusted boot state is inferred by the
+presence or absense of a vTPM.) It's simply 1 = enabled, 0 = disabled.
+
+As for this patch specifically, with the very small nits below,
+
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+
+> -	node = get_ppc_fw_sb_node();
+> -	enabled = of_property_read_bool(node, "os-secureboot-enforcing");
+> +	if (machine_is(powernv)) {
+> +		node = get_ppc_fw_sb_node();
+> +		enabled =
+> +		    of_property_read_bool(node, "os-secureboot-enforcing");
+> +		of_node_put(node);
+> +	}
+>  
+> -	of_node_put(node);
+> +	if (machine_is(pseries)) {
+Maybe this should be an else if?
+
+> +		secureboot = of_get_property(of_root, "ibm,secure-boot", NULL);
+> +		if (secureboot)
+> +			enabled = (*secureboot > 1) ? true : false;
+> +	}
+>  
+>  	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
+>  
+> @@ -38,11 +48,20 @@ bool is_ppc_trustedboot_enabled(void)
+>  {
+>  	struct device_node *node;
+>  	bool enabled = false;
+> +	const u32 *trustedboot;
+>  
+> -	node = get_ppc_fw_sb_node();
+> -	enabled = of_property_read_bool(node, "trusted-enabled");
+> +	if (machine_is(powernv)) {
+> +		node = get_ppc_fw_sb_node();
+> +		enabled = of_property_read_bool(node, "trusted-enabled");
+> +		of_node_put(node);
+> +	}
+>  
+> -	of_node_put(node);
+> +	if (machine_is(pseries)) {
+Likewise.
+> +		trustedboot =
+> +		    of_get_property(of_root, "ibm,trusted-boot", NULL);
+> +		if (trustedboot)
+> +			enabled = (*trustedboot > 0) ? true : false;
+
+Regards,
+Daniel
+
