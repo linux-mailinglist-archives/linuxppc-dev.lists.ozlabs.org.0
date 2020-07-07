@@ -2,78 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E136C216B7E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 13:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83ED3216B95
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 13:33:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Kvd1ZVszDq8g
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 21:29:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1L0h536qzDqBX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 21:33:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
+ envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
+ header.s=default header.b=rPEakt1n; dkim-atps=neutral
+X-Greylist: delayed 340 seconds by postgrey-1.36 at bilbo;
+ Tue, 07 Jul 2020 21:30:47 AEST
+Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1KqY5BkGzDqpq
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 21:25:29 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 067B1Nt5119162; Tue, 7 Jul 2020 07:25:22 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 324fdh5tmx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Jul 2020 07:25:21 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 067BKIxr027793;
- Tue, 7 Jul 2020 11:25:20 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma04wdc.us.ibm.com with ESMTP id 324qfur6u6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Jul 2020 11:25:20 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 067BPJDm40763696
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Jul 2020 11:25:19 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 84C29B2064;
- Tue,  7 Jul 2020 11:25:19 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E901EB205F;
- Tue,  7 Jul 2020 11:25:17 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.102.0.187])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  7 Jul 2020 11:25:17 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 23/26] powerpc/book3s64/kuap: Move UAMOR setup to key
- init function
-In-Reply-To: <87fta35084.fsf@mpe.ellerman.id.au>
-References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
- <20200619135850.47155-24-aneesh.kumar@linux.ibm.com>
- <87fta35084.fsf@mpe.ellerman.id.au>
-Date: Tue, 07 Jul 2020 16:55:15 +0530
-Message-ID: <87d057k1no.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Kxg6H3czDq8F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 21:30:47 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id E13D22A69;
+ Tue,  7 Jul 2020 07:25:01 -0400 (EDT)
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id k3YImSe-riiC; Tue,  7 Jul 2020 07:25:01 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 8940A2B49;
+ Tue,  7 Jul 2020 07:25:01 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 8940A2B49
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1594121101;
+ bh=TlBdJNeyeSn9XfCxZcoZaJA/3ADyLlwuwfztjgTSa7k=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=rPEakt1n6vbv0sBLqUYM4HSUzmbQnz0ds7b5EY4BOpcYgTE6MDlCvme6FaMD2EcaZ
+ 3/4HPRlk3tsVNmKsQW3LzDtIySkA07Noif6VhtnN/kdZ7XEc+cEbMp0h0mMYuT0EXj
+ ncT7zh7D+4JeBZqpBk7Dcmc7bE3VpFV1YopOTFx1ggSLOvK9GcwoyN/LFmzMMZGacu
+ sRJi+fWGBrKaZVDRfQRhqVPSHTyJBoWCdkvT04cuR2LZwgI6EF66JdYZXbH5tARlLd
+ aJ85ckAIUWMAR/7fTg1IuVAA8QxOi0iPrObSAme4YXFEY2FpcjK2uLUOsdK7NmNotf
+ YcGJxo4edOYyQ==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id tpfUPIRxxZFi; Tue,  7 Jul 2020 07:25:01 -0400 (EDT)
+Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
+ by mail.efficios.com (Postfix) with ESMTP id 7C4382C6F;
+ Tue,  7 Jul 2020 07:25:01 -0400 (EDT)
+Date: Tue, 7 Jul 2020 07:25:01 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Message-ID: <638683144.970.1594121101349.JavaMail.zimbra@efficios.com>
+In-Reply-To: <1594098302.nadnq2txti.astroid@bobo.none>
+References: <20200706021822.1515189-1-npiggin@gmail.com>
+ <cf10b0bc-de79-1b2b-8355-fc7bbeec47c3@csgroup.eu>
+ <1594098302.nadnq2txti.astroid@bobo.none>
+Subject: Re: [PATCH] powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-07_06:2020-07-07,
- 2020-07-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 phishscore=0
- cotscore=-2147483648 suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0
- mlxlogscore=999 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007070081
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [167.114.26.124]
+X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
+Thread-Topic: powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
+Thread-Index: MNbpaRSW9cIGgxQzDjC98QqVXDKt7w==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,86 +78,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, bauerman@linux.ibm.com
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+----- On Jul 7, 2020, at 1:50 AM, Nicholas Piggin npiggin@gmail.com wrote:
 
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->  
-.....
+> Excerpts from Christophe Leroy's message of July 6, 2020 7:53 pm:
+>>=20
+>>=20
+>> Le 06/07/2020 =C3=A0 04:18, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>> diff --git a/arch/powerpc/include/asm/exception-64s.h
+>>> b/arch/powerpc/include/asm/exception-64s.h
+>>> index 47bd4ea0837d..b88cb3a989b6 100644
+>>> --- a/arch/powerpc/include/asm/exception-64s.h
+>>> +++ b/arch/powerpc/include/asm/exception-64s.h
+>>> @@ -68,6 +68,10 @@
+>>>    *
+>>>    * The nop instructions allow us to insert one or more instructions t=
+o flush the
+>>>    * L1-D cache when returning to userspace or a guest.
+>>> + *
+>>> + * powerpc relies on return from interrupt/syscall being context synch=
+ronising
+>>> + * (which hrfid, rfid, and rfscv are) to support ARCH_HAS_MEMBARRIER_S=
+YNC_CORE
+>>> + * without additional additional synchronisation instructions.
+>>=20
+>> This file is dedicated to BOOK3S/64. What about other ones ?
+>>=20
+>> On 32 bits, this is also valid as 'rfi' is also context synchronising,
+>> but then why just add some comment in exception-64s.h and only there ?
+>=20
+> Yeah you're right, I basically wanted to keep a note there just in case,
+> because it's possible we would get a less synchronising return (maybe
+> unlikely with meltdown) or even return from a kernel interrupt using a
+> something faster (e.g., bctar if we don't use tar register in the kernel
+> anywhere).
+>=20
+> So I wonder where to add the note, entry_32.S and 64e.h as well?
+>=20
 
->> @@ -232,8 +246,9 @@ void __init setup_kuap(bool disabled)
->>  		cur_cpu_spec->mmu_features |= MMU_FTR_KUAP;
->>  	}
->>  
->> -	/* Make sure userspace can't change the AMR */
->> -	mtspr(SPRN_UAMOR, 0);
->
-> Why not just leave it there. It's extra insurance and it's good
-> documentation.
+For 64-bit powerpc, I would be tempted to either place the comment in the h=
+eader
+implementing the RFI_TO_USER and RFI_TO_USER_OR_KERNEL macros or the .S fil=
+es
+using them, e.g. either:
 
-We can't se the value to 0, because with hash kuap it is derived
-from what other keys are used for. Are you suggesting to keep it as
+arch/powerpc/include/asm/exception-64e.h
+arch/powerpc/include/asm/exception-64s.h
 
-if (radix_enabled())
-	mtspr(SPRN_UAMOR, 0);
+or
 
-That would confuse w.r.t what happens with hash.
+arch/powerpc/kernel/exceptions-64s.S
+arch/powerpc/kernel/entry_64.S
 
-I can add a comment there explaining details? 
+And for 32-bit powerpc, AFAIU
 
->
->> +	/*
->> +	 * Set the default kernel AMR values on all cpus.
->> +	 */
->>  	mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
->>  	isync();
->>  }
->> @@ -278,11 +293,6 @@ static inline u64 read_uamor(void)
->>  	return mfspr(SPRN_UAMOR);
->>  }
->>  
->> -static inline void write_uamor(u64 value)
->> -{
->> -	mtspr(SPRN_UAMOR, value);
->> -}
->> -
->>  static bool is_pkey_enabled(int pkey)
->>  {
->>  	u64 uamor = read_uamor();
->> @@ -353,7 +363,6 @@ void thread_pkey_regs_save(struct thread_struct *thread)
->>  	 */
->>  	thread->amr = read_amr();
->>  	thread->iamr = read_iamr();
->> -	thread->uamor = read_uamor();
->>  }
->>  
->>  void thread_pkey_regs_restore(struct thread_struct *new_thread,
->> @@ -366,8 +375,6 @@ void thread_pkey_regs_restore(struct thread_struct *new_thread,
->>  		write_amr(new_thread->amr);
->>  	if (old_thread->iamr != new_thread->iamr)
->>  		write_iamr(new_thread->iamr);
->> -	if (old_thread->uamor != new_thread->uamor)
->> -		write_uamor(new_thread->uamor);
->>  }
->>  
->>  void thread_pkey_regs_init(struct thread_struct *thread)
->> @@ -377,11 +384,9 @@ void thread_pkey_regs_init(struct thread_struct *thread)
->>  
->>  	thread->amr   = default_amr;
->>  	thread->iamr  = default_iamr;
->> -	thread->uamor = default_uamor;
->>  
->>  	write_amr(default_amr);
->>  	write_iamr(default_iamr);
->> -	write_uamor(default_uamor);
->>  }
->>  
->>  int execute_only_pkey(struct mm_struct *mm)
->
-> cheers
+arch/powerpc/kernel/entry_32.S
 
--aneesh
+uses SYNC + RFI to return to user-space. RFI is defined in
+
+arch/powerpc/include/asm/ppc_asm.h
+
+So a comment either near the RFI define and its uses should work.
+
+> I should actually change the comment for 64-bit because soft masked
+> interrupt replay is an interesting case. I thought it was okay (because
+> the IPI would cause a hard interrupt which does do the rfi) but that
+> should at least be written.
+
+Yes.
+
+> The context synchronisation happens before
+> the Linux IPI function is called, but for the purpose of membarrier I
+> think that is okay (the membarrier just needs to have caused a memory
+> barrier + context synchronistaion by the time it has done).
+
+Can you point me to the code implementing this logic ?
+
+Thanks,
+
+Mathieu
+
+>=20
+> Thanks,
+> Nick
+
+--=20
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
