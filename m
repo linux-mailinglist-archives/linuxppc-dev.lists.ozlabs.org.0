@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0787921761C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DC2217639
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:17:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Vw21spVzDqvD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:14:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1VyS1CWyzDqY1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:17:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,34 +17,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=kcpmxaf8; 
+ header.s=casper.20170209 header.b=JxrM/LYD; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vjh5QmMzDqxf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vjy5g1HzDqxB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:14 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=eaqfaebmOSOj0mbjpn+DosDS2INVUNao8Fb7NVppBZM=; b=kcpmxaf84w5Oxc9kFP/sAP+GmO
- 6lV4TU5zNTj3L1bN6Zwx+HdFoqLf70UyzHzCSZpmcBQX/dy+7sLG+9Yoa+ZfUNwuVDcsB4457DDJl
- iplwMOaNhaunyzNJEcxkhTi9JeC+SOvWZw8iIyQT9cHOXCrdM2XJY9yBgd+jyccEKzU78VUX7X1p8
- pU7YkIL5aRW5Kwja+rB4Naf4Xlx4O8teEDyiWxzRiZX/nR6JkGjKIuPUtNU/wWjCP3Mgv2MCIwYrF
- byZA29CM+hm5P6E0M+pWNzKBL1Q6Dz8F4gXil4SH8FggjkUBWmXcpB7MQ28asjiGyWHaqJ/FmbRYw
- 81z6v4ng==;
+ bh=M80BHus9hyLsqPgKepEifdkgrljPnRgGnyYqCcQQ+Qw=; b=JxrM/LYDi1fPXsL0UBFZq3X2P6
+ nf9Q1La85N8JvfLjmdhMtKaUDAaIAmZ11w449X5DopcBEO0wKjTyTJfLlikaIrx0v32PD8323n2LK
+ yOl9K4zVE+02BYfSPSc5uxUvK4DQjqOxT+viBBT/aXwdpoVptdzIaJndvOEl3XowSHZGW/wMioCFA
+ 7MlEM7YBtCGWRicVuNGkd06FzFky1ofY+6wmuSolEaEa+ZvRWThG3AxULlCDY5+1vIKouPS7XwutU
+ nnizUSFwo0x9gsrIocPNS6PFencp9mjoxUXL/PpNZiEnXpbryHMgs6YT6eLxTwrY0Buq+BA7GPjnL
+ MlCDoNRA==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsry5-0004JY-Av; Tue, 07 Jul 2020 18:05:21 +0000
+ id 1jsryG-0004JY-1j; Tue, 07 Jul 2020 18:05:32 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 05/20] Documentation: fpga: eliminate duplicated word
-Date: Tue,  7 Jul 2020 11:03:59 -0700
-Message-Id: <20200707180414.10467-6-rdunlap@infradead.org>
+Subject: [PATCH 06/20] Documentation: gpu/komeda-kms: eliminate duplicated word
+Date: Tue,  7 Jul 2020 11:04:00 -0700
+Message-Id: <20200707180414.10467-7-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -98,25 +98,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the doubled word "this".
+Drop the doubled word "and".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: Wu Hao <hao.wu@intel.com>
-Cc: linux-fpga@vger.kernel.org
+Cc: James (Qian) Wang <james.qian.wang@arm.com>
+Cc: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Mihail Atanassov <mihail.atanassov@arm.com>
+Cc: Mali DP Maintainers <malidp@foss.arm.com>
 ---
- Documentation/fpga/dfl.rst |    2 +-
+ Documentation/gpu/komeda-kms.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/fpga/dfl.rst
-+++ linux-next-20200701/Documentation/fpga/dfl.rst
-@@ -8,7 +8,7 @@ Authors:
- - Xiao Guangrong <guangrong.xiao@linux.intel.com>
- - Wu Hao <hao.wu@intel.com>
+--- linux-next-20200701.orig/Documentation/gpu/komeda-kms.rst
++++ linux-next-20200701/Documentation/gpu/komeda-kms.rst
+@@ -41,7 +41,7 @@ Compositor blends multiple layers or pix
+ frame. its output frame can be fed into post image processor for showing it on
+ the monitor or fed into wb_layer and written to memory at the same time.
+ user can also insert a scaler between compositor and wb_layer to down scale
+-the display frame first and and then write to memory.
++the display frame first and then write to memory.
  
--The Device Feature List (DFL) FPGA framework (and drivers according to this
-+The Device Feature List (DFL) FPGA framework (and drivers according to
- this framework) hides the very details of low layer hardwares and provides
- unified interfaces to userspace. Applications could use these interfaces to
- configure, enumerate, open and access FPGA accelerators on platforms which
+ Writeback Layer (wb_layer)
+ --------------------------
