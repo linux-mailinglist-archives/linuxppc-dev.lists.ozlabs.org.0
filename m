@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B292175E3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F650217677
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:20:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1Vl2070MzDqQd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:07:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1W241j0GzDqXb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:20:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,34 +17,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=sxkrQiQd; 
+ header.s=casper.20170209 header.b=SW63xAOO; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vj12MZyzDqft
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:05:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vk70QkDzDqy1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=Uy8yJX+vppiMsr/LbFCCYFmBCFPFPsjcjKfD38DWB7A=; b=sxkrQiQdnrmXTHTrkBRYk3GyhK
- 3MoKQhb+VfxX97H4vExjQgOEnyoL1sepIe7MXNHtQG2tERYABfleZ69U31o9ImVgu60K3fIqLAIW6
- ZeDojpK29hd5agAoqQDfiJnK3d6GUED5cwgc+KqUiL5I1+s9/hQCwifXsOzC762dw39q7YyZ2+cGh
- 1vVFdfUD1M5yzAdj/r5cYonsIqgMyL1DyCq+CYPlpT0axL3Ozj+O9LQa+9b6lQq2q3J3Em28VHhlZ
- g6v4Snc4M3hPk/gQB1VHQhx1uCTpN3rM8cxq2bHB3+Ty+Yf7e1ywWOO/booRcPiuYmsyfxSxUi+0O
- NJslNOhA==;
+ bh=S0rI9BPk98gmUpIetVbAsCn3BOBRdoilS5Tyn5oPSmg=; b=SW63xAOOPIV0Xh3xxUIeNap+kY
+ ALmry2FpzQZ0jI9iUzAqI49urTy1wKD5asS4EwWqeqG/T2KFett/U/PmACPaIL0o3PbyJ9LdTxfZL
+ 3ggersKwwbImUnid0cCR44+oihlm2SC/JZCb39fV3Az/D1jNUdg6njOXs5B9dOzl263Kf/dkDl+SL
+ 00sA5VWB7lVyXuGMKBncOCmi7D9xp0Urg0guoUHMF8TQueFkBtlUowlvVJTgAS4fyXOwmCQ3/7wnS
+ UWJtpe+DbKkhmoXJarNKMFVmb+5PztEyxOUv4S5VzZFDFSJ+Fe05iG+SvVl16eLygiI5uFUMlA7vE
+ NJaSwpkQ==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsrxZ-0004JY-4V; Tue, 07 Jul 2020 18:04:49 +0000
+ id 1jsrxj-0004JY-Qd; Tue, 07 Jul 2020 18:05:00 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 02/20] Documentation: block: eliminate duplicated word
-Date: Tue,  7 Jul 2020 11:03:56 -0700
-Message-Id: <20200707180414.10467-3-rdunlap@infradead.org>
+Subject: [PATCH 03/20] Documentation: printk-basics: eliminate duplicated word
+Date: Tue,  7 Jul 2020 11:03:57 -0700
+Message-Id: <20200707180414.10467-4-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -98,25 +98,23 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Change the doubled word "the" to "to the".
+Drop the doubled word "the".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org
 ---
- Documentation/block/pr.rst |    2 +-
+ Documentation/core-api/printk-basics.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/block/pr.rst
-+++ linux-next-20200701/Documentation/block/pr.rst
-@@ -9,7 +9,7 @@ access to block devices to specific init
- setup.
+--- linux-next-20200701.orig/Documentation/core-api/printk-basics.rst
++++ linux-next-20200701/Documentation/core-api/printk-basics.rst
+@@ -69,7 +69,7 @@ You can check the current *console_logle
+ The result shows the *current*, *default*, *minimum* and *boot-time-default* log
+ levels.
  
- This document gives a general overview of the support ioctl commands.
--For a more detailed reference please refer the the SCSI Primary
-+For a more detailed reference please refer to the SCSI Primary
- Commands standard, specifically the section on Reservations and the
- "PERSISTENT RESERVE IN" and "PERSISTENT RESERVE OUT" commands.
+-To change the current console_loglevel simply write the the desired level to
++To change the current console_loglevel simply write the desired level to
+ ``/proc/sys/kernel/printk``. For example, to print all messages to the console::
  
+   # echo 8 > /proc/sys/kernel/printk
