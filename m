@@ -2,80 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0711521632E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 02:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE998216339
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 03:02:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B13qL2GVlzDqTv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 10:54:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B141F21K8zDqfc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 11:02:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f44;
- helo=mail-qv1-xf44.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=aiktmtNj; dkim-atps=neutral
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com
- [IPv6:2607:f8b0:4864:20::f44])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B13jS4cnRzDqdg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 10:49:15 +1000 (AEST)
-Received: by mail-qv1-xf44.google.com with SMTP id di5so13188886qvb.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jul 2020 17:49:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=nupjNinoHUh+uunJaY1+lviIz5/yMs8Gt+iI8FGKf1E=;
- b=aiktmtNj5ZAoNyPO1vLNFxBZIg4wlgHK6Lj3LTR6TuvRNwIUv7FlYq7hz36B/C9zYu
- JQxB8ajz6Wqk4BEOOWRLZDtOgTwRvJ3enGHwNIPJzN0MlvRp5i4zdcsgT5KVGLkhWMWx
- Ze/izcWhua9ygTYA0VHp9wTGxaBtuxstHphkPkNzxWTyO2FNRAPW83yZSTzICoi9w7j6
- JHxnWX2NjjQ5ryqTQpVaOvI42+H20BPKcrIzezzNDzujgticoI78gSt6M6ZPY95sv8uN
- poI9ocj5Y6sM8hhmljMdl9WFWCnFoFLjjRKN1ia4Ig+DmbrkMXP3Z+R5cJJuKm0u8Zvw
- LEIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=nupjNinoHUh+uunJaY1+lviIz5/yMs8Gt+iI8FGKf1E=;
- b=uajBoy5epTFPo01T3F8/MoFnO66eQUHwVYNzVSIVT2zl4qLDvuxYnfWhl/78JKU9Yb
- QagSAFT+w+61X8CLg28ihbCDOcvgF4vEEbxR8TBpNHN872Px4Nv52NI+Kx8Nov2K+Ry3
- YLNdEdUktDIDgSdvUvXdfjjuzFpzjIfA6VupvYHrLA+hXS5YKXF7EklShV3ubik5IyGy
- wX+AjSepjcWOP52UpO3x+nbcaYVey/P43khm4b3NIbc5nyz7u/nlut40TM72R9X8nh7b
- gJSSYB7/X13FyeSPoK3lV/oqsAgpeGPL89tOPpiucSrFwAu0vYDxL9GFZ/zyTtM7mStW
- n2Mw==
-X-Gm-Message-State: AOAM533EFTF43UphOh8jVhJApo4AX+HO6fSSEOpApZmMIRlGZ6P8oH+6
- 9o6H2QiDVmHWGfMk+O1meg4=
-X-Google-Smtp-Source: ABdhPJztRm0dtfm0yUaV6CFQuiSny4WpTBoh+ADVnQgav5R2Q07nHdng/u3kPPaGv8DoqtC4hoHQ0Q==
-X-Received: by 2002:a05:6214:289:: with SMTP id
- l9mr41967514qvv.238.1594082950616; 
- Mon, 06 Jul 2020 17:49:10 -0700 (PDT)
-Received: from localhost.localdomain (179-125-148-98.dynamic.desktop.com.br.
- [179.125.148.98])
- by smtp.gmail.com with ESMTPSA id d23sm24413636qtk.97.2020.07.06.17.49.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Jul 2020 17:49:09 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
- Bharata B Rao <bharata@linux.ibm.com>, Leonardo Bras <leobras.c@gmail.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Subject: [PATCH 1/1] KVM/PPC: Fix typo on H_DISABLE_AND_GET hcall
-Date: Mon,  6 Jul 2020 21:48:12 -0300
-Message-Id: <20200707004812.190765-1-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.25.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B13yW6b5lzDqV9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 11:00:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=CbJXs+bs; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B13yW389cz9s1x;
+ Tue,  7 Jul 2020 11:00:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594083635;
+ bh=qzPV20SJNkcjihYEHYWApl1OnmD+HUg13ZYKS5sj3qg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=CbJXs+bso0RcSodKjIkkEw2DV/QxCgKTENyG2295m8U2ho/ZbAARRaHghk9NHB4fC
+ bk+5OQTfwS/JSimaNsv5HqZQuhl64uggHDFfHrQC2nnzTtf1BsHLdXyxgsI8eKoyow
+ Z56r1E+uKxsIuujzsYZ2GZErmrU/pOjK1XOK/WeCsnAbTyTDeIMRZAUrks8Kh8DpFM
+ BVqpFe7sdv8Y2puClVbqvoZ+3y58zGzxD+znrUR/Y8HV+8pckrJx6h9difJw4zHmWJ
+ GMsnR8/a82XJEOE8zJRdrWfF7i5gLHguXfBSJ18PF8xpFn2f11ufl0zadR+zSab/Cm
+ j2l1nNq4ncXIw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 13/26] powerpc/book3s64/pkeys: Enable MMU_FTR_PKEY
+In-Reply-To: <6fa2a91d-c11c-2be4-2057-15f86d4dd39c@linux.ibm.com>
+References: <20200619135850.47155-1-aneesh.kumar@linux.ibm.com>
+ <20200619135850.47155-14-aneesh.kumar@linux.ibm.com>
+ <878sfw6b7v.fsf@mpe.ellerman.id.au>
+ <cddb4987-860f-f4be-43b0-f164031f9f6a@linux.ibm.com>
+ <6fa2a91d-c11c-2be4-2057-15f86d4dd39c@linux.ibm.com>
+Date: Tue, 07 Jul 2020 11:02:49 +1000
+Message-ID: <87zh8c3znq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,65 +63,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: linuxram@us.ibm.com, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On PAPR+ the hcall() on 0x1B0 is called H_DISABLE_AND_GET, but got
-defined as H_DISABLE_AND_GETC instead.
-
-This define was introduced with a typo in commit <b13a96cfb055>
-("[PATCH] powerpc: Extends HCALL interface for InfiniBand usage"), and was
-later used without having the typo noticed.
-
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
----
- arch/powerpc/include/asm/hvcall.h            | 2 +-
- arch/powerpc/kvm/trace_hv.h                  | 2 +-
- tools/perf/arch/powerpc/util/book3s_hcalls.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index e90c073e437e..d8ada9c7ec78 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -237,7 +237,7 @@
- #define H_CREATE_RPT            0x1A4
- #define H_REMOVE_RPT            0x1A8
- #define H_REGISTER_RPAGES       0x1AC
--#define H_DISABLE_AND_GETC      0x1B0
-+#define H_DISABLE_AND_GET       0x1B0
- #define H_ERROR_DATA            0x1B4
- #define H_GET_HCA_INFO          0x1B8
- #define H_GET_PERF_COUNT        0x1BC
-diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
-index 4a61a971c34e..830a126e095d 100644
---- a/arch/powerpc/kvm/trace_hv.h
-+++ b/arch/powerpc/kvm/trace_hv.h
-@@ -89,7 +89,7 @@
- 	{H_CREATE_RPT,			"H_CREATE_RPT"}, \
- 	{H_REMOVE_RPT,			"H_REMOVE_RPT"}, \
- 	{H_REGISTER_RPAGES,		"H_REGISTER_RPAGES"}, \
--	{H_DISABLE_AND_GETC,		"H_DISABLE_AND_GETC"}, \
-+	{H_DISABLE_AND_GET,		"H_DISABLE_AND_GET"}, \
- 	{H_ERROR_DATA,			"H_ERROR_DATA"}, \
- 	{H_GET_HCA_INFO,		"H_GET_HCA_INFO"}, \
- 	{H_GET_PERF_COUNT,		"H_GET_PERF_COUNT"}, \
-diff --git a/tools/perf/arch/powerpc/util/book3s_hcalls.h b/tools/perf/arch/powerpc/util/book3s_hcalls.h
-index 54cfa0530e86..488f4339b83c 100644
---- a/tools/perf/arch/powerpc/util/book3s_hcalls.h
-+++ b/tools/perf/arch/powerpc/util/book3s_hcalls.h
-@@ -84,7 +84,7 @@
- 	{0x1a4, "H_CREATE_RPT"},				\
- 	{0x1a8, "H_REMOVE_RPT"},				\
- 	{0x1ac, "H_REGISTER_RPAGES"},				\
--	{0x1b0, "H_DISABLE_AND_GETC"},				\
-+	{0x1b0, "H_DISABLE_AND_GET"},				\
- 	{0x1b4, "H_ERROR_DATA"},				\
- 	{0x1b8, "H_GET_HCA_INFO"},				\
- 	{0x1bc, "H_GET_PERF_COUNT"},				\
--- 
-2.25.4
-
+IkFuZWVzaCBLdW1hciBLLlYiIDxhbmVlc2gua3VtYXJAbGludXguaWJtLmNvbT4gd3JpdGVzOg0K
+Pj4+DQo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoCAvKg0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCAqIExldCdzIGFzc3VtZSAzMiBwa2V5cyBvbiBQOCBiYXJlIG1ldGFsLCBpZiBpdHMgbm90IA0K
+Pj4+PiBkZWZpbmVkIGJ5IGRldmljZQ0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIHRyZWUu
+IFdlIG1ha2UgdGhpcyBleGNlcHRpb24gc2luY2Ugc2tpYm9vdCBmb3Jnb3QgdG8gDQo+Pj4+IGV4
+cG9zZSB0aGlzDQo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgICogcHJvcGVydHkgb24gcG93ZXI4
+Lg0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqLw0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAg
+aWYgKCFmaXJtd2FyZV9oYXNfZmVhdHVyZShGV19GRUFUVVJFX0xQQVIpICYmDQo+Pj4+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIGNwdV9oYXNfZmVhdHVyZShDUFVfRlRSU19QT1dFUjgpKQ0KPj4+
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBlYXJseV9jcHVfaGFzX2ZlYXR1cmUoQ1BVX0ZUUlNf
+UE9XRVI4KSkNCj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcGtleXNfdG90YWwgPSAz
+MjsNCj4+Pg0KPj4+IFRoYXQncyBub3QgaG93IGNwdV9oYXNfZmVhdHVyZSgpIHdvcmtzLCB3ZSds
+bCBuZWVkIHRvIGZpeCB0aGF0Lg0KPj4+DQo+Pj4gY2hlZXJzDQo+Pj4NCj4+IA0KPj4gSSBkaWQg
+YSBzZXBhcmF0ZSBwYXRjaCB0byBoYW5kbGUgdGhhdCB3aGljaCBzd2l0Y2ggdGhlIGFib3ZlIHRv
+DQo+PiANCj4+ICDCoMKgwqDCoMKgwqDCoCAvKg0KPj4gIMKgwqDCoMKgwqDCoMKgwqAgKiBMZXQn
+cyBhc3N1bWUgMzIgcGtleXMgb24gUDgvUDkgYmFyZSBtZXRhbCwgaWYgaXRzIG5vdCANCj4+IGRl
+ZmluZWQgYnkgZGV2aWNlDQo+PiAgwqDCoMKgwqDCoMKgwqDCoCAqIHRyZWUuIFdlIG1ha2UgdGhp
+cyBleGNlcHRpb24gc2luY2Ugc2tpYm9vdCBmb3Jnb3QgdG8gZXhwb3NlIA0KPj4gdGhpcw0KPj4g
+IMKgwqDCoMKgwqDCoMKgwqAgKiBwcm9wZXJ0eSBvbiBwb3dlcjgvOS4NCj4+ICDCoMKgwqDCoMKg
+wqDCoMKgICovDQo+PiAgwqDCoMKgwqDCoMKgwqAgaWYgKCFmaXJtd2FyZV9oYXNfZmVhdHVyZShG
+V19GRUFUVVJFX0xQQVIpICYmDQo+PiAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAoZWFybHlfY3B1
+X2hhc19mZWF0dXJlKENQVV9GVFJfQVJDSF8yMDdTKSB8fA0KPj4gIMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBlYXJseV9jcHVfaGFzX2ZlYXR1cmUoQ1BVX0ZUUl9BUkNIXzMwMCkpKQ0KPj4gIMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgcGtleXNfdG90YWwgPSAzMjsNCj4+IA0KPg0KPiBXZSBzaG91
+bGQgZG8gYSBQVlIgY2hlY2sgaGVyZSBpIGd1ZXNzLg0KDQpZZXMsIHRoZSBBUkNIIGZlYXR1cmVz
+IGRvbid0IHdvcmsgYmVjYXVzZSBQMTAgd2lsbCBoYXZlIGJvdGggb2YgdGhvc2UNCmVuYWJsZWQu
+DQoNCj4gCXJldCA9IG9mX3NjYW5fZmxhdF9kdChkdF9zY2FuX3N0b3JhZ2Vfa2V5cywgJnBrZXlz
+X3RvdGFsKTsNCj4gCWlmIChyZXQgPT0gMCkgew0KPg0KPiAJCS8qDQo+IAkJICogTGV0J3MgYXNz
+dW1lIDMyIHBrZXlzIG9uIFA4L1A5IGJhcmUgbWV0YWwsIGlmIGl0cyBub3QgZGVmaW5lZCBieSBk
+ZXZpY2UNCj4gCQkgKiB0cmVlLiBXZSBtYWtlIHRoaXMgZXhjZXB0aW9uIHNpbmNlIHNraWJvb3Qg
+Zm9yZ290IHRvIGV4cG9zZSB0aGlzDQo+IAkJICogcHJvcGVydHkgb24gcG93ZXI4LzkuDQoNCldl
+bGwsIGl0IGRvZXMgZXhwb3NlIGl0IG9uIFBvd2VyOSBhZnRlciB2Ni42LCBidXQgbW9zdCBQOSBz
+eXN0ZW1zIGhhdmUNCmFuIG9sZGVyIGZpcm13YXJlIHRoYW4gdGhhdC4NCg0KQW5kIGFsc28gdGhl
+IGtlcm5lbCBoYXMgYmVlbiBlbmFibGluZyB0aGF0IG9uIFBvd2VyOSBiZWNhdXNlIG9mIHRoZQ0K
+Q1BVX0ZUUlNfUE9XRVI4IGJ1Zywgc28gdGhpcyBpcyBub3QgYWN0dWFsbHkgYSBiZWhhdmlvdXIg
+Y2hhbmdlLg0KDQo+IAkJICovDQo+IAkJaWYgKCFmaXJtd2FyZV9oYXNfZmVhdHVyZShGV19GRUFU
+VVJFX0xQQVIpICYmDQo+IAkJICAgIChwdnJfdmVyc2lvbl9pcyhQVlJfUE9XRVI4KSB8fCBwdnJf
+dmVyc2lvbl9pcyhQVlJfUE9XRVI5KSkpDQo+IAkJCXBrZXlzX3RvdGFsID0gMzI7DQo+IAl9DQoN
+CllvdSBuZWVkIFBWUl9QT1dFUjhFIGFuZCBQVlJfUE9XRVI4TlZMIGFzIHdlbGwuDQoNCmNoZWVy
+cw0K
