@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92F021771F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1510521777B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 21:05:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WlH19MczDr4Y
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:52:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1X1t02BJzDqvx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 05:05:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,36 +17,48 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1WJK5bGnzDqpC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:32:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Wzz1th9zDqq5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 05:03:24 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4B1WJB69kFz9v1HL;
- Tue,  7 Jul 2020 20:32:26 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4B1Wzs0LHJz9tyY5;
+ Tue,  7 Jul 2020 21:03:21 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 1NCa8ObR2Wbn; Tue,  7 Jul 2020 20:32:26 +0200 (CEST)
+ with ESMTP id nLDw_LnQf98w; Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4B1WJB5Jqsz9v1HK;
- Tue,  7 Jul 2020 20:32:26 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4B1Wzr64nMz9tyXt;
+ Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C334E8B7ED;
- Tue,  7 Jul 2020 20:32:26 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DACD28B7ED;
+ Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ndX5NHz7O5u9; Tue,  7 Jul 2020 20:32:26 +0200 (CEST)
-Received: from po16052vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F1B718B7D7;
- Tue,  7 Jul 2020 20:32:25 +0200 (CEST)
-Received: by po16052vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 816F965BB1; Tue,  7 Jul 2020 18:32:25 +0000 (UTC)
-Message-Id: <810bd8840ef990a200f58c9dea9abe767ca02a3a.1594146723.git.christophe.leroy@csgroup.eu>
+ with ESMTP id EqsTOoR54YIs; Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 51A3A8B7D7;
+ Tue,  7 Jul 2020 21:03:20 +0200 (CEST)
+Subject: Re: [PATCH v2] powerpc/uaccess: Use flexible addressing with
+ __put_user()/__get_user()
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/signal64: Don't opencode page prefaulting
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue,  7 Jul 2020 18:32:25 +0000 (UTC)
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, npiggin@gmail.com,
+ segher@kernel.crashing.org
+References: <c2addbd9d76212242d3d8554a2f7ff849fb08b85.1587040754.git.christophe.leroy@c-s.fr>
+ <7b916759-1683-b4df-0d4b-b04b3fcd9a02@csgroup.eu>
+ <878sg6862r.fsf@mpe.ellerman.id.au> <875zb98i5a.fsf@mpe.ellerman.id.au>
+ <8b751738-a9d1-8f55-8f9b-9264c8ac7ed8@csgroup.eu>
+Message-ID: <faa6759a-8188-104b-a9f9-a5ff3b060cfa@csgroup.eu>
+Date: Tue, 7 Jul 2020 21:02:58 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <8b751738-a9d1-8f55-8f9b-9264c8ac7ed8@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,46 +75,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of doing a __get_user() from the first and last location
-into a tmp var which won't be used, use fault_in_pages_readable()
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/signal_64.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index 55e5f76554da..c451c47538e1 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -21,6 +21,7 @@
- #include <linux/ptrace.h>
- #include <linux/ratelimit.h>
- #include <linux/syscalls.h>
-+#include <linux/pagemap.h>
- 
- #include <asm/sigcontext.h>
- #include <asm/ucontext.h>
-@@ -632,7 +633,6 @@ static long setup_trampoline(unsigned int syscall, unsigned int __user *tramp)
- SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 		struct ucontext __user *, new_ctx, long, ctx_size)
- {
--	unsigned char tmp;
- 	sigset_t set;
- 	unsigned long new_msr = 0;
- 	int ctx_has_vsx_region = 0;
-@@ -667,9 +667,8 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 	}
- 	if (new_ctx == NULL)
- 		return 0;
--	if (!access_ok(new_ctx, ctx_size)
--	    || __get_user(tmp, (u8 __user *) new_ctx)
--	    || __get_user(tmp, (u8 __user *) new_ctx + ctx_size - 1))
-+	if (!access_ok(new_ctx, ctx_size) ||
-+	    fault_in_pages_readable((u8 __user *)new_ctx, ctx_size))
- 		return -EFAULT;
- 
- 	/*
--- 
-2.25.0
+Le 07/07/2020 à 14:44, Christophe Leroy a écrit :
+> 
+> 
+> Le 30/06/2020 à 03:19, Michael Ellerman a écrit :
+>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>>> Hi Michael,
+>>>>
+>>>> I see this patch is marked as "defered" in patchwork, but I can't see
+>>>> any related discussion. Is it normal ?
+>>>
+>>> Because it uses the "m<>" constraint which didn't work on GCC 4.6.
+>>>
+>>> https://github.com/linuxppc/issues/issues/297
+>>>
+>>> So we should be able to pick it up for v5.9 hopefully.
+>>
+>> It seems to break the build with the kernel.org 4.9.4 compiler and
+>> corenet64_smp_defconfig:
+> 
+> Most likely a GCC bug ?
+> 
+> It seems the problem vanishes with patch 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/173de3b659fa3a5f126a0eb170522cccd909950f.1594125164.git.christophe.leroy@csgroup.eu/ 
+> 
 
+Same kind of issue in signal_64.c now.
+
+The following patch fixes it: 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/810bd8840ef990a200f58c9dea9abe767ca02a3a.1594146723.git.christophe.leroy@csgroup.eu/
+
+Christophe
