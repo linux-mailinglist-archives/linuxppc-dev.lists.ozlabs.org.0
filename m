@@ -2,55 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFE92166DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 08:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B079B216702
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 09:04:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1CrX2lG4zDqkD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 16:55:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1D2s3mDWzDqlZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 17:04:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1ClB0rSqzDqkG
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 16:51:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=LwSUNUtD; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4B1Cl936w8z9sTC; Tue,  7 Jul 2020 16:51:17 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ExAnVfts; dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1Cl86QFpz9sT6;
- Tue,  7 Jul 2020 16:51:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594104676;
- bh=mSc7ZlijM9jYtm2c8+HUAgy7pwbP8QyWMOMDkWVm4O8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=LwSUNUtDs2cuWpV/Zglq+yiqLNmNZWXBp+A8oyJUqac2a2y0eDXpeMw8n5+NLMvXe
- pmRvsCnxzFiY5ayGCwANTTe8Hvoifob5OwojW/8mmx456MjuXjy44ss3dE43xNA5qn
- XDR28REueOivUI4JQZkuAMtpxjzTmZYsMBgf+rDOlHXseYFs5/oVsDH9B9DwkWNs4N
- 9mB7bRLq4QhJCl0ehhUdbvBmGnZynLYQBmXGdoMP5CsJWKGMbbyn7lWxh6rI4rPL7Q
- 8fphVU6A5pZqQ65at7xEbCcqxCB5a0/Ae1warSVG/89wW2F6b5Wg1w65HDKbqaXF7+
- YYiAVL98rqhuA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@ozlabs.org
-Subject: Re: [RFC PATCH 4/5] powerpc/mm: Remove custom stack expansion checking
-In-Reply-To: <fb3aad5f-17a1-93cc-1a3a-c50fe16ab711@csgroup.eu>
-References: <20200703141327.1732550-1-mpe@ellerman.id.au>
- <20200703141327.1732550-4-mpe@ellerman.id.au>
- <fb3aad5f-17a1-93cc-1a3a-c50fe16ab711@csgroup.eu>
-Date: Tue, 07 Jul 2020 16:53:32 +1000
-Message-ID: <87d0574xzn.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1D1F5KtBzDqjx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jul 2020 17:03:29 +1000 (AEST)
+Received: by mail-wr1-x441.google.com with SMTP id z15so32671953wrl.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jul 2020 00:03:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=AztWC89PWpVueMvE6WySiDXogkF7gCYc/XwxHL5ObHk=;
+ b=ExAnVftsMAzDgIUccPYQuWmM5PzpFJFoM2qu3mB3j5FGPII+dLLfQ/qVeEUDbN46Jo
+ lSFj1ozhdO/z9Bk5Lsz3KJ0JhEGY/JLwnc1PY/jsMCwp3RdToDrwbGzc0oZr47xTynB/
+ qNh6HFtCmFYcyP+xqGBNpMW9bvZiUEthPJSiAxOfJQhXD+7qKp27zpTWiqFEbTQ42Zn8
+ NSVHFvyOCgli7EjCconldnUUiNsZ/TGjjgseDWtE07Ac0mqQiG8A6HqArLLTeEZ/XsgQ
+ kuvCNlIhpKAO0xh8qM1TFac8buGuUpZ6hFtGWN0iF5lWESKB31K8OHWajZn6bO6yjXnl
+ 4Lkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=AztWC89PWpVueMvE6WySiDXogkF7gCYc/XwxHL5ObHk=;
+ b=eCIvhzFUnjvbXYCpVLy6fu2SRVnC6hcKkY/3m7jAY8Xv9EMWTtPeRy63gprMdG+RMJ
+ nit5r3fn6BhI3uuFn3uRQiU40z1K4J0TwFigaS7BJXj+7Xb/AqJNkrnZ6swdD017eZCm
+ P+vnElF4BBamptCu4yVXwrNO3oOdAkcPYHISxRF5KYjUz+w+LNqpJGsoNRgtqtn6Yk/g
+ WgciYQwRFSU3OZJ9JveqZ9lIyEt9uDsx/D5QmYYZgz3qclLlbWalm6pGwnYI33MxG4zK
+ xXLA+3hedBilODiNKe5tQbzFAQrKOA+eaG2Nt3wp1x+Jt2U0HssMFlWWxjFLBqGR0LXo
+ cxyA==
+X-Gm-Message-State: AOAM5322c64VgbQjFavOePQZgTKF2OkjlxuVWMNjxIY5YEGInTWZ/gaX
+ YOWDLhxeIoBoEsrNH33siWw=
+X-Google-Smtp-Source: ABdhPJy90KbOkJ+oVaaQSLVvuLkUBUG0S5sDTQ0dQNdcle572wINupHGKHWGRWcR70UJsUUVzrpZtQ==
+X-Received: by 2002:a5d:6cce:: with SMTP id c14mr50034412wrc.377.1594105406365; 
+ Tue, 07 Jul 2020 00:03:26 -0700 (PDT)
+Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id h84sm2375211wme.22.2020.07.07.00.03.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Jul 2020 00:03:25 -0700 (PDT)
+Date: Tue, 07 Jul 2020 17:03:19 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: Using Firefox hangs system
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>, Paul Menzel
+ <pmenzel@molgen.mpg.de>
+References: <673619a2-74d7-105b-dacb-bec15bc37872@molgen.mpg.de>
+ <2a86d85d-b51d-52c5-f84f-efea5a0ca628@molgen.mpg.de>
+ <1593995628.78zg3dfzk8.astroid@bobo.none>
+ <de2c9ccd-a078-a2ca-e7c7-13a1032cbda3@molgen.mpg.de>
+In-Reply-To: <de2c9ccd-a078-a2ca-e7c7-13a1032cbda3@molgen.mpg.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Message-Id: <1594101688.1iv25hofi6.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,188 +83,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, hughd@google.com, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 03/07/2020 =C3=A0 16:13, Michael Ellerman a =C3=A9crit=C2=A0:
->> We have powerpc specific logic in our page fault handling to decide if
->> an access to an unmapped address below the stack pointer should expand
->> the stack VMA.
+Excerpts from Paul Menzel's message of July 6, 2020 3:20 pm:
+> Dear Nicholas,
+>=20
+>=20
+> Thank you for the quick response.
+>=20
+>=20
+> Am 06.07.20 um 02:41 schrieb Nicholas Piggin:
+>> Excerpts from Paul Menzel's message of July 5, 2020 8:30 pm:
+>=20
+>>> Am 05.07.20 um 11:22 schrieb Paul Menzel:
+>>>> [  572.253008] Oops: Exception in kernel mode, sig: 5 [#1]
+>>>> [  572.253198] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA P=
+owerNV
+>>>> [  572.253232] Modules linked in: tcp_diag inet_diag unix_diag xt_CHEC=
+KSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp ip6tabl=
+e_mangle ip6table_nat iptable_mangle iptable_nat nf_nat nf_conntrack nf_def=
+rag_ipv6 nf_defrag_ipv4 nf_tables nfnetlink ip6table_filter ip6_tables ipta=
+ble_filter bridge stp llc overlay xfs kvm_hv kvm binfmt_misc joydev uas usb=
+_storage vmx_crypto bnx2x crct10dif_vpmsum ofpart cmdlinepart powernv_flash=
+ mtd mdio ibmpowernv at24 ipmi_powernv ipmi_devintf ipmi_msghandler opal_pr=
+d powernv_rng sch_fq_codel parport_pc ppdev lp nfsd parport auth_rpcgss nfs=
+_acl lockd grace sunrpc ip_tables x_tables autofs4 btrfs blake2b_generic li=
+bcrc32c xor zstd_compress raid6_pq input_leds mac_hid hid_generic ast drm_v=
+ram_helper drm_ttm_helper i2c_algo_bit ttm drm_kms_helper syscopyarea sysfi=
+llrect sysimgblt fb_sys_fops drm ahci drm_panel_orientation_quirks libahci =
+usbhid hid crc32c_vpmsum uio_pdrv_genirq uio
+>>>> [  572.253639] CPU: 4 PID: 6728 Comm: Web Content Not tainted 5.8.0-rc=
+3+ #1
+>>>> [  572.253659] NIP:  c00000000000ff5c LR: c00000000001a8f8 CTR: c00000=
+00001d5f00
+>>>> [  572.253835] REGS: c000007f31f0f420 TRAP: 1500   Not tainted  (5.8.0=
+-rc3+)
+>>>> [  572.253854] MSR:  900000000290b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI=
+,LE>  CR: 28c48482  XER: 20000000
+>>>> [  572.253888] CFAR: c00000000000fecc IRQMASK: 1
+>>>> [  572.253888] GPR00: c00000000001b228 c000007f31f0f6b0 c000000001f9a9=
+00 c000007f351544d0
+>>>> [  572.253888] GPR04: 0000000000000000 c000007f31f0fe90 c000007f351544=
+f0 c000007f32e522b0
+>>>> [  572.253888] GPR08: 0000000000000000 0000000000002000 90000000000090=
+33 c000007fbcd85800
+>>>> [  572.253888] GPR12: 0000000000008800 c000007fffffb680 00000000000000=
+05 0000000000000004
+>>>> [  572.253888] GPR16: c000007f35153800 c000007f35154130 00000000000000=
+05 0000000000000001
+>>>> [  572.253888] GPR20: 0000000000000024 c000007f32e51e68 c000007f351540=
+28 0000007fd8da0000
+>>>> [  572.253888] GPR24: 0000007fd8da0000 c000007f351544d0 c000007e9a4024=
+d0 c000000001665f18
+>>>> [  572.253888] GPR28: c000007f351544d0 c000007f35153800 900000000290f0=
+33 c000007f35153800
+>>>> [  572.254079] NIP [c00000000000ff5c] save_fpu+0xa8/0x2ac
+>>>> [  572.254098] LR [c00000000001a8f8] __giveup_fpu+0x28/0x80
+>>>> [  572.254114] Call Trace:
+>>>> [  572.254128] [c000007f31f0f6b0] [c000007f35153980] 0xc000007f3515398=
+0 (unreliable)
+>>>> [  572.254156] [c000007f31f0f6e0] [c00000000001b228] giveup_all+0x128/=
+0x150
+>>>> [  572.254327] [c000007f31f0f710] [c00000000001c124] __switch_to+0x104=
+/0x490
+>>>> [  572.254352] [c000007f31f0f770] [c0000000010d2e34] __schedule+0x2e4/=
+0xa10
+>>>> [  572.254374] [c000007f31f0f840] [c0000000010d35d4] schedule+0x74/0x1=
+40
+>>>> [  572.254397] [c000007f31f0f870] [c0000000010d9478] schedule_timeout+=
+0x358/0x5d0
+>>>> [  572.254424] [c000007f31f0f980] [c0000000010d5638] wait_for_completi=
+on+0xc8/0x210
+>>>> [  572.254451] [c000007f31f0fa00] [c000000000608ed4] do_coredump+0x3a4=
+/0xd60
+>>>> [  572.254625] [c000007f31f0fba0] [c00000000018d1cc] get_signal+0x1dc/=
+0xd00
+>>>> [  572.254648] [c000007f31f0fcc0] [c00000000001f088] do_notify_resume+=
+0x158/0x450
+>>>> [  572.254672] [c000007f31f0fda0] [c000000000037d04] interrupt_exit_us=
+er_prepare+0x1c4/0x230
+>>>> [  572.254699] [c000007f31f0fe20] [c00000000000f2b4] interrupt_return+=
+0x14/0x1c0
+>>>> [  572.254720] Instruction dump:
+>>>> [  572.254882] dae60170 db060180 db260190 db4601a0 db6601b0 db8601c0 d=
+ba601d0 dbc601e0
+>>>> [  572.254912] dbe601f0 48000204 38800000 f0000250 <7c062798> f0000250=
+ 38800010 f0210a50
+>>>> [  572.254946] ---[ end trace ba4452ee5c77d58e ]---
+>>>
+>>> Please find all the messages attached.
 >>=20
->> The logic aims to prevent userspace from doing bad accesses below the
->> stack pointer. However as long as the stack is < 1MB in size, we allow
->> all accesses without further checks. Adding some debug I see that I
->> can do a full kernel build and LTP run, and not a single process has
->> used more than 1MB of stack. So for the majority of processes the
->> logic never even fires.
+>> "Oops: Exception in kernel mode, sig: 5 [#1]"
 >>=20
->> We also recently found a nasty bug in this code which could cause
->> userspace programs to be killed during signal delivery. It went
->> unnoticed presumably because most processes use < 1MB of stack.
->>=20
->> The generic mm code has also grown support for stack guard pages since
->> this code was originally written, so the most heinous case of the
->> stack expanding into other mappings is now handled for us.
->>=20
->> Finally although some other arches have special logic in this path,
->> from what I can tell none of x86, arm64, arm and s390 impose any extra
->> checks other than those in expand_stack().
->>=20
->> So drop our complicated logic and like other architectures just let
->> the stack expand as long as its within the rlimit.
->
-> I agree that's probably not worth a so complicated logic that is nowhere=
+>> Unfortunately it's a very poor error message. I think it is a 0x1500
+>> exception triggering in the kernel FP register saving. Do you have the
+>> CONFIG_PPC_DENORMALISATION config option set?
+>=20
+> Yes, as it=E2=80=99s set in the Ubuntu Linux kernel configuration, I have=
+ it set=20
+> too.
+>=20
+>      $ grep DENORMALI /boot/config-*
+>      /boot/config-4.15.0-23-generic:CONFIG_PPC_DENORMALISATION=3Dy
+>      /boot/config-5.4.0-40-generic:CONFIG_PPC_DENORMALISATION=3Dy
+>      /boot/config-5.7.0-rc5+:CONFIG_PPC_DENORMALISATION=3Dy
+>      /boot/config-5.8.0-rc3+:CONFIG_PPC_DENORMALISATION=3Dy
+
+Ah thanks I was able to reproduce with a little denorm test case.
+
+The denorm interrupt handler got broken by some careless person.
+
+This patch should hopefully fix it for you?
+
+Thanks,
+Nick
+
+---
+ arch/powerpc/kernel/exceptions-64s.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exc=
+eptions-64s.S
+index fa080694e581..0fc8bad878b2 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -2551,7 +2551,7 @@ EXC_VIRT_NONE(0x5400, 0x100)
+ INT_DEFINE_BEGIN(denorm_exception)
+ 	IVEC=3D0x1500
+ 	IHSRR=3D1
+-	IBRANCH_COMMON=3D0
++	IBRANCH_TO_COMMON=3D0
+ 	IKVM_REAL=3D1
+ INT_DEFINE_END(denorm_exception)
 =20
-> documented.
->
-> This patch looks good to me, minor comments below.
+--=20
+2.23.0
 
-Thanks.
-
->> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
->> index ed01329dd12b..925a7231abb3 100644
->> --- a/arch/powerpc/mm/fault.c
->> +++ b/arch/powerpc/mm/fault.c
->> @@ -42,39 +42,7 @@
->>   #include <asm/kup.h>
->>   #include <asm/inst.h>
->>=20=20=20
->> -/*
->> - * Check whether the instruction inst is a store using
->> - * an update addressing form which will update r1.
->> - */
->> -static bool store_updates_sp(struct ppc_inst inst)
->> -{
->> -	/* check for 1 in the rA field */
->> -	if (((ppc_inst_val(inst) >> 16) & 0x1f) !=3D 1)
->> -		return false;
->> -	/* check major opcode */
->> -	switch (ppc_inst_primary_opcode(inst)) {
->> -	case OP_STWU:
->> -	case OP_STBU:
->> -	case OP_STHU:
->> -	case OP_STFSU:
->> -	case OP_STFDU:
->> -		return true;
->> -	case OP_STD:	/* std or stdu */
->> -		return (ppc_inst_val(inst) & 3) =3D=3D 1;
->> -	case OP_31:
->> -		/* check minor opcode */
->> -		switch ((ppc_inst_val(inst) >> 1) & 0x3ff) {
->> -		case OP_31_XOP_STDUX:
->> -		case OP_31_XOP_STWUX:
->> -		case OP_31_XOP_STBUX:
->> -		case OP_31_XOP_STHUX:
->> -		case OP_31_XOP_STFSUX:
->> -		case OP_31_XOP_STFDUX:
->> -			return true;
->> -		}
->> -	}
->> -	return false;
->> -}
->> +
->
-> Do we need this additional blank line ?
-
-I usually leave two blank lines between the end of the includes and the
-start of the code, which is what I did here I guess.
-
->>   /*
->>    * do_page_fault error handling helpers
->>    */
->> @@ -267,54 +235,6 @@ static bool bad_kernel_fault(struct pt_regs *regs, =
-unsigned long error_code,
->>   	return false;
->>   }
->>=20=20=20
->> -static bool bad_stack_expansion(struct pt_regs *regs, unsigned long add=
-ress,
->> -				struct vm_area_struct *vma, unsigned int flags,
->> -				bool *must_retry)
->> -{
->> -	/*
->> -	 * N.B. The POWER/Open ABI allows programs to access up to
->> -	 * 288 bytes below the stack pointer.
->> -	 * The kernel signal delivery code writes up to 4KB
->> -	 * below the stack pointer (r1) before decrementing it.
->> -	 * The exec code can write slightly over 640kB to the stack
->> -	 * before setting the user r1.  Thus we allow the stack to
->> -	 * expand to 1MB without further checks.
->> -	 */
->> -	if (address + 0x100000 < vma->vm_end) {
->> -		struct ppc_inst __user *nip =3D (struct ppc_inst __user *)regs->nip;
->> -		/* get user regs even if this fault is in kernel mode */
->> -		struct pt_regs *uregs =3D current->thread.regs;
->> -		if (uregs =3D=3D NULL)
->> -			return true;
->> -
->> -		/*
->> -		 * A user-mode access to an address a long way below
->> -		 * the stack pointer is only valid if the instruction
->> -		 * is one which would update the stack pointer to the
->> -		 * address accessed if the instruction completed,
->> -		 * i.e. either stwu rs,n(r1) or stwux rs,r1,rb
->> -		 * (or the byte, halfword, float or double forms).
->> -		 *
->> -		 * If we don't check this then any write to the area
->> -		 * between the last mapped region and the stack will
->> -		 * expand the stack rather than segfaulting.
->> -		 */
->> -		if (address + 4096 >=3D uregs->gpr[1])
->> -			return false;
->> -
->> -		if ((flags & FAULT_FLAG_WRITE) && (flags & FAULT_FLAG_USER) &&
->> -		    access_ok(nip, sizeof(*nip))) {
->> -			struct ppc_inst inst;
->> -
->> -			if (!probe_user_read_inst(&inst, nip))
->> -				return !store_updates_sp(inst);
->> -			*must_retry =3D true;
->> -		}
->> -		return true;
->> -	}
->> -	return false;
->> -}
->> -
->>   #ifdef CONFIG_PPC_MEM_KEYS
->>   static bool access_pkey_error(bool is_write, bool is_exec, bool is_pke=
-y,
->>   			      struct vm_area_struct *vma)
->> @@ -480,7 +400,6 @@ static int __do_page_fault(struct pt_regs *regs, uns=
-igned long address,
->>   	int is_user =3D user_mode(regs);
->>   	int is_write =3D page_fault_is_write(error_code);
->>   	vm_fault_t fault, major =3D 0;
->> -	bool must_retry =3D false;
->>   	bool kprobe_fault =3D kprobe_page_fault(regs, 11);
->>=20=20=20
->>   	if (unlikely(debugger_fault_handler(regs) || kprobe_fault))
->> @@ -569,30 +488,15 @@ static int __do_page_fault(struct pt_regs *regs, u=
-nsigned long address,
->>   	vma =3D find_vma(mm, address);
->>   	if (unlikely(!vma))
->>   		return bad_area(regs, address);
->> -	if (likely(vma->vm_start <=3D address))
->> -		goto good_area;
->> -	if (unlikely(!(vma->vm_flags & VM_GROWSDOWN)))
->> -		return bad_area(regs, address);
->>=20=20=20
->> -	/* The stack is being expanded, check if it's valid */
->> -	if (unlikely(bad_stack_expansion(regs, address, vma, flags,
->> -					 &must_retry))) {
->> -		if (!must_retry)
->> +	if (unlikely(vma->vm_start > address)) {
->> +		if (unlikely(!(vma->vm_flags & VM_GROWSDOWN)))
->
-> We are already in an unlikely() branch, I don't think it is worth having=
-=20
-> a second level of unlikely(), better let gcc decide what's most efficient.
-
-Yeah I did wonder if we need so many unlikelys in here, but I thought
-that should be done in a separate patch with some actual analysis of the
-generated code.
-
-cheers
