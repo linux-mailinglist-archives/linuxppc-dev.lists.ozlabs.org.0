@@ -1,66 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3619217B95
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 01:06:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68543217B97
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 01:08:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1dNB58NjzDqnD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 09:06:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1dQN0s2bzDqsw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 09:08:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::541;
- helo=mail-ed1-x541.google.com; envelope-from=refactormyself@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::641;
+ helo=mail-ej1-x641.google.com; envelope-from=refactormyself@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=E+virPP7; dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
+ header.s=20161025 header.b=PD50e4vM; dkim-atps=neutral
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com
+ [IPv6:2a00:1450:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1dKF26QrzDqlp
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 09:03:45 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id z17so40079649edr.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jul 2020 16:03:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1dKd1V8YzDqsW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 09:04:04 +1000 (AEST)
+Received: by mail-ej1-x641.google.com with SMTP id o18so44013608eje.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jul 2020 16:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=kTq/VH/p4TyQ5wPRzJwyOD8JsPzalLXL/D+9ThOBTJk=;
- b=E+virPP7R0DNmaCjVGtSUu/QcvSxTf4R7sOk6VcFsmCvGe0J84CcBd5HeNBiHdEGFF
- JmZI2QMdJ3elJ5MqdzZR/53PLHZyXBiuCFyv35oO8MHG9CZxR2Iq5EhY68cQJh6tS3FM
- 8criJyFHjuNIStjyC28tRfZTtvROoXe7nu6rzuI3busfBGfKDruR6mMoncEkVbIcPRMU
- 3N/NxjKHK7cc70B3dsJJ2bJ/tFj3dVtUDJmcxY3vtXJ/MTH3h7iZdQ/G7oUXSqNkMlnJ
- ECGvJ/Ssb2a2O9P/PsgcX12j0Sc5qUzPp+C5ZZ0LsYvGa3vZu43Jj4nfAT10J0pBwVjO
- sZhw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=TDNee8GVeUeyBsCjyc6danC/ynEOptI+9KXBNHn5gUo=;
+ b=PD50e4vMzFR5le1ao1Ae6vuTHCknkbfKAiLbDT70l8X7nzwML3pjQqA/vBosHSFuHD
+ G/LmYKcCftSPXGToiWf2pSbxg58KVWi8a9p117WWcHau/A7enRJRWV/wGFL9vKWZagej
+ aVVo7PLCLbdnDwnv5hvhukqzop+1wL1PClfZ/fuZE8Z27Mna7vdlk3vbB5yUurj2KXxf
+ piFaUYZZmp5oAUkoR1GPB9tSDp+AbcdaQoIXkRhNNiBiIOjdbUazjlJh0ZtSx0QMpi7x
+ PJp3pV9sVay5rgP9GqI/ABxAKS4wW3STZIWur29NuukyNc4xcJ3Y3XC7CaduhYn5ha1x
+ 4sUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=kTq/VH/p4TyQ5wPRzJwyOD8JsPzalLXL/D+9ThOBTJk=;
- b=edBV+RISOrzwbmiij+pAF3WkqB8YOhlQpanDpCsuGBhxQjcCD3cdoh1124l1UPbubO
- vuR8J9G7/slstAQl4CZJp2Ih9wWMDgRszTMRVFGvL5i9sjoT6pbrumt8s6aVrjpj+gJu
- P/k/6IRBS1/MLKbqoDev9yi9kNA+Q90Tfkkw8Fi/JWY9JXX8pd9+ULBGcqKQGJJ/hRHY
- Z4/1+ErE4fnA3DS3vDID/wcs9HT+G6IL4nuSEYzZn1hrNgZxGXUQkMfW//K3w6HutsyQ
- PK8HRdKPREMno/QyTpo/0YGPQ3v7mv6wywiWYgOwXFbuFT7ogCTkj6QDz6DToDY1zoPc
- CSSQ==
-X-Gm-Message-State: AOAM533suaMur70gf2+njN1Af8OwGIFXSCs/h1/qGQzoDT+p2hTAnIs4
- 8PmGtGDm5xye9siqF6bMcQI=
-X-Google-Smtp-Source: ABdhPJyCkNHIU7Mg/3LR3/ROH8pv8slqj90hjhE3e1+AdXgWeG9fxZ5hQsBoE731r/kg9QH8KEcJqA==
-X-Received: by 2002:aa7:d989:: with SMTP id u9mr46087113eds.85.1594163020678; 
- Tue, 07 Jul 2020 16:03:40 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references;
+ bh=TDNee8GVeUeyBsCjyc6danC/ynEOptI+9KXBNHn5gUo=;
+ b=iEcApjOEVsKQGj4kK/wcHJ+ANf0iwwMES51UsAiRJqAEMvjY9UlEyTvTgM1dFPfwYr
+ 6s1u5/BNWO8uSo4jaF7PhYR0EbMTQaP38+6DnW5SIyQ124c+3FBfk11iTMFb06H/A8H8
+ jQbOznfh2mGfGHioNxboyY3Ol2icoq4Xf83c01aRiUu5wQjdGJpoG0xNrptb2d9VbyYp
+ sKjMeZO/Brv/TRhQn+7hAg6OF/nsFUPDDzYwe7gOdU/NZFZcQcvzCyZCa1g/fj9C8/7T
+ bADwiyoew25GbC7WLq4jD6BG52ILMv/0gwdCDpG21FQcWQCYh3qllKEaO0H+sltfXJcc
+ OQZA==
+X-Gm-Message-State: AOAM533LkJURgmtt9v5oBckILq+8xf23JSEh6PpVZk5WQF2wmbXxVNCm
+ ElFN8LFcOZcRJ9x0hX64kSk=
+X-Google-Smtp-Source: ABdhPJy5RfHewjT0dnWFda9i0XhBHF0l10D3kiKEqleSJ0mL94SUpk1lTLn4o9t2bQPzn68Xo9d2yw==
+X-Received: by 2002:a17:906:d217:: with SMTP id
+ w23mr38205012ejz.292.1594163039774; 
+ Tue, 07 Jul 2020 16:03:59 -0700 (PDT)
 Received: from net.saheed (54007186.dsl.pool.telekom.hu. [84.0.113.134])
- by smtp.gmail.com with ESMTPSA id f10sm27096310edx.5.2020.07.07.16.03.36
+ by smtp.gmail.com with ESMTPSA id f10sm27096310edx.5.2020.07.07.16.03.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Jul 2020 16:03:39 -0700 (PDT)
+ Tue, 07 Jul 2020 16:03:58 -0700 (PDT)
 From: Saheed Olayemi Bolarinwa <refactormyself@gmail.com>
 To: helgaas@kernel.org
-Subject: [PATCH 0/13] PCI: Remove '*val = 0' from pcie_capability_read_*()
-Date: Wed,  8 Jul 2020 00:03:11 +0200
-Message-Id: <20200707220324.8425-1-refactormyself@gmail.com>
+Subject: [PATCH 13/13] PCI: Remove '*val = 0' from pcie_capability_read_*()
+Date: Wed,  8 Jul 2020 00:03:24 +0200
+Message-Id: <20200707220324.8425-14-refactormyself@gmail.com>
 X-Mailer: git-send-email 2.18.2
+In-Reply-To: <20200707220324.8425-1-refactormyself@gmail.com>
+References: <20200707220324.8425-1-refactormyself@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,22 +99,6 @@ Sender: "Linuxppc-dev"
 
 From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
 
-MERGING:
-Only Patch 13/13 depend on all preceeding patchs. All other patches are
-independent of one another. Hence, please merge PATCH 13/13 only after
-other patches in this series have been merged.
-
-PATCH 6/13:
-Make the function set status to "Power On" by default and only set to
-Set "Power Off" only if pcie_capability_read_word() is successful and
-(slot_ctrl & PCI_EXP_SLTCTL_PCC) == PCI_EXP_SLTCTL_PWR_OFF. 
-
-PATCH 1/13 to 12/13:
-Check the return value of pcie_capability_read_*() to ensure success or
-confirm failure. While maintaining these functions, this ensures that the
-changes in PATCH 13/13 does not introduce any bug. 
-
-PATCH 13/13:
 There are several reasons why a PCI capability read may fail whether the
 device is present or not. If this happens, pcie_capability_read_*() will
 return -EINVAL/PCIBIOS_BAD_REGISTER_NUMBER or PCIBIOS_DEVICE_NOT_FOUND
@@ -151,41 +139,49 @@ not always be true as explained in (a).
 In any case, checks need to be done to validate the value read and maybe
 confirm which error has occurred. It is better left to the drivers to do.
 
-Check the return value of pcie_capability_read_dword() to ensure success
-and avoid bug as a result of Patch 13/13.
 Remove the reset of *val to 0 when pci_read_config_*() fails.
 
-
-Bolarinwa Olayemi Saheed (13):
-  IB/hfi1: Check the return value of pcie_capability_read_*()
-  misc: rtsx: Check the return value of pcie_capability_read_*()
-  ath9k: Check the return value of pcie_capability_read_*()
-  iwlegacy: Check the return value of pcie_capability_read_*()
-  PCI: pciehp: Check the return value of pcie_capability_read_*()
-  PCI: pciehp: Make "Power On" the default 
-  PCI/ACPI: Check the return value of pcie_capability_read_*()
-  PCI: pciehp: Check the return value of pcie_capability_read_*()
-  PCI: Check the return value of pcie_capability_read_*()
-  PCI/PM: Check return value of pcie_capability_read_*()
-  PCI/AER: Check the return value of pcie_capability_read_*()
-  PCI/ASPM: Check the return value of pcie_capability_read_*()
-  PCI: Remove '*val = 0' from pcie_capability_read_*()
-
- drivers/net/wireless/ath/ath9k/pci.c         | 5 +++--
- drivers/net/wireless/intel/iwlegacy/common.c | 4 ++--
- drivers/infiniband/hw/hfi1/aspm.c | 7 ++++---
- drivers/misc/cardreader/rts5227.c | 5 +++--
- drivers/misc/cardreader/rts5249.c | 5 +++--
- drivers/misc/cardreader/rts5260.c | 5 +++--
- drivers/misc/cardreader/rts5261.c | 5 +++--
- drivers/pci/pcie/aer.c  |  5 +++--
- drivers/pci/pcie/aspm.c | 33 +++++++++++++++++----------------
- drivers/pci/hotplug/pciehp_hpc.c | 47 ++++++++++++++++----------------
- drivers/pci/pci-acpi.c           | 10 ++++---
- drivers/pci/probe.c              | 29 ++++++++++++--------
+Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
+Signed-off-by: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+---
+This patch  depends on all of the preceeding patches in this series,
+otherwise it will introduce bugs as pointed out in the commit message
+of each.
  drivers/pci/access.c | 14 --------------
- 13 files changed, 87 insertions(+), 87 deletions(-)
+ 1 file changed, 14 deletions(-)
 
+diff --git a/drivers/pci/access.c b/drivers/pci/access.c
+index 79c4a2ef269a..ec95edbb1ac8 100644
+--- a/drivers/pci/access.c
++++ b/drivers/pci/access.c
+@@ -413,13 +413,6 @@ int pcie_capability_read_word(struct pci_dev *dev, int pos, u16 *val)
+ 
+ 	if (pcie_capability_reg_implemented(dev, pos)) {
+ 		ret = pci_read_config_word(dev, pci_pcie_cap(dev) + pos, val);
+-		/*
+-		 * Reset *val to 0 if pci_read_config_word() fails, it may
+-		 * have been written as 0xFFFF if hardware error happens
+-		 * during pci_read_config_word().
+-		 */
+-		if (ret)
+-			*val = 0;
+ 		return ret;
+ 	}
+ 
+@@ -448,13 +441,6 @@ int pcie_capability_read_dword(struct pci_dev *dev, int pos, u32 *val)
+ 
+ 	if (pcie_capability_reg_implemented(dev, pos)) {
+ 		ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
+-		/*
+-		 * Reset *val to 0 if pci_read_config_dword() fails, it may
+-		 * have been written as 0xFFFFFFFF if hardware error happens
+-		 * during pci_read_config_dword().
+-		 */
+-		if (ret)
+-			*val = 0;
+ 		return ret;
+ 	}
+ 
 -- 
 2.18.2
 
