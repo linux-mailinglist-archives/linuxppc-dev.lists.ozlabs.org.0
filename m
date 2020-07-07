@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D468C2176FA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:44:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BBF2176FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:46:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WZ62m7nzDqkX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:44:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WcN15htzDr2w
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:46:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,34 +17,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=f7ohGBtS; 
+ header.s=casper.20170209 header.b=Hs+eVVPR; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1VmW3gpHzDqXK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:08:27 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vmv1jMczDqHY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:08:47 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=tPwwCvf342z6zeuNFfuY5usY2zScx9Hl+AJvysbkDIU=; b=f7ohGBtS6/FTaOWSZJnKjLpqpr
- ajWcwxdymujTQPeTQ6sYri3e9ZRw9klUBkpu+kCnwE+4+cQlo/AOoiz+xrT9RK0b3oXtfsxCCQpF6
- MpJhpvuBlE2bqoTfrsWmPrCYxbfJVWYPO+kLbpmZC67XnBqB+v7sHK1CXrKdg+6m8QksTnBCXAmgH
- o+JXRgM01RG04D1UJWPpesRYuB8y4f61y1zfzUV0JuSuitDE+V8bS2SqsnP7v0xeaTTqVQvXBC358
- 3rVgL9fCtD0YP7/mcF4IdSOzKVN169+bMJeTKzhJY3xt/4ok/elUGmc7zB6TQANJAZS1x0qJtmZKw
- D7N9DblA==;
+ bh=8wfZDtgdUoXKGihiBP/1w1LPLu4vuzlYcFEiq+Cintc=; b=Hs+eVVPRDZbmHqxw4R6tGr0SKX
+ B1jecmarAFXmmj+WjfDO+ShabgqA4fXiBU/J/di2EQpOAjQz23qTPBMlsUAuRDQkt/YL9U74yyFRQ
+ RIEB0PP25Vw/gk0PU9Z5gJFSsCISdrx/51Gh5+8rsdtMw1j3uRyZYwL2HzJdtqsl89a9Ag2fF5hpn
+ HC5XYOTb6nyMr5f9GzmPWZyZjd/qHGzeZr3n0H+eqtJQcp3MNOsHOT363PfFxdTgqUMOmiy1HJECs
+ 1Lb2+hizWUjzDvcMWjHptnTa87zX+XN15ku/tUq0XO1BzzhYzLy6wzP9s/yBt+to7hmahAZ59gwBh
+ ZT+DuZqw==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jss0M-0004JY-Kq; Tue, 07 Jul 2020 18:07:43 +0000
+ id 1jss0i-0004JY-SL; Tue, 07 Jul 2020 18:08:05 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 18/20] Documentation: security/keys: eliminate duplicated word
-Date: Tue,  7 Jul 2020 11:04:12 -0700
-Message-Id: <20200707180414.10467-19-rdunlap@infradead.org>
+Subject: [PATCH 19/20] Documentation: virt/kvm/api: eliminate duplicated word
+Date: Tue,  7 Jul 2020 11:04:14 -0700
+Message-Id: <20200707180414.10467-21-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -98,28 +98,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the doubled word "in".
+Drop the duplicated word "struct".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: James Bottomley <jejb@linux.ibm.com>
-Cc: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
 ---
- Documentation/security/keys/trusted-encrypted.rst |    2 +-
+ Documentation/virt/kvm/api.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/security/keys/trusted-encrypted.rst
-+++ linux-next-20200701/Documentation/security/keys/trusted-encrypted.rst
-@@ -200,7 +200,7 @@ Load an encrypted key "evm" from saved b
-     24717c64 5972dcb82ab2dde83376d82b2e3c09ffc
+--- linux-5.8-rc3.orig/Documentation/virt/kvm/api.rst
++++ linux-5.8-rc3/Documentation/virt/kvm/api.rst
+@@ -3147,7 +3147,7 @@ Possible features:
+ :Capability: basic
+ :Architectures: arm, arm64
+ :Type: vm ioctl
+-:Parameters: struct struct kvm_vcpu_init (out)
++:Parameters: struct kvm_vcpu_init (out)
+ :Returns: 0 on success; -1 on error
  
- Other uses for trusted and encrypted keys, such as for disk and file encryption
--are anticipated.  In particular the new format 'ecryptfs' has been defined in
-+are anticipated.  In particular the new format 'ecryptfs' has been defined
- in order to use encrypted keys to mount an eCryptfs filesystem.  More details
- about the usage can be found in the file
- ``Documentation/security/keys/ecryptfs.rst``.
+ Errors:
