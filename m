@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901DD21769E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374CA2176B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:28:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1W7C0b0szDqyx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:24:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1WCj3kH5zDqPy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:28:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,34 +17,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=mme0HOW3; 
+ header.s=casper.20170209 header.b=SwoLXbpn; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vkf2MZtzDqTw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vkr0SbjzDqmh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:07:00 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=ncrUf+tMkKNDQi5/EmoipCE+MeRd0JYdh5qBYgZcQsY=; b=mme0HOW3OP1d6nVxPOMb08I+xp
- 9KU6f29dA2Fhjkm+pEYvD74FIxW4W6EzHy24/QP5lM8xYogNQvISiymqSra6o7a2KKiL7HbSmLKXn
- Qdb/me1RLhW/kuNfec7xzzGbs6ajVBTEy9eFTsIse1sluOcYa4BgLMYdeEiGx1X76VxfOgCnBeQcO
- uPqa54NfyePc2xrB3O/qdBA7MvASSldnbwblhmjlHJ6pbdjcGh060F3oWuQOZoplksxx3v69cs4sO
- 3LzqR+ReMqWljAVqbID9PxeyCsXV2+fj0IuNof2jDxQ77IGZXtAfnElPN/E2GZVPUEoTERRE/J2JR
- el85VwiA==;
+ bh=jD7xUkHaujArIkx0Qqw+94A1LtaeINuMKow1sxCm4oE=; b=SwoLXbpn+/lnObyUzGcIpESpZR
+ gSvUG27zGR6WWeA04LYHBW8uwk2ZFZM22SsPc2LCH0nKorClKPlODXECGYtNuFmGIlIpXijwV/GHX
+ Evi2R2WszEz6E7PgJoWMbHshC1xVQ+wyEv/q9x1eV8ZjeFkUOkHH1MISPwqpLyBC33EQKgyQDALV4
+ GklyzjVB8rsDygyHZFgoV70Fhyiy6pcsyIV54J74SpU7kpB0WLDMEJSqCx0TZBUjB7n3ahlbNQgMT
+ qTRl0K+/lbCOLdwMEdiHUcKR/KGVy6imk4ZKzSQxjGOUyG/ibcm1RNIDS2yM+nRY+56HfOjvKId6b
+ gb2zy60g==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsrym-0004JY-TZ; Tue, 07 Jul 2020 18:06:05 +0000
+ id 1jsryx-0004JY-Ox; Tue, 07 Jul 2020 18:06:16 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 09/20] Documentation: i2c: eliminate duplicated word
-Date: Tue,  7 Jul 2020 11:04:03 -0700
-Message-Id: <20200707180414.10467-10-rdunlap@infradead.org>
+Subject: [PATCH 10/20] Documentation: kbuild/kconfig-language: eliminate
+ duplicated word
+Date: Tue,  7 Jul 2020 11:04:04 -0700
+Message-Id: <20200707180414.10467-11-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -98,25 +99,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop doubled word "new".
+Drop the doubled word "the".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: Wolfram Sang <wsa@kernel.org>
-Cc: linux-i2c@vger.kernel.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Cc: linux-kbuild@vger.kernel.org
 ---
- Documentation/i2c/upgrading-clients.rst |    2 +-
+ Documentation/kbuild/kconfig-language.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/i2c/upgrading-clients.rst
-+++ linux-next-20200701/Documentation/i2c/upgrading-clients.rst
-@@ -8,7 +8,7 @@ Introduction
- ------------
+--- linux-next-20200701.orig/Documentation/kbuild/kconfig-language.rst
++++ linux-next-20200701/Documentation/kbuild/kconfig-language.rst
+@@ -681,7 +681,7 @@ translate Kconfig logic into boolean for
+ find dead code / features (always inactive), 114 dead features were found in
+ Linux using this methodology [1]_ (Section 8: Threats to validity).
  
- This guide outlines how to alter existing Linux 2.6 client drivers from
--the old to the new new binding methods.
-+the old to the new binding methods.
- 
- 
- Example old-style driver
+-Confirming this could prove useful as Kconfig stands as one of the the leading
++Confirming this could prove useful as Kconfig stands as one of the leading
+ industrial variability modeling languages [1]_ [2]_. Its study would help
+ evaluate practical uses of such languages, their use was only theoretical
+ and real world requirements were not well understood. As it stands though
