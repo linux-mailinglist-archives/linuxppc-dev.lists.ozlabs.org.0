@@ -2,58 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7305F21704B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 17:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 127C321714D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 17:34:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1R4z0vLrzDqc8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 01:22:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1RM11fBMzDqvy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 01:34:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1QRC2mDmzDqYq
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 00:53:08 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4B1QR270wgz9v06h;
- Tue,  7 Jul 2020 16:53:02 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id rAbeoBIq_1hu; Tue,  7 Jul 2020 16:53:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4B1QR24xbGz9v06g;
- Tue,  7 Jul 2020 16:53:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C51078B7E6;
- Tue,  7 Jul 2020 16:53:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id thv4Up09SXQk; Tue,  7 Jul 2020 16:53:04 +0200 (CEST)
-Received: from [10.25.210.22] (po15451.idsi0.si.c-s.fr [10.25.210.22])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A3B6D8B7D7;
- Tue,  7 Jul 2020 16:53:04 +0200 (CEST)
-Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
-To: Giuseppe Sacco <giuseppe@sguazz.it>, linuxppc-dev@lists.ozlabs.org
-References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
- <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
- <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
-Date: Tue, 7 Jul 2020 16:52:54 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1RFH2BDPzDqcF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 01:29:39 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 067F3Ghu051693; Tue, 7 Jul 2020 11:29:25 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 324pxshwr5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jul 2020 11:29:24 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 067F6qAD013963;
+ Tue, 7 Jul 2020 15:29:22 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 322h1h3gw4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Jul 2020 15:29:22 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 067FTKUU53673996
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Jul 2020 15:29:20 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5F113AE057;
+ Tue,  7 Jul 2020 15:29:20 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3EB1EAE045;
+ Tue,  7 Jul 2020 15:29:18 +0000 (GMT)
+Received: from pratiks-thinkpad.ibmuc.com (unknown [9.85.70.197])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Jul 2020 15:29:18 +0000 (GMT)
+From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+To: rjw@rjwysocki.net, daniel.lezcano@linaro.org, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, srivatsa@csail.mit.edu,
+ shuah@kernel.org, ego@linux.vnet.ibm.com, svaidy@linux.ibm.com,
+ linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: [PATCH 0/2] Selftest for cpuidle latency measurement
+Date: Tue,  7 Jul 2020 20:59:15 +0530
+Message-Id: <20200707152917.10652-1-psampat@linux.ibm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-In-Reply-To: <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-07_08:2020-07-07,
+ 2020-07-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011
+ impostorscore=0 cotscore=-2147483648 suspectscore=0 adultscore=0
+ mlxlogscore=623 spamscore=0 priorityscore=1501 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007070109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,40 +90,93 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The patch series introduces a mechanism to measure wakeup latency for
+IPI and timer based interrupts
+The motivation behind this series is to find significant deviations
+behind advertised latency and resisdency values
 
+To achieve this, we introduce a kernel module and expose its control
+knobs through the debugfs interface that the selftests can engage with.
 
-Le 07/07/2020 à 16:03, Giuseppe Sacco a écrit :
-> Hello Cristophe,
-> 
-> Il giorno mar, 07/07/2020 alle 15.35 +0200, Christophe Leroy ha
-> scritto:
->> Hi,
->> Le 07/07/2020 à 14:58, Giuseppe Sacco a écrit :
-> [...]
->>> So, I am looking for help. How may I better investigate the
->>> problem?
->>> How may I crossbuild the kernel on a faster machine (amd64) in
->>> order to
->>> try git-bisect without waiting ages?
->>
->> To crossbuild, use cross tools at
->> https://mirrors.edge.kernel.org/pub/tools/crosstool/
-> 
-> thank you, I'll have a look at it.
-> 
->> Can you tell which defconfig you use or provide your .config
-> 
-> You may get the standard one from debian or a reduced one that I made
-> on purpose. The latter is here:
-> https://eppesuigoccas.homedns.org/~giuseppe/config-5.4.50.gz (boot)
-> https://eppesuigoccas.homedns.org/~giuseppe/config-5.6.19.gz (no boot)
-> 
+The kernel module provides the following interfaces within
+/sys/kernel/debug/latency_test/ for,
+1. IPI test:
+  ipi_cpu_dest   # Destination CPU for the IPI
+  ipi_cpu_src    # Origin of the IPI
+  ipi_latency_ns # Measured latency time in ns
+2. Timeout test:
+  timeout_cpu_src     # CPU on which the timer to be queued
+  timeout_expected_ns # Timer duration
+  timeout_diff_ns     # Difference of actual duration vs expected timer
+To include the module, check option and include as module
+kernel hacking -> Cpuidle latency selftests
 
-Thanks
+The selftest inserts the module, disables all the idle states and
+enables them one by one testing:
+1. Keeping source CPU constant, iterates through all the CPUS measuring
+   IPI latency for baseline (CPU is busy with "yes" workload) and the
+   when the CPU is at rest
+2. Iterating through all the CPUs, sending expected timer durations to
+   be equivalent to the residency of the the deepest idle state
+   enabled and extracting the difference in time between the time of
+   wakeup and the expected timer duration
 
-Can you provide the complete output when it works, so that I can see 
-what is after the place it stops when it fails.
+Usage
+-----
+Can be used in conjuction to the rest of the selftests.
+Default Output location in: tools/testing/cpuidle/cpuidle.log
 
-And can you try without CONFIG_VMAP_STACK on 5.6.19
+To run this test specifically:
+$ make -C tools/testing/selftests TARGETS="cpuidle" run_tests
 
-Christophe
+There are a few optinal arguments too that the script can take
+	[-h <help>]
+	[-m <location of the module>]
+	[-o <location of the output>]
+
+Sample output snippet
+---------------------
+--IPI Latency Test---
+---Enabling state: 0---
+SRC_CPU   DEST_CPU Base_IPI_Latency(ns) IPI_Latency(ns)
+0            0          328                291
+0            1         1500               1071
+0            2         1070               1062
+0            3         1557               1668
+. . . .
+Expected IPI latency(ns): 1000
+Baseline Average IPI latency(ns): 1113
+Observed Average IPI latency(ns): 1023
+--Timeout Latency Test--
+---Enabling state: 0---
+Wakeup_src Baseline_delay(ns)  Delay(ns)
+0            3134               2128
+1            2275               2107
+2            2222               2198
+3            2421               2325
+. . . .
+Expected timeout(ns): 200
+Baseline Average timeout diff(ns): 2513
+Observed Average timeout diff(ns): 2189
+
+Pratik Rajesh Sampat (2):
+  cpuidle: Trace IPI based and timer based wakeup latency from idle
+    states
+  selftest/cpuidle: Add support for cpuidle latency measurement
+
+ drivers/cpuidle/Makefile                   |   1 +
+ drivers/cpuidle/test-cpuidle_latency.c     | 150 +++++++++++++
+ lib/Kconfig.debug                          |  10 +
+ tools/testing/selftests/Makefile           |   1 +
+ tools/testing/selftests/cpuidle/Makefile   |   6 +
+ tools/testing/selftests/cpuidle/cpuidle.sh | 240 +++++++++++++++++++++
+ tools/testing/selftests/cpuidle/settings   |   1 +
+ 7 files changed, 409 insertions(+)
+ create mode 100644 drivers/cpuidle/test-cpuidle_latency.c
+ create mode 100644 tools/testing/selftests/cpuidle/Makefile
+ create mode 100755 tools/testing/selftests/cpuidle/cpuidle.sh
+ create mode 100644 tools/testing/selftests/cpuidle/settings
+
+-- 
+2.25.4
+
