@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DC2217639
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:17:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E720217693
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jul 2020 20:22:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1VyS1CWyzDqY1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:17:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1W4s2prTzDqtY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 04:22:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,34 +17,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=JxrM/LYD; 
+ header.s=casper.20170209 header.b=OQFeo3ag; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vjy5g1HzDqxB
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1Vk91l4dzDqxg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:06:25 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=M80BHus9hyLsqPgKepEifdkgrljPnRgGnyYqCcQQ+Qw=; b=JxrM/LYDi1fPXsL0UBFZq3X2P6
- nf9Q1La85N8JvfLjmdhMtKaUDAaIAmZ11w449X5DopcBEO0wKjTyTJfLlikaIrx0v32PD8323n2LK
- yOl9K4zVE+02BYfSPSc5uxUvK4DQjqOxT+viBBT/aXwdpoVptdzIaJndvOEl3XowSHZGW/wMioCFA
- 7MlEM7YBtCGWRicVuNGkd06FzFky1ofY+6wmuSolEaEa+ZvRWThG3AxULlCDY5+1vIKouPS7XwutU
- nnizUSFwo0x9gsrIocPNS6PFencp9mjoxUXL/PpNZiEnXpbryHMgs6YT6eLxTwrY0Buq+BA7GPjnL
- MlCDoNRA==;
+ bh=3MXCz5n944OUWtN7L6ZR0Zd5nlp06oEeDxmjjhzssic=; b=OQFeo3ag5lXCLGC6k9UcAyRTb4
+ /Q9gq9VkvMyptGfnXC6dr+8JSy8ey2aDpG9sKw8/XAfOgDmpnd6qTid+/ugED4x5OOPzHMdLzx+SK
+ dqY30Bng10xRd6zB9Ud/723dGs8bV5RivA8Fqf6mlcxMGYAjkRnyqb64LTymY4WWmIGfQMb+g7tbf
+ 1Nvgd079VjOwEFQV9e9K4S8zCL3GPFRNIHxgKWhGYWtertC9Gu+JXvm0x/W13WIxEa7QGjlIZtpUw
+ 0odQYtrKVQCg05Qb7aTrpj2UazL5KowW91DuGBTfDEzWTK/rP22BxDGWjOxY24jtI7iq0EB8DidkR
+ aHXEivPA==;
 Received: from [2601:1c0:6280:3f0:897c:6038:c71d:ecac]
  (helo=smtpauth.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jsryG-0004JY-1j; Tue, 07 Jul 2020 18:05:32 +0000
+ id 1jsryR-0004JY-57; Tue, 07 Jul 2020 18:05:43 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 06/20] Documentation: gpu/komeda-kms: eliminate duplicated word
-Date: Tue,  7 Jul 2020 11:04:00 -0700
-Message-Id: <20200707180414.10467-7-rdunlap@infradead.org>
+Subject: [PATCH 07/20] Documentation: gpu/drm-uapi: eliminate duplicated word
+Date: Tue,  7 Jul 2020 11:04:01 -0700
+Message-Id: <20200707180414.10467-8-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200707180414.10467-1-rdunlap@infradead.org>
 References: <20200707180414.10467-1-rdunlap@infradead.org>
@@ -98,27 +98,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the doubled word "and".
+Drop the doubled word "when".
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: linux-doc@vger.kernel.org
-Cc: James (Qian) Wang <james.qian.wang@arm.com>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Cc: Mihail Atanassov <mihail.atanassov@arm.com>
-Cc: Mali DP Maintainers <malidp@foss.arm.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
 ---
- Documentation/gpu/komeda-kms.rst |    2 +-
+ Documentation/gpu/drm-uapi.rst |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20200701.orig/Documentation/gpu/komeda-kms.rst
-+++ linux-next-20200701/Documentation/gpu/komeda-kms.rst
-@@ -41,7 +41,7 @@ Compositor blends multiple layers or pix
- frame. its output frame can be fed into post image processor for showing it on
- the monitor or fed into wb_layer and written to memory at the same time.
- user can also insert a scaler between compositor and wb_layer to down scale
--the display frame first and and then write to memory.
-+the display frame first and then write to memory.
+--- linux-next-20200701.orig/Documentation/gpu/drm-uapi.rst
++++ linux-next-20200701/Documentation/gpu/drm-uapi.rst
+@@ -195,7 +195,7 @@ ENOSPC:
+ EPERM/EACCES:
+         Returned for an operation that is valid, but needs more privileges.
+         E.g. root-only or much more common, DRM master-only operations return
+-        this when when called by unpriviledged clients. There's no clear
++        this when called by unpriviledged clients. There's no clear
+         difference between EACCES and EPERM.
  
- Writeback Layer (wb_layer)
- --------------------------
+ ENODEV:
