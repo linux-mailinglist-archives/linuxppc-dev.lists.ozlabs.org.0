@@ -1,51 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE6A2186F0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 14:08:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE812186FF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 14:14:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1yl56qXJzDqTv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 22:08:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1yss3F3CzDqQj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 22:14:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1yc10XJ0zDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 22:02:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1yqM6tXzzDqfj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 22:12:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=bSknxx2a; 
+ header.a=rsa-sha256 header.s=201909 header.b=N0ME8wmj; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1yc01xLfz9sSJ;
- Wed,  8 Jul 2020 22:02:40 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1yqK51zdz9sRf;
+ Wed,  8 Jul 2020 22:12:29 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594209760;
- bh=EhjG9LHxfPVZzaqI7nGJ8xavJVE5BwzFdgCGdaretOg=;
+ s=201909; t=1594210349;
+ bh=PL91sEuccRkhCqAtfob7pQDXe5kXLWacpArSdJI++2o=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=bSknxx2aFbx3iIq7tg35zAp7r0Cc+jwFrLqND9xVrQkLDQ6mdI3fRMprUOv9X6jZX
- NTpGQSvo8k3/+fg2NAhqiWbB1JL1h0YOb2sHD0gd7Fc3jDsDMuctK4hy+XdZ5kn4Dg
- mwi7bOe+p7BqEY8mPcePTimC6QLQDrPA6m027Zg9X7AJVYUc1vJxvgHaH2EWgy/Ob8
- naXiOylen2wWPCXhOZgEcqxxL24EdJVh5JITwZXlFilxCUxiWx3FnnoT+WzsnETHM/
- C1OjSuNCRjS2p8rWQTDMzLrAOxV+rTzkBuSTdCYJUucG6whLI1VD0Bh/unXCcfPpTa
- 02eA5opwKW3Sw==
+ b=N0ME8wmjahxXIllko4JiHNHsPJ+Y/dibVdmAITs9ILi21kzLUVcddomQhNONrRrQ7
+ Fen4r1zL+mUwXMW9o4Ri0zEmdRCfAAfK6Yly6R9p16T0CJ0OaDHkFPliJQKpj+gp7a
+ K3ljPIuCVdUoDu0jWUi+aGo9uNMGpepdEfs+Dzj/lX5GIEi+hneIzr63owt4Rghy/C
+ 1KuTUAAiqmDUcoFjZM6EuwMyNSsTErE/ZrVfoYxei/HUjiNCa9EsXWs5tIHe2zWIFD
+ RaQJZ4VnbEDULlWUt8YHVe8sLOwk1THi/D4HvciPY2cAPJavYMsk1uPnGHnlosOkqm
+ lgcDW4coYq9og==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 09/10] tools/perf: Add perf tools support for extended
- register capability in powerpc
-In-Reply-To: <1593595262-1433-10-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1593595262-1433-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1593595262-1433-10-git-send-email-atrajeev@linux.vnet.ibm.com>
-Date: Wed, 08 Jul 2020 22:04:55 +1000
-Message-ID: <87pn962owo.fsf@mpe.ellerman.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 4/4] powerpc/mm/radix: Create separate mappings for
+ hot-plugged memory
+In-Reply-To: <aa2e029f-d6f3-60da-7840-0b377da0337a@linux.ibm.com>
+References: <20200625064547.228448-1-aneesh.kumar@linux.ibm.com>
+ <20200625064547.228448-5-aneesh.kumar@linux.ibm.com>
+ <877dve4nvj.fsf@mpe.ellerman.id.au>
+ <aa2e029f-d6f3-60da-7840-0b377da0337a@linux.ibm.com>
+Date: Wed, 08 Jul 2020 22:14:44 +1000
+Message-ID: <87mu4a2ogb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,182 +62,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
-> From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> On 7/8/20 10:14 AM, Michael Ellerman wrote:
+>> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+>>> To enable memory unplug without splitting kernel page table
+>>> mapping, we force the max mapping size to the LMB size. LMB
+>>> size is the unit in which hypervisor will do memory add/remove
+>>> operation.
+>>>
+>>> This implies on pseries system, we now end up mapping
+>> 
+>> Please expand on why it "implies" that for pseries.
+>> 
+>>> memory with 2M page size instead of 1G. To improve
+>>> that we want hypervisor to hint the kernel about the hotplug
+>>> memory range.  This was added that as part of
+>>                   That
+>>>
+>>> commit b6eca183e23e ("powerpc/kernel: Enables memory
+>>> hot-remove after reboot on pseries guests")
+>>>
+>>> But we still don't do that on PowerVM. Once we get PowerVM
+>> 
+>> I think you mean PowerVM doesn't provide that hint yet?
+>> 
+>> Realistically it won't until P10. So this means we'll always use 2MB on
+>> Power9 PowerVM doesn't it?
+>> 
+>> What about KVM?
+>> 
+>> Have you done any benchmarking on the impact of switching the linear
+>> mapping to 2MB pages?
+>> 
 >
-> Add extended regs to sample_reg_mask in the tool side to use
-> with `-I?` option. Perf tools side uses extended mask to display
-> the platform supported register names (with -I? option) to the user
-> and also send this mask to the kernel to capture the extended registers
-> in each sample. Hence decide the mask value based on the processor
-> version.
+> The TLB impact should be minimal because with a 256M LMB size partition 
+> scoped entries are still 2M and hence we end up with TLBs of 2M size.
 >
-> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-> [Decide extended mask at run time based on platform]
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+>
+>>> updated, we can then force the 2M mapping only to hot-pluggable
+>>> memory region using memblock_is_hotpluggable(). Till then
+>>> let's depend on LMB size for finding the mapping page size
+>>> for linear range.
+>>>
+>
+> updated
+>
+>
+> powerpc/mm/radix: Create separate mappings for hot-plugged memory
+>
+> To enable memory unplug without splitting kernel page table
+> mapping, we force the max mapping size to the LMB size. LMB
+> size is the unit in which hypervisor will do memory add/remove
+> operation.
+>
+> Pseries systems supports max LMB size of 256MB. Hence on pseries,
+> we now end up mapping memory with 2M page size instead of 1G. To improve
+> that we want hypervisor to hint the kernel about the hotplug
+> memory range.  That was added that as part of
+>
+> commit b6eca18 ("powerpc/kernel: Enables memory
+> hot-remove after reboot on pseries guests")
+>
+> But PowerVM doesn't provide that hint yet. Once we get PowerVM
+> updated, we can then force the 2M mapping only to hot-pluggable
+> memory region using memblock_is_hotpluggable(). Till then
+> let's depend on LMB size for finding the mapping page size
+> for linear range.
+>
+> With this change KVM guest will also be doing linear mapping with
+> 2M page size.
 
-Will need an ack from perf tools folks, who are not on Cc by the looks.
+...
+>>> @@ -494,17 +544,27 @@ void __init radix__early_init_devtree(void)
+>>>   	 * Try to find the available page sizes in the device-tree
+>>>   	 */
+>>>   	rc = of_scan_flat_dt(radix_dt_scan_page_sizes, NULL);
+>>> -	if (rc != 0)  /* Found */
+>>> -		goto found;
+>>> +	if (rc == 0) {
+>>> +		/*
+>>> +		 * no page size details found in device tree
+>>> +		 * let's assume we have page 4k and 64k support
+>> 
+>> Capitals and punctuation please?
+>> 
+>>> +		 */
+>>> +		mmu_psize_defs[MMU_PAGE_4K].shift = 12;
+>>> +		mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
+>>> +
+>>> +		mmu_psize_defs[MMU_PAGE_64K].shift = 16;
+>>> +		mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
+>>> +	}
+>> 
+>> Moving that seems like an unrelated change. It's a reasonable change but
+>> I'd rather you did it in a standalone patch.
+>> 
+>
+> we needed that change so that we can call radix_memory_block_size() for 
+> both found and !found case.
 
-> diff --git a/tools/arch/powerpc/include/uapi/asm/perf_regs.h b/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-> index f599064..485b1d5 100644
-> --- a/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-> +++ b/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-> @@ -48,6 +48,18 @@ enum perf_event_powerpc_regs {
->  	PERF_REG_POWERPC_DSISR,
->  	PERF_REG_POWERPC_SIER,
->  	PERF_REG_POWERPC_MMCRA,
-> -	PERF_REG_POWERPC_MAX,
-> +	/* Extended registers */
-> +	PERF_REG_POWERPC_MMCR0,
-> +	PERF_REG_POWERPC_MMCR1,
-> +	PERF_REG_POWERPC_MMCR2,
-> +	/* Max regs without the extended regs */
-> +	PERF_REG_POWERPC_MAX = PERF_REG_POWERPC_MMCRA + 1,
+But the found and !found cases converge at found:, which is where you
+call it. So I don't understand.
 
-I don't really understand this idea of a max that's not the max.
-
->  };
-> +
-> +#define PERF_REG_PMU_MASK	((1ULL << PERF_REG_POWERPC_MAX) - 1)
-> +
-> +/* PERF_REG_EXTENDED_MASK value for CPU_FTR_ARCH_300 */
-> +#define PERF_REG_PMU_MASK_300   (((1ULL << (PERF_REG_POWERPC_MMCR2 + 1)) - 1) \
-> +				- PERF_REG_PMU_MASK)
-> +
->  #endif /* _UAPI_ASM_POWERPC_PERF_REGS_H */
-> diff --git a/tools/perf/arch/powerpc/include/perf_regs.h b/tools/perf/arch/powerpc/include/perf_regs.h
-> index e18a355..46ed00d 100644
-> --- a/tools/perf/arch/powerpc/include/perf_regs.h
-> +++ b/tools/perf/arch/powerpc/include/perf_regs.h
-> @@ -64,7 +64,10 @@
->  	[PERF_REG_POWERPC_DAR] = "dar",
->  	[PERF_REG_POWERPC_DSISR] = "dsisr",
->  	[PERF_REG_POWERPC_SIER] = "sier",
-> -	[PERF_REG_POWERPC_MMCRA] = "mmcra"
-> +	[PERF_REG_POWERPC_MMCRA] = "mmcra",
-> +	[PERF_REG_POWERPC_MMCR0] = "mmcr0",
-> +	[PERF_REG_POWERPC_MMCR1] = "mmcr1",
-> +	[PERF_REG_POWERPC_MMCR2] = "mmcr2",
->  };
->  
->  static inline const char *perf_reg_name(int id)
-> diff --git a/tools/perf/arch/powerpc/util/perf_regs.c b/tools/perf/arch/powerpc/util/perf_regs.c
-> index 0a52429..9179230 100644
-> --- a/tools/perf/arch/powerpc/util/perf_regs.c
-> +++ b/tools/perf/arch/powerpc/util/perf_regs.c
-> @@ -6,9 +6,14 @@
->  
->  #include "../../../util/perf_regs.h"
->  #include "../../../util/debug.h"
-> +#include "../../../util/event.h"
-> +#include "../../../util/header.h"
-> +#include "../../../perf-sys.h"
->  
->  #include <linux/kernel.h>
->  
-> +#define PVR_POWER9		0x004E
-> +
->  const struct sample_reg sample_reg_masks[] = {
->  	SMPL_REG(r0, PERF_REG_POWERPC_R0),
->  	SMPL_REG(r1, PERF_REG_POWERPC_R1),
-> @@ -55,6 +60,9 @@
->  	SMPL_REG(dsisr, PERF_REG_POWERPC_DSISR),
->  	SMPL_REG(sier, PERF_REG_POWERPC_SIER),
->  	SMPL_REG(mmcra, PERF_REG_POWERPC_MMCRA),
-> +	SMPL_REG(mmcr0, PERF_REG_POWERPC_MMCR0),
-> +	SMPL_REG(mmcr1, PERF_REG_POWERPC_MMCR1),
-> +	SMPL_REG(mmcr2, PERF_REG_POWERPC_MMCR2),
->  	SMPL_REG_END
->  };
->  
-> @@ -163,3 +171,50 @@ int arch_sdt_arg_parse_op(char *old_op, char **new_op)
->  
->  	return SDT_ARG_VALID;
->  }
-> +
-> +uint64_t arch__intr_reg_mask(void)
-> +{
-> +	struct perf_event_attr attr = {
-> +		.type                   = PERF_TYPE_HARDWARE,
-> +		.config                 = PERF_COUNT_HW_CPU_CYCLES,
-> +		.sample_type            = PERF_SAMPLE_REGS_INTR,
-> +		.precise_ip             = 1,
-> +		.disabled               = 1,
-> +		.exclude_kernel         = 1,
-> +	};
-> +	int fd, ret;
-> +	char buffer[64];
-> +	u32 version;
-> +	u64 extended_mask = 0;
-> +
-> +	/* Get the PVR value to set the extended
-> +	 * mask specific to platform
-
-Comment format is wrong, and punctuation please.
-
-> +	 */
-> +	get_cpuid(buffer, sizeof(buffer));
-> +	ret = sscanf(buffer, "%u,", &version);
-
-This is powerpc specific code, why not just use mfspr(SPRN_PVR), rather
-than redirecting via printf/sscanf.
-
-> +
-> +	if (ret != 1) {
-> +		pr_debug("Failed to get the processor version, unable to output extended registers\n");
-> +		return PERF_REGS_MASK;
-> +	}
-> +
-> +	if (version == PVR_POWER9)
-> +		extended_mask = PERF_REG_PMU_MASK_300;
-> +	else
-> +		return PERF_REGS_MASK;
-> +
-> +	attr.sample_regs_intr = extended_mask;
-> +	attr.sample_period = 1;
-> +	event_attr_init(&attr);
-> +
-> +	/*
-> +	 * check if the pmu supports perf extended regs, before
-> +	 * returning the register mask to sample.
-> +	 */
-> +	fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
-> +	if (fd != -1) {
-> +		close(fd);
-> +		return (extended_mask | PERF_REGS_MASK);
-> +	}
-> +	return PERF_REGS_MASK;
-
-I think this would read a bit better like:
-
-	mask = PERF_REGS_MASK;
-
-	if (version == PVR_POWER9)
-		extended_mask = PERF_REG_PMU_MASK_300;
-        else
-        	return mask;
-
-        attr.sample_regs_intr = extended_mask;
-        attr.sample_period = 1;
-        event_attr_init(&attr);
-
-        /*
-          * check if the pmu supports perf extended regs, before
-          * returning the register mask to sample.
-          */
-        fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
-        if (fd != -1) {
-                close(fd);
-                mask |= extended_mask;
-        }
-
-	return mask;
-
+But as I said below, it would be even simpler if you worked out the
+memory block size first.
 
 cheers
+
+>>>   	/*
+>>> -	 * let's assume we have page 4k and 64k support
+>>> +	 * Max mapping size used when mapping pages. We don't use
+>>> +	 * ppc_md.memory_block_size() here because this get called
+>>> +	 * early and we don't have machine probe called yet. Also
+>>> +	 * the pseries implementation only check for ibm,lmb-size.
+>>> +	 * All hypervisor supporting radix do expose that device
+>>> +	 * tree node.
+>>>   	 */
+>>> -	mmu_psize_defs[MMU_PAGE_4K].shift = 12;
+>>> -	mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
+>>> -
+>>> -	mmu_psize_defs[MMU_PAGE_64K].shift = 16;
+>>> -	mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
+>>> -found:
+>>> +	radix_mem_block_size = radix_memory_block_size();
+>> 
+>> If you did that earlier in the function, before
+>> radix_dt_scan_page_sizes(), the logic would be simpler.
+>> 
+>>>   	return;
+>>>   }
