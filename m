@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3005218BB4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 17:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CE5218C2B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 17:47:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B23Tb18bZzDqjb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:42:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B23b9678yzDqJg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:47:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=aPaRkTKR; 
+ header.s=casper.20170209 header.b=Awv94X5L; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B23MP0fblzDqXX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 01:37:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B23QB54LvzDqjW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 01:39:30 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=WONRmdayeVnib8Sp6DFT/rNEBQkDNkncQsl/NpzNp0k=; b=aPaRkTKR36u+fHzuZPyLOmBo8k
- LXZH5MHfJ+0hjjyE4HVtaZhzhC889r4Lshr6amjGAZXi1wCuffWCA+QsQtGJeaSuA7/5WrKDAaFfQ
- Q6cGAhFHum2OSzgf4XmQaOf6UsFGJYEhAFrdYQTWLGBt75fxgaw+DC0r8oDeSuC6heJhLjc3WPsej
- e+ROqavGMPIXyP2BDLjgKB83Z/aPqYuQTPr8zmZvKiV1x5zlHsBOaOeQiptzYy3V8jcNFV4cwY94w
- 2aCaWUyOVEwbK/7//UijvoiXkjhgcs41+yG/8VsBOkKgLA0jP/EpY60DsZLlGrnNy8uLCnOlTY3Av
- pjsk09EQ==;
+ bh=YWMW3K2J8IUvzI1kP8IohAug+CmpewPJUfdbnh0Wntw=; b=Awv94X5LC0od1aO6iiqfINx41h
+ 2ztg70rY1xevKISNu8a6NNpryEMxwzKMDhpZNrUz6cW3Zzki2SpLb7SW1pjbnB7fN+89XrPwHbUEI
+ F2+9CQ+b1aSn1ueXLovk8LBQ00lAQdvLuVZ24glSD1MkAUNFDZyBISY4AiT5gAYobVJLW/TdI0uW6
+ iaxu7eGXc5ldvemq9ZchE9XZk12GnQL01sBY+XIFwIse/zuPtE/7V4gyEVVcFuFr5/Dgu9G5wgtUK
+ mEiz6s6MG0By+PY7KJX8TQYrbBgHVGXeLFuBIOOP7CNoZ7B9KThLVw6WWY1sQE35duApqGEDQ7X4K
+ cLAq4RrA==;
 Received: from 213-225-32-40.nat.highway.a1.net ([213.225.32.40]
  helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jtC7n-0002aO-Oy; Wed, 08 Jul 2020 15:36:51 +0000
+ id 1jtCAB-0002eQ-Vl; Wed, 08 Jul 2020 15:39:13 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org,
 	Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH 4/5] dma-mapping: add a dma_ops_bypass flag to struct device
-Date: Wed,  8 Jul 2020 17:24:48 +0200
-Message-Id: <20200708152449.316476-5-hch@lst.de>
+Subject: [PATCH 5/5] powerpc: use the generic dma_ops_bypass mode
+Date: Wed,  8 Jul 2020 17:24:49 +0200
+Message-Id: <20200708152449.316476-6-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200708152449.316476-1-hch@lst.de>
 References: <20200708152449.316476-1-hch@lst.de>
@@ -74,289 +74,238 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Several IOMMU drivers have a bypass mode where they can use a direct
-mapping if the devices DMA mask is large enough.  Add generic support
-to the core dma-mapping code to do that to switch those drivers to
-a common solution.
+Use the DMA API bypass mechanism for direct window mappings.  This uses
+common code and speed up the direct mapping case by avoiding indirect
+calls just when not using dma ops at all.  It also fixes a problem where
+the sync_* methods were using the bypass check for DMA allocations, but
+those are part of the streaming ops.
 
+Note that this patch loses the DMA_ATTR_WEAK_ORDERING override, which
+has never been well defined, as is only used by a few drivers, which
+IIRC never showed up in the typical Cell blade setups that are affected
+by the ordering workaround.
+
+Fixes: efd176a04bef ("powerpc/pseries/dma: Allow SWIOTLB")
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/device.h |  8 +++++
- kernel/dma/Kconfig     |  8 +++++
- kernel/dma/mapping.c   | 74 +++++++++++++++++++++++++++++-------------
- 3 files changed, 68 insertions(+), 22 deletions(-)
+ arch/powerpc/Kconfig              |  1 +
+ arch/powerpc/include/asm/device.h |  5 --
+ arch/powerpc/kernel/dma-iommu.c   | 90 ++++---------------------------
+ 3 files changed, 10 insertions(+), 86 deletions(-)
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 4c4af98321ebd6..1f71acf37f78d7 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -523,6 +523,11 @@ struct dev_links_info {
-  *		  sync_state() callback.
-  * @dma_coherent: this particular device is dma coherent, even if the
-  *		architecture supports non-coherent devices.
-+ * @dma_ops_bypass: If set to %true then the dma_ops are bypassed for the
-+ *		streaming DMA operations (->map_* / ->unmap_* / ->sync_*),
-+ *		and optionall (if the coherent mask is large enough) also
-+ *		for dma allocations.  This flag is managed by the dma ops
-+ *		instance from ->dma_supported.
-  *
-  * At the lowest level, every device in a Linux system is represented by an
-  * instance of struct device. The device structure contains the information
-@@ -623,6 +628,9 @@ struct device {
-     defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
- 	bool			dma_coherent:1;
- #endif
-+#ifdef CONFIG_DMA_OPS_BYPASS
-+	bool			dma_ops_bypass : 1;
-+#endif
- };
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index e9b091d3587222..be868bfbe76ecf 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -152,6 +152,7 @@ config PPC
+ 	select CLONE_BACKWARDS
+ 	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
+ 	select DMA_OPS				if PPC64
++	select DMA_OPS_BYPASS			if PPC64
+ 	select DYNAMIC_FTRACE			if FUNCTION_TRACER
+ 	select EDAC_ATOMIC_SCRUB
+ 	select EDAC_SUPPORT
+diff --git a/arch/powerpc/include/asm/device.h b/arch/powerpc/include/asm/device.h
+index 266542769e4bd1..452402215e1210 100644
+--- a/arch/powerpc/include/asm/device.h
++++ b/arch/powerpc/include/asm/device.h
+@@ -18,11 +18,6 @@ struct iommu_table;
+  * drivers/macintosh/macio_asic.c
+  */
+ struct dev_archdata {
+-	/*
+-	 * Set to %true if the dma_iommu_ops are requested to use a direct
+-	 * window instead of dynamically mapping memory.
+-	 */
+-	bool			iommu_bypass : 1;
+ 	/*
+ 	 * These two used to be a union. However, with the hybrid ops we need
+ 	 * both so here we store both a DMA offset for direct mappings and
+diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
+index e486d1d78de288..569fecd7b5b234 100644
+--- a/arch/powerpc/kernel/dma-iommu.c
++++ b/arch/powerpc/kernel/dma-iommu.c
+@@ -14,23 +14,6 @@
+  * Generic iommu implementation
+  */
  
- static inline struct device *kobj_to_dev(struct kobject *kobj)
-diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
-index 5cfb2428593ac7..f4770fcfa62bb3 100644
---- a/kernel/dma/Kconfig
-+++ b/kernel/dma/Kconfig
-@@ -8,6 +8,14 @@ config HAS_DMA
- config DMA_OPS
- 	bool
- 
-+#
-+# IOMMU drivers that can bypass the IOMMU code and optionally use the direct
-+# mapping fast path should select this option and set the dma_ops_bypass
-+# flag in struct device where applicable
-+#
-+config DMA_OPS_BYPASS
-+	bool
-+
- config NEED_SG_DMA_LENGTH
- 	bool
- 
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index b53953024512fe..0d129421e75fc8 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -105,9 +105,35 @@ void *dmam_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
- }
- EXPORT_SYMBOL(dmam_alloc_attrs);
- 
--static inline bool dma_is_direct(const struct dma_map_ops *ops)
-+static bool dma_go_direct(struct device *dev, dma_addr_t mask,
-+		const struct dma_map_ops *ops)
+-/*
+- * The coherent mask may be smaller than the real mask, check if we can
+- * really use a direct window.
+- */
+-static inline bool dma_iommu_alloc_bypass(struct device *dev)
+-{
+-	return dev->archdata.iommu_bypass && !iommu_fixed_is_weak &&
+-		dma_direct_supported(dev, dev->coherent_dma_mask);
+-}
+-
+-static inline bool dma_iommu_map_bypass(struct device *dev,
+-		unsigned long attrs)
+-{
+-	return dev->archdata.iommu_bypass &&
+-		(!iommu_fixed_is_weak || (attrs & DMA_ATTR_WEAK_ORDERING));
+-}
+-
+ /* Allocates a contiguous real buffer and creates mappings over it.
+  * Returns the virtual address of the buffer and sets dma_handle
+  * to the dma address (mapping) of the first page.
+@@ -39,8 +22,6 @@ static void *dma_iommu_alloc_coherent(struct device *dev, size_t size,
+ 				      dma_addr_t *dma_handle, gfp_t flag,
+ 				      unsigned long attrs)
  {
--	return likely(!ops);
-+	if (likely(!ops))
-+		return true;
-+#ifdef CONFIG_DMA_OPS_BYPASS
-+	if (dev->dma_ops_bypass)
-+		return min_not_zero(mask, dev->bus_dma_limit) >=
-+			    dma_direct_get_required_mask(dev);
-+#endif
-+	return false;
-+}
-+
-+
-+/*
-+ * Check if the devices uses a direct mapping for streaming DMA operations.
-+ * This allows IOMMU drivers to set a bypass mode if the DMA mask is large
-+ * enough.
-+ */
-+static inline bool dma_alloc_direct(struct device *dev,
-+		const struct dma_map_ops *ops)
-+{
-+	return dma_go_direct(dev, dev->coherent_dma_mask, ops);
-+}
-+
-+static inline bool dma_map_direct(struct device *dev,
-+		const struct dma_map_ops *ops)
-+{
-+	return dma_go_direct(dev, *dev->dma_mask, ops);
+-	if (dma_iommu_alloc_bypass(dev))
+-		return dma_direct_alloc(dev, size, dma_handle, flag, attrs);
+ 	return iommu_alloc_coherent(dev, get_iommu_table_base(dev), size,
+ 				    dma_handle, dev->coherent_dma_mask, flag,
+ 				    dev_to_node(dev));
+@@ -50,11 +31,7 @@ static void dma_iommu_free_coherent(struct device *dev, size_t size,
+ 				    void *vaddr, dma_addr_t dma_handle,
+ 				    unsigned long attrs)
+ {
+-	if (dma_iommu_alloc_bypass(dev))
+-		dma_direct_free(dev, size, vaddr, dma_handle, attrs);
+-	else
+-		iommu_free_coherent(get_iommu_table_base(dev), size, vaddr,
+-				dma_handle);
++	iommu_free_coherent(get_iommu_table_base(dev), size, vaddr, dma_handle);
  }
  
- dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
-@@ -118,7 +144,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
- 	dma_addr_t addr;
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		addr = dma_direct_map_page(dev, page, offset, size, dir, attrs);
- 	else
- 		addr = ops->map_page(dev, page, offset, size, dir, attrs);
-@@ -134,7 +160,7 @@ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		dma_direct_unmap_page(dev, addr, size, dir, attrs);
- 	else if (ops->unmap_page)
- 		ops->unmap_page(dev, addr, size, dir, attrs);
-@@ -153,7 +179,7 @@ int dma_map_sg_attrs(struct device *dev, struct scatterlist *sg, int nents,
- 	int ents;
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		ents = dma_direct_map_sg(dev, sg, nents, dir, attrs);
- 	else
- 		ents = ops->map_sg(dev, sg, nents, dir, attrs);
-@@ -172,7 +198,7 @@ void dma_unmap_sg_attrs(struct device *dev, struct scatterlist *sg,
- 
- 	BUG_ON(!valid_dma_direction(dir));
- 	debug_dma_unmap_sg(dev, sg, nents, dir);
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		dma_direct_unmap_sg(dev, sg, nents, dir, attrs);
- 	else if (ops->unmap_sg)
- 		ops->unmap_sg(dev, sg, nents, dir, attrs);
-@@ -191,7 +217,7 @@ dma_addr_t dma_map_resource(struct device *dev, phys_addr_t phys_addr,
- 	if (WARN_ON_ONCE(pfn_valid(PHYS_PFN(phys_addr))))
- 		return DMA_MAPPING_ERROR;
- 
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		addr = dma_direct_map_resource(dev, phys_addr, size, dir, attrs);
- 	else if (ops->map_resource)
- 		addr = ops->map_resource(dev, phys_addr, size, dir, attrs);
-@@ -207,7 +233,7 @@ void dma_unmap_resource(struct device *dev, dma_addr_t addr, size_t size,
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (!dma_is_direct(ops) && ops->unmap_resource)
-+	if (!dma_map_direct(dev, ops) && ops->unmap_resource)
- 		ops->unmap_resource(dev, addr, size, dir, attrs);
- 	debug_dma_unmap_resource(dev, addr, size, dir);
+ /* Creates TCEs for a user provided buffer.  The user buffer must be
+@@ -67,9 +44,6 @@ static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
+ 				     enum dma_data_direction direction,
+ 				     unsigned long attrs)
+ {
+-	if (dma_iommu_map_bypass(dev, attrs))
+-		return dma_direct_map_page(dev, page, offset, size, direction,
+-				attrs);
+ 	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
+ 			      size, dma_get_mask(dev), direction, attrs);
  }
-@@ -219,7 +245,7 @@ void dma_sync_single_for_cpu(struct device *dev, dma_addr_t addr, size_t size,
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		dma_direct_sync_single_for_cpu(dev, addr, size, dir);
- 	else if (ops->sync_single_for_cpu)
- 		ops->sync_single_for_cpu(dev, addr, size, dir);
-@@ -233,7 +259,7 @@ void dma_sync_single_for_device(struct device *dev, dma_addr_t addr,
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		dma_direct_sync_single_for_device(dev, addr, size, dir);
- 	else if (ops->sync_single_for_device)
- 		ops->sync_single_for_device(dev, addr, size, dir);
-@@ -247,7 +273,7 @@ void dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sg,
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		dma_direct_sync_sg_for_cpu(dev, sg, nelems, dir);
- 	else if (ops->sync_sg_for_cpu)
- 		ops->sync_sg_for_cpu(dev, sg, nelems, dir);
-@@ -261,7 +287,7 @@ void dma_sync_sg_for_device(struct device *dev, struct scatterlist *sg,
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
- 	BUG_ON(!valid_dma_direction(dir));
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		dma_direct_sync_sg_for_device(dev, sg, nelems, dir);
- 	else if (ops->sync_sg_for_device)
- 		ops->sync_sg_for_device(dev, sg, nelems, dir);
-@@ -302,7 +328,7 @@ int dma_get_sgtable_attrs(struct device *dev, struct sg_table *sgt,
+@@ -79,11 +53,8 @@ static void dma_iommu_unmap_page(struct device *dev, dma_addr_t dma_handle,
+ 				 size_t size, enum dma_data_direction direction,
+ 				 unsigned long attrs)
  {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
--	if (dma_is_direct(ops))
-+	if (dma_alloc_direct(dev, ops))
- 		return dma_direct_get_sgtable(dev, sgt, cpu_addr, dma_addr,
- 				size, attrs);
- 	if (!ops->get_sgtable)
-@@ -372,7 +398,7 @@ bool dma_can_mmap(struct device *dev)
- {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
--	if (dma_is_direct(ops))
-+	if (dma_alloc_direct(dev, ops))
- 		return dma_direct_can_mmap(dev);
- 	return ops->mmap != NULL;
+-	if (!dma_iommu_map_bypass(dev, attrs))
+-		iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size,
+-				direction,  attrs);
+-	else
+-		dma_direct_unmap_page(dev, dma_handle, size, direction, attrs);
++	iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size, direction,
++			 attrs);
  }
-@@ -397,7 +423,7 @@ int dma_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
+ 
+ 
+@@ -91,8 +62,6 @@ static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
+ 			    int nelems, enum dma_data_direction direction,
+ 			    unsigned long attrs)
  {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
--	if (dma_is_direct(ops))
-+	if (dma_alloc_direct(dev, ops))
- 		return dma_direct_mmap(dev, vma, cpu_addr, dma_addr, size,
- 				attrs);
- 	if (!ops->mmap)
-@@ -410,7 +436,7 @@ u64 dma_get_required_mask(struct device *dev)
+-	if (dma_iommu_map_bypass(dev, attrs))
+-		return dma_direct_map_sg(dev, sglist, nelems, direction, attrs);
+ 	return ppc_iommu_map_sg(dev, get_iommu_table_base(dev), sglist, nelems,
+ 				dma_get_mask(dev), direction, attrs);
+ }
+@@ -101,11 +70,8 @@ static void dma_iommu_unmap_sg(struct device *dev, struct scatterlist *sglist,
+ 		int nelems, enum dma_data_direction direction,
+ 		unsigned long attrs)
  {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
+-	if (!dma_iommu_map_bypass(dev, attrs))
+-		ppc_iommu_unmap_sg(get_iommu_table_base(dev), sglist, nelems,
++	ppc_iommu_unmap_sg(get_iommu_table_base(dev), sglist, nelems,
+ 			   direction, attrs);
+-	else
+-		dma_direct_unmap_sg(dev, sglist, nelems, direction, attrs);
+ }
  
--	if (dma_is_direct(ops))
-+	if (dma_alloc_direct(dev, ops))
- 		return dma_direct_get_required_mask(dev);
- 	if (ops->get_required_mask)
- 		return ops->get_required_mask(dev);
-@@ -441,7 +467,7 @@ void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 	/* let the implementation decide on the zone to allocate from: */
- 	flag &= ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM);
+ static bool dma_iommu_bypass_supported(struct device *dev, u64 mask)
+@@ -113,8 +79,9 @@ static bool dma_iommu_bypass_supported(struct device *dev, u64 mask)
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+ 	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
  
--	if (dma_is_direct(ops))
-+	if (dma_alloc_direct(dev, ops))
- 		cpu_addr = dma_direct_alloc(dev, size, dma_handle, flag, attrs);
- 	else if (ops->alloc)
- 		cpu_addr = ops->alloc(dev, size, dma_handle, flag, attrs);
-@@ -473,7 +499,7 @@ void dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
- 		return;
+-	return phb->controller_ops.iommu_bypass_supported &&
+-		phb->controller_ops.iommu_bypass_supported(pdev, mask);
++	if (iommu_fixed_is_weak || !phb->controller_ops.iommu_bypass_supported)
++		return false;
++	return phb->controller_ops.iommu_bypass_supported(pdev, mask);
+ }
  
- 	debug_dma_free_coherent(dev, size, cpu_addr, dma_handle);
--	if (dma_is_direct(ops))
-+	if (dma_alloc_direct(dev, ops))
- 		dma_direct_free(dev, size, cpu_addr, dma_handle, attrs);
- 	else if (ops->free)
- 		ops->free(dev, size, cpu_addr, dma_handle, attrs);
-@@ -484,7 +510,11 @@ int dma_supported(struct device *dev, u64 mask)
- {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
+ /* We support DMA to/from any memory page via the iommu */
+@@ -123,7 +90,7 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
+ 	struct iommu_table *tbl = get_iommu_table_base(dev);
  
--	if (dma_is_direct(ops))
-+	/*
-+	 * ->dma_supported sets the bypass flag, so we must always call
-+	 * into the method here unless the device is truly direct mapped.
-+	 */
-+	if (!ops)
- 		return dma_direct_supported(dev, mask);
- 	if (!ops->dma_supported)
+ 	if (dev_is_pci(dev) && dma_iommu_bypass_supported(dev, mask)) {
+-		dev->archdata.iommu_bypass = true;
++		dev->dma_ops_bypass = true;
+ 		dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
  		return 1;
-@@ -540,7 +570,7 @@ void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+ 	}
+@@ -141,7 +108,7 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
+ 	}
  
- 	BUG_ON(!valid_dma_direction(dir));
- 
--	if (dma_is_direct(ops))
-+	if (dma_alloc_direct(dev, ops))
- 		arch_dma_cache_sync(dev, vaddr, size, dir);
- 	else if (ops->cache_sync)
- 		ops->cache_sync(dev, vaddr, size, dir);
-@@ -552,7 +582,7 @@ size_t dma_max_mapping_size(struct device *dev)
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 	size_t size = SIZE_MAX;
- 
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		size = dma_direct_max_mapping_size(dev);
- 	else if (ops && ops->max_mapping_size)
- 		size = ops->max_mapping_size(dev);
-@@ -565,7 +595,7 @@ bool dma_need_sync(struct device *dev, dma_addr_t dma_addr)
- {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 
--	if (dma_is_direct(ops))
-+	if (dma_map_direct(dev, ops))
- 		return dma_direct_need_sync(dev, dma_addr);
- 	return ops->sync_single_for_cpu || ops->sync_single_for_device;
+ 	dev_dbg(dev, "iommu: not 64-bit, using default ops\n");
+-	dev->archdata.iommu_bypass = false;
++	dev->dma_ops_bypass = false;
+ 	return 1;
  }
+ 
+@@ -153,47 +120,12 @@ u64 dma_iommu_get_required_mask(struct device *dev)
+ 	if (!tbl)
+ 		return 0;
+ 
+-	if (dev_is_pci(dev)) {
+-		u64 bypass_mask = dma_direct_get_required_mask(dev);
+-
+-		if (dma_iommu_bypass_supported(dev, bypass_mask))
+-			return bypass_mask;
+-	}
+-
+ 	mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1);
+ 	mask += mask - 1;
+ 
+ 	return mask;
+ }
+ 
+-static void dma_iommu_sync_for_cpu(struct device *dev, dma_addr_t addr,
+-		size_t size, enum dma_data_direction dir)
+-{
+-	if (dma_iommu_alloc_bypass(dev))
+-		dma_direct_sync_single_for_cpu(dev, addr, size, dir);
+-}
+-
+-static void dma_iommu_sync_for_device(struct device *dev, dma_addr_t addr,
+-		size_t sz, enum dma_data_direction dir)
+-{
+-	if (dma_iommu_alloc_bypass(dev))
+-		dma_direct_sync_single_for_device(dev, addr, sz, dir);
+-}
+-
+-extern void dma_iommu_sync_sg_for_cpu(struct device *dev,
+-		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
+-{
+-	if (dma_iommu_alloc_bypass(dev))
+-		dma_direct_sync_sg_for_cpu(dev, sgl, nents, dir);
+-}
+-
+-extern void dma_iommu_sync_sg_for_device(struct device *dev,
+-		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
+-{
+-	if (dma_iommu_alloc_bypass(dev))
+-		dma_direct_sync_sg_for_device(dev, sgl, nents, dir);
+-}
+-
+ const struct dma_map_ops dma_iommu_ops = {
+ 	.alloc			= dma_iommu_alloc_coherent,
+ 	.free			= dma_iommu_free_coherent,
+@@ -203,10 +135,6 @@ const struct dma_map_ops dma_iommu_ops = {
+ 	.map_page		= dma_iommu_map_page,
+ 	.unmap_page		= dma_iommu_unmap_page,
+ 	.get_required_mask	= dma_iommu_get_required_mask,
+-	.sync_single_for_cpu	= dma_iommu_sync_for_cpu,
+-	.sync_single_for_device	= dma_iommu_sync_for_device,
+-	.sync_sg_for_cpu	= dma_iommu_sync_sg_for_cpu,
+-	.sync_sg_for_device	= dma_iommu_sync_sg_for_device,
+ 	.mmap			= dma_common_mmap,
+ 	.get_sgtable		= dma_common_get_sgtable,
+ };
 -- 
 2.26.2
 
