@@ -1,51 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84FB217C26
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 02:18:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34159217C69
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 03:01:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1fzF4mD2zDr2h
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 10:18:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1gwn0qTHzDqwm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 11:01:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=QfQm0Cof; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1ftb42wwzDr22
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 10:14:15 +1000 (AEST)
-Received: from localhost (mobile-166-175-191-139.mycingular.net
- [166.175.191.139])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9257F20771;
- Wed,  8 Jul 2020 00:14:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1594167253;
- bh=2L7WP+FH4ge1x8kEWdYfaMjqxWIqNu5qXRk+3MClC9M=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=QfQm0CofV3QNZvEH3olHTvHrgD7XQHvllDn6Up+u11+4dp7W22MPY9dg3vmZWGzER
- XIiCpVWWCkkV+VCDHLhTa8Ym/BUyWS7ON39mcGLvaWfMQbdSPEJgwGPXDWS+65+HBv
- vl3vI1BfK3voK1Ltv5Bul0yUXBMvW/rDkI2IZmZY=
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Matt Jolly <Kangie@footclan.ninja>
-Subject: [PATCH 2/2] PCI/AER: Log correctable errors as warning, not error
-Date: Tue,  7 Jul 2020 19:14:01 -0500
-Message-Id: <20200708001401.405749-2-helgaas@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200708001401.405749-1-helgaas@kernel.org>
-References: <20200618155511.16009-1-Kangie@footclan.ninja>
- <20200708001401.405749-1-helgaas@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4B1gtt3RsjzDqwT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 10:59:34 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 0680xMRN027976;
+ Tue, 7 Jul 2020 19:59:22 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 0680xMwM027975;
+ Tue, 7 Jul 2020 19:59:22 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 7 Jul 2020 19:59:22 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: Failure to build librseq on ppc
+Message-ID: <20200708005922.GW3598@gate.crashing.org>
+References: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,94 +49,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Michael Jeanson <mjeanson@efficios.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Matt Jolly <Kangie@footclan.ninja>
+Hi!
 
-PCIe correctable errors are recovered by hardware with no need for software
-intervention (PCIe r5.0, sec 6.2.2.1).
+On Tue, Jul 07, 2020 at 03:17:10PM -0400, Mathieu Desnoyers wrote:
+> I'm trying to build librseq at:
+> 
+> https://git.kernel.org/pub/scm/libs/librseq/librseq.git
+> 
+> on powerpc, and I get these errors when building the rseq basic
+> test mirrored from the kernel selftests code:
+> 
+> /tmp/ccieEWxU.s: Assembler messages:
+> /tmp/ccieEWxU.s:118: Error: syntax error; found `,', expected `('
+> /tmp/ccieEWxU.s:118: Error: junk at end of line: `,8'
+> /tmp/ccieEWxU.s:121: Error: syntax error; found `,', expected `('
+> /tmp/ccieEWxU.s:121: Error: junk at end of line: `,8'
+> /tmp/ccieEWxU.s:626: Error: syntax error; found `,', expected `('
+> /tmp/ccieEWxU.s:626: Error: junk at end of line: `,8'
+> /tmp/ccieEWxU.s:629: Error: syntax error; found `,', expected `('
+> /tmp/ccieEWxU.s:629: Error: junk at end of line: `,8'
+> /tmp/ccieEWxU.s:735: Error: syntax error; found `,', expected `('
+> /tmp/ccieEWxU.s:735: Error: junk at end of line: `,8'
+> /tmp/ccieEWxU.s:738: Error: syntax error; found `,', expected `('
+> /tmp/ccieEWxU.s:738: Error: junk at end of line: `,8'
+> /tmp/ccieEWxU.s:741: Error: syntax error; found `,', expected `('
+> /tmp/ccieEWxU.s:741: Error: junk at end of line: `,8'
+> Makefile:581: recipe for target 'basic_percpu_ops_test.o' failed
 
-Reduce the log level of correctable errors from KERN_ERR to KERN_WARNING.
+You'll have to show the actual failing machine code, and with enough
+context that we can relate this to the source code.
 
-The bug reports below are for correctable error logging.  This doesn't fix
-the cause of those reports, but it may make the messages less alarming.
+-save-temps helps, or use -S instead of -c, etc.
 
-[bhelgaas: commit log, use pci_printk() to avoid code duplication]
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=201517
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=196183
-Link: https://lore.kernel.org/r/20200618155511.16009-1-Kangie@footclan.ninja
-Signed-off-by: Matt Jolly <Kangie@footclan.ninja>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/pcie/aer.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+> I am using this compiler:
+> 
+> gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)
+> Target: powerpc-linux-gnu
+> 
+> So far, I got things to build by changing "m" operands to "Q" operands.
+> Based on https://gcc.gnu.org/onlinedocs/gcc/Machine-Constraints.html#Machine-Constraints
+> it seems that "Q" means "A memory operand addressed by just a base register."
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 9176c8a968b9..ca886bf91fd9 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -673,20 +673,23 @@ static void __aer_print_error(struct pci_dev *dev,
- {
- 	const char **strings;
- 	unsigned long status = info->status & ~info->mask;
--	const char *errmsg;
-+	const char *level, *errmsg;
- 	int i;
- 
--	if (info->severity == AER_CORRECTABLE)
-+	if (info->severity == AER_CORRECTABLE) {
- 		strings = aer_correctable_error_string;
--	else
-+		level = KERN_WARNING;
-+	} else {
- 		strings = aer_uncorrectable_error_string;
-+		level = KERN_ERR;
-+	}
- 
- 	for_each_set_bit(i, &status, 32) {
- 		errmsg = strings[i];
- 		if (!errmsg)
- 			errmsg = "Unknown Error Bit";
- 
--		pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
-+		pci_printk(level, dev, "   [%2d] %-22s%s\n", i, errmsg,
- 				info->first_error == i ? " (First)" : "");
- 	}
- 	pci_dev_aer_stats_incr(dev, info);
-@@ -696,6 +699,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- {
- 	int layer, agent;
- 	int id = ((dev->bus->number << 8) | dev->devfn);
-+	const char *level;
- 
- 	if (!info->status) {
- 		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
-@@ -706,13 +710,14 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
- 	agent = AER_GET_AGENT(info->severity, info->status);
- 
--	pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
--		aer_error_severity_string[info->severity],
--		aer_error_layer[layer], aer_agent_string[agent]);
-+	level = (info->severity == AER_CORRECTABLE) ? KERN_WARNING : KERN_ERR;
-+
-+	pci_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
-+		   aer_error_severity_string[info->severity],
-+		   aer_error_layer[layer], aer_agent_string[agent]);
- 
--	pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
--		dev->vendor, dev->device,
--		info->status, info->mask);
-+	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
-+		   dev->vendor, dev->device, info->status, info->mask);
- 
- 	__aer_print_error(dev, info);
- 
--- 
-2.25.1
+Yup.
 
+> I suspect that lwz and stw don't expect some kind of immediate offset which
+> can be kept with "m", and "Q" fixes this. Is that the right fix ?
+> 
+> And should we change all operands passed to lwz and stw to a "Q" operand ?
+
+No, lwz and stw exactly *do* take an immediate offset.
+
+It sounds like the compiler passed memory addressed by indexed
+addressing, instead.  Which is fine for "m", and also fine for those
+insns... well, you need lwzx and stwx.
+
+So perhaps you have code like
+
+  int *p;
+  int x;
+  ...
+  asm ("lwz %0,%1" : "=r"(x) : "m"(*p));
+
+where that last line should actually read
+
+  asm ("lwz%X1 %0,%1" : "=r"(x) : "m"(*p));
+
+?
+
+
+Segher
