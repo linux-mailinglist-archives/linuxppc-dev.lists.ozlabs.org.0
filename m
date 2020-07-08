@@ -1,67 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06989218FDF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 20:47:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EC4219186
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 22:31:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B27Zb2H9KzDqmJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 04:47:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B29vb3NZ8zDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 06:31:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=arbab@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B27XN64CLzDqXR
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 04:45:05 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4B27XF6rW2z9v1NN;
- Wed,  8 Jul 2020 20:45:01 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 0vT_6agWH8PX; Wed,  8 Jul 2020 20:45:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4B27XF3nhCz9v1NM;
- Wed,  8 Jul 2020 20:45:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 758EB8B804;
- Wed,  8 Jul 2020 20:45:01 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id cFhakQw1pUAd; Wed,  8 Jul 2020 20:45:01 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0BF248B7FE;
- Wed,  8 Jul 2020 20:45:01 +0200 (CEST)
-Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
-To: Giuseppe Sacco <giuseppe@sguazz.it>, linuxppc-dev@lists.ozlabs.org
-References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
- <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
- <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
- <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
- <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
- <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
- <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
- <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
- <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
- <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
- <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
-Date: Wed, 8 Jul 2020 20:44:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B29st2w0gzDq8F
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 06:30:19 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 068K3ET4151994; Wed, 8 Jul 2020 16:30:15 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 325k3quntj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Jul 2020 16:30:15 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 068KTuYY018888;
+ Wed, 8 Jul 2020 20:30:14 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02wdc.us.ibm.com with ESMTP id 325k1v8tqc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Jul 2020 20:30:14 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 068KUBgI10289688
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 8 Jul 2020 20:30:12 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BDB266A051;
+ Wed,  8 Jul 2020 20:30:13 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5D4F66A05D;
+ Wed,  8 Jul 2020 20:30:13 +0000 (GMT)
+Received: from arbab-vm.localdomain (unknown [9.160.108.126])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with SMTP;
+ Wed,  8 Jul 2020 20:30:13 +0000 (GMT)
+Received: from arbab-vm (localhost [IPv6:::1])
+ by arbab-vm.localdomain (Postfix) with ESMTP id B3AF01001AC;
+ Wed,  8 Jul 2020 15:30:10 -0500 (CDT)
+Date: Wed, 8 Jul 2020 15:30:10 -0500
+From: Reza Arbab <arbab@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v2 2/4] powerpc/mm/radix: Free PUD table when freeing
+ pagetable
+Message-ID: <20200708203010.qmpdgtxpfgiffzpi@arbab-vm>
+Organization: IBM Linux Technology Center
+References: <20200625064547.228448-1-aneesh.kumar@linux.ibm.com>
+ <20200625064547.228448-3-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20200625064547.228448-3-aneesh.kumar@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-08_17:2020-07-08,
+ 2020-07-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 adultscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 mlxlogscore=579
+ bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007080121
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,70 +89,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jun 25, 2020 at 12:15:45PM +0530, Aneesh Kumar K.V wrote:
+>remove_pagetable() isn't freeing PUD table. This causes memory
+>leak during memory unplug. Fix this.
 
+This has come up before:
+https://lore.kernel.org/linuxppc-dev/20190731061920.GA18807@in.ibm.com/
 
-Le 08/07/2020 à 19:36, Giuseppe Sacco a écrit :
-> Hi Cristophe,
-> 
-> Il giorno mer, 08/07/2020 alle 19.09 +0200, Christophe Leroy ha
-> scritto:
->> Hi
->>
->> Le 08/07/2020 à 19:00, Giuseppe Sacco a écrit :
->>> Hello,
->>> while trying to debug a problem using git bisect, I am now at a point
->>> where I cannot build the kernel at all. This is the error message I
->>> get:
->>>
->>> $ LANG=C make ARCH=powerpc \
->>>    CROSS_COMPILE=powerpc-linux- \
->>>    CONFIG_MODULE_COMPRESS_GZIP=true \
->>>    INSTALL_MOD_STRIP=1 CONFIG_MODULE_COMPRESS=1 \
->>>    -j4 INSTALL_MOD_PATH=$BOOT INSTALL_PATH=$BOOT \
->>>    CONFIG_DEBUG_INFO_COMPRESSED=1 \
->>>    install modules_install
->>> make[2]: *** No rule to make target 'vmlinux', needed by
->>
->> Surprising.
->>
->> Did you make any change to Makefiles ?
-> 
-> No
-> 
->> Are you in the middle of a bisect ? If so, if the previous builds
->> worked, I'd do 'git bisect skip'
-> 
-> Yes, the previous one worked.
-> 
->> What's the result with:
->>
->> LANG=C make ARCH=powerpc CROSS_COMPILE=powerpc-linux- vmlinux
-> 
-> $ LANG=C make ARCH=powerpc CROSS_COMPILE=powerpc-linux- vmlinux
->    CALL    scripts/checksyscalls.sh
->    CALL    scripts/atomic/check-atomics.sh
->    CHK     include/generated/compile.h
->    CC      kernel/module.o
-> kernel/module.c: In function 'do_init_module':
-> kernel/module.c:3593:2: error: implicit declaration of function
-> 'module_enable_ro'; did you mean 'module_enable_x'? [-Werror=implicit-
-> function-declaration]
->   3593 |  module_enable_ro(mod, true);
->        |  ^~~~~~~~~~~~~~~~
->        |  module_enable_x
-> cc1: some warnings being treated as errors
-> make[1]: *** [scripts/Makefile.build:267: kernel/module.o] Error 1
-> make: *** [Makefile:1735: kernel] Error 2
-> 
-> So, should I 'git bisect skip'?
+tl;dr, x86 intentionally does not free, and it wasn't quite clear if 
+their motivation also applies to us. Probably not, but I thought it was 
+worth mentioning again.
 
-Ah yes, I had the exact same problem last time I bisected.
-
-So yes do 'git bisect skip'. You'll probably hit this problem half a 
-dozen of times, but at the end you should get a usefull bisect anyway.
-
-Christophe
+-- 
+Reza Arbab
