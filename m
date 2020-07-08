@@ -1,56 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE812186FF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 14:14:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDD6218713
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 14:19:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1yss3F3CzDqQj
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 22:14:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1yzF3glxzDq9H
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 22:19:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1yqM6tXzzDqfj
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 22:12:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=N0ME8wmj; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1yqK51zdz9sRf;
- Wed,  8 Jul 2020 22:12:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594210349;
- bh=PL91sEuccRkhCqAtfob7pQDXe5kXLWacpArSdJI++2o=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=N0ME8wmjahxXIllko4JiHNHsPJ+Y/dibVdmAITs9ILi21kzLUVcddomQhNONrRrQ7
- Fen4r1zL+mUwXMW9o4Ri0zEmdRCfAAfK6Yly6R9p16T0CJ0OaDHkFPliJQKpj+gp7a
- K3ljPIuCVdUoDu0jWUi+aGo9uNMGpepdEfs+Dzj/lX5GIEi+hneIzr63owt4Rghy/C
- 1KuTUAAiqmDUcoFjZM6EuwMyNSsTErE/ZrVfoYxei/HUjiNCa9EsXWs5tIHe2zWIFD
- RaQJZ4VnbEDULlWUt8YHVe8sLOwk1THi/D4HvciPY2cAPJavYMsk1uPnGHnlosOkqm
- lgcDW4coYq9og==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 4/4] powerpc/mm/radix: Create separate mappings for
- hot-plugged memory
-In-Reply-To: <aa2e029f-d6f3-60da-7840-0b377da0337a@linux.ibm.com>
-References: <20200625064547.228448-1-aneesh.kumar@linux.ibm.com>
- <20200625064547.228448-5-aneesh.kumar@linux.ibm.com>
- <877dve4nvj.fsf@mpe.ellerman.id.au>
- <aa2e029f-d6f3-60da-7840-0b377da0337a@linux.ibm.com>
-Date: Wed, 08 Jul 2020 22:14:44 +1000
-Message-ID: <87mu4a2ogb.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1ywJ5bMqzDqBc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 22:16:48 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 068C0eio107900; Wed, 8 Jul 2020 08:16:42 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 325dp70r9k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Jul 2020 08:16:41 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 068CAH8u002721;
+ Wed, 8 Jul 2020 12:16:40 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 322hd7vhgy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Jul 2020 12:16:40 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 068CGbaI36896792
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 8 Jul 2020 12:16:37 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41927AE055;
+ Wed,  8 Jul 2020 12:16:37 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BA336AE045;
+ Wed,  8 Jul 2020 12:16:36 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.179.233])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  8 Jul 2020 12:16:36 +0000 (GMT)
+Subject: Re: [PATCH 2/2] KVM: PPC: Book3S HV: rework secure mem slot dropping
+To: bharata@linux.ibm.com
+References: <20200703155914.40262-1-ldufour@linux.ibm.com>
+ <20200703155914.40262-3-ldufour@linux.ibm.com>
+ <20200708112531.GA7902@in.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <0588d16a-8548-0f55-1132-400807a390a1@linux.ibm.com>
+Date: Wed, 8 Jul 2020 14:16:36 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200708112531.GA7902@in.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-08_08:2020-07-08,
+ 2020-07-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ cotscore=-2147483648 phishscore=0 impostorscore=0 priorityscore=1501
+ mlxscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=3 bulkscore=0
+ spamscore=0 mlxlogscore=779 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2007080084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,137 +89,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bharata B Rao <bharata@linux.ibm.com>
+Cc: Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, paulus@samba.org, sathnaga@linux.vnet.ibm.com,
+ sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> On 7/8/20 10:14 AM, Michael Ellerman wrote:
->> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->>> To enable memory unplug without splitting kernel page table
->>> mapping, we force the max mapping size to the LMB size. LMB
->>> size is the unit in which hypervisor will do memory add/remove
->>> operation.
->>>
->>> This implies on pseries system, we now end up mapping
->> 
->> Please expand on why it "implies" that for pseries.
->> 
->>> memory with 2M page size instead of 1G. To improve
->>> that we want hypervisor to hint the kernel about the hotplug
->>> memory range.  This was added that as part of
->>                   That
->>>
->>> commit b6eca183e23e ("powerpc/kernel: Enables memory
->>> hot-remove after reboot on pseries guests")
->>>
->>> But we still don't do that on PowerVM. Once we get PowerVM
->> 
->> I think you mean PowerVM doesn't provide that hint yet?
->> 
->> Realistically it won't until P10. So this means we'll always use 2MB on
->> Power9 PowerVM doesn't it?
->> 
->> What about KVM?
->> 
->> Have you done any benchmarking on the impact of switching the linear
->> mapping to 2MB pages?
->> 
->
-> The TLB impact should be minimal because with a 256M LMB size partition 
-> scoped entries are still 2M and hence we end up with TLBs of 2M size.
->
->
->>> updated, we can then force the 2M mapping only to hot-pluggable
->>> memory region using memblock_is_hotpluggable(). Till then
->>> let's depend on LMB size for finding the mapping page size
->>> for linear range.
->>>
->
-> updated
->
->
-> powerpc/mm/radix: Create separate mappings for hot-plugged memory
->
-> To enable memory unplug without splitting kernel page table
-> mapping, we force the max mapping size to the LMB size. LMB
-> size is the unit in which hypervisor will do memory add/remove
-> operation.
->
-> Pseries systems supports max LMB size of 256MB. Hence on pseries,
-> we now end up mapping memory with 2M page size instead of 1G. To improve
-> that we want hypervisor to hint the kernel about the hotplug
-> memory range.  That was added that as part of
->
-> commit b6eca18 ("powerpc/kernel: Enables memory
-> hot-remove after reboot on pseries guests")
->
-> But PowerVM doesn't provide that hint yet. Once we get PowerVM
-> updated, we can then force the 2M mapping only to hot-pluggable
-> memory region using memblock_is_hotpluggable(). Till then
-> let's depend on LMB size for finding the mapping page size
-> for linear range.
->
-> With this change KVM guest will also be doing linear mapping with
-> 2M page size.
+Le 08/07/2020 à 13:25, Bharata B Rao a écrit :
+> On Fri, Jul 03, 2020 at 05:59:14PM +0200, Laurent Dufour wrote:
+>> When a secure memslot is dropped, all the pages backed in the secure device
+>> (aka really backed by secure memory by the Ultravisor) should be paged out
+>> to a normal page. Previously, this was achieved by triggering the page
+>> fault mechanism which is calling kvmppc_svm_page_out() on each pages.
+>>
+>> This can't work when hot unplugging a memory slot because the memory slot
+>> is flagged as invalid and gfn_to_pfn() is then not trying to access the
+>> page, so the page fault mechanism is not triggered.
+>>
+>> Since the final goal is to make a call to kvmppc_svm_page_out() it seems
+>> simpler to directly calling it instead of triggering such a mechanism. This
+>> way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
+>> memslot.
+> 
+> Yes, this appears much simpler.
 
-...
->>> @@ -494,17 +544,27 @@ void __init radix__early_init_devtree(void)
->>>   	 * Try to find the available page sizes in the device-tree
->>>   	 */
->>>   	rc = of_scan_flat_dt(radix_dt_scan_page_sizes, NULL);
->>> -	if (rc != 0)  /* Found */
->>> -		goto found;
->>> +	if (rc == 0) {
->>> +		/*
->>> +		 * no page size details found in device tree
->>> +		 * let's assume we have page 4k and 64k support
->> 
->> Capitals and punctuation please?
->> 
->>> +		 */
->>> +		mmu_psize_defs[MMU_PAGE_4K].shift = 12;
->>> +		mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
->>> +
->>> +		mmu_psize_defs[MMU_PAGE_64K].shift = 16;
->>> +		mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
->>> +	}
->> 
->> Moving that seems like an unrelated change. It's a reasonable change but
->> I'd rather you did it in a standalone patch.
->> 
->
-> we needed that change so that we can call radix_memory_block_size() for 
-> both found and !found case.
+Thanks Bharata for reviewing this.
 
-But the found and !found cases converge at found:, which is where you
-call it. So I don't understand.
+> 
+>>
+>> Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
+>> the call to __kvmppc_svm_page_out() is made.
+>> As __kvmppc_svm_page_out needs the vma pointer to migrate the pages, the
+>> VMA is fetched in a lazy way, to not trigger find_vma() all the time. In
+>> addition, the mmap_sem is help in read mode during that time, not in write
+>> mode since the virual memory layout is not impacted, and
+>> kvm->arch.uvmem_lock prevents concurrent operation on the secure device.
+>>
+>> Cc: Ram Pai <linuxram@us.ibm.com>
+>> Cc: Bharata B Rao <bharata@linux.ibm.com>
+>> Cc: Paul Mackerras <paulus@ozlabs.org>
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kvm/book3s_hv_uvmem.c | 54 ++++++++++++++++++++----------
+>>   1 file changed, 37 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> index 852cc9ae6a0b..479ddf16d18c 100644
+>> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> @@ -533,35 +533,55 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
+>>    * fault on them, do fault time migration to replace the device PTEs in
+>>    * QEMU page table with normal PTEs from newly allocated pages.
+>>    */
+>> -void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+>> +void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
+>>   			     struct kvm *kvm, bool skip_page_out)
+>>   {
+>>   	int i;
+>>   	struct kvmppc_uvmem_page_pvt *pvt;
+>> -	unsigned long pfn, uvmem_pfn;
+>> -	unsigned long gfn = free->base_gfn;
+>> +	struct page *uvmem_page;
+>> +	struct vm_area_struct *vma = NULL;
+>> +	unsigned long uvmem_pfn, gfn;
+>> +	unsigned long addr, end;
+>> +
+>> +	down_read(&kvm->mm->mmap_sem);
+> 
+> You should be using mmap_read_lock(kvm->mm) with recent kernels.
 
-But as I said below, it would be even simpler if you worked out the
-memory block size first.
+Absolutely, shame on me, I reviewed Michel's series about that!
 
-cheers
+Paul, Michael, could you fix that when pulling this patch or should I sent a 
+whole new series?
 
->>>   	/*
->>> -	 * let's assume we have page 4k and 64k support
->>> +	 * Max mapping size used when mapping pages. We don't use
->>> +	 * ppc_md.memory_block_size() here because this get called
->>> +	 * early and we don't have machine probe called yet. Also
->>> +	 * the pseries implementation only check for ibm,lmb-size.
->>> +	 * All hypervisor supporting radix do expose that device
->>> +	 * tree node.
->>>   	 */
->>> -	mmu_psize_defs[MMU_PAGE_4K].shift = 12;
->>> -	mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
->>> -
->>> -	mmu_psize_defs[MMU_PAGE_64K].shift = 16;
->>> -	mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
->>> -found:
->>> +	radix_mem_block_size = radix_memory_block_size();
->> 
->> If you did that earlier in the function, before
->> radix_dt_scan_page_sizes(), the logic would be simpler.
->> 
->>>   	return;
->>>   }
+> 
+>> +
+>> +	addr = slot->userspace_addr;
+>> +	end = addr + (slot->npages * PAGE_SIZE);
+>>   
+>> -	for (i = free->npages; i; --i, ++gfn) {
+>> -		struct page *uvmem_page;
+>> +	gfn = slot->base_gfn;
+>> +	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
+>> +
+>> +		/* Fetch the VMA if addr is not in the latest fetched one */
+>> +		if (!vma || (addr < vma->vm_start || addr >= vma->vm_end)) {
+>> +			vma = find_vma_intersection(kvm->mm, addr, end);
+>> +			if (!vma ||
+>> +			    vma->vm_start > addr || vma->vm_end < end) {
+>> +				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
+>> +				break;
+>> +			}
+>> +		}
+> 
+> The first find_vma_intersection() was called for the range spanning the
+> entire memslot, but you have code to check if vma remains valid for the
+> new addr in each iteration. Guess you wanted to get vma for one page at
+> a time and use it for subsequent pages until it covers the range?
+
+That's the goal, fetch the VMA once and no more until we reach its end boundary.
