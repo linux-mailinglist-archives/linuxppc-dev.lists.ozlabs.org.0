@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378E9218B73
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 17:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6C7218B7E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 17:39:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B23NP30ZvzDqgL
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:37:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B23Qb5yWvzDqP0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:39:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=go2tyef7; 
+ header.s=casper.20170209 header.b=PbYQX1bn; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B23GF3nxkzDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 01:32:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B23K11W6MzDqgF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 01:35:01 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=uUUl6/91E4RjY3y2FdTQuf9fNwe4LcxCQPXQPlAagng=; b=go2tyef7UxkXhGCQbSKvJqNsbe
- CRtr5l8AYmmj9HSsm/+Z1YL23NBX+28KMlqyywl+GfX9Zaey5kTW48Sss42mbVvEN7MTuAxZBBMIa
- ODrozsDOkltatkBKy4OmTR4afejuF8cVEnqql3NlvRi2cl8yvm7hJRWT9OJth0VJPFSjp+DEcjOvY
- voSlEB3WO50FHBqG9dAXFB8pdoMxwY8doXNlmtbi3PUEoeqzH0AomqVLaUoYRHzFpSmBv0yvV4t+C
- Ka/8ElDNDVNcJqHxWpnOPGksVN8Y5LQ+SncoR3fe8uyrSlUZD2nPuI+Q+iNbzBefg4+BOlaSqqrfG
- WoJEoq3A==;
+ bh=XforiWlDYLqCZsvALIcTqMySwFsvzYffNCOI6b8L4vw=; b=PbYQX1bnMlKSLnv89nYy/I0v9n
+ slCqevJyz6wvsr78vSPL4fC4q58LrUHwZlSVoxlc4YodMktYs6YEYfELsjhtvqoSrayaClyGCoDBu
+ OOSQlCmJdOvLNMEZOYus2iEnyulqMbWG8nPUC04jeRMEMurIF12eqTz0910uxHajxNJSA6LFjIsZS
+ yDj4sS9xk2yRuSWeIOhy1s4n8AEz7DFxQQTKIR66ZkrC2A3CouV8YkOLapcbzj0vQAFZNpqZNMOKA
+ D5KS2DKfRCgvO57gbvJrVbfeBirooSLt/Btw92/G594CS0R5dDFi6IsT6bipEogpmKkbeqyUXYWrq
+ yyAFTxfg==;
 Received: from 213-225-32-40.nat.highway.a1.net ([213.225.32.40]
  helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jtC3J-0002LJ-Ol; Wed, 08 Jul 2020 15:32:10 +0000
+ id 1jtC5Z-0002PE-Mh; Wed, 08 Jul 2020 15:34:28 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org,
 	Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH 2/5] dma-mapping: inline the fast path dma-direct calls
-Date: Wed,  8 Jul 2020 17:24:46 +0200
-Message-Id: <20200708152449.316476-3-hch@lst.de>
+Subject: [PATCH 3/5] dma-mapping: make support for dma ops optional
+Date: Wed,  8 Jul 2020 17:24:47 +0200
+Message-Id: <20200708152449.316476-4-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200708152449.316476-1-hch@lst.de>
 References: <20200708152449.316476-1-hch@lst.de>
@@ -74,271 +74,274 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Inline the single page map/unmap/sync dma-direct calls into the now
-out of line generic wrappers.  This restores the behavior of a single
-function call that we had before moving the generic calls out of line.
-Besides the dma-mapping callers there are just a few callers in IOMMU
-drivers that have a bypass mode, and more of those are going to be
-switched to the generic bypass soon.
+Avoid the overhead of the dma ops support for tiny builds that only
+use the direct mapping.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/dma-direct.h | 92 ++++++++++++++++++++++++++++----------
- kernel/dma/direct.c        | 65 ---------------------------
- 2 files changed, 69 insertions(+), 88 deletions(-)
+ arch/alpha/Kconfig          |  1 +
+ arch/arm/Kconfig            |  1 +
+ arch/ia64/Kconfig           |  1 +
+ arch/mips/Kconfig           |  1 +
+ arch/parisc/Kconfig         |  1 +
+ arch/powerpc/Kconfig        |  1 +
+ arch/s390/Kconfig           |  1 +
+ arch/sparc/Kconfig          |  1 +
+ arch/x86/Kconfig            |  1 +
+ drivers/iommu/Kconfig       |  2 ++
+ drivers/misc/mic/Kconfig    |  1 +
+ drivers/vdpa/Kconfig        |  1 +
+ drivers/xen/Kconfig         |  1 +
+ include/linux/device.h      |  3 ++-
+ include/linux/dma-mapping.h | 12 +++++++++++-
+ kernel/dma/Kconfig          |  4 ++++
+ kernel/dma/Makefile         |  3 ++-
+ 17 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
-index 78dc3524adf880..dbb19dd9869054 100644
---- a/include/linux/dma-direct.h
-+++ b/include/linux/dma-direct.h
-@@ -1,10 +1,16 @@
- /* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Internals of the DMA direct mapping implementation.  Only for use by the
-+ * DMA mapping code and IOMMU drivers.
-+ */
- #ifndef _LINUX_DMA_DIRECT_H
- #define _LINUX_DMA_DIRECT_H 1
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index 10862c5a8c7682..9c5f06e8eb9bc0 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -7,6 +7,7 @@ config ALPHA
+ 	select ARCH_NO_PREEMPT
+ 	select ARCH_NO_SG_CHAIN
+ 	select ARCH_USE_CMPXCHG_LOCKREF
++	select DMA_OPS if PCI
+ 	select FORCE_PCI if !ALPHA_JENSEN
+ 	select PCI_DOMAINS if PCI
+ 	select PCI_SYSCALL if PCI
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 2ac74904a3ce58..bee35b0187e452 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -41,6 +41,7 @@ config ARM
+ 	select CPU_PM if SUSPEND || CPU_IDLE
+ 	select DCACHE_WORD_ACCESS if HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	select DMA_DECLARE_COHERENT
++	select DMA_OPS
+ 	select DMA_REMAP if MMU
+ 	select EDAC_SUPPORT
+ 	select EDAC_ATOMIC_SCRUB
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 1fa2fe2ef053f8..5b4ec80bf5863a 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -192,6 +192,7 @@ config IA64_SGI_UV
  
- #include <linux/dma-mapping.h>
-+#include <linux/dma-noncoherent.h>
- #include <linux/memblock.h> /* for min_low_pfn */
- #include <linux/mem_encrypt.h>
-+#include <linux/swiotlb.h>
+ config IA64_HP_SBA_IOMMU
+ 	bool "HP SBA IOMMU support"
++	select DMA_OPS
+ 	default y
+ 	help
+ 	  Say Y here to add support for the SBA IOMMU found on HP zx1 and
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 6fee1a133e9d6a..8a458105e445b6 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -367,6 +367,7 @@ config MACH_JAZZ
+ 	select ARC_PROMLIB
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
++	select DMA_OPS
+ 	select FW_ARC
+ 	select FW_ARC32
+ 	select ARCH_MAY_HAVE_PC_FDC
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 8e4c3708773d08..38c1eafc1f1ae9 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -14,6 +14,7 @@ config PARISC
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_NO_SG_CHAIN
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
++	select DMA_OPS
+ 	select RTC_CLASS
+ 	select RTC_DRV_GENERIC
+ 	select INIT_ALL_POSSIBLE
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9fa23eb320ff5a..e9b091d3587222 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -151,6 +151,7 @@ config PPC
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS
+ 	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
++	select DMA_OPS				if PPC64
+ 	select DYNAMIC_FTRACE			if FUNCTION_TRACER
+ 	select EDAC_ATOMIC_SCRUB
+ 	select EDAC_SUPPORT
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index c7d7ede6300c59..687fe23f61cc8d 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -113,6 +113,7 @@ config S390
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS2
++	select DMA_OPS if PCI
+ 	select DYNAMIC_FTRACE if FUNCTION_TRACER
+ 	select GENERIC_CLOCKEVENTS
+ 	select GENERIC_CPU_AUTOPROBE
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 5bf2dc163540fc..5db1faaaee31c8 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -15,6 +15,7 @@ config SPARC
+ 	default y
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT if SPARC64 && PCI
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
++	select DMA_OPS
+ 	select OF
+ 	select OF_PROMTREE
+ 	select HAVE_ASM_MODVERSIONS
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 883da0abf7790c..96ab92754158dd 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -909,6 +909,7 @@ config DMI
  
- extern unsigned int zone_dma_bits;
+ config GART_IOMMU
+ 	bool "Old AMD GART IOMMU support"
++	select DMA_OPS
+ 	select IOMMU_HELPER
+ 	select SWIOTLB
+ 	depends on X86_64 && PCI && AMD_NB
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index 6dc49ed8377a5c..d6ce878a7e8684 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -97,6 +97,7 @@ config OF_IOMMU
+ # IOMMU-agnostic DMA-mapping layer
+ config IOMMU_DMA
+ 	bool
++	select DMA_OPS
+ 	select IOMMU_API
+ 	select IOMMU_IOVA
+ 	select IRQ_MSI_IOMMU
+@@ -183,6 +184,7 @@ config DMAR_TABLE
+ config INTEL_IOMMU
+ 	bool "Support for Intel IOMMU using DMA Remapping Devices"
+ 	depends on PCI_MSI && ACPI && (X86 || IA64)
++	select DMA_OPS
+ 	select IOMMU_API
+ 	select IOMMU_IOVA
+ 	select NEED_DMA_MAP_STATE
+diff --git a/drivers/misc/mic/Kconfig b/drivers/misc/mic/Kconfig
+index 8f201d019f5a4d..a9ec0b25ac40c9 100644
+--- a/drivers/misc/mic/Kconfig
++++ b/drivers/misc/mic/Kconfig
+@@ -49,6 +49,7 @@ config INTEL_MIC_HOST
+ 	tristate "Intel MIC Host Driver"
+ 	depends on 64BIT && PCI && X86
+ 	depends on INTEL_MIC_BUS && SCIF_BUS && MIC_COSM && VOP_BUS
++	select DMA_OPS
+ 	help
+ 	  This enables Host Driver support for the Intel Many Integrated
+ 	  Core (MIC) family of PCIe form factor coprocessor devices that
+diff --git a/drivers/vdpa/Kconfig b/drivers/vdpa/Kconfig
+index 3e1ceb8e9f2b52..d93a69b12f81e3 100644
+--- a/drivers/vdpa/Kconfig
++++ b/drivers/vdpa/Kconfig
+@@ -11,6 +11,7 @@ if VDPA
+ config VDPA_SIM
+ 	tristate "vDPA device simulator"
+ 	depends on RUNTIME_TESTING_MENU && HAS_DMA
++	select DMA_OPS
+ 	select VHOST_RING
+ 	default n
+ 	help
+diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
+index 727f11eb46b2bf..1d339ef924228c 100644
+--- a/drivers/xen/Kconfig
++++ b/drivers/xen/Kconfig
+@@ -179,6 +179,7 @@ config XEN_GRANT_DMA_ALLOC
  
-@@ -86,25 +92,17 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
- 		unsigned long attrs);
- int dma_direct_supported(struct device *dev, u64 mask);
- bool dma_direct_need_sync(struct device *dev, dma_addr_t dma_addr);
--dma_addr_t dma_direct_map_page(struct device *dev, struct page *page,
--		unsigned long offset, size_t size, enum dma_data_direction dir,
--		unsigned long attrs);
- int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
- 		enum dma_data_direction dir, unsigned long attrs);
- dma_addr_t dma_direct_map_resource(struct device *dev, phys_addr_t paddr,
- 		size_t size, enum dma_data_direction dir, unsigned long attrs);
-+size_t dma_direct_max_mapping_size(struct device *dev);
+ config SWIOTLB_XEN
+ 	def_bool y
++	select DMA_OPS
+ 	select SWIOTLB
  
- #if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
-     defined(CONFIG_SWIOTLB)
--void dma_direct_sync_single_for_device(struct device *dev,
--		dma_addr_t addr, size_t size, enum dma_data_direction dir);
--void dma_direct_sync_sg_for_device(struct device *dev,
--		struct scatterlist *sgl, int nents, enum dma_data_direction dir);
-+void dma_direct_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
-+		int nents, enum dma_data_direction dir);
- #else
--static inline void dma_direct_sync_single_for_device(struct device *dev,
--		dma_addr_t addr, size_t size, enum dma_data_direction dir)
--{
--}
- static inline void dma_direct_sync_sg_for_device(struct device *dev,
- 		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
- {
-@@ -114,34 +112,82 @@ static inline void dma_direct_sync_sg_for_device(struct device *dev,
- #if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
-     defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL) || \
-     defined(CONFIG_SWIOTLB)
--void dma_direct_unmap_page(struct device *dev, dma_addr_t addr,
--		size_t size, enum dma_data_direction dir, unsigned long attrs);
- void dma_direct_unmap_sg(struct device *dev, struct scatterlist *sgl,
- 		int nents, enum dma_data_direction dir, unsigned long attrs);
--void dma_direct_sync_single_for_cpu(struct device *dev,
--		dma_addr_t addr, size_t size, enum dma_data_direction dir);
- void dma_direct_sync_sg_for_cpu(struct device *dev,
- 		struct scatterlist *sgl, int nents, enum dma_data_direction dir);
- #else
--static inline void dma_direct_unmap_page(struct device *dev, dma_addr_t addr,
--		size_t size, enum dma_data_direction dir, unsigned long attrs)
--{
--}
- static inline void dma_direct_unmap_sg(struct device *dev,
- 		struct scatterlist *sgl, int nents, enum dma_data_direction dir,
- 		unsigned long attrs)
- {
- }
-+static inline void dma_direct_sync_sg_for_cpu(struct device *dev,
-+		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
-+{
-+}
-+#endif
-+
-+static inline void dma_direct_sync_single_for_device(struct device *dev,
-+		dma_addr_t addr, size_t size, enum dma_data_direction dir)
-+{
-+	phys_addr_t paddr = dma_to_phys(dev, addr);
-+
-+	if (unlikely(is_swiotlb_buffer(paddr)))
-+		swiotlb_tbl_sync_single(dev, paddr, size, dir, SYNC_FOR_DEVICE);
-+
-+	if (!dev_is_dma_coherent(dev))
-+		arch_sync_dma_for_device(paddr, size, dir);
-+}
-+
- static inline void dma_direct_sync_single_for_cpu(struct device *dev,
- 		dma_addr_t addr, size_t size, enum dma_data_direction dir)
- {
-+	phys_addr_t paddr = dma_to_phys(dev, addr);
-+
-+	if (!dev_is_dma_coherent(dev)) {
-+		arch_sync_dma_for_cpu(paddr, size, dir);
-+		arch_sync_dma_for_cpu_all();
-+	}
-+
-+	if (unlikely(is_swiotlb_buffer(paddr)))
-+		swiotlb_tbl_sync_single(dev, paddr, size, dir, SYNC_FOR_CPU);
- }
--static inline void dma_direct_sync_sg_for_cpu(struct device *dev,
--		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
-+
-+static inline dma_addr_t dma_direct_map_page(struct device *dev,
-+		struct page *page, unsigned long offset, size_t size,
-+		enum dma_data_direction dir, unsigned long attrs)
- {
-+	phys_addr_t phys = page_to_phys(page) + offset;
-+	dma_addr_t dma_addr = phys_to_dma(dev, phys);
-+
-+	if (unlikely(swiotlb_force == SWIOTLB_FORCE))
-+		return swiotlb_map(dev, phys, size, dir, attrs);
-+
-+	if (unlikely(!dma_capable(dev, dma_addr, size, true))) {
-+		if (swiotlb_force != SWIOTLB_NO_FORCE)
-+			return swiotlb_map(dev, phys, size, dir, attrs);
-+
-+		dev_WARN_ONCE(dev, 1,
-+			     "DMA addr %pad+%zu overflow (mask %llx, bus limit %llx).\n",
-+			     &dma_addr, size, *dev->dma_mask, dev->bus_dma_limit);
-+		return DMA_MAPPING_ERROR;
-+	}
-+
-+	if (!dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
-+		arch_sync_dma_for_device(phys, size, dir);
-+	return dma_addr;
- }
--#endif
- 
--size_t dma_direct_max_mapping_size(struct device *dev);
-+static inline void dma_direct_unmap_page(struct device *dev, dma_addr_t addr,
-+		size_t size, enum dma_data_direction dir, unsigned long attrs)
-+{
-+	phys_addr_t phys = dma_to_phys(dev, addr);
- 
-+	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
-+		dma_direct_sync_single_for_cpu(dev, addr, size, dir);
-+
-+	if (unlikely(is_swiotlb_buffer(phys)))
-+		swiotlb_tbl_unmap_single(dev, phys, size, size, dir, attrs);
-+}
- #endif /* _LINUX_DMA_DIRECT_H */
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 6d1975c4a26873..3078e36941e6d4 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -10,11 +10,9 @@
- #include <linux/dma-direct.h>
- #include <linux/scatterlist.h>
- #include <linux/dma-contiguous.h>
--#include <linux/dma-noncoherent.h>
- #include <linux/pfn.h>
- #include <linux/vmalloc.h>
- #include <linux/set_memory.h>
--#include <linux/swiotlb.h>
- 
- /*
-  * Most architectures use ZONE_DMA for the first 16 Megabytes, but some use it
-@@ -304,18 +302,6 @@ void dma_direct_free(struct device *dev, size_t size,
- 
- #if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
-     defined(CONFIG_SWIOTLB)
--void dma_direct_sync_single_for_device(struct device *dev,
--		dma_addr_t addr, size_t size, enum dma_data_direction dir)
--{
--	phys_addr_t paddr = dma_to_phys(dev, addr);
--
--	if (unlikely(is_swiotlb_buffer(paddr)))
--		swiotlb_tbl_sync_single(dev, paddr, size, dir, SYNC_FOR_DEVICE);
--
--	if (!dev_is_dma_coherent(dev))
--		arch_sync_dma_for_device(paddr, size, dir);
--}
--
- void dma_direct_sync_sg_for_device(struct device *dev,
- 		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
- {
-@@ -339,20 +325,6 @@ void dma_direct_sync_sg_for_device(struct device *dev,
- #if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU) || \
-     defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL) || \
-     defined(CONFIG_SWIOTLB)
--void dma_direct_sync_single_for_cpu(struct device *dev,
--		dma_addr_t addr, size_t size, enum dma_data_direction dir)
--{
--	phys_addr_t paddr = dma_to_phys(dev, addr);
--
--	if (!dev_is_dma_coherent(dev)) {
--		arch_sync_dma_for_cpu(paddr, size, dir);
--		arch_sync_dma_for_cpu_all();
--	}
--
--	if (unlikely(is_swiotlb_buffer(paddr)))
--		swiotlb_tbl_sync_single(dev, paddr, size, dir, SYNC_FOR_CPU);
--}
--
- void dma_direct_sync_sg_for_cpu(struct device *dev,
- 		struct scatterlist *sgl, int nents, enum dma_data_direction dir)
- {
-@@ -374,18 +346,6 @@ void dma_direct_sync_sg_for_cpu(struct device *dev,
- 		arch_sync_dma_for_cpu_all();
- }
- 
--void dma_direct_unmap_page(struct device *dev, dma_addr_t addr,
--		size_t size, enum dma_data_direction dir, unsigned long attrs)
--{
--	phys_addr_t phys = dma_to_phys(dev, addr);
--
--	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
--		dma_direct_sync_single_for_cpu(dev, addr, size, dir);
--
--	if (unlikely(is_swiotlb_buffer(phys)))
--		swiotlb_tbl_unmap_single(dev, phys, size, size, dir, attrs);
--}
--
- void dma_direct_unmap_sg(struct device *dev, struct scatterlist *sgl,
- 		int nents, enum dma_data_direction dir, unsigned long attrs)
- {
-@@ -398,31 +358,6 @@ void dma_direct_unmap_sg(struct device *dev, struct scatterlist *sgl,
- }
+ config XEN_PCIDEV_BACKEND
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 15460a5ac024a1..4c4af98321ebd6 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -568,8 +568,9 @@ struct device {
+ #ifdef CONFIG_GENERIC_MSI_IRQ
+ 	struct list_head	msi_list;
  #endif
+-
++#ifdef CONFIG_DMA_OPS
+ 	const struct dma_map_ops *dma_ops;
++#endif
+ 	u64		*dma_mask;	/* dma mask (if dma'able device) */
+ 	u64		coherent_dma_mask;/* Like dma_mask, but for
+ 					     alloc_coherent mappings as
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index bd0a6f5ee44581..39da883c861954 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -191,6 +191,7 @@ static inline int dma_mmap_from_global_coherent(struct vm_area_struct *vma,
+ #ifdef CONFIG_HAS_DMA
+ #include <asm/dma-mapping.h>
  
--dma_addr_t dma_direct_map_page(struct device *dev, struct page *page,
--		unsigned long offset, size_t size, enum dma_data_direction dir,
--		unsigned long attrs)
--{
--	phys_addr_t phys = page_to_phys(page) + offset;
--	dma_addr_t dma_addr = phys_to_dma(dev, phys);
--
--	if (unlikely(swiotlb_force == SWIOTLB_FORCE))
--		return swiotlb_map(dev, phys, size, dir, attrs);
--
--	if (unlikely(!dma_capable(dev, dma_addr, size, true))) {
--		if (swiotlb_force != SWIOTLB_NO_FORCE)
--			return swiotlb_map(dev, phys, size, dir, attrs);
--
--		dev_WARN_ONCE(dev, 1,
--			     "DMA addr %pad+%zu overflow (mask %llx, bus limit %llx).\n",
--			     &dma_addr, size, *dev->dma_mask, dev->bus_dma_limit);
--		return DMA_MAPPING_ERROR;
--	}
--
--	if (!dev_is_dma_coherent(dev) && !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
--		arch_sync_dma_for_device(phys, size, dir);
--	return dma_addr;
--}
--
- int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl, int nents,
- 		enum dma_data_direction dir, unsigned long attrs)
++#ifdef CONFIG_DMA_OPS
+ static inline const struct dma_map_ops *get_dma_ops(struct device *dev)
  {
+ 	if (dev->dma_ops)
+@@ -203,7 +204,16 @@ static inline void set_dma_ops(struct device *dev,
+ {
+ 	dev->dma_ops = dma_ops;
+ }
+-
++#else /* CONFIG_DMA_OPS */
++static inline const struct dma_map_ops *get_dma_ops(struct device *dev)
++{
++	return NULL;
++}
++static inline void set_dma_ops(struct device *dev,
++			       const struct dma_map_ops *dma_ops)
++{
++}
++#endif /* CONFIG_DMA_OPS */
+ 
+ static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+ {
+diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+index 1da3f44f2565b4..5cfb2428593ac7 100644
+--- a/kernel/dma/Kconfig
++++ b/kernel/dma/Kconfig
+@@ -5,6 +5,9 @@ config HAS_DMA
+ 	depends on !NO_DMA
+ 	default y
+ 
++config DMA_OPS
++	bool
++
+ config NEED_SG_DMA_LENGTH
+ 	bool
+ 
+@@ -60,6 +63,7 @@ config DMA_NONCOHERENT_CACHE_SYNC
+ config DMA_VIRT_OPS
+ 	bool
+ 	depends on HAS_DMA
++	select DMA_OPS
+ 
+ config SWIOTLB
+ 	bool
+diff --git a/kernel/dma/Makefile b/kernel/dma/Makefile
+index 370f63344e9cd9..32c7c1942bbd6c 100644
+--- a/kernel/dma/Makefile
++++ b/kernel/dma/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-obj-$(CONFIG_HAS_DMA)			+= mapping.o direct.o dummy.o
++obj-$(CONFIG_HAS_DMA)			+= mapping.o direct.o
++obj-$(CONFIG_DMA_OPS)			+= dummy.o
+ obj-$(CONFIG_DMA_CMA)			+= contiguous.o
+ obj-$(CONFIG_DMA_DECLARE_COHERENT)	+= coherent.o
+ obj-$(CONFIG_DMA_VIRT_OPS)		+= virt.o
 -- 
 2.26.2
 
