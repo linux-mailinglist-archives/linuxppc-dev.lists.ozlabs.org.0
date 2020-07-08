@@ -2,74 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05F4218611
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 13:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F5A218655
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 13:42:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1xqX6RhhzDqjc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 21:27:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1y8K3dY2zDr7H
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 21:42:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1xnQ1lKJzDqN0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 21:25:46 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 068B20DW094805; Wed, 8 Jul 2020 07:25:41 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3251mva5hh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 07:25:41 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 068BAkuR015452;
- Wed, 8 Jul 2020 11:25:39 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 322h1h4d4m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 11:25:39 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 068BOFMb60424510
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Jul 2020 11:24:15 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 752655204E;
- Wed,  8 Jul 2020 11:25:36 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.75.251])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 5857052051;
- Wed,  8 Jul 2020 11:25:34 +0000 (GMT)
-Date: Wed, 8 Jul 2020 16:55:31 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH 2/2] KVM: PPC: Book3S HV: rework secure mem slot dropping
-Message-ID: <20200708112531.GA7902@in.ibm.com>
-References: <20200703155914.40262-1-ldufour@linux.ibm.com>
- <20200703155914.40262-3-ldufour@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1y5d6jGbzDqPm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 21:39:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=UZ5/cHuQ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1y5c0HN0z9sDX;
+ Wed,  8 Jul 2020 21:39:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594208388;
+ bh=UJ9ry/dS2+fm+JogA1F9Drn8jGHbKtFwYs7A3hI7Aec=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=UZ5/cHuQNck7zIKqg33Jz9QyGyi82pJKeUdSACLcUbZXuUCSIN7O+gIZrq6G+5Zi3
+ V1XAiI2YGiwWRnJDLbykxe9QcBvabroBuLLOejr0coBCz/0Y0yTBwAzEP1VDnDFk/u
+ dmOavR56XMa66o+R3XYBi8MmZnbYXaQdDHSNq8ncEFkGLVCXmuUnnw+cMpKpFbBAm2
+ djVkjvlxpxNrZ8HuVJ4kRG+rzJn5bmzJM973VaNaDC9gBVG6+DW3QPfvc7VygNBFy3
+ C5oT3rMf0z9xYeNqosI+yliTmwazm77z1m+wWSFl4wdZOGuoKs4ClkZgMzyIpimb/G
+ wdokgWQerkz/g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 07/10] powerpc/perf: support BHRB disable bit and new
+ filtering modes
+In-Reply-To: <1593595262-1433-8-git-send-email-atrajeev@linux.vnet.ibm.com>
+References: <1593595262-1433-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1593595262-1433-8-git-send-email-atrajeev@linux.vnet.ibm.com>
+Date: Wed, 08 Jul 2020 21:42:02 +1000
+Message-ID: <87v9iy2pyt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200703155914.40262-3-ldufour@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-08_07:2020-07-08,
- 2020-07-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1011
- mlxscore=0 malwarescore=0 adultscore=0 suspectscore=5 cotscore=-2147483648
- lowpriorityscore=0 bulkscore=0 mlxlogscore=886 priorityscore=1501
- phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2007080075
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,96 +59,275 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, paulus@samba.org, sathnaga@linux.vnet.ibm.com,
- sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: mikey@neuling.org, maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 03, 2020 at 05:59:14PM +0200, Laurent Dufour wrote:
-> When a secure memslot is dropped, all the pages backed in the secure device
-> (aka really backed by secure memory by the Ultravisor) should be paged out
-> to a normal page. Previously, this was achieved by triggering the page
-> fault mechanism which is calling kvmppc_svm_page_out() on each pages.
-> 
-> This can't work when hot unplugging a memory slot because the memory slot
-> is flagged as invalid and gfn_to_pfn() is then not trying to access the
-> page, so the page fault mechanism is not triggered.
-> 
-> Since the final goal is to make a call to kvmppc_svm_page_out() it seems
-> simpler to directly calling it instead of triggering such a mechanism. This
-> way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
-> memslot.
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
 
-Yes, this appears much simpler.
+> PowerISA v3.1 has few updates for the Branch History Rolling Buffer(BHRB).
+                   ^
+                   a
+> First is the addition of BHRB disable bit and second new filtering
+                                                      ^
+                                                      is
+> modes for BHRB.
+>
+> BHRB disable is controlled via Monitor Mode Control Register A (MMCRA)
+> bit 26, namely "BHRB Recording Disable (BHRBRD)". This field controls
 
-> 
-> Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
-> the call to __kvmppc_svm_page_out() is made.
-> As __kvmppc_svm_page_out needs the vma pointer to migrate the pages, the
-> VMA is fetched in a lazy way, to not trigger find_vma() all the time. In
-> addition, the mmap_sem is help in read mode during that time, not in write
-> mode since the virual memory layout is not impacted, and
-> kvm->arch.uvmem_lock prevents concurrent operation on the secure device.
-> 
-> Cc: Ram Pai <linuxram@us.ibm.com>
-> Cc: Bharata B Rao <bharata@linux.ibm.com>
-> Cc: Paul Mackerras <paulus@ozlabs.org>
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Most people call that bit 37.
+
+> whether BHRB entries are written when BHRB recording is enabled by other
+> bits. Patch implements support for this BHRB disable bit.
+       ^
+       This
+
+> Secondly PowerISA v3.1 introduce filtering support for
+
+.. that should be in a separate patch please.
+
+> PERF_SAMPLE_BRANCH_IND_CALL/COND. The patch adds BHRB filter support
+                                    ^
+                                    This
+> for "ind_call" and "cond" in power10_bhrb_filter_map().
+>
+> 'commit bb19af816025 ("powerpc/perf: Prevent kernel address leak to userspace via BHRB buffer")'
+
+That doesn't need single quotes, and should be wrapped at 72 columns
+like the rest of the text.
+
+> added a check in bhrb_read() to filter the kernel address from BHRB buffer. Patch here modified
+> it to avoid that check for PowerISA v3.1 based processors, since PowerISA v3.1 allows
+> only MSR[PR]=1 address to be written to BHRB buffer.
+
+And that should be a separate patch again please.
+
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c | 54 ++++++++++++++++++++----------
->  1 file changed, 37 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index 852cc9ae6a0b..479ddf16d18c 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -533,35 +533,55 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
->   * fault on them, do fault time migration to replace the device PTEs in
->   * QEMU page table with normal PTEs from newly allocated pages.
->   */
-> -void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
-> +void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
->  			     struct kvm *kvm, bool skip_page_out)
->  {
->  	int i;
->  	struct kvmppc_uvmem_page_pvt *pvt;
-> -	unsigned long pfn, uvmem_pfn;
-> -	unsigned long gfn = free->base_gfn;
-> +	struct page *uvmem_page;
-> +	struct vm_area_struct *vma = NULL;
-> +	unsigned long uvmem_pfn, gfn;
-> +	unsigned long addr, end;
-> +
-> +	down_read(&kvm->mm->mmap_sem);
+>  arch/powerpc/perf/core-book3s.c       | 27 +++++++++++++++++++++------
+>  arch/powerpc/perf/isa207-common.c     | 13 +++++++++++++
+>  arch/powerpc/perf/power10-pmu.c       | 13 +++++++++++--
+>  arch/powerpc/platforms/powernv/idle.c | 14 ++++++++++++++
+>  4 files changed, 59 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+> index fad5159..9709606 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -466,9 +466,13 @@ static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *
+>  			 * addresses at this point. Check the privileges before
+>  			 * exporting it to userspace (avoid exposure of regions
+>  			 * where we could have speculative execution)
+> +			 * Incase of ISA 310, BHRB will capture only user-space
+                           ^
+                           In case of ISA v3.1,
 
-You should be using mmap_read_lock(kvm->mm) with recent kernels.
+> +			 * address,hence include a check before filtering code
+                           ^                                                  ^
+                           addresses, hence                                   .
+>  			 */
+> -			if (is_kernel_addr(addr) && perf_allow_kernel(&event->attr) != 0)
+> -				continue;
+> +			if (!(ppmu->flags & PPMU_ARCH_310S))
+> +				if (is_kernel_addr(addr) &&
+> +				perf_allow_kernel(&event->attr) != 0)
+> +					continue;
 
-> +
-> +	addr = slot->userspace_addr;
-> +	end = addr + (slot->npages * PAGE_SIZE);
+The indentation is weird. You should just check all three conditions
+with &&.
+
 >  
-> -	for (i = free->npages; i; --i, ++gfn) {
-> -		struct page *uvmem_page;
-> +	gfn = slot->base_gfn;
-> +	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
+>  			/* Branches are read most recent first (ie. mfbhrb 0 is
+>  			 * the most recent branch).
+> @@ -1212,7 +1216,7 @@ static void write_mmcr0(struct cpu_hw_events *cpuhw, unsigned long mmcr0)
+>  static void power_pmu_disable(struct pmu *pmu)
+>  {
+>  	struct cpu_hw_events *cpuhw;
+> -	unsigned long flags, mmcr0, val;
+> +	unsigned long flags, mmcr0, val, mmcra = 0;
+
+You initialise it below.
+
+>  	if (!ppmu)
+>  		return;
+> @@ -1245,12 +1249,23 @@ static void power_pmu_disable(struct pmu *pmu)
+>  		mb();
+>  		isync();
+>  
+> +		val = mmcra = cpuhw->mmcr[2];
 > +
-> +		/* Fetch the VMA if addr is not in the latest fetched one */
-> +		if (!vma || (addr < vma->vm_start || addr >= vma->vm_end)) {
-> +			vma = find_vma_intersection(kvm->mm, addr, end);
-> +			if (!vma ||
-> +			    vma->vm_start > addr || vma->vm_end < end) {
-> +				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
-> +				break;
-> +			}
-> +		}
 
-The first find_vma_intersection() was called for the range spanning the
-entire memslot, but you have code to check if vma remains valid for the
-new addr in each iteration. Guess you wanted to get vma for one page at
-a time and use it for subsequent pages until it covers the range?
+For mmcr0 (above), val is the variable we mutate and mmcr0 is the
+original value. But here you've done the reverse, which is confusing.
 
-Regards,
-Bharata.
+>  		/*
+>  		 * Disable instruction sampling if it was enabled
+>  		 */
+> -		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE) {
+> -			mtspr(SPRN_MMCRA,
+> -			      cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE);
+> +		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE)
+> +			mmcra = cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE;
+
+You just loaded cpuhw->mmcr[2] into mmcra, use it rather than referring
+back to cpuhw->mmcr[2] over and over.
+
+> +
+> +		/* Disable BHRB via mmcra [:26] for p10 if needed */
+> +		if (!(cpuhw->mmcr[2] & MMCRA_BHRB_DISABLE))
+
+You don't need to check that it's clear AFAICS. Just always set disable
+and the check against val below will catch the nop case.
+
+> +			mmcra |= MMCRA_BHRB_DISABLE;
+> +
+> +		/* Write SPRN_MMCRA if mmcra has either disabled
+
+Comment format is wrong.
+
+> +		 * instruction sampling or BHRB
+
+Full stop please.
+
+> +		 */
+> +		if (val != mmcra) {
+> +			mtspr(SPRN_MMCRA, mmcra);
+>  			mb();
+>  			isync();
+>  		}
+> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+> index 7d4839e..463d925 100644
+> --- a/arch/powerpc/perf/isa207-common.c
+> +++ b/arch/powerpc/perf/isa207-common.c
+> @@ -404,6 +404,12 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
+>  
+>  	mmcra = mmcr1 = mmcr2 = mmcr3 = 0;
+>  
+> +	/* Disable bhrb unless explicitly requested
+> +	 * by setting MMCRA [:26] bit.
+> +	 */
+
+Comment format again.
+
+> +	if (cpu_has_feature(CPU_FTR_ARCH_31))
+> +		mmcra |= MMCRA_BHRB_DISABLE;
+
+Here we do a feature check before setting MMCRA_BHRB_DISABLE, but you
+didn't above?
+
+> +
+>  	/* Second pass: assign PMCs, set all MMCR1 fields */
+>  	for (i = 0; i < n_ev; ++i) {
+>  		pmc     = (event[i] >> EVENT_PMC_SHIFT) & EVENT_PMC_MASK;
+> @@ -475,10 +481,17 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
+>  		}
+>  
+>  		if (event[i] & EVENT_WANTS_BHRB) {
+> +			/* set MMCRA[:26] to 0 for Power10 to enable BHRB */
+
+"set MMCRA[:26] to 0" == "clear MMCRA[:26]"
+
+> +			if (cpu_has_feature(CPU_FTR_ARCH_31))
+> +				mmcra &= ~MMCRA_BHRB_DISABLE;
+
+Newline please.
+
+>  			val = (event[i] >> EVENT_IFM_SHIFT) & EVENT_IFM_MASK;
+>  			mmcra |= val << MMCRA_IFM_SHIFT;
+>  		}
+>  
+> +		/* set MMCRA[:26] to 0 if there is user request for BHRB */
+> +		if (cpu_has_feature(CPU_FTR_ARCH_31) && has_branch_stack(pevents[i]))
+> +			mmcra &= ~MMCRA_BHRB_DISABLE;
+> +
+
+I think it would be cleaner if you did a single test, eg:
+
+		if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+                   (has_branch_stack(pevents[i]) || (event[i] & EVENT_WANTS_BHRB)))
+			mmcra &= ~MMCRA_BHRB_DISABLE;
+
+>  		if (pevents[i]->attr.exclude_user)
+>  			mmcr2 |= MMCR2_FCP(pmc);
+>  
+> diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
+> index d64d69d..07fb919 100644
+> --- a/arch/powerpc/perf/power10-pmu.c
+> +++ b/arch/powerpc/perf/power10-pmu.c
+> @@ -82,6 +82,8 @@
+>  
+>  /* MMCRA IFM bits - POWER10 */
+>  #define POWER10_MMCRA_IFM1		0x0000000040000000UL
+> +#define POWER10_MMCRA_IFM2		0x0000000080000000UL
+> +#define POWER10_MMCRA_IFM3		0x00000000C0000000UL
+>  #define POWER10_MMCRA_BHRB_MASK	0x00000000C0000000UL
+>  
+>  /* Table of alternatives, sorted by column 0 */
+> @@ -233,8 +235,15 @@ static u64 power10_bhrb_filter_map(u64 branch_sample_type)
+>  	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_RETURN)
+>  		return -1;
+>  
+> -	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL)
+> -		return -1;
+> +	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL) {
+> +		pmu_bhrb_filter |= POWER10_MMCRA_IFM2;
+> +		return pmu_bhrb_filter;
+> +	}
+> +
+> +	if (branch_sample_type & PERF_SAMPLE_BRANCH_COND) {
+> +		pmu_bhrb_filter |= POWER10_MMCRA_IFM3;
+> +		return pmu_bhrb_filter;
+> +	}
+>  
+>  	if (branch_sample_type & PERF_SAMPLE_BRANCH_CALL)
+>  		return -1;
+> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
+> index 2dd4673..7db99c7 100644
+> --- a/arch/powerpc/platforms/powernv/idle.c
+> +++ b/arch/powerpc/platforms/powernv/idle.c
+> @@ -611,6 +611,7 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+>  	unsigned long srr1;
+>  	unsigned long pls;
+>  	unsigned long mmcr0 = 0;
+> +	unsigned long mmcra_bhrb = 0;
+>  	struct p9_sprs sprs = {}; /* avoid false used-uninitialised */
+>  	bool sprs_saved = false;
+>  
+> @@ -657,6 +658,15 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+>  		  */
+>  		mmcr0		= mfspr(SPRN_MMCR0);
+>  	}
+> +
+> +	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+> +		/* POWER10 uses MMCRA[:26] as BHRB disable bit
+
+Comment format.
+
+> +		 * to disable BHRB logic when not used. Hence Save and
+> +		 * restore MMCRA after a state-loss idle.
+> +		 */
+> +		mmcra_bhrb		= mfspr(SPRN_MMCRA);
+> +	}
+
+It's the whole mmcra it should be called mmcra?
+
+> +
+>  	if ((psscr & PSSCR_RL_MASK) >= pnv_first_spr_loss_level) {
+>  		sprs.lpcr	= mfspr(SPRN_LPCR);
+>  		sprs.hfscr	= mfspr(SPRN_HFSCR);
+> @@ -721,6 +731,10 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+>  			mtspr(SPRN_MMCR0, mmcr0);
+>  		}
+>  
+> +		/* Reload MMCRA to restore BHRB disable bit for POWER10 */
+> +		if (cpu_has_feature(CPU_FTR_ARCH_31))
+> +			mtspr(SPRN_MMCRA, mmcra_bhrb);
+> +
+>  		/*
+>  		 * DD2.2 and earlier need to set then clear bit 60 in MMCRA
+>  		 * to ensure the PMU starts running.
+
+
+cheers
