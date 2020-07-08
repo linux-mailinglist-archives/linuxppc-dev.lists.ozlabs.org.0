@@ -2,63 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CE42182C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 10:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 948A32182FA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 10:58:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1tB63ycVzDr2r
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 18:43:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1tWX5DjzzDr4Q
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 18:58:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=centrum.lixper.it (client-ip=46.4.16.148; helo=centrum.lixper.it;
+ envelope-from=srs0=/ymy=at=sguazz.it=giuseppe@centrum.lixper.it;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=90.155.50.34; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=s35D4xLy; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1t8D3gxRzDqwl
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 18:41:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=S32XUF0JR40sOoi2lYA1Jt2WlEew0VlzGuJ1gwYbhcU=; b=s35D4xLyvnkYZU4YcWf+9NjRFK
- qAGphMcWSVhYkoJc8aLz2jh51DodnUkao4ypjVVvtlh5fcEIsMpk6UdXCby8V2qdZA2gSM5VTx11d
- ejcgbzpQUBqwaR783SFDpecCm7eKgFdgoL4fECk9Qy30bGquxIr924rnywePvDNug5/GOl4mBqpIf
- yhYDUhFAoVr+rZtcrUHltrwRK7hN7qpv20iSjblFycKsMdUlki/Rvlx96bthlu203IRbVK2rv+Qyz
- fe6lVWcbvlapeHkqUU1cRfS5tDsGg7qLw6HfdJdLjRTuWghNE1CJUhLCA2Q5UKIbSoK08YZTIcjeG
- XvtIgbgA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jt5df-0008Ee-Rc; Wed, 08 Jul 2020 08:41:16 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=sguazz.it
+Received: from centrum.lixper.it (centrum.lixper.it [46.4.16.148])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id BAE6F304D58;
- Wed,  8 Jul 2020 10:41:06 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id A7CDA203D34DE; Wed,  8 Jul 2020 10:41:06 +0200 (CEST)
-Date: Wed, 8 Jul 2020 10:41:06 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 0/6] powerpc: queued spinlocks and rwlocks
-Message-ID: <20200708084106.GE597537@hirez.programming.kicks-ass.net>
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
- <1594101082.hfq9x5yact.astroid@bobo.none>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1tTX0QqGzDqKv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 18:56:47 +1000 (AEST)
+Received: from net-130-25-222-52.cust.vodafonedsl.it ([130.25.222.52]
+ helo=uefi)
+ by centrum.lixper.it with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.84_2) (envelope-from <giuseppe@sguazz.it>)
+ id 1jt5si-0001a5-G4
+ for linuxppc-dev@lists.ozlabs.org; Wed, 08 Jul 2020 10:56:44 +0200
+Message-ID: <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
+Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
+From: Giuseppe Sacco <giuseppe@sguazz.it>
+To: linuxppc-dev@lists.ozlabs.org
+Date: Wed, 08 Jul 2020 10:56:38 +0200
+In-Reply-To: <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
+References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
+ <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
+ <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
+ <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
+ <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
+ <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
+ <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.3-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1594101082.hfq9x5yact.astroid@bobo.none>
+Content-Transfer-Encoding: 8bit
+X-GeoIP: IT
+X-SRS: Sender address rewritten from <giuseppe@sguazz.it> to
+ <SRS0=/yMY=AT=sguazz.it=giuseppe@centrum.lixper.it> by centrum.lixper.it.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,28 +57,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 07, 2020 at 03:57:06PM +1000, Nicholas Piggin wrote:
-> Yes, powerpc could certainly get more performance out of the slow
-> paths, and then there are a few parameters to tune.
+Salut Cristophe,
 
-Can you clarify? The slow path is already in use on ARM64 which is weak,
-so I doubt there's superfluous serialization present. And Will spend a
-fair amount of time on making that thing guarantee forward progressm, so
-there just isn't too much room to play.
+Il giorno mer, 08/07/2020 alle 10.38 +0200, Christophe Leroy ha
+scritto:
+> Hi Giuseppe,
+> 
+> Le 08/07/2020 à 09:59, Giuseppe Sacco a écrit :
+> > Hello Cristophe,
+> > 
+> > Il giorno mar, 07/07/2020 alle 17.34 +0200, Giuseppe Sacco ha
+> > scritto:
+[...]
+> > > > And can you try without CONFIG_VMAP_STACK on 5.6.19
+> > > 
+> > > Sure, I'll let you know.
+> > 
+> > No, this change did not make the kernel boot. I only changed the
+> > option
+> > you proposed:
+> > 
+> > $ grep VMAP .config
+> > CONFIG_HAVE_ARCH_VMAP_STACK=y
+> > # CONFIG_VMAP_STACK is not set
+> > 
+> 
+> Ok, at least it is not that. I wanted to be sure because this is a
+> huge 
+> change added recently that is selected by default.
+> 
+> I tried on QEMU with your config, it boots properly.
+> 
+> So I think the only way now will be to bisect. Hope you were able to 
+> setup a cross compiler on a speedy machine.
 
-> We don't have a good alternate patching for function calls yet, but
-> that would be something to do for native vs pv.
+thank you for your time; indeed I may now crosscompile the kernel in 15
+minutes instead of about 390... I hope to have a final result in a
+couple of days.
 
-Going by your jump_label implementation, support for static_call should
-be fairly straight forward too, no?
+Bye,
+Giuseppe
 
-  https://lkml.kernel.org/r/20200624153024.794671356@infradead.org
