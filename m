@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1FA217EE8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 07:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5CD217EF4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 07:12:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1nS70wgwzDqQP
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 15:10:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1nVT1tWszDqVm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 15:12:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,52 +19,51 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1n2l1RNbzDqpR
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 14:51:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1n2q3j81zDqvV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 14:51:47 +1000 (AEST)
 Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0684XpOi105120; Wed, 8 Jul 2020 00:51:35 -0400
+ 0684Xpic105146; Wed, 8 Jul 2020 00:51:39 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3253d1ncs6-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3253d1nct6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 00:51:34 -0400
+ Wed, 08 Jul 2020 00:51:39 -0400
 Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0684XqZq105275;
- Wed, 8 Jul 2020 00:51:34 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3253d1ncrn-1
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0684aJ0m112077;
+ Wed, 8 Jul 2020 00:51:38 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3253d1ncsk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 00:51:34 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0684kvfo012667;
- Wed, 8 Jul 2020 04:51:32 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 322h1h425b-1
+ Wed, 08 Jul 2020 00:51:38 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0684gUha021264;
+ Wed, 8 Jul 2020 04:51:36 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 322h1ga1e1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 04:51:31 +0000
+ Wed, 08 Jul 2020 04:51:36 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0684o79l52494814
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0684pXUH64421906
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Jul 2020 04:50:07 GMT
+ Wed, 8 Jul 2020 04:51:33 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0B6E0AE04D;
+ by IMSVA (Postfix) with ESMTP id 3CBD7AE045;
+ Wed,  8 Jul 2020 04:51:33 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E770AE051;
  Wed,  8 Jul 2020 04:51:29 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7017EAE051;
- Wed,  8 Jul 2020 04:51:25 +0000 (GMT)
 Received: from bangoria.ibmuc.com (unknown [9.199.51.84])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  8 Jul 2020 04:51:25 +0000 (GMT)
+ Wed,  8 Jul 2020 04:51:29 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: mpe@ellerman.id.au, mikey@neuling.org
-Subject: [PATCH v3 8/9] powerpc/watchpoint: Return available watchpoints
- dynamically
-Date: Wed,  8 Jul 2020 10:20:45 +0530
-Message-Id: <20200708045046.135702-9-ravi.bangoria@linux.ibm.com>
+Subject: [PATCH v3 9/9] powerpc/watchpoint: Remove 512 byte boundary
+Date: Wed,  8 Jul 2020 10:20:46 +0530
+Message-Id: <20200708045046.135702-10-ravi.bangoria@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200708045046.135702-1-ravi.bangoria@linux.ibm.com>
 References: <20200708045046.135702-1-ravi.bangoria@linux.ibm.com>
@@ -100,57 +99,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-So far Book3S Powerpc supported only one watchpoint. Power10 is
-introducing 2nd DAWR. Enable 2nd DAWR support for Power10.
-Availability of 2nd DAWR will depend on CPU_FTR_DAWR1.
+Power10 has removed 512 bytes boundary from match criteria. i.e. The watch
+range can cross 512 bytes boundary.
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- arch/powerpc/include/asm/cputable.h      | 4 +++-
- arch/powerpc/include/asm/hw_breakpoint.h | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/hw_breakpoint.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index 3445c86e1f6f..36a0851a7a9b 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -633,7 +633,9 @@ enum {
-  * Maximum number of hw breakpoint supported on powerpc. Number of
-  * breakpoints supported by actual hw might be less than this.
-  */
--#define HBP_NUM_MAX	1
-+#define HBP_NUM_MAX	2
-+#define HBP_NUM_ONE	1
-+#define HBP_NUM_TWO	2
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 7a66c370a105..270fbb4d01ce 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -418,8 +418,9 @@ static int hw_breakpoint_validate_len(struct arch_hw_breakpoint *hw)
  
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-index cb424799da0d..d4eab1694bcd 100644
---- a/arch/powerpc/include/asm/hw_breakpoint.h
-+++ b/arch/powerpc/include/asm/hw_breakpoint.h
-@@ -5,10 +5,11 @@
-  * Copyright 2010, IBM Corporation.
-  * Author: K.Prasad <prasad@linux.vnet.ibm.com>
-  */
--
- #ifndef _PPC_BOOK3S_64_HW_BREAKPOINT_H
- #define _PPC_BOOK3S_64_HW_BREAKPOINT_H
- 
-+#include <asm/cpu_has_feature.h>
-+
- #ifdef	__KERNEL__
- struct arch_hw_breakpoint {
- 	unsigned long	address;
-@@ -46,7 +47,7 @@ struct arch_hw_breakpoint {
- 
- static inline int nr_wp_slots(void)
- {
--	return HBP_NUM_MAX;
-+	return cpu_has_feature(CPU_FTR_DAWR1) ? HBP_NUM_TWO : HBP_NUM_ONE;
- }
- 
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ 	if (dawr_enabled()) {
+ 		max_len = DAWR_MAX_LEN;
+-		/* DAWR region can't cross 512 bytes boundary */
+-		if (ALIGN_DOWN(start_addr, SZ_512) != ALIGN_DOWN(end_addr - 1, SZ_512))
++		/* DAWR region can't cross 512 bytes boundary on p10 predecessors */
++		if (!cpu_has_feature(CPU_FTR_ARCH_31) &&
++		    (ALIGN_DOWN(start_addr, SZ_512) != ALIGN_DOWN(end_addr - 1, SZ_512)))
+ 			return -EINVAL;
+ 	} else if (IS_ENABLED(CONFIG_PPC_8xx)) {
+ 		/* 8xx can setup a range without limitation */
 -- 
 2.26.2
 
