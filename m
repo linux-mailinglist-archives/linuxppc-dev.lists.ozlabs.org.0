@@ -1,83 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABEE7217BDA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 01:47:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41614217C1C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 02:11:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1fH9583rzDqHS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 09:47:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1fqk6CrZzDqyY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 10:11:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1WJ86hF0zDqM0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:32:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=r/qT4vPk; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B1WJ832MKz8tX8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 04:32:24 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4B1WJ826sgz9sRN; Wed,  8 Jul 2020 04:32:24 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=r/qT4vPk; 
- dkim-atps=neutral
-X-Greylist: delayed 179 seconds by postgrey-1.36 at bilbo;
- Wed, 08 Jul 2020 04:32:19 AEST
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.54])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=v/atDYLg; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B1WJ34PwRz9sRK
- for <linuxppc-dev@ozlabs.org>; Wed,  8 Jul 2020 04:32:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1594146735;
- s=strato-dkim-0002; d=xenosoft.de;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=bS9U1Nrm0g7+0tRpE03SJz9Xi4GhynZinSSlNOlFmhY=;
- b=r/qT4vPkTRkWvDdsr+CaUi641xpMIwEFdZcChXau7uSx2DqDUmqgfLlyMymElzXi0W
- KiMfYoj8clTvaqDJ3L1X/mOJWWPMz+Jt8VuQm4q7SKWOO74Mwq6CdqybymlaG0WxTh4s
- JHIPYud94DLkbydx9c5cWCpL9xvppOn6gFrd72gYxB4FPjpF4nCcHqXKX09mIv4OSevA
- 7xUnKMTlqmUP2MDdQNS5Q9Cjh0FNkFrTyaxnGnKaF3IGfhtD/nSmGv0HMF3AfDMHlXUC
- zWEOLcVsgaYn8ATBTwCK5Pds4w1eFgxyAkzoJrk2bRuBdlnTT2oz31KtRwe/w3I6igPf
- AA7w==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7b2Zxiro3lnCbQO1HZlTeoCr8RmiKfTl4x5qgNBFC"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:b101:bb6c:c11d:a086:f393:fea3]
- by smtp.strato.de (RZmta 46.10.5 AUTH)
- with ESMTPSA id 60686ew67IQDpKd
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 7 Jul 2020 20:26:13 +0200 (CEST)
-Content-Type: multipart/alternative;
- boundary=Apple-Mail-03BD6120-3C68-485A-AA65-407215FA2D0D
-Content-Transfer-Encoding: 7bit
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: FSL P5020/P5040: DPAA Ethernet issue with the latest Git kernel
-Date: Tue, 7 Jul 2020 20:26:12 +0200
-Message-Id: <4E3069C3-B777-4460-A781-84214C4539DA@xenosoft.de>
-References: <AM6PR04MB3976584920CFDC269D859DBBEC660@AM6PR04MB3976.eurprd04.prod.outlook.com>
-In-Reply-To: <AM6PR04MB3976584920CFDC269D859DBBEC660@AM6PR04MB3976.eurprd04.prod.outlook.com>
-To: "Madalin Bucur (OSS)" <madalin.bucur@oss.nxp.com>
-X-Mailer: iPhone Mail (17E262)
-X-Mailman-Approved-At: Wed, 08 Jul 2020 09:43:35 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1fnx3ShMzDqsj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 10:10:12 +1000 (AEST)
+Received: from localhost (mobile-166-175-191-139.mycingular.net
+ [166.175.191.139])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id D4ED820771;
+ Wed,  8 Jul 2020 00:10:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1594167010;
+ bh=GRc7bmT28/LGGsLBxls6P/+Y6GitVFKoeGWw+LQ+Mwk=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=v/atDYLgMKucbXsAUe1GUdgPRkPL0yNf7YGKKHQ5z4/k3CbENeBvSIhGrAZdQO++g
+ F+BN9MXxPyuUjI72ftoxL941QdlK0rC+FHFMMbVHlc2EekTddVVfTZQZk8wOjRotJR
+ tAAsdF9mi1WNnSuqgWU9/OkjzUQewK+8X08x9dCY=
+Date: Tue, 7 Jul 2020 19:10:08 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Matt Jolly <Kangie@footclan.ninja>
+Subject: Re: [PATCH] pci: pcie: AER: Fix logging of Correctable errors
+Message-ID: <20200708001008.GA404699@bjorn-Precision-5520>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200618155511.16009-1-Kangie@footclan.ninja>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,57 +55,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>, netdev@vger.kernel.org,
- linuxppc-dev@ozlabs.org, Camelia Alexandra Groza <camelia.groza@nxp.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Jun 19, 2020 at 01:55:11AM +1000, Matt Jolly wrote:
+> The AER documentation indicates that correctable (severity=Corrected)
+> errors should be output as a warning so that users can filter these
+> errors if they choose to; This functionality does not appear to have been implemented.
+> 
+> This patch modifies the functions aer_print_error and __aer_print_error
+> to send correctable errors as a warning (pci_warn), rather than as an error (pci_err). It
+> partially addresses several bugs in relation to kernel message buffer
+> spam for misbehaving devices - the root cause (possibly device firmware?) isn't
+> addressed, but the dmesg output is less alarming for end users, and can
+> be filtered separately from uncorrectable errors. This should hopefully
+> reduce the need for users to disable AER to suppress corrected errors.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=201517
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=196183
+> 
+> Signed-off-by: Matt Jolly <Kangie@footclan.ninja>
+> ---
+>  drivers/pci/pcie/aer.c | 36 ++++++++++++++++++++++++++----------
+>  1 file changed, 26 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 3acf56683915..131ecc0df2cb 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -662,12 +662,18 @@ static void __aer_print_error(struct pci_dev *dev,
+>  			errmsg = i < ARRAY_SIZE(aer_uncorrectable_error_string) ?
+>  				aer_uncorrectable_error_string[i] : NULL;
+>  
+> -		if (errmsg)
+> -			pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
+> -				info->first_error == i ? " (First)" : "");
+> -		else
+> +		if (errmsg) {
+> +			if (info->severity == AER_CORRECTABLE) {
+> +				pci_warn(dev, "   [%2d] %-22s%s\n", i, errmsg,
 
---Apple-Mail-03BD6120-3C68-485A-AA65-407215FA2D0D
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+I think we can use pci_printk() here to reduce the code duplication.
 
+And I think we can also simplify the aer_correctable_error_string/
+aer_uncorrectable_error_string stuff above, which would make this even
+simpler.
 
-> On 7. Jul 2020, at 17:53, Madalin Bucur (OSS) <madalin.bucur@oss.nxp.com> w=
-rote:
->=20
-> Was DPAA functional before commit A?
-> How about after commit A and before commit B?
+I'll respond to this with my proposal.
 
-The DPAA Ethernet works from  the kernel 5.6-rc4 [1] till the Git kernel fro=
-m the 11 of June [2]. It doesn=E2=80=99t work since the commit =E2=80=9Cfix b=
-itmap_parse=E2=80=9D [3].
-
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D49936#p49936
-[2] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D50848#p50848
-[3] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D50980#p50980
-
-
---Apple-Mail-03BD6120-3C68-485A-AA65-407215FA2D0D
-Content-Type: text/html;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
-utf-8"></head><body dir=3D"auto"><br><div dir=3D"ltr"><blockquote type=3D"ci=
-te">On 7. Jul 2020, at 17:53, Madalin Bucur (OSS) &lt;madalin.bucur@oss.nxp.=
-com&gt; wrote:<br><br></blockquote></div><blockquote type=3D"cite"><div dir=3D=
-"ltr"><span>Was DPAA functional before commit A?</span><br><span>How about a=
-fter commit A and before commit B?</span><br></div></blockquote><div><br></d=
-iv>The DPAA Ethernet works from &nbsp;the kernel 5.6-rc4 [1] till the Git ke=
-rnel from the 11 of June [2]. It doesn=E2=80=99t work since the commit =E2=80=
-=9Cfix bitmap_parse=E2=80=9D [3].<div><br></div><div>[1]&nbsp;<a href=3D"htt=
-ps://forum.hyperion-entertainment.com/viewtopic.php?p=3D49936#p49936">https:=
-//forum.hyperion-entertainment.com/viewtopic.php?p=3D49936#p49936</a></div><=
-div>[2]&nbsp;<a href=3D"https://forum.hyperion-entertainment.com/viewtopic.p=
-hp?p=3D50848#p50848">https://forum.hyperion-entertainment.com/viewtopic.php?=
-p=3D50848#p50848</a></div><div>[3]&nbsp;<a href=3D"https://forum.hyperion-en=
-tertainment.com/viewtopic.php?p=3D50980#p50980">https://forum.hyperion-enter=
-tainment.com/viewtopic.php?p=3D50980#p50980</a><br><div><br></div></div></bo=
-dy></html>=
-
---Apple-Mail-03BD6120-3C68-485A-AA65-407215FA2D0D--
+> +					info->first_error == i ? " (First)" : "");
+> +			} else {
+> +				pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
+> +					info->first_error == i ? " (First)" : "");
+> +			}
+> +		} else {
+>  			pci_err(dev, "   [%2d] Unknown Error Bit%s\n",
+>  				i, info->first_error == i ? " (First)" : "");
+> +		}
+>  	}
+>  	pci_dev_aer_stats_incr(dev, info);
+>  }
+> @@ -686,13 +692,23 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
+>  	agent = AER_GET_AGENT(info->severity, info->status);
+>  
+> -	pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> -		aer_error_severity_string[info->severity],
+> -		aer_error_layer[layer], aer_agent_string[agent]);
+> +	if  (info->severity == AER_CORRECTABLE) {
+> +		pci_warn(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> +			aer_error_severity_string[info->severity],
+> +			aer_error_layer[layer], aer_agent_string[agent]);
+>  
+> -	pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> -		dev->vendor, dev->device,
+> -		info->status, info->mask);
+> +		pci_warn(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> +			dev->vendor, dev->device,
+> +			info->status, info->mask);
+> +	} else {
+> +		pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> +			aer_error_severity_string[info->severity],
+> +			aer_error_layer[layer], aer_agent_string[agent]);
+> +
+> +		pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> +			dev->vendor, dev->device,
+> +			info->status, info->mask);
+> +	}
+>  
+>  	__aer_print_error(dev, info);
+>  
+> -- 
+> 2.26.2
+> 
