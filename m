@@ -1,44 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDBA52194B6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:56:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99FB2194BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:58:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2GRc0p7JzDqwr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 09:56:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2GTS5vjNzDr0f
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 09:58:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B2GNZ6syfzDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 09:53:50 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 068NrWHr017689;
- Wed, 8 Jul 2020 18:53:32 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 068NrVnE017686;
- Wed, 8 Jul 2020 18:53:31 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 8 Jul 2020 18:53:31 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: Failure to build librseq on ppc
-Message-ID: <20200708235331.GA3598@gate.crashing.org>
-References: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
- <20200708005922.GW3598@gate.crashing.org> <87k0ze2nv4.fsf@mpe.ellerman.id.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87k0ze2nv4.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.4.2.3i
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=JU+GUDGD; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=JU+GUDGD; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2GPf2JKgzDqkw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 09:54:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594252481;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DtrdIs9PFK4eESgNJshnXKkRcQvqs7rbt6XjlBm0KbQ=;
+ b=JU+GUDGD8/h39OEbGcTEdQx4DbJTBABxYYurbs/1H3amYYO24vEdzOP3fdz3rscTH3JV8V
+ UwCQXCpr2UA/IPnWvQ5AE/9yj+3p1ItoKJ5E27T/eLOzUD+83Jd9Dd+lu6CcGqIe/saZG6
+ aCtlIqtFh1OA6+746aFC7tWfH8Vn9n8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594252481;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DtrdIs9PFK4eESgNJshnXKkRcQvqs7rbt6XjlBm0KbQ=;
+ b=JU+GUDGD8/h39OEbGcTEdQx4DbJTBABxYYurbs/1H3amYYO24vEdzOP3fdz3rscTH3JV8V
+ UwCQXCpr2UA/IPnWvQ5AE/9yj+3p1ItoKJ5E27T/eLOzUD+83Jd9Dd+lu6CcGqIe/saZG6
+ aCtlIqtFh1OA6+746aFC7tWfH8Vn9n8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-148-uUzGLLqxNBSRxBpviTCmyg-1; Wed, 08 Jul 2020 19:54:37 -0400
+X-MC-Unique: uUzGLLqxNBSRxBpviTCmyg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DA4D98027B1;
+ Wed,  8 Jul 2020 23:54:35 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-116-205.rdu2.redhat.com [10.10.116.205])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 986922C2BC;
+ Wed,  8 Jul 2020 23:54:34 +0000 (UTC)
+Subject: Re: [PATCH v3 0/6] powerpc: queued spinlocks and rwlocks
+To: Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
+ <1594101082.hfq9x5yact.astroid@bobo.none>
+ <20200708084106.GE597537@hirez.programming.kicks-ass.net>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <a9834278-25bf-90e9-10f2-cd10e5407ff6@redhat.com>
+Date: Wed, 8 Jul 2020 19:54:34 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <20200708084106.GE597537@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,40 +89,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Michael Jeanson <mjeanson@efficios.com>
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+On 7/8/20 4:41 AM, Peter Zijlstra wrote:
+> On Tue, Jul 07, 2020 at 03:57:06PM +1000, Nicholas Piggin wrote:
+>> Yes, powerpc could certainly get more performance out of the slow
+>> paths, and then there are a few parameters to tune.
+> Can you clarify? The slow path is already in use on ARM64 which is weak,
+> so I doubt there's superfluous serialization present. And Will spend a
+> fair amount of time on making that thing guarantee forward progressm, so
+> there just isn't too much room to play.
+>
+>> We don't have a good alternate patching for function calls yet, but
+>> that would be something to do for native vs pv.
+> Going by your jump_label implementation, support for static_call should
+> be fairly straight forward too, no?
+>
+>    https://lkml.kernel.org/r/20200624153024.794671356@infradead.org
+>
+Speaking of static_call, I am also looking forward to it. Do you have an 
+idea when that will be merged?
 
-On Wed, Jul 08, 2020 at 10:27:27PM +1000, Michael Ellerman wrote:
-> Segher Boessenkool <segher@kernel.crashing.org> writes:
-> > You'll have to show the actual failing machine code, and with enough
-> > context that we can relate this to the source code.
-> >
-> > -save-temps helps, or use -S instead of -c, etc.
-> 
-> Attached below.
+Cheers,
+Longman
 
-Thanks!
-
-> I think that's from:
-> 
-> #define LOAD_WORD       "ld "
-> 
-> #define RSEQ_ASM_OP_CMPEQ(var, expect, label)                                   \
->                 LOAD_WORD "%%r17, %[" __rseq_str(var) "]\n\t"                   \
-
-The way this hardcodes r17 *will* break, btw.  The compiler will not
-likely want to use r17 as long as your code (after inlining etc.!) stays
-small, but there is Murphy's law.
-
-Anyway...  something in rseq_str is wrong, missing %X<n>.  This may
-have to do with the abuse of inline asm here, making a fix harder :-(
-
-
-Segher
