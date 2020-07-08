@@ -2,61 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CD12182AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 10:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CE42182C0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 10:43:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1t6P6Wb9zDr7K
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 18:40:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1tB63ycVzDr2r
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 18:43:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=90.155.50.34; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=s35D4xLy; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1t4f1DsdzDqym
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 18:38:39 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4B1t4T6Mz2z9v1Bp;
- Wed,  8 Jul 2020 10:38:33 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id NYbTPSdw9YLs; Wed,  8 Jul 2020 10:38:33 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4B1t4T5X9vz9v19w;
- Wed,  8 Jul 2020 10:38:33 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 152298B7F3;
- Wed,  8 Jul 2020 10:38:35 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 2okFSoiOoymG; Wed,  8 Jul 2020 10:38:34 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3D1888B76B;
- Wed,  8 Jul 2020 10:38:34 +0200 (CEST)
-Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
-To: Giuseppe Sacco <giuseppe@sguazz.it>, linuxppc-dev@lists.ozlabs.org
-References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
- <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
- <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
- <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
- <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
- <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
-Date: Wed, 8 Jul 2020 10:38:25 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1t8D3gxRzDqwl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 18:41:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=S32XUF0JR40sOoi2lYA1Jt2WlEew0VlzGuJ1gwYbhcU=; b=s35D4xLyvnkYZU4YcWf+9NjRFK
+ qAGphMcWSVhYkoJc8aLz2jh51DodnUkao4ypjVVvtlh5fcEIsMpk6UdXCby8V2qdZA2gSM5VTx11d
+ ejcgbzpQUBqwaR783SFDpecCm7eKgFdgoL4fECk9Qy30bGquxIr924rnywePvDNug5/GOl4mBqpIf
+ yhYDUhFAoVr+rZtcrUHltrwRK7hN7qpv20iSjblFycKsMdUlki/Rvlx96bthlu203IRbVK2rv+Qyz
+ fe6lVWcbvlapeHkqUU1cRfS5tDsGg7qLw6HfdJdLjRTuWghNE1CJUhLCA2Q5UKIbSoK08YZTIcjeG
+ XvtIgbgA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jt5df-0008Ee-Rc; Wed, 08 Jul 2020 08:41:16 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id BAE6F304D58;
+ Wed,  8 Jul 2020 10:41:06 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id A7CDA203D34DE; Wed,  8 Jul 2020 10:41:06 +0200 (CEST)
+Date: Wed, 8 Jul 2020 10:41:06 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 0/6] powerpc: queued spinlocks and rwlocks
+Message-ID: <20200708084106.GE597537@hirez.programming.kicks-ass.net>
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
+ <1594101082.hfq9x5yact.astroid@bobo.none>
 MIME-Version: 1.0
-In-Reply-To: <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1594101082.hfq9x5yact.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,60 +70,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Giuseppe,
+On Tue, Jul 07, 2020 at 03:57:06PM +1000, Nicholas Piggin wrote:
+> Yes, powerpc could certainly get more performance out of the slow
+> paths, and then there are a few parameters to tune.
 
-Le 08/07/2020 à 09:59, Giuseppe Sacco a écrit :
-> Hello Cristophe,
-> 
-> Il giorno mar, 07/07/2020 alle 17.34 +0200, Giuseppe Sacco ha scritto:
->> Il giorno mar, 07/07/2020 alle 16.52 +0200, Christophe Leroy ha
->> scritto:
->>> Le 07/07/2020 à 16:03, Giuseppe Sacco a écrit :
->>>> Hello Cristophe,
->>>>
->>>>> Can you tell which defconfig you use or provide your .config
->>>>
->>>> You may get the standard one from debian or a reduced one that I
->>>> made on purpose. The latter is here:
->>>> https://eppesuigoccas.homedns.org/~giuseppe/config-5.4.50.gz
->>>>
->>>>   (boot)
->>>> https://eppesuigoccas.homedns.org/~giuseppe/config-5.6.19.gz
->>>>
->>>>   (no boot)
->>>
->>> Thanks
->>>
->>> Can you provide the complete output when it works, so that I can
->>> see
->>> what is after the place it stops when it fails.
->>
->> Here it is:
->> https://eppesuigoccas.homedns.org/~giuseppe/dmesg-5.4.40-minimo.gz
->>
->>
->>> And can you try without CONFIG_VMAP_STACK on 5.6.19
->>
->> Sure, I'll let you know.
-> 
-> No, this change did not make the kernel boot. I only changed the option
-> you proposed:
-> 
-> $ grep VMAP .config
-> CONFIG_HAVE_ARCH_VMAP_STACK=y
-> # CONFIG_VMAP_STACK is not set
-> 
+Can you clarify? The slow path is already in use on ARM64 which is weak,
+so I doubt there's superfluous serialization present. And Will spend a
+fair amount of time on making that thing guarantee forward progressm, so
+there just isn't too much room to play.
 
-Ok, at least it is not that. I wanted to be sure because this is a huge 
-change added recently that is selected by default.
+> We don't have a good alternate patching for function calls yet, but
+> that would be something to do for native vs pv.
 
-I tried on QEMU with your config, it boots properly.
+Going by your jump_label implementation, support for static_call should
+be fairly straight forward too, no?
 
-So I think the only way now will be to bisect. Hope you were able to 
-setup a cross compiler on a speedy machine.
-
-Christophe
+  https://lkml.kernel.org/r/20200624153024.794671356@infradead.org
