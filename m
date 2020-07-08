@@ -2,50 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948A32182FA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 10:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABE32185EC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 13:19:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1tWX5DjzzDr4Q
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 18:58:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1xdb5zYGzDr7x
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 21:18:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=centrum.lixper.it (client-ip=46.4.16.148; helo=centrum.lixper.it;
- envelope-from=srs0=/ymy=at=sguazz.it=giuseppe@centrum.lixper.it;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.helo=cstnet.cn
+ (client-ip=159.226.251.21; helo=cstnet.cn; envelope-from=vulab@iscas.ac.cn;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=sguazz.it
-Received: from centrum.lixper.it (centrum.lixper.it [46.4.16.148])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1tTX0QqGzDqKv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 18:56:47 +1000 (AEST)
-Received: from net-130-25-222-52.cust.vodafonedsl.it ([130.25.222.52]
- helo=uefi)
- by centrum.lixper.it with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.84_2) (envelope-from <giuseppe@sguazz.it>)
- id 1jt5si-0001a5-G4
- for linuxppc-dev@lists.ozlabs.org; Wed, 08 Jul 2020 10:56:44 +0200
-Message-ID: <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
-Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
-From: Giuseppe Sacco <giuseppe@sguazz.it>
-To: linuxppc-dev@lists.ozlabs.org
-Date: Wed, 08 Jul 2020 10:56:38 +0200
-In-Reply-To: <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
-References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
- <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
- <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
- <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
- <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
- <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
- <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.3-1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GeoIP: IT
-X-SRS: Sender address rewritten from <giuseppe@sguazz.it> to
- <SRS0=/yMY=AT=sguazz.it=giuseppe@centrum.lixper.it> by centrum.lixper.it.
+ dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+X-Greylist: delayed 443 seconds by postgrey-1.36 at bilbo;
+ Wed, 08 Jul 2020 17:30:02 AEST
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4B1rYQ6HNLzDqMB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 17:30:02 +1000 (AEST)
+Received: from localhost (unknown [159.226.5.99])
+ by APP-01 (Coremail) with SMTP id qwCowAAnCOk2dAVfs4CkBA--.31422S2;
+ Wed, 08 Jul 2020 15:22:31 +0800 (CST)
+From: Xu Wang <vulab@iscas.ac.cn>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ vulab@iscas.ac.cn, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] arch: powerpc: Remove unnecessary cast in kfree()
+Date: Wed,  8 Jul 2020 07:22:28 +0000
+Message-Id: <20200708072228.30776-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: qwCowAAnCOk2dAVfs4CkBA--.31422S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrWxWw4rXr1rWr1xuw17Wrg_yoW3GrbEk3
+ yvkFnFkrW0qrsavanxXF1xGFn2y393Xrs5KrnFga9rt345Xw15C3W3ZrW8Gay8Jry0yrZx
+ G3Z8tr98Zas3KjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUbzAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+ A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+ Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+ 0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+ jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
+ W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l42xK82IYc2Ij64vI
+ r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+ xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+ cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+ AvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
+ 7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUY6wZUUUUU
+X-Originating-IP: [159.226.5.99]
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwcLA102Yl76WQAAs8
+X-Mailman-Approved-At: Wed, 08 Jul 2020 21:17:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,48 +60,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Salut Cristophe,
+Remove unnecassary casts in the argument to kfree.
 
-Il giorno mer, 08/07/2020 alle 10.38 +0200, Christophe Leroy ha
-scritto:
-> Hi Giuseppe,
-> 
-> Le 08/07/2020 à 09:59, Giuseppe Sacco a écrit :
-> > Hello Cristophe,
-> > 
-> > Il giorno mar, 07/07/2020 alle 17.34 +0200, Giuseppe Sacco ha
-> > scritto:
-[...]
-> > > > And can you try without CONFIG_VMAP_STACK on 5.6.19
-> > > 
-> > > Sure, I'll let you know.
-> > 
-> > No, this change did not make the kernel boot. I only changed the
-> > option
-> > you proposed:
-> > 
-> > $ grep VMAP .config
-> > CONFIG_HAVE_ARCH_VMAP_STACK=y
-> > # CONFIG_VMAP_STACK is not set
-> > 
-> 
-> Ok, at least it is not that. I wanted to be sure because this is a
-> huge 
-> change added recently that is selected by default.
-> 
-> I tried on QEMU with your config, it boots properly.
-> 
-> So I think the only way now will be to bisect. Hope you were able to 
-> setup a cross compiler on a speedy machine.
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+---
+ arch/powerpc/platforms/pseries/dlpar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thank you for your time; indeed I may now crosscompile the kernel in 15
-minutes instead of about 390... I hope to have a final result in a
-couple of days.
-
-Bye,
-Giuseppe
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 16e86ba8aa20..1f3d26806295 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -379,7 +379,7 @@ static void pseries_hp_work_fn(struct work_struct *work)
+ 	handle_dlpar_errorlog(hp_work->errlog);
+ 
+ 	kfree(hp_work->errlog);
+-	kfree((void *)work);
++	kfree(work);
+ }
+ 
+ void queue_hotplug_event(struct pseries_hp_errorlog *hp_errlog)
+-- 
+2.17.1
 
