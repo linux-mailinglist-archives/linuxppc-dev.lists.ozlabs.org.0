@@ -1,165 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFB6217F0E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 07:23:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CCB217EF8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 07:14:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1nl33MVYzDqgr
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 15:23:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1nXj3m4bzDr5D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 15:14:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=40.107.7.40; helo=eur04-he1-obe.outbound.protection.outlook.com;
- envelope-from=james.qian.wang@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=armh.onmicrosoft.com header.i=@armh.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-armh-onmicrosoft-com header.b=LdZVkyZH;
- dkim=pass (1024-bit key) header.d=armh.onmicrosoft.com
- header.i=@armh.onmicrosoft.com header.a=rsa-sha256
- header.s=selector2-armh-onmicrosoft-com header.b=LdZVkyZH; 
- dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr70040.outbound.protection.outlook.com [40.107.7.40])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=M8TEn2dP; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1nQX3tsfzDqXL
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 15:08:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com; 
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lXY8310WrBa1OIFy0+8YHD/vsejg15RPJL0nGSe21Hc=;
- b=LdZVkyZHffRY3zc8d7PkEH6Er4IMXnRtIH2vKa84vfGU2JhoCHYliZPltpjD5l7/WTbbeUvornNRn3JJyNn6zTCswY9A1QCbLePCS0zoypRVMVm9Mluf4/7lbXWySIfkrbxP2If3jfxaUF1eqOqAlPqzLkGcarHkvm98Ah+ROBA=
-Received: from AM5PR0601CA0061.eurprd06.prod.outlook.com (2603:10a6:206::26)
- by AM0PR08MB3762.eurprd08.prod.outlook.com (2603:10a6:208:100::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.23; Wed, 8 Jul
- 2020 05:08:39 +0000
-Received: from AM5EUR03FT013.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:206:0:cafe::2f) by AM5PR0601CA0061.outlook.office365.com
- (2603:10a6:206::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20 via Frontend
- Transport; Wed, 8 Jul 2020 05:08:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; lists.ozlabs.org; dkim=pass (signature was verified)
- header.d=armh.onmicrosoft.com;lists.ozlabs.org; dmarc=bestguesspass
- action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- AM5EUR03FT013.mail.protection.outlook.com (10.152.16.140) with
- Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3174.21 via Frontend Transport; Wed, 8 Jul 2020 05:08:39 +0000
-Received: ("Tessian outbound e44de778b77e:v62");
- Wed, 08 Jul 2020 05:08:39 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: 31c59d195aa7f0dc
-X-CR-MTA-TID: 64aa7808
-Received: from 2e5d9e7d8353.1
- by 64aa7808-outbound-1.mta.getcheckrecipient.com id
- 06FC9AB5-E7E5-4261-865C-0C530ED94E38.1; 
- Wed, 08 Jul 2020 05:08:39 +0000
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com
- by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 2e5d9e7d8353.1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
- Wed, 08 Jul 2020 05:08:39 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GtUjxmWFlhOqgMKTTCk0ej+2KO2YVuvGrBQd6zpxtJ5JbtVd67CWNwutBuzVp0FRS4JY9Lu/SJOzZwGwi4PnHgNb03wgKkjohPtJUi4786G09q2tsuZbb/te7vNLas0R+qhQqI2oIwJn35Dron8NJJwa4gQo3gmLHSfim3LOOy5DqKy9oSrUFNpKSzkpZZ+GlVG6sTF/h6LmIKAaAlc9UFR3OnSnk5MI/HY/FKA0S9zKzMBFd/pYYwDNleFam4wSctNqnyoG20qpXBeeAxIaI5vGMhBATIqruTaFqmowuZbmV31lOCEISp/l5exmIvFQzSJXOcqTMcTl2/d9MT9Lgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lXY8310WrBa1OIFy0+8YHD/vsejg15RPJL0nGSe21Hc=;
- b=Vo4fp2KvVUc7u7E6caIyjBGj20AuBQk1aIvjntJwAYH47rP/Jxj2R87rcj+nsyyzPmaConDnUVdWbzB7kJALGUE29LwvOtDGGvAY2QGJIvLOd3hHGQ9n+I/p8bOp0GQR8wapf2BUu3DpwBxsKap5dXhfKQwEqMQKR7cmt3Wo3dmM/m1DYKNW/MPByusFBiwEjf4jrA8ja8SflGoLSoz55GsOYtmH6xCh27KqhMdCKQLitURgCYPjK71i4GBXjeZTohLm979ywqmgNA2BeR7f0lIdAezYXjBJmsQyiGiD3+wYhKHDA4h3oFe9bcT7haEIjDV8agjcor5Us9kOCtwH9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com; 
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lXY8310WrBa1OIFy0+8YHD/vsejg15RPJL0nGSe21Hc=;
- b=LdZVkyZHffRY3zc8d7PkEH6Er4IMXnRtIH2vKa84vfGU2JhoCHYliZPltpjD5l7/WTbbeUvornNRn3JJyNn6zTCswY9A1QCbLePCS0zoypRVMVm9Mluf4/7lbXWySIfkrbxP2If3jfxaUF1eqOqAlPqzLkGcarHkvm98Ah+ROBA=
-Authentication-Results-Original: infradead.org; dkim=none (message not signed)
- header.d=none; infradead.org;
- dmarc=none action=none header.from=arm.com; 
-Received: from DB6PR0801MB1719.eurprd08.prod.outlook.com (2603:10a6:4:3a::18)
- by DB8PR08MB5418.eurprd08.prod.outlook.com (2603:10a6:10:116::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.21; Wed, 8 Jul
- 2020 05:08:27 +0000
-Received: from DB6PR0801MB1719.eurprd08.prod.outlook.com
- ([fe80::7d48:27e3:a154:17ef]) by DB6PR0801MB1719.eurprd08.prod.outlook.com
- ([fe80::7d48:27e3:a154:17ef%12]) with mapi id 15.20.3153.030; Wed, 8 Jul 2020
- 05:08:27 +0000
-Date: Wed, 8 Jul 2020 13:08:21 +0800
-From: "james qian wang (Arm Technology China)" <james.qian.wang@arm.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH 06/20] Documentation: gpu/komeda-kms: eliminate
- duplicated word
-Message-ID: <20200708050821.GA1121718@jamwan02-TSP300>
-References: <20200707180414.10467-1-rdunlap@infradead.org>
- <20200707180414.10467-7-rdunlap@infradead.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200707180414.10467-7-rdunlap@infradead.org>
-X-ClientProxiedBy: SGBP274CA0019.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::31)
- To DB6PR0801MB1719.eurprd08.prod.outlook.com
- (2603:10a6:4:3a::18)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1nT21l7NzDr4q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 15:11:01 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id cm21so663332pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jul 2020 22:11:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=NBE822KLqldc4RgjTMLNTL7g5oeVKxCy90pB/bhnbqA=;
+ b=M8TEn2dPCMOvBZET4JnaMDMy0lYBY2dVPXjJw8C+E1TwnoBBTuk66pgPu2fJqXKVx1
+ B5vvUPxm8LxCIC+/4HpDyj9eQK+FH+k8I9aySXAuKaiX/IyWQBl6c9oSucY0pJSrHdhk
+ kmKB9L6ekk6XeywFS7Hoy/JAxeOTezXXqTtHJtI9+cpy4/BmerCtU+RNLW1bt+52PMrU
+ Pk0YR8Vd5fowCPr/XR1VDl6eRw8K/yg3l2NMayfyGThwcRjmydMPd/jZW4d43k68o1N9
+ VVe106DV3DoJXbOl4exlvOx0GiUCrvhWLD74gWkyw6keF+43d7HBt78+En6/6Yio7WIE
+ LqLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=NBE822KLqldc4RgjTMLNTL7g5oeVKxCy90pB/bhnbqA=;
+ b=X5kcEJ/nNdEAXkpk+Srq8t2MrUbb01QKuPOQWhRUWneXI+ARSJVTKgs2a71zzdUCCd
+ 5TlslwQ2AS24QRMGFYP8e/DhaX5f4+xt4l0L75TpuLGTNVSSELC0DdylAHHuCmCnEarA
+ ZU+T2aHI60anfW4exPq9NihI0yqgxFk8VhJXJH+Pz+ZWBycQxRUufvx/pElRmQJhNsCc
+ q5JoA+XerX8rBFhnSaRWSGsRIJcCZIays4JVa/WGVTtgmJEw1ntwgvUo1kubApOTG//R
+ suwLkTd1lhpXDZwQXhMjsSHIMz67cAaNqh6b2rftGNiUHe+VXRM8InbQkxQWoQRiSpiB
+ e/rA==
+X-Gm-Message-State: AOAM533HU5X9s8sy2eOm+JLSTkk7WGId4yqN5+8dgJT2SxBnAcf1dLlE
+ /8IedjWMiDGSAT7e9i05RO9UF8zB
+X-Google-Smtp-Source: ABdhPJy7irHmoUu0ynDnJY978dkucESYFNMabuBQ/Z2GkOluE+v9BuscHayaBiw3xLfuRm15lUcw4A==
+X-Received: by 2002:a17:902:b114:: with SMTP id
+ q20mr23771251plr.266.1594185058097; 
+ Tue, 07 Jul 2020 22:10:58 -0700 (PDT)
+Received: from localhost (61-68-186-125.tpgi.com.au. [61.68.186.125])
+ by smtp.gmail.com with ESMTPSA id m20sm25080630pfk.52.2020.07.07.22.10.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 Jul 2020 22:10:57 -0700 (PDT)
+Date: Wed, 08 Jul 2020 15:10:52 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 0/6] powerpc: queued spinlocks and rwlocks
+To: linuxppc-dev@lists.ozlabs.org, Waiman Long <longman@redhat.com>
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
+ <1594101082.hfq9x5yact.astroid@bobo.none>
+ <de3ead58-7f81-8ebd-754d-244f6be24af4@redhat.com>
+In-Reply-To: <de3ead58-7f81-8ebd-754d-244f6be24af4@redhat.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost (203.126.0.111) by
- SGBP274CA0019.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::31) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3174.21 via Frontend Transport; Wed, 8 Jul 2020 05:08:26 +0000
-X-Originating-IP: [203.126.0.111]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 6b488b61-2a32-4971-ec2d-08d822fcfa33
-X-MS-TrafficTypeDiagnostic: DB8PR08MB5418:|AM0PR08MB3762:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM0PR08MB3762CB6D7B3F2089095972B4B3670@AM0PR08MB3762.eurprd08.prod.outlook.com>
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;OLM:5797;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: Ugv76lIcWFzncaE8CL8NRcn6Y25zj4XaFHTLySKgaHoOkaWTWq9Qj9ZZhP0IJzeMVS1pPW9l3z9+9dwd3xUldiqi+o7oxY0AOqdkDPPHERIhDyC2SNjRnrLpm6iYobnss+uIxhuvfEryWIeZylCaITi7KP5y54tSmWIY2DME7iiFTGMCou1LWfo5Sx9h54U2HnAzztC+7i/KxuFyqyRcfH0cxR/1YKdDobyrQxHxNwVAQ5jUFJOlNXS36ebm775MNWRYWv3kdjf2/invGaF++KMpE2wNwFXFrO9cg1P8v8v1RCprlSrRLlDlNzS6KVHZRGjK0s1jpIMzdiZyoGPiNQ==
-X-Forefront-Antispam-Report-Untrusted: CIP:255.255.255.255; CTRY:; LANG:en;
- SCL:1; SRV:; IPV:NLI; SFV:NSPM; H:DB6PR0801MB1719.eurprd08.prod.outlook.com;
- PTR:; CAT:NONE; SFTY:;
- SFS:(4636009)(7916004)(39850400004)(396003)(346002)(366004)(376002)(136003)(478600001)(186003)(7406005)(9686003)(2906002)(7416002)(7366002)(6916009)(54906003)(8936002)(6496006)(52116002)(4326008)(316002)(33716001)(956004)(1076003)(6666004)(83380400001)(8676002)(16526019)(33656002)(26005)(86362001)(6486002)(66556008)(66476007)(66946007)(5660300002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: cbkH8aJ+VUJQNAYUsDp271bZLTF9bRsCKaYGBd3fSkjP/IVDmSUfCWoIVjMV00+V8zEh4kZ3pmIpL1u53ce11rKnQjfGIVmzmZ3GUtSRRteRb6x/qYqIW2lXJKMjl11L9YpRW0e/YLWSiU8X9Tq7dmlfMZHPOLSBn3CRoEJ5X/2jt1eF+V8EaJZFdp785bZA5B5+o9ocL5EkUAxXsDBuv2TmBgzekPUHt+NUqXeagtZMSNfnCZLf/bbvm+qrplQMutZ1irKbQLFnErk4jDNLuUX8DcJGqP8nHL/j24c89Z6FfJ42q/uN/6HFIOWBuJj2jpyYx/9dVVUidbMOT5qe7bCmyjy3C79wynuMO3rVlav6A7FjUcb2tHg+CI4PflCHdF6RfwnKnBwy+MQpm6yyzRv1s1n4sWYtBi1BH7pEuC+waX0qJVyLIFbKC2Dy8T0Bng/8w+kAIzGeNxNDHToKvpsXjxdPadN2moIcftwpV38=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR08MB5418
-Original-Authentication-Results: infradead.org; dkim=none (message not signed)
- header.d=none; infradead.org;
- dmarc=none action=none header.from=arm.com; 
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: AM5EUR03FT013.eop-EUR03.prod.protection.outlook.com
-X-Forefront-Antispam-Report: CIP:63.35.35.123; CTRY:IE; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:64aa7808-outbound-1.mta.getcheckrecipient.com;
- PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com; CAT:NONE; SFTY:;
- SFS:(7916004)(4636009)(376002)(346002)(39850400004)(396003)(136003)(46966005)(82740400003)(47076004)(8936002)(81166007)(478600001)(956004)(36906005)(86362001)(8676002)(9686003)(54906003)(316002)(33716001)(2906002)(336012)(6666004)(6486002)(1076003)(4326008)(70206006)(70586007)(6862004)(83380400001)(6496006)(186003)(356005)(16526019)(5660300002)(26005)(33656002)(82310400002);
- DIR:OUT; SFP:1101; 
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 5ffebe40-5e4a-44cc-93c2-08d822fcf283
-X-Forefront-PRVS: 04583CED1A
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +6bT3mq7vJ2QLS4FckVMLNEBuJ6hpD2OeiM8f+HFUDaamQjErnzpwIW1IRrlTJY9Du73IFjysa4u4Jj50jrZLxAuQq27WJIgLHd5cNrJh5MF/PPnwmD+TJ+ZIgOfYeb0XPM0l9PzRHFsjkt5CTjkznxel2AMyBk7aaS3/hKQX5+pgai9y2FWXYrbMt65Xw7hLdffc7b7quMDjPGnivMDMYb+s6FAjKcvhaHTicYvdPWpzwnd3b/vUd4QkohoWKiM8aZ97t4zQdR0VebkpWv9/XtltYnEcTv0ufaqucRt2Jv5Pxo5xfgWXdrYA1Ciss6+/R4oz7Yd3YcyTOcSKt8PILdTuBPMhBuFfjDJ+nykrQONAuQr4mtZv5ifwAOyPfKGlrsNXSYzL14kIIAQGkAvGg==
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2020 05:08:39.6795 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b488b61-2a32-4971-ec2d-08d822fcfa33
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d; Ip=[63.35.35.123];
- Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: AM5EUR03FT013.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB3762
-X-Mailman-Approved-At: Wed, 08 Jul 2020 15:21:35 +1000
+Message-Id: <1594184204.ncuq7vstsz.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -171,69 +82,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
- linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
- dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>,
- Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
- Pavel Machek <pavel@ucw.cz>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
- linux-s390@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
- linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Halil Pasic <pasic@linux.ibm.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- Mali DP Maintainers <malidp@foss.arm.com>, linux-input@vger.kernel.org,
- Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
- Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
- Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, nd@arm.com,
- Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Pierre Morel <pmorel@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
+Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Randy
+Excerpts from Waiman Long's message of July 8, 2020 1:33 pm:
+> On 7/7/20 1:57 AM, Nicholas Piggin wrote:
+>> Yes, powerpc could certainly get more performance out of the slow
+>> paths, and then there are a few parameters to tune.
+>>
+>> We don't have a good alternate patching for function calls yet, but
+>> that would be something to do for native vs pv.
+>>
+>> And then there seem to be one or two tunable parameters we could
+>> experiment with.
+>>
+>> The paravirt locks may need a bit more tuning. Some simple testing
+>> under KVM shows we might be a bit slower in some cases. Whether this
+>> is fairness or something else I'm not sure. The current simple pv
+>> spinlock code can do a directed yield to the lock holder CPU, whereas
+>> the pv qspl here just does a general yield. I think we might actually
+>> be able to change that to also support directed yield. Though I'm
+>> not sure if this is actually the cause of the slowdown yet.
+>=20
+> Regarding the paravirt lock, I have taken a further look into the=20
+> current PPC spinlock code. There is an equivalent of pv_wait() but no=20
+> pv_kick(). Maybe PPC doesn't really need that.
 
-On Tue, Jul 07, 2020 at 11:04:00AM -0700, Randy Dunlap wrote:
-> Drop the doubled word "and".
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: James (Qian) Wang <james.qian.wang@arm.com>
-> Cc: Liviu Dudau <liviu.dudau@arm.com>
-> Cc: Mihail Atanassov <mihail.atanassov@arm.com>
-> Cc: Mali DP Maintainers <malidp@foss.arm.com>
-> ---
->  Documentation/gpu/komeda-kms.rst |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --- linux-next-20200701.orig/Documentation/gpu/komeda-kms.rst
-> +++ linux-next-20200701/Documentation/gpu/komeda-kms.rst
-> @@ -41,7 +41,7 @@ Compositor blends multiple layers or pix
->  frame. its output frame can be fed into post image processor for showing it on
->  the monitor or fed into wb_layer and written to memory at the same time.
->  user can also insert a scaler between compositor and wb_layer to down scale
-> -the display frame first and and then write to memory.
-> +the display frame first and then write to memory.
+So powerpc has two types of wait, either undirected "all processors" or=20
+directed to a specific processor which has been preempted by the=20
+hypervisor.
 
-Thank you for the patch.
+The simple spinlock code does a directed wait, because it knows the CPU=20
+which is holding the lock. In this case, there is a sequence that is=20
+used to ensure we don't wait if the condition has become true, and the
+target CPU does not need to kick the waiter it will happen automatically
+(see splpar_spin_yield). This is preferable because we only wait as=20
+needed and don't require the kick operation.
 
-Reviewed-by: James Qian Wang <james.qian.wang@arm.com>
+The pv spinlock code I did uses the undirected wait, because we don't
+know the CPU number which we are waiting on. This is undesirable because=20
+it's higher overhead and the wait is not so accurate.
 
->  Writeback Layer (wb_layer)
->  --------------------------
+I think perhaps we could change things so we wait on the correct CPU=20
+when queued, which might be good enough (we could also put the lock
+owner CPU in the spinlock word, if we add another format).
+
+> Attached are two=20
+> additional qspinlock patches that adds a CONFIG_PARAVIRT_QSPINLOCKS_LITE=20
+> option to not require pv_kick(). There is also a fixup patch to be=20
+> applied after your patchset.
+>=20
+> I don't have access to a PPC LPAR with shared processor at the moment,=20
+> so I can't test the performance of the paravirt code. Would you mind=20
+> adding my patches and do some performance test on your end to see if it=20
+> gives better result?
+
+Great, I'll do some tests. Any suggestions for what to try?
+
+Thanks,
+Nick
