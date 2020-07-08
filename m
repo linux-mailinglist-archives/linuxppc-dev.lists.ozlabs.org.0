@@ -1,78 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7D621944D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:30:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096142194A0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 01:52:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2Fsr6fVYzDqYn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 09:30:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2GLZ2LWNzDqjR
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 09:52:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=longman@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=eRFum40t; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=eRFum40t; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2Fr72NxCzDqY7
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 09:29:10 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 068N1SUD174366; Wed, 8 Jul 2020 19:29:04 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0b-001b2d01.pphosted.com with ESMTP id 325mcqw68w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 19:29:04 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 068NJd0d028239;
- Wed, 8 Jul 2020 23:29:03 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 325k1qss78-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 23:29:03 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 068NT2Yi46268828
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Jul 2020 23:29:02 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B7C44AC05F;
- Wed,  8 Jul 2020 23:29:02 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D543BAC059;
- Wed,  8 Jul 2020 23:29:01 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.211.134.102])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  8 Jul 2020 23:29:01 +0000 (GMT)
-Message-ID: <7345fc7fb186dcc77586cccfb4a720ec4149e1c9.camel@linux.ibm.com>
-Subject: [PATCH 2/2] selftests/powerpc: Use proper error code to check fault
- address
-From: Haren Myneni <haren@linux.ibm.com>
-To: mpe@ellerman.id.au
-Date: Wed, 08 Jul 2020 16:28:58 -0700
-In-Reply-To: <f8af60fd4167c9c04ee5ab47147b9e95bcb3b9ff.camel@linux.ibm.com>
-References: <f8af60fd4167c9c04ee5ab47147b9e95bcb3b9ff.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2GJX6l2dzDqX3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 09:50:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594252214;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7a+U5YBzYfEsFsCMWL9LQvEdqafvJrKo9TGytXjXtNY=;
+ b=eRFum40tEpxZLIdeFTAHQ9NJ+608fxIb7EkPgvWrYb3MxM3GjEZPwaaKHsjg+G4sGo0wQM
+ 9ktqoCjTprWNftOGLJRbQn5D75+bL+tFejK76XomE3rydV+PoC5r/sEr+d8Wbxmuhi63id
+ byz31vwOUyA5VT1JuyDtq914TafYMoA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594252214;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7a+U5YBzYfEsFsCMWL9LQvEdqafvJrKo9TGytXjXtNY=;
+ b=eRFum40tEpxZLIdeFTAHQ9NJ+608fxIb7EkPgvWrYb3MxM3GjEZPwaaKHsjg+G4sGo0wQM
+ 9ktqoCjTprWNftOGLJRbQn5D75+bL+tFejK76XomE3rydV+PoC5r/sEr+d8Wbxmuhi63id
+ byz31vwOUyA5VT1JuyDtq914TafYMoA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-490-y7uP8t23P4WocJdbNKNi9g-1; Wed, 08 Jul 2020 19:50:12 -0400
+X-MC-Unique: y7uP8t23P4WocJdbNKNi9g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6DD511085;
+ Wed,  8 Jul 2020 23:50:10 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-116-205.rdu2.redhat.com [10.10.116.205])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2B6FD60E3E;
+ Wed,  8 Jul 2020 23:50:06 +0000 (UTC)
+Subject: Re: [PATCH v3 0/6] powerpc: queued spinlocks and rwlocks
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
+ <1594101082.hfq9x5yact.astroid@bobo.none>
+ <de3ead58-7f81-8ebd-754d-244f6be24af4@redhat.com>
+ <1594184204.ncuq7vstsz.astroid@bobo.none>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <62fa6343-e084-75c3-01c9-349a4617e67c@redhat.com>
+Date: Wed, 8 Jul 2020 19:50:05 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
+In-Reply-To: <1594184204.ncuq7vstsz.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-08_18:2020-07-08,
- 2020-07-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- spamscore=0 clxscore=1015 malwarescore=0 suspectscore=1 impostorscore=0
- phishscore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007080136
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,68 +90,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tulioqm@br.ibm.com, linuxppc-dev@lists.ozlabs.org, abali@us.ibm.com,
- rzinsly@linux.ibm.com
+Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 7/8/20 1:10 AM, Nicholas Piggin wrote:
+> Excerpts from Waiman Long's message of July 8, 2020 1:33 pm:
+>> On 7/7/20 1:57 AM, Nicholas Piggin wrote:
+>>> Yes, powerpc could certainly get more performance out of the slow
+>>> paths, and then there are a few parameters to tune.
+>>>
+>>> We don't have a good alternate patching for function calls yet, but
+>>> that would be something to do for native vs pv.
+>>>
+>>> And then there seem to be one or two tunable parameters we could
+>>> experiment with.
+>>>
+>>> The paravirt locks may need a bit more tuning. Some simple testing
+>>> under KVM shows we might be a bit slower in some cases. Whether this
+>>> is fairness or something else I'm not sure. The current simple pv
+>>> spinlock code can do a directed yield to the lock holder CPU, whereas
+>>> the pv qspl here just does a general yield. I think we might actually
+>>> be able to change that to also support directed yield. Though I'm
+>>> not sure if this is actually the cause of the slowdown yet.
+>> Regarding the paravirt lock, I have taken a further look into the
+>> current PPC spinlock code. There is an equivalent of pv_wait() but no
+>> pv_kick(). Maybe PPC doesn't really need that.
+> So powerpc has two types of wait, either undirected "all processors" or
+> directed to a specific processor which has been preempted by the
+> hypervisor.
+>
+> The simple spinlock code does a directed wait, because it knows the CPU
+> which is holding the lock. In this case, there is a sequence that is
+> used to ensure we don't wait if the condition has become true, and the
+> target CPU does not need to kick the waiter it will happen automatically
+> (see splpar_spin_yield). This is preferable because we only wait as
+> needed and don't require the kick operation.
+Thanks for the explanation.
+>
+> The pv spinlock code I did uses the undirected wait, because we don't
+> know the CPU number which we are waiting on. This is undesirable because
+> it's higher overhead and the wait is not so accurate.
+>
+> I think perhaps we could change things so we wait on the correct CPU
+> when queued, which might be good enough (we could also put the lock
+> owner CPU in the spinlock word, if we add another format).
 
-ERR_NX_TRANSLATION (CSB.CC=5) is for internal to VAS for fault
-handling and should not used by OS. ERR_NX_AT_FAULT(CSB.CC=250) is the
-proper error code reported by OS when NX encounters address translation
-failure.
+The LS byte of the lock word is used to indicate locking status. If we 
+have less than 255 cpus, we can put the (cpu_nr + 1) into the lock byte. 
+The special 0xff value can be used to indicate a cpu number >= 255 for 
+indirect yield. The required change to the qspinlock code will be 
+minimal, I think.
 
-This patch uses ERR_NX_AT_FAULT (CSB.CC=250) to determine the fault
-address when the request is not successful.
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- tools/testing/selftests/powerpc/nx-gzip/gunz_test.c  | 4 ++--
- tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+>> Attached are two
+>> additional qspinlock patches that adds a CONFIG_PARAVIRT_QSPINLOCKS_LITE
+>> option to not require pv_kick(). There is also a fixup patch to be
+>> applied after your patchset.
+>>
+>> I don't have access to a PPC LPAR with shared processor at the moment,
+>> so I can't test the performance of the paravirt code. Would you mind
+>> adding my patches and do some performance test on your end to see if it
+>> gives better result?
+> Great, I'll do some tests. Any suggestions for what to try?
 
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c b/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
-index 6ee0fde..7c23d3d 100644
---- a/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
-+++ b/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
-@@ -698,13 +698,13 @@ int decompress_file(int argc, char **argv, void *devhandle)
- 
- 	switch (cc) {
- 
--	case ERR_NX_TRANSLATION:
-+	case ERR_NX_AT_FAULT:
- 
- 		/* We touched the pages ahead of time.  In the most common case
- 		 * we shouldn't be here.  But may be some pages were paged out.
- 		 * Kernel should have placed the faulting address to fsaddr.
- 		 */
--		NXPRT(fprintf(stderr, "ERR_NX_TRANSLATION %p\n",
-+		NXPRT(fprintf(stderr, "ERR_NX_AT_FAULT %p\n",
- 			      (void *)cmdp->crb.csb.fsaddr));
- 
- 		if (pgfault_retries == NX_MAX_FAULTS) {
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-index 7496a83..02dffb6 100644
---- a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-+++ b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-@@ -306,13 +306,13 @@ int compress_file(int argc, char **argv, void *handle)
- 			lzcounts, cmdp, handle);
- 
- 		if (cc != ERR_NX_OK && cc != ERR_NX_TPBC_GT_SPBC &&
--		    cc != ERR_NX_TRANSLATION) {
-+		    cc != ERR_NX_AT_FAULT) {
- 			fprintf(stderr, "nx error: cc= %d\n", cc);
- 			exit(-1);
- 		}
- 
- 		/* Page faults are handled by the user code */
--		if (cc == ERR_NX_TRANSLATION) {
-+		if (cc == ERR_NX_AT_FAULT) {
- 			NXPRT(fprintf(stderr, "page fault: cc= %d, ", cc));
- 			NXPRT(fprintf(stderr, "try= %d, fsa= %08llx\n",
- 				  fault_tries,
--- 
-1.8.3.1
+I will just like to see if it will produce some better performance 
+result compared with your current version.
 
+Cheers,
+Longman
 
