@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F5A218655
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 13:42:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091B02186DF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 14:05:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1y8K3dY2zDr7H
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 21:42:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B1yfq4XBszDqlD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 22:05:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1y5d6jGbzDqPm
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 21:39:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B1ybv3cTvzDqQS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 22:02:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=UZ5/cHuQ; 
+ header.a=rsa-sha256 header.s=201909 header.b=oGgwpobw; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1y5c0HN0z9sDX;
- Wed,  8 Jul 2020 21:39:47 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B1ybt67RRz9sRf;
+ Wed,  8 Jul 2020 22:02:34 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594208388;
- bh=UJ9ry/dS2+fm+JogA1F9Drn8jGHbKtFwYs7A3hI7Aec=;
+ s=201909; t=1594209754;
+ bh=QR6QJ4WFvb8YTI/SXIeahW/0IVN707IxK533i92Vjj0=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=UZ5/cHuQNck7zIKqg33Jz9QyGyi82pJKeUdSACLcUbZXuUCSIN7O+gIZrq6G+5Zi3
- V1XAiI2YGiwWRnJDLbykxe9QcBvabroBuLLOejr0coBCz/0Y0yTBwAzEP1VDnDFk/u
- dmOavR56XMa66o+R3XYBi8MmZnbYXaQdDHSNq8ncEFkGLVCXmuUnnw+cMpKpFbBAm2
- djVkjvlxpxNrZ8HuVJ4kRG+rzJn5bmzJM973VaNaDC9gBVG6+DW3QPfvc7VygNBFy3
- C5oT3rMf0z9xYeNqosI+yliTmwazm77z1m+wWSFl4wdZOGuoKs4ClkZgMzyIpimb/G
- wdokgWQerkz/g==
+ b=oGgwpobw8urcvVp4DSmt/+4D728Qd88ouZ5z/av1H4Ha63ETAB+q08jtrUe/6/Vzs
+ LY8uuhz34GdM0UHj57uxTELcV4KG6ugVqLr06sCnm5BvvPK9H7xkijSYxYOFupKxix
+ VZ5olUIXaWZfc6SindQTqsgmN+7e0fnavneE5dP2b87bc90sDH2QObMY2sWfdZyDce
+ rAgQzaIr4btV8bXJiwMWktXro/MUjKC2j6aD6yR5rSl896Wse9aYYwO6uAcLGps+zc
+ 5mkt56yQwPGJ/rMpThRu8+dNbSevrsMawOLdn/Qp38nZdag5kuoHh+8QHAjLbVbilq
+ hjwfUsXbi1+sA==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 07/10] powerpc/perf: support BHRB disable bit and new
- filtering modes
-In-Reply-To: <1593595262-1433-8-git-send-email-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 10/10] powerpc/perf: Add extended regs support for
+ power10 platform
+In-Reply-To: <1593595262-1433-11-git-send-email-atrajeev@linux.vnet.ibm.com>
 References: <1593595262-1433-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1593595262-1433-8-git-send-email-atrajeev@linux.vnet.ibm.com>
-Date: Wed, 08 Jul 2020 21:42:02 +1000
-Message-ID: <87v9iy2pyt.fsf@mpe.ellerman.id.au>
+ <1593595262-1433-11-git-send-email-atrajeev@linux.vnet.ibm.com>
+Date: Wed, 08 Jul 2020 22:04:49 +1000
+Message-ID: <87r1tm2owu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -65,269 +65,124 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
-
-> PowerISA v3.1 has few updates for the Branch History Rolling Buffer(BHRB).
-                   ^
-                   a
-> First is the addition of BHRB disable bit and second new filtering
-                                                      ^
-                                                      is
-> modes for BHRB.
+> Include capability flag `PERF_PMU_CAP_EXTENDED_REGS` for power10
+> and expose MMCR3, SIER2, SIER3 registers as part of extended regs.
+> Also introduce `PERF_REG_PMU_MASK_31` to define extended mask
+> value at runtime for power10
 >
-> BHRB disable is controlled via Monitor Mode Control Register A (MMCRA)
-> bit 26, namely "BHRB Recording Disable (BHRBRD)". This field controls
-
-Most people call that bit 37.
-
-> whether BHRB entries are written when BHRB recording is enabled by other
-> bits. Patch implements support for this BHRB disable bit.
-       ^
-       This
-
-> Secondly PowerISA v3.1 introduce filtering support for
-
-.. that should be in a separate patch please.
-
-> PERF_SAMPLE_BRANCH_IND_CALL/COND. The patch adds BHRB filter support
-                                    ^
-                                    This
-> for "ind_call" and "cond" in power10_bhrb_filter_map().
->
-> 'commit bb19af816025 ("powerpc/perf: Prevent kernel address leak to userspace via BHRB buffer")'
-
-That doesn't need single quotes, and should be wrapped at 72 columns
-like the rest of the text.
-
-> added a check in bhrb_read() to filter the kernel address from BHRB buffer. Patch here modified
-> it to avoid that check for PowerISA v3.1 based processors, since PowerISA v3.1 allows
-> only MSR[PR]=1 address to be written to BHRB buffer.
-
-And that should be a separate patch again please.
-
 > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->  arch/powerpc/perf/core-book3s.c       | 27 +++++++++++++++++++++------
->  arch/powerpc/perf/isa207-common.c     | 13 +++++++++++++
->  arch/powerpc/perf/power10-pmu.c       | 13 +++++++++++--
->  arch/powerpc/platforms/powernv/idle.c | 14 ++++++++++++++
->  4 files changed, 59 insertions(+), 8 deletions(-)
+>  arch/powerpc/include/uapi/asm/perf_regs.h       |  6 ++++++
+>  arch/powerpc/perf/perf_regs.c                   | 10 +++++++++-
+>  arch/powerpc/perf/power10-pmu.c                 |  6 ++++++
+>  tools/arch/powerpc/include/uapi/asm/perf_regs.h |  6 ++++++
+>  tools/perf/arch/powerpc/include/perf_regs.h     |  3 +++
+>  tools/perf/arch/powerpc/util/perf_regs.c        |  6 ++++++
+
+Please split into a kernel patch and a tools patch. And cc the tools people.
+
+>  6 files changed, 36 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-> index fad5159..9709606 100644
-> --- a/arch/powerpc/perf/core-book3s.c
-> +++ b/arch/powerpc/perf/core-book3s.c
-> @@ -466,9 +466,13 @@ static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *
->  			 * addresses at this point. Check the privileges before
->  			 * exporting it to userspace (avoid exposure of regions
->  			 * where we could have speculative execution)
-> +			 * Incase of ISA 310, BHRB will capture only user-space
-                           ^
-                           In case of ISA v3.1,
-
-> +			 * address,hence include a check before filtering code
-                           ^                                                  ^
-                           addresses, hence                                   .
->  			 */
-> -			if (is_kernel_addr(addr) && perf_allow_kernel(&event->attr) != 0)
-> -				continue;
-> +			if (!(ppmu->flags & PPMU_ARCH_310S))
-> +				if (is_kernel_addr(addr) &&
-> +				perf_allow_kernel(&event->attr) != 0)
-> +					continue;
-
-The indentation is weird. You should just check all three conditions
-with &&.
-
+> diff --git a/arch/powerpc/include/uapi/asm/perf_regs.h b/arch/powerpc/include/uapi/asm/perf_regs.h
+> index 485b1d5..020b51c 100644
+> --- a/arch/powerpc/include/uapi/asm/perf_regs.h
+> +++ b/arch/powerpc/include/uapi/asm/perf_regs.h
+> @@ -52,6 +52,9 @@ enum perf_event_powerpc_regs {
+>  	PERF_REG_POWERPC_MMCR0,
+>  	PERF_REG_POWERPC_MMCR1,
+>  	PERF_REG_POWERPC_MMCR2,
+> +	PERF_REG_POWERPC_MMCR3,
+> +	PERF_REG_POWERPC_SIER2,
+> +	PERF_REG_POWERPC_SIER3,
+>  	/* Max regs without the extended regs */
+>  	PERF_REG_POWERPC_MAX = PERF_REG_POWERPC_MMCRA + 1,
+>  };
+> @@ -62,4 +65,7 @@ enum perf_event_powerpc_regs {
+>  #define PERF_REG_PMU_MASK_300   (((1ULL << (PERF_REG_POWERPC_MMCR2 + 1)) - 1) \
+>  				- PERF_REG_PMU_MASK)
 >  
->  			/* Branches are read most recent first (ie. mfbhrb 0 is
->  			 * the most recent branch).
-> @@ -1212,7 +1216,7 @@ static void write_mmcr0(struct cpu_hw_events *cpuhw, unsigned long mmcr0)
->  static void power_pmu_disable(struct pmu *pmu)
+> +/* PERF_REG_EXTENDED_MASK value for CPU_FTR_ARCH_31 */
+> +#define PERF_REG_PMU_MASK_31	(((1ULL << (PERF_REG_POWERPC_SIER3 + 1)) - 1) \
+> +				- PERF_REG_PMU_MASK)
+
+Wrapping that provides no benefit, just let it be long.
+
+>  #endif /* _UAPI_ASM_POWERPC_PERF_REGS_H */
+> diff --git a/arch/powerpc/perf/perf_regs.c b/arch/powerpc/perf/perf_regs.c
+> index c8a7e8c..c969935 100644
+> --- a/arch/powerpc/perf/perf_regs.c
+> +++ b/arch/powerpc/perf/perf_regs.c
+> @@ -81,6 +81,12 @@ static u64 get_ext_regs_value(int idx)
+>  		return mfspr(SPRN_MMCR1);
+>  	case PERF_REG_POWERPC_MMCR2:
+>  		return mfspr(SPRN_MMCR2);
+> +	case PERF_REG_POWERPC_MMCR3:
+> +			return mfspr(SPRN_MMCR3);
+> +	case PERF_REG_POWERPC_SIER2:
+> +			return mfspr(SPRN_SIER2);
+> +	case PERF_REG_POWERPC_SIER3:
+> +			return mfspr(SPRN_SIER3);
+
+Indentation is wrong.
+
+>  	default: return 0;
+>  	}
+>  }
+> @@ -89,7 +95,9 @@ u64 perf_reg_value(struct pt_regs *regs, int idx)
 >  {
->  	struct cpu_hw_events *cpuhw;
-> -	unsigned long flags, mmcr0, val;
-> +	unsigned long flags, mmcr0, val, mmcra = 0;
-
-You initialise it below.
-
->  	if (!ppmu)
->  		return;
-> @@ -1245,12 +1249,23 @@ static void power_pmu_disable(struct pmu *pmu)
->  		mb();
->  		isync();
+>  	u64 PERF_REG_EXTENDED_MAX;
 >  
-> +		val = mmcra = cpuhw->mmcr[2];
-> +
-
-For mmcr0 (above), val is the variable we mutate and mmcr0 is the
-original value. But here you've done the reverse, which is confusing.
-
->  		/*
->  		 * Disable instruction sampling if it was enabled
->  		 */
-> -		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE) {
-> -			mtspr(SPRN_MMCRA,
-> -			      cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE);
-> +		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE)
-> +			mmcra = cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE;
-
-You just loaded cpuhw->mmcr[2] into mmcra, use it rather than referring
-back to cpuhw->mmcr[2] over and over.
-
-> +
-> +		/* Disable BHRB via mmcra [:26] for p10 if needed */
-> +		if (!(cpuhw->mmcr[2] & MMCRA_BHRB_DISABLE))
-
-You don't need to check that it's clear AFAICS. Just always set disable
-and the check against val below will catch the nop case.
-
-> +			mmcra |= MMCRA_BHRB_DISABLE;
-> +
-> +		/* Write SPRN_MMCRA if mmcra has either disabled
-
-Comment format is wrong.
-
-> +		 * instruction sampling or BHRB
-
-Full stop please.
-
-> +		 */
-> +		if (val != mmcra) {
-> +			mtspr(SPRN_MMCRA, mmcra);
->  			mb();
->  			isync();
->  		}
-> diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-> index 7d4839e..463d925 100644
-> --- a/arch/powerpc/perf/isa207-common.c
-> +++ b/arch/powerpc/perf/isa207-common.c
-> @@ -404,6 +404,12 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
->  
->  	mmcra = mmcr1 = mmcr2 = mmcr3 = 0;
->  
-> +	/* Disable bhrb unless explicitly requested
-> +	 * by setting MMCRA [:26] bit.
-> +	 */
-
-Comment format again.
-
+> -	if (cpu_has_feature(CPU_FTR_ARCH_300))
 > +	if (cpu_has_feature(CPU_FTR_ARCH_31))
-> +		mmcra |= MMCRA_BHRB_DISABLE;
+> +		PERF_REG_EXTENDED_MAX = PERF_REG_POWERPC_SIER3 + 1;
 
-Here we do a feature check before setting MMCRA_BHRB_DISABLE, but you
-didn't above?
+There's no way to know if that's correct other than going back to the
+header to look at the list of values.
 
-> +
->  	/* Second pass: assign PMCs, set all MMCR1 fields */
->  	for (i = 0; i < n_ev; ++i) {
->  		pmc     = (event[i] >> EVENT_PMC_SHIFT) & EVENT_PMC_MASK;
-> @@ -475,10 +481,17 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
->  		}
->  
->  		if (event[i] & EVENT_WANTS_BHRB) {
-> +			/* set MMCRA[:26] to 0 for Power10 to enable BHRB */
+So instead you should define it in the header, next to the other values,
+with a meaningful name, like PERF_REG_MAX_ISA_31 or something.
 
-"set MMCRA[:26] to 0" == "clear MMCRA[:26]"
+> +	else if (cpu_has_feature(CPU_FTR_ARCH_300))
+>  		PERF_REG_EXTENDED_MAX = PERF_REG_POWERPC_MMCR2 + 1;
 
-> +			if (cpu_has_feature(CPU_FTR_ARCH_31))
-> +				mmcra &= ~MMCRA_BHRB_DISABLE;
+Same.
 
-Newline please.
-
->  			val = (event[i] >> EVENT_IFM_SHIFT) & EVENT_IFM_MASK;
->  			mmcra |= val << MMCRA_IFM_SHIFT;
->  		}
->  
-> +		/* set MMCRA[:26] to 0 if there is user request for BHRB */
-> +		if (cpu_has_feature(CPU_FTR_ARCH_31) && has_branch_stack(pevents[i]))
-> +			mmcra &= ~MMCRA_BHRB_DISABLE;
-> +
-
-I think it would be cleaner if you did a single test, eg:
-
-		if (cpu_has_feature(CPU_FTR_ARCH_31) &&
-                   (has_branch_stack(pevents[i]) || (event[i] & EVENT_WANTS_BHRB)))
-			mmcra &= ~MMCRA_BHRB_DISABLE;
-
->  		if (pevents[i]->attr.exclude_user)
->  			mmcr2 |= MMCR2_FCP(pmc);
->  
+>  	if (idx == PERF_REG_POWERPC_SIER &&
 > diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-> index d64d69d..07fb919 100644
+> index 07fb919..51082d6 100644
 > --- a/arch/powerpc/perf/power10-pmu.c
 > +++ b/arch/powerpc/perf/power10-pmu.c
-> @@ -82,6 +82,8 @@
+> @@ -86,6 +86,8 @@
+>  #define POWER10_MMCRA_IFM3		0x00000000C0000000UL
+>  #define POWER10_MMCRA_BHRB_MASK		0x00000000C0000000UL
 >  
->  /* MMCRA IFM bits - POWER10 */
->  #define POWER10_MMCRA_IFM1		0x0000000040000000UL
-> +#define POWER10_MMCRA_IFM2		0x0000000080000000UL
-> +#define POWER10_MMCRA_IFM3		0x00000000C0000000UL
->  #define POWER10_MMCRA_BHRB_MASK	0x00000000C0000000UL
->  
+> +extern u64 mask_var;
+
+Why is it extern? Also not a good name for a global.
+
+Hang on, it's not even used? Is there some macro magic somewhere?
+
 >  /* Table of alternatives, sorted by column 0 */
-> @@ -233,8 +235,15 @@ static u64 power10_bhrb_filter_map(u64 branch_sample_type)
->  	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_RETURN)
->  		return -1;
+>  static const unsigned int power10_event_alternatives[][MAX_ALT] = {
+>  	{ PM_RUN_CYC_ALT,		PM_RUN_CYC },
+> @@ -397,6 +399,7 @@ static void power10_config_bhrb(u64 pmu_bhrb_filter)
+>  	.cache_events		= &power10_cache_events,
+>  	.attr_groups		= power10_pmu_attr_groups,
+>  	.bhrb_nr		= 32,
+> +	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
+>  };
 >  
-> -	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL)
-> -		return -1;
-> +	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL) {
-> +		pmu_bhrb_filter |= POWER10_MMCRA_IFM2;
-> +		return pmu_bhrb_filter;
-> +	}
-> +
-> +	if (branch_sample_type & PERF_SAMPLE_BRANCH_COND) {
-> +		pmu_bhrb_filter |= POWER10_MMCRA_IFM3;
-> +		return pmu_bhrb_filter;
-> +	}
+>  int init_power10_pmu(void)
+> @@ -408,6 +411,9 @@ int init_power10_pmu(void)
+>  	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power10"))
+>  		return -ENODEV;
 >  
->  	if (branch_sample_type & PERF_SAMPLE_BRANCH_CALL)
->  		return -1;
-> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-> index 2dd4673..7db99c7 100644
-> --- a/arch/powerpc/platforms/powernv/idle.c
-> +++ b/arch/powerpc/platforms/powernv/idle.c
-> @@ -611,6 +611,7 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
->  	unsigned long srr1;
->  	unsigned long pls;
->  	unsigned long mmcr0 = 0;
-> +	unsigned long mmcra_bhrb = 0;
->  	struct p9_sprs sprs = {}; /* avoid false used-uninitialised */
->  	bool sprs_saved = false;
->  
-> @@ -657,6 +658,15 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
->  		  */
->  		mmcr0		= mfspr(SPRN_MMCR0);
->  	}
+> +	/* Set the PERF_REG_EXTENDED_MASK here */
+> +	mask_var = PERF_REG_PMU_MASK_31;
 > +
-> +	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-> +		/* POWER10 uses MMCRA[:26] as BHRB disable bit
-
-Comment format.
-
-> +		 * to disable BHRB logic when not used. Hence Save and
-> +		 * restore MMCRA after a state-loss idle.
-> +		 */
-> +		mmcra_bhrb		= mfspr(SPRN_MMCRA);
-> +	}
-
-It's the whole mmcra it should be called mmcra?
-
-> +
->  	if ((psscr & PSSCR_RL_MASK) >= pnv_first_spr_loss_level) {
->  		sprs.lpcr	= mfspr(SPRN_LPCR);
->  		sprs.hfscr	= mfspr(SPRN_HFSCR);
-> @@ -721,6 +731,10 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
->  			mtspr(SPRN_MMCR0, mmcr0);
->  		}
->  
-> +		/* Reload MMCRA to restore BHRB disable bit for POWER10 */
-> +		if (cpu_has_feature(CPU_FTR_ARCH_31))
-> +			mtspr(SPRN_MMCRA, mmcra_bhrb);
-> +
->  		/*
->  		 * DD2.2 and earlier need to set then clear bit 60 in MMCRA
->  		 * to ensure the PMU starts running.
+>  	rc = register_power_pmu(&power10_pmu);
+>  	if (rc)
+>  		return rc;
 
 
 cheers
