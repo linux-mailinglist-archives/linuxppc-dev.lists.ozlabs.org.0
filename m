@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750D721883F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 14:59:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A612188D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 15:19:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B1zt14SR7zDqQ6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 22:59:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B20JZ3D9fzDqcg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jul 2020 23:19:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::442;
- helo=mail-wr1-x442.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::344;
+ helo=mail-wm1-x344.google.com; envelope-from=daniel.thompson@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=bqCkYlhY; dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
+ header.s=google header.b=A1ZIjk7Y; dkim-atps=neutral
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B1zq65115zDqHp
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 22:57:22 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id k6so48902031wrn.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jul 2020 05:57:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B20C401Y5zDqXg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jul 2020 23:14:33 +1000 (AEST)
+Received: by mail-wm1-x344.google.com with SMTP id g75so3037191wme.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jul 2020 06:14:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=TTuqyVT9cnuWmuZkR2avkoolSz/GKaORVGbqfOTz7Tw=;
- b=bqCkYlhYnCpQAHR1jCpg4zDsmvF7/yYY+dW4Ry8hSQ0ol6hlgM9RxlvgkLto7NQu5s
- SXp/EDHEhxl+WtlnQE+xeWiBsEgbG0avYbPfKcs3fKh90TWTpl3657DTRoFlcHS0lmrv
- 7ERcbYLCIBCB+dlVGHCMZm8/s+8PcLN6rNLnhsJGomxu6akKrsW1Gs3MzNUg8R2DM8Uw
- P4YHkaMvjJqDKUr8l0a0yYdnA22JvmDESt/jJJtoE/+ULkUzyKAzorUCP8nUCaZtRmWV
- 8JGxbZEPcoL+95Lp48vw6qXXBAJdLR8xqZGilGjfZ5k6ZeZQ5cnVFZ5cITwpJahCk7JF
- HJFg==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=l8TXsMU8pcx7Tss0R/XmiW2rwe2Hix1sm/QIevQOb2M=;
+ b=A1ZIjk7YGe2YSEoQCSRgqjmHR7oxja8buIPLjIhRTjdJVpAt9lG0gE7SFtVGHQLadT
+ xVpcPloGsK2WSxEeeICvTCCQ1YYB1VSfUPjrX131Kkrf1ua0TB8eUFoz6BcB/ltMdxle
+ g0CUQEDldKrVRBTAatDkSdjEu36OQGD68toOzC25aprt3rfyUr9rqTVrTmbAXsTUgf77
+ 9cR8rDocIEreQ2XYDW7IWJeD90ce47cu6PI8ZsNUWN9GnPzAGJerkmwY1TNG1BH5v+ah
+ Y+0oSh28JHhB1q0lkYDfWGe+5f8BNO5h4B8RbndZgEm96Q69dP3WLG/nFIdlxkVQzXH+
+ HYhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=TTuqyVT9cnuWmuZkR2avkoolSz/GKaORVGbqfOTz7Tw=;
- b=PVsy0avwlAA/vlXV90WxnA9m2QiVcxuVUatsph+RoQtUpizyCfJxzkO0ZLRFNLSuvB
- 0ajGZlN6qSsQMDRI3JfUEB9DMFLH964/mJpk9TMSoj7nkkr0ytBQ16nFf38jd1a4ry8F
- 0G42FEqcavBLrz4w3Hw+zg3Saeujs3575T+8uZHoUSG9rbpvuw6G0+fC/8fpTGzlPMyj
- xGGyJWfKPyYBwJd+DgAkr+htwyUED/UnwERysz+WYppPsSDITWpww91nag6JkUHavi0s
- PuJgscJx9G4IlEOrP+Sw2IbRcbMA30omNQyM5/lJccWVkvXEJTVWhvJ3/tJLkqVlETNF
- RsgA==
-X-Gm-Message-State: AOAM530TyvfgHICbW1ybWlMzWa3TpGzT0/VgMYJHAh9QG9K0SGKKblQg
- UnHKOA+ejZICmQGa/HkOwWArGQ==
-X-Google-Smtp-Source: ABdhPJxIHdPTQ+3Fj8EaoAnC4n0L/dO6qJOdSZK1Vn9FBMjAc28ucuEaecvFE3uBbNM6QZPL88lZuw==
-X-Received: by 2002:adf:f8cb:: with SMTP id f11mr61733966wrq.358.1594213037108; 
- Wed, 08 Jul 2020 05:57:17 -0700 (PDT)
-Received: from localhost.localdomain ([2.27.35.206])
- by smtp.gmail.com with ESMTPSA id v9sm6993885wri.3.2020.07.08.05.57.16
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=l8TXsMU8pcx7Tss0R/XmiW2rwe2Hix1sm/QIevQOb2M=;
+ b=FrRFglVITt3X2PdqCWRG7nwf1QNa2zPJuMTMJNc1dc0gCo7dt/H2FlMuFwmDzTRtAp
+ 0YggGeObOlOG2uOFwkrEnp9/58BXkyThfJbqq0i4VN/zkZ2pMc41xyd31nUOosB2Wyv4
+ Et5+8xiVHyd/5DNuGDv0/TZQh7M6QK9iorlCRKm+b9jpKNzV8RCDzGS188U+50mgqCAH
+ JeLXO6uMHzgy1rGO3TpMoWG9lF1by3fiwMjlskZo11OQvr67/FqWk3/CjypkOH7FJBK5
+ +1XI/PSQ7LrIxcfbv7+IT3LHa3lPKnz1HcXxgKqGu/wU2in2QASoLejv2nodrfTF5r2z
+ 7lvg==
+X-Gm-Message-State: AOAM533zadGJjBxczihnEXIyINeE+PgOP3JgVwfSzRan68flyxx3Zymr
+ r3A6cPR1tkkBnOq/Be3LkW4uzw==
+X-Google-Smtp-Source: ABdhPJwq0Oc6xY1jGe2yyxLQ3zEuUYKf/Jmuh4JKlNT9KiWq8rLJ6802Y6Ay8mTXZNr5ogQ7BAfKOg==
+X-Received: by 2002:a7b:ce87:: with SMTP id q7mr9822665wmj.39.1594214068610;
+ Wed, 08 Jul 2020 06:14:28 -0700 (PDT)
+Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net.
+ [86.9.19.6])
+ by smtp.gmail.com with ESMTPSA id n16sm5779824wra.19.2020.07.08.06.14.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jul 2020 05:57:16 -0700 (PDT)
-From: Lee Jones <lee.jones@linaro.org>
-To: arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Subject: [PATCH 3/3] misc: cxl: flash: Remove unused variable 'drc_index'
-Date: Wed,  8 Jul 2020 13:57:11 +0100
-Message-Id: <20200708125711.3443569-4-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200708125711.3443569-1-lee.jones@linaro.org>
-References: <20200708125711.3443569-1-lee.jones@linaro.org>
+ Wed, 08 Jul 2020 06:14:27 -0700 (PDT)
+Date: Wed, 8 Jul 2020 14:14:25 +0100
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH 04/20] Documentation: kgdb: eliminate duplicated word
+Message-ID: <20200708131425.iesuqtfklrsn3kam@holly.lan>
+References: <20200707180414.10467-1-rdunlap@infradead.org>
+ <20200707180414.10467-5-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200707180414.10467-5-rdunlap@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,52 +80,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
- Andrew Donnellan <ajd@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
+ linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
+ dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>,
+ Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
+ Pavel Machek <pavel@ucw.cz>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
+ linux-s390@vger.kernel.org, Hannes Reinecke <hare@suse.com>,
+ linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
+ Mali DP Maintainers <malidp@foss.arm.com>,
+ Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
+ Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ linux-block@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Pierre Morel <pmorel@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Keeping the pointer increment though.
+On Tue, Jul 07, 2020 at 11:03:58AM -0700, Randy Dunlap wrote:
+> Drop the doubled word "driver".
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Jason Wessel <jason.wessel@windriver.com>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: kgdb-bugreport@lists.sourceforge.net
 
-Fixes the following W=1 kernel build warning:
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
 
- drivers/misc/cxl/flash.c: In function ‘update_devicetree’:
- drivers/misc/cxl/flash.c:178:16: warning: variable ‘drc_index’ set but not used [-Wunused-but-set-variable]
- 178 | __be32 *data, drc_index, phandle;
- | ^~~~~~~~~
 
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/misc/cxl/flash.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/misc/cxl/flash.c b/drivers/misc/cxl/flash.c
-index cb9cca35a2263..774d582ddd70b 100644
---- a/drivers/misc/cxl/flash.c
-+++ b/drivers/misc/cxl/flash.c
-@@ -175,7 +175,7 @@ static int update_devicetree(struct cxl *adapter, s32 scope)
- 	struct update_nodes_workarea *unwa;
- 	u32 action, node_count;
- 	int token, rc, i;
--	__be32 *data, drc_index, phandle;
-+	__be32 *data, phandle;
- 	char *buf;
- 
- 	token = rtas_token("ibm,update-nodes");
-@@ -213,7 +213,7 @@ static int update_devicetree(struct cxl *adapter, s32 scope)
- 					break;
- 				case OPCODE_ADD:
- 					/* nothing to do, just move pointer */
--					drc_index = *data++;
-+					*data++;
- 					break;
- 				}
- 			}
--- 
-2.25.1
-
+Daniel.
