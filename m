@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF65219708
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 06:06:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68AA219717
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 06:12:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2Mzh29dWzF0Y4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 14:06:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2N6R3cBSzDqjN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 14:11:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2MBw5LqJzDqZC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 13:30:48 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2MC05cvYzDqZm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 13:30:52 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06933GOn055956; Wed, 8 Jul 2020 23:30:44 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 325rh2kfbq-1
+ 06931loV024800; Wed, 8 Jul 2020 23:30:46 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 325kgxbca3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Jul 2020 23:30:44 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0693Ejdh031337;
- Thu, 9 Jul 2020 03:30:43 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 325k27k54n-1
+ Wed, 08 Jul 2020 23:30:46 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0693FhFj021253;
+ Thu, 9 Jul 2020 03:30:45 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 325k1qu5w8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Jul 2020 03:30:43 +0000
+ Thu, 09 Jul 2020 03:30:45 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0693Ug5f52953564
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0693Ujit55181810
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Jul 2020 03:30:42 GMT
+ Thu, 9 Jul 2020 03:30:45 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7DEB7B2065;
- Thu,  9 Jul 2020 03:30:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2B8B9B2066;
+ Thu,  9 Jul 2020 03:30:45 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC5BEB2064;
- Thu,  9 Jul 2020 03:30:40 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1F446B2065;
+ Thu,  9 Jul 2020 03:30:43 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.62.107])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  9 Jul 2020 03:30:40 +0000 (GMT)
+ Thu,  9 Jul 2020 03:30:42 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v6 20/23] powerpc/selftest/ptrave-pkey: Rename variables to
- make it easier to follow code
-Date: Thu,  9 Jul 2020 08:59:43 +0530
-Message-Id: <20200709032946.881753-21-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v6 21/23] powerpc/selftest/ptrace-pkey: Update the test to
+ mark an invalid pkey correctly
+Date: Thu,  9 Jul 2020 08:59:44 +0530
+Message-Id: <20200709032946.881753-22-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200709032946.881753-1-aneesh.kumar@linux.ibm.com>
 References: <20200709032946.881753-1-aneesh.kumar@linux.ibm.com>
@@ -67,11 +67,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-08_19:2020-07-08,
  2020-07-08 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- lowpriorityscore=0 mlxscore=0 clxscore=1015 bulkscore=0 phishscore=0
- mlxlogscore=999 priorityscore=1501 spamscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007090023
+ lowpriorityscore=0
+ phishscore=0 suspectscore=2 bulkscore=0 priorityscore=1501 mlxscore=0
+ adultscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007090019
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,102 +89,75 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rename variable to indicate that they are invalid values which we will use to
-test ptrace update of pkeys.
-
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- .../selftests/powerpc/ptrace/ptrace-pkey.c    | 26 +++++++++----------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ .../selftests/powerpc/ptrace/ptrace-pkey.c    | 30 ++++++++-----------
+ 1 file changed, 12 insertions(+), 18 deletions(-)
 
 diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-index bdbbbe8431e0..f9216c7a1829 100644
+index f9216c7a1829..bc33d748d95b 100644
 --- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
 +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-@@ -44,7 +44,7 @@ struct shared_info {
- 	unsigned long amr2;
+@@ -66,11 +66,6 @@ static int sys_pkey_alloc(unsigned long flags, unsigned long init_access_rights)
+ 	return syscall(__NR_pkey_alloc, flags, init_access_rights);
+ }
  
- 	/* AMR value that ptrace should refuse to write to the child. */
--	unsigned long amr3;
-+	unsigned long invalid_amr;
- 
- 	/* IAMR value the parent expects to read from the child. */
- 	unsigned long expected_iamr;
-@@ -57,8 +57,8 @@ struct shared_info {
- 	 * (even though they're valid ones) because userspace doesn't have
- 	 * access to those registers.
- 	 */
--	unsigned long new_iamr;
--	unsigned long new_uamor;
-+	unsigned long invalid_iamr;
-+	unsigned long invalid_uamor;
- };
- 
- static int sys_pkey_alloc(unsigned long flags, unsigned long init_access_rights)
-@@ -100,7 +100,7 @@ static int child(struct shared_info *info)
+-static int sys_pkey_free(int pkey)
+-{
+-	return syscall(__NR_pkey_free, pkey);
+-}
+-
+ static int child(struct shared_info *info)
+ {
+ 	unsigned long reg;
+@@ -100,7 +95,11 @@ static int child(struct shared_info *info)
  
  	info->amr1 |= 3ul << pkeyshift(pkey1);
  	info->amr2 |= 3ul << pkeyshift(pkey2);
--	info->amr3 |= info->amr2 | 3ul << pkeyshift(pkey3);
-+	info->invalid_amr |= info->amr2 | 3ul << pkeyshift(pkey3);
+-	info->invalid_amr |= info->amr2 | 3ul << pkeyshift(pkey3);
++	/*
++	 * invalid amr value where we try to force write
++	 * things which are deined by a uamor setting.
++	 */
++	info->invalid_amr = info->amr2 | (~0x0UL & ~info->expected_uamor);
  
  	if (disable_execute)
  		info->expected_iamr |= 1ul << pkeyshift(pkey1);
-@@ -111,8 +111,8 @@ static int child(struct shared_info *info)
+@@ -111,17 +110,12 @@ static int child(struct shared_info *info)
  
  	info->expected_uamor |= 3ul << pkeyshift(pkey1) |
  				3ul << pkeyshift(pkey2);
--	info->new_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
--	info->new_uamor |= 3ul << pkeyshift(pkey1);
-+	info->invalid_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
-+	info->invalid_uamor |= 3ul << pkeyshift(pkey1);
- 
+-	info->invalid_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
+-	info->invalid_uamor |= 3ul << pkeyshift(pkey1);
+-
  	/*
- 	 * We won't use pkey3. We just want a plausible but invalid key to test
-@@ -196,9 +196,9 @@ static int parent(struct shared_info *info, pid_t pid)
+-	 * We won't use pkey3. We just want a plausible but invalid key to test
+-	 * whether ptrace will let us write to AMR bits we are not supposed to.
+-	 *
+-	 * This also tests whether the kernel restores the UAMOR permissions
+-	 * after a key is freed.
++	 * Create an IAMR value different from expected value.
++	 * Kernel will reject an IAMR and UAMOR change.
+ 	 */
+-	sys_pkey_free(pkey3);
++	info->invalid_iamr = info->expected_iamr | (1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2));
++	info->invalid_uamor = info->expected_uamor & ~(0x3ul << pkeyshift(pkey1));
+ 
+ 	printf("%-30s AMR: %016lx pkey1: %d pkey2: %d pkey3: %d\n",
+ 	       user_write, info->amr1, pkey1, pkey2, pkey3);
+@@ -196,9 +190,9 @@ static int parent(struct shared_info *info, pid_t pid)
  	PARENT_SKIP_IF_UNSUPPORTED(ret, &info->child_sync);
  	PARENT_FAIL_IF(ret, &info->child_sync);
  
--	info->amr1 = info->amr2 = info->amr3 = regs[0];
--	info->expected_iamr = info->new_iamr = regs[1];
--	info->expected_uamor = info->new_uamor = regs[2];
-+	info->amr1 = info->amr2 = info->invalid_amr = regs[0];
-+	info->expected_iamr = info->invalid_iamr = regs[1];
-+	info->expected_uamor = info->invalid_uamor = regs[2];
+-	info->amr1 = info->amr2 = info->invalid_amr = regs[0];
+-	info->expected_iamr = info->invalid_iamr = regs[1];
+-	info->expected_uamor = info->invalid_uamor = regs[2];
++	info->amr1 = info->amr2 = regs[0];
++	info->expected_iamr = regs[1];
++	info->expected_uamor = regs[2];
  
  	/* Wake up child so that it can set itself up. */
  	ret = prod_child(&info->child_sync);
-@@ -234,10 +234,10 @@ static int parent(struct shared_info *info, pid_t pid)
- 		return ret;
- 
- 	/* Write invalid AMR value in child. */
--	ret = ptrace_write_regs(pid, NT_PPC_PKEY, &info->amr3, 1);
-+	ret = ptrace_write_regs(pid, NT_PPC_PKEY, &info->invalid_amr, 1);
- 	PARENT_FAIL_IF(ret, &info->child_sync);
- 
--	printf("%-30s AMR: %016lx\n", ptrace_write_running, info->amr3);
-+	printf("%-30s AMR: %016lx\n", ptrace_write_running, info->invalid_amr);
- 
- 	/* Wake up child so that it can verify it didn't change. */
- 	ret = prod_child(&info->child_sync);
-@@ -249,7 +249,7 @@ static int parent(struct shared_info *info, pid_t pid)
- 
- 	/* Try to write to IAMR. */
- 	regs[0] = info->amr1;
--	regs[1] = info->new_iamr;
-+	regs[1] = info->invalid_iamr;
- 	ret = ptrace_write_regs(pid, NT_PPC_PKEY, regs, 2);
- 	PARENT_FAIL_IF(!ret, &info->child_sync);
- 
-@@ -257,7 +257,7 @@ static int parent(struct shared_info *info, pid_t pid)
- 	       ptrace_write_running, regs[0], regs[1]);
- 
- 	/* Try to write to IAMR and UAMOR. */
--	regs[2] = info->new_uamor;
-+	regs[2] = info->invalid_uamor;
- 	ret = ptrace_write_regs(pid, NT_PPC_PKEY, regs, 3);
- 	PARENT_FAIL_IF(!ret, &info->child_sync);
- 
 -- 
 2.26.2
 
