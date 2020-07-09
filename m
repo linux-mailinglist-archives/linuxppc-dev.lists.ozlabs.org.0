@@ -1,105 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1F921A001
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 14:27:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EB221A017
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 14:33:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2b6g1bgLzDr5h
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 22:27:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2bDY6rvrzDr7s
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 22:33:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xilinx.com (client-ip=40.107.237.62;
- helo=nam12-bn8-obe.outbound.protection.outlook.com;
- envelope-from=draganc@xilinx.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xilinx.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=xilinx.onmicrosoft.com header.i=@xilinx.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-xilinx-onmicrosoft-com
- header.b=QLje5vTv; dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2062.outbound.protection.outlook.com [40.107.237.62])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2Z2B6CJmzDqxB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 21:38:58 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iWmjRlrltMhXgWEPhzLT1CVjQLHQ+ft2kanwk2l0GW75ozuiitMreZ9a9Kv2BvXBAATW6gWJv8diAFG3MwfdP4saFgOhnZBnPsFRusXVwiR2pIO6qLOaxQGQVKD66mD/qoKFHBAGax2t6T0LIwEeXK4z3xH7DoI9RApnpVaE5W+QK6F4Fw1XVwu4NUNW5GuMQoHBrLSFzaiKIWS6wL+ClfBoBnO/doF+ksJSvV+TJQp4UBzhBBWtdN6zZnkq+ckGj28HPHpTQLcgTwe1KlbgwXvWZala4Zm5z48zBcvuLIPpkVqp00POblSuyvACQQZIDApOpihps4D+js10NbZ+1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PtPwyE17w23Xtepx41hpf1jPV+4WEloaCDZ/u/gOBJE=;
- b=K0gAWNdrNp59Xkv6LArah6Byvk4SJw6sPyJ6kk3G0dXI9SGEBMHc9FrmUBkZ3iQW1coBJn2fEF7djSDMCpLfJzUAI+8KYAsFYPMO3/NE/SGFtoqRB9DL1BY+wnAmADeFg0gQV/u3X6qoNzu+M9Kuf57H57SpnNAhs0rXalntgee6ygIuvZ14zuwRk+b3Boai8pTjLKMqTSbTUb96542dF9NMdktqN0GbG7tuYx7apQgIU0VwwfquYp0jjzb2CQmWouXG78BaVTLrQBZnfaAqB69bFj9nSWcM4JfhxjmnENcZA2mt2AhLEgn9IaEJ/S19vQXyCRY5NyVowPSy3u8maQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PtPwyE17w23Xtepx41hpf1jPV+4WEloaCDZ/u/gOBJE=;
- b=QLje5vTvGXjqB9Z/vM5fs0kZw3xZLUoM+4els9ImX/ngHmWtRd4bJGYeHIvb4HbMzG1X/TU6+LPiN/Lp58rF9SKA5zdTl1XacQxHvyob3xlkPDCcMPQhaO8XJUe48Ej82xVF0AosIgbS0oJk8CqVvXJ3EV2p0AU3iilVgyt/6iU=
-Received: from DM6PR02MB4140.namprd02.prod.outlook.com (2603:10b6:5:97::21) by
- DM5PR02MB3720.namprd02.prod.outlook.com (2603:10b6:4:b2::26) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3174.21; Thu, 9 Jul 2020 11:38:51 +0000
-Received: from DM6PR02MB4140.namprd02.prod.outlook.com
- ([fe80::7885:10b5:7055:2ae8]) by DM6PR02MB4140.namprd02.prod.outlook.com
- ([fe80::7885:10b5:7055:2ae8%7]) with mapi id 15.20.3153.030; Thu, 9 Jul 2020
- 11:38:51 +0000
-From: Dragan Cvetic <draganc@xilinx.com>
-To: Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 14/20] Documentation: misc/xilinx_sdfec: eliminate
- duplicated word
-Thread-Topic: [PATCH 14/20] Documentation: misc/xilinx_sdfec: eliminate
- duplicated word
-Thread-Index: AQHWVIl01j2WA8nZ+0qkTNSLOgAd4qj/IPtQ
-Date: Thu, 9 Jul 2020 11:38:51 +0000
-Message-ID: <DM6PR02MB4140D40A07411B0FA50A3913CB640@DM6PR02MB4140.namprd02.prod.outlook.com>
-References: <20200707180414.10467-1-rdunlap@infradead.org>
- <20200707180414.10467-15-rdunlap@infradead.org>
-In-Reply-To: <20200707180414.10467-15-rdunlap@infradead.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: infradead.org; dkim=none (message not signed)
- header.d=none;infradead.org; dmarc=none action=none header.from=xilinx.com;
-x-originating-ip: [149.199.80.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: b99db2df-7741-4c88-9845-08d823fca72b
-x-ms-traffictypediagnostic: DM5PR02MB3720:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM5PR02MB372060AA596D7BF97137A8F8CB640@DM5PR02MB3720.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5236;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: qR+CT0TDr1hEwjC4JBQRtqtPfgA/sC5N4CmnJYREhBvJ7X7HQ9viUvQ2nEScuw7SMhOdq2b15tm6YR7ClyT2nWwe7ZiHimM/AIloSvl2mP/iWO7q7DVePjI17TVzEBMEv+fIcOuZqWNpJD53uSnc5Z03pFtdidFyt8lsJ0bKHhBUyE/P52fcteYiVnZhVxxqj85X6/jp7h8/A9hLCqfQwYGa/RlrFyIxrL98hMb4eYNyrppxEjO8QWYCEMulD5kMKfW6TWWcLJiqcHzYTj//98FU4wXM23GNqc2ypvg0Y79z6eSqAWQlICsaJTx2Z9kV1EMMSIao871x01XPoN9pPQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR02MB4140.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFTY:;
- SFS:(346002)(366004)(396003)(136003)(376002)(39860400002)(6506007)(86362001)(71200400001)(4326008)(26005)(55016002)(52536014)(7696005)(186003)(64756008)(66556008)(66476007)(66446008)(76116006)(66946007)(5660300002)(8676002)(7366002)(7406005)(7416002)(2906002)(53546011)(83380400001)(316002)(110136005)(54906003)(33656002)(478600001)(8936002)(9686003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: yxDppt/H2ZM0nUizdJqLLgKHlViRAEOvc1OPAK+znjO+8f1XTKm7UWh30LQuj3xgaq7XNAbkoc1zF/IYumIg11lPBqod9GoYzN4x9WfO8oLqW1+Gd1YvC/wmpEx7tAcGq2i4l0fu+0mWZ3IRssqU7z0CQJibKFmWnM1L7GjAiAI3xvL+m8NYL9ePm0UaP8x7IbFpLqNolvIe9m7NgFD0MeCohqAkTrwuv5rxAvTan8Ca1fXRH2BbkwpX/lIifahd5/QpAUB4HsOlx4fPVl1Ijsqukd3nPh40irZfDqVI3BY8dy5jhc2Yza+ZjI7tM+IrKPLKOVJ0wokB6hs5JSzVRZQHIdDRalAS5yG1DpPrpqZXLtyd32kI70aTL0zoy1eOCayTjV6Mr6vIHMX5LeG1Edoj7QSYaF9kwwZGrYC/i/wGoNCP7N/wILfPhu6HDzUeL/3pZpKajfyTJ8Mt4zUQuJw/WMj2mZyP6L3x0mMHX70kBDp0OVOYnY2PLd3jqQng
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2b9F53tLzDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 22:30:09 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 069C14rr083295; Thu, 9 Jul 2020 08:29:59 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 325ktsrtun-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Jul 2020 08:29:59 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 069CCJWI023681;
+ Thu, 9 Jul 2020 12:29:58 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 325k1vgweu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Jul 2020 12:29:57 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 069CSXTE56426992
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Jul 2020 12:28:33 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DA8934203F;
+ Thu,  9 Jul 2020 12:29:54 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D943E42041;
+ Thu,  9 Jul 2020 12:29:52 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.49.147])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Jul 2020 12:29:52 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au, mikey@neuling.org
+Subject: [PATCH] powerpc/watchpoint/ptrace: Introduce
+ PPC_DEBUG_FEATURE_DATA_BP_DAWR_ARCH_31
+Date: Thu,  9 Jul 2020 17:59:44 +0530
+Message-Id: <20200709122944.173744-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR02MB4140.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b99db2df-7741-4c88-9845-08d823fca72b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2020 11:38:51.4539 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zIfGVOCbBOp1mCjikYmTLat4R47fO8DM122rmCjbuAmLOkNMkzeszU/83YLFYmhoPdnI4mpER/bRNJrN1/HL/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR02MB3720
-X-Mailman-Approved-At: Thu, 09 Jul 2020 22:23:07 +1000
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-09_06:2020-07-09,
+ 2020-07-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ clxscore=1015 bulkscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007090093
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,126 +81,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- David Airlie <airlied@linux.ie>,
- "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
- "linux-fpga@vger.kernel.org" <linux-fpga@vger.kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- Paul Cercueil <paul@crapouillou.net>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
- Pavel Machek <pavel@ucw.cz>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Mihail Atanassov <mihail.atanassov@arm.com>,
- "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Masahiro Yamada <masahiroy@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Halil Pasic <pasic@linux.ibm.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- James Wang <james.qian.wang@arm.com>,
- "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
- Mali DP Maintainers <malidp@foss.arm.com>, Wu Hao <hao.wu@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>,
- "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
- Hannes Reinecke <hare@suse.com>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>,
- "linux-mm@vger.kernel.org" <linux-mm@vger.kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Pierre Morel <pmorel@linux.ibm.com>, Douglas Anderson <dianders@chromium.org>,
- Wolfram Sang <wsa@kernel.org>, Derek Kiernan <dkiernan@xilinx.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
+Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org, pedromfc@br.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+PPC_DEBUG_FEATURE_DATA_BP_DAWR_ARCH_31 can be used to determine
+whether we are running on an ISA 3.1 compliant machine. Which is
+needed to determine DAR behaviour, 512 byte boundary limit etc.
+This was requested by Pedro Miraglia Franco de Carvalho for
+extending watchpoint features in gdb. Note that availability of
+2nd DAWR is independent of this flag and should be checked using
+ppc_debug_info->num_data_bps.
 
-> -----Original Message-----
-> From: Randy Dunlap <rdunlap@infradead.org>
-> Sent: Tuesday 7 July 2020 19:04
-> To: linux-kernel@vger.kernel.org
-> Cc: Randy Dunlap <rdunlap@infradead.org>; Jonathan Corbet <corbet@lwn.net=
->; linux-doc@vger.kernel.org; linux-
-> mm@vger.kernel.org; Mike Rapoport <rppt@kernel.org>; Jens Axboe <axboe@ke=
-rnel.dk>; linux-block@vger.kernel.org; Jason
-> Wessel <jason.wessel@windriver.com>; Daniel Thompson <daniel.thompson@lin=
-aro.org>; Douglas Anderson
-> <dianders@chromium.org>; kgdb-bugreport@lists.sourceforge.net; Wu Hao <ha=
-o.wu@intel.com>; linux-fpga@vger.kernel.org;
-> James Wang <james.qian.wang@arm.com>; Liviu Dudau <liviu.dudau@arm.com>; =
-Mihail Atanassov <mihail.atanassov@arm.com>;
-> Mali DP Maintainers <malidp@foss.arm.com>; David Airlie <airlied@linux.ie=
->; Daniel Vetter <daniel@ffwll.ch>; dri-
-> devel@lists.freedesktop.org; Srinivas Pandruvada <srinivas.pandruvada@lin=
-ux.intel.com>; Jiri Kosina <jikos@kernel.org>; linux-
-> input@vger.kernel.org; Wolfram Sang <wsa@kernel.org>; linux-i2c@vger.kern=
-el.org; Masahiro Yamada <masahiroy@kernel.org>;
-> Michal Marek <michal.lkml@markovi.net>; linux-kbuild@vger.kernel.org; Jac=
-ek Anaszewski <jacek.anaszewski@gmail.com>; Pavel
-> Machek <pavel@ucw.cz>; Dan Murphy <dmurphy@ti.com>; linux-leds@vger.kerne=
-l.org; Dan Williams <dan.j.williams@intel.com>;
-> Paul Cercueil <paul@crapouillou.net>; Thomas Bogendoerfer <tsbogend@alpha=
-.franken.de>; linux-mips@vger.kernel.org; Derek
-> Kiernan <dkiernan@xilinx.com>; Dragan Cvetic <draganc@xilinx.com>; Michae=
-l Ellerman <mpe@ellerman.id.au>; Benjamin
-> Herrenschmidt <benh@kernel.crashing.org>; Paul Mackerras <paulus@samba.or=
-g>; linuxppc-dev@lists.ozlabs.org; Tony Krowiak
-> <akrowiak@linux.ibm.com>; Pierre Morel <pmorel@linux.ibm.com>; Halil Pasi=
-c <pasic@linux.ibm.com>; linux-s390@vger.kernel.org;
-> Matthew Wilcox <willy@infradead.org>; Hannes Reinecke <hare@suse.com>; li=
-nux-scsi@vger.kernel.org; James E.J. Bottomley
-> <jejb@linux.ibm.com>; Martin K. Petersen <martin.petersen@oracle.com>; Ja=
-rkko Sakkinen <jarkko.sakkinen@linux.intel.com>;
-> Mimi Zohar <zohar@linux.ibm.com>; linux-integrity@vger.kernel.org; keyrin=
-gs@vger.kernel.org; Paolo Bonzini
-> <pbonzini@redhat.com>; kvm@vger.kernel.org; Andrew Morton <akpm@linux-fou=
-ndation.org>
-> Subject: [PATCH 14/20] Documentation: misc/xilinx_sdfec: eliminate duplic=
-ated word
->=20
-> Drop the doubled word "the".
->=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Derek Kiernan <derek.kiernan@xilinx.com>
-> Cc: Dragan Cvetic <dragan.cvetic@xilinx.com>
-> ---
->  Documentation/misc-devices/xilinx_sdfec.rst |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> --- linux-next-20200701.orig/Documentation/misc-devices/xilinx_sdfec.rst
-> +++ linux-next-20200701/Documentation/misc-devices/xilinx_sdfec.rst
-> @@ -78,7 +78,7 @@ application interfaces:
->    - open: Implements restriction that only a single file descriptor can =
-be open per SD-FEC instance at any time
->    - release: Allows another file descriptor to be open, that is after cu=
-rrent file descriptor is closed
->    - poll: Provides a method to monitor for SD-FEC Error events
-> -  - unlocked_ioctl: Provides the the following ioctl commands that allow=
-s the application configure the SD-FEC core:
-> +  - unlocked_ioctl: Provides the following ioctl commands that allows th=
-e application configure the SD-FEC core:
->=20
->  		- :c:macro:`XSDFEC_START_DEV`
->  		- :c:macro:`XSDFEC_STOP_DEV`
+Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+---
+ arch/powerpc/include/uapi/asm/ptrace.h    | 1 +
+ arch/powerpc/kernel/ptrace/ptrace-noadv.c | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-Acked-by: Dragan Cvetic <dragan.cvetic@xilinx.com>
-Thanks Randy
+diff --git a/arch/powerpc/include/uapi/asm/ptrace.h b/arch/powerpc/include/uapi/asm/ptrace.h
+index f5f1ccc740fc..0a87bcd4300a 100644
+--- a/arch/powerpc/include/uapi/asm/ptrace.h
++++ b/arch/powerpc/include/uapi/asm/ptrace.h
+@@ -222,6 +222,7 @@ struct ppc_debug_info {
+ #define PPC_DEBUG_FEATURE_DATA_BP_RANGE		0x0000000000000004
+ #define PPC_DEBUG_FEATURE_DATA_BP_MASK		0x0000000000000008
+ #define PPC_DEBUG_FEATURE_DATA_BP_DAWR		0x0000000000000010
++#define PPC_DEBUG_FEATURE_DATA_BP_DAWR_ARCH_31	0x0000000000000020
+ 
+ #ifndef __ASSEMBLY__
+ 
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-noadv.c b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+index 697c7e4b5877..b2de874d650b 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-noadv.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+@@ -52,8 +52,11 @@ void ppc_gethwdinfo(struct ppc_debug_info *dbginfo)
+ 	dbginfo->sizeof_condition = 0;
+ 	if (IS_ENABLED(CONFIG_HAVE_HW_BREAKPOINT)) {
+ 		dbginfo->features = PPC_DEBUG_FEATURE_DATA_BP_RANGE;
+-		if (dawr_enabled())
++		if (dawr_enabled()) {
+ 			dbginfo->features |= PPC_DEBUG_FEATURE_DATA_BP_DAWR;
++			if (cpu_has_feature(CPU_FTR_ARCH_31))
++				dbginfo->features |= PPC_DEBUG_FEATURE_DATA_BP_DAWR_ARCH_31;
++		}
+ 	} else {
+ 		dbginfo->features = 0;
+ 	}
+-- 
+2.26.2
 
-Dragan
