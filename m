@@ -1,78 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E33B21A0EF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 15:32:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A6F21A0FC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 15:35:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2cY70RhyzDqV4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 23:32:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2ccj4Lq6zDqVr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 23:35:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
+ envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
+ header.s=default header.b=hFI1/gof; dkim-atps=neutral
+Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2cGb0St5zDr7G
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 23:19:50 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 069D5FXk133384; Thu, 9 Jul 2020 09:19:47 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 325k3rkerg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Jul 2020 09:19:46 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 069DEX1s021846;
- Thu, 9 Jul 2020 13:19:45 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04wdc.us.ibm.com with ESMTP id 325k246dvs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Jul 2020 13:19:45 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 069DJix516187720
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Jul 2020 13:19:44 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 49EF913605D;
- Thu,  9 Jul 2020 13:19:44 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B278A13604F;
- Thu,  9 Jul 2020 13:19:42 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.62.107])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  9 Jul 2020 13:19:42 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v3 4/4] powerpc/mm/radix: Create separate mappings for
- hot-plugged memory
-Date: Thu,  9 Jul 2020 18:49:25 +0530
-Message-Id: <20200709131925.922266-5-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
-References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2cZF2fHqzDqND
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 23:33:24 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 295322874B2;
+ Thu,  9 Jul 2020 09:33:19 -0400 (EDT)
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id 9IWcHfoPOYvy; Thu,  9 Jul 2020 09:33:18 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id B0BFA2871EB;
+ Thu,  9 Jul 2020 09:33:18 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com B0BFA2871EB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1594301598;
+ bh=6O37I+s8mJ/TGzUJ9xz8tYWI2QXNKfxpO1/8v2v/gNU=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=hFI1/gofvSvEqSIE7dgZrPFTRAGcfoeh/9uJxdV+8SIDADRHxuiTV75QmgYuMdGOF
+ xzYk5FLQamshypGUCpSx4pPwEaxK8H67L0UUi3L9pP49OgqmSFu+yq4cLNy3RnriDj
+ bUfvHvlSMfXAn8VJGyGnj1pNlJ/hzWRfrfkkudIHT+v41xEB7sDG1sZ65sq8ihGCR0
+ x3C7nFPFyhEoXNR+GlBoWbiPVIZJK973Moqu20Ob2eLpBhKnh5DJUnP2H1XwYgUuMg
+ 7WekeUHDY/GRNQ3OknelC0p6mEwq+HQjsBILL2mjIAq0K1VTHgP7s5oBsKgir0Rzbq
+ uPictiWYKYRAw==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id cM3VRQ6HP3dl; Thu,  9 Jul 2020 09:33:18 -0400 (EDT)
+Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
+ by mail.efficios.com (Postfix) with ESMTP id A4DC72871EA;
+ Thu,  9 Jul 2020 09:33:18 -0400 (EDT)
+Date: Thu, 9 Jul 2020 09:33:18 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Message-ID: <429958629.6348.1594301598584.JavaMail.zimbra@efficios.com>
+In-Reply-To: <20200709001003.GB3598@gate.crashing.org>
+References: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
+ <20200708005922.GW3598@gate.crashing.org>
+ <841816533.1735.1594211583710.JavaMail.zimbra@efficios.com>
+ <1623833219.1877.1594216801865.JavaMail.zimbra@efficios.com>
+ <20200709001003.GB3598@gate.crashing.org>
+Subject: Re: Failure to build librseq on ppc
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-09_07:2020-07-09,
- 2020-07-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 mlxlogscore=999
- bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0 impostorscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007090100
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [167.114.26.124]
+X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
+Thread-Topic: Failure to build librseq on ppc
+Thread-Index: ftMGuAIpjiHhC82GKDkP+XliiNN/4Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,236 +78,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Bharata B Rao <bharata@linux.ibm.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Michael Jeanson <mjeanson@efficios.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To enable memory unplug without splitting kernel page table
-mapping, we force the max mapping size to the LMB size. LMB
-size is the unit in which hypervisor will do memory add/remove
-operation.
+----- On Jul 8, 2020, at 8:10 PM, Segher Boessenkool segher@kernel.crashing.org wrote:
 
-Pseries systems supports max LMB size of 256MB. Hence on pseries,
-we now end up mapping memory with 2M page size instead of 1G. To improve
-that we want hypervisor to hint the kernel about the hotplug
-memory range. That was added that as part of
+> Hi!
+> 
+> On Wed, Jul 08, 2020 at 10:00:01AM -0400, Mathieu Desnoyers wrote:
+[...]
+> 
+>> -#define STORE_WORD     "std "
+>> -#define LOAD_WORD      "ld "
+>> -#define LOADX_WORD     "ldx "
+>> +#define STORE_WORD(arg)        "std%U[" __rseq_str(arg) "]%X[" __rseq_str(arg)
+>> "] "    /* To memory ("m" constraint) */
+>> +#define LOAD_WORD(arg) "lwd%U[" __rseq_str(arg) "]%X[" __rseq_str(arg) "] "
+>> /* From memory ("m" constraint) */
+> 
+> That cannot work (you typoed "ld" here).
 
-commit b6eca183e23e ("powerpc/kernel: Enables memory
-hot-remove after reboot on pseries guests")
+Indeed, I noticed it before pushing to master (lwd -> ld).
 
-But PowerVM doesn't provide that hint yet. Once we get PowerVM
-updated, we can then force the 2M mapping only to hot-pluggable
-memory region using memblock_is_hotpluggable(). Till then
-let's depend on LMB size for finding the mapping page size
-for linear range.
+> 
+> Some more advice about this code, pretty generic stuff:
 
-With this change KVM guest will also be doing linear mapping with
-2M page size.
+Let's take an example to support the discussion here. I'm taking it from
+master branch (after a cleanup changing e.g. LOAD_WORD into RSEQ_LOAD_LONG).
+So for powerpc32 we have (code edited to remove testing instrumentation):
 
-The actual TLB benefit of mapping guest page table entries with
-hugepage size can only be materialized if the partition scoped
-entries are also using the same or higher page size. A guest using
-1G hugetlbfs backing guest memory can have a performance impact with
-the above change.
+#define __rseq_str_1(x) #x
+#define __rseq_str(x)           __rseq_str_1(x)
 
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/book3s/64/mmu.h |  5 ++
- arch/powerpc/mm/book3s64/radix_pgtable.c | 81 ++++++++++++++++++++----
- arch/powerpc/platforms/powernv/setup.c   | 10 ++-
- 3 files changed, 84 insertions(+), 12 deletions(-)
+#define RSEQ_STORE_LONG(arg)    "stw%U[" __rseq_str(arg) "]%X[" __rseq_str(arg) "] "    /* To memory ("m" constraint) */
+#define RSEQ_STORE_INT(arg)     RSEQ_STORE_LONG(arg)                                    /* To memory ("m" constraint) */
+#define RSEQ_LOAD_LONG(arg)     "lwz%U[" __rseq_str(arg) "]%X[" __rseq_str(arg) "] "    /* From memory ("m" constraint) */
+#define RSEQ_LOAD_INT(arg)      RSEQ_LOAD_LONG(arg)                                     /* From memory ("m" constraint) */
+#define RSEQ_LOADX_LONG         "lwzx "                                                 /* From base register ("b" constraint) */
+#define RSEQ_CMP_LONG           "cmpw "
 
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index 5393a535240c..15aae924f41c 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -82,6 +82,11 @@ extern unsigned int mmu_pid_bits;
- /* Base PID to allocate from */
- extern unsigned int mmu_base_pid;
- 
-+/*
-+ * memory block size used with radix translation.
-+ */
-+extern unsigned int __ro_after_init radix_mem_block_size;
-+
- #define PRTB_SIZE_SHIFT	(mmu_pid_bits + 4)
- #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
- 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index d5a01b9aadc9..bba45fc0b7b2 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -15,6 +15,7 @@
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/string_helpers.h>
-+#include <linux/memory.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/mmu_context.h>
-@@ -33,6 +34,7 @@
- 
- unsigned int mmu_pid_bits;
- unsigned int mmu_base_pid;
-+unsigned int radix_mem_block_size __ro_after_init;
- 
- static __ref void *early_alloc_pgtable(unsigned long size, int nid,
- 			unsigned long region_start, unsigned long region_end)
-@@ -265,6 +267,7 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
- 
- static int __meminit create_physical_mapping(unsigned long start,
- 					     unsigned long end,
-+					     unsigned long max_mapping_size,
- 					     int nid, pgprot_t _prot)
- {
- 	unsigned long vaddr, addr, mapping_size = 0;
-@@ -278,6 +281,8 @@ static int __meminit create_physical_mapping(unsigned long start,
- 		int rc;
- 
- 		gap = next_boundary(addr, end) - addr;
-+		if (gap > max_mapping_size)
-+			gap = max_mapping_size;
- 		previous_size = mapping_size;
- 		prev_exec = exec;
- 
-@@ -328,8 +333,9 @@ static void __init radix_init_pgtable(void)
- 
- 	/* We don't support slb for radix */
- 	mmu_slb_size = 0;
-+
- 	/*
--	 * Create the linear mapping, using standard page size for now
-+	 * Create the linear mapping
- 	 */
- 	for_each_memblock(memory, reg) {
- 		/*
-@@ -345,6 +351,7 @@ static void __init radix_init_pgtable(void)
- 
- 		WARN_ON(create_physical_mapping(reg->base,
- 						reg->base + reg->size,
-+						radix_mem_block_size,
- 						-1, PAGE_KERNEL));
- 	}
- 
-@@ -485,6 +492,47 @@ static int __init radix_dt_scan_page_sizes(unsigned long node,
- 	return 1;
- }
- 
-+static int __init probe_memory_block_size(unsigned long node, const char *uname, int
-+					  depth, void *data)
-+{
-+	unsigned long *mem_block_size = (unsigned long *)data;
-+	const __be64 *prop;
-+	int len;
-+
-+	if (depth != 1)
-+		return 0;
-+
-+	if (strcmp(uname, "ibm,dynamic-reconfiguration-memory"))
-+		return 0;
-+
-+	prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
-+	if (!prop || len < sizeof(__be64))
-+		/*
-+		 * Nothing in the device tree
-+		 */
-+		*mem_block_size = MIN_MEMORY_BLOCK_SIZE;
-+	else
-+		*mem_block_size = be64_to_cpup(prop);
-+	return 1;
-+}
-+
-+static unsigned long radix_memory_block_size(void)
-+{
-+	unsigned long mem_block_size = MIN_MEMORY_BLOCK_SIZE;
-+
-+	/*
-+	 * OPAL firmware feature is set by now. Hence we are ok
-+	 * to test OPAL feature.
-+	 */
-+	if (firmware_has_feature(FW_FEATURE_OPAL))
-+		mem_block_size = 1UL * 1024 * 1024 * 1024;
-+	else
-+		of_scan_flat_dt(probe_memory_block_size, &mem_block_size);
-+
-+	return mem_block_size;
-+}
-+
-+
- void __init radix__early_init_devtree(void)
- {
- 	int rc;
-@@ -493,17 +541,27 @@ void __init radix__early_init_devtree(void)
- 	 * Try to find the available page sizes in the device-tree
- 	 */
- 	rc = of_scan_flat_dt(radix_dt_scan_page_sizes, NULL);
--	if (rc != 0)  /* Found */
--		goto found;
-+	if (!rc) {
-+		/*
-+		 * No page size details found in device tree.
-+		 * Let's assume we have page 4k and 64k support
-+		 */
-+		mmu_psize_defs[MMU_PAGE_4K].shift = 12;
-+		mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
-+
-+		mmu_psize_defs[MMU_PAGE_64K].shift = 16;
-+		mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
-+	}
-+
- 	/*
--	 * let's assume we have page 4k and 64k support
-+	 * Max mapping size used when mapping pages. We don't use
-+	 * ppc_md.memory_block_size() here because this get called
-+	 * early and we don't have machine probe called yet. Also
-+	 * the pseries implementation only check for ibm,lmb-size.
-+	 * All hypervisor supporting radix do expose that device
-+	 * tree node.
- 	 */
--	mmu_psize_defs[MMU_PAGE_4K].shift = 12;
--	mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
--
--	mmu_psize_defs[MMU_PAGE_64K].shift = 16;
--	mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
--found:
-+	radix_mem_block_size = radix_memory_block_size();
- 	return;
- }
- 
-@@ -855,7 +913,8 @@ int __meminit radix__create_section_mapping(unsigned long start,
- 		return -1;
- 	}
- 
--	return create_physical_mapping(__pa(start), __pa(end), nid, prot);
-+	return create_physical_mapping(__pa(start), __pa(end),
-+				       radix_mem_block_size, nid, prot);
- }
- 
- int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
-diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 3bc188da82ba..7fcb88623081 100644
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -399,7 +399,15 @@ static void pnv_kexec_cpu_down(int crash_shutdown, int secondary)
- #ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
- static unsigned long pnv_memory_block_size(void)
- {
--	return 256UL * 1024 * 1024;
-+	/*
-+	 * We map the kernel linear region with 1GB large pages on radix. For
-+	 * memory hot unplug to work our memory block size must be at least
-+	 * this size.
-+	 */
-+	if (radix_enabled())
-+		return radix_mem_block_size;
-+	else
-+		return 256UL * 1024 * 1024;
- }
- #endif
- 
+#define __RSEQ_ASM_DEFINE_TABLE(label, version, flags,                          \
+                        start_ip, post_commit_offset, abort_ip)                 \
+                ".pushsection __rseq_cs, \"aw\"\n\t"                            \
+                ".balign 32\n\t"                                                \
+                __rseq_str(label) ":\n\t"                                       \
+                ".long " __rseq_str(version) ", " __rseq_str(flags) "\n\t"      \
+                /* 32-bit only supported on BE */                               \
+                ".long 0x0, " __rseq_str(start_ip) ", 0x0, " __rseq_str(post_commit_offset) ", 0x0, " __rseq_str(abort_ip) "\n\t" \
+                ".popsection\n\t"                                       \
+                ".pushsection __rseq_cs_ptr_array, \"aw\"\n\t"          \
+                ".long 0x0, " __rseq_str(label) "b\n\t"                 \
+                ".popsection\n\t"
+
+/*
+ * Exit points of a rseq critical section consist of all instructions outside
+ * of the critical section where a critical section can either branch to or
+ * reach through the normal course of its execution. The abort IP and the
+ * post-commit IP are already part of the __rseq_cs section and should not be
+ * explicitly defined as additional exit points. Knowing all exit points is
+ * useful to assist debuggers stepping over the critical section.
+ */
+#define RSEQ_ASM_DEFINE_EXIT_POINT(start_ip, exit_ip)                           \
+                ".pushsection __rseq_exit_point_array, \"aw\"\n\t"              \
+                /* 32-bit only supported on BE */                               \
+                ".long 0x0, " __rseq_str(start_ip) ", 0x0, " __rseq_str(exit_ip) "\n\t" \
+                ".popsection\n\t"
+
+#define RSEQ_ASM_STORE_RSEQ_CS(label, cs_label, rseq_cs)                        \
+                "lis %%r17, (" __rseq_str(cs_label) ")@ha\n\t"                  \
+                "addi %%r17, %%r17, (" __rseq_str(cs_label) ")@l\n\t"           \
+                RSEQ_STORE_INT(rseq_cs) "%%r17, %[" __rseq_str(rseq_cs) "]\n\t" \
+                __rseq_str(label) ":\n\t"
+
+#define RSEQ_ASM_DEFINE_TABLE(label, start_ip, post_commit_ip, abort_ip)        \
+                __RSEQ_ASM_DEFINE_TABLE(label, 0x0, 0x0, start_ip,              \
+                                        (post_commit_ip - start_ip), abort_ip)
+
+#define RSEQ_ASM_CMP_CPU_ID(cpu_id, current_cpu_id, label)                      \
+                RSEQ_LOAD_INT(current_cpu_id) "%%r17, %[" __rseq_str(current_cpu_id) "]\n\t" \
+                "cmpw cr7, %[" __rseq_str(cpu_id) "], %%r17\n\t"                \
+                "bne- cr7, " __rseq_str(label) "\n\t"
+
+#define RSEQ_ASM_DEFINE_ABORT(label, abort_label)                               \
+                ".pushsection __rseq_failure, \"ax\"\n\t"                       \
+                ".long " __rseq_str(RSEQ_SIG) "\n\t"                            \
+                __rseq_str(label) ":\n\t"                                       \
+                "b %l[" __rseq_str(abort_label) "]\n\t"                         \
+                ".popsection\n\t"
+
+#define RSEQ_ASM_OP_CMPEQ(var, expect, label)                                   \
+                RSEQ_LOAD_LONG(var) "%%r17, %[" __rseq_str(var) "]\n\t"         \
+                RSEQ_CMP_LONG "cr7, %%r17, %[" __rseq_str(expect) "]\n\t"               \
+                "bne- cr7, " __rseq_str(label) "\n\t"
+
+#define RSEQ_ASM_OP_FINAL_STORE(value, var, post_commit_label)                  \
+                RSEQ_STORE_LONG(var) "%[" __rseq_str(value) "], %[" __rseq_str(var) "]\n\t" \
+                __rseq_str(post_commit_label) ":\n\t"
+
+static inline __attribute__((always_inline))
+int rseq_cmpeqv_storev(intptr_t *v, intptr_t expect, intptr_t newv, int cpu)
+{
+        __asm__ __volatile__ goto (
+                RSEQ_ASM_DEFINE_TABLE(3, 1f, 2f, 4f) /* start, commit, abort */
+                RSEQ_ASM_DEFINE_EXIT_POINT(1f, %l[cmpfail])
+
+                /* Start rseq by storing table entry pointer into rseq_cs. */
+                RSEQ_ASM_STORE_RSEQ_CS(1, 3b, rseq_cs)
+                /* cmp cpuid */
+                RSEQ_ASM_CMP_CPU_ID(cpu_id, current_cpu_id, 4f)
+                /* cmp @v equal to @expect */
+                RSEQ_ASM_OP_CMPEQ(v, expect, %l[cmpfail])
+
+                /* final store */
+                RSEQ_ASM_OP_FINAL_STORE(newv, v, 2)
+                RSEQ_ASM_DEFINE_ABORT(4, abort)
+
+                : /* gcc asm goto does not allow outputs */
+                : [cpu_id]              "r" (cpu),
+                  [current_cpu_id]      "m" (__rseq_abi.cpu_id),
+                  [rseq_cs]             "m" (__rseq_abi.rseq_cs),
+                  [v]                   "m" (*v),
+                  [expect]              "r" (expect),
+                  [newv]                "r" (newv)
+                : "memory", "cc", "r17"
+                : abort, cmpfail
+        );
+        return 0;
+abort:
+        RSEQ_INJECT_FAILED
+        return -1;
+cmpfail:
+        return 1;
+}
+
+> 
+> The way this all uses r17 will likely not work reliably.
+
+r17 is only used as a temporary register within the inline assembler, and it is
+in the clobber list. In which scenario would it not work reliably ?
+
+> The way multiple asm statements are used seems to have missing
+> dependencies between the statements.
+
+I'm not sure I follow here. Note that we are injecting the CPP macros into
+a single inline asm statement as strings.
+
+> 
+> Don't try to work *against* the compiler.  You will not win.
+> 
+> Alternatively, write assembler code, if that is what you actually want
+> to do?  Not C code.
+>
+> And done macro-mess this, you want to be able to debug it, and you need
+> other people to be able to read it!
+
+I understand that looking at macros can be cumbersome from the perspective
+of a reviewer only interested in a single architecture,
+
+However, from my perspective, as a maintainer who must maintain similar code
+for x86 32/64, powerpc 32/64, arm, aarch64, s390, s390x, mips 32/64, and likely
+other architectures in the future, the macros abstracting 32-bit and 64-bit
+allow to eliminate code duplication for each architecture with 32-bit and 64-bit
+variants, which is better for maintainability.
+
+Thanks,
+
+Mathieu
+
 -- 
-2.26.2
-
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
