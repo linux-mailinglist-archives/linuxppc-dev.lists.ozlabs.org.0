@@ -2,65 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37DB21A3CE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 17:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AB021A464
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 18:08:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2gFS4fLnzDrCQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 01:34:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2h0x395TzDqF1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 02:08:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.82;
- helo=conssluserg-03.nifty.com; envelope-from=masahiroy@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=longman@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=XzW+BQ/J; 
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=VouPM7Fb; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=E/pZW+Fu; 
  dkim-atps=neutral
-Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
- [210.131.2.82])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2gCH3W0XzDr95
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 01:32:10 +1000 (AEST)
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com
- [209.85.219.179]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id 069FVmfG015335
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 00:31:49 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 069FVmfG015335
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1594308709;
- bh=OtxKPGTO/pZbwYh7E0pVV6aQCW7rvgzMKyprc/l7uvw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=XzW+BQ/JSn+dV64V8fqNHJK+OdIyiLSnfnsrK6xtIhY738jFwF18rBafhnhFMTIjq
- It/Z7XU0oM8JfclHnU+t80A1fUpjloOc4MZzb/b0jhxlre9ReCB4/JOtR367Z824ab
- sIGKVYQyJRh3ZFwXzZpqWSd2ynbGJ2X/OcmdyyYc8G/5SLM6qHGC4vzaH7S4QmdvRx
- +Ff/LkThpBaC0qs07UgJZ+Tz6WT0buGdUZidykrBcEhPMk6ezn6iv7yDqPf83o149l
- f96C3Xqo+fe3xx9/S3nmjSlOkr5w+hvhSr2NyZKXzOhexLVbZtLNeLGbT4uQnE1f2f
- qrqlu6fGfiR2Q==
-X-Nifty-SrcIP: [209.85.219.179]
-Received: by mail-yb1-f179.google.com with SMTP id 187so1228690ybq.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jul 2020 08:31:48 -0700 (PDT)
-X-Gm-Message-State: AOAM531itlsDIjuTc7kGyYBQRTebXjQsyHgf5Q3G2luPs+JJSrI6K3ZH
- wBe1N9eqCPKoqkvMtNLBDXBsM3ikezNEhh0Cnlg=
-X-Google-Smtp-Source: ABdhPJxAnxTJNTtnQtFovYQkrUal1o80dMPa969JqVz6oQaG8jBDcy1jbc08IXGNVNtiEaHsg2cPflWUKNAmtElJid0=
-X-Received: by 2002:ab0:71d3:: with SMTP id n19mr46109137uao.25.1594308707342; 
- Thu, 09 Jul 2020 08:31:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2gym6MvNzDrBB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 02:06:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594310781;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5OfLVV9ee+e3aH9dIq9Uyj1RNa4dEfM45FxDPLW9s5s=;
+ b=VouPM7FbUzs9gAvBps3AW8ZmnsDwQgQo9pnbA5ZoYBHiD9gaaSrTVpDAncetij5vwL4lfa
+ rvYFwEnsy+6yO6GT/Qutv5Z35dfuKQeQW9rK1MSH16vGqLxaFugeGexsgEpKdzlvjlsn29
+ qH7qsXH5oPYNKo35csE34+PbASG2EwE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594310782;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5OfLVV9ee+e3aH9dIq9Uyj1RNa4dEfM45FxDPLW9s5s=;
+ b=E/pZW+FuBVQbuTPLMgzH8HPiw81x33kKfJcq/LbvvQGC8ZsW4ZrEmNRZGumXjC0Ip7Sq2B
+ bObzC2qvsGcFYGqL2d9G8vWJ823n1JQH/TxuvJjQIUr0/o6CAww/ZZapeBTN6DCMY3W8AG
+ 4gahUNTSS4jEdmLJlnF87s1AURgsCMM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-378-3cdqq7fgOK-wggAAqi1Q3w-1; Thu, 09 Jul 2020 12:06:17 -0400
+X-MC-Unique: 3cdqq7fgOK-wggAAqi1Q3w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 83A94100AA21;
+ Thu,  9 Jul 2020 16:06:15 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-120-122.rdu2.redhat.com [10.10.120.122])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CB60179CE7;
+ Thu,  9 Jul 2020 16:06:13 +0000 (UTC)
+Subject: Re: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks for
+ SPLPAR
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <20200706043540.1563616-6-npiggin@gmail.com>
+ <874kqhvu1v.fsf@mpe.ellerman.id.au>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
+Date: Thu, 9 Jul 2020 12:06:13 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-References: <20200707180414.10467-1-rdunlap@infradead.org>
- <20200707180414.10467-11-rdunlap@infradead.org>
-In-Reply-To: <20200707180414.10467-11-rdunlap@infradead.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 10 Jul 2020 00:31:10 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQB6DCw3CZyViCOWCZURfHQKm2JFx0Ypfhai9ecX6T9GQ@mail.gmail.com>
-Message-ID: <CAK7LNAQB6DCw3CZyViCOWCZURfHQKm2JFx0Ypfhai9ecX6T9GQ@mail.gmail.com>
-Subject: Re: [PATCH 10/20] Documentation: kbuild/kconfig-language: eliminate
- duplicated word
-To: Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <874kqhvu1v.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,86 +90,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
- linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Douglas Anderson <dianders@chromium.org>, Paul Cercueil <paul@crapouillou.net>,
- keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-i2c@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
- linux-s390 <linux-s390@vger.kernel.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- linux-scsi <linux-scsi@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Matthew Wilcox <willy@infradead.org>, Halil Pasic <pasic@linux.ibm.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
- Mali DP Maintainers <malidp@foss.arm.com>,
- Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
- Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
- Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Pierre Morel <pmorel@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
+Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 8, 2020 at 3:06 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+On 7/9/20 6:53 AM, Michael Ellerman wrote:
+> Nicholas Piggin <npiggin@gmail.com> writes:
 >
-> Drop the doubled word "the".
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   arch/powerpc/include/asm/paravirt.h           | 28 ++++++++
+>>   arch/powerpc/include/asm/qspinlock.h          | 66 +++++++++++++++++++
+>>   arch/powerpc/include/asm/qspinlock_paravirt.h |  7 ++
+>>   arch/powerpc/platforms/pseries/Kconfig        |  5 ++
+>>   arch/powerpc/platforms/pseries/setup.c        |  6 +-
+>>   include/asm-generic/qspinlock.h               |  2 +
+> Another ack?
 >
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Masahiro Yamada <masahiroy@kernel.org>
+I am OK with adding the #ifdef around queued_spin_lock().
 
+Acked-by: Waiman Long <longman@redhat.com>
 
-
-I guess this series will go in via the doc sub-system.
-
-If so, please feel free to add:
-
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-
-
-
-
-
-
-> Cc: Michal Marek <michal.lkml@markovi.net>
-> Cc: linux-kbuild@vger.kernel.org
-> ---
->  Documentation/kbuild/kconfig-language.rst |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+>> index 7a8546660a63..f2d51f929cf5 100644
+>> --- a/arch/powerpc/include/asm/paravirt.h
+>> +++ b/arch/powerpc/include/asm/paravirt.h
+>> @@ -45,6 +55,19 @@ static inline void yield_to_preempted(int cpu, u32 yield_count)
+>>   {
+>>   	___bad_yield_to_preempted(); /* This would be a bug */
+>>   }
+>> +
+>> +extern void ___bad_yield_to_any(void);
+>> +static inline void yield_to_any(void)
+>> +{
+>> +	___bad_yield_to_any(); /* This would be a bug */
+>> +}
+> Why do we do that rather than just not defining yield_to_any() at all
+> and letting the build fail on that?
 >
-> --- linux-next-20200701.orig/Documentation/kbuild/kconfig-language.rst
-> +++ linux-next-20200701/Documentation/kbuild/kconfig-language.rst
-> @@ -681,7 +681,7 @@ translate Kconfig logic into boolean for
->  find dead code / features (always inactive), 114 dead features were found in
->  Linux using this methodology [1]_ (Section 8: Threats to validity).
+> There's a condition somewhere that we know will false at compile time
+> and drop the call before linking?
 >
-> -Confirming this could prove useful as Kconfig stands as one of the the leading
-> +Confirming this could prove useful as Kconfig stands as one of the leading
->  industrial variability modeling languages [1]_ [2]_. Its study would help
->  evaluate practical uses of such languages, their use was only theoretical
->  and real world requirements were not well understood. As it stands though
+>> diff --git a/arch/powerpc/include/asm/qspinlock_paravirt.h b/arch/powerpc/include/asm/qspinlock_paravirt.h
+>> new file mode 100644
+>> index 000000000000..750d1b5e0202
+>> --- /dev/null
+>> +++ b/arch/powerpc/include/asm/qspinlock_paravirt.h
+>> @@ -0,0 +1,7 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+>> +#ifndef __ASM_QSPINLOCK_PARAVIRT_H
+>> +#define __ASM_QSPINLOCK_PARAVIRT_H
+> _ASM_POWERPC_QSPINLOCK_PARAVIRT_H please.
+>
+>> +
+>> +EXPORT_SYMBOL(__pv_queued_spin_unlock);
+> Why's that in a header? Should that (eventually) go with the generic implementation?
+The PV qspinlock implementation is not that generic at the moment. Even 
+though native qspinlock is used by a number of archs, PV qspinlock is 
+only currently used in x86. This is certainly an area that needs 
+improvement.
+>> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+>> index 24c18362e5ea..756e727b383f 100644
+>> --- a/arch/powerpc/platforms/pseries/Kconfig
+>> +++ b/arch/powerpc/platforms/pseries/Kconfig
+>> @@ -25,9 +25,14 @@ config PPC_PSERIES
+>>   	select SWIOTLB
+>>   	default y
+>>   
+>> +config PARAVIRT_SPINLOCKS
+>> +	bool
+>> +	default n
+> default n is the default.
+>
+>> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+>> index 2db8469e475f..747a203d9453 100644
+>> --- a/arch/powerpc/platforms/pseries/setup.c
+>> +++ b/arch/powerpc/platforms/pseries/setup.c
+>> @@ -771,8 +771,12 @@ static void __init pSeries_setup_arch(void)
+>>   	if (firmware_has_feature(FW_FEATURE_LPAR)) {
+>>   		vpa_init(boot_cpuid);
+>>   
+>> -		if (lppaca_shared_proc(get_lppaca()))
+>> +		if (lppaca_shared_proc(get_lppaca())) {
+>>   			static_branch_enable(&shared_processor);
+>> +#ifdef CONFIG_PARAVIRT_SPINLOCKS
+>> +			pv_spinlocks_init();
+>> +#endif
+>> +		}
+> We could avoid the ifdef with this I think?
+>
+> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
+> index 434615f1d761..6ec72282888d 100644
+> --- a/arch/powerpc/include/asm/spinlock.h
+> +++ b/arch/powerpc/include/asm/spinlock.h
+> @@ -10,5 +10,9 @@
+>   #include <asm/simple_spinlock.h>
+>   #endif
+>
+> +#ifndef CONFIG_PARAVIRT_SPINLOCKS
+> +static inline void pv_spinlocks_init(void) { }
+> +#endif
+> +
+>   #endif /* __KERNEL__ */
+>   #endif /* __ASM_SPINLOCK_H */
+>
+>
+> cheers
+>
+We don't really need to do a pv_spinlocks_init() if pv_kick() isn't 
+supported.
 
+Cheers,
+Longman
 
-
---
-Best Regards
-Masahiro Yamada
