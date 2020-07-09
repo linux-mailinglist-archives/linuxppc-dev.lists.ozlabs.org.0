@@ -1,62 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F3921A0E6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 15:30:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E33B21A0EF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 15:32:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2cVJ5cyKzDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 23:30:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2cY70RhyzDqV4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 23:32:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2cGY2f97zDr6t
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 23:19:49 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2cGb0St5zDr7G
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 23:19:50 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 069D2Und010170; Thu, 9 Jul 2020 09:19:44 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 325n5xqu5f-1
+ 069D5FXk133384; Thu, 9 Jul 2020 09:19:47 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 325k3rkerg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Jul 2020 09:19:44 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 069DFVrA022087;
- Thu, 9 Jul 2020 13:19:43 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma03dal.us.ibm.com with ESMTP id 325k1mr17g-1
+ Thu, 09 Jul 2020 09:19:46 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 069DEX1s021846;
+ Thu, 9 Jul 2020 13:19:45 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma04wdc.us.ibm.com with ESMTP id 325k246dvs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Jul 2020 13:19:43 +0000
+ Thu, 09 Jul 2020 13:19:45 +0000
 Received: from b03ledav002.gho.boulder.ibm.com
  (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 069DJdFS31588672
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 069DJix516187720
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Jul 2020 13:19:39 GMT
+ Thu, 9 Jul 2020 13:19:44 GMT
 Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36CB213604F;
+ by IMSVA (Postfix) with ESMTP id 49EF913605D;
+ Thu,  9 Jul 2020 13:19:44 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B278A13604F;
  Thu,  9 Jul 2020 13:19:42 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B75A7136051;
- Thu,  9 Jul 2020 13:19:40 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.62.107])
  by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  9 Jul 2020 13:19:40 +0000 (GMT)
+ Thu,  9 Jul 2020 13:19:42 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v3 3/4] powerpc/mm/radix: Remove split_kernel_mapping()
-Date: Thu,  9 Jul 2020 18:49:24 +0530
-Message-Id: <20200709131925.922266-4-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v3 4/4] powerpc/mm/radix: Create separate mappings for
+ hot-plugged memory
+Date: Thu,  9 Jul 2020 18:49:25 +0530
+Message-Id: <20200709131925.922266-5-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
 References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
@@ -67,11 +68,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-09_07:2020-07-09,
  2020-07-09 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- suspectscore=2 bulkscore=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 mlxlogscore=999 clxscore=1015 phishscore=0 spamscore=0
- mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007090097
+ clxscore=1015 adultscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 mlxlogscore=999
+ bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007090100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,193 +84,235 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Bharata B Rao <bharata@linux.ibm.com>
+To enable memory unplug without splitting kernel page table
+mapping, we force the max mapping size to the LMB size. LMB
+size is the unit in which hypervisor will do memory add/remove
+operation.
 
-We split the page table mapping on memory unplug if the
-linear range was mapped with huge page mapping (for ex: 1G)
-The page table splitting code has a few issues:
+Pseries systems supports max LMB size of 256MB. Hence on pseries,
+we now end up mapping memory with 2M page size instead of 1G. To improve
+that we want hypervisor to hint the kernel about the hotplug
+memory range. That was added that as part of
 
-1. Recursive locking
---------------------
-Memory unplug path takes cpu_hotplug_lock and calls stop_machine()
-for splitting the mappings. However stop_machine() takes
-cpu_hotplug_lock again causing deadlock.
+commit b6eca183e23e ("powerpc/kernel: Enables memory
+hot-remove after reboot on pseries guests")
 
-2. BUG: sleeping function called from in_atomic() context
----------------------------------------------------------
-Memory unplug path (remove_pagetable) takes init_mm.page_table_lock
-spinlock and later calls stop_machine() which does wait_for_completion()
+But PowerVM doesn't provide that hint yet. Once we get PowerVM
+updated, we can then force the 2M mapping only to hot-pluggable
+memory region using memblock_is_hotpluggable(). Till then
+let's depend on LMB size for finding the mapping page size
+for linear range.
 
-3. Bad unlock unbalance
------------------------
-Memory unplug path takes init_mm.page_table_lock spinlock and calls
-stop_machine(). The stop_machine thread function runs in a different
-thread context (migration thread) which tries to release and reaquire
-ptl. Releasing ptl from a different thread than which acquired it
-causes bad unlock unbalance.
+With this change KVM guest will also be doing linear mapping with
+2M page size.
 
-These problems can be avoided if we avoid mapping hot-plugged memory
-with 1G mapping, thereby removing the need for splitting them during
-unplug. The kernel always make sure the minimum unplug request is
-SUBSECTION_SIZE for device memory and SECTION_SIZE for regular memory.
-
-In preparation for such a change remove page table splitting support.
-
-This essentially is a revert of
-commit 4dd5f8a99e791 ("powerpc/mm/radix: Split linear mapping on hot-unplug")
+The actual TLB benefit of mapping guest page table entries with
+hugepage size can only be materialized if the partition scoped
+entries are also using the same or higher page size. A guest using
+1G hugetlbfs backing guest memory can have a performance impact with
+the above change.
 
 Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 95 +++++-------------------
- 1 file changed, 19 insertions(+), 76 deletions(-)
+ arch/powerpc/include/asm/book3s/64/mmu.h |  5 ++
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 81 ++++++++++++++++++++----
+ arch/powerpc/platforms/powernv/setup.c   | 10 ++-
+ 3 files changed, 84 insertions(+), 12 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+index 5393a535240c..15aae924f41c 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+@@ -82,6 +82,11 @@ extern unsigned int mmu_pid_bits;
+ /* Base PID to allocate from */
+ extern unsigned int mmu_base_pid;
+ 
++/*
++ * memory block size used with radix translation.
++ */
++extern unsigned int __ro_after_init radix_mem_block_size;
++
+ #define PRTB_SIZE_SHIFT	(mmu_pid_bits + 4)
+ #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
+ 
 diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 46ad2da3087a..d5a01b9aadc9 100644
+index d5a01b9aadc9..bba45fc0b7b2 100644
 --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
 +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -15,7 +15,6 @@
+@@ -15,6 +15,7 @@
  #include <linux/mm.h>
  #include <linux/hugetlb.h>
  #include <linux/string_helpers.h>
--#include <linux/stop_machine.h>
++#include <linux/memory.h>
  
  #include <asm/pgalloc.h>
  #include <asm/mmu_context.h>
-@@ -722,32 +721,6 @@ static void free_pud_table(pud_t *pud_start, p4d_t *p4d)
- 	p4d_clear(p4d);
- }
+@@ -33,6 +34,7 @@
  
--struct change_mapping_params {
--	pte_t *pte;
--	unsigned long start;
--	unsigned long end;
--	unsigned long aligned_start;
--	unsigned long aligned_end;
--};
--
--static int __meminit stop_machine_change_mapping(void *data)
--{
--	struct change_mapping_params *params =
--			(struct change_mapping_params *)data;
--
--	if (!data)
--		return -1;
--
--	spin_unlock(&init_mm.page_table_lock);
--	pte_clear(&init_mm, params->aligned_start, params->pte);
--	create_physical_mapping(__pa(params->aligned_start),
--				__pa(params->start), -1, PAGE_KERNEL);
--	create_physical_mapping(__pa(params->end), __pa(params->aligned_end),
--				-1, PAGE_KERNEL);
--	spin_lock(&init_mm.page_table_lock);
--	return 0;
--}
--
- static void remove_pte_table(pte_t *pte_start, unsigned long addr,
- 			     unsigned long end)
+ unsigned int mmu_pid_bits;
+ unsigned int mmu_base_pid;
++unsigned int radix_mem_block_size __ro_after_init;
+ 
+ static __ref void *early_alloc_pgtable(unsigned long size, int nid,
+ 			unsigned long region_start, unsigned long region_end)
+@@ -265,6 +267,7 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
+ 
+ static int __meminit create_physical_mapping(unsigned long start,
+ 					     unsigned long end,
++					     unsigned long max_mapping_size,
+ 					     int nid, pgprot_t _prot)
  {
-@@ -776,52 +749,6 @@ static void remove_pte_table(pte_t *pte_start, unsigned long addr,
- 	}
- }
+ 	unsigned long vaddr, addr, mapping_size = 0;
+@@ -278,6 +281,8 @@ static int __meminit create_physical_mapping(unsigned long start,
+ 		int rc;
  
--/*
-- * clear the pte and potentially split the mapping helper
-- */
--static void __meminit split_kernel_mapping(unsigned long addr, unsigned long end,
--				unsigned long size, pte_t *pte)
--{
--	unsigned long mask = ~(size - 1);
--	unsigned long aligned_start = addr & mask;
--	unsigned long aligned_end = addr + size;
--	struct change_mapping_params params;
--	bool split_region = false;
--
--	if ((end - addr) < size) {
--		/*
--		 * We're going to clear the PTE, but not flushed
--		 * the mapping, time to remap and flush. The
--		 * effects if visible outside the processor or
--		 * if we are running in code close to the
--		 * mapping we cleared, we are in trouble.
--		 */
--		if (overlaps_kernel_text(aligned_start, addr) ||
--			overlaps_kernel_text(end, aligned_end)) {
--			/*
--			 * Hack, just return, don't pte_clear
--			 */
--			WARN_ONCE(1, "Linear mapping %lx->%lx overlaps kernel "
--				  "text, not splitting\n", addr, end);
--			return;
--		}
--		split_region = true;
--	}
--
--	if (split_region) {
--		params.pte = pte;
--		params.start = addr;
--		params.end = end;
--		params.aligned_start = addr & ~(size - 1);
--		params.aligned_end = min_t(unsigned long, aligned_end,
--				(unsigned long)__va(memblock_end_of_DRAM()));
--		stop_machine(stop_machine_change_mapping, &params, NULL);
--		return;
--	}
--
--	pte_clear(&init_mm, addr, pte);
--}
--
- static void remove_pmd_table(pmd_t *pmd_start, unsigned long addr,
- 			     unsigned long end)
- {
-@@ -837,7 +764,12 @@ static void remove_pmd_table(pmd_t *pmd_start, unsigned long addr,
- 			continue;
+ 		gap = next_boundary(addr, end) - addr;
++		if (gap > max_mapping_size)
++			gap = max_mapping_size;
+ 		previous_size = mapping_size;
+ 		prev_exec = exec;
  
- 		if (pmd_is_leaf(*pmd)) {
--			split_kernel_mapping(addr, end, PMD_SIZE, (pte_t *)pmd);
-+			if (!IS_ALIGNED(addr, PMD_SIZE) ||
-+			    !IS_ALIGNED(next, PMD_SIZE)) {
-+				WARN_ONCE(1, "%s: unaligned range\n", __func__);
-+				continue;
-+			}
-+			pte_clear(&init_mm, addr, (pte_t *)pmd);
- 			continue;
- 		}
+@@ -328,8 +333,9 @@ static void __init radix_init_pgtable(void)
  
-@@ -862,7 +794,12 @@ static void remove_pud_table(pud_t *pud_start, unsigned long addr,
- 			continue;
- 
- 		if (pud_is_leaf(*pud)) {
--			split_kernel_mapping(addr, end, PUD_SIZE, (pte_t *)pud);
-+			if (!IS_ALIGNED(addr, PUD_SIZE) ||
-+			    !IS_ALIGNED(next, PUD_SIZE)) {
-+				WARN_ONCE(1, "%s: unaligned range\n", __func__);
-+				continue;
-+			}
-+			pte_clear(&init_mm, addr, (pte_t *)pud);
- 			continue;
- 		}
- 
-@@ -890,7 +827,13 @@ static void __meminit remove_pagetable(unsigned long start, unsigned long end)
- 			continue;
- 
- 		if (p4d_is_leaf(*p4d)) {
--			split_kernel_mapping(addr, end, P4D_SIZE, (pte_t *)p4d);
-+			if (!IS_ALIGNED(addr, P4D_SIZE) ||
-+			    !IS_ALIGNED(next, P4D_SIZE)) {
-+				WARN_ONCE(1, "%s: unaligned range\n", __func__);
-+				continue;
-+			}
+ 	/* We don't support slb for radix */
+ 	mmu_slb_size = 0;
 +
-+			pte_clear(&init_mm, addr, (pte_t *)pgd);
- 			continue;
- 		}
+ 	/*
+-	 * Create the linear mapping, using standard page size for now
++	 * Create the linear mapping
+ 	 */
+ 	for_each_memblock(memory, reg) {
+ 		/*
+@@ -345,6 +351,7 @@ static void __init radix_init_pgtable(void)
+ 
+ 		WARN_ON(create_physical_mapping(reg->base,
+ 						reg->base + reg->size,
++						radix_mem_block_size,
+ 						-1, PAGE_KERNEL));
+ 	}
+ 
+@@ -485,6 +492,47 @@ static int __init radix_dt_scan_page_sizes(unsigned long node,
+ 	return 1;
+ }
+ 
++static int __init probe_memory_block_size(unsigned long node, const char *uname, int
++					  depth, void *data)
++{
++	unsigned long *mem_block_size = (unsigned long *)data;
++	const __be64 *prop;
++	int len;
++
++	if (depth != 1)
++		return 0;
++
++	if (strcmp(uname, "ibm,dynamic-reconfiguration-memory"))
++		return 0;
++
++	prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
++	if (!prop || len < sizeof(__be64))
++		/*
++		 * Nothing in the device tree
++		 */
++		*mem_block_size = MIN_MEMORY_BLOCK_SIZE;
++	else
++		*mem_block_size = be64_to_cpup(prop);
++	return 1;
++}
++
++static unsigned long radix_memory_block_size(void)
++{
++	unsigned long mem_block_size = MIN_MEMORY_BLOCK_SIZE;
++
++	/*
++	 * OPAL firmware feature is set by now. Hence we are ok
++	 * to test OPAL feature.
++	 */
++	if (firmware_has_feature(FW_FEATURE_OPAL))
++		mem_block_size = 1UL * 1024 * 1024 * 1024;
++	else
++		of_scan_flat_dt(probe_memory_block_size, &mem_block_size);
++
++	return mem_block_size;
++}
++
++
+ void __init radix__early_init_devtree(void)
+ {
+ 	int rc;
+@@ -493,17 +541,27 @@ void __init radix__early_init_devtree(void)
+ 	 * Try to find the available page sizes in the device-tree
+ 	 */
+ 	rc = of_scan_flat_dt(radix_dt_scan_page_sizes, NULL);
+-	if (rc != 0)  /* Found */
+-		goto found;
++	if (!rc) {
++		/*
++		 * No page size details found in device tree.
++		 * Let's assume we have page 4k and 64k support
++		 */
++		mmu_psize_defs[MMU_PAGE_4K].shift = 12;
++		mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
++
++		mmu_psize_defs[MMU_PAGE_64K].shift = 16;
++		mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
++	}
++
+ 	/*
+-	 * let's assume we have page 4k and 64k support
++	 * Max mapping size used when mapping pages. We don't use
++	 * ppc_md.memory_block_size() here because this get called
++	 * early and we don't have machine probe called yet. Also
++	 * the pseries implementation only check for ibm,lmb-size.
++	 * All hypervisor supporting radix do expose that device
++	 * tree node.
+ 	 */
+-	mmu_psize_defs[MMU_PAGE_4K].shift = 12;
+-	mmu_psize_defs[MMU_PAGE_4K].ap = 0x0;
+-
+-	mmu_psize_defs[MMU_PAGE_64K].shift = 16;
+-	mmu_psize_defs[MMU_PAGE_64K].ap = 0x5;
+-found:
++	radix_mem_block_size = radix_memory_block_size();
+ 	return;
+ }
+ 
+@@ -855,7 +913,8 @@ int __meminit radix__create_section_mapping(unsigned long start,
+ 		return -1;
+ 	}
+ 
+-	return create_physical_mapping(__pa(start), __pa(end), nid, prot);
++	return create_physical_mapping(__pa(start), __pa(end),
++				       radix_mem_block_size, nid, prot);
+ }
+ 
+ int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
+diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
+index 3bc188da82ba..7fcb88623081 100644
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -399,7 +399,15 @@ static void pnv_kexec_cpu_down(int crash_shutdown, int secondary)
+ #ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
+ static unsigned long pnv_memory_block_size(void)
+ {
+-	return 256UL * 1024 * 1024;
++	/*
++	 * We map the kernel linear region with 1GB large pages on radix. For
++	 * memory hot unplug to work our memory block size must be at least
++	 * this size.
++	 */
++	if (radix_enabled())
++		return radix_mem_block_size;
++	else
++		return 256UL * 1024 * 1024;
+ }
+ #endif
  
 -- 
 2.26.2
