@@ -2,40 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02DB21A676
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 19:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D830521A888
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 22:04:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2kTh5bVNzDr2N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 03:59:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2nDv1psjzDr9v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 06:03:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643;
+ helo=mail-ej1-x643.google.com; envelope-from=jacek.anaszewski@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=GkZHcqMU; dkim-atps=neutral
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
+ [IPv6:2a00:1450:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2kQb325ZzDqWy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 03:57:11 +1000 (AEST)
-Received: from gaia (unknown [95.146.230.158])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0AE5E20775;
- Thu,  9 Jul 2020 17:57:07 +0000 (UTC)
-Date: Thu, 9 Jul 2020 18:57:05 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: Re: /sys/kernel/debug/kmemleak empty despite kmemleak reports
-Message-ID: <20200709175705.GD6579@gaia>
-References: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2nB409rrzDr7j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 06:01:26 +1000 (AEST)
+Received: by mail-ej1-x643.google.com with SMTP id o18so3589554eje.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jul 2020 13:01:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=d0gYY+wvsRxBQmwzqJnWeCjIuXvxeaWsWRCnx0ubZOg=;
+ b=GkZHcqMUxKmjdVenudvdvqrkXbo+JquPTX2QSgtNobUDUV+vraMZmE9cpIcAdHZJUq
+ BsNZoufFprGyxI+wF74biz7ZS11pt7kce+6MsuFWiTDxGPiFDCBKH/FQV0TSZY+pJnKZ
+ aQgYU21P8pRSAHEIpMjQaSk+/2UWcXpEmWTHqU2pnGGc+WJE2vTWQaeOqT9pS6Wvbnc+
+ FHkBOL1YGb2IRejD/iE8bAHlYDJJb7i6xs3ZqMC0TUpFxaYPBos1PzAaPH3oFvaWN425
+ C2K8MZOf+/7LZ1SzGQPQTHQjCyQFHQkVSe9p2Uwwgk+FPt9rtQwguKi6C2OAdfptqC2j
+ oImw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=d0gYY+wvsRxBQmwzqJnWeCjIuXvxeaWsWRCnx0ubZOg=;
+ b=bukDOwH9+Rs70xfELBa26LBti8rbLRjVGs3oWJt9HRkQGzGy0B9fMykTq0hHU9XncY
+ j2Zzz9ULhBrmfLuiwehfvA4sdrqjB7o5Ai2zZrrF6ngxTLhHdQ2Pvh3QcgtNMvmLTCye
+ thD0Ek5uCFKV9kJo9FeM7MllUKI9SdESXO2dKXjkg43xF+OI38HW8WJYhwEqGOX3WJC0
+ TxPE0MjOe3PC5JIaJ8X4Ks9XKKNql/lL8MfBbReMhbeLeI/B+ex/o30IGVSgnfUyyl4w
+ 0uqul5i8GVB4yDwGkitWwB4sE6ERe5YmGuYY3rLrtmfGHUjoUqAs2VL0DqOTv2xdVmhf
+ LchA==
+X-Gm-Message-State: AOAM533t4zuxgMj3tzFhViq2nIH5YfViuvDW3kpFO4f3J1A+Wq9jwbXr
+ dsjeE6OkSH+b1/2RgCZqkPQ=
+X-Google-Smtp-Source: ABdhPJxPlnTPprrTFBMP+KVIniKNlWppnSrNKOcRmi8sX8QVrNf9GjrPlFc+WTiAQakw0xXsLbAzEQ==
+X-Received: by 2002:a17:906:3a04:: with SMTP id
+ z4mr51246240eje.441.1594324883183; 
+ Thu, 09 Jul 2020 13:01:23 -0700 (PDT)
+Received: from ?IPv6:2a01:110f:b59:fd00:2066:8db:696f:8073?
+ ([2a01:110f:b59:fd00:2066:8db:696f:8073])
+ by smtp.gmail.com with ESMTPSA id t2sm2728139eds.60.2020.07.09.13.01.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Jul 2020 13:01:22 -0700 (PDT)
+Subject: Re: [PATCH 11/20] Documentation: leds/ledtrig-transient: eliminate
+ duplicated word
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+References: <20200707180414.10467-1-rdunlap@infradead.org>
+ <20200707180414.10467-12-rdunlap@infradead.org>
+From: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Message-ID: <16035116-2154-d0fe-6655-a829a9d36ceb@gmail.com>
+Date: Thu, 9 Jul 2020 22:01:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200707180414.10467-12-rdunlap@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,42 +86,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
+ linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
+ dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
+ Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
+ Pavel Machek <pavel@ucw.cz>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
+ linux-s390@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
+ linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
+ Mali DP Maintainers <malidp@foss.arm.com>,
+ Derek Kiernan <derek.kiernan@xilinx.com>,
+ Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dan Murphy <dmurphy@ti.com>,
+ linux-mm@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Pierre Morel <pmorel@linux.ibm.com>, Douglas Anderson <dianders@chromium.org>,
+ Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 09, 2020 at 04:37:10PM +0200, Paul Menzel wrote:
-> Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, the
-> file does not contain more information.
+On 7/7/20 8:04 PM, Randy Dunlap wrote:
+> Drop the doubled word "for".
 > 
-> > $ dmesg
-> > […] > [48662.953323] perf: interrupt took too long (2570 > 2500),
-> > lowering
-> kernel.perf_event_max_sample_rate to 77750
-> > [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
-> > [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
-> > [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
-> > [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
-> > [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
-> > [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
-> > [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
-> > [61608.697728] Can't find PMC that caused IRQ
-> > [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> > [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
-> > [92849.380672] FS-Cache: Loaded
-> > [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
-> > [92849.595974] NFS: Registering the id_resolver key type
-> > [92849.596000] Key type id_resolver registered
-> > [92849.596000] Key type id_legacy registered
-> > [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> > [106904.323471] Can't find PMC that caused IRQ
-> > [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> > [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> > $ sudo cat /sys/kernel/debug/kmemleak
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+> Cc: Pavel Machek <pavel@ucw.cz>
+> Cc: Dan Murphy <dmurphy@ti.com>
+> Cc: linux-leds@vger.kernel.org
+> ---
+>   Documentation/leds/ledtrig-transient.rst |    2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- linux-next-20200701.orig/Documentation/leds/ledtrig-transient.rst
+> +++ linux-next-20200701/Documentation/leds/ledtrig-transient.rst
+> @@ -157,7 +157,7 @@ repeat the following step as needed::
+>   	echo 1 > activate - start timer = duration to run once
+>   	echo none > trigger
+>   
+> -This trigger is intended to be used for for the following example use cases:
+> +This trigger is intended to be used for the following example use cases:
+>   
+>    - Control of vibrate (phones, tablets etc.) hardware by user space app.
+>    - Use of LED by user space app as activity indicator.
+> 
 
-When they are no longer present, they are most likely false positives.
-Was this triggered during boot? Or under some workload?
+Acked-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
 
 -- 
-Catalin
+Best regards,
+Jacek Anaszewski
