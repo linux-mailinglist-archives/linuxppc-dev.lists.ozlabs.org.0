@@ -1,52 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C559219D8F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 12:20:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B81219DB2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 12:27:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2XH65661zDqvV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 20:20:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2XRJ0Xs6zDqxl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 20:27:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2XDy4kb2zDqfC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 20:18:10 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Vq+WB38V; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=h3icAK0f; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B2XDx5w9fz9sSd;
- Thu,  9 Jul 2020 20:18:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594289889;
- bh=ou5GvH7X+W5XkenHcVbChXPfY+zWQZQPug6Gv9qz3HE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Vq+WB38V5Vr/85nXNhGqpqupy+34Vv3WSzVEQwoNCfqjMOzALtdReOZo98sRNdF4v
- sGsRiBQZQRt9C10DozPjdUV+RVnAD+xtRpukIAyztq9aHvkQ7/XJdsPUAl3LuHK+wj
- I+iQuTB21OEn2hVajUA+VVaiYzvot5nUEtDX3PWAK0rNKp94aOfUACCnwCPfDJHTD/
- KdBs6WLMY5gzQ3OaXS2KwOuuu+1z1BuTcE9hZDf/FSr1zbkU2zqJX99Vfvgk6YPtuA
- Jd7OYgdjaDbdWZq1nwUULVHLrRzs0jKC70v2D3AgBk59KBxHS6YKhIhksR5MJn+pvZ
- 8f7eEgvbfiJuA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 4/6] powerpc/64s: implement queued spinlocks and rwlocks
-In-Reply-To: <20200706043540.1563616-5-npiggin@gmail.com>
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <20200706043540.1563616-5-npiggin@gmail.com>
-Date: Thu, 09 Jul 2020 20:20:25 +1000
-Message-ID: <877dvdvvkm.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2XP20GVtzDqKf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 20:25:08 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id d10so669850pll.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jul 2020 03:25:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=b2NeK05XWB0xDJ7gbj6dxeZbhLfM0JEMlPnaA+COod8=;
+ b=h3icAK0fJlduSxaVJZTAsAbBOXWSxN4IoYHK8mdc1bCh1bsLxSIRHiIVfUBzc1NIk4
+ aoS/LYGHK2VtD9IJjgkcsYAiHBNDI5I/E9YfhQN+zvgbc0Sf+ycTqzneR/HN2BDzvLwH
+ Q2NkaNM+WU969yGnPwKGrc5gVFFKNhZLEDB8Wrk5PdIFMYw+IjQ9SG4k3hotPwn1fe1/
+ PkDr0zWaYC0j89w8FyTmwpQTbCevkciW+WhITHnKtX+zqcrDC1lMP6LttxQPbpM+yVht
+ D5GQ4RzZJEfyRBjOJVXeLp/yD/BbL/R+GWtYKEZJdg+8aZ50SP5aWC/FwiNOqOn19AgU
+ VCuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=b2NeK05XWB0xDJ7gbj6dxeZbhLfM0JEMlPnaA+COod8=;
+ b=a6o0FPorD5LQPlvFWncuBachN0MDl5N4A65CkFG2rO92yVtG+62UeaYj9Xg6aTsPZI
+ kZSwPwQRakpfW8K0Oonm/IYRTSXrDuqC5lWLjItR1MsrzgmSmn8q4lsE9YH8PCWO5POR
+ fh4KwVumxDJ2/FHxaB+y6p6u3204+20Vcw4W8pU2oyoAAcfrQzqU966NIIMkiF9sVLYw
+ CbRpehgAJhei14CuO15d9jhtxCCg3S1MilpkZeEHJpP9ZwBkrzcAN7drSk1yVDbz3arr
+ QQAbmQxafyh8b48Nor4mwUUItC6kn+p+X6rcgDeIml+BCqWwe9g3iG69eSD2VjbeJ5YL
+ j03g==
+X-Gm-Message-State: AOAM530EIDrzPNp0Vg6bOBDTRuSYE+AxdiiWnKGbXgq/i1OC/XtuuKMM
+ 8dcsUSsO7YD1APxyPWp7ocM=
+X-Google-Smtp-Source: ABdhPJyW7NYnbURxdwM8YP4WKOabd+AK4ezMjz49kVRoyMbLLTmNSYA/GBxbPfH1AietJHL0utbNeQ==
+X-Received: by 2002:a17:90a:7185:: with SMTP id
+ i5mr15201660pjk.170.1594290304419; 
+ Thu, 09 Jul 2020 03:25:04 -0700 (PDT)
+Received: from localhost (27-33-0-186.tpgi.com.au. [27.33.0.186])
+ by smtp.gmail.com with ESMTPSA id l15sm2101883pjq.1.2020.07.09.03.25.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Jul 2020 03:25:03 -0700 (PDT)
+Date: Thu, 09 Jul 2020 20:24:56 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+References: <20200706021822.1515189-1-npiggin@gmail.com>
+ <cf10b0bc-de79-1b2b-8355-fc7bbeec47c3@csgroup.eu>
+ <1594098302.nadnq2txti.astroid@bobo.none>
+ <638683144.970.1594121101349.JavaMail.zimbra@efficios.com>
+ <1594185107.e130s0d92x.astroid@bobo.none>
+ <407005394.1910.1594217551840.JavaMail.zimbra@efficios.com>
+In-Reply-To: <407005394.1910.1594217551840.JavaMail.zimbra@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-Id: <1594290193.f21t9y66td.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,78 +84,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, virtualization@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>, kvm-ppc@vger.kernel.org,
- Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> These have shown significantly improved performance and fairness when
-> spinlock contention is moderate to high on very large systems.
->
->  [ Numbers hopefully forthcoming after more testing, but initial
->    results look good ]
+Excerpts from Mathieu Desnoyers's message of July 9, 2020 12:12 am:
+> ----- On Jul 8, 2020, at 1:17 AM, Nicholas Piggin npiggin@gmail.com wrote=
+:
+>=20
+>> Excerpts from Mathieu Desnoyers's message of July 7, 2020 9:25 pm:
+>>> ----- On Jul 7, 2020, at 1:50 AM, Nicholas Piggin npiggin@gmail.com wro=
+te:
+>>>=20
+> [...]
+>>>> I should actually change the comment for 64-bit because soft masked
+>>>> interrupt replay is an interesting case. I thought it was okay (becaus=
+e
+>>>> the IPI would cause a hard interrupt which does do the rfi) but that
+>>>> should at least be written.
+>>>=20
+>>> Yes.
+>>>=20
+>>>> The context synchronisation happens before
+>>>> the Linux IPI function is called, but for the purpose of membarrier I
+>>>> think that is okay (the membarrier just needs to have caused a memory
+>>>> barrier + context synchronistaion by the time it has done).
+>>>=20
+>>> Can you point me to the code implementing this logic ?
+>>=20
+>> It's mostly in arch/powerpc/kernel/exception-64s.S and
+>> powerpc/kernel/irq.c, but a lot of asm so easier to explain.
+>>=20
+>> When any Linux code does local_irq_disable(), we set interrupts as
+>> software-masked in a per-cpu flag. When interrupts (including IPIs) come
+>> in, the first thing we do is check that flag and if we are masked, then
+>> record that the interrupt needs to be "replayed" in another per-cpu
+>> flag. The interrupt handler then exits back using RFI (which is context
+>> synchronising the CPU). Later, when the kernel code does
+>> local_irq_enable(), it checks the replay flag to see if anything needs
+>> to be done. At that point we basically just call the interrupt handler
+>> code like a normal function, and when that returns there is no context
+>> synchronising instruction.
+>=20
+> AFAIU this can only happen for interrupts nesting over irqoff sections,
+> therefore over kernel code, never userspace, right ?
 
-Would be good to have something here, even if it's preliminary.
+Right.
 
-> Thanks to the fast path, single threaded performance is not noticably
-> hurt.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/Kconfig                      | 13 ++++++++++++
->  arch/powerpc/include/asm/Kbuild           |  2 ++
->  arch/powerpc/include/asm/qspinlock.h      | 25 +++++++++++++++++++++++
->  arch/powerpc/include/asm/spinlock.h       |  5 +++++
->  arch/powerpc/include/asm/spinlock_types.h |  5 +++++
->  arch/powerpc/lib/Makefile                 |  3 +++
+>> So membarrier IPI will always cause target CPUs to perform a context
+>> synchronising instruction, but sometimes it happens before the IPI
+>> handler function runs.
+>=20
+> If my understanding is correct, the replayed interrupt handler logic
+> only nests over kernel code, which will eventually need to issue a
+> context synchronizing instruction before returning to user-space.
 
->  include/asm-generic/qspinlock.h           |  2 ++
+Yes.
 
-Who's ack do we need for that part?
+> All we care about is that starting from the membarrier, each core
+> either:
+>=20
+> - interrupt user-space to issue the context synchronizing instruction if
+>   they were running userspace, or
+> - _eventually_ issue a context synchronizing instruction before returning
+>   to user-space if they were running kernel code.
+>=20
+> So your earlier statement "the membarrier just needs to have caused a mem=
+ory
+> barrier + context synchronistaion by the time it has done" is not strictl=
+y
+> correct: the context synchronizing instruction does not strictly need to
+> happen on each core before membarrier returns. A similar line of thoughts
+> can be followed for memory barriers.
 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 24ac85c868db..17663ea57697 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -492,6 +494,17 @@ config HOTPLUG_CPU
->  
->  	  Say N if you are unsure.
->  
-> +config PPC_QUEUED_SPINLOCKS
-> +	bool "Queued spinlocks"
-> +	depends on SMP
-> +	default "y" if PPC_BOOK3S_64
+Ah okay that makes it simpler, then no such speical comment is required=20
+for the powerpc specific interrupt handling.
 
-Not sure about default y? At least until we've got a better idea of the
-perf impact on a range of small/big new/old systems.
-
-> +	help
-> +	  Say Y here to use to use queued spinlocks which are more complex
-> +	  but give better salability and fairness on large SMP and NUMA
-> +	  systems.
-> +
-> +	  If unsure, say "Y" if you have lots of cores, otherwise "N".
-
-Would be nice if we could give a range for "lots".
-
-> diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
-> index dadbcf3a0b1e..1dd8b6adff5e 100644
-> --- a/arch/powerpc/include/asm/Kbuild
-> +++ b/arch/powerpc/include/asm/Kbuild
-> @@ -6,5 +6,7 @@ generated-y += syscall_table_spu.h
->  generic-y += export.h
->  generic-y += local64.h
->  generic-y += mcs_spinlock.h
-> +generic-y += qrwlock.h
-> +generic-y += qspinlock.h
-
-The 2nd line spits a warning about a redundant entry. I think you want
-to just drop it.
-
-
-cheers
+Thanks,
+Nick
