@@ -1,53 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066C7219D60
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 12:16:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0AE219DA4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 12:22:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2XBk3256zDqXZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 20:16:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2XL071ZCzDr6x
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 20:22:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2X7h0s4fzDqCW
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 20:13:36 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nzRAwHg5; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=vAFl0E6H; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B2X7g5nVsz9sSd;
- Thu,  9 Jul 2020 20:13:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594289615;
- bh=V/UfiEcEJmEZN4U3f8evnqswy/uVMHS/9JdwtGfPUdY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nzRAwHg5DWqxnr64TpRTPXGRnE8/0g/MyPqvHEW3TplcuZ3VZBDq81ZBJjsHRPTfO
- WsF67x5DG9UVg2a+ikk+zlNznorFWPGELSjP7EJNjUETZRVcWnF+6eFUI+sARv0w89
- XmFkeR/7TehGnZiVKu6YYFKLGW8hNZc/gnQcUwejYBC3byHW8EBZb19YX67mHIQYKc
- cLm365Y07n+K60Q2nwUmyXjBB4LGBvpb6xIwZgrvc6vJFfdVIO/82FuL9RSpKLGfyo
- 0DKn3B2IBr7N3KP7jsgXda8lowUQ5CSUzWetkPqOxOJ71izeS+acNFfg6Gr0mcz8ci
- mGMQBP8XgO4aA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 3/6] powerpc: move spinlock implementation to
- simple_spinlock
-In-Reply-To: <20200706043540.1563616-4-npiggin@gmail.com>
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <20200706043540.1563616-4-npiggin@gmail.com>
-Date: Thu, 09 Jul 2020 20:15:51 +1000
-Message-ID: <87a709vvs8.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2XHn2lqYzDqgs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 20:20:37 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id x72so828450pfc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jul 2020 03:20:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=K1VxGPW0xuJmXA1rhdwVLxJA7czyM/CyNjmy8WBsRv4=;
+ b=vAFl0E6HBeNrm26G8P0UQdOfXgqNlJcA/tct4oKyTFUwEd43U7dI8PbkM8WGgVIowk
+ JzOfLvU81ZaMeTJzi15ONkYEhz8ZdK1bWR7BWVaIJs/P8JDNNQZ4C6ygk426LLZ1i6Ur
+ FSzzF+6FLikQrB7ZepCeoeEROzURE/Dh8X1u0DbLBpr2ry99jml6TiaDBUgmGT2TZjot
+ Bs/VL2qJTGoqSBj1njDvTMQmdGXXJaLZAQkf7dMbet9Ig0o24iRlaaiRDvelEBe4Vlmq
+ 4o1KND3JDQfEv+NoULX20gLL2VRHXrUZDwdaew59oF71+DhmqI90PweEtb3EfegD5Mb6
+ BlTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=K1VxGPW0xuJmXA1rhdwVLxJA7czyM/CyNjmy8WBsRv4=;
+ b=D79ZoUFESufRGMgn3ScI/ZJ9slCVd3zY7vNKZrmJecsx04CVLcYaMyfQt5SYp1QVx2
+ fqpZzFOX3UdefGa07XrXStd1qu2nPatE8Q66MuWj0Hgs+T4hfay8kXVok3ulr1auUHtZ
+ qEGDnjNshznRSGAYh1bAdvJk+bqmW5NxOTH4nEaIgKtbYeYtrgpYy7RfHk5ZG7c0AX2i
+ sXICmcth/Q/xX+qWGyax/6/NGIfyihFWHWXaPdzya+NGTD1wkmqgGzeNFQuqnfyK/JYu
+ 4P4tlD27fTM5ps5dJ+R+4A2Ac4e0vzI0r3sagMcxBdaHadieDbtwM1lWrzfDWrpv7lAs
+ /1ww==
+X-Gm-Message-State: AOAM531wuANjC93qmOY+Gd8wkF1e7++Q47nwu1VfDiakYFZHDeefKz9/
+ 9wkzIBpgmBTr2I5QW/k7+Ok=
+X-Google-Smtp-Source: ABdhPJyK/kHRiKtUEQazqsog0g6PKjmX1zO9iglcz1L9RZo+7iGTY/FgnI/8ZzYcrflQm4qNDWLuzw==
+X-Received: by 2002:a63:ab0d:: with SMTP id p13mr52941361pgf.327.1594290031443; 
+ Thu, 09 Jul 2020 03:20:31 -0700 (PDT)
+Received: from localhost (27-33-0-186.tpgi.com.au. [27.33.0.186])
+ by smtp.gmail.com with ESMTPSA id z2sm2453364pfq.67.2020.07.09.03.20.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Jul 2020 03:20:30 -0700 (PDT)
+Date: Thu, 09 Jul 2020 20:20:23 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 2/3] powerpc/64s: remove PROT_SAO support
+To: David Gibson <david@gibson.dropbear.id.au>, Paul Mackerras
+ <paulus@ozlabs.org>
+References: <20200703011958.1166620-1-npiggin@gmail.com>
+ <20200703011958.1166620-3-npiggin@gmail.com>
+ <20200709043406.GB2822576@thinks.paulus.ozlabs.org>
+In-Reply-To: <20200709043406.GB2822576@thinks.paulus.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-Id: <1594288843.m3s9igh1hu.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,66 +81,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, virtualization@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>, kvm-ppc@vger.kernel.org,
- Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>
+Cc: linux-api@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org, linux-mm@kvack.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> To prepare for queued spinlocks. This is a simple rename except to update
-> preprocessor guard name and a file reference.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/include/asm/simple_spinlock.h    | 292 ++++++++++++++++++
->  .../include/asm/simple_spinlock_types.h       |  21 ++
->  arch/powerpc/include/asm/spinlock.h           | 285 +----------------
->  arch/powerpc/include/asm/spinlock_types.h     |  12 +-
->  4 files changed, 315 insertions(+), 295 deletions(-)
->  create mode 100644 arch/powerpc/include/asm/simple_spinlock.h
->  create mode 100644 arch/powerpc/include/asm/simple_spinlock_types.h
->
-> diff --git a/arch/powerpc/include/asm/simple_spinlock.h b/arch/powerpc/include/asm/simple_spinlock.h
-> new file mode 100644
-> index 000000000000..e048c041c4a9
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/simple_spinlock.h
-> @@ -0,0 +1,292 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +#ifndef __ASM_SIMPLE_SPINLOCK_H
-> +#define __ASM_SIMPLE_SPINLOCK_H
+Excerpts from Paul Mackerras's message of July 9, 2020 2:34 pm:
+> On Fri, Jul 03, 2020 at 11:19:57AM +1000, Nicholas Piggin wrote:
+>> ISA v3.1 does not support the SAO storage control attribute required to
+>> implement PROT_SAO. PROT_SAO was used by specialised system software
+>> (Lx86) that has been discontinued for about 7 years, and is not thought
+>> to be used elsewhere, so removal should not cause problems.
+>>=20
+>> We rather remove it than keep support for older processors, because
+>> live migrating guest partitions to newer processors may not be possible
+>> if SAO is in use (or worse allowed with silent races).
+>=20
+> This is actually a real problem for KVM, because now we have the
+> capabilities of the host affecting the characteristics of the guest
+> virtual machine in a manner which userspace (e.g. QEMU) is unable to
+> control.
+>=20
+> It would probably be better to disallow SAO on all machines than have
+> it available on some hosts and not others.  (Yes I know there is a
+> check on CPU_FTR_ARCH_206 in there, but that has been a no-op since we
+> removed the PPC970 KVM support.)
 
-_ASM_POWERPC_SIMPLE_SPINLOCK_H
+This change doesn't change the SAO difference on the host processors
+though, just tries to slightly improve it from silently broken to
+maybe complaining a bit.
 
-> +#ifdef __KERNEL__
+I didn't want to stop some very old image that uses this and is running
+okay on an existing host from working, but maybe the existence of such
+a thing would contradict my reasoning. But then if we don't care about
+it why care about this KVM behaviour difference at all?
 
-Shouldn't be necessary.
+> Solving this properly will probably require creating a new KVM host
+> capability and associated machine parameter in QEMU, along with a new
+> machine type.
 
-> +/*
-> + * Simple spin lock operations.  
-> + *
-> + * Copyright (C) 2001-2004 Paul Mackerras <paulus@au.ibm.com>, IBM
-> + * Copyright (C) 2001 Anton Blanchard <anton@au.ibm.com>, IBM
-> + * Copyright (C) 2002 Dave Engebretsen <engebret@us.ibm.com>, IBM
-> + *	Rework to support virtual processors
-> + *
-> + * Type of int is used as a full 64b word is not necessary.
-> + *
-> + * (the type definitions are in asm/simple_spinlock_types.h)
-> + */
-> +#include <linux/irqflags.h>
-> +#include <asm/paravirt.h>
-> +#ifdef CONFIG_PPC64
-> +#include <asm/paca.h>
-> +#endif
+Rather than answer any of these questions, I might take the KVM change
+out and that can be dealt with separately from guest SAO removal.
 
-I don't think paca.h needs a CONFIG_PPC64 guard, it contains one. I know
-you're just moving the code, but still nice to cleanup slightly along
-the way.
+Thanks,
+Nick
 
-cheers
-
+>=20
+> [snip]
+>=20
+>> diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/inc=
+lude/asm/kvm_book3s_64.h
+>> index 9bb9bb370b53..fac39ff659d4 100644
+>> --- a/arch/powerpc/include/asm/kvm_book3s_64.h
+>> +++ b/arch/powerpc/include/asm/kvm_book3s_64.h
+>> @@ -398,9 +398,10 @@ static inline bool hpte_cache_flags_ok(unsigned lon=
+g hptel, bool is_ci)
+>>  {
+>>  	unsigned int wimg =3D hptel & HPTE_R_WIMG;
+>> =20
+>> -	/* Handle SAO */
+>> +	/* Handle SAO for POWER7,8,9 */
+>>  	if (wimg =3D=3D (HPTE_R_W | HPTE_R_I | HPTE_R_M) &&
+>> -	    cpu_has_feature(CPU_FTR_ARCH_206))
+>> +	    cpu_has_feature(CPU_FTR_ARCH_206) &&
+>> +	    !cpu_has_feature(CPU_FTR_ARCH_31))
+>>  		wimg =3D HPTE_R_M;
+>=20
+> Paul.
+>=20
