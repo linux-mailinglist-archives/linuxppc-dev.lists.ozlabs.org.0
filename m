@@ -2,58 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8D721A1D0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 16:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DD021A246
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 16:40:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2dPg00y1zDqxs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 00:11:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2f376v7wzDrBq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 00:40:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2d3s6LQ5zDr6v
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 23:55:37 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4B2d3l4t09z9v0CP;
- Thu,  9 Jul 2020 15:55:31 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iOo54wDduwFk; Thu,  9 Jul 2020 15:55:31 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4B2d3l3rxjz9v0CL;
- Thu,  9 Jul 2020 15:55:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E3C58B809;
- Thu,  9 Jul 2020 15:55:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id UcwuJIQK9PmW; Thu,  9 Jul 2020 15:55:33 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 716AC8B824;
- Thu,  9 Jul 2020 15:55:32 +0200 (CEST)
-Subject: Re: [PATCH v2 2/2] papr/scm: Add bad memory ranges to nvdimm bad
- ranges
-To: Santosh Sivaraj <santosh@fossix.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20200709135142.721504-1-santosh@fossix.org>
- <20200709135142.721504-2-santosh@fossix.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <35acd295-4e81-59e2-eadd-0afb15ce2081@csgroup.eu>
-Date: Thu, 9 Jul 2020 15:55:33 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2f003sK9zDqrN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 00:37:17 +1000 (AEST)
+Received: from [192.168.0.6] (ip5f5af27e.dynamic.kabel-deutschland.de
+ [95.90.242.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0124120646096;
+ Thu,  9 Jul 2020 16:37:10 +0200 (CEST)
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: /sys/kernel/debug/kmemleak empty despite kmemleak reports
+Message-ID: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
+Date: Thu, 9 Jul 2020 16:37:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200709135142.721504-2-santosh@fossix.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,179 +48,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Oliver <oohall@gmail.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Dear Linux folks,
 
 
-Le 09/07/2020 à 15:51, Santosh Sivaraj a écrit :
-> Subscribe to the MCE notification and add the physical address which
-> generated a memory error to nvdimm bad range.
-> 
-> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, 
+the file does not contain more information.
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> $ dmesg
+> […] > [48662.953323] perf: interrupt took too long (2570 > 2500), lowering 
+kernel.perf_event_max_sample_rate to 77750
+> [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
+> [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
+> [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
+> [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
+> [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
+> [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
+> [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
+> [61608.697728] Can't find PMC that caused IRQ
+> [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
+> [92849.380672] FS-Cache: Loaded
+> [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
+> [92849.595974] NFS: Registering the id_resolver key type
+> [92849.596000] Key type id_resolver registered
+> [92849.596000] Key type id_legacy registered
+> [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> [106904.323471] Can't find PMC that caused IRQ
+> [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> $ sudo cat /sys/kernel/debug/kmemleak
+> $
 
-> ---
->   arch/powerpc/platforms/pseries/papr_scm.c | 96 ++++++++++++++++++++++-
->   1 file changed, 95 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index 9c569078a09fd..90729029ca010 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -13,9 +13,11 @@
->   #include <linux/platform_device.h>
->   #include <linux/delay.h>
->   #include <linux/seq_buf.h>
-> +#include <linux/nd.h>
->   
->   #include <asm/plpar_wrappers.h>
->   #include <asm/papr_pdsm.h>
-> +#include <asm/mce.h>
->   
->   #define BIND_ANY_ADDR (~0ul)
->   
-> @@ -80,6 +82,7 @@ struct papr_scm_priv {
->   	struct resource res;
->   	struct nd_region *region;
->   	struct nd_interleave_set nd_set;
-> +	struct list_head region_list;
->   
->   	/* Protect dimm health data from concurrent read/writes */
->   	struct mutex health_mutex;
-> @@ -91,6 +94,9 @@ struct papr_scm_priv {
->   	u64 health_bitmap;
->   };
->   
-> +LIST_HEAD(papr_nd_regions);
-> +DEFINE_MUTEX(papr_ndr_lock);
-> +
->   static int drc_pmem_bind(struct papr_scm_priv *p)
->   {
->   	unsigned long ret[PLPAR_HCALL_BUFSIZE];
-> @@ -759,6 +765,10 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->   		dev_info(dev, "Region registered with target node %d and online node %d",
->   			 target_nid, online_nid);
->   
-> +	mutex_lock(&papr_ndr_lock);
-> +	list_add_tail(&p->region_list, &papr_nd_regions);
-> +	mutex_unlock(&papr_ndr_lock);
-> +
->   	return 0;
->   
->   err:	nvdimm_bus_unregister(p->bus);
-> @@ -766,6 +776,68 @@ err:	nvdimm_bus_unregister(p->bus);
->   	return -ENXIO;
->   }
->   
-> +static void papr_scm_add_badblock(struct nd_region *region,
-> +				  struct nvdimm_bus *bus, u64 phys_addr)
-> +{
-> +	u64 aligned_addr = ALIGN_DOWN(phys_addr, L1_CACHE_BYTES);
-> +
-> +	if (nvdimm_bus_add_badrange(bus, aligned_addr, L1_CACHE_BYTES)) {
-> +		pr_err("Bad block registration for 0x%llx failed\n", phys_addr);
-> +		return;
-> +	}
-> +
-> +	pr_debug("Add memory range (0x%llx - 0x%llx) as bad range\n",
-> +		 aligned_addr, aligned_addr + L1_CACHE_BYTES);
-> +
-> +	nvdimm_region_notify(region, NVDIMM_REVALIDATE_POISON);
-> +}
-> +
-> +static int handle_mce_ue(struct notifier_block *nb, unsigned long val,
-> +			 void *data)
-> +{
-> +	struct machine_check_event *evt = data;
-> +	struct papr_scm_priv *p;
-> +	u64 phys_addr;
-> +	bool found = false;
-> +
-> +	if (evt->error_type != MCE_ERROR_TYPE_UE)
-> +		return NOTIFY_DONE;
-> +
-> +	if (list_empty(&papr_nd_regions))
-> +		return NOTIFY_DONE;
-> +
-> +	/*
-> +	 * The physical address obtained here is PAGE_SIZE aligned, so get the
-> +	 * exact address from the effective address
-> +	 */
-> +	phys_addr = evt->u.ue_error.physical_address +
-> +			(evt->u.ue_error.effective_address & ~PAGE_MASK);
-> +
-> +	if (!evt->u.ue_error.physical_address_provided ||
-> +	    !is_zone_device_page(pfn_to_page(phys_addr >> PAGE_SHIFT)))
-> +		return NOTIFY_DONE;
-> +
-> +	/* mce notifier is called from a process context, so mutex is safe */
-> +	mutex_lock(&papr_ndr_lock);
-> +	list_for_each_entry(p, &papr_nd_regions, region_list) {
-> +		if (phys_addr >= p->res.start && phys_addr <= p->res.end) {
-> +			found = true;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (found)
-> +		papr_scm_add_badblock(p->region, p->bus, phys_addr);
-> +
-> +	mutex_unlock(&papr_ndr_lock);
-> +
-> +	return found ? NOTIFY_OK : NOTIFY_DONE;
-> +}
-> +
-> +static struct notifier_block mce_ue_nb = {
-> +	.notifier_call = handle_mce_ue
-> +};
-> +
->   static int papr_scm_probe(struct platform_device *pdev)
->   {
->   	struct device_node *dn = pdev->dev.of_node;
-> @@ -866,6 +938,10 @@ static int papr_scm_remove(struct platform_device *pdev)
->   {
->   	struct papr_scm_priv *p = platform_get_drvdata(pdev);
->   
-> +	mutex_lock(&papr_ndr_lock);
-> +	list_del(&p->region_list);
-> +	mutex_unlock(&papr_ndr_lock);
-> +
->   	nvdimm_bus_unregister(p->bus);
->   	drc_pmem_unbind(p);
->   	kfree(p->bus_desc.provider_name);
-> @@ -888,7 +964,25 @@ static struct platform_driver papr_scm_driver = {
->   	},
->   };
->   
-> -module_platform_driver(papr_scm_driver);
-> +static int __init papr_scm_init(void)
-> +{
-> +	int ret;
-> +
-> +	ret = platform_driver_register(&papr_scm_driver);
-> +	if (!ret)
-> +		mce_register_notifier(&mce_ue_nb);
-> +
-> +	return ret;
-> +}
-> +module_init(papr_scm_init);
-> +
-> +static void __exit papr_scm_exit(void)
-> +{
-> +	mce_unregister_notifier(&mce_ue_nb);
-> +	platform_driver_unregister(&papr_scm_driver);
-> +}
-> +module_exit(papr_scm_exit);
-> +
->   MODULE_DEVICE_TABLE(of, papr_scm_match);
->   MODULE_LICENSE("GPL");
->   MODULE_AUTHOR("IBM Corporation");
-> 
+
+Kind regards,
+
+Paul
