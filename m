@@ -2,74 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C52921A973
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 22:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C3E21A98D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 23:10:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2pT24RdyzDqxB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 06:59:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2pjl5R45zDrFF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 07:10:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=rMcZ8L2Q; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2pR970FvzDqtZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 06:57:57 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 04DC02928C0;
- Thu,  9 Jul 2020 16:57:53 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id WNUsV1GDHBRB; Thu,  9 Jul 2020 16:57:52 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id B904C2928BF;
- Thu,  9 Jul 2020 16:57:52 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com B904C2928BF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1594328272;
- bh=j8L5xeGd9McORpcjaf5FdpAMBj3b4OCMGzV2SSpglJI=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=rMcZ8L2QjwnTIXmJP50yPRHvLJ7FL3AnIh9zl37yK1drK7/EHeZS452ftliUGkrAZ
- gfcNy/wzlsZEbF1Mw1Euqa6Px2otnijfgQKK+AC8Miq3dPOJ/PBnlcf9d1bJfbPnOh
- 8nb7pmlYUlYlzF1B//vqXjgTMI7TIi8XbKw41sa6XCIfCHtrYPS87N/PSXvPX6zRpI
- hYqQJ+h9bIuBcsMYfzTMdVcf7U+h+8MqPo7UMjbanJpKvi0MZEKiwdJpsO3RHypMVP
- s4/6PhEZw4cLceTGum81zFkC9Eqb+b+1OKQg2rUeW5LEOHGD+m71y2PDP/B7OXtG12
- 61fVVipPaoH1A==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id 8KRNKCQJERPK; Thu,  9 Jul 2020 16:57:52 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id AF497292852;
- Thu,  9 Jul 2020 16:57:52 -0400 (EDT)
-Date: Thu, 9 Jul 2020 16:57:52 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Message-ID: <285510163.7773.1594328272638.JavaMail.zimbra@efficios.com>
-In-Reply-To: <20200709204609.GQ3598@gate.crashing.org>
-References: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
- <1968953502.5815.1594252883512.JavaMail.zimbra@efficios.com>
- <20200709001837.GD3598@gate.crashing.org>
- <1769596686.6365.1594302227962.JavaMail.zimbra@efficios.com>
- <20200709173712.GL3598@gate.crashing.org>
- <1584179170.7410.1594316576293.JavaMail.zimbra@efficios.com>
- <1682947575.7422.1594317379612.JavaMail.zimbra@efficios.com>
- <20200709204609.GQ3598@gate.crashing.org>
-Subject: Re: Failure to build librseq on ppc
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2pgy5jqvzDr61
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 07:08:58 +1000 (AEST)
+Received: from [192.168.0.6] (ip5f5af4d3.dynamic.kabel-deutschland.de
+ [95.90.244.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 6A571206462B4;
+ Thu,  9 Jul 2020 23:08:53 +0200 (CEST)
+Subject: Re: /sys/kernel/debug/kmemleak empty despite kmemleak reports
+To: Catalin Marinas <catalin.marinas@arm.com>
+References: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
+ <20200709175705.GD6579@gaia>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Message-ID: <276e4bce-3e21-8020-9a1c-729a6cafcdd3@molgen.mpg.de>
+Date: Thu, 9 Jul 2020 23:08:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
-Thread-Topic: Failure to build librseq on ppc
-Thread-Index: A3Re7gQDd7JxEOujPX5Z9ycuIkoKwg==
+In-Reply-To: <20200709175705.GD6579@gaia>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,58 +50,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Michael Jeanson <mjeanson@efficios.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Jul 9, 2020, at 4:46 PM, Segher Boessenkool segher@kernel.crashing.org wrote:
+Dear Catalin,
 
-> On Thu, Jul 09, 2020 at 01:56:19PM -0400, Mathieu Desnoyers wrote:
->> > Just to make sure I understand your recommendation. So rather than
->> > hard coding r17 as the temporary registers, we could explicitly
->> > declare the temporary register as a C variable, pass it as an
->> > input operand to the inline asm, and then refer to it by operand
->> > name in the macros using it. This way the compiler would be free
->> > to perform its own register allocation.
->> > 
->> > If that is what you have in mind, then yes, I think it makes a
->> > lot of sense.
->> 
->> Except that asm goto have this limitation with gcc: those cannot
->> have any output operand, only inputs, clobbers and target labels.
->> We cannot modify a temporary register received as input operand. So I don't
->> see how to get a temporary register allocated by the compiler considering
->> this limitation.
+
+Am 09.07.20 um 19:57 schrieb Catalin Marinas:
+> On Thu, Jul 09, 2020 at 04:37:10PM +0200, Paul Menzel wrote:
+>> Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, the
+>> file does not contain more information.
+>>
+>>> $ dmesg
+>>> […] > [48662.953323] perf: interrupt took too long (2570 > 2500), lowering kernel.perf_event_max_sample_rate to 77750
+>>> [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
+>>> [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
+>>> [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
+>>> [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
+>>> [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
+>>> [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
+>>> [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
+>>> [61608.697728] Can't find PMC that caused IRQ
+>>> [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>> [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
+>>> [92849.380672] FS-Cache: Loaded
+>>> [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
+>>> [92849.595974] NFS: Registering the id_resolver key type
+>>> [92849.596000] Key type id_resolver registered
+>>> [92849.596000] Key type id_legacy registered
+>>> [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>> [106904.323471] Can't find PMC that caused IRQ
+>>> [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>> [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>> $ sudo cat /sys/kernel/debug/kmemleak
 > 
-> Heh, yet another reason not to obfuscate your inline asm: it didn't
-> register this is asm goto.
-> 
-> A clobber is one way, yes (those *are* allowed in asm goto).  Another
-> way is to not actually change that register: move the original value
-> back into there at the end of the asm!  (That isn't always easy to do,
-> it depends on your code).  So something like
-> 
->	long start = ...;
->	long tmp = start;
->	asm("stuff that modifies %0; ...; mr %0,%1" : : "r"(tmp), "r"(start));
-> 
-> is just fine: %0 isn't actually modified at all, as far as GCC is
-> concerned, and this isn't lying to it!
+> When they are no longer present, they are most likely false positives.
 
-It appears to be at the cost of adding one extra instruction on the fast-path
-to restore the register to its original value. I'll leave Boqun whom authored
-the original rseq-ppc code to figure out what works best performance-wise
-(when he finds time).
+How can this be? Shouldn’t the false positive also be logged in 
+`/sys/kernel/debug/kmemleak`?
 
-Thanks for the pointers!
+> Was this triggered during boot? Or under some workload?
 
-Mathieu
+ From the timestamps it looks like under some load.
 
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+Kind regards,
+
+Paul
