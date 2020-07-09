@@ -2,74 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830652198EE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 08:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A1C219900
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 09:04:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2RpY63q8zDqyb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 16:58:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2RxV0rMczDqys
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 17:04:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::342;
- helo=mail-wm1-x342.google.com; envelope-from=lee.jones@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=SIK7xtQ1; dkim-atps=neutral
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2Rmr5FBszDqHH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 16:56:58 +1000 (AEST)
-Received: by mail-wm1-x342.google.com with SMTP id f139so672812wmf.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jul 2020 23:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=Wcz1X2aMI4wLAwmC/YcHtbFjsUgNxZUhx2oTPKovSdI=;
- b=SIK7xtQ1ZwjCMbOJj8SaWAbOcjJjQxj/PLiDND12LcX+IT6pg5CKd5VSce06Esth1C
- tjZAcMGJP7lgp0MW+RSgIN6cfTi3ndq8AxGnl6OkEUImbPGMbxPD79cQ7Nms8/XBRI8m
- DiBujo29jQgV1djDLijkwqi4n2NCN8N/cx39JyMxcCyjekM3316o7vX7647QSVQQXITh
- gQoElcghul+GRYV26uHkUU8Q8zAwKOgiyWE348Rc6E3/9E6aJAJWKPW1X6v96eOklZnA
- hEpQvye4SxWYDUo1OCfnMJ8Q0Gk1C5gO6qc9BFnbGsMSaZlmVBguT14spVCZq3355Ycb
- st3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=Wcz1X2aMI4wLAwmC/YcHtbFjsUgNxZUhx2oTPKovSdI=;
- b=A/OYdGQ0/OYClnUPd+X/WexH0aD+Eiu8NZb8kNpub+8BaUBQSiP4MXdQ0UdzHoEZNL
- 6wIQ8FTt7b9KMUXSYJicAejS0oc0mYr6+NYqPuBH6C3XJj7zZL9cE7HxBV4GE3ZowrtF
- nMS9K7a0m6t3SRERlrRd0fbYdI6t2SXv1qwEzZXw07hoJObsGCTIMyHGgL6PIwzhsCNx
- 4+X6+MZ0g/UoeAgr27LH6637Hq0yBnELtlgee6iKDjtfA+FZ5bfjWPS+icyGM+d0AA5n
- uOZrlD5UvC8j0/fv0rLM0Mtq4dqhsjw2WJGSHWd2reZwknQDWvmVAjlJQrgkAj+ZGi4X
- f6gw==
-X-Gm-Message-State: AOAM532VZyLV070Ma60Sk5aHTfPJQU6rOnyrDxZfqlZj+xY/ITBv9IB0
- Iw84k9VpHDKrlH/otcHC5Y7KzQ==
-X-Google-Smtp-Source: ABdhPJwGYuNnqxYo1af0qUZYMa4Nco75fT1qnFm7LZCMHjtPUU5qRn6vAxb8puXXlwwJ03KgDY726w==
-X-Received: by 2002:a1c:96c5:: with SMTP id y188mr13135281wmd.71.1594277813587; 
- Wed, 08 Jul 2020 23:56:53 -0700 (PDT)
-Received: from dell ([2.27.35.206])
- by smtp.gmail.com with ESMTPSA id f17sm3732156wme.14.2020.07.08.23.56.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Jul 2020 23:56:53 -0700 (PDT)
-Date: Thu, 9 Jul 2020 07:56:51 +0100
-From: Lee Jones <lee.jones@linaro.org>
-To: arnd@arndb.de, gregkh@linuxfoundation.org
-Subject: [PATCH v2 3/3] misc: cxl: flash: Remove unused variable 'drc_index'
-Message-ID: <20200709065651.GY3500@dell>
-References: <20200708125711.3443569-1-lee.jones@linaro.org>
- <20200708125711.3443569-4-lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2Rvk46XpzDqdl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 17:02:55 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4B2RvW0b9Wz9v0J8;
+ Thu,  9 Jul 2020 09:02:47 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 0U9ZvYfRgq0Z; Thu,  9 Jul 2020 09:02:47 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4B2RvV6QsJz9v0J2;
+ Thu,  9 Jul 2020 09:02:46 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A1328B809;
+ Thu,  9 Jul 2020 09:02:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 2w2eNtAogbVu; Thu,  9 Jul 2020 09:02:48 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 781ED8B806;
+ Thu,  9 Jul 2020 09:02:47 +0200 (CEST)
+Subject: Re: [PATCH v2 3/5] powerpc/lib: Use a temporary mm for code patching
+To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@lists.ozlabs.org
+References: <20200709040316.12789-1-cmr@informatik.wtf>
+ <20200709040316.12789-4-cmr@informatik.wtf>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <9de00169-208f-5c94-0c29-1180364c9bd7@csgroup.eu>
+Date: Thu, 9 Jul 2020 09:02:44 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20200709040316.12789-4-cmr@informatik.wtf>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200708125711.3443569-4-lee.jones@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,56 +64,245 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>
+Cc: kernel-hardening@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Keeping the pointer increment though.
 
-Fixes the following W=1 kernel build warning:
 
- drivers/misc/cxl/flash.c: In function ‘update_devicetree’:
- drivers/misc/cxl/flash.c:178:16: warning: variable ‘drc_index’ set but not used [-Wunused-but-set-variable]
- 178 | __be32 *data, drc_index, phandle;
- | ^~~~~~~~~
+Le 09/07/2020 à 06:03, Christopher M. Riedl a écrit :
+> Currently, code patching a STRICT_KERNEL_RWX exposes the temporary
+> mappings to other CPUs. These mappings should be kept local to the CPU
+> doing the patching. Use the pre-initialized temporary mm and patching
+> address for this purpose. Also add a check after patching to ensure the
+> patch succeeded.
 
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
-Changelog:
+While trying the LKDTM test, I realised that this is useless for non SMP.
+Is it worth applying that change to non SMP systems ?
 
-v1 => v2:
- - Fix "flash.c:216:6: error: value computed is not used [-Werror=unused-value]"
-   - ... as reported by Intel's Kernel Test Robot
+Christophe
 
-drivers/misc/cxl/flash.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/misc/cxl/flash.c b/drivers/misc/cxl/flash.c
-index cb9cca35a2263..5b93ff51d82a5 100644
---- a/drivers/misc/cxl/flash.c
-+++ b/drivers/misc/cxl/flash.c
-@@ -175,7 +175,7 @@ static int update_devicetree(struct cxl *adapter, s32 scope)
- 	struct update_nodes_workarea *unwa;
- 	u32 action, node_count;
- 	int token, rc, i;
--	__be32 *data, drc_index, phandle;
-+	__be32 *data, phandle;
- 	char *buf;
- 
- 	token = rtas_token("ibm,update-nodes");
-@@ -213,7 +213,7 @@ static int update_devicetree(struct cxl *adapter, s32 scope)
- 					break;
- 				case OPCODE_ADD:
- 					/* nothing to do, just move pointer */
--					drc_index = *data++;
-+					data++;
- 					break;
- 				}
- 			}
--- 
-2.25.1
+> 
+> Use the KUAP functions on non-BOOKS3_64 platforms since the temporary
+> mapping for patching uses a userspace address (to keep the mapping
+> local). On BOOKS3_64 platforms hash does not implement KUAP and on radix
+> the use of PAGE_KERNEL sets EAA[0] for the PTE which means the AMR
+> (KUAP) protection is ignored (see PowerISA v3.0b, Fig, 35).
+> 
+> Based on x86 implementation:
+> 
+> commit b3fd8e83ada0
+> ("x86/alternatives: Use temporary mm for text poking")
+> 
+> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+> ---
+>   arch/powerpc/lib/code-patching.c | 152 +++++++++++--------------------
+>   1 file changed, 54 insertions(+), 98 deletions(-)
+> 
+> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+> index 8ae1a9e5fe6e..80fe3864f377 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -19,6 +19,7 @@
+>   #include <asm/code-patching.h>
+>   #include <asm/setup.h>
+>   #include <asm/inst.h>
+> +#include <asm/mmu_context.h>
+>   
+>   static int __patch_instruction(struct ppc_inst *exec_addr, struct ppc_inst instr,
+>   			       struct ppc_inst *patch_addr)
+> @@ -77,106 +78,57 @@ void __init poking_init(void)
+>   	pte_unmap_unlock(ptep, ptl);
+>   }
+>   
+> -static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
+> -
+> -static int text_area_cpu_up(unsigned int cpu)
+> -{
+> -	struct vm_struct *area;
+> -
+> -	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
+> -	if (!area) {
+> -		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
+> -			cpu);
+> -		return -1;
+> -	}
+> -	this_cpu_write(text_poke_area, area);
+> -
+> -	return 0;
+> -}
+> -
+> -static int text_area_cpu_down(unsigned int cpu)
+> -{
+> -	free_vm_area(this_cpu_read(text_poke_area));
+> -	return 0;
+> -}
+> -
+> -/*
+> - * Run as a late init call. This allows all the boot time patching to be done
+> - * simply by patching the code, and then we're called here prior to
+> - * mark_rodata_ro(), which happens after all init calls are run. Although
+> - * BUG_ON() is rude, in this case it should only happen if ENOMEM, and we judge
+> - * it as being preferable to a kernel that will crash later when someone tries
+> - * to use patch_instruction().
+> - */
+> -static int __init setup_text_poke_area(void)
+> -{
+> -	BUG_ON(!cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+> -		"powerpc/text_poke:online", text_area_cpu_up,
+> -		text_area_cpu_down));
+> -
+> -	return 0;
+> -}
+> -late_initcall(setup_text_poke_area);
+> +struct patch_mapping {
+> +	spinlock_t *ptl; /* for protecting pte table */
+> +	pte_t *ptep;
+> +	struct temp_mm temp_mm;
+> +};
+>   
+>   /*
+>    * This can be called for kernel text or a module.
+>    */
+> -static int map_patch_area(void *addr, unsigned long text_poke_addr)
+> +static int map_patch(const void *addr, struct patch_mapping *patch_mapping)
+>   {
+> -	unsigned long pfn;
+> -	int err;
+> +	struct page *page;
+> +	pte_t pte;
+> +	pgprot_t pgprot;
+>   
+>   	if (is_vmalloc_addr(addr))
+> -		pfn = vmalloc_to_pfn(addr);
+> +		page = vmalloc_to_page(addr);
+>   	else
+> -		pfn = __pa_symbol(addr) >> PAGE_SHIFT;
+> +		page = virt_to_page(addr);
+>   
+> -	err = map_kernel_page(text_poke_addr, (pfn << PAGE_SHIFT), PAGE_KERNEL);
+> +	if (radix_enabled())
+> +		pgprot = PAGE_KERNEL;
+> +	else
+> +		pgprot = PAGE_SHARED;
+>   
+> -	pr_devel("Mapped addr %lx with pfn %lx:%d\n", text_poke_addr, pfn, err);
+> -	if (err)
+> +	patch_mapping->ptep = get_locked_pte(patching_mm, patching_addr,
+> +					     &patch_mapping->ptl);
+> +	if (unlikely(!patch_mapping->ptep)) {
+> +		pr_warn("map patch: failed to allocate pte for patching\n");
+>   		return -1;
+> +	}
+> +
+> +	pte = mk_pte(page, pgprot);
+> +	pte = pte_mkdirty(pte);
+> +	set_pte_at(patching_mm, patching_addr, patch_mapping->ptep, pte);
+> +
+> +	init_temp_mm(&patch_mapping->temp_mm, patching_mm);
+> +	use_temporary_mm(&patch_mapping->temp_mm);
+>   
+>   	return 0;
+>   }
+>   
+> -static inline int unmap_patch_area(unsigned long addr)
+> +static void unmap_patch(struct patch_mapping *patch_mapping)
+>   {
+> -	pte_t *ptep;
+> -	pmd_t *pmdp;
+> -	pud_t *pudp;
+> -	p4d_t *p4dp;
+> -	pgd_t *pgdp;
+> -
+> -	pgdp = pgd_offset_k(addr);
+> -	if (unlikely(!pgdp))
+> -		return -EINVAL;
+> -
+> -	p4dp = p4d_offset(pgdp, addr);
+> -	if (unlikely(!p4dp))
+> -		return -EINVAL;
+> -
+> -	pudp = pud_offset(p4dp, addr);
+> -	if (unlikely(!pudp))
+> -		return -EINVAL;
+> -
+> -	pmdp = pmd_offset(pudp, addr);
+> -	if (unlikely(!pmdp))
+> -		return -EINVAL;
+> -
+> -	ptep = pte_offset_kernel(pmdp, addr);
+> -	if (unlikely(!ptep))
+> -		return -EINVAL;
+> +	/* In hash, pte_clear flushes the tlb */
+> +	pte_clear(patching_mm, patching_addr, patch_mapping->ptep);
+> +	unuse_temporary_mm(&patch_mapping->temp_mm);
+>   
+> -	pr_devel("clearing mm %p, pte %p, addr %lx\n", &init_mm, ptep, addr);
+> -
+> -	/*
+> -	 * In hash, pte_clear flushes the tlb, in radix, we have to
+> -	 */
+> -	pte_clear(&init_mm, addr, ptep);
+> -	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> -
+> -	return 0;
+> +	/* In radix, we have to explicitly flush the tlb (no-op in hash) */
+> +	local_flush_tlb_mm(patching_mm);
+> +	pte_unmap_unlock(patch_mapping->ptep, patch_mapping->ptl);
+>   }
+>   
+>   static int do_patch_instruction(struct ppc_inst *addr, struct ppc_inst instr)
+> @@ -184,32 +136,36 @@ static int do_patch_instruction(struct ppc_inst *addr, struct ppc_inst instr)
+>   	int err;
+>   	struct ppc_inst *patch_addr = NULL;
+>   	unsigned long flags;
+> -	unsigned long text_poke_addr;
+> -	unsigned long kaddr = (unsigned long)addr;
+> +	struct patch_mapping patch_mapping;
+>   
+>   	/*
+> -	 * During early early boot patch_instruction is called
+> -	 * when text_poke_area is not ready, but we still need
+> -	 * to allow patching. We just do the plain old patching
+> +	 * The patching_mm is initialized before calling mark_rodata_ro. Prior
+> +	 * to this, patch_instruction is called when we don't have (and don't
+> +	 * need) the patching_mm so just do plain old patching.
+>   	 */
+> -	if (!this_cpu_read(text_poke_area))
+> +	if (!patching_mm)
+>   		return raw_patch_instruction(addr, instr);
+>   
+>   	local_irq_save(flags);
+>   
+> -	text_poke_addr = (unsigned long)__this_cpu_read(text_poke_area)->addr;
+> -	if (map_patch_area(addr, text_poke_addr)) {
+> -		err = -1;
+> +	err = map_patch(addr, &patch_mapping);
+> +	if (err)
+>   		goto out;
+> -	}
+>   
+> -	patch_addr = (struct ppc_inst *)(text_poke_addr + (kaddr & ~PAGE_MASK));
+> +	patch_addr = (struct ppc_inst *)(patching_addr | offset_in_page(addr));
+>   
+> -	__patch_instruction(addr, instr, patch_addr);
+> +	if (!radix_enabled())
+> +		allow_write_to_user(patch_addr, ppc_inst_len(instr));
+> +	err = __patch_instruction(addr, instr, patch_addr);
+> +	if (!radix_enabled())
+> +		prevent_write_to_user(patch_addr, ppc_inst_len(instr));
+>   
+> -	err = unmap_patch_area(text_poke_addr);
+> -	if (err)
+> -		pr_warn("failed to unmap %lx\n", text_poke_addr);
+> +	unmap_patch(&patch_mapping);
+> +	/*
+> +	 * Something is wrong if what we just wrote doesn't match what we
+> +	 * think we just wrote.
+> +	 */
+> +	WARN_ON(!ppc_inst_equal(ppc_inst_read(addr), instr));
+>   
+>   out:
+>   	local_irq_restore(flags);
+> 
