@@ -1,42 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57572219725
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 06:17:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACABC219761
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 06:29:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2NDk2ZM0zDqlJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 14:17:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2NVM4B9jzDqGk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 14:29:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B2MC91xzwzDqZx
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 13:30:59 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0042E31B;
- Wed,  8 Jul 2020 20:30:56 -0700 (PDT)
-Received: from [192.168.0.129] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0BF133F887;
- Wed,  8 Jul 2020 20:30:46 -0700 (PDT)
-Subject: Re: [PATCH V4 0/3] arm64: Enable vmemmap mapping from device memory
-To: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>
-References: <1594004178-8861-1-git-send-email-anshuman.khandual@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <a9157943-d033-f9a8-87fc-dce78540df78@arm.com>
-Date: Thu, 9 Jul 2020 09:00:17 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=informatik.wtf (client-ip=131.153.2.45;
+ helo=h4.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=informatik.wtf
+Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
+ [131.153.2.45])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2Mt645MFzDsRH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 14:01:18 +1000 (AEST)
+Received: from MTA-08-4.privateemail.com (mta-08.privateemail.com
+ [68.65.122.18])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id 6C36C80080
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 00:01:14 -0400 (EDT)
+Received: from MTA-08.privateemail.com (localhost [127.0.0.1])
+ by MTA-08.privateemail.com (Postfix) with ESMTP id 5366960038;
+ Thu,  9 Jul 2020 00:01:08 -0400 (EDT)
+Received: from geist.attlocal.net (unknown [10.20.151.216])
+ by MTA-08.privateemail.com (Postfix) with ESMTPA id C4E4760033;
+ Thu,  9 Jul 2020 04:01:07 +0000 (UTC)
+From: "Christopher M. Riedl" <cmr@informatik.wtf>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/5] Use per-CPU temporary mappings for patching
+Date: Wed,  8 Jul 2020 23:03:11 -0500
+Message-Id: <20200709040316.12789-1-cmr@informatik.wtf>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <1594004178-8861-1-git-send-email-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,46 +53,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
- linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, catalin.marinas@arm.com,
- Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, justin.he@arm.com, x86@kernel.org,
- "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Fenghua Yu <fenghua.yu@intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: kernel-hardening@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When compiled with CONFIG_STRICT_KERNEL_RWX, the kernel must create
+temporary mappings when patching itself. These mappings temporarily
+override the strict RWX text protections to permit a write. Currently,
+powerpc allocates a per-CPU VM area for patching. Patching occurs as
+follows:
+
+	1. Map page of text to be patched to per-CPU VM area w/
+	   PAGE_KERNEL protection
+	2. Patch text
+	3. Remove the temporary mapping
+
+While the VM area is per-CPU, the mapping is actually inserted into the
+kernel page tables. Presumably, this could allow another CPU to access
+the normally write-protected text - either malicously or accidentally -
+via this same mapping if the address of the VM area is known. Ideally,
+the mapping should be kept local to the CPU doing the patching (or any
+other sensitive operations requiring temporarily overriding memory
+protections) [0].
+
+x86 introduced "temporary mm" structs which allow the creation of
+mappings local to a particular CPU [1]. This series intends to bring the
+notion of a temporary mm to powerpc and harden powerpc by using such a
+mapping for patching a kernel with strict RWX permissions.
+
+The first patch introduces the temporary mm struct and API for powerpc
+along with a new function to retrieve a current hw breakpoint.
+
+The second patch uses the `poking_init` init hook added by the x86
+patches to initialize a temporary mm and patching address. The patching
+address is randomized between 0 and DEFAULT_MAP_WINDOW-PAGE_SIZE. The
+upper limit is necessary due to how the hash MMU operates - by default
+the space above DEFAULT_MAP_WINDOW is not available. For now, both hash
+and radix randomize inside this range. The number of possible random
+addresses is dependent on PAGE_SIZE and limited by DEFAULT_MAP_WINDOW.
+
+Bits of entropy with 64K page size on BOOK3S_64:
+
+	bits of entropy = log2(DEFAULT_MAP_WINDOW_USER64 / PAGE_SIZE)
+
+	PAGE_SIZE=64K, DEFAULT_MAP_WINDOW_USER64=128TB
+	bits of entropy = log2(128TB / 64K)
+	bits of entropy = 31
+
+Randomization occurs only once during initialization at boot.
+
+The third patch replaces the VM area with the temporary mm in the
+patching code. The page for patching has to be mapped PAGE_SHARED with
+the hash MMU since hash prevents the kernel from accessing userspace
+pages with PAGE_PRIVILEGED bit set. On the radix MMU the page is mapped with
+PAGE_KERNEL which has the added benefit that we can skip KUAP. 
+
+The fourth and fifth patches implement an LKDTM test "proof-of-concept" which
+exploits the previous vulnerability (ie. the mapping during patching is exposed
+in kernel page tables and accessible by other CPUS). The LKDTM test is somewhat
+"rough" in that it uses a brute-force approach - I am open to any suggestions
+and/or ideas to improve this. Currently, the LKDTM test passes with this series
+on POWER8 (hash) and POWER9 (radix, hash) and fails without this series (ie.
+the temporary mapping for patching is exposed to CPUs other than the patching
+CPU).
+
+The test can be applied to a tree without this new series by applying
+the last two patches of this series, and then fixing up in
+/arch/powerpc/lib/code-patching.c:
+
+ #ifdef CONFIG_STRICT_KERNEL_RWX
+ static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
+
++#ifdef CONFIG_LKDTM
++unsigned long read_cpu_patching_addr(unsigned int cpu)
++{
++       return (unsigned long)(per_cpu(text_poke_area, cpu))->addr;
++}
++#endif
++
+ static int text_area_cpu_up(unsigned int cpu)
+ {
+        struct vm_struct *area;
+
+I also have a tree with just linuxppc/next and the LKDTM test here:
+https://github.com/cmr-informatik/linux/commits/percpu-lkdtm-only
+
+Tested on Blackbird (8-core POWER9) w/ Hash (`disable_radix`) and Radix
+MMUs.
+
+v2:	* Rebase on linuxppc/next:
+	  commit 105fb38124a4 ("powerpc/8xx: Modify ptep_get()")
+	* Always dirty pte when mapping patch
+	* Use `ppc_inst_len` instead of `sizeof` on instructions
+	* Declare LKDTM patching addr accessor in header where it
+	  belongs	
+
+v1:	* Rebase on linuxppc/next (4336b9337824)
+	* Save and restore second hw watchpoint
+	* Use new ppc_inst_* functions for patching check and in LKDTM
+	  test
+
+rfc-v2:	* Many fixes and improvements mostly based on extensive feedback and
+          testing by Christophe Leroy (thanks!).
+	* Make patching_mm and patching_addr static and mode '__ro_after_init'
+	  to after the variable name (more common in other parts of the kernel)
+	* Use 'asm/debug.h' header instead of 'asm/hw_breakpoint.h' to fix
+	  PPC64e compile
+	* Add comment explaining why we use BUG_ON() during the init call to
+	  setup for patching later
+	* Move ptep into patch_mapping to avoid walking page tables a second
+	  time when unmapping the temporary mapping
+	* Use KUAP under non-radix, also manually dirty the PTE for patch
+	  mapping on non-BOOK3S_64 platforms
+	* Properly return any error from __patch_instruction
+	* Do not use 'memcmp' where a simple comparison is appropriate
+	* Simplify expression for patch address by removing pointer maths
+	* Add LKDTM test
 
 
-On 07/06/2020 08:26 AM, Anshuman Khandual wrote:
-> This series enables vmemmap backing memory allocation from device memory
-> ranges on arm64. But before that, it enables vmemmap_populate_basepages()
-> and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
-> alocation requests.
-> 
-> This series applies on 5.8-rc4.
-> 
-> Changes in V4:
-> 
-> - Dropped 'fallback' from vmemmap_alloc_block_buf() per Catalin
+[0]: https://github.com/linuxppc/issues/issues/224
+[1]: https://lore.kernel.org/kernel-hardening/20190426232303.28381-1-nadav.amit@gmail.com/
 
-Hello Andrew,
+Christopher M. Riedl (5):
+  powerpc/mm: Introduce temporary mm
+  powerpc/lib: Initialize a temporary mm for code patching
+  powerpc/lib: Use a temporary mm for code patching
+  powerpc/lib: Add LKDTM accessor for patching addr
+  powerpc: Add LKDTM test to hijack a patch mapping
 
-This series has been a long running one :) Now that all the three patches
-here have been reviewed, could you please consider this series for merging
-towards 5.9-rc1. Catalin had suggested earlier [1] that it should go via
-the MM tree instead, as it touches multiple architecture. Thank you.
+ arch/powerpc/include/asm/code-patching.h |   4 +
+ arch/powerpc/include/asm/debug.h         |   1 +
+ arch/powerpc/include/asm/mmu_context.h   |  64 +++++++++
+ arch/powerpc/kernel/process.c            |   5 +
+ arch/powerpc/lib/code-patching.c         | 176 +++++++++++------------
+ drivers/misc/lkdtm/core.c                |   1 +
+ drivers/misc/lkdtm/lkdtm.h               |   1 +
+ drivers/misc/lkdtm/perms.c               |  99 +++++++++++++
+ 8 files changed, 261 insertions(+), 90 deletions(-)
 
-[1] https://patchwork.kernel.org/patch/11611103/
+-- 
+2.27.0
 
-- Anshuman
