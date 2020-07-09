@@ -2,73 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CF821A66A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 19:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02DB21A676
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 19:59:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2kRk3HyRzDqJk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 03:58:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2kTh5bVNzDr2N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 03:59:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=TcMSSvmz; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2kPg0gkmzDq7d
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 03:56:22 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 184FF29126B;
- Thu,  9 Jul 2020 13:56:20 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id mXKfqIg6XXZy; Thu,  9 Jul 2020 13:56:19 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id B6C142912D3;
- Thu,  9 Jul 2020 13:56:19 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com B6C142912D3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1594317379;
- bh=VxFFyICjl7esdkbHxUyPi2zFNcGjMFP309ML9n923V0=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=TcMSSvmzf7dGDmwKGFhUX4CwLlSkpSidgr9gMb3lfDjx5XfZ31R33NopHcuzmnE30
- D7bhODQrkTrhA5k6puRfFDPfjPmv+w0BhZWD5XIZrWrCey++PsCHKEwU/7W4lhIga6
- kxGIOwrtqeupu6fhdTLR10orJwRvWpyRcEeyF/qdHOD1eBEIez+dGjwvtmKrQmQ9/t
- Auj003BlJh94TKT8pZhvk0GBdqoAQwhRq3F8i24VDx3iWLGFCYjN1fbf4K1oH6vj77
- xfcE1MS7RJ+VP2HP2id0yCRAYyjX0mB77/2KIkblKbk0vc/YZ4mcsZl0u9IelocrPg
- erauSvQc9T6LA==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id BAa6cGdb2L8L; Thu,  9 Jul 2020 13:56:19 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id A984A29158E;
- Thu,  9 Jul 2020 13:56:19 -0400 (EDT)
-Date: Thu, 9 Jul 2020 13:56:19 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Message-ID: <1682947575.7422.1594317379612.JavaMail.zimbra@efficios.com>
-In-Reply-To: <1584179170.7410.1594316576293.JavaMail.zimbra@efficios.com>
-References: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
- <87k0ze2nv4.fsf@mpe.ellerman.id.au> <20200708235331.GA3598@gate.crashing.org>
- <1968953502.5815.1594252883512.JavaMail.zimbra@efficios.com>
- <20200709001837.GD3598@gate.crashing.org>
- <1769596686.6365.1594302227962.JavaMail.zimbra@efficios.com>
- <20200709173712.GL3598@gate.crashing.org>
- <1584179170.7410.1594316576293.JavaMail.zimbra@efficios.com>
-Subject: Re: Failure to build librseq on ppc
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2kQb325ZzDqWy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 03:57:11 +1000 (AEST)
+Received: from gaia (unknown [95.146.230.158])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0AE5E20775;
+ Thu,  9 Jul 2020 17:57:07 +0000 (UTC)
+Date: Thu, 9 Jul 2020 18:57:05 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: Re: /sys/kernel/debug/kmemleak empty despite kmemleak reports
+Message-ID: <20200709175705.GD6579@gaia>
+References: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
-Thread-Topic: Failure to build librseq on ppc
-Thread-Index: q69V8GVx/SoKpVhL7JIT4yP2NgYiwCJBkMC5
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,54 +47,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Michael Jeanson <mjeanson@efficios.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Jul 9, 2020, at 1:42 PM, Mathieu Desnoyers mathieu.desnoyers@efficios.com wrote:
-
-> ----- On Jul 9, 2020, at 1:37 PM, Segher Boessenkool segher@kernel.crashing.org
-> wrote:
+On Thu, Jul 09, 2020 at 04:37:10PM +0200, Paul Menzel wrote:
+> Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, the
+> file does not contain more information.
 > 
->> On Thu, Jul 09, 2020 at 09:43:47AM -0400, Mathieu Desnoyers wrote:
->>> > What protects r17 *after* this asm statement?
->>> 
->>> As discussed in the other leg of the thread (with the code example),
->>> r17 is in the clobber list of all asm statements using this macro, and
->>> is used as a temporary register within each inline asm.
->> 
->> That works fine then, for a testcase.  Using r17 is not a great idea for
->> performance (it increases the active register footprint, and causes more
->> registers to be saved in the prologue of the functions, esp. on older
->> compilers), and it is easier to just let the compiler choose a good
->> register to use.  But maybe you want to see r17 in the generated
->> testcases, as eyecatcher or something, dunno :-)
-> 
-> Just to make sure I understand your recommendation. So rather than
-> hard coding r17 as the temporary registers, we could explicitly
-> declare the temporary register as a C variable, pass it as an
-> input operand to the inline asm, and then refer to it by operand
-> name in the macros using it. This way the compiler would be free
-> to perform its own register allocation.
-> 
-> If that is what you have in mind, then yes, I think it makes a
-> lot of sense.
+> > $ dmesg
+> > […] > [48662.953323] perf: interrupt took too long (2570 > 2500),
+> > lowering
+> kernel.perf_event_max_sample_rate to 77750
+> > [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
+> > [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
+> > [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
+> > [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
+> > [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
+> > [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
+> > [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
+> > [61608.697728] Can't find PMC that caused IRQ
+> > [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
+> > [92849.380672] FS-Cache: Loaded
+> > [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
+> > [92849.595974] NFS: Registering the id_resolver key type
+> > [92849.596000] Key type id_resolver registered
+> > [92849.596000] Key type id_legacy registered
+> > [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > [106904.323471] Can't find PMC that caused IRQ
+> > [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > $ sudo cat /sys/kernel/debug/kmemleak
 
-Except that asm goto have this limitation with gcc: those cannot
-have any output operand, only inputs, clobbers and target labels.
-We cannot modify a temporary register received as input operand. So I don't
-see how to get a temporary register allocated by the compiler considering
-this limitation.
-
-Thanks,
-
-Mathieu
-
+When they are no longer present, they are most likely false positives.
+Was this triggered during boot? Or under some workload?
 
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+Catalin
