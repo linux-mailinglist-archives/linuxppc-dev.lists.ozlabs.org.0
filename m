@@ -2,41 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DD021A246
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 16:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A37DB21A3CE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 17:34:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2f376v7wzDrBq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 00:40:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2gFS4fLnzDrCQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 01:34:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.82;
+ helo=conssluserg-03.nifty.com; envelope-from=masahiroy@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=XzW+BQ/J; 
+ dkim-atps=neutral
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
+ [210.131.2.82])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2f003sK9zDqrN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 00:37:17 +1000 (AEST)
-Received: from [192.168.0.6] (ip5f5af27e.dynamic.kabel-deutschland.de
- [95.90.242.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0124120646096;
- Thu,  9 Jul 2020 16:37:10 +0200 (CEST)
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: /sys/kernel/debug/kmemleak empty despite kmemleak reports
-Message-ID: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
-Date: Thu, 9 Jul 2020 16:37:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2gCH3W0XzDr95
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 01:32:10 +1000 (AEST)
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com
+ [209.85.219.179]) (authenticated)
+ by conssluserg-03.nifty.com with ESMTP id 069FVmfG015335
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 00:31:49 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 069FVmfG015335
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1594308709;
+ bh=OtxKPGTO/pZbwYh7E0pVV6aQCW7rvgzMKyprc/l7uvw=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=XzW+BQ/JSn+dV64V8fqNHJK+OdIyiLSnfnsrK6xtIhY738jFwF18rBafhnhFMTIjq
+ It/Z7XU0oM8JfclHnU+t80A1fUpjloOc4MZzb/b0jhxlre9ReCB4/JOtR367Z824ab
+ sIGKVYQyJRh3ZFwXzZpqWSd2ynbGJ2X/OcmdyyYc8G/5SLM6qHGC4vzaH7S4QmdvRx
+ +Ff/LkThpBaC0qs07UgJZ+Tz6WT0buGdUZidykrBcEhPMk6ezn6iv7yDqPf83o149l
+ f96C3Xqo+fe3xx9/S3nmjSlOkr5w+hvhSr2NyZKXzOhexLVbZtLNeLGbT4uQnE1f2f
+ qrqlu6fGfiR2Q==
+X-Nifty-SrcIP: [209.85.219.179]
+Received: by mail-yb1-f179.google.com with SMTP id 187so1228690ybq.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jul 2020 08:31:48 -0700 (PDT)
+X-Gm-Message-State: AOAM531itlsDIjuTc7kGyYBQRTebXjQsyHgf5Q3G2luPs+JJSrI6K3ZH
+ wBe1N9eqCPKoqkvMtNLBDXBsM3ikezNEhh0Cnlg=
+X-Google-Smtp-Source: ABdhPJxAnxTJNTtnQtFovYQkrUal1o80dMPa969JqVz6oQaG8jBDcy1jbc08IXGNVNtiEaHsg2cPflWUKNAmtElJid0=
+X-Received: by 2002:ab0:71d3:: with SMTP id n19mr46109137uao.25.1594308707342; 
+ Thu, 09 Jul 2020 08:31:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20200707180414.10467-1-rdunlap@infradead.org>
+ <20200707180414.10467-11-rdunlap@infradead.org>
+In-Reply-To: <20200707180414.10467-11-rdunlap@infradead.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Fri, 10 Jul 2020 00:31:10 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQB6DCw3CZyViCOWCZURfHQKm2JFx0Ypfhai9ecX6T9GQ@mail.gmail.com>
+Message-ID: <CAK7LNAQB6DCw3CZyViCOWCZURfHQKm2JFx0Ypfhai9ecX6T9GQ@mail.gmail.com>
+Subject: Re: [PATCH 10/20] Documentation: kbuild/kconfig-language: eliminate
+ duplicated word
+To: Randy Dunlap <rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,43 +72,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
+ linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Douglas Anderson <dianders@chromium.org>, Paul Cercueil <paul@crapouillou.net>,
+ keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-i2c@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ linux-scsi <linux-scsi@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Matthew Wilcox <willy@infradead.org>, Halil Pasic <pasic@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
+ Mali DP Maintainers <malidp@foss.arm.com>,
+ Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
+ Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Pierre Morel <pmorel@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear Linux folks,
+On Wed, Jul 8, 2020 at 3:06 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> Drop the doubled word "the".
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Masahiro Yamada <masahiroy@kernel.org>
 
 
-Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, 
-the file does not contain more information.
 
-> $ dmesg
-> […] > [48662.953323] perf: interrupt took too long (2570 > 2500), lowering 
-kernel.perf_event_max_sample_rate to 77750
-> [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
-> [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
-> [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
-> [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
-> [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
-> [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
-> [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
-> [61608.697728] Can't find PMC that caused IRQ
-> [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
-> [92849.380672] FS-Cache: Loaded
-> [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
-> [92849.595974] NFS: Registering the id_resolver key type
-> [92849.596000] Key type id_resolver registered
-> [92849.596000] Key type id_legacy registered
-> [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> [106904.323471] Can't find PMC that caused IRQ
-> [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-> $ sudo cat /sys/kernel/debug/kmemleak
-> $
+I guess this series will go in via the doc sub-system.
+
+If so, please feel free to add:
+
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
 
 
-Kind regards,
 
-Paul
+
+
+
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Cc: linux-kbuild@vger.kernel.org
+> ---
+>  Documentation/kbuild/kconfig-language.rst |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> --- linux-next-20200701.orig/Documentation/kbuild/kconfig-language.rst
+> +++ linux-next-20200701/Documentation/kbuild/kconfig-language.rst
+> @@ -681,7 +681,7 @@ translate Kconfig logic into boolean for
+>  find dead code / features (always inactive), 114 dead features were found in
+>  Linux using this methodology [1]_ (Section 8: Threats to validity).
+>
+> -Confirming this could prove useful as Kconfig stands as one of the the leading
+> +Confirming this could prove useful as Kconfig stands as one of the leading
+>  industrial variability modeling languages [1]_ [2]_. Its study would help
+>  evaluate practical uses of such languages, their use was only theoretical
+>  and real world requirements were not well understood. As it stands though
+
+
+
+--
+Best Regards
+Masahiro Yamada
