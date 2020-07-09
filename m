@@ -1,39 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EF5219A21
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 09:38:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04616219A24
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 09:40:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2Shf1dWczDrNk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 17:38:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2Skd26F1zDrFS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 17:40:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=krzk@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.193;
+ helo=mail-lj1-f193.google.com; envelope-from=k.kozlowski.k@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=1Vq5Rv+m; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-lj1-f193.google.com (mail-lj1-f193.google.com
+ [209.85.208.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2SV54jqJzDqwb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 17:29:17 +1000 (AEST)
-Received: from kozik-lap.mshome.net (unknown [194.230.155.195])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 50C8120786;
- Thu,  9 Jul 2020 07:29:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1594279754;
- bh=QYSGAmbCCxKq7PeNXIOIYLZvnbzZZuWLOEUVbks30dw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=1Vq5Rv+mJ7JMcX+20xViqkzmfdNd9iFeiU157MTdQIU4+8aph9P1UPl4B25DGwWL5
- hrvyew5GekUMVukmUmyVH1Uef1LLdOT9JBeKJZeXTdMus5SGdjIAF3SIv5q2RYQIiw
- p9JIqnDhZP52EWTpOYsrInFFCFBgKwGPUHdFeSTk=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2ShT0fy6zDrNV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 17:38:16 +1000 (AEST)
+Received: by mail-lj1-f193.google.com with SMTP id r19so1238478ljn.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jul 2020 00:38:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=j7DqbPSyBqq2qwNcdYTCxivolsap4LLnpECg1M+YJYk=;
+ b=axKZq2HBWPZ8HQmhNumHWP1b8D6tFWju+QqHwPX/XajYDL7kilO0pqFRQZVD+Aiak6
+ gHp9rVrZVYyRNuNaVdvi8aVHOWTj5E7l/0Kn5IU7fOd6LlmEZsKg3HslZeBh39SBmoSm
+ 4U09Q7hyoMMVnC07+s+3n/7hUWp+UriMpmnQ6NWIArjWvG4qHn//OfSwgjPFu6cLxCU+
+ RcVtrBelLAXA8jcphdW0d9P7E+DMTJlNVN5GSOEcfItN3Ni5i4LXLiziehrYUkK0SGgE
+ UYjfrbxLa/pCo2Ka+FEn1HEyISjkKzi++VYCSNgxAtXU9UzfSMgu4R6fcORVrMuce9Rn
+ ujog==
+X-Gm-Message-State: AOAM532rXVtog8zj372uS3lSabZE/EPrE7rPTZWrIePYrnJap2HunHDQ
+ YbpdI21F/CAnHideVLToEuPzc97pz2g=
+X-Google-Smtp-Source: ABdhPJwrkOg1VmskPen0ndAgGUffYWkrKR783vprCdOePKnp0T8h/KXoPOC3hmTqCSglRRVLLvqDkw==
+X-Received: by 2002:a50:d8c2:: with SMTP id y2mr62468108edj.114.1594279973653; 
+ Thu, 09 Jul 2020 00:32:53 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.195])
+ by smtp.googlemail.com with ESMTPSA id sa10sm1258696ejb.79.2020.07.09.00.32.51
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 09 Jul 2020 00:32:52 -0700 (PDT)
+Date: Thu, 9 Jul 2020 09:32:49 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -42,26 +53,30 @@ To: Richard Henderson <rth@twiddle.net>,
  Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- Kalle Valo <kvalo@codeaurora.org>, "David S. Miller" <davem@davemloft.net>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Rich Felker <dalias@libc.org>, Kalle Valo <kvalo@codeaurora.org>,
+ "David S. Miller" <davem@davemloft.net>,
  Jakub Kicinski <kuba@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
  Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Arnd Bergmann <arnd@arndb.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
  Geert Uytterhoeven <geert+renesas@glider.be>,
- Andrew Morton <akpm@linux-foundation.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
- linux-arch@vger.kernel.org
-Subject: [PATCH v3 4/4] virtio: pci: Constify ioreadX() iomem argument (as in
+ Andrew Morton <akpm@linux-foundation.org>,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sh@vger.kernel.org, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+ virtualization@lists.linux-foundation.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] iomap: Constify ioreadX() iomem argument (as in
  generic implementation)
-Date: Thu,  9 Jul 2020 09:28:37 +0200
-Message-Id: <20200709072837.5869-5-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200709072837.5869-1-krzk@kernel.org>
+Message-ID: <20200709073249.GA6335@kozik-lap>
 References: <20200709072837.5869-1-krzk@kernel.org>
+ <20200709072837.5869-2-krzk@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200709072837.5869-2-krzk@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,48 +88,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ioreadX() helpers have inconsistent interface.  On some architectures
-void *__iomem address argument is a pointer to const, on some not.
+On Thu, Jul 09, 2020 at 09:28:34AM +0200, Krzysztof Kozlowski wrote:
+> The ioreadX() and ioreadX_rep() helpers have inconsistent interface.  On
+> some architectures void *__iomem address argument is a pointer to const,
+> on some not.
+> 
+> Implementations of ioreadX() do not modify the memory under the address
+> so they can be converted to a "const" version for const-safety and
+> consistency among architectures.
+> 
+> Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-Implementations of ioreadX() do not modify the memory under the address
-so they can be converted to a "const" version for const-safety and
-consistency among architectures.
+I forgot to put here one more Ack, for PowerPC:
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/virtio/virtio_pci_modern.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+https://lore.kernel.org/lkml/87ftedj0zz.fsf@mpe.ellerman.id.au/
 
-diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
-index db93cedd262f..90eff165a719 100644
---- a/drivers/virtio/virtio_pci_modern.c
-+++ b/drivers/virtio/virtio_pci_modern.c
-@@ -27,16 +27,16 @@
-  * method, i.e. 32-bit accesses for 32-bit fields, 16-bit accesses
-  * for 16-bit fields and 8-bit accesses for 8-bit fields.
-  */
--static inline u8 vp_ioread8(u8 __iomem *addr)
-+static inline u8 vp_ioread8(const u8 __iomem *addr)
- {
- 	return ioread8(addr);
- }
--static inline u16 vp_ioread16 (__le16 __iomem *addr)
-+static inline u16 vp_ioread16 (const __le16 __iomem *addr)
- {
- 	return ioread16(addr);
- }
- 
--static inline u32 vp_ioread32(__le32 __iomem *addr)
-+static inline u32 vp_ioread32(const __le32 __iomem *addr)
- {
- 	return ioread32(addr);
- }
--- 
-2.17.1
+Best regards,
+Krzysztof
 
