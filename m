@@ -1,84 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9AB021A464
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 18:08:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5516E21A4FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 18:41:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2h0x395TzDqF1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 02:08:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2hl64CvlzDrC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 02:41:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=longman@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=VouPM7Fb; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=E/pZW+Fu; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2gym6MvNzDrBB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 02:06:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1594310781;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5OfLVV9ee+e3aH9dIq9Uyj1RNa4dEfM45FxDPLW9s5s=;
- b=VouPM7FbUzs9gAvBps3AW8ZmnsDwQgQo9pnbA5ZoYBHiD9gaaSrTVpDAncetij5vwL4lfa
- rvYFwEnsy+6yO6GT/Qutv5Z35dfuKQeQW9rK1MSH16vGqLxaFugeGexsgEpKdzlvjlsn29
- qH7qsXH5oPYNKo35csE34+PbASG2EwE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1594310782;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5OfLVV9ee+e3aH9dIq9Uyj1RNa4dEfM45FxDPLW9s5s=;
- b=E/pZW+FuBVQbuTPLMgzH8HPiw81x33kKfJcq/LbvvQGC8ZsW4ZrEmNRZGumXjC0Ip7Sq2B
- bObzC2qvsGcFYGqL2d9G8vWJ823n1JQH/TxuvJjQIUr0/o6CAww/ZZapeBTN6DCMY3W8AG
- 4gahUNTSS4jEdmLJlnF87s1AURgsCMM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-378-3cdqq7fgOK-wggAAqi1Q3w-1; Thu, 09 Jul 2020 12:06:17 -0400
-X-MC-Unique: 3cdqq7fgOK-wggAAqi1Q3w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 83A94100AA21;
- Thu,  9 Jul 2020 16:06:15 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-120-122.rdu2.redhat.com [10.10.120.122])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CB60179CE7;
- Thu,  9 Jul 2020 16:06:13 +0000 (UTC)
-Subject: Re: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks for
- SPLPAR
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <20200706043540.1563616-6-npiggin@gmail.com>
- <874kqhvu1v.fsf@mpe.ellerman.id.au>
-From: Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
-Date: Thu, 9 Jul 2020 12:06:13 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <874kqhvu1v.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2hj60CSQzDrBd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 02:39:37 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 069GWPIs138921; Thu, 9 Jul 2020 12:39:30 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32637wftp7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Jul 2020 12:39:30 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 069GWZMk139984;
+ Thu, 9 Jul 2020 12:39:29 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32637wftn4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Jul 2020 12:39:29 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 069GWFnm008508;
+ Thu, 9 Jul 2020 16:39:27 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 325k2qrhad-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Jul 2020 16:39:27 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 069GdOfa64815126
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Jul 2020 16:39:24 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 78FF3A4062;
+ Thu,  9 Jul 2020 16:39:24 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 00D4EA405C;
+ Thu,  9 Jul 2020 16:39:22 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.79.209.33])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Jul 2020 16:39:21 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/pseries: Avoid using addr_to_pfn in realmode
+Date: Thu,  9 Jul 2020 22:09:14 +0530
+Message-Id: <20200709163914.13110-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.17.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-09_08:2020-07-09,
+ 2020-07-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ adultscore=0 mlxlogscore=966 clxscore=1015 malwarescore=0
+ priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007090116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,120 +86,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
+Cc: mahesh@linux.vnet.ibm.com, Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ npiggin@gmail.com, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/9/20 6:53 AM, Michael Ellerman wrote:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   arch/powerpc/include/asm/paravirt.h           | 28 ++++++++
->>   arch/powerpc/include/asm/qspinlock.h          | 66 +++++++++++++++++++
->>   arch/powerpc/include/asm/qspinlock_paravirt.h |  7 ++
->>   arch/powerpc/platforms/pseries/Kconfig        |  5 ++
->>   arch/powerpc/platforms/pseries/setup.c        |  6 +-
->>   include/asm-generic/qspinlock.h               |  2 +
-> Another ack?
->
-I am OK with adding the #ifdef around queued_spin_lock().
+When an UE or memory error exception is encountered the MCE handler
+tries to find the pfn using addr_to_pfn() which takes effective
+address as an argument, later pfn is used to poison the page where
+memory error occurred, recent rework in this area made addr_to_pfn
+to run in realmode, which can be fatal as it may try to access
+memory outside RMO region.
 
-Acked-by: Waiman Long <longman@redhat.com>
+To fix this use addr_to_pfn after switching to virtual mode.
 
->> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
->> index 7a8546660a63..f2d51f929cf5 100644
->> --- a/arch/powerpc/include/asm/paravirt.h
->> +++ b/arch/powerpc/include/asm/paravirt.h
->> @@ -45,6 +55,19 @@ static inline void yield_to_preempted(int cpu, u32 yield_count)
->>   {
->>   	___bad_yield_to_preempted(); /* This would be a bug */
->>   }
->> +
->> +extern void ___bad_yield_to_any(void);
->> +static inline void yield_to_any(void)
->> +{
->> +	___bad_yield_to_any(); /* This would be a bug */
->> +}
-> Why do we do that rather than just not defining yield_to_any() at all
-> and letting the build fail on that?
->
-> There's a condition somewhere that we know will false at compile time
-> and drop the call before linking?
->
->> diff --git a/arch/powerpc/include/asm/qspinlock_paravirt.h b/arch/powerpc/include/asm/qspinlock_paravirt.h
->> new file mode 100644
->> index 000000000000..750d1b5e0202
->> --- /dev/null
->> +++ b/arch/powerpc/include/asm/qspinlock_paravirt.h
->> @@ -0,0 +1,7 @@
->> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->> +#ifndef __ASM_QSPINLOCK_PARAVIRT_H
->> +#define __ASM_QSPINLOCK_PARAVIRT_H
-> _ASM_POWERPC_QSPINLOCK_PARAVIRT_H please.
->
->> +
->> +EXPORT_SYMBOL(__pv_queued_spin_unlock);
-> Why's that in a header? Should that (eventually) go with the generic implementation?
-The PV qspinlock implementation is not that generic at the moment. Even 
-though native qspinlock is used by a number of archs, PV qspinlock is 
-only currently used in x86. This is certainly an area that needs 
-improvement.
->> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
->> index 24c18362e5ea..756e727b383f 100644
->> --- a/arch/powerpc/platforms/pseries/Kconfig
->> +++ b/arch/powerpc/platforms/pseries/Kconfig
->> @@ -25,9 +25,14 @@ config PPC_PSERIES
->>   	select SWIOTLB
->>   	default y
->>   
->> +config PARAVIRT_SPINLOCKS
->> +	bool
->> +	default n
-> default n is the default.
->
->> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
->> index 2db8469e475f..747a203d9453 100644
->> --- a/arch/powerpc/platforms/pseries/setup.c
->> +++ b/arch/powerpc/platforms/pseries/setup.c
->> @@ -771,8 +771,12 @@ static void __init pSeries_setup_arch(void)
->>   	if (firmware_has_feature(FW_FEATURE_LPAR)) {
->>   		vpa_init(boot_cpuid);
->>   
->> -		if (lppaca_shared_proc(get_lppaca()))
->> +		if (lppaca_shared_proc(get_lppaca())) {
->>   			static_branch_enable(&shared_processor);
->> +#ifdef CONFIG_PARAVIRT_SPINLOCKS
->> +			pv_spinlocks_init();
->> +#endif
->> +		}
-> We could avoid the ifdef with this I think?
->
-> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
-> index 434615f1d761..6ec72282888d 100644
-> --- a/arch/powerpc/include/asm/spinlock.h
-> +++ b/arch/powerpc/include/asm/spinlock.h
-> @@ -10,5 +10,9 @@
->   #include <asm/simple_spinlock.h>
->   #endif
->
-> +#ifndef CONFIG_PARAVIRT_SPINLOCKS
-> +static inline void pv_spinlocks_init(void) { }
-> +#endif
-> +
->   #endif /* __KERNEL__ */
->   #endif /* __ASM_SPINLOCK_H */
->
->
-> cheers
->
-We don't really need to do a pv_spinlocks_init() if pv_kick() isn't 
-supported.
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+---
+V2: Leave bare metal code and save_mce_event as is.
+---
+ arch/powerpc/platforms/pseries/ras.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-Cheers,
-Longman
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index f3736fcd98fc..def875815e92 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -610,16 +610,8 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
+ 		if (mce_log->sub_err_type & UE_EFFECTIVE_ADDR_PROVIDED)
+ 			eaddr = be64_to_cpu(mce_log->effective_address);
+ 
+-		if (mce_log->sub_err_type & UE_LOGICAL_ADDR_PROVIDED) {
++		if (mce_log->sub_err_type & UE_LOGICAL_ADDR_PROVIDED)
+ 			paddr = be64_to_cpu(mce_log->logical_address);
+-		} else if (mce_log->sub_err_type & UE_EFFECTIVE_ADDR_PROVIDED) {
+-			unsigned long pfn;
+-
+-			pfn = addr_to_pfn(regs, eaddr);
+-			if (pfn != ULONG_MAX)
+-				paddr = pfn << PAGE_SHIFT;
+-		}
+-
+ 		break;
+ 	case MC_ERROR_TYPE_SLB:
+ 		mce_err.error_type = MCE_ERROR_TYPE_SLB;
+@@ -725,6 +717,16 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
+ 	 *       SLB multihit is done by now.
+ 	 */
+ 	mtmsr(mfmsr() | MSR_IR | MSR_DR);
++
++	/* Use addr_to_pfn after switching to virtual mode */
++	if (!paddr && error_type == MC_ERROR_TYPE_UE &&
++	    mce_log->sub_err_type & UE_EFFECTIVE_ADDR_PROVIDED) {
++		unsigned long pfn;
++
++		pfn = addr_to_pfn(regs, eaddr);
++		if (pfn != ULONG_MAX)
++			paddr = pfn << PAGE_SHIFT;
++	}
+ 	save_mce_event(regs, disposition == RTAS_DISP_FULLY_RECOVERED,
+ 			&mce_err, regs->nip, eaddr, paddr);
+ 
+-- 
+2.17.2
 
