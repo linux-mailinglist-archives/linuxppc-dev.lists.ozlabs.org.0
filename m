@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37742194E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 02:18:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BA52194F0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 02:20:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2Gwj1GqWzDqRS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 10:18:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2Gz71V46zDqs2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 10:20:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,31 +17,29 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=kernel.crashing.org
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B2Gsy2DPSzDqr6
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 10:15:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4B2GxJ1FtjzDq9k
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jul 2020 10:18:43 +1000 (AEST)
 Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 0690Fbi9019654;
- Wed, 8 Jul 2020 19:15:37 -0500
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 0690Ic1A019905;
+ Wed, 8 Jul 2020 19:18:38 -0500
 Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 0690FboB019653;
- Wed, 8 Jul 2020 19:15:37 -0500
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 0690IcnS019903;
+ Wed, 8 Jul 2020 19:18:38 -0500
 X-Authentication-Warning: gate.crashing.org: segher set sender to
  segher@kernel.crashing.org using -f
-Date: Wed, 8 Jul 2020 19:15:36 -0500
+Date: Wed, 8 Jul 2020 19:18:37 -0500
 From: Segher Boessenkool <segher@kernel.crashing.org>
 To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Subject: Re: Failure to build librseq on ppc
-Message-ID: <20200709001536.GC3598@gate.crashing.org>
+Message-ID: <20200709001837.GD3598@gate.crashing.org>
 References: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
- <20200708005922.GW3598@gate.crashing.org>
- <841816533.1735.1594211583710.JavaMail.zimbra@efficios.com>
- <1623833219.1877.1594216801865.JavaMail.zimbra@efficios.com>
- <96994487-ae4a-3bfb-b0f1-34228e51bea2@csgroup.eu>
- <1137155888.2676.1594218740683.JavaMail.zimbra@efficios.com>
+ <20200708005922.GW3598@gate.crashing.org> <87k0ze2nv4.fsf@mpe.ellerman.id.au>
+ <20200708235331.GA3598@gate.crashing.org>
+ <1968953502.5815.1594252883512.JavaMail.zimbra@efficios.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1137155888.2676.1594218740683.JavaMail.zimbra@efficios.com>
+In-Reply-To: <1968953502.5815.1594252883512.JavaMail.zimbra@efficios.com>
 User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,18 +59,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 08, 2020 at 10:32:20AM -0400, Mathieu Desnoyers wrote:
-> > As far as I can see, %U is mentioned in
-> > https://gcc.gnu.org/onlinedocs/gcc/Machine-Constraints.html in the
-> > powerpc subpart, at the "m" constraint.
+On Wed, Jul 08, 2020 at 08:01:23PM -0400, Mathieu Desnoyers wrote:
+> > > #define RSEQ_ASM_OP_CMPEQ(var, expect, label)                                   \
+> > >                 LOAD_WORD "%%r17, %[" __rseq_str(var) "]\n\t"                   \
+> > 
+> > The way this hardcodes r17 *will* break, btw.  The compiler will not
+> > likely want to use r17 as long as your code (after inlining etc.!) stays
+> > small, but there is Murphy's law.
 > 
-> Yep, I did notice it, but mistakenly thought it was only needed for "m<>" operand,
-> not "m".
+> r17 is in the clobber list, so it should be ok.
 
-Historically, "m" meant what "m<>" does now (in inline asm).  Too many
-people couldn't get it right ever (on other targets -- not that the
-situation was great for PowerPC, heh), so in inline asm "m" now means
-"no pre-modify or post-modify".
+What protects r17 *after* this asm statement?
 
 
 Segher
