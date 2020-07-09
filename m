@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B0C21A916
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 22:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B75E921A948
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 22:47:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2nvF6frgzDrDq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 06:33:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2pCS5gM8zDrD2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 06:47:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,33 +17,33 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=kernel.crashing.org
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B2nrj4Dr9zDrBx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 06:31:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4B2p9h4V0xzDr5j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 06:46:16 +1000 (AEST)
 Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 069KVJKK019073;
- Thu, 9 Jul 2020 15:31:19 -0500
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 069KkAns021000;
+ Thu, 9 Jul 2020 15:46:11 -0500
 Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 069KVI58019072;
- Thu, 9 Jul 2020 15:31:18 -0500
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 069KkAAp020997;
+ Thu, 9 Jul 2020 15:46:10 -0500
 X-Authentication-Warning: gate.crashing.org: segher set sender to
  segher@kernel.crashing.org using -f
-Date: Thu, 9 Jul 2020 15:31:18 -0500
+Date: Thu, 9 Jul 2020 15:46:09 -0500
 From: Segher Boessenkool <segher@kernel.crashing.org>
 To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Subject: Re: Failure to build librseq on ppc
-Message-ID: <20200709203118.GP3598@gate.crashing.org>
+Message-ID: <20200709204609.GQ3598@gate.crashing.org>
 References: <972420887.755.1594149430308.JavaMail.zimbra@efficios.com>
- <20200708005922.GW3598@gate.crashing.org> <87k0ze2nv4.fsf@mpe.ellerman.id.au>
- <20200708235331.GA3598@gate.crashing.org>
+ <87k0ze2nv4.fsf@mpe.ellerman.id.au> <20200708235331.GA3598@gate.crashing.org>
  <1968953502.5815.1594252883512.JavaMail.zimbra@efficios.com>
  <20200709001837.GD3598@gate.crashing.org>
  <1769596686.6365.1594302227962.JavaMail.zimbra@efficios.com>
  <20200709173712.GL3598@gate.crashing.org>
  <1584179170.7410.1594316576293.JavaMail.zimbra@efficios.com>
+ <1682947575.7422.1594317379612.JavaMail.zimbra@efficios.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1584179170.7410.1594316576293.JavaMail.zimbra@efficios.com>
+In-Reply-To: <1682947575.7422.1594317379612.JavaMail.zimbra@efficios.com>
 User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,29 +63,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 09, 2020 at 01:42:56PM -0400, Mathieu Desnoyers wrote:
-> > That works fine then, for a testcase.  Using r17 is not a great idea for
-> > performance (it increases the active register footprint, and causes more
-> > registers to be saved in the prologue of the functions, esp. on older
-> > compilers), and it is easier to just let the compiler choose a good
-> > register to use.  But maybe you want to see r17 in the generated
-> > testcases, as eyecatcher or something, dunno :-)
+On Thu, Jul 09, 2020 at 01:56:19PM -0400, Mathieu Desnoyers wrote:
+> > Just to make sure I understand your recommendation. So rather than
+> > hard coding r17 as the temporary registers, we could explicitly
+> > declare the temporary register as a C variable, pass it as an
+> > input operand to the inline asm, and then refer to it by operand
+> > name in the macros using it. This way the compiler would be free
+> > to perform its own register allocation.
+> > 
+> > If that is what you have in mind, then yes, I think it makes a
+> > lot of sense.
 > 
-> Just to make sure I understand your recommendation. So rather than
-> hard coding r17 as the temporary registers, we could explicitly
-> declare the temporary register as a C variable, pass it as an
-> input operand to the inline asm, and then refer to it by operand
-> name in the macros using it. This way the compiler would be free
-> to perform its own register allocation.
-> 
-> If that is what you have in mind, then yes, I think it makes a
-> lot of sense.
+> Except that asm goto have this limitation with gcc: those cannot
+> have any output operand, only inputs, clobbers and target labels.
+> We cannot modify a temporary register received as input operand. So I don't
+> see how to get a temporary register allocated by the compiler considering
+> this limitation.
 
-You write to it as well, so an inout register ("+r" or such).  And yes,
-you use a local var for it (like "long tmp;").  And then you can refer
-to it like anything else in your asm, like "%3" or like
-"%[a_long_name]"; and the compiler sees it as any other register,
-exactly.
+Heh, yet another reason not to obfuscate your inline asm: it didn't
+register this is asm goto.
+
+A clobber is one way, yes (those *are* allowed in asm goto).  Another
+way is to not actually change that register: move the original value
+back into there at the end of the asm!  (That isn't always easy to do,
+it depends on your code).  So something like
+
+	long start = ...;
+	long tmp = start;
+	asm("stuff that modifies %0; ...; mr %0,%1" : : "r"(tmp), "r"(start));
+
+is just fine: %0 isn't actually modified at all, as far as GCC is
+concerned, and this isn't lying to it!
 
 
 Segher
