@@ -2,43 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C3E21A98D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jul 2020 23:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7287F21AA44
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 00:07:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2pjl5R45zDrFF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 07:10:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B2qzv1kGDzDrBx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 08:07:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=hOh4lvO6; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2pgy5jqvzDr61
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 07:08:58 +1000 (AEST)
-Received: from [192.168.0.6] (ip5f5af4d3.dynamic.kabel-deutschland.de
- [95.90.244.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 6A571206462B4;
- Thu,  9 Jul 2020 23:08:53 +0200 (CEST)
-Subject: Re: /sys/kernel/debug/kmemleak empty despite kmemleak reports
-To: Catalin Marinas <catalin.marinas@arm.com>
-References: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
- <20200709175705.GD6579@gaia>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Message-ID: <276e4bce-3e21-8020-9a1c-729a6cafcdd3@molgen.mpg.de>
-Date: Thu, 9 Jul 2020 23:08:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B2qxq0G38zDrBj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 08:06:06 +1000 (AEST)
+Received: from localhost (mobile-166-175-191-139.mycingular.net
+ [166.175.191.139])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id E7E91206A1;
+ Thu,  9 Jul 2020 22:06:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1594332364;
+ bh=1E3KNYJwxzhk32vkxEFceHo/gsiJzSp6Aq70IvYmWQI=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=hOh4lvO6KVrS6aI6+Ob+ftOEskN/RvK0Afz3UgwW9FW6/2X96hxs19EqA5He/U1bA
+ +xP3oo0uep2m07nZQ4vYHju3ZIIj7vIK3v1ta6WdtVWZhpBWYnFslhv0cuX8rFBdem
+ rfOv/uGGLlBSdNUzbFcGYr7H8NrfRXMLQFKOoWok=
+Date: Thu, 9 Jul 2020 17:06:02 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Matt Jolly <Kangie@footclan.ninja>
+Subject: Re: [PATCH 2/2] PCI/AER: Log correctable errors as warning, not error
+Message-ID: <20200709220602.GA21872@bjorn-Precision-5520>
 MIME-Version: 1.0
-In-Reply-To: <20200709175705.GD6579@gaia>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200708001401.405749-2-helgaas@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,52 +55,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear Catalin,
-
-
-Am 09.07.20 um 19:57 schrieb Catalin Marinas:
-> On Thu, Jul 09, 2020 at 04:37:10PM +0200, Paul Menzel wrote:
->> Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, the
->> file does not contain more information.
->>
->>> $ dmesg
->>> […] > [48662.953323] perf: interrupt took too long (2570 > 2500), lowering kernel.perf_event_max_sample_rate to 77750
->>> [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
->>> [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
->>> [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
->>> [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
->>> [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
->>> [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
->>> [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
->>> [61608.697728] Can't find PMC that caused IRQ
->>> [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
->>> [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
->>> [92849.380672] FS-Cache: Loaded
->>> [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
->>> [92849.595974] NFS: Registering the id_resolver key type
->>> [92849.596000] Key type id_resolver registered
->>> [92849.596000] Key type id_legacy registered
->>> [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
->>> [106904.323471] Can't find PMC that caused IRQ
->>> [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
->>> [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
->>> $ sudo cat /sys/kernel/debug/kmemleak
+On Tue, Jul 07, 2020 at 07:14:01PM -0500, Bjorn Helgaas wrote:
+> From: Matt Jolly <Kangie@footclan.ninja>
 > 
-> When they are no longer present, they are most likely false positives.
+> PCIe correctable errors are recovered by hardware with no need for software
+> intervention (PCIe r5.0, sec 6.2.2.1).
+> 
+> Reduce the log level of correctable errors from KERN_ERR to KERN_WARNING.
+> 
+> The bug reports below are for correctable error logging.  This doesn't fix
+> the cause of those reports, but it may make the messages less alarming.
+> 
+> [bhelgaas: commit log, use pci_printk() to avoid code duplication]
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=201517
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=196183
+> Link: https://lore.kernel.org/r/20200618155511.16009-1-Kangie@footclan.ninja
+> Signed-off-by: Matt Jolly <Kangie@footclan.ninja>
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 
-How can this be? Shouldn’t the false positive also be logged in 
-`/sys/kernel/debug/kmemleak`?
+I applied both of these to pci/error for v5.9.
 
-> Was this triggered during boot? Or under some workload?
-
- From the timestamps it looks like under some load.
-
-
-Kind regards,
-
-Paul
+> ---
+>  drivers/pci/pcie/aer.c | 25 +++++++++++++++----------
+>  1 file changed, 15 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 9176c8a968b9..ca886bf91fd9 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -673,20 +673,23 @@ static void __aer_print_error(struct pci_dev *dev,
+>  {
+>  	const char **strings;
+>  	unsigned long status = info->status & ~info->mask;
+> -	const char *errmsg;
+> +	const char *level, *errmsg;
+>  	int i;
+>  
+> -	if (info->severity == AER_CORRECTABLE)
+> +	if (info->severity == AER_CORRECTABLE) {
+>  		strings = aer_correctable_error_string;
+> -	else
+> +		level = KERN_WARNING;
+> +	} else {
+>  		strings = aer_uncorrectable_error_string;
+> +		level = KERN_ERR;
+> +	}
+>  
+>  	for_each_set_bit(i, &status, 32) {
+>  		errmsg = strings[i];
+>  		if (!errmsg)
+>  			errmsg = "Unknown Error Bit";
+>  
+> -		pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
+> +		pci_printk(level, dev, "   [%2d] %-22s%s\n", i, errmsg,
+>  				info->first_error == i ? " (First)" : "");
+>  	}
+>  	pci_dev_aer_stats_incr(dev, info);
+> @@ -696,6 +699,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  {
+>  	int layer, agent;
+>  	int id = ((dev->bus->number << 8) | dev->devfn);
+> +	const char *level;
+>  
+>  	if (!info->status) {
+>  		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
+> @@ -706,13 +710,14 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
+>  	agent = AER_GET_AGENT(info->severity, info->status);
+>  
+> -	pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> -		aer_error_severity_string[info->severity],
+> -		aer_error_layer[layer], aer_agent_string[agent]);
+> +	level = (info->severity == AER_CORRECTABLE) ? KERN_WARNING : KERN_ERR;
+> +
+> +	pci_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+> +		   aer_error_severity_string[info->severity],
+> +		   aer_error_layer[layer], aer_agent_string[agent]);
+>  
+> -	pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> -		dev->vendor, dev->device,
+> -		info->status, info->mask);
+> +	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+> +		   dev->vendor, dev->device, info->status, info->mask);
+>  
+>  	__aer_print_error(dev, info);
+>  
+> -- 
+> 2.25.1
+> 
