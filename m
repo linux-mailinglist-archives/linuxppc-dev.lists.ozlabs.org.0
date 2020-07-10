@@ -2,81 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3827321BDA1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 21:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3394F21BFBD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 00:22:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B3NN93N39zDrP5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 05:27:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B3SFz6PF0zDrPR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 08:22:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=bmeneg@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::441;
+ helo=mail-wr1-x441.google.com; envelope-from=refactormyself@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Obv3yu1S; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Obv3yu1S; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=E/WvXIbd; dkim-atps=neutral
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B3NL95W5ZzDqwJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 05:25:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1594409133;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dB+4p3mFcNbkumvGSSHU5rWnmgenBPiiFxkhyGA7nh8=;
- b=Obv3yu1SiTZT/VRBCG7bbPKPnpH4WkYI72x/Ic1B6FueUQyJvsvmCNz2Ngo4cvTDOEPIU3
- dnwFJx+RpLQioFGij2/MOBuFHAYVCW7XhjENtsIv7no/ns4BzTBzpTwVihCCAllTU58e/L
- 9UJujHWNaPq7u68p0u31cEoJbet4LeA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1594409133;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dB+4p3mFcNbkumvGSSHU5rWnmgenBPiiFxkhyGA7nh8=;
- b=Obv3yu1SiTZT/VRBCG7bbPKPnpH4WkYI72x/Ic1B6FueUQyJvsvmCNz2Ngo4cvTDOEPIU3
- dnwFJx+RpLQioFGij2/MOBuFHAYVCW7XhjENtsIv7no/ns4BzTBzpTwVihCCAllTU58e/L
- 9UJujHWNaPq7u68p0u31cEoJbet4LeA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-509-D3aiIOxYOIuMLB_d2DOSHw-1; Fri, 10 Jul 2020 15:25:20 -0400
-X-MC-Unique: D3aiIOxYOIuMLB_d2DOSHw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 81758106B242;
- Fri, 10 Jul 2020 19:25:18 +0000 (UTC)
-Received: from localhost (ovpn-116-13.gru2.redhat.com [10.97.116.13])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0DCD91010404;
- Fri, 10 Jul 2020 19:25:17 +0000 (UTC)
-Date: Fri, 10 Jul 2020 16:25:16 -0300
-From: Bruno Meneguele <bmeneg@redhat.com>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Subject: Re: [PATCH v5] ima: move APPRAISE_BOOTPARAM dependency on
- ARCH_POLICY to runtime
-Message-ID: <20200710192516.GC10547@glitch>
-References: <20200709164647.45153-1-bmeneg@redhat.com>
- <1594401804.14405.8.camel@linux.ibm.com>
- <20200710180338.GA10547@glitch> <20200710183420.GB10547@glitch>
- <1594407288.14405.36.camel@linux.ibm.com>
-MIME-Version: 1.0
-In-Reply-To: <1594407288.14405.36.camel@linux.ibm.com>
-X-PGP-Key: http://keys.gnupg.net/pks/lookup?op=get&search=0x3823031E4660608D
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="VywGB/WGlW4DM4P8"
-Content-Disposition: inline
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B3SCf71r5zDrMH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 08:20:14 +1000 (AEST)
+Received: by mail-wr1-x441.google.com with SMTP id z13so7340569wrw.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 15:20:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=sQSNR/BugIoJc6hRmCvyOY2T/BtHesGbyrXiTgar9dI=;
+ b=E/WvXIbdBLzBijEIrHjy3ROSLzxYB5kRcgXlTWV5s6nTjk0sIxLxLV8dtFIH5vEf/H
+ U3eWv/xfzqF2tIQrGPbwIRR+9fsr3gC+Af8kb4EapkgW9zT1y/O6QsdJtedCfC+yuMe/
+ KhighYvpRyQnvVu4JLLuQojc1o28CCTGSLa/Vc7qo5GY/zFYL/85uWjW98zmkPmndBES
+ mAL7VvNIpEqvxJ1y9qrWHkQw7gdl6GJkw3mcT+pmgsizutcBpX00cH6+jfPFxCmME6bi
+ I2ZMDOM7hADKIDhEsG+aR5z3LW8kLVbqkzK9d8Ey3Xa9e5RkgEjZbSXxXl+6egvtEr7E
+ enFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=sQSNR/BugIoJc6hRmCvyOY2T/BtHesGbyrXiTgar9dI=;
+ b=NCITp/iWShxd7ZeM7DVRWEegZ9bhudfRvujh7vgp45uI8rV6D/weA0u8ZG5kVGf8I/
+ KIlyUMJUH/O7C61PVzXdcvZ/gibTGirMExpWRm+5beWGNCRkTWQS4ZG62xKJyeFnO0aT
+ 7YvmlYtybJ70l98vPVVXWHCav3dM0amtHB0rbRZbOK9nVZraki6ER+Ze6vzhoyUdn+C8
+ EAB+Z78Eph0UjFQ/ybsjvMf8dQRlazzylNR4tc8MSNh4ySZJqRxCieykzA7AkU1CnUx7
+ u8WeiotywS4cJrApANnFbcLyruhHagQwsnFgYGYVQ1X7FrKrZ1HvPcUYf1sH+wSiCbjU
+ H9jw==
+X-Gm-Message-State: AOAM533ofzvCy3pLz0a8FbeAdriWq9hNEkEilsLPyaWaEKRJTh2wITr6
+ F7cZDCmecxh9UNHarlHgcj4=
+X-Google-Smtp-Source: ABdhPJzS+uPpTiLsWNHg6xiOAW9CUTiS8ft4sXtfvWRv8joGH8d+W+t6FJyQoDufDDsZv9lKN31XXA==
+X-Received: by 2002:adf:ef4d:: with SMTP id c13mr67998573wrp.315.1594419608520; 
+ Fri, 10 Jul 2020 15:20:08 -0700 (PDT)
+Received: from net.saheed (54007186.dsl.pool.telekom.hu. [84.0.113.134])
+ by smtp.gmail.com with ESMTPSA id l18sm12170281wrm.52.2020.07.10.15.20.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Jul 2020 15:20:07 -0700 (PDT)
+From: Saheed Olayemi Bolarinwa <refactormyself@gmail.com>
+To: helgaas@kernel.org
+Subject: [PATCH 0/14 v3] PCI: Remove '*val = 0' from pcie_capability_read_*()
+Date: Fri, 10 Jul 2020 23:20:12 +0200
+Message-Id: <20200710212026.27136-1-refactormyself@gmail.com>
+X-Mailer: git-send-email 2.18.2
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,182 +72,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, nayna@linux.ibm.com, erichte@linux.ibm.com,
- x86@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
+ QCA ath9k Development <ath9k-devel@qca.qualcomm.com>, netdev@vger.kernel.org,
+ Oliver O'Halloran <oohall@gmail.com>, Stanislaw Gruszka <stf_xl@wp.pl>,
+ linux-acpi@vger.kernel.org, linux-rdma@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Doug Ledford <dledford@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ linux-kernel-mentees@lists.linuxfoundation.org, Len Brown <lenb@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, skhan@linuxfoundation.org, bjorn@helgaas.com,
+ Kalle Valo <kvalo@codeaurora.org>,
+ Mike Marciniszyn <mike.marciniszyn@intel.com>,
+ Sam Bobroff <sbobroff@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dennis Dalessandro <dennis.dalessandro@intel.com>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Lukas Wunner <lukas@wunner.de>,
+ Bolarinwa Olayemi Saheed <refactormyself@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---VywGB/WGlW4DM4P8
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
 
-On Fri, Jul 10, 2020 at 02:54:48PM -0400, Mimi Zohar wrote:
-> On Fri, 2020-07-10 at 15:34 -0300, Bruno Meneguele wrote:
-> > On Fri, Jul 10, 2020 at 03:03:38PM -0300, Bruno Meneguele wrote:
-> > > On Fri, Jul 10, 2020 at 01:23:24PM -0400, Mimi Zohar wrote:
-> > > > On Thu, 2020-07-09 at 13:46 -0300, Bruno Meneguele wrote:
-> > > > > APPRAISE_BOOTPARAM has been marked as dependent on !ARCH_POLICY i=
-n compile
-> > > > > time, enforcing the appraisal whenever the kernel had the arch po=
-licy option
-> > > > > enabled.
-> > > >=20
-> > > > > However it breaks systems where the option is set but the system =
-didn't
-> > > > > boot in a "secure boot" platform. In this scenario, anytime an ap=
-praisal
-> > > > > policy (i.e. ima_policy=3Dappraisal_tcb) is used it will be force=
-d, without
-> > > > > giving the user the opportunity to label the filesystem, before e=
-nforcing
-> > > > > integrity.
-> > > > >=20
-> > > > > Considering the ARCH_POLICY is only effective when secure boot is=
- actually
-> > > > > enabled this patch remove the compile time dependency and move it=
- to a
-> > > > > runtime decision, based on the secure boot state of that platform=
-.
-> > > >=20
-> > > > Perhaps we could simplify this patch description a bit?
-> > > >=20
-> > > > The IMA_APPRAISE_BOOTPARAM config allows enabling different
-> > > > "ima_appraise=3D" modes - log, fix, enforce - at run time, but not =
-when
-> > > > IMA architecture specific policies are enabled. =A0This prevents
-> > > > properly labeling the filesystem on systems where secure boot is
-> > > > supported, but not enabled on the platform. =A0Only when secure boo=
-t is
-> > > > enabled, should these IMA appraise modes be disabled.
-> > > >=20
-> > > > This patch removes the compile time dependency and makes it a runti=
-me
-> > > > decision, based on the secure boot state of that platform.
-> > > >=20
-> > >=20
-> > > Sounds good to me.
-> > >=20
-> > > > <snip>
-> > > >=20
-> > > > > diff --git a/security/integrity/ima/ima_appraise.c b/security/int=
-egrity/ima/ima_appraise.c
-> > > > > index a9649b04b9f1..884de471b38a 100644
-> > > > > --- a/security/integrity/ima/ima_appraise.c
-> > > > > +++ b/security/integrity/ima/ima_appraise.c
-> > > > > @@ -19,6 +19,11 @@
-> > > > >  static int __init default_appraise_setup(c
-> > > >=20
-> > > > > har *str)
-> > > > >  {
-> > > > >  #ifdef CONFIG_IMA_APPRAISE_BOOTPARAM
-> > > > > +=09if (arch_ima_get_secureboot()) {
-> > > > > +=09=09pr_info("appraise boot param ignored: secure boot enabled"=
-);
-> > > >=20
-> > > > Instead of a generic statement, is it possible to include the actua=
-l
-> > > > option being denied? =A0Perhaps something like: "Secure boot enable=
-d,
-> > > > ignoring %s boot command line option"
-> > > >=20
-> > > > Mimi
-> > > >=20
-> > >=20
-> > > Yes, sure.
-> > >=20
-> >=20
-> > Btw, would it make sense to first make sure we have a valid "str"
-> > option and not something random to print?
-> > =20
-> > diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity=
-/ima/ima_appraise.c
-> > index a9649b04b9f1..1f1175531d3e 100644
-> > --- a/security/integrity/ima/ima_appraise.c
-> > +++ b/security/integrity/ima/ima_appraise.c
-> > @@ -25,6 +25,16 @@ static int __init default_appraise_setup(char *str)
-> >                 ima_appraise =3D IMA_APPRAISE_LOG;
-> >         else if (strncmp(str, "fix", 3) =3D=3D 0)
-> >                 ima_appraise =3D IMA_APPRAISE_FIX;
-> > +       else
-> > +               pr_info("invalid \"%s\" appraise option");
-> > +
-> > +       if (arch_ima_get_secureboot()) {
-> > +               if (!is_ima_appraise_enabled()) {
-> > +                       pr_info("Secure boot enabled: ignoring ima_appr=
-aise=3D%s boot parameter option",
-> > +                               str);
-> > +                       ima_appraise =3D IMA_APPRAISE_ENFORCE;
-> > +               }
-> > +       }
->=20
-> Providing feedback is probably a good idea. =A0However, the
-> "arch_ima_get_secureboot" test can't come after setting
-> "ima_appraise."
->=20
+v3 CHANGES:
+- Split previous PATCH 6/13 into two : PATCH 6/14 and PATCH 7/14
+- Fix commit message of PATCH 5/14
+- Update Patch numbering and Commit messages
+- Add 'Acked by Greg KH' to PATCH 2/14
+- Add PATCH version
 
-Sorry, but I'm not sure if I got the reason to why it can't be done
-after: would it be basically to prevent any further processing about
-ima_appraise as a matter of security principle? Or maybe to keep the
-dependency between secureboot and bootparam truly strict?=20
+v2 CHANGES:
+- Fix missing comma, causing the email cc error
+- Fix typos and numbering errors in commit messages
+- Add commit message to 13/13
+- Add two more patches: PATCH 3/13 and PATCH 4/13
 
-Or are there something else I'm missing?
+MERGING:
+Patch 7/14 depends on Patch 6/14. However Patch 6/14 has no dependency.
+Please, merge PATCH 7/14 only after Patch 6/14.
+Patch 14/14 depend on all preceeding patchs. Except for Patch 6/14 and
+Patch 7/14, all other patches are independent of one another. Hence,
+please merge Patch 14/14 only after other patches in this series have
+been merged.
 
-> Mimi
->=20
-> >  #endif
-> >         return 1;
-> >  }
-> >=20
-> >=20
-> > The "else" there I think would make sense as well, at least to give the
-> > user some feedback about a possible mispelling of him (as a separate
-> > patch).
-> >=20
-> > And "if(!is_ima_appraise_enabled())" would avoid to print anything abou=
-t
-> > "ignoring the option" to the user in case he explicitly set "enforce",
-> > which we know there isn't any real effect but is allowed and shown in
-> > kernel-parameters.txt.
-> >=20
-> > > Thanks!
-> > >=20
-> > > > > +=09=09return 1;
-> > > > > +=09}
-> > > > > +
-> > > > >  =09if (strncmp(str, "off", 3) =3D=3D 0)
-> > > > >  =09=09ima_appraise =3D 0;
-> > > > >  =09else if (strncmp(str, "log", 3) =3D=3D 0)
-> > > >=20
-> > >=20
-> > > --=20
-> > > bmeneg=20
-> > > PGP Key: http://bmeneg.com/pubkey.txt
-> >=20
-> >=20
-> >=20
->=20
 
---=20
-bmeneg=20
-PGP Key: http://bmeneg.com/pubkey.txt
+PATCH 6/14:
+Make the function set status to "Power On" by default and only set to
+Set "Power Off" only if pcie_capability_read_word() is successful and
+(slot_ctrl & PCI_EXP_SLTCTL_PCC) == PCI_EXP_SLTCTL_PWR_OFF. 
 
---VywGB/WGlW4DM4P8
-Content-Type: application/pgp-signature; name="signature.asc"
+PATCH 1/14 to 13/14:
+Check the return value of pcie_capability_read_*() to ensure success or
+confirm failure. While maintaining these functions, this ensures that the
+changes in PATCH 14/14 does not introduce any bug. 
 
------BEGIN PGP SIGNATURE-----
+PATCH 14/14:
+There are several reasons why a PCI capability read may fail whether the
+device is present or not. If this happens, pcie_capability_read_*() will
+return -EINVAL/PCIBIOS_BAD_REGISTER_NUMBER or PCIBIOS_DEVICE_NOT_FOUND
+and *val is set to 0.
 
-iQEzBAEBCAAdFiEEdWo6nTbnZdbDmXutYdRkFR+RokMFAl8IwJwACgkQYdRkFR+R
-okPoHwgAy7MLZ15gY7OtTlh4cernWNb6w8odML7tp8dhQG8ToXwkPwBdBjC5WU6z
-nbhxCHTxLej0ej8nHoo0IEsAv+4iNnlM+VtS/mWT5p1/dD2HkiM2cTK3Zwj1kqZk
-1L9tPFbvBIllDRAFzzn44vSDG/jixbGFMGU9y3rFAQQHqFNi1ZDz3hg0yzgwJNar
-pW4FPhxzXVi5ASCGhm7/Z5/qbx6ARtwH5U/eFIx45dG3oAafXqcZiJ1fj871nEjR
-1ddrO2U4Yy53z4JqimlRxhu/VlB+U1wlRG8GnEuM1ngkiKwJ48Zrdo+Ren8dOdTK
-0gu15PhNDXuOPPzVHi2ot69JM1kq1Q==
-=nip5
------END PGP SIGNATURE-----
+This behaviour if further ensured by this code inside
+pcie_capability_read_*()
 
---VywGB/WGlW4DM4P8--
+ ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
+ /*
+  * Reset *val to 0 if pci_read_config_dword() fails, it may
+  * have been written as 0xFFFFFFFF if hardware error happens
+  * during pci_read_config_dword().
+  */
+ if (ret)
+	 *val = 0;
+ return ret;
+
+a) Since all pci_generic_config_read() does is read a register value,
+it may return success after reading a ~0 which *may* have been fabricated
+by the PCI host bridge due to a read timeout. Hence pci_read_config_*() 
+will return success with a fabricated ~0 in *val, indicating a problem.
+In this case, the assumed behaviour of  pcie_capability_read_*() will be
+wrong. To avoid error slipping through, more checks are necessary.
+
+b) pci_read_config_*() will return PCIBIOS_DEVICE_NOT_FOUND only if 
+dev->error_state = pci_channel_io_perm_failure (i.e. 
+pci_dev_is_disconnected()) or if pci_generic_config_read() can't find the
+device. In both cases *val is initially set to ~0 but as shown in the code
+above pcie_capability_read_*() resets it back to 0. Even with this effort,
+drivers still have to perform validation checks more so if 0 is a valid
+value.
+
+Most drivers only consider the case (b) and in some cases, there is the 
+expectation that on timeout *val has a fabricated value of ~0, which *may*
+not always be true as explained in (a).
+
+In any case, checks need to be done to validate the value read and maybe
+confirm which error has occurred. It is better left to the drivers to do.
+
+Check the return value of pcie_capability_read_dword() to ensure success
+and avoid bug as a result of Patch 14/14.
+Remove the reset of *val to 0 when pci_read_config_*() fails.
+
+
+Bolarinwa Olayemi Saheed (14):
+  IB/hfi1: Check the return value of pcie_capability_read_*()
+  misc: rtsx: Check the return value of pcie_capability_read_*()
+  ath9k: Check the return value of pcie_capability_read_*()
+  iwlegacy: Check the return value of pcie_capability_read_*()
+  PCI: pciehp: Check the return value of pcie_capability_read_*()
+  PCI: pciehp: Make "Power On" the default 
+  PCI: pciehp: Check the return value of pcie_capability_read_*()
+  PCI/ACPI: Check the return value of pcie_capability_read_*()
+  PCI: pciehp: Check the return value of pcie_capability_read_*()
+  PCI: Check the return value of pcie_capability_read_*()
+  PCI/PM: Check return value of pcie_capability_read_*()
+  PCI/AER: Check the return value of pcie_capability_read_*()
+  PCI/ASPM: Check the return value of pcie_capability_read_*()
+  PCI: Remove '*val = 0' from pcie_capability_read_*()
+
+ drivers/net/wireless/ath/ath9k/pci.c         | 5 +++--
+ drivers/net/wireless/intel/iwlegacy/common.c | 4 ++--
+ drivers/infiniband/hw/hfi1/aspm.c | 7 ++++---
+ drivers/misc/cardreader/rts5227.c | 5 +++--
+ drivers/misc/cardreader/rts5249.c | 5 +++--
+ drivers/misc/cardreader/rts5260.c | 5 +++--
+ drivers/misc/cardreader/rts5261.c | 5 +++--
+ drivers/pci/pcie/aer.c  |  5 +++--
+ drivers/pci/pcie/aspm.c | 33 +++++++++++++++++----------------
+ drivers/pci/hotplug/pciehp_hpc.c | 47 ++++++++++++++++----------------
+ drivers/pci/pci-acpi.c           | 10 ++++---
+ drivers/pci/probe.c              | 29 ++++++++++++--------
+ drivers/pci/access.c | 14 --------------
+ 13 files changed, 87 insertions(+), 87 deletions(-)
+
+-- 
+2.18.2
 
