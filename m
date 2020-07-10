@@ -1,62 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2988D21C0EA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 01:49:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A9321C0F1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 01:51:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B3VBH07s4zDrP5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 09:49:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B3VFP2BzgzDrNn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 09:51:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B3V8Q44XgzDrNd
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 09:47:34 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B3VCS3kLDzDrNj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 09:50:12 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06AN3Xq2036117; Fri, 10 Jul 2020 19:47:25 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 326j843ay0-1
+ 06ANXBQO116558; Fri, 10 Jul 2020 19:50:05 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 326b8ysyuw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Jul 2020 19:47:25 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06ANij9V024578;
- Fri, 10 Jul 2020 23:47:24 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma04wdc.us.ibm.com with ESMTP id 326bcb08ha-1
+ Fri, 10 Jul 2020 19:50:05 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06ANilqB000948;
+ Fri, 10 Jul 2020 23:50:04 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma05wdc.us.ibm.com with ESMTP id 326bcb07b7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Jul 2020 23:47:23 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06ANlMcL51118454
+ Fri, 10 Jul 2020 23:50:04 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06ANnwP119202540
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Jul 2020 23:47:22 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B47AA112066;
- Fri, 10 Jul 2020 23:47:22 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E0D2112062;
- Fri, 10 Jul 2020 23:47:21 +0000 (GMT)
+ Fri, 10 Jul 2020 23:49:58 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0CCE76E04C;
+ Fri, 10 Jul 2020 23:50:01 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 867316E050;
+ Fri, 10 Jul 2020 23:50:00 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.211.134.102])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 10 Jul 2020 23:47:21 +0000 (GMT)
-Message-ID: <019fd53e7538c6f8f332d175df74b1815ef5aa8c.camel@linux.ibm.com>
-Subject: [PATCH V2 1/2] powerpc/vas: Report proper error code for address
- translation failure
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 10 Jul 2020 23:50:00 +0000 (GMT)
+Message-ID: <0315251705baff94f678c33178491b5008723511.camel@linux.ibm.com>
+Subject: [PATCH V2 2/2] selftests/powerpc: Use proper error code to check
+ fault address
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au
-Date: Fri, 10 Jul 2020 16:47:19 -0700
+Date: Fri, 10 Jul 2020 16:49:58 -0700
+In-Reply-To: <019fd53e7538c6f8f332d175df74b1815ef5aa8c.camel@linux.ibm.com>
+References: <019fd53e7538c6f8f332d175df74b1815ef5aa8c.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
 MIME-Version: 1.0
@@ -66,11 +69,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-10_14:2020-07-10,
  2020-07-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- clxscore=1015 malwarescore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- mlxlogscore=500 spamscore=0 impostorscore=0 suspectscore=1 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007100152
+ mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 mlxscore=0 spamscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=1
+ malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007100155
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,76 +85,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tulioqm@br.ibm.com, abali@us.ibm.com, linuxppc-dev@lists.ozlabs.org,
+Cc: tulioqm@br.ibm.com, linuxppc-dev@lists.ozlabs.org, abali@us.ibm.com,
  rzinsly@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-P9 DD2 NX workbook (Table 4-36) says DMA controller uses CC=5
-internally for translation fault handling. NX reserves CC=250 for
-OS to notify user space when NX encounters address translation
-failure on the request buffer. Not an issue in earlier releases
-as NX does not get faults on kernel addresses.
+ERR_NX_TRANSLATION(CSB.CC=5) is for internal to VAS for fault handling
+and should not used by OS. ERR_NX_AT_FAULT(CSB.CC=250) is the proper
+error code should be reported by OS when NX encounters address
+translation failure.
 
-This patch defines CSB_CC_FAULT_ADDRESS(250) and updates CSB.CC with
-this proper error code for user space.
+This patch uses CC=250 to determine the fault address when the request
+is not successful.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-
-Changes in V2:
-- Use CSB_CC_FAULT_ADDRESS instead of CSB_CC_ADDRESS_TRANSLATION
-  to distinguish from other error codes.
-- Add NX workbook reference in the comment.
-
 ---
- Documentation/powerpc/vas-api.rst          | 2 +-
- arch/powerpc/include/asm/icswx.h           | 4 ++++
- arch/powerpc/platforms/powernv/vas-fault.c | 2 +-
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/powerpc/nx-gzip/gunz_test.c  | 4 ++--
+ tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/powerpc/vas-api.rst b/Documentation/powerpc/vas-api.rst
-index 1217c2f..788dc83 100644
---- a/Documentation/powerpc/vas-api.rst
-+++ b/Documentation/powerpc/vas-api.rst
-@@ -213,7 +213,7 @@ request buffers are not in memory. The operating system handles the fault by
- updating CSB with the following data:
+diff --git a/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c b/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
+index 6ee0fde..7c23d3d 100644
+--- a/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
++++ b/tools/testing/selftests/powerpc/nx-gzip/gunz_test.c
+@@ -698,13 +698,13 @@ int decompress_file(int argc, char **argv, void *devhandle)
  
- 	csb.flags = CSB_V;
--	csb.cc = CSB_CC_TRANSLATION;
-+	csb.cc = CSB_CC_FAULT_ADDRESS;
- 	csb.ce = CSB_CE_TERMINATION;
- 	csb.address = fault_address;
+ 	switch (cc) {
  
-diff --git a/arch/powerpc/include/asm/icswx.h b/arch/powerpc/include/asm/icswx.h
-index 965b1f3..9bc7c58 100644
---- a/arch/powerpc/include/asm/icswx.h
-+++ b/arch/powerpc/include/asm/icswx.h
-@@ -77,6 +77,10 @@ struct coprocessor_completion_block {
- #define CSB_CC_CHAIN		(37)
- #define CSB_CC_SEQUENCE		(38)
- #define CSB_CC_HW		(39)
-+/*
-+ * P9 DD NX Workbook 3.2 (Table 4-36): Address translation fault
-+ */
-+#define	CSB_CC_FAULT_ADDRESS	(250)
+-	case ERR_NX_TRANSLATION:
++	case ERR_NX_AT_FAULT:
  
- #define CSB_SIZE		(0x10)
- #define CSB_ALIGN		CSB_SIZE
-diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
-index 266a6ca..3d21fce 100644
---- a/arch/powerpc/platforms/powernv/vas-fault.c
-+++ b/arch/powerpc/platforms/powernv/vas-fault.c
-@@ -79,7 +79,7 @@ static void update_csb(struct vas_window *window,
- 	csb_addr = (void __user *)be64_to_cpu(crb->csb_addr);
+ 		/* We touched the pages ahead of time.  In the most common case
+ 		 * we shouldn't be here.  But may be some pages were paged out.
+ 		 * Kernel should have placed the faulting address to fsaddr.
+ 		 */
+-		NXPRT(fprintf(stderr, "ERR_NX_TRANSLATION %p\n",
++		NXPRT(fprintf(stderr, "ERR_NX_AT_FAULT %p\n",
+ 			      (void *)cmdp->crb.csb.fsaddr));
  
- 	memset(&csb, 0, sizeof(csb));
--	csb.cc = CSB_CC_TRANSLATION;
-+	csb.cc = CSB_CC_FAULT_ADDRESS;
- 	csb.ce = CSB_CE_TERMINATION;
- 	csb.cs = 0;
- 	csb.count = 0;
+ 		if (pgfault_retries == NX_MAX_FAULTS) {
+diff --git a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
+index 7496a83..02dffb6 100644
+--- a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
++++ b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
+@@ -306,13 +306,13 @@ int compress_file(int argc, char **argv, void *handle)
+ 			lzcounts, cmdp, handle);
+ 
+ 		if (cc != ERR_NX_OK && cc != ERR_NX_TPBC_GT_SPBC &&
+-		    cc != ERR_NX_TRANSLATION) {
++		    cc != ERR_NX_AT_FAULT) {
+ 			fprintf(stderr, "nx error: cc= %d\n", cc);
+ 			exit(-1);
+ 		}
+ 
+ 		/* Page faults are handled by the user code */
+-		if (cc == ERR_NX_TRANSLATION) {
++		if (cc == ERR_NX_AT_FAULT) {
+ 			NXPRT(fprintf(stderr, "page fault: cc= %d, ", cc));
+ 			NXPRT(fprintf(stderr, "try= %d, fsa= %08llx\n",
+ 				  fault_tries,
 -- 
 1.8.3.1
 
