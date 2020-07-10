@@ -1,77 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57EE21BC7C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 19:43:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B861A21BCC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 20:05:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B3L3m01gzzDqXl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 03:43:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B3LYf6PGPzDrP4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 04:05:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bmeneg@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=gMuDc4HL; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=gMuDc4HL; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B3L236pxXzDrNJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 03:41:31 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06AHVaoH178907; Fri, 10 Jul 2020 13:41:25 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 326bp0uwdx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Jul 2020 13:41:25 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06AHYqh2032535;
- Fri, 10 Jul 2020 17:41:24 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04wdc.us.ibm.com with ESMTP id 326bcaxd6d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Jul 2020 17:41:24 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06AHfN9Q20054340
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Jul 2020 17:41:23 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D1BE76E050;
- Fri, 10 Jul 2020 17:41:23 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 988E86E04C;
- Fri, 10 Jul 2020 17:41:23 +0000 (GMT)
-Received: from localhost (unknown [9.160.49.198])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 10 Jul 2020 17:41:23 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/numa: Restrict possible nodes based on platform
-In-Reply-To: <20200707084203.GC874@linux.vnet.ibm.com>
-References: <20200706064002.14848-1-srikar@linux.vnet.ibm.com>
- <87lfjv5352.fsf@mpe.ellerman.id.au> <20200707084203.GC874@linux.vnet.ibm.com>
-Date: Fri, 10 Jul 2020 12:41:22 -0500
-Message-ID: <871rljfet9.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B3LWs33kQzDrN7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 04:03:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594404228;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XN24PGjpaeX+61Yzd0yY+PTaQgU43gwsWj3Uzow6ocE=;
+ b=gMuDc4HLeuzzON83UD4BZ09Tz3U3eKNRJ9sFsD9y+h+AzZN2yi0vi1ADplxRUsNcST9Sww
+ mP4bRtmFAfZ9XmDRtcmjaPXMe+H9uev225v8q3FTcxFe0hiGquxhAJMyrKJFy60CS/aITl
+ zK0CL4bfI7bL2lC/+b8Un+ptkT0S+kk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594404228;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XN24PGjpaeX+61Yzd0yY+PTaQgU43gwsWj3Uzow6ocE=;
+ b=gMuDc4HLeuzzON83UD4BZ09Tz3U3eKNRJ9sFsD9y+h+AzZN2yi0vi1ADplxRUsNcST9Sww
+ mP4bRtmFAfZ9XmDRtcmjaPXMe+H9uev225v8q3FTcxFe0hiGquxhAJMyrKJFy60CS/aITl
+ zK0CL4bfI7bL2lC/+b8Un+ptkT0S+kk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-90-_VnW-mdIMea6fAcU4Rjghg-1; Fri, 10 Jul 2020 14:03:41 -0400
+X-MC-Unique: _VnW-mdIMea6fAcU4Rjghg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D4A628027E4;
+ Fri, 10 Jul 2020 18:03:39 +0000 (UTC)
+Received: from localhost (ovpn-116-13.gru2.redhat.com [10.97.116.13])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 518907EF89;
+ Fri, 10 Jul 2020 18:03:39 +0000 (UTC)
+Date: Fri, 10 Jul 2020 15:03:38 -0300
+From: Bruno Meneguele <bmeneg@redhat.com>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH v5] ima: move APPRAISE_BOOTPARAM dependency on
+ ARCH_POLICY to runtime
+Message-ID: <20200710180338.GA10547@glitch>
+References: <20200709164647.45153-1-bmeneg@redhat.com>
+ <1594401804.14405.8.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-10_13:2020-07-10,
- 2020-07-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- phishscore=0 suspectscore=0 spamscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007100112
+In-Reply-To: <1594401804.14405.8.camel@linux.ibm.com>
+X-PGP-Key: http://keys.gnupg.net/pks/lookup?op=get&search=0x3823031E4660608D
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=bmeneg@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="IS0zKkzwUGydFO0o"
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,78 +88,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Bharata B Rao <bharata@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, nayna@linux.ibm.com, erichte@linux.ibm.com,
+ x86@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+--IS0zKkzwUGydFO0o
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> * Michael Ellerman <mpe@ellerman.id.au> [2020-07-07 15:02:17]:
->
->> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
->> > $ lsprop /proc/device-tree/rtas/ibm,*associ*-domains
->> > /proc/device-tree/rtas/ibm,current-associativity-domains
->> > 		 00000005 00000001 00000002 00000002 00000002 00000010
->> > /proc/device-tree/rtas/ibm,max-associativity-domains
->> > 		 00000005 00000001 00000008 00000020 00000020 00000100
->> >
->> > $ cat /sys/devices/system/node/possible ##Before patch
->> > 0-31
->> >
->> > $ cat /sys/devices/system/node/possible ##After patch
->> > 0-1
->> >
->> > Note the maximum nodes this platform can support is only 2 but the
->> > possible nodes is set to 32.
->> 
->> But what about LPM to a system with more nodes?
->> 
->
-> I have very less info on LPM, so I checked with Nathan Lynch before posting
-> and as per Nathan in the current design of LPM, Linux wouldn't use the new
-> node numbers.
+On Fri, Jul 10, 2020 at 01:23:24PM -0400, Mimi Zohar wrote:
+> On Thu, 2020-07-09 at 13:46 -0300, Bruno Meneguele wrote:
+> > APPRAISE_BOOTPARAM has been marked as dependent on !ARCH_POLICY in comp=
+ile
+> > time, enforcing the appraisal whenever the kernel had the arch policy o=
+ption
+> > enabled.
+>=20
+> > However it breaks systems where the option is set but the system didn't
+> > boot in a "secure boot" platform. In this scenario, anytime an appraisa=
+l
+> > policy (i.e. ima_policy=3Dappraisal_tcb) is used it will be forced, wit=
+hout
+> > giving the user the opportunity to label the filesystem, before enforci=
+ng
+> > integrity.
+> >=20
+> > Considering the ARCH_POLICY is only effective when secure boot is actua=
+lly
+> > enabled this patch remove the compile time dependency and move it to a
+> > runtime decision, based on the secure boot state of that platform.
+>=20
+> Perhaps we could simplify this patch description a bit?
+>=20
+> The IMA_APPRAISE_BOOTPARAM config allows enabling different
+> "ima_appraise=3D" modes - log, fix, enforce - at run time, but not when
+> IMA architecture specific policies are enabled. =A0This prevents
+> properly labeling the filesystem on systems where secure boot is
+> supported, but not enabled on the platform. =A0Only when secure boot is
+> enabled, should these IMA appraise modes be disabled.
+>=20
+> This patch removes the compile time dependency and makes it a runtime
+> decision, based on the secure boot state of that platform.
+>=20
 
-(I see a v2 has been posted already but I needed a little time to check
-with our hypervisor people on this point.)
+Sounds good to me.
 
-It's less of a design and more of a least-bad option in the absence of a
-more flexible NUMA architecture in Linux.
+> <snip>
+>=20
+> > diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity=
+/ima/ima_appraise.c
+> > index a9649b04b9f1..884de471b38a 100644
+> > --- a/security/integrity/ima/ima_appraise.c
+> > +++ b/security/integrity/ima/ima_appraise.c
+> > @@ -19,6 +19,11 @@
+> >  static int __init default_appraise_setup(c
+>=20
+> > har *str)
+> >  {
+> >  #ifdef CONFIG_IMA_APPRAISE_BOOTPARAM
+> > +=09if (arch_ima_get_secureboot()) {
+> > +=09=09pr_info("appraise boot param ignored: secure boot enabled");
+>=20
+> Instead of a generic statement, is it possible to include the actual
+> option being denied? =A0Perhaps something like: "Secure boot enabled,
+> ignoring %s boot command line option"
+>=20
+> Mimi
+>=20
 
-For now, the "rule" with LPM and NUMA has to be that Linux uses the NUMA
-information from the device tree that it was booted with, and it must
-disregard ibm,associativity and similar information after LPM or certain
-other platform events. Historically there has been code that tried to
-honor changes in NUMA information but it caused much worse problems than
-degraded performance. That code has been disabled by default since last
-year and is now subject to removal:
+Yes, sure.
 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=182897
+Thanks!
 
-Most NUMA-aware code happens to follow that rule because the device tree
-associativity information tends to get cached on first access in Linux's
-own data structures. It all feels a little fragile to me though,
-especially since we can DLPAR add processors and memory after LPM with
-"new" associativity properties which don't relate to the logical
-topology Linux has already built. However, on currently available hw, as
-long as we're using ibm,max-associativity-domains to limit the set of
-possible nodes, I believe such resources will always receive valid (but
-possibly suboptimal) NUMA assignments. That's because as of this
-writing ibm,max-associativity-domains has the same contents on all
-currently available PowerVM systems.
+> > +=09=09return 1;
+> > +=09}
+> > +
+> >  =09if (strncmp(str, "off", 3) =3D=3D 0)
+> >  =09=09ima_appraise =3D 0;
+> >  =09else if (strncmp(str, "log", 3) =3D=3D 0)
+>=20
 
-Now if we change to using ibm,current-associativity-domains, which we
-*can* expect to differ between differently configured systems, post-LPM
-DLPAR additions can yield resources with node assignments that
-fall outside of the possible range, especially when we've migrated from
-a smaller system to a larger one.
+--=20
+bmeneg=20
+PGP Key: http://bmeneg.com/pubkey.txt
 
-Is the current code robust against that possibility? I don't think so:
-it looks like of_node_to_nid_single(), of_drconf_to_nid_single() and
-possibly more code need to guard against this in order to prevent
-NODE_DATA() null dereferences and the like. Probably those functions
-should be made to clamp the nid assignment at num_possible_nodes()
-instead of MAX_NUMNODES, which strikes me as more correct regardless of
-your patch.
+--IS0zKkzwUGydFO0o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEdWo6nTbnZdbDmXutYdRkFR+RokMFAl8IrXoACgkQYdRkFR+R
+okMw7wf/QLnOgC+jQhpff5dmbxQXCG/rSbdtVKMUjIej817eUaAGovHn4XwicYqn
+xCg2qIqTHuF4e5aYOsVB+kRIVdNZI2GVL27O0SArwFrPgvvOan3CKK5nStQkXRr9
+XsLBEsgLKDV91xaQxBXrxWSslJWln5YFZNZYxvOsrhiRLwt4m7P0eSIForfL4UI2
+OoJhwTCuBBMEi906mhlmOQwFyTi9/NMQluwf2iB+moJzRMo79cfFU6D//rP9RfoP
+yttKBvpWqWUbPQ3cAVHkke+Yqr06Cz8BDYT3hP0oRJaludvY2Q/xVjBIOi3sX0gI
+dx8A3npnWwj0SUi90M+u4rIHQm9vCA==
+=X95t
+-----END PGP SIGNATURE-----
+
+--IS0zKkzwUGydFO0o--
 
