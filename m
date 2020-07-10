@@ -1,42 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A640D21AFB9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 08:49:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461B621B042
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 09:34:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B33Ys5VzWzDqQs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 16:49:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B34YT6GZ0zDrNR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 17:34:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B33Wq6bjhzDrK0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 16:47:50 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC759C0A;
- Thu,  9 Jul 2020 23:47:47 -0700 (PDT)
-Received: from [10.163.87.77] (unknown [10.163.87.77])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 878B63F887;
- Thu,  9 Jul 2020 23:47:38 -0700 (PDT)
-Subject: Re: [mm/debug_vm_pgtable] a97a171093:
- BUG:unable_to_handle_page_fault_for_address
-To: kernel test robot <lkp@intel.com>
-References: <20200709061122.GN3874@shao2-debian>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <686d83dc-d49f-77f2-1581-8f2be1a5fc60@arm.com>
-Date: Fri, 10 Jul 2020 12:17:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.44;
+ helo=out30-44.freemail.mail.aliyun.com;
+ envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.alibaba.com
+Received: from out30-44.freemail.mail.aliyun.com
+ (out30-44.freemail.mail.aliyun.com [115.124.30.44])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B34Wl3q2PzDrKb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 17:32:49 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R201e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01f04427;
+ MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
+ TI=SMTPD_---0U2Gmw93_1594366344; 
+Received: from 30.27.116.248(mailfrom:tianjia.zhang@linux.alibaba.com
+ fp:SMTPD_---0U2Gmw93_1594366344) by smtp.aliyun-inc.com(127.0.0.1);
+ Fri, 10 Jul 2020 15:32:26 +0800
+Subject: Re: [PATCH v6 0/5] clean up redundant 'kvm_run' parameters
+To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
+ frankja@linux.ibm.com, david@redhat.com, cohuck@redhat.com,
+ heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+ sean.j.christopherson@intel.com, vkuznets@redhat.com, wanpengli@tencent.com,
+ jmattson@google.com, joro@8bytes.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, x86@kernel.org, hpa@zytor.com, maz@kernel.org,
+ james.morse@arm.com, julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
+ christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com,
+ chenhuacai@gmail.com
+References: <20200623131418.31473-1-tianjia.zhang@linux.alibaba.com>
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Message-ID: <6604e273-d7b1-5007-8721-75c4a4dec68e@linux.alibaba.com>
+Date: Fri, 10 Jul 2020 15:32:24 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200709061122.GN3874@shao2-debian>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
+In-Reply-To: <20200623131418.31473-1-tianjia.zhang@linux.alibaba.com>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,94 +60,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, lkp@lists.01.org,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Paolo,
 
+Any opinion on this series patches? Can I help with this patchset ?
 
-On 07/09/2020 11:41 AM, kernel test robot wrote:
-> [   94.349598] BUG: unable to handle page fault for address: ffffed10a7ffddff
-> [   94.351039] #PF: supervisor read access in kernel mode
-> [   94.352172] #PF: error_code(0x0000) - not-present page
-> [   94.353256] PGD 43ffed067 P4D 43ffed067 PUD 43fdee067 PMD 0 
-> [   94.354484] Oops: 0000 [#1] SMP KASAN
-> [   94.355238] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.8.0-rc4-00002-ga97a17109332c #1
-> [   94.360456] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-> [   94.361950] RIP: 0010:hugetlb_advanced_tests+0x137/0x699
-> [   94.363026] Code: 8b 13 4d 85 f6 75 0b 48 ff 05 2c e4 6a 01 31 ed eb 41 bf f8 ff ff ff ba ff ff 37 00 4c 01 f7 48 c1 e2 2a 48 89 f9 48 c1 e9 03 <80> 3c 11 00 74 05 e8 cd c0 67 fa ba f8 ff ff ff 49 8b 2c 16 48 85
-> [   94.366592] RSP: 0000:ffffc90000047d30 EFLAGS: 00010a06
-> [   94.367693] RAX: 1ffffffff1049b80 RBX: ffff888380525308 RCX: 1ffff110a7ffddff
-> [   94.369215] RDX: dffffc0000000000 RSI: 1ffff11087ffdc00 RDI: ffff88853ffeeff8
-> [   94.370693] RBP: 000000000018e510 R08: 0000000000000025 R09: 0000000000000001
-> [   94.372165] R10: ffff888380523c07 R11: ffffed10700a4780 R12: ffff88843208e510
-> [   94.373674] R13: 0000000000000025 R14: ffff88843ffef000 R15: 000031e01ae61000
-> [   94.375147] FS:  0000000000000000(0000) GS:ffff8883a3800000(0000) knlGS:0000000000000000
-> [   94.376883] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   94.378051] CR2: ffffed10a7ffddff CR3: 0000000004e15000 CR4: 00000000000406a0
-> [   94.379522] Call Trace:
-> [   94.380073]  debug_vm_pgtable+0xd81/0x2029
-> [   94.380871]  ? pmd_advanced_tests+0x621/0x621
-> [   94.381819]  do_one_initcall+0x1eb/0xbd0
-> [   94.382551]  ? trace_event_raw_event_initcall_finish+0x240/0x240
-> [   94.383634]  ? rcu_read_lock_sched_held+0xb9/0x110
-> [   94.388727]  ? rcu_read_lock_held+0xd0/0xd0
-> [   94.389604]  ? __kasan_check_read+0x1d/0x30
-> [   94.390485]  kernel_init_freeable+0x430/0x4f8
-> [   94.391416]  ? rest_init+0x3f8/0x3f8
-> [   94.392185]  kernel_init+0x14/0x1e8
-> [   94.392918]  ret_from_fork+0x22/0x30
-> [   94.393662] Modules linked in:
-> [   94.394289] CR2: ffffed10a7ffddff
-> [   94.395000] ---[ end trace 8ca5a1655dfb8c39 ]---
+Thanks and best,
+Tianjia
 
-This bug is caused from here.
-
-static inline struct mem_section *__nr_to_section(unsigned long nr)
-{
-#ifdef CONFIG_SPARSEMEM_EXTREME
-        if (!mem_section)
-                return NULL;
-#endif
-        if (!mem_section[SECTION_NR_TO_ROOT(nr)]) <-------- BUG
-                return NULL;
-        return &mem_section[SECTION_NR_TO_ROOT(nr)][nr & SECTION_ROOT_MASK];
-}
-
-static inline struct mem_section *__pfn_to_section(unsigned long pfn)
-{
-        return __nr_to_section(pfn_to_section_nr(pfn));
-}
-
-#define __pfn_to_page(pfn)                              \
-({      unsigned long __pfn = (pfn);                    \
-        struct mem_section *__sec = __pfn_to_section(__pfn);    \
-        __section_mem_map_addr(__sec) + __pfn;          \
-})
-
-which is called via hugetlb_advanced_tests().
-
-paddr = (__pfn_to_phys(pfn) | RANDOM_ORVALUE) & PMD_MASK;
-pte = pte_mkhuge(mk_pte(pfn_to_page(PHYS_PFN(paddr)), prot));
-
-Primary reason being RANDOM_ORVALUE, which is added to the paddr before
-being masked with PMD_MASK. This clobbers up the pfn value which cannot
-be searched in relevant memory sections. This problem stays hidden on
-other configs where pfn_to_page() does not go via memory section search.
-Dropping off RANDOM_ORVALUE solves the problem. Probably, just wanted to
-drop that off during V2 series (https://lkml.org/lkml/2020/4/8/997) but
-dont remember why ended up keeping it again.
+On 2020/6/23 21:14, Tianjia Zhang wrote:
+> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
+> structure. For historical reasons, many kvm-related function parameters
+> retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
+> patch does a unified cleanup of these remaining redundant parameters.
+> 
+> This series of patches has completely cleaned the architecture of
+> arm64, mips, ppc, and s390 (no such redundant code on x86). Due to
+> the large number of modified codes, a separate patch is made for each
+> platform. On the ppc platform, there is also a redundant structure
+> pointer of 'kvm_run' in 'vcpu_arch', which has also been cleaned
+> separately.
+> 
+> ---
+> v6 changes:
+>    Rearrange patch sets, only keep the unmerged patch.
+>    rebase on mainline.
+> 
+> v5 change:
+>    ppc: fix for review.
+> 
+> v4 change:
+>    mips: fixes two errors in entry.c.
+> 
+> v3 change:
+>    Keep the existing `vcpu->run` in the function body unchanged.
+> 
+> v2 change:
+>    s390 retains the original variable name and minimizes modification.
+> 
+> Tianjia Zhang (5):
+>    KVM: s390: clean up redundant 'kvm_run' parameters
+>    KVM: arm64: clean up redundant 'kvm_run' parameters
+>    KVM: PPC: clean up redundant kvm_run parameters in assembly
+>    KVM: MIPS: clean up redundant 'kvm_run' parameters
+>    KVM: MIPS: clean up redundant kvm_run parameters in assembly
+> 
+>   arch/arm64/include/asm/kvm_coproc.h   |  12 +--
+>   arch/arm64/include/asm/kvm_host.h     |  11 +--
+>   arch/arm64/include/asm/kvm_mmu.h      |   2 +-
+>   arch/arm64/kvm/arm.c                  |   6 +-
+>   arch/arm64/kvm/handle_exit.c          |  36 ++++----
+>   arch/arm64/kvm/mmio.c                 |  11 +--
+>   arch/arm64/kvm/mmu.c                  |   5 +-
+>   arch/arm64/kvm/sys_regs.c             |  13 ++-
+>   arch/mips/include/asm/kvm_host.h      |  32 ++------
+>   arch/mips/kvm/emulate.c               |  59 +++++--------
+>   arch/mips/kvm/entry.c                 |  21 ++---
+>   arch/mips/kvm/mips.c                  |  14 ++--
+>   arch/mips/kvm/trap_emul.c             | 114 +++++++++++---------------
+>   arch/mips/kvm/vz.c                    |  26 +++---
+>   arch/powerpc/include/asm/kvm_ppc.h    |   2 +-
+>   arch/powerpc/kvm/book3s_interrupts.S  |  22 +++--
+>   arch/powerpc/kvm/book3s_pr.c          |   9 +-
+>   arch/powerpc/kvm/booke.c              |   9 +-
+>   arch/powerpc/kvm/booke_interrupts.S   |   9 +-
+>   arch/powerpc/kvm/bookehv_interrupts.S |  10 +--
+>   arch/s390/kvm/kvm-s390.c              |  23 ++++--
+>   21 files changed, 188 insertions(+), 258 deletions(-)
+> 
