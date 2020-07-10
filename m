@@ -2,74 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA8621ACED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 04:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B970221AE7D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 07:24:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B2xR21kPrzDqtv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 12:13:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B31g9662RzDrGp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jul 2020 15:24:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=BoASjg5D; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B2x523pzLzDqRw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 11:57:42 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id b9so1594591plx.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jul 2020 18:57:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=cuNVeJNgy5mpkucMC/444QKJa8KYGoy9AAUByxslVr0=;
- b=BoASjg5DuB0JgJ/G9iM75j5066TvHrMOt03o2xV9i6pMNokjvc39C4RRiktgpOGDpj
- doX11205IDJ2VrLi+hwng0m6ABgVjNKqpQL8fhFw5B2J1gLI2JIoG704T6+BP64xHFiV
- oC1niasIHgPNHKmcbXkkm7jg1TSu+PYvG91YB+PNqEYITyWlWT4Td2P7rbTyPIeOSQ1p
- UhyJv744LdKzZvGoLMLwHiZ3d7BK5HhwyAmV8z/WA1ssGO44c/ay+9U5Tj75XkrkfkzJ
- E9mOxkFL6p9WWJnJl2n0ivM3zsrbM75wwFMUskppQkK7tJ4l0oImoRAKuPxJfJI9rV4E
- QqDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=cuNVeJNgy5mpkucMC/444QKJa8KYGoy9AAUByxslVr0=;
- b=oDilTaEgRlvvrw0Vz4JhI0ZJLiUTbsFdwOMwCtWIbY/NseLTzaCdzEptqYRJe27cEA
- BURIKuoqpNWb6YGX1Cged4M/o7YLEWhgil9KiyYEmsG9CPwnj1lElvPdRKzvFdD/Kfug
- /Kg/69gU2ghO5uWo9wcC+AjqD17qvdFQggoWhTCr2fs5fWFAgoGe+NX08FK2ba0FeTTr
- T9KCeStaSg3mc7JG+3FLsSy3uMYY6PGDNgzi9BBByXNNaUBpHAvcwzA1aJnv7YWOymJx
- Qe0xJcSvO0nPJbeXtyAarDxCxObYCx+6ZkiPhj4akf9XnQZNia95C0T/30rXfiC9XfeA
- OLDg==
-X-Gm-Message-State: AOAM533oTR8qC7WXeb2Arf+0ETd0p+48Egg0Ycg72BM9XdbWWYNZ4Lw3
- E0UW9SKBHQBFajqGVT0FsRiZkJQR
-X-Google-Smtp-Source: ABdhPJyO+w0HBiEzqfRNFqWFAjyLUpISZ9zKyiEOCRhCmyS9AmC4eBitlltoelxlr5SRAGfnZKpe8g==
-X-Received: by 2002:a17:902:6194:: with SMTP id
- u20mr58629926plj.333.1594346260530; 
- Thu, 09 Jul 2020 18:57:40 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (220-245-19-62.static.tpgi.com.au.
- [220.245.19.62])
- by smtp.gmail.com with ESMTPSA id 7sm3912834pgw.85.2020.07.09.18.57.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Jul 2020 18:57:40 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-arch@vger.kernel.org
-Subject: [RFC PATCH 7/7] lazy tlb: shoot lazies,
- a non-refcounting lazy tlb option
-Date: Fri, 10 Jul 2020 11:56:46 +1000
-Message-Id: <20200710015646.2020871-8-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200710015646.2020871-1-npiggin@gmail.com>
-References: <20200710015646.2020871-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B31dG2PKSzDrFm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jul 2020 15:22:25 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06A51dKX019342; Fri, 10 Jul 2020 01:22:15 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 326bpb09jr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Jul 2020 01:22:15 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06A51glN019703;
+ Fri, 10 Jul 2020 01:22:15 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 326bpb09ja-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Jul 2020 01:22:14 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06A5FAnB016688;
+ Fri, 10 Jul 2020 05:22:13 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04fra.de.ibm.com with ESMTP id 326bcj84x0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 Jul 2020 05:22:12 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06A5MATY65601896
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Jul 2020 05:22:10 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F179FA405B;
+ Fri, 10 Jul 2020 05:22:09 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0A5B0A4054;
+ Fri, 10 Jul 2020 05:22:08 +0000 (GMT)
+Received: from pratiks-thinkpad.ibmuc.com (unknown [9.85.105.207])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 10 Jul 2020 05:22:07 +0000 (GMT)
+From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ mikey@neuling.org, ravi.bangoria@linux.ibm.com, ego@linux.vnet.ibm.com,
+ svaidy@linux.ibm.com, psampat@linux.ibm.com, pratik.r.sampat@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] Power10 basic energy management
+Date: Fri, 10 Jul 2020 10:52:04 +0530
+Message-Id: <20200710052207.12003-1-psampat@linux.ibm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-10_01:2020-07-09,
+ 2020-07-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ malwarescore=0 mlxlogscore=661 phishscore=0 adultscore=0 suspectscore=0
+ impostorscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007100029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,160 +91,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On big systems, the mm refcount can become highly contented when doing
-a lot of context switching with threaded applications (particularly
-switching between the idle thread and an application thread).
+Changelog v1 --> v2:
+1. Save-restore DAWR and DAWRX unconditionally as they are lost in
+shallow idle states too
+2. Rename pnv_first_spr_loss_level to pnv_first_fullstate_loss_level to
+correct naming terminology
 
-Abandoning lazy tlb slows switching down quite a bit in the important
-user->idle->user cases, so so instead implement a non-refcounted scheme
-that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
-any remaining lazy ones.
+Pratik Rajesh Sampat (3):
+  powerpc/powernv/idle: Exclude mfspr on HID1,4,5 on P9 and above
+  powerpc/powernv/idle: save-restore DAWR0,DAWRX0 for P10
+  powerpc/powernv/idle: Rename pnv_first_spr_loss_level variable
 
-On a 16-socket 192-core POWER8 system, a context switching benchmark
-with as many software threads as CPUs (so each switch will go in and
-out of idle), upstream can achieve a rate of about 1 million context
-switches per second. After this patch it goes up to 118 million.
+ arch/powerpc/platforms/powernv/idle.c | 34 +++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/Kconfig             | 16 ++++++++++++++++
- arch/powerpc/Kconfig     |  1 +
- include/linux/sched/mm.h |  6 +++---
- kernel/fork.c            | 39 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 59 insertions(+), 3 deletions(-)
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 2daf8fe6146a..edf69437a971 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -418,6 +418,22 @@ config MMU_LAZY_TLB
- 	help
- 	  Enable "lazy TLB" mmu context switching for kernel threads.
- 
-+config MMU_LAZY_TLB_REFCOUNT
-+	def_bool y
-+	depends on MMU_LAZY_TLB
-+	depends on !MMU_LAZY_TLB_SHOOTDOWN
-+
-+config MMU_LAZY_TLB_SHOOTDOWN
-+	bool
-+	depends on MMU_LAZY_TLB
-+	help
-+	  Instead of refcounting the "lazy tlb" mm struct, which can cause
-+	  contention with multi-threaded apps on large multiprocessor systems,
-+	  this option causes __mmdrop to IPI all CPUs in the mm_cpumask and
-+	  switch to init_mm if they were using the to-be-freed mm as the lazy
-+	  tlb. Architectures which do not track all possible lazy tlb CPUs in
-+	  mm_cpumask can not use this (without modification).
-+
- config ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	bool
- 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 920c4e3ca4ef..24ac85c868db 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -225,6 +225,7 @@ config PPC
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select MMU_GATHER_RCU_TABLE_FREE
- 	select MMU_GATHER_PAGE_SIZE
-+	select MMU_LAZY_TLB_SHOOTDOWN
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE		if PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
- 	select HAVE_SYSCALL_TRACEPOINTS
-diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index 2c2b20e2ccc7..1067af8039bd 100644
---- a/include/linux/sched/mm.h
-+++ b/include/linux/sched/mm.h
-@@ -53,19 +53,19 @@ void mmdrop(struct mm_struct *mm);
- /* Helpers for lazy TLB mm refcounting */
- static inline void mmgrab_lazy_tlb(struct mm_struct *mm)
- {
--	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB))
-+	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_REFCOUNT))
- 		mmgrab(mm);
- }
- 
- static inline void mmdrop_lazy_tlb(struct mm_struct *mm)
- {
--	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB))
-+	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_REFCOUNT))
- 		mmdrop(mm);
- }
- 
- static inline void mmdrop_lazy_tlb_smp_mb(struct mm_struct *mm)
- {
--	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB))
-+	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_REFCOUNT))
- 		mmdrop(mm); /* This depends on mmdrop providing a full smp_mb() */
- 	else
- 		smp_mb();
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 142b23645d82..da0fba9e6079 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -685,6 +685,40 @@ static void check_mm(struct mm_struct *mm)
- #define allocate_mm()	(kmem_cache_alloc(mm_cachep, GFP_KERNEL))
- #define free_mm(mm)	(kmem_cache_free(mm_cachep, (mm)))
- 
-+static void do_shoot_lazy_tlb(void *arg)
-+{
-+	struct mm_struct *mm = arg;
-+
-+	if (current->active_mm == mm) {
-+		BUG_ON(current->mm);
-+		switch_mm(mm, &init_mm, current);
-+		current->active_mm = &init_mm;
-+	}
-+}
-+
-+static void do_check_lazy_tlb(void *arg)
-+{
-+	struct mm_struct *mm = arg;
-+
-+	BUG_ON(current->active_mm == mm);
-+}
-+
-+static void shoot_lazy_tlbs(struct mm_struct *mm)
-+{
-+	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_SHOOTDOWN)) {
-+		smp_call_function_many(mm_cpumask(mm), do_shoot_lazy_tlb, (void *)mm, 1);
-+		do_shoot_lazy_tlb(mm);
-+	}
-+}
-+
-+static void check_lazy_tlbs(struct mm_struct *mm)
-+{
-+	if (IS_ENABLED(CONFIG_DEBUG_VM)) {
-+		smp_call_function(do_check_lazy_tlb, (void *)mm, 1);
-+		do_check_lazy_tlb(mm);
-+	}
-+}
-+
- /*
-  * Called when the last reference to the mm
-  * is dropped: either by a lazy thread or by
-@@ -695,6 +729,11 @@ void __mmdrop(struct mm_struct *mm)
- 	BUG_ON(mm == &init_mm);
- 	WARN_ON_ONCE(mm == current->mm);
- 	WARN_ON_ONCE(mm == current->active_mm);
-+
-+	/* Ensure no CPUs are using this as their lazy tlb mm */
-+	shoot_lazy_tlbs(mm);
-+	check_lazy_tlbs(mm);
-+
- 	mm_free_pgd(mm);
- 	destroy_context(mm);
- 	mmu_notifier_subscriptions_destroy(mm);
 -- 
-2.23.0
+2.25.4
 
