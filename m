@@ -1,75 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B060821C351
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 11:21:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77F021C365
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 11:46:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B3ktc6QgXzDrDT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 19:21:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B3lS011XPzDqwr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 19:46:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=ucw.cz
+ (client-ip=46.255.230.98; helo=jabberwock.ucw.cz; envelope-from=pavel@ucw.cz;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ucw.cz
+X-Greylist: delayed 587 seconds by postgrey-1.36 at bilbo;
+ Sat, 11 Jul 2020 19:45:32 AEST
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B3kkW225nzDqY5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 19:14:27 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06B92U5t025504; Sat, 11 Jul 2020 05:14:21 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3279a8hayf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 11 Jul 2020 05:14:21 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06B9BOwP020029;
- Sat, 11 Jul 2020 09:14:20 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma02fra.de.ibm.com with ESMTP id 327527r7e6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 11 Jul 2020 09:14:19 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06B9CtfG66453780
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 11 Jul 2020 09:12:55 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 20B4311C054;
- Sat, 11 Jul 2020 09:14:17 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 234D611C04A;
- Sat, 11 Jul 2020 09:14:14 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.163.39.1])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sat, 11 Jul 2020 09:14:13 +0000 (GMT)
-From: Ram Pai <linuxram@us.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [v3 5/5] KVM: PPC: Book3S HV: migrate hot plugged memory
-Date: Sat, 11 Jul 2020 02:13:47 -0700
-Message-Id: <1594458827-31866-6-git-send-email-linuxram@us.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1594458827-31866-1-git-send-email-linuxram@us.ibm.com>
-References: <1594458827-31866-1-git-send-email-linuxram@us.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-11_03:2020-07-10,
- 2020-07-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 impostorscore=0 priorityscore=1501 suspectscore=0
- clxscore=1015 spamscore=0 malwarescore=0 phishscore=0 mlxlogscore=993
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007110069
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B3lQN1CBHzDqqJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 19:45:31 +1000 (AEST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+ id E78131C0BD2; Sat, 11 Jul 2020 11:35:33 +0200 (CEST)
+Date: Sat, 11 Jul 2020 11:35:33 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH 11/20] Documentation: leds/ledtrig-transient: eliminate
+ duplicated word
+Message-ID: <20200711093533.GA16221@amd>
+References: <20200707180414.10467-1-rdunlap@infradead.org>
+ <20200707180414.10467-12-rdunlap@infradead.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature"; boundary="AqsLC8rIMeq19msA"
+Content-Disposition: inline
+In-Reply-To: <20200707180414.10467-12-rdunlap@infradead.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,51 +50,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ldufour@linux.ibm.com, linuxram@us.ibm.com, cclaudio@linux.ibm.com,
- bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
+ linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
+ dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>,
+ Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
+ linux-s390@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
+ linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
+ Mali DP Maintainers <malidp@foss.arm.com>,
+ Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
+ Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Pierre Morel <pmorel@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Laurent Dufour <ldufour@linux.ibm.com>
 
-When a memory slot is hot plugged to a SVM, PFNs associated with the
-GFNs in that slot must be migrated to the secure-PFNs, aka device-PFNs.
+--AqsLC8rIMeq19msA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-kvmppc_uv_migrate_mem_slot() is called to accomplish this. UV_PAGE_IN
-ucall is skipped, since the ultravisor does not trust the content of
-those pages and hence ignores it.
+On Tue 2020-07-07 11:04:05, Randy Dunlap wrote:
+> Drop the doubled word "for".
+>=20
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
 
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-	[resolved conflicts, and modified the commit log]
----
- arch/powerpc/kvm/book3s_hv.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Acked-by: Pavel Machek <pavel@ucw.cz>
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 819f96d..b0d4231 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4523,10 +4523,12 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
- 	case KVM_MR_CREATE:
- 		if (kvmppc_uvmem_slot_init(kvm, new))
- 			return;
--		uv_register_mem_slot(kvm->arch.lpid,
--				     new->base_gfn << PAGE_SHIFT,
--				     new->npages * PAGE_SIZE,
--				     0, new->id);
-+		if (uv_register_mem_slot(kvm->arch.lpid,
-+					 new->base_gfn << PAGE_SHIFT,
-+					 new->npages * PAGE_SIZE,
-+					 0, new->id))
-+			return;
-+		kvmppc_uv_migrate_mem_slot(kvm, new);
- 		break;
- 	case KVM_MR_DELETE:
- 		uv_unregister_mem_slot(kvm->arch.lpid, old->id);
--- 
-1.8.3.1
+(I expect documentation people take this, not me).
 
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--AqsLC8rIMeq19msA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl8Jh+UACgkQMOfwapXb+vJi5QCfV+X2sIx7tNekwXoW+LwM5Yat
+/zUAn1DV/ge+vI2WsfN3c5/HFiUA7pOV
+=q1Ep
+-----END PGP SIGNATURE-----
+
+--AqsLC8rIMeq19msA--
