@@ -2,43 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77F021C365
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 11:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D5021C412
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 13:49:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B3lS011XPzDqwr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 19:46:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B3p9c0n6GzDqby
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 21:49:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ucw.cz
- (client-ip=46.255.230.98; helo=jabberwock.ucw.cz; envelope-from=pavel@ucw.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ucw.cz
-X-Greylist: delayed 587 seconds by postgrey-1.36 at bilbo;
- Sat, 11 Jul 2020 19:45:32 AEST
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B3lQN1CBHzDqqJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 19:45:31 +1000 (AEST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
- id E78131C0BD2; Sat, 11 Jul 2020 11:35:33 +0200 (CEST)
-Date: Sat, 11 Jul 2020 11:35:33 +0200
-From: Pavel Machek <pavel@ucw.cz>
-To: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH 11/20] Documentation: leds/ledtrig-transient: eliminate
- duplicated word
-Message-ID: <20200711093533.GA16221@amd>
-References: <20200707180414.10467-1-rdunlap@infradead.org>
- <20200707180414.10467-12-rdunlap@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B3p7x1w51zDqRW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 21:48:13 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QgPVAto0; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B3p7t6VJpz9sRR;
+ Sat, 11 Jul 2020 21:48:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594468092;
+ bh=dKeMPZ3coLq1t8Os4YUhMXsxVwacg9mcb6Um7+nbyMM=;
+ h=From:To:Cc:Subject:Date:From;
+ b=QgPVAto0j6mboSpyNKkOHIg8wO9JF4IADPuieLiPwIrMP2FbdryVnD8LcLbW4qg1U
+ iN/+V221zlRheQ11w1bQdv3czDd5LLJzrfgKoxkRrXYdM5bH+1eYG6uMZZ7Og5a8Ng
+ Plw9PScJqaTppcY94gVfZN8fJ/etNju2ci0aych9cf8poRtj49R94tf/YX+ZRhxDJ3
+ fXIb1CP5Bf4k//8kMJBi6SWD83XsP/qgVbge0pyrvIdiHduGeIi3whlYEb+L4mPXHy
+ SYSW/yjHvNqkVTHaTGnThhkWUEDXflOv1Rxjetq6FYzCq/JVsEE6LCRrp6M1VeC3Kl
+ FDqw2iem7rn/w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.8-6 tag
+Date: Sat, 11 Jul 2020 21:50:20 +1000
+Message-ID: <87v9iuuv7n.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature"; boundary="AqsLC8rIMeq19msA"
-Content-Disposition: inline
-In-Reply-To: <20200707180414.10467-12-rdunlap@infradead.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,74 +55,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
- linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
- dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>,
- Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
- linux-s390@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
- linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Halil Pasic <pasic@linux.ibm.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
- Mali DP Maintainers <malidp@foss.arm.com>,
- Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
- Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
- Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Pierre Morel <pmorel@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
---AqsLC8rIMeq19msA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Linus,
 
-On Tue 2020-07-07 11:04:05, Randy Dunlap wrote:
-> Drop the doubled word "for".
->=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Please pull another powerpc fix for 5.8:
 
-Acked-by: Pavel Machek <pavel@ucw.cz>
+The following changes since commit 19ab500edb5d6020010caba48ce3b4ce4182ab63:
 
-(I expect documentation people take this, not me).
+  powerpc/mm/pkeys: Make pkey access check work on execute_only_key (2020-06-29 16:17:02 +1000)
 
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+are available in the git repository at:
 
---AqsLC8rIMeq19msA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.8-6
 
+for you to fetch changes up to 4557ac6b344b8cdf948ff8b007e8e1de34832f2e:
+
+  powerpc/64s/exception: Fix 0x1500 interrupt handler crash (2020-07-08 20:41:06 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.8 #6
+
+One fix for a crash/soft lockup on Power8, caused by the exception rework we did
+in v5.7.
+
+Thanks to:
+  Paul Menzel, Nicholas Piggin.
+
+- ------------------------------------------------------------------
+Nicholas Piggin (1):
+      powerpc/64s/exception: Fix 0x1500 interrupt handler crash
+
+
+ arch/powerpc/kernel/exceptions-64s.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
 
-iEYEARECAAYFAl8Jh+UACgkQMOfwapXb+vJi5QCfV+X2sIx7tNekwXoW+LwM5Yat
-/zUAn1DV/ge+vI2WsfN3c5/HFiUA7pOV
-=q1Ep
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl8JpzUACgkQUevqPMjh
+pYD5Zg/+JSMK0phSPCEpBusdlwIeuP5JwQzMCPZgiz7wGsOl6OMF/pMekvQmYzsD
+/9VKTWejulkn1Q1Gz3dhEEaVRJhjErPN0xb3tdrXmzyK2s67kwbkd+PhkmXyzRJ/
+ByEHmg8K3kKhB3FEC/BimNzcjAhVy2bIqBR1+4gTjF/PDc9heugv9iOpnw2uvhGu
+/DoYyQScWnC01PgOd8/dFDykELj98s/p4hKNx6JnteGi5cjrWClqJGJYCBc4xhs/
+rPSA5ybUzuN+CbMZbvDi7sJPw+w4AYIC5kVYsZqRuJVGYGh0y4qcxSYK4BL0FDO2
+UWdCLUFOkZqHtGhOUMn886YQnhPFukxVOVfLCIlkWcYeXK3HwQld8LrfzHUoMjBk
+ao06xwccNyzGlRUn0lYKuRFRGyEtWXNDqLQZ9L4Klowwe9BG5HdYRzrNxLsyi7p0
+yom6hevA5w2Sw9rZJrtImWevrsIp7ZexOcVBdfCGwCt9WlWHvT4C5iT0kMFGBh50
+Tx/nKAaBWVN9p8OLX4qsmUlRIeAGQdV18HiAaLo5YubUSJ9Ne5ZGcTTZ42VwxvaM
+1VCMUfexdr/oljy1BUP/ZTldcj8dF6saaWDb+yWWh8sUmKdsduXJP/5640au9FxS
+EBofwuyiU0u8aoV9oH4km+Tqp2WtFhMtrgTNNgHtPix7C8ck2Y4=
+=u9rR
 -----END PGP SIGNATURE-----
-
---AqsLC8rIMeq19msA--
