@@ -2,87 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6636521C1C9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 04:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0EA21C353
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 11:23:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B3YjB2vG8zDrMh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 12:27:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B3kwh41JbzDqqD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jul 2020 19:23:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B3YgF6RG4zDqd9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 12:26:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B3YgF12Mxz8t3x
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 12:26:01 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4B3YgD62nsz9sRR; Sat, 11 Jul 2020 12:26:00 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B3YgC4q9Fz9sDX;
- Sat, 11 Jul 2020 12:25:58 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B3kld6h6TzDr2d
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jul 2020 19:15:25 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06B23EZ7156055; Fri, 10 Jul 2020 22:25:55 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 326b8yvbc1-1
+ 06B920Ew126627; Sat, 11 Jul 2020 05:15:20 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3279y3gq93-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Jul 2020 22:25:55 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06B2LD2U023542;
- Sat, 11 Jul 2020 02:25:54 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma05fra.de.ibm.com with ESMTP id 326bc90jqf-1
+ Sat, 11 Jul 2020 05:15:20 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06B9BVsd020041;
+ Sat, 11 Jul 2020 09:15:18 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma02fra.de.ibm.com with ESMTP id 327527r7er-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 11 Jul 2020 02:25:53 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06B2PotF25231464
+ Sat, 11 Jul 2020 09:15:18 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06B9E00P65405134
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 11 Jul 2020 02:25:50 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C0F47A4057;
- Sat, 11 Jul 2020 02:25:50 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 60170A404D;
- Sat, 11 Jul 2020 02:25:49 +0000 (GMT)
-Received: from swastik.ibm.com (unknown [9.160.34.17])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sat, 11 Jul 2020 02:25:49 +0000 (GMT)
-From: Nayna Jain <nayna@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v2] powerpc/pseries: detect secure and trusted boot state of
- the system.
-Date: Fri, 10 Jul 2020 22:25:29 -0400
-Message-Id: <1594434329-31219-1-git-send-email-nayna@linux.ibm.com>
+ Sat, 11 Jul 2020 09:14:00 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 852E311C04A;
+ Sat, 11 Jul 2020 09:14:00 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A27D811C04C;
+ Sat, 11 Jul 2020 09:13:57 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.163.39.1])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sat, 11 Jul 2020 09:13:57 +0000 (GMT)
+From: Ram Pai <linuxram@us.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [v3 0/5] Migrate non-migrated pages of a SVM.
+Date: Sat, 11 Jul 2020 02:13:42 -0700
+Message-Id: <1594458827-31866-1-git-send-email-linuxram@us.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-10_14:2020-07-10,
- 2020-07-10 signatures=0
+ definitions=2020-07-11_03:2020-07-10,
+ 2020-07-11 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=956
- lowpriorityscore=0 phishscore=0 mlxscore=0 spamscore=0 adultscore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=1
- malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2007110012
+ impostorscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 adultscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007110065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,86 +79,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>
+Cc: ldufour@linux.ibm.com, linuxram@us.ibm.com, cclaudio@linux.ibm.com,
+ bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The device-tree property to check secure and trusted boot state is
-different for guests(pseries) compared to baremetal(powernv).
+The time taken to switch a VM to Secure-VM, increases by the size of the VM.  A
+100GB VM takes about 7minutes. This is unacceptable.  This linear increase is
+caused by a suboptimal behavior by the Ultravisor and the Hypervisor.  The
+Ultravisor unnecessarily migrates all the GFN of the VM from normal-memory to
+secure-memory. It has to just migrate the necessary and sufficient GFNs.
 
-This patch updates the existing is_ppc_secureboot_enabled() and
-is_ppc_trustedboot_enabled() function to add support for pseries.
+However when the optimization is incorporated in the Ultravisor, the Hypervisor
+starts misbehaving. The Hypervisor has a inbuilt assumption that the Ultravisor
+will explicitly request to migrate, each and every GFN of the VM. If only
+necessary and sufficient GFNs are requested for migration, the Hypervisor
+continues to manage the remaining GFNs as normal GFNs. This leads of memory
+corruption, manifested consistently when the SVM reboots.
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Reviewed-by: Daniel Axtens <dja@axtens.net>
----
-v2:
-* included Michael Ellerman's feedback.
-* added Daniel Axtens's Reviewed-by.
+The same is true, when a memory slot is hotplugged into a SVM. The Hypervisor
+expects the ultravisor to request migration of all GFNs to secure-GFN.  But the
+hypervisor cannot handle any H_SVM_PAGE_IN requests from the Ultravisor, done
+in the context of UV_REGISTER_MEM_SLOT ucall.  This problem manifests as random
+errors in the SVM, when a memory-slot is hotplugged.
 
- arch/powerpc/kernel/secure_boot.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+This patch series automatically migrates the non-migrated pages of a SVM,
+     and thus solves the problem.
 
-diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
-index 4b982324d368..efb325cbd42f 100644
---- a/arch/powerpc/kernel/secure_boot.c
-+++ b/arch/powerpc/kernel/secure_boot.c
-@@ -6,6 +6,7 @@
- #include <linux/types.h>
- #include <linux/of.h>
- #include <asm/secure_boot.h>
-+#include <asm/machdep.h>
- 
- static struct device_node *get_ppc_fw_sb_node(void)
- {
-@@ -23,12 +24,21 @@ bool is_ppc_secureboot_enabled(void)
- {
- 	struct device_node *node;
- 	bool enabled = false;
-+	u32 secureboot;
- 
- 	node = get_ppc_fw_sb_node();
- 	enabled = of_property_read_bool(node, "os-secureboot-enforcing");
--
- 	of_node_put(node);
- 
-+	if (enabled)
-+		goto out;
-+
-+	if (!of_property_read_u32(of_root, "ibm,secure-boot", &secureboot)) {
-+		if (secureboot)
-+			enabled = (secureboot > 1) ? true : false;
-+	}
-+
-+out:
- 	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
- 
- 	return enabled;
-@@ -38,12 +48,21 @@ bool is_ppc_trustedboot_enabled(void)
- {
- 	struct device_node *node;
- 	bool enabled = false;
-+	u32 trustedboot;
- 
- 	node = get_ppc_fw_sb_node();
- 	enabled = of_property_read_bool(node, "trusted-enabled");
--
- 	of_node_put(node);
- 
-+	if (enabled)
-+		goto out;
-+
-+	if (!of_property_read_u32(of_root, "ibm,trusted-boot", &trustedboot)) {
-+		if (trustedboot)
-+			enabled = (trustedboot > 0) ? true : false;
-+	}
-+
-+out:
- 	pr_info("Trusted boot mode %s\n", enabled ? "enabled" : "disabled");
- 
- 	return enabled;
+Testing: Passed rigorous testing using various sized SVMs.
+
+Changelog:
+
+v3: . Optimized the page-migration retry-logic. 
+    . Relax and relinquish the cpu regularly while bulk migrating
+    	the non-migrated pages. This issue was causing soft-lockups.
+	Fixed it.
+    . Added a new patch, to retry page-migration a couple of times
+    	before returning H_BUSY in H_SVM_PAGE_IN. This issue was
+	seen a few times in a 24hour continuous reboot test of the SVMs.
+
+v2: . fixed a bug observed by Laurent. The state of the GFN's associated
+	with Secure-VMs were not reset during memslot flush.
+    . Re-organized the code, for easier review.
+    . Better description of the patch series.
+
+v1: fixed a bug observed by Bharata. Pages that where paged-in and later
+paged-out must also be skipped from migration during H_SVM_INIT_DONE.
+
+Laurent Dufour (1):
+  KVM: PPC: Book3S HV: migrate hot plugged memory
+
+Ram Pai (4):
+  KVM: PPC: Book3S HV: Disable page merging in H_SVM_INIT_START
+  KVM: PPC: Book3S HV: track the state GFNs associated with secure VMs
+  KVM: PPC: Book3S HV: migrate remaining normal-GFNs to secure-GFNs in
+    H_SVM_INIT_DONE
+  KVM: PPC: Book3S HV: retry page migration before erroring-out
+    H_SVM_PAGE_IN
+
+ Documentation/powerpc/ultravisor.rst        |   3 +
+ arch/powerpc/include/asm/kvm_book3s_uvmem.h |   2 +
+ arch/powerpc/kvm/book3s_hv.c                |  10 +-
+ arch/powerpc/kvm/book3s_hv_uvmem.c          | 487 ++++++++++++++++++++++++----
+ 4 files changed, 429 insertions(+), 73 deletions(-)
+
 -- 
-2.26.2
+1.8.3.1
 
