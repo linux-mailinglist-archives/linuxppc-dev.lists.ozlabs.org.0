@@ -1,77 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3000021DF79
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 20:20:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D8CD21DFA7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 20:29:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5Blw2cKbzDqXd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 04:20:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5By44mLwzDqRD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 04:29:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=amacapital.net (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=luto@amacapital.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=amacapital.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=amacapital-net.20150623.gappssmtp.com
- header.i=@amacapital-net.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=u4CmsHwa; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Bk635CPzDqKX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 04:19:08 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id gc9so262435pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 11:19:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amacapital-net.20150623.gappssmtp.com; s=20150623;
- h=content-transfer-encoding:from:mime-version:subject:date:message-id
- :references:cc:in-reply-to:to;
- bh=DMv6KVcfwWuUfVxq/TG9jnHiUvzjJiD3obg8ZekXyMs=;
- b=u4CmsHwa7xaCe3zDb4jrOUPoyQAwVMb0GO0GgYreE3k9fxWU5POmlIk30LPDTgAQUj
- UXSamG1nn5bzlmnsItQRLjFVeTX9jNNZSWB3UwJkV82kO9sw8mlCK+8QA2A6XZi7xW2p
- cYw26U3rmfF6mijGvSDefylxiQCOhgYcxL7pxRoq9V/UTMxzAkw29s2tnGqbRpV7VXiB
- xUZoWpQGSZUmOzxEuR/l0sY53x7ZhIn9xs7ai2/qJ8GwCFJdnk5CAStVEdHSJJZOWF44
- QORefjrjcSrzgiOPOEdXNRfrCTZl39dyw6LhXayUWrSOVuTaE7f9koQ+xXXMyR2rQ5bk
- e1xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:content-transfer-encoding:from:mime-version
- :subject:date:message-id:references:cc:in-reply-to:to;
- bh=DMv6KVcfwWuUfVxq/TG9jnHiUvzjJiD3obg8ZekXyMs=;
- b=ZzUkifonMylG0BWtpgtloSa9sZ5rHS+0jf5YXRqMcaUSWs6qFSOw2PSxZxhYRvhkb4
- RJ2IV7a83ohlEFtx0/qLs7fLOrcd1Nn7rOTKoikJDwdHlQSy/XF+M58Keh5NqOlDEzx6
- OdAdg20R9GfvuBH4/QNANfNUss5IbNICvVqgnaIC9O1LZb+N4Ix6Iu6EmJbxo1qgMm1t
- vi9qh3AyGuIEtHqQvgNVbqkxawlTIP244JOGoC4ivjUk2QBObRDZNolEVfLZ85np1VBM
- QZ9ZmFSYFZfetEEx/60CQiETmyBAg2bHIt/e7SEtJWSydc9W+5QnNiPhlF2LSutlE0Ft
- hEQA==
-X-Gm-Message-State: AOAM532MYylFJWLz19Fd53eyiQDzf7KNu8zHZ+LbdWWwnlDBQWdv86ZK
- aaIulxqO2tojtXbYZuox/8fIpg==
-X-Google-Smtp-Source: ABdhPJxyhASCLIINvghsf6QoRE0SwaPQ4do1QD3z/4f/3BAYiXHFhS0sGlAWxIM465D2lRN3W0sD0g==
-X-Received: by 2002:a17:90a:ba86:: with SMTP id t6mr719906pjr.10.1594664345260; 
- Mon, 13 Jul 2020 11:19:05 -0700 (PDT)
-Received: from ?IPv6:2601:646:c200:1ef2:3071:afe7:f805:6350?
- ([2601:646:c200:1ef2:3071:afe7:f805:6350])
- by smtp.gmail.com with ESMTPSA id j5sm15051298pfa.5.2020.07.13.11.19.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Jul 2020 11:19:04 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Andy Lutomirski <luto@amacapital.net>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [RFC PATCH 7/7] lazy tlb: shoot lazies,
- a non-refcounting lazy tlb option
-Date: Mon, 13 Jul 2020 11:18:57 -0700
-Message-Id: <010054C3-7FFF-4FB5-BDA8-D2B80F7B1A5D@amacapital.net>
-References: <1594658283.qabzoxga67.astroid@bobo.none>
-In-Reply-To: <1594658283.qabzoxga67.astroid@bobo.none>
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: iPhone Mail (17F80)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Bvv24vbzDqLK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 04:27:39 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06DI3PoD036740; Mon, 13 Jul 2020 14:27:26 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3276ag04jk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Jul 2020 14:27:25 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06DIQYnf105762;
+ Mon, 13 Jul 2020 14:27:25 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3276ag04hf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Jul 2020 14:27:25 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06DIJWnY003604;
+ Mon, 13 Jul 2020 18:27:23 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma02fra.de.ibm.com with ESMTP id 327527th2h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Jul 2020 18:27:22 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06DIRJxS46399502
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Jul 2020 18:27:20 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DB27252051;
+ Mon, 13 Jul 2020 18:27:19 +0000 (GMT)
+Received: from [9.85.72.195] (unknown [9.85.72.195])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 27B2A52050;
+ Mon, 13 Jul 2020 18:27:15 +0000 (GMT)
+Subject: Re: [PATCH v2 0/3] Power10 basic energy management
+To: Nicholas Piggin <npiggin@gmail.com>, benh@kernel.crashing.org,
+ ego@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, mikey@neuling.org, mpe@ellerman.id.au,
+ paulus@samba.org, pratik.r.sampat@gmail.com,
+ ravi.bangoria@linux.ibm.com, svaidy@linux.ibm.com
+References: <20200710052207.12003-1-psampat@linux.ibm.com>
+ <1594617564.57k8bsyfd0.astroid@bobo.none>
+ <bc6494c0-9a17-2416-c6cc-15612020f497@linux.ibm.com>
+ <1594658947.97ndhsx6xh.astroid@bobo.none>
+From: Pratik Sampat <psampat@linux.ibm.com>
+Message-ID: <cce3c51b-8614-5f4b-89ea-be5872bdcd7c@linux.ibm.com>
+Date: Mon, 13 Jul 2020 23:57:14 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <1594658947.97ndhsx6xh.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-13_15:2020-07-13,
+ 2020-07-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ mlxlogscore=999 malwarescore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 lowpriorityscore=0 suspectscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007130129
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,80 +97,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-> On Jul 13, 2020, at 9:48 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
->=20
-> =EF=BB=BFExcerpts from Andy Lutomirski's message of July 14, 2020 1:59 am:=
 
->>> On Thu, Jul 9, 2020 at 6:57 PM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
->>>=20
->>> On big systems, the mm refcount can become highly contented when doing
->>> a lot of context switching with threaded applications (particularly
->>> switching between the idle thread and an application thread).
->>>=20
->>> Abandoning lazy tlb slows switching down quite a bit in the important
->>> user->idle->user cases, so so instead implement a non-refcounted scheme
->>> that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
->>> any remaining lazy ones.
->>>=20
->>> On a 16-socket 192-core POWER8 system, a context switching benchmark
->>> with as many software threads as CPUs (so each switch will go in and
->>> out of idle), upstream can achieve a rate of about 1 million context
->>> switches per second. After this patch it goes up to 118 million.
->>>=20
->>=20
->> I read the patch a couple of times, and I have a suggestion that could
->> be nonsense.  You are, effectively, using mm_cpumask() as a sort of
->> refcount.  You're saying "hey, this mm has no more references, but it
->> still has nonempty mm_cpumask(), so let's send an IPI and shoot down
->> those references too."  I'm wondering whether you actually need the
->> IPI.  What if, instead, you actually treated mm_cpumask as a refcount
->> for real?  Roughly, in __mmdrop(), you would only free the page tables
->> if mm_cpumask() is empty.  And, in the code that removes a CPU from
->> mm_cpumask(), you would check if mm_users =3D=3D 0 and, if so, check if
->> you just removed the last bit from mm_cpumask and potentially free the
->> mm.
->>=20
->> Getting the locking right here could be a bit tricky -- you need to
->> avoid two CPUs simultaneously exiting lazy TLB and thinking they
->> should free the mm, and you also need to avoid an mm with mm_users
->> hitting zero concurrently with the last remote CPU using it lazily
->> exiting lazy TLB.  Perhaps this could be resolved by having mm_count
->> =3D=3D 1 mean "mm_cpumask() is might contain bits and, if so, it owns the=
-
->> mm" and mm_count =3D=3D 0 meaning "now it's dead" and using some careful
->> cmpxchg or dec_return to make sure that only one CPU frees it.
->>=20
->> Or maybe you'd need a lock or RCU for this, but the idea would be to
->> only ever take the lock after mm_users goes to zero.
->=20
-> I don't think it's nonsense, it could be a good way to avoid IPIs.
->=20
-> I haven't seen much problem here that made me too concerned about IPIs=20
-> yet, so I think the simple patch may be good enough to start with
-> for powerpc. I'm looking at avoiding/reducing the IPIs by combining the
-> unlazying with the exit TLB flush without doing anything fancy with
-> ref counting, but we'll see.
-
-I would be cautious with benchmarking here. I would expect that the nasty ca=
-ses may affect power consumption more than performance =E2=80=94 the specifi=
-c issue is IPIs hitting idle cores, and the main effects are to slow down ex=
-it() a bit but also to kick the idle core out of idle. Although, if the idle=
- core is in a deep sleep, that IPI could be *very* slow.
-
-So I think it=E2=80=99s worth at least giving this a try.
-
->=20
+On 13/07/20 10:20 pm, Nicholas Piggin wrote:
+> Excerpts from Pratik Sampat's message of July 13, 2020 8:02 pm:
+>> Thank you for your comments,
+>>
+>> On 13/07/20 10:53 am, Nicholas Piggin wrote:
+>>> Excerpts from Pratik Rajesh Sampat's message of July 10, 2020 3:22 pm:
+>>>> Changelog v1 --> v2:
+>>>> 1. Save-restore DAWR and DAWRX unconditionally as they are lost in
+>>>> shallow idle states too
+>>>> 2. Rename pnv_first_spr_loss_level to pnv_first_fullstate_loss_level to
+>>>> correct naming terminology
+>>>>
+>>>> Pratik Rajesh Sampat (3):
+>>>>     powerpc/powernv/idle: Exclude mfspr on HID1,4,5 on P9 and above
+>>>>     powerpc/powernv/idle: save-restore DAWR0,DAWRX0 for P10
+>>>>     powerpc/powernv/idle: Rename pnv_first_spr_loss_level variable
+>>>>
+>>>>    arch/powerpc/platforms/powernv/idle.c | 34 +++++++++++++++++----------
+>>>>    1 file changed, 22 insertions(+), 12 deletions(-)
+>>> These look okay to me, but the CPU_FTR_ARCH_300 test for
+>>> pnv_power9_idle_init() is actually wrong, it should be a PVR test
+>>> because idle is not completely architected (not even shallow stop
+>>> states, unfortunately).
+>>>
+>>> It doesn't look like we support POWER10 idle correctly yet, and on older
+>>> kernels it wouldn't work even if we fixed newer, so ideally the PVR
+>>> check would be backported as a fix in the front of the series.
+>>>
+>>> Sadly, we have no OPAL idle driver yet. Hopefully we will before the
+>>> next processor shows up :P
+>>>
+>>> Thanks,
+>>> Nick
+>> So if I understand this correctly, in powernv/idle.c where we check for
+>> CPU_FTR_ARCH_300, we should rather be making a pvr_version_is(PVR_POWER9)
+>> check instead?
+>>
+>> Of course, the P10 PVR and its relevant checks will have to be added then too.
+> Yes I think so, unfortunately.
+>
 > Thanks,
 > Nick
+
+Sure, I'll add these checks in.
+
+Thanks,
+Pratik
+
