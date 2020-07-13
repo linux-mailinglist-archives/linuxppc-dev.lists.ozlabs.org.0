@@ -1,38 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D77721CDC5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 05:33:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5914F21CE64
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 06:47:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B4q3x3mVDzDqWm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 13:33:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B4rjp1Rn3zDqWK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 14:47:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B4pt23cnWzDqTl
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 13:24:42 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D1071FB;
- Sun, 12 Jul 2020 20:24:40 -0700 (PDT)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.87.124])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 526E93F7D8;
- Sun, 12 Jul 2020 20:24:28 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [PATCH V5 4/4] Documentation/mm: Add descriptions for arch page table
- helpers
-Date: Mon, 13 Jul 2020 08:53:07 +0530
-Message-Id: <1594610587-4172-5-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1594610587-4172-1-git-send-email-anshuman.khandual@arm.com>
-References: <1594610587-4172-1-git-send-email-anshuman.khandual@arm.com>
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=egVFExGh; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B4rh15BCjzDqV7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 14:46:09 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id md7so5625578pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jul 2020 21:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=q1N88XcmGsG7tQk8kvHh/DQnQIuf9w5Y7n08iZ+eaNk=;
+ b=egVFExGhE5xkScrADiledvNgi8y+1C6hD9IBIr+shsPDEVINbQRyN8uKKVZZweZZ2M
+ idrbZz+Jifj6hpU8TC+Ng06kIK8YKrC9Ns5jqzT7g3BPLfhjC5PDDYxBgpbSk72ldLzI
+ l5B0q8YGwfp2X3JujCqPpodlR428XAvANQJanF6kwGhb+vxDt5XGilYUuOuw4mkph59d
+ rhmAE4zHlGK+JuOn7gaYjzMWQOvZtuNf9y+HNA1asYmItT0BbiwzjzmjlyT3uuUNSxbN
+ 0r68BH3kyrOfBnTTmOpjEceRI91WbMItctCWzOVW/ii1wuEq6qDahLE2XvNqbCjmMXZc
+ d/QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=q1N88XcmGsG7tQk8kvHh/DQnQIuf9w5Y7n08iZ+eaNk=;
+ b=ZGU8QcbpGvmgi7kcO5EDX7u20QxiyGd5LApszFX4VS48AorUrJTYvDolP941+sPDvs
+ Wl711yByh/7A+88ud/9Kq0YUtY5PNLiU0w9hZbySnEj8agfXpaL+ChypmDu8eDgH8iig
+ edaLSdZLDJqVAsrD8pw2nAtQKhuypUkJ4HFAo29PcduxIe4SxjWzzXy0r9YmvjAZhtSt
+ 6MEIl63rQAyWJUhq/yaZSDQwSmHrH4VFRxzLNHOnft52BlkFKhCjc2XrnLU3ednv65Qz
+ OOL9ty1yPGOOUSsoGPovR0hEdr7Lz3TlMdABdb1wX0QW0Fmyba8/rhrBIIh0ZswGYw9p
+ 7eDw==
+X-Gm-Message-State: AOAM530ZJzfKn24Bl9AZ1Wx4NKH9rVsmbT5MXVkwy5bQ0JE40BhxdQhv
+ 8kLIv0P3cLoFYbRPQibcLI0=
+X-Google-Smtp-Source: ABdhPJzmOJTBU9fuOQPfjHOcVBD/aFYiveBzOuR4Z2LytdM/O7Bq5MREarczxjYMZr8JHKvpCnNmVA==
+X-Received: by 2002:a17:90a:d3cf:: with SMTP id
+ d15mr17341179pjw.202.1594615566081; 
+ Sun, 12 Jul 2020 21:46:06 -0700 (PDT)
+Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id s6sm12567527pfd.20.2020.07.12.21.46.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 12 Jul 2020 21:46:05 -0700 (PDT)
+Date: Mon, 13 Jul 2020 14:45:59 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+To: Andy Lutomirski <luto@kernel.org>
+References: <20200710015646.2020871-1-npiggin@gmail.com>
+ <20200710015646.2020871-5-npiggin@gmail.com>
+ <CALCETrVqHDLo09HcaoeOoAVK8w+cNWkSNTLkDDU=evUhaXkyhQ@mail.gmail.com>
+In-Reply-To: <CALCETrVqHDLo09HcaoeOoAVK8w+cNWkSNTLkDDU=evUhaXkyhQ@mail.gmail.com>
+MIME-Version: 1.0
+Message-Id: <1594613902.1wzayj0p15.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,355 +82,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, agordeev@linux.ibm.com,
- Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org, ziy@nvidia.com,
- linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, cai@lca.pw,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, gerald.schaefer@de.ibm.com,
- christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- aneesh.kumar@linux.ibm.com, Borislav Petkov <bp@alien8.de>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- rppt@kernel.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds a specific description file for all arch page table helpers which
-is in sync with the semantics being tested via CONFIG_DEBUG_VM_PGTABLE. All
-future changes either to these descriptions here or the debug test should
-always remain in sync.
+Excerpts from Andy Lutomirski's message of July 11, 2020 3:04 am:
+> On Thu, Jul 9, 2020 at 6:57 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+>>
+>> And get rid of the generic sync_core_before_usermode facility.
+>>
+>> This helper is the wrong way around I think. The idea that membarrier
+>> state requires a core sync before returning to user is the easy one
+>> that does not need hiding behind membarrier calls. The gap in core
+>> synchronization due to x86's sysret/sysexit and lazy tlb mode, is the
+>> tricky detail that is better put in x86 lazy tlb code.
+>>
+>> Consider if an arch did not synchronize core in switch_mm either, then
+>> membarrier_mm_sync_core_before_usermode would be in the wrong place
+>> but arch specific mmu context functions would still be the right place.
+>> There is also a exit_lazy_tlb case that is not covered by this call, whi=
+ch
+>> could be a bugs (kthread use mm the membarrier process's mm then context
+>> switch back to the process without switching mm or lazy mm switch).
+>>
+>> This makes lazy tlb code a bit more modular.
+>=20
+> The mm-switching and TLB-management has often had the regrettable
+> property that it gets wired up in a way that seems to work at the time
+> but doesn't have clear semantics, and I'm a bit concerned that this
+> patch is in that category.
 
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Mike Rapoport <rppt@linux.ibm.com>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Kirill A. Shutemov <kirill@shutemov.name>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org
-Cc: x86@kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-Suggested-by: Mike Rapoport <rppt@kernel.org>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- Documentation/vm/arch_pgtable_helpers.rst | 258 ++++++++++++++++++++++
- mm/debug_vm_pgtable.c                     |   6 +
- 2 files changed, 264 insertions(+)
- create mode 100644 Documentation/vm/arch_pgtable_helpers.rst
+It's much more explicit in the core code about where hooks are called
+after this patch. And then the x86 membarrier implementation details
+are contained to the x86 code where they belong, and we don't have the
+previous hook with unclear semantics missing from core code.
 
-diff --git a/Documentation/vm/arch_pgtable_helpers.rst b/Documentation/vm/arch_pgtable_helpers.rst
-new file mode 100644
-index 000000000000..f3591ee3aaa8
---- /dev/null
-+++ b/Documentation/vm/arch_pgtable_helpers.rst
-@@ -0,0 +1,258 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. _arch_page_table_helpers:
-+
-+===============================
-+Architecture Page Table Helpers
-+===============================
-+
-+Generic MM expects architectures (with MMU) to provide helpers to create, access
-+and modify page table entries at various level for different memory functions.
-+These page table helpers need to conform to a common semantics across platforms.
-+Following tables describe the expected semantics which can also be tested during
-+boot via CONFIG_DEBUG_VM_PGTABLE option. All future changes in here or the debug
-+test need to be in sync.
-+
-+======================
-+PTE Page Table Helpers
-+======================
-+
-++---------------------------+--------------------------------------------------+
-+| pte_same                  | Tests whether both PTE entries are the same      |
-++---------------------------+--------------------------------------------------+
-+| pte_bad                   | Tests a non-table mapped PTE                     |
-++---------------------------+--------------------------------------------------+
-+| pte_present               | Tests a valid mapped PTE                         |
-++---------------------------+--------------------------------------------------+
-+| pte_young                 | Tests a young PTE                                |
-++---------------------------+--------------------------------------------------+
-+| pte_dirty                 | Tests a dirty PTE                                |
-++---------------------------+--------------------------------------------------+
-+| pte_write                 | Tests a writable PTE                             |
-++---------------------------+--------------------------------------------------+
-+| pte_special               | Tests a special PTE                              |
-++---------------------------+--------------------------------------------------+
-+| pte_protnone              | Tests a PROT_NONE PTE                            |
-++---------------------------+--------------------------------------------------+
-+| pte_devmap                | Tests a ZONE_DEVICE mapped PTE                   |
-++---------------------------+--------------------------------------------------+
-+| pte_soft_dirty            | Tests a soft dirty PTE                           |
-++---------------------------+--------------------------------------------------+
-+| pte_swp_soft_dirty        | Tests a soft dirty swapped PTE                   |
-++---------------------------+--------------------------------------------------+
-+| pte_mkyoung               | Creates a young PTE                              |
-++---------------------------+--------------------------------------------------+
-+| pte_mkold                 | Creates an old PTE                               |
-++---------------------------+--------------------------------------------------+
-+| pte_mkdirty               | Creates a dirty PTE                              |
-++---------------------------+--------------------------------------------------+
-+| pte_mkclean               | Creates a clean PTE                              |
-++---------------------------+--------------------------------------------------+
-+| pte_mkwrite               | Creates a writable PTE                           |
-++---------------------------+--------------------------------------------------+
-+| pte_mkwrprotect           | Creates a write protected PTE                    |
-++---------------------------+--------------------------------------------------+
-+| pte_mkspecial             | Creates a special PTE                            |
-++---------------------------+--------------------------------------------------+
-+| pte_mkdevmap              | Creates a ZONE_DEVICE mapped PTE                 |
-++---------------------------+--------------------------------------------------+
-+| pte_mksoft_dirty          | Creates a soft dirty PTE                         |
-++---------------------------+--------------------------------------------------+
-+| pte_clear_soft_dirty      | Clears a soft dirty PTE                          |
-++---------------------------+--------------------------------------------------+
-+| pte_swp_mksoft_dirty      | Creates a soft dirty swapped PTE                 |
-++---------------------------+--------------------------------------------------+
-+| pte_swp_clear_soft_dirty  | Clears a soft dirty swapped PTE                  |
-++---------------------------+--------------------------------------------------+
-+| pte_mknotpresent          | Invalidates a mapped PTE                         |
-++---------------------------+--------------------------------------------------+
-+| ptep_get_and_clear        | Clears a PTE                                     |
-++---------------------------+--------------------------------------------------+
-+| ptep_get_and_clear_full   | Clears a PTE                                     |
-++---------------------------+--------------------------------------------------+
-+| ptep_test_and_clear_young | Clears young from a PTE                          |
-++---------------------------+--------------------------------------------------+
-+| ptep_set_wrprotect        | Converts into a write protected PTE              |
-++---------------------------+--------------------------------------------------+
-+| ptep_set_access_flags     | Converts into a more permissive PTE              |
-++---------------------------+--------------------------------------------------+
-+
-+======================
-+PMD Page Table Helpers
-+======================
-+
-++---------------------------+--------------------------------------------------+
-+| pmd_same                  | Tests whether both PMD entries are the same      |
-++---------------------------+--------------------------------------------------+
-+| pmd_bad                   | Tests a non-table mapped PMD                     |
-++---------------------------+--------------------------------------------------+
-+| pmd_leaf                  | Tests a leaf mapped PMD                          |
-++---------------------------+--------------------------------------------------+
-+| pmd_huge                  | Tests a HugeTLB mapped PMD                       |
-++---------------------------+--------------------------------------------------+
-+| pmd_trans_huge            | Tests a Transparent Huge Page (THP) at PMD       |
-++---------------------------+--------------------------------------------------+
-+| pmd_present               | Tests a valid mapped PMD                         |
-++---------------------------+--------------------------------------------------+
-+| pmd_young                 | Tests a young PMD                                |
-++---------------------------+--------------------------------------------------+
-+| pmd_dirty                 | Tests a dirty PMD                                |
-++---------------------------+--------------------------------------------------+
-+| pmd_write                 | Tests a writable PMD                             |
-++---------------------------+--------------------------------------------------+
-+| pmd_special               | Tests a special PMD                              |
-++---------------------------+--------------------------------------------------+
-+| pmd_protnone              | Tests a PROT_NONE PMD                            |
-++---------------------------+--------------------------------------------------+
-+| pmd_devmap                | Tests a ZONE_DEVICE mapped PMD                   |
-++---------------------------+--------------------------------------------------+
-+| pmd_soft_dirty            | Tests a soft dirty PMD                           |
-++---------------------------+--------------------------------------------------+
-+| pmd_swp_soft_dirty        | Tests a soft dirty swapped PMD                   |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkyoung               | Creates a young PMD                              |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkold                 | Creates an old PMD                               |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkdirty               | Creates a dirty PMD                              |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkclean               | Creates a clean PMD                              |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkwrite               | Creates a writable PMD                           |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkwrprotect           | Creates a write protected PMD                    |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkspecial             | Creates a special PMD                            |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkdevmap              | Creates a ZONE_DEVICE mapped PMD                 |
-++---------------------------+--------------------------------------------------+
-+| pmd_mksoft_dirty          | Creates a soft dirty PMD                         |
-++---------------------------+--------------------------------------------------+
-+| pmd_clear_soft_dirty      | Clears a soft dirty PMD                          |
-++---------------------------+--------------------------------------------------+
-+| pmd_swp_mksoft_dirty      | Creates a soft dirty swapped PMD                 |
-++---------------------------+--------------------------------------------------+
-+| pmd_swp_clear_soft_dirty  | Clears a soft dirty swapped PMD                  |
-++---------------------------+--------------------------------------------------+
-+| pmd_mkinvalid             | Invalidates a mapped PMD [1]                     |
-++---------------------------+--------------------------------------------------+
-+| pmd_set_huge              | Creates a PMD huge mapping                       |
-++---------------------------+--------------------------------------------------+
-+| pmd_clear_huge            | Clears a PMD huge mapping                        |
-++---------------------------+--------------------------------------------------+
-+| pmdp_get_and_clear        | Clears a PMD                                     |
-++---------------------------+--------------------------------------------------+
-+| pmdp_get_and_clear_full   | Clears a PMD                                     |
-++---------------------------+--------------------------------------------------+
-+| pmdp_test_and_clear_young | Clears young from a PMD                          |
-++---------------------------+--------------------------------------------------+
-+| pmdp_set_wrprotect        | Converts into a write protected PMD              |
-++---------------------------+--------------------------------------------------+
-+| pmdp_set_access_flags     | Converts into a more permissive PMD              |
-++---------------------------+--------------------------------------------------+
-+
-+======================
-+PUD Page Table Helpers
-+======================
-+
-++---------------------------+--------------------------------------------------+
-+| pud_same                  | Tests whether both PUD entries are the same      |
-++---------------------------+--------------------------------------------------+
-+| pud_bad                   | Tests a non-table mapped PUD                     |
-++---------------------------+--------------------------------------------------+
-+| pud_leaf                  | Tests a leaf mapped PUD                          |
-++---------------------------+--------------------------------------------------+
-+| pud_huge                  | Tests a HugeTLB mapped PUD                       |
-++---------------------------+--------------------------------------------------+
-+| pud_trans_huge            | Tests a Transparent Huge Page (THP) at PUD       |
-++---------------------------+--------------------------------------------------+
-+| pud_present               | Tests a valid mapped PUD                         |
-++---------------------------+--------------------------------------------------+
-+| pud_young                 | Tests a young PUD                                |
-++---------------------------+--------------------------------------------------+
-+| pud_dirty                 | Tests a dirty PUD                                |
-++---------------------------+--------------------------------------------------+
-+| pud_write                 | Tests a writable PUD                             |
-++---------------------------+--------------------------------------------------+
-+| pud_devmap                | Tests a ZONE_DEVICE mapped PUD                   |
-++---------------------------+--------------------------------------------------+
-+| pud_mkyoung               | Creates a young PUD                              |
-++---------------------------+--------------------------------------------------+
-+| pud_mkold                 | Creates an old PUD                               |
-++---------------------------+--------------------------------------------------+
-+| pud_mkdirty               | Creates a dirty PUD                              |
-++---------------------------+--------------------------------------------------+
-+| pud_mkclean               | Creates a clean PUD                              |
-++---------------------------+--------------------------------------------------+
-+| pud_mkwrite               | Creates a writable PUD                           |
-++---------------------------+--------------------------------------------------+
-+| pud_mkwrprotect           | Creates a write protected PUD                    |
-++---------------------------+--------------------------------------------------+
-+| pud_mkdevmap              | Creates a ZONE_DEVICE mapped PUD                 |
-++---------------------------+--------------------------------------------------+
-+| pud_mkinvalid             | Invalidates a mapped PUD [1]                     |
-++---------------------------+--------------------------------------------------+
-+| pud_set_huge              | Creates a PUD huge mapping                       |
-++---------------------------+--------------------------------------------------+
-+| pud_clear_huge            | Clears a PUD huge mapping                        |
-++---------------------------+--------------------------------------------------+
-+| pudp_get_and_clear        | Clears a PUD                                     |
-++---------------------------+--------------------------------------------------+
-+| pudp_get_and_clear_full   | Clears a PUD                                     |
-++---------------------------+--------------------------------------------------+
-+| pudp_test_and_clear_young | Clears young from a PUD                          |
-++---------------------------+--------------------------------------------------+
-+| pudp_set_wrprotect        | Converts into a write protected PUD              |
-++---------------------------+--------------------------------------------------+
-+| pudp_set_access_flags     | Converts into a more permissive PUD              |
-++---------------------------+--------------------------------------------------+
-+
-+==========================
-+HugeTLB Page Table Helpers
-+==========================
-+
-++---------------------------+--------------------------------------------------+
-+| pte_huge                  | Tests a HugeTLB                                  |
-++---------------------------+--------------------------------------------------+
-+| pte_mkhuge                | Creates a HugeTLB                                |
-++---------------------------+--------------------------------------------------+
-+| huge_pte_dirty            | Tests a dirty HugeTLB                            |
-++---------------------------+--------------------------------------------------+
-+| huge_pte_write            | Tests a writable HugeTLB                         |
-++---------------------------+--------------------------------------------------+
-+| huge_pte_mkdirty          | Creates a dirty HugeTLB                          |
-++---------------------------+--------------------------------------------------+
-+| huge_pte_mkwrite          | Creates a writable HugeTLB                       |
-++---------------------------+--------------------------------------------------+
-+| huge_pte_mkwrprotect      | Creates a write protected HugeTLB                |
-++---------------------------+--------------------------------------------------+
-+| huge_ptep_get_and_clear   | Clears a HugeTLB                                 |
-++---------------------------+--------------------------------------------------+
-+| huge_ptep_set_wrprotect   | Converts into a write protected HugeTLB          |
-++---------------------------+--------------------------------------------------+
-+| huge_ptep_set_access_flags  | Converts into a more permissive HugeTLB        |
-++---------------------------+--------------------------------------------------+
-+
-+========================
-+SWAP Page Table Helpers
-+========================
-+
-++---------------------------+--------------------------------------------------+
-+| __pte_to_swp_entry        | Creates a swapped entry (arch) from a mapped PTE |
-++---------------------------+--------------------------------------------------+
-+| __swp_to_pte_entry        | Creates a mapped PTE from a swapped entry (arch) |
-++---------------------------+--------------------------------------------------+
-+| __pmd_to_swp_entry        | Creates a swapped entry (arch) from a mapped PMD |
-++---------------------------+--------------------------------------------------+
-+| __swp_to_pmd_entry        | Creates a mapped PMD from a swapped entry (arch) |
-++---------------------------+--------------------------------------------------+
-+| is_migration_entry        | Tests a migration (read or write) swapped entry  |
-++---------------------------+--------------------------------------------------+
-+| is_write_migration_entry  | Tests a write migration swapped entry            |
-++---------------------------+--------------------------------------------------+
-+| make_migration_entry_read | Converts into read migration swapped entry       |
-++---------------------------+--------------------------------------------------+
-+| make_migration_entry      | Creates a migration swapped entry (read or write)|
-++---------------------------+--------------------------------------------------+
-+
-+[1] https://lore.kernel.org/linux-mm/20181017020930.GN30832@redhat.com/
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 0db4390435be..e86c3d824693 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -31,6 +31,12 @@
- #include <asm/pgalloc.h>
- #include <asm/tlbflush.h>
- 
-+/*
-+ * Please refer Documentation/vm/arch_pgtable_helpers.rst for the semantics
-+ * expectations that are being validated here. All future changes in here
-+ * or the documentation need to be in sync.
-+ */
-+
- #define VMFLAGS	(VM_READ|VM_WRITE|VM_EXEC)
- 
- /*
--- 
-2.20.1
+> If I'm understanding right, you're trying
+> to enforce the property that exiting lazy TLB mode will promise to
+> sync the core eventually.  But this has all kinds of odd properties:
+>=20
+>  - Why is exit_lazy_tlb() getting called at all in the relevant cases?
 
+It's a property of how MEMBARRIER_SYNC_CORE is implemented by arch/x86,
+see the membarrier comment in finish_task_switch (for analogous reason).
+
+>  When is it permissible to call it?
+
+Comment for the asm-generic code says it's to be called when the lazy
+active mm becomes non-lazy.
+
+> I look at your new code and see:
+>=20
+>> +/*
+>> + * Ensure that a core serializing instruction is issued before returnin=
+g
+>> + * to user-mode, if a SYNC_CORE was requested. x86 implements return to
+>> + * user-space through sysexit, sysrel, and sysretq, which are not core
+>> + * serializing.
+>> + *
+>> + * See the membarrier comment in finish_task_switch as to why this is d=
+one
+>> + * in exit_lazy_tlb.
+>> + */
+>> +#define exit_lazy_tlb exit_lazy_tlb
+>> +static inline void exit_lazy_tlb(struct mm_struct *mm, struct task_stru=
+ct *tsk)
+>> +{
+>> +       /* Switching mm is serializing with write_cr3 */
+>> +        if (tsk->mm !=3D mm)
+>> +                return;
+>=20
+> And my brain says WTF?  Surely you meant something like if
+> (WARN_ON_ONCE(tsk->mm !=3D mm)) { /* egads, what even happened?  how do
+> we try to recover well enough to get a crashed logged at least? */ }
+
+No, the active mm can be unlazied by switching to a different mm.
+
+> So this needs actual documentation, preferably in comments near the
+> function, of what the preconditions are and what this mm parameter is.
+> Once that's done, then we could consider whether it's appropriate to
+> have this function promise to sync the core under some conditions.
+
+It's documented in generic code. I prefer not to duplicate comments
+too much but I can add a "refer to asm-generic version for usage" or
+something if you'd like?
+
+>  - This whole structure seems to rely on the idea that switching mm
+> syncs something.
+
+Which whole structure? The x86 implementation of sync core explicitly
+does rely on that, yes. But I've pulled that out of core code with
+this patch.
+
+> I periodically ask chip vendor for non-serializing
+> mm switches.  Specifically, in my dream world, we have totally
+> separate user and kernel page tables.  Changing out the user tables
+> doesn't serialize or even create a fence.  Instead it creates the
+> minimum required pipeline hazard such that user memory access and
+> switches to usermode will make sure they access memory through the
+> correct page tables.  I haven't convinced a chip vendor yet, but there
+> are quite a few hundreds of cycles to be saved here.
+
+The fundmaental difficulty is that the kernel can still access user
+mappings any time after the switch. We can probably handwave ways
+around it by serializing lazily when encountering the next user
+access and hoping that most of your mm switches result in a kernel
+exit that serializes or some other unavoidable serialize so you can
+avoid the mm switch one. In practice it sounds like a lot of trouble.
+But anyway the sync core could presumably be adjusted or reasoned to
+still be correct, depending on how it works.
+
+> With this in
+> mind, I see the fencing aspects of the TLB handling code as somewhat
+> of an accident.  I'm fine with documenting them and using them to
+> optimize other paths, but I think it should be explicit.  For example:
+>=20
+> /* Also does a full barrier?  (Or a sync_core()-style barrier.)
+> However, if you rely on this, you must document it in a comment where
+> you call this function. *?
+> void switch_mm_irqs_off()
+> {
+> }
+>=20
+> This is kind of like how we strongly encourage anyone using smp_?mb()
+> to document what they are fencing against.
+
+Hmm. I don't think anything outside core scheduler/arch code is allowed
+to assume that, because they don't really know if schedule() will cause
+a switch. Hopefully nobody does, I would agree it shouldn't be=20
+encouraged.
+
+It is pretty fundamental to how we do task CPU migration so I don't see
+it ever going away. A push model where the source CPU has to release=20
+tasks that it last ran before they can be run elsewhere is unworkable.=20
+(Or maybe it's not, but no getting around that would require careful
+audits of said low level code).
+
+> Also, as it stands, I can easily see in_irq() ceasing to promise to
+> serialize.  There are older kernels for which it does not promise to
+> serialize.  And I have plans to make it stop serializing in the
+> nearish future.
+
+You mean x86's return from interrupt? Sounds fun... you'll konw where to=20
+update the membarrier sync code, at least :)
+
+Thanks,
+Nick
