@@ -1,91 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2900421CEEA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 07:44:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B497021CED7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 07:31:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B4szF3wjSzDqVP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 15:44:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B4shg4pNkzDqTN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 15:31:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B4sXk3pYMzDqVQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 15:24:54 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B4sXj1c80z8tWg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 15:24:53 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4B4sXj09ybz9sSJ; Mon, 13 Jul 2020 15:24:53 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B4sXg6w5Jz9sDX;
- Mon, 13 Jul 2020 15:24:51 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06D52NSF180904; Mon, 13 Jul 2020 01:24:48 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32771wj11j-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B4sfb0MDwzDqJc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 15:29:58 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06D51qVj036163; Mon, 13 Jul 2020 01:29:51 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3279k2q7ra-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 01:24:47 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06D5OkOI014335;
- Mon, 13 Jul 2020 05:24:46 GMT
+ Mon, 13 Jul 2020 01:29:51 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06D5PZ1n004547;
+ Mon, 13 Jul 2020 05:29:49 GMT
 Received: from b06cxnps3075.portsmouth.uk.ibm.com
  (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 327527stsb-1
+ by ppma04ams.nl.ibm.com with ESMTP id 3275281tw9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 05:24:46 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
+ Mon, 13 Jul 2020 05:29:48 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
  by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06D5Ohdk63832220
+ 06D5TkEl42336478
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Jul 2020 05:24:44 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4AAA4C044;
- Mon, 13 Jul 2020 05:24:43 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F3CB34C050;
- Mon, 13 Jul 2020 05:24:40 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.102.23.34])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 13 Jul 2020 05:24:40 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v6] powerpc/fadump: fix race between pstore write and fadump
- crash trigger
-Date: Mon, 13 Jul 2020 10:54:35 +0530
-Message-Id: <20200713052435.183750-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.25.4
+ Mon, 13 Jul 2020 05:29:46 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3232111C054;
+ Mon, 13 Jul 2020 05:29:46 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E6A6411C04C;
+ Mon, 13 Jul 2020 05:29:43 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.58.151])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 13 Jul 2020 05:29:43 +0000 (GMT)
+Date: Mon, 13 Jul 2020 10:59:41 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: Re: [v3 1/5] KVM: PPC: Book3S HV: Disable page merging in
+ H_SVM_INIT_START
+Message-ID: <20200713052941.GF7902@in.ibm.com>
+References: <1594458827-31866-1-git-send-email-linuxram@us.ibm.com>
+ <1594458827-31866-2-git-send-email-linuxram@us.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1594458827-31866-2-git-send-email-linuxram@us.ibm.com>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-13_03:2020-07-10,
- 2020-07-13 signatures=0
+ definitions=2020-07-12_14:2020-07-10,
+ 2020-07-12 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- mlxlogscore=999 impostorscore=0 malwarescore=0 suspectscore=0 adultscore=0
- clxscore=1015 bulkscore=0 phishscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007130034
-X-Mailman-Approved-At: Mon, 13 Jul 2020 15:43:01 +1000
+ lowpriorityscore=0
+ spamscore=0 malwarescore=0 phishscore=0 adultscore=0 mlxscore=0
+ bulkscore=0 mlxlogscore=943 priorityscore=1501 impostorscore=0
+ suspectscore=5 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007130034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,163 +85,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
- hbathini@linux.ibm.com, linuxppc-dev@ozlabs.org
+Reply-To: bharata@linux.ibm.com
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When we enter into fadump crash path via system reset we fail to update
-the pstore.
+On Sat, Jul 11, 2020 at 02:13:43AM -0700, Ram Pai wrote:
+> Merging of pages associated with each memslot of a SVM is
+> disabled the page is migrated in H_SVM_PAGE_IN handler.
+> 
+> This operation should have been done much earlier; the moment the VM
+> is initiated for secure-transition. Delaying this operation, increases
+> the probability for those pages to acquire new references , making it
+> impossible to migrate those pages in H_SVM_PAGE_IN handler.
+> 
+> Disable page-migration in H_SVM_INIT_START handling.
 
-On the system reset path we first update the pstore then we go for fadump
-crash. But the problem here is when all the CPUs try to get the pstore
-lock to initiate the pstore write, only one CPUs will acquire the lock
-and proceed with the pstore write. Since it in NMI context CPUs that fail
-to get lock do not wait for their turn to write to the pstore and simply
-proceed with the next operation which is fadump crash. One of the CPU who
-proceeded with fadump crash path triggers the crash and does not wait for
-the CPU who gets the pstore lock to complete the pstore update.
+While it is a good idea to disable KSM merging for all VMAs during
+H_SVM_INIT_START, I am curious if you did observe an actual case of
+ksm_madvise() failing which resulted in subsequent H_SVM_PAGE_IN
+failing to migrate?
 
-Timeline diagram to depicts the sequence of events that leads to an
-unsuccessful pstore update when we hit fadump crash path via system reset.
+> 
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv_uvmem.c | 96 +++++++++++++++++++++++++++++---------
+>  1 file changed, 74 insertions(+), 22 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index 3d987b1..bfc3841 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -211,6 +211,65 @@ static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
+>  	return false;
+>  }
+>  
+> +static int kvmppc_memslot_page_merge(struct kvm *kvm,
+> +		struct kvm_memory_slot *memslot, bool merge)
+> +{
+> +	unsigned long gfn = memslot->base_gfn;
+> +	unsigned long end, start = gfn_to_hva(kvm, gfn);
+> +	int ret = 0;
+> +	struct vm_area_struct *vma;
+> +	int merge_flag = (merge) ? MADV_MERGEABLE : MADV_UNMERGEABLE;
+> +
+> +	if (kvm_is_error_hva(start))
+> +		return H_STATE;
 
-                 1    2     3    ...      n   CPU Threads
-                 |    |     |             |
-                 |    |     |             |
- Reached to   -->|--->|---->| ----------->|
- system reset    |    |     |             |
- path            |    |     |             |
-                 |    |     |             |
- Try to       -->|--->|---->|------------>|
- acquire the     |    |     |             |
- pstore lock     |    |     |             |
-                 |    |     |             |
-                 |    |     |             |
- Got the      -->| +->|     |             |<-+
- pstore lock     | |  |     |             |  |-->  Didn't get the
-                 | --------------------------+     lock and moving
-                 |    |     |             |        ahead on fadump
-                 |    |     |             |        crash path
-                 |    |     |             |
-  Begins the  -->|    |     |             |
-  process to     |    |     |             |<-- Got the chance to
-  update the     |    |     |             |    trigger the crash
-  pstore         | -> |     |    ... <-   |
-                 | |  |     |         |   |
-                 | |  |     |         |   |<-- Triggers the
-                 | |  |     |         |   |    crash
-                 | |  |     |         |   |      ^
-                 | |  |     |         |   |      |
-  Writing to  -->| |  |     |         |   |      |
-  pstore         | |  |     |         |   |      |
-                   |                  |          |
-       ^           |__________________|          |
-       |               CPU Relax                 |
-       |                                         |
-       +-----------------------------------------+
-                          |
-                          v
-            Race: crash triggered before pstore
-                  update completes
+This and other cases below seem to be a new return value from
+H_SVM_INIT_START. May be update the documentation too along with
+this patch?
 
-To avoid this race condition a barrier is added on crash_fadump path, it
-prevents the CPU to trigger the crash until all the online CPUs completes
-their task.
+> +
+> +	end = start + (memslot->npages << PAGE_SHIFT);
+> +
+> +	down_write(&kvm->mm->mmap_sem);
 
-A barrier is added to make sure all the secondary CPUs hit the
-crash_fadump function before we initiates the crash. A timeout is kept to
-ensure the primary CPU (one who initiates the crash) do not wait for
-secondary CPUs indefinitely.
+When you rebase the patches against latest upstream you may want to
+replace the above and other instances by mmap_write/read_lock().
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- arch/powerpc/kernel/fadump.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+> +	do {
+> +		vma = find_vma_intersection(kvm->mm, start, end);
+> +		if (!vma) {
+> +			ret = H_STATE;
+> +			break;
+> +		}
+> +		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> +			  merge_flag, &vma->vm_flags);
+> +		if (ret) {
+> +			ret = H_STATE;
+> +			break;
+> +		}
+> +		start = vma->vm_end + 1;
+> +	} while (end > vma->vm_end);
+> +
+> +	up_write(&kvm->mm->mmap_sem);
+> +	return ret;
+> +}
+> +
+> +static int __kvmppc_page_merge(struct kvm *kvm, bool merge)
+> +{
+> +	struct kvm_memslots *slots;
+> +	struct kvm_memory_slot *memslot;
+> +	int ret = 0;
+> +
+> +	slots = kvm_memslots(kvm);
+> +	kvm_for_each_memslot(memslot, slots) {
+> +		ret = kvmppc_memslot_page_merge(kvm, memslot, merge);
+> +		if (ret)
+> +			break;
+> +	}
+> +	return ret;
+> +}
+> +
+> +static inline int kvmppc_disable_page_merge(struct kvm *kvm)
+> +{
+> +	return __kvmppc_page_merge(kvm, false);
+> +}
+> +
+> +static inline int kvmppc_enable_page_merge(struct kvm *kvm)
+> +{
+> +	return __kvmppc_page_merge(kvm, true);
+> +}
+> +
+>  unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>  {
+>  	struct kvm_memslots *slots;
+> @@ -232,11 +291,18 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>  		return H_AUTHORITY;
+>  
+>  	srcu_idx = srcu_read_lock(&kvm->srcu);
+> +
+> +	/* disable page-merging for all memslot */
+> +	ret = kvmppc_disable_page_merge(kvm);
+> +	if (ret)
+> +		goto out;
+> +
+> +	/* register the memslot */
+>  	slots = kvm_memslots(kvm);
+>  	kvm_for_each_memslot(memslot, slots) {
+>  		if (kvmppc_uvmem_slot_init(kvm, memslot)) {
+>  			ret = H_PARAMETER;
+> -			goto out;
+> +			break;
+>  		}
+>  		ret = uv_register_mem_slot(kvm->arch.lpid,
+>  					   memslot->base_gfn << PAGE_SHIFT,
+> @@ -245,9 +311,12 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>  		if (ret < 0) {
+>  			kvmppc_uvmem_slot_free(kvm, memslot);
+>  			ret = H_PARAMETER;
+> -			goto out;
+> +			break;
+>  		}
+>  	}
+> +
+> +	if (ret)
+> +		kvmppc_enable_page_merge(kvm);
 
----
-Chanagelog:
+Is there any use of enabling KSM merging in the failure path here?
+Won't UV terminate the VM if H_SVM_INIT_START fails? If there is no need,
+you can do away with some extra routines above.
 
-v1 -> v3:
-   - https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-April/208267.html
+>  out:
+>  	srcu_read_unlock(&kvm->srcu, srcu_idx);
+>  	return ret;
+> @@ -384,7 +453,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
+>   */
+>  static int kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
+>  		   unsigned long end, unsigned long gpa, struct kvm *kvm,
+> -		   unsigned long page_shift, bool *downgrade)
+> +		   unsigned long page_shift)
+>  {
+>  	unsigned long src_pfn, dst_pfn = 0;
+>  	struct migrate_vma mig;
+> @@ -400,18 +469,6 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
+>  	mig.src = &src_pfn;
+>  	mig.dst = &dst_pfn;
+>  
+> -	/*
+> -	 * We come here with mmap_sem write lock held just for
+> -	 * ksm_madvise(), otherwise we only need read mmap_sem.
+> -	 * Hence downgrade to read lock once ksm_madvise() is done.
+> -	 */
+> -	ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> -			  MADV_UNMERGEABLE, &vma->vm_flags);
 
-v3 -> v4:
+I haven't seen the subsequent patches yet, but guess you are
+taking care of disabling KSM mering for hot-plugged memory too.
 
-   - Now the primary CPU (one who triggers dump) waits for all secondary
-     CPUs to enter and then initiates the crash.
-
-v4 -> v5:
-    - Fixed a build failure reported by kernel test robot <lkp at intel.com>
-      Now the cpus_in_crash variable is defined outside CONFIG_CMA
-      config option.
-
-v5 -> v6
-    - Changed a variable name cpus_in_crash -> cpus_in_fadump.
----
-
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 78ab9a6ee6ac..1858896d6809 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -32,11 +32,20 @@
- #include <asm/fadump-internal.h>
- #include <asm/setup.h>
- 
-+/*
-+ * The CPU who acquired the lock to trigger the fadump crash should
-+ * wait for other CPUs to enter.
-+ *
-+ * The timeout is in milliseconds.
-+ */
-+#define CRASH_TIMEOUT		500
-+
- static struct fw_dump fw_dump;
- 
- static void __init fadump_reserve_crash_area(u64 base);
- 
- struct kobject *fadump_kobj;
-+static atomic_t cpus_in_fadump;
- 
- #ifndef CONFIG_PRESERVE_FA_DUMP
- static DEFINE_MUTEX(fadump_mutex);
-@@ -668,8 +677,11 @@ early_param("fadump_reserve_mem", early_fadump_reserve_mem);
- 
- void crash_fadump(struct pt_regs *regs, const char *str)
- {
-+	unsigned int msecs;
- 	struct fadump_crash_info_header *fdh = NULL;
- 	int old_cpu, this_cpu;
-+	/* Do not include first CPU */
-+	unsigned int ncpus = num_online_cpus() - 1;
- 
- 	if (!should_fadump_crash())
- 		return;
-@@ -685,6 +697,8 @@ void crash_fadump(struct pt_regs *regs, const char *str)
- 	old_cpu = cmpxchg(&crashing_cpu, -1, this_cpu);
- 
- 	if (old_cpu != -1) {
-+		atomic_inc(&cpus_in_fadump);
-+
- 		/*
- 		 * We can't loop here indefinitely. Wait as long as fadump
- 		 * is in force. If we race with fadump un-registration this
-@@ -708,6 +722,16 @@ void crash_fadump(struct pt_regs *regs, const char *str)
- 
- 	fdh->online_mask = *cpu_online_mask;
- 
-+	/*
-+	 * If we came in via system reset, wait a while for the secondary
-+	 * CPUs to enter.
-+	 */
-+	if (TRAP(&(fdh->regs)) == 0x100) {
-+		msecs = CRASH_TIMEOUT;
-+		while ((atomic_read(&cpus_in_fadump) < ncpus) && (--msecs > 0))
-+			mdelay(1);
-+	}
-+
- 	fw_dump.ops->fadump_trigger(fdh, str);
- }
- 
--- 
-2.25.4
-
+Regards,
+Bharata.
