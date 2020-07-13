@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D2221D1B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 10:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B80121D1C2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 10:32:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B4xf424j5zDqS6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 18:29:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B4xhd3ttkzDqTl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 18:32:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=aIkZRPwC; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=20150623 header.b=zyTCm030; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B4xcF3FKXzDqRN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 18:28:12 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id t6so5728903pgq.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 01:28:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B4xfv19przDqRd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 18:30:30 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id m22so5715726pgv.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 01:30:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=VOlJEIp2vq/hgt7p2eUDo6tAZS72+I0Gabgt3aJj6MI=;
- b=aIkZRPwC/R0ora9TNIsa238O8ikvfR3f9lp5xJadPTYbLzHbgUYOcL1oMSLs74wzqX
- rurbqQRkZ4wYUHfHg1JANzCpDUZdrsh5j0qBdnZ6emIUcJ6ZF9k56+kTTGHmR+wxxC0Y
- QjTxYM3OEJCsZO8g4L0qQwFsbGe/ESB7kcHevGfOl9aVTVJSfX5HJdzvQ0zmXuUCAKp3
- q1NlUS+y/Ecz6pHUB6AgW91i3AL9dvP04/QQ9WAvR2M5Da6noFiw+RxZzkAlhY/TFoDu
- vN9t0WnxKJ3uuBDRcrFVYuMTqyRl7q+CQa7NOb7U68n4eQjGTWG+5cwVZJNPoGm8rfAv
- 8s2g==
+ bh=444IZGBIkFWlYUD0cW/WwEamQ3tlOGJK+PIoB/fDL9I=;
+ b=zyTCm0300LX0MFAHb0Lt+6ULpmUgFiQXk6XC7m2zxLLX5V8jhyFch0Co/mHr1EmCgA
+ fbR2BQgi/4+LuYBHBnQpwxwzbF3OrGgZTtjjSe4hscnfP6i/DolGFuWlXynavvqvJGJQ
+ b5CAnOB4UAdlxc/s+g4rldne5J7+yz3v6DSbitpmLhRFS+5XYJKS84xFlbHPhKE3vma1
+ xYM/XHcpxJ8x5bISrs67BkJRZ//a8BQgtngZeGTWqN5lVOhc0JeFqLll/6j30+o+ntFk
+ FPGAafxORWBiqDoWfr3CUe8dnVwLeNk+6qeoePLaH8wtnH+dkWU3beWXh9SLZ/HsJjU8
+ ubgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
  :date:user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=VOlJEIp2vq/hgt7p2eUDo6tAZS72+I0Gabgt3aJj6MI=;
- b=dZES3h6wNdFcYjPRPDpC2PJClHdMuTAmDKSUSbyIYEa3bcrDK0Ke/T5QkiLPsafPfP
- T4DtZ04ghWD9NTFZ7O0sCHd/BjHr4/0WZNH7djmXQchqkGqV6DRXSdPAaT7vZqDMOobX
- XHdvngu3+yotU+foTCa3Kc9XcYulBPZfUc9FrFwIYzcxONO56cI/A0YXNBZP9QsukfBw
- lpiwLiXm4jWuuP1VKSOE9n4ugpBnrgVIxRY9SQavsoVKsDraAZDARAYGLjXee9rlcrln
- viQCSPTu9Oar69VgyiDO//tUQICZsLFqBRVRR3wwCoy4H5wA5i6T+kDZ05oMHXm7qDXt
- J+5w==
-X-Gm-Message-State: AOAM533HKodFgM3sAANRGVVepmfS7E6Vvcs9ERenS79cUkAR2Ll6WSDn
- YqUh09SZDrj2oDWbGJ92MM+LRqLo+T4O6Q==
-X-Google-Smtp-Source: ABdhPJwBrxzAl+8C48VgmNIIUhS4B1ho9NvgtTsSPDc9fOTO/EWGZLZoFO2jeGgmqusrFmqQWKIykQ==
-X-Received: by 2002:aa7:8e90:: with SMTP id a16mr70521054pfr.84.1594628888581; 
- Mon, 13 Jul 2020 01:28:08 -0700 (PDT)
+ bh=444IZGBIkFWlYUD0cW/WwEamQ3tlOGJK+PIoB/fDL9I=;
+ b=l5rIjfQEgQStBU2bAESRQcNSSVrxPPwS0hehkDmrhoWp0EFKt9w24sHcqk9jqxwDOh
+ 3BkTvH3Z7+uLLTQbjvNSO88uF0vMWSAKmvKlk94UrrMg4tvnsxokc6x6iFvQfRXxRHCM
+ 4Ny/psKu+KhYJObgVciA59jH/vctq6EWq5Z8BrIXweXAp0rcnuDR/S5ufzeXblWycHqu
+ y5UgV5jn2gFpPHr0kbqHdp1aFERsidqvXVi4DXpyCUl/V9/Zahxjaqrv6iwdsx5igbKZ
+ BjwXpL5b2/69/3gGbN0OvUGb96hKcDT/q1BuzhOHTPQsP3WKb7KKmeM1tDCv6PxvBPTL
+ YO5A==
+X-Gm-Message-State: AOAM531Cc/BUZY4D9NANjZ2SmuRRIH+jwV6GCeRNrgu+M53FXjtrB/Kx
+ nT4fUdBQcM9KLr7qiNCUUkGKveTdNdKfbw==
+X-Google-Smtp-Source: ABdhPJwQLka3/FmAU6EWNN/MSOXBWOX0jKNLu5n+H2hjJi7mbMH6o/HOaALkQdlZ2n7Pn50Vgu8Tsg==
+X-Received: by 2002:a63:7f5a:: with SMTP id p26mr68240669pgn.117.1594629028487; 
+ Mon, 13 Jul 2020 01:30:28 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id mu17sm15227459pjb.53.2020.07.13.01.28.06
+ by smtp.gmail.com with ESMTPSA id b8sm14126997pjm.31.2020.07.13.01.30.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Jul 2020 01:28:07 -0700 (PDT)
-Subject: Re: [PATCH 01/15] powernv/pci: Add pci_bus_to_pnvhb() helper
+ Mon, 13 Jul 2020 01:30:27 -0700 (PDT)
+Subject: Re: [PATCH 02/15] powerpc/powernv/pci: Always tear down DMA windows
+ on PE release
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-2-oohall@gmail.com>
+ <20200710052340.737567-3-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -139,12 +140,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <61aba0b1-fd8e-f9c2-d603-da1012ee9eb2@ozlabs.ru>
-Date: Mon, 13 Jul 2020 18:28:04 +1000
+Message-ID: <36ae7269-3014-aeef-4c40-ad1b63dc7b66@ozlabs.ru>
+Date: Mon, 13 Jul 2020 18:30:24 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200710052340.737567-2-oohall@gmail.com>
+In-Reply-To: <20200710052340.737567-3-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -166,384 +167,109 @@ Sender: "Linuxppc-dev"
 
 
 On 10/07/2020 15:23, Oliver O'Halloran wrote:
-> Add a helper to go from a pci_bus structure to the pnv_phb that hosts that
-> bus. There's a lot of instances of the following pattern:
+> Currently we have these two functions:
 > 
-> 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> 	struct pnv_phb *phb = hose->private_data;
+> 	pnv_pci_ioda2_release_dma_pe(), and
+> 	pnv_pci_ioda2_release_pe_dma()
 > 
-> Without any other uses of the pci_controller inside the function. This is
-> hard to read since it requires you to memorise the contents of the
-> private data fields and kind of error prone since it involves blindly
-> assigning a void pointer. Add a helper to make it more concise and
-> explicit.
+> The first is used when tearing down VF PEs and the other is used for normal
+> devices. There's very little difference between the two though. The latter
+> (non-VF) will skip a call to pnv_pci_ioda2_unset_window() unless
+> CONFIG_IOMMU_API=y is set. There's no real point in doing this so fold the
+> two together.
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+
+
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
 > ---
->  arch/powerpc/platforms/powernv/pci-ioda.c | 88 +++++++----------------
->  arch/powerpc/platforms/powernv/pci.c      | 14 ++--
->  arch/powerpc/platforms/powernv/pci.h      | 10 +++
->  3 files changed, 38 insertions(+), 74 deletions(-)
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 30 +++--------------------
+>  1 file changed, 3 insertions(+), 27 deletions(-)
 > 
 > diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 31c3e6d58c41..687919db0347 100644
+> index 687919db0347..bfb40607aa0e 100644
 > --- a/arch/powerpc/platforms/powernv/pci-ioda.c
 > +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -252,8 +252,7 @@ static int pnv_ioda2_init_m64(struct pnv_phb *phb)
->  static void pnv_ioda_reserve_dev_m64_pe(struct pci_dev *pdev,
->  					 unsigned long *pe_bitmap)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	struct resource *r;
->  	resource_size_t base, sgsz, start, end;
->  	int segno, i;
-> @@ -351,8 +350,7 @@ static void pnv_ioda_reserve_m64_pe(struct pci_bus *bus,
+> @@ -1422,26 +1422,7 @@ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
+>  	return -EBUSY;
+>  }
 >  
->  static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
->  	struct pnv_ioda_pe *master_pe, *pe;
->  	unsigned long size, *pe_alloc;
->  	int i;
-> @@ -673,8 +671,7 @@ struct pnv_ioda_pe *pnv_pci_bdfn_to_pe(struct pnv_phb *phb, u16 bdfn)
->  
->  struct pnv_ioda_pe *pnv_ioda_get_pe(struct pci_dev *dev)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(dev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
->  	struct pci_dn *pdn = pci_get_pdn(dev);
->  
->  	if (!pdn)
-> @@ -1069,8 +1066,7 @@ static int pnv_pci_vf_resource_shift(struct pci_dev *dev, int offset)
->  
->  static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(dev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
->  	struct pci_dn *pdn = pci_get_pdn(dev);
->  	struct pnv_ioda_pe *pe;
->  
-> @@ -1129,8 +1125,7 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
->   */
->  static struct pnv_ioda_pe *pnv_ioda_setup_bus_PE(struct pci_bus *bus, bool all)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
->  	struct pnv_ioda_pe *pe = NULL;
->  	unsigned int pe_num;
->  
-> @@ -1196,8 +1191,7 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
->  	struct pnv_ioda_pe *pe;
->  	struct pci_dev *gpu_pdev;
->  	struct pci_dn *npu_pdn;
-> -	struct pci_controller *hose = pci_bus_to_host(npu_pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(npu_pdev->bus);
->  
->  	/*
->  	 * Intentionally leak a reference on the npu device (for
-> @@ -1300,16 +1294,12 @@ static void pnv_pci_ioda_setup_nvlink(void)
->  #ifdef CONFIG_PCI_IOV
->  static int pnv_pci_vf_release_m64(struct pci_dev *pdev, u16 num_vfs)
->  {
-> -	struct pci_bus        *bus;
-> -	struct pci_controller *hose;
->  	struct pnv_phb        *phb;
->  	struct pci_dn         *pdn;
->  	int                    i, j;
->  	int                    m64_bars;
->  
-> -	bus = pdev->bus;
-> -	hose = pci_bus_to_host(bus);
-> -	phb = hose->private_data;
-> +	phb = pci_bus_to_pnvhb(pdev->bus);
->  	pdn = pci_get_pdn(pdev);
->  
->  	if (pdn->m64_single_mode)
-> @@ -1333,8 +1323,6 @@ static int pnv_pci_vf_release_m64(struct pci_dev *pdev, u16 num_vfs)
->  
->  static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
->  {
-> -	struct pci_bus        *bus;
-> -	struct pci_controller *hose;
->  	struct pnv_phb        *phb;
->  	struct pci_dn         *pdn;
->  	unsigned int           win;
-> @@ -1346,9 +1334,7 @@ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
->  	int                    pe_num;
->  	int                    m64_bars;
->  
-> -	bus = pdev->bus;
-> -	hose = pci_bus_to_host(bus);
-> -	phb = hose->private_data;
-> +	phb = pci_bus_to_pnvhb(pdev->bus);
->  	pdn = pci_get_pdn(pdev);
->  	total_vfs = pci_sriov_get_totalvfs(pdev);
->  
-> @@ -1459,15 +1445,11 @@ static void pnv_pci_ioda2_release_dma_pe(struct pci_dev *dev, struct pnv_ioda_pe
+> -static long pnv_pci_ioda2_unset_window(struct iommu_table_group *table_group,
+> -		int num);
+> -
+> -static void pnv_pci_ioda2_release_dma_pe(struct pci_dev *dev, struct pnv_ioda_pe *pe)
+> -{
+> -	struct iommu_table    *tbl;
+> -	int64_t               rc;
+> -
+> -	tbl = pe->table_group.tables[0];
+> -	rc = pnv_pci_ioda2_unset_window(&pe->table_group, 0);
+> -	if (rc)
+> -		pe_warn(pe, "OPAL error %lld release DMA window\n", rc);
+> -
+> -	pnv_pci_ioda2_set_bypass(pe, false);
+> -	if (pe->table_group.group) {
+> -		iommu_group_put(pe->table_group.group);
+> -		BUG_ON(pe->table_group.group);
+> -	}
+> -	iommu_tce_table_put(tbl);
+> -}
+> +static void pnv_pci_ioda2_release_pe_dma(struct pnv_ioda_pe *pe);
 >  
 >  static void pnv_ioda_release_vf_PE(struct pci_dev *pdev)
 >  {
-> -	struct pci_bus        *bus;
-> -	struct pci_controller *hose;
->  	struct pnv_phb        *phb;
->  	struct pnv_ioda_pe    *pe, *pe_n;
->  	struct pci_dn         *pdn;
->  
-> -	bus = pdev->bus;
-> -	hose = pci_bus_to_host(bus);
-> -	phb = hose->private_data;
-> +	phb = pci_bus_to_pnvhb(pdev->bus);
->  	pdn = pci_get_pdn(pdev);
->  
+> @@ -1455,11 +1436,12 @@ static void pnv_ioda_release_vf_PE(struct pci_dev *pdev)
 >  	if (!pdev->is_physfn)
-> @@ -1492,16 +1474,12 @@ static void pnv_ioda_release_vf_PE(struct pci_dev *pdev)
->  
->  static void pnv_pci_sriov_disable(struct pci_dev *pdev)
->  {
-> -	struct pci_bus        *bus;
-> -	struct pci_controller *hose;
->  	struct pnv_phb        *phb;
->  	struct pnv_ioda_pe    *pe;
->  	struct pci_dn         *pdn;
->  	u16                    num_vfs, i;
->  
-> -	bus = pdev->bus;
-> -	hose = pci_bus_to_host(bus);
-> -	phb = hose->private_data;
-> +	phb = pci_bus_to_pnvhb(pdev->bus);
->  	pdn = pci_get_pdn(pdev);
->  	num_vfs = pdn->num_vfs;
->  
-> @@ -1535,17 +1513,13 @@ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
->  				       struct pnv_ioda_pe *pe);
->  static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  {
-> -	struct pci_bus        *bus;
-> -	struct pci_controller *hose;
->  	struct pnv_phb        *phb;
->  	struct pnv_ioda_pe    *pe;
->  	int                    pe_num;
->  	u16                    vf_index;
->  	struct pci_dn         *pdn;
->  
-> -	bus = pdev->bus;
-> -	hose = pci_bus_to_host(bus);
-> -	phb = hose->private_data;
-> +	phb = pci_bus_to_pnvhb(pdev->bus);
->  	pdn = pci_get_pdn(pdev);
->  
->  	if (!pdev->is_physfn)
-> @@ -1572,7 +1546,7 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  		pe->rid = (vf_bus << 8) | vf_devfn;
->  
->  		pe_info(pe, "VF %04d:%02d:%02d.%d associated with PE#%x\n",
-> -			hose->global_number, pdev->bus->number,
-> +			pci_domain_nr(pdev->bus), pdev->bus->number,
->  			PCI_SLOT(vf_devfn), PCI_FUNC(vf_devfn), pe_num);
->  
->  		if (pnv_ioda_configure_pe(phb, pe)) {
-> @@ -1602,17 +1576,13 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  
->  static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  {
-> -	struct pci_bus        *bus;
-> -	struct pci_controller *hose;
->  	struct pnv_phb        *phb;
->  	struct pnv_ioda_pe    *pe;
->  	struct pci_dn         *pdn;
->  	int                    ret;
->  	u16                    i;
->  
-> -	bus = pdev->bus;
-> -	hose = pci_bus_to_host(bus);
-> -	phb = hose->private_data;
-> +	phb = pci_bus_to_pnvhb(pdev->bus);
->  	pdn = pci_get_pdn(pdev);
->  
->  	if (phb->type == PNV_PHB_IODA2) {
-> @@ -1735,8 +1705,7 @@ static int pnv_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  
->  static void pnv_pci_ioda_dma_dev_setup(struct pci_dev *pdev)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	struct pci_dn *pdn = pci_get_pdn(pdev);
->  	struct pnv_ioda_pe *pe;
->  
-> @@ -1847,8 +1816,7 @@ static int pnv_pci_ioda_dma_64bit_bypass(struct pnv_ioda_pe *pe)
->  static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
->  		u64 dma_mask)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	struct pci_dn *pdn = pci_get_pdn(pdev);
->  	struct pnv_ioda_pe *pe;
->  
-> @@ -2766,8 +2734,7 @@ static void pnv_pci_init_ioda_msis(struct pnv_phb *phb)
->  #ifdef CONFIG_PCI_IOV
->  static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	const resource_size_t gate = phb->ioda.m64_segsize >> 2;
->  	struct resource *res;
->  	int i;
-> @@ -3101,10 +3068,9 @@ static void pnv_pci_ioda_fixup(void)
->  static resource_size_t pnv_pci_window_alignment(struct pci_bus *bus,
->  						unsigned long type)
->  {
-> -	struct pci_dev *bridge;
-> -	struct pci_controller *hose = pci_bus_to_host(bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
->  	int num_pci_bridges = 0;
-> +	struct pci_dev *bridge;
->  
->  	bridge = bus->self;
->  	while (bridge) {
-> @@ -3190,8 +3156,7 @@ static void pnv_pci_fixup_bridge_resources(struct pci_bus *bus,
->  
->  static void pnv_pci_configure_bus(struct pci_bus *bus)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
->  	struct pci_dev *bridge = bus->self;
->  	struct pnv_ioda_pe *pe;
->  	bool all = (bridge && pci_pcie_type(bridge) == PCI_EXP_TYPE_PCI_BRIDGE);
-> @@ -3237,8 +3202,7 @@ static resource_size_t pnv_pci_default_alignment(void)
->  static resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
->  						      int resno)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	struct pci_dn *pdn = pci_get_pdn(pdev);
->  	resource_size_t align;
->  
-> @@ -3274,8 +3238,7 @@ static resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
->   */
->  static bool pnv_pci_enable_device_hook(struct pci_dev *dev)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(dev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
->  	struct pci_dn *pdn;
->  
->  	/* The function is probably called while the PEs have
-> @@ -3488,8 +3451,7 @@ static void pnv_ioda_release_pe(struct pnv_ioda_pe *pe)
->  
->  static void pnv_pci_release_device(struct pci_dev *pdev)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	struct pci_dn *pdn = pci_get_pdn(pdev);
->  	struct pnv_ioda_pe *pe;
->  
-> @@ -3534,8 +3496,7 @@ static void pnv_pci_ioda_shutdown(struct pci_controller *hose)
->  
->  static void pnv_pci_ioda_dma_bus_setup(struct pci_bus *bus)
->  {
-> -	struct pci_controller *hose = bus->sysdata;
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
->  	struct pnv_ioda_pe *pe;
->  
->  	list_for_each_entry(pe, &phb->ioda.pe_list, list) {
-> @@ -3873,8 +3834,7 @@ void __init pnv_pci_init_npu2_opencapi_phb(struct device_node *np)
->  
->  static void pnv_npu2_opencapi_cfg_size_fixup(struct pci_dev *dev)
->  {
-> -	struct pci_controller *hose = pci_bus_to_host(dev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
->  
->  	if (!machine_is(powernv))
 >  		return;
-> diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-> index 091fe1cf386b..9b9bca169275 100644
-> --- a/arch/powerpc/platforms/powernv/pci.c
-> +++ b/arch/powerpc/platforms/powernv/pci.c
-> @@ -162,8 +162,7 @@ EXPORT_SYMBOL_GPL(pnv_pci_set_power_state);
 >  
->  int pnv_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+> +	/* FIXME: Use pnv_ioda_release_pe()? */
+>  	list_for_each_entry_safe(pe, pe_n, &phb->ioda.pe_list, list) {
+>  		if (pe->parent_dev != pdev)
+>  			continue;
+>  
+> -		pnv_pci_ioda2_release_dma_pe(pdev, pe);
+> +		pnv_pci_ioda2_release_pe_dma(pe);
+>  
+>  		/* Remove from list */
+>  		mutex_lock(&phb->ioda.pe_list_mutex);
+> @@ -2429,7 +2411,6 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
+>  	return 0;
+>  }
+>  
+> -#if defined(CONFIG_IOMMU_API) || defined(CONFIG_PCI_IOV)
+>  static long pnv_pci_ioda2_unset_window(struct iommu_table_group *table_group,
+>  		int num)
 >  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	struct msi_desc *entry;
->  	struct msi_msg msg;
->  	int hwirq;
-> @@ -211,8 +210,7 @@ int pnv_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+> @@ -2453,7 +2434,6 @@ static long pnv_pci_ioda2_unset_window(struct iommu_table_group *table_group,
 >  
->  void pnv_teardown_msi_irqs(struct pci_dev *pdev)
+>  	return ret;
+>  }
+> -#endif
+>  
+>  #ifdef CONFIG_IOMMU_API
+>  unsigned long pnv_pci_ioda2_get_table_size(__u32 page_shift,
+> @@ -3334,18 +3314,14 @@ static void pnv_pci_ioda2_release_pe_dma(struct pnv_ioda_pe *pe)
 >  {
-> -	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> -	struct pnv_phb *phb = hose->private_data;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->  	struct msi_desc *entry;
->  	irq_hw_number_t hwirq;
+>  	struct iommu_table *tbl = pe->table_group.tables[0];
+>  	unsigned int weight = pnv_pci_ioda_pe_dma_weight(pe);
+> -#ifdef CONFIG_IOMMU_API
+>  	int64_t rc;
+> -#endif
 >  
-> @@ -824,10 +822,9 @@ EXPORT_SYMBOL(pnv_pci_get_phb_node);
+>  	if (!weight)
+>  		return;
 >  
->  int pnv_pci_set_tunnel_bar(struct pci_dev *dev, u64 addr, int enable)
->  {
-> -	__be64 val;
-> -	struct pci_controller *hose;
-> -	struct pnv_phb *phb;
-> +	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
->  	u64 tunnel_bar;
-> +	__be64 val;
->  	int rc;
+> -#ifdef CONFIG_IOMMU_API
+>  	rc = pnv_pci_ioda2_unset_window(&pe->table_group, 0);
+>  	if (rc)
+>  		pe_warn(pe, "OPAL error %lld release DMA window\n", rc);
+> -#endif
 >  
->  	if (!opal_check_token(OPAL_PCI_GET_PBCQ_TUNNEL_BAR))
-> @@ -835,9 +832,6 @@ int pnv_pci_set_tunnel_bar(struct pci_dev *dev, u64 addr, int enable)
->  	if (!opal_check_token(OPAL_PCI_SET_PBCQ_TUNNEL_BAR))
->  		return -ENXIO;
->  
-> -	hose = pci_bus_to_host(dev->bus);
-> -	phb = hose->private_data;
-> -
->  	mutex_lock(&tunnel_mutex);
->  	rc = opal_pci_get_pbcq_tunnel_bar(phb->opal_id, &val);
->  	if (rc != OPAL_SUCCESS) {
-> diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-> index 51c254f2f3cb..0727dec9a0d1 100644
-> --- a/arch/powerpc/platforms/powernv/pci.h
-> +++ b/arch/powerpc/platforms/powernv/pci.h
-> @@ -260,4 +260,14 @@ extern void pnv_pci_setup_iommu_table(struct iommu_table *tbl,
->  
->  extern unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb);
->  
-> +static inline struct pnv_phb *pci_bus_to_pnvhb(struct pci_bus *bus)
-> +{
-> +	struct pci_controller *hose = bus->sysdata;
-> +
-> +	if (hose)
-> +		return hose->private_data;
-
-
-Since it is powernv, private_data should not ever be NULL so we want
-BUG_ON here may be?
-
-
-> +
-> +	return NULL;
-> +}
-> +
->  #endif /* __POWERNV_PCI_H */
+>  	pnv_pci_ioda2_set_bypass(pe, false);
+>  	if (pe->table_group.group) {
 > 
 
 -- 
