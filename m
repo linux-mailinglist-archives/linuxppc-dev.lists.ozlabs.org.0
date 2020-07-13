@@ -2,71 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5346921D252
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 10:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B46321D25C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 11:01:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B4yGz1gnSzDqTp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 18:58:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B4yL710zjzDqHG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 19:01:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Q+CIg1rN; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20150623 header.b=Lq5mymRK; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B4yDS0wJ4zDqSj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 18:56:07 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id p1so5238240pls.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 01:56:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B4yJ972HPzDq9C
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 18:59:21 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id p1so5241587pls.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 01:59:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=n2TPtzyje2ZTEC1R3z8UR2smHm+j7GD+XD558f0ULMI=;
- b=Q+CIg1rNH9Joan9n9IzcSPa4+DIkA4BrmzRCVW35W1LgsK3kW9UlwIW3TCFjUMa2z5
- iM3si4TwyTma4MJZCca7EN3vcBShgWPyuwiPjdUUUUp65EMy6aE3hFQ1DD47CL0k+iYn
- tgQuu4d0B6o8a2u9gfGaThSWGXKUD+vvTCB+7r/0sT0+Wn0PPP6mN0kRtJSdq5LSjl31
- zJdfqY9pNYD/WjvHB93bAEHiZidK1qNVbei5AgYdxfkCroBIbv3M973F7P+jn8CM2ixU
- sT5vuhemf3li6l0twX6DRvZDMpvhPrl1Jc5bBdicJjYyuQVeN19D9h6Y3j2wJ/kQmt/L
- UKkg==
+ bh=QzFXClcx6WKFPqvWGb0ZpR6Y/Qk5GcHFA1hoCyv/2O4=;
+ b=Lq5mymRKgUpBqsL0h1wQBwhNqKwmiCPT3E7iKApmhlXqTWqoCr6n/0na0OTJzpAdTY
+ o3Y26pWXa3DOFdQyZim/yDIjHmsJyYyt135opOwYyAymdEeYAuV9XaQmVrfHII37QGLN
+ S+Kv2yGfv0O1m0NQii1R6nUwLW7KybU0MnJkLwY7i44WVVm7auzU8VZ/+pn9nNaKwz0H
+ 3Kr/OtmAui75nsEZY/bTcgnzVbHPLZxGcOq4OmIQRey2FNUQNIlSL26UMvCVFrfStpnF
+ 33kzqUmEUg46EaUxArLyRr38thE+wlxiiAhAlXhQyoYYFmEBpyZRmX2NeEJ6djF5OgnR
+ hzZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=n2TPtzyje2ZTEC1R3z8UR2smHm+j7GD+XD558f0ULMI=;
- b=eQAwzTcu1AQaQe89l5+tJlaawkp59PUfi/Wy7Pf2wzHRJT70YNamRp+l4sjIeUyFTZ
- EP6MO+4L5S33npUrdvJLLB6HIPFo5P/XB2tBxKcUOqkYLzM84XBIUPOVtJcB6F+8PTik
- qL+o3SOKgIyKwNl727YSe1Xner5B++G3Lqn0mj+xUEEVi7+wV+fNS89xV7XHtRpGKF7e
- bSfm8tZdEaYBq+ykiIgfeGOGavjBV5G8sqbrm57i3S/9LqyVUS6GvRAOMZfG820qAS5q
- +osWKUhlKalvotlbbs/WwB5RDYapWicxLZj9CH7EzGHltvtXkonVCYXgnhY0Ki1Qkj70
- JBXA==
-X-Gm-Message-State: AOAM533MZ/17Ivo9aHKEvy52Dia/W7h7BaRk/FKCh+mbvyHehLzool+3
- q7NcjpcsJknX9RN5d9n8yBXYW7wwUSUtuQ==
-X-Google-Smtp-Source: ABdhPJyDf1gCKy+I+D2R4Q9dapfyXHqoRCDwIDx3nfyNOG194X6qVQeY25/Nxhz/LMtVh4huDoXkGA==
-X-Received: by 2002:a17:90a:5218:: with SMTP id
- v24mr16962365pjh.223.1594630563898; 
- Mon, 13 Jul 2020 01:56:03 -0700 (PDT)
+ bh=QzFXClcx6WKFPqvWGb0ZpR6Y/Qk5GcHFA1hoCyv/2O4=;
+ b=ko4QgSokoO3lRrBFMeHpwH7d0mG4d7DVP+1eeGUAMNlUGhUzBDWsnr8wQI/wwrGhY4
+ bA7+80gwCQH5Du8cggDyTziBh+kw3H4o5JVfJiwXS2f3ce+R7GXMkJ+a+VlxEXnfmvUM
+ mA0Yrzp2PXx3Bl6J87WgmS8EbOOLygcF7wBJh7LS8kJ9blP4V1RWU0WiYyT4fgKFZXWr
+ OkXlcOct25hSC1xDi8X3VjgZ0kuTlNcwJF0tnPdWVPtA6ufFwKfSIiGG/7fp/nRDS/N9
+ 1XhWpuRuIbYbcmCaWIW1gCczwyYGjOFz4l67rBeLykD7JSEzFqg+JEJYEgICgY/1LyU8
+ LbpQ==
+X-Gm-Message-State: AOAM530UPRgU0j3/l7W5BaIpQzsNbQf1yfL0PV31jux9bj4KACZqBbeH
+ Q/nMN9VKpufcz62ifx3DWC7FXA==
+X-Google-Smtp-Source: ABdhPJxgsOBmhTtKMGX24IgAXDxd2Znxy11cufQ6dSRbrw6fmnKkQJabF/CQgq3xA3zZzdPI/Lb/rQ==
+X-Received: by 2002:a17:90b:1993:: with SMTP id
+ mv19mr18960527pjb.39.1594630758070; 
+ Mon, 13 Jul 2020 01:59:18 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id 9sm13775472pfx.131.2020.07.13.01.56.01
+ by smtp.gmail.com with ESMTPSA id o26sm13936766pfp.219.2020.07.13.01.59.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Jul 2020 01:56:03 -0700 (PDT)
-Subject: Re: [PATCH 03/14] powerpc/eeh: Move vf_index out of pci_dn and into
- eeh_dev
+ Mon, 13 Jul 2020 01:59:17 -0700 (PDT)
+Subject: Re: [PATCH 04/14] powerpc/pseries: Stop using pdn->pe_number
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200706013619.459420-1-oohall@gmail.com>
- <20200706013619.459420-4-oohall@gmail.com>
+ <20200706013619.459420-5-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -141,12 +140,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <7853bbc2-715b-110a-2d96-8d32e6141261@ozlabs.ru>
-Date: Mon, 13 Jul 2020 18:55:59 +1000
+Message-ID: <9d9c214d-53be-c97b-39e9-c42a33395828@ozlabs.ru>
+Date: Mon, 13 Jul 2020 18:59:14 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200706013619.459420-4-oohall@gmail.com>
+In-Reply-To: <20200706013619.459420-5-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -169,131 +168,65 @@ Sender: "Linuxppc-dev"
 
 
 On 06/07/2020 11:36, Oliver O'Halloran wrote:
-> Drivers that do not support the PCI error handling callbacks are handled by
-> tearing down the device and re-probing them. If the device to be removed is
-> a virtual function we need to know the index of the index of the VF so that
-
-Too many indexes in "the index of the index of "?
-
-
-> we can remove it with the pci_iov_{add|remove}_virtfn() API.
-> 
-> Currently this is handled by looking up the pci_dn, and using the vf_index
-> that was stashed there when the pci_dn for the VF was created in
-> pcibios_sriov_enable(). We would like to eliminate the use of pci_dn
-> outside of pseries though so we need to provide the generic EEH code with
-> some other way to find the vf_index.
-> 
-> The easiest thing to do here is move the vf_index field out of pci_dn and
-> into eeh_dev.  Currently pci_dn and eeh_dev are allocated and initialized
-> together so this is a fairly minimal change in preparation for splitting
-> pci_dn and eeh_dev in the future.
+> The pci_dn->pe_number field is mainly used to track the IODA PE number of a
+> device on PowerNV. At some point it grew a user in the pseries SR-IOV
+> support which muddies the waters a bit, so remove it.
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-
 
 
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 
+
 > ---
->  arch/powerpc/include/asm/eeh.h        | 3 +++
->  arch/powerpc/include/asm/pci-bridge.h | 1 -
->  arch/powerpc/kernel/eeh_driver.c      | 6 ++----
->  arch/powerpc/kernel/pci_dn.c          | 7 ++++---
->  4 files changed, 9 insertions(+), 8 deletions(-)
+>  arch/powerpc/platforms/pseries/eeh_pseries.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
-> index e22881a0c415..3d648e042835 100644
-> --- a/arch/powerpc/include/asm/eeh.h
-> +++ b/arch/powerpc/include/asm/eeh.h
-> @@ -148,7 +148,10 @@ struct eeh_dev {
->  	struct pci_dn *pdn;		/* Associated PCI device node	*/
->  	struct pci_dev *pdev;		/* Associated PCI device	*/
->  	bool in_error;			/* Error flag for edev		*/
-> +
-> +	/* VF specific properties */
->  	struct pci_dev *physfn;		/* Associated SRIOV PF		*/
-> +	int vf_index;			/* Index of this VF 		*/
->  };
->  
->  /* "fmt" must be a simple literal string */
-> diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
-> index b92e81b256e5..d2a2a14e56f9 100644
-> --- a/arch/powerpc/include/asm/pci-bridge.h
-> +++ b/arch/powerpc/include/asm/pci-bridge.h
-> @@ -202,7 +202,6 @@ struct pci_dn {
->  #define IODA_INVALID_PE		0xFFFFFFFF
->  	unsigned int pe_number;
+> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> index ace117f99d94..18a2522b9b5e 100644
+> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
+> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> @@ -52,8 +52,6 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
+>  	dev_dbg(&pdev->dev, "EEH: Setting up device\n");
 >  #ifdef CONFIG_PCI_IOV
-> -	int     vf_index;		/* VF index in the PF */
->  	u16     vfs_expanded;		/* number of VFs IOV BAR expanded */
->  	u16     num_vfs;		/* number of VFs enabled*/
->  	unsigned int *pe_num_map;	/* PE# for the first VF PE or array */
-> diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-> index 7b048cee767c..b70b9273f45a 100644
-> --- a/arch/powerpc/kernel/eeh_driver.c
-> +++ b/arch/powerpc/kernel/eeh_driver.c
-> @@ -477,7 +477,7 @@ static void *eeh_add_virt_device(struct eeh_dev *edev)
->  	}
->  
->  #ifdef CONFIG_PCI_IOV
-> -	pci_iov_add_virtfn(edev->physfn, eeh_dev_to_pdn(edev)->vf_index);
-> +	pci_iov_add_virtfn(edev->physfn, edev->vf_index);
->  #endif
->  	return NULL;
->  }
-> @@ -521,9 +521,7 @@ static void eeh_rmv_device(struct eeh_dev *edev, void *userdata)
->  
->  	if (edev->physfn) {
->  #ifdef CONFIG_PCI_IOV
-> -		struct pci_dn *pdn = eeh_dev_to_pdn(edev);
+>  	if (pdev->is_virtfn) {
+> -		struct pci_dn *physfn_pdn;
 > -
-> -		pci_iov_remove_virtfn(edev->physfn, pdn->vf_index);
-> +		pci_iov_remove_virtfn(edev->physfn, edev->vf_index);
->  		edev->pdev = NULL;
->  #endif
->  		if (rmv_data)
-> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
-> index f790a8d06f50..bf11ac8427ac 100644
-> --- a/arch/powerpc/kernel/pci_dn.c
-> +++ b/arch/powerpc/kernel/pci_dn.c
-> @@ -146,7 +146,6 @@ static struct eeh_dev *eeh_dev_init(struct pci_dn *pdn)
->  
->  #ifdef CONFIG_PCI_IOV
->  static struct pci_dn *add_one_sriov_vf_pdn(struct pci_dn *parent,
-> -					   int vf_index,
->  					   int busno, int devfn)
->  {
->  	struct pci_dn *pdn;
-> @@ -163,7 +162,6 @@ static struct pci_dn *add_one_sriov_vf_pdn(struct pci_dn *parent,
->  	pdn->parent = parent;
->  	pdn->busno = busno;
->  	pdn->devfn = devfn;
-> -	pdn->vf_index = vf_index;
->  	pdn->pe_number = IODA_INVALID_PE;
->  	INIT_LIST_HEAD(&pdn->child_list);
->  	INIT_LIST_HEAD(&pdn->list);
-> @@ -194,7 +192,7 @@ struct pci_dn *add_sriov_vf_pdns(struct pci_dev *pdev)
->  	for (i = 0; i < pci_sriov_get_totalvfs(pdev); i++) {
->  		struct eeh_dev *edev __maybe_unused;
->  
-> -		pdn = add_one_sriov_vf_pdn(parent, i,
-> +		pdn = add_one_sriov_vf_pdn(parent,
->  					   pci_iov_virtfn_bus(pdev, i),
->  					   pci_iov_virtfn_devfn(pdev, i));
->  		if (!pdn) {
-> @@ -207,7 +205,10 @@ struct pci_dn *add_sriov_vf_pdns(struct pci_dev *pdev)
->  		/* Create the EEH device for the VF */
->  		edev = eeh_dev_init(pdn);
->  		BUG_ON(!edev);
-> +
-> +		/* FIXME: these should probably be populated by the EEH probe */
->  		edev->physfn = pdev;
-> +		edev->vf_index = i;
->  #endif /* CONFIG_EEH */
+>  		pdn->device_id  =  pdev->device;
+>  		pdn->vendor_id  =  pdev->vendor;
+>  		pdn->class_code =  pdev->class;
+> @@ -63,8 +61,6 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
+>  		 * completion from platform.
+>  		 */
+>  		pdn->last_allow_rc =  0;
+> -		physfn_pdn      =  pci_get_pdn(pdev->physfn);
+> -		pdn->pe_number  =  physfn_pdn->pe_num_map[pdn->vf_index];
 >  	}
->  	return pci_get_pdn(pdev);
+>  #endif
+>  	pseries_eeh_init_edev(pdn);
+> @@ -772,8 +768,8 @@ int pseries_send_allow_unfreeze(struct pci_dn *pdn,
+>  
+>  static int pseries_call_allow_unfreeze(struct eeh_dev *edev)
+>  {
+> +	int cur_vfs = 0, rc = 0, vf_index, bus, devfn, vf_pe_num;
+>  	struct pci_dn *pdn, *tmp, *parent, *physfn_pdn;
+> -	int cur_vfs = 0, rc = 0, vf_index, bus, devfn;
+>  	u16 *vf_pe_array;
+>  
+>  	vf_pe_array = kzalloc(RTAS_DATA_BUF_SIZE, GFP_KERNEL);
+> @@ -806,8 +802,10 @@ static int pseries_call_allow_unfreeze(struct eeh_dev *edev)
+>  			}
+>  		} else {
+>  			pdn = pci_get_pdn(edev->pdev);
+> -			vf_pe_array[0] = cpu_to_be16(pdn->pe_number);
+>  			physfn_pdn = pci_get_pdn(edev->physfn);
+> +
+> +			vf_pe_num = physfn_pdn->pe_num_map[edev->vf_index];
+> +			vf_pe_array[0] = cpu_to_be16(vf_pe_num);
+>  			rc = pseries_send_allow_unfreeze(physfn_pdn,
+>  							 vf_pe_array, 1);
+>  			pdn->last_allow_rc = rc;
 > 
 
 -- 
