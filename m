@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0F021DEE9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 19:41:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C011721DECD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 19:34:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B59v65B1xzDqLy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 03:41:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B59kM0rZnzDqDb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 03:34:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B59Tn5JtHzDqM6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 03:23:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B59T14lkvzDqRy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 03:22:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B59Tm6JVhz8vnS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 03:23:24 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B59Sz0pBwz9CMP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 03:22:43 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 4B59Tm0HNnz9sSt; Tue, 14 Jul 2020 03:23:24 +1000 (AEST)
+ id 4B59Sy2lySz9sV3; Tue, 14 Jul 2020 03:22:42 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
@@ -33,49 +33,52 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B59Tl1XYcz9sRk
- for <linuxppc-dev@ozlabs.org>; Tue, 14 Jul 2020 03:23:23 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 4B59Sx6nlGz9sV2
+ for <linuxppc-dev@ozlabs.org>; Tue, 14 Jul 2020 03:22:41 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06DH3eQa114867; Mon, 13 Jul 2020 13:23:15 -0400
+ 06DH1vmZ167139; Mon, 13 Jul 2020 13:22:33 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3276afxevw-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3277rd50rb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 13:23:14 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06DH3dDl114843;
- Mon, 13 Jul 2020 13:23:14 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3276afxev5-1
+ Mon, 13 Jul 2020 13:22:33 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06DH20cK167416;
+ Mon, 13 Jul 2020 13:22:33 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3277rd50qh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 13:23:14 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06DHLPL7027246;
- Mon, 13 Jul 2020 17:23:11 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 327527tfd5-1
+ Mon, 13 Jul 2020 13:22:32 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06DHJiwL000348;
+ Mon, 13 Jul 2020 17:22:30 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04fra.de.ibm.com with ESMTP id 327527h7t5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 17:23:11 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06DHLsXD65470486
+ Mon, 13 Jul 2020 17:22:30 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06DHMR8763635652
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Jul 2020 17:21:54 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 071445204E;
- Mon, 13 Jul 2020 17:21:54 +0000 (GMT)
+ Mon, 13 Jul 2020 17:22:27 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 82969A4053;
+ Mon, 13 Jul 2020 17:22:27 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9D183A4055;
+ Mon, 13 Jul 2020 17:22:23 +0000 (GMT)
 Received: from hbathini.in.ibm.com (unknown [9.102.3.11])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B26F75204F;
- Mon, 13 Jul 2020 17:21:50 +0000 (GMT)
-Subject: [PATCH v3 05/12] powerpc/drmem: make lmb walk a bit more flexible
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 13 Jul 2020 17:22:23 +0000 (GMT)
+Subject: [PATCH v3 07/12] ppc64/kexec_file: add support to relocate purgatory
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Andrew Morton <akpm@linux-foundation.org>
-Date: Mon, 13 Jul 2020 22:51:49 +0530
-Message-ID: <159466090332.24747.9255471295044653085.stgit@hbathini.in.ibm.com>
+Date: Mon, 13 Jul 2020 22:52:22 +0530
+Message-ID: <159466093748.24747.4655547403463921814.stgit@hbathini.in.ibm.com>
 In-Reply-To: <159466074408.24747.10036072269371204890.stgit@hbathini.in.ibm.com>
 References: <159466074408.24747.10036072269371204890.stgit@hbathini.in.ibm.com>
 User-Agent: StGit/0.17.1-dirty
@@ -87,11 +90,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-13_15:2020-07-13,
  2020-07-13 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 phishscore=0 priorityscore=1501
- clxscore=1015 lowpriorityscore=0 suspectscore=0 spamscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007130122
+ suspectscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 impostorscore=0 mlxlogscore=999 lowpriorityscore=0
+ malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007130120
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,10 +106,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
- Nayna Jain <nayna@linux.ibm.com>, Petr Tesarik <ptesarik@suse.cz>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+Cc: kernel test robot <lkp@intel.com>, Pingfan Liu <piliu@redhat.com>,
+ Kexec-ml <kexec@lists.infradead.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>,
  Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
  Dave Young <dyoung@redhat.com>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
  Eric Biederman <ebiederm@xmission.com>
@@ -114,372 +118,433 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, numa & prom are the users of drmem lmb walk code. Loading
-kdump with kexec_file also needs to walk the drmem LMBs to setup the
-usable memory ranges for kdump kernel. But there are couple of issues
-in using the code as is. One, walk_drmem_lmb() code is built into the
-.init section currently, while kexec_file needs it later. Two, there
-is no scope to pass data to the callback function for processing and/
-or erroring out on certain conditions.
+Right now purgatory implementation is only minimal. But if purgatory
+code is to be enhanced to copy memory to the backup region and verify
+sha256 digest, relocations may have to be applied to the purgatory.
+So, add support to relocate purgatory in kexec_file_load system call
+by setting up TOC pointer and applying RELA relocations as needed.
 
-Fix that by, moving drmem LMB walk code out of .init section, adding
-scope to pass data to the callback function and bailing out when
-an error is encountered in the callback function.
-
+Reported-by: kernel test robot <lkp@intel.com>
+[lkp: In v1, 'struct mem_sym' was declared in parameter list]
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Tested-by: Pingfan Liu <piliu@redhat.com>
 ---
 
-Patch 05/12
-
 v2 -> v3:
-* Unchanged. Added Tested-by tag from Pingfan.
+* Fixed get_toc_section() to return the section info that had relocations
+  applied, to calculate the correct toc pointer.
+* Fixed how relocation value is converted to relative while applying
+  R_PPC64_REL64 & R_PPC64_REL32 relocations.
 
 v1 -> v2:
-* No changes.
+* Fixed wrong use of 'struct mem_sym' in local_entry_offset() as
+  reported by lkp. lkp report for reference:
+    - https://lore.kernel.org/patchwork/patch/1264421/
 
 
- arch/powerpc/include/asm/drmem.h |    9 ++--
- arch/powerpc/kernel/prom.c       |   13 +++---
- arch/powerpc/mm/drmem.c          |   87 +++++++++++++++++++++++++-------------
- arch/powerpc/mm/numa.c           |   13 +++---
- 4 files changed, 78 insertions(+), 44 deletions(-)
+ arch/powerpc/kexec/file_load_64.c      |  337 ++++++++++++++++++++++++++++++++
+ arch/powerpc/purgatory/trampoline_64.S |    8 +
+ 2 files changed, 345 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-index 414d209..17ccc64 100644
---- a/arch/powerpc/include/asm/drmem.h
-+++ b/arch/powerpc/include/asm/drmem.h
-@@ -90,13 +90,14 @@ static inline bool drmem_lmb_reserved(struct drmem_lmb *lmb)
- }
- 
- u64 drmem_lmb_memory_max(void);
--void __init walk_drmem_lmbs(struct device_node *dn,
--			void (*func)(struct drmem_lmb *, const __be32 **));
-+int walk_drmem_lmbs(struct device_node *dn, void *data,
-+		    int (*func)(struct drmem_lmb *, const __be32 **, void *));
- int drmem_update_dt(void);
- 
- #ifdef CONFIG_PPC_PSERIES
--void __init walk_drmem_lmbs_early(unsigned long node,
--			void (*func)(struct drmem_lmb *, const __be32 **));
-+int __init
-+walk_drmem_lmbs_early(unsigned long node, void *data,
-+		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
- #endif
- 
- static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 9cc49f2..7df78de 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -468,8 +468,9 @@ static bool validate_mem_limit(u64 base, u64 *size)
-  * This contains a list of memory blocks along with NUMA affinity
-  * information.
-  */
--static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
--					const __be32 **usm)
-+static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
-+					const __be32 **usm,
-+					void *data)
- {
- 	u64 base, size;
- 	int is_kexec_kdump = 0, rngs;
-@@ -484,7 +485,7 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- 	 */
- 	if ((lmb->flags & DRCONF_MEM_RESERVED) ||
- 	    !(lmb->flags & DRCONF_MEM_ASSIGNED))
--		return;
-+		return 0;
- 
- 	if (*usm)
- 		is_kexec_kdump = 1;
-@@ -499,7 +500,7 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- 		 */
- 		rngs = dt_mem_next_cell(dt_root_size_cells, usm);
- 		if (!rngs) /* there are no (base, size) duple */
--			return;
-+			return 0;
- 	}
- 
- 	do {
-@@ -524,6 +525,8 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- 		if (lmb->flags & DRCONF_MEM_HOTREMOVABLE)
- 			memblock_mark_hotplug(base, size);
- 	} while (--rngs);
-+
-+	return 0;
- }
- #endif /* CONFIG_PPC_PSERIES */
- 
-@@ -534,7 +537,7 @@ static int __init early_init_dt_scan_memory_ppc(unsigned long node,
- #ifdef CONFIG_PPC_PSERIES
- 	if (depth == 1 &&
- 	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
--		walk_drmem_lmbs_early(node, early_init_drmem_lmb);
-+		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
- 		return 0;
- 	}
- #endif
-diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-index 59327ce..b2eeea3 100644
---- a/arch/powerpc/mm/drmem.c
-+++ b/arch/powerpc/mm/drmem.c
-@@ -14,6 +14,8 @@
- #include <asm/prom.h>
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 1c4e3eb..8bff29e 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -20,6 +20,7 @@
+ #include <linux/of_device.h>
+ #include <linux/memblock.h>
+ #include <linux/slab.h>
++#include <asm/types.h>
  #include <asm/drmem.h>
+ #include <asm/kexec_ranges.h>
+ #include <asm/crashdump-ppc64.h>
+@@ -621,6 +622,244 @@ static int update_usable_mem_fdt(void *fdt, struct crash_mem *usable_mem)
+ }
  
-+static int n_root_addr_cells, n_root_size_cells;
+ /**
++ * get_toc_section - Look for ".toc" symbol and return the corresponding section
++ *                   in the purgatory.
++ * @pi:              Purgatory Info.
++ *
++ * Returns TOC section on success, NULL otherwise.
++ */
++static const Elf_Shdr *get_toc_section(const struct purgatory_info *pi)
++{
++	const Elf_Shdr *sechdrs;
++	const char *secstrings;
++	int i;
 +
- static struct drmem_lmb_info __drmem_info;
- struct drmem_lmb_info *drmem_info = &__drmem_info;
- 
-@@ -189,12 +191,13 @@ int drmem_update_dt(void)
- 	return rc;
- }
- 
--static void __init read_drconf_v1_cell(struct drmem_lmb *lmb,
-+static void read_drconf_v1_cell(struct drmem_lmb *lmb,
- 				       const __be32 **prop)
- {
- 	const __be32 *p = *prop;
- 
--	lmb->base_addr = dt_mem_next_cell(dt_root_addr_cells, &p);
-+	lmb->base_addr = of_read_number(p, n_root_addr_cells);
-+	p += n_root_addr_cells;
- 	lmb->drc_index = of_read_number(p++, 1);
- 
- 	p++; /* skip reserved field */
-@@ -205,29 +208,33 @@ static void __init read_drconf_v1_cell(struct drmem_lmb *lmb,
- 	*prop = p;
- }
- 
--static void __init __walk_drmem_v1_lmbs(const __be32 *prop, const __be32 *usm,
--			void (*func)(struct drmem_lmb *, const __be32 **))
-+static int
-+__walk_drmem_v1_lmbs(const __be32 *prop, const __be32 *usm, void *data,
-+		     int (*func)(struct drmem_lmb *, const __be32 **, void *))
- {
- 	struct drmem_lmb lmb;
- 	u32 i, n_lmbs;
++	if (!pi->ehdr) {
++		pr_err("Purgatory elf load info missing?\n");
++		return NULL;
++	}
++
++	sechdrs = (void *)pi->ehdr + pi->ehdr->e_shoff;
++	secstrings = (void *)pi->ehdr + sechdrs[pi->ehdr->e_shstrndx].sh_offset;
++
++	for (i = 0; i < pi->ehdr->e_shnum; i++) {
++		if ((sechdrs[i].sh_size != 0) &&
++		    (strcmp(secstrings + sechdrs[i].sh_name, ".toc") == 0)) {
++			/* Return the relocated ".toc" section */
++			return &(pi->sechdrs[i]);
++		}
++	}
++
++	return NULL;
++}
++
++/**
++ * get_toc_ptr - Get the TOC pointer (r2) of purgatory.
++ * @pi:          Purgatory Info.
++ *
++ * Returns r2 on success, 0 otherwise.
++ */
++static unsigned long get_toc_ptr(const struct purgatory_info *pi)
++{
++	unsigned long toc_ptr = 0;
++	const Elf_Shdr *sechdr;
++
++	sechdr = get_toc_section(pi);
++	if (!sechdr)
++		pr_err("Could not get the TOC section!\n");
++	else
++		toc_ptr = sechdr->sh_addr + 0x8000;	/* 0x8000 into TOC */
++
++	pr_debug("TOC pointer (r2) is 0x%lx\n", toc_ptr);
++	return toc_ptr;
++}
++
++/* Helper functions to apply relocations */
++static int do_relative_toc(unsigned long val, uint16_t *loc,
++			   unsigned long mask, int complain_signed)
++{
++	if (complain_signed && (val + 0x8000 > 0xffff)) {
++		pr_err("TOC16 relocation overflows (%lu)\n", val);
++		return -ENOEXEC;
++	}
++
++	if ((~mask & 0xffff) & val) {
++		pr_err("Bad TOC16 relocation (%lu)\n", val);
++		return -ENOEXEC;
++	}
++
++	*loc = (*loc & ~mask) | (val & mask);
++	return 0;
++}
++#ifdef PPC64_ELF_ABI_v2
++/* PowerPC64 specific values for the Elf64_Sym st_other field.  */
++#define STO_PPC64_LOCAL_BIT	5
++#define STO_PPC64_LOCAL_MASK	(7 << STO_PPC64_LOCAL_BIT)
++#define PPC64_LOCAL_ENTRY_OFFSET(other)					\
++	(((1 << (((other) & STO_PPC64_LOCAL_MASK) >> STO_PPC64_LOCAL_BIT)) \
++	 >> 2) << 2)
++
++static unsigned int local_entry_offset(const Elf64_Sym *sym)
++{
++	/* If this symbol has a local entry point, use it. */
++	return PPC64_LOCAL_ENTRY_OFFSET(sym->st_other);
++}
++#else
++static unsigned int local_entry_offset(const Elf64_Sym *sym)
++{
++	return 0;
++}
++#endif
++
++/**
++ * __kexec_do_relocs - Apply relocations based on relocation type.
++ * @my_r2:             TOC pointer.
++ * @sym:               Symbol to relocate.
++ * @r_type:            Relocation type.
++ * @loc:               Location to modify.
++ * @val:               Relocated symbol value.
++ * @addr:              Final location after relocation.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++static int __kexec_do_relocs(unsigned long my_r2, const Elf_Sym *sym,
++			     int r_type, void *loc, unsigned long val,
++			     unsigned long addr)
++{
 +	int ret = 0;
++
++	switch (r_type) {
++	case R_PPC64_ADDR32:
++		/* Simply set it */
++		*(uint32_t *)loc = val;
++		break;
++
++	case R_PPC64_ADDR64:
++		/* Simply set it */
++		*(uint64_t *)loc = val;
++		break;
++
++	case R_PPC64_REL64:
++		*(uint64_t *)loc = val - (uint64_t)addr;
++		break;
++
++	case R_PPC64_REL32:
++		/* Convert value to relative */
++		val -= addr;
++		if (val + 0x80000000 > 0xffffffff) {
++			pr_err("REL32 %li out of range!\n", val);
++			return -ENOEXEC;
++		}
++
++		*(uint32_t *)loc = val;
++		break;
++
++	case R_PPC64_TOC:
++		*(uint64_t *)loc = my_r2;
++		break;
++
++	case R_PPC64_TOC16:
++		ret = do_relative_toc(val - my_r2, loc, 0xffff, 1);
++		break;
++
++	case R_PPC64_TOC16_DS:
++		ret = do_relative_toc(val - my_r2, loc, 0xfffc, 1);
++		break;
++
++	case R_PPC64_TOC16_LO:
++		ret = do_relative_toc(val - my_r2, loc, 0xffff, 0);
++		break;
++
++	case R_PPC64_TOC16_LO_DS:
++		ret = do_relative_toc(val - my_r2, loc, 0xfffc, 0);
++		break;
++
++	case R_PPC64_TOC16_HI:
++		ret = do_relative_toc((val - my_r2) >> 16, loc,
++				      0xffff, 0);
++		break;
++
++	case R_PPC64_TOC16_HA:
++		ret = do_relative_toc((val - my_r2 + 0x8000) >> 16, loc,
++				      0xffff, 0);
++		break;
++
++	case R_PPC64_REL24:
++		val += local_entry_offset(sym);
++		/* Convert value to relative */
++		val -= addr;
++		if (val + 0x2000000 > 0x3ffffff || (val & 3) != 0) {
++			pr_err("REL24 %li out of range!\n", val);
++			return -ENOEXEC;
++		}
++
++		/* Only replace bits 2 through 26 */
++		*(uint32_t *)loc = ((*(uint32_t *)loc & ~0x03fffffc) |
++				    (val & 0x03fffffc));
++		break;
++
++	case R_PPC64_ADDR16_LO:
++		*(uint16_t *)loc = val & 0xffff;
++		break;
++
++	case R_PPC64_ADDR16_HI:
++		*(uint16_t *)loc = (val >> 16) & 0xffff;
++		break;
++
++	case R_PPC64_ADDR16_HA:
++		*(uint16_t *)loc = (((val + 0x8000) >> 16) & 0xffff);
++		break;
++
++	case R_PPC64_ADDR16_HIGHER:
++		*(uint16_t *)loc = (((uint64_t)val >> 32) & 0xffff);
++		break;
++
++	case R_PPC64_ADDR16_HIGHEST:
++		*(uint16_t *)loc = (((uint64_t)val >> 48) & 0xffff);
++		break;
++
++		/* R_PPC64_REL16_HA and R_PPC64_REL16_LO are handled to support
++		 * ABIv2 r2 assignment based on r12 for PIC executable.
++		 * Here address is known, so replace
++		 *	0:	addis 2,12,.TOC.-0b@ha
++		 *		addi 2,2,.TOC.-0b@l
++		 * by
++		 *		lis 2,.TOC.@ha
++		 *		addi 2,2,.TOC.@l
++		 */
++	case R_PPC64_REL16_HA:
++		/* check that we are dealing with the addis 2,12 instruction */
++		if (((*(uint32_t *)loc) & 0xffff0000) != 0x3c4c0000) {
++			pr_err("Unexpected instruction for  R_PPC64_REL16_HA");
++			return -ENOEXEC;
++		}
++
++		val += my_r2;
++		/* replacing by lis 2 */
++		*(uint32_t *)loc = 0x3c400000 + ((val >> 16) & 0xffff);
++		break;
++
++	case R_PPC64_REL16_LO:
++		/* check that we are dealing with the addi 2,2 instruction */
++		if (((*(uint32_t *)loc) & 0xffff0000) != 0x38420000) {
++			pr_err("Unexpected instruction for R_PPC64_REL16_LO");
++			return -ENOEXEC;
++		}
++
++		val += my_r2 - 4;
++		*(uint16_t *)loc = val & 0xffff;
++		break;
++
++	default:
++		pr_err("Unknown rela relocation: %d\n", r_type);
++		ret = -ENOEXEC;
++		break;
++	}
++
++	return ret;
++}
++
++/**
+  * setup_purgatory_ppc64 - initialize PPC64 specific purgatory's global
+  *                         variables and call setup_purgatory() to initialize
+  *                         common global variable.
+@@ -636,6 +875,7 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 			  const void *fdt, unsigned long kernel_load_addr,
+ 			  unsigned long fdt_load_addr)
+ {
++	uint64_t val;
+ 	int ret;
  
- 	n_lmbs = of_read_number(prop++, 1);
--	if (n_lmbs == 0)
--		return;
--
- 	for (i = 0; i < n_lmbs; i++) {
- 		read_drconf_v1_cell(&lmb, &prop);
--		func(&lmb, &usm);
-+		ret = func(&lmb, &usm, data);
+ 	ret = setup_purgatory(image, slave_code, fdt, kernel_load_addr,
+@@ -658,6 +898,10 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 			goto out;
+ 	}
+ 
++	/* Setup the TOC pointer */
++	val = get_toc_ptr(&(image->purgatory_info));
++	ret = kexec_purgatory_get_set_symbol(image, "my_toc", &val, sizeof(val),
++					     false);
+ out:
+ 	if (ret)
+ 		pr_err("Failed to setup purgatory symbols");
+@@ -784,6 +1028,99 @@ int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
+ }
+ 
+ /**
++ * arch_kexec_apply_relocations_add - Apply relocations of type RELA
++ * @pi:                               Purgatory Info.
++ * @section:                          Section relocations applying to.
++ * @relsec:                           Section containing RELAs.
++ * @symtab:                           Corresponding symtab.
++ *
++ * Returns 0 on success, negative errno on error.
++ */
++int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
++				     Elf_Shdr *section,
++				     const Elf_Shdr *relsec,
++				     const Elf_Shdr *symtab)
++{
++	const char *strtab, *name, *shstrtab;
++	int i, r_type, ret, err = -ENOEXEC;
++	const Elf_Shdr *sechdrs;
++	unsigned long my_r2;
++	Elf_Rela *relas;
++
++	/* String & section header string table */
++	sechdrs = (void *)pi->ehdr + pi->ehdr->e_shoff;
++	strtab = (char *)pi->ehdr + sechdrs[symtab->sh_link].sh_offset;
++	shstrtab = (char *)pi->ehdr + sechdrs[pi->ehdr->e_shstrndx].sh_offset;
++
++	relas = (void *)pi->ehdr + relsec->sh_offset;
++
++	pr_debug("Applying relocate section %s to %u\n",
++		 shstrtab + relsec->sh_name, relsec->sh_info);
++
++	/* Get the TOC pointer (r2) */
++	my_r2 = get_toc_ptr(pi);
++	if (!my_r2)
++		return err;
++
++	for (i = 0; i < relsec->sh_size / sizeof(*relas); i++) {
++		const Elf_Sym *sym;	/* symbol to relocate */
++		unsigned long addr;	/* final location after relocation */
++		unsigned long val;	/* relocated symbol value */
++		void *loc;		/* tmp location to modify */
++
++		sym = (void *)pi->ehdr + symtab->sh_offset;
++		sym += ELF64_R_SYM(relas[i].r_info);
++
++		if (sym->st_name)
++			name = strtab + sym->st_name;
++		else
++			name = shstrtab + sechdrs[sym->st_shndx].sh_name;
++
++		pr_debug("Symbol: %s info: %x shndx: %x value=%llx size: %llx\n",
++			 name, sym->st_info, sym->st_shndx, sym->st_value,
++			 sym->st_size);
++
++		if ((sym->st_shndx == SHN_UNDEF) &&
++		    (ELF_ST_TYPE(sym->st_info) != STT_NOTYPE)) {
++			pr_err("Undefined symbol: %s\n", name);
++			return err;
++		}
++
++		if (sym->st_shndx == SHN_COMMON) {
++			pr_err("symbol '%s' in common section\n", name);
++			return err;
++		}
++
++		if ((sym->st_shndx >= pi->ehdr->e_shnum) &&
++		    (sym->st_shndx != SHN_ABS)) {
++			pr_err("Invalid section %d for symbol %s\n",
++			       sym->st_shndx, name);
++			return err;
++		}
++
++		loc = pi->purgatory_buf;
++		loc += section->sh_offset;
++		loc += relas[i].r_offset;
++
++		val = sym->st_value;
++		if (sym->st_shndx != SHN_ABS)
++			val += pi->sechdrs[sym->st_shndx].sh_addr;
++		val += relas[i].r_addend;
++
++		addr = section->sh_addr + relas[i].r_offset;
++
++		pr_debug("Symbol: %s value=%lx address=%lx\n", name, val, addr);
++
++		r_type = ELF64_R_TYPE(relas[i].r_info);
++		ret = __kexec_do_relocs(my_r2, sym, r_type, loc, val, addr);
 +		if (ret)
-+			break;
- 	}
-+
-+	return ret;
- }
- 
--static void __init read_drconf_v2_cell(struct of_drconf_cell_v2 *dr_cell,
-+static void read_drconf_v2_cell(struct of_drconf_cell_v2 *dr_cell,
- 				       const __be32 **prop)
- {
- 	const __be32 *p = *prop;
- 
- 	dr_cell->seq_lmbs = of_read_number(p++, 1);
--	dr_cell->base_addr = dt_mem_next_cell(dt_root_addr_cells, &p);
-+	dr_cell->base_addr = of_read_number(p, n_root_addr_cells);
-+	p += n_root_addr_cells;
- 	dr_cell->drc_index = of_read_number(p++, 1);
- 	dr_cell->aa_index = of_read_number(p++, 1);
- 	dr_cell->flags = of_read_number(p++, 1);
-@@ -235,17 +242,16 @@ static void __init read_drconf_v2_cell(struct of_drconf_cell_v2 *dr_cell,
- 	*prop = p;
- }
- 
--static void __init __walk_drmem_v2_lmbs(const __be32 *prop, const __be32 *usm,
--			void (*func)(struct drmem_lmb *, const __be32 **))
-+static int
-+__walk_drmem_v2_lmbs(const __be32 *prop, const __be32 *usm, void *data,
-+		     int (*func)(struct drmem_lmb *, const __be32 **, void *))
- {
- 	struct of_drconf_cell_v2 dr_cell;
- 	struct drmem_lmb lmb;
- 	u32 i, j, lmb_sets;
-+	int ret = 0;
- 
- 	lmb_sets = of_read_number(prop++, 1);
--	if (lmb_sets == 0)
--		return;
--
- 	for (i = 0; i < lmb_sets; i++) {
- 		read_drconf_v2_cell(&dr_cell, &prop);
- 
-@@ -259,21 +265,29 @@ static void __init __walk_drmem_v2_lmbs(const __be32 *prop, const __be32 *usm,
- 			lmb.aa_index = dr_cell.aa_index;
- 			lmb.flags = dr_cell.flags;
- 
--			func(&lmb, &usm);
-+			ret = func(&lmb, &usm, data);
-+			if (ret)
-+				break;
- 		}
- 	}
-+
-+	return ret;
- }
- 
- #ifdef CONFIG_PPC_PSERIES
--void __init walk_drmem_lmbs_early(unsigned long node,
--			void (*func)(struct drmem_lmb *, const __be32 **))
-+int __init walk_drmem_lmbs_early(unsigned long node, void *data,
-+		int (*func)(struct drmem_lmb *, const __be32 **, void *))
- {
- 	const __be32 *prop, *usm;
--	int len;
-+	int len, ret = -ENODEV;
- 
- 	prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
- 	if (!prop || len < dt_root_size_cells * sizeof(__be32))
--		return;
-+		return ret;
-+
-+	/* Get the address & size cells */
-+	n_root_addr_cells = dt_root_addr_cells;
-+	n_root_size_cells = dt_root_size_cells;
- 
- 	drmem_info->lmb_size = dt_mem_next_cell(dt_root_size_cells, &prop);
- 
-@@ -281,20 +295,21 @@ void __init walk_drmem_lmbs_early(unsigned long node,
- 
- 	prop = of_get_flat_dt_prop(node, "ibm,dynamic-memory", &len);
- 	if (prop) {
--		__walk_drmem_v1_lmbs(prop, usm, func);
-+		ret = __walk_drmem_v1_lmbs(prop, usm, data, func);
- 	} else {
- 		prop = of_get_flat_dt_prop(node, "ibm,dynamic-memory-v2",
- 					   &len);
- 		if (prop)
--			__walk_drmem_v2_lmbs(prop, usm, func);
-+			ret = __walk_drmem_v2_lmbs(prop, usm, data, func);
- 	}
- 
- 	memblock_dump_all();
-+	return ret;
- }
- 
- #endif
- 
--static int __init init_drmem_lmb_size(struct device_node *dn)
-+static int init_drmem_lmb_size(struct device_node *dn)
- {
- 	const __be32 *prop;
- 	int len;
-@@ -303,12 +318,12 @@ static int __init init_drmem_lmb_size(struct device_node *dn)
- 		return 0;
- 
- 	prop = of_get_property(dn, "ibm,lmb-size", &len);
--	if (!prop || len < dt_root_size_cells * sizeof(__be32)) {
-+	if (!prop || len < n_root_size_cells * sizeof(__be32)) {
- 		pr_info("Could not determine LMB size\n");
- 		return -1;
- 	}
- 
--	drmem_info->lmb_size = dt_mem_next_cell(dt_root_size_cells, &prop);
-+	drmem_info->lmb_size = of_read_number(prop, n_root_size_cells);
- 	return 0;
- }
- 
-@@ -329,24 +344,36 @@ static const __be32 *of_get_usable_memory(struct device_node *dn)
- 	return prop;
- }
- 
--void __init walk_drmem_lmbs(struct device_node *dn,
--			    void (*func)(struct drmem_lmb *, const __be32 **))
-+int walk_drmem_lmbs(struct device_node *dn, void *data,
-+		    int (*func)(struct drmem_lmb *, const __be32 **, void *))
- {
- 	const __be32 *prop, *usm;
-+	int ret = -ENODEV;
-+
-+	if (!of_root)
-+		return ret;
-+
-+	/* Get the address & size cells */
-+	of_node_get(of_root);
-+	n_root_addr_cells = of_n_addr_cells(of_root);
-+	n_root_size_cells = of_n_size_cells(of_root);
-+	of_node_put(of_root);
- 
- 	if (init_drmem_lmb_size(dn))
--		return;
-+		return ret;
- 
- 	usm = of_get_usable_memory(dn);
- 
- 	prop = of_get_property(dn, "ibm,dynamic-memory", NULL);
- 	if (prop) {
--		__walk_drmem_v1_lmbs(prop, usm, func);
-+		ret = __walk_drmem_v1_lmbs(prop, usm, data, func);
- 	} else {
- 		prop = of_get_property(dn, "ibm,dynamic-memory-v2", NULL);
- 		if (prop)
--			__walk_drmem_v2_lmbs(prop, usm, func);
-+			ret = __walk_drmem_v2_lmbs(prop, usm, data, func);
- 	}
-+
-+	return ret;
- }
- 
- static void __init init_drmem_v1_lmbs(const __be32 *prop)
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 9fcf2d1..88eb689 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -644,8 +644,9 @@ static inline int __init read_usm_ranges(const __be32 **usm)
-  * Extract NUMA information from the ibm,dynamic-reconfiguration-memory
-  * node.  This assumes n_mem_{addr,size}_cells have been set.
-  */
--static void __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
--					const __be32 **usm)
-+static int __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
-+					const __be32 **usm,
-+					void *data)
- {
- 	unsigned int ranges, is_kexec_kdump = 0;
- 	unsigned long base, size, sz;
-@@ -657,7 +658,7 @@ static void __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
- 	 */
- 	if ((lmb->flags & DRCONF_MEM_RESERVED)
- 	    || !(lmb->flags & DRCONF_MEM_ASSIGNED))
--		return;
-+		return 0;
- 
- 	if (*usm)
- 		is_kexec_kdump = 1;
-@@ -669,7 +670,7 @@ static void __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
- 	if (is_kexec_kdump) {
- 		ranges = read_usm_ranges(usm);
- 		if (!ranges) /* there are no (base, size) duple */
--			return;
-+			return 0;
- 	}
- 
- 	do {
-@@ -686,6 +687,8 @@ static void __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
- 		if (sz)
- 			memblock_set_node(base, sz, &memblock.memory, nid);
- 	} while (--ranges);
++			return ret;
++	}
 +
 +	return 0;
- }
++}
++
++/**
+  * arch_kexec_kernel_image_probe - Does additional handling needed to setup
+  *                                 kexec segments.
+  * @image:                         kexec image being loaded.
+diff --git a/arch/powerpc/purgatory/trampoline_64.S b/arch/powerpc/purgatory/trampoline_64.S
+index a5a83c3..7b4a5f7 100644
+--- a/arch/powerpc/purgatory/trampoline_64.S
++++ b/arch/powerpc/purgatory/trampoline_64.S
+@@ -51,6 +51,8 @@ master:
+ 	bl	0f		/* Work out where we're running */
+ 0:	mflr	%r18
  
- static int __init parse_numa_properties(void)
-@@ -787,7 +790,7 @@ static int __init parse_numa_properties(void)
- 	 */
- 	memory = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
- 	if (memory) {
--		walk_drmem_lmbs(memory, numa_setup_drmem_lmb);
-+		walk_drmem_lmbs(memory, NULL, numa_setup_drmem_lmb);
- 		of_node_put(memory);
- 	}
++	ld	%r2,(my_toc - 0b)(%r18)		/* setup toc */
++
+ 	/* load device-tree address */
+ 	ld	%r3, (dt_offset - 0b)(%r18)
+ 	mr	%r16,%r3	/* save dt address in reg16 */
+@@ -103,6 +105,12 @@ dt_offset:
+ 	.size dt_offset, . - dt_offset
  
+ 
++	.balign 8
++	.globl my_toc
++my_toc:
++	.8byte  0x0
++	.size my_toc, . - my_toc
++
+ 	.data
+ 	.balign 8
+ .globl purgatory_sha256_digest
 
