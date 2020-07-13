@@ -2,77 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A7F21CF0F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 07:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F12A621CF97
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 08:25:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B4tDg0dcmzDqVb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 15:56:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B4ttT5sYFzDqTp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 16:25:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=u1MGfil8; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B4t9b2FCpzDqSD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 15:53:23 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id j19so5548464pgm.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jul 2020 22:53:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=uecLSSMQGQtX8OytHhkOZFnvFTK3OHFUY42nNLg3ABE=;
- b=u1MGfil8qHxrkbmrq1SmKUEnko9AGmDv47/jmi8HKQ0vphBT/9ulAAQxIbKhnlPyby
- bRiw4T/khixQOpD16g4LZuIn7Ev9omDdAw8P3FfKgBU3iEVGnDupb7JTEtvmWq4+FY2K
- eLvR/rR8SuRLfdW3mxfYUjsXlTvtgBIS1LU2YbkrrfH6rPnWGse8bvwKu3bVNDkSqJDh
- to//Yy9HTPjRcsZL4xshJCJtDvnfjzDEdfs4Up2flgDjCE3QxITLdhs4SHLa9IbZTLiS
- cqPughCR86yg2hcRGdzC6nA1Wdhu/594jlBz78Ak3oVAYu216AzSzr1Zp9WJuzjuysB5
- 4hDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=uecLSSMQGQtX8OytHhkOZFnvFTK3OHFUY42nNLg3ABE=;
- b=GKtZKe5hNdGG6rJbHfXWS5i7mfokINogBBuFa4y/uk4edS1E9JDQ1j4A6tN/yuzGnF
- S8ZbXRUs7jPIDpBOmOOj23Gv4nVMPjSJzaMR0utDynmqfjTiEo1nTyFTqGCtyB9DtDBs
- Bk0Ly5mTpUVzaygwCJTrLEBAzid2DKUKgDqDPeIsJMHzuPlMdngmx3Unq4oNZvqrIFhN
- bH2wfP2j5Y9eMSefqEsjSEPzo+G63SoG+f3WH5iGR22dDTYL+h1dk9+8Svrog7UOioS9
- 8Um57fT1AJYtGOQjFBTqRLQpbG9ctn6WodbU2TMQ6BoVd0FRzwHBfT0202OixFDe00DB
- cU9A==
-X-Gm-Message-State: AOAM533nT9WU32JDYiL7SNygLqrhnvg9XrbOeKdNogHnkFRwtMc8ze6l
- smTgKE6BbyjN5ejXpp3K2O0=
-X-Google-Smtp-Source: ABdhPJzXw0ZbytaGBaYMr9UpjIoCHbbFgUMOxvQbACypUaCUiUauG1Mf/GrpNgizVfWr1PJRjeFKNA==
-X-Received: by 2002:a63:3d01:: with SMTP id k1mr65375789pga.71.1594619600683; 
- Sun, 12 Jul 2020 22:53:20 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id j16sm12090719pgb.33.2020.07.12.22.53.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 Jul 2020 22:53:20 -0700 (PDT)
-Date: Mon, 13 Jul 2020 15:53:14 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 1/3] powerpc/powernv/idle: Exclude mfspr on HID1, 4, 5
- on P9 and above
-To: benh@kernel.crashing.org, ego@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- mikey@neuling.org, mpe@ellerman.id.au, paulus@samba.org,
- pratik.r.sampat@gmail.com, Pratik Rajesh Sampat <psampat@linux.ibm.com>,
- ravi.bangoria@linux.ibm.com, svaidy@linux.ibm.com
-References: <20200710052207.12003-1-psampat@linux.ibm.com>
- <20200710052207.12003-2-psampat@linux.ibm.com>
-In-Reply-To: <20200710052207.12003-2-psampat@linux.ibm.com>
-MIME-Version: 1.0
-Message-Id: <1594619577.gadjg7e4y7.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Received: from ozlabs.ru (unknown [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4B4trq65btzDqMX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 16:23:55 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id BED66AE80110;
+ Mon, 13 Jul 2020 02:21:19 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] powerpc/dma: Fallback to dma_ops when persistent
+ memory present
+Date: Mon, 13 Jul 2020 16:23:48 +1000
+Message-Id: <20200713062348.100552-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,55 +38,272 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Leonardo Bras <leobras.c@gmail.com>, Brian J King <bjking1@us.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Christoph Hellwig <hch@lst.de>, Wen Xiong <wenxiong@us.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Pratik Rajesh Sampat's message of July 10, 2020 3:22 pm:
-> POWER9 onwards the support for the registers HID1, HID4, HID5 has been
-> receded.
-> Although mfspr on the above registers worked in Power9, In Power10
-> simulator is unrecognized. Moving their assignment under the
-> check for machines lower than Power9
+So far we have been using huge DMA windows to map all the RAM available.
+The RAM is normally mapped to the VM address space contiguously, and
+there is always a reasonable upper limit for possible future hot plugged
+RAM which makes it easy to map all RAM via IOMMU.
 
-Seems like a good fix.
+Now there is persistent memory ("ibm,pmemory" in the FDT) which (unlike
+normal RAM) can map anywhere in the VM space beyond the maximum RAM size
+and since it can be used for DMA, it requires extending the huge window
+up to MAX_PHYSMEM_BITS which requires hypervisor support for:
+1. huge TCE tables;
+2. multilevel TCE tables;
+3. huge IOMMU pages.
 
-Thanks,
-Nick
+Certain hypervisors cannot do either so the only option left is
+restricting the huge DMA window to include only RAM and fallback to
+the default DMA window for persistent memory.
 
->=20
-> Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/platforms/powernv/idle.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platfor=
-ms/powernv/idle.c
-> index 2dd467383a88..19d94d021357 100644
-> --- a/arch/powerpc/platforms/powernv/idle.c
-> +++ b/arch/powerpc/platforms/powernv/idle.c
-> @@ -73,9 +73,6 @@ static int pnv_save_sprs_for_deep_states(void)
->  	 */
->  	uint64_t lpcr_val	=3D mfspr(SPRN_LPCR);
->  	uint64_t hid0_val	=3D mfspr(SPRN_HID0);
-> -	uint64_t hid1_val	=3D mfspr(SPRN_HID1);
-> -	uint64_t hid4_val	=3D mfspr(SPRN_HID4);
-> -	uint64_t hid5_val	=3D mfspr(SPRN_HID5);
->  	uint64_t hmeer_val	=3D mfspr(SPRN_HMEER);
->  	uint64_t msr_val =3D MSR_IDLE;
->  	uint64_t psscr_val =3D pnv_deepest_stop_psscr_val;
-> @@ -117,6 +114,9 @@ static int pnv_save_sprs_for_deep_states(void)
-> =20
->  			/* Only p8 needs to set extra HID regiters */
->  			if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
-> +				uint64_t hid1_val =3D mfspr(SPRN_HID1);
-> +				uint64_t hid4_val =3D mfspr(SPRN_HID4);
-> +				uint64_t hid5_val =3D mfspr(SPRN_HID5);
-> =20
->  				rc =3D opal_slw_set_reg(pir, SPRN_HID1, hid1_val);
->  				if (rc !=3D 0)
-> --=20
-> 2.25.4
->=20
->=20
+This checks if the system has persistent memory. If it does not,
+the DMA bypass mode is selected, i.e.
+* dev->bus_dma_limit = 0
+* dev->dma_ops_bypass = true <- this avoid calling dma_ops for mapping.
+
+If there is such memory, this creates identity mapping only for RAM and
+disables the DMA bypass mode which makes generic DMA code use indirect
+dma_ops which may have performance impact:
+* dev->bus_dma_limit = bus_offset + max_ram_size
+  for example 0x0800.0000.8000.0000 for a 2GB VM
+* dev->dma_ops_bypass = false <- this forces indirect calls to dma_ops for
+  every mapping which then directs these to small or huge window.
+
+This should not change the existing behaviour when no persistent memory.
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+
+This is based on
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=188385
+
+Leonardo, this makes
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=187348
+not apply but the conflict should be quite trivial to resolve
+(do not rush, let me finish reviewing this first). Cheers,
+
+
+
+---
+ arch/powerpc/kernel/dma-iommu.c        | 68 +++++++++++++++++++++++++-
+ arch/powerpc/platforms/pseries/iommu.c | 41 +++++++++++++---
+ 2 files changed, 99 insertions(+), 10 deletions(-)
+
+diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
+index 569fecd7b5b2..9fe5f0aefa9d 100644
+--- a/arch/powerpc/kernel/dma-iommu.c
++++ b/arch/powerpc/kernel/dma-iommu.c
+@@ -10,6 +10,16 @@
+ #include <linux/pci.h>
+ #include <asm/iommu.h>
+ 
++static inline bool can_map_direct(struct device *dev, phys_addr_t addr)
++{
++	return dev->bus_dma_limit >= phys_to_dma(dev, addr);
++}
++
++static inline bool dma_handle_direct(struct device *dev, dma_addr_t dma_handle)
++{
++	return dma_handle >= dev->archdata.dma_offset;
++}
++
+ /*
+  * Generic iommu implementation
+  */
+@@ -44,6 +54,12 @@ static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
+ 				     enum dma_data_direction direction,
+ 				     unsigned long attrs)
+ {
++	if (dev->bus_dma_limit &&
++	    can_map_direct(dev, (phys_addr_t) page_to_phys(page) +
++			   offset + size))
++		return dma_direct_map_page(dev, page, offset, size, direction,
++					   attrs);
++
+ 	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
+ 			      size, dma_get_mask(dev), direction, attrs);
+ }
+@@ -53,6 +69,12 @@ static void dma_iommu_unmap_page(struct device *dev, dma_addr_t dma_handle,
+ 				 size_t size, enum dma_data_direction direction,
+ 				 unsigned long attrs)
+ {
++	if (dev->bus_dma_limit &&
++	    dma_handle_direct(dev, dma_handle + size)) {
++		dma_direct_unmap_page(dev, dma_handle, size, direction, attrs);
++		return;
++	}
++
+ 	iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size, direction,
+ 			 attrs);
+ }
+@@ -62,6 +84,22 @@ static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
+ 			    int nelems, enum dma_data_direction direction,
+ 			    unsigned long attrs)
+ {
++	if (dev->bus_dma_limit) {
++		struct scatterlist *s;
++		bool direct = true;
++		int i;
++
++		for_each_sg(sglist, s, nelems, i) {
++			direct = can_map_direct(dev,
++					sg_phys(s) + s->offset + s->length);
++			if (!direct)
++				break;
++		}
++		if (direct)
++			return dma_direct_map_sg(dev, sglist, nelems, direction,
++						 attrs);
++	}
++
+ 	return ppc_iommu_map_sg(dev, get_iommu_table_base(dev), sglist, nelems,
+ 				dma_get_mask(dev), direction, attrs);
+ }
+@@ -70,6 +108,24 @@ static void dma_iommu_unmap_sg(struct device *dev, struct scatterlist *sglist,
+ 		int nelems, enum dma_data_direction direction,
+ 		unsigned long attrs)
+ {
++	if (dev->bus_dma_limit) {
++		struct scatterlist *s;
++		bool direct = true;
++		int i;
++
++		for_each_sg(sglist, s, nelems, i) {
++			direct = dma_handle_direct(dev,
++						   s->dma_address + s->length);
++			if (!direct)
++				break;
++		}
++		if (direct) {
++			dma_direct_unmap_sg(dev, sglist, nelems, direction,
++					    attrs);
++			return;
++		}
++	}
++
+ 	ppc_iommu_unmap_sg(get_iommu_table_base(dev), sglist, nelems,
+ 			   direction, attrs);
+ }
+@@ -90,8 +146,16 @@ int dma_iommu_dma_supported(struct device *dev, u64 mask)
+ 	struct iommu_table *tbl = get_iommu_table_base(dev);
+ 
+ 	if (dev_is_pci(dev) && dma_iommu_bypass_supported(dev, mask)) {
+-		dev->dma_ops_bypass = true;
+-		dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
++		/*
++		 * dma_iommu_bypass_supported() sets dma_max when there is
++		 * 1:1 mapping but it is somehow limited.
++		 * ibm,pmemory is one example.
++		 */
++		dev->dma_ops_bypass = dev->bus_dma_limit == 0;
++		if (!dev->dma_ops_bypass)
++			dev_warn(dev, "iommu: 64-bit OK but using default ops\n");
++		else
++			dev_dbg(dev, "iommu: 64-bit OK, using fixed ops\n");
+ 		return 1;
+ 	}
+ 
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 6d47b4a3ce39..1996f83021fe 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -816,7 +816,7 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
+ 			np, ret);
+ }
+ 
+-static u64 find_existing_ddw(struct device_node *pdn)
++static u64 find_existing_ddw(struct device_node *pdn, int *window_shift)
+ {
+ 	struct direct_window *window;
+ 	const struct dynamic_dma_window_prop *direct64;
+@@ -828,6 +828,7 @@ static u64 find_existing_ddw(struct device_node *pdn)
+ 		if (window->device == pdn) {
+ 			direct64 = window->prop;
+ 			dma_addr = be64_to_cpu(direct64->dma_base);
++			*window_shift = be32_to_cpu(direct64->window_shift);
+ 			break;
+ 		}
+ 	}
+@@ -990,11 +991,13 @@ static phys_addr_t ddw_memory_hotplug_max(void)
+  */
+ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ {
+-	int len, ret;
++	int len = 0, ret;
++	bool pmem_present = of_find_node_by_type(NULL, "ibm,pmemory") != NULL;
++	int max_ram_len = order_base_2(ddw_memory_hotplug_max());
+ 	struct ddw_query_response query;
+ 	struct ddw_create_response create;
+ 	int page_shift;
+-	u64 dma_addr, max_addr;
++	u64 dma_addr;
+ 	struct device_node *dn;
+ 	u32 ddw_avail[3];
+ 	struct direct_window *window;
+@@ -1004,7 +1007,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 
+ 	mutex_lock(&direct_window_init_mutex);
+ 
+-	dma_addr = find_existing_ddw(pdn);
++	dma_addr = find_existing_ddw(pdn, &len);
+ 	if (dma_addr != 0)
+ 		goto out_unlock;
+ 
+@@ -1066,14 +1069,27 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	}
+ 	/* verify the window * number of ptes will map the partition */
+ 	/* check largest block * page size > max memory hotplug addr */
+-	max_addr = ddw_memory_hotplug_max();
+-	if (query.largest_available_block < (max_addr >> page_shift)) {
++	/*
++	 * The "ibm,pmemory" can appear anywhere in the address space.
++	 * Assuming it is still backed by page structs, try MAX_PHYSMEM_BITS
++	 * for the upper limit and fallback to max RAM otherwise but this
++	 * disables device::dma_ops_bypass.
++	 */
++	len = max_ram_len;
++	if (pmem_present) {
++		if (query.largest_available_block >=
++		    (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
++			len = MAX_PHYSMEM_BITS - page_shift;
++		else
++			dev_info(&dev->dev, "Skipping ibm,pmemory");
++	}
++
++	if (query.largest_available_block < (1ULL << (len - page_shift))) {
+ 		dev_dbg(&dev->dev, "can't map partition max 0x%llx with %u "
+-			  "%llu-sized pages\n", max_addr,  query.largest_available_block,
++			  "%llu-sized pages\n", 1ULL << len, query.largest_available_block,
+ 			  1ULL << page_shift);
+ 		goto out_failed;
+ 	}
+-	len = order_base_2(max_addr);
+ 	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
+ 	if (!win64) {
+ 		dev_info(&dev->dev,
+@@ -1151,6 +1167,15 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 
+ out_unlock:
+ 	mutex_unlock(&direct_window_init_mutex);
++
++	/*
++	 * If we have persistent memory and the window size is only as big
++	 * as RAM, then we failed to create a window to cover persistent
++	 * memory and need to set the DMA limit.
++	 */
++	if (pmem_present && dma_addr && (len == max_ram_len))
++		dev->dev.bus_dma_limit = dma_addr + (1ULL << len);
++
+ 	return dma_addr;
+ }
+ 
+-- 
+2.17.1
+
