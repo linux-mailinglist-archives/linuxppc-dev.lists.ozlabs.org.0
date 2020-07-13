@@ -2,155 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA61421D520
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 13:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FA821DA34
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 17:36:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B51vj4JyczDqMx
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 21:41:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B576d1SGlzDqWG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 01:36:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::543;
+ helo=mail-ed1-x543.google.com; envelope-from=refactormyself@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Tg41nJJ6; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=hlFk02nn; dkim-atps=neutral
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
+ [IPv6:2a00:1450:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B51sP0H13zDq9V
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 21:39:50 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id p1so5405318pls.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 04:39:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=EGej97LZyL/Lmtgte1T5nTRQBtJftoRDspAvDrrDSY0=;
- b=Tg41nJJ6huB0JTzZRbBlFNesC6UqLUomZT7wVWFm+Lk+BmUAe73AD+m2U5Y/YVTsv9
- 8/ZoMZSUSef3rGOV+XrLVwJ9I9t4abkYibT0xQDsL9Q9J6itIYeqXMHolO7YDCSx9Ni+
- wCl4tuLItK0tnUTHCFUsI+Cox0xYJWPRMmK1lYRn94PNns6pFO2r9GHUjS5Q2DZxbCw/
- HjbAsQcQsFf0pdr9bIy/CTNOgLV5UUY6DD1yA0SfNlzZKKRdAFi0hjCT7ZEAy8zn0kWK
- JT/aQPaM//lTaCXAS0yRBJwK7OmHvW0puuG5UCb59do+yyaen7ayeJ2ZLWBqmKhxNePt
- vSXQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B54815J6MzDqR0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 23:22:40 +1000 (AEST)
+Received: by mail-ed1-x543.google.com with SMTP id dg28so13669399edb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 06:22:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=TEh/JkkBeDq0BmwWDLkY2ALcEwIhER9cNUR1loI6e78=;
+ b=hlFk02nnRr+rQKvpcmIRPBcv9Vppks3wU3BsbHQlS35RNRr0Lm2YUw7/utWjHu70OH
+ fu21BCriHQitKJ9VJJ9HkQBoc0oNiPianJ9DfryJ5s4iB77Gi9+P+wSDFA8dw7sDMdjN
+ CRk+C/cn77UZdk8p4eMVCYK2N1kZ9NOWbvXAMsA8NoetiFgB4PjRem+NJr8k6FdLryN7
+ KSXqy55pf7Mo7GW41Rrh43kHUodvpJcq7yyqbdwHNICmnMteEU7rrwF/z8u+pZc3nMOJ
+ t5bRIsTEDAnzpyq0Z/t5ptBct6erL48Bl/rPmxQHyXzHf8lqWgUjMDOqwGt/I2ULZZSO
+ jYxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=EGej97LZyL/Lmtgte1T5nTRQBtJftoRDspAvDrrDSY0=;
- b=loMAdjAGoMyXoJ7zKmhuG8R3HQeLBUyc5N1QvoX2/jEbZwtI/+5p/t5nlK3bnhEnpH
- rv44NPz1QGUVRpd5Lc33ZvJkpP62pESt0ESfrsc6Dq0dGvpO5e2LkWwPze9vJtjNe0hU
- U6MJT5tUqlS9M7Ztp9Cpu5ehqFbc6iUiRUap4mM37D6IWhED0eDR6+eY042Uw0lxX1DT
- d9S0Wd0kl7CzClMOsz0PJesDrI/Q4RWdmCQGvG1mMHj8COVLRgtAmsMG/USte32xsKoz
- 2Izg0DPhO/of9SrTeoy/8N573wGNjlObgWLwwM9UXTJUkK6l/94FQJ4oZxTuUs/cr4bN
- uAVA==
-X-Gm-Message-State: AOAM532wqgXrIwYBbb6GcwXDxQ7Yx8pJtySuT4lhwzDbWGWnFFJIrS3H
- HhCuyFaqrss+CW0m9Vo2VcNcwQ==
-X-Google-Smtp-Source: ABdhPJxTvwtH7izVrxxfa0kyCTIK91KqfapI2F4tQlxsB79bEH6CpLzwB45Nc7lgJLH0l+1nY4WquA==
-X-Received: by 2002:a17:90a:7184:: with SMTP id
- i4mr19582383pjk.75.1594640386875; 
- Mon, 13 Jul 2020 04:39:46 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id g3sm14018372pfq.19.2020.07.13.04.39.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Jul 2020 04:39:46 -0700 (PDT)
-Subject: Re: [PATCH 06/14] powerpc/eeh: Remove VF config space restoration
-To: Oliver O'Halloran <oohall@gmail.com>
-References: <20200706013619.459420-1-oohall@gmail.com>
- <20200706013619.459420-7-oohall@gmail.com>
- <c808c6d8-b5ed-3256-5396-4300be9fa308@ozlabs.ru>
- <CAOSf1CFsC8PeLW3Deh=vf8pJQbo7Gg7oDTSOk0T0Da1TBptwGg@mail.gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <9954d007-13d5-d0de-2ffb-89ae5bee73fd@ozlabs.ru>
-Date: Mon, 13 Jul 2020 21:39:42 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <CAOSf1CFsC8PeLW3Deh=vf8pJQbo7Gg7oDTSOk0T0Da1TBptwGg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=TEh/JkkBeDq0BmwWDLkY2ALcEwIhER9cNUR1loI6e78=;
+ b=AxjHD5yI5lRAqBmsFY7iCbdlFSd5WbhyoE+6VlBpNR/LxhQnn9ZkbCug56v8bfrUez
+ HEvqQg1I6hfBW/UE1GD3FOIq+Qc6B0RK7KrU7U4eCAA3pBDZXNmM5pcE4FqqVw8z22fE
+ QJ+/FlK43bJAarMQZZ4NukeLIhb5TyQAt3LdR3J0w14/Ja7Q0+8M19+UKTT5m+sHCf+c
+ zqfR1NGmQDb/0Zu1T5889+wbO0fi+gSVdt0LfoYFv8hCpuixOF3YJhhPwwdFsVDQE59w
+ KWUaLaLjkwhreOQciKLoNGxJilEJlLd23vopCMJA2VBA4loP5K8JeWqtUR/VR0XARbmW
+ xakA==
+X-Gm-Message-State: AOAM532EcXLibIpgepqnYGkzd6SObBhfx36J2a+hdj+FSlI/N+3cImGZ
+ hIdzIc7sSuVDmVtOYlpKYq4=
+X-Google-Smtp-Source: ABdhPJw69dKLZM419xxp02IeffDX2nQ+F52A+jh3cXUOZ7YUfQhM+G+xXauU5Oq4EhNqFD1PfU4cXQ==
+X-Received: by 2002:a50:fb93:: with SMTP id e19mr83849853edq.106.1594646556147; 
+ Mon, 13 Jul 2020 06:22:36 -0700 (PDT)
+Received: from net.saheed (54007186.dsl.pool.telekom.hu. [84.0.113.134])
+ by smtp.gmail.com with ESMTPSA id n9sm11806540edr.46.2020.07.13.06.22.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 Jul 2020 06:22:35 -0700 (PDT)
+From: "Saheed O. Bolarinwa" <refactormyself@gmail.com>
+To: helgaas@kernel.org
+Subject: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Date: Mon, 13 Jul 2020 14:22:12 +0200
+Message-Id: <20200713122247.10985-1-refactormyself@gmail.com>
+X-Mailer: git-send-email 2.18.2
+X-Mailman-Approved-At: Tue, 14 Jul 2020 01:32:14 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -162,69 +73,268 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: Rich Felker <dalias@libc.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, linux-sh@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
+ Yicong Yang <yangyicong@hisilicon.com>, Keith Busch <kbusch@kernel.org>,
+ netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-i2c@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ sparclinux@vger.kernel.org, rfi@lists.rocketboards.org,
+ Toan Le <toan@os.amperecomputing.com>, Greg Ungerer <gerg@linux-m68k.org>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, Sagi Grimberg <sagi@grimberg.me>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-scsi@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-atm-general@lists.sourceforge.net, Russell King <linux@armlinux.org.uk>,
+ Realtek linux nic maintainers <nic_swsd@realtek.com>,
+ Christoph Hellwig <hch@lst.de>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+ Chas Williams <3chas3@gmail.com>, xen-devel@lists.xenproject.org,
+ Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
+ linux-kernel-mentees@lists.linuxfoundation.org,
+ Kevin Hilman <khilman@baylibre.com>, Guenter Roeck <linux@roeck-us.net>,
+ linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Ray Jui <rjui@broadcom.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Yue Wang <yue.wang@Amlogic.com>, Jens Axboe <axboe@fb.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-m68k@lists.linux-m68k.org,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Michael Buesch <m@bues.ch>,
+ skhan@linuxfoundation.org, bjorn@helgaas.com,
+ linux-amlogic@lists.infradead.org,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
+ Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Scott Branden <sbranden@broadcom.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Jingoo Han <jingoohan1@gmail.com>,
+ "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, Brian King <brking@us.ibm.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, linux-alpha@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 13/07/2020 20:55, Oliver O'Halloran wrote:
-> On Mon, Jul 13, 2020 at 8:32 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->>
->>>  #ifdef CONFIG_PCI_IOV
->>>  int pseries_send_allow_unfreeze(struct pci_dn *pdn,
->>>                               u16 *vf_pe_array, int cur_vfs)
->>> @@ -848,7 +824,7 @@ static struct eeh_ops pseries_eeh_ops = {
->>>       .read_config            = pseries_eeh_read_config,
->>>       .write_config           = pseries_eeh_write_config,
->>>       .next_error             = NULL,
->>> -     .restore_config         = pseries_eeh_restore_config,
->>> +     .restore_config         = NULL, /* NB: configure_bridge() does this */
->>
->>
->> configure_bridge() calls rtas_call(ibm_configure_pe, 3, 1, NULL...)
->> which reconfigures the PE and which is quite different from what
->> pseries_eeh_restore_config() used to do although the comment suggests it
->> is about the same thing. I am pretty sure the new code produces a better
->> result so I suggest ditching this comment and adding a note to the
->> commit log may be. Thanks,
-> 
-> I put the comment there largely because the EEH core seems to think
-> that restore_config() is what should be called to reset the device's
-> config space to the defaults set be firmware. On PowerNV it does
-> actually do that and configure_bridge is this:
-> 
-> static int pnv_eeh_configure_bridge(struct eeh_pe *pe)
-> {
->         return 0;
-> }
-> 
-> So... there's definitely something strange going on there. I don't
-> remember the exact details, but I think the generic EEH code calls
-> into RTAS to collect debug data and apparently that requires the
-> device to be accessible via MMIO (i.e BARs need to be restored) which
-> is why the pseries .configure_bridge() calls configure_pe. 
+This goal of these series is to move the definition of *all* PCIBIOS* from
+include/linux/pci.h to arch/x86 and limit their use within there.
+All other tree specific definition will be left for intact. Maybe they can
+be renamed.
+
+PCIBIOS* is an x86 concept as defined by the PCI spec. The returned error
+codes of PCIBIOS* are positive values and this introduces some complexities
+which other archs need not incur.
+
+PLAN:
+
+1.   [PATCH v0 1-36] Replace all PCIBIOS_SUCCESSFUL with 0
+
+2a.  Audit all functions returning PCIBIOS_* error values directly or
+     indirectly and prevent possible bug coming in (2b)
+
+2b.  Make all functions returning PCIBIOS_* error values call 
+     pcibios_err_to_errno(). *This will change their behaviour, for good.*
+
+3.   Clone a pcibios_err_to_errno() into arch/x86/pci/pcbios.c as _v2.
+     This handles the positive error codes directly and will not use any
+     PCIBIOS* definitions. So calls to it have no outside dependence.
+
+4.   Make all x86 codes that needs to convert to -E* values call the 
+     cloned version - pcibios_err_to_errno_v2()
+
+5.   Assign PCIBIOS_* errors values directly to generic -E* errors
+
+6.   Refactor pcibios_err_to_errno() and mark it deprecated
+
+7.   Replace all calls to pcibios_err_to_errno() with the proper -E* value
+     or 0.
+
+8.   Remove all PCIBIOS* definitions in include/linux/pci.h and 
+     pcibios_err_to_errno() too.
+
+9.   Redefine all PCIBIOS* definitions with original values inside 
+     arch/x86/pci/pcbios.c
+
+10.  Redefine pcibios_err_to_errno() inside arch/x86/pci/pcbios.c
+
+11.  Replace pcibios_err_to_errno_v2() calls with pcibios_err_to_errno()
+
+12.  Remove pcibios_err_to_errno_v2()
+
+Suggested-by: Bjorn Helgaas <bjorn@helgaas.com>
+Suggested-by: Yicong Yang <yangyicong@hisilicon.com>
+Signed-off-by: "Saheed O. Bolarinwa" <refactormyself@gmail.com>
 
 
-ah ok, makes more now, cool. thanks,
+Bolarinwa Olayemi Saheed (35):
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Fix Style ERROR: assignment in if condition
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
+  Change PCIBIOS_SUCCESSFUL to 0
+  Tidy Success/Failure checks
 
-
-> It might
-> work out better, but having something called "restore_config" that
-> doesn't actually restore the config is uh... modern. It's something
-> that probably needs a rework at some point. Anyway, I think the
-> comment is more helpful than it is misleading. Especially if you
-> consider the PowerNV behaviour.
-> 
->>>  #ifdef CONFIG_PCI_IOV
->>>       .notify_resume          = pseries_notify_resume
->>>  #endif
->>>
->>
->> --
->> Alexey
+ arch/alpha/kernel/core_apecs.c                |  4 +--
+ arch/alpha/kernel/core_cia.c                  |  4 +--
+ arch/alpha/kernel/core_irongate.c             |  4 +--
+ arch/alpha/kernel/core_lca.c                  |  4 +--
+ arch/alpha/kernel/core_marvel.c               |  4 +--
+ arch/alpha/kernel/core_mcpcia.c               |  4 +--
+ arch/alpha/kernel/core_polaris.c              |  4 +--
+ arch/alpha/kernel/core_t2.c                   |  4 +--
+ arch/alpha/kernel/core_titan.c                |  4 +--
+ arch/alpha/kernel/core_tsunami.c              |  4 +--
+ arch/alpha/kernel/core_wildfire.c             |  4 +--
+ arch/alpha/kernel/sys_miata.c                 |  2 +-
+ arch/arm/common/it8152.c                      |  4 +--
+ arch/arm/mach-cns3xxx/pcie.c                  |  2 +-
+ arch/arm/mach-footbridge/dc21285.c            |  4 +--
+ arch/arm/mach-iop32x/pci.c                    |  6 ++--
+ arch/arm/mach-ixp4xx/common-pci.c             |  8 ++---
+ arch/arm/mach-orion5x/pci.c                   |  4 +--
+ arch/arm/plat-orion/pcie.c                    |  8 ++---
+ arch/m68k/coldfire/pci.c                      |  8 ++---
+ arch/microblaze/pci/indirect_pci.c            |  4 +--
+ arch/mips/pci/fixup-ath79.c                   |  2 +-
+ arch/mips/pci/ops-bcm63xx.c                   | 14 ++++----
+ arch/mips/pci/ops-bonito64.c                  |  4 +--
+ arch/mips/pci/ops-gt64xxx_pci0.c              |  4 +--
+ arch/mips/pci/ops-lantiq.c                    |  4 +--
+ arch/mips/pci/ops-loongson2.c                 |  4 +--
+ arch/mips/pci/ops-mace.c                      |  4 +--
+ arch/mips/pci/ops-msc.c                       |  4 +--
+ arch/mips/pci/ops-rc32434.c                   |  6 ++--
+ arch/mips/pci/ops-sni.c                       |  4 +--
+ arch/mips/pci/ops-tx3927.c                    |  2 +-
+ arch/mips/pci/ops-tx4927.c                    |  2 +-
+ arch/mips/pci/ops-vr41xx.c                    |  4 +--
+ arch/mips/pci/pci-alchemy.c                   |  6 ++--
+ arch/mips/pci/pci-ar2315.c                    |  5 ++-
+ arch/mips/pci/pci-ar71xx.c                    |  4 +--
+ arch/mips/pci/pci-ar724x.c                    |  6 ++--
+ arch/mips/pci/pci-bcm1480.c                   |  4 +--
+ arch/mips/pci/pci-bcm1480ht.c                 |  4 +--
+ arch/mips/pci/pci-mt7620.c                    |  4 +--
+ arch/mips/pci/pci-octeon.c                    | 12 +++----
+ arch/mips/pci/pci-rt2880.c                    |  4 +--
+ arch/mips/pci/pci-rt3883.c                    |  4 +--
+ arch/mips/pci/pci-sb1250.c                    |  4 +--
+ arch/mips/pci/pci-virtio-guest.c              |  4 +--
+ arch/mips/pci/pci-xlp.c                       |  4 +--
+ arch/mips/pci/pci-xlr.c                       |  4 +--
+ arch/mips/pci/pci-xtalk-bridge.c              | 14 ++++----
+ arch/mips/pci/pcie-octeon.c                   |  4 +--
+ arch/mips/txx9/generic/pci.c                  |  5 ++-
+ arch/powerpc/kernel/rtas_pci.c                |  4 +--
+ arch/powerpc/platforms/4xx/pci.c              |  4 +--
+ arch/powerpc/platforms/52xx/efika.c           |  4 +--
+ arch/powerpc/platforms/52xx/mpc52xx_pci.c     |  4 +--
+ arch/powerpc/platforms/82xx/pq2.c             |  2 +-
+ arch/powerpc/platforms/85xx/mpc85xx_cds.c     |  2 +-
+ arch/powerpc/platforms/85xx/mpc85xx_ds.c      |  2 +-
+ arch/powerpc/platforms/86xx/mpc86xx_hpcn.c    |  2 +-
+ arch/powerpc/platforms/chrp/pci.c             |  8 ++---
+ arch/powerpc/platforms/embedded6xx/holly.c    |  2 +-
+ .../platforms/embedded6xx/mpc7448_hpc2.c      |  2 +-
+ arch/powerpc/platforms/fsl_uli1575.c          |  2 +-
+ arch/powerpc/platforms/maple/pci.c            | 18 +++++-----
+ arch/powerpc/platforms/pasemi/pci.c           |  6 ++--
+ arch/powerpc/platforms/powermac/pci.c         |  8 ++---
+ arch/powerpc/platforms/powernv/eeh-powernv.c  |  4 +--
+ arch/powerpc/platforms/powernv/pci.c          |  4 +--
+ arch/powerpc/platforms/pseries/eeh_pseries.c  |  4 +--
+ arch/powerpc/sysdev/fsl_pci.c                 |  2 +-
+ arch/powerpc/sysdev/indirect_pci.c            |  4 +--
+ arch/powerpc/sysdev/tsi108_pci.c              |  4 +--
+ arch/sh/drivers/pci/common.c                  |  3 +-
+ arch/sh/drivers/pci/ops-dreamcast.c           |  4 +--
+ arch/sh/drivers/pci/ops-sh4.c                 |  4 +--
+ arch/sh/drivers/pci/ops-sh7786.c              |  8 ++---
+ arch/sh/drivers/pci/pci.c                     |  2 +-
+ arch/sparc/kernel/pci_common.c                | 28 +++++++--------
+ arch/unicore32/kernel/pci.c                   |  4 +--
+ drivers/atm/iphase.c                          | 20 ++++++-----
+ drivers/atm/lanai.c                           |  8 ++---
+ drivers/bcma/driver_pci_host.c                |  4 +--
+ drivers/hwmon/sis5595.c                       | 13 +++----
+ drivers/hwmon/via686a.c                       | 13 +++----
+ drivers/hwmon/vt8231.c                        | 13 +++----
+ drivers/i2c/busses/i2c-ali15x3.c              |  5 ++-
+ drivers/i2c/busses/i2c-nforce2.c              |  3 +-
+ drivers/i2c/busses/i2c-sis5595.c              | 15 +++-----
+ drivers/misc/cxl/vphb.c                       |  4 +--
+ drivers/net/ethernet/realtek/r8169_main.c     |  2 +-
+ drivers/nvme/host/pci.c                       |  2 +-
+ drivers/pci/access.c                          | 14 ++++----
+ drivers/pci/controller/dwc/pci-meson.c        |  4 +--
+ .../pci/controller/dwc/pcie-designware-host.c |  2 +-
+ drivers/pci/controller/dwc/pcie-designware.c  |  4 +--
+ drivers/pci/controller/dwc/pcie-hisi.c        |  4 +--
+ drivers/pci/controller/dwc/pcie-tegra194.c    |  4 +--
+ .../pci/controller/mobiveil/pcie-mobiveil.c   |  4 +--
+ drivers/pci/controller/pci-aardvark.c         |  4 +--
+ drivers/pci/controller/pci-ftpci100.c         |  4 +--
+ drivers/pci/controller/pci-hyperv.c           |  8 ++---
+ drivers/pci/controller/pci-mvebu.c            |  4 +--
+ drivers/pci/controller/pci-thunder-ecam.c     | 36 +++++++++----------
+ drivers/pci/controller/pci-thunder-pem.c      |  4 +--
+ drivers/pci/controller/pci-xgene.c            |  5 ++-
+ drivers/pci/controller/pcie-altera.c          | 16 ++++-----
+ drivers/pci/controller/pcie-iproc.c           | 10 +++---
+ drivers/pci/controller/pcie-mediatek.c        |  4 +--
+ drivers/pci/controller/pcie-rcar-host.c       |  8 ++---
+ drivers/pci/controller/pcie-rockchip-host.c   | 10 +++---
+ drivers/pci/pci-bridge-emul.c                 | 14 ++++----
+ drivers/pci/pci.c                             |  8 ++---
+ drivers/pci/pcie/bw_notification.c            |  4 +--
+ drivers/pci/probe.c                           |  4 +--
+ drivers/pci/quirks.c                          |  4 +--
+ drivers/pci/syscall.c                         |  8 ++---
+ drivers/pci/xen-pcifront.c                    |  2 +-
+ drivers/scsi/ipr.c                            | 16 ++++-----
+ drivers/scsi/pmcraid.c                        |  6 ++--
+ drivers/ssb/driver_gige.c                     |  4 +--
+ drivers/ssb/driver_pcicore.c                  |  4 +--
+ drivers/xen/xen-pciback/conf_space.c          |  2 +-
+ 122 files changed, 347 insertions(+), 369 deletions(-)
 
 -- 
-Alexey
+2.18.2
+
