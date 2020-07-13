@@ -1,49 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9EE21D602
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 14:34:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7880D21D64B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 14:47:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B534G6Rd5zDqQ4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 22:34:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B53MR11KczDqPl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 22:47:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B53216G7WzDqC6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 22:32:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B53K84x79zDqP4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 22:45:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=huZjoq5T; 
+ header.a=rsa-sha256 header.s=201909 header.b=U04Y66A8; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B531z0mNJz9sQt;
- Mon, 13 Jul 2020 22:32:23 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B53K766Clz9sQt;
+ Mon, 13 Jul 2020 22:45:31 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594643545;
- bh=MqWMoeDNwlUAHlcs0wWO5CUaK7kc9jQIHbwysyqNKzE=;
+ s=201909; t=1594644331;
+ bh=P26pqzKyPkg1TFY+JeCN6osGX6gbap8LirvV6DqEo3E=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=huZjoq5TXwq98uPA/wjGPFbbrESigMSKQbqC1SI/KU7B00Nn3h+zEMxwkqmlAUZL+
- CC65/DsbXm11/6KxT8nk2apPPcXW3uA7sT+WdfsSMSac1SdlqQJQf4emNH06cGQmro
- a0iHEaquMXdj6FSQCHaWaHyC0umMMAOXCfJqn1Y2vafN0UOMJCyL1aU8P9juC6TCpI
- FVUzJi1QCXPtSNISS2qaoIR3GaBo4TtzwVrg3jxn9VkfBL/55qy+wG7Rmh9HqYkj14
- vYQIAeiEqi4xeJE6EIrbMWxJ2kXganV4j2SeT9FWNGH+EVc84Ml7CyErbc9iFiWRJ3
- UTZk9VBuwglWg==
+ b=U04Y66A82+jPnPSSIlIou1Fm50wZYlaMKHZsEohsd3Kdca1spL43+ry/bdCck60xX
+ DBOszla7HErZY6+/U2dNkryqH0/KYk9oh3+5sO8uCbjHCw6hhiQoTA/yUuWeSKd80H
+ S4Yi/8ac3wXKTM01UCdEwUmAva3urLTJbn5LbJMJYpCE/WrPQxD7NLcFei3TrDXvE0
+ KBp4+DGFFkvSDGAcxbabYZeebIzSG+09eAol+6vnLJ2k/VzFckPj55LPvI3xcS4kK+
+ 7FPivpXhBS/4Vv1lvH6Uan8tBZMFdumA3LfSGf9X22iJ5lTesBgo9abMNOry8cfD+9
+ f8+bC3MuGeUCQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH] powerpc/boot: add DTB to 'targets'
-In-Reply-To: <20200713075629.5948-1-masahiroy@kernel.org>
-References: <20200713075629.5948-1-masahiroy@kernel.org>
-Date: Mon, 13 Jul 2020 22:34:43 +1000
-Message-ID: <87sgdvvbj0.fsf@mpe.ellerman.id.au>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 09/10] tools/perf: Add perf tools support for extended
+ register capability in powerpc
+In-Reply-To: <FFC0AE06-9BF8-446C-B6D8-C4D62B61FDBE@linux.vnet.ibm.com>
+References: <1593595262-1433-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1593595262-1433-10-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <87pn962owo.fsf@mpe.ellerman.id.au>
+ <FFC0AE06-9BF8-446C-B6D8-C4D62B61FDBE@linux.vnet.ibm.com>
+Date: Mon, 13 Jul 2020 22:47:53 +1000
+Message-ID: <87pn8zvax2.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,51 +61,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, Arnd Bergmann <arnd@arndb.de>,
- Masahiro Yamada <masahiroy@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: mikey@neuling.org, maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-> PowerPC always re-builds DTB even if nothing has been changed.
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+>> On 08-Jul-2020, at 5:34 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> 
+>> Athira Rajeev <atrajeev@linux.vnet.ibm.com <mailto:atrajeev@linux.vnet.ibm.com>> writes:
+>>> From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+>>> 
+>>> Add extended regs to sample_reg_mask in the tool side to use
+>>> with `-I?` option. Perf tools side uses extended mask to display
+...
+>> 
+>>> +	 */
+>>> +	get_cpuid(buffer, sizeof(buffer));
+>>> +	ret = sscanf(buffer, "%u,", &version);
+>> 
+>> This is powerpc specific code, why not just use mfspr(SPRN_PVR), rather
+>> than redirecting via printf/sscanf.
 >
-> As for other architectures, arch/*/boot/dts/Makefile builds DTB by
-> using the dtb-y syntax.
+> Hi Michael
 >
-> In contrast, arch/powerpc/boot/dts/(fsl/)Makefile does nothing unless
-> CONFIG_OF_ALL_DTBS is defined. Instead, arch/powerpc/boot/Makefile
-> builds DTB on demand. You need to add DTB to 'targets' explicitly
-> so .*.cmd files are included.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
-> I want to apply this to kbuild tree because this is needed
-> to fix the build error caused by another kbuild patch:
->
-> https://lkml.org/lkml/2020/7/7/134
+> For perf tools, defines for `mfspr` , `SPRN_PVR` are in arch/powerpc/util/header.c 
+> So I have re-used existing utility. Otherwise, we will need to include these defines here as well
+> Does that sounds good ?
 
-OK.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+They should be moved to a header in that directory that both C files can include.
 
 cheers
-
-> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> index 63d7456b9518..8792323707fd 100644
-> --- a/arch/powerpc/boot/Makefile
-> +++ b/arch/powerpc/boot/Makefile
-> @@ -366,6 +366,8 @@ initrd-y := $(patsubst zImage%, zImage.initrd%, \
->  		$(patsubst treeImage%, treeImage.initrd%, $(image-y)))))
->  initrd-y := $(filter-out $(image-y), $(initrd-y))
->  targets	+= $(image-y) $(initrd-y)
-> +targets += $(foreach x, dtbImage uImage cuImage simpleImage treeImage, \
-> +		$(patsubst $(x).%, dts/%.dtb, $(filter $(x).%, $(image-y))))
->  
->  $(addprefix $(obj)/, $(initrd-y)): $(obj)/ramdisk.image.gz
->  
-> -- 
-> 2.25.1
