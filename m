@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDAA21DDDF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 18:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F66421DDE2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 18:51:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B58lC67hBzDqNL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 02:49:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B58nJ3kplzDqPm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 02:51:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bmeneg@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=R+6LRuLZ; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=cXV7tsHj; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=cXV7tsHj; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B58jP21LgzDqMp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 02:48:24 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id e18so6270236pgn.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 09:48:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=INPs3nxni2V4l7Wi5FNDIFPFwYguU/xf1qgvb0BuhC4=;
- b=R+6LRuLZbvncOfmOwYY5q8IVDwZiV+RDPEu6DkwQ7DghW24zrjlhrUTVAvXZR3UUHH
- mkBdeBPq/GcwQRrBAUjLvieWEIgcEhNfLRhInWKe9n46bjAtdCWUhOcKDGBJWiwjkxgR
- 6Rj9VkbiyOt3ADuG2ZXGxNQKLMZBBmZCoDqbFodM2xjHs/iLWVOY/Bl5KLgNhYdeleLA
- edC+A3d9UvHuGkddJK37cHRQypGFRiX+ha42c3w/yAXtJr1q/VMTuk7Vb7ki7dk5K3bW
- ZS52GW3lsY3/2uK3rwUG7dp8gk5XfTe7av83x249Xfkf9EShHRcn4+fBVSnTnIstdvKZ
- 5a9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=INPs3nxni2V4l7Wi5FNDIFPFwYguU/xf1qgvb0BuhC4=;
- b=EWt2p0A5tvbqpLuEsCLWYBw+bibcThuJPLfx2DRe9zXWK1+PDNndvTvpFjRBEjJnyJ
- e4WZLmt4Wu6DGQr5AIJvTgMcyxojcovSzchxFTI+SFr2cdk9nu32+DtoxUCL7AXKOpo+
- kBZ0XwDu3iTquVYL2RBRoDOQODxTFrZzWt7Vs3N2882nSpqkHDRKe0yQ9O7z8Fv44/QO
- eQr0qs0ZDpOqRZndaMVEOVf3RCzTZNn9uux6KDs8sV+PErO2HnWprCPJSe54CRLeBwiV
- AYcMwTZYkXyhm3JE+VO3uJ6BFcEAayKNovckQWh85wIE/y2GKMkICyaOxNoCd4N/cbOw
- 7w0g==
-X-Gm-Message-State: AOAM530P0GAmCbMdO67gH6hCrmc3M2lpUjz9qrqiBnLqtYgqkWk/5nFa
- 0lWNR9c6NtTptI9T/GrzxCcFuV7t
-X-Google-Smtp-Source: ABdhPJyzYE/gbgNRIvd8T1nEKwOmWyQ0D6wBLrY+CaPnFOU0pgGH0kYtLwOHfmaSiihyfPeLfiiMRg==
-X-Received: by 2002:aa7:8ac3:: with SMTP id b3mr723937pfd.45.1594658901764;
- Mon, 13 Jul 2020 09:48:21 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id m68sm121909pje.24.2020.07.13.09.48.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Jul 2020 09:48:21 -0700 (PDT)
-Date: Tue, 14 Jul 2020 02:48:15 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 7/7] lazy tlb: shoot lazies, a non-refcounting lazy
- tlb option
-To: Andy Lutomirski <luto@kernel.org>
-References: <20200710015646.2020871-1-npiggin@gmail.com>
- <20200710015646.2020871-8-npiggin@gmail.com>
- <CALCETrWbD=3SUOuq9P7Syb+a1DoBjjem8hq9_HCvn7wyqETkpw@mail.gmail.com>
-In-Reply-To: <CALCETrWbD=3SUOuq9P7Syb+a1DoBjjem8hq9_HCvn7wyqETkpw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B58jz0NwzzDqT3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 02:48:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594658927;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=84HXSEfmbt0+vn1F/xRQMsKwpXDD6K/wrYokP/216f8=;
+ b=cXV7tsHjNOBWlKwvRD07BpixmAm1xZl/XWBLWo19CebdnsZEoZNXJiZitOOelxTJBIsdhu
+ 2wVWDH34gpTXNNYl6bh5x6rcE0wEYefC0ochGaiQZTHkT7smmV6NVrREJZ6+gqLTGwdG5j
+ tRS7rNgN73tjEa+R6FJzGKoLkQTyeLo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1594658927;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=84HXSEfmbt0+vn1F/xRQMsKwpXDD6K/wrYokP/216f8=;
+ b=cXV7tsHjNOBWlKwvRD07BpixmAm1xZl/XWBLWo19CebdnsZEoZNXJiZitOOelxTJBIsdhu
+ 2wVWDH34gpTXNNYl6bh5x6rcE0wEYefC0ochGaiQZTHkT7smmV6NVrREJZ6+gqLTGwdG5j
+ tRS7rNgN73tjEa+R6FJzGKoLkQTyeLo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-422-taVAPnOMMCiMeU52nuZSZQ-1; Mon, 13 Jul 2020 12:48:45 -0400
+X-MC-Unique: taVAPnOMMCiMeU52nuZSZQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3F831800597;
+ Mon, 13 Jul 2020 16:48:42 +0000 (UTC)
+Received: from localhost (ovpn-116-10.gru2.redhat.com [10.97.116.10])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0F9791053B31;
+ Mon, 13 Jul 2020 16:48:32 +0000 (UTC)
+From: Bruno Meneguele <bmeneg@redhat.com>
+To: linux-kernel@vger.kernel.org, x86@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: [PATCH v6] ima: move APPRAISE_BOOTPARAM dependency on ARCH_POLICY to
+ runtime
+Date: Mon, 13 Jul 2020 13:48:30 -0300
+Message-Id: <20200713164830.101165-1-bmeneg@redhat.com>
 MIME-Version: 1.0
-Message-Id: <1594658283.qabzoxga67.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,64 +81,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: erichte@linux.ibm.com, Bruno Meneguele <bmeneg@redhat.com>,
+ nayna@linux.ibm.com, stable@vger.kernel.org, zohar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andy Lutomirski's message of July 14, 2020 1:59 am:
-> On Thu, Jul 9, 2020 at 6:57 PM Nicholas Piggin <npiggin@gmail.com> wrote:
->>
->> On big systems, the mm refcount can become highly contented when doing
->> a lot of context switching with threaded applications (particularly
->> switching between the idle thread and an application thread).
->>
->> Abandoning lazy tlb slows switching down quite a bit in the important
->> user->idle->user cases, so so instead implement a non-refcounted scheme
->> that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
->> any remaining lazy ones.
->>
->> On a 16-socket 192-core POWER8 system, a context switching benchmark
->> with as many software threads as CPUs (so each switch will go in and
->> out of idle), upstream can achieve a rate of about 1 million context
->> switches per second. After this patch it goes up to 118 million.
->>
->=20
-> I read the patch a couple of times, and I have a suggestion that could
-> be nonsense.  You are, effectively, using mm_cpumask() as a sort of
-> refcount.  You're saying "hey, this mm has no more references, but it
-> still has nonempty mm_cpumask(), so let's send an IPI and shoot down
-> those references too."  I'm wondering whether you actually need the
-> IPI.  What if, instead, you actually treated mm_cpumask as a refcount
-> for real?  Roughly, in __mmdrop(), you would only free the page tables
-> if mm_cpumask() is empty.  And, in the code that removes a CPU from
-> mm_cpumask(), you would check if mm_users =3D=3D 0 and, if so, check if
-> you just removed the last bit from mm_cpumask and potentially free the
-> mm.
->=20
-> Getting the locking right here could be a bit tricky -- you need to
-> avoid two CPUs simultaneously exiting lazy TLB and thinking they
-> should free the mm, and you also need to avoid an mm with mm_users
-> hitting zero concurrently with the last remote CPU using it lazily
-> exiting lazy TLB.  Perhaps this could be resolved by having mm_count
-> =3D=3D 1 mean "mm_cpumask() is might contain bits and, if so, it owns the
-> mm" and mm_count =3D=3D 0 meaning "now it's dead" and using some careful
-> cmpxchg or dec_return to make sure that only one CPU frees it.
->=20
-> Or maybe you'd need a lock or RCU for this, but the idea would be to
-> only ever take the lock after mm_users goes to zero.
+The IMA_APPRAISE_BOOTPARAM config allows enabling different "ima_appraise="
+modes - log, fix, enforce - at run time, but not when IMA architecture
+specific policies are enabled.  This prevents properly labeling the
+filesystem on systems where secure boot is supported, but not enabled on the
+platform.  Only when secure boot is actually enabled should these IMA
+appraise modes be disabled.
 
-I don't think it's nonsense, it could be a good way to avoid IPIs.
+This patch removes the compile time dependency and makes it a runtime
+decision, based on the secure boot state of that platform.
 
-I haven't seen much problem here that made me too concerned about IPIs=20
-yet, so I think the simple patch may be good enough to start with
-for powerpc. I'm looking at avoiding/reducing the IPIs by combining the
-unlazying with the exit TLB flush without doing anything fancy with
-ref counting, but we'll see.
+Test results as follows:
 
-Thanks,
-Nick
+-> x86-64 with secure boot enabled
+
+[    0.015637] Kernel command line: <...> ima_policy=appraise_tcb ima_appraise=fix
+[    0.015668] ima: Secure boot enabled: ignoring ima_appraise=fix boot parameter option
+
+-> powerpc with secure boot disabled
+
+[    0.000000] Kernel command line: <...> ima_policy=appraise_tcb ima_appraise=fix
+[    0.000000] Secure boot mode disabled
+
+-> Running the system without secure boot and with both options set:
+
+CONFIG_IMA_APPRAISE_BOOTPARAM=y
+CONFIG_IMA_ARCH_POLICY=y
+
+Audit prompts "missing-hash" but still allow execution and, consequently,
+filesystem labeling:
+
+type=INTEGRITY_DATA msg=audit(07/09/2020 12:30:27.778:1691) : pid=4976
+uid=root auid=root ses=2
+subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 op=appraise_data
+cause=missing-hash comm=bash name=/usr/bin/evmctl dev="dm-0" ino=493150
+res=no
+
+Cc: stable@vger.kernel.org
+Fixes: d958083a8f64 ("x86/ima: define arch_get_ima_policy() for x86")
+Signed-off-by: Bruno Meneguele <bmeneg@redhat.com>
+---
+v6:
+  - explictly print the bootparam being ignored to the user (Mimi)
+v5:
+  - add pr_info() to inform user the ima_appraise= boot param is being
+	ignored due to secure boot enabled (Nayna)
+  - add some testing results to commit log
+v4:
+  - instead of change arch_policy loading code, check secure boot state at
+	"ima_appraise=" parameter handler (Mimi)
+v3:
+  - extend secure boot arch checker to also consider trusted boot
+  - enforce IMA appraisal when secure boot is effectively enabled (Nayna)
+  - fix ima_appraise flag assignment by or'ing it (Mimi)
+v2:
+  - pr_info() message prefix correction
+ security/integrity/ima/Kconfig        | 2 +-
+ security/integrity/ima/ima_appraise.c | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index edde88dbe576..62dc11a5af01 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -232,7 +232,7 @@ config IMA_APPRAISE_REQUIRE_POLICY_SIGS
+ 
+ config IMA_APPRAISE_BOOTPARAM
+ 	bool "ima_appraise boot parameter"
+-	depends on IMA_APPRAISE && !IMA_ARCH_POLICY
++	depends on IMA_APPRAISE
+ 	default y
+ 	help
+ 	  This option enables the different "ima_appraise=" modes
+diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
+index a9649b04b9f1..28a59508c6bd 100644
+--- a/security/integrity/ima/ima_appraise.c
++++ b/security/integrity/ima/ima_appraise.c
+@@ -19,6 +19,12 @@
+ static int __init default_appraise_setup(char *str)
+ {
+ #ifdef CONFIG_IMA_APPRAISE_BOOTPARAM
++	if (arch_ima_get_secureboot()) {
++		pr_info("Secure boot enabled: ignoring ima_appraise=%s boot parameter option",
++			str);
++		return 1;
++	}
++
+ 	if (strncmp(str, "off", 3) == 0)
+ 		ima_appraise = 0;
+ 	else if (strncmp(str, "log", 3) == 0)
+-- 
+2.26.2
+
