@@ -2,86 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DA321D56F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 13:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E716521D41D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 12:57:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B52HD5kDdzDqRc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 21:58:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B50wk3ShkzDqVp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 20:57:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::141;
+ helo=mail-il1-x141.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=XGjH/J3Y; dkim-atps=neutral
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com
+ [IPv6:2607:f8b0:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B52Db1DM6zDqF0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 21:56:30 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06DBs4eL195413; Mon, 13 Jul 2020 07:56:25 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32792u0mrw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 07:56:24 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06DBWsxO133872;
- Mon, 13 Jul 2020 07:56:23 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32792u0mrg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 07:56:23 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06DBsNEp002462;
- Mon, 13 Jul 2020 11:56:22 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01dal.us.ibm.com with ESMTP id 327528bhpc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 11:56:22 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06DBuLve50659752
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Jul 2020 11:56:22 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE660AC059;
- Mon, 13 Jul 2020 11:56:21 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B97AAC05B;
- Mon, 13 Jul 2020 11:56:21 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.77.204.163])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 13 Jul 2020 11:56:21 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id B1C1E2E4ACB; Mon, 13 Jul 2020 16:18:37 +0530 (IST)
-Date: Mon, 13 Jul 2020 16:18:37 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 0/3] Power10 basic energy management
-Message-ID: <20200713104837.GG24866@in.ibm.com>
-References: <20200710052207.12003-1-psampat@linux.ibm.com>
- <1594617564.57k8bsyfd0.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B50tC4Wr4zDqTK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 20:55:31 +1000 (AEST)
+Received: by mail-il1-x141.google.com with SMTP id o3so10718234ilo.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 03:55:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=/nQI/nHNNWtxQ746r21uQY0IB9tAtjZIYWcUcpb8iaY=;
+ b=XGjH/J3Y2Aee09Isxyvjln/9KAk4VinrIMOlwBnXqXkpWLb6k6n70Nm0CA1Lg/NIzq
+ d8P9ujasJFNf1nzzbPoE/ATtPliUsasqu5o1jsjsM5lDJllJOeGfJMnODJq0ARaSV9/c
+ 9F8A4B+CUcH0IPpfR479Bn/iYP0axwmoq1N9k2hacBCnQRYQUSZXAMobJR9JKf1zDWAF
+ bcNYCVVtO0RkUZw64J1pqSEquYoHnZrZmv/VuTyo58gBSOyoiDTc9KkCJhFb4OMX7Og/
+ ocMvhT5NrD6jGr1ESgnEo04sPPOpllanxoAnSJ0trp06jktI+huTBpzBaVGun//RFLgt
+ Phmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=/nQI/nHNNWtxQ746r21uQY0IB9tAtjZIYWcUcpb8iaY=;
+ b=NU6dl9wyzJm57lkHCIp+9477nNRfCURf5X4Gar1LcA6+3H38KRaGsrjZXurQuTXt3F
+ FyscpBpDx1pf9QZgznRQHMK2jsWOGEb9pSB127EW8ABD4xtxinmEFWBVG3wo9kIr+2pZ
+ nVkejP6fLI+IgYyjKJv3ywwhjBX2M5QBwMaZh4rM6T+hwG5MOZEQEHlmJOUE9iddJtlj
+ hazeMmTWt2u/VH4FuOcA0cwUZKxoj75oGZCUi9clpUk2huHSYRTphjJGmAKIB9omI5M4
+ jwy8QXwc12bowLZWVi+Eh1hE7kbe7QkzY3rzGwSNHFR9IZ4eWTwZga5kr5z3xtGEQIIw
+ MfKQ==
+X-Gm-Message-State: AOAM532ImDNszVo2RSpDpLAHPYpUbIuI9A56SqxJsLJZdyx9vL7BbwOx
+ PE9nCTCpHqPJW7b7ZDOwcoW8XDmREhHHFez7nfU=
+X-Google-Smtp-Source: ABdhPJwVM/WK+xpzgnRKy46wD9pVo41iHbml6J/Ownnli9jiQZozGPb6BJoDKp+IVIdDmzyx1KHwOKmN9mG5friWuM4=
+X-Received: by 2002:a92:4913:: with SMTP id w19mr60500040ila.185.1594637727358; 
+ Mon, 13 Jul 2020 03:55:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1594617564.57k8bsyfd0.astroid@bobo.none>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-13_07:2020-07-13,
- 2020-07-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- adultscore=0 impostorscore=0 spamscore=0 malwarescore=0 bulkscore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007130084
+References: <20200706013619.459420-1-oohall@gmail.com>
+ <20200706013619.459420-7-oohall@gmail.com>
+ <c808c6d8-b5ed-3256-5396-4300be9fa308@ozlabs.ru>
+In-Reply-To: <c808c6d8-b5ed-3256-5396-4300be9fa308@ozlabs.ru>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Mon, 13 Jul 2020 20:55:15 +1000
+Message-ID: <CAOSf1CFsC8PeLW3Deh=vf8pJQbo7Gg7oDTSOk0T0Da1TBptwGg@mail.gmail.com>
+Subject: Re: [PATCH 06/14] powerpc/eeh: Remove VF config space restoration
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,50 +74,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, pratik.r.sampat@gmail.com,
- linux-kernel@vger.kernel.org, Pratik Rajesh Sampat <psampat@linux.ibm.com>,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org, ravi.bangoria@linux.ibm.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 13, 2020 at 03:23:21PM +1000, Nicholas Piggin wrote:
-> Excerpts from Pratik Rajesh Sampat's message of July 10, 2020 3:22 pm:
-> > Changelog v1 --> v2:
-> > 1. Save-restore DAWR and DAWRX unconditionally as they are lost in
-> > shallow idle states too
-> > 2. Rename pnv_first_spr_loss_level to pnv_first_fullstate_loss_level to
-> > correct naming terminology
-> > 
-> > Pratik Rajesh Sampat (3):
-> >   powerpc/powernv/idle: Exclude mfspr on HID1,4,5 on P9 and above
-> >   powerpc/powernv/idle: save-restore DAWR0,DAWRX0 for P10
-> >   powerpc/powernv/idle: Rename pnv_first_spr_loss_level variable
-> > 
-> >  arch/powerpc/platforms/powernv/idle.c | 34 +++++++++++++++++----------
-> >  1 file changed, 22 insertions(+), 12 deletions(-)
-> 
-> These look okay to me, but the CPU_FTR_ARCH_300 test for 
-> pnv_power9_idle_init() is actually wrong, it should be a PVR test 
-> because idle is not completely architected (not even shallow stop 
-> states, unfortunately).
-> 
-> It doesn't look like we support POWER10 idle correctly yet, and on older
-> kernels it wouldn't work even if we fixed newer, so ideally the PVR 
-> check would be backported as a fix in the front of the series.
-> 
-> Sadly, we have no OPAL idle driver yet. Hopefully we will before the
-> next processor shows up :P
+On Mon, Jul 13, 2020 at 8:32 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>
+> >  #ifdef CONFIG_PCI_IOV
+> >  int pseries_send_allow_unfreeze(struct pci_dn *pdn,
+> >                               u16 *vf_pe_array, int cur_vfs)
+> > @@ -848,7 +824,7 @@ static struct eeh_ops pseries_eeh_ops = {
+> >       .read_config            = pseries_eeh_read_config,
+> >       .write_config           = pseries_eeh_write_config,
+> >       .next_error             = NULL,
+> > -     .restore_config         = pseries_eeh_restore_config,
+> > +     .restore_config         = NULL, /* NB: configure_bridge() does this */
+>
+>
+> configure_bridge() calls rtas_call(ibm_configure_pe, 3, 1, NULL...)
+> which reconfigures the PE and which is quite different from what
+> pseries_eeh_restore_config() used to do although the comment suggests it
+> is about the same thing. I am pretty sure the new code produces a better
+> result so I suggest ditching this comment and adding a note to the
+> commit log may be. Thanks,
 
-Abhishek posted a version recently :
-https://patchwork.ozlabs.org/project/skiboot/patch/20200706043533.76539-1-huntbag@linux.vnet.ibm.com/
+I put the comment there largely because the EEH core seems to think
+that restore_config() is what should be called to reset the device's
+config space to the defaults set be firmware. On PowerNV it does
+actually do that and configure_bridge is this:
 
+static int pnv_eeh_configure_bridge(struct eeh_pe *pe)
+{
+        return 0;
+}
 
-> 
-> Thanks,
-> Nick
+So... there's definitely something strange going on there. I don't
+remember the exact details, but I think the generic EEH code calls
+into RTAS to collect debug data and apparently that requires the
+device to be accessible via MMIO (i.e BARs need to be restored) which
+is why the pseries .configure_bridge() calls configure_pe. It might
+work out better, but having something called "restore_config" that
+doesn't actually restore the config is uh... modern. It's something
+that probably needs a rework at some point. Anyway, I think the
+comment is more helpful than it is misleading. Especially if you
+consider the PowerNV behaviour.
 
---
-Thanks and Regards
-gautham.
+> >  #ifdef CONFIG_PCI_IOV
+> >       .notify_resume          = pseries_notify_resume
+> >  #endif
+> >
+>
+> --
+> Alexey
