@@ -1,46 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F6921E32B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 00:47:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CDA21E330
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 00:49:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5Jh54d1mzDqcq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:47:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5JkN1jWGzDqdh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:49:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=al2klimov.de
- (client-ip=2a01:4f8:c0c:1465::1; helo=smtp.al2klimov.de;
- envelope-from=grandmaster@al2klimov.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=al2klimov.de
-Received: from smtp.al2klimov.de (smtp.al2klimov.de
- [IPv6:2a01:4f8:c0c:1465::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=MWvKJTjv; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Dvs4VVDzDqXN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 05:57:45 +1000 (AEST)
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
- by smtp.al2klimov.de (Postfix) with ESMTPA id 58DA3BC0C2;
- Mon, 13 Jul 2020 19:57:35 +0000 (UTC)
-From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To: shuah@kernel.org, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, ravi.bangoria@linux.ibm.com, broonie@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests: Replace HTTP links with HTTPS ones
-Date: Mon, 13 Jul 2020 21:57:29 +0200
-Message-Id: <20200713195729.37666-1-grandmaster@al2klimov.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5HgF1JTmzDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 08:02:01 +1000 (AEST)
+Received: from localhost (mobile-166-175-191-139.mycingular.net
+ [166.175.191.139])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id A520620663;
+ Mon, 13 Jul 2020 22:01:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1594677718;
+ bh=HSAUHsS9kXD1HIJNE6WsRPhRQVem0B8cFajFbFBR0EI=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=MWvKJTjvl/1YEIl1J2bYU68QOMCk3laZW9SifUEehjNOErgOIYQha/bgzSaTFKI2l
+ QuIAmIsupUSbzYcZR4NjPAxoi7WbrMXAjLRHTnmV/Yc0VJOJrp/0Y79w5eZfIKt71L
+ +1J5CchrY3/xdkH17Ff+7DtiGZ9FgLPSUNKvv7eo=
+Date: Mon, 13 Jul 2020 17:01:56 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Saheed O. Bolarinwa" <refactormyself@gmail.com>
+Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Message-ID: <20200713220156.GA284762@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++++
-X-Spam-Level: *****
-Authentication-Results: smtp.al2klimov.de;
- auth=pass smtp.auth=aklimov@al2klimov.de
- smtp.mailfrom=grandmaster@al2klimov.de
-X-Mailman-Approved-At: Tue, 14 Jul 2020 08:35:05 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200713122247.10985-1-refactormyself@gmail.com>
+X-Mailman-Approved-At: Tue, 14 Jul 2020 08:35:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,107 +56,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Cc: Rich Felker <dalias@libc.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, linux-sh@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
+ Yicong Yang <yangyicong@hisilicon.com>, Keith Busch <kbusch@kernel.org>,
+ Realtek linux nic maintainers <nic_swsd@realtek.com>,
+ Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, sparclinux@vger.kernel.org,
+ rfi@lists.rocketboards.org, Toan Le <toan@os.amperecomputing.com>,
+ Greg Ungerer <gerg@linux-m68k.org>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, Sagi Grimberg <sagi@grimberg.me>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-scsi@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-atm-general@lists.sourceforge.net, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Christoph Hellwig <hch@lst.de>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Chas Williams <3chas3@gmail.com>, xen-devel@lists.xenproject.org,
+ Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
+ linux-kernel-mentees@lists.linuxfoundation.org,
+ Kevin Hilman <khilman@baylibre.com>, Guenter Roeck <linux@roeck-us.net>,
+ linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Ray Jui <rjui@broadcom.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Yue Wang <yue.wang@Amlogic.com>, Jens Axboe <axboe@fb.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-m68k@lists.linux-m68k.org,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Michael Buesch <m@bues.ch>,
+ skhan@linuxfoundation.org, bjorn@helgaas.com,
+ linux-amlogic@lists.infradead.org,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
+ Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Scott Branden <sbranden@broadcom.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Jingoo Han <jingoohan1@gmail.com>, netdev@vger.kernel.org,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, Brian King <brking@us.ibm.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, linux-alpha@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rationale:
-Reduces attack surface on kernel devs opening the links for MITM
-as HTTPS traffic is much harder to manipulate.
+On Mon, Jul 13, 2020 at 02:22:12PM +0200, Saheed O. Bolarinwa wrote:
+> This goal of these series is to move the definition of *all* PCIBIOS* from
+> include/linux/pci.h to arch/x86 and limit their use within there.
+> All other tree specific definition will be left for intact. Maybe they can
+> be renamed.
 
-Deterministic algorithm:
-For each file:
-  If not .svg:
-    For each line:
-      If doesn't contain `\bxmlns\b`:
-        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
-            If both the HTTP and HTTPS versions
-            return 200 OK and serve the same content:
-              Replace HTTP with HTTPS.
+More comments later, but a few trivial whitespace issues you can clean
+up in the meantime.  Don't repost for at least a few days to avoid
+spamming everybody.  I found these with:
 
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
----
- Continuing my work started at 93431e0607e5.
- See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
- (Actually letting a shell for loop submit all this stuff for me.)
+  $ b4 am -om/ 20200713122247.10985-1-refactormyself@gmail.com
+  $ git am m/20200713_refactormyself_move_all_pcibios_definitions_into_arch_x86.mbx
 
- If there are any URLs to be removed completely or at least not just HTTPSified:
- Just clearly say so and I'll *undo my change*.
- See also: https://lkml.org/lkml/2020/6/27/64
+  Applying: atm: Change PCIBIOS_SUCCESSFUL to 0
+  .git/rebase-apply/patch:11: trailing whitespace.
+	  iadev = INPH_IA_DEV(dev);
+  .git/rebase-apply/patch:12: trailing whitespace.
+	  for(i=0; i<64; i++)
+  .git/rebase-apply/patch:13: trailing whitespace.
+	    if ((error = pci_read_config_dword(iadev->pci,
+  .git/rebase-apply/patch:16: trailing whitespace, space before tab in indent.
+		return error;
+  .git/rebase-apply/patch:17: trailing whitespace.
+	  writel(0, iadev->reg+IPHASE5575_EXT_RESET);
+  warning: squelched 5 whitespace errors
+  warning: 10 lines add whitespace errors.
+  Applying: atm: Tidy Success/Failure checks
+  .git/rebase-apply/patch:13: trailing whitespace.
 
- If there are any valid, but yet not changed URLs:
- See: https://lkml.org/lkml/2020/6/26/837
+  .git/rebase-apply/patch:14: trailing whitespace.
+	  iadev = INPH_IA_DEV(dev);
+  .git/rebase-apply/patch:15: trailing whitespace.
+	  for(i=0; i<64; i++)
+  .git/rebase-apply/patch:21: trailing whitespace.
+	  writel(0, iadev->reg+IPHASE5575_EXT_RESET);
+  .git/rebase-apply/patch:22: trailing whitespace.
+	  for(i=0; i<64; i++)
+  warning: squelched 3 whitespace errors
+  warning: 8 lines add whitespace errors.
+  Applying: atm: Fix Style ERROR- assignment in if condition
+  .git/rebase-apply/patch:12: trailing whitespace.
+	  unsigned int pci[64];
+  .git/rebase-apply/patch:13: trailing whitespace.
 
- If you apply the patch, please let me know.
-
- Sorry again to all maintainers who complained about subject lines.
- Now I realized that you want an actually perfect prefixes,
- not just subsystem ones.
- I tried my best...
- And yes, *I could* (at least half-)automate it.
- Impossible is nothing! :)
-
-
- tools/testing/selftests/futex/include/atomic.h        | 2 +-
- tools/testing/selftests/futex/include/futextest.h     | 2 +-
- tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c | 2 +-
- tools/testing/selftests/vDSO/parse_vdso.c             | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/futex/include/atomic.h b/tools/testing/selftests/futex/include/atomic.h
-index 428bcd921bb5..23703ecfcd68 100644
---- a/tools/testing/selftests/futex/include/atomic.h
-+++ b/tools/testing/selftests/futex/include/atomic.h
-@@ -5,7 +5,7 @@
-  *
-  * DESCRIPTION
-  *      GCC atomic builtin wrappers
-- *      http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
-+ *      https://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
-  *
-  * AUTHOR
-  *      Darren Hart <dvhart@linux.intel.com>
-diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testing/selftests/futex/include/futextest.h
-index ddbcfc9b7bac..2a210c482f7b 100644
---- a/tools/testing/selftests/futex/include/futextest.h
-+++ b/tools/testing/selftests/futex/include/futextest.h
-@@ -211,7 +211,7 @@ futex_cmp_requeue_pi(futex_t *uaddr, futex_t val, futex_t *uaddr2, int nr_wake,
-  * @newval:	The new value to try and assign the futex
-  *
-  * Implement cmpxchg using gcc atomic builtins.
-- * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
-+ * https://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
-  *
-  * Return the old futex value.
-  */
-diff --git a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-index c1f324afdbf3..946c52e1f327 100644
---- a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-+++ b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-@@ -12,7 +12,7 @@
-  * times. Then check the output count from perf is as expected.
-  *
-  * Based on:
-- *   http://ozlabs.org/~anton/junkcode/perf_events_example1.c
-+ *   https://ozlabs.org/~anton/junkcode/perf_events_example1.c
-  *
-  * Copyright (C) 2018 Michael Neuling, IBM Corporation.
-  */
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 413f75620a35..3413fc00c835 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -5,7 +5,7 @@
-  * This code is meant to be linked in to various programs that run on Linux.
-  * As such, it is available with as few restrictions as possible.  This file
-  * is licensed under the Creative Commons Zero License, version 1.0,
-- * available at http://creativecommons.org/publicdomain/zero/1.0/legalcode
-+ * available at https://creativecommons.org/publicdomain/zero/1.0/legalcode
-  *
-  * The vDSO is a regular ELF DSO that the kernel maps into user space when
-  * it starts a program.  It works equally well in statically and dynamically
--- 
-2.27.0
-
+  .git/rebase-apply/patch:14: trailing whitespace.
+	  iadev = INPH_IA_DEV(dev);
+  .git/rebase-apply/patch:23: trailing whitespace.
+	  writel(0, iadev->reg+IPHASE5575_EXT_RESET);
+  .git/rebase-apply/patch:32: trailing whitespace.
+	  udelay(5);
+  warning: squelched 2 whitespace errors
+  warning: 7 lines add whitespace errors.
+  Applying: PCI: Change PCIBIOS_SUCCESSFUL to 0
+  .git/rebase-apply/patch:37: trailing whitespace.
+  struct pci_ops apecs_pci_ops =
+  .git/rebase-apply/patch:50: trailing whitespace.
+  static int
+  .git/rebase-apply/patch:59: trailing whitespace.
+  struct pci_ops cia_pci_ops =
+  .git/rebase-apply/patch:94: trailing whitespace.
+  static int
+  .git/rebase-apply/patch:103: trailing whitespace.
+  struct pci_ops lca_pci_ops =
+  warning: squelched 10 whitespace errors
+  warning: 15 lines add whitespace errors.
