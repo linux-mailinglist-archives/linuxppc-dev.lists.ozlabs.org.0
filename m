@@ -1,91 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8CD21DFA7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 20:29:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F90A21DFB7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 20:31:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5By44mLwzDqRD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 04:29:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5C0p1jrHzDqT9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 04:31:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Bvv24vbzDqLK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 04:27:39 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06DI3PoD036740; Mon, 13 Jul 2020 14:27:26 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3276ag04jk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 14:27:25 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06DIQYnf105762;
- Mon, 13 Jul 2020 14:27:25 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3276ag04hf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 14:27:25 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06DIJWnY003604;
- Mon, 13 Jul 2020 18:27:23 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma02fra.de.ibm.com with ESMTP id 327527th2h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 18:27:22 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06DIRJxS46399502
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Jul 2020 18:27:20 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB27252051;
- Mon, 13 Jul 2020 18:27:19 +0000 (GMT)
-Received: from [9.85.72.195] (unknown [9.85.72.195])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 27B2A52050;
- Mon, 13 Jul 2020 18:27:15 +0000 (GMT)
-Subject: Re: [PATCH v2 0/3] Power10 basic energy management
-To: Nicholas Piggin <npiggin@gmail.com>, benh@kernel.crashing.org,
- ego@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, mikey@neuling.org, mpe@ellerman.id.au,
- paulus@samba.org, pratik.r.sampat@gmail.com,
- ravi.bangoria@linux.ibm.com, svaidy@linux.ibm.com
-References: <20200710052207.12003-1-psampat@linux.ibm.com>
- <1594617564.57k8bsyfd0.astroid@bobo.none>
- <bc6494c0-9a17-2416-c6cc-15612020f497@linux.ibm.com>
- <1594658947.97ndhsx6xh.astroid@bobo.none>
-From: Pratik Sampat <psampat@linux.ibm.com>
-Message-ID: <cce3c51b-8614-5f4b-89ea-be5872bdcd7c@linux.ibm.com>
-Date: Mon, 13 Jul 2020 23:57:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Bvy29ydzDqLK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 04:27:41 +1000 (AEST)
+Received: from gaia (unknown [95.146.230.158])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7D6DB206F5;
+ Mon, 13 Jul 2020 18:27:38 +0000 (UTC)
+Date: Mon, 13 Jul 2020 19:27:36 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: Re: /sys/kernel/debug/kmemleak empty despite kmemleak reports
+Message-ID: <20200713182735.GH15829@gaia>
+References: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
+ <20200709175705.GD6579@gaia>
+ <276e4bce-3e21-8020-9a1c-729a6cafcdd3@molgen.mpg.de>
 MIME-Version: 1.0
-In-Reply-To: <1594658947.97ndhsx6xh.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-13_15:2020-07-13,
- 2020-07-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 phishscore=0 priorityscore=1501
- clxscore=1015 lowpriorityscore=0 suspectscore=0 spamscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007130129
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <276e4bce-3e21-8020-9a1c-729a6cafcdd3@molgen.mpg.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,57 +49,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jul 09, 2020 at 11:08:52PM +0200, Paul Menzel wrote:
+> Am 09.07.20 um 19:57 schrieb Catalin Marinas:
+> > On Thu, Jul 09, 2020 at 04:37:10PM +0200, Paul Menzel wrote:
+> > > Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, the
+> > > file does not contain more information.
+> > > 
+> > > > $ dmesg
+> > > > […] > [48662.953323] perf: interrupt took too long (2570 > 2500), lowering kernel.perf_event_max_sample_rate to 77750
+> > > > [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
+> > > > [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
+> > > > [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
+> > > > [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
+> > > > [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
+> > > > [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
+> > > > [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
+> > > > [61608.697728] Can't find PMC that caused IRQ
+> > > > [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > > > [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
+> > > > [92849.380672] FS-Cache: Loaded
+> > > > [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
+> > > > [92849.595974] NFS: Registering the id_resolver key type
+> > > > [92849.596000] Key type id_resolver registered
+> > > > [92849.596000] Key type id_legacy registered
+> > > > [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > > > [106904.323471] Can't find PMC that caused IRQ
+> > > > [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > > > [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+> > > > $ sudo cat /sys/kernel/debug/kmemleak
+> > 
+> > When they are no longer present, they are most likely false positives.
+> 
+> How can this be? Shouldn’t the false positive also be logged in
+> `/sys/kernel/debug/kmemleak`?
 
+Sorry, I wasn't clear. It can be a transient false positive. At a
+subsequent scan, kmemleak found pointer referring the previously
+reported objects and no longer shows them.
 
-On 13/07/20 10:20 pm, Nicholas Piggin wrote:
-> Excerpts from Pratik Sampat's message of July 13, 2020 8:02 pm:
->> Thank you for your comments,
->>
->> On 13/07/20 10:53 am, Nicholas Piggin wrote:
->>> Excerpts from Pratik Rajesh Sampat's message of July 10, 2020 3:22 pm:
->>>> Changelog v1 --> v2:
->>>> 1. Save-restore DAWR and DAWRX unconditionally as they are lost in
->>>> shallow idle states too
->>>> 2. Rename pnv_first_spr_loss_level to pnv_first_fullstate_loss_level to
->>>> correct naming terminology
->>>>
->>>> Pratik Rajesh Sampat (3):
->>>>     powerpc/powernv/idle: Exclude mfspr on HID1,4,5 on P9 and above
->>>>     powerpc/powernv/idle: save-restore DAWR0,DAWRX0 for P10
->>>>     powerpc/powernv/idle: Rename pnv_first_spr_loss_level variable
->>>>
->>>>    arch/powerpc/platforms/powernv/idle.c | 34 +++++++++++++++++----------
->>>>    1 file changed, 22 insertions(+), 12 deletions(-)
->>> These look okay to me, but the CPU_FTR_ARCH_300 test for
->>> pnv_power9_idle_init() is actually wrong, it should be a PVR test
->>> because idle is not completely architected (not even shallow stop
->>> states, unfortunately).
->>>
->>> It doesn't look like we support POWER10 idle correctly yet, and on older
->>> kernels it wouldn't work even if we fixed newer, so ideally the PVR
->>> check would be backported as a fix in the front of the series.
->>>
->>> Sadly, we have no OPAL idle driver yet. Hopefully we will before the
->>> next processor shows up :P
->>>
->>> Thanks,
->>> Nick
->> So if I understand this correctly, in powernv/idle.c where we check for
->> CPU_FTR_ARCH_300, we should rather be making a pvr_version_is(PVR_POWER9)
->> check instead?
->>
->> Of course, the P10 PVR and its relevant checks will have to be added then too.
-> Yes I think so, unfortunately.
->
-> Thanks,
-> Nick
+> > Was this triggered during boot? Or under some workload?
+> 
+> From the timestamps it looks like under some load.
 
-Sure, I'll add these checks in.
+Was it during boot? I put a delay of 60s to avoid this but, depending on
+the platform, it can still trigger.
 
-Thanks,
-Pratik
-
+-- 
+Catalin
