@@ -1,48 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF3621CD87
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 05:09:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FC021CDAE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 05:25:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B4pX96mlHzDqTg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 13:09:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B4pvN4ymlzDqTJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 13:25:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.43;
- helo=out30-43.freemail.mail.aliyun.com;
- envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.alibaba.com
-Received: from out30-43.freemail.mail.aliyun.com
- (out30-43.freemail.mail.aliyun.com [115.124.30.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B4pVQ5NggzDqT9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 13:07:41 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01355;
- MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
- TI=SMTPD_---0U2UhFSb_1594609639; 
-Received: from 30.25.206.74(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0U2UhFSb_1594609639) by smtp.aliyun-inc.com(127.0.0.1);
- Mon, 13 Jul 2020 11:07:21 +0800
-Subject: Re: [PATCH v4 5/7] KVM: PPC: clean up redundant kvm_run parameters in
- assembly
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
- <20200427043514.16144-6-tianjia.zhang@linux.alibaba.com>
- <20200526055924.GD282305@thinks.paulus.ozlabs.org>
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <c3540a4b-a568-3428-0427-ae2a1f30dbe2@linux.alibaba.com>
-Date: Mon, 13 Jul 2020 11:07:18 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20200526055924.GD282305@thinks.paulus.ozlabs.org>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 7bit
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4B4ps667TpzDqTC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 13:23:52 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EA64C1FB;
+ Sun, 12 Jul 2020 20:23:49 -0700 (PDT)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.87.124])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 92B753F7D8;
+ Sun, 12 Jul 2020 20:23:35 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V5 0/4] mm/debug_vm_pgtable: Add some more tests
+Date: Mon, 13 Jul 2020 08:53:03 +0530
+Message-Id: <1594610587-4172-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,104 +41,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
- heiko.carstens@de.ibm.com, peterx@redhat.com, linux-mips@vger.kernel.org,
- hpa@zytor.com, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- frankja@linux.ibm.com, chenhuacai@gmail.com, maz@kernel.org, joro@8bytes.org,
- x86@kernel.org, borntraeger@de.ibm.com, mingo@redhat.com,
- julien.thierry.kdev@gmail.com, thuth@redhat.com, gor@linux.ibm.com,
- suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org, bp@alien8.de,
- tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, jmattson@google.com,
- tsbogend@alpha.franken.de, cohuck@redhat.com, christoffer.dall@arm.com,
- sean.j.christopherson@intel.com, linux-kernel@vger.kernel.org,
- james.morse@arm.com, pbonzini@redhat.com, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, agordeev@linux.ibm.com,
+ Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, ziy@nvidia.com,
+ linux-snps-arc@lists.infradead.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, cai@lca.pw,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, gerald.schaefer@de.ibm.com,
+ christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ aneesh.kumar@linux.ibm.com, Borislav Petkov <bp@alien8.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series adds some more arch page table helper validation tests which
+are related to core and advanced memory functions. This also creates a
+documentation, enlisting expected semantics for all page table helpers as
+suggested by Mike Rapoport previously (https://lkml.org/lkml/2020/1/30/40).
 
+There are many TRANSPARENT_HUGEPAGE and ARCH_HAS_TRANSPARENT_HUGEPAGE_PUD
+ifdefs scattered across the test. But consolidating all the fallback stubs
+is not very straight forward because ARCH_HAS_TRANSPARENT_HUGEPAGE_PUD is
+not explicitly dependent on ARCH_HAS_TRANSPARENT_HUGEPAGE.
 
-On 2020/5/26 13:59, Paul Mackerras wrote:
-> On Mon, Apr 27, 2020 at 12:35:12PM +0800, Tianjia Zhang wrote:
->> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
->> structure. For historical reasons, many kvm-related function parameters
->> retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
->> patch does a unified cleanup of these remaining redundant parameters.
-> 
-> Some of these changes don't look completely correct to me, see below.
-> If you're expecting these patches to go through my tree, I can fix up
-> the patch and commit it (with you as author), noting the changes I
-> made in the commit message.  Do you want me to do that?
-> 
+Tested on arm64, x86 platforms but only build tested on all other enabled
+platforms through ARCH_HAS_DEBUG_VM_PGTABLE i.e powerpc, arc, s390. The
+following failure on arm64 still exists which was mentioned previously. It
+will be fixed with the upcoming THP migration on arm64 enablement series.
 
-I am very glad for you to do so, although I have submitted a new version 
-of patch, I still prefer you to fix up and commit it.
+WARNING .... mm/debug_vm_pgtable.c:866 debug_vm_pgtable+0x940/0xa54
+WARN_ON(!pmd_present(pmd_mkinvalid(pmd_mkhuge(pmd))))
 
-Thanks and best,
-Tianjia
+This series is based on v5.8-rc5.
 
->> diff --git a/arch/powerpc/kvm/book3s_interrupts.S b/arch/powerpc/kvm/book3s_interrupts.S
->> index f7ad99d972ce..0eff749d8027 100644
->> --- a/arch/powerpc/kvm/book3s_interrupts.S
->> +++ b/arch/powerpc/kvm/book3s_interrupts.S
->> @@ -55,8 +55,7 @@
->>    ****************************************************************************/
->>   
->>   /* Registers:
->> - *  r3: kvm_run pointer
->> - *  r4: vcpu pointer
->> + *  r3: vcpu pointer
->>    */
->>   _GLOBAL(__kvmppc_vcpu_run)
->>   
->> @@ -68,8 +67,8 @@ kvm_start_entry:
->>   	/* Save host state to the stack */
->>   	PPC_STLU r1, -SWITCH_FRAME_SIZE(r1)
->>   
->> -	/* Save r3 (kvm_run) and r4 (vcpu) */
->> -	SAVE_2GPRS(3, r1)
->> +	/* Save r3 (vcpu) */
->> +	SAVE_GPR(3, r1)
->>   
->>   	/* Save non-volatile registers (r14 - r31) */
->>   	SAVE_NVGPRS(r1)
->> @@ -82,11 +81,11 @@ kvm_start_entry:
->>   	PPC_STL	r0, _LINK(r1)
->>   
->>   	/* Load non-volatile guest state from the vcpu */
->> -	VCPU_LOAD_NVGPRS(r4)
->> +	VCPU_LOAD_NVGPRS(r3)
->>   
->>   kvm_start_lightweight:
->>   	/* Copy registers into shadow vcpu so we can access them in real mode */
->> -	mr	r3, r4
->> +	mr	r4, r3
-> 
-> This mr doesn't seem necessary.
-> 
->>   	bl	FUNC(kvmppc_copy_to_svcpu)
->>   	nop
->>   	REST_GPR(4, r1)
-> 
-> This should be loading r4 from GPR3(r1), not GPR4(r1) - which is what
-> REST_GPR(4, r1) will do.
-> 
-> Then, in the file but not in the patch context, there is this line:
-> 
-> 	PPC_LL	r3, GPR4(r1)		/* vcpu pointer */
-> 
-> where once again GPR4 needs to be GPR3.
-> 
->> @@ -191,10 +190,10 @@ after_sprg3_load:
->>   	PPC_STL	r31, VCPU_GPR(R31)(r7)
->>   
->>   	/* Pass the exit number as 3rd argument to kvmppc_handle_exit */
-> 
-> The comment should be modified to say "2nd" instead of "3rd",
-> otherwise it is confusing.
-> 
-> The rest of the patch looks OK.
-> 
-> Paul.
-> 
+Changes in V5:
+
+- Dropped RANDOM_ORVALUE from hugetlb_advanced_tests()
+- Folded in Mike's patch for the rst document
+- Fixed typos in the rst document
+
+Changes in V4: (https://patchwork.kernel.org/project/linux-mm/list/?series=313173)
+
+- Replaced READ_ONCE() with ptep_get() while accessing PTE pointers per Christophe
+- Fixed function argument alignments per Christophe
+
+Changes in V3: (https://patchwork.kernel.org/project/linux-mm/list/?series=302483)
+
+- Replaced HAVE_ARCH_SOFT_DIRTY with MEM_SOFT_DIRTY
+- Added HAVE_ARCH_HUGE_VMAP checks in pxx_huge_tests() per Gerald
+- Updated documentation for pmd_thp_tests() per Zi Yan
+- Replaced READ_ONCE() with huge_ptep_get() per Gerald
+- Added pte_mkhuge() and masking with PMD_MASK per Gerald
+- Replaced pte_same() with holding pfn check in pxx_swap_tests()
+- Added documentation for all (#ifdef #else #endif) per Gerald
+- Updated pmd_protnone_tests() per Gerald
+- Updated HugeTLB PTE creation in hugetlb_advanced_tests() per Gerald
+- Replaced [pmd|pud]_mknotpresent() with [pmd|pud]_mkinvalid()
+- Added has_transparent_hugepage() check for PMD and PUD tests
+- Added a patch which debug prints all individual tests being executed
+- Updated documentation for renamed [pmd|pud]_mkinvalid() helpers
+
+Changes in V2: (https://patchwork.kernel.org/project/linux-mm/list/?series=260573)
+
+- Dropped CONFIG_ARCH_HAS_PTE_SPECIAL per Christophe
+- Dropped CONFIG_NUMA_BALANCING per Christophe
+- Dropped CONFIG_HAVE_ARCH_SOFT_DIRTY per Christophe
+- Dropped CONFIG_MIGRATION per Christophe
+- Replaced CONFIG_S390 with __HAVE_ARCH_PMDP_INVALIDATE
+- Moved page allocation & free inside swap_migration_tests() per Christophe
+- Added CONFIG_TRANSPARENT_HUGEPAGE to protect pfn_pmd()
+- Added CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD to protect pfn_pud()
+- Added a patch for other arch advanced page table helper tests
+- Added a patch creating a documentation for page table helper semantics
+
+Changes in V1: (https://patchwork.kernel.org/patch/11408253/)
+
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Kirill A. Shutemov <kirill@shutemov.name>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: x86@kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (4):
+  mm/debug_vm_pgtable: Add tests validating arch helpers for core MM features
+  mm/debug_vm_pgtable: Add tests validating advanced arch page table helpers
+  mm/debug_vm_pgtable: Add debug prints for individual tests
+  Documentation/mm: Add descriptions for arch page table helpers
+
+ Documentation/vm/arch_pgtable_helpers.rst | 258 +++++++++
+ mm/debug_vm_pgtable.c                     | 666 +++++++++++++++++++++-
+ 2 files changed, 922 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/vm/arch_pgtable_helpers.rst
+
+-- 
+2.20.1
+
