@@ -1,87 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1730F21D5FA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 14:30:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9EE21D602
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 14:34:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B52zP4Zy2zDqRM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 22:30:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B534G6Rd5zDqQ4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jul 2020 22:34:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B52sy1ZHczDqCV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 22:25:25 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06DC2QUC089714; Mon, 13 Jul 2020 08:24:57 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3278qsaxrn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 08:24:57 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06DC5DBg107636;
- Mon, 13 Jul 2020 08:24:56 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3278qsaxpx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 08:24:56 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06DCLFZv024944;
- Mon, 13 Jul 2020 12:24:51 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma02fra.de.ibm.com with ESMTP id 327527t79u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 13 Jul 2020 12:24:51 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06DCOmdT44171464
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 13 Jul 2020 12:24:48 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C19611C054;
- Mon, 13 Jul 2020 12:24:48 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC6C711C066;
- Mon, 13 Jul 2020 12:24:41 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.142.243])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 13 Jul 2020 12:24:41 +0000 (GMT)
-Message-ID: <1594643081.14405.87.camel@linux.ibm.com>
-Subject: Re: [PATCH 18/20] Documentation: security/keys: eliminate
- duplicated word
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Date: Mon, 13 Jul 2020 08:24:41 -0400
-In-Reply-To: <20200707180414.10467-19-rdunlap@infradead.org>
-References: <20200707180414.10467-1-rdunlap@infradead.org>
- <20200707180414.10467-19-rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-13_10:2020-07-13,
- 2020-07-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0
- bulkscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0 spamscore=0
- priorityscore=1501 mlxlogscore=814 phishscore=0 impostorscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007130087
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B53216G7WzDqC6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 22:32:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=huZjoq5T; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B531z0mNJz9sQt;
+ Mon, 13 Jul 2020 22:32:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594643545;
+ bh=MqWMoeDNwlUAHlcs0wWO5CUaK7kc9jQIHbwysyqNKzE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=huZjoq5TXwq98uPA/wjGPFbbrESigMSKQbqC1SI/KU7B00Nn3h+zEMxwkqmlAUZL+
+ CC65/DsbXm11/6KxT8nk2apPPcXW3uA7sT+WdfsSMSac1SdlqQJQf4emNH06cGQmro
+ a0iHEaquMXdj6FSQCHaWaHyC0umMMAOXCfJqn1Y2vafN0UOMJCyL1aU8P9juC6TCpI
+ FVUzJi1QCXPtSNISS2qaoIR3GaBo4TtzwVrg3jxn9VkfBL/55qy+wG7Rmh9HqYkj14
+ vYQIAeiEqi4xeJE6EIrbMWxJ2kXganV4j2SeT9FWNGH+EVc84Ml7CyErbc9iFiWRJ3
+ UTZk9VBuwglWg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH] powerpc/boot: add DTB to 'targets'
+In-Reply-To: <20200713075629.5948-1-masahiroy@kernel.org>
+References: <20200713075629.5948-1-masahiroy@kernel.org>
+Date: Mon, 13 Jul 2020 22:34:43 +1000
+Message-ID: <87sgdvvbj0.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,45 +57,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
- linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
- dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
- Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
- Pavel Machek <pavel@ucw.cz>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
- linux-s390@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
- linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Halil Pasic <pasic@linux.ibm.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
- Mali DP Maintainers <malidp@foss.arm.com>,
- Derek Kiernan <derek.kiernan@xilinx.com>,
- Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
- Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
- Michal Marek <michal.lkml@markovi.net>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Pierre Morel <pmorel@linux.ibm.com>, Douglas Anderson <dianders@chromium.org>,
- Wolfram Sang <wsa@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Jason Wessel <jason.wessel@windriver.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>, Dan Murphy <dmurphy@ti.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, Arnd Bergmann <arnd@arndb.de>,
+ Masahiro Yamada <masahiroy@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-07-07 at 11:04 -0700, Randy Dunlap wrote:
-> Drop the doubled word "in".
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Masahiro Yamada <masahiroy@kernel.org> writes:
+> PowerPC always re-builds DTB even if nothing has been changed.
+>
+> As for other architectures, arch/*/boot/dts/Makefile builds DTB by
+> using the dtb-y syntax.
+>
+> In contrast, arch/powerpc/boot/dts/(fsl/)Makefile does nothing unless
+> CONFIG_OF_ALL_DTBS is defined. Instead, arch/powerpc/boot/Makefile
+> builds DTB on demand. You need to add DTB to 'targets' explicitly
+> so .*.cmd files are included.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+> I want to apply this to kbuild tree because this is needed
+> to fix the build error caused by another kbuild patch:
+>
+> https://lkml.org/lkml/2020/7/7/134
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+OK.
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+
+cheers
+
+> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> index 63d7456b9518..8792323707fd 100644
+> --- a/arch/powerpc/boot/Makefile
+> +++ b/arch/powerpc/boot/Makefile
+> @@ -366,6 +366,8 @@ initrd-y := $(patsubst zImage%, zImage.initrd%, \
+>  		$(patsubst treeImage%, treeImage.initrd%, $(image-y)))))
+>  initrd-y := $(filter-out $(image-y), $(initrd-y))
+>  targets	+= $(image-y) $(initrd-y)
+> +targets += $(foreach x, dtbImage uImage cuImage simpleImage treeImage, \
+> +		$(patsubst $(x).%, dts/%.dtb, $(filter $(x).%, $(image-y))))
+>  
+>  $(addprefix $(obj)/, $(initrd-y)): $(obj)/ramdisk.image.gz
+>  
+> -- 
+> 2.25.1
