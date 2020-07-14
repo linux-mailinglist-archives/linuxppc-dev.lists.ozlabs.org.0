@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7D821E9CF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 09:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB2E21E9F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 09:23:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5Wwp0wG9zDqcP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 17:14:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5X7B04TNzDqWx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 17:23:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=jgCK4YPr; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20150623 header.b=ELI3JQIu; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Wts5q1gzDqRp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 17:12:51 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id t6so3490517plo.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 00:12:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5X5B2V4VzDqW3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 17:21:49 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id k5so1105335pjg.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 00:21:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=GHa/UMhfw9KboeDXbUXD3oxQgythQz002gcAyatKj40=;
- b=jgCK4YPr9hsnv17HJoHnYZsTiQ59K0Cy0C5uhPmQwmjeUxlLClpokAa1owA5murzg5
- XsLOEofUU9U0wyZXeRoSh0r9M3mkLpX1I2mQ9ccqFUUAWjXifmF2VA/To07LCd3hNPJa
- CP2t54wGjvilojpM3+TWUqNx+eS8pRisis5KQ/VPm4mDhkpqS2RkKxiurTHlzHgfDf3U
- tsHCZkodtFeaeeVjgt3DBqORJ2qOUY2txj0Ze3gp9ju+rHKAZiuuTbjCBW+oAfS1FloS
- isiwdz1wObIf9ds5da/V5cvG6jmgMKqmE0+YQrx2NT429KeIzdrGv6uGSL3aQVVvx9mk
- hJkQ==
+ bh=2bpgJKCJpttTJWtnuu2M2a+0WQJ/9a2t9ZHq4o0/nQg=;
+ b=ELI3JQIuxkWQvEIdazvkEi+BxyFsyFgFV7bIUBirquvUvQoVH2tlhtYy9AumF8yQAC
+ MKqz+4XWFFmp8vPn3OTd/dlIhC3OndiNz8SpsHHwcMoRmJbYv1RFZSdU8Iqb4fGT58jE
+ JvIiqR76t1rQHeDpaGtaB97M4nMThs5PEPjv0IQDgPvDg+TdCwZSgWVDdewBb/N6H1GT
+ IRgF24VlRijImQhupWpWofw0qQtECrOMijqtOuOjoBHNSvyYk4Lrfvu1U/mX/yAqEqI4
+ Z0TboeAsL+KPecxBtm8bmYdxDNg5zT/CKCJ/T6qbkCq+0zCH7l7HDfbX8ob12U9CSsXS
+ xQoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=GHa/UMhfw9KboeDXbUXD3oxQgythQz002gcAyatKj40=;
- b=UkmGg2W7Jgd6ZdF/VFDZ5jTRknMEoarUca1aCDONu5j+HH9A0yhigrZaQvkedG+Si2
- sao31E0+I/0k0pE7x10k4mUVZ8D6MNpOFChqgJR887BsP5FqmuoP3nDVIXAUrzSOMKdv
- D5dhUnCgI7he2E1hXP0lENnvNsuGokk5yp9Go5CzCCpRV07Bx9e+o3ngkkFy3NyhB4wv
- TdIQcNmTUw5NU3oEwkytyFgrAVB4kCTDd2FWTC6vkq9Cjho0P6oWZdmGzj6BCY+eVhbN
- I9YzrqquHPmihY0fU3tAjzHDU8oZ71GDZcKiuGQjoc1LkDnrczpIP6KLb/csJy87UqnV
- BV9g==
-X-Gm-Message-State: AOAM533iLv00Di3oSP2MCNxGpAuPxOAhk3bfGXUEMKWqTbX28rTQ2xC4
- y1Iq7fntlBfuRIF7J0nUps4new==
-X-Google-Smtp-Source: ABdhPJxa5VfG6L6eXQDTu5cNxMWezD6VxLQX894+VIA7txo1vKde2ZlnvK62caW5Tezr+skb/hr+Ug==
-X-Received: by 2002:a17:902:547:: with SMTP id
- 65mr2738152plf.191.1594710769340; 
- Tue, 14 Jul 2020 00:12:49 -0700 (PDT)
+ bh=2bpgJKCJpttTJWtnuu2M2a+0WQJ/9a2t9ZHq4o0/nQg=;
+ b=aRa7RVQRnL7TxpkEk/Wf8EPT00KAPnaBOD/nh+x140p33oOqh8mspoucHynXHhE7n6
+ E+aZn+VF7OeBi6XZzxvzbrKcgl7Ttsa9Ow31lEuTNsspub0s/v8aKsHW4/cYk/EosgXz
+ oVZhqEJt2r1t1+Yst6JHLGzYb2qcBxY7t3jj5GOMXkccKNW0ucXdUPN5N5BJoSilysZr
+ sQKAshIGuzFjCmcBIn/aT1SrglLxAdGFEZSQ8bMugAv9ke2LbLrVe3tmem0/ot6hM23k
+ IHnQl0eW3sJtnyjBcZBnYOg45QDx4XZkF2oqanc5ao0XImJbVEiQZ1A9bF1OM7UUcgYU
+ CeVg==
+X-Gm-Message-State: AOAM533Gzh9ewuEZpBXDqhQFzWGD8n4/yFgGGQASBqcQS1zhMsAkDDSa
+ AFNY47lvoZg5eDCWmPcE4pZfGUGkFrcNig==
+X-Google-Smtp-Source: ABdhPJz7lk1rQh8DRZDFd3hy8o8JROXguRm0B8PdfnTMLdh2PG9VFDQqnLa4sDgWWzu8+4MaVg65yA==
+X-Received: by 2002:a17:90a:728d:: with SMTP id
+ e13mr3396169pjg.51.1594711306207; 
+ Tue, 14 Jul 2020 00:21:46 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id 66sm15775112pfd.93.2020.07.14.00.12.44
+ by smtp.gmail.com with ESMTPSA id nh14sm1454716pjb.4.2020.07.14.00.21.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jul 2020 00:12:48 -0700 (PDT)
-Subject: Re: [PATCH 4/5] dma-mapping: add a dma_ops_bypass flag to struct
- device
-To: Christoph Hellwig <hch@lst.de>
-References: <20200708152449.316476-1-hch@lst.de>
- <20200708152449.316476-5-hch@lst.de>
- <9bff7460-e6fa-f765-dcb4-cc96eb86d92c@ozlabs.ru>
- <20200714070757.GA776@lst.de>
+ Tue, 14 Jul 2020 00:21:45 -0700 (PDT)
+Subject: Re: [PATCH 03/15] powerpc/powernv/pci: Add explicit tracking of the
+ DMA setup state
+To: Oliver O'Halloran <oohall@gmail.com>
+References: <20200710052340.737567-1-oohall@gmail.com>
+ <20200710052340.737567-4-oohall@gmail.com>
+ <ee5a00db-badd-12fe-1c46-eaba5afc8dea@ozlabs.ru>
+ <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -143,12 +143,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <4883e908-2e8d-6c13-6e28-154aa8ab3a78@ozlabs.ru>
-Date: Tue, 14 Jul 2020 17:12:42 +1000
+Message-ID: <34f7eea2-4ace-9931-7b5f-98ec159f3532@ozlabs.ru>
+Date: Tue, 14 Jul 2020 17:21:42 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200714070757.GA776@lst.de>
+In-Reply-To: <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -163,63 +163,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Jesper Dangaard Brouer <brouer@redhat.com>,
- Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 14/07/2020 17:07, Christoph Hellwig wrote:
-> On Mon, Jul 13, 2020 at 02:59:39PM +1000, Alexey Kardashevskiy wrote:
+On 14/07/2020 15:58, Oliver O'Halloran wrote:
+> On Tue, Jul 14, 2020 at 3:37 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
 >>
->>
->> On 09/07/2020 01:24, Christoph Hellwig wrote:
->>> Several IOMMU drivers have a bypass mode where they can use a direct
->>> mapping if the devices DMA mask is large enough.  Add generic support
->>> to the core dma-mapping code to do that to switch those drivers to
->>> a common solution.
+>> On 10/07/2020 15:23, Oliver O'Halloran wrote:
+>>> There's an optimisation in the PE setup which skips performing DMA
+>>> setup for a PE if we only have bridges in a PE. The assumption being
+>>> that only "real" devices will DMA to system memory, which is probably
+>>> fair. However, if we start off with only bridge devices in a PE then
+>>> add a non-bridge device the new device won't be able to use DMA  because
+>>> we never configured it.
 >>>
->>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>> ---
->>>  include/linux/device.h |  8 +++++
->>>  kernel/dma/Kconfig     |  8 +++++
->>>  kernel/dma/mapping.c   | 74 +++++++++++++++++++++++++++++-------------
->>>  3 files changed, 68 insertions(+), 22 deletions(-)
->>>
->>> diff --git a/include/linux/device.h b/include/linux/device.h
->>> index 4c4af98321ebd6..1f71acf37f78d7 100644
->>> --- a/include/linux/device.h
->>> +++ b/include/linux/device.h
->>> @@ -523,6 +523,11 @@ struct dev_links_info {
->>>   *		  sync_state() callback.
->>>   * @dma_coherent: this particular device is dma coherent, even if the
->>>   *		architecture supports non-coherent devices.
->>> + * @dma_ops_bypass: If set to %true then the dma_ops are bypassed for the
->>> + *		streaming DMA operations (->map_* / ->unmap_* / ->sync_*),
->>> + *		and optionall (if the coherent mask is large enough) also
+>>> Fix this (admittedly pretty weird) edge case by tracking whether we've done
+>>> the DMA setup for the PE or not. If a non-bridge device is added to the PE
+>>> (via rescan or hotplug, or whatever) we can set up DMA on demand.
 >>
->>
->> s/optionall/optional/g
->>
->> Otherwise the series looks good and works well on powernv and pseries.
->> Thanks,
+>> So hotplug does not work on powernv then, right? I thought you tested it
+>> a while ago, or this patch is the result of that attempt? If it is, then
 > 
-> Can you give a formal ACK?
+> It mostly works. Just the really niche case of hot plugging a bridge,
+> then later on hot plugging a device into the same bus which wouldn't
+> work.
 
-It did never matter before but sure :)
+Do not you have to have a slot (which is a bridge) for hotplug in the
+first place, to hotplug the bridge?
 
-Tested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> 
+>> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+>>
+>>
+>>> This also means the only remaining user of the old "DMA Weight" code is
+>>> the IODA1 DMA setup code that it was originally added for, which is good.
+>>
+>>
+>> Is ditching IODA1 in the plan? :)
+> 
+> That or separating out the pci_controller_ops for IODA1 and IODA2 so
+> we can stop any IODA2 specific changes from breaking it.
 
-or you want me to reply to individual patches?  Thanks,
+Is IODA1 tested at all these days? Or, is anyone running upstream
+kernels anywhere and keeps shouting when it does not work on IODA1? Thanks,
 
+
+
+> For the most
+> part keeping around IODA1 support isn't hurting anyone, but I wanted
+> to re-work how the BDFN->PE assignment works so that we'd delay
+> assigning a BDFN to a PE until the device is probed. Right now when
+> we're configuring the PE for a bus we map all 255 devfn's to that PE.
+> This is mostly fine, but if you do a bus rescan and there's no device
+> present we'll get a spurious EEH on that PE since the PHB sees that
+> there's no device responding to the CFG cycle. We stop the spurious
+> EEH freeze today by only allowing config cycles if we can find a
+> pci_dn for that bdfn, but I want to get rid of pci_dn.
+> 
+> Mapping each BDFN to a PE after the device is probed is easy enough to
+> do on PHB3 and above since the mapping is handled by an in-memory
+> table which is indexed by the BDFN. Earlier PHBs (i.e. IODA1) use a
+> table of bask & mask values which match on the BDFN, so assigning a
+> whole bus at once is easy, but adding individual BDFNs is hard. It's
+> still possible to do in the HW, but the way the OPAL API works makes
+> it impossible.
+> 
+>>>
+>>> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+>>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+>>> ---
+>>> Alexey, do we need to have the IOMMU API stuff set/clear this flag?
+>>
+>>
+>> I'd say no as that API only cares if a device is in a PE and for those
+>> the PE DMA setup  optimization is skipped. Thanks,
+> 
+> Ok cool.
+> 
 
 -- 
 Alexey
