@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2ED21FD68
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 21:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E45321FD6C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 21:33:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5rHd2HxtzDqh2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:31:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5rKT4JpvzDqfv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:33:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
- (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk;
- envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=armlinux.org.uk
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
- header.s=pandora-2019 header.b=pfNUm5sb; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=prJBLy+H; 
  dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
- [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5mZy5FMDzDqbG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:44:58 +1000 (AEST)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5mcs54MmzDqbG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:46:36 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=uxJ0B4NAox0pi048pE6kICiISqhTtULxJ9O1+AK0TzY=; b=pfNUm5sbcnKckbbkuHgpG1iUb
- PG9jFr4aLHtB0TNVGz7S+w7TZeuO8wzbUK6HYdd9o0z98jWuTA0hxnSx79z5aqUzOmzQEE6gYtB1k
- AbmjYvt7SQIAHovkUz5M+dyZnwHMfuh1OaOej9C3YdgUehNEobmexCAmqrslD2JxSn1ySJIM/ASI7
- uDAuZ2Eg5VP0CLP4JEq/Nvug+u9/hGBcAGSyRBRiVLloqHAPSl/MsUpRaZz9dVHSvjHjE4FW1lB25
- n9tNBfwwIM4n5h+ULkbnIEoCH9xoRNhWnlndUCnxL0mIOM59zrkDaM0Ft9W4vyzmWvxCCPRN4HSFx
- /0qyLCjHg==;
-Received: from shell.armlinux.org.uk
- ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39470)
- by pandora.armlinux.org.uk with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <linux@armlinux.org.uk>)
- id 1jvO1J-0005XY-I7; Tue, 14 Jul 2020 17:43:05 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
- (envelope-from <linux@shell.armlinux.org.uk>)
- id 1jvO0z-0007Sh-7G; Tue, 14 Jul 2020 17:42:45 +0100
-Date: Tue, 14 Jul 2020 17:42:45 +0100
-From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To: Peter Zijlstra <peterz@infradead.org>
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=lMfxGNMVoYOEfkBUsJtItE9upelYcUOPHcRW+zyqzic=; b=prJBLy+HldU4/X+cRPRbDZC/QJ
+ LqT18Ym5+qACPv6G2N/gA0B2SEqcOHztarakYVh3lKoPDjh7Wx7TWhdQgrAb0V+SIyEgR6IOA+efj
+ QLxJ+LNEiMx4FycdkDwQET2pBbuT0sNPkTFnqCS/E/kjILJjpoMpPAt7hHMCkEUqZRNlUGEg9cP82
+ F1gZdu6P4cLa0ow/PQ0Nwg9PObddUxnu47kGAounufTQnAk/X0oF+yhcd2ATzKcAkSRswd9HHlMjF
+ kH8TS0yBh2ryX/KDwW/+lNX0sqPd8ClJXOMnhdRUbT7vBsibZZwzuxX5A6winidsAmsyVP2pI9D9R
+ FcEVSYSw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jvO4O-0006OG-EV; Tue, 14 Jul 2020 16:46:16 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id DE1B5305B23;
+ Tue, 14 Jul 2020 18:46:11 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id B969821211CEB; Tue, 14 Jul 2020 18:46:11 +0200 (CEST)
+Date: Tue, 14 Jul 2020 18:46:11 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
  move to kernel proper
-Message-ID: <20200714164245.GE1551@shell.armlinux.org.uk>
+Message-ID: <20200714164611.GA10769@hirez.programming.kicks-ass.net>
 References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
  <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
  <20200714102826.GB4756@willie-the-truck>
  <20200714112927.GV10769@hirez.programming.kicks-ass.net>
  <CAMj1kXGG4vxWrp1de1FxdU=8F4Jof00=T1x-7e+BW7_HP-oZMQ@mail.gmail.com>
  <20200714130109.GX10769@hirez.programming.kicks-ass.net>
+ <20200714163103.GA1472166@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200714130109.GX10769@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200714163103.GA1472166@linux.intel.com>
 X-Mailman-Approved-At: Wed, 15 Jul 2020 05:16:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,11 +103,10 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
  Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
  Paul Walmsley <paul.walmsley@sifive.com>,
  Heiko Carstens <heiko.carstens@de.ibm.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- Atish Patra <atish.patra@wdc.com>, Will Deacon <will@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>,
- Nayna Jain <nayna@linux.ibm.com>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
+ Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Ley Foon Tan <ley.foon.tan@intel.com>,
  Christian Borntraeger <borntraeger@de.ibm.com>,
  Sami Tolvanen <samitolvanen@google.com>,
  "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
@@ -129,6 +128,7 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>,
  Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
  "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
  "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
  Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
  Albert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <paulmck@kernel.org>,
@@ -143,65 +143,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 14, 2020 at 03:01:09PM +0200, Peter Zijlstra wrote:
-> On Tue, Jul 14, 2020 at 03:19:24PM +0300, Ard Biesheuvel wrote:
-> > So perhaps the answer is to have text_alloc() not with a 'where'
-> > argument but with a 'why' argument. Or more simply, just have separate
-> > alloc/free APIs for each case, with generic versions that can be
-> > overridden by the architecture.
+On Tue, Jul 14, 2020 at 07:31:03PM +0300, Jarkko Sakkinen wrote:
+> On Tue, Jul 14, 2020 at 03:01:09PM +0200, Peter Zijlstra wrote:
+> > to help with text_alloc() usage in generic code, but I think
+> > fundamentally, there's only these two options.
 > 
-> Well, there only seem to be 2 cases here, either the pointer needs to
-> fit in some immediate displacement, or not.
-> 
-> On x86 we seem have the advantage of a fairly large immediate
-> displacement as compared to many other architectures (due to our
-> variable sized instructions). And thus have been fairly liberal with our
-> usage of it (also our indirect jmps/calls suck, double so with
-> RETCH-POLINE).
-> 
-> Still, the indirect jump, as mentioned by Russel should work for
-> arbitrarily placed code for us too.
-> 
-> 
-> So I'm thinking that something like:
-> 
-> enum ptr_type {
-> 	immediate_displacement,
-> 	absolute,
-> };
-> 
-> void *text_alloc(unsigned long size, enum ptr_type type)
-> {
-> 	unsigned long vstart = VMALLOC_START;
-> 	unsigned long vend   = VMALLOC_END;
-> 
-> 	if (type == immediate_displacement) {
-> 		vstart = MODULES_VADDR;
-> 		vend   = MODULES_END;
-> 	}
-> 
-> 	return __vmalloc_node_range(size, TEXT_ALIGN, vstart, vend,
-> 				    GFP_KERNEL, PAGE_KERNEL_EXEC, 0,
-> 				    NUMA_NO_NODE, _RET_IP_);
-> }
-> 
-> void text_free(void *ptr)
-> {
-> 	vfree(ptr);
-> }
+> There is one arch (nios2), which uses a regular kzalloc(). This means
+> that both text_alloc() and text_memfree() need to be weaks symbols and
+> nios2 needs to have overriding text.c to do its thing.
 
-Beware, however, that on 32-bit ARM, if module PLTs are enabled,
-we will try to place the module in the module region (which gives
-best performance) but if that allocation fails, we will fall back
-to placing it in the vmalloc region and using PLTs.
-
-So, for a module allocation, we would need to make up to two calls
-to text_alloc(), once with "immediate_displacement", and if that
-fails and we have PLT support enabled, again with "absolute".
-
-Hence, as other people have said, why module_alloc() would need to
-stay separate.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+IMO nios2 is just broken.
