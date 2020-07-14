@@ -2,64 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958D521F274
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 15:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A485921F428
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:33:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5h9h0HQVzDqfk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 23:26:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5jgZ69b2zDqRk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 00:33:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=weiyongjun1@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=Kh3uWg7u; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5h6v5KT8zDqdS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 23:23:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=T7rggtXykXMc4C3uWwX+AsNgDJpkydxTqpZAtzGfPZw=; b=Kh3uWg7u8XQglQ4xrw+ceXYX8S
- CWYZSH7s+NgPkTUhlq3N/9wlFTdrJWTUnC9eq/G9rVKsKpa3nSNgKcvTJyVzIzkn5nUzA/PZoDzoU
- dLfUT4nS8snnIwOWcrOzkVucwrUhbZdhbvN+5Dr/QZ+Asez6AXurhhpzMkQ2139xhUsSPU2xWIIQQ
- 7gxe6uFmEEyfFAzvaexTRkN7d5JSEbyo9mJKoddyBTvgQyAvEWHAF6x06dSySkk64A+k4SRf2+Nf6
- wB4G28sTRoDwXUGqj2sP0qL2DpJotZ27Aa94peKoOJ0bT/0WvZ+cCmHU5fXW+e2BbzVlAJRePIXXd
- TkX/DowA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jvKuM-0004mD-H6; Tue, 14 Jul 2020 13:23:42 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id BF165302753;
- Tue, 14 Jul 2020 15:23:41 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id AB5BC2BE34E09; Tue, 14 Jul 2020 15:23:41 +0200 (CEST)
-Date: Tue, 14 Jul 2020 15:23:41 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Andy Lutomirski <luto@amacapital.net>
-Subject: Re: [RFC PATCH 7/7] lazy tlb: shoot lazies, a non-refcounting lazy
- tlb option
-Message-ID: <20200714132341.GY10769@hirez.programming.kicks-ass.net>
-References: <1594708054.04iuyxuyb5.astroid@bobo.none>
- <6D3D1346-DB1E-43EB-812A-184918CCC16A@amacapital.net>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5jZq5YFSzDqNL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 00:29:36 +1000 (AEST)
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 51AE2774C1BD5835F576;
+ Tue, 14 Jul 2020 22:14:02 +0800 (CST)
+Received: from kernelci-master.huawei.com (10.175.101.6) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 14 Jul 2020 22:13:52 +0800
+From: Wei Yongjun <weiyongjun1@huawei.com>
+To: Hulk Robot <hulkci@huawei.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH -next] cpufreq: powernv: Make some symbols static
+Date: Tue, 14 Jul 2020 22:23:55 +0800
+Message-ID: <20200714142355.29819-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6D3D1346-DB1E-43EB-812A-184918CCC16A@amacapital.net>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.175.101.6]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,23 +48,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Wei Yongjun <weiyongjun1@huawei.com>,
+ linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 14, 2020 at 05:46:05AM -0700, Andy Lutomirski wrote:
-> x86 has this exact problem. At least no more than 64*8 CPUs share the cache line :)
+The sparse tool complains as follows:
 
-I've seen patches for a 'sparse' bitmap to solve related problems.
+drivers/cpufreq/powernv-cpufreq.c:88:1: warning:
+ symbol 'pstate_revmap' was not declared. Should it be static?
+drivers/cpufreq/powernv-cpufreq.c:383:18: warning:
+ symbol 'cpufreq_freq_attr_cpuinfo_nominal_freq' was not declared. Should it be static?
+drivers/cpufreq/powernv-cpufreq.c:669:6: warning:
+ symbol 'gpstate_timer_handler' was not declared. Should it be static?
+drivers/cpufreq/powernv-cpufreq.c:902:6: warning:
+ symbol 'powernv_cpufreq_work_fn' was not declared. Should it be static?
 
-It's basically the same code, except it multiplies everything (size,
-bit-nr) by a constant to reduce the number of active bits per line.
+Those symbols are not used outside of this file, so mark
+them static.
 
-This sadly doesn't take topology into account, but reducing contention
-is still good ofcourse.
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/cpufreq/powernv-cpufreq.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+index 8646eb197cd9..cf118263ec65 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -85,7 +85,7 @@ struct global_pstate_info {
+ 
+ static struct cpufreq_frequency_table powernv_freqs[POWERNV_MAX_PSTATES+1];
+ 
+-DEFINE_HASHTABLE(pstate_revmap, POWERNV_MAX_PSTATES_ORDER);
++static DEFINE_HASHTABLE(pstate_revmap, POWERNV_MAX_PSTATES_ORDER);
+ /**
+  * struct pstate_idx_revmap_data: Entry in the hashmap pstate_revmap
+  *				  indexed by a function of pstate id.
+@@ -380,7 +380,7 @@ static ssize_t cpuinfo_nominal_freq_show(struct cpufreq_policy *policy,
+ 		powernv_freqs[powernv_pstate_info.nominal].frequency);
+ }
+ 
+-struct freq_attr cpufreq_freq_attr_cpuinfo_nominal_freq =
++static struct freq_attr cpufreq_freq_attr_cpuinfo_nominal_freq =
+ 	__ATTR_RO(cpuinfo_nominal_freq);
+ 
+ #define SCALING_BOOST_FREQS_ATTR_INDEX		2
+@@ -666,7 +666,7 @@ static inline void  queue_gpstate_timer(struct global_pstate_info *gpstates)
+  * according quadratic equation. Queues a new timer if it is still not equal
+  * to local pstate
+  */
+-void gpstate_timer_handler(struct timer_list *t)
++static void gpstate_timer_handler(struct timer_list *t)
+ {
+ 	struct global_pstate_info *gpstates = from_timer(gpstates, t, timer);
+ 	struct cpufreq_policy *policy = gpstates->policy;
+@@ -899,7 +899,7 @@ static struct notifier_block powernv_cpufreq_reboot_nb = {
+ 	.notifier_call = powernv_cpufreq_reboot_notifier,
+ };
+ 
+-void powernv_cpufreq_work_fn(struct work_struct *work)
++static void powernv_cpufreq_work_fn(struct work_struct *work)
+ {
+ 	struct chip *chip = container_of(work, struct chip, throttle);
+ 	struct cpufreq_policy *policy;
+
