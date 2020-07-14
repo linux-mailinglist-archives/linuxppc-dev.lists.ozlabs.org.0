@@ -2,48 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5815D21FA02
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 20:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C315721FD17
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 21:17:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5qKj43dwzDqcV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 04:48:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5qz95ZVnzDqhT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:17:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=M9TjDOCd; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=Jtl1Wg+/; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5qGW0MTDzDqYX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 04:45:54 +1000 (AEST)
-Received: from localhost (mobile-166-175-191-139.mycingular.net
- [166.175.191.139])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5gd638JpzDqMt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 23:01:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=J/gJvCUhZaH49je89LCcpmy+HAxWN3dlCfIW7kcsmZs=; b=Jtl1Wg+/IxJqXObLY4gMXGB04G
+ rv3ag64EJ2iC/BjPNU4r2hN8OvMmXH351iMvO+JpgUH/mNB68Wna7pfwMiJN4NDbMihaumJqfgOgB
+ 2a/8fJ6v0OeRswNbUD9NWStEzOcMj5PLIFApH01iTjh9OdFjHo2emsusFazRi5faO+Q6fSFt0Iacv
+ ZfWAOaGfdDqy9fOUmZN9dJcH9hPxaaHVNZRYEwuSWZdiJct2B0mjw51bXqS9vsqbYNylSs7EM/bAk
+ HsfFkjVnW8/3iH/0MiCbiOzCbnnOAVGFQxF0Bt6z7Dsu3XZev3Dqqy1x32CkwRcHkeQ5LO9f7NOAW
+ msrUfdWg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jvKYa-0003Vq-Ii; Tue, 14 Jul 2020 13:01:13 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 839FA222B9;
- Tue, 14 Jul 2020 18:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1594752352;
- bh=3OfvyawWxOWWLmXQVPZtn6FECuVWd3F0Ue8HezI5sRQ=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=M9TjDOCdh9hdhfOxp+E/b+GQRQRJigrTzFdSr08bZTbYfgplA8ZfIK7sw2uU4D17i
- JnwGLNAMtpemAssFF0Jl2PbTYsF6P1lbaXH8vsBMr+WVIisiILxg/v2D+n7zNSVt6u
- tBiC82XAr1HVg4w3jwKWvTKOh5aFHvV/m2Ll8Hf4=
-Date: Tue, 14 Jul 2020 13:45:50 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
-Message-ID: <20200714184550.GA397277@bjorn-Precision-5520>
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A29CE302753;
+ Tue, 14 Jul 2020 15:01:09 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 854E92B0C0D90; Tue, 14 Jul 2020 15:01:09 +0200 (CEST)
+Date: Tue, 14 Jul 2020 15:01:09 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
+ move to kernel proper
+Message-ID: <20200714130109.GX10769@hirez.programming.kicks-ass.net>
+References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
+ <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
+ <20200714102826.GB4756@willie-the-truck>
+ <20200714112927.GV10769@hirez.programming.kicks-ass.net>
+ <CAMj1kXGG4vxWrp1de1FxdU=8F4Jof00=T1x-7e+BW7_HP-oZMQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a3NWSZw6678k1O2eJ6-c5GuW7484PRvEzU9MEPPrCD-yw@mail.gmail.com>
+In-Reply-To: <CAMj1kXGG4vxWrp1de1FxdU=8F4Jof00=T1x-7e+BW7_HP-oZMQ@mail.gmail.com>
+X-Mailman-Approved-At: Wed, 15 Jul 2020 05:16:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,160 +75,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Keith Busch <kbusch@kernel.org>, Paul Mackerras <paulus@samba.org>,
- sparclinux <sparclinux@vger.kernel.org>, Toan Le <toan@os.amperecomputing.com>,
- Greg Ungerer <gerg@linux-m68k.org>,
- Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Sagi Grimberg <sagi@grimberg.me>, Russell King <linux@armlinux.org.uk>,
- Ley Foon Tan <ley.foon.tan@intel.com>, Christoph Hellwig <hch@lst.de>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Kevin Hilman <khilman@baylibre.com>,
- linux-pci <linux-pci@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Matt Turner <mattst88@gmail.com>,
- linux-kernel-mentees@lists.linuxfoundation.org,
- Guenter Roeck <linux@roeck-us.net>, Ray Jui <rjui@broadcom.com>,
- Jens Axboe <axboe@fb.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Shuah Khan <skhan@linuxfoundation.org>, bjorn@helgaas.com,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Richard Henderson <rth@twiddle.net>, Juergen Gross <jgross@suse.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Scott Branden <sbranden@broadcom.com>, Jingoo Han <jingoohan1@gmail.com>,
- "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
+ Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
+ Paul Burton <paulburton@kernel.org>,
+ Vincent Whitchurch <vincent.whitchurch@axis.com>,
+ Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Kosina <jkosina@suse.cz>, Anup Patel <anup.patel@wdc.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Philipp Rudo <prudo@linux.ibm.com>, Torsten Duwe <duwe@lst.de>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Vincent Chen <deanbo422@gmail.com>, Omar Sandoval <osandov@fb.com>,
+ "open list:S390" <linux-s390@vger.kernel.org>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>,
+ Andrii Nakryiko <andriin@fb.com>, Thomas Huth <thuth@redhat.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+ Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
+ Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ Atish Patra <atish.patra@wdc.com>, Will Deacon <will@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>,
+ Nayna Jain <nayna@linux.ibm.com>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
+ Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
+ Guan Xuetao <gxt@pku.edu.cn>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ Jessica Yu <jeyu@kernel.org>,
+ "open list:BPF JIT for MIPS \(32-BIT AND 64-BIT\)" <bpf@vger.kernel.org>,
  "David S. Miller" <davem@davemloft.net>,
- Heiner Kallweit <hkallweit1@gmail.com>
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>,
+ "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
+ Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Amit Daniel Kachhap <amit.kachhap@arm.com>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz>,
+ Jiri Olsa <jolsa@redhat.com>,
+ "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ KP Singh <kpsingh@chromium.org>, Dmitry Vyukov <dvyukov@google.com>,
+ Nick Hu <nickhu@andestech.com>,
+ "open list:BPF JIT for MIPS \(32-BIT AND 64-BIT\)" <netdev@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[trimmed the cc list; it's still too large but maybe arch folks care]
+On Tue, Jul 14, 2020 at 03:19:24PM +0300, Ard Biesheuvel wrote:
+> So perhaps the answer is to have text_alloc() not with a 'where'
+> argument but with a 'why' argument. Or more simply, just have separate
+> alloc/free APIs for each case, with generic versions that can be
+> overridden by the architecture.
 
-On Mon, Jul 13, 2020 at 05:08:10PM +0200, Arnd Bergmann wrote:
-> On Mon, Jul 13, 2020 at 3:22 PM Saheed O. Bolarinwa
-> <refactormyself@gmail.com> wrote:
-> > This goal of these series is to move the definition of *all*
-> > PCIBIOS* from include/linux/pci.h to arch/x86 and limit their use
-> > within there.  All other tree specific definition will be left for
-> > intact. Maybe they can be renamed.
-> >
-> > PCIBIOS* is an x86 concept as defined by the PCI spec. The
-> > returned error codes of PCIBIOS* are positive values and this
-> > introduces some complexities which other archs need not incur.
-> 
-> I think the intention is good, but I find the series in its current
-> form very hard to review, in particular the way you touch some
-> functions three times with trivial changes. Instead of
-> 
-> 1) replace PCIBIOS_SUCCESSFUL with 0
-> 2) drop pointless 0-comparison
-> 3) reformat whitespace
-> 
-> I would suggest to combine the first two steps into one patch per
-> subsystem and drop the third step.
+Well, there only seem to be 2 cases here, either the pointer needs to
+fit in some immediate displacement, or not.
 
-I agree.  BUT please don't just run out and post new patches to do
-this.  Let's talk about Arnd's further ideas below first.
+On x86 we seem have the advantage of a fairly large immediate
+displacement as compared to many other architectures (due to our
+variable sized instructions). And thus have been fairly liberal with our
+usage of it (also our indirect jmps/calls suck, double so with
+RETCH-POLINE).
 
-> ...
-> Maybe the work can be split up differently, with a similar end
-> result but fewer and easier reviewed patches. The way I'd look at
-> the problem, there are three main areas that can be dealt with one
-> at a time:
-> 
-> a) callers of the high-level config space accessors
->    pci_{write,read}_config_{byte,word,dword}, mostly in device
->    drivers.
-> b) low-level implementation of the config space accessors
->     through struct pci_ops
-> c) all other occurrences of these constants
-> 
-> Starting with a), my first question is whether any high-level
-> drivers even need to care about errors from these functions. I see
-> 4913 callers that ignore the return code, and 576 that actually
-> check it, and almost none care about the specific error (as you
-> found as well). Unless we conclude that most PCI drivers are wrong,
-> could we just change the return type to 'void' and assume they never
-> fail for valid arguments on a valid pci_device* ?
+Still, the indirect jump, as mentioned by Russel should work for
+arbitrarily placed code for us too.
 
-I really like this idea.
 
-pci_write_config_*() has one return value, and only 100ish of 2500
-callers check for errors.  It's sometimes possible for config
-accessors to detect PCI errors and return failure, e.g., device was
-removed or didn't respond, but most of them don't, and detecting these
-errors is not really that valuable.
+So I'm thinking that something like:
 
-pci_read_config_*() is much more interesting because it returns two
-things, the function return value and the value read from the PCI
-device, and it's complicated to check both. 
+enum ptr_type {
+	immediate_displacement,
+	absolute,
+};
 
-Again it's sometimes possible for config read accessors to detect PCI
-errors, but in most cases a PCI error means the accessor returns
-success and the value from PCI is ~0.
+void *text_alloc(unsigned long size, enum ptr_type type)
+{
+	unsigned long vstart = VMALLOC_START;
+	unsigned long vend   = VMALLOC_END;
 
-Checking the function return value catches programming errors (bad
-alignment, etc) but misses most of the interesting errors (device was
-unplugged or reported a PCI error).
+	if (type == immediate_displacement) {
+		vstart = MODULES_VADDR;
+		vend   = MODULES_END;
+	}
 
-Checking the value returned from PCI is tricky because ~0 is a valid
-value for some config registers, and only the driver knows for sure.
-If the driver knows that ~0 is a possible value, it would have to do
-something else, e.g., another config read of a register that *cannot*
-be ~0, to see whether it's really an error.
+	return __vmalloc_node_range(size, TEXT_ALIGN, vstart, vend,
+				    GFP_KERNEL, PAGE_KERNEL_EXEC, 0,
+				    NUMA_NO_NODE, _RET_IP_);
+}
 
-I suspect that if we had a single value to look at it would be easier
-to get right.  Error checking with current interface would look like
-this:
+void text_free(void *ptr)
+{
+	vfree(ptr);
+}
 
-  err = pci_read_config_word(dev, addr, &val);
-  if (err)
-    return -EINVAL;
+Should work for all cases. Yes, we might then want something like a per
+arch:
 
-  if (PCI_POSSIBLE_ERROR(val)) {
-    /* if driver knows ~0 is invalid */
-    return -EINVAL;
+	{BPF,FTRACE,KPROBE}_TEXT_TYPE
 
-    /* if ~0 is potentially a valid value */
-    err = pci_read_config_word(dev, PCI_VENDOR_ID, &val2);
-    if (err)
-      return -EINVAL;
-
-    if (PCI_POSSIBLE_ERROR(val2))
-      return -EINVAL;
-  }
-
-Error checking with a possible interface that returned only a single
-value could look like this:
-
-  val = pci_config_read_word(dev, addr);
-  if (PCI_POSSIBLE_ERROR(val)) {
-    /* if driver knows ~0 is invalid */
-    return -EINVAL;
-
-    /* if ~0 is potentially a valid value */
-    val2 = pci_config_read_word(dev, PCI_VENDOR_ID);
-    if (PCI_POSSIBLE_ERROR(val2))
-      return -EINVAL;
-  }
-
-Am I understanding you correctly?
-
-> For b), it might be nice to also change other aspects of the
-> interface, e.g. passing a pci_host_bridge pointer plus bus number
-> instead of a pci_bus pointer, or having the callback in the
-> pci_host_bridge structure.
-
-I like this idea a lot, too.  I think the fact that
-pci_bus_read_config_word() requires a pci_bus * complicates things in
-a few places.
-
-I think it's completely separate, as you say, and we should defer it
-for now because even part a) is a lot of work.  I added it to my list
-of possible future projects.
-
-Bjorn
+to help with text_alloc() usage in generic code, but I think
+fundamentally, there's only these two options.
