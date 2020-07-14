@@ -1,88 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5821E869
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:40:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363BF21E896
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:49:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5W9K0dk4zDqNW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:40:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5WNC39xtzDqbr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:49:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=D6enXb3M; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5W7Z28cRzDqNV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:38:50 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=Xts+McWZ; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B5W7Y6XTPz8tY5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:38:49 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4B5W7Y5xCfz9sT6; Tue, 14 Jul 2020 16:38:49 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=Xts+McWZ; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B5W7Y4K6Bz9sQt
- for <linuxppc-dev@ozlabs.org>; Tue, 14 Jul 2020 16:38:48 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id k4so6597155pld.12
- for <linuxppc-dev@ozlabs.org>; Mon, 13 Jul 2020 23:38:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=a1VxGILEG42+H8L6GoViFzWZFZSKw5Ols1wGUf0gdqo=;
- b=Xts+McWZovvImnzKPR+kJgv321ta/+h+TY/aye5u1KOB2hnbQ34iDFo+AZuD1vvRx2
- pFG/PH9yf5hkE7tE9sw1zr8PEmXxMms68RIYOdjI41nx7/RZxGplxkUHqzONT0PK2apj
- 1wVUjOeXgsAKDDEZeKAaj3HauILJ/hYAfv6ac=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5WJZ74G2zDqXf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:46:38 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id l6so14645530qkc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 23:46:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :organization:user-agent:mime-version:content-transfer-encoding;
+ bh=dzxfeYMtkjsMRhuGgWk+6usvf7YkNVFphbzmaI9AE80=;
+ b=D6enXb3MQ6lRfQoiLzp7fWvveVWEPafnRj0qOq8HR749w3FZ37ez2NYcHDpWVcNJ8C
+ E6oilKdejmb5r0rqLFJB+CCLpscI8XUiIVZ8bDM7z6I/7R0PfB+60Ow/jN3FMTFb+aqf
+ VIHAGF84TrYoYpJzXubl8z4dY24kY+GAm+G0m27ZFHu72vmK0NVCiy4kSnFIwVT401mB
+ pkAFtMTtLD4gEXq7awDLySJq5spWEL2tFvchp9MVLxoMnoF7vhSgssNg+M6z59ENUxiH
+ RLqIUZYFM3dl6pT13dxMsHSTwb+OG1YiOQOwRreOhSXvfmOqJOBWL9iUxFa+QBQb4eC8
+ ukrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=a1VxGILEG42+H8L6GoViFzWZFZSKw5Ols1wGUf0gdqo=;
- b=sSJOXjLRBYCIAoK6NKhVH4CqT/pWYl5+aWrkcROLYKdm0Kyg5Ek7D3yzo6LDjSnXgn
- kORTXOo3CF+dT9MSIfsMuDUV4BpTpKB18dGrP9HqErGfgDa6PFaqBtvm9Df9m/x4iwtM
- 8O33siGa6u4Edz06DhpEQzqJN05iWMkqxagOQkPQsXGY+H4fLFaybEaUU1txmHk/WeE8
- 3+c3IAjN8Vhg8OxPO6GI0a1tp1to0BHpRYpMOEAQfFAq3qMJF+sUjn6NAmRa5SHtyS/i
- EyU5ESvlri1Q1fDHMD68b04hrY8GNF5Ydb9G6WYFk5eMGvcfkj/SSUq3oQaNCXE2gJaW
- O9Cg==
-X-Gm-Message-State: AOAM530h1/19oI0fV4y2lP08sPMmRpyyFNEN1NWynPIoPAtDX1bMADfj
- gG0+9w/HWktvh9fhGei9h4JVBg==
-X-Google-Smtp-Source: ABdhPJyONPZ3um3fwUzwJ1uRRYNCRh7Wl6QNk16NHZgya2eaSlYdiNMNO4v4tQ2yfRJXmBLelUoxXw==
-X-Received: by 2002:a17:90a:1acc:: with SMTP id
- p70mr3216700pjp.210.1594708725751; 
- Mon, 13 Jul 2020 23:38:45 -0700 (PDT)
-Received: from localhost
- (2001-44b8-111e-5c00-0c99-1211-d258-b704.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:c99:1211:d258:b704])
- by smtp.gmail.com with ESMTPSA id p12sm1322396pjz.44.2020.07.13.23.38.44
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:organization:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=dzxfeYMtkjsMRhuGgWk+6usvf7YkNVFphbzmaI9AE80=;
+ b=ABcg3IYjWJpXNqzXpPh8c08gCNZn4eTdivvpIZe0YOVhpO+eXQ+oUxTI/SfVj9LoKn
+ xCCzFy5KReyvV51HekiyNQz4fEkotCwchFpewOyqUv05dfsQfMU/chtzdKt/hSB9gPng
+ 2gBRQGXNp+rugrUSVKLCwQ5qHYFNBcI2Os+NyBNPlkd5LGHCjETEVF+PYblyVPI/Gl6O
+ fRJws2WEuU43oxRlCc6I1Z2S70kedSTBDbdMAUfVIssO96CTXgZgJ+47Sphez5GSxK6/
+ RgWS/k7H/ETvPSx3J2CnIG0rxdzXhv/kg6/ae/W7JEu+3yu/rUP1KuzOSKbjQ6+wbhKT
+ ljag==
+X-Gm-Message-State: AOAM531G2oMSiL2xCP66maIxKhq0JfGTSiCE0oUXkiAVpQra381DhAd8
+ t9Ql9lfyh2Qw3MUTysjxIdQ=
+X-Google-Smtp-Source: ABdhPJyC3/V/9okdvc0CGcOc+6fmRvKD6sJ98UlaqvKOZ2nYA2QIkbbrDx8NW6BywsBA4Kr4BtJlsQ==
+X-Received: by 2002:a37:4bcd:: with SMTP id y196mr3029955qka.495.1594709195156; 
+ Mon, 13 Jul 2020 23:46:35 -0700 (PDT)
+Received: from LeoBras (179-125-193-229.dynamic.desktop.com.br.
+ [179.125.193.229])
+ by smtp.gmail.com with ESMTPSA id a68sm20906352qkc.110.2020.07.13.23.46.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Jul 2020 23:38:45 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v2] powerpc/pseries: detect secure and trusted boot state
- of the system.
-In-Reply-To: <1594434329-31219-1-git-send-email-nayna@linux.ibm.com>
-References: <1594434329-31219-1-git-send-email-nayna@linux.ibm.com>
-Date: Tue, 14 Jul 2020 16:38:41 +1000
-Message-ID: <87y2nmtxce.fsf@dja-thinkpad.axtens.net>
+ Mon, 13 Jul 2020 23:46:34 -0700 (PDT)
+Message-ID: <846ba63b1f1fc4c9366f39b2cf09df71a19da891.camel@gmail.com>
+Subject: Re: [PATCH v3 4/6] powerpc/pseries/iommu: Remove default DMA window
+ before creating DDW
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Thiago Jung Bauermann
+ <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
+Date: Tue, 14 Jul 2020 03:46:29 -0300
+In-Reply-To: <eb357d42f5605a2b0234c04de477e171134c24f5.camel@gmail.com>
+References: <20200703061844.111865-1-leobras.c@gmail.com>
+ <20200703061844.111865-5-leobras.c@gmail.com>
+ <cc15a81d-04d9-3ee4-4fdb-093618f6e635@ozlabs.ru>
+ <8c29be499e8741e7d77d53ca005034a2ca0179ac.camel@gmail.com>
+ <18fd94d2-4365-16d1-7c85-af07d5c9a0f3@ozlabs.ru>
+ <eb357d42f5605a2b0234c04de477e171134c24f5.camel@gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,60 +91,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nayna,
+In fact, the changes over the last patch are more complex than the
+current patch. 
+Just for reference, that's how enable_ddw() currently patches:
 
-Thanks! Would you be able to fold in some of the information from my
-reply to v1 into the changelog? Until we have public PAPR release with
-it, that information is the extent of the public documentation. It would
-be good to get it into the git log rather than just floating around in
-the mail archives!
+@@ -1087,7 +1119,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct
+device_node *pdn)
+        struct device_node *dn;
+        u32 ddw_avail[DDW_APPLICABLE_SIZE];
+        struct direct_window *window;
+-       struct property *win64;
++       struct property *win64, *default_win = NULL;
+        struct dynamic_dma_window_prop *ddwprop;
+        struct failed_ddw_pdn *fpdn;
+ 
+@@ -1133,14 +1165,38 @@ static u64 enable_ddw(struct pci_dev *dev,
+struct device_node *pdn)
+        if (ret != 0)
+                goto out_failed;
+ 
++       /*
++        * If there is no window available, remove the default DMA
+window,
++        * if it's present. This will make all the resources available
+to the
++        * new DDW window.
++        * If anything fails after this, we need to restore it, so also
+check
++        * for extensions presence.
++        */
+        if (query.windows_available == 0) {
+-               /*
+-                * no additional windows are available for this device.
+-                * We might be able to reallocate the existing window,
+-                * trading in for a larger page size.
+-                */
+-               dev_dbg(&dev->dev, "no free dynamic windows");
+-               goto out_failed;
++               int reset_win_ext;
++
++               default_win = of_find_property(pdn, "ibm,dma-window",
+NULL);
++               if (!default_win)
++                       goto out_failed;
++
++               reset_win_ext = ddw_read_ext(pdn,
+DDW_EXT_RESET_DMA_WIN, NULL);
++               if (reset_win_ext) {
++                       default_win = NULL;
++                       goto out_failed;
++               }
++
++               remove_dma_window(pdn, ddw_avail, default_win);
++
++               /* Query again, to check if the window is available */
++               ret = query_ddw(dev, ddw_avail, &query, pdn);
++               if (ret != 0)
++                       goto out_failed;
++
++               if (query.windows_available == 0) {
++                       /* no windows are available for this device. */
++                       dev_dbg(&dev->dev, "no free dynamic windows");
++                       goto out_failed;
++               }
+        }
+        if (query.page_size & 4) {
+                page_shift = 24; /* 16MB */
+@@ -1231,6 +1287,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct
+device_node *pdn)
+        kfree(win64);
+ 
+ out_failed:
++       if (default_win)
++               reset_dma_window(dev, pdn);
+ 
+        fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
+        if (!fpdn)
 
-A couple of small nits:
-
-> +	if (enabled)
-> +		goto out;
-> +
-> +	if (!of_property_read_u32(of_root, "ibm,secure-boot", &secureboot)) {
-> +		if (secureboot)
-> +			enabled = (secureboot > 1) ? true : false;
-
-Your tests double up here - you don't need both the 'if' statement and
-the 'secureboot > 1' ternary operator.
-
-Just
-
-+	if (!of_property_read_u32(of_root, "ibm,secure-boot", &secureboot)) {
-+		enabled = (secureboot > 1) ? true : false;
-
-or even
-
-+	if (!of_property_read_u32(of_root, "ibm,secure-boot", &secureboot)) {
-+		enabled = (secureboot > 1);
-
-would work.
-
-> +	if (!of_property_read_u32(of_root, "ibm,trusted-boot", &trustedboot)) {
-> +		if (trustedboot)
-> +			enabled = (trustedboot > 0) ? true : false;
-
-Likewise for trusted boot.
-
-Regards,
-Daniel
-
-P.S. please could you add me to the cc: list for future revisions?
-
-> +	}
-> +
-> +out:
->  	pr_info("Trusted boot mode %s\n", enabled ? "enabled" : "disabled");
->  
->  	return enabled;
-> -- 
-> 2.26.2
