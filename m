@@ -2,66 +2,116 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E94A21EE44
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 12:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E78F021EE4C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 12:48:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5cdm4BbkzDqdM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 20:46:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5cgf6SmhzDqbv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 20:48:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
- (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk;
- envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=armlinux.org.uk
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
- header.s=pandora-2019 header.b=DzRdxgzq; 
- dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
- [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+ spf=none (no SPF record) smtp.mailfrom=ffwll.ch
+ (client-ip=2a00:1450:4864:20::341; helo=mail-wm1-x341.google.com;
+ envelope-from=daniel@ffwll.ch; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=ffwll.ch header.i=@ffwll.ch header.a=rsa-sha256
+ header.s=google header.b=YzSPJ57V; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5bVk2zv5zDqPT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 19:55:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=J4Ka59dcMikVp35QPQMFqJHxEAVMkkUAFnV88fuGsI4=; b=DzRdxgzqEKSDZhMDp+2U2nh2c
- IArxVML1LOtJWFiuW0xPmOxkAa0qr6V6rEZ4el59j7/XsgBHo1IpGZn++6KaXAmUh+HCdrDrIbcO3
- esZT32ryUAbv3Ergm9f4wl3EbKkosBtpwoeVrKvQA29j0K9Ac8tdMuxVw9QqtQ9M4fucRYfDKowOG
- 0omhBwWG2VVBCaAA6eqLsRQBEYwte95h9sI6CgwWuRGpea2Z+9U1YVVdnUoiIXMxXcHoyX3Z+eode
- qaC+kavumdZei7rN7gurw8Q65G3DqOX4YG2qgnEON+ohmmJQ1tumlMSoCZOWcyplyDHMDnM0bpJig
- b3yUQyNLg==;
-Received: from shell.armlinux.org.uk
- ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39344)
- by pandora.armlinux.org.uk with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <linux@armlinux.org.uk>)
- id 1jvHdD-0004xm-TI; Tue, 14 Jul 2020 10:53:47 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
- (envelope-from <linux@shell.armlinux.org.uk>)
- id 1jvHdC-0007CZ-L9; Tue, 14 Jul 2020 10:53:46 +0100
-Date: Tue, 14 Jul 2020 10:53:46 +0100
-From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Subject: Re: [PATCH 1/3] module: Rename module_alloc() to text_alloc() and
- move to kernel proper
-Message-ID: <20200714095346.GA1551@shell.armlinux.org.uk>
-References: <20200713182030.1418041-1-jarkko.sakkinen@linux.intel.com>
- <20200713183410.GY1551@shell.armlinux.org.uk>
- <20200714094928.GA1442951@linux.intel.com>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5bqb2lRHzDqTF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 20:10:15 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id a6so1559037wmm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 03:10:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ffwll.ch; s=google;
+ h=date:from:to:cc:subject:message-id:mail-followup-to:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=T/8Q4L8NXOZkQ/tz+AhfWHGd9ugb/VQ1NTeCRd70fRk=;
+ b=YzSPJ57VF1NPDw3vqT+620LhD0SUy/zauBG1xtDEhX1eUlTmFvCOI0hPBmtLQENSnn
+ 6/TAH0xl7I97woT37GTVAxBZOLEBHgiaFb9Uqggexgi/xkK28gXQxGwWP9ul8haJdads
+ Ov8mi9vjiMKlSJyG96C+bAGNTmgZe5ROyu+Lk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id
+ :mail-followup-to:references:mime-version:content-disposition
+ :in-reply-to;
+ bh=T/8Q4L8NXOZkQ/tz+AhfWHGd9ugb/VQ1NTeCRd70fRk=;
+ b=SxZdjTxZIItsdI6rnJav8S25qe4BFQQjE+RcdYsc+x2gynOVMSKxcOIkKbRtFQmRLB
+ OOHzrKApDUU2Ig1mes5aBZ6jZg4WxZEMgSpG+MWkgDORqZdhdjNR8pMJzje/deWyTbyQ
+ 4ArfAb2TCuUpJ1b4nSyRppKefwKPXqCDpvlIiMIAKGFJ0fy9mXOtIgyk9PicF1tjB1aa
+ Vtu9IkhyIseRh5knrH6vCrdJIcIi0eSjGkcsMrRpS5i+u1I1Ei497kVRi/cdIhWVGqzg
+ URWif/N8RAckNSyWtYTiIo86gK3xuoIyJldPxKzt2Xt3kn+B80yhMfF0iYNRyxDaavl+
+ meyg==
+X-Gm-Message-State: AOAM532WNW8k5A6CTJi+J4TzDNYhAbP7J3WLcfbzsG1QyK4446iCmxdd
+ DjQLaBlbDnyaZsK7puKQTZtlzA==
+X-Google-Smtp-Source: ABdhPJyqFd0o0r7Uhj2GkJDPlWKnVbjeuZeIBdDxA3RZenN7KDJyJSMu/8KGKJnF2dYF5oDa1m5pVQ==
+X-Received: by 2002:a1c:7916:: with SMTP id l22mr3323574wme.115.1594721409986; 
+ Tue, 14 Jul 2020 03:10:09 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+ by smtp.gmail.com with ESMTPSA id 33sm30262923wri.16.2020.07.14.03.10.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Jul 2020 03:10:09 -0700 (PDT)
+Date: Tue, 14 Jul 2020 12:10:05 +0200
+From: Daniel Vetter <daniel@ffwll.ch>
+To: "james qian wang (Arm Technology China)" <james.qian.wang@arm.com>
+Subject: Re: [PATCH 06/20] Documentation: gpu/komeda-kms: eliminate
+ duplicated word
+Message-ID: <20200714101005.GA3278063@phenom.ffwll.local>
+Mail-Followup-To: "james qian wang (Arm Technology China)"
+ <james.qian.wang@arm.com>, 
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+ linux-mm@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Jason Wessel <jason.wessel@windriver.com>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Douglas Anderson <dianders@chromium.org>,
+ kgdb-bugreport@lists.sourceforge.net, Wu Hao <hao.wu@intel.com>,
+ linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
+ Mihail Atanassov <mihail.atanassov@arm.com>,
+ Mali DP Maintainers <malidp@foss.arm.com>,
+ David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org,
+ Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ Michal Marek <michal.lkml@markovi.net>,
+ linux-kbuild@vger.kernel.org,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+ Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+ linux-leds@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Paul Cercueil <paul@crapouillou.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ linux-mips@vger.kernel.org,
+ Derek Kiernan <derek.kiernan@xilinx.com>,
+ Dragan Cvetic <dragan.cvetic@xilinx.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ Tony Krowiak <akrowiak@linux.ibm.com>,
+ Pierre Morel <pmorel@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>,
+ Hannes Reinecke <hare@suse.com>, linux-scsi@vger.kernel.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org,
+ keyrings@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ kvm@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ nd@arm.com
+References: <20200707180414.10467-1-rdunlap@infradead.org>
+ <20200707180414.10467-7-rdunlap@infradead.org>
+ <20200708050821.GA1121718@jamwan02-TSP300>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200714094928.GA1442951@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200708050821.GA1121718@jamwan02-TSP300>
+X-Operating-System: Linux phenom 5.6.0-1-amd64 
 X-Mailman-Approved-At: Tue, 14 Jul 2020 20:36:21 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,102 +124,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
- Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
- Paul Burton <paulburton@kernel.org>,
- Vincent Whitchurch <vincent.whitchurch@axis.com>,
- Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Yonghong Song <yhs@fb.com>,
- Thomas Gleixner <tglx@linutronix.de>, Jiri Kosina <jkosina@suse.cz>,
- Anup Patel <anup.patel@wdc.com>, linux-kernel@vger.kernel.org,
- Philipp Rudo <prudo@linux.ibm.com>, Torsten Duwe <duwe@lst.de>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Vincent Chen <deanbo422@gmail.com>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- John Fastabend <john.fastabend@gmail.com>,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>, Iurii Zaikin <yzaikin@google.com>,
- Andrii Nakryiko <andriin@fb.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
- Peter Oberparleiter <oberpar@linux.ibm.com>,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
- Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Ley Foon Tan <ley.foon.tan@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Dmitry Vyukov <dvyukov@google.com>, Sami Tolvanen <samitolvanen@google.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
- Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
- Guan Xuetao <gxt@pku.edu.cn>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Jessica Yu <jeyu@kernel.org>,
- "open list:BPF JIT for MIPS \(32-BIT AND 64-BIT\)" <bpf@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>,
- "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
- Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Amit Daniel Kachhap <amit.kachhap@arm.com>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz>,
- Jiri Olsa <jolsa@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <paulmck@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, KP Singh <kpsingh@chromium.org>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>, Nick Hu <nickhu@andestech.com>,
- "open list:BPF JIT for MIPS \(32-BIT AND 64-BIT\)" <netdev@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
+ linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
+ dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>,
+ Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
+ Pavel Machek <pavel@ucw.cz>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
+ linux-s390@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
+ linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ Mali DP Maintainers <malidp@foss.arm.com>, linux-input@vger.kernel.org,
+ Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
+ Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, nd@arm.com,
+ Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Pierre Morel <pmorel@linux.ibm.com>, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
+ Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>,
+ Dan Murphy <dmurphy@ti.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 14, 2020 at 12:49:28PM +0300, Jarkko Sakkinen wrote:
-> On Mon, Jul 13, 2020 at 07:34:10PM +0100, Russell King - ARM Linux admin wrote:
-> > On Mon, Jul 13, 2020 at 09:19:37PM +0300, Jarkko Sakkinen wrote:
-> > > Rename module_alloc() to text_alloc() and module_memfree() to
-> > > text_memfree(), and move them to kernel/text.c, which is unconditionally
-> > > compiled to the kernel proper. This allows kprobes, ftrace and bpf to
-> > > allocate space for executable code without requiring to compile the modules
-> > > support (CONFIG_MODULES=y) in.
-> > 
-> > I'm not sure this is a good idea for 32-bit ARM.  The code you are
-> > moving for 32-bit ARM is quite specific to module use in that it also
-> > supports allocating from the vmalloc area, where the module code
-> > knows to add PLT entries.
-> > 
-> > If the other proposed users of this text_alloc() do not have the logic
-> > to add PLT entries when branches between kernel code and this
-> > allocation are not reachable by, e.g. a 26-bit signed offset for 32-bit
-> > ARM code, then this code is not suitable for that use.
-> 
-> My intention is to use this in kprobes code in the place of
-> module_alloc().  I'm not sure why moving this code out of the module
-> subsystem could possibly break anything.  Unfortunately I forgot to add
-> covere letter to my series. Sending v2 with that to explain my use case
-> for this.
+This and next patch merged to drm-misc-next, thanks.
 
-Ah, so you're merely renaming module_alloc() to text_alloc() everywhere?
-It sounded from the initial patch like you were also converting other
-users to use module_alloc().
+On Wed, Jul 08, 2020 at 01:08:21PM +0800, james qian wang (Arm Technology China) wrote:
+> Hi Randy
+> 
+> On Tue, Jul 07, 2020 at 11:04:00AM -0700, Randy Dunlap wrote:
+> > Drop the doubled word "and".
+> > 
+> > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> > Cc: Jonathan Corbet <corbet@lwn.net>
+> > Cc: linux-doc@vger.kernel.org
+> > Cc: James (Qian) Wang <james.qian.wang@arm.com>
+> > Cc: Liviu Dudau <liviu.dudau@arm.com>
+> > Cc: Mihail Atanassov <mihail.atanassov@arm.com>
+> > Cc: Mali DP Maintainers <malidp@foss.arm.com>
+> > ---
+> >  Documentation/gpu/komeda-kms.rst |    2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > --- linux-next-20200701.orig/Documentation/gpu/komeda-kms.rst
+> > +++ linux-next-20200701/Documentation/gpu/komeda-kms.rst
+> > @@ -41,7 +41,7 @@ Compositor blends multiple layers or pix
+> >  frame. its output frame can be fed into post image processor for showing it on
+> >  the monitor or fed into wb_layer and written to memory at the same time.
+> >  user can also insert a scaler between compositor and wb_layer to down scale
+> > -the display frame first and and then write to memory.
+> > +the display frame first and then write to memory.
+> 
+> Thank you for the patch.
+> 
+> Reviewed-by: James Qian Wang <james.qian.wang@arm.com>
+
+James, for simple patches like this just go ahead and merge them. You're
+the maintainer for this, just slapping an r-b onto a patch and no
+indiciation whether you will pick it up only confuses people and increases
+the risk that patches get lost.
+
+So either pick up right away, or state clearly that you will pick it up
+later, or that you expect someone else to merge this.
+
+Thanks, Daniel
+> 
+> >  Writeback Layer (wb_layer)
+> >  --------------------------
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
