@@ -2,68 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE38821FFC1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 23:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C7C21FFD0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 23:17:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5tX50gCpzDqc5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 07:12:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5tcz73cHzDqd2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 07:17:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::144;
- helo=mail-il1-x144.google.com; envelope-from=oftedal@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cUVYKmbu; dkim-atps=neutral
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
- [IPv6:2607:f8b0:4864:20::144])
+ header.s=20161025 header.b=c4g5l41v; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5tT400s2zDqXM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 07:10:15 +1000 (AEST)
-Received: by mail-il1-x144.google.com with SMTP id s21so65934ilk.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 14:10:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5tZr0Vr1zDqQH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 07:15:13 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id t6so8316468pgq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 14:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:in-reply-to:references:from:date:message-id:subject:to
- :cc; bh=2npQXh+dkmWmSHKIQodxnxIAaeJj1A/FFr2Ll6AD3Hs=;
- b=cUVYKmbuMquj1tPPomJ3QAhJreggNlTpwsACBo1UIJy8ABrEJRvYcUBJ+BzMm+B8Pw
- MqSqKdxiUZLp3/SF8aRm3MPFEOcuXTXzReaF83C04QfRQHgm5C83Tljo6P1xGnktBhzD
- OT+ejuCCRxGNB8MkOVi2pHeVYazL4B1RPNhoCnI8kHFaP6uAtl1cDWerw9s1oH2TTw0B
- LM7J/Ue++Hb1A6pAPvTDsxvbkSlC8xNFDSx4dnf7ckP1Hwf+uHJfUVUzdHq5jQZARzeY
- kP3Kn/qUbeuD8v9JUHRLTRkHEjvJZJQ63Z+mmdiHUET6RLX7HxZvg2kwWAFQoo3rA3v3
- 6aTw==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=gUsxgEIbOCPN/g+dhdnfdWC6Rsm4WcdiQ4zDxdYgS80=;
+ b=c4g5l41vPTzdfvBku6Gyyd9dtF0BOhHeYH39FPISi5h5zu/7m0KQBQAauU6DRWwCNI
+ aJFxK5Oqe96j7ceibK0CyVHiTNei10p4jHaC3l7OVoXMCCEeHsi/Q8ezd90xrh3x8oJ6
+ UwDEyUiPh3Ja1sl8MrwnF5+o4DsaE+nx8NDmDwYw98Nea3ZKmlTfZx3CCP800NIM0SOY
+ CXa3j3AUDNMdDH2KvVLhkxmyCWqXWjSov+f1nxIO31O0Gx6YS7hwxXt8puB0/xHjTd2f
+ u1Y3X+ybA8mclQRcyyvl59frNzSpsGVtHfR6Mbi41HgC+bFjI9xSl+k3C4ePbPUODuiP
+ oeqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:in-reply-to:references:from:date
- :message-id:subject:to:cc;
- bh=2npQXh+dkmWmSHKIQodxnxIAaeJj1A/FFr2Ll6AD3Hs=;
- b=fZKmBki/xyLEhPBguCaC/CzvQIVtaUgHIA8QfYPjxe+g0u+vBru01ZVAh01bCtnOWm
- 1stbGTLt8YE70tC7UHdfGau3HIqJYZRNrymRYIiWDhopbXIReSx0gCLCdie3UmRdGtkQ
- 23eBtJwXCresw+rM5EioEyRi1ddx80HmQuvaeaLKjDFXITNYfS3/Xa1M7i9JiWhOi4BO
- 4oYzttSfNOR2sbnpXPO6PLVO8Z7JQ7fgjVaU0svzo0rHcsxmOMF1tfKboUrCwp0rc1+i
- TH0iPcTMXQQi4+mUJfxATjbntVt0J5OKGYLga+L7A7mocz4u8TrGTgacd6Ojrux69eeJ
- /dQA==
-X-Gm-Message-State: AOAM531KpTR2t7exPKtw9W77cxWzB7JHjjAbutS5AINcYpuSw++iZ3ti
- jq5IWET5Bc7janiEv671wJ4IQLhtEJgCQ79sM7G2jemerMw=
-X-Google-Smtp-Source: ABdhPJwkddnl6FvRyOMdkmyyDRG9lWADdbl/Rct2E+/PQzsVJk9f8CH9Av6NUhTRswYDc3FssSb6pCSldchYVLW9F38=
-X-Received: by 2002:a92:9a4f:: with SMTP id t76mr6568425ili.174.1594760561627; 
- Tue, 14 Jul 2020 14:02:41 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=gUsxgEIbOCPN/g+dhdnfdWC6Rsm4WcdiQ4zDxdYgS80=;
+ b=e/YbMAtrLLOtJICH1E3nhWLWC6uyV/f8v2TESnyGB4Qx6k46TdX1ybeFPUH/AYbPPp
+ VEwXa0YbEXy66mPvazglWmwll4zN44WFZUvduM/qPxDJFLcZELKpR2+zUxJCcKXBJCbB
+ 8dyHVGKXri+Xi3lV5cgJ+nd4Ooq/z6sG8UVjOn1YmS/P5SEBIIJsWz96i2LAZxE6f5W+
+ 0IKQ5vtkwkJUTVGMGSG3xSE5z36K07kKrpFrzeBEZVHNvBEoZrmrnim41+hWjwGOJKrt
+ d5ZuUnspqoYlWzRxvF0uxHS+f3rBXLt/USVlApJA7/G6cuoQ+eSHO8wV4FfC8Fjc3r5b
+ bFhw==
+X-Gm-Message-State: AOAM53398lKWV9Hmi1u6Sy3MG1mGp8n5d8a6DhHb/64O/PjhRlvT+Qws
+ j+avo17jnatURb7vC9XMZ+o=
+X-Google-Smtp-Source: ABdhPJwsRQ9mKCwSTE8ucb75FPjtcLbouSD8dQj1J5mA3EExVAJ2tJ3R4hWiETcAhJVqwmV+N1o7rA==
+X-Received: by 2002:a63:441c:: with SMTP id r28mr4965134pga.372.1594761309828; 
+ Tue, 14 Jul 2020 14:15:09 -0700 (PDT)
+Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
+ by smtp.gmail.com with ESMTPSA id y17sm105760pfe.30.2020.07.14.14.15.08
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 14 Jul 2020 14:15:09 -0700 (PDT)
+Date: Tue, 14 Jul 2020 14:14:45 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 3/3] ASoC: fsl-asoc-card: Support Headphone and
+ Microphone Jack detection
+Message-ID: <20200714211432.GA10818@Asurada-Nvidia>
+References: <1594717536-5188-1-git-send-email-shengjiu.wang@nxp.com>
+ <1594717536-5188-4-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6602:21d8:0:0:0:0 with HTTP; Tue, 14 Jul 2020 14:02:40
- -0700 (PDT)
-In-Reply-To: <20200714184550.GA397277@bjorn-Precision-5520>
-References: <CAK8P3a3NWSZw6678k1O2eJ6-c5GuW7484PRvEzU9MEPPrCD-yw@mail.gmail.com>
- <20200714184550.GA397277@bjorn-Precision-5520>
-From: Kjetil Oftedal <oftedal@gmail.com>
-Date: Tue, 14 Jul 2020 23:02:40 +0200
-Message-ID: <CALMQjD9OVTbLVPGX-9+GDekZ02Wsqdz57-k1uCBMXC7cT3K_7w@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1594717536-5188-4-git-send-email-shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,153 +81,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Keith Busch <kbusch@kernel.org>, Paul Mackerras <paulus@samba.org>,
- sparclinux <sparclinux@vger.kernel.org>, Toan Le <toan@os.amperecomputing.com>,
- Greg Ungerer <gerg@linux-m68k.org>,
- Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Sagi Grimberg <sagi@grimberg.me>, Russell King <linux@armlinux.org.uk>,
- Ley Foon Tan <ley.foon.tan@intel.com>, Christoph Hellwig <hch@lst.de>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Kevin Hilman <khilman@baylibre.com>,
- linux-pci <linux-pci@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Matt Turner <mattst88@gmail.com>,
- linux-kernel-mentees@lists.linuxfoundation.org,
- Guenter Roeck <linux@roeck-us.net>, Arnd Bergmann <arnd@arndb.de>,
- Ray Jui <rjui@broadcom.com>, Jens Axboe <axboe@fb.com>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Shuah Khan <skhan@linuxfoundation.org>, bjorn@helgaas.com,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Richard Henderson <rth@twiddle.net>, Juergen Gross <jgross@suse.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Scott Branden <sbranden@broadcom.com>, Jingoo Han <jingoohan1@gmail.com>,
- "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- Heiner Kallweit <hkallweit1@gmail.com>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, timur@kernel.org,
+ kuninori.morimoto.gx@renesas.com, samuel@sholland.org, katsuhiro@katsuster.net,
+ linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, lgirdwood@gmail.com,
+ robh+dt@kernel.org, tiwai@suse.com, broonie@kernel.org, perex@perex.cz,
+ festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 14/07/2020, Bjorn Helgaas <helgaas@kernel.org> wrote:
+Hi Shengjiu,
 
->>
->> a) callers of the high-level config space accessors
->>    pci_{write,read}_config_{byte,word,dword}, mostly in device
->>    drivers.
->> b) low-level implementation of the config space accessors
->>     through struct pci_ops
->> c) all other occurrences of these constants
->>
->> Starting with a), my first question is whether any high-level
->> drivers even need to care about errors from these functions. I see
->> 4913 callers that ignore the return code, and 576 that actually
->> check it, and almost none care about the specific error (as you
->> found as well). Unless we conclude that most PCI drivers are wrong,
->> could we just change the return type to 'void' and assume they never
->> fail for valid arguments on a valid pci_device* ?
->
-> I really like this idea.
->
-> pci_write_config_*() has one return value, and only 100ish of 2500
-> callers check for errors.  It's sometimes possible for config
-> accessors to detect PCI errors and return failure, e.g., device was
-> removed or didn't respond, but most of them don't, and detecting these
-> errors is not really that valuable.
->
-> pci_read_config_*() is much more interesting because it returns two
-> things, the function return value and the value read from the PCI
-> device, and it's complicated to check both.
->
-> Again it's sometimes possible for config read accessors to detect PCI
-> errors, but in most cases a PCI error means the accessor returns
-> success and the value from PCI is ~0.
->
-> Checking the function return value catches programming errors (bad
-> alignment, etc) but misses most of the interesting errors (device was
-> unplugged or reported a PCI error).
->
-> Checking the value returned from PCI is tricky because ~0 is a valid
-> value for some config registers, and only the driver knows for sure.
-> If the driver knows that ~0 is a possible value, it would have to do
-> something else, e.g., another config read of a register that *cannot*
-> be ~0, to see whether it's really an error.
->
-> I suspect that if we had a single value to look at it would be easier
-> to get right.  Error checking with current interface would look like
-> this:
->
->   err = pci_read_config_word(dev, addr, &val);
->   if (err)
->     return -EINVAL;
->
->   if (PCI_POSSIBLE_ERROR(val)) {
->     /* if driver knows ~0 is invalid */
->     return -EINVAL;
->
->     /* if ~0 is potentially a valid value */
->     err = pci_read_config_word(dev, PCI_VENDOR_ID, &val2);
->     if (err)
->       return -EINVAL;
->
->     if (PCI_POSSIBLE_ERROR(val2))
->       return -EINVAL;
->   }
->
-> Error checking with a possible interface that returned only a single
-> value could look like this:
->
->   val = pci_config_read_word(dev, addr);
->   if (PCI_POSSIBLE_ERROR(val)) {
->     /* if driver knows ~0 is invalid */
->     return -EINVAL;
->
->     /* if ~0 is potentially a valid value */
->     val2 = pci_config_read_word(dev, PCI_VENDOR_ID);
->     if (PCI_POSSIBLE_ERROR(val2))
->       return -EINVAL;
->   }
->
-> Am I understanding you correctly?
+The whole series looks good to me. Just a couple of small
+questions inline:
 
-Let us not do this. Reading config space is really expensive on some
-architectures. Requiring a driver to do it twice on some values does not
-improve upon that situation. And is quite redundant if the Root Complex
-driver already knows that the first access has failed.
+On Tue, Jul 14, 2020 at 05:05:36PM +0800, Shengjiu Wang wrote:
+> Use asoc_simple_init_jack function from simple card to implement
+> the Headphone and Microphone detection.
+> Register notifier to disable Speaker when Headphone is plugged in
+> and enable Speaker when Headphone is unplugged.
+> Register notifier to disable Digital Microphone when Analog Microphone
+> is plugged in and enable DMIC when Analog Microphone is unplugged.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  sound/soc/fsl/Kconfig         |  1 +
+>  sound/soc/fsl/fsl-asoc-card.c | 69 ++++++++++++++++++++++++++++++++++-
+>  2 files changed, 68 insertions(+), 2 deletions(-)
 
-Additionally since multiple config accesses to the same devices is not
-allowed in the spec, the hardware must block and wait for a timeout if
-a config access does not get a response.
-(Can happen if a intermediate link between the RC and endpoint has to retrain)
-Having to block twice is very much not ideal. And in the case with
-retraining the secondary access might even succeed. As the link might
-recover between reading the first config word and reading PCI_VENDOR_ID.
-Thus allowing the driver to accept invalid data from the device.
+>  static int fsl_asoc_card_late_probe(struct snd_soc_card *card)
+>  {
+>  	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(card);
+> @@ -745,8 +789,29 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+>  	snd_soc_card_set_drvdata(&priv->card, priv);
+>  
+>  	ret = devm_snd_soc_register_card(&pdev->dev, &priv->card);
+> -	if (ret && ret != -EPROBE_DEFER)
+> -		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
+> +	if (ret) {
+> +		if (ret != -EPROBE_DEFER)
+> +			dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
 
->
->> For b), it might be nice to also change other aspects of the
->> interface, e.g. passing a pci_host_bridge pointer plus bus number
->> instead of a pci_bus pointer, or having the callback in the
->> pci_host_bridge structure.
->
-> I like this idea a lot, too.  I think the fact that
-> pci_bus_read_config_word() requires a pci_bus * complicates things in
-> a few places.
->
-> I think it's completely separate, as you say, and we should defer it
-> for now because even part a) is a lot of work.  I added it to my list
-> of possible future projects.
->
+I think we may move this EPROBE_DEFER to the asrc_fail label.
 
-What about strange PCI devices such as Non-Transparent bridges?
-They will require their own PCI Config space accessors that is not
-connected to a host bridge if one wants to do some sort of
-punch-through enumeration.
-I guess the kernel doesn't care much about them?
+> +		goto asrc_fail;
+> +	}
+> +
+> +	if (of_property_read_bool(np, "hp-det-gpio")) {
 
-Best regards,
-Kjetil Oftedal
+Could we move this check inside asoc_simple_init_jack? There's no
+problem with doing it here though, yet I got a bit confused by it
+as I thought it's a boolean type property, which would be against
+the DT bindings until I saw asoc_simple_init_jack() uses the same
+string to get the GPIO. Just it probably would be a bit tricky as
+we need it to be optional here.
+
+Otherwise, I think we may add a line of comments to indicate that
+the API would use the same string to get the GPIO.
+
+> +		ret = asoc_simple_init_jack(&priv->card, &priv->hp_jack,
+> +					    1, NULL, "Headphone Jack");
+> +		if (ret)
+> +			goto asrc_fail;
+> +
+> +		snd_soc_jack_notifier_register(&priv->hp_jack.jack, &hp_jack_nb);
+> +	}
