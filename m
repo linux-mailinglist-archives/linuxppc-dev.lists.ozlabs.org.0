@@ -2,53 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B902821E7E3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E6321E81F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:32:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5VSD0cSyzDqbm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:08:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5W0D2dGQzDqZp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:32:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5VQQ28gVzDqW3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:06:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=BNT5ATKK; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B5VQP4n85z9sQt;
- Tue, 14 Jul 2020 16:06:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594706797;
- bh=tY7n/UdK8tlbvEHfcHoZLk3bmHxUK6IFDEldxaGgfL4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=BNT5ATKKyJLLeTZd8sYH7BxrwHh8t+/mNRJlwtxkBBO3Ilke6pKUEfTi7Me73YdWo
- WkLFmWfjJNnY8++5m0sMkzhg2sD0x4ibjRKBOu5NQouHO8IeQckcidvOR/Puj8THEo
- REj1zkzprifSNEBG5nIx4o/de0jf80Jiaz0mIk6w4eEtzu4QFzbcmjmRI0ZCrqUMRu
- +MRyNmJRtoDJIZ/L2az5INeGVDYPSnDTzp4SY7PyyR3c4oj/tV9qF5GhPKHt/zMGr7
- B+ygiLW4XGoalbjmX39Nj/iz05bK1LETs6zy+XjkVAVBkQmM4EsomOf9fWnTDE49Dv
- vSzzT7TM9R5ug==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3] powerpc/perf: Use SIER_USER_MASK while updating
- SPRN_SIER for EBB events
-In-Reply-To: <8C50DF8B-1CBB-4365-B068-C8DA5B7D1148@linux.vnet.ibm.com>
-References: <1584533181-4331-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <87r1xod3c3.fsf@mpe.ellerman.id.au>
- <8C50DF8B-1CBB-4365-B068-C8DA5B7D1148@linux.vnet.ibm.com>
-Date: Tue, 14 Jul 2020 16:08:58 +1000
-Message-ID: <87ft9uvdad.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Vy76yxjzDqZG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:30:39 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06E61uSZ178758; Tue, 14 Jul 2020 02:30:32 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3279k3wm1n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Jul 2020 02:30:32 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06E62VP3185105;
+ Tue, 14 Jul 2020 02:30:32 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3279k3wm10-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Jul 2020 02:30:32 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06E6K6kb019737;
+ Tue, 14 Jul 2020 06:30:29 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04fra.de.ibm.com with ESMTP id 327527hgy4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Jul 2020 06:30:29 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06E6UOPg66322730
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Jul 2020 06:30:24 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A60D4C06F;
+ Tue, 14 Jul 2020 06:30:24 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B06884C040;
+ Tue, 14 Jul 2020 06:30:22 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Tue, 14 Jul 2020 06:30:22 +0000 (GMT)
+Date: Tue, 14 Jul 2020 12:00:22 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH 05/11] powerpc/smp: Dont assume l2-cache to be superset
+ of sibling
+Message-ID: <20200714063022.GC26776@linux.vnet.ibm.com>
+References: <20200714043624.5648-1-srikar@linux.vnet.ibm.com>
+ <20200714043624.5648-6-srikar@linux.vnet.ibm.com>
+ <CAOSf1CGmHuyiW_s6DgaNbBEzUhq0qsuQ0ODPYvH+X9je3VWxwA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <CAOSf1CGmHuyiW_s6DgaNbBEzUhq0qsuQ0ODPYvH+X9je3VWxwA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-14_01:2020-07-13,
+ 2020-07-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ spamscore=0 malwarescore=0 phishscore=0 adultscore=0 mlxscore=0
+ bulkscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007140043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,75 +94,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
+ Michael Ellerman <michaele@au1.ibm.com>, Anton Blanchard <anton@au1.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nick Piggin <npiggin@au1.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
->> On 19-Mar-2020, at 4:22 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
->> 
->> Hi Athira,
->> 
->> Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
->>> Sampled Instruction Event Register (SIER), is a PMU register,
->>                                                               ^
->>                                                               that
->>> captures architecture state for a given sample. And sier_user_mask
->>           ^                                          ^
->>           don't think we need "architecture"         SIER_USER_MASK
->> 
->>> defined in commit 330a1eb7775b ("powerpc/perf: Core EBB support for 64-bit
->>> book3s") defines the architected bits that needs to be saved from the SPR.
->> 
->> Not quite, it defines the bits that are visible to userspace.
->> 
->> And I think it's true that for EBB events the bits we need/want to save
->> are only the user visible bits.
->> 
->>> Currently all of the bits from SIER are saved for EBB events. Patch fixes
->>> this by ANDing the "sier_user_mask" to data from SIER in ebb_switch_out().
->>> This will force save only architected bits from the SIER.
->> 
->> s/architected/user visible/
->> 
->> 
->> But, why does it matter? The kernel saves the user visible bits, as well
->> as the kernel-only bits into the thread struct. And then later the
->> kernel restores that value into the hardware before returning to
->> userspace.
->> 
->> But the hardware enforces the visibility of the bits, so userspace can't
->> observe any bits that it shouldn't.
->> 
->> Or is there some other mechanism whereby userspace can see those bits? ;)
->> 
->> If there was, what would the security implications of that be?
->
-> Hi Michael,
->
-> Thanks for your comments. 
->
-> In ebb_switch_in, we set PMCC bit [MMCR0 44:45 ] to 10 which means
-> SIER ( Group B ) register is readable in problem state. Hence the
-> intention of the patch was to make sure we are not exposing the bits
-> which the userspace shouldn't be reading.
->
-> But following your comment about "hardware enforcing the visibility of
-> bits", I did try an "ebb" experiment which showed that reading
-> SPRN_SIER didn't expose any bits other than the user visible bits.
-> Sorry for the confusion here.
+* Oliver O'Halloran <oohall@gmail.com> [2020-07-14 15:40:09]:
 
-That's OK. Thanks for following my trail of clues :)
+> On Tue, Jul 14, 2020 at 2:45 PM Srikar Dronamraju
+> <srikar@linux.vnet.ibm.com> wrote:
+> >
+> > Current code assumes that cpumask of cpus sharing a l2-cache mask will
+> > always be a superset of cpu_sibling_mask.
+> >
+> > Lets stop that assumption.
+> 
+> It's been a while since I looked, but I'm pretty sure the scheduler
+> requires child domains to be subsets of their parents. Why is this
+> necessary or a good idea?
 
-> In that case, Can we drop the existing definition of SIER_USER_MASK if
-> it is no more needed ?
+Thanks for looking into the patches.
 
-I think it is still needed, and I think this change to use it is good, because
-SIER is visible via ptrace.
+Yes the scheduler requires the child domains to be subsets of their parents.
 
-What we need to do, is look at what information in SIER we are currently
-exposing to userspace via ptrace, and what the security implications (if
-any) of that are.
+Current code assumes that the l2_cache is always a superset of sibling mask.
+However there may be processors in future whose sibling mask maynot be a
+superset. 
 
-cheers
+Lets for example we have a chip with 16 threads and 8 threads share
+l2-cache, i.e 8 threads are acting like a small core and 16 threads are
+acting like a big core. Then the assumption that l2-cache mask is a superset
+of cpu_sibling mask would be wrong.
+
+> 
+> > Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> > Cc: Michael Ellerman <michaele@au1.ibm.com>
+> > Cc: Nick Piggin <npiggin@au1.ibm.com>
+> > Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
+> > Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> > Cc: Michael Neuling <mikey@linux.ibm.com>
+> > Cc: Anton Blanchard <anton@au1.ibm.com>
+> > Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> > Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+> > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > ---
+> >  arch/powerpc/kernel/smp.c | 28 +++++++++++++++-------------
+> >  1 file changed, 15 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> > index 7d430fc536cc..875f57e41355 100644
+> > --- a/arch/powerpc/kernel/smp.c
+> > +++ b/arch/powerpc/kernel/smp.c
+> > @@ -1198,6 +1198,7 @@ static bool update_mask_by_l2(int cpu, struct cpumask *(*mask_fn)(int))
+> >         struct device_node *l2_cache, *np;
+> >         int i;
+> >
+> > +       cpumask_set_cpu(cpu, mask_fn(cpu));
+> 
+> ?
+
+At the time the cpumasks are updated, the cpu is not yet part of the
+cpu_online_mask. So when we online/offline the cpus, the masks will end up
+not having itself and causes the scheduler to bork.
+
+Previously (as we can note in code below thats removed), we were doing as
+part of updating all cpus that were part of the cpu_sibling_mask before
+calling update_mask_by_l2.
+
+> 
+> >         l2_cache = cpu_to_l2cache(cpu);
+> >         if (!l2_cache)
+> >                 return false;
+> > @@ -1284,29 +1285,30 @@ static void add_cpu_to_masks(int cpu)
+> >          * add it to it's own thread sibling mask.
+> >          */
+> >         cpumask_set_cpu(cpu, cpu_sibling_mask(cpu));
+> > +       cpumask_set_cpu(cpu, cpu_core_mask(cpu));
+> >
+> >         for (i = first_thread; i < first_thread + threads_per_core; i++)
+> >                 if (cpu_online(i))
+> >                         set_cpus_related(i, cpu, cpu_sibling_mask);
+> >
+> >         add_cpu_to_smallcore_masks(cpu);
+> > -       /*
+> > -        * Copy the thread sibling mask into the cache sibling mask
+> > -        * and mark any CPUs that share an L2 with this CPU.
+> > -        */
+> > -       for_each_cpu(i, cpu_sibling_mask(cpu))
+> > -               set_cpus_related(cpu, i, cpu_l2_cache_mask);
+
+I am referring to this code above. This would have updated the self in its
+cpumask. For the rest of the cpus in the cpu_sibling_mask, they get updated
+correctly in the update_mask_by_l2.
+
+> >         update_mask_by_l2(cpu, cpu_l2_cache_mask);
+> >
+> > -       /*
+> > -        * Copy the cache sibling mask into core sibling mask and mark
+> > -        * any CPUs on the same chip as this CPU.
+> > -        */
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
