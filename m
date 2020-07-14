@@ -2,156 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB2E21E9F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 09:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0050921E9FF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 09:26:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5X7B04TNzDqWx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 17:23:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5XB92FGxzDqdM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 17:26:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::243;
+ helo=mail-lj1-x243.google.com; envelope-from=linus.walleij@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=ELI3JQIu; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=wuCbpWXb; dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5X5B2V4VzDqW3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 17:21:49 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id k5so1105335pjg.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 00:21:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=2bpgJKCJpttTJWtnuu2M2a+0WQJ/9a2t9ZHq4o0/nQg=;
- b=ELI3JQIuxkWQvEIdazvkEi+BxyFsyFgFV7bIUBirquvUvQoVH2tlhtYy9AumF8yQAC
- MKqz+4XWFFmp8vPn3OTd/dlIhC3OndiNz8SpsHHwcMoRmJbYv1RFZSdU8Iqb4fGT58jE
- JvIiqR76t1rQHeDpaGtaB97M4nMThs5PEPjv0IQDgPvDg+TdCwZSgWVDdewBb/N6H1GT
- IRgF24VlRijImQhupWpWofw0qQtECrOMijqtOuOjoBHNSvyYk4Lrfvu1U/mX/yAqEqI4
- Z0TboeAsL+KPecxBtm8bmYdxDNg5zT/CKCJ/T6qbkCq+0zCH7l7HDfbX8ob12U9CSsXS
- xQoA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5X8M4gptzDqDf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 17:24:33 +1000 (AEST)
+Received: by mail-lj1-x243.google.com with SMTP id e4so21230866ljn.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 00:24:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=DsTnC/VUlVqwF1XtVp1muf5zivM1vKkZuI2tYPJ/2Hk=;
+ b=wuCbpWXbCBM7aYUe3O4hind5+zvO8tvQn/ci/3oYyK7wJnTnyJLAocF9K7cT2XFX07
+ XInRtQkDJcuDPI7DkvQiT0W3NB+Y+g2TPrp349Knkn7iPTrLS3ubRafMckXjv+ZYpufJ
+ EHrP7L+n9g/FJFVKu3wXELAP4lJxWCX52XnAWJWf6osH+X593ifp5vioGIFZ001nhYFk
+ vXXb8Cx619HvqCsfpm0XkPLo8yZKMpZyDlRL8P0E3Gs3+qIyC4GaIafb6HDaABOanBHZ
+ d1CD8OEXQE5/xT7RKzIPi6zW9XoUAHvS2eGscYo5lvrDNfT7LZBVWdMNHsA/kbbxH+Iu
+ 6+BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=2bpgJKCJpttTJWtnuu2M2a+0WQJ/9a2t9ZHq4o0/nQg=;
- b=aRa7RVQRnL7TxpkEk/Wf8EPT00KAPnaBOD/nh+x140p33oOqh8mspoucHynXHhE7n6
- E+aZn+VF7OeBi6XZzxvzbrKcgl7Ttsa9Ow31lEuTNsspub0s/v8aKsHW4/cYk/EosgXz
- oVZhqEJt2r1t1+Yst6JHLGzYb2qcBxY7t3jj5GOMXkccKNW0ucXdUPN5N5BJoSilysZr
- sQKAshIGuzFjCmcBIn/aT1SrglLxAdGFEZSQ8bMugAv9ke2LbLrVe3tmem0/ot6hM23k
- IHnQl0eW3sJtnyjBcZBnYOg45QDx4XZkF2oqanc5ao0XImJbVEiQZ1A9bF1OM7UUcgYU
- CeVg==
-X-Gm-Message-State: AOAM533Gzh9ewuEZpBXDqhQFzWGD8n4/yFgGGQASBqcQS1zhMsAkDDSa
- AFNY47lvoZg5eDCWmPcE4pZfGUGkFrcNig==
-X-Google-Smtp-Source: ABdhPJz7lk1rQh8DRZDFd3hy8o8JROXguRm0B8PdfnTMLdh2PG9VFDQqnLa4sDgWWzu8+4MaVg65yA==
-X-Received: by 2002:a17:90a:728d:: with SMTP id
- e13mr3396169pjg.51.1594711306207; 
- Tue, 14 Jul 2020 00:21:46 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id nh14sm1454716pjb.4.2020.07.14.00.21.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jul 2020 00:21:45 -0700 (PDT)
-Subject: Re: [PATCH 03/15] powerpc/powernv/pci: Add explicit tracking of the
- DMA setup state
-To: Oliver O'Halloran <oohall@gmail.com>
-References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-4-oohall@gmail.com>
- <ee5a00db-badd-12fe-1c46-eaba5afc8dea@ozlabs.ru>
- <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <34f7eea2-4ace-9931-7b5f-98ec159f3532@ozlabs.ru>
-Date: Tue, 14 Jul 2020 17:21:42 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=DsTnC/VUlVqwF1XtVp1muf5zivM1vKkZuI2tYPJ/2Hk=;
+ b=YQwJCMOxg60hxwYdBWbrlGyf1gXpGeq+M/W5fIPIu1vciFXcfJjJJbsll9kK9xY5vo
+ PXb2l5qiGFdwk/2PnMiYwJnFIUf4i0cqDCUkXYVnZSqqRiYG5raXQ2U+08us2GvDdoM6
+ oBS08jKuZfR9tt3jSUmxVPcmEE5pn7n+B8wUg4l0jpsybECVny5HLjZEoee4blalxg3O
+ LIBa8lwqiQoyBooCYdenUY4bPxzkyl9s/Ubbc1LjNkhU8yruaE1/apRvrn8W42eUALj9
+ 2ajlvUxkT+oPL8gfyBlK9t6q0kOo0S0zdPuhM+dY52vyJPM2n3V0c6dLJHd1KT1WEhDc
+ 2MMg==
+X-Gm-Message-State: AOAM532pNnlXeRD0nEs5THPkcWhfFMaOaTJHMVzEGMIO+k+pNo4QxTaR
+ EpK2e8eAJqArRqrtmxvwcRuzKA==
+X-Google-Smtp-Source: ABdhPJxl+J9ZWdJ5YcjO/3NrofqTdxgZZkAtDUhah6A/8GIOYex0dLpP5FcgIeZVp9A4OiD/iTJriQ==
+X-Received: by 2002:a2e:b054:: with SMTP id d20mr1534958ljl.55.1594711468890; 
+ Tue, 14 Jul 2020 00:24:28 -0700 (PDT)
+Received: from localhost.localdomain
+ (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+ by smtp.gmail.com with ESMTPSA id v5sm4474655lji.75.2020.07.14.00.24.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Jul 2020 00:24:28 -0700 (PDT)
+From: Linus Walleij <linus.walleij@linaro.org>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+Subject: [PATCH] spi: ppc4xx: Convert to use GPIO descriptors
+Date: Tue, 14 Jul 2020 09:22:26 +0200
+Message-Id: <20200714072226.26071-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -163,87 +78,279 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This converts the PPC4xx SPI driver to use GPIO descriptors.
 
+The driver is already just picking some GPIOs from the device
+tree so the conversion is pretty straight forward. However
+this driver is looking form a pure "gpios" property rather
+than the standard binding "cs-gpios" so we need to add a new
+exception to the gpiolib OF parser to allow this for this
+driver's compatibles.
 
-On 14/07/2020 15:58, Oliver O'Halloran wrote:
-> On Tue, Jul 14, 2020 at 3:37 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->>
->> On 10/07/2020 15:23, Oliver O'Halloran wrote:
->>> There's an optimisation in the PE setup which skips performing DMA
->>> setup for a PE if we only have bridges in a PE. The assumption being
->>> that only "real" devices will DMA to system memory, which is probably
->>> fair. However, if we start off with only bridge devices in a PE then
->>> add a non-bridge device the new device won't be able to use DMA  because
->>> we never configured it.
->>>
->>> Fix this (admittedly pretty weird) edge case by tracking whether we've done
->>> the DMA setup for the PE or not. If a non-bridge device is added to the PE
->>> (via rescan or hotplug, or whatever) we can set up DMA on demand.
->>
->> So hotplug does not work on powernv then, right? I thought you tested it
->> a while ago, or this patch is the result of that attempt? If it is, then
-> 
-> It mostly works. Just the really niche case of hot plugging a bridge,
-> then later on hot plugging a device into the same bus which wouldn't
-> work.
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/gpio/gpiolib-of.c |  10 ++--
+ drivers/spi/spi-ppc4xx.c  | 106 ++++----------------------------------
+ 2 files changed, 17 insertions(+), 99 deletions(-)
 
-Do not you have to have a slot (which is a bridge) for hotplug in the
-first place, to hotplug the bridge?
-
-> 
->> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->>
->>
->>> This also means the only remaining user of the old "DMA Weight" code is
->>> the IODA1 DMA setup code that it was originally added for, which is good.
->>
->>
->> Is ditching IODA1 in the plan? :)
-> 
-> That or separating out the pci_controller_ops for IODA1 and IODA2 so
-> we can stop any IODA2 specific changes from breaking it.
-
-Is IODA1 tested at all these days? Or, is anyone running upstream
-kernels anywhere and keeps shouting when it does not work on IODA1? Thanks,
-
-
-
-> For the most
-> part keeping around IODA1 support isn't hurting anyone, but I wanted
-> to re-work how the BDFN->PE assignment works so that we'd delay
-> assigning a BDFN to a PE until the device is probed. Right now when
-> we're configuring the PE for a bus we map all 255 devfn's to that PE.
-> This is mostly fine, but if you do a bus rescan and there's no device
-> present we'll get a spurious EEH on that PE since the PHB sees that
-> there's no device responding to the CFG cycle. We stop the spurious
-> EEH freeze today by only allowing config cycles if we can find a
-> pci_dn for that bdfn, but I want to get rid of pci_dn.
-> 
-> Mapping each BDFN to a PE after the device is probed is easy enough to
-> do on PHB3 and above since the mapping is handled by an in-memory
-> table which is indexed by the BDFN. Earlier PHBs (i.e. IODA1) use a
-> table of bask & mask values which match on the BDFN, so assigning a
-> whole bus at once is easy, but adding individual BDFNs is hard. It's
-> still possible to do in the HW, but the way the OPAL API works makes
-> it impossible.
-> 
->>>
->>> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
->>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
->>> ---
->>> Alexey, do we need to have the IOMMU API stuff set/clear this flag?
->>
->>
->> I'd say no as that API only cares if a device is in a PE and for those
->> the PE DMA setup  optimization is skipped. Thanks,
-> 
-> Ok cool.
-> 
-
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index 219eb0054233..e3e88510aec7 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -26,7 +26,7 @@
+ /**
+  * of_gpio_spi_cs_get_count() - special GPIO counting for SPI
+  * Some elder GPIO controllers need special quirks. Currently we handle
+- * the Freescale GPIO controller with bindings that doesn't use the
++ * the Freescale and PPC GPIO controller with bindings that doesn't use the
+  * established "cs-gpios" for chip selects but instead rely on
+  * "gpios" for the chip select lines. If we detect this, we redirect
+  * the counting of "cs-gpios" to count "gpios" transparent to the
+@@ -41,7 +41,8 @@ static int of_gpio_spi_cs_get_count(struct device *dev, const char *con_id)
+ 	if (!con_id || strcmp(con_id, "cs"))
+ 		return 0;
+ 	if (!of_device_is_compatible(np, "fsl,spi") &&
+-	    !of_device_is_compatible(np, "aeroflexgaisler,spictrl"))
++	    !of_device_is_compatible(np, "aeroflexgaisler,spictrl") &&
++	    !of_device_is_compatible(np, "ibm,ppc4xx-spi"))
+ 		return 0;
+ 	return of_gpio_named_count(np, "gpios");
+ }
+@@ -405,9 +406,10 @@ static struct gpio_desc *of_find_spi_cs_gpio(struct device *dev,
+ 	if (!IS_ENABLED(CONFIG_SPI_MASTER))
+ 		return ERR_PTR(-ENOENT);
+ 
+-	/* Allow this specifically for Freescale devices */
++	/* Allow this specifically for Freescale and PPC devices */
+ 	if (!of_device_is_compatible(np, "fsl,spi") &&
+-	    !of_device_is_compatible(np, "aeroflexgaisler,spictrl"))
++	    !of_device_is_compatible(np, "aeroflexgaisler,spictrl") &&
++	    !of_device_is_compatible(np, "ibm,ppc4xx-spi"))
+ 		return ERR_PTR(-ENOENT);
+ 	/* Allow only if asking for "cs-gpios" */
+ 	if (!con_id || strcmp(con_id, "cs"))
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 0ea2d9a369d9..d8ee363fb714 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -28,11 +28,9 @@
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+ #include <linux/of_platform.h>
+-#include <linux/of_gpio.h>
+ #include <linux/interrupt.h>
+ #include <linux/delay.h>
+ 
+-#include <linux/gpio.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ 
+@@ -127,8 +125,6 @@ struct ppc4xx_spi {
+ 	const unsigned char *tx;
+ 	unsigned char *rx;
+ 
+-	int *gpios;
+-
+ 	struct spi_ppc4xx_regs __iomem *regs; /* pointer to the registers */
+ 	struct spi_master *master;
+ 	struct device *dev;
+@@ -260,27 +256,6 @@ static int spi_ppc4xx_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static void spi_ppc4xx_chipsel(struct spi_device *spi, int value)
+-{
+-	struct ppc4xx_spi *hw = spi_master_get_devdata(spi->master);
+-	unsigned int cs = spi->chip_select;
+-	unsigned int cspol;
+-
+-	/*
+-	 * If there are no chip selects at all, or if this is the special
+-	 * case of a non-existent (dummy) chip select, do nothing.
+-	 */
+-
+-	if (!hw->master->num_chipselect || hw->gpios[cs] == -EEXIST)
+-		return;
+-
+-	cspol = spi->mode & SPI_CS_HIGH ? 1 : 0;
+-	if (value == BITBANG_CS_INACTIVE)
+-		cspol = !cspol;
+-
+-	gpio_set_value(hw->gpios[cs], cspol);
+-}
+-
+ static irqreturn_t spi_ppc4xx_int(int irq, void *dev_id)
+ {
+ 	struct ppc4xx_spi *hw;
+@@ -359,19 +334,6 @@ static void spi_ppc4xx_enable(struct ppc4xx_spi *hw)
+ 	dcri_clrset(SDR0, SDR0_PFC1, 0x80000000 >> 14, 0);
+ }
+ 
+-static void free_gpios(struct ppc4xx_spi *hw)
+-{
+-	if (hw->master->num_chipselect) {
+-		int i;
+-		for (i = 0; i < hw->master->num_chipselect; i++)
+-			if (gpio_is_valid(hw->gpios[i]))
+-				gpio_free(hw->gpios[i]);
+-
+-		kfree(hw->gpios);
+-		hw->gpios = NULL;
+-	}
+-}
+-
+ /*
+  * platform_device layer stuff...
+  */
+@@ -385,7 +347,6 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	struct device *dev = &op->dev;
+ 	struct device_node *opbnp;
+ 	int ret;
+-	int num_gpios;
+ 	const unsigned int *clk;
+ 
+ 	master = spi_alloc_master(dev, sizeof *hw);
+@@ -399,74 +360,32 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 
+ 	init_completion(&hw->done);
+ 
+-	/*
+-	 * A count of zero implies a single SPI device without any chip-select.
+-	 * Note that of_gpio_count counts all gpios assigned to this spi master.
+-	 * This includes both "null" gpio's and real ones.
+-	 */
+-	num_gpios = of_gpio_count(np);
+-	if (num_gpios > 0) {
+-		int i;
+-
+-		hw->gpios = kcalloc(num_gpios, sizeof(*hw->gpios), GFP_KERNEL);
+-		if (!hw->gpios) {
+-			ret = -ENOMEM;
+-			goto free_master;
+-		}
+-
+-		for (i = 0; i < num_gpios; i++) {
+-			int gpio;
+-			enum of_gpio_flags flags;
+-
+-			gpio = of_get_gpio_flags(np, i, &flags);
+-			hw->gpios[i] = gpio;
+-
+-			if (gpio_is_valid(gpio)) {
+-				/* Real CS - set the initial state. */
+-				ret = gpio_request(gpio, np->name);
+-				if (ret < 0) {
+-					dev_err(dev,
+-						"can't request gpio #%d: %d\n",
+-						i, ret);
+-					goto free_gpios;
+-				}
+-
+-				gpio_direction_output(gpio,
+-						!!(flags & OF_GPIO_ACTIVE_LOW));
+-			} else if (gpio == -EEXIST) {
+-				; /* No CS, but that's OK. */
+-			} else {
+-				dev_err(dev, "invalid gpio #%d: %d\n", i, gpio);
+-				ret = -EINVAL;
+-				goto free_gpios;
+-			}
+-		}
+-	}
+-
+ 	/* Setup the state for the bitbang driver */
+ 	bbp = &hw->bitbang;
+ 	bbp->master = hw->master;
+ 	bbp->setup_transfer = spi_ppc4xx_setupxfer;
+-	bbp->chipselect = spi_ppc4xx_chipsel;
+ 	bbp->txrx_bufs = spi_ppc4xx_txrx;
+ 	bbp->use_dma = 0;
+ 	bbp->master->setup = spi_ppc4xx_setup;
+ 	bbp->master->cleanup = spi_ppc4xx_cleanup;
+ 	bbp->master->bits_per_word_mask = SPI_BPW_MASK(8);
++	bbp->master->use_gpio_descriptors = true;
++	/*
++	 * The SPI core will count the number of GPIO descriptors to figure
++	 * out the number of chip selects available on the platform.
++	 */
++	bbp->master->num_chipselect = 0;
+ 
+ 	/* the spi->mode bits understood by this driver: */
+ 	bbp->master->mode_bits =
+ 		SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST;
+ 
+-	/* this many pins in all GPIO controllers */
+-	bbp->master->num_chipselect = num_gpios > 0 ? num_gpios : 0;
+-
+ 	/* Get the clock for the OPB */
+ 	opbnp = of_find_compatible_node(NULL, NULL, "ibm,opb");
+ 	if (opbnp == NULL) {
+ 		dev_err(dev, "OPB: cannot find node\n");
+ 		ret = -ENODEV;
+-		goto free_gpios;
++		goto free_master;
+ 	}
+ 	/* Get the clock (Hz) for the OPB */
+ 	clk = of_get_property(opbnp, "clock-frequency", NULL);
+@@ -474,7 +393,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 		dev_err(dev, "OPB: no clock-frequency property set\n");
+ 		of_node_put(opbnp);
+ 		ret = -ENODEV;
+-		goto free_gpios;
++		goto free_master;
+ 	}
+ 	hw->opb_freq = *clk;
+ 	hw->opb_freq >>= 2;
+@@ -483,7 +402,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	ret = of_address_to_resource(np, 0, &resource);
+ 	if (ret) {
+ 		dev_err(dev, "error while parsing device node resource\n");
+-		goto free_gpios;
++		goto free_master;
+ 	}
+ 	hw->mapbase = resource.start;
+ 	hw->mapsize = resource_size(&resource);
+@@ -492,7 +411,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	if (hw->mapsize < sizeof(struct spi_ppc4xx_regs)) {
+ 		dev_err(dev, "too small to map registers\n");
+ 		ret = -EINVAL;
+-		goto free_gpios;
++		goto free_master;
+ 	}
+ 
+ 	/* Request IRQ */
+@@ -501,7 +420,7 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 			  0, "spi_ppc4xx_of", (void *)hw);
+ 	if (ret) {
+ 		dev_err(dev, "unable to allocate interrupt\n");
+-		goto free_gpios;
++		goto free_master;
+ 	}
+ 
+ 	if (!request_mem_region(hw->mapbase, hw->mapsize, DRIVER_NAME)) {
+@@ -538,8 +457,6 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	release_mem_region(hw->mapbase, hw->mapsize);
+ request_mem_error:
+ 	free_irq(hw->irqnum, hw);
+-free_gpios:
+-	free_gpios(hw);
+ free_master:
+ 	spi_master_put(master);
+ 
+@@ -556,7 +473,6 @@ static int spi_ppc4xx_of_remove(struct platform_device *op)
+ 	release_mem_region(hw->mapbase, hw->mapsize);
+ 	free_irq(hw->irqnum, hw);
+ 	iounmap(hw->regs);
+-	free_gpios(hw);
+ 	spi_master_put(master);
+ 	return 0;
+ }
 -- 
-Alexey
+2.26.2
+
