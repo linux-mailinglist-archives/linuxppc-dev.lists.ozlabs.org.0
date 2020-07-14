@@ -2,68 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E461821E7C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B902821E7E3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:08:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5VGv1cxdzDqc4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:00:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5VSD0cSyzDqbm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:08:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d42;
- helo=mail-io1-xd42.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uykS8ZY4; dkim-atps=neutral
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
- [IPv6:2607:f8b0:4864:20::d42])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5VF50g3YzDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 15:58:32 +1000 (AEST)
-Received: by mail-io1-xd42.google.com with SMTP id l1so16082369ioh.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 22:58:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=0lEQiTKGfsKn6GiZqFQW0gj62PTpsSis2GUTQxZh3bU=;
- b=uykS8ZY4BSYHyE6E2DlLoNR/xKglZ9/QYuB1UQlYXk0a1+X50e0yitgEkqOTid3fAr
- 8YWrukQNv6PUjq9w/gP3v2ubdLexPGZA1lAdgEhGr6jrTVhqAnUcXSD066wXuh6VmsW+
- HMSyf2Fsw+mKbxNaUddxklsxWo8sMmfRjGD/o6bzpxM0NNVZkxDdrMl4IUQ+gFS17CHN
- qq5RNOLOb+30elm02WwVTQahjlIPYXY4B/xxOzuE+wJPV9+RqnCKItzPR4v0Eor/6VW6
- 5S+R+hURg4ib9f6JZTXVAS9Q+Dh0BedzmziEMYb7jXPgMgrCNyqVrn3nTXGCtlAbM3vF
- iAEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=0lEQiTKGfsKn6GiZqFQW0gj62PTpsSis2GUTQxZh3bU=;
- b=tOx1AfFD6PNlEjs3lyq43HyU8EXhXki8lfMNzwQXaW4Nsbhngdvv7MoP1ISk3TLMYi
- M3AITZVGm7KN+p5J2ZfgslkaHypTUkMOUOMibJyL5omCVMy1iD0xuiAy+c9GG4K81uBj
- wSX0OByMfoumFnkopyQZRgaYpyDXnV/4SwSIgmbYoMvA1pFacopc0ladVHk3SpYU4yB2
- dcw+zjJBxUp5Xmp7q6IP4ejnxuYny8QCbi8SuZgZ8zHtgJF4QYAsVYo+8LGu4Q+vaaM8
- HEwXrRYOBM7q9cvSnMqKENFyu9b4XFILYhjxUDM4sZnXFpWh37WbKj8htvNOwwEbD68h
- bh6g==
-X-Gm-Message-State: AOAM530lfwgnYV2tZD0YdQzVuh1dopMrZNDEV1sEhCvrwUB55AStl4Ql
- i5vMOrEYghlluqb7PkCZBtR/rIMH8JIPNAapbbt3jL83
-X-Google-Smtp-Source: ABdhPJzb2OSehjiT4Rb5hBdJTOIlc+bo7pgKFqXBnKucKI8LUty7MO33sj4Iver47eKIzhi4QEv/ZGOidYkBrmcCsEU=
-X-Received: by 2002:a5d:8853:: with SMTP id t19mr3469552ios.73.1594706309231; 
- Mon, 13 Jul 2020 22:58:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5VQQ28gVzDqW3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:06:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=BNT5ATKK; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B5VQP4n85z9sQt;
+ Tue, 14 Jul 2020 16:06:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594706797;
+ bh=tY7n/UdK8tlbvEHfcHoZLk3bmHxUK6IFDEldxaGgfL4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=BNT5ATKKyJLLeTZd8sYH7BxrwHh8t+/mNRJlwtxkBBO3Ilke6pKUEfTi7Me73YdWo
+ WkLFmWfjJNnY8++5m0sMkzhg2sD0x4ibjRKBOu5NQouHO8IeQckcidvOR/Puj8THEo
+ REj1zkzprifSNEBG5nIx4o/de0jf80Jiaz0mIk6w4eEtzu4QFzbcmjmRI0ZCrqUMRu
+ +MRyNmJRtoDJIZ/L2az5INeGVDYPSnDTzp4SY7PyyR3c4oj/tV9qF5GhPKHt/zMGr7
+ B+ygiLW4XGoalbjmX39Nj/iz05bK1LETs6zy+XjkVAVBkQmM4EsomOf9fWnTDE49Dv
+ vSzzT7TM9R5ug==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3] powerpc/perf: Use SIER_USER_MASK while updating
+ SPRN_SIER for EBB events
+In-Reply-To: <8C50DF8B-1CBB-4365-B068-C8DA5B7D1148@linux.vnet.ibm.com>
+References: <1584533181-4331-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <87r1xod3c3.fsf@mpe.ellerman.id.au>
+ <8C50DF8B-1CBB-4365-B068-C8DA5B7D1148@linux.vnet.ibm.com>
+Date: Tue, 14 Jul 2020 16:08:58 +1000
+Message-ID: <87ft9uvdad.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-4-oohall@gmail.com>
- <ee5a00db-badd-12fe-1c46-eaba5afc8dea@ozlabs.ru>
-In-Reply-To: <ee5a00db-badd-12fe-1c46-eaba5afc8dea@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 14 Jul 2020 15:58:18 +1000
-Message-ID: <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
-Subject: Re: [PATCH 03/15] powerpc/powernv/pci: Add explicit tracking of the
- DMA setup state
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,69 +60,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 14, 2020 at 3:37 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+>> On 19-Mar-2020, at 4:22 PM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> 
+>> Hi Athira,
+>> 
+>> Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+>>> Sampled Instruction Event Register (SIER), is a PMU register,
+>>                                                               ^
+>>                                                               that
+>>> captures architecture state for a given sample. And sier_user_mask
+>>           ^                                          ^
+>>           don't think we need "architecture"         SIER_USER_MASK
+>> 
+>>> defined in commit 330a1eb7775b ("powerpc/perf: Core EBB support for 64-bit
+>>> book3s") defines the architected bits that needs to be saved from the SPR.
+>> 
+>> Not quite, it defines the bits that are visible to userspace.
+>> 
+>> And I think it's true that for EBB events the bits we need/want to save
+>> are only the user visible bits.
+>> 
+>>> Currently all of the bits from SIER are saved for EBB events. Patch fixes
+>>> this by ANDing the "sier_user_mask" to data from SIER in ebb_switch_out().
+>>> This will force save only architected bits from the SIER.
+>> 
+>> s/architected/user visible/
+>> 
+>> 
+>> But, why does it matter? The kernel saves the user visible bits, as well
+>> as the kernel-only bits into the thread struct. And then later the
+>> kernel restores that value into the hardware before returning to
+>> userspace.
+>> 
+>> But the hardware enforces the visibility of the bits, so userspace can't
+>> observe any bits that it shouldn't.
+>> 
+>> Or is there some other mechanism whereby userspace can see those bits? ;)
+>> 
+>> If there was, what would the security implications of that be?
 >
-> On 10/07/2020 15:23, Oliver O'Halloran wrote:
-> > There's an optimisation in the PE setup which skips performing DMA
-> > setup for a PE if we only have bridges in a PE. The assumption being
-> > that only "real" devices will DMA to system memory, which is probably
-> > fair. However, if we start off with only bridge devices in a PE then
-> > add a non-bridge device the new device won't be able to use DMA  because
-> > we never configured it.
-> >
-> > Fix this (admittedly pretty weird) edge case by tracking whether we've done
-> > the DMA setup for the PE or not. If a non-bridge device is added to the PE
-> > (via rescan or hotplug, or whatever) we can set up DMA on demand.
+> Hi Michael,
 >
-> So hotplug does not work on powernv then, right? I thought you tested it
-> a while ago, or this patch is the result of that attempt? If it is, then
+> Thanks for your comments. 
+>
+> In ebb_switch_in, we set PMCC bit [MMCR0 44:45 ] to 10 which means
+> SIER ( Group B ) register is readable in problem state. Hence the
+> intention of the patch was to make sure we are not exposing the bits
+> which the userspace shouldn't be reading.
+>
+> But following your comment about "hardware enforcing the visibility of
+> bits", I did try an "ebb" experiment which showed that reading
+> SPRN_SIER didn't expose any bits other than the user visible bits.
+> Sorry for the confusion here.
 
-It mostly works. Just the really niche case of hot plugging a bridge,
-then later on hot plugging a device into the same bus which wouldn't
-work.
+That's OK. Thanks for following my trail of clues :)
 
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->
->
-> > This also means the only remaining user of the old "DMA Weight" code is
-> > the IODA1 DMA setup code that it was originally added for, which is good.
->
->
-> Is ditching IODA1 in the plan? :)
+> In that case, Can we drop the existing definition of SIER_USER_MASK if
+> it is no more needed ?
 
-That or separating out the pci_controller_ops for IODA1 and IODA2 so
-we can stop any IODA2 specific changes from breaking it. For the most
-part keeping around IODA1 support isn't hurting anyone, but I wanted
-to re-work how the BDFN->PE assignment works so that we'd delay
-assigning a BDFN to a PE until the device is probed. Right now when
-we're configuring the PE for a bus we map all 255 devfn's to that PE.
-This is mostly fine, but if you do a bus rescan and there's no device
-present we'll get a spurious EEH on that PE since the PHB sees that
-there's no device responding to the CFG cycle. We stop the spurious
-EEH freeze today by only allowing config cycles if we can find a
-pci_dn for that bdfn, but I want to get rid of pci_dn.
+I think it is still needed, and I think this change to use it is good, because
+SIER is visible via ptrace.
 
-Mapping each BDFN to a PE after the device is probed is easy enough to
-do on PHB3 and above since the mapping is handled by an in-memory
-table which is indexed by the BDFN. Earlier PHBs (i.e. IODA1) use a
-table of bask & mask values which match on the BDFN, so assigning a
-whole bus at once is easy, but adding individual BDFNs is hard. It's
-still possible to do in the HW, but the way the OPAL API works makes
-it impossible.
+What we need to do, is look at what information in SIER we are currently
+exposing to userspace via ptrace, and what the security implications (if
+any) of that are.
 
-> >
-> > Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
-> > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> > ---
-> > Alexey, do we need to have the IOMMU API stuff set/clear this flag?
->
->
-> I'd say no as that API only cares if a device is in a PE and for those
-> the PE DMA setup  optimization is skipped. Thanks,
-
-Ok cool.
+cheers
