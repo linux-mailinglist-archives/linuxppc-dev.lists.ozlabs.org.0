@@ -2,84 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363BF21E896
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 08:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCF221E8C4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 09:01:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5WNC39xtzDqbr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 16:49:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5Wds0MC5zDqZw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 17:01:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
- helo=mail-qk1-x743.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=D6enXb3M; dkim-atps=neutral
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5WJZ74G2zDqXf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:46:38 +1000 (AEST)
-Received: by mail-qk1-x743.google.com with SMTP id l6so14645530qkc.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jul 2020 23:46:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=dzxfeYMtkjsMRhuGgWk+6usvf7YkNVFphbzmaI9AE80=;
- b=D6enXb3MQ6lRfQoiLzp7fWvveVWEPafnRj0qOq8HR749w3FZ37ez2NYcHDpWVcNJ8C
- E6oilKdejmb5r0rqLFJB+CCLpscI8XUiIVZ8bDM7z6I/7R0PfB+60Ow/jN3FMTFb+aqf
- VIHAGF84TrYoYpJzXubl8z4dY24kY+GAm+G0m27ZFHu72vmK0NVCiy4kSnFIwVT401mB
- pkAFtMTtLD4gEXq7awDLySJq5spWEL2tFvchp9MVLxoMnoF7vhSgssNg+M6z59ENUxiH
- RLqIUZYFM3dl6pT13dxMsHSTwb+OG1YiOQOwRreOhSXvfmOqJOBWL9iUxFa+QBQb4eC8
- ukrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=dzxfeYMtkjsMRhuGgWk+6usvf7YkNVFphbzmaI9AE80=;
- b=ABcg3IYjWJpXNqzXpPh8c08gCNZn4eTdivvpIZe0YOVhpO+eXQ+oUxTI/SfVj9LoKn
- xCCzFy5KReyvV51HekiyNQz4fEkotCwchFpewOyqUv05dfsQfMU/chtzdKt/hSB9gPng
- 2gBRQGXNp+rugrUSVKLCwQ5qHYFNBcI2Os+NyBNPlkd5LGHCjETEVF+PYblyVPI/Gl6O
- fRJws2WEuU43oxRlCc6I1Z2S70kedSTBDbdMAUfVIssO96CTXgZgJ+47Sphez5GSxK6/
- RgWS/k7H/ETvPSx3J2CnIG0rxdzXhv/kg6/ae/W7JEu+3yu/rUP1KuzOSKbjQ6+wbhKT
- ljag==
-X-Gm-Message-State: AOAM531G2oMSiL2xCP66maIxKhq0JfGTSiCE0oUXkiAVpQra381DhAd8
- t9Ql9lfyh2Qw3MUTysjxIdQ=
-X-Google-Smtp-Source: ABdhPJyC3/V/9okdvc0CGcOc+6fmRvKD6sJ98UlaqvKOZ2nYA2QIkbbrDx8NW6BywsBA4Kr4BtJlsQ==
-X-Received: by 2002:a37:4bcd:: with SMTP id y196mr3029955qka.495.1594709195156; 
- Mon, 13 Jul 2020 23:46:35 -0700 (PDT)
-Received: from LeoBras (179-125-193-229.dynamic.desktop.com.br.
- [179.125.193.229])
- by smtp.gmail.com with ESMTPSA id a68sm20906352qkc.110.2020.07.13.23.46.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Jul 2020 23:46:34 -0700 (PDT)
-Message-ID: <846ba63b1f1fc4c9366f39b2cf09df71a19da891.camel@gmail.com>
-Subject: Re: [PATCH v3 4/6] powerpc/pseries/iommu: Remove default DMA window
- before creating DDW
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Thiago Jung Bauermann
- <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>
-Date: Tue, 14 Jul 2020 03:46:29 -0300
-In-Reply-To: <eb357d42f5605a2b0234c04de477e171134c24f5.camel@gmail.com>
-References: <20200703061844.111865-1-leobras.c@gmail.com>
- <20200703061844.111865-5-leobras.c@gmail.com>
- <cc15a81d-04d9-3ee4-4fdb-093618f6e635@ozlabs.ru>
- <8c29be499e8741e7d77d53ca005034a2ca0179ac.camel@gmail.com>
- <18fd94d2-4365-16d1-7c85-af07d5c9a0f3@ozlabs.ru>
- <eb357d42f5605a2b0234c04de477e171134c24f5.camel@gmail.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5Wbc4dCZzDqRp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 16:59:37 +1000 (AEST)
+Received: from [192.168.0.6] (ip5f5af29b.dynamic.kabel-deutschland.de
+ [95.90.242.155])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 6BEA6206466EA;
+ Tue, 14 Jul 2020 08:59:31 +0200 (CEST)
+Subject: Re: /sys/kernel/debug/kmemleak empty despite kmemleak reports
+To: Catalin Marinas <catalin.marinas@arm.com>
+References: <070dd6b7-1ee6-8090-8973-1eb0240f6948@molgen.mpg.de>
+ <20200709175705.GD6579@gaia>
+ <276e4bce-3e21-8020-9a1c-729a6cafcdd3@molgen.mpg.de>
+ <20200713182735.GH15829@gaia>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Message-ID: <b84ccca2-3c5d-b3b9-e097-6932592b3bc9@molgen.mpg.de>
+Date: Tue, 14 Jul 2020 08:59:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200713182735.GH15829@gaia>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,85 +52,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In fact, the changes over the last patch are more complex than the
-current patch. 
-Just for reference, that's how enable_ddw() currently patches:
+Dear Catalin,
 
-@@ -1087,7 +1119,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct
-device_node *pdn)
-        struct device_node *dn;
-        u32 ddw_avail[DDW_APPLICABLE_SIZE];
-        struct direct_window *window;
--       struct property *win64;
-+       struct property *win64, *default_win = NULL;
-        struct dynamic_dma_window_prop *ddwprop;
-        struct failed_ddw_pdn *fpdn;
- 
-@@ -1133,14 +1165,38 @@ static u64 enable_ddw(struct pci_dev *dev,
-struct device_node *pdn)
-        if (ret != 0)
-                goto out_failed;
- 
-+       /*
-+        * If there is no window available, remove the default DMA
-window,
-+        * if it's present. This will make all the resources available
-to the
-+        * new DDW window.
-+        * If anything fails after this, we need to restore it, so also
-check
-+        * for extensions presence.
-+        */
-        if (query.windows_available == 0) {
--               /*
--                * no additional windows are available for this device.
--                * We might be able to reallocate the existing window,
--                * trading in for a larger page size.
--                */
--               dev_dbg(&dev->dev, "no free dynamic windows");
--               goto out_failed;
-+               int reset_win_ext;
-+
-+               default_win = of_find_property(pdn, "ibm,dma-window",
-NULL);
-+               if (!default_win)
-+                       goto out_failed;
-+
-+               reset_win_ext = ddw_read_ext(pdn,
-DDW_EXT_RESET_DMA_WIN, NULL);
-+               if (reset_win_ext) {
-+                       default_win = NULL;
-+                       goto out_failed;
-+               }
-+
-+               remove_dma_window(pdn, ddw_avail, default_win);
-+
-+               /* Query again, to check if the window is available */
-+               ret = query_ddw(dev, ddw_avail, &query, pdn);
-+               if (ret != 0)
-+                       goto out_failed;
-+
-+               if (query.windows_available == 0) {
-+                       /* no windows are available for this device. */
-+                       dev_dbg(&dev->dev, "no free dynamic windows");
-+                       goto out_failed;
-+               }
-        }
-        if (query.page_size & 4) {
-                page_shift = 24; /* 16MB */
-@@ -1231,6 +1287,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct
-device_node *pdn)
-        kfree(win64);
- 
- out_failed:
-+       if (default_win)
-+               reset_dma_window(dev, pdn);
- 
-        fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
-        if (!fpdn)
 
+Am 13.07.20 um 20:27 schrieb Catalin Marinas:
+> On Thu, Jul 09, 2020 at 11:08:52PM +0200, Paul Menzel wrote:
+>> Am 09.07.20 um 19:57 schrieb Catalin Marinas:
+>>> On Thu, Jul 09, 2020 at 04:37:10PM +0200, Paul Menzel wrote:
+>>>> Despite Linux 5.8-rc4 reporting memory leaks on the IBM POWER 8 S822LC, the
+>>>> file does not contain more information.
+>>>>
+>>>>> $ dmesg
+>>>>> […] > [48662.953323] perf: interrupt took too long (2570 > 2500), lowering kernel.perf_event_max_sample_rate to 77750
+>>>>> [48854.810636] perf: interrupt took too long (3216 > 3212), lowering kernel.perf_event_max_sample_rate to 62000
+>>>>> [52300.044518] perf: interrupt took too long (4244 > 4020), lowering kernel.perf_event_max_sample_rate to 47000
+>>>>> [52751.373083] perf: interrupt took too long (5373 > 5305), lowering kernel.perf_event_max_sample_rate to 37000
+>>>>> [53354.000363] perf: interrupt took too long (6793 > 6716), lowering kernel.perf_event_max_sample_rate to 29250
+>>>>> [53850.215606] perf: interrupt took too long (8672 > 8491), lowering kernel.perf_event_max_sample_rate to 23000
+>>>>> [57542.266099] perf: interrupt took too long (10940 > 10840), lowering kernel.perf_event_max_sample_rate to 18250
+>>>>> [57559.645404] perf: interrupt took too long (13714 > 13675), lowering kernel.perf_event_max_sample_rate to 14500
+>>>>> [61608.697728] Can't find PMC that caused IRQ
+>>>>> [71774.463111] kmemleak: 12 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>>>> [92372.044785] process '@/usr/bin/gnatmake-5' started with executable stack
+>>>>> [92849.380672] FS-Cache: Loaded
+>>>>> [92849.417269] FS-Cache: Netfs 'nfs' registered for caching
+>>>>> [92849.595974] NFS: Registering the id_resolver key type
+>>>>> [92849.596000] Key type id_resolver registered
+>>>>> [92849.596000] Key type id_legacy registered
+>>>>> [101808.079143] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>>>> [106904.323471] Can't find PMC that caused IRQ
+>>>>> [129416.391456] kmemleak: 1 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>>>> [158171.604221] kmemleak: 34 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+>>>>> $ sudo cat /sys/kernel/debug/kmemleak
+>>>
+>>> When they are no longer present, they are most likely false positives.
+>>
+>> How can this be? Shouldn’t the false positive also be logged in
+>> `/sys/kernel/debug/kmemleak`?
+> 
+> Sorry, I wasn't clear. It can be a transient false positive. At a
+> subsequent scan, kmemleak found pointer referring the previously
+> reported objects and no longer shows them.
+
+Interesting. Is it possible to print a message in that case to avoid 
+confusion?
+
+>>> Was this triggered during boot? Or under some workload?
+>>
+>>  From the timestamps it looks like under some load.
+> 
+> Was it during boot? I put a delay of 60s to avoid this but, depending on
+> the platform, it can still trigger.
+
+No, it happened after several hours of runtime.
+
+
+Kind regards,
+
+Paul
