@@ -2,56 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E1821F1EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 14:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D6021F1F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 14:57:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5gRl354VzDqV6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 22:53:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5gXK21cszDqQj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jul 2020 22:57:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=amacapital.net (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=luto@amacapital.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=amacapital.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=amacapital-net.20150623.gappssmtp.com
+ header.i=@amacapital-net.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=D1NGAPg9; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5fr3683gzDqc4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 22:25:55 +1000 (AEST)
-IronPort-SDR: 1DwkuD1yUmu8TrMtlWLfGnRkry7kKQ2SpVmdVgwH8TN/J4eukB8qBt6S5WwhcAaUTbesscIxRz
- ALWiqG1FYsRA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9681"; a="137017554"
-X-IronPort-AV: E=Sophos;i="5.75,350,1589266800"; d="scan'208";a="137017554"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2020 05:25:53 -0700
-IronPort-SDR: TVIaMKQPYPdjGFZZbI3WQ9ns1+0Iskz9REpvCKvlTFGqhFJ9NUL6fPtyjLnMsU2L3jtH6/uf5d
- oLaIYQihVZaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,350,1589266800"; d="scan'208";a="268639830"
-Received: from pipper-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.249.46.185])
- by fmsmga007.fm.intel.com with ESMTP; 14 Jul 2020 05:25:20 -0700
-Date: Tue, 14 Jul 2020 15:25:18 +0300
-From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
- move to kernel proper
-Message-ID: <20200714122518.GE1463346@linux.intel.com>
-References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
- <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
- <20200714102826.GB4756@willie-the-truck>
- <20200714112927.GV10769@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200714112927.GV10769@hirez.programming.kicks-ass.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Mailman-Approved-At: Tue, 14 Jul 2020 22:39:55 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5gHV3TBkzDqFs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 22:46:14 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id ls15so1532317pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 05:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amacapital-net.20150623.gappssmtp.com; s=20150623;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=/SewYUnqs72nnjMOfIaT/P3hnIetrZLumBpPg+JegX0=;
+ b=D1NGAPg9DguAGriffg1ZKDQlJlC1+rzx1RCn9Z1SjvMh8mVyP85iJVTOk27SO4a08k
+ 1V5qK1FMv2kRDf61ZAwWSToubCahJWjZawbE9dK/JQl/n6KGaGigwT8v4+/JvSOH3c9g
+ Mz5Lgz2PjW6tfU5YGXzfAQPF4Wg/hMeniIXfs+bXaz6nZPur23tEIN3EVe4/csCszP7T
+ aa4VAfNXB2ufQhsSmU5YlKzEACcAVaHvnN4wfizMbk4JbzAHCQuXlr1YyqS155MassiF
+ mgNzS52TqPR5Z4Go7wsaOTe0Q3qKQGveLcrduWSquAZ69BfUR0H0nvbYv0E4QcG7eqYv
+ Zv5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=/SewYUnqs72nnjMOfIaT/P3hnIetrZLumBpPg+JegX0=;
+ b=XtQ2luIR+gUEpOZXMBs3RxudRRJMLnmPiaxrP9Xvr+IQMzXIdSFpTMkEkZoHHDILOl
+ Ax9vIS9dRGMNwUCUNFlf8cbibyf4rNpPv2MYgxJLLHwv2p02nel7wn84kVeGYWvMXPEc
+ +mRPMVP5mu2sz14toiMz9XDoCXD9ldBMz5+ZNmPYkblkQY36XRLhNnypjizzLjkIwCBz
+ 76GX7PYCfaSeBnCon2JElaA6PwYnnkV7GkdNfA4jXG1rcrzEXMKgNXsSB/UPpkgOEX7e
+ solZ+S87JE+voMf2sl741sqL794NtE1gVzj7VjqRYNhal1uA4U+g4UR5roNmNJZ7xWlT
+ B1Pg==
+X-Gm-Message-State: AOAM531fUeEjXLzVy+iLeJhK82H97UTFiIYu2avjS5f6HxNoKX2mAkUw
+ 4tzZA17cO1m3Ffb5RSc9gBsGCQ==
+X-Google-Smtp-Source: ABdhPJxJbeD76js5UkUJHGRXxQF8mvRABkEpz0TioNSqyjRD+fSmGpaHXMGBmfPRvfGBot/P0MR7fg==
+X-Received: by 2002:a17:90a:3a81:: with SMTP id
+ b1mr4539573pjc.217.1594730768819; 
+ Tue, 14 Jul 2020 05:46:08 -0700 (PDT)
+Received: from ?IPv6:2601:646:c200:1ef2:d111:b7a3:a3d3:c7aa?
+ ([2601:646:c200:1ef2:d111:b7a3:a3d3:c7aa])
+ by smtp.gmail.com with ESMTPSA id g28sm17494542pfr.70.2020.07.14.05.46.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Jul 2020 05:46:07 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Andy Lutomirski <luto@amacapital.net>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [RFC PATCH 7/7] lazy tlb: shoot lazies,
+ a non-refcounting lazy tlb option
+Date: Tue, 14 Jul 2020 05:46:05 -0700
+Message-Id: <6D3D1346-DB1E-43EB-812A-184918CCC16A@amacapital.net>
+References: <1594708054.04iuyxuyb5.astroid@bobo.none>
+In-Reply-To: <1594708054.04iuyxuyb5.astroid@bobo.none>
+To: Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: iPhone Mail (17F80)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,116 +84,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
- Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
- Paul Burton <paulburton@kernel.org>,
- Vincent Whitchurch <vincent.whitchurch@axis.com>,
- Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Jiri Kosina <jkosina@suse.cz>, Anup Patel <anup.patel@wdc.com>,
- linux-kernel@vger.kernel.org, Philipp Rudo <prudo@linux.ibm.com>,
- Torsten Duwe <duwe@lst.de>, Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Vincent Chen <deanbo422@gmail.com>, Omar Sandoval <osandov@fb.com>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- John Fastabend <john.fastabend@gmail.com>,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>,
- Andrii Nakryiko <andriin@fb.com>, Thomas Huth <thuth@redhat.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
- Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
- Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Ley Foon Tan <ley.foon.tan@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Sami Tolvanen <samitolvanen@google.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
- Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
- Guan Xuetao <gxt@pku.edu.cn>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Jessica Yu <jeyu@kernel.org>,
- "open list:BPF JIT for MIPS \(32-BIT AND 64-BIT\)" <bpf@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- David Howells <dhowells@redhat.com>,
- "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
- Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Amit Daniel Kachhap <amit.kachhap@arm.com>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz>,
- Jiri Olsa <jolsa@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <paulmck@kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, KP Singh <kpsingh@chromium.org>,
- Dmitry Vyukov <dvyukov@google.com>, Nick Hu <nickhu@andestech.com>,
- "open list:BPF JIT for MIPS \(32-BIT AND 64-BIT\)" <netdev@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 14, 2020 at 01:29:27PM +0200, Peter Zijlstra wrote:
-> On Tue, Jul 14, 2020 at 11:28:27AM +0100, Will Deacon wrote:
-> 
-> > As Ard says, module_alloc() _is_ special, in the sense that the virtual
-> > memory it allocates wants to be close to the kernel text, whereas the
-> > concept of allocating executable memory is broader and doesn't have these
-> > restrictions. So, while I'm in favour of having a text_alloc() interface
-> > that can be used by callers which only require an executable mapping, I'd
-> > much prefer for the module_alloc() code to remain for, err, modules.
-> 
-> So on x86 all those things (kprobes, bpf, ftrace) require that same
-> closeness.
-> 
-> An interface like the late vmalloc_exec() will simply not work for us.
-> 
-> We recently talked about arm64-kprobes and how you're not doing any of
-> the optimizations and fully rely on the exception return. And I see
-> you're one of the few archs that has bpf_jit_alloc_exec() (also,
-> shouldn't you be using PAGE_KERNEL_EXEC there?). But the BPF core seems
-> to use module_alloc() as a default means of allocating text.
-> 
-> 
-> So what should this look like? Have a text_alloc() with an argument that
-> indicates where? But then I suppose we also need a means to manage PLT
-> entries. Otherwise I don't exactly see how you're going to call BPF
-> code, or how that BPF stuff is going to call back into its helpers.
 
-To make this less of a havoc to arch maintainers what if:
 
-void * __weak module_alloc(unsigned long size)
-{
-	if (IS_ENABLED(HAS_TEXT_ALLOC))
-		return text_alloc(size);
+> On Jul 13, 2020, at 11:31 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
+>=20
+> =EF=BB=BFExcerpts from Nicholas Piggin's message of July 14, 2020 3:04 pm:=
 
-	return __vmalloc_node_range(size, 1, VMALLOC_START, VMALLOC_END,
-			GFP_KERNEL, PAGE_KERNEL_EXEC, VM_FLUSH_RESET_PERMS,
-			NUMA_NO_NODE, __builtin_return_address(0));
-}
+>> Excerpts from Andy Lutomirski's message of July 14, 2020 4:18 am:
+>>>=20
+>>>> On Jul 13, 2020, at 9:48 AM, Nicholas Piggin <npiggin@gmail.com> wrote:=
 
-Then in arch/x86/Kconfig I could put:
+>>>>=20
+>>>> =EF=BB=BFExcerpts from Andy Lutomirski's message of July 14, 2020 1:59 a=
+m:
+>>>>>> On Thu, Jul 9, 2020 at 6:57 PM Nicholas Piggin <npiggin@gmail.com> wr=
+ote:
+>>>>>>=20
+>>>>>> On big systems, the mm refcount can become highly contented when doin=
+g
+>>>>>> a lot of context switching with threaded applications (particularly
+>>>>>> switching between the idle thread and an application thread).
+>>>>>>=20
+>>>>>> Abandoning lazy tlb slows switching down quite a bit in the important=
 
-config HAS_TEXT_ALLOC
-	def_bool y
+>>>>>> user->idle->user cases, so so instead implement a non-refcounted sche=
+me
+>>>>>> that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot do=
+wn
+>>>>>> any remaining lazy ones.
+>>>>>>=20
+>>>>>> On a 16-socket 192-core POWER8 system, a context switching benchmark
+>>>>>> with as many software threads as CPUs (so each switch will go in and
+>>>>>> out of idle), upstream can achieve a rate of about 1 million context
+>>>>>> switches per second. After this patch it goes up to 118 million.
+>>>>>>=20
+>>>>>=20
+>>>>> I read the patch a couple of times, and I have a suggestion that could=
 
-This would scale down the patch set just to add kernel/text.c and
-arch/x86/kernel/text.c, and allows gradual migration to other arch's.
+>>>>> be nonsense.  You are, effectively, using mm_cpumask() as a sort of
+>>>>> refcount.  You're saying "hey, this mm has no more references, but it
+>>>>> still has nonempty mm_cpumask(), so let's send an IPI and shoot down
+>>>>> those references too."  I'm wondering whether you actually need the
+>>>>> IPI.  What if, instead, you actually treated mm_cpumask as a refcount
+>>>>> for real?  Roughly, in __mmdrop(), you would only free the page tables=
 
-/Jarkko
+>>>>> if mm_cpumask() is empty.  And, in the code that removes a CPU from
+>>>>> mm_cpumask(), you would check if mm_users =3D=3D 0 and, if so, check i=
+f
+>>>>> you just removed the last bit from mm_cpumask and potentially free the=
+
+>>>>> mm.
+>>>>>=20
+>>>>> Getting the locking right here could be a bit tricky -- you need to
+>>>>> avoid two CPUs simultaneously exiting lazy TLB and thinking they
+>>>>> should free the mm, and you also need to avoid an mm with mm_users
+>>>>> hitting zero concurrently with the last remote CPU using it lazily
+>>>>> exiting lazy TLB.  Perhaps this could be resolved by having mm_count
+>>>>> =3D=3D 1 mean "mm_cpumask() is might contain bits and, if so, it owns t=
+he
+>>>>> mm" and mm_count =3D=3D 0 meaning "now it's dead" and using some caref=
+ul
+>>>>> cmpxchg or dec_return to make sure that only one CPU frees it.
+>>>>>=20
+>>>>> Or maybe you'd need a lock or RCU for this, but the idea would be to
+>>>>> only ever take the lock after mm_users goes to zero.
+>>>>=20
+>>>> I don't think it's nonsense, it could be a good way to avoid IPIs.
+>>>>=20
+>>>> I haven't seen much problem here that made me too concerned about IPIs=20=
+
+>>>> yet, so I think the simple patch may be good enough to start with
+>>>> for powerpc. I'm looking at avoiding/reducing the IPIs by combining the=
+
+>>>> unlazying with the exit TLB flush without doing anything fancy with
+>>>> ref counting, but we'll see.
+>>>=20
+>>> I would be cautious with benchmarking here. I would expect that the
+>>> nasty cases may affect power consumption more than performance =E2=80=94=
+ the=20
+>>> specific issue is IPIs hitting idle cores, and the main effects are to=20=
+
+>>> slow down exit() a bit but also to kick the idle core out of idle.=20
+>>> Although, if the idle core is in a deep sleep, that IPI could be=20
+>>> *very* slow.
+>>=20
+>> It will tend to be self-limiting to some degree (deeper idle cores
+>> would tend to have less chance of IPI) but we have bigger issues on
+>> powerpc with that, like broadcast IPIs to the mm cpumask for THP
+>> management. Power hasn't really shown up as an issue but powerpc
+>> CPUs may have their own requirements and issues there, shall we say.
+>>=20
+>>> So I think it=E2=80=99s worth at least giving this a try.
+>>=20
+>> To be clear it's not a complete solution itself. The problem is of=20
+>> course that mm cpumask gives you false negatives, so the bits
+>> won't always clean up after themselves as CPUs switch away from their
+>> lazy tlb mms.
+>=20
+> ^^
+>=20
+> False positives: CPU is in the mm_cpumask, but is not using the mm
+> as a lazy tlb. So there can be bits left and never freed.
+>=20
+> If you closed the false positives, you're back to a shared mm cache
+> line on lazy mm context switches.
+
+x86 has this exact problem. At least no more than 64*8 CPUs share the cache l=
+ine :)
+
+Can your share your benchmark?
+
+>=20
+> Thanks,
+> Nick
