@@ -2,75 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EC2220806
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 11:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B7E22091A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 11:46:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6BGl4cpbzDqf6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 19:02:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6CG50THZzDql9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 19:46:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::144;
- helo=mail-il1-x144.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::444;
+ helo=mail-wr1-x444.google.com; envelope-from=lee.jones@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=a4Ag6XZN; dkim-atps=neutral
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
- [IPv6:2607:f8b0:4864:20::144])
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=SinIXReR; dkim-atps=neutral
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6BDZ3HQJzDqf6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 19:00:28 +1000 (AEST)
-Received: by mail-il1-x144.google.com with SMTP id x9so1339893ila.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:00:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=Bx+mAAqnrHgAzXQXG6WKZvX5m5t6d99W/4/GZ8ZVf2s=;
- b=a4Ag6XZNdeqNafqKobNciKBW0q9tqBTCO9JCniCHk5xWrDQ6RWS6ryjVWcqnTbm7Vv
- k4mlthzRu5FYdSx2ZBuDlEyTCUtHYmoJpo4hDjzvW2sS6Bp+dAaBUSVCsYi4atyxwshR
- JhxpRbu95DCcY1OHr+RqF/UNbRjYnCBeDv/HkUdLXLVw6JLdlsCUIqchMXa2xCGIFWAr
- IwThvnlDlLYlntUIEhe3iRy+k8W1WXMb09221BgpghM92E8/pV8/J74XxsFAB6i6a3rx
- nutkyXkl7Jmp+Q/VKpYJFKxU1LnjcYCbLH1lbvbtDudcrzmiJ3kOXDV6/H8KqWA/TWa2
- mqgA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6CCx0lTBzDqhm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 19:45:00 +1000 (AEST)
+Received: by mail-wr1-x444.google.com with SMTP id k6so1757619wrn.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:45:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PqrROLW34HUUtR2h51/zb0sAvx91AU1D+g0vWHL8Q9E=;
+ b=SinIXReRv8gqiSN2QfRyGZoxeCSVs1tW6IJ0fPIXqJKyYvSmw8FpS+EVBSF+0RW2Sh
+ ZfKeXn9lmtbB+SD4BCJTJtQtDjyF2+P5LA2TO/WhKm/a78apZ8l4h9DB5vNSrDY7ImIu
+ 27zi1mRvX6cZpJGg/WmAanuUBKuAlFUU9iN8VbKWgpo540NBthUPbNZPqtKKMlWE5juh
+ Ut84YQeS4jXHNSmflZPszNc5fOGAmn02ROdfQGAteYwrd9dDC6lrCh/JloCEggU+Wffe
+ XRSDKtOVNA3pnZjeWEYAlDKuTayNQ2dWFNwMG7b7jH0R7Za1vatKApj6jDIhtjHreS2w
+ RZWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=Bx+mAAqnrHgAzXQXG6WKZvX5m5t6d99W/4/GZ8ZVf2s=;
- b=KFb6xxOK4H+qJAPRDgnAQQDLCw2ttkDFfa0zH+Le4iiBrfZOW4YNqX/Nye4/1X4cUb
- HQqEdoBTz6EKleyAT621yAn7o0IKERN/w477WaieqQ5nqmVMDDFOUHZJCMZ+wc6QkhSf
- wfAFKZRi9Z8Ln3/IiAFJsdi4Lo5LhJ5V+aEaMxA2fDQpP+bOtfaHbeK/sSrXBVNHM2bG
- eUIwBVH/28jKY/LCMJHK0/pfjYduqlQFV3fIw7g1FAHYXk+v/dzrQJIzvr03petggrSH
- zfS6zVN3BjNjG+qBFCM3ysHZ/mVRq1qy3WonUw2dTcSebwZrpNHBOuEmhzmYfIRzZr3M
- aPTA==
-X-Gm-Message-State: AOAM5328Czp201ndGPXZtAH6BbCquV3j60vJXeHGTdcAg7Apu+EiZz0o
- 2x/UAa9yenhd5DJazG4RKEZ8pHh92zjPmNNsljc=
-X-Google-Smtp-Source: ABdhPJxbq4sJKDYTI0IhkoaYzjTowB4eKtuSsRdhUGeUlLlyHoE344wvjqNBVNXYpoR71mhCvjnoMTTXmH7nI6j0a18=
-X-Received: by 2002:a92:58d6:: with SMTP id z83mr8767661ilf.186.1594803622036; 
- Wed, 15 Jul 2020 02:00:22 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PqrROLW34HUUtR2h51/zb0sAvx91AU1D+g0vWHL8Q9E=;
+ b=ksvUNYi85yn+VyGdhxcnhwbNRaoTTgIg06Ru8kTOT8PmBbx8+/SY4T7BIKMVi3rN1K
+ Z/JcD6SZbMVNHMsfIWsQdB91vKsKnC6zEhxGbdNHCiD/C9B7OSZ/OTEN55GIlXWiXE03
+ 11Te6zmzyFqUw6NsEBxrNpCU27L4LsgcLo5mhjUg4iSO5SvT14KVqxBNI7OQCX8zHRLC
+ ZdEjnBK9rNz9xSzOXeJsusCO3lSNoVEJ3DC9ALjWXWMwMuHOtAjB4ht86etNyPv2YTq/
+ jvnPzMd0nxUzaP6YTyjf+RazNPwqLZyFmdecz5DVB62gcYqCxfpSO0wilIlIiO/MluOS
+ GD/A==
+X-Gm-Message-State: AOAM533cfgMU/3mfzMZnWjoLZJpA6KJMEXiJke8+nfF92lmYtFAEffVJ
+ sGSRMvHwjlx0HQKj8H2Udn0Taw==
+X-Google-Smtp-Source: ABdhPJz9iEgW39p9NP+x+8HK/WX7+X1jz9XTLGQ3OWUni12lXxbaIHvRiJa1hStnOPuDJMtNRKu1oQ==
+X-Received: by 2002:a5d:444e:: with SMTP id x14mr9877312wrr.279.1594806293824; 
+ Wed, 15 Jul 2020 02:44:53 -0700 (PDT)
+Received: from localhost.localdomain ([2.31.163.61])
+ by smtp.gmail.com with ESMTPSA id r10sm2774916wrm.17.2020.07.15.02.44.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 Jul 2020 02:44:53 -0700 (PDT)
+From: Lee Jones <lee.jones@linaro.org>
+To: broonie@kernel.org,
+	lgirdwood@gmail.com
+Subject: [PATCH 1/1] ASoC: fsl: fsl-asoc-card: Trivial: Fix misspelling of
+ 'exists'
+Date: Wed, 15 Jul 2020 10:44:47 +0100
+Message-Id: <20200715094447.3170843-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-4-oohall@gmail.com>
- <ee5a00db-badd-12fe-1c46-eaba5afc8dea@ozlabs.ru>
- <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
- <34f7eea2-4ace-9931-7b5f-98ec159f3532@ozlabs.ru>
- <CAOSf1CGhc1i64_DS18evMhwoXvMWyafOk3r2czUz49F6gERtfw@mail.gmail.com>
- <1da1c482-a720-d5ec-a39c-a4b4869352d5@ozlabs.ru>
- <5a1c3bd9-3a35-6e63-2f51-1626b178a7c8@kaod.org>
-In-Reply-To: <5a1c3bd9-3a35-6e63-2f51-1626b178a7c8@kaod.org>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 15 Jul 2020 19:00:09 +1000
-Message-ID: <CAOSf1CHWLH3Km3bj1fFVLXvQu-vE=_K4VWZQLyUFfwCVJbJBuA@mail.gmail.com>
-Subject: Re: [PATCH 03/15] powerpc/powernv/pci: Add explicit tracking of the
- DMA setup state
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,20 +78,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Lee Jones <lee.jones@linaro.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 15, 2020 at 5:05 PM C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> I could but can we fix the issue below before I reboot ?  I don't have a
-> console anymore on these boxes.
->
-> Firmware is :
-> *snip*
+Cc: Timur Tabi <timur@kernel.org>
+Cc: Nicolin Chen <nicoleotsuka@gmail.com>
+Cc: Xiubo Li <Xiubo.Lee@gmail.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+---
+ sound/soc/fsl/fsl-asoc-card.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Do you know when that started happening? I don't think anything
-console related has changed in a very long time, but we probably
-haven't tested it on p7 in even longer.
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index faac6ce9a82cb..399c9aad48b1d 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -92,8 +92,7 @@ struct fsl_asoc_card_priv {
+ };
+ 
+ /*
+- * This dapm route map exits for DPCM link only.
++ * This dapm route map exists for DPCM link only.
+  * The other routes shall go through Device Tree.
+  *
+  * Note: keep all ASRC routes in the second half
+-- 
+2.25.1
+
