@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D67220326
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 06:03:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7E9220328
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 06:05:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B63dM3D3pzDqbW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:03:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B63hT5TXQzDqbW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:05:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=JfZiQRM2; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ header.s=20150623 header.b=l8aCbf+q; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B63Zg5FX6zDqS2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 14:00:41 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id t6so2040109pgq.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 21:00:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B63cd4RdXzDqjM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 14:02:25 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id p1so1628953pls.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 21:02:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=OTAHAcBoMojP476eR3rvdPVImhyUpuivDO3uM2Gt6gI=;
- b=JfZiQRM2Mx7t+vAmhGuns4BYcD+C02SwUIiUfWEPnMobwgqW6fG8Uh6JtbmCce1POu
- OskzYYu0Ho6IcfLvDvWPmNtqIkYAai8gn9HveNTqPK1Em/1pPjhDazXxb+mQNK6ImiYE
- xPpwHyX0Lrkykg8Jnl9lk0Q2FTmzGdD/4BkU5o5iEFbDKTtYabCkaS+sfBl4iT7UHwEK
- orZBi8wfU4NXz82MAVK4Ta/+hWv71W+jNPb2tsacP2ogd9Pr7rM1k+RFPMMbz/tk+P56
- ZjrH7NFIkyK1dLy6sQG+Xdeshcdt7YDP5o5YIqa++01GqlRG9ixUHxyoIZ8UhCsEXi3Y
- ju0g==
+ bh=8Ng/GPHGFM0vDIIr+058lcTyS7YAmPfrPjs67a0G2CE=;
+ b=l8aCbf+qZpc3dVfJkwmvK9aQy20dPlYYHYWvib2/qmLVZbYkhV5BWG3/1RIzQ3z9sU
+ e+ip6J7z7fXvxxNVPkcKnIuL1UdTvCp+IREM3eQvTiMBO+Lnanaq2P32ROyRh02lzIgx
+ 6yIE2673YzhlhTz70Jcx0xexfZ+ip4RWMhbm5sy3lB2+7Alf9R6qLHf/jJ8wOkefl0ED
+ NI9Twn+KHQU/Zdkwjn6J7a/Yzp4sgCFXB2qD6bXf0bjJNzbY9bc7vN7q8YVvPp7VGEMw
+ VzPB0RwnUOn5M2H+HfKDRMJ5oPyad4/Cd/tT+rM+q5J/oXVL1XsH7vRegQ8t9XgVJmD6
+ c2nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
  :date:user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=OTAHAcBoMojP476eR3rvdPVImhyUpuivDO3uM2Gt6gI=;
- b=WFYkTPgWbsJ4N+Oo3EFB35MDkUJImZzw7rIM55R6/pkq45HPpCLo+XNxNe8szl+Uce
- xZMUmzeqeON6FfW+OJdaOdesjAo9koJzBvBC02NgkQlb53e0Mw+hUpQjKH1Z9P1+eSPY
- 7XrP8uW3VtHvbkLCiaNJ+AaOzkG74ipFc3hLmCLq4wZogjg6qcs6GGJ9/yMy5vdYNPT6
- X4EqX+Hen44FwD4UZ/YMq3apayXPu0u/J4ipeF9FijAm/oDYqk0HY8CnRW6RbAOQTdCF
- D1FrLDbI9VRJRxNBnYkOer37ye+EWBTX9DOyowzzaH0xIRtmUFulaqQQsow7vS6hE8JH
- G00g==
-X-Gm-Message-State: AOAM531DTlsEFvem8lpJdsfh2PDfmAmUZrc2gXeo8s/NmFfdhgE+a/rI
- 0+STkubuzPkrwlHTyAIpX1dDiSYoQ7ze9g==
-X-Google-Smtp-Source: ABdhPJxgK/R3KhW6vWFICaMOOIXOSnD2+CQdQJW6XwXdst7g7w8p+WbYL0oFdSxndqSCc6603H9CIw==
-X-Received: by 2002:a63:d250:: with SMTP id t16mr6115915pgi.51.1594785637625; 
- Tue, 14 Jul 2020 21:00:37 -0700 (PDT)
+ bh=8Ng/GPHGFM0vDIIr+058lcTyS7YAmPfrPjs67a0G2CE=;
+ b=mJv6VSH6SayYKssRQ9cd+7jwPPIFYrw8LVqbutOFM1//Sn8BR9iBcjFcd3rq9kTWc6
+ GBCrh4/oDPF6CX0YzxZ7iuWPbEbuWIu+VJ6aeshgt/rkQettj7MmFq9Bl1N2IEV5G4KA
+ eCCWtlR4aowNuNpd2tSnkRuDTKiP2v/eJmwedgxuerqmbh4l26zxydBipvX/xz+GD+1/
+ l/e6xpo9GNMPfbVgllwjlYkPOdqGcjzZe88Tk057hFJ/OnaK16/94XW+Tl0/4/WyyMPL
+ wlZy8m5LtFZ2OMPb/XXEEhnunyx/QVzDUHs0Upu8lD54Xq2j6IFfCyL76UqfT5NQPGnp
+ i0+Q==
+X-Gm-Message-State: AOAM531LmGAdP+uJOqsNpU2SQzlR3P5xcYAW3iNKxqsM/6h5MwlwFKqT
+ J5GS2MUGe82sGpo5D5ABZtEvtA3BXDhIfg==
+X-Google-Smtp-Source: ABdhPJwB5p22aSZl88U57WbrML5Xi6iJa+qHUI5UFS9R8HxQe3NAIs1J5+BOXPH06fJyKSVNdflrtQ==
+X-Received: by 2002:a17:90b:19d4:: with SMTP id
+ nm20mr8621651pjb.206.1594785742598; 
+ Tue, 14 Jul 2020 21:02:22 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id v15sm562670pgo.15.2020.07.14.21.00.35
+ by smtp.gmail.com with ESMTPSA id nl11sm3969341pjb.0.2020.07.14.21.02.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jul 2020 21:00:36 -0700 (PDT)
-Subject: Re: [PATCH 12/15] powerpc/powernv/sriov: De-indent setup and teardown
+ Tue, 14 Jul 2020 21:02:21 -0700 (PDT)
+Subject: Re: [PATCH 13/15] powerpc/powernv/sriov: Move M64 BAR allocation into
+ a helper
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-13-oohall@gmail.com>
+ <20200710052340.737567-14-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -139,12 +141,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <ece39d29-6ab0-dcf4-0561-3c488c7921f9@ozlabs.ru>
-Date: Wed, 15 Jul 2020 14:00:33 +1000
+Message-ID: <0377246c-26db-a39b-a231-7486615b5ad4@ozlabs.ru>
+Date: Wed, 15 Jul 2020 14:02:19 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200710052340.737567-13-oohall@gmail.com>
+In-Reply-To: <20200710052340.737567-14-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -166,139 +168,69 @@ Sender: "Linuxppc-dev"
 
 
 On 10/07/2020 15:23, Oliver O'Halloran wrote:
-> Remove the IODA2 PHB checks. We already assume IODA2 in several places so
-> there's not much point in wrapping most of the setup and teardown process
-> in an if block.
+> I want to refactor the loop this code is currently inside of. Hoist it on
+> out.
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+
+
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
 > ---
->  arch/powerpc/platforms/powernv/pci-sriov.c | 86 ++++++++++++----------
->  1 file changed, 49 insertions(+), 37 deletions(-)
+>  arch/powerpc/platforms/powernv/pci-sriov.c | 31 ++++++++++++++--------
+>  1 file changed, 20 insertions(+), 11 deletions(-)
 > 
 > diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-> index 08f88187d65a..d5699cd2ab7a 100644
+> index d5699cd2ab7a..2f967aa4fbf5 100644
 > --- a/arch/powerpc/platforms/powernv/pci-sriov.c
 > +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-> @@ -610,16 +610,18 @@ static void pnv_pci_sriov_disable(struct pci_dev *pdev)
->  	num_vfs = iov->num_vfs;
->  	base_pe = iov->vf_pe_arr[0].pe_number;
->  
-> +	if (WARN_ON(!iov))
-> +		return;
-> +
->  	/* Release VF PEs */
->  	pnv_ioda_release_vf_PE(pdev);
->  
-> -	if (phb->type == PNV_PHB_IODA2) {
-> -		if (!iov->m64_single_mode)
-> -			pnv_pci_vf_resource_shift(pdev, -base_pe);
-> +	/* Un-shift the IOV BAR resources */
-> +	if (!iov->m64_single_mode)
-> +		pnv_pci_vf_resource_shift(pdev, -base_pe);
->  
-> -		/* Release M64 windows */
-> -		pnv_pci_vf_release_m64(pdev, num_vfs);
-> -	}
-> +	/* Release M64 windows */
-> +	pnv_pci_vf_release_m64(pdev, num_vfs);
+> @@ -416,6 +416,23 @@ static int64_t pnv_ioda_map_m64_single(struct pnv_phb *phb,
+>  	return rc;
 >  }
 >  
->  static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
-> @@ -693,41 +695,51 @@ static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  	phb = pci_bus_to_pnvhb(pdev->bus);
->  	iov = pnv_iov_get(pdev);
->  
-> -	if (phb->type == PNV_PHB_IODA2) {
-> -		if (!iov->vfs_expanded) {
-> -			dev_info(&pdev->dev, "don't support this SRIOV device"
-> -				" with non 64bit-prefetchable IOV BAR\n");
-> -			return -ENOSPC;
-> -		}
-> +	/*
-> +	 * There's a calls to IODA2 PE setup code littered throughout. We could
-> +	 * probably fix that, but we'd still have problems due to the
-> +	 * restriction inherent on IODA1 PHBs.
-> +	 *
-> +	 * NB: We class IODA3 as IODA2 since they're very similar.
-> +	 */
-> +	if (phb->type != PNV_PHB_IODA2) {
-> +		pci_err(pdev, "SR-IOV is not supported on this PHB\n");
-> +		return -ENXIO;
-> +	}
-
-or we could just skip setting
-
-ppc_md.pcibios_sriov_enable = pnv_pcibios_sriov_enable;
-
-for uninteresting platforms in pnv_pci_init_ioda_phb().
-
-
->  
-> -		/* allocate a contigious block of PEs for our VFs */
-> -		base_pe = pnv_ioda_alloc_pe(phb, num_vfs);
-> -		if (!base_pe) {
-> -			pci_err(pdev, "Unable to allocate PEs for %d VFs\n", num_vfs);
-> -			return -EBUSY;
-> -		}
-> +	if (!iov->vfs_expanded) {
-> +		dev_info(&pdev->dev, "don't support this SRIOV device"
-> +			" with non 64bit-prefetchable IOV BAR\n");
-> +		return -ENOSPC;
-> +	}
->  
-> -		iov->vf_pe_arr = base_pe;
-> -		iov->num_vfs = num_vfs;
-> +	/* allocate a contigious block of PEs for our VFs */
-> +	base_pe = pnv_ioda_alloc_pe(phb, num_vfs);
-> +	if (!base_pe) {
-> +		pci_err(pdev, "Unable to allocate PEs for %d VFs\n", num_vfs);
-> +		return -EBUSY;
-> +	}
->  
-> -		/* Assign M64 window accordingly */
-> -		ret = pnv_pci_vf_assign_m64(pdev, num_vfs);
-> -		if (ret) {
-> -			dev_info(&pdev->dev, "Not enough M64 window resources\n");
-> -			goto m64_failed;
-> -		}
-> +	iov->vf_pe_arr = base_pe;
-> +	iov->num_vfs = num_vfs;
->  
-> -		/*
-> -		 * When using one M64 BAR to map one IOV BAR, we need to shift
-> -		 * the IOV BAR according to the PE# allocated to the VFs.
-> -		 * Otherwise, the PE# for the VF will conflict with others.
-> -		 */
-> -		if (!iov->m64_single_mode) {
-> -			ret = pnv_pci_vf_resource_shift(pdev,
-> -							base_pe->pe_number);
-> -			if (ret)
-> -				goto shift_failed;
-> -		}
-> +	/* Assign M64 window accordingly */
-> +	ret = pnv_pci_vf_assign_m64(pdev, num_vfs);
-> +	if (ret) {
-> +		dev_info(&pdev->dev, "Not enough M64 window resources\n");
-> +		goto m64_failed;
-> +	}
+> +static int pnv_pci_alloc_m64_bar(struct pnv_phb *phb, struct pnv_iov_data *iov)
+> +{
+> +	int win;
 > +
-> +	/*
-> +	 * When using one M64 BAR to map one IOV BAR, we need to shift
-> +	 * the IOV BAR according to the PE# allocated to the VFs.
-> +	 * Otherwise, the PE# for the VF will conflict with others.
-> +	 */
-> +	if (!iov->m64_single_mode) {
-> +		ret = pnv_pci_vf_resource_shift(pdev,
-> +						base_pe->pe_number);
-
-This can be a single line now. Thanks,
-
-
-> +		if (ret)
-> +			goto shift_failed;
->  	}
+> +	do {
+> +		win = find_next_zero_bit(&phb->ioda.m64_bar_alloc,
+> +				phb->ioda.m64_bar_idx + 1, 0);
+> +
+> +		if (win >= phb->ioda.m64_bar_idx + 1)
+> +			return -1;
+> +	} while (test_and_set_bit(win, &phb->ioda.m64_bar_alloc));
+> +
+> +	set_bit(win, iov->used_m64_bar_mask);
+> +
+> +	return win;
+> +}
+> +
+>  static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
+>  {
+>  	struct pnv_iov_data   *iov;
+> @@ -443,17 +460,9 @@ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
+>  			continue;
 >  
->  	/* Setup VF PEs */
+>  		for (j = 0; j < m64_bars; j++) {
+> -
+> -			/* allocate a window ID for this BAR */
+> -			do {
+> -				win = find_next_zero_bit(&phb->ioda.m64_bar_alloc,
+> -						phb->ioda.m64_bar_idx + 1, 0);
+> -
+> -				if (win >= phb->ioda.m64_bar_idx + 1)
+> -					goto m64_failed;
+> -			} while (test_and_set_bit(win, &phb->ioda.m64_bar_alloc));
+> -			set_bit(win, iov->used_m64_bar_mask);
+> -
+> +			win = pnv_pci_alloc_m64_bar(phb, iov);
+> +			if (win < 0)
+> +				goto m64_failed;
+>  
+>  			if (iov->m64_single_mode) {
+>  				int pe_num = iov->vf_pe_arr[j].pe_number;
 > 
 
 -- 
