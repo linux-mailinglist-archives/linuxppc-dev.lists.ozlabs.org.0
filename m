@@ -1,53 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2AD2214AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 20:48:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8B0221694
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 22:50:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6RGX5RWbzDqnf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 04:48:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6Tzr5ZTpzDqnG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 06:50:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=WfhBj627; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6RDd0hYFzDql0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 04:46:21 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4B6RDS377kz9vBLp;
- Wed, 15 Jul 2020 20:46:16 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id v3pZUE7jclzU; Wed, 15 Jul 2020 20:46:16 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4B6RDS1Lj6z9vBLn;
- Wed, 15 Jul 2020 20:46:16 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 037EE6CC; Wed, 15 Jul 2020 20:47:25 +0200 (CEST)
-Received: from 37.173.149.38 ([37.173.149.38]) by messagerie.si.c-s.fr
- (Horde Framework) with HTTP; Wed, 15 Jul 2020 20:47:25 +0200
-Date: Wed, 15 Jul 2020 20:47:25 +0200
-Message-ID: <20200715204725.Horde.5GZvsEv4ZkdzFHL76HZiFg8@messagerie.si.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v8 5/8] powerpc/vdso: Prepare for switching VDSO to
- generic C implementation.
-References: <cover.1588079622.git.christophe.leroy@c-s.fr>
- <2a67c333893454868bbfda773ba4b01c20272a5d.1588079622.git.christophe.leroy@c-s.fr>
- <878sflvbad.fsf@mpe.ellerman.id.au>
-In-Reply-To: <878sflvbad.fsf@mpe.ellerman.id.au>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6Txh2LH6zDqf5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 06:48:39 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id b92so3565056pjc.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 13:48:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=YwtQ+qIZRMu1aHjFHPtF40fPrwJ9tfeRwj/jvnsJYBE=;
+ b=WfhBj627Y0WOtyr1wRjCUf4CYVWiv9xzOas2x0/JPpSflqWZmNEp95WvwJiPslkU2d
+ Kios/eGN2XcbMmUIQ9klS1VhHOTkfjtPmpIyJJFaAHb8FJTBq5kGR2CZ5/HY+l2RjpVi
+ i2grx16HFurjU299NUhstWKgdpL5bNT08QT9ZevBaeFxDI/+RZ00qhq2VPxTxwsiKmce
+ UdGnoQzlQXNtlhig++nO4/kAuwBPXjZL9/gLz8HWgggqzUUDW+WHz1bxHPcvq1ta8lSr
+ 6+f9FCbLIynLkNZbyxGHPGbSHsrIRaKOoIb8D841N/GpaWFnWcg4hUlqmD0RJpDt+jrL
+ bWAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=YwtQ+qIZRMu1aHjFHPtF40fPrwJ9tfeRwj/jvnsJYBE=;
+ b=K+szNRroKtYESDKsrw5RnAJ9dEk+KpfhZIL/5hBMx05cTdqtqKOkjbpgoF23cWF2je
+ yGcietbBtOZLMKXByxISlG1DaLQnowt+ho0rwoyBttExORzzzsM3rcDiVVBaEQ+Qjf+/
+ NafwJlsscueVAysESgc8vndwmnf9v2VSkBXU2Y3ZKrpG+oXee+xQAY8/BoB+KWPCwGq7
+ uWKBBNhpg3bziXx6nSGNMqOwFHIyV22iIN3+0uK63CRfB+9rX9iH+1GRpsQBMn3+kZdU
+ ipGfe2zAOrAzQD3ASw2fEwbugXVTA0KyLo16JWgnjAFejgKj+FAlODELEz2rTfZ1oVvF
+ DcKA==
+X-Gm-Message-State: AOAM531Vahm+v5IgU0skO5UWC6Oqvf1HGJP+HKIGA27TvZW+p0rpL0Du
+ Yy0MrjZyTmulhkySWWCoA9g=
+X-Google-Smtp-Source: ABdhPJz1GJ2Ik7lZDPIUXV5ePwyu/YwogLbPU4apDaOlkhisq+aJKtFRAA1r//dZtZBvcY/zN4hOBQ==
+X-Received: by 2002:a17:90a:a413:: with SMTP id
+ y19mr1460097pjp.59.1594846114095; 
+ Wed, 15 Jul 2020 13:48:34 -0700 (PDT)
+Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
+ by smtp.gmail.com with ESMTPSA id w9sm2983563pja.39.2020.07.15.13.48.33
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 15 Jul 2020 13:48:33 -0700 (PDT)
+Date: Wed, 15 Jul 2020 13:48:09 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v2 1/1] ASoC: fsl: fsl-asoc-card: Trivial: Fix
+ misspelling of 'exists'
+Message-ID: <20200715204809.GA14565@Asurada-Nvidia>
+References: <20200715150009.407442-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200715150009.407442-1-lee.jones@linaro.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,112 +81,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, nathanl@linux.ibm.com, arnd@arndb.de,
- linux-kernel@vger.kernel.org,
- Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Christophe Leroy <christophe.leroy@c-s.fr>,
- luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ lgirdwood@gmail.com, linux-kernel@vger.kernel.org, broonie@kernel.org,
+ Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> a =C3=A9crit=C2=A0:
+On Wed, Jul 15, 2020 at 04:00:09PM +0100, Lee Jones wrote:
+> Cc: Timur Tabi <timur@kernel.org>
+> Cc: Nicolin Chen <nicoleotsuka@gmail.com>
 
-> Christophe Leroy <christophe.leroy@c-s.fr> writes:
->> Prepare for switching VDSO to generic C implementation in following
->> patch. Here, we:
->> - Modify __get_datapage() to take an offset
->> - Prepare the helpers to call the C VDSO functions
->> - Prepare the required callbacks for the C VDSO functions
->> - Prepare the clocksource.h files to define VDSO_ARCH_CLOCKMODES
->> - Add the C trampolines to the generic C VDSO functions
->>
->> powerpc is a bit special for VDSO as well as system calls in the
->> way that it requires setting CR SO bit which cannot be done in C.
->> Therefore, entry/exit needs to be performed in ASM.
->>
->> Implementing __arch_get_vdso_data() would clobber the link register,
->> requiring the caller to save it. As the ASM calling function already
->> has to set a stack frame and saves the link register before calling
->> the C vdso function, retriving the vdso data pointer there is lighter.
-> ...
->
->> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h=20=20
->>=20b/arch/powerpc/include/asm/vdso/gettimeofday.h
->> new file mode 100644
->> index 000000000000..4452897f9bd8
->> --- /dev/null
->> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
->> @@ -0,0 +1,175 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +#ifndef __ASM_VDSO_GETTIMEOFDAY_H
->> +#define __ASM_VDSO_GETTIMEOFDAY_H
->> +
->> +#include <asm/ptrace.h>
->> +
->> +#ifdef __ASSEMBLY__
->> +
->> +.macro cvdso_call funct
->> +  .cfi_startproc
->> +	PPC_STLU	r1, -STACK_FRAME_OVERHEAD(r1)
->> +	mflr		r0
->> +  .cfi_register lr, r0
->> +	PPC_STL		r0, STACK_FRAME_OVERHEAD + PPC_LR_STKOFF(r1)
->
-> This doesn't work for me on ppc64(le) with glibc.
->
-> glibc doesn't create a stack frame before making the VDSO call, so the
-> store of r0 (LR) goes into the caller's frame, corrupting the saved LR,
-> leading to an infinite loop.
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 
-Where should it be saved if it can't be saved in the standard location ?
-
->
-> This is an example from a statically built program that calls
-> clock_gettime():
->
-> 0000000010030cb0 <__clock_gettime>:
->     10030cb0:   0e 10 40 3c     lis     r2,4110
->     10030cb4:   00 7a 42 38     addi    r2,r2,31232
->     10030cb8:   a6 02 08 7c     mflr    r0
->     10030cbc:   ff ff 22 3d     addis   r9,r2,-1
->     10030cc0:   58 6d 29 39     addi    r9,r9,27992
->     10030cc4:   f0 ff c1 fb     std     r30,-16(r1)			<-- redzone store
->     10030cc8:   78 23 9e 7c     mr      r30,r4
->     10030ccc:   f8 ff e1 fb     std     r31,-8(r1)			<-- redzone store
->     10030cd0:   78 1b 7f 7c     mr      r31,r3
->     10030cd4:   10 00 01 f8     std     r0,16(r1)			<-- save LR to=20=20
->=20caller's frame
->     10030cd8:   00 00 09 e8     ld      r0,0(r9)
->     10030cdc:   00 00 20 2c     cmpdi   r0,0
->     10030ce0:   50 00 82 41     beq     10030d30 <__clock_gettime+0x80>
->     10030ce4:   a6 03 09 7c     mtctr   r0
->     10030ce8:   21 04 80 4e     bctrl					<-- vdso call
->     10030cec:   26 00 00 7c     mfcr    r0
->     10030cf0:   00 10 09 74     andis.  r9,r0,4096
->     10030cf4:   78 1b 69 7c     mr      r9,r3
->     10030cf8:   28 00 82 40     bne     10030d20 <__clock_gettime+0x70>
->     10030cfc:   b4 07 23 7d     extsw   r3,r9
->     10030d00:   10 00 01 e8     ld      r0,16(r1)			<-- load saved=20=20
->=20LR, since clobbered by the VDSO
->     10030d04:   f0 ff c1 eb     ld      r30,-16(r1)
->     10030d08:   f8 ff e1 eb     ld      r31,-8(r1)
->     10030d0c:   a6 03 08 7c     mtlr    r0				<-- restore LR
->     10030d10:   20 00 80 4e     blr					<-- jumps to 10030cec
->
->
-> I'm kind of confused how it worked for you on 32-bit.
-
-So am I then. I'm away for 3 weeks, summer break. I'll check when I'm back.
-
->
-> There's also no code to load/restore the TOC pointer on BE, which I
-> think we'll need to handle.
-
-What does it means exactly ? Just saving r2 all the time ? Is there a=20=20
-dedicated=20location in the stack frame for it ? Is that only for 64 be ?
-
-Christophe
-
-
+> Cc: Xiubo Li <Xiubo.Lee@gmail.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> ---
+>  sound/soc/fsl/fsl-asoc-card.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+> index faac6ce9a82cb..dbacdd25dfe76 100644
+> --- a/sound/soc/fsl/fsl-asoc-card.c
+> +++ b/sound/soc/fsl/fsl-asoc-card.c
+> @@ -92,7 +92,7 @@ struct fsl_asoc_card_priv {
+>  };
+>  
+>  /*
+> - * This dapm route map exits for DPCM link only.
+> + * This dapm route map exists for DPCM link only.
+>   * The other routes shall go through Device Tree.
+>   *
+>   * Note: keep all ASRC routes in the second half
+> -- 
+> 2.25.1
+> 
