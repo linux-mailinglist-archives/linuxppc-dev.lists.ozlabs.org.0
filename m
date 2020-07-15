@@ -2,68 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F42220290
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 04:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 420802202BA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:08:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B62C34fvZzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 12:58:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B62Qn5VNhzDqdb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 13:08:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
- helo=mail-io1-xd44.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JNnaIhVC; dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+X-Greylist: delayed 948 seconds by postgrey-1.36 at bilbo;
+ Wed, 15 Jul 2020 13:07:02 AEST
+Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B625g3lWjzDqVK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 12:53:59 +1000 (AEST)
-Received: by mail-io1-xd44.google.com with SMTP id i4so652230iov.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 19:53:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=AtFp8U1b6BENSgSZDGY3gDXQq0rheXhSd0EOSiGFWLg=;
- b=JNnaIhVCX8VLZK2m3RK/vp9B/cEEGk18cxihQxh4k0yXk4a5FWxyqJ/VCUgQR/vdxv
- Kfm/5YWihmxDwBj7ERBb4vijxKYIao2ynnxy2AtRtIWruwSSbrPSVNrJgawU1ED9JQml
- 0qSrzhQOWZ+6JZ6WUMsFyhLo8f9ZI8ZOkqAXeS6v4dZEtqDVVasuiF1YPCY+qnA+dgIL
- hghLPYw1JO/Td/8ZqDacTxYXGyA70pWJUSPZ774K/HjJUo46MOzFPkd0CRMSxWENLGFu
- lCxkKcT0joYrLW6R1K43kRwakpboggMwFtmg685RiDHEqgJnvMO+nbO1DxxD3cdNWVf3
- mUMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=AtFp8U1b6BENSgSZDGY3gDXQq0rheXhSd0EOSiGFWLg=;
- b=GqZuKb2j7kfYljP7QNH1GRvvPsFgv+s+OtPfXUj9lC3WYjAaJb5MgQEt3DVbs0WMDy
- AflJkvMYkMWF0h9xMMO8t16C5iAPaYqsjZloqcgg8DjWRByQmZKnnu2uRvAVCdmk/bNo
- 9jBt8I6R28QCi63vDFvTJPDij+iEKS0ZgjmweIKcGAGWDNVAI6agAZd9fs+tOOdTR6XV
- U0/tNxLnm+jmd5CcpsSLUA8Bi3gU7Dm1OauZ0jl1N0jVEMWoW+pG0xyeXom7jcz+CHOv
- kvbf0CJDmevmgqOFiS1hnuzkR+gYXNyK2WfvUw9INQl7yV/H3D/XEKO1L8+X0AwTFbYr
- RTbg==
-X-Gm-Message-State: AOAM533OZat63+LIj8qZ0SzwzmFM8m++4ulcNhnA4yyniYHjiuxyUlYy
- gL/uCiuqQ067qhaPxCh1M0Zmx++7tZHx/aVqkCy1zcTL
-X-Google-Smtp-Source: ABdhPJz7xBzwR8YE6iLTdClmpOTXjWCHJzFFFbJ1XU39bIYHPFokE9G6qq1pmHNyDgfc6+RJln2EYVdr4jiYeRzTer4=
-X-Received: by 2002:a05:6638:250f:: with SMTP id
- v15mr9280844jat.97.1594781634836; 
- Tue, 14 Jul 2020 19:53:54 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B62Nk3ybKzDqWM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 13:06:58 +1000 (AEST)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 38E3358C57A4BE1C1A3A;
+ Wed, 15 Jul 2020 10:51:03 +0800 (CST)
+Received: from localhost (10.174.179.108) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Wed, 15 Jul 2020
+ 10:50:53 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <groug@kaod.org>
+Subject: [PATCH -next] powerpc/xive: Remove unused inline function
+ xive_kexec_teardown_cpu()
+Date: Wed, 15 Jul 2020 10:50:40 +0800
+Message-ID: <20200715025040.33952-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-11-oohall@gmail.com>
- <dd85f256-0f52-f2f5-f729-2d5b7269f895@ozlabs.ru>
-In-Reply-To: <dd85f256-0f52-f2f5-f729-2d5b7269f895@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 15 Jul 2020 12:53:43 +1000
-Message-ID: <CAOSf1CGkQBL5caG7tgCUzC7OP55qVk86_XbAx9L43+hy7YNXSw@mail.gmail.com>
-Subject: Re: [PATCH 10/15] powerpc/powernv/pci: Refactor pnv_ioda_alloc_pe()
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.108]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,26 +50,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 15, 2020 at 12:29 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->
->
->
-> On 10/07/2020 15:23, Oliver O'Halloran wrote:
-> > Rework the PE allocation logic to allow allocating blocks of PEs rather
-> > than individually. We'll use this to allocate contigious blocks of PEs for
-> > the SR-IOVs.
->
-> The patch does not do just this, it also adds missing mutexes (which is
-> good) but still misses them in pnv_pci_sriov_disable() and
-> pnv_pci_ioda_pe_dump().
+commit e27e0a94651e ("powerpc/xive: Remove xive_kexec_teardown_cpu()")
+left behind this, remove it.
 
-The current implementation doesn't need the mutex because alloc,
-reserve and free all use atomic bit ops. The mutex has been there
-forever with nothing actually using it, but with the change we need to
-prevent modifications to the bitmap while alloc() is scanning it. I
-probably should have mentioned that in the commit message.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ arch/powerpc/include/asm/xive.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/xive.h b/arch/powerpc/include/asm/xive.h
+index d08ea11b271c..309b4d65b74f 100644
+--- a/arch/powerpc/include/asm/xive.h
++++ b/arch/powerpc/include/asm/xive.h
+@@ -155,7 +155,6 @@ static inline void xive_smp_probe(void) { }
+ static inline int  xive_smp_prepare_cpu(unsigned int cpu) { return -EINVAL; }
+ static inline void xive_smp_setup_cpu(void) { }
+ static inline void xive_smp_disable_cpu(void) { }
+-static inline void xive_kexec_teardown_cpu(int secondary) { }
+ static inline void xive_shutdown(void) { }
+ static inline void xive_flush_interrupt(void) { }
+ 
+-- 
+2.17.1
+
+
