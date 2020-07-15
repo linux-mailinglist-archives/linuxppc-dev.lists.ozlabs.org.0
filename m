@@ -2,92 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC5322130C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 18:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2AD2214AE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 20:48:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6Npp5kZczDqpf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 02:57:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6RGX5RWbzDqnf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 04:48:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6Nlt33bJzDqnl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 02:54:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B6Nlt2Vzvz8tWg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 02:54:50 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4B6Nlt1gTVz9sTN; Thu, 16 Jul 2020 02:54:50 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B6Nls277Xz9sTM;
- Thu, 16 Jul 2020 02:54:48 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06FGVCPS032440; Wed, 15 Jul 2020 12:54:45 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 329r2076am-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jul 2020 12:54:45 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06FGo5hP008360;
- Wed, 15 Jul 2020 16:54:42 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03fra.de.ibm.com with ESMTP id 327527jceh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jul 2020 16:54:42 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06FGseUx38863096
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jul 2020 16:54:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36E9BAE05F;
- Wed, 15 Jul 2020 16:54:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B15BAE056;
- Wed, 15 Jul 2020 16:54:39 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.155.184])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 15 Jul 2020 16:54:39 +0000 (GMT)
-Message-ID: <1594832079.12900.321.camel@linux.ibm.com>
-Subject: Re: [PATCH v3] powerpc/pseries: detect secure and trusted boot
- state of the system.
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Date: Wed, 15 Jul 2020 12:54:39 -0400
-In-Reply-To: <1594813921-12425-1-git-send-email-nayna@linux.ibm.com>
-References: <1594813921-12425-1-git-send-email-nayna@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-15_12:2020-07-15,
- 2020-07-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 adultscore=0 spamscore=0 mlxscore=0 phishscore=0
- malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- mlxlogscore=903 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2007150126
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6RDd0hYFzDql0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 04:46:21 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4B6RDS377kz9vBLp;
+ Wed, 15 Jul 2020 20:46:16 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id v3pZUE7jclzU; Wed, 15 Jul 2020 20:46:16 +0200 (CEST)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4B6RDS1Lj6z9vBLn;
+ Wed, 15 Jul 2020 20:46:16 +0200 (CEST)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 037EE6CC; Wed, 15 Jul 2020 20:47:25 +0200 (CEST)
+Received: from 37.173.149.38 ([37.173.149.38]) by messagerie.si.c-s.fr
+ (Horde Framework) with HTTP; Wed, 15 Jul 2020 20:47:25 +0200
+Date: Wed, 15 Jul 2020 20:47:25 +0200
+Message-ID: <20200715204725.Horde.5GZvsEv4ZkdzFHL76HZiFg8@messagerie.si.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v8 5/8] powerpc/vdso: Prepare for switching VDSO to
+ generic C implementation.
+References: <cover.1588079622.git.christophe.leroy@c-s.fr>
+ <2a67c333893454868bbfda773ba4b01c20272a5d.1588079622.git.christophe.leroy@c-s.fr>
+ <878sflvbad.fsf@mpe.ellerman.id.au>
+In-Reply-To: <878sflvbad.fsf@mpe.ellerman.id.au>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+MIME-Version: 1.0
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,37 +59,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Daniel Axtens <dja@axtens.net>
+Cc: linux-arch@vger.kernel.org, nathanl@linux.ibm.com, arnd@arndb.de,
+ linux-kernel@vger.kernel.org,
+ Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Christophe Leroy <christophe.leroy@c-s.fr>,
+ luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-07-15 at 07:52 -0400, Nayna Jain wrote:
-> The device-tree property to check secure and trusted boot state is
-> different for guests(pseries) compared to baremetal(powernv).
-> 
-> This patch updates the existing is_ppc_secureboot_enabled() and
-> is_ppc_trustedboot_enabled() functions to add support for pseries.
-> 
-> The secureboot and trustedboot state are exposed via device-tree property:
-> /proc/device-tree/ibm,secure-boot and /proc/device-tree/ibm,trusted-boot
-> 
-> The values of ibm,secure-boot under pseries are interpreted as:
-> 
-> 0 - Disabled
-> 1 - Enabled in Log-only mode. This patch interprets this value as
-> disabled, since audit mode is currently not supported for Linux.
-> 2 - Enabled and enforced.
-> 3-9 - Enabled and enforcing; requirements are at the discretion of the
-> operating system.
-> 
-> The values of ibm,trusted-boot under pseries are interpreted as:
-> 0 - Disabled
-> 1 - Enabled
-> 
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> Reviewed-by: Daniel Axtens <dja@axtens.net>
+Michael Ellerman <mpe@ellerman.id.au> a =C3=A9crit=C2=A0:
 
-Thanks for updating the patch description.
+> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>> Prepare for switching VDSO to generic C implementation in following
+>> patch. Here, we:
+>> - Modify __get_datapage() to take an offset
+>> - Prepare the helpers to call the C VDSO functions
+>> - Prepare the required callbacks for the C VDSO functions
+>> - Prepare the clocksource.h files to define VDSO_ARCH_CLOCKMODES
+>> - Add the C trampolines to the generic C VDSO functions
+>>
+>> powerpc is a bit special for VDSO as well as system calls in the
+>> way that it requires setting CR SO bit which cannot be done in C.
+>> Therefore, entry/exit needs to be performed in ASM.
+>>
+>> Implementing __arch_get_vdso_data() would clobber the link register,
+>> requiring the caller to save it. As the ASM calling function already
+>> has to set a stack frame and saves the link register before calling
+>> the C vdso function, retriving the vdso data pointer there is lighter.
+> ...
+>
+>> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h=20=20
+>>=20b/arch/powerpc/include/asm/vdso/gettimeofday.h
+>> new file mode 100644
+>> index 000000000000..4452897f9bd8
+>> --- /dev/null
+>> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
+>> @@ -0,0 +1,175 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +#ifndef __ASM_VDSO_GETTIMEOFDAY_H
+>> +#define __ASM_VDSO_GETTIMEOFDAY_H
+>> +
+>> +#include <asm/ptrace.h>
+>> +
+>> +#ifdef __ASSEMBLY__
+>> +
+>> +.macro cvdso_call funct
+>> +  .cfi_startproc
+>> +	PPC_STLU	r1, -STACK_FRAME_OVERHEAD(r1)
+>> +	mflr		r0
+>> +  .cfi_register lr, r0
+>> +	PPC_STL		r0, STACK_FRAME_OVERHEAD + PPC_LR_STKOFF(r1)
+>
+> This doesn't work for me on ppc64(le) with glibc.
+>
+> glibc doesn't create a stack frame before making the VDSO call, so the
+> store of r0 (LR) goes into the caller's frame, corrupting the saved LR,
+> leading to an infinite loop.
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Where should it be saved if it can't be saved in the standard location ?
+
+>
+> This is an example from a statically built program that calls
+> clock_gettime():
+>
+> 0000000010030cb0 <__clock_gettime>:
+>     10030cb0:   0e 10 40 3c     lis     r2,4110
+>     10030cb4:   00 7a 42 38     addi    r2,r2,31232
+>     10030cb8:   a6 02 08 7c     mflr    r0
+>     10030cbc:   ff ff 22 3d     addis   r9,r2,-1
+>     10030cc0:   58 6d 29 39     addi    r9,r9,27992
+>     10030cc4:   f0 ff c1 fb     std     r30,-16(r1)			<-- redzone store
+>     10030cc8:   78 23 9e 7c     mr      r30,r4
+>     10030ccc:   f8 ff e1 fb     std     r31,-8(r1)			<-- redzone store
+>     10030cd0:   78 1b 7f 7c     mr      r31,r3
+>     10030cd4:   10 00 01 f8     std     r0,16(r1)			<-- save LR to=20=20
+>=20caller's frame
+>     10030cd8:   00 00 09 e8     ld      r0,0(r9)
+>     10030cdc:   00 00 20 2c     cmpdi   r0,0
+>     10030ce0:   50 00 82 41     beq     10030d30 <__clock_gettime+0x80>
+>     10030ce4:   a6 03 09 7c     mtctr   r0
+>     10030ce8:   21 04 80 4e     bctrl					<-- vdso call
+>     10030cec:   26 00 00 7c     mfcr    r0
+>     10030cf0:   00 10 09 74     andis.  r9,r0,4096
+>     10030cf4:   78 1b 69 7c     mr      r9,r3
+>     10030cf8:   28 00 82 40     bne     10030d20 <__clock_gettime+0x70>
+>     10030cfc:   b4 07 23 7d     extsw   r3,r9
+>     10030d00:   10 00 01 e8     ld      r0,16(r1)			<-- load saved=20=20
+>=20LR, since clobbered by the VDSO
+>     10030d04:   f0 ff c1 eb     ld      r30,-16(r1)
+>     10030d08:   f8 ff e1 eb     ld      r31,-8(r1)
+>     10030d0c:   a6 03 08 7c     mtlr    r0				<-- restore LR
+>     10030d10:   20 00 80 4e     blr					<-- jumps to 10030cec
+>
+>
+> I'm kind of confused how it worked for you on 32-bit.
+
+So am I then. I'm away for 3 weeks, summer break. I'll check when I'm back.
+
+>
+> There's also no code to load/restore the TOC pointer on BE, which I
+> think we'll need to handle.
+
+What does it means exactly ? Just saving r2 all the time ? Is there a=20=20
+dedicated=20location in the stack frame for it ? Is that only for 64 be ?
+
+Christophe
+
+
