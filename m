@@ -2,77 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2773E22092C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 11:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFB122093A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 11:51:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6CJY0t2CzDqLB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 19:49:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6CMb256QzDqlV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 19:51:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=ZiDAjjBZ; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ghMBMa6o; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6CD71l0dzDql2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 19:45:10 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id w17so2156809ply.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:45:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to
- :user-agent; bh=4BTTr5oucsR8JbbShHUL2XbMTStwAjQe5P0BncDXj58=;
- b=ZiDAjjBZM/18U5oGdS+177O7tJJlRYSHzUSAe7RuMTwrs0ACtN+bj5Vbw0m+RP4NPH
- FTONJ3j3zDRFBi+lWSl0lFFi7SsWDRcd3haI5usSaW9MdEiP5pSEiaaw6TRA4ipn7D+E
- 0PY7Zn85htsoso7JuhFupFcqKQb8r//K9EGlDqKbcPdEA0afofS2/DMj6UdomWTvtScp
- kYjZIsAPHODHik5Xo0NOQXlzKz0x9Roae3Yw6eUgGmnnn8P1/OlOZ7C7HDIkHseLKkUI
- 0l2LtzDn74BqqRTB4jYPHTGn2lZk9HZ4dXGm8iF00EjXaN74jT/lxWmYZoqyD9Ncao+T
- cK7A==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6CJF6LNlzDqkw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 19:48:45 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id t11so1846681pfq.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:48:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=BE62416Xc19KRXmvjN2CjcEmrYIv08l7/E7jdoi1zI4=;
+ b=ghMBMa6oHPfUaqdUjwynOWV+LMKEd8BRi/Q8axbMR0CCyoyKEzrLVIrG6ZElLCYL0O
+ Vh1/EM6p8Dhca9uJkhYwZwYZ02giYdAj2qBibkHARMEx3CzYVOu/J9G7ObEbiENqdpXI
+ ECJWONylQ79Oy2JRSEoEqcOom72b96KGFvRW0kvP7/T6zR64NDEeMn8zuDlMyXEHnJr9
+ CxRBshIye4MDx+wxyKHCwbHmY/IFkz61uIery9g2x9D0/lLOO/6V1HEX0B8hogYHZvpi
+ MQi00HLqEbNUYvRehYZAJYOJSd3/o5reDPTPGXqlUxo1VLNdcmooSzuODddGdMtr/AkN
+ mjSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to:user-agent;
- bh=4BTTr5oucsR8JbbShHUL2XbMTStwAjQe5P0BncDXj58=;
- b=jIMn7hGNACE30qjQmT+9mMttTm3tRGMRZiAtGZEttQ+gzhIqmMrkbRav3sgSupUiD8
- 0zcXEjsmi6DzpOia/AhKegDsWmI1Mj4+Qr7KWSlm42ije7Jwi2Zl2E/PIc9MMUwX9RpD
- 8vKJQQundFhu8bA56jsXmg02/ng1a3UXi0RlOwfA4uTmJ7wxwabwcsQ+g5tgERQ0+gdg
- AJpFtaMTux9UD70LwZwqMJWiN8YKCCth0F87Sod7RbzGX9o0V+RVK5vCPeBnDKp5vRu8
- uP8HoTOyCd8YCvwncbfw3KQOqt5eBeLvFIMCcqNshQDpAKI+TDwJZ5krHiz+89RWR1Au
- QKJw==
-X-Gm-Message-State: AOAM532TtYuh640yPk9UpQtWghMHsQUL4QKebd8b9A2yVztfA+PMYIHK
- fgBs5qk7XWitc7ucJjDfUAuzRg==
-X-Google-Smtp-Source: ABdhPJyrLXJkqRK/7BhC4BFVruLsng1ogMN6DlNeSjBGIhJnVoVhQXAvhZxEgnc3/B4w8m9S8AXf5Q==
-X-Received: by 2002:a17:902:d916:: with SMTP id
- c22mr7404932plz.69.1594806307293; 
- Wed, 15 Jul 2020 02:45:07 -0700 (PDT)
-Received: from localhost ([122.172.34.142])
- by smtp.gmail.com with ESMTPSA id z13sm1605674pfq.220.2020.07.15.02.45.05
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 15 Jul 2020 02:45:06 -0700 (PDT)
-Date: Wed, 15 Jul 2020 15:15:04 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH v2 06/13] cpufreq: powernv-cpufreq: Functions only used
- in call-backs should be static
-Message-ID: <20200715094504.val6rb7wibysh7dn@vireshk-i7>
-References: <20200715082634.3024816-1-lee.jones@linaro.org>
- <20200715082634.3024816-7-lee.jones@linaro.org>
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=BE62416Xc19KRXmvjN2CjcEmrYIv08l7/E7jdoi1zI4=;
+ b=T8rwkjqp0oOBYNNAwM7JtpN4VUxVHR8fQghlLQoeGUyw5v3spz6/zA/JDE+SGCZ/+D
+ EGOwN1e66575aA7Os9HOQhcOUgf+lVHmd3Ltfi45nEe83UmeEVfsj4JvZl1vprdM1JMl
+ AdmWzBZPfldrDn8roF55ebFDYQ6rCMsPkFfKNZ1/stwfHcfAkHoKbipyMxM7jwMhNhTq
+ JCn5Fj4bgFzXpugp92M5k7g4RU3lfBpYhmimQ8sNbhzjeeW22bJnjeGNv0Zm8woY8u9c
+ M+PtgO8/mrJOJZH7R4+NLtJopce6kSp0j5am7e36yp42F6HPFODtueFHtd6vj/V8P9nN
+ f/PQ==
+X-Gm-Message-State: AOAM532bgmW/3fInOGMFNr2TnT9LkQe8O5pcf02pgbyfiZfZt74SnxJo
+ VQpnuQke++x29ybDir+cXCsrvskf
+X-Google-Smtp-Source: ABdhPJw1ZZ9JPF/xHU2Hp61fu+puTuyZ0wJXDdK4fMm6aKqlfV/K5KJZXVLOvAn6niwYCehILcDuUw==
+X-Received: by 2002:a62:7650:: with SMTP id r77mr7898932pfc.235.1594806519144; 
+ Wed, 15 Jul 2020 02:48:39 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (110-174-173-27.tpgi.com.au.
+ [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id x66sm1790622pgb.12.2020.07.15.02.48.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 Jul 2020 02:48:38 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
+Date: Wed, 15 Jul 2020 19:48:29 +1000
+Message-Id: <20200715094829.252208-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200715082634.3024816-7-lee.jones@linaro.org>
-User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,54 +77,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15-07-20, 09:26, Lee Jones wrote:
-> Fixes the following W=1 kernel build warning(s):
-> 
->  drivers/cpufreq/powernv-cpufreq.c:669:6: warning: no previous prototype for ‘gpstate_timer_handler’ [-Wmissing-prototypes]
->  drivers/cpufreq/powernv-cpufreq.c:902:6: warning: no previous prototype for ‘powernv_cpufreq_work_fn’ [-Wmissing-prototypes]
-> 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Lee Jones <lee.jones@linaro.org>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  drivers/cpufreq/powernv-cpufreq.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-> index 8646eb197cd96..068cc53abe320 100644
-> --- a/drivers/cpufreq/powernv-cpufreq.c
-> +++ b/drivers/cpufreq/powernv-cpufreq.c
-> @@ -666,7 +666,7 @@ static inline void  queue_gpstate_timer(struct global_pstate_info *gpstates)
->   * according quadratic equation. Queues a new timer if it is still not equal
->   * to local pstate
->   */
-> -void gpstate_timer_handler(struct timer_list *t)
-> +static void gpstate_timer_handler(struct timer_list *t)
->  {
->  	struct global_pstate_info *gpstates = from_timer(gpstates, t, timer);
->  	struct cpufreq_policy *policy = gpstates->policy;
-> @@ -899,7 +899,7 @@ static struct notifier_block powernv_cpufreq_reboot_nb = {
->  	.notifier_call = powernv_cpufreq_reboot_notifier,
->  };
->  
-> -void powernv_cpufreq_work_fn(struct work_struct *work)
-> +static void powernv_cpufreq_work_fn(struct work_struct *work)
->  {
->  	struct chip *chip = container_of(work, struct chip, throttle);
->  	struct cpufreq_policy *policy;
+powerpc return from interrupt and return from system call sequences are
+context synchronising.
 
-Don't you want to drop this patch now ? As you already reviewed the
-other one on the list ?
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+v2: add more comments
 
+ .../features/sched/membarrier-sync-core/arch-support.txt   | 4 ++--
+ arch/powerpc/Kconfig                                       | 1 +
+ arch/powerpc/include/asm/exception-64e.h                   | 6 +++++-
+ arch/powerpc/include/asm/exception-64s.h                   | 7 +++++++
+ arch/powerpc/kernel/entry_32.S                             | 6 ++++++
+ 5 files changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/features/sched/membarrier-sync-core/arch-support.txt b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
+index 8a521a622966..52ad74a25f54 100644
+--- a/Documentation/features/sched/membarrier-sync-core/arch-support.txt
++++ b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
+@@ -5,7 +5,7 @@
+ #
+ # Architecture requirements
+ #
+-# * arm/arm64
++# * arm/arm64/powerpc
+ #
+ # Rely on implicit context synchronization as a result of exception return
+ # when returning from IPI handler, and when returning to user-space.
+@@ -45,7 +45,7 @@
+     |       nios2: | TODO |
+     |    openrisc: | TODO |
+     |      parisc: | TODO |
+-    |     powerpc: | TODO |
++    |     powerpc: |  ok  |
+     |       riscv: | TODO |
+     |        s390: | TODO |
+     |          sh: | TODO |
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9fa23eb320ff..920c4e3ca4ef 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -131,6 +131,7 @@ config PPC
+ 	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
++	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+ 	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC32 && !HIBERNATION)
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+diff --git a/arch/powerpc/include/asm/exception-64e.h b/arch/powerpc/include/asm/exception-64e.h
+index 54a98ef7d7fe..071d7ccb830f 100644
+--- a/arch/powerpc/include/asm/exception-64e.h
++++ b/arch/powerpc/include/asm/exception-64e.h
+@@ -204,7 +204,11 @@ exc_##label##_book3e:
+ 	LOAD_REG_ADDR(r3,interrupt_base_book3e);\
+ 	ori	r3,r3,vector_offset@l;		\
+ 	mtspr	SPRN_IVOR##vector_number,r3;
+-
++/*
++ * powerpc relies on return from interrupt/syscall being context synchronising
++ * (which rfi is) to support ARCH_HAS_MEMBARRIER_SYNC_CORE without additional
++ * additional synchronisation instructions.
++ */
+ #define RFI_TO_KERNEL							\
+ 	rfi
+ 
+diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
+index 47bd4ea0837d..a4704f405e8d 100644
+--- a/arch/powerpc/include/asm/exception-64s.h
++++ b/arch/powerpc/include/asm/exception-64s.h
+@@ -68,6 +68,13 @@
+  *
+  * The nop instructions allow us to insert one or more instructions to flush the
+  * L1-D cache when returning to userspace or a guest.
++ *
++ * powerpc relies on return from interrupt/syscall being context synchronising
++ * (which hrfid, rfid, and rfscv are) to support ARCH_HAS_MEMBARRIER_SYNC_CORE
++ * without additional additional synchronisation instructions. soft-masked
++ * interrupt replay does not include a context-synchronising rfid, but those
++ * always return to kernel, the context sync is only required for IPIs which
++ * return to user.
+  */
+ #define RFI_FLUSH_SLOT							\
+ 	RFI_FLUSH_FIXUP_SECTION;					\
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 217ebdf5b00b..23bb7352e7c3 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -35,6 +35,12 @@
+ 
+ #include "head_32.h"
+ 
++/*
++ * powerpc relies on return from interrupt/syscall being context synchronising
++ * (which rfi is) to support ARCH_HAS_MEMBARRIER_SYNC_CORE without additional
++ * additional synchronisation instructions.
++ */
++
+ /*
+  * Align to 4k in order to ensure that all functions modyfing srr0/srr1
+  * fit into one page in order to not encounter a TLB miss between the
 -- 
-viresh
+2.23.0
+
