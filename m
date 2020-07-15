@@ -2,51 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE0F2216BA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 23:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943F0221773
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 00:03:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6VFN08yYzDqKf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 07:02:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6Wbc2RdTzDqhb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 08:03:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6VCT0SK0zDqlp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 07:00:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=d63s8WY9; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B6VCR6BX1z9sRK;
- Thu, 16 Jul 2020 07:00:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1594846836; bh=XhVOLxVfBnZHiqAzYmWw8Uh1CSzj1P31KTli2xRb354=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=d63s8WY9YdmG8OcOJoUzQnG/7jA4CRVQ6QoIe9zm+7/ovknSCXhdnedTo8WTvrXJy
- 5Y53uQAvQT7H+VBHknt5fN7ADotqI0eAK20gEa0x75ltvJkNKBsyXLrDFgiQDKqrgI
- XXQaUhkF/mlgFeal+mUmE5Ur41MkJJRwZ6kDSvivWH+5Fu69YLrYuTORmJinRrzW8R
- V1Co8+MIskr8YkWp3XbardgAkbJGapuVVjSChkHkivBK67hEkMlL3zTU3q5dbQtz8V
- p5gSKFPuDTMGTrVK1bBHZ6skdlvd9JolxxAfdkf0WrNLsoMMyHCg++wOiyfMyd1XTk
- 58FUc/jjrRYyA==
-Date: Thu, 16 Jul 2020 07:00:34 +1000
-From: Anton Blanchard <anton@ozlabs.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] pseries: Fix 64 bit logical memory block panic
-Message-ID: <20200716070034.344e3d7d@kryten.localdomain>
-In-Reply-To: <87d04x3q6m.fsf@linux.ibm.com>
-References: <20200715000820.1255764-1-anton@ozlabs.org>
- <87d04x3q6m.fsf@linux.ibm.com>
-X-Mailer: Mutt/1.8.0 (2017-02-23)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=AcJGbRPs; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6WYw5n2mzDqkj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 08:01:40 +1000 (AEST)
+Received: from localhost (mobile-166-175-191-139.mycingular.net
+ [166.175.191.139])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6936020657;
+ Wed, 15 Jul 2020 22:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1594850497;
+ bh=Dz/aXCXx6hEm65ykjKGAALSDHDgV9W4n51TE8HVaNyg=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=AcJGbRPssyYC0nJ+ZVPaX639DVjl/UswzmNpCfYtIJ/9lFmLiqEsM8Oe+PVOaMtjA
+ 8PYZFuxwlwNeaxYlaY0rRvuyKueHVRBBr22r3PeGhVh/B0wzpcKP+NZFvlFVPKec7F
+ rA+SlkNjfyr5hBkmPyt0Czd/Rsugt1iAY+IfWurU=
+Date: Wed, 15 Jul 2020 17:01:35 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: David Laight <David.Laight@ACULAB.COM>
+Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Message-ID: <20200715220135.GA563272@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4c994d9a804b4a2c8555c50b63e20772@AcuMS.aculab.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,24 +55,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Keith Busch <kbusch@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ sparclinux <sparclinux@vger.kernel.org>, Toan Le <toan@os.amperecomputing.com>,
+ Kjetil Oftedal <oftedal@gmail.com>, Greg Ungerer <gerg@linux-m68k.org>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Christoph Hellwig <hch@lst.de>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Kevin Hilman <khilman@baylibre.com>,
+ linux-pci <linux-pci@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Matt Turner <mattst88@gmail.com>,
+ "linux-kernel-mentees@lists.linuxfoundation.org"
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ Guenter Roeck <linux@roeck-us.net>, 'Arnd Bergmann' <arnd@arndb.de>,
+ Ray Jui <rjui@broadcom.com>, Jens Axboe <axboe@fb.com>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ "bjorn@helgaas.com" <bjorn@helgaas.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Richard Henderson <rth@twiddle.net>, Juergen Gross <jgross@suse.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Scott Branden <sbranden@broadcom.com>, Jingoo Han <jingoohan1@gmail.com>,
+ "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Aneesh,
+On Wed, Jul 15, 2020 at 02:24:21PM +0000, David Laight wrote:
+> From: Arnd Bergmann
+> > Sent: 15 July 2020 07:47
+> > On Wed, Jul 15, 2020 at 1:46 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > 
+> >  So something like:
+> > >
+> > >   void pci_read_config_word(struct pci_dev *dev, int where, u16 *val)
+> > >
+> > > and where we used to return anything non-zero, we just set *val = ~0
+> > > instead?  I think we do that already in most, maybe all, cases.
+> > 
+> > Right, this is what I had in mind. If we start by removing the handling
+> > of the return code in all files that clearly don't need it, looking at
+> > whatever remains will give a much better idea of what a good interface
+> > should be.
+> 
+> It would be best to get rid of that nasty 'u16 *' parameter.
 
-> > Booting with a 4GB LMB size causes us to panic:
-> >
-> >   qemu-system-ppc64: OS terminated: OS panic:
-> >       Memory block size not suitable: 0x0
-> >
-> > Fix pseries_memory_block_size() to handle 64 bit LMBs.
+Do you mean nasty because it's basically a return value, but not
+returned as the *function's* return value?  I agree that if we were
+starting from scratch it would nicer to have:
 
-> We need similar changes at more places?
+  u16 pci_read_config_word(struct pci_dev *dev, int where)
 
-I agree. I wanted to get a minimal and tested fix (using QEMU) that
-could make it into stable, so that the distros will at least boot.
+but I don't think it's worth changing the thousands of callers just
+for that.
 
-Thanks,
-Anton
+> Make the return int and return the read value or -1 on error.
+> (Or maybe 0xffff0000 on error??)
+> 
+> For a 32bit read (there must be one for the BARs) returning
+> a 64bit signed integer would work even for 32bit systems.
+> 
+> If code cares about the error, and it can be detected then
+> it can check. Otherwise the it all 'just works'.
+
+There are u8 (byte), u16 (word), and u32 (dword) config reads &
+writes.  But I don't think it really helps to return something wider
+than the access.  For programmatic errors like invalid alignment, we
+could indeed use the extra bits to return an unambiguous error.  But
+we still have the "device was unplugged" sort of errors where the
+*hardware* typically returns ~0 and the config accessor doesn't know
+whether that's valid data or an error.
+
+Bjorn
