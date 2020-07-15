@@ -1,75 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E9A220152
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 02:25:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1624A220170
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 02:42:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B5yp12m8LzDqbX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 10:25:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B5zB4480HzDqbW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 10:42:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=0QpKVb0/; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20150623 header.b=acZsiaC0; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B5ym91qk0zDqX7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 10:23:33 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id s26so336346pfm.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 17:23:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B5z862QkxzDqXb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 10:40:51 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id ch3so720676pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 17:40:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:from:to:cc:references:autocrypt:message-id:date:user-agent
+ h=subject:to:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=F+ojBQYtGk2Uu0g/1YcXUDhGo2AFWeqJG0Zbd0bkzzI=;
- b=0QpKVb0/JHbV+Pa9T6M2deUH3npyRCDv2K4r7cJ9tdkFt1AwmNWgEyaruyud6fQ91Q
- elQfiEusmjgc2s08Vjr2hdK3PgfVyOmYFNN728lz4/Kj+NlM+BajGSusMn864K00W2RV
- JEGH/9sO7iZjKvFZKOzayK3TiBWDPuiumG7fOBUswJtg8MCQ4sgFWnnq/1olVoJAsDTv
- ZUT5eN30dEuqAW+pBXhbC2den91DPMEmfTA4wVV9mr/fkKyRHiULt7yaRFU70VH/k6Uz
- AwTUoKQmoJaiF/0kRZ+KOmRZ0UP9ATGH17Xs599SvNJLzoJhWWxIa9MLeIDoHAfn8QYP
- fKRA==
+ bh=MMhhlrOlDMJWw529RkMnkW2xX3T2OucyhtjKJ1ZiCmU=;
+ b=acZsiaC0wF5v4Wp9tn0dCYOdOaYWzeg5karcie1Nu1CP0OLFJmuiRmmrQDbE3vAp37
+ Ms4aEvNJHfcs6RWerpmJ7arf0XWFAtl7FtyFMrklISWTU8SWeofgPXNLAPTEf/jPx9p+
+ 6pnFlcqD6xkYjJzrEsZol32ZEhyNh7vvwiCjcv0jys4Dcwbn2HAdJG41FiFc5X60XGJy
+ 0UctrS3cSjcvoWxVK42/n+G0TbcyJ+BC7MYRmRG+NCdykzWQC/2fjnLB+12WpoYHeKaL
+ pRm6VYGJOxVDYj+JclLAI1hF+teB8UlO8LNFgC9RyaszEUeebAoW5VbLNnIs29YwkFN9
+ 7ZnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:from:to:cc:references:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=F+ojBQYtGk2Uu0g/1YcXUDhGo2AFWeqJG0Zbd0bkzzI=;
- b=HsSJtOKOS6EVA5dRLPIGyrOOuBdTW+DorkprSb5TDtAmiR26z9PBQdhZiSumOk0YTo
- nKaQ0h+SGAJoRP4oSnFN7dw8fWaoeFOl0BoYRqaL/Rs5042SuCWQG6Ttq7TOaeE6goXf
- M5D+4nUIXWhj5kEhCsWhDUBdOILPJ8NPuj4y0+QST50qN39yvCGBWPZSy/fKKWpPUkC3
- G3UlhdaPFkT407DCrMfZmPH1d24Hf4NCyIFZWiUDjwaPySX6NkPgD3x4DjYsXdta0PLm
- zjwkRT3TEp+URz6SKSulCLVV1PuWDJol3CtRktDY8dB+FpPepO/gkOUB8nPcVm3YZ1gt
- C10Q==
-X-Gm-Message-State: AOAM533oTL+vh1zxJCF0cYbb8o95Q789LwPSabDiPup0PEonM0cyS2+r
- z0NJxYU1IuxSpKZkvEtTM/7gMMRyKaEs4g==
-X-Google-Smtp-Source: ABdhPJwY39cd7juIDf7YvRrsMjh+ELHh15dcPlHgVtQMbchfeLuaNLNkV9vniurc3CvynbiqsuWQ3g==
-X-Received: by 2002:a62:64ce:: with SMTP id y197mr6669625pfb.19.1594772609912; 
- Tue, 14 Jul 2020 17:23:29 -0700 (PDT)
+ h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=MMhhlrOlDMJWw529RkMnkW2xX3T2OucyhtjKJ1ZiCmU=;
+ b=WtU0en/j+1dQ7yOFvr+ao+BrMgbI3EAbsWf7RSZpRJOefBo0BYnvnxp9G+K5OWKH3j
+ dxz/ATy0l0XPcYky4wO/4wNQmHvdWD07FPtzUTcNdmoEin5PeEra7Ait85U8f4dwMHry
+ FQ53NbV7qPu1ZCyR0q1OVQxBb7S2C8Xm/QuwrXPnE3of2xNwlagCfWfuXMXelOkaLTvq
+ dfkzfevgFG8oYwDLIgsZtm1pE+6uXRoLGZrGGfDMt6JGGKC9qseZoyIAkv/v18xWwvkw
+ 61TtI7pLNk1TgAu7xwLMT65x0ln/7HldvGrTcn3khPzL5RnGAnlN9hj5HyOtQAuuBl/i
+ lK3Q==
+X-Gm-Message-State: AOAM530hBV9+q2z2L5fh6Vn0s+ei/c2XQTTIs6d/ZBEn+kHK4ttoXfAK
+ xD//01rDWMVQbzg1MjDFcAUvMwhcliu9Lw==
+X-Google-Smtp-Source: ABdhPJyokL4Fv4GfazQRNXGElvh5V4Ra24/+OYjvKilfT9lpJIAAHnuKCbQR8/tOhTvSCt244S63Gw==
+X-Received: by 2002:a17:902:d911:: with SMTP id
+ c17mr5842267plz.227.1594773648088; 
+ Tue, 14 Jul 2020 17:40:48 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id o8sm235617pgb.23.2020.07.14.17.23.27
+ by smtp.gmail.com with ESMTPSA id n63sm272824pfd.209.2020.07.14.17.40.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jul 2020 17:23:29 -0700 (PDT)
-Subject: Re: [PATCH 03/15] powerpc/powernv/pci: Add explicit tracking of the
- DMA setup state
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: Oliver O'Halloran <oohall@gmail.com>
+ Tue, 14 Jul 2020 17:40:47 -0700 (PDT)
+Subject: Re: [PATCH 06/15] powerpc/powernv/sriov: Explain how SR-IOV works on
+ PowerNV
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-4-oohall@gmail.com>
- <ee5a00db-badd-12fe-1c46-eaba5afc8dea@ozlabs.ru>
- <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
- <34f7eea2-4ace-9931-7b5f-98ec159f3532@ozlabs.ru>
+ <20200710052340.737567-7-oohall@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
  EePO1JqpVuIow/wGud9xaPA5uvuVgRS1q7RU8otD+7VLDFzPRiRE4Jfr2CW89Ox6BF+q5ZPV
@@ -143,12 +141,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <539f0258-8b18-25b2-448f-833b93094837@ozlabs.ru>
-Date: Wed, 15 Jul 2020 10:23:25 +1000
+Message-ID: <2d0aadde-be32-2cfb-fa77-9ba8cccb7746@ozlabs.ru>
+Date: Wed, 15 Jul 2020 10:40:44 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <34f7eea2-4ace-9931-7b5f-98ec159f3532@ozlabs.ru>
+In-Reply-To: <20200710052340.737567-7-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -163,48 +161,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 14/07/2020 17:21, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 14/07/2020 15:58, Oliver O'Halloran wrote:
->> On Tue, Jul 14, 2020 at 3:37 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->>>
->>> On 10/07/2020 15:23, Oliver O'Halloran wrote:
->>>> There's an optimisation in the PE setup which skips performing DMA
->>>> setup for a PE if we only have bridges in a PE. The assumption being
->>>> that only "real" devices will DMA to system memory, which is probably
->>>> fair. However, if we start off with only bridge devices in a PE then
->>>> add a non-bridge device the new device won't be able to use DMA  because
->>>> we never configured it.
->>>>
->>>> Fix this (admittedly pretty weird) edge case by tracking whether we've done
->>>> the DMA setup for the PE or not. If a non-bridge device is added to the PE
->>>> (via rescan or hotplug, or whatever) we can set up DMA on demand.
->>>
->>> So hotplug does not work on powernv then, right? I thought you tested it
->>> a while ago, or this patch is the result of that attempt? If it is, then
->>
->> It mostly works. Just the really niche case of hot plugging a bridge,
->> then later on hot plugging a device into the same bus which wouldn't
->> work.
-> 
-> Do not you have to have a slot (which is a bridge) for hotplug in the
-> first place, to hotplug the bridge?
+On 10/07/2020 15:23, Oliver O'Halloran wrote:
+> SR-IOV support on PowerNV is a byzantine maze of hooks. I have no idea
+> how anyone is supposed to know how it works except through a lot of
+> stuffering. Write up some docs about the overall story to help out
+> the next sucker^Wperson who needs to tinker with it.
 
 
-As discussed elsewhere, I missed that it is a non bridge device on the
-same bus with previously plugged bridge. Now it all makes sense and
-
+Sounds about right :)
 
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
+
+
+> 
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ---
+>  arch/powerpc/platforms/powernv/pci-sriov.c | 130 +++++++++++++++++++++
+>  1 file changed, 130 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+> index 080ea39f5a83..f4c74ab1284d 100644
+> --- a/arch/powerpc/platforms/powernv/pci-sriov.c
+> +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+> @@ -12,6 +12,136 @@
+>  /* for pci_dev_is_added() */
+>  #include "../../../../drivers/pci/pci.h"
+>  
+> +/*
+> + * The majority of the complexity in supporting SR-IOV on PowerNV comes from
+> + * the need to put the MMIO space for each VF into a separate PE. Internally
+> + * the PHB maps MMIO addresses to a specific PE using the "Memory BAR Table".
+> + * The MBT historically only applied to the 64bit MMIO window of the PHB
+> + * so it's common to see it referred to as the "M64BT".
+> + *
+> + * An MBT entry stores the mapped range as an <base>,<mask> pair. This forces
+> + * the address range that we want to map to be power-of-two sized and aligned.
+> + * For conventional PCI devices this isn't really an issue since PCI device BARs
+> + * have the same requirement.
+> + *
+> + * For a SR-IOV BAR things are a little more awkward since size and alignment
+> + * are not coupled. The alignment is set based on the the per-VF BAR size, but
+> + * the total BAR area is: number-of-vfs * per-vf-size. The number of VFs
+> + * isn't necessarily a power of two, so neither is the total size. To fix that
+> + * we need to finesse (read: hack) the Linux BAR allocator so that it will
+> + * allocate the SR-IOV BARs in a way that lets us map them using the MBT.
+> + *
+> + * The changes to size and alignment that we need to do depend on the "mode"
+> + * of MBT entry that we use. We only support SR-IOV on PHB3 (IODA2) and above,
+> + * so as a baseline we can assume that we have the following BAR modes
+> + * available:
+> + *
+> + *   NB: $PE_COUNT is the number of PEs that the PHB supports.
+> + *
+> + * a) A segmented BAR that splits the mapped range into $PE_COUNT equally sized
+> + *    segments. The n'th segment is mapped to the n'th PE.
+> + * b) An un-segmented BAR that maps the whole address range to a specific PE.
+> + *
+> + *
+> + * We prefer to use mode a) since it only requires one MBT entry per SR-IOV BAR
+> + * For comparison b) requires one entry per-VF per-BAR, or:
+> + * (num-vfs * num-sriov-bars) in total. To use a) we need the size of each segment
+> + * to equal the size of the per-VF BAR area. So:
+> + *
+> + *	new_size = per-vf-size * number-of-PEs
+> + *
+> + * The alignment for the SR-IOV BAR also needs to be changed from per-vf-size
+> + * to "new_size", calculated above. Implementing this is a convoluted process
+> + * which requires several hooks in the PCI core:
+> + *
+> + * 1. In pcibios_add_device() we call pnv_pci_ioda_fixup_iov().
+> + *
+> + *    At this point the device has been probed and the device's BARs are sized,
+> + *    but no resource allocations have been done. The SR-IOV BARs are sized
+> + *    based on the maximum number of VFs supported by the device and we need
+> + *    to increase that to new_size.
+> + *
+> + * 2. Later, when Linux actually assigns resources it tries to make the resource
+> + *    allocations for each PCI bus as compact as possible. As a part of that it
+> + *    sorts the BARs on a bus by their required alignment, which is calculated
+> + *    using pci_resource_alignment().
+> + *
+> + *    For IOV resources this goes:
+> + *    pci_resource_alignment()
+> + *        pci_sriov_resource_alignment()
+> + *            pcibios_sriov_resource_alignment()
+> + *                pnv_pci_iov_resource_alignment()
+> + *
+> + *    Our hook overrides the default alignment, equal to the per-vf-size, with
+> + *    new_size computed above.
+> + *
+> + * 3. When userspace enables VFs for a device:
+> + *
+> + *    sriov_enable()
+> + *       pcibios_sriov_enable()
+> + *           pnv_pcibios_sriov_enable()
+> + *
+> + *    This is where we actually allocate PE numbers for each VF and setup the
+> + *    MBT mapping for each SR-IOV BAR. In steps 1) and 2) we setup an "arena"
+> + *    where each MBT segment is equal in size to the VF BAR so we can shift
+> + *    around the actual SR-IOV BAR location within this arena. We need this
+> + *    ability because the PE space is shared by all devices on the same PHB.
+> + *    When using mode a) described above segment 0 in maps to PE#0 which might
+> + *    be already being used by another device on the PHB.
+> + *
+> + *    As a result we need allocate a contigious range of PE numbers, then shift
+> + *    the address programmed into the SR-IOV BAR of the PF so that the address
+> + *    of VF0 matches up with the segment corresponding to the first allocated
+> + *    PE number. This is handled in pnv_pci_vf_resource_shift().
+> + *
+> + *    Once all that is done we return to the PCI core which then enables VFs,
+> + *    scans them and creates pci_devs for each. The init process for a VF is
+> + *    largely the same as a normal device, but the VF is inserted into the IODA
+> + *    PE that we allocated for it rather than the PE associated with the bus.
+> + *
+> + * 4. When userspace disables VFs we unwind the above in
+> + *    pnv_pcibios_sriov_disable(). Fortunately this is relatively simple since
+> + *    we don't need to validate anything, just tear down the mappings and
+> + *    move SR-IOV resource back to its "proper" location.
+> + *
+> + * That's how mode a) works. In theory mode b) (single PE mapping) is less work
+> + * since we can map each individual VF with a separate BAR. However, there's a
+> + * few limitations:
+> + *
+> + * 1) For IODA2 mode b) has a minimum alignment requirement of 32MB. This makes
+> + *    it only usable for devices with very large per-VF BARs. Such devices are
+> + *    similar to Big Foot. They definitely exist, but I've never seen one.
+> + *
+> + * 2) The number of MBT entries that we have is limited. PHB3 and PHB4 only
+> + *    16 total and some are needed for. Most SR-IOV capable network cards can support
+> + *    more than 16 VFs on each port.
+> + *
+> + * We use b) when using a) would use more than 1/4 of the entire 64 bit MMIO
+> + * window of the PHB.
+> + *
+> + *
+> + *
+> + * PHB4 (IODA3) added a few new features that would be useful for SR-IOV. It
+> + * allowed the MBT to map 32bit MMIO space in addition to 64bit which allows
+> + * us to support SR-IOV BARs in the 32bit MMIO window. This is useful since
+> + * the Linux BAR allocation will place any BAR marked as non-prefetchable into
+> + * the non-prefetchable bridge window, which is 32bit only. It also added two
+> + * new modes:
+> + *
+> + * c) A segmented BAR similar to a), but each segment can be individually
+> + *    mapped to any PE. This is matches how the 32bit MMIO window worked on
+> + *    IODA1&2.
+> + *
+> + * d) A segmented BAR with 8, 64, or 128 segments. This works similarly to a),
+> + *    but with fewer segments and configurable base PE.
+> + *
+> + *    i.e. The n'th segment maps to the (n + base)'th PE.
+> + *
+> + *    The base PE is also required to be a multiple of the window size.
+> + *
+> + * Unfortunately, the OPAL API doesn't currently (as of skiboot v6.6) allow us
+> + * to exploit any of the IODA3 features.
+> + */
+>  
+>  static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
+>  {
+> 
 
 -- 
 Alexey
