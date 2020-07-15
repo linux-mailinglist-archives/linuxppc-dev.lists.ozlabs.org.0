@@ -2,51 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73C0220CDA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFE0220CEA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:30:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6Gm26z9ZzDqSW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 22:24:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6GtV6Hn6zDqY1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 22:30:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6Gjt3XvLzDqj1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 22:22:42 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
+ envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=efficios.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=mybKQfP/; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B6Gjs49tdz9s1x;
- Wed, 15 Jul 2020 22:22:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594815761;
- bh=Y8j90lrvJqU8LkgdUr74V2K/s7Gh4WhJQGlePVUnek8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=mybKQfP/UVFZuhYRuLtxJsKUd4PMqXYvQ4BG43NxDXD67VzjEl65QG5gpw1vQvngE
- jB6+kGgkGsDvXAHjeQRGUosfNu94A+eBAOKyUhFoEsAluH5GM14CZZFqNQIv2y3zXz
- IN4QrF9YEhOlYFNAnbye0ZO3jQnYak96lX4fvR81V8BRBakvbizOJW2mXXha5ISDj8
- s+YufzfAcVsYd3QnoMnbLgphqPZyGrJRWrUt2IHz1kcG3fG2hFLyDmpTm57KIO91e1
- Wolmts2eLiKj4cQtbm37OqhXF0gZ1TWjRDj6+aCkLDZya2EBcL8aOiuz13Aj/30cjI
- PhHN5cZA0tOlg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Anton Blanchard <anton@ozlabs.org>, benh@kernel.crashing.org,
- paulus@samba.org, nathanl@linux.ibm.com
-Subject: Re: [PATCH] pseries: Fix 64 bit logical memory block panic
-In-Reply-To: <20200715000820.1255764-1-anton@ozlabs.org>
-References: <20200715000820.1255764-1-anton@ozlabs.org>
-Date: Wed, 15 Jul 2020 22:22:35 +1000
-Message-ID: <87365tufw4.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
+ header.s=default header.b=d7fTd5KW; dkim-atps=neutral
+Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6GqF3dg5zDqWj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 22:27:19 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 9F49228115E;
+ Wed, 15 Jul 2020 08:27:15 -0400 (EDT)
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id Dl7BREeXYyAE; Wed, 15 Jul 2020 08:27:15 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 628C528115D;
+ Wed, 15 Jul 2020 08:27:15 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 628C528115D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1594816035;
+ bh=TPZk1GxCJoMUtYrz9jqLjh21bcDfMdLDKQPSdffICmI=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=d7fTd5KWxvmgO4I8LgyPOUjfjlKiObobBtc68vjoGxtqLj+iGrO9px2YRd+0OxLqB
+ PCXMgM51z27gLqvyXwAclVTQ7TNoj22s1a0AiFsejmKKDq54zCagSw7CI1vvzc1bGz
+ gn7L4hDJj0qgjhsPdjy3R4TZKBwdlHCzbwpCWICdi1zgN8YeVd60kijEoRSTTA7w2k
+ EllO2ulvcs0ExLTmolqWMzxVgcS0EQRQIbwFC0tqApBErwJrC1jlzMQE6u4h9xRRg5
+ EyUz+zXrhfqatsRPGJVhkcZBhz3HdMgAGie6tRl7WpRxn6vsUi1Uyxh7YjEFIa6bPC
+ tdz9sw90KTjsw==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id OrLV38hoRJkS; Wed, 15 Jul 2020 08:27:15 -0400 (EDT)
+Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
+ by mail.efficios.com (Postfix) with ESMTP id 5612A28115C;
+ Wed, 15 Jul 2020 08:27:15 -0400 (EDT)
+Date: Wed, 15 Jul 2020 08:27:15 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Message-ID: <849841781.14062.1594816035327.JavaMail.zimbra@efficios.com>
+In-Reply-To: <20200715094829.252208-1-npiggin@gmail.com>
+References: <20200715094829.252208-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [167.114.26.124]
+X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
+Thread-Topic: powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
+Thread-Index: 3xz9KaI4NJiQWIgfXkzcTMmBc5tGIA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,36 +74,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Andy Lutomirski <luto@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anton Blanchard <anton@ozlabs.org> writes:
-> Booting with a 4GB LMB size causes us to panic:
->
->   qemu-system-ppc64: OS terminated: OS panic:
->       Memory block size not suitable: 0x0
->
-> Fix pseries_memory_block_size() to handle 64 bit LMBs.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Anton Blanchard <anton@ozlabs.org>
-> ---
->  arch/powerpc/platforms/pseries/hotplug-memory.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 5ace2f9a277e..6574ac33e887 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -27,7 +27,7 @@ static bool rtas_hp_event;
->  unsigned long pseries_memory_block_size(void)
->  {
->  	struct device_node *np;
-> -	unsigned int memblock_size = MIN_MEMORY_BLOCK_SIZE;
-> +	uint64_t memblock_size = MIN_MEMORY_BLOCK_SIZE;
+----- On Jul 15, 2020, at 5:48 AM, Nicholas Piggin npiggin@gmail.com wrote:
+[...]
+> index 47bd4ea0837d..a4704f405e8d 100644
+> --- a/arch/powerpc/include/asm/exception-64s.h
+> +++ b/arch/powerpc/include/asm/exception-64s.h
+> @@ -68,6 +68,13 @@
+>  *
+>  * The nop instructions allow us to insert one or more instructions to flush the
+>  * L1-D cache when returning to userspace or a guest.
+> + *
+> + * powerpc relies on return from interrupt/syscall being context synchronising
+> + * (which hrfid, rfid, and rfscv are) to support ARCH_HAS_MEMBARRIER_SYNC_CORE
+> + * without additional additional synchronisation instructions. soft-masked
+> + * interrupt replay does not include a context-synchronising rfid, but those
+> + * always return to kernel, the context sync is only required for IPIs which
+> + * return to user.
+>  */
+> #define RFI_FLUSH_SLOT							\
+> 	RFI_FLUSH_FIXUP_SECTION;					\
 
-I changed it to u64.
+I suspect the statement "the context sync is only required for IPIs which return to
+user." is misleading.
 
-cheers
+As I recall that we need more than just context sync after IPI. We need context sync
+in return path of any trap/interrupt/system call which returns to user-space, else
+we'd need to add the proper core serializing barriers in the scheduler, as we had
+to do for lazy tlb on x86.
+
+Or am I missing something ?
+
+Thanks,
+
+Mathieu
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
