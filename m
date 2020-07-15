@@ -1,76 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D0B220CAE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:11:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73C0220CDA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:24:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6GT56jFjzDqjn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 22:11:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6Gm26z9ZzDqSW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 22:24:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6GMS1lTQzDqjQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 22:06:43 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06FC23pp180096; Wed, 15 Jul 2020 08:06:39 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 329bghxepr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jul 2020 08:06:39 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06FC6bQi030101;
- Wed, 15 Jul 2020 12:06:37 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06fra.de.ibm.com with ESMTP id 328rbqs1f7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jul 2020 12:06:36 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06FC5BoV52756924
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Jul 2020 12:05:11 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F34154C050;
- Wed, 15 Jul 2020 12:06:33 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5E54B4C058;
- Wed, 15 Jul 2020 12:06:32 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.85.111.3])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 15 Jul 2020 12:06:32 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 2/2] powerpc/numa: Remove a redundant variable
-Date: Wed, 15 Jul 2020 17:35:34 +0530
-Message-Id: <20200715120534.3673-2-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200715120534.3673-1-srikar@linux.vnet.ibm.com>
-References: <871rljfet9.fsf@linux.ibm.com>
- <20200715120534.3673-1-srikar@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-15_10:2020-07-15,
- 2020-07-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- adultscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=947 bulkscore=0 suspectscore=0 clxscore=1015 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007150098
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6Gjt3XvLzDqj1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 22:22:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=mybKQfP/; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4B6Gjs49tdz9s1x;
+ Wed, 15 Jul 2020 22:22:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1594815761;
+ bh=Y8j90lrvJqU8LkgdUr74V2K/s7Gh4WhJQGlePVUnek8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=mybKQfP/UVFZuhYRuLtxJsKUd4PMqXYvQ4BG43NxDXD67VzjEl65QG5gpw1vQvngE
+ jB6+kGgkGsDvXAHjeQRGUosfNu94A+eBAOKyUhFoEsAluH5GM14CZZFqNQIv2y3zXz
+ IN4QrF9YEhOlYFNAnbye0ZO3jQnYak96lX4fvR81V8BRBakvbizOJW2mXXha5ISDj8
+ s+YufzfAcVsYd3QnoMnbLgphqPZyGrJRWrUt2IHz1kcG3fG2hFLyDmpTm57KIO91e1
+ Wolmts2eLiKj4cQtbm37OqhXF0gZ1TWjRDj6+aCkLDZya2EBcL8aOiuz13Aj/30cjI
+ PhHN5cZA0tOlg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Anton Blanchard <anton@ozlabs.org>, benh@kernel.crashing.org,
+ paulus@samba.org, nathanl@linux.ibm.com
+Subject: Re: [PATCH] pseries: Fix 64 bit logical memory block panic
+In-Reply-To: <20200715000820.1255764-1-anton@ozlabs.org>
+References: <20200715000820.1255764-1-anton@ozlabs.org>
+Date: Wed, 15 Jul 2020 22:22:35 +1000
+Message-ID: <87365tufw4.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,61 +58,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Michael Ellerman <michaele@au1.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In of_drconf_to_nid_single() default_nid always refers to NUMA_NO_NODE.
-Hence replace it with NUMA_NO_NODE.
+Anton Blanchard <anton@ozlabs.org> writes:
+> Booting with a 4GB LMB size causes us to panic:
+>
+>   qemu-system-ppc64: OS terminated: OS panic:
+>       Memory block size not suitable: 0x0
+>
+> Fix pseries_memory_block_size() to handle 64 bit LMBs.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anton Blanchard <anton@ozlabs.org>
+> ---
+>  arch/powerpc/platforms/pseries/hotplug-memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 5ace2f9a277e..6574ac33e887 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -27,7 +27,7 @@ static bool rtas_hp_event;
+>  unsigned long pseries_memory_block_size(void)
+>  {
+>  	struct device_node *np;
+> -	unsigned int memblock_size = MIN_MEMORY_BLOCK_SIZE;
+> +	uint64_t memblock_size = MIN_MEMORY_BLOCK_SIZE;
 
-No functional changes.
+I changed it to u64.
 
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Michael Ellerman <michaele@au1.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
----
- arch/powerpc/mm/numa.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index a2c5fe0d0cad..b066d89c2975 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -432,16 +432,15 @@ static int of_get_assoc_arrays(struct assoc_arrays *aa)
- static int of_drconf_to_nid_single(struct drmem_lmb *lmb)
- {
- 	struct assoc_arrays aa = { .arrays = NULL };
--	int default_nid = NUMA_NO_NODE;
--	int nid = default_nid;
-+	int nid = NUMA_NO_NODE;
- 	int rc, index;
- 
- 	if ((min_common_depth < 0) || !numa_enabled)
--		return default_nid;
-+		return NUMA_NO_NODE;
- 
- 	rc = of_get_assoc_arrays(&aa);
- 	if (rc)
--		return default_nid;
-+		return NUMA_NO_NODE;
- 
- 	if (min_common_depth <= aa.array_sz &&
- 	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_arrays) {
-@@ -449,7 +448,7 @@ static int of_drconf_to_nid_single(struct drmem_lmb *lmb)
- 		nid = of_read_number(&aa.arrays[index], 1);
- 
- 		if (nid == 0xffff || nid >= num_possible_nodes())
--			nid = default_nid;
-+			nid = NUMA_NO_NODE;
- 
- 		if (nid > 0) {
- 			index = lmb->aa_index * aa.array_sz;
--- 
-2.18.2
-
+cheers
