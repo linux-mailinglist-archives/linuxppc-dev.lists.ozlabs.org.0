@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED3C22028D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 04:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8509B22028A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 04:54:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B628x4R2nzDqcS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 12:56:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B626m4dW5zDqV4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 12:54:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B62556L97zDqW6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 12:53:28 +1000 (AEST)
-IronPort-SDR: rAiszWKb7Ha0Tige4IXC3uSmeUSd26sBZRzhUUY/ATV6HI3ig8zh88FUxtbZmcXLo0KRlbG11U
- 7jufohCY/8TQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9682"; a="148218172"
-X-IronPort-AV: E=Sophos;i="5.75,353,1589266800"; d="scan'208";a="148218172"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B624y0lFpzDqSg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 12:53:20 +1000 (AEST)
+IronPort-SDR: AgsiGevzVNZGWLJZ/IirLD4nh1qvBf8ANl7nZ3LOXlJhMx+kgInzHqopAikwuCmhqVPgaGQFma
+ fWV0YUam924A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9682"; a="150481005"
+X-IronPort-AV: E=Sophos;i="5.75,353,1589266800"; d="scan'208";a="150481005"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 Jul 2020 19:53:16 -0700
-IronPort-SDR: sEF+p7Skr4TGmJjM3gqpSAqxRghkOcWQjq4UsPZyJva9Uu9NqdOznj8vJ6ndsirNopVPms2lbL
- KSQ4QiN426Cg==
+IronPort-SDR: xlGV6bCNw12k41iz6VKeSmsVfKEHKPdJs8V5443Japfso3MM8i1xQ4rJju+6O5ZU4qKFpnFp5Y
+ +h4S9BKtlYbA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,353,1589266800"; d="scan'208";a="360572499"
+X-IronPort-AV: E=Sophos;i="5.75,353,1589266800"; d="scan'208";a="299740892"
 Received: from lkp-server01.sh.intel.com (HELO e1edd1aee32c) ([10.239.97.150])
- by orsmga001.jf.intel.com with ESMTP; 14 Jul 2020 19:53:15 -0700
+ by orsmga002.jf.intel.com with ESMTP; 14 Jul 2020 19:53:15 -0700
 Received: from kbuild by e1edd1aee32c with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1jvXXm-00001W-LT; Wed, 15 Jul 2020 02:53:14 +0000
-Date: Wed, 15 Jul 2020 10:52:39 +0800
+ id 1jvXXm-00001T-Fr; Wed, 15 Jul 2020 02:53:14 +0000
+Date: Wed, 15 Jul 2020 10:52:46 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- b710d27bf72068b15b2f0305d825988183e2ff28
-Message-ID: <5f0e6f77.ozELO5+qzkfRPeNp%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 17babc2734a55cdf4a678d572f316280b820202b
+Message-ID: <5f0e6f7e.7Wy6LY+kW2r8WJ4V%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -63,13 +63,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: b710d27bf72068b15b2f0305d825988183e2ff28  powerpc/pseries/svm: Fix incorrect check for shared_lppaca_size
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: 17babc2734a55cdf4a678d572f316280b820202b  powerpc/fadump: fix race between pstore write and fadump crash trigger
 
-elapsed time: 721m
+elapsed time: 720m
 
-configs tested: 110
-configs skipped: 6
+configs tested: 104
+configs skipped: 8
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -86,6 +86,13 @@ sh                           se7724_defconfig
 sh                          sdk7786_defconfig
 arm                          tango4_defconfig
 sh                            migor_defconfig
+sh                           se7206_defconfig
+mips                malta_qemu_32r6_defconfig
+sparc64                             defconfig
+mips                      pistachio_defconfig
+sh                               alldefconfig
+powerpc64                           defconfig
+arm                            u300_defconfig
 i386                             allyesconfig
 arm                         s3c6400_defconfig
 m68k                         amcore_defconfig
@@ -153,18 +160,6 @@ powerpc                          rhel-kconfig
 powerpc                          allmodconfig
 powerpc                           allnoconfig
 powerpc                             defconfig
-i386                 randconfig-a001-20200714
-i386                 randconfig-a005-20200714
-i386                 randconfig-a002-20200714
-i386                 randconfig-a006-20200714
-i386                 randconfig-a003-20200714
-i386                 randconfig-a004-20200714
-i386                 randconfig-a016-20200714
-i386                 randconfig-a011-20200714
-i386                 randconfig-a015-20200714
-i386                 randconfig-a012-20200714
-i386                 randconfig-a013-20200714
-i386                 randconfig-a014-20200714
 riscv                            allyesconfig
 riscv                             allnoconfig
 riscv                               defconfig
@@ -174,7 +169,6 @@ s390                              allnoconfig
 s390                             allmodconfig
 s390                                defconfig
 sparc                            allyesconfig
-sparc64                             defconfig
 sparc64                           allnoconfig
 sparc64                          allyesconfig
 sparc64                          allmodconfig
