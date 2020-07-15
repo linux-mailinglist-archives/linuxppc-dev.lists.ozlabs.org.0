@@ -1,71 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CDC62202F1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:32:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE512202F2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:34:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B62yG25H4zDqgx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 13:32:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B630c5dqHzDqgd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 13:34:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=YrRkQ1Qo; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20150623 header.b=iFRztEvV; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B62wV5GQDzDqYk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 13:31:06 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id p1so1436106pls.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 20:31:06 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B62z120gQzDqPT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 13:33:16 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id a14so1284783pfi.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 20:33:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:references:from:autocrypt:message-id:date:user-agent
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=g77doqSeHm5n7eF6Yg24cpSL2pWKkPvZ4RJhWp3tDMk=;
- b=YrRkQ1QoIQ3Vap9mKNCQMgPinbBzF5ZxUz+/jlqhlPwm6Rz0oZf6A+5Jk+NE+9Hh2Z
- inHAKkednS3yq2FlLfisjunDcJ2DBcX1eMyjnhdDohg/nkWLiLGpiFV9VbOdn53RMiKU
- i6+dcmt0uGHYPxypBUL20wZyhKHM2hwq4+KSmNXu9IgDGcZNXY4LlpVBSsDeIOD6qyWn
- gXWCTWhpBSvvA9luiCo4IFZKVCXK2EzOK37vQk/GeoutFHhLK1StKbebhPPmnYCkrSyy
- ylfh9ozejbguZkZOZ9qTsrSAHa/TxuuYB0XsuffjLlRpevxBBi3I0wOAkqpSB8JuM/F2
- pNsQ==
+ bh=m7ftx3K5jJVJV0zNT17j7k91nMzeRvPDA3hETo6H8WM=;
+ b=iFRztEvVkiynwBE20DQADylGjNxcOobPHGnM/uEv0chnzFRku4ZW69lgbya/WzDTmn
+ dJimWZXBL63/qhGKH6WPApNPIkaMkUr9O0XqgCy+BEWUVFaWNLmpeTi11weeUb6dqncI
+ kzStMqqMM6LOU1b6Cr+A9it9DDRe/lMTFhJqFRiDZ23Z9Uw9G4kTr7qSd1EPjE40y1yc
+ XLIs208Q8irq7pSVDKaSnkk+7d5H2IdZG/9VHW/QWMky1cajqWo20odK7yUlEjJQC8tI
+ TAVFamKpsbidZi1sNUuemy+jyhI8xaLK3UcMeGUIR7B4Cf1wqiRJjo4ZNS65cWCkPA/f
+ ph5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=g77doqSeHm5n7eF6Yg24cpSL2pWKkPvZ4RJhWp3tDMk=;
- b=bhw005e8LWPzpy27Cdk/EjGqiP40e42Y2xMJyGIIzFvk2kZbq901UvUKwCb+R/Qyq2
- W02pHzQXo98t8077qDziQhO8qGe/dvaS6kcJQd7t+t4apIvD1zUn+p5mPNNbjMJKpq/o
- roN3NB8Ac8nXgyN9MrZAbKIxU3HsBk4BFeonrrBkCBayKG5w8h6mNtO5f9YCueay/PeU
- b1JiErm3OQBpdiCFGCsK8tut07gSnp+1SG/F3iyWH8eQaZOTtKA3Hp5rvozpo6SBx4/u
- fmU0Qi2bQCspn8Mx7cAdrRXGhQxA3ECItCnCgN8P+dG868r+2TtoHnur3xUq9h5NEzFT
- /SEg==
-X-Gm-Message-State: AOAM533rlhR0rJkYv99LQXF/BPtikch4HSPpfjU6Zc4txCqSTF8bLS8v
- yRJqCLi1sp6QzwY4VfrxYYn1IVEnNszgag==
-X-Google-Smtp-Source: ABdhPJxonsIUZZ2uyyBe8UGoJxnX4pSwDNWx4o89pJRDR54n2HgEaCBzh6q8oL6EXKIAkQCblrFpBA==
-X-Received: by 2002:a17:902:b084:: with SMTP id
- p4mr6773269plr.58.1594783863935; 
- Tue, 14 Jul 2020 20:31:03 -0700 (PDT)
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=m7ftx3K5jJVJV0zNT17j7k91nMzeRvPDA3hETo6H8WM=;
+ b=BGTIGsQ8nxraWJql4J0cdKLLzjG57i7tqncZwzuwKwe6QGeDjeFg8/4eYybQcAzxUI
+ AbsIfmraDRbE6qtutV4hlxtatcLozsbLr/x02DV3TsKokm+Zc0W2QigMJfn/hxKjcsTO
+ 5AoQ9OuGkj3Iu9v4Isg5+msSaSjBu6hx81PChKjiPi6wVx+agBq0icn8ZZuKPcbeZZ3A
+ 7JgXWWITqFC68DdRej9bieBP/H2ASgI4XGz4gXrJ62W/EdR/ww90MfWenfiW+s7iYGrQ
+ uWodJ1OLeJOygPi8t143Y0EUX5tWtDO5+UVkq8cNRzX+gBchHUTmCl19tkjBUPmeLVRP
+ IIxA==
+X-Gm-Message-State: AOAM531bAyzR6/xsgs+MoA82uX8c1bBaGdQhcfiMeYw2fxbWGNk4jRZD
+ h97xmr5YgtisNrNFWXJkG+9rcw==
+X-Google-Smtp-Source: ABdhPJwl8I8orTEHdjNh74q0nuuyfMtPrb2VZUg2g8u1YbNBPG6MKaK2hQhune1DoJgD1B31k+Uz8A==
+X-Received: by 2002:a62:7790:: with SMTP id s138mr6709592pfc.65.1594783993642; 
+ Tue, 14 Jul 2020 20:33:13 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id r8sm500107pfh.29.2020.07.14.20.31.01
+ by smtp.gmail.com with ESMTPSA id m26sm292774pff.84.2020.07.14.20.33.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jul 2020 20:31:03 -0700 (PDT)
-Subject: Re: [PATCH 11/15] powerpc/powernv/sriov: Drop iov->pe_num_map[]
-To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+ Tue, 14 Jul 2020 20:33:13 -0700 (PDT)
+Subject: Re: [PATCH 03/15] powerpc/powernv/pci: Add explicit tracking of the
+ DMA setup state
+To: Oliver O'Halloran <oohall@gmail.com>
 References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-12-oohall@gmail.com>
+ <20200710052340.737567-4-oohall@gmail.com>
+ <ee5a00db-badd-12fe-1c46-eaba5afc8dea@ozlabs.ru>
+ <CAOSf1CESRPypebf6+rnkZkNmi6+xL4+QP1xgAS1szGsZDBcs8A@mail.gmail.com>
+ <34f7eea2-4ace-9931-7b5f-98ec159f3532@ozlabs.ru>
+ <CAOSf1CGhc1i64_DS18evMhwoXvMWyafOk3r2czUz49F6gERtfw@mail.gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +144,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <833e07b0-3c55-ef51-8649-a5e244f72560@ozlabs.ru>
-Date: Wed, 15 Jul 2020 13:31:00 +1000
+Message-ID: <1da1c482-a720-d5ec-a39c-a4b4869352d5@ozlabs.ru>
+Date: Wed, 15 Jul 2020 13:33:09 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200710052340.737567-12-oohall@gmail.com>
+In-Reply-To: <CAOSf1CGhc1i64_DS18evMhwoXvMWyafOk3r2czUz49F6gERtfw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -160,261 +164,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 10/07/2020 15:23, Oliver O'Halloran wrote:
-> Currently the iov->pe_num_map[] does one of two things depending on
-> whether single PE mode is being used or not. When it is, this contains an
-> array which maps a vf_index to the corresponding PE number. When single PE
-> mode is not being used this contains a scalar which is the base PE for the
-> set of enabled VFs (for for VFn is base + n).
+On 15/07/2020 11:38, Oliver O'Halloran wrote:
+> On Tue, Jul 14, 2020 at 5:21 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>>
+>> On 14/07/2020 15:58, Oliver O'Halloran wrote:
+>>> On Tue, Jul 14, 2020 at 3:37 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>>>>
+>>>> On 10/07/2020 15:23, Oliver O'Halloran wrote:
+>>>>> This also means the only remaining user of the old "DMA Weight" code is
+>>>>> the IODA1 DMA setup code that it was originally added for, which is good.
+>>>>
+>>>>
+>>>> Is ditching IODA1 in the plan? :)
+>>>
+>>> That or separating out the pci_controller_ops for IODA1 and IODA2 so
+>>> we can stop any IODA2 specific changes from breaking it.
+>>
+>> Is IODA1 tested at all these days? Or, is anyone running upstream
+>> kernels anywhere and keeps shouting when it does not work on IODA1? Thanks,
 > 
-> The array was necessary because when calling pnv_ioda_alloc_pe() there is
-> no guarantee that the allocated PEs would be contigious. We can now
+> Cedric has a P7 with OPAL. That's probably the one left though.
+
+Has he tried these patches on that box? Or we hope for the best here? :)
 
 
-s/contigious/contiguous/ here and below.
-
-
-> allocate contigious blocks of PEs so this is no longer an issue. This
-> allows us to drop the if (single_mode) {} .. else {} block scattered
-> through the SR-IOV code which is a nice clean up.
-> 
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> ---
->  arch/powerpc/platforms/powernv/pci-sriov.c | 109 +++++----------------
->  arch/powerpc/platforms/powernv/pci.h       |   4 +-
->  2 files changed, 25 insertions(+), 88 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-> index d53a85ccb538..08f88187d65a 100644
-> --- a/arch/powerpc/platforms/powernv/pci-sriov.c
-> +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-> @@ -456,11 +456,13 @@ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
->  
->  
->  			if (iov->m64_single_mode) {
-> +				int pe_num = iov->vf_pe_arr[j].pe_number;
-> +
->  				size = pci_iov_resource_size(pdev,
->  							PCI_IOV_RESOURCES + i);
->  				start = res->start + size * j;
->  				rc = pnv_ioda_map_m64_single(phb, win,
-> -							     iov->pe_num_map[j],
-> +							     pe_num,
->  							     start,
->  							     size);
->  			} else {
-> @@ -599,38 +601,24 @@ static int pnv_pci_vf_resource_shift(struct pci_dev *dev, int offset)
->  
->  static void pnv_pci_sriov_disable(struct pci_dev *pdev)
->  {
-> +	u16                    num_vfs, base_pe;
->  	struct pnv_phb        *phb;
-> -	struct pnv_ioda_pe    *pe;
->  	struct pnv_iov_data   *iov;
-> -	u16                    num_vfs, i;
->  
->  	phb = pci_bus_to_pnvhb(pdev->bus);
->  	iov = pnv_iov_get(pdev);
->  	num_vfs = iov->num_vfs;
-> +	base_pe = iov->vf_pe_arr[0].pe_number;
->  
->  	/* Release VF PEs */
->  	pnv_ioda_release_vf_PE(pdev);
->  
->  	if (phb->type == PNV_PHB_IODA2) {
->  		if (!iov->m64_single_mode)
-> -			pnv_pci_vf_resource_shift(pdev, -*iov->pe_num_map);
-> +			pnv_pci_vf_resource_shift(pdev, -base_pe);
->  
->  		/* Release M64 windows */
->  		pnv_pci_vf_release_m64(pdev, num_vfs);
-> -
-> -		/* Release PE numbers */
-> -		if (iov->m64_single_mode) {
-> -			for (i = 0; i < num_vfs; i++) {
-> -				if (iov->pe_num_map[i] == IODA_INVALID_PE)
-> -					continue;
-> -
-> -				pe = &phb->ioda.pe_array[iov->pe_num_map[i]];
-> -				pnv_ioda_free_pe(pe);
-> -			}
-> -		} else
-> -			bitmap_clear(phb->ioda.pe_alloc, *iov->pe_num_map, num_vfs);
-> -		/* Releasing pe_num_map */
-> -		kfree(iov->pe_num_map);
->  	}
->  }
->  
-> @@ -656,13 +644,7 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  		int vf_bus = pci_iov_virtfn_bus(pdev, vf_index);
->  		struct pci_dn *vf_pdn;
->  
-> -		if (iov->m64_single_mode)
-> -			pe_num = iov->pe_num_map[vf_index];
-> -		else
-> -			pe_num = *iov->pe_num_map + vf_index;
-> -
-> -		pe = &phb->ioda.pe_array[pe_num];
-> -		pe->pe_number = pe_num;
-> +		pe = &iov->vf_pe_arr[vf_index];
->  		pe->phb = phb;
->  		pe->flags = PNV_IODA_PE_VF;
->  		pe->pbus = NULL;
-> @@ -670,6 +652,7 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  		pe->mve_number = -1;
->  		pe->rid = (vf_bus << 8) | vf_devfn;
->  
-> +		pe_num = pe->pe_number;
->  		pe_info(pe, "VF %04d:%02d:%02d.%d associated with PE#%x\n",
->  			pci_domain_nr(pdev->bus), pdev->bus->number,
->  			PCI_SLOT(vf_devfn), PCI_FUNC(vf_devfn), pe_num);
-> @@ -701,9 +684,9 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  
->  static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  {
-> +	struct pnv_ioda_pe    *base_pe;
->  	struct pnv_iov_data   *iov;
->  	struct pnv_phb        *phb;
-> -	struct pnv_ioda_pe    *pe;
->  	int                    ret;
->  	u16                    i;
->  
-> @@ -717,55 +700,14 @@ static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  			return -ENOSPC;
->  		}
->  
-> -		/*
-> -		 * When M64 BARs functions in Single PE mode, the number of VFs
-> -		 * could be enabled must be less than the number of M64 BARs.
-> -		 */
-> -		if (iov->m64_single_mode && num_vfs > phb->ioda.m64_bar_idx) {
-> -			dev_info(&pdev->dev, "Not enough M64 BAR for VFs\n");
-> +		/* allocate a contigious block of PEs for our VFs */
-> +		base_pe = pnv_ioda_alloc_pe(phb, num_vfs);
-> +		if (!base_pe) {
-> +			pci_err(pdev, "Unable to allocate PEs for %d VFs\n", num_vfs);
->  			return -EBUSY;
->  		}
->  
-> -		/* Allocating pe_num_map */
-> -		if (iov->m64_single_mode)
-> -			iov->pe_num_map = kmalloc_array(num_vfs,
-> -							sizeof(*iov->pe_num_map),
-> -							GFP_KERNEL);
-> -		else
-> -			iov->pe_num_map = kmalloc(sizeof(*iov->pe_num_map), GFP_KERNEL);
-> -
-> -		if (!iov->pe_num_map)
-> -			return -ENOMEM;
-> -
-> -		if (iov->m64_single_mode)
-> -			for (i = 0; i < num_vfs; i++)
-> -				iov->pe_num_map[i] = IODA_INVALID_PE;
-> -
-> -		/* Calculate available PE for required VFs */
-> -		if (iov->m64_single_mode) {
-> -			for (i = 0; i < num_vfs; i++) {
-> -				pe = pnv_ioda_alloc_pe(phb);
-> -				if (!pe) {
-> -					ret = -EBUSY;
-> -					goto m64_failed;
-> -				}
-> -
-> -				iov->pe_num_map[i] = pe->pe_number;
-> -			}
-> -		} else {
-> -			mutex_lock(&phb->ioda.pe_alloc_mutex);
-> -			*iov->pe_num_map = bitmap_find_next_zero_area(
-> -				phb->ioda.pe_alloc, phb->ioda.total_pe_num,
-> -				0, num_vfs, 0);
-> -			if (*iov->pe_num_map >= phb->ioda.total_pe_num) {
-> -				mutex_unlock(&phb->ioda.pe_alloc_mutex);
-> -				dev_info(&pdev->dev, "Failed to enable VF%d\n", num_vfs);
-> -				kfree(iov->pe_num_map);
-> -				return -EBUSY;
-> -			}
-> -			bitmap_set(phb->ioda.pe_alloc, *iov->pe_num_map, num_vfs);
-> -			mutex_unlock(&phb->ioda.pe_alloc_mutex);
-> -		}
-> +		iov->vf_pe_arr = base_pe;
->  		iov->num_vfs = num_vfs;
->  
->  		/* Assign M64 window accordingly */
-> @@ -781,9 +723,10 @@ static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  		 * Otherwise, the PE# for the VF will conflict with others.
->  		 */
->  		if (!iov->m64_single_mode) {
-> -			ret = pnv_pci_vf_resource_shift(pdev, *iov->pe_num_map);
-> +			ret = pnv_pci_vf_resource_shift(pdev,
-> +							base_pe->pe_number);
->  			if (ret)
-> -				goto m64_failed;
-> +				goto shift_failed;
->  		}
->  	}
->  
-> @@ -792,20 +735,12 @@ static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
->  
->  	return 0;
->  
-> -m64_failed:
-> -	if (iov->m64_single_mode) {
-> -		for (i = 0; i < num_vfs; i++) {
-> -			if (iov->pe_num_map[i] == IODA_INVALID_PE)
-> -				continue;
-> -
-> -			pe = &phb->ioda.pe_array[iov->pe_num_map[i]];
-> -			pnv_ioda_free_pe(pe);
-> -		}
-> -	} else
-> -		bitmap_clear(phb->ioda.pe_alloc, *iov->pe_num_map, num_vfs);
-> +shift_failed:
-> +	pnv_pci_vf_release_m64(pdev, num_vfs);
->  
-> -	/* Releasing pe_num_map */
-> -	kfree(iov->pe_num_map);
-> +m64_failed:
-> +	for (i = 0; i < num_vfs; i++)
-> +		pnv_ioda_free_pe(&iov->vf_pe_arr[i]);
->  
->  	return ret;
->  }
-> diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-> index b4c9bdba7217..13555bc549f4 100644
-> --- a/arch/powerpc/platforms/powernv/pci.h
-> +++ b/arch/powerpc/platforms/powernv/pci.h
-> @@ -238,7 +238,9 @@ struct pnv_iov_data {
->  
->  	/* number of VFs enabled */
->  	u16     num_vfs;
-> -	unsigned int *pe_num_map;	/* PE# for the first VF PE or array */
-> +
-> +	/* pointer to the array of VF PEs. num_vfs long*/
-
-I read the comment and for a second I thought that now you are storing
-pnv_ioda_pe structs in pnv_iov_data which is not true: vf_pe_arr
-actually points inside phb->ioda.pe_array[]. May be add this to the
-comment please.
-
-Otherwise good,
-
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-
-> +	struct pnv_ioda_pe *vf_pe_arr;
->  
->  	/* Did we map the VF BARs with single-PE IODA BARs? */
->  	bool    m64_single_mode;
-> 
 
 -- 
 Alexey
