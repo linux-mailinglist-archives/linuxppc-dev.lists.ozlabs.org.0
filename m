@@ -2,69 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB5B22041F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 06:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DEE22042A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 07:00:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B64k814F9zDqkV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:52:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B64v20fLMzDqkJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:59:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=hTJPnqah; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ header.s=20150623 header.b=cHM7c03b; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B64hV1GD0zDqg3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 14:50:49 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id o13so2378175pgf.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 21:50:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B64sQ2C29zDqMd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 14:58:32 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id t6so2401174pgq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 21:58:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:references:from:autocrypt:message-id:date:user-agent
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=6/BgYQJOaVUXGBgFElJ2GBnMEOChyv7EIQCFQtwTJag=;
- b=hTJPnqahyn/tXqTcLyq4dN/gsqoeOpfp8K1UCFuyRl7COvQIKo4XjxrvCAbVlCRJWF
- hrez3tQY0lV/mOME3YOHUFTJ22zfb+9GX06BCz67pnD/XQv7dRBnubhRgqLnQhq/Afwo
- 5J7CU//LEG4wp/7AraiEZxRhzQbHD/aq62CxBxM7r+p3R1vSMQWjB9LFr03IfIkE7v+C
- 6lcFLYLvr2n3Iu8nDY405YdoOlNeIwdJlM/9Ou9qgQ3AHerxx3Jxtlxtpa2tU8r273lB
- NRBQoYuSE1JAnZV7uzUrzyQ9ONZq0KTqijirggxQoIRLWVbjMPcs12nl7h1C7RiQEU8N
- OT4Q==
+ bh=HKr7onQgriqqPAcDokhngndVx4sHXqCOrSC9vdaaye0=;
+ b=cHM7c03b0dJdAjGYFB6zPpFLW+JD77yb2AURRGb2Fqi7riOBO7iSLbpv8ti6Ljjpvf
+ 84wZ9ebWh3i1O2qsIvjejJzLhlXlZomqH+0KuiMgYPVvv6zkne6L7S48vZu6wFPQZJRI
+ aXaTLStnZwG6C5s1nJMAQ1gqI1wbqq4lrPFLUP4LJjcefbZBBjJIhmusgqVDGP9q9IPb
+ ErzXYV7ksnIXe/jTe+9vdvlXB7a3YfiKQNpNWlIDqAqZaDwVp5ZO7EZzsu0Zo5oztxid
+ YJmIKZL+noDxYSeDkGUD8Q9AFJ9m9F+RMV+DZ6Fp+9NCL8+gtG8Q9LnaqrfFAeyh7Ac9
+ YYuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=6/BgYQJOaVUXGBgFElJ2GBnMEOChyv7EIQCFQtwTJag=;
- b=SJoSTZTY062+m9Gpwg+KDitBYf4U9L1zHfuxcD7oAid1lD1LzJbmjRr9iBoKecoSeC
- 8FU18+8CNWzEuWUIsPvJBUy9b4kWHXi6JUShsLdNyNNUhbQSOt+jSgK7aMY9oJjU3ZCw
- HICSmmAtcZOzJxMQESpBqQb2bKsF2apzVK0u61O3HBMo7f7kFLAftCO/nCHA69/q/6og
- f728N7NZ8+3b7AU3Fs6Fdag+m/yn814f234V81uJUZZpdECnMhvPMcnTvlPA+6tMSiJN
- wPXQu8C4o6U8r8ijdUPIZ6E0HYRW+fBD7IvQ1U9Wujvlmn+3CSVEag9JIY4GA3oQV8X1
- Wcxg==
-X-Gm-Message-State: AOAM531ln3YxUnEtFaz+YgwdkUaQ7rHjlKf/MTVBXwlC34onL99Rvakh
- 12LwX9DO4lWu8NMxAIB9FWPxB6aNosmIDg==
-X-Google-Smtp-Source: ABdhPJwBMiDRFB82T4nZOx24qHZjWGX0vOiEXUthZJy91MqTMCv36mcVQdhjvsm7isFmPSgVwP9dsA==
-X-Received: by 2002:a63:7b15:: with SMTP id w21mr6691333pgc.386.1594788647413; 
- Tue, 14 Jul 2020 21:50:47 -0700 (PDT)
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=HKr7onQgriqqPAcDokhngndVx4sHXqCOrSC9vdaaye0=;
+ b=LhDfS1Nal7nD9O1gO+TotmEgwYNGeYCoXUIzYcyeAyEm73gBgmPFwpxS3R2OGpCtmh
+ VYE4F4KTWq/vNiGeGyRMRpkn6Z8VmUdkiyJAUo6dxSTzT0ekfwR5FIdjgEFQmDr3fPIc
+ /o9SUk36o45zrtgFYI67cdCNdyJ0t1QsvgjwyBeq82L7uixVQcHkemZMcQOYu6YZiyh8
+ 7LJLXz0mep0R1aJhyjys/nKYgQYBjnk8ADueK0a35zCZ+pit/vaAAO/lvJY0UhfE7hSQ
+ UwCeUXKOOlE+vZhO53r6bYjClvZzvkyw5gQWsRA3PrSIP4WENdcDR07hOrzVDFmYf6Sy
+ UMdw==
+X-Gm-Message-State: AOAM532Crkb4bONp0a5wKhuPISSoGGhO2yU/iH7Kb43UIcI2x5qv9Crr
+ KD2dDE8l7tPBzk04PXJRww/uNofM4x8Bpg==
+X-Google-Smtp-Source: ABdhPJyVF8vAnfdqkjxZYbSP6tyyHEk1S6HN1RP9NNzNgaYhooKc6xW7snF9N8JRGOk1ICIHGY4LOA==
+X-Received: by 2002:aa7:8801:: with SMTP id c1mr7110914pfo.105.1594789108932; 
+ Tue, 14 Jul 2020 21:58:28 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id j2sm4305456pjy.1.2020.07.14.21.50.44
+ by smtp.gmail.com with ESMTPSA id o4sm631682pjo.16.2020.07.14.21.58.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 Jul 2020 21:50:46 -0700 (PDT)
-Subject: Re: [PATCH 14/15] powerpc/powernv/sriov: Refactor M64 BAR setup
-To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+ Tue, 14 Jul 2020 21:58:28 -0700 (PDT)
+Subject: Re: [PATCH 12/15] powerpc/powernv/sriov: De-indent setup and teardown
+To: Oliver O'Halloran <oohall@gmail.com>
 References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-15-oohall@gmail.com>
+ <20200710052340.737567-13-oohall@gmail.com>
+ <ece39d29-6ab0-dcf4-0561-3c488c7921f9@ozlabs.ru>
+ <CAOSf1CGbDWFzuh5pD3CYayTXOFsw18E0kFn052xtxrdes_2_zw@mail.gmail.com>
+ <f97edf44-0029-5a33-0cff-7067a81f10ba@ozlabs.ru>
+ <CAOSf1CGdGQ0cFNmfL=gVNcqX+JhT_W=73UWYd6aVourvtEs4ow@mail.gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -139,12 +143,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <1c6dd4fd-dff4-7bce-20cb-5d6cbc01af09@ozlabs.ru>
-Date: Wed, 15 Jul 2020 14:50:42 +1000
+Message-ID: <28e790cd-17f5-6d4f-f302-2ba23f02892e@ozlabs.ru>
+Date: Wed, 15 Jul 2020 14:58:25 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200710052340.737567-15-oohall@gmail.com>
+In-Reply-To: <CAOSf1CGdGQ0cFNmfL=gVNcqX+JhT_W=73UWYd6aVourvtEs4ow@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -159,116 +163,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 10/07/2020 15:23, Oliver O'Halloran wrote:
-> Split up the logic so that we have one branch that handles setting up a
-> segmented window and another that handles setting up single PE windows for
-> each VF.
+On 15/07/2020 14:46, Oliver O'Halloran wrote:
+> On Wed, Jul 15, 2020 at 2:41 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>>
+>>
+>>
+>> On 15/07/2020 14:21, Oliver O'Halloran wrote:
+>>> On Wed, Jul 15, 2020 at 2:00 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>>>>
+>>>>
+>>>> or we could just skip setting
+>>>>
+>>>> ppc_md.pcibios_sriov_enable = pnv_pcibios_sriov_enable;
+>>>>
+>>>> for uninteresting platforms in pnv_pci_init_ioda_phb().
+>>>
+>>> I don't think so. ppc_md is per-platform, not per-PHB andw e still
+>>> have to deal with a mixture of IODA/NVLink/OpenCAPI PHBs on a single
+>>> system.
+>>
+>> NVLink/OpenCAPI won't have SRIOV devices.
 > 
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ...OR WILL THEY?
+
+NO!
 
 
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-> ---
-> This patch could be folded into the previous one. I've kept it
-> seperate mainly because the diff is *horrific* when they're merged.
-> ---
->  arch/powerpc/platforms/powernv/pci-sriov.c | 57 ++++++++++------------
->  1 file changed, 27 insertions(+), 30 deletions(-)
+>> Other types won't appear on
+>> the same platform simultaneously. It is not too clean, yes.
 > 
-> diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-> index 2f967aa4fbf5..8de03636888a 100644
-> --- a/arch/powerpc/platforms/powernv/pci-sriov.c
-> +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-> @@ -441,52 +441,49 @@ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
->  	struct resource       *res;
->  	int                    i, j;
->  	int64_t                rc;
-> -	int                    total_vfs;
->  	resource_size_t        size, start;
-> -	int                    m64_bars;
-> +	int                    base_pe_num;
->  
->  	phb = pci_bus_to_pnvhb(pdev->bus);
->  	iov = pnv_iov_get(pdev);
-> -	total_vfs = pci_sriov_get_totalvfs(pdev);
-> -
-> -	if (iov->m64_single_mode)
-> -		m64_bars = num_vfs;
-> -	else
-> -		m64_bars = 1;
->  
->  	for (i = 0; i < PCI_SRIOV_NUM_BARS; i++) {
->  		res = &pdev->resource[i + PCI_IOV_RESOURCES];
->  		if (!res->flags || !res->parent)
->  			continue;
->  
-> -		for (j = 0; j < m64_bars; j++) {
-> +		/* don't need single mode? map everything in one go! */
-> +		if (!iov->m64_single_mode) {
->  			win = pnv_pci_alloc_m64_bar(phb, iov);
->  			if (win < 0)
->  				goto m64_failed;
->  
-> -			if (iov->m64_single_mode) {
-> -				int pe_num = iov->vf_pe_arr[j].pe_number;
-> -
-> -				size = pci_iov_resource_size(pdev,
-> -							PCI_IOV_RESOURCES + i);
-> -				start = res->start + size * j;
-> -				rc = pnv_ioda_map_m64_single(phb, win,
-> -							     pe_num,
-> -							     start,
-> -							     size);
-> -			} else {
-> -				size = resource_size(res);
-> -				start = res->start;
-> -
-> -				rc = pnv_ioda_map_m64_accordion(phb, win, start,
-> -								size);
-> -			}
-> +			size = resource_size(res);
-> +			start = res->start;
->  
-> -			if (rc != OPAL_SUCCESS) {
-> -				dev_err(&pdev->dev, "Failed to map M64 window #%d: %lld\n",
-> -					win, rc);
-> +			rc = pnv_ioda_map_m64_accordion(phb, win, start, size);
-> +			if (rc)
-> +				goto m64_failed;
-> +
-> +			continue;
-> +		}
-> +
-> +		/* otherwise map each VF with single PE BARs */
-> +		size = pci_iov_resource_size(pdev, PCI_IOV_RESOURCES + i);
-> +		base_pe_num = iov->vf_pe_arr[0].pe_number;
-> +
-> +		for (j = 0; j < num_vfs; j++) {
-> +			win = pnv_pci_alloc_m64_bar(phb, iov);
-> +			if (win < 0)
-> +				goto m64_failed;
-> +
-> +			start = res->start + size * j;
-> +			rc = pnv_ioda_map_m64_single(phb, win,
-> +						     base_pe_num + j,
-> +						     start,
-> +						     size);
-> +			if (rc)
->  				goto m64_failed;
-> -			}
->  		}
->  	}
->  	return 0;
+> Sure, my point is that's a per-PHB setting rather than a per-platform
+> one so we should set it up like that.
+
+and my point is that you did too good job getting rid of IODA1 vs IODA2
+checks to keep this check. But ok.
+
 > 
+>>> We could make it a callback in pnv_phb, but  it seemed like
+>>> more indirection than it's worth.
+>>
+>> I genuinely dislike how we use ppc_md so removing things from it is
+>> definitely a good thing.
+> 
+> you wouldn't be able to get rid of it. We'd have something like what
+> we have for the existing pcibios calls where there's a "generic" one
+> that bounces it to a member of pci_controller_ops, which then bounces
+> it to the pnv_phb method. It's bad and I hate it.
+
+No argument here...
+
 
 -- 
 Alexey
