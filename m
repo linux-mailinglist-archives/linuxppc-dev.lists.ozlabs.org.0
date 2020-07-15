@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109F5220341
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 06:16:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5740E220357
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 06:22:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B63wm3sBCzDqVs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:16:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B643S4rv6zDqZm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 14:22:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::842;
- helo=mail-qt1-x842.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::142;
+ helo=mail-il1-x142.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=K1HTY9Dw; dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
+ header.s=20161025 header.b=bQAhGIZJ; dkim-atps=neutral
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com
+ [IPv6:2607:f8b0:4864:20::142])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B63tM3rVMzDqW3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 14:14:17 +1000 (AEST)
-Received: by mail-qt1-x842.google.com with SMTP id w34so719519qte.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 21:14:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B63zq2vpyzDqQX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 14:19:03 +1000 (AEST)
+Received: by mail-il1-x142.google.com with SMTP id a11so844973ilk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 21:19:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=foDNNdgIp5gEZxCFX16NjXsSXtzimT2AqP9s4DUPnRU=;
- b=K1HTY9DwxKkwlxnhxfdiEyaM+jc4pxAHsm3ZoHLNf46o0NPweVzUmsjJtWpbSuLE+5
- lvihYceaJxRcEpAn5Y7EIeZe/uvSunAtgqS9kNlEQiAGK00zW7tqpXxTeSY/4j+aQStZ
- dmrHIkiZe+s8yH734YCb8MWgS9ATNCn5XMcrXihLhLhW4cwiabHZHBVUHd1gjGLW4Q1k
- a0OvsQS95Pvuit+60T/5UuMN5I0UHd0X5zOBO38F201gGpVLceSzNqKd3aGWubrmj2EM
- Mn2jFZoMXI7qVziDUAk642VoUW2CExUIyYCmfbb46N7N3LTCKRJRuW2yeEO85s+bRLIn
- UHIQ==
+ :cc; bh=+vY2OIlneWe5ztE2bvwwhli0jm6HqPh+OWIpoUB8BSw=;
+ b=bQAhGIZJE7XGnGYhwL0/1olYisauxe9ymI6u2tgG5vEOuz2Nq+QlDtF7dhHuDuByuD
+ qW96jNuM4d+gf7D3wc8J8orrZQS9iM0Icv2ATeffIzl0qNeTkHmX83cMCjFi8nTTJm5v
+ 7ig6QsacBF0GCuiO/mGKrMcs7KLcULwA6yDS5Bhdj00wAveDS58I1htt6LsbCi5aopAo
+ 94cRQMbn77WvY0ntAe3eMQsVBODihtWQxeS8Nk4f6gtDn95RBRSxHL19GMAyBDy2dM6S
+ N6sPHPVxHB/cnaCH/kcUf5eC7pYe8YR2n8bCiJu6OiN1Jb3CBLYelLNvpnWbwRHuU5zs
+ q8/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=foDNNdgIp5gEZxCFX16NjXsSXtzimT2AqP9s4DUPnRU=;
- b=JMHvId16sqSpxG/jK97xDj4CpiLyyDy3rqHHamtazVmwtgQ0JmFdNK6W05ynAAtCoD
- DWOzFiwoVtNdBGx3iWfYMbW+ZYl/dQq/ur90kJK7WaQMdbq7XBnriHVC6txfa9C1a/Im
- uACyrbkyz4kYpWjYyLJJN2A5TLyQOJ6LNsNBi78+3HLyqVxkGRvps3eYvh7ee8cQ0MJB
- VK8dt5mQdp9m4osHhZlKi3jVkhuOML9yTsHoJKT+skabt3K42XVEKB9Jt2gOrgBLS0zV
- JYFz2G+2iCwZcgE6m0NMgL835jVGLoz+OyCLb7J2K5Z3HBKYb33bXTSpQZ6dBdM+uyNy
- 81lA==
-X-Gm-Message-State: AOAM532LgBXJnBBb/H5hd1y6msDMMCammPYDejN2gP8luOhplLnoYRc1
- iTMTWUPHm3KNeDRcQNoRb15irH4eYWqxM1uwacI=
-X-Google-Smtp-Source: ABdhPJz9uu3YAldIkZ25DwFl7GQTjr4Q/2qWdCJALV+nDYpRz3j+ggBoJDewGFe15ct9g6o4fvRHNE0l6dRRFxn2zpM=
-X-Received: by 2002:ac8:41c6:: with SMTP id o6mr8114697qtm.292.1594786452616; 
- Tue, 14 Jul 2020 21:14:12 -0700 (PDT)
+ bh=+vY2OIlneWe5ztE2bvwwhli0jm6HqPh+OWIpoUB8BSw=;
+ b=WrvCndJUY1mEFV3cbJI4+t1ATU8vT7/TsnIfjsml00IJDsRRUBUQ2E8RiGrKo9TNDe
+ cprJikvWLNJN1LxadLteEziwTI2L3LFrbZuEzrfRB+aH3w390S9XilW2Ojz+uf5ZJ787
+ 07/BZWApO4xaxhrcx4jsmhUw6yeHPn0z/sKg8I627WB45uS4ck0hzITBf7KX9jADokGk
+ 4A9mKjssnW6Ev2kKoLZq3pTuSoFN50rZH46/jZuapeGexgwGGHH5uiseuqqqVqpL9DGq
+ MQcXSlmC/gx4RH15rYBGi5WT5nrFByAaHpdbB/g7OC7DJyGGSZ3Cqvz+XWC3sBVLM4f7
+ WLaQ==
+X-Gm-Message-State: AOAM531WKlvv+xscTDfU1TG481R4ag5I06DfwbJYhAOZW5S3cMKOWxJ6
+ H18KII1O9+tB784xA8WzwQz0UOhqFxgbXqqTGAg=
+X-Google-Smtp-Source: ABdhPJxbEVXkXtWoblqKfj5L8JbBLsjm2+xbwAB3m5diPF3AzSD/1a23QyEn3OuWSfYYBfrU93OGI/PkJJ/ZoDLhhcU=
+X-Received: by 2002:a92:9a97:: with SMTP id c23mr8119143ill.258.1594786739362; 
+ Tue, 14 Jul 2020 21:18:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <1594717536-5188-1-git-send-email-shengjiu.wang@nxp.com>
- <1594717536-5188-4-git-send-email-shengjiu.wang@nxp.com>
- <20200714211432.GA10818@Asurada-Nvidia>
-In-Reply-To: <20200714211432.GA10818@Asurada-Nvidia>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 15 Jul 2020 12:14:01 +0800
-Message-ID: <CAA+D8ANQ_B9jJUhLYQnKxKJcVrmvakxPo58h433QqFhdu2nRPA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ASoC: fsl-asoc-card: Support Headphone and Microphone
- Jack detection
-To: Nicolin Chen <nicoleotsuka@gmail.com>
+References: <CAK8P3a3NWSZw6678k1O2eJ6-c5GuW7484PRvEzU9MEPPrCD-yw@mail.gmail.com>
+ <20200714184550.GA397277@bjorn-Precision-5520>
+ <CAK8P3a3EZX8=649R9cYF6_=ivh1Xyrgsc5mUtS=d5yvQ3doZaQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a3EZX8=649R9cYF6_=ivh1Xyrgsc5mUtS=d5yvQ3doZaQ@mail.gmail.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 15 Jul 2020 14:18:47 +1000
+Message-ID: <CAOSf1CEviMYySQhyQGks8hHjST-85wGpxEBasuxwSX_homBJ2A@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+To: Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,100 +74,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
- kuninori.morimoto.gx@renesas.com, Timur Tabi <timur@kernel.org>,
- samuel@sholland.org, katsuhiro@katsuster.net,
- Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-pci <linux-pci@vger.kernel.org>, bjorn@helgaas.com,
+ Paul Mackerras <paulus@samba.org>, sparclinux <sparclinux@vger.kernel.org>,
+ Toan Le <toan@os.amperecomputing.com>, Christoph Hellwig <hch@lst.de>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Kevin Hilman <khilman@baylibre.com>,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Greg Ungerer <gerg@linux-m68k.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Jakub Kicinski <kuba@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ linux-kernel-mentees@lists.linuxfoundation.org,
+ Guenter Roeck <linux@roeck-us.net>, Bjorn Helgaas <helgaas@kernel.org>,
+ Ray Jui <rjui@broadcom.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Jens Axboe <axboe@fb.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Shuah Khan <skhan@linuxfoundation.org>, Keith Busch <kbusch@kernel.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Richard Henderson <rth@twiddle.net>, Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Scott Branden <sbranden@broadcom.com>, Jingoo Han <jingoohan1@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ "Saheed O. Bolarinwa" <refactormyself@gmail.com>,
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 15, 2020 at 5:16 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+On Wed, Jul 15, 2020 at 8:03 AM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> Hi Shengjiu,
->
-> The whole series looks good to me. Just a couple of small
-> questions inline:
->
-> On Tue, Jul 14, 2020 at 05:05:36PM +0800, Shengjiu Wang wrote:
-> > Use asoc_simple_init_jack function from simple card to implement
-> > the Headphone and Microphone detection.
-> > Register notifier to disable Speaker when Headphone is plugged in
-> > and enable Speaker when Headphone is unplugged.
-> > Register notifier to disable Digital Microphone when Analog Microphone
-> > is plugged in and enable DMIC when Analog Microphone is unplugged.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  sound/soc/fsl/Kconfig         |  1 +
-> >  sound/soc/fsl/fsl-asoc-card.c | 69 ++++++++++++++++++++++++++++++++++-
-> >  2 files changed, 68 insertions(+), 2 deletions(-)
->
-> >  static int fsl_asoc_card_late_probe(struct snd_soc_card *card)
-> >  {
-> >       struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(card);
-> > @@ -745,8 +789,29 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
-> >       snd_soc_card_set_drvdata(&priv->card, priv);
-> >
-> >       ret = devm_snd_soc_register_card(&pdev->dev, &priv->card);
-> > -     if (ret && ret != -EPROBE_DEFER)
-> > -             dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
-> > +     if (ret) {
-> > +             if (ret != -EPROBE_DEFER)
-> > +                     dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
->
-> I think we may move this EPROBE_DEFER to the asrc_fail label.
+> - Most error checking is static: PCIBIOS_BAD_REGISTER_NUMBER
+>   only happens if you pass an invalid register number, but most
+>   callers pass a compile-time constant register number that is
+>   known to be correct, or the driver would never work. Similarly,
+>   PCIBIOS_DEVICE_NOT_FOUND wouldn't normally happen
+>   since you pass a valid pci_device pointer that was already
+>   probed.
 
-If we move this to asrc_fail label, then it will be hard to define the
-error message.
-There are many places that goto asrc_fail.
+Having some feedback about obvious programming errors is still useful
+when doing driver development. Reporting those via printk() would
+probably be more useful to those who care though.
 
->
-> > +             goto asrc_fail;
-> > +     }
-> > +
-> > +     if (of_property_read_bool(np, "hp-det-gpio")) {
->
-> Could we move this check inside asoc_simple_init_jack? There's no
-> problem with doing it here though, yet I got a bit confused by it
-> as I thought it's a boolean type property, which would be against
-> the DT bindings until I saw asoc_simple_init_jack() uses the same
-> string to get the GPIO. Just it probably would be a bit tricky as
-> we need it to be optional here.
->
-> Otherwise, I think we may add a line of comments to indicate that
-> the API would use the same string to get the GPIO.
+> - config space accesses are very rare compared to memory
+>   space access and on the hardware side the error handling
+>   would be similar, but readl/writel don't return errors, they just
+>   access wrong registers or return 0xffffffff.
+>   arch/powerpc/kernel/eeh.c has a ton extra code written to
+>   deal with it, but no other architectures do.
 
-In asoc_simple_init_jack, gpio_is_valid() will be invalid when there is
-no "hp-det-gpio" property, and asoc_simple_init_jack will return 0.
+TBH the EEH MMIO hooks were probably a mistake to begin with. Errors
+detected via MMIO are almost always asynchronous to the error itself
+so you usually just wind up with a misleading stack trace rather than
+any kind of useful synchronous error reporting. It seems like most
+drivers don't bother checking for 0xFFs either and rely on the
+asynchronous reporting via .error_detected() instead, so I have to
+wonder what the point is. I've been thinking of removing the MMIO
+hooks and using a background poller to check for errors on each PHB
+periodically (assuming we don't have an EEH interrupt) instead. That
+would remove the requirement for eeh_dev_check_failure() to be
+interrupt safe too, so it might even let us fix all the godawful races
+in EEH.
 
-The reason why I add a check here is mostly for
-snd_soc_jack_notifier_register().
-when there is no jack created, there will be a kernel dump.
+> - If we add code to detect errors in pci_read_config_*
+>   and do some of the stuff from powerpc's
+>   eeh_dev_check_failure(), we are more likely to catch
+>   intermittent failures when drivers don't check, or bugs
+>   with invalid arguments in device drivers than relying on
+>   drivers to get their error handling right when those code
+>   paths don't ever get covered in normal testing.
 
-or I can use this code:
+Adding some kind of error detection to the generic config accessors
+wouldn't hurt, but detection is only half the problem. The main job of
+eeh_dev_check_failure() is waking up the EEH recovery thread which
+actually handles notifying drivers, device resets, etc and you'd want
+something in the PCI core. Right now there's two implementations of
+that reporting logic: one for EEH in arch/powerpc/eeh_driver.c and one
+for AER/DPC in drivers/pci/pcie/err.c. I think the latter could be
+moved into the PCI core easily enough since there's not much about it
+that's really specific to PCIe. Ideally we could drop the EEH specific
+one too, but I'm not sure how to implement that without it devolving
+into callback spaghetti.
 
--       if (of_property_read_bool(np, "hp-det-gpio")) {
--               ret = asoc_simple_init_jack(&priv->card, &priv->hp_jack,
--                                           1, NULL, "Headphone Jack");
--               if (ret)
--                       goto asrc_fail;
-+       ret = asoc_simple_init_jack(&priv->card, &priv->hp_jack,
-+                                   1, NULL, "Headphone Jack");
-+       if (ret)
-+               goto asrc_fail;
-
-+       if (priv->hp_jack.jack.jack)
-                snd_soc_jack_notifier_register(&priv->hp_jack.jack,
-&hp_jack_nb);
--       }
-
-what do you think?
-
-best regards
-wang shengjiu
+Oliver
