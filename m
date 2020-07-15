@@ -1,72 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B7E22091A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 11:46:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2773E22092C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 11:49:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6CG50THZzDql9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 19:46:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6CJY0t2CzDqLB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 19:49:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::444;
- helo=mail-wr1-x444.google.com; envelope-from=lee.jones@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=viresh.kumar@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=SinIXReR; dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
+ header.s=google header.b=ZiDAjjBZ; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6CCx0lTBzDqhm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 19:45:00 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id k6so1757619wrn.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:45:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6CD71l0dzDql2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 19:45:10 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id w17so2156809ply.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 02:45:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=PqrROLW34HUUtR2h51/zb0sAvx91AU1D+g0vWHL8Q9E=;
- b=SinIXReRv8gqiSN2QfRyGZoxeCSVs1tW6IJ0fPIXqJKyYvSmw8FpS+EVBSF+0RW2Sh
- ZfKeXn9lmtbB+SD4BCJTJtQtDjyF2+P5LA2TO/WhKm/a78apZ8l4h9DB5vNSrDY7ImIu
- 27zi1mRvX6cZpJGg/WmAanuUBKuAlFUU9iN8VbKWgpo540NBthUPbNZPqtKKMlWE5juh
- Ut84YQeS4jXHNSmflZPszNc5fOGAmn02ROdfQGAteYwrd9dDC6lrCh/JloCEggU+Wffe
- XRSDKtOVNA3pnZjeWEYAlDKuTayNQ2dWFNwMG7b7jH0R7Za1vatKApj6jDIhtjHreS2w
- RZWg==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to
+ :user-agent; bh=4BTTr5oucsR8JbbShHUL2XbMTStwAjQe5P0BncDXj58=;
+ b=ZiDAjjBZM/18U5oGdS+177O7tJJlRYSHzUSAe7RuMTwrs0ACtN+bj5Vbw0m+RP4NPH
+ FTONJ3j3zDRFBi+lWSl0lFFi7SsWDRcd3haI5usSaW9MdEiP5pSEiaaw6TRA4ipn7D+E
+ 0PY7Zn85htsoso7JuhFupFcqKQb8r//K9EGlDqKbcPdEA0afofS2/DMj6UdomWTvtScp
+ kYjZIsAPHODHik5Xo0NOQXlzKz0x9Roae3Yw6eUgGmnnn8P1/OlOZ7C7HDIkHseLKkUI
+ 0l2LtzDn74BqqRTB4jYPHTGn2lZk9HZ4dXGm8iF00EjXaN74jT/lxWmYZoqyD9Ncao+T
+ cK7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=PqrROLW34HUUtR2h51/zb0sAvx91AU1D+g0vWHL8Q9E=;
- b=ksvUNYi85yn+VyGdhxcnhwbNRaoTTgIg06Ru8kTOT8PmBbx8+/SY4T7BIKMVi3rN1K
- Z/JcD6SZbMVNHMsfIWsQdB91vKsKnC6zEhxGbdNHCiD/C9B7OSZ/OTEN55GIlXWiXE03
- 11Te6zmzyFqUw6NsEBxrNpCU27L4LsgcLo5mhjUg4iSO5SvT14KVqxBNI7OQCX8zHRLC
- ZdEjnBK9rNz9xSzOXeJsusCO3lSNoVEJ3DC9ALjWXWMwMuHOtAjB4ht86etNyPv2YTq/
- jvnPzMd0nxUzaP6YTyjf+RazNPwqLZyFmdecz5DVB62gcYqCxfpSO0wilIlIiO/MluOS
- GD/A==
-X-Gm-Message-State: AOAM533cfgMU/3mfzMZnWjoLZJpA6KJMEXiJke8+nfF92lmYtFAEffVJ
- sGSRMvHwjlx0HQKj8H2Udn0Taw==
-X-Google-Smtp-Source: ABdhPJz9iEgW39p9NP+x+8HK/WX7+X1jz9XTLGQ3OWUni12lXxbaIHvRiJa1hStnOPuDJMtNRKu1oQ==
-X-Received: by 2002:a5d:444e:: with SMTP id x14mr9877312wrr.279.1594806293824; 
- Wed, 15 Jul 2020 02:44:53 -0700 (PDT)
-Received: from localhost.localdomain ([2.31.163.61])
- by smtp.gmail.com with ESMTPSA id r10sm2774916wrm.17.2020.07.15.02.44.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jul 2020 02:44:53 -0700 (PDT)
-From: Lee Jones <lee.jones@linaro.org>
-To: broonie@kernel.org,
-	lgirdwood@gmail.com
-Subject: [PATCH 1/1] ASoC: fsl: fsl-asoc-card: Trivial: Fix misspelling of
- 'exists'
-Date: Wed, 15 Jul 2020 10:44:47 +0100
-Message-Id: <20200715094447.3170843-1-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to:user-agent;
+ bh=4BTTr5oucsR8JbbShHUL2XbMTStwAjQe5P0BncDXj58=;
+ b=jIMn7hGNACE30qjQmT+9mMttTm3tRGMRZiAtGZEttQ+gzhIqmMrkbRav3sgSupUiD8
+ 0zcXEjsmi6DzpOia/AhKegDsWmI1Mj4+Qr7KWSlm42ije7Jwi2Zl2E/PIc9MMUwX9RpD
+ 8vKJQQundFhu8bA56jsXmg02/ng1a3UXi0RlOwfA4uTmJ7wxwabwcsQ+g5tgERQ0+gdg
+ AJpFtaMTux9UD70LwZwqMJWiN8YKCCth0F87Sod7RbzGX9o0V+RVK5vCPeBnDKp5vRu8
+ uP8HoTOyCd8YCvwncbfw3KQOqt5eBeLvFIMCcqNshQDpAKI+TDwJZ5krHiz+89RWR1Au
+ QKJw==
+X-Gm-Message-State: AOAM532TtYuh640yPk9UpQtWghMHsQUL4QKebd8b9A2yVztfA+PMYIHK
+ fgBs5qk7XWitc7ucJjDfUAuzRg==
+X-Google-Smtp-Source: ABdhPJyrLXJkqRK/7BhC4BFVruLsng1ogMN6DlNeSjBGIhJnVoVhQXAvhZxEgnc3/B4w8m9S8AXf5Q==
+X-Received: by 2002:a17:902:d916:: with SMTP id
+ c22mr7404932plz.69.1594806307293; 
+ Wed, 15 Jul 2020 02:45:07 -0700 (PDT)
+Received: from localhost ([122.172.34.142])
+ by smtp.gmail.com with ESMTPSA id z13sm1605674pfq.220.2020.07.15.02.45.05
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 15 Jul 2020 02:45:06 -0700 (PDT)
+Date: Wed, 15 Jul 2020 15:15:04 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v2 06/13] cpufreq: powernv-cpufreq: Functions only used
+ in call-backs should be static
+Message-ID: <20200715094504.val6rb7wibysh7dn@vireshk-i7>
+References: <20200715082634.3024816-1-lee.jones@linaro.org>
+ <20200715082634.3024816-7-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200715082634.3024816-7-lee.jones@linaro.org>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,38 +84,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicolin Chen <nicoleotsuka@gmail.com>, Lee Jones <lee.jones@linaro.org>,
+Cc: linux-pm@vger.kernel.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
  linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Cc: Timur Tabi <timur@kernel.org>
-Cc: Nicolin Chen <nicoleotsuka@gmail.com>
-Cc: Xiubo Li <Xiubo.Lee@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- sound/soc/fsl/fsl-asoc-card.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 15-07-20, 09:26, Lee Jones wrote:
+> Fixes the following W=1 kernel build warning(s):
+> 
+>  drivers/cpufreq/powernv-cpufreq.c:669:6: warning: no previous prototype for ‘gpstate_timer_handler’ [-Wmissing-prototypes]
+>  drivers/cpufreq/powernv-cpufreq.c:902:6: warning: no previous prototype for ‘powernv_cpufreq_work_fn’ [-Wmissing-prototypes]
+> 
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+>  drivers/cpufreq/powernv-cpufreq.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 8646eb197cd96..068cc53abe320 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -666,7 +666,7 @@ static inline void  queue_gpstate_timer(struct global_pstate_info *gpstates)
+>   * according quadratic equation. Queues a new timer if it is still not equal
+>   * to local pstate
+>   */
+> -void gpstate_timer_handler(struct timer_list *t)
+> +static void gpstate_timer_handler(struct timer_list *t)
+>  {
+>  	struct global_pstate_info *gpstates = from_timer(gpstates, t, timer);
+>  	struct cpufreq_policy *policy = gpstates->policy;
+> @@ -899,7 +899,7 @@ static struct notifier_block powernv_cpufreq_reboot_nb = {
+>  	.notifier_call = powernv_cpufreq_reboot_notifier,
+>  };
+>  
+> -void powernv_cpufreq_work_fn(struct work_struct *work)
+> +static void powernv_cpufreq_work_fn(struct work_struct *work)
+>  {
+>  	struct chip *chip = container_of(work, struct chip, throttle);
+>  	struct cpufreq_policy *policy;
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index faac6ce9a82cb..399c9aad48b1d 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -92,8 +92,7 @@ struct fsl_asoc_card_priv {
- };
- 
- /*
-- * This dapm route map exits for DPCM link only.
-+ * This dapm route map exists for DPCM link only.
-  * The other routes shall go through Device Tree.
-  *
-  * Note: keep all ASRC routes in the second half
+Don't you want to drop this patch now ? As you already reviewed the
+other one on the list ?
+
 -- 
-2.25.1
-
+viresh
