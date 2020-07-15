@@ -1,77 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8672202C1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:10:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE692202CE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 05:12:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B62T81yD1zDqWg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 13:10:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B62WP1gwRzDqLH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 13:12:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=viresh.kumar@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=T6AbBGKL; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=google header.b=zr5JWRbT; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B62Nx4lLfzDqcD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 13:07:12 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id b92so1670918pjc.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 20:07:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B62PS5yHBzDqWM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 13:07:40 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id q17so1306703pls.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jul 2020 20:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:content-transfer-encoding:in-reply-to
- :user-agent; bh=0035V8bnG3whIAu8f7LLUznLFIPtedBFd2Vvyt7nBVE=;
- b=T6AbBGKLFGiO0rMZSPzPGLvnhapccenwdvNWp3pzTj2roNEx6srIAWKTBvrEsL/hBA
- IZkPg8mUeuKB1PT4pOTI4RjF5htA4bxX6dyCndlvlQe4G3ODxC2ZOvhPWx+05HCv9rDZ
- va/MRhxP+3uW57aWLqjD3o2VwG34nmWoW4VDWWaVLnO2XyVSQ6mxJiYqPIYyBouwaDte
- gFQTXx4zqagvxCcyT8kLl6jPMhLAi7mmed0AH0wF+KddDCiP8oCCatuOk/jTqvTazoK2
- EjDKeUpPihFzsLsxEaEe6MTwtmRnr+fQ9s2ka4YKgYXJJjwdcjX1AxKMspjlcbaQ/Gx8
- Vajg==
+ :user-agent; bh=G2eRhXKmTEwTRQanSal/vSTAH9sP+NPQp5iAdhOZfgg=;
+ b=zr5JWRbTGLJp8u1/MRQxIwWW/APlv9WqwsvnqgQGG8mSRtvxbJYHVHv43e4/bUsskg
+ m9YsiPUcPQSqG9NYzOsapwL/AL0euAzYN+yFHAygI6Rbv2i0iy2VW3erNMQMx6b+o+bK
+ CqQ5PR5wRHps18XmeeLDlHBdpaFq4Dbp/NA/AK/UaTjmxhqlqq7ncpED5RPZnusmlFdI
+ ZvXa96YRX4SN4a6TVM9u+nBQtNNFuSk2CDQP32u/iJd+rBShWhobxpQlmQ2ErLkN3r24
+ F7sZD2wX99im9YbzgEC1lDsjOXAzZS6uDX+t3YnDY9MDgpytN3Tyd90smDlsEZ4i9qRV
+ w3sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:content-transfer-encoding
  :in-reply-to:user-agent;
- bh=0035V8bnG3whIAu8f7LLUznLFIPtedBFd2Vvyt7nBVE=;
- b=bfdRt1h1wFw1qKjRlgkQRde+us8j7/6aGyWH8ZL9M5g6uEpC11cVsgUe02vFfj/vpy
- mBYawzCQuRmlu20p0y/lV8lQ/RmaEqxSGViA7Q64dB7ysZZqm4EwjDObQCVguXu+egNr
- EdJmw5CQq6N4qPzGED3HF0YaFCugEKuMp3tLQ6HntXcPw26QveKI8MPMABLKMuSzqA1I
- oIM4pXN1bvJJUynxiqBP9z4FC5txB5MnHRak57N0gT9XLgw8PqGvPz1RciYimxckkBCp
- 2o+cSGEePT7TAdM9dAhctSozFoPRQiIksSS9rOxcchqHMW46hVxcWHc+66UQlMJQr4z/
- Fv+w==
-X-Gm-Message-State: AOAM532qO9qEtXuMw1yc5T1/U3YYTM7U6MNss2tljIZxZOp68puIiUZ9
- r/7MRK+Pol6r7oG7hyHRv04pfA==
-X-Google-Smtp-Source: ABdhPJy2AmTOb51BDdwUOYzF95HLQmIbML6+9DPgV2vlmfNf/gS+QQumkK0XzVQ3zBHzkUs41mvn/g==
-X-Received: by 2002:a17:902:8bc7:: with SMTP id
- r7mr6673755plo.57.1594782428813; 
- Tue, 14 Jul 2020 20:07:08 -0700 (PDT)
+ bh=G2eRhXKmTEwTRQanSal/vSTAH9sP+NPQp5iAdhOZfgg=;
+ b=l6QQjNDoEEAcT8wL2w/BqIKqxGKcg/vJ9y+W5HQcR37JpRCtH4M3QsDsQuvHfJJlDa
+ 68Zk34hYtY79XtdinPV4DVOcZMg+1MDhvZhhiyEdfD7sU8gLAQmCPSr8qorY28s7xxy+
+ nSOGL8DfjzNjfjRFFXEtxex7jEe95MTlm14qhmFSX9PZZoIWuE2T4ikvaYlKaWFfCgbY
+ ZNHPaTEb8Jg0tJZJ4ii4gLX5aF3pNng6DWFT4lJ3Z3zQoYXjdgqexbDC0XJz8aAXJcus
+ YmoGNy8O0La5A4vFwubbCMGMcBo1M1IzjpWSFrfkn6qFtML+IukcWlMp5NMiOa3d3+w/
+ YJGA==
+X-Gm-Message-State: AOAM531vZ2xPV75gC1HF7V+3IhXEaxHoIZm+QKrK3N6/HD6ZmgWTVV4Z
+ jpuEaP+5uO0/rDZslrLKDu1iiQ==
+X-Google-Smtp-Source: ABdhPJy6G78yRMtYXULRufyLyim3gEDYCwAAZwkqYmBwjzlqARktEGcx+FHp/26xKL2ZJaDT5cfH6w==
+X-Received: by 2002:a17:90a:db02:: with SMTP id
+ g2mr7405784pjv.43.1594782456515; 
+ Tue, 14 Jul 2020 20:07:36 -0700 (PDT)
 Received: from localhost ([122.172.34.142])
- by smtp.gmail.com with ESMTPSA id h100sm388981pjb.46.2020.07.14.20.07.07
+ by smtp.gmail.com with ESMTPSA id b15sm465430pga.54.2020.07.14.20.07.35
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 14 Jul 2020 20:07:07 -0700 (PDT)
-Date: Wed, 15 Jul 2020 08:37:06 +0530
+ Tue, 14 Jul 2020 20:07:35 -0700 (PDT)
+Date: Wed, 15 Jul 2020 08:37:34 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH 05/13] cpufreq/arch: powerpc: pasemi: Move prototypes to
- shared header
-Message-ID: <20200715030706.prxya7fyylscoy25@vireshk-i7>
+Subject: Re: [PATCH 06/13] cpufreq: powernv-cpufreq: Functions only used in
+ call-backs should be static
+Message-ID: <20200715030734.3kdqmyr7rjlmrd3h@vireshk-i7>
 References: <20200714145049.2496163-1-lee.jones@linaro.org>
- <20200714145049.2496163-6-lee.jones@linaro.org>
+ <20200714145049.2496163-7-lee.jones@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200714145049.2496163-6-lee.jones@linaro.org>
+In-Reply-To: <20200714145049.2496163-7-lee.jones@linaro.org>
 User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,43 +85,51 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-pm@vger.kernel.org, rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Olof Johansson <olof@lixom.net>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 14-07-20, 15:50, Lee Jones wrote:
-> If function callers and providers do not share the same prototypes the
-> compiler complains of missing prototypes.  Fix this by moving the
-> already existing prototypes out to a mutually convenient location.
-> 
 > Fixes the following W=1 kernel build warning(s):
 > 
->  drivers/cpufreq/pasemi-cpufreq.c:109:5: warning: no previous prototype for ‘check_astate’ [-Wmissing-prototypes]
->  109 | int check_astate(void)
->  | ^~~~~~~~~~~~
->  drivers/cpufreq/pasemi-cpufreq.c:114:6: warning: no previous prototype for ‘restore_astate’ [-Wmissing-prototypes]
->  114 | void restore_astate(int cpu)
->  | ^~~~~~~~~~~~~~
+>  drivers/cpufreq/powernv-cpufreq.c:669:6: warning: no previous prototype for ‘gpstate_timer_handler’ [-Wmissing-prototypes]
+>  drivers/cpufreq/powernv-cpufreq.c:902:6: warning: no previous prototype for ‘powernv_cpufreq_work_fn’ [-Wmissing-prototypes]
 > 
-> Cc: Olof Johansson <olof@lixom.net>
 > Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 > Cc: Paul Mackerras <paulus@samba.org>
 > Cc: linuxppc-dev@lists.ozlabs.org
 > Signed-off-by: Lee Jones <lee.jones@linaro.org>
 > ---
->  arch/powerpc/platforms/pasemi/pasemi.h    | 15 ------------
+>  drivers/cpufreq/powernv-cpufreq.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 8646eb197cd96..068cc53abe320 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -666,7 +666,7 @@ static inline void  queue_gpstate_timer(struct global_pstate_info *gpstates)
+>   * according quadratic equation. Queues a new timer if it is still not equal
+>   * to local pstate
+>   */
+> -void gpstate_timer_handler(struct timer_list *t)
+> +static void gpstate_timer_handler(struct timer_list *t)
+>  {
+>  	struct global_pstate_info *gpstates = from_timer(gpstates, t, timer);
+>  	struct cpufreq_policy *policy = gpstates->policy;
+> @@ -899,7 +899,7 @@ static struct notifier_block powernv_cpufreq_reboot_nb = {
+>  	.notifier_call = powernv_cpufreq_reboot_notifier,
+>  };
+>  
+> -void powernv_cpufreq_work_fn(struct work_struct *work)
+> +static void powernv_cpufreq_work_fn(struct work_struct *work)
+>  {
+>  	struct chip *chip = container_of(work, struct chip, throttle);
+>  	struct cpufreq_policy *policy;
 
-Is there no sane way we can include this file directly to the cpufreq
-file ?
-
->  arch/powerpc/platforms/pasemi/powersave.S |  2 ++
->  drivers/cpufreq/pasemi-cpufreq.c          |  1 +
->  include/linux/platform_data/pasemi.h      | 28 +++++++++++++++++++++++
->  4 files changed, 31 insertions(+), 15 deletions(-)
->  create mode 100644 include/linux/platform_data/pasemi.h
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
 -- 
 viresh
