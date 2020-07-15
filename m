@@ -2,52 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729A9220F70
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 16:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206A9220FAB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jul 2020 16:41:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6Kfx5XZ6zDqWx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 00:35:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6Kp6357JzDqY7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 00:41:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=DtX+/tcc; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6KTM5m7czDqBy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 00:27:03 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5078B205CB;
- Wed, 15 Jul 2020 14:27:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1594823220;
- bh=2qpN2cOs0v8OgbKiTCEOLREVstlLLC76OJcC/cCHwQw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=DtX+/tccMlVeMNKiozjp+uC/QzIQ1f5ReA3ZExvuVyNGw7we44RduABqcmoZCDDTW
- Yzotqw74bb233t4PKstgZM/1zygsYv/Qh2xv2TfbzbNK1RRDl96p13D4q6Shjmt1T7
- POLd33Hw9krqvH6eIAcns0jJpXABgnfIgVr5iNJ0=
-Date: Wed, 15 Jul 2020 15:26:51 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH 1/1] ASoC: fsl: fsl-asoc-card: Trivial: Fix misspelling
- of 'exists'
-Message-ID: <20200715142651.GA44014@sirena.org.uk>
-References: <20200715094447.3170843-1-lee.jones@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6Kkj1YPbzDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 00:38:35 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-77-9crfze-iNZqlCsLzYG0IKA-1; Wed, 15 Jul 2020 15:38:30 +0100
+X-MC-Unique: 9crfze-iNZqlCsLzYG0IKA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 15 Jul 2020 15:38:29 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Wed, 15 Jul 2020 15:38:29 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Oliver O'Halloran' <oohall@gmail.com>, Arnd Bergmann <arnd@arndb.de>
+Subject: RE: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Thread-Topic: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Thread-Index: AQHWWl8Tn5bD1WsSsUK40p+tBVrtaakIsp9A
+Date: Wed, 15 Jul 2020 14:38:29 +0000
+Message-ID: <1e2ae69a55f542faa18988a49e9b9491@AcuMS.aculab.com>
+References: <CAK8P3a3NWSZw6678k1O2eJ6-c5GuW7484PRvEzU9MEPPrCD-yw@mail.gmail.com>
+ <20200714184550.GA397277@bjorn-Precision-5520>
+ <CAK8P3a3EZX8=649R9cYF6_=ivh1Xyrgsc5mUtS=d5yvQ3doZaQ@mail.gmail.com>
+ <CAOSf1CEviMYySQhyQGks8hHjST-85wGpxEBasuxwSX_homBJ2A@mail.gmail.com>
+In-Reply-To: <CAOSf1CEviMYySQhyQGks8hHjST-85wGpxEBasuxwSX_homBJ2A@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="3V7upXqbjpZ4EhLz"
-Content-Disposition: inline
-In-Reply-To: <20200715094447.3170843-1-lee.jones@linaro.org>
-X-Cookie: Minimum charge for booths.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,42 +65,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
- Nicolin Chen <nicoleotsuka@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-pci <linux-pci@vger.kernel.org>, "bjorn@helgaas.com" <bjorn@helgaas.com>,
+ Paul
+ Mackerras <paulus@samba.org>, sparclinux <sparclinux@vger.kernel.org>, Toan
+ Le <toan@os.amperecomputing.com>, Christoph Hellwig <hch@lst.de>, Marek
+ Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Kevin Hilman <khilman@baylibre.com>,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Greg Ungerer <gerg@linux-m68k.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Jakub Kicinski <kuba@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ "linux-kernel-mentees@lists.linuxfoundation.org"
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ Guenter Roeck <linux@roeck-us.net>, Bjorn Helgaas <helgaas@kernel.org>,
+ Ray Jui <rjui@broadcom.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Jens Axboe <axboe@fb.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Shuah Khan <skhan@linuxfoundation.org>, Keith Busch <kbusch@kernel.org>, Boris
+ Ostrovsky <boris.ostrovsky@oracle.com>, Richard Henderson <rth@twiddle.net>,
+ Juergen Gross <jgross@suse.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Scott Branden <sbranden@broadcom.com>,
+ Jingoo Han <jingoohan1@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>, "Saheed O.
+ Bolarinwa" <refactormyself@gmail.com>,
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+RnJvbTogT2xpdmVyIE8nSGFsbG9yYW4NCj4gU2VudDogMTUgSnVseSAyMDIwIDA1OjE5DQo+IA0K
+PiBPbiBXZWQsIEp1bCAxNSwgMjAyMCBhdCA4OjAzIEFNIEFybmQgQmVyZ21hbm4gPGFybmRAYXJu
+ZGIuZGU+IHdyb3RlOg0KLi4uDQo+ID4gLSBjb25maWcgc3BhY2UgYWNjZXNzZXMgYXJlIHZlcnkg
+cmFyZSBjb21wYXJlZCB0byBtZW1vcnkNCj4gPiAgIHNwYWNlIGFjY2VzcyBhbmQgb24gdGhlIGhh
+cmR3YXJlIHNpZGUgdGhlIGVycm9yIGhhbmRsaW5nDQo+ID4gICB3b3VsZCBiZSBzaW1pbGFyLCBi
+dXQgcmVhZGwvd3JpdGVsIGRvbid0IHJldHVybiBlcnJvcnMsIHRoZXkganVzdA0KPiA+ICAgYWNj
+ZXNzIHdyb25nIHJlZ2lzdGVycyBvciByZXR1cm4gMHhmZmZmZmZmZi4NCj4gPiAgIGFyY2gvcG93
+ZXJwYy9rZXJuZWwvZWVoLmMgaGFzIGEgdG9uIGV4dHJhIGNvZGUgd3JpdHRlbiB0bw0KPiA+ICAg
+ZGVhbCB3aXRoIGl0LCBidXQgbm8gb3RoZXIgYXJjaGl0ZWN0dXJlcyBkby4NCj4gDQo+IFRCSCB0
+aGUgRUVIIE1NSU8gaG9va3Mgd2VyZSBwcm9iYWJseSBhIG1pc3Rha2UgdG8gYmVnaW4gd2l0aC4g
+RXJyb3JzDQo+IGRldGVjdGVkIHZpYSBNTUlPIGFyZSBhbG1vc3QgYWx3YXlzIGFzeW5jaHJvbm91
+cyB0byB0aGUgZXJyb3IgaXRzZWxmDQo+IHNvIHlvdSB1c3VhbGx5IGp1c3Qgd2luZCB1cCB3aXRo
+IGEgbWlzbGVhZGluZyBzdGFjayB0cmFjZSByYXRoZXIgdGhhbg0KPiBhbnkga2luZCBvZiB1c2Vm
+dWwgc3luY2hyb25vdXMgZXJyb3IgcmVwb3J0aW5nLiBJdCBzZWVtcyBsaWtlIG1vc3QNCj4gZHJp
+dmVycyBkb24ndCBib3RoZXIgY2hlY2tpbmcgZm9yIDB4RkZzIGVpdGhlciBhbmQgcmVseSBvbiB0
+aGUNCj4gYXN5bmNocm9ub3VzIHJlcG9ydGluZyB2aWEgLmVycm9yX2RldGVjdGVkKCkgaW5zdGVh
+ZCwgc28gSSBoYXZlIHRvDQo+IHdvbmRlciB3aGF0IHRoZSBwb2ludCBpcy4gSSd2ZSBiZWVuIHRo
+aW5raW5nIG9mIHJlbW92aW5nIHRoZSBNTUlPDQo+IGhvb2tzIGFuZCB1c2luZyBhIGJhY2tncm91
+bmQgcG9sbGVyIHRvIGNoZWNrIGZvciBlcnJvcnMgb24gZWFjaCBQSEINCj4gcGVyaW9kaWNhbGx5
+IChhc3N1bWluZyB3ZSBkb24ndCBoYXZlIGFuIEVFSCBpbnRlcnJ1cHQpIGluc3RlYWQuIFRoYXQN
+Cj4gd291bGQgcmVtb3ZlIHRoZSByZXF1aXJlbWVudCBmb3IgZWVoX2Rldl9jaGVja19mYWlsdXJl
+KCkgdG8gYmUNCj4gaW50ZXJydXB0IHNhZmUgdG9vLCBzbyBpdCBtaWdodCBldmVuIGxldCB1cyBm
+aXggYWxsIHRoZSBnb2Rhd2Z1bCByYWNlcw0KPiBpbiBFRUguDQoNCkkndmUgJ3BsYXllZCcgd2l0
+aCBQQ0llIGVycm9yIGhhbmRsaW5nIC0gd2l0aG91dCBtdWNoIHN1Y2Nlc3MuDQpXaGF0IG1pZ2h0
+IGJlIHVzZWZ1bCBpcyBmb3IgYSBkcml2ZXIgdGhhdCBoYXMganVzdCByZWFkIH4wdSB0bw0KYmUg
+YWJsZSB0byBhc2sgJ2hhcyB0aGVyZSBiZWVuIGFuIGVycm9yIHNpZ25hbGxlZCBmb3IgdGhpcyBk
+ZXZpY2U/Jy4NCg0KSSBnb3QgYW4gZXJyb3IgZ2VuZXJhdGVkIGJ5IGRvaW5nIGFuIE1NSU8gYWNj
+ZXNzIHRoYXQgd2FzIGluc2lkZQ0KdGhlIGFkZHJlc3MgcmFuZ2UgZm9yd2FyZGVkIHRvIHRoZSBz
+bGF2ZSwgYnV0IG91dHNpZGUgYW55IG9mIGl0cyBCQVJzLg0KKFR3byBCQVJzIG9mIGRpZmZlcmVu
+dCBzaXplcyBsZWF2ZXMgYSBuaWNlIGdhcC4pDQpUaGlzIGdvdCByZXBvcnRlZCB1cCB0byB0aGUg
+YnJpZGdlIG5lYXJlc3QgdGhlIHNsYXZlICh3aGljaCBzdXBwb3J0ZWQNCmVycm9yIGhhbmRsaW5n
+KSwgYnV0IG5vdCB0byB0aGUgcm9vdCBicmlkZ2UgKHdoaWNoIEkgZG9uJ3QgdGhpbmsgZG9lcyku
+DQpJU1RSIGEgbWVzc2FnZSBhYm91dCBFRUggYmVpbmcgaGFuZGxlZCBieSB0aGUgaGFyZHdhcmUg
+KHRoZSBtYWNoaW5lDQppcyB1cCBidXQgZG1lc2cgaXMgZnVsbCBvZiBtZXNzYWdlcyBmcm9tIGEg
+Ym91bmNpbmcgVVNCIG1vdXNlKS4NCg0KV2l0aCBzdWNoIHBhcnRpYWwgZXJyb3IgcmVwb3J0aW5n
+IHVzZWZ1bCBpbmZvIGNhbiBzdGlsbCBiZSBleHRyYWN0ZWQuDQoNCk9mIGNvdXJzZSwgd2hhdCBh
+Y3R1YWxseSBoYXBwZW5zIG9uIGEgUENJZSBlcnJvciBpcyB0aGF0IHRoZSBzaWduYWwNCmdldHMg
+cm91dGVkIHRvIHNvbWUgJ2JvYXJkIHN1cHBvcnQgbG9naWMnIGFuZCB0aGVuIHBhc3NlZCBiYWNr
+IGludG8NCnRoZSBrZXJuZWwgYXMgYW4gTk1JIC0gd2hpY2ggdGhlbiBjcmFzaGVzIHRoZSBrZXJu
+ZWwhDQpUaGlzIGV2ZW4gaGFwcGVucyB3aGVuIHRoZSBQQ0llIGxpbmsgZ29lcyBkb3duIGFmdGVy
+IHdlJ3ZlIGRvbmUgYQ0Kc29mdC1yZW1vdmUgb2YgdGhlIGRldmljZSBpdHNlbGYhDQpSYXRoZXIg
+bWFrZXMgdXBkYXRpbmcgdGhlIGJvYXJkJ3MgRlBHQSB3aXRob3V0IGEgcmVib290IHRyaWNreS4N
+Cg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2Fk
+LCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5v
+OiAxMzk3Mzg2IChXYWxlcykNCg==
 
---3V7upXqbjpZ4EhLz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Jul 15, 2020 at 10:44:47AM +0100, Lee Jones wrote:
-
->  /*
-> - * This dapm route map exits for DPCM link only.
-> + * This dapm route map exists for DPCM link only.
->   * The other routes shall go through Device Tree.
-
-This doesn't apply against current code, please check and resend.
-
---3V7upXqbjpZ4EhLz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8PEioACgkQJNaLcl1U
-h9DvQAf/f/u76ASoswKuqEP0xg72QuhZGUj08nlVQnAV1civDdfyjXZEc45CEfoX
-SBrMdVIMfvk8oxGZIsgRkhW+QimcJLr5rsyO7RylN6YZsXysfG0GqDbuH9WvgGSJ
-yTggaet7yI6gAlbjos476ee+yrzNSssnBzOpxuk5pXCYxDkEf0lgclfQY21oOG/t
-8F1tzjQjJ8kXcfYfnBofJFJPqi5EA2DbogxL0bH+7/ndzpuo4BNVb4463SuG7CXy
-upIOZq7CFRlVOY4Izb27YyFAeq3SnigakVEBJrkFeKsOECP6gTBHSbZGrydD2NrO
-2K6J+fPzeGcdXutqMeP+n2ke/vXxLw==
-=viwB
------END PGP SIGNATURE-----
-
---3V7upXqbjpZ4EhLz--
