@@ -1,77 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B732227CB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 17:49:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4827A2227FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 18:05:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6zGS64QBzDr70
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 01:49:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6zc56h5MzDr73
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 02:05:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=K0GdpyhC; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6zBV2YvDzDr6W
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 01:46:25 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 159EB295C14;
- Thu, 16 Jul 2020 11:46:23 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id Ync1L2q1T9lv; Thu, 16 Jul 2020 11:46:22 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id CA374295C12;
- Thu, 16 Jul 2020 11:46:22 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com CA374295C12
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1594914382;
- bh=vp71nmZTDnneRvjCieT0x9SqYt8j1qCXpo2gjxlL3so=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=K0GdpyhCRtALmYLXIh6DsJqf5JNfl+RI9XMaZP0aXJxChWcSX9OVVieyRrXb0RdNF
- /Jipc4A5/RnMwjqyEEjMbVvPgdIyqg6mfSDPHwU7+bVACA16/s7rBD/5S9Ry3GzbYz
- zozOXqGhRXMR7LQsMhcMdCiJxv4UqQcKzv23U33hh7+oS3VAGnpLQ7djUioTHcUXDS
- rK/z3rkvdslH/xm8AnVlglCB7mUKCwPJ2Wa5dCSeWU5gFMxAxZAqzIFqfrTeE61LmU
- I7C30UDlbJOPkIN+i5Daj+lxxaCposb7B788MeCho+Z3GlA44nFE/aH+PkU8QPciwE
- N4uKpWyshlp+Q==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id LKw2bNJbhb-0; Thu, 16 Jul 2020 11:46:22 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id BE0E2295C10;
- Thu, 16 Jul 2020 11:46:22 -0400 (EDT)
-Date: Thu, 16 Jul 2020 11:46:22 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <1494299304.15894.1594914382695.JavaMail.zimbra@efficios.com>
-In-Reply-To: <1594873644.viept6os6j.astroid@bobo.none>
-References: <20200710015646.2020871-1-npiggin@gmail.com>
- <20200710015646.2020871-5-npiggin@gmail.com>
- <CALCETrVqHDLo09HcaoeOoAVK8w+cNWkSNTLkDDU=evUhaXkyhQ@mail.gmail.com>
- <1594613902.1wzayj0p15.astroid@bobo.none>
- <1594647408.wmrazhwjzb.astroid@bobo.none>
- <284592761.9860.1594649601492.JavaMail.zimbra@efficios.com>
- <1594868476.6k5kvx8684.astroid@bobo.none>
- <1594873644.viept6os6j.astroid@bobo.none>
-Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6zVN5XT2zDr44
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 02:00:11 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06GFWxH3110454; Thu, 16 Jul 2020 12:00:05 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 327u1ktp3s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Jul 2020 12:00:04 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06GG02eq017976;
+ Thu, 16 Jul 2020 16:00:02 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma03dal.us.ibm.com with ESMTP id 327529mdpa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Jul 2020 16:00:02 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06GFxwt061145592
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Jul 2020 15:59:58 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DBC506A05D;
+ Thu, 16 Jul 2020 16:00:00 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D44FC6A04D;
+ Thu, 16 Jul 2020 15:59:59 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.160.26.83])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 16 Jul 2020 15:59:59 +0000 (GMT)
+Subject: Re: [PATCH net-next] ibmvnic: Increase driver logging
+To: David Miller <davem@davemloft.net>, kuba@kernel.org
+References: <1594857115-22380-1-git-send-email-tlfalcon@linux.ibm.com>
+ <20200715170632.11f0bf19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <20200715.182956.490791427431304861.davem@davemloft.net>
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+Message-ID: <9c9d6e46-240b-8513-08e4-e1c7556cb3c8@linux.ibm.com>
+Date: Thu, 16 Jul 2020 10:59:58 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200715.182956.490791427431304861.davem@davemloft.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
-Thread-Topic: x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-Thread-Index: cb6zdS0KPjkbq8hxmgetruE+ExgftQ==
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-16_07:2020-07-16,
+ 2020-07-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 clxscore=1011 mlxlogscore=999
+ suspectscore=2 phishscore=0 bulkscore=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007160114
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,58 +88,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: drt@linux.ibm.com, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+On 7/15/20 8:29 PM, David Miller wrote:
+> From: Jakub Kicinski <kuba@kernel.org>
+> Date: Wed, 15 Jul 2020 17:06:32 -0700
+>
+>> On Wed, 15 Jul 2020 18:51:55 -0500 Thomas Falcon wrote:
+>>>   	free_netdev(netdev);
+>>>   	dev_set_drvdata(&dev->dev, NULL);
+>>> +	netdev_info(netdev, "VNIC client device has been successfully removed.\n");
+>> A step too far, perhaps.
+>>
+>> In general this patch looks a little questionable IMHO, this amount of
+>> logging output is not commonly seen in drivers. All the the info
+>> messages are just static text, not even carrying any extra information.
+>> In an era of ftrace, and bpftrace, do we really need this?
+> Agreed, this is too much.  This is debugging, and thus suitable for tracing
+> facilities, at best.
 
------ On Jul 16, 2020, at 12:42 AM, Nicholas Piggin npiggin@gmail.com wrote:
-> I should be more complete here, especially since I was complaining
-> about unclear barrier comment :)
-> 
-> 
-> CPU0                     CPU1
-> a. user stuff            1. user stuff
-> b. membarrier()          2. enter kernel
-> c. smp_mb()              3. smp_mb__after_spinlock(); // in __schedule
-> d. read rq->curr         4. rq->curr switched to kthread
-> e. is kthread, skip IPI  5. switch_to kthread
-> f. return to user        6. rq->curr switched to user thread
-> g. user stuff            7. switch_to user thread
->                         8. exit kernel
->                         9. more user stuff
-> 
-> What you're really ordering is a, g vs 1, 9 right?
-> 
-> In other words, 9 must see a if it sees g, g must see 1 if it saw 9,
-> etc.
-> 
-> Userspace does not care where the barriers are exactly or what kernel
-> memory accesses might be being ordered by them, so long as there is a
-> mb somewhere between a and g, and 1 and 9. Right?
-
-This is correct. Note that the accesses to user-space memory can be
-done either by user-space code or kernel code, it doesn't matter.
-However, in order to be considered as happening before/after
-either membarrier or the matching compiler barrier, kernel code
-needs to have causality relationship with user-space execution,
-e.g. user-space does a system call, or returns from a system call.
-
-In the case of io_uring, submitting a request or returning from waiting
-on request completion appear to provide this causality relationship.
+Thanks for your feedback. I see now that I was overly aggressive with 
+this patch to be sure, but it would help with narrowing down problems at 
+a first glance, should they arise. The driver in its current state logs 
+very little of what is it doing without the use of additional debugging 
+or tracing facilities. Would it be worth it to pursue a less aggressive 
+version or would that be dead on arrival? What are acceptable driver 
+operations to log at this level?
 
 Thanks,
 
-Mathieu
+Tom
 
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
