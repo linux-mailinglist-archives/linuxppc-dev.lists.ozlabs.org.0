@@ -2,30 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77DC22253A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 16:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C62C72224E0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 16:09:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6xLm0XzSzDqCc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 00:23:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6x2d1Rc7zDqNt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 00:09:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6vQB6RnnzDqYX
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6vQB0H5bzDqlY
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 22:56:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4B6vQ31rftz9sVV; Thu, 16 Jul 2020 22:56:10 +1000 (AEST)
+ id 4B6vQ35nj2z9sTC; Thu, 16 Jul 2020 22:56:11 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20200623234139.2262227-1-npiggin@gmail.com>
-References: <20200623234139.2262227-1-npiggin@gmail.com>
-Subject: Re: [PATCH 1/3] powerpc/64s: restore_math remove TM test
-Message-Id: <159490401036.3805857.3437252892376420317.b4-ty@ellerman.id.au>
-Date: Thu, 16 Jul 2020 22:56:10 +1000 (AEST)
+In-Reply-To: <20200511101952.1463138-1-npiggin@gmail.com>
+References: <20200511101952.1463138-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/64/signal: balance return predictor stack in
+ signal trampoline
+Message-Id: <159490400676.3805857.12503556753801139476.b4-ty@ellerman.id.au>
+Date: Thu, 16 Jul 2020 22:56:11 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,26 +38,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anton Blanchard <anton@linux.ibm.com>,
- Gustavo Romero <gromero@linux.ibm.com>
+Cc: Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 24 Jun 2020 09:41:37 +1000, Nicholas Piggin wrote:
-> The TM test in restore_math added by commit dc16b553c949e ("powerpc:
-> Always restore FPU/VEC/VSX if hardware transactional memory in use") is
-> no longer necessary after commit a8318c13e79ba ("powerpc/tm: Fix
-> restoring FP/VMX facility incorrectly on interrupts"), which removed
-> the cases where restore_math has to restore if TM is active.
+On Mon, 11 May 2020 20:19:52 +1000, Nicholas Piggin wrote:
+> Returning from an interrupt or syscall to a signal handler currently
+> begins execution directly at the handler's entry point, with LR set to
+> the address of the sigreturn trampoline. When the signal handler
+> function returns, it runs the trampoline. It looks like this:
+> 
+>     # interrupt at user address xyz
+>     # kernel stuff... signal is raised
+>     rfid
+>     # void handler(int sig)
+>     addis 2,12,.TOC.-.LCF0@ha
+>     addi 2,2,.TOC.-.LCF0@l
+>     mflr 0
+>     std 0,16(1)
+>     stdu 1,-96(1)
+>     # handler stuff
+>     ld 0,16(1)
+>     mtlr 0
+>     blr
+>     # __kernel_sigtramp_rt64
+>     addi    r1,r1,__SIGNAL_FRAMESIZE
+>     li      r0,__NR_rt_sigreturn
+>     sc
+>     # kernel executes rt_sigreturn
+>     rfid
+>     # back to user address xyz
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/3] powerpc/64s: restore_math remove TM test
-      https://git.kernel.org/powerpc/c/891b4fe8fe3d09f20948b391f24c9fc5b7580a2b
-[2/3] powerpc/64s: Fix restore_math unnecessarily changing MSR
-      https://git.kernel.org/powerpc/c/01eb01877f3386d4bd5de75909abdd0af45a5fa2
-[3/3] powerpc: re-initialise lazy FPU/VEC counters on every fault
-      https://git.kernel.org/powerpc/c/b2b46304e9360f3dda49c9d8ba4a1478b9eecf1d
+[1/1] powerpc/64/signal: Balance return predictor stack in signal trampoline
+      https://git.kernel.org/powerpc/c/0138ba5783ae0dcc799ad401a1e8ac8333790df9
 
 cheers
