@@ -1,78 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2154222B5E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 21:00:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C688222C0A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 21:41:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B73Vp6VPYzDr8L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 05:00:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B74PK2v62zDr7m
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 05:41:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=palmer@dabbelt.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
+ dmarc=none (p=none dis=none) header.from=dabbelt.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=YgwfmSUm; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=dabbelt-com.20150623.gappssmtp.com
+ header.i=@dabbelt-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=cIXAUZoE; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B73SR10nPzDqn1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 04:58:46 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 2493D297CAB;
- Thu, 16 Jul 2020 14:58:42 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id jho3kzP0Uhx3; Thu, 16 Jul 2020 14:58:41 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id B8552297D0D;
- Thu, 16 Jul 2020 14:58:41 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com B8552297D0D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1594925921;
- bh=4y3OZc0uvqLRNtfhBnb/Pl6FBzMj468Y31eGzsZO15Y=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=YgwfmSUmKI5QGNkVW/ZZ4DkKkDfr6+Hx/88oYF+i0AnoO/Z9FhYpe84gUEYocOQZs
- 9YhXWYkwGT6T1MBDwQSVG52oBQHsCzbEu3te/aG2x3gC6D4Ct4Tg+ZhasUje9+KMDx
- hU95kX5H6X+56H71ssixg7KPiZhw6SOybRTXFdnfUfURYh5zYw+0WneFlzLtl/t4Tt
- JN1LzdW1iz+hxNNqnAVpLaaIAAdfyWLN/KTn9tdroxw0L7iCs0t9rq5BBsFGHyBULI
- j1YpgVOwQwHVBV5Rdk21VIMyt9QZIbAt3Xw3/fbE14m0SXc+CByVsMsZHcPrXKlX/h
- dYSAnCv5SaUAA==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id T-n-DAhdMKvn; Thu, 16 Jul 2020 14:58:41 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id A1E69297CA8;
- Thu, 16 Jul 2020 14:58:41 -0400 (EDT)
-Date: Thu, 16 Jul 2020 14:58:41 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Nicholas Piggin <npiggin@gmail.com>, paulmck <paulmck@kernel.org>, 
- Alan Stern <stern@rowland.harvard.edu>
-Message-ID: <595582123.17106.1594925921537.JavaMail.zimbra@efficios.com>
-In-Reply-To: <1370747990.15974.1594915396143.JavaMail.zimbra@efficios.com>
-References: <20200710015646.2020871-1-npiggin@gmail.com>
- <1594613902.1wzayj0p15.astroid@bobo.none>
- <1594647408.wmrazhwjzb.astroid@bobo.none>
- <284592761.9860.1594649601492.JavaMail.zimbra@efficios.com>
- <1594868476.6k5kvx8684.astroid@bobo.none>
- <1594873644.viept6os6j.astroid@bobo.none>
- <1494299304.15894.1594914382695.JavaMail.zimbra@efficios.com>
- <1370747990.15974.1594915396143.JavaMail.zimbra@efficios.com>
-Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B74ML1f3PzDr5T
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 05:39:24 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id q17so4159876pfu.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 12:39:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+ h=subject:date:message-id:mime-version:content-transfer-encoding:cc
+ :from:to; bh=jFw/ClOpq5T+sEE+HkoHP8FUQXO2g2TMYTCx3LN9u+U=;
+ b=cIXAUZoEl+VbWqI+bWZ6UNd/b6CjlQlebzn7F51ygg732VKsNUyl7DvsnIq/q8CnRD
+ MWyO5PEAVK+AkyuS5IIP160Qpqg2RwaJbiuHaOqIGaOUrKwLZjyuK6YPwi3I3c9OqjPX
+ uxs4LYz/vya0GQfg8gs6V7ZoR51P/Vj9BNpDc7Q/ocU7sDI+m+K1wqHn6n/tbTWPr2kl
+ CJXmyuKlnDiQDAXaXdlljeJaPSGAfOvtQS3iU3y20mg5hEoBJ0exCxREj9zx5TbYnuhl
+ 21YpvR8/8GOndAJMOSKUAdZD2btafq3qF0kFteV1b9ieb06F9FRiy+fJiW/DOY6PNdcv
+ fjNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:date:message-id:mime-version
+ :content-transfer-encoding:cc:from:to;
+ bh=jFw/ClOpq5T+sEE+HkoHP8FUQXO2g2TMYTCx3LN9u+U=;
+ b=p1luWFJG5PVHeoEehfiM3mr0s2zHG6iJyazRyTwv7ukIL8USTljzwPENymnVMepvIM
+ 4eXl21Y8exsKosP/PCgD+qA5UbkeU35MKCksILeT/zP4r6BgAXhYrUiGPwSIYdKqWFRI
+ 4v/2eq9+3weTSowz9vDyv2GrnchYKu0akGpRJNJFGm9YxBWOKuTtYIGC00F40CaLjkaw
+ NduX1wfmw4BY5bou/t0Aq6MUAZ3rC4i7kFf+CYaOHYmuuSi+HzUuJQDygIFuUm5JaP6I
+ SGYYdnu4oxCKOozJV3gqZ2SXIFTAiBP7oRLTL2AQFCsYkVqU8kxic1M+tOgzDkch5yHj
+ kDJQ==
+X-Gm-Message-State: AOAM532ixXoU479Rh9Yk1S4T3AuKFpNrSVlrYWcQoKyB674ICZhq3X3j
+ y1Eu5JwFx3wzcGi/Adl7Sxu8rQ==
+X-Google-Smtp-Source: ABdhPJzVTejMe5736mG+GTa4x+WLCBZjws2DJXmE8I5MCTTJ/dLjlEKKrmiobrsE6CR38PDoJ0gZig==
+X-Received: by 2002:a63:7e55:: with SMTP id o21mr5702707pgn.263.1594928359698; 
+ Thu, 16 Jul 2020 12:39:19 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net.
+ [76.210.143.223])
+ by smtp.gmail.com with ESMTPSA id 129sm5351398pfv.161.2020.07.16.12.39.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Jul 2020 12:39:19 -0700 (PDT)
+Subject: [PATCH] powerpc/64: Fix an out of date comment about MMIO ordering
+Date: Thu, 16 Jul 2020 12:38:20 -0700
+Message-Id: <20200716193820.1141936-1-palmer@dabbelt.com>
+X-Mailer: git-send-email 2.28.0.rc0.105.gf9edc3c819-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
-Thread-Topic: x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-Thread-Index: cb6zdS0KPjkbq8hxmgetruE+ExgftXKEdKLPFXA9iBY=
+Content-Transfer-Encoding: 8bit
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: Will Deacon <willdeacon@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,118 +78,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: kernel-team@android.com, bigeasy@linutronix.de,
+ Palmer Dabbelt <palmerdabbelt@google.com>, linuxppc-dev@lists.ozlabs.org,
+ npiggin@gmail.com, linux-kernel@vger.kernel.org, paulus@samba.org,
+ tglx@linutronix.de, msuchanek@suse.de, jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Jul 16, 2020, at 12:03 PM, Mathieu Desnoyers mathieu.desnoyers@efficios.com wrote:
+From: Palmer Dabbelt <palmerdabbelt@google.com>
 
-> ----- On Jul 16, 2020, at 11:46 AM, Mathieu Desnoyers
-> mathieu.desnoyers@efficios.com wrote:
-> 
->> ----- On Jul 16, 2020, at 12:42 AM, Nicholas Piggin npiggin@gmail.com wrote:
->>> I should be more complete here, especially since I was complaining
->>> about unclear barrier comment :)
->>> 
->>> 
->>> CPU0                     CPU1
->>> a. user stuff            1. user stuff
->>> b. membarrier()          2. enter kernel
->>> c. smp_mb()              3. smp_mb__after_spinlock(); // in __schedule
->>> d. read rq->curr         4. rq->curr switched to kthread
->>> e. is kthread, skip IPI  5. switch_to kthread
->>> f. return to user        6. rq->curr switched to user thread
->>> g. user stuff            7. switch_to user thread
->>>                         8. exit kernel
->>>                         9. more user stuff
->>> 
->>> What you're really ordering is a, g vs 1, 9 right?
->>> 
->>> In other words, 9 must see a if it sees g, g must see 1 if it saw 9,
->>> etc.
->>> 
->>> Userspace does not care where the barriers are exactly or what kernel
->>> memory accesses might be being ordered by them, so long as there is a
->>> mb somewhere between a and g, and 1 and 9. Right?
->> 
->> This is correct.
-> 
-> Actually, sorry, the above is not quite right. It's been a while
-> since I looked into the details of membarrier.
-> 
-> The smp_mb() at the beginning of membarrier() needs to be paired with a
-> smp_mb() _after_ rq->curr is switched back to the user thread, so the
-> memory barrier is between store to rq->curr and following user-space
-> accesses.
-> 
-> The smp_mb() at the end of membarrier() needs to be paired with the
-> smp_mb__after_spinlock() at the beginning of schedule, which is
-> between accesses to userspace memory and switching rq->curr to kthread.
-> 
-> As to *why* this ordering is needed, I'd have to dig through additional
-> scenarios from https://lwn.net/Articles/573436/. Or maybe Paul remembers ?
+This primitive has been renamed, but because it was spelled incorrectly in the
+first place it must have escaped the fixup patch.  As far as I can tell this
+logic is still correct: smp_mb__after_spinlock() uses the default smp_mb()
+implementation, which is "sync" rather than "hwsync" but those are the same
+(though I'm not that familiar with PowerPC).
 
-Thinking further about this, I'm beginning to consider that maybe we have been
-overly cautious by requiring memory barriers before and after store to rq->curr.
+Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
+---
+ arch/powerpc/kernel/entry_64.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If CPU0 observes a CPU1's rq->curr->mm which differs from its own process (current)
-while running the membarrier system call, it necessarily means that CPU1 had
-to issue smp_mb__after_spinlock when entering the scheduler, between any user-space
-loads/stores and update of rq->curr.
-
-Requiring a memory barrier between update of rq->curr (back to current process's
-thread) and following user-space memory accesses does not seem to guarantee
-anything more than what the initial barrier at the beginning of __schedule already
-provides, because the guarantees are only about accesses to user-space memory.
-
-Therefore, with the memory barrier at the beginning of __schedule, just observing that
-CPU1's rq->curr differs from current should guarantee that a memory barrier was issued
-between any sequentially consistent instructions belonging to the current process on
-CPU1.
-
-Or am I missing/misremembering an important point here ?
-
-Thanks,
-
-Mathieu
-
-> 
-> Thanks,
-> 
-> Mathieu
-> 
-> 
->> Note that the accesses to user-space memory can be
->> done either by user-space code or kernel code, it doesn't matter.
->> However, in order to be considered as happening before/after
->> either membarrier or the matching compiler barrier, kernel code
->> needs to have causality relationship with user-space execution,
->> e.g. user-space does a system call, or returns from a system call.
->> 
->> In the case of io_uring, submitting a request or returning from waiting
->> on request completion appear to provide this causality relationship.
->> 
->> Thanks,
->> 
->> Mathieu
->> 
->> 
->> --
->> Mathieu Desnoyers
->> EfficiOS Inc.
->> http://www.efficios.com
-> 
-> --
-> Mathieu Desnoyers
-> EfficiOS Inc.
-> http://www.efficios.com
-
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index b3c9f15089b6..7b38b4daca93 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -357,7 +357,7 @@ _GLOBAL(_switch)
+ 	 * kernel/sched/core.c).
+ 	 *
+ 	 * Uncacheable stores in the case of involuntary preemption must
+-	 * be taken care of. The smp_mb__before_spin_lock() in __schedule()
++	 * be taken care of. The smp_mb__after_spinlock() in __schedule()
+ 	 * is implemented as hwsync on powerpc, which orders MMIO too. So
+ 	 * long as there is an hwsync in the context switch path, it will
+ 	 * be executed on the source CPU after the task has performed
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+2.28.0.rc0.105.gf9edc3c819-goog
+
