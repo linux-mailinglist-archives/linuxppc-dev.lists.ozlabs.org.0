@@ -2,69 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C33722198E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 03:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8002D221990
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 03:39:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6cLj56SyzDqWx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 11:37:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6cPd33LRzDqsH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 11:39:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::443;
- helo=mail-wr1-x443.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UHwwNzkJ; dkim-atps=neutral
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
- [IPv6:2a00:1450:4864:20::443])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6cJq1cQyzDqs2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 11:35:37 +1000 (AEST)
-Received: by mail-wr1-x443.google.com with SMTP id q5so5109887wru.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 18:35:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=No2sfoa2XC1AzcEtK/n3qxZKzaVyUKVOKE64N4pMv54=;
- b=UHwwNzkJQ9qTDaaKlL7k/lxPK/jXaantEE3zp7KA0EWNHj+HPs1rIs3rWntTeks/o6
- +m98G3qHhJuhXaaq8kMs5n1L5gaAOL7G69soMsn2LermUDffcrkQbg8d+lBD47KfkOh/
- FWZtngpH9SVgpETAzmg1pSM0PbGP6WNa29gZ+OX8j6AX2NOPsVo5JekiDu9xM8T4vAHp
- 9UgE8r8MqhF6H8LT7VR4ApCSXcZABKDhLkgudTSABbnCCuQGVny9DcDP7TsXxuamZzZ3
- fjAdMjVOkP5eknRNuqoyR2YW5UBzUKfG4rWkEWM9oqKqMhkBYXrBPeuBDzmHjTQZLURl
- aVqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=No2sfoa2XC1AzcEtK/n3qxZKzaVyUKVOKE64N4pMv54=;
- b=AtdRNMIwnM5bce/qiBv4TsQqflAfIHP/XMZq7+KTBuv5PRm+35niMe9e45R2t7GAyF
- 2T27G5FOjgHGABKezaolNVghWyBaKovVyPc4bEQTw6Dt9vpc9fQyaEjV4W4vNVKGPMUE
- lwkiTDfEmjQvpSlwoVwexZ6vzdz6WYAFrE7wgHdhcrRkkwM6FYwxOtU0rMNko/c66UHM
- UYz7NSNUkUbzPEatIfrL+plj2opZbBbPBWtmT96B2D40/nEE4nxNkNdY0GZKbOJZM9N1
- xUjMdE1oCje/Dm8mMjxhQ72/gJraP4ZtH//Q4/UQjg/9bg+/8PE3kJpBsgbuzzyCWqtJ
- NHrw==
-X-Gm-Message-State: AOAM532gIwYMmN5uWRYNQoSj1Gd+yaWKQM9LKDTuOXDSHLfUGsluPp2o
- opysHANpCN1i34RTIz57wvW113I8
-X-Google-Smtp-Source: ABdhPJzKwW4E8EKZahCMqsAY6dQ2dsSbs4WSKcT9kAgysOtibkSAFbX7DAlm2f6LYw5ti733qyoBTA==
-X-Received: by 2002:a5d:6088:: with SMTP id w8mr2313955wrt.49.1594863332634;
- Wed, 15 Jul 2020 18:35:32 -0700 (PDT)
-Received: from bobo.ibm.com (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id p29sm6155879wmi.43.2020.07.15.18.35.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Jul 2020 18:35:32 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc: select ARCH_HAS_MEMBARRIER_SYNC_CORE
-Date: Thu, 16 Jul 2020 11:35:22 +1000
-Message-Id: <20200716013522.338318-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6cMw6DN4zDq9b
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 11:38:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B6cMw2yMrz8tNy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 11:38:20 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4B6cMw2T1Cz9sT6; Thu, 16 Jul 2020 11:38:20 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4B6cMv6Wh5z9sSt
+ for <linuxppc-dev@ozlabs.org>; Thu, 16 Jul 2020 11:38:19 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06G1WGFN145846; Wed, 15 Jul 2020 21:38:11 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32792wr5tt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Jul 2020 21:38:11 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06G1X3K5151252;
+ Wed, 15 Jul 2020 21:38:10 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32792wr5th-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 15 Jul 2020 21:38:10 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06G1a79C027895;
+ Thu, 16 Jul 2020 01:38:09 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02dal.us.ibm.com with ESMTP id 327529ped3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Jul 2020 01:38:09 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06G1c5rb58720706
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Jul 2020 01:38:05 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 813F27805F;
+ Thu, 16 Jul 2020 01:38:07 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E89847805C;
+ Thu, 16 Jul 2020 01:38:03 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.163.73.114])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu, 16 Jul 2020 01:38:03 +0000 (GMT)
+References: <159466074408.24747.10036072269371204890.stgit@hbathini.in.ibm.com>
+ <159466096898.24747.16701009925943468066.stgit@hbathini.in.ibm.com>
+User-agent: mu4e 1.2.0; emacs 26.3
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v3 09/12] ppc64/kexec_file: setup backup region for kdump
+ kernel
+In-reply-to: <159466096898.24747.16701009925943468066.stgit@hbathini.in.ibm.com>
+Date: Wed, 15 Jul 2020 22:38:01 -0300
+Message-ID: <87y2nk8cjq.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-15_12:2020-07-15,
+ 2020-07-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 clxscore=1015
+ adultscore=0 impostorscore=0 spamscore=0 malwarescore=0 bulkscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007160005
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,115 +106,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Andreas Schwab <schwab@linux-m68k.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: kernel test robot <lkp@intel.com>, Pingfan Liu <piliu@redhat.com>,
+ Nayna Jain <nayna@linux.ibm.com>, Kexec-ml <kexec@lists.infradead.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, Petr Tesarik <ptesarik@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc return from interrupt and return from system call sequences are
-context synchronising.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
+Hari Bathini <hbathini@linux.ibm.com> writes:
 
-v3: more comment fixes
+> @@ -968,7 +1040,7 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>
+>  	/*
+>  	 * Restrict memory usage for kdump kernel by setting up
+> -	 * usable memory ranges.
+> +	 * usable memory ranges and memory reserve map.
+>  	 */
+>  	if (image->type == KEXEC_TYPE_CRASH) {
+>  		ret = get_usable_memory_ranges(&umem);
+> @@ -980,6 +1052,24 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+>  			pr_err("Error setting up usable-memory property for kdump kernel\n");
+>  			goto out;
+>  		}
+> +
+> +		ret = fdt_add_mem_rsv(fdt, BACKUP_SRC_START + BACKUP_SRC_SIZE,
+> +				      crashk_res.start - BACKUP_SRC_SIZE);
 
- .../features/sched/membarrier-sync-core/arch-support.txt  | 4 ++--
- arch/powerpc/Kconfig                                      | 1 +
- arch/powerpc/include/asm/exception-64e.h                  | 6 +++++-
- arch/powerpc/include/asm/exception-64s.h                  | 8 ++++++++
- arch/powerpc/kernel/entry_32.S                            | 6 ++++++
- 5 files changed, 22 insertions(+), 3 deletions(-)
+I believe this answers my question from the other email about how the
+crashkernel is prevented from stomping in the crashed kernel's memory,
+right? I needed to think for a bit to understand what the above
+reservation was protecting. I think it's worth adding a comment.
 
-diff --git a/Documentation/features/sched/membarrier-sync-core/arch-support.txt b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
-index 8a521a622966..52ad74a25f54 100644
---- a/Documentation/features/sched/membarrier-sync-core/arch-support.txt
-+++ b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
-@@ -5,7 +5,7 @@
- #
- # Architecture requirements
- #
--# * arm/arm64
-+# * arm/arm64/powerpc
- #
- # Rely on implicit context synchronization as a result of exception return
- # when returning from IPI handler, and when returning to user-space.
-@@ -45,7 +45,7 @@
-     |       nios2: | TODO |
-     |    openrisc: | TODO |
-     |      parisc: | TODO |
--    |     powerpc: | TODO |
-+    |     powerpc: |  ok  |
-     |       riscv: | TODO |
-     |        s390: | TODO |
-     |          sh: | TODO |
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 9fa23eb320ff..920c4e3ca4ef 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -131,6 +131,7 @@ config PPC
- 	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
-+	select ARCH_HAS_MEMBARRIER_SYNC_CORE
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
- 	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC32 && !HIBERNATION)
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
-diff --git a/arch/powerpc/include/asm/exception-64e.h b/arch/powerpc/include/asm/exception-64e.h
-index 54a98ef7d7fe..72b6657acd2d 100644
---- a/arch/powerpc/include/asm/exception-64e.h
-+++ b/arch/powerpc/include/asm/exception-64e.h
-@@ -204,7 +204,11 @@ exc_##label##_book3e:
- 	LOAD_REG_ADDR(r3,interrupt_base_book3e);\
- 	ori	r3,r3,vector_offset@l;		\
- 	mtspr	SPRN_IVOR##vector_number,r3;
--
-+/*
-+ * powerpc relies on return from interrupt/syscall being context synchronising
-+ * (which rfi is) to support ARCH_HAS_MEMBARRIER_SYNC_CORE without additional
-+ * synchronisation instructions.
-+ */
- #define RFI_TO_KERNEL							\
- 	rfi
- 
-diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
-index 47bd4ea0837d..d7a1a427a690 100644
---- a/arch/powerpc/include/asm/exception-64s.h
-+++ b/arch/powerpc/include/asm/exception-64s.h
-@@ -68,6 +68,14 @@
-  *
-  * The nop instructions allow us to insert one or more instructions to flush the
-  * L1-D cache when returning to userspace or a guest.
-+ *
-+ * powerpc relies on return from interrupt/syscall being context synchronising
-+ * (which hrfid, rfid, and rfscv are) to support ARCH_HAS_MEMBARRIER_SYNC_CORE
-+ * without additional synchronisation instructions.
-+ *
-+ * soft-masked interrupt replay does not include a context-synchronising rfid,
-+ * but those always return to kernel, the sync is only required when returning
-+ * to user.
-  */
- #define RFI_FLUSH_SLOT							\
- 	RFI_FLUSH_FIXUP_SECTION;					\
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 217ebdf5b00b..f4d0af8e1136 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -35,6 +35,12 @@
- 
- #include "head_32.h"
- 
-+/*
-+ * powerpc relies on return from interrupt/syscall being context synchronising
-+ * (which rfi is) to support ARCH_HAS_MEMBARRIER_SYNC_CORE without additional
-+ * synchronisation instructions.
-+ */
-+
- /*
-  * Align to 4k in order to ensure that all functions modyfing srr0/srr1
-  * fit into one page in order to not encounter a TLB miss between the
--- 
-2.23.0
+> +		if (ret) {
+> +			pr_err("Error reserving crash memory: %s\n",
+> +			       fdt_strerror(ret));
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	if (image->arch.backup_start) {
+> +		ret = fdt_add_mem_rsv(fdt, image->arch.backup_start,
+> +				      BACKUP_SRC_SIZE);
+> +		if (ret) {
+> +			pr_err("Error reserving memory for backup: %s\n",
+> +			       fdt_strerror(ret));
+> +			goto out;
+> +		}
+>  	}
 
+This is only true for KEXEC_TYPE_CRASH, if I'm following the code
+correctly. I think it would be clearer to put the if above inside the if
+for KEXEC_TYPE_CRASH to make it clearer.
+
+>
+>  	ret = setup_new_fdt(image, fdt, initrd_load_addr, initrd_len,
+
+<snip>
+
+> diff --git a/arch/powerpc/purgatory/purgatory_64.c b/arch/powerpc/purgatory/purgatory_64.c
+> new file mode 100644
+> index 0000000..1eca74c
+> --- /dev/null
+> +++ b/arch/powerpc/purgatory/purgatory_64.c
+> @@ -0,0 +1,36 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * purgatory: Runs between two kernels
+> + *
+> + * Copyright 2020, Hari Bathini, IBM Corporation.
+> + */
+> +
+> +#include <asm/purgatory.h>
+> +#include <asm/crashdump-ppc64.h>
+> +
+> +extern unsigned long backup_start;
+> +
+> +static void *__memcpy(void *dest, const void *src, unsigned long n)
+> +{
+> +	unsigned long i;
+> +	unsigned char *d;
+> +	const unsigned char *s;
+> +
+> +	d = dest;
+> +	s = src;
+> +	for (i = 0; i < n; i++)
+> +		d[i] = s[i];
+> +
+> +	return dest;
+> +}
+> +
+> +void purgatory(void)
+> +{
+> +	void *dest, *src;
+> +
+> +	src = (void *)BACKUP_SRC_START;
+> +	if (backup_start) {
+> +		dest = (void *)backup_start;
+> +		__memcpy(dest, src, BACKUP_SRC_SIZE);
+> +	}
+> +}
+
+In general I'm in favor of using C code over assembly, but having to
+bring in that relocation support just for the above makes me wonder if
+it's worth it in this case.
+
+--
+Thiago Jung Bauermann
+IBM Linux Technology Center
