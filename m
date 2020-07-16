@@ -1,82 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EE322260D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 16:44:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E7022261D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 16:46:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6xpY2gGKzDqfH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 00:44:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6xsk10kmzDqYk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 00:46:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6x081R1lzDqNK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 00:07:19 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06GE2c5K053591; Thu, 16 Jul 2020 10:07:09 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32afvm8x0y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jul 2020 10:07:09 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06GE6JLi003344;
- Thu, 16 Jul 2020 14:07:07 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma05fra.de.ibm.com with ESMTP id 327q2y2hdc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jul 2020 14:07:07 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06GE75PH55640514
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Jul 2020 14:07:05 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 64A8FAE053;
- Thu, 16 Jul 2020 14:07:05 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11598AE051;
- Thu, 16 Jul 2020 14:07:04 +0000 (GMT)
-Received: from [9.85.88.232] (unknown [9.85.88.232])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 16 Jul 2020 14:07:03 +0000 (GMT)
-Subject: Re: [PATCH] pseries: Fix 64 bit logical memory block panic
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20200715000820.1255764-1-anton@ozlabs.org>
- <87d04x3q6m.fsf@linux.ibm.com>
- <20200716013030.GA4076912@thinks.paulus.ozlabs.org>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <f2b90495-dbfc-ec99-1ea1-c32d74e6ba21@linux.ibm.com>
-Date: Thu, 16 Jul 2020 19:37:03 +0530
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=steven.price@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4B6x8t3Xg5zDr6t
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 00:14:46 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA8F331B;
+ Thu, 16 Jul 2020 07:14:43 -0700 (PDT)
+Received: from [192.168.1.84] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 00B4B3F66E;
+ Thu, 16 Jul 2020 07:14:38 -0700 (PDT)
+Subject: Re: [PATCH V5 1/4] mm/debug_vm_pgtable: Add tests validating arch
+ helpers for core MM features
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+References: <1594610587-4172-1-git-send-email-anshuman.khandual@arm.com>
+ <1594610587-4172-2-git-send-email-anshuman.khandual@arm.com>
+From: Steven Price <steven.price@arm.com>
+Message-ID: <2ff756c5-28e2-b64a-3788-260ba30c6409@arm.com>
+Date: Thu, 16 Jul 2020 15:14:06 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200716013030.GA4076912@thinks.paulus.ozlabs.org>
+In-Reply-To: <1594610587-4172-2-git-send-email-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-16_06:2020-07-16,
- 2020-07-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- bulkscore=0 clxscore=1015 spamscore=0 adultscore=0 mlxscore=0
- lowpriorityscore=0 suspectscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007160105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,128 +50,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ agordeev@linux.ibm.com, Will Deacon <will@kernel.org>,
+ linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, x86@kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ gerald.schaefer@de.ibm.com, ziy@nvidia.com,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, cai@lca.pw,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ aneesh.kumar@linux.ibm.com, Borislav Petkov <bp@alien8.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/16/20 7:00 AM, Paul Mackerras wrote:
-> On Wed, Jul 15, 2020 at 06:12:25PM +0530, Aneesh Kumar K.V wrote:
->> Anton Blanchard <anton@ozlabs.org> writes:
->>
->>> Booting with a 4GB LMB size causes us to panic:
->>>
->>>    qemu-system-ppc64: OS terminated: OS panic:
->>>        Memory block size not suitable: 0x0
->>>
->>> Fix pseries_memory_block_size() to handle 64 bit LMBs.
->>>
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Anton Blanchard <anton@ozlabs.org>
->>> ---
->>>   arch/powerpc/platforms/pseries/hotplug-memory.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> index 5ace2f9a277e..6574ac33e887 100644
->>> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> @@ -27,7 +27,7 @@ static bool rtas_hp_event;
->>>   unsigned long pseries_memory_block_size(void)
->>>   {
->>>   	struct device_node *np;
->>> -	unsigned int memblock_size = MIN_MEMORY_BLOCK_SIZE;
->>> +	uint64_t memblock_size = MIN_MEMORY_BLOCK_SIZE;
->>>   	struct resource r;
->>>   
->>>   	np = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
->>
->> We need similar changes at more places?
->>
->> modified   arch/powerpc/include/asm/book3s/64/mmu.h
->> @@ -85,7 +85,7 @@ extern unsigned int mmu_base_pid;
->>   /*
->>    * memory block size used with radix translation.
->>    */
->> -extern unsigned int __ro_after_init radix_mem_block_size;
->> +extern unsigned long __ro_after_init radix_mem_block_size;
->>   
->>   #define PRTB_SIZE_SHIFT	(mmu_pid_bits + 4)
->>   #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
->> modified   arch/powerpc/include/asm/drmem.h
->> @@ -21,7 +21,7 @@ struct drmem_lmb {
->>   struct drmem_lmb_info {
->>   	struct drmem_lmb        *lmbs;
->>   	int                     n_lmbs;
->> -	u32                     lmb_size;
->> +	u64                     lmb_size;
->>   };
->>   
->>   extern struct drmem_lmb_info *drmem_info;
->> modified   arch/powerpc/mm/book3s64/radix_pgtable.c
->> @@ -34,7 +34,7 @@
->>   
->>   unsigned int mmu_pid_bits;
->>   unsigned int mmu_base_pid;
->> -unsigned int radix_mem_block_size __ro_after_init;
->> +unsigned long radix_mem_block_size __ro_after_init;
+On 13/07/2020 04:23, Anshuman Khandual wrote:
+> This adds new tests validating arch page table helpers for these following
+> core memory features. These tests create and test specific mapping types at
+> various page table levels.
 > 
-> These changes look fine.
+> 1. SPECIAL mapping
+> 2. PROTNONE mapping
+> 3. DEVMAP mapping
+> 4. SOFTDIRTY mapping
+> 5. SWAP mapping
+> 6. MIGRATION mapping
+> 7. HUGETLB mapping
+> 8. THP mapping
 > 
->>   static __ref void *early_alloc_pgtable(unsigned long size, int nid,
->>   			unsigned long region_start, unsigned long region_end)
->> modified   arch/powerpc/mm/drmem.c
->> @@ -268,14 +268,15 @@ static void __init __walk_drmem_v2_lmbs(const __be32 *prop, const __be32 *usm,
->>   void __init walk_drmem_lmbs_early(unsigned long node,
->>   			void (*func)(struct drmem_lmb *, const __be32 **))
->>   {
->> +	const __be64 *lmb_prop;
->>   	const __be32 *prop, *usm;
->>   	int len;
->>   
->> -	prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
->> -	if (!prop || len < dt_root_size_cells * sizeof(__be32))
->> +	lmb_prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
->> +	if (!lmb_prop || len < sizeof(__be64))
->>   		return;
->>   
->> -	drmem_info->lmb_size = dt_mem_next_cell(dt_root_size_cells, &prop);
->> +	drmem_info->lmb_size = be64_to_cpup(lmb_prop);
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Mike Rapoport <rppt@linux.ibm.com>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: x86@kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Tested-by: Vineet Gupta <vgupta@synopsys.com>	#arc
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>   mm/debug_vm_pgtable.c | 302 +++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 301 insertions(+), 1 deletion(-)
 > 
-> This particular change shouldn't be necessary.  We already have
-> dt_mem_next_cell() returning u64, and it knows how to combine two
-> cells to give a u64 (for dt_root_size_cells == 2).
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 61ab16fb2e36..2fac47db3eb7 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+[...]
+> +
+> +static void __init pte_swap_tests(unsigned long pfn, pgprot_t prot)
+> +{
+> +	swp_entry_t swp;
+> +	pte_t pte;
+> +
+> +	pte = pfn_pte(pfn, prot);
+> +	swp = __pte_to_swp_entry(pte);
 
+Minor issue: this doesn't look necessarily valid - there's no reason a 
+normal PTE can be turned into a swp_entry. In practise this is likely to 
+work on all architectures because there's no reason not to use (at 
+least) all the PFN bits for the swap entry, but it doesn't exactly seem 
+correct.
 
-agreed. I added it here because in another patch i was confused about 
-the usage of dt_root_size_cells. We don't generally use that in other 
-device tree parsing code. I will move that to a separate patch as cleanup.
+Can we start with a swp_entry_t (from __swp_entry()) and check the round 
+trip of that?
 
-> 
->>   	usm = of_get_flat_dt_prop(node, "linux,drconf-usable-memory", &len);
->>   
->> @@ -296,19 +297,19 @@ void __init walk_drmem_lmbs_early(unsigned long node,
->>   
->>   static int __init init_drmem_lmb_size(struct device_node *dn)
->>   {
->> -	const __be32 *prop;
->> +	const __be64 *prop;
->>   	int len;
->>   
->>   	if (drmem_info->lmb_size)
->>   		return 0;
->>   
->>   	prop = of_get_property(dn, "ibm,lmb-size", &len);
->> -	if (!prop || len < dt_root_size_cells * sizeof(__be32)) {
->> +	if (!prop || len < sizeof(__be64)) {
->>   		pr_info("Could not determine LMB size\n");
->>   		return -1;
->>   	}
->>   
->> -	drmem_info->lmb_size = dt_mem_next_cell(dt_root_size_cells, &prop);
->> +	drmem_info->lmb_size = be64_to_cpup(prop);
-> 
-> Same comment here.
-> 
+It would also seem sensible to have a check that 
+is_swap_pte(__swp_entry_to_pte(__swp_entry(x,y))) is true.
 
--aneesh
+> +	pte = __swp_entry_to_pte(swp);
+> +	WARN_ON(pfn != pte_pfn(pte));
+> +}
+> +
+> +#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+> +static void __init pmd_swap_tests(unsigned long pfn, pgprot_t prot)
+> +{
+> +	swp_entry_t swp;
+> +	pmd_t pmd;
+> +
+> +	pmd = pfn_pmd(pfn, prot);
+> +	swp = __pmd_to_swp_entry(pmd);
+> +	pmd = __swp_entry_to_pmd(swp);
+> +	WARN_ON(pfn != pmd_pfn(pmd));
+> +}
+> +#else  /* !CONFIG_ARCH_ENABLE_THP_MIGRATION */
+> +static void __init pmd_swap_tests(unsigned long pfn, pgprot_t prot) { }
+> +#endif /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
+> +
+> +static void __init swap_migration_tests(void)
+> +{
+> +	struct page *page;
+> +	swp_entry_t swp;
+> +
+> +	if (!IS_ENABLED(CONFIG_MIGRATION))
+> +		return;
+> +	/*
+> +	 * swap_migration_tests() requires a dedicated page as it needs to
+> +	 * be locked before creating a migration entry from it. Locking the
+> +	 * page that actually maps kernel text ('start_kernel') can be real
+> +	 * problematic. Lets allocate a dedicated page explicitly for this
+
+NIT: s/Lets/Let's
+
+Otherwise looks good to me.
+
+Steve
