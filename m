@@ -2,50 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7411B221DA1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 09:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDA8221DEE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 10:10:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6mfC3BBRzDqpy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 17:51:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6n4n4R47zDqsR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 18:10:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+X-Greylist: delayed 76 seconds by postgrey-1.36 at bilbo;
+ Thu, 16 Jul 2020 18:09:04 AEST
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6mc50K5zzDqlR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 17:49:18 +1000 (AEST)
-IronPort-SDR: xk3iiR1FmggiP3hoa3nWCwXNmWxoxIu4dHRFpkgUDav40Qrqy4YTskfuQlS+wN9yoTsIO6okMs
- +I0nspmln+fA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9683"; a="167468131"
-X-IronPort-AV: E=Sophos;i="5.75,358,1589266800"; d="scan'208";a="167468131"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2020 00:49:14 -0700
-IronPort-SDR: ZEIpYJcDyJVRAM8Bb19QjPwhj1dnPWqBakLds1RLgIacIult9FExRLgjkhcJCjWg+4kZSA3nYt
- 7dh4rnWez/AQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,358,1589266800"; d="scan'208";a="270495452"
-Received: from lkp-server02.sh.intel.com (HELO 02dcbd16d3ea) ([10.239.97.151])
- by fmsmga008.fm.intel.com with ESMTP; 16 Jul 2020 00:49:13 -0700
-Received: from kbuild by 02dcbd16d3ea with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1jvydk-00006C-Qv; Thu, 16 Jul 2020 07:49:12 +0000
-Date: Thu, 16 Jul 2020 15:47:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 58a4eb09c4aebaaffa8b4517c71543a41539c096
-Message-ID: <5f100619.6AcduvpjXDNMKo5l%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6n2n012zzDqrZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 18:09:04 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-256-PplaHSnfMy-vJii-bmgfqA-1; Thu, 16 Jul 2020 09:07:38 +0100
+X-MC-Unique: PplaHSnfMy-vJii-bmgfqA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 16 Jul 2020 09:07:37 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Thu, 16 Jul 2020 09:07:37 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Benjamin Herrenschmidt' <benh@kernel.crashing.org>, Bjorn Helgaas
+ <helgaas@kernel.org>
+Subject: RE: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Thread-Topic: [RFC PATCH 00/35] Move all PCIBIOS* definitions into arch/x86
+Thread-Index: AQHWWvotn5bD1WsSsUK40p+tBVrtaakJ2CmQ
+Date: Thu, 16 Jul 2020 08:07:37 +0000
+Message-ID: <5a7574c0efc1475a89f84c6393e598d6@AcuMS.aculab.com>
+References: <20200715221230.GA563957@bjorn-Precision-5520>
+ <5d4b3a716f85017c17c52a85915fba9e19509e81.camel@kernel.crashing.org>
+In-Reply-To: <5d4b3a716f85017c17c52a85915fba9e19509e81.camel@kernel.crashing.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,117 +66,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-pci <linux-pci@vger.kernel.org>, "bjorn@helgaas.com" <bjorn@helgaas.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux <sparclinux@vger.kernel.org>,
+ Toan Le <toan@os.amperecomputing.com>, Christoph Hellwig <hch@lst.de>, Marek
+ Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Kevin Hilman <khilman@baylibre.com>,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Greg Ungerer <gerg@linux-m68k.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Jakub Kicinski <kuba@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ "linux-kernel-mentees@lists.linuxfoundation.org"
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ Guenter Roeck <linux@roeck-us.net>, Arnd Bergmann <arnd@arndb.de>,
+ Ray Jui <rjui@broadcom.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Jens Axboe <axboe@fb.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Shuah Khan <skhan@linuxfoundation.org>, Keith Busch <kbusch@kernel.org>, Boris
+ Ostrovsky <boris.ostrovsky@oracle.com>, Richard Henderson <rth@twiddle.net>,
+ Juergen Gross <jgross@suse.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Scott Branden <sbranden@broadcom.com>,
+ Jingoo Han <jingoohan1@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>, "Saheed O.
+ Bolarinwa" <refactormyself@gmail.com>, 'Oliver O'Halloran' <oohall@gmail.com>,
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: 58a4eb09c4aebaaffa8b4517c71543a41539c096  Automatic merge of 'master', 'next' and 'fixes' (2020-07-15 23:12)
+RnJvbTogQmVuamFtaW4gSGVycmVuc2NobWlkdA0KPiBTZW50OiAxNSBKdWx5IDIwMjAgMjM6NDkN
+Cj4gT24gV2VkLCAyMDIwLTA3LTE1IGF0IDE3OjEyIC0wNTAwLCBCam9ybiBIZWxnYWFzIHdyb3Rl
+Og0KPiA+ID4gSSd2ZSAncGxheWVkJyB3aXRoIFBDSWUgZXJyb3IgaGFuZGxpbmcgLSB3aXRob3V0
+IG11Y2ggc3VjY2Vzcy4NCj4gPiA+IFdoYXQgbWlnaHQgYmUgdXNlZnVsIGlzIGZvciBhIGRyaXZl
+ciB0aGF0IGhhcyBqdXN0IHJlYWQgfjB1IHRvDQo+ID4gPiBiZSBhYmxlIHRvIGFzayAnaGFzIHRo
+ZXJlIGJlZW4gYW4gZXJyb3Igc2lnbmFsbGVkIGZvciB0aGlzIGRldmljZT8nLg0KPiA+DQo+ID4g
+SW4gbWFueSBjYXNlcyBhIGRyaXZlciB3aWxsIGtub3cgdGhhdCB+MCBpcyBub3QgYSB2YWxpZCB2
+YWx1ZSBmb3IgdGhlDQo+ID4gcmVnaXN0ZXIgaXQncyByZWFkaW5nLiAgQnV0IGlmIH4wICpjb3Vs
+ZCogYmUgdmFsaWQsIGFuIGludGVyZmFjZSBsaWtlDQo+ID4geW91IHN1Z2dlc3QgY291bGQgYmUg
+dXNlZnVsLiAgSSBkb24ndCB0aGluayB3ZSBoYXZlIGFueXRoaW5nIGxpa2UgdGhhdA0KPiA+IHRv
+ZGF5LCBidXQgbWF5YmUgd2UgY291bGQuICBJdCB3b3VsZCBjZXJ0YWlubHkgYmUgbmljZSBpZiB0
+aGUgUENJIGNvcmUNCj4gPiBub3RpY2VkLCBsb2dnZWQsIGFuZCBjbGVhcmVkIGVycm9ycy4gIFdl
+IGhhdmUgc29tZSBvZiB0aGF0IGZvciBBRVIsDQo+ID4gYnV0IHRoYXQncyBhbiBvcHRpb25hbCBm
+ZWF0dXJlLCBhbmQgc3VwcG9ydCBmb3IgdGhlIGVycm9yIGJpdHMgaW4gdGhlDQo+ID4gZ2FyZGVu
+LXZhcmlldHkgUENJX1NUQVRVUyByZWdpc3RlciBpcyBwcmV0dHkgaGFwaGF6YXJkLiAgQXMgeW91
+IG5vdGUNCj4gPiBiZWxvdywgdGhpcyBzb3J0IG9mIFNFUlIvUEVSUiByZXBvcnRpbmcgaXMgZnJl
+cXVlbnRseSBoYXJkLXdpcmVkIGluDQo+ID4gd2F5cyB0aGF0IHRha2VzIGl0IG91dCBvZiBvdXIg
+cHVydmlldy4NCj4gDQo+IFdlIGRvIGhhdmUgcGNpX2NoYW5uZWxfc3RhdGUgKHZpYSBwY2lfY2hh
+bm5lbF9vZmZsaW5lKCkpIHdoaWNoIGNvdmVycw0KPiB0aGUgY2FzZXMgd2hlcmUgdGhlIHVuZGVy
+bHlpbmcgZXJyb3IgaGFuZGxpbmcgKHN1Y2ggYXMgRUVIIG9yIHVucGx1ZykNCj4gcmVzdWx0cyBp
+biB0aGUgZGV2aWNlIGJlaW5nIG9mZmxpbmVkIHRob3VnaCB0aGlzIHRlbmQgdG8gYmUNCj4gYXN5
+bmNocm9ub3VzIHNvIGl0IG1pZ2h0IHRha2UgYSBmZXcgfjAncyBiZWZvcmUgeW91IGdldCBpdC4N
+Cg0KT24gb25lIG9mIG15IHN5c3RlbXMgSSBkb24ndCB0aGluayB0aGUgZXJyb3IgVExQIGZyb20g
+dGhlIHRhcmdldA0KbWFkZSBpdHMgd2F5IHBhc3QgdGhlIGZpcnN0IGJyaWRnZSAtIEkgY291bGQg
+c2VlIHRoZSBlcnJvciBpbiBpdCdzDQpzdGF0dXMgcmVnaXN0ZXJzLg0KQnV0IEkgY291bGRuJ3Qg
+ZmluZCBhbnkgb2YgdGhlIEFFUiBzdGF0dXMgcmVnaXN0ZXJzIGluIHRoZSByb290IGJyaWRnZS4N
+ClNvIEkgdGhpbmsgeW91J2QgbmVlZCBhIHNvZnR3YXJlIHBvbGwgb2YgdGhlIGJyaWRnZSByZWdp
+c3RlcnMgdG8NCmZpbmQgb3V0IChhbmQgY2xlYXIpIHRoZSBlcnJvci4NCg0KVGhlIE5NSSBvbiB0
+aGUgZGVsbCBzeXN0ZW0gKHdoaWNoIGlzIHN1cHBvc2VkIHRvIG1lZXQgc29tZSBzcGVjaWFsDQpO
+RUJTPyBzZXJ2ZXIgcmVxdWlyZW1lbnRzKSBpcyBqdXN0IHN0dXBpZC4NClRvbyBsYXRlIHRvIGJl
+IHN5bmNocm9ub3VzIGFuZCBpbXBvc3NpYmxlIGZvciB0aGUgT1MgdG8gaGFuZGxlLg0KDQoJRGF2
+aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50
+IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTcz
+ODYgKFdhbGVzKQ0K
 
-elapsed time: 1031m
-
-configs tested: 94
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arc                          axs101_defconfig
-c6x                        evmc6457_defconfig
-sh                 kfr2r09-romimage_defconfig
-powerpc                    gamecube_defconfig
-arm                          lpd270_defconfig
-mips                          malta_defconfig
-riscv                               defconfig
-c6x                        evmc6474_defconfig
-arm                        clps711x_defconfig
-arm                           corgi_defconfig
-riscv                            allyesconfig
-arm                         orion5x_defconfig
-arm                          moxart_defconfig
-powerpc                    amigaone_defconfig
-m68k                         apollo_defconfig
-sh                        edosk7705_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-i386                 randconfig-a016-20200715
-i386                 randconfig-a011-20200715
-i386                 randconfig-a015-20200715
-i386                 randconfig-a012-20200715
-i386                 randconfig-a013-20200715
-i386                 randconfig-a014-20200715
-riscv                             allnoconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                                    lkp
-x86_64                              fedora-25
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
