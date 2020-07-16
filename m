@@ -2,46 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003A4221F7B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 11:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E67222068
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 12:17:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6pVk556mzDqyv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 19:14:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6qtw6b9SzDqLq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 20:17:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6pSP3rm5zDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 19:12:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=miaoqinglang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=RTZbaMPF; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4B6pSN5296z9sSt; Thu, 16 Jul 2020 19:12:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1594890772; bh=JeI8v2lLOzWwduE+5cSU76pNmQxFjMg77GPeGybRqHk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=RTZbaMPFL0TPpJfiHejGfdYRHvlga0aS4vZNXrPbMuwZdsmoKvb6b0dSgPoWnNbRn
- ChfPK8y9gaspYvb/FvXX9OSOqKRzVN/T1S3KgxeO+8qpJp0UE5AcvM4p4oTQL3cy5p
- WMNrskZhplqFVyet1GF5MzBJvqqNXLqNjtF9ENpfcQZR3p3vyYGqsWit4nKSBv/9Aw
- tBuQWyBQXbKOMxxHSPtCcTFeu3r8OL3dqtmP6rQSz+QD6ao6Pl0f9uCC/hgwtyY+sb
- 72TyY/oRNMCFRCxil/bBfQVhS8nPrxrb8J1BDilqmExbEL13Vc1bXs30bUrpcOKRwN
- UuwV+n07ETsIQ==
-Date: Thu, 16 Jul 2020 11:30:30 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] pseries: Fix 64 bit logical memory block panic
-Message-ID: <20200716013030.GA4076912@thinks.paulus.ozlabs.org>
-References: <20200715000820.1255764-1-anton@ozlabs.org>
- <87d04x3q6m.fsf@linux.ibm.com>
+ dmarc=none (p=none dis=none) header.from=huawei.com
+X-Greylist: delayed 970 seconds by postgrey-1.36 at bilbo;
+ Thu, 16 Jul 2020 19:19:41 AEST
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6pcF251RzDqgx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 19:19:37 +1000 (AEST)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id C89E76DB5867427788A6;
+ Thu, 16 Jul 2020 17:03:21 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 16 Jul 2020 17:03:17 +0800
+From: Qinglang Miao <miaoqinglang@huawei.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Paul Mackerras
+ <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH -next] powerpc: Convert to DEFINE_SHOW_ATTRIBUTE
+Date: Thu, 16 Jul 2020 17:07:12 +0800
+Message-ID: <20200716090712.14375-1-miaoqinglang@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87d04x3q6m.fsf@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Thu, 16 Jul 2020 20:14:51 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,120 +51,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 15, 2020 at 06:12:25PM +0530, Aneesh Kumar K.V wrote:
-> Anton Blanchard <anton@ozlabs.org> writes:
-> 
-> > Booting with a 4GB LMB size causes us to panic:
-> >
-> >   qemu-system-ppc64: OS terminated: OS panic:
-> >       Memory block size not suitable: 0x0
-> >
-> > Fix pseries_memory_block_size() to handle 64 bit LMBs.
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Anton Blanchard <anton@ozlabs.org>
-> > ---
-> >  arch/powerpc/platforms/pseries/hotplug-memory.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > index 5ace2f9a277e..6574ac33e887 100644
-> > --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> > @@ -27,7 +27,7 @@ static bool rtas_hp_event;
-> >  unsigned long pseries_memory_block_size(void)
-> >  {
-> >  	struct device_node *np;
-> > -	unsigned int memblock_size = MIN_MEMORY_BLOCK_SIZE;
-> > +	uint64_t memblock_size = MIN_MEMORY_BLOCK_SIZE;
-> >  	struct resource r;
-> >  
-> >  	np = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
-> 
-> We need similar changes at more places?
-> 
-> modified   arch/powerpc/include/asm/book3s/64/mmu.h
-> @@ -85,7 +85,7 @@ extern unsigned int mmu_base_pid;
->  /*
->   * memory block size used with radix translation.
->   */
-> -extern unsigned int __ro_after_init radix_mem_block_size;
-> +extern unsigned long __ro_after_init radix_mem_block_size;
->  
->  #define PRTB_SIZE_SHIFT	(mmu_pid_bits + 4)
->  #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
-> modified   arch/powerpc/include/asm/drmem.h
-> @@ -21,7 +21,7 @@ struct drmem_lmb {
->  struct drmem_lmb_info {
->  	struct drmem_lmb        *lmbs;
->  	int                     n_lmbs;
-> -	u32                     lmb_size;
-> +	u64                     lmb_size;
->  };
->  
->  extern struct drmem_lmb_info *drmem_info;
-> modified   arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -34,7 +34,7 @@
->  
->  unsigned int mmu_pid_bits;
->  unsigned int mmu_base_pid;
-> -unsigned int radix_mem_block_size __ro_after_init;
-> +unsigned long radix_mem_block_size __ro_after_init;
+From: Chen Huang <chenhuang5@huawei.com>
 
-These changes look fine.
+Use DEFINE_SHOW_ATTRIBUTE macro to simplify the code.
 
->  static __ref void *early_alloc_pgtable(unsigned long size, int nid,
->  			unsigned long region_start, unsigned long region_end)
-> modified   arch/powerpc/mm/drmem.c
-> @@ -268,14 +268,15 @@ static void __init __walk_drmem_v2_lmbs(const __be32 *prop, const __be32 *usm,
->  void __init walk_drmem_lmbs_early(unsigned long node,
->  			void (*func)(struct drmem_lmb *, const __be32 **))
->  {
-> +	const __be64 *lmb_prop;
->  	const __be32 *prop, *usm;
->  	int len;
->  
-> -	prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
-> -	if (!prop || len < dt_root_size_cells * sizeof(__be32))
-> +	lmb_prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
-> +	if (!lmb_prop || len < sizeof(__be64))
->  		return;
->  
-> -	drmem_info->lmb_size = dt_mem_next_cell(dt_root_size_cells, &prop);
-> +	drmem_info->lmb_size = be64_to_cpup(lmb_prop);
+Signed-off-by: Chen Huang <chenhuang5@huawei.com>
+---
+ arch/powerpc/kvm/book3s_xive_native.c  | 12 +-----------
+ arch/powerpc/mm/ptdump/bats.c          | 24 +++++++-----------------
+ arch/powerpc/mm/ptdump/hashpagetable.c | 12 +-----------
+ arch/powerpc/mm/ptdump/ptdump.c        | 13 +------------
+ arch/powerpc/mm/ptdump/segment_regs.c  | 12 +-----------
+ 5 files changed, 11 insertions(+), 62 deletions(-)
 
-This particular change shouldn't be necessary.  We already have
-dt_mem_next_cell() returning u64, and it knows how to combine two
-cells to give a u64 (for dt_root_size_cells == 2).
+diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+index 02e3cbbea..d0c2db0e0 100644
+--- a/arch/powerpc/kvm/book3s_xive_native.c
++++ b/arch/powerpc/kvm/book3s_xive_native.c
+@@ -1227,17 +1227,7 @@ static int xive_native_debug_show(struct seq_file *m, void *private)
+ 	return 0;
+ }
+ 
+-static int xive_native_debug_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, xive_native_debug_show, inode->i_private);
+-}
+-
+-static const struct file_operations xive_native_debug_fops = {
+-	.open = xive_native_debug_open,
+-	.read_iter = seq_read_iter,
+-	.llseek = seq_lseek,
+-	.release = single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(xive_native_debug);
+ 
+ static void xive_native_debugfs_init(struct kvmppc_xive *xive)
+ {
+diff --git a/arch/powerpc/mm/ptdump/bats.c b/arch/powerpc/mm/ptdump/bats.c
+index 7afcdac48..93771af72 100644
+--- a/arch/powerpc/mm/ptdump/bats.c
++++ b/arch/powerpc/mm/ptdump/bats.c
+@@ -56,7 +56,7 @@ static void bat_show_601(struct seq_file *m, int idx, u32 lower, u32 upper)
+ 
+ #define BAT_SHOW_601(_m, _n, _l, _u) bat_show_601(_m, _n, mfspr(_l), mfspr(_u))
+ 
+-static int bats_show_601(struct seq_file *m, void *v)
++static int bats_601_show(struct seq_file *m, void *v)
+ {
+ 	seq_puts(m, "---[ Block Address Translation ]---\n");
+ 
+@@ -113,7 +113,7 @@ static void bat_show_603(struct seq_file *m, int idx, u32 lower, u32 upper, bool
+ 
+ #define BAT_SHOW_603(_m, _n, _l, _u, _d) bat_show_603(_m, _n, mfspr(_l), mfspr(_u), _d)
+ 
+-static int bats_show_603(struct seq_file *m, void *v)
++static int bats_603_show(struct seq_file *m, void *v)
+ {
+ 	seq_puts(m, "---[ Instruction Block Address Translation ]---\n");
+ 
+@@ -144,25 +144,15 @@ static int bats_show_603(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static int bats_open(struct inode *inode, struct file *file)
+-{
+-	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
+-		return single_open(file, bats_show_601, NULL);
+-
+-	return single_open(file, bats_show_603, NULL);
+-}
+-
+-static const struct file_operations bats_fops = {
+-	.open		= bats_open,
+-	.read_iter		= seq_read_iter,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(bats_601);
++DEFINE_SHOW_ATTRIBUTE(bats_603);
+ 
+ static int __init bats_init(void)
+ {
+ 	debugfs_create_file("block_address_translation", 0400,
+-			    powerpc_debugfs_root, NULL, &bats_fops);
++			    powerpc_debugfs_root, NULL,
++			    IS_ENABLED(CONFIG_PPC_BOOK3S_601) ?
++			    &bats_601_fops : &bats_603_fops);
+ 	return 0;
+ }
+ device_initcall(bats_init);
+diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
+index 457fcee7e..c7f824d29 100644
+--- a/arch/powerpc/mm/ptdump/hashpagetable.c
++++ b/arch/powerpc/mm/ptdump/hashpagetable.c
+@@ -526,17 +526,7 @@ static int ptdump_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static int ptdump_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, ptdump_show, NULL);
+-}
+-
+-static const struct file_operations ptdump_fops = {
+-	.open		= ptdump_open,
+-	.read_iter		= seq_read_iter,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(ptdump);
+ 
+ static int ptdump_init(void)
+ {
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index db17e84b5..58b062f1b 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -398,18 +398,7 @@ static int ptdump_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-
+-static int ptdump_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, ptdump_show, NULL);
+-}
+-
+-static const struct file_operations ptdump_fops = {
+-	.open		= ptdump_open,
+-	.read_iter		= seq_read_iter,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(ptdump);
+ 
+ static void build_pgtable_complete_mask(void)
+ {
+diff --git a/arch/powerpc/mm/ptdump/segment_regs.c b/arch/powerpc/mm/ptdump/segment_regs.c
+index 8b15bad5a..9e870d44c 100644
+--- a/arch/powerpc/mm/ptdump/segment_regs.c
++++ b/arch/powerpc/mm/ptdump/segment_regs.c
+@@ -41,17 +41,7 @@ static int sr_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static int sr_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, sr_show, NULL);
+-}
+-
+-static const struct file_operations sr_fops = {
+-	.open		= sr_open,
+-	.read_iter		= seq_read_iter,
+-	.llseek		= seq_lseek,
+-	.release	= single_release,
+-};
++DEFINE_SHOW_ATTRIBUTE(sr);
+ 
+ static int __init sr_init(void)
+ {
+-- 
+2.17.1
 
->  	usm = of_get_flat_dt_prop(node, "linux,drconf-usable-memory", &len);
->  
-> @@ -296,19 +297,19 @@ void __init walk_drmem_lmbs_early(unsigned long node,
->  
->  static int __init init_drmem_lmb_size(struct device_node *dn)
->  {
-> -	const __be32 *prop;
-> +	const __be64 *prop;
->  	int len;
->  
->  	if (drmem_info->lmb_size)
->  		return 0;
->  
->  	prop = of_get_property(dn, "ibm,lmb-size", &len);
-> -	if (!prop || len < dt_root_size_cells * sizeof(__be32)) {
-> +	if (!prop || len < sizeof(__be64)) {
->  		pr_info("Could not determine LMB size\n");
->  		return -1;
->  	}
->  
-> -	drmem_info->lmb_size = dt_mem_next_cell(dt_root_size_cells, &prop);
-> +	drmem_info->lmb_size = be64_to_cpup(prop);
-
-Same comment here.
-
-Paul.
