@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C107D221C7E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 08:18:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B3C221C89
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 08:20:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6kZl0NsqzDqby
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 16:18:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6kdH3Z8qzDqV4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 16:20:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,52 +19,55 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6kXy1hh4zDqZT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 16:16:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6kY148KwzDqby
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 16:16:37 +1000 (AEST)
 Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06G626oO175769; Thu, 16 Jul 2020 02:16:27 -0400
+ 06G626KY175835; Thu, 16 Jul 2020 02:16:32 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32afvktee4-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32afvktegj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jul 2020 02:16:27 -0400
+ Thu, 16 Jul 2020 02:16:32 -0400
 Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06G62CR0176300;
- Thu, 16 Jul 2020 02:16:26 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32afvktedb-1
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06G64XJf183144;
+ Thu, 16 Jul 2020 02:16:32 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32afvktefy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jul 2020 02:16:26 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06G6FNBj014255;
- Thu, 16 Jul 2020 06:16:25 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 3274pgw3t6-1
+ Thu, 16 Jul 2020 02:16:32 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06G6FX23010204;
+ Thu, 16 Jul 2020 06:16:30 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma02fra.de.ibm.com with ESMTP id 327527wcmm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jul 2020 06:16:25 +0000
+ Thu, 16 Jul 2020 06:16:30 +0000
 Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
  [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06G6GM8x27591148
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06G6GRMa64684300
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Jul 2020 06:16:22 GMT
+ Thu, 16 Jul 2020 06:16:27 GMT
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 289124205C;
+ by IMSVA (Postfix) with ESMTP id 02E8C42063;
+ Thu, 16 Jul 2020 06:16:27 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E15DE42042;
  Thu, 16 Jul 2020 06:16:22 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2CC5042049;
- Thu, 16 Jul 2020 06:16:18 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.79.215.148])
  by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 16 Jul 2020 06:16:17 +0000 (GMT)
+ Thu, 16 Jul 2020 06:16:22 +0000 (GMT)
 From: Balamuruhan S <bala24@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH v2 0/4] VSX 32-byte vector paired load/store instructions
-Date: Thu, 16 Jul 2020 11:45:54 +0530
-Message-Id: <20200716061558.1532199-1-bala24@linux.ibm.com>
+Subject: [PATCH v2 1/4] powerpc/sstep: support new VSX vector paired storage
+ access instructions
+Date: Thu, 16 Jul 2020 11:45:55 +0530
+Message-Id: <20200716061558.1532199-2-bala24@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200716061558.1532199-1-bala24@linux.ibm.com>
+References: <20200716061558.1532199-1-bala24@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -72,7 +75,7 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-15_12:2020-07-15,
  2020-07-15 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=978
+ phishscore=0 mlxlogscore=999
  bulkscore=0 clxscore=1015 spamscore=0 adultscore=0 mlxscore=0
  lowpriorityscore=0 suspectscore=1 malwarescore=0 impostorscore=0
  priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
@@ -95,40 +98,125 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VSX vector paired instructions operates with octword (32-byte) operand
-for loads and stores between storage and a pair of two sequential Vector-Scalar
-Registers (VSRs). There are 4 word instructions and 2 prefixed instructions
-that provides this 32-byte storage access operations - lxvp, lxvpx, stxvp,
-stxvpx, plxvpx, pstxvpx.
+VSX Vector Paired instructions loads/stores an octword (32 bytes)
+from/to storage into two sequential VSRs. Add `analyse_instr()` support
+to these new instructions,
+        * Load VSX Vector Paired (lxvp)
+        * Load VSX Vector Paired Indexed (lxvpx)
+        * Prefixed Load VSX Vector Paired (plxvp)
+        * Store VSX Vector Paired (stxvp)
+        * Store VSX Vector Paired Indexed (stxvpx)
+        * Prefixed Store VSX Vector Paired (pstxvp)
 
-Emulation infrastructure doesn't have support for these instructions, to
-operate with 32-byte storage access and to operate with 2 VSX registers.
-This patch series enables the instruction emulation support and adds test
-cases for them respectively.
+Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+---
+ arch/powerpc/lib/sstep.c | 52 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-Changes in v2:
--------------
-* Fix suggestion from Sandipan, wrap ISA 3.1 instructions with
-  cpu_has_feature(CPU_FTR_ARCH_31) check.
-
-* Rebase on latest powerpc next branch.
-
-Balamuruhan S (4):
-  powerpc/sstep: support new VSX vector paired storage access
-    instructions
-  powerpc/sstep: support emulation for vsx vector paired storage access
-    instructions
-  powerpc ppc-opcode: add opcodes for vsx vector paired instructions
-  powerpc sstep: add testcases for vsx load/store instructions
-
- arch/powerpc/include/asm/ppc-opcode.h |  11 ++
- arch/powerpc/include/asm/sstep.h      |   2 +-
- arch/powerpc/lib/sstep.c              | 110 ++++++++++-
- arch/powerpc/lib/test_emulate_step.c  | 273 ++++++++++++++++++++++++++
- 4 files changed, 386 insertions(+), 10 deletions(-)
-
-
-base-commit: b2b46304e9360f3dda49c9d8ba4a1478b9eecf1d
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index 5abe98216dc2..1af8c1920b36 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -31,6 +31,10 @@ extern char system_call_common[];
+ #define XER_OV32	0x00080000U
+ #define XER_CA32	0x00040000U
+ 
++#ifdef CONFIG_VSX
++#define VSX_REGISTER_XTP(rd)   ((((rd) & 1) << 5) | ((rd) & 0xfe))
++#endif
++
+ #ifdef CONFIG_PPC_FPU
+ /*
+  * Functions in ldstfp.S
+@@ -2382,6 +2386,15 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			op->vsx_flags = VSX_SPLAT;
+ 			break;
+ 
++		case 333:       /* lxvpx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_31))
++				return -1;
++			op->reg = VSX_REGISTER_XTP(rd);
++			op->type = MKOP(LOAD_VSX, 0, 32);
++			op->element_size = 32;
++			op->vsx_flags = VSX_CHECK_VEC;
++			break;
++
+ 		case 364:	/* lxvwsx */
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 4);
+@@ -2410,6 +2423,14 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 				VSX_CHECK_VEC;
+ 			break;
+ 		}
++		case 461:       /* stxvpx */
++			if (!cpu_has_feature(CPU_FTR_ARCH_31))
++				return -1;
++			op->reg = VSX_REGISTER_XTP(rd);
++			op->type = MKOP(STORE_VSX, 0, 32);
++			op->element_size = 32;
++			op->vsx_flags = VSX_CHECK_VEC;
++			break;
+ 		case 524:	/* lxsspx */
+ 			op->reg = rd | ((word & 1) << 5);
+ 			op->type = MKOP(LOAD_VSX, 0, 4);
+@@ -2651,6 +2672,23 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ #endif
+ 
+ #ifdef CONFIG_VSX
++	case 6:
++		if (!cpu_has_feature(CPU_FTR_ARCH_31))
++			return -1;
++		op->ea = dqform_ea(word, regs);
++		op->reg = VSX_REGISTER_XTP(rd);
++		op->element_size = 32;
++		op->vsx_flags = VSX_CHECK_VEC;
++		switch (word & 0xf) {
++		case 0:         /* lxvp */
++			op->type = MKOP(LOAD_VSX, 0, 32);
++			break;
++		case 1:         /* stxvp */
++			op->type = MKOP(STORE_VSX, 0, 32);
++			break;
++		}
++		break;
++
+ 	case 61:	/* stfdp, lxv, stxsd, stxssp, stxv */
+ 		switch (word & 7) {
+ 		case 0:		/* stfdp with LSB of DS field = 0 */
+@@ -2715,6 +2753,8 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		}
+ 		break;
+ 	case 1: /* Prefixed instructions */
++		if (!cpu_has_feature(CPU_FTR_ARCH_31))
++			return -1;
+ 		prefix_r = word & (1ul << 20);
+ 		ra = (suffix >> 16) & 0x1f;
+ 		op->update_reg = ra;
+@@ -2779,12 +2819,24 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			case 57:	/* pld */
+ 				op->type = MKOP(LOAD, PREFIXED, 8);
+ 				break;
++			case 58:        /* plxvp */
++				op->reg = VSX_REGISTER_XTP(rd);
++				op->type = MKOP(LOAD_VSX, PREFIXED, 32);
++				op->element_size = 32;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
+ 			case 60:        /* stq */
+ 				op->type = MKOP(STORE, PREFIXED, 16);
+ 				break;
+ 			case 61:	/* pstd */
+ 				op->type = MKOP(STORE, PREFIXED, 8);
+ 				break;
++			case 62:        /* pstxvp */
++				op->reg = VSX_REGISTER_XTP(rd);
++				op->type = MKOP(STORE_VSX, PREFIXED, 32);
++				op->element_size = 32;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
+ 			}
+ 			break;
+ 		case 1: /* Type 01 Eight-Byte Register-to-Register */
 -- 
 2.24.1
 
