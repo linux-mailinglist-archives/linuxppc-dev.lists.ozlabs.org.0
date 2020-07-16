@@ -1,99 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5159F2218FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 02:36:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FDD22190E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 02:51:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6b0z3djdzDqH1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 10:36:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6bKJ4pjLzDqnw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 10:51:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6ZzJ1TtlzDqjJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 10:35:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6bH95FRfzDqlY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 10:49:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=R6Vqu16S; dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4B6ZzH6nS1z8tWg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 10:35:23 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B6bH90r6Rz8tFw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 10:49:09 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 4B6ZzH6PQ6z9sQt; Thu, 16 Jul 2020 10:35:23 +1000 (AEST)
+ id 4B6bH90RNDz9sT6; Thu, 16 Jul 2020 10:49:09 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=axtens.net
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=R6Vqu16S; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4B6ZzH2nCrz9sDX
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Jul 2020 10:35:23 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06G0WP27006018; Wed, 15 Jul 2020 20:35:17 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 329r1jcupq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jul 2020 20:35:16 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06G0WQg3006534;
- Wed, 15 Jul 2020 20:35:16 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0b-001b2d01.pphosted.com with ESMTP id 329r1jcupe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Jul 2020 20:35:16 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06G0KJoq015981;
- Thu, 16 Jul 2020 00:35:15 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03wdc.us.ibm.com with ESMTP id 327529cswp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Jul 2020 00:35:15 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06G0ZEiA46334458
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Jul 2020 00:35:14 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 454917805F;
- Thu, 16 Jul 2020 00:35:14 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C2BE87805E;
- Thu, 16 Jul 2020 00:35:10 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.163.73.114])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Thu, 16 Jul 2020 00:35:10 +0000 (GMT)
-References: <159466074408.24747.10036072269371204890.stgit@hbathini.in.ibm.com>
- <159466095278.24747.9161591016931052627.stgit@hbathini.in.ibm.com>
-User-agent: mu4e 1.2.0; emacs 26.3
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH v3 08/12] ppc64/kexec_file: setup the stack for purgatory
-In-reply-to: <159466095278.24747.9161591016931052627.stgit@hbathini.in.ibm.com>
-Date: Wed, 15 Jul 2020 21:35:07 -0300
-Message-ID: <87zh808fgk.fsf@morokweng.localdomain>
+ by ozlabs.org (Postfix) with ESMTPS id 4B6bH84vGGz9sR4
+ for <linuxppc-dev@ozlabs.org>; Thu, 16 Jul 2020 10:49:08 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id p3so3978556pgh.3
+ for <linuxppc-dev@ozlabs.org>; Wed, 15 Jul 2020 17:49:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=o2o92rwO9CkuSztudCtshx5MGMYC4PKKPlgn//SYCT0=;
+ b=R6Vqu16SO4S7zlcPL9tUftEcCKhhmTuJASV1jHrkm3VX08jfTe7LOeGPzQmLuBXS8K
+ bxxMJOyGywyDBigdEoLCLxIncuGOcJ4XQOKkvkC+KbaK6Y+M8e5KJbA10C7AZFsqIfbM
+ GsHdaWGDhvvseGp15soN8AXWw1Cr45nqDdgzQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=o2o92rwO9CkuSztudCtshx5MGMYC4PKKPlgn//SYCT0=;
+ b=toIB6L/JTxNDxpucivR+mTYM8W4cuY+uo5oTu2ZKd6+DpD6ryqm9E3lr1g3AwClA2b
+ mn4EU2kK2H8OqpknrpJWB/qu3xFbHt8rE7ps//WCq79Ri5OSmDsiwgcC1BlY76vtgsd/
+ RyKjRtkyl1jdZPDEOc9Zpky931l3ITOmddgCd/b3qDi7OtHGzjSzVUiiAqDNn+GrdLt5
+ 7WPyCQI7BPaffkM8WGyrGFujt7+8Olb3FbebeRN/9IxP3Rdwh3bqTfGWils1GO8+CXW2
+ wngil4+FVZ7fXUckjXL7jiw/LmENhyNlgfEjV2pVbmQFYONzlxOim5fIx1A36PANmJpT
+ AHpA==
+X-Gm-Message-State: AOAM533ixViOvDrxh3H/jixMbtTJx+QsyqyyP8TD9pWBAiu/zI2hjRXB
+ olRWXF1CIZE1CMXsaXfcP0Ph9Q==
+X-Google-Smtp-Source: ABdhPJwZ+N82U87oKOvzJ+8+ZKG3CnsD1/N4sgOMAKA9IVhp/S5iMs5muXWDZP36CYKxWy/UtLNkqQ==
+X-Received: by 2002:a63:4f05:: with SMTP id d5mr1942789pgb.298.1594860546292; 
+ Wed, 15 Jul 2020 17:49:06 -0700 (PDT)
+Received: from localhost
+ (2001-44b8-111e-5c00-64dc-606d-f98e-b592.static.ipv6.internode.on.net.
+ [2001:44b8:111e:5c00:64dc:606d:f98e:b592])
+ by smtp.gmail.com with ESMTPSA id cv7sm3078621pjb.9.2020.07.15.17.49.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 Jul 2020 17:49:05 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v3] powerpc/pseries: detect secure and trusted boot state
+ of the system.
+In-Reply-To: <1594813921-12425-1-git-send-email-nayna@linux.ibm.com>
+References: <1594813921-12425-1-git-send-email-nayna@linux.ibm.com>
+Date: Thu, 16 Jul 2020 10:49:02 +1000
+Message-ID: <87v9iothc1.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-15_12:2020-07-15,
- 2020-07-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- priorityscore=1501 spamscore=0 mlxlogscore=999 lowpriorityscore=0
- impostorscore=0 adultscore=0 mlxscore=0 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007150175
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,45 +93,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Nayna Jain <nayna@linux.ibm.com>,
- Kexec-ml <kexec@lists.infradead.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, Petr Tesarik <ptesarik@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Nayna,
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
+Looks good to me.
 
-> To avoid any weird errors, the purgatory should run with its own
-> stack. Set one up by adding the stack buffer to .data section of
-> the purgatory. Also, setup opal base & entry values in r8 & r9
-> registers to help early OPAL debugging.
->
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> Tested-by: Pingfan Liu <piliu@redhat.com>
+Sorry for not noticing this before, but I think
+> +#include <asm/machdep.h>
+is now superfluous (I think it's leftover from the machine_is
+version?). Maybe mpe will take pity on you and remove it when he picks
+up your patch.
 
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Kind regards,
+Daniel
 
-> ---
->
-> v2 -> v3:
-> * Unchanged. Added Tested-by tag from Pingfan.
->
-> v1 -> v2:
-> * Setting up opal base & entry values in r8 & r9 for early OPAL debug.
->
->
->  arch/powerpc/include/asm/kexec.h       |    4 ++++
->  arch/powerpc/kexec/file_load_64.c      |   29 +++++++++++++++++++++++++++++
->  arch/powerpc/purgatory/trampoline_64.S |   32 ++++++++++++++++++++++++++++++++
->  3 files changed, 65 insertions(+)
->
-
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+>  
+>  static struct device_node *get_ppc_fw_sb_node(void)
+>  {
+> @@ -23,12 +24,19 @@ bool is_ppc_secureboot_enabled(void)
+>  {
+>  	struct device_node *node;
+>  	bool enabled = false;
+> +	u32 secureboot;
+>  
+>  	node = get_ppc_fw_sb_node();
+>  	enabled = of_property_read_bool(node, "os-secureboot-enforcing");
+> -
+>  	of_node_put(node);
+>  
+> +	if (enabled)
+> +		goto out;
+> +
+> +	if (!of_property_read_u32(of_root, "ibm,secure-boot", &secureboot))
+> +		enabled = (secureboot > 1);
+> +
+> +out:
+>  	pr_info("Secure boot mode %s\n", enabled ? "enabled" : "disabled");
+>  
+>  	return enabled;
+> @@ -38,12 +46,19 @@ bool is_ppc_trustedboot_enabled(void)
+>  {
+>  	struct device_node *node;
+>  	bool enabled = false;
+> +	u32 trustedboot;
+>  
+>  	node = get_ppc_fw_sb_node();
+>  	enabled = of_property_read_bool(node, "trusted-enabled");
+> -
+>  	of_node_put(node);
+>  
+> +	if (enabled)
+> +		goto out;
+> +
+> +	if (!of_property_read_u32(of_root, "ibm,trusted-boot", &trustedboot))
+> +		enabled = (trustedboot > 0);
+> +
+> +out:
+>  	pr_info("Trusted boot mode %s\n", enabled ? "enabled" : "disabled");
+>  
+>  	return enabled;
+> -- 
+> 2.26.2
