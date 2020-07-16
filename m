@@ -2,79 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B405D221D7E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 09:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7411B221DA1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 09:51:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6mGT08ryzDr2F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 17:34:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6mfC3BBRzDqpy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 17:51:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
- helo=mail-qk1-x743.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oamjSBt4; dkim-atps=neutral
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6lvp3L5gzDqvR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 17:17:58 +1000 (AEST)
-Received: by mail-qk1-x743.google.com with SMTP id e11so4638694qkm.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 00:17:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=ZS4oJIQ2eGXNXG4ckn/BOCjLtcC7Sfi7mznbmBvYbzg=;
- b=oamjSBt4+8VIplrXC+jFe4VZV+OdEcmqKl6Iwf4ecu4XygY1Y1vJ5OdUV7KhttV4Zk
- FAIGMNNPJuxBcXK9J02xLqlWDqbfRQVPMNVM+dNT0qMtmTyMZCYwzkvjL3anEzx3jHON
- EgCFBvupyO9rncdasTCwB1FI3g7KpHJ+zx6dF6t9alP2cZRre319oogkNZvpBQLL5eC6
- kM9GNZe5MZhzIO+zrC+cXKJuSQtQF2iqFaowU+TazTsmqXo1dtEosHR/BigI2y8MtOck
- /mWNKqotNM/2+5fgwYkz0IKEKaOg1uXTTtvq0pAQhEjKaljs5Q6KdB/zJ21JxsyrGyw5
- mBqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=ZS4oJIQ2eGXNXG4ckn/BOCjLtcC7Sfi7mznbmBvYbzg=;
- b=MPNu1gNXouLMjobe+j2w1TY/kn3ezWodZ3R5O+gkj/d86tUIv7jIGD7TusUkFVKksa
- OHg8vg1m46G+YpsAy9q1Bv5Jv4g4i/zqBDJQjQEqxKgQJbM5p/APrdNMTuMBn2r+bPHZ
- +lv67AP4JudYokQ+UYoM8MuNZ/DD9nhs8mLPlc8SjnttWp9maAqPXifPm+YKBcRm4gO2
- oZDYnTFdBaxvSTVTOzDmHtjmLN2mQkMvam4Z8cBYZgqpTeLvMxnNsa9Stk+iPkrVFgGA
- fq/t4dWLMn95GfcIVTEzLzfgQTcpMueuoIRaY/VPqDGfYXjkXYcw/h3ir8IDpsv2FKU0
- 3MAA==
-X-Gm-Message-State: AOAM530nnihwfwbFLSkEhWWC08CVun8YjE/PBpXmoIy8LeGj+uhWRZ5j
- o6nNvxMwOXyvy28lFFPmZQA=
-X-Google-Smtp-Source: ABdhPJyURFS5X63jWted3i4754ovE+xqZMCPQm3I9rkPOy+KOPpLA2hsUxg1Mcbm+o+VmlSKIT7ZAA==
-X-Received: by 2002:a37:995:: with SMTP id 143mr2705579qkj.266.1594883876048; 
- Thu, 16 Jul 2020 00:17:56 -0700 (PDT)
-Received: from LeoBras.ibmuc.com (200-236-239-31.dynamic.desktop.com.br.
- [200.236.239.31])
- by smtp.gmail.com with ESMTPSA id a5sm6637989qtd.84.2020.07.16.00.17.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jul 2020 00:17:55 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Joel Stanley <joel@jms.id.au>, Christophe Leroy <christophe.leroy@c-s.fr>,
- Leonardo Bras <leobras.c@gmail.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>
-Subject: [PATCH v4 7/7] powerpc/pseries/iommu: Rename "direct window" to "dma
- window"
-Date: Thu, 16 Jul 2020 04:16:59 -0300
-Message-Id: <20200716071658.467820-8-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200716071658.467820-1-leobras.c@gmail.com>
-References: <20200716071658.467820-1-leobras.c@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6mc50K5zzDqlR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 17:49:18 +1000 (AEST)
+IronPort-SDR: xk3iiR1FmggiP3hoa3nWCwXNmWxoxIu4dHRFpkgUDav40Qrqy4YTskfuQlS+wN9yoTsIO6okMs
+ +I0nspmln+fA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9683"; a="167468131"
+X-IronPort-AV: E=Sophos;i="5.75,358,1589266800"; d="scan'208";a="167468131"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2020 00:49:14 -0700
+IronPort-SDR: ZEIpYJcDyJVRAM8Bb19QjPwhj1dnPWqBakLds1RLgIacIult9FExRLgjkhcJCjWg+4kZSA3nYt
+ 7dh4rnWez/AQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,358,1589266800"; d="scan'208";a="270495452"
+Received: from lkp-server02.sh.intel.com (HELO 02dcbd16d3ea) ([10.239.97.151])
+ by fmsmga008.fm.intel.com with ESMTP; 16 Jul 2020 00:49:13 -0700
+Received: from kbuild by 02dcbd16d3ea with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jvydk-00006C-Qv; Thu, 16 Jul 2020 07:49:12 +0000
+Date: Thu, 16 Jul 2020 15:47:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 58a4eb09c4aebaaffa8b4517c71543a41539c096
+Message-ID: <5f100619.6AcduvpjXDNMKo5l%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,315 +57,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A previous change introduced the usage of DDW as a bigger indirect DMA
-mapping when the DDW available size does not map the whole partition.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 58a4eb09c4aebaaffa8b4517c71543a41539c096  Automatic merge of 'master', 'next' and 'fixes' (2020-07-15 23:12)
 
-As most of the code that manipulates direct mappings was reused for
-indirect mappings, it's necessary to rename all names and debug/info
-messages to reflect that it can be used for both kinds of mapping.
+elapsed time: 1031m
 
-Also, defines DEFAULT_DMA_WIN as "ibm,dma-window" to document that
-it's the name of the default DMA window.
+configs tested: 94
+configs skipped: 4
 
-Those changes are not supposed to change how the code works in any
-way, just adjust naming.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arc                          axs101_defconfig
+c6x                        evmc6457_defconfig
+sh                 kfr2r09-romimage_defconfig
+powerpc                    gamecube_defconfig
+arm                          lpd270_defconfig
+mips                          malta_defconfig
+riscv                               defconfig
+c6x                        evmc6474_defconfig
+arm                        clps711x_defconfig
+arm                           corgi_defconfig
+riscv                            allyesconfig
+arm                         orion5x_defconfig
+arm                          moxart_defconfig
+powerpc                    amigaone_defconfig
+m68k                         apollo_defconfig
+sh                        edosk7705_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+i386                 randconfig-a016-20200715
+i386                 randconfig-a011-20200715
+i386                 randconfig-a015-20200715
+i386                 randconfig-a012-20200715
+i386                 randconfig-a013-20200715
+i386                 randconfig-a014-20200715
+riscv                             allnoconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                                    lkp
+x86_64                              fedora-25
+
 ---
- arch/powerpc/platforms/pseries/iommu.c | 100 +++++++++++++------------
- 1 file changed, 52 insertions(+), 48 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 6e1c9d1599d1..5ca952d966a4 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -339,7 +339,7 @@ struct dynamic_dma_window_prop {
- 	__be32	window_shift;	/* ilog2(tce_window_size) */
- };
- 
--struct direct_window {
-+struct dma_win {
- 	struct device_node *device;
- 	const struct dynamic_dma_window_prop *prop;
- 	struct list_head list;
-@@ -359,12 +359,13 @@ struct ddw_create_response {
- 	u32 addr_lo;
- };
- 
--static LIST_HEAD(direct_window_list);
-+static LIST_HEAD(dma_win_list);
- /* prevents races between memory on/offline and window creation */
--static DEFINE_SPINLOCK(direct_window_list_lock);
-+static DEFINE_SPINLOCK(dma_win_list_lock);
- /* protects initializing window twice for same device */
--static DEFINE_MUTEX(direct_window_init_mutex);
-+static DEFINE_MUTEX(dma_win_init_mutex);
- #define DMA64_PROPNAME "linux,dma64-ddr-window-info"
-+#define DEFAULT_DMA_WIN "ibm,dma-window"
- 
- static int tce_clearrange_multi_pSeriesLP(unsigned long start_pfn,
- 					unsigned long num_pfn, const void *arg)
-@@ -697,15 +698,18 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
- 	pr_debug("pci_dma_bus_setup_pSeriesLP: setting up bus %pOF\n",
- 		 dn);
- 
--	/* Find nearest ibm,dma-window, walking up the device tree */
-+	/*
-+	 * Find nearest ibm,dma-window (default DMA window), walking up the
-+	 * device tree
-+	 */
- 	for (pdn = dn; pdn != NULL; pdn = pdn->parent) {
--		dma_window = of_get_property(pdn, "ibm,dma-window", NULL);
-+		dma_window = of_get_property(pdn, DEFAULT_DMA_WIN, NULL);
- 		if (dma_window != NULL)
- 			break;
- 	}
- 
- 	if (dma_window == NULL) {
--		pr_debug("  no ibm,dma-window property !\n");
-+		pr_debug("  no %s property !\n", DEFAULT_DMA_WIN);
- 		return;
- 	}
- 
-@@ -803,11 +807,11 @@ static void remove_dma_window(struct device_node *np, u32 *ddw_avail,
- 
- 	ret = rtas_call(ddw_avail[DDW_REMOVE_PE_DMA_WIN], 1, 1, NULL, liobn);
- 	if (ret)
--		pr_warn("%pOF: failed to remove direct window: rtas returned "
-+		pr_warn("%pOF: failed to remove dma window: rtas returned "
- 			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
- 			np, ret, ddw_avail[DDW_REMOVE_PE_DMA_WIN], liobn);
- 	else
--		pr_debug("%pOF: successfully removed direct window: rtas returned "
-+		pr_debug("%pOF: successfully removed dma window: rtas returned "
- 			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
- 			np, ret, ddw_avail[DDW_REMOVE_PE_DMA_WIN], liobn);
- }
-@@ -835,26 +839,26 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
- 
- 	ret = of_remove_property(np, win);
- 	if (ret)
--		pr_warn("%pOF: failed to remove direct window property: %d\n",
-+		pr_warn("%pOF: failed to remove dma window property: %d\n",
- 			np, ret);
- }
- 
- static u64 find_existing_ddw(struct device_node *pdn)
- {
--	struct direct_window *window;
--	const struct dynamic_dma_window_prop *direct64;
-+	struct dma_win *window;
-+	const struct dynamic_dma_window_prop *dma64;
- 	u64 dma_addr = 0;
- 
--	spin_lock(&direct_window_list_lock);
-+	spin_lock(&dma_win_list_lock);
- 	/* check if we already created a window and dupe that config if so */
--	list_for_each_entry(window, &direct_window_list, list) {
-+	list_for_each_entry(window, &dma_win_list, list) {
- 		if (window->device == pdn) {
--			direct64 = window->prop;
--			dma_addr = be64_to_cpu(direct64->dma_base);
-+			dma64 = window->prop;
-+			dma_addr = be64_to_cpu(dma64->dma_base);
- 			break;
- 		}
- 	}
--	spin_unlock(&direct_window_list_lock);
-+	spin_unlock(&dma_win_list_lock);
- 
- 	return dma_addr;
- }
-@@ -863,15 +867,15 @@ static int find_existing_ddw_windows(void)
- {
- 	int len;
- 	struct device_node *pdn;
--	struct direct_window *window;
--	const struct dynamic_dma_window_prop *direct64;
-+	struct dma_win *window;
-+	const struct dynamic_dma_window_prop *dma64;
- 
- 	if (!firmware_has_feature(FW_FEATURE_LPAR))
- 		return 0;
- 
- 	for_each_node_with_property(pdn, DMA64_PROPNAME) {
--		direct64 = of_get_property(pdn, DMA64_PROPNAME, &len);
--		if (!direct64)
-+		dma64 = of_get_property(pdn, DMA64_PROPNAME, &len);
-+		if (!dma64)
- 			continue;
- 
- 		window = kzalloc(sizeof(*window), GFP_KERNEL);
-@@ -882,10 +886,10 @@ static int find_existing_ddw_windows(void)
- 		}
- 
- 		window->device = pdn;
--		window->prop = direct64;
--		spin_lock(&direct_window_list_lock);
--		list_add(&window->list, &direct_window_list);
--		spin_unlock(&direct_window_list_lock);
-+		window->prop = dma64;
-+		spin_lock(&dma_win_list_lock);
-+		list_add(&window->list, &dma_win_list);
-+		spin_unlock(&dma_win_list_lock);
- 	}
- 
- 	return 0;
-@@ -1118,13 +1122,13 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	u64 dma_addr, max_addr;
- 	struct device_node *dn;
- 	u32 ddw_avail[DDW_APPLICABLE_SIZE];
--	struct direct_window *window;
-+	struct dma_win *window;
- 	struct property *win64;
- 	struct dynamic_dma_window_prop *ddwprop;
- 	struct failed_ddw_pdn *fpdn;
- 	bool default_win_removed = false;
- 
--	mutex_lock(&direct_window_init_mutex);
-+	mutex_lock(&dma_win_init_mutex);
- 
- 	dma_addr = find_existing_ddw(pdn);
- 	if (dma_addr != 0)
-@@ -1177,7 +1181,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		struct property *default_win;
- 		int reset_win_ext;
- 
--		default_win = of_find_property(pdn, "ibm,dma-window", NULL);
-+		default_win = of_find_property(pdn, DEFAULT_DMA_WIN, NULL);
- 		if (!default_win)
- 			goto out_failed;
- 
-@@ -1206,8 +1210,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	} else if (query.page_size & 1) {
- 		page_shift = 12; /* 4kB */
- 	} else {
--		dev_dbg(&dev->dev, "no supported direct page size in mask %x",
--			  query.page_size);
-+		dev_dbg(&dev->dev, "no supported page size in mask %x",
-+			query.page_size);
- 		goto out_failed;
- 	}
- 
-@@ -1258,7 +1262,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
- 			win64->value, tce_setrange_multi_pSeriesLP_walk);
- 	if (ret) {
--		dev_info(&dev->dev, "failed to map direct window for %pOF: %d\n",
-+		dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
- 			 dn, ret);
- 		goto out_free_window;
- 	}
-@@ -1272,9 +1276,9 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 
- 	window->device = pdn;
- 	window->prop = ddwprop;
--	spin_lock(&direct_window_list_lock);
--	list_add(&window->list, &direct_window_list);
--	spin_unlock(&direct_window_list_lock);
-+	spin_lock(&dma_win_list_lock);
-+	list_add(&window->list, &dma_win_list);
-+	spin_unlock(&dma_win_list_lock);
- 
- 	/* Only returns the dma_addr if DDW maps the whole partition */
- 	if (len == order_base_2(max_addr))
-@@ -1303,7 +1307,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	list_add(&fpdn->list, &failed_ddw_pdn_list);
- 
- out_unlock:
--	mutex_unlock(&direct_window_init_mutex);
-+	mutex_unlock(&dma_win_init_mutex);
- 	return dma_addr;
- }
- 
-@@ -1343,7 +1347,7 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
- 
- 	for (pdn = dn; pdn && PCI_DN(pdn) && !PCI_DN(pdn)->table_group;
- 	     pdn = pdn->parent) {
--		dma_window = of_get_property(pdn, "ibm,dma-window", NULL);
-+		dma_window = of_get_property(pdn, DEFAULT_DMA_WIN, NULL);
- 		if (dma_window)
- 			break;
- 	}
-@@ -1394,7 +1398,7 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
- 	 */
- 	for (pdn = dn; pdn && PCI_DN(pdn) && !PCI_DN(pdn)->table_group;
- 			pdn = pdn->parent) {
--		dma_window = of_get_property(pdn, "ibm,dma-window", NULL);
-+		dma_window = of_get_property(pdn, DEFAULT_DMA_WIN, NULL);
- 		if (dma_window)
- 			break;
- 	}
-@@ -1412,29 +1416,29 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
- static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
- 		void *data)
- {
--	struct direct_window *window;
-+	struct dma_win *window;
- 	struct memory_notify *arg = data;
- 	int ret = 0;
- 
- 	switch (action) {
- 	case MEM_GOING_ONLINE:
--		spin_lock(&direct_window_list_lock);
--		list_for_each_entry(window, &direct_window_list, list) {
-+		spin_lock(&dma_win_list_lock);
-+		list_for_each_entry(window, &dma_win_list, list) {
- 			ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
- 					arg->nr_pages, window->prop);
- 			/* XXX log error */
- 		}
--		spin_unlock(&direct_window_list_lock);
-+		spin_unlock(&dma_win_list_lock);
- 		break;
- 	case MEM_CANCEL_ONLINE:
- 	case MEM_OFFLINE:
--		spin_lock(&direct_window_list_lock);
--		list_for_each_entry(window, &direct_window_list, list) {
-+		spin_lock(&dma_win_list_lock);
-+		list_for_each_entry(window, &dma_win_list, list) {
- 			ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
- 					arg->nr_pages, window->prop);
- 			/* XXX log error */
- 		}
--		spin_unlock(&direct_window_list_lock);
-+		spin_unlock(&dma_win_list_lock);
- 		break;
- 	default:
- 		break;
-@@ -1455,7 +1459,7 @@ static int iommu_reconfig_notifier(struct notifier_block *nb, unsigned long acti
- 	struct of_reconfig_data *rd = data;
- 	struct device_node *np = rd->dn;
- 	struct pci_dn *pci = PCI_DN(np);
--	struct direct_window *window;
-+	struct dma_win *window;
- 
- 	switch (action) {
- 	case OF_RECONFIG_DETACH_NODE:
-@@ -1471,15 +1475,15 @@ static int iommu_reconfig_notifier(struct notifier_block *nb, unsigned long acti
- 			iommu_pseries_free_group(pci->table_group,
- 					np->full_name);
- 
--		spin_lock(&direct_window_list_lock);
--		list_for_each_entry(window, &direct_window_list, list) {
-+		spin_lock(&dma_win_list_lock);
-+		list_for_each_entry(window, &dma_win_list, list) {
- 			if (window->device == np) {
- 				list_del(&window->list);
- 				kfree(window);
- 				break;
- 			}
- 		}
--		spin_unlock(&direct_window_list_lock);
-+		spin_unlock(&dma_win_list_lock);
- 		break;
- 	default:
- 		err = NOTIFY_DONE;
--- 
-2.25.4
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
