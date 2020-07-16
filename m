@@ -1,77 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2F3221BE8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 07:19:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E79B221C0F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 07:44:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6jHb6dG7zDqwp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 15:19:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6jrS3K0wzDqJN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 15:44:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=amacapital.net (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=luto@amacapital.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=amacapital.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=amacapital-net.20150623.gappssmtp.com
- header.i=@amacapital-net.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=SzLH2bWv; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6jFy5vcnzDqrn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 15:18:29 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id d4so4259152pgk.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 22:18:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amacapital-net.20150623.gappssmtp.com; s=20150623;
- h=content-transfer-encoding:from:mime-version:subject:date:message-id
- :references:cc:in-reply-to:to;
- bh=pjSAQ6Btld2fycHWHEXEy5l6TD0W6bB4dFccT/gpVM8=;
- b=SzLH2bWvof9kr76xot8dGve40BlKMean/0Ynh3Mixvp/iYGI6jslyiT1H/1n9Qj1ow
- Mh6ujatjCTcxc2s25k7iA9sn8U89yBeRY8ebObRWZj6HYuZXFeSDTBb/EWPHPkSP4FNU
- WwDuuMXK/rQCsP66Mjz/JMKuDuyf2EqCTf0wV7Jeao4eNmnGi3HcAtNuOo1DPvCl3PrS
- G8xS6Xv4Ca2XuthzckdOpVp0+F0+/78sRIME7/YVN8R9H8xTFBhlymC5jiziD9Jh1/PT
- 1dEIfLgzq81IlVYg4rVZj6jYicZCgwuZlDfimKz4575Fr0aZwG6NbpNsQCvhpVa8sGpY
- J2Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:content-transfer-encoding:from:mime-version
- :subject:date:message-id:references:cc:in-reply-to:to;
- bh=pjSAQ6Btld2fycHWHEXEy5l6TD0W6bB4dFccT/gpVM8=;
- b=ZXfNWuoIiRfLoTwdMosuJOePbnJJYW8bFlG6wU7Z4V/E7rvslA+63VNwGXW31AoFQm
- fe7WRuHgyHpH+GnD8R3dxVkbr7XUB+VWPLwr7UHSKk7j3yHmUw2GQ+Si3sVVBFIcnl7h
- JcgJkfN6Y4+tYWHwpW0XzPqF4zsVOaACIwYRYLJOCjgbxgNmUTdbSmNzYWDX4qdBh5Mi
- NwROy1MqL05yvEH/FScepI9fkg0BeajXdLgTkP+ZheiC47X7B9oYFDwmNUwawbuJPcrc
- UaUfqF8xsKiZoQ6IcHDZnjaPcd4czw7hhru4Q9wOJhyIpkykH62ScD9T9JXD5vPTnDWl
- xq9g==
-X-Gm-Message-State: AOAM531mX76T/IFVCzzEpOaGP7exxZkvN1ZCFkF3ttxsafN/7eLdwnES
- heHXJnubSxz0gaFyXHyGoWkuIQ==
-X-Google-Smtp-Source: ABdhPJz36lMtXy7jtJjFqq3zOAV60PvUS/Hlk91z+f9BEuTeTezdLYpRcGCyT7+UAXDv2D+6odC4ig==
-X-Received: by 2002:a63:444b:: with SMTP id t11mr2886208pgk.134.1594876706172; 
- Wed, 15 Jul 2020 22:18:26 -0700 (PDT)
-Received: from ?IPv6:2601:646:c200:1ef2:c8f2:5437:b9af:674c?
- ([2601:646:c200:1ef2:c8f2:5437:b9af:674c])
- by smtp.gmail.com with ESMTPSA id k7sm3623730pgh.46.2020.07.15.22.18.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Jul 2020 22:18:25 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Andy Lutomirski <luto@amacapital.net>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-Date: Wed, 15 Jul 2020 22:18:20 -0700
-Message-Id: <EFAD6E2F-EC08-4EB3-9ECC-2A963C023FC5@amacapital.net>
-References: <1594868476.6k5kvx8684.astroid@bobo.none>
-In-Reply-To: <1594868476.6k5kvx8684.astroid@bobo.none>
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: iPhone Mail (17F80)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6jpc48SWzDqG1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 15:43:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B6jpc2ySgz8tNy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 15:43:20 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4B6jpc2Mp6z9sRK; Thu, 16 Jul 2020 15:43:20 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4B6jpb6g6Zz9sR4
+ for <linuxppc-dev@ozlabs.org>; Thu, 16 Jul 2020 15:43:19 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06G5WcAJ164468; Thu, 16 Jul 2020 01:43:11 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32adafn42y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Jul 2020 01:43:11 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06G5XK0w166197;
+ Thu, 16 Jul 2020 01:43:10 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32adafn42h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Jul 2020 01:43:10 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06G5ebaQ015824;
+ Thu, 16 Jul 2020 05:43:09 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma01dal.us.ibm.com with ESMTP id 328ux7hu5d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Jul 2020 05:43:09 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06G5h9TV15991466
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Jul 2020 05:43:09 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 04EA7112061;
+ Thu, 16 Jul 2020 05:43:09 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C9C2112064;
+ Thu, 16 Jul 2020 05:43:04 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.163.73.114])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Thu, 16 Jul 2020 05:43:04 +0000 (GMT)
+References: <159466074408.24747.10036072269371204890.stgit@hbathini.in.ibm.com>
+ <159466101903.24747.7234708045729315954.stgit@hbathini.in.ibm.com>
+User-agent: mu4e 1.2.0; emacs 26.3
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v3 12/12] ppc64/kexec_file: fix kexec load failure with
+ lack of memory hole
+In-reply-to: <159466101903.24747.7234708045729315954.stgit@hbathini.in.ibm.com>
+Date: Thu, 16 Jul 2020 02:43:01 -0300
+Message-ID: <87r1tc817e.fsf@morokweng.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-15_12:2020-07-15,
+ 2020-07-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
+ score=100 bulkscore=0
+ adultscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0 spamscore=100
+ impostorscore=0 suspectscore=0 phishscore=0 mlxlogscore=-1000
+ priorityscore=1501 mlxscore=100 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007160042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,152 +105,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Pingfan Liu <piliu@redhat.com>, Nayna Jain <nayna@linux.ibm.com>,
+ Kexec-ml <kexec@lists.infradead.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, Petr Tesarik <ptesarik@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+Hari Bathini <hbathini@linux.ibm.com> writes:
 
-> On Jul 15, 2020, at 9:15 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
->=20
-> =EF=BB=BFExcerpts from Mathieu Desnoyers's message of July 14, 2020 12:13 a=
-m:
->> ----- On Jul 13, 2020, at 9:47 AM, Nicholas Piggin npiggin@gmail.com wrot=
-e:
->>=20
->>> Excerpts from Nicholas Piggin's message of July 13, 2020 2:45 pm:
->>>> Excerpts from Andy Lutomirski's message of July 11, 2020 3:04 am:
->>>>> Also, as it stands, I can easily see in_irq() ceasing to promise to
->>>>> serialize.  There are older kernels for which it does not promise to
->>>>> serialize.  And I have plans to make it stop serializing in the
->>>>> nearish future.
->>>>=20
->>>> You mean x86's return from interrupt? Sounds fun... you'll konw where t=
-o
->>>> update the membarrier sync code, at least :)
->>>=20
->>> Oh, I should actually say Mathieu recently clarified a return from
->>> interrupt doesn't fundamentally need to serialize in order to support
->>> membarrier sync core.
->>=20
->> Clarification to your statement:
->>=20
->> Return from interrupt to kernel code does not need to be context serializ=
-ing
->> as long as kernel serializes before returning to user-space.
->>=20
->> However, return from interrupt to user-space needs to be context serializ=
-ing.
->=20
-> Hmm, I'm not sure it's enough even with the sync in the exit_lazy_tlb
-> in the right places.
->=20
-> A kernel thread does a use_mm, then it blocks and the user process with
-> the same mm runs on that CPU, and then it calls into the kernel, blocks,
-> the kernel thread runs again, another CPU issues a membarrier which does
-> not IPI this one because it's running a kthread, and then the kthread
-> switches back to the user process (still without having unused the mm),
-> and then the user process returns from syscall without having done a=20
-> core synchronising instruction.
->=20
-> The cause of the problem is you want to avoid IPI'ing kthreads. Why?
-> I'm guessing it really only matters as an optimisation in case of idle
-> threads. Idle thread is easy (well, easier) because it won't use_mm, so=20=
+> The kexec purgatory has to run in real mode. Only the first memory
+> block maybe accessible in real mode. And, unlike the case with panic
+> kernel, no memory is set aside for regular kexec load. Another thing
+> to note is, the memory for crashkernel is reserved at an offset of
+> 128MB. So, when crashkernel memory is reserved, the memory ranges to
+> load kexec segments shrink further as the generic code only looks for
+> memblock free memory ranges and in all likelihood only a tiny bit of
+> memory from 0 to 128MB would be available to load kexec segments.
+>
+> With kdump being used by default in general, kexec file load is likely
+> to fail almost always.
 
-> you could check for rq->curr =3D=3D rq->idle in your loop (in a suitable=20=
+Ah. I wasn't aware of this problem.
 
-> sched accessor function).
->=20
-> But... I'm not really liking this subtlety in the scheduler for all this=20=
+> This can be fixed by changing the memory hole
+> lookup logic for regular kexec to use the same method as kdump.
 
-> (the scheduler still needs the barriers when switching out of idle).
->=20
-> Can it be improved somehow? Let me forget x86 core sync problem for now
-> (that _may_ be a bit harder), and step back and look at what we're doing.
-> The memory barrier case would actually suffer from the same problem as
-> core sync, because in the same situation it has no implicit mmdrop in
-> the scheduler switch code either.
->=20
-> So what are we doing with membarrier? We want any activity caused by the=20=
+Right. It doesn't make that much sense to use memblock to find free
+memory areas for the kexec kernel, because memblock tracks which memory
+areas are free for the currently running kernel. But that's not what
+matters for the kernel that will be kexec'd into. In this case, regions
+which may be reserved for the current OS instance may well be free for a
+freshly started kernel. The kdump method is better at knowing which
+memory regions are actually reserved by the firmware/hardware.
 
-> set of CPUs/threads specified that can be observed by this thread before=20=
+> This
+> would mean that most kexec segments will overlap with crashkernel
+> memory region. That should still be ok as the pages, whose destination
+> address isn't available while loading, are placed in an intermediate
+> location till a flush to the actual destination address happens during
+> kexec boot sequence.
 
-> calling membarrier is appropriately fenced from activity that can be=20
-> observed to happen after the call returns.
->=20
-> CPU0                     CPU1
->                         1. user stuff
-> a. membarrier()          2. enter kernel
-> b. read rq->curr         3. rq->curr switched to kthread
-> c. is kthread, skip IPI  4. switch_to kthread
-> d. return to user        5. rq->curr switched to user thread
->                 6. switch_to user thread
->                 7. exit kernel
->                         8. more user stuff
->=20
-> As far as I can see, the problem is CPU1 might reorder step 5 and step
-> 8, so you have mmdrop of lazy mm be a mb after step 6.
->=20
-> But why? The membarrier call only cares that there is a full barrier
-> between 1 and 8, right? Which it will get from the previous context
-> switch to the kthread.
->=20
-> I must say the memory barrier comments in membarrier could be improved
-> a bit (unless I'm missing where the main comment is). It's fine to know
-> what barriers pair with one another, but we need to know which exact
-> memory accesses it is ordering
->=20
->       /*
->         * Matches memory barriers around rq->curr modification in
->         * scheduler.
->         */
->=20
-> Sure, but it doesn't say what else is being ordered. I think it's just
-> the user memory accesses, but would be nice to make that a bit more
-> explicit. If we had such comments then we might know this case is safe.
->=20
-> I think the funny powerpc barrier is a similar case of this. If we
-> ever see remote_rq->curr->flags & PF_KTHREAD, then we _know_ that
-> CPU has or will have issued a memory barrier between running user
-> code.
->=20
-> So AFAIKS all this membarrier stuff in kernel/sched/core.c could
-> just go away. Except x86 because thread switch doesn't imply core
-> sync, so CPU1 between 1 and 8 may never issue a core sync instruction
-> the same way a context switch must be a full mb.
->=20
-> Before getting to x86 -- Am I right, or way off track here?
+Yes, since the kdump kernel and the "regular" kexec kernel can't be both
+booted at the same time, it's not a problem if both plan to use the same
+region of memory.
 
-I find it hard to believe that this is x86 only. Why would thread switch imp=
-ly core sync on any architecture?  Is x86 unique in having a stupid expensiv=
-e core sync that is heavier than smp_mb()?
+>
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> Tested-by: Pingfan Liu <piliu@redhat.com>
 
-But I=E2=80=99m wondering if all this deferred sync stuff is wrong. In the b=
-rave new world of io_uring and such, perhaps kernel access matter too.  Heck=
-, even:
+Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
-int a[2];
+> ---
+>
+> v2 -> v3:
+> * Unchanged. Added Tested-by tag from Pingfan.
+>
+> v1 -> v2:
+> * New patch to fix locating memory hole for kexec_file_load (kexec -s -l)
+>   when memory is reserved for crashkernel.
+>
+>
+>  arch/powerpc/kexec/file_load_64.c |   33 ++++++++++++++-------------------
+>  1 file changed, 14 insertions(+), 19 deletions(-)
 
-Thread A:
-a[0] =3D 1;
-a[1] =3D 2:
-
-Thread B:
-
-write(fd, a, sizeof(a));
-
-Doesn=E2=80=99t do what thread A is expecting.  Admittedly this particular e=
-xample is nonsense, but maybe there are sensible cases that matter to someon=
-e.
-
-=E2=80=94Andy
-
->=20
-> Thanks,
-> Nick
+-- 
+Thiago Jung Bauermann
+IBM Linux Technology Center
