@@ -2,74 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482D7222ED7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 01:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29225222EFE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 01:28:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B79843ZTXzDrDn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 09:15:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B79S43LjrzDr0p
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 09:28:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::832;
- helo=mail-qt1-x832.google.com; envelope-from=danielhb413@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=STBnq3ni; dkim-atps=neutral
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com
- [IPv6:2607:f8b0:4864:20::832])
+ header.s=20161025 header.b=BxY54KCj; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B79625JvrzDq9T
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 09:13:11 +1000 (AEST)
-Received: by mail-qt1-x832.google.com with SMTP id 6so6346164qtt.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 16:13:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B79Q32qh3zDqRp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 09:27:07 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id t11so4422555pfq.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 16:27:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:subject:to:message-id:date:user-agent:mime-version
- :content-language:content-transfer-encoding;
- bh=wZS/t2Mj0TGsuGPTN8DU449TKfPVJLD4EGITfzmiAIY=;
- b=STBnq3ni6/bBe/uZ+0mJgBZNnWFLngdH3C+uopRvxRihT2yTkSPatS0Lrt0Q9G+peY
- 83of6ZmHPqQCy7stkOzFtGRRfpQxhV6DCgV/+Ux0JwXZtW/oQV7EeY7j58pN3BRHWTwZ
- kzKzRa7pk0lcPT97p5NXyQGjzdnu+pEeltCLMvaOnIqUP2/tgC8M9oP7PeFntlugE/yA
- a7ndm/sIL023NXZVtzUDGWfJtRLxIWFbyWKuBAZMtV1hlH36ZrEjcePOqlj2Y7RsjmXl
- rCJNekDWRUi1C7SJMS8XZj1Ye5rLsmbsFEzNRju66AUWw/L1F/D03vWwQwJHm27KIz7F
- pYvA==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=emv834qbGgi893dX/IaKrVeomPzEVS0ZG+EyN4ke6Jw=;
+ b=BxY54KCj4kiARNkK+N4vp/W9OTuudktsuJd+WODxPAeDB4oFxO4DQsQB4GI6IM8Gas
+ UJN/mRtbMfMb7XYESBrFdSYxHm0/dz5lI2i/IvV6zif0bXiZCQ+gabEvMQ/IDQfQisVf
+ qes+jiODle+UMzXIbB4xMZ9XK1erPvZaombyKjkf2dPCBjxm1hRdpabhchByUJPhDzib
+ 1F8S+2UX/dzkcedaYb5el1Xm3NMrNgCIzlZ/QU0AfZ6HYI73UBsnFviQsYS1R4bLJyiY
+ ZznnhHQxDV5gPYJtSWQnGIgTy8kG8Ine/794rLiZ9vTmkP2RhhiHUWsR4lNJs0KKqWp4
+ Ibpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:subject:to:message-id:date:user-agent
- :mime-version:content-language:content-transfer-encoding;
- bh=wZS/t2Mj0TGsuGPTN8DU449TKfPVJLD4EGITfzmiAIY=;
- b=PcBloFcCRjclWXD68lV815DanzRqI61mx5wFRRVyFNbDHCA4kk2pdE3xZTNUOwJgW+
- ZSc0Qmii13YjBoi00v00HJVDXoTLW9GAw2HzXmnu8kdjlN1Aaau8uaS6c88HB6AIoMT9
- FoLUu4byTP1T1kOUQ7IHpIJ9HqgBqhr5Q/p8EvXzelgGn5wvYcI2XQiYEoBSSs1oWtgK
- ygkKRW5sMwabmCTJUraO8E08Q/3IGqdr6Lb+Cu/x2mkWqSqArpBGVfuyhyN0SP7GZfSF
- iU3tuKA/6hB4XqAdLSDBOlHBlfwDkrrw/ZyleI0ZBgMhizmQopbF0qmExWYv41NIUq28
- xn6A==
-X-Gm-Message-State: AOAM53350Ecb+Gl1361Ibf4olHccW/JmBrJbT00yFgDSBoG7DqkyIyER
- s/xJ55Qnd7cZNAlernGMmFh65bOw
-X-Google-Smtp-Source: ABdhPJwsFlJ+VzRJb4narIXG6ce3qOl+OVq2kXfVBVNWRqXEQFVdi2tO35SInge7NbavdDUG+zYtNA==
-X-Received: by 2002:ac8:514d:: with SMTP id h13mr7779006qtn.223.1594941185147; 
- Thu, 16 Jul 2020 16:13:05 -0700 (PDT)
-Received: from ?IPv6:2804:431:c7c6:9447:1f8b:580e:61d9:b1a4?
- ([2804:431:c7c6:9447:1f8b:580e:61d9:b1a4])
- by smtp.gmail.com with ESMTPSA id p80sm8700442qke.19.2020.07.16.16.13.04
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Jul 2020 16:13:04 -0700 (PDT)
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Question about NUMA distance calculation in powerpc/mm/numa.c
-To: linuxppc-dev@lists.ozlabs.org
-Message-ID: <e5c3b1f1-d6ac-50d5-95f5-3c6e830a078e@gmail.com>
-Date: Thu, 16 Jul 2020 20:13:03 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=emv834qbGgi893dX/IaKrVeomPzEVS0ZG+EyN4ke6Jw=;
+ b=JMAbgryBWv1GexJ5hMGju22aBQhN2eNicy7AsmnhQs1TLDx0W+x8d99SLRokuQyAJ7
+ 1UOP9+n3aDBaemupcT9n+h5BqFaqcMh4nIUW6YsmTIClsXCa0nggOWWOZPmvYvAuh211
+ 1stkVZhpV5/Cj6J6CKJwe7B+nK9/em6H5l2Ciyw06v5ruI8hAMIYWV/pzisVv3L/J5qz
+ UvyZyTTFXJdiiBw63D+zH+TeV7G5rG79Ld8ujg6nM8DTE6n6a8V/pjsO4UBcaMwI6Gft
+ PedO3W3z5VkOLiMuXXTuGq9pYQ1sqaEkqcbPEdaI7jgeZxhie/I3fJBqn5Gd9qq2RTUp
+ r81g==
+X-Gm-Message-State: AOAM533oR1Bd9w63Hfw4stoPAl0gBfOaqN1ZK/0mIcFsU+zI1+HLYBl6
+ UvE8MlRst+RrmFmW9G+d59g=
+X-Google-Smtp-Source: ABdhPJzsas/W/l7YZ8rsW53AbEGEaqr8R3Pt+kUjAsFkMcalVEs2KKHzvH8Zn5PQ137qjCJoqRQ5XQ==
+X-Received: by 2002:a63:fc52:: with SMTP id r18mr6477752pgk.334.1594942023742; 
+ Thu, 16 Jul 2020 16:27:03 -0700 (PDT)
+Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id 4sm5684665pgk.68.2020.07.16.16.27.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Jul 2020 16:27:03 -0700 (PDT)
+Date: Fri, 17 Jul 2020 09:26:57 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+To: peterz@infradead.org
+References: <1594868476.6k5kvx8684.astroid@bobo.none>
+ <EFAD6E2F-EC08-4EB3-9ECC-2A963C023FC5@amacapital.net>
+ <20200716085032.GO10769@hirez.programming.kicks-ass.net>
+ <1594892300.mxnq3b9a77.astroid@bobo.none>
+ <20200716110038.GA119549@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200716110038.GA119549@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Message-Id: <1594906688.ikv6r4gznx.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,55 +83,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ x86 <x86@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Andy Lutomirski <luto@amacapital.net>, linux-mm <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Excerpts from peterz@infradead.org's message of July 16, 2020 9:00 pm:
+> On Thu, Jul 16, 2020 at 08:03:36PM +1000, Nicholas Piggin wrote:
+>> Excerpts from Peter Zijlstra's message of July 16, 2020 6:50 pm:
+>> > On Wed, Jul 15, 2020 at 10:18:20PM -0700, Andy Lutomirski wrote:
+>> >> > On Jul 15, 2020, at 9:15 PM, Nicholas Piggin <npiggin@gmail.com> wr=
+ote:
+>=20
+>> >> But I=E2=80=99m wondering if all this deferred sync stuff is wrong. I=
+n the
+>> >> brave new world of io_uring and such, perhaps kernel access matter
+>> >> too.  Heck, even:
+>> >=20
+>> > IIRC the membarrier SYNC_CORE use-case is about user-space
+>> > self-modifying code.
+>> >=20
+>> > Userspace re-uses a text address and needs to SYNC_CORE before it can =
+be
+>> > sure the old text is forgotten. Nothing the kernel does matters there.
+>> >=20
+>> > I suppose the manpage could be more clear there.
+>>=20
+>> True, but memory ordering of kernel stores from kernel threads for
+>> regular mem barrier is the concern here.
+>>=20
+>> Does io_uring update completion queue from kernel thread or interrupt,
+>> for example? If it does, then membarrier will not order such stores
+>> with user memory accesses.
+>=20
+> So we're talking about regular membarrier() then? Not the SYNC_CORE
+> variant per-se.
 
+Well, both but Andy in this case was wondering about kernel writes
+vs user.
 
-I didn't find an explanation about the 'double the distance' logic in
-'git log' or anywhere in the kernel docs:
+>=20
+> Even there, I'll argue we don't care, but perhaps Mathieu has a
+> different opinion. All we care about is that all other threads (or CPUs
+> for GLOBAL) observe an smp_mb() before it returns.
+>=20
+> Any serialization against whatever those other threads/CPUs are running
+> at the instant of the syscall is external to the syscall, we make no
+> gauarantees about that. That is, we can fundamentally not say what
+> another CPU is executing concurrently. Nor should we want to.
+>=20
+> So if you feel that your membarrier() ought to serialize against remote
+> execution, you need to arrange a quiecent state on the remote side
+> yourself.
+>=20
+> Now, normally membarrier() is used to implement userspace RCU like
+> things, and there all that matters is that the remote CPUs observe the
+> beginngin of the new grace-period, ie counter flip, and we observe their
+> read-side critical sections, or smething like that, it's been a while
+> since I looked at all that.
+>=20
+> It's always been the case that concurrent syscalls could change user
+> memory, io_uring doesn't change that, it just makes it even less well
+> defined when that would happen. If you want to serialize against that,
+> you need to arrange that externally.
 
+membarrier does replace barrier instructions on remote CPUs, which do
+order accesses performed by the kernel on the user address space. So
+membarrier should too I guess.
 
-(arch/powerpc/mm/numa.c, __node_distance()):
-
-for (i = 0; i < distance_ref_points_depth; i++) {
-	if (distance_lookup_table[a][i] == distance_lookup_table[b][i])
-		break;
-
-	/* Double the distance for each NUMA level */
-	distance *= 2;
-}
-
-For reference, the commit that added it:
-
-
-commit 41eab6f88f24124df89e38067b3766b7bef06ddb
-Author: Anton Blanchard <anton@samba.org>
-Date:   Sun May 16 20:22:31 2010 +0000
-
-     powerpc/numa: Use form 1 affinity to setup node distance
-  
-
-Is there a technical reason for the distance being calculated as the double
-for each NUMA level?
-
-The reason I'm asking is because of the QEMU/Libvirt capability to define NUMA
-node distances in the VMs. For x86, an user is capable of setting any distance
-values to the NUMA topology due to how ACPI SLIT works.
-
-The user, of course, wants the pseries guest to behave the same way. The best
-we can do for now is document why this will not happen. I'll document the
-limitations imposed by the design itself (how ibm,associativity-reference-points
-is capped to MAX_DISTANCE_REF_POINTS and so on). I also would like to document
-that the pseries kernel will double the distance for each NUMA level, and for
-that it would be nice to provide an actual reason for that to happen, if
-there is any.
-
+Normal process context accesses like read(2) will do so because they
+don't get filtered out from IPIs, but kernel threads using the mm may
+not.
 
 Thanks,
-
-
-Daniel
-
+Nick
