@@ -2,62 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B90222C5F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 21:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55362222CB1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 22:24:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B74jL743kzDr8N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 05:55:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B75Lm3GMzzDr97
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 06:24:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.194;
- helo=mail-il1-f194.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-il1-f194.google.com (mail-il1-f194.google.com
- [209.85.166.194])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=KLQQplKf; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B74gY5Q3bzDqLx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 05:53:27 +1000 (AEST)
-Received: by mail-il1-f194.google.com with SMTP id s21so6143435ilk.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 12:53:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=xPJI5AUNc3GLpKlOl9E8pVIu2DWZ+nUPV7c3Fd1fTW8=;
- b=s8MeAKmMFiirZz8GGtS25G7F7daOOV1GBvgmnMo9udBksxmxR0sYcLpn112RD2VUYm
- VLGxhjEjnzAVthzvHS3NW/Bw0cIY3n54dUhCgsThp6XHsu6yo6tBeuStWqfXCXrzG2st
- SkWoHAbQAhERIbyRH1B1Xtl80IQWjFnm6tFacIHFzLXWMN6TOB/cLy0Gj+RnsDaRmyBI
- pZGrp/JJMk7HjrTT4dF6tWN1gP6yVdIINu1lG7ysY1y+MieL9Blm+DiE3gLiXq6Dx0aK
- gY9grwTZkqyEJ3SA/6BZxERERs0dD5XvKGIsn6geM6zodUQrlvPjg/1oNk72Edu+R2bl
- 35Hg==
-X-Gm-Message-State: AOAM533IyuhwzK4T9M0yyI9srbkvGumfZMWwDf+XOAyoDD8NcIriQKJo
- r5KzcpSgeKu1N0upWmWcPQ==
-X-Google-Smtp-Source: ABdhPJwbtrb2hzcyMrDtMJ8lQQG2F77dP0WpMBde2WE/BUG6j0yjkG7KFC7V4dHYMGHTHGdG0n/9rA==
-X-Received: by 2002:a92:d186:: with SMTP id z6mr6614069ilz.227.1594929204916; 
- Thu, 16 Jul 2020 12:53:24 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
- by smtp.gmail.com with ESMTPSA id a5sm3219354ilt.71.2020.07.16.12.53.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jul 2020 12:53:24 -0700 (PDT)
-Received: (nullmailer pid 2739233 invoked by uid 1000);
- Thu, 16 Jul 2020 19:53:23 -0000
-Date: Thu, 16 Jul 2020 13:53:23 -0600
-From: Rob Herring <robh@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2 2/3] ASoC: bindings: fsl-asoc-card: Support
- hp-det-gpio and mic-det-gpio
-Message-ID: <20200716195323.GA2739158@bogus>
-References: <1594822179-1849-1-git-send-email-shengjiu.wang@nxp.com>
- <1594822179-1849-3-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B75JZ3PRhzDqPv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 06:22:05 +1000 (AEST)
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown
+ [163.114.132.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 88247207E8;
+ Thu, 16 Jul 2020 20:22:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1594930923;
+ bh=lQnOz2T3QCHaK6UF7S1d7Qs0hGwqgBqz68lRqr564Q0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=KLQQplKfA+NxUh+JpUeyJiJAnN52TP3b4UWJGR5wAgqeK58SdOgIK3lPFET+4pS0c
+ ZkpllacXbfFMcTVMsGo1YejtdZEKpY/i+1zBDJfBSpldarLXselgIwp8T3mTkWIkij
+ vJGykErjJBUv1/s4xfKaq6zWabUTAhvNle2M8UnU=
+Date: Thu, 16 Jul 2020 13:22:00 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+Subject: Re: [PATCH net-next] ibmvnic: Increase driver logging
+Message-ID: <20200716132200.37934905@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200716160736.GI32107@kitsune.suse.cz>
+References: <1594857115-22380-1-git-send-email-tlfalcon@linux.ibm.com>
+ <20200715170632.11f0bf19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <20200715.182956.490791427431304861.davem@davemloft.net>
+ <9c9d6e46-240b-8513-08e4-e1c7556cb3c8@linux.ibm.com>
+ <20200716160736.GI32107@kitsune.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1594822179-1849-3-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,23 +60,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
- lgirdwood@gmail.com, linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com,
- tiwai@suse.com, robh+dt@kernel.org, perex@perex.cz, nicoleotsuka@gmail.com,
- broonie@kernel.org, festevam@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: drt@linux.ibm.com, netdev@vger.kernel.org,
+ Thomas Falcon <tlfalcon@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 15 Jul 2020 22:09:38 +0800, Shengjiu Wang wrote:
-> Add headphone and microphone detection GPIO support.
-> These properties are optional.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-> ---
->  Documentation/devicetree/bindings/sound/fsl-asoc-card.txt | 3 +++
->  1 file changed, 3 insertions(+)
-> 
+On Thu, 16 Jul 2020 18:07:37 +0200 Michal Such=C3=A1nek wrote:
+> On Thu, Jul 16, 2020 at 10:59:58AM -0500, Thomas Falcon wrote:
+> > On 7/15/20 8:29 PM, David Miller wrote: =20
+> > > From: Jakub Kicinski <kuba@kernel.org>
+> > > Date: Wed, 15 Jul 2020 17:06:32 -0700
+> > >  =20
+> > > > On Wed, 15 Jul 2020 18:51:55 -0500 Thomas Falcon wrote: =20
+> > > > >   	free_netdev(netdev);
+> > > > >   	dev_set_drvdata(&dev->dev, NULL);
+> > > > > +	netdev_info(netdev, "VNIC client device has been successfully r=
+emoved.\n"); =20
+> > > > A step too far, perhaps.
+> > > >=20
+> > > > In general this patch looks a little questionable IMHO, this amount=
+ of
+> > > > logging output is not commonly seen in drivers. All the the info
+> > > > messages are just static text, not even carrying any extra informat=
+ion.
+> > > > In an era of ftrace, and bpftrace, do we really need this? =20
+> > > Agreed, this is too much.  This is debugging, and thus suitable for t=
+racing
+> > > facilities, at best. =20
+> >=20
+> > Thanks for your feedback. I see now that I was overly aggressive with t=
+his
+> > patch to be sure, but it would help with narrowing down problems at a f=
+irst
+> > glance, should they arise. The driver in its current state logs very li=
+ttle
+> > of what is it doing without the use of additional debugging or tracing
+> > facilities. Would it be worth it to pursue a less aggressive version or
+> > would that be dead on arrival? What are acceptable driver operations to=
+ log
+> > at this level? =20
 
-Acked-by: Rob Herring <robh@kernel.org>
+Sadly it's much more of an art than hard science. Most networking
+drivers will print identifying information when they probe the device
+and then only about major config changes or when link comes up or goes
+down. And obviously when anything unexpected, like an error happens,
+that's key.
+
+You seem to be adding start / end information for each driver init /
+deinit stage. I'd say try to focus on the actual errors you're trying
+to catch.
+
+> Also would it be advisable to add the messages as pr_dbg to be enabled on=
+ demand?
+
+I personally have had a pretty poor experience with pr_debug() because
+CONFIG_DYNAMIC_DEBUG is not always enabled. Since you're just printing
+static text there shouldn't be much difference between pr_debug and
+ftrace and/or bpftrace, honestly.
+
+Again, slightly hard to advise not knowing what you're trying to catch.
