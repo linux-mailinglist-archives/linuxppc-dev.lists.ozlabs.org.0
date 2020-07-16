@@ -2,34 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAE92223F0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 15:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E2B2223EC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 15:31:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6wF80XKbzDqWj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 23:33:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6wBR3xR9zDr3R
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 23:31:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6vPm0X6MzDqYX
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6vPm0YG2zDql9
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 22:55:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4B6vPf4xzsz9sTw; Thu, 16 Jul 2020 22:55:49 +1000 (AEST)
+ id 4B6vPg1xcLz9sTk; Thu, 16 Jul 2020 22:55:50 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: erhard_f@mailbox.org, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, corbet@lwn.net,
  Paul Mackerras <paulus@samba.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <3667deb0911affbf999b99f87c31c77d5e870cd2.1593690707.git.christophe.leroy@csgroup.eu>
-References: <3667deb0911affbf999b99f87c31c77d5e870cd2.1593690707.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/2] Revert "powerpc/kasan: Fix shadow pages allocation
- failure"
-Message-Id: <159490400742.3805857.5182439247334544863.b4-ty@ellerman.id.au>
-Date: Thu, 16 Jul 2020 22:55:49 +1000 (AEST)
+In-Reply-To: <261923c075d1cb49d02493685e8585d4ea2a5197.1593698951.git.christophe.leroy@csgroup.eu>
+References: <261923c075d1cb49d02493685e8585d4ea2a5197.1593698951.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] docs: powerpc: Clarify book3s/32 MMU families
+Message-Id: <159490400710.3805857.5851125255446308712.b4-ty@ellerman.id.au>
+Date: Thu, 16 Jul 2020 22:55:50 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +40,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2 Jul 2020 11:52:02 +0000 (UTC), Christophe Leroy wrote:
-> This reverts commit d2a91cef9bbdeb87b7449fdab1a6be6000930210.
+On Thu, 2 Jul 2020 14:09:21 +0000 (UTC), Christophe Leroy wrote:
+> Documentation wrongly tells that book3s/32 CPU have hash MMU.
 > 
-> This commit moved too much work in kasan_init(). The allocation
-> of shadow pages has to be moved for the reason explained in that
-> patch, but the allocation of page tables still need to be done
-> before switching to the final hash table.
+> 603 and e300 core only have software loaded TLB.
+> 
+> 755, 7450 family and e600 core have both hash MMU and software loaded
+> TLB. This can be selected by setting a bit in HID2 (755) or
+> HID0 (others). At the time being this is not supported by the kernel.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] Revert "powerpc/kasan: Fix shadow pages allocation failure"
-      https://git.kernel.org/powerpc/c/b506923ee44ae87fc9f4de16b53feb313623e146
-[2/2] powerpc/kasan: Fix shadow pages allocation failure
-      https://git.kernel.org/powerpc/c/41ea93cf7ba4e0f0cc46ebfdda8b6ff27c67bc91
+[1/1] docs: powerpc: Clarify book3s/32 MMU families
+      https://git.kernel.org/powerpc/c/7d38f089731fe129a49e254028caec6f05420f18
 
 cheers
