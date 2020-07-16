@@ -1,57 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5E6221B9D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 06:56:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2F3221BE8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 07:19:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B6hm60NfgzDqqY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 14:56:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B6jHb6dG7zDqwp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jul 2020 15:19:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=amacapital.net (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=luto@amacapital.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=amacapital.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=amacapital-net.20150623.gappssmtp.com
+ header.i=@amacapital-net.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=SzLH2bWv; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B6hjj4jhjzDqYd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 14:54:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Q+fZUiVG; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4B6hjh38P2z9sRW; Thu, 16 Jul 2020 14:54:00 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B6hjh1m8Dz9sR4;
- Thu, 16 Jul 2020 14:54:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1594875240;
- bh=FmAkXsd5ylVmoGslmFobuHuO65vIrkIORrej0EwX2ts=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Q+fZUiVGUkVTM4eSFCMtRkFtxovdTo6nBtySqfDlb2q7ySoyuEWGLA49Ses8+LwNR
- qFckoQe3HjNIeOH2Up5nOdYzMZYqnjsk/FuCP+ohYJWUX/P3q43aAyVpEZzOmOM7a4
- RpYIb9Flr0ucpju+Xv17yhKosh8FdDoW9+qB8oByVMEjSufhJpXvc/gQOV2fzukiMb
- NiqsBike/HalTrjb42Wlr3chaRn7SEt8m2HGAQaR0vk9475WQ2wK7sL1EtrQm9i/7y
- fNT5fwDvdfoYGbT56wKLSb6ats077QovgkrWuhmvrKLdS57csz/P7LmBneL1md1yWR
- VuWDQ7hY0B9ug==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Axtens <dja@axtens.net>, Nayna Jain <nayna@linux.ibm.com>,
- linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v3] powerpc/pseries: detect secure and trusted boot state
- of the system.
-In-Reply-To: <87v9iothc1.fsf@dja-thinkpad.axtens.net>
-References: <1594813921-12425-1-git-send-email-nayna@linux.ibm.com>
- <87v9iothc1.fsf@dja-thinkpad.axtens.net>
-Date: Thu, 16 Jul 2020 14:53:51 +1000
-Message-ID: <87sgdst600.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B6jFy5vcnzDqrn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 15:18:29 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id d4so4259152pgk.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jul 2020 22:18:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amacapital-net.20150623.gappssmtp.com; s=20150623;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=pjSAQ6Btld2fycHWHEXEy5l6TD0W6bB4dFccT/gpVM8=;
+ b=SzLH2bWvof9kr76xot8dGve40BlKMean/0Ynh3Mixvp/iYGI6jslyiT1H/1n9Qj1ow
+ Mh6ujatjCTcxc2s25k7iA9sn8U89yBeRY8ebObRWZj6HYuZXFeSDTBb/EWPHPkSP4FNU
+ WwDuuMXK/rQCsP66Mjz/JMKuDuyf2EqCTf0wV7Jeao4eNmnGi3HcAtNuOo1DPvCl3PrS
+ G8xS6Xv4Ca2XuthzckdOpVp0+F0+/78sRIME7/YVN8R9H8xTFBhlymC5jiziD9Jh1/PT
+ 1dEIfLgzq81IlVYg4rVZj6jYicZCgwuZlDfimKz4575Fr0aZwG6NbpNsQCvhpVa8sGpY
+ J2Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=pjSAQ6Btld2fycHWHEXEy5l6TD0W6bB4dFccT/gpVM8=;
+ b=ZXfNWuoIiRfLoTwdMosuJOePbnJJYW8bFlG6wU7Z4V/E7rvslA+63VNwGXW31AoFQm
+ fe7WRuHgyHpH+GnD8R3dxVkbr7XUB+VWPLwr7UHSKk7j3yHmUw2GQ+Si3sVVBFIcnl7h
+ JcgJkfN6Y4+tYWHwpW0XzPqF4zsVOaACIwYRYLJOCjgbxgNmUTdbSmNzYWDX4qdBh5Mi
+ NwROy1MqL05yvEH/FScepI9fkg0BeajXdLgTkP+ZheiC47X7B9oYFDwmNUwawbuJPcrc
+ UaUfqF8xsKiZoQ6IcHDZnjaPcd4czw7hhru4Q9wOJhyIpkykH62ScD9T9JXD5vPTnDWl
+ xq9g==
+X-Gm-Message-State: AOAM531mX76T/IFVCzzEpOaGP7exxZkvN1ZCFkF3ttxsafN/7eLdwnES
+ heHXJnubSxz0gaFyXHyGoWkuIQ==
+X-Google-Smtp-Source: ABdhPJz36lMtXy7jtJjFqq3zOAV60PvUS/Hlk91z+f9BEuTeTezdLYpRcGCyT7+UAXDv2D+6odC4ig==
+X-Received: by 2002:a63:444b:: with SMTP id t11mr2886208pgk.134.1594876706172; 
+ Wed, 15 Jul 2020 22:18:26 -0700 (PDT)
+Received: from ?IPv6:2601:646:c200:1ef2:c8f2:5437:b9af:674c?
+ ([2601:646:c200:1ef2:c8f2:5437:b9af:674c])
+ by smtp.gmail.com with ESMTPSA id k7sm3623730pgh.46.2020.07.15.22.18.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 Jul 2020 22:18:25 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Andy Lutomirski <luto@amacapital.net>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+Date: Wed, 15 Jul 2020 22:18:20 -0700
+Message-Id: <EFAD6E2F-EC08-4EB3-9ECC-2A963C023FC5@amacapital.net>
+References: <1594868476.6k5kvx8684.astroid@bobo.none>
+In-Reply-To: <1594868476.6k5kvx8684.astroid@bobo.none>
+To: Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: iPhone Mail (17F80)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,24 +83,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
-> Hi Nayna,
->
-> Looks good to me.
->
-> Sorry for not noticing this before, but I think
->> +#include <asm/machdep.h>
 
-> is now superfluous (I think it's leftover from the machine_is
-> version?). Maybe mpe will take pity on you and remove it when he picks
-> up your patch.
 
-Yeah I did that.
+> On Jul 15, 2020, at 9:15 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
+>=20
+> =EF=BB=BFExcerpts from Mathieu Desnoyers's message of July 14, 2020 12:13 a=
+m:
+>> ----- On Jul 13, 2020, at 9:47 AM, Nicholas Piggin npiggin@gmail.com wrot=
+e:
+>>=20
+>>> Excerpts from Nicholas Piggin's message of July 13, 2020 2:45 pm:
+>>>> Excerpts from Andy Lutomirski's message of July 11, 2020 3:04 am:
+>>>>> Also, as it stands, I can easily see in_irq() ceasing to promise to
+>>>>> serialize.  There are older kernels for which it does not promise to
+>>>>> serialize.  And I have plans to make it stop serializing in the
+>>>>> nearish future.
+>>>>=20
+>>>> You mean x86's return from interrupt? Sounds fun... you'll konw where t=
+o
+>>>> update the membarrier sync code, at least :)
+>>>=20
+>>> Oh, I should actually say Mathieu recently clarified a return from
+>>> interrupt doesn't fundamentally need to serialize in order to support
+>>> membarrier sync core.
+>>=20
+>> Clarification to your statement:
+>>=20
+>> Return from interrupt to kernel code does not need to be context serializ=
+ing
+>> as long as kernel serializes before returning to user-space.
+>>=20
+>> However, return from interrupt to user-space needs to be context serializ=
+ing.
+>=20
+> Hmm, I'm not sure it's enough even with the sync in the exit_lazy_tlb
+> in the right places.
+>=20
+> A kernel thread does a use_mm, then it blocks and the user process with
+> the same mm runs on that CPU, and then it calls into the kernel, blocks,
+> the kernel thread runs again, another CPU issues a membarrier which does
+> not IPI this one because it's running a kthread, and then the kthread
+> switches back to the user process (still without having unused the mm),
+> and then the user process returns from syscall without having done a=20
+> core synchronising instruction.
+>=20
+> The cause of the problem is you want to avoid IPI'ing kthreads. Why?
+> I'm guessing it really only matters as an optimisation in case of idle
+> threads. Idle thread is easy (well, easier) because it won't use_mm, so=20=
 
-cheers
+> you could check for rq->curr =3D=3D rq->idle in your loop (in a suitable=20=
+
+> sched accessor function).
+>=20
+> But... I'm not really liking this subtlety in the scheduler for all this=20=
+
+> (the scheduler still needs the barriers when switching out of idle).
+>=20
+> Can it be improved somehow? Let me forget x86 core sync problem for now
+> (that _may_ be a bit harder), and step back and look at what we're doing.
+> The memory barrier case would actually suffer from the same problem as
+> core sync, because in the same situation it has no implicit mmdrop in
+> the scheduler switch code either.
+>=20
+> So what are we doing with membarrier? We want any activity caused by the=20=
+
+> set of CPUs/threads specified that can be observed by this thread before=20=
+
+> calling membarrier is appropriately fenced from activity that can be=20
+> observed to happen after the call returns.
+>=20
+> CPU0                     CPU1
+>                         1. user stuff
+> a. membarrier()          2. enter kernel
+> b. read rq->curr         3. rq->curr switched to kthread
+> c. is kthread, skip IPI  4. switch_to kthread
+> d. return to user        5. rq->curr switched to user thread
+>                 6. switch_to user thread
+>                 7. exit kernel
+>                         8. more user stuff
+>=20
+> As far as I can see, the problem is CPU1 might reorder step 5 and step
+> 8, so you have mmdrop of lazy mm be a mb after step 6.
+>=20
+> But why? The membarrier call only cares that there is a full barrier
+> between 1 and 8, right? Which it will get from the previous context
+> switch to the kthread.
+>=20
+> I must say the memory barrier comments in membarrier could be improved
+> a bit (unless I'm missing where the main comment is). It's fine to know
+> what barriers pair with one another, but we need to know which exact
+> memory accesses it is ordering
+>=20
+>       /*
+>         * Matches memory barriers around rq->curr modification in
+>         * scheduler.
+>         */
+>=20
+> Sure, but it doesn't say what else is being ordered. I think it's just
+> the user memory accesses, but would be nice to make that a bit more
+> explicit. If we had such comments then we might know this case is safe.
+>=20
+> I think the funny powerpc barrier is a similar case of this. If we
+> ever see remote_rq->curr->flags & PF_KTHREAD, then we _know_ that
+> CPU has or will have issued a memory barrier between running user
+> code.
+>=20
+> So AFAIKS all this membarrier stuff in kernel/sched/core.c could
+> just go away. Except x86 because thread switch doesn't imply core
+> sync, so CPU1 between 1 and 8 may never issue a core sync instruction
+> the same way a context switch must be a full mb.
+>=20
+> Before getting to x86 -- Am I right, or way off track here?
+
+I find it hard to believe that this is x86 only. Why would thread switch imp=
+ly core sync on any architecture?  Is x86 unique in having a stupid expensiv=
+e core sync that is heavier than smp_mb()?
+
+But I=E2=80=99m wondering if all this deferred sync stuff is wrong. In the b=
+rave new world of io_uring and such, perhaps kernel access matter too.  Heck=
+, even:
+
+int a[2];
+
+Thread A:
+a[0] =3D 1;
+a[1] =3D 2:
+
+Thread B:
+
+write(fd, a, sizeof(a));
+
+Doesn=E2=80=99t do what thread A is expecting.  Admittedly this particular e=
+xample is nonsense, but maybe there are sensible cases that matter to someon=
+e.
+
+=E2=80=94Andy
+
+>=20
+> Thanks,
+> Nick
