@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E8A223688
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 10:04:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA7F22369B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 10:09:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7NvV6BMrzDrMp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 18:04:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7P0K480LzDqsZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 18:09:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7Nq16wXYzDrLv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 18:01:01 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06H7WfYM020743; Fri, 17 Jul 2020 04:00:56 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32ax78p5ey-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7Nq46ppKzDrLb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 18:01:04 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06H7Xcoh079071; Fri, 17 Jul 2020 04:00:57 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32aurb2mpv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 04:00:55 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06H7kdrP020917;
- Fri, 17 Jul 2020 08:00:53 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 329nmyjnxr-1
+ Fri, 17 Jul 2020 04:00:57 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06H7kFXm015518;
+ Fri, 17 Jul 2020 08:00:55 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma04fra.de.ibm.com with ESMTP id 32b6jsr1fj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 08:00:53 +0000
+ Fri, 17 Jul 2020 08:00:55 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06H80okQ20775286
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06H80q8e53215300
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Jul 2020 08:00:50 GMT
+ Fri, 17 Jul 2020 08:00:52 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ADEB3A406E;
- Fri, 17 Jul 2020 08:00:48 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 36FA8A406B;
+ Fri, 17 Jul 2020 08:00:52 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44041A405F;
- Fri, 17 Jul 2020 08:00:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 32E58A406F;
+ Fri, 17 Jul 2020 08:00:49 +0000 (GMT)
 Received: from oc0525413822.ibm.com (unknown [9.163.39.1])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 17 Jul 2020 08:00:45 +0000 (GMT)
+ Fri, 17 Jul 2020 08:00:48 +0000 (GMT)
 From: Ram Pai <linuxram@us.ibm.com>
 To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [v4 2/5] KVM: PPC: Book3S HV: track the state GFNs associated with
- secure VMs
-Date: Fri, 17 Jul 2020 01:00:24 -0700
-Message-Id: <1594972827-13928-3-git-send-email-linuxram@us.ibm.com>
+Subject: [v4 3/5] KVM: PPC: Book3S HV: in H_SVM_INIT_DONE,
+ migrate remaining normal-GFNs to secure-GFNs.
+Date: Fri, 17 Jul 2020 01:00:25 -0700
+Message-Id: <1594972827-13928-4-git-send-email-linuxram@us.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1594972827-13928-1-git-send-email-linuxram@us.ibm.com>
 References: <1594972827-13928-1-git-send-email-linuxram@us.ibm.com>
@@ -66,10 +66,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-17_04:2020-07-16,
  2020-07-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- spamscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 clxscore=1015 malwarescore=0 suspectscore=2
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 adultscore=0
+ mlxlogscore=999 suspectscore=2 clxscore=1015 bulkscore=0 spamscore=0
+ phishscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007170054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -90,132 +90,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-During the life of SVM, its GFNs transition through normal, secure and
-shared states. Since the kernel does not track GFNs that are shared, it
-is not possible to disambiguate a shared GFN from a GFN whose PFN has
-not yet been migrated to a secure-PFN. Also it is not possible to
-disambiguate a secure-GFN from a GFN whose GFN has been pagedout from
-the ultravisor.
+The Ultravisor is expected to explicitly call H_SVM_PAGE_IN for all the
+pages of the SVM before calling H_SVM_INIT_DONE. This causes a huge
+delay in tranistioning the VM to SVM. The Ultravisor is only interested
+in the pages that contain the kernel, initrd and other important data
+structures. The rest contain throw-away content.
 
-The ability to identify the state of a GFN is needed to skip migration
-of its PFN to secure-PFN during ESM transition.
+However if not all pages are requested by the Ultravisor, the Hypervisor
+continues to consider the GFNs corresponding to the non-requested pages
+as normal GFNs. This can lead to data-corruption and undefined behavior.
 
-The code is re-organized to track the states of a GFN as explained
-below.
-
-************************************************************************
- 1. States of a GFN
-    ---------------
- The GFN can be in one of the following states.
-
- (a) Secure - The GFN is secure. The GFN is associated with
- 	a Secure VM, the contents of the GFN is not accessible
- 	to the Hypervisor.  This GFN can be backed by a secure-PFN,
- 	or can be backed by a normal-PFN with contents encrypted.
- 	The former is true when the GFN is paged-in into the
- 	ultravisor. The latter is true when the GFN is paged-out
- 	of the ultravisor.
-
- (b) Shared - The GFN is shared. The GFN is associated with a
- 	a secure VM. The contents of the GFN is accessible to
- 	Hypervisor. This GFN is backed by a normal-PFN and its
- 	content is un-encrypted.
-
- (c) Normal - The GFN is a normal. The GFN is associated with
- 	a normal VM. The contents of the GFN is accesible to
- 	the Hypervisor. Its content is never encrypted.
-
- 2. States of a VM.
-    ---------------
-
- (a) Normal VM:  A VM whose contents are always accessible to
- 	the hypervisor.  All its GFNs are normal-GFNs.
-
- (b) Secure VM: A VM whose contents are not accessible to the
- 	hypervisor without the VM's consent.  Its GFNs are
- 	either Shared-GFN or Secure-GFNs.
-
- (c) Transient VM: A Normal VM that is transitioning to secure VM.
- 	The transition starts on successful return of
- 	H_SVM_INIT_START, and ends on successful return
- 	of H_SVM_INIT_DONE. This transient VM, can have GFNs
- 	in any of the three states; i.e Secure-GFN, Shared-GFN,
- 	and Normal-GFN.	The VM never executes in this state
- 	in supervisor-mode.
-
- 3. Memory slot State.
-    ------------------
-  	The state of a memory slot mirrors the state of the
-  	VM the memory slot is associated with.
-
- 4. VM State transition.
-    --------------------
-
-  A VM always starts in Normal Mode.
-
-  H_SVM_INIT_START moves the VM into transient state. During this
-  time the Ultravisor may request some of its GFNs to be shared or
-  secured. So its GFNs can be in one of the three GFN states.
-
-  H_SVM_INIT_DONE moves the VM entirely from transient state to
-  secure-state. At this point any left-over normal-GFNs are
-  transitioned to Secure-GFN.
-
-  H_SVM_INIT_ABORT moves the transient VM back to normal VM.
-  All its GFNs are moved to Normal-GFNs.
-
-  UV_TERMINATE transitions the secure-VM back to normal-VM. All
-  the secure-GFN and shared-GFNs are tranistioned to normal-GFN
-  Note: The contents of the normal-GFN is undefined at this point.
-
- 5. GFN state implementation:
-    -------------------------
-
- Secure GFN is associated with a secure-PFN; also called uvmem_pfn,
- when the GFN is paged-in. Its pfn[] has KVMPPC_GFN_UVMEM_PFN flag
- set, and contains the value of the secure-PFN.
- It is associated with a normal-PFN; also called mem_pfn, when
- the GFN is pagedout. Its pfn[] has KVMPPC_GFN_MEM_PFN flag set.
- The value of the normal-PFN is not tracked.
-
- Shared GFN is associated with a normal-PFN. Its pfn[] has
- KVMPPC_UVMEM_SHARED_PFN flag set. The value of the normal-PFN
- is not tracked.
-
- Normal GFN is associated with normal-PFN. Its pfn[] has
- no flag set. The value of the normal-PFN is not tracked.
-
- 6. Life cycle of a GFN
-    --------------------
- --------------------------------------------------------------
- |        |     Share  |  Unshare | SVM       |H_SVM_INIT_DONE|
- |        |operation   |operation | abort/    |               |
- |        |            |          | terminate |               |
- -------------------------------------------------------------
- |        |            |          |           |               |
- | Secure |     Shared | Secure   |Normal     |Secure         |
- |        |            |          |           |               |
- | Shared |     Shared | Secure   |Normal     |Shared         |
- |        |            |          |           |               |
- | Normal |     Shared | Secure   |Normal     |Secure         |
- --------------------------------------------------------------
-
- 7. Life cycle of a VM
-    --------------------
- --------------------------------------------------------------------
- |         |  start    |  H_SVM_  |H_SVM_   |H_SVM_     |UV_SVM_    |
- |         |  VM       |INIT_START|INIT_DONE|INIT_ABORT |TERMINATE  |
- |         |           |          |         |           |           |
- --------- ----------------------------------------------------------
- |         |           |          |         |           |           |
- | Normal  | Normal    | Transient|Error    |Error      |Normal     |
- |         |           |          |         |           |           |
- | Secure  |   Error   | Error    |Error    |Error      |Normal     |
- |         |           |          |         |           |           |
- |Transient|   N/A     | Error    |Secure   |Normal     |Normal     |
- --------------------------------------------------------------------
-
-************************************************************************
+In H_SVM_INIT_DONE handler, move all the PFNs associated with the SVM's
+GFNs to secure-PFNs. Skip the GFNs that are already Paged-in or Shared
+or Paged-in followed by a Paged-out.
 
 Cc: Paul Mackerras <paulus@ozlabs.org>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
@@ -229,314 +116,234 @@ Cc: David Gibson <david@gibson.dropbear.id.au>
 Cc: Claudio Carvalho <cclaudio@linux.ibm.com>
 Cc: kvm-ppc@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Signed-off-by: Ram Pai <linuxram@us.ibm.com>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 187 +++++++++++++++++++++++++++++++++----
- 1 file changed, 168 insertions(+), 19 deletions(-)
+ Documentation/powerpc/ultravisor.rst        |   2 +
+ arch/powerpc/include/asm/kvm_book3s_uvmem.h |   2 +
+ arch/powerpc/kvm/book3s_hv_uvmem.c          | 135 +++++++++++++++++++++++++---
+ 3 files changed, 125 insertions(+), 14 deletions(-)
 
+diff --git a/Documentation/powerpc/ultravisor.rst b/Documentation/powerpc/ultravisor.rst
+index a1c8c37..ba6b1bf 100644
+--- a/Documentation/powerpc/ultravisor.rst
++++ b/Documentation/powerpc/ultravisor.rst
+@@ -934,6 +934,8 @@ Return values
+ 	* H_UNSUPPORTED		if called from the wrong context (e.g.
+ 				from an SVM or before an H_SVM_INIT_START
+ 				hypercall).
++	* H_STATE		if the hypervisor could not successfully
++                                transition the VM to Secure VM.
+ 
+ Description
+ ~~~~~~~~~~~
+diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+index 9cb7d8b..f229ab5 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
++++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+@@ -23,6 +23,8 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
+ unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm);
+ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+ 			     struct kvm *kvm, bool skip_page_out);
++int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
++			const struct kvm_memory_slot *memslot);
+ #else
+ static inline int kvmppc_uvmem_init(void)
+ {
 diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 0baa293..df2e272 100644
+index df2e272..3274663 100644
 --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
 +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -98,7 +98,127 @@
+@@ -93,6 +93,7 @@
+ #include <asm/ultravisor.h>
+ #include <asm/mman.h>
+ #include <asm/kvm_ppc.h>
++#include <asm/kvm_book3s_uvmem.h>
+ 
+ static struct dev_pagemap kvmppc_uvmem_pgmap;
  static unsigned long *kvmppc_uvmem_bitmap;
- static DEFINE_SPINLOCK(kvmppc_uvmem_bitmap_lock);
+@@ -348,8 +349,45 @@ static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
+ 	return false;
+ }
  
--#define KVMPPC_UVMEM_PFN	(1UL << 63)
 +/*
-+ * States of a GFN
-+ * ---------------
-+ * The GFN can be in one of the following states.
-+ *
-+ * (a) Secure - The GFN is secure. The GFN is associated with
-+ *	a Secure VM, the contents of the GFN is not accessible
-+ *	to the Hypervisor.  This GFN can be backed by a secure-PFN,
-+ *	or can be backed by a normal-PFN with contents encrypted.
-+ *	The former is true when the GFN is paged-in into the
-+ *	ultravisor. The latter is true when the GFN is paged-out
-+ *	of the ultravisor.
-+ *
-+ * (b) Shared - The GFN is shared. The GFN is associated with a
-+ *	a secure VM. The contents of the GFN is accessible to
-+ *	Hypervisor. This GFN is backed by a normal-PFN and its
-+ *	content is un-encrypted.
-+ *
-+ * (c) Normal - The GFN is a normal. The GFN is associated with
-+ *	a normal VM. The contents of the GFN is accesible to
-+ *	the Hypervisor. Its content is never encrypted.
-+ *
-+ * States of a VM.
-+ * ---------------
-+ *
-+ * Normal VM:  A VM whose contents are always accessible to
-+ *	the hypervisor.  All its GFNs are normal-GFNs.
-+ *
-+ * Secure VM: A VM whose contents are not accessible to the
-+ *	hypervisor without the VM's consent.  Its GFNs are
-+ *	either Shared-GFN or Secure-GFNs.
-+ *
-+ * Transient VM: A Normal VM that is transitioning to secure VM.
-+ *	The transition starts on successful return of
-+ *	H_SVM_INIT_START, and ends on successful return
-+ *	of H_SVM_INIT_DONE. This transient VM, can have GFNs
-+ *	in any of the three states; i.e Secure-GFN, Shared-GFN,
-+ *	and Normal-GFN.	The VM never executes in this state
-+ *	in supervisor-mode.
-+ *
-+ * Memory slot State.
-+ * -----------------------------
-+ *	The state of a memory slot mirrors the state of the
-+ *	VM the memory slot is associated with.
-+ *
-+ * VM State transition.
-+ * --------------------
-+ *
-+ *  A VM always starts in Normal Mode.
-+ *
-+ *  H_SVM_INIT_START moves the VM into transient state. During this
-+ *  time the Ultravisor may request some of its GFNs to be shared or
-+ *  secured. So its GFNs can be in one of the three GFN states.
-+ *
-+ *  H_SVM_INIT_DONE moves the VM entirely from transient state to
-+ *  secure-state. At this point any left-over normal-GFNs are
-+ *  transitioned to Secure-GFN.
-+ *
-+ *  H_SVM_INIT_ABORT moves the transient VM back to normal VM.
-+ *  All its GFNs are moved to Normal-GFNs.
-+ *
-+ *  UV_TERMINATE transitions the secure-VM back to normal-VM. All
-+ *  the secure-GFN and shared-GFNs are tranistioned to normal-GFN
-+ *  Note: The contents of the normal-GFN is undefined at this point.
-+ *
-+ * GFN state implementation:
-+ * -------------------------
-+ *
-+ * Secure GFN is associated with a secure-PFN; also called uvmem_pfn,
-+ * when the GFN is paged-in. Its pfn[] has KVMPPC_GFN_UVMEM_PFN flag
-+ * set, and contains the value of the secure-PFN.
-+ * It is associated with a normal-PFN; also called mem_pfn, when
-+ * the GFN is pagedout. Its pfn[] has KVMPPC_GFN_MEM_PFN flag set.
-+ * The value of the normal-PFN is not tracked.
-+ *
-+ * Shared GFN is associated with a normal-PFN. Its pfn[] has
-+ * KVMPPC_UVMEM_SHARED_PFN flag set. The value of the normal-PFN
-+ * is not tracked.
-+ *
-+ * Normal GFN is associated with normal-PFN. Its pfn[] has
-+ * no flag set. The value of the normal-PFN is not tracked.
-+ *
-+ * Life cycle of a GFN
-+ * --------------------
-+ *
-+ * --------------------------------------------------------------
-+ * |        |     Share  |  Unshare | SVM       |H_SVM_INIT_DONE|
-+ * |        |operation   |operation | abort/    |               |
-+ * |        |            |          | terminate |               |
-+ * -------------------------------------------------------------
-+ * |        |            |          |           |               |
-+ * | Secure |     Shared | Secure   |Normal     |Secure         |
-+ * |        |            |          |           |               |
-+ * | Shared |     Shared | Secure   |Normal     |Shared         |
-+ * |        |            |          |           |               |
-+ * | Normal |     Shared | Secure   |Normal     |Secure         |
-+ * --------------------------------------------------------------
-+ *
-+ * Life cycle of a VM
-+ * --------------------
-+ *
-+ * --------------------------------------------------------------------
-+ * |         |  start    |  H_SVM_  |H_SVM_   |H_SVM_     |UV_SVM_    |
-+ * |         |  VM       |INIT_START|INIT_DONE|INIT_ABORT |TERMINATE  |
-+ * |         |           |          |         |           |           |
-+ * --------- ----------------------------------------------------------
-+ * |         |           |          |         |           |           |
-+ * | Normal  | Normal    | Transient|Error    |Error      |Normal     |
-+ * |         |           |          |         |           |           |
-+ * | Secure  |   Error   | Error    |Error    |Error      |Normal     |
-+ * |         |           |          |         |           |           |
-+ * |Transient|   N/A     | Error    |Secure   |Normal     |Normal     |
-+ * --------------------------------------------------------------------
++ * starting from *gfn search for the next available GFN that is not yet
++ * transitioned to a secure GFN.  return the value of that GFN in *gfn.  If a
++ * GFN is found, return true, else return false
 + */
-+
-+#define KVMPPC_GFN_UVMEM_PFN	(1UL << 63)
-+#define KVMPPC_GFN_MEM_PFN	(1UL << 62)
-+#define KVMPPC_GFN_SHARED	(1UL << 61)
-+#define KVMPPC_GFN_SECURE	(KVMPPC_GFN_UVMEM_PFN | KVMPPC_GFN_MEM_PFN)
-+#define KVMPPC_GFN_FLAG_MASK	(KVMPPC_GFN_SECURE | KVMPPC_GFN_SHARED)
-+#define KVMPPC_GFN_PFN_MASK	(~KVMPPC_GFN_FLAG_MASK)
- 
- struct kvmppc_uvmem_slot {
- 	struct list_head list;
-@@ -106,11 +226,11 @@ struct kvmppc_uvmem_slot {
- 	unsigned long base_pfn;
- 	unsigned long *pfns;
- };
--
- struct kvmppc_uvmem_page_pvt {
- 	struct kvm *kvm;
- 	unsigned long gpa;
- 	bool skip_page_out;
-+	bool remove_gfn;
- };
- 
- bool kvmppc_uvmem_available(void)
-@@ -163,8 +283,8 @@ void kvmppc_uvmem_slot_free(struct kvm *kvm, const struct kvm_memory_slot *slot)
- 	mutex_unlock(&kvm->arch.uvmem_lock);
- }
- 
--static void kvmppc_uvmem_pfn_insert(unsigned long gfn, unsigned long uvmem_pfn,
--				    struct kvm *kvm)
-+static void kvmppc_mark_gfn(unsigned long gfn, struct kvm *kvm,
-+			unsigned long flag, unsigned long uvmem_pfn)
- {
- 	struct kvmppc_uvmem_slot *p;
- 
-@@ -172,24 +292,41 @@ static void kvmppc_uvmem_pfn_insert(unsigned long gfn, unsigned long uvmem_pfn,
- 		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
- 			unsigned long index = gfn - p->base_pfn;
- 
--			p->pfns[index] = uvmem_pfn | KVMPPC_UVMEM_PFN;
-+			if (flag == KVMPPC_GFN_UVMEM_PFN)
-+				p->pfns[index] = uvmem_pfn | flag;
-+			else
-+				p->pfns[index] = flag;
- 			return;
- 		}
- 	}
- }
- 
--static void kvmppc_uvmem_pfn_remove(unsigned long gfn, struct kvm *kvm)
-+/* mark the GFN as secure-GFN associated with @uvmem pfn device-PFN. */
-+static void kvmppc_gfn_secure_uvmem_pfn(unsigned long gfn,
-+			unsigned long uvmem_pfn, struct kvm *kvm)
- {
--	struct kvmppc_uvmem_slot *p;
-+	kvmppc_mark_gfn(gfn, kvm, KVMPPC_GFN_UVMEM_PFN, uvmem_pfn);
-+}
- 
--	list_for_each_entry(p, &kvm->arch.uvmem_pfns, list) {
--		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
--			p->pfns[gfn - p->base_pfn] = 0;
--			return;
--		}
--	}
-+/* mark the GFN as secure-GFN associated with a memory-PFN. */
-+static void kvmppc_gfn_secure_mem_pfn(unsigned long gfn, struct kvm *kvm)
++static bool kvmppc_next_nontransitioned_gfn(const struct kvm_memory_slot *memslot,
++		struct kvm *kvm, unsigned long *gfn)
 +{
-+	kvmppc_mark_gfn(gfn, kvm, KVMPPC_GFN_MEM_PFN, 0);
-+}
++	struct kvmppc_uvmem_slot *p;
++	bool ret = false;
++	unsigned long i;
 +
-+/* mark the GFN as a shared GFN. */
-+static void kvmppc_gfn_shared(unsigned long gfn, struct kvm *kvm)
-+{
-+	kvmppc_mark_gfn(gfn, kvm, KVMPPC_GFN_SHARED, 0);
-+}
++	mutex_lock(&kvm->arch.uvmem_lock);
 +
-+/* mark the GFN as a non-existent GFN. */
-+static void kvmppc_gfn_remove(unsigned long gfn, struct kvm *kvm)
-+{
-+	kvmppc_mark_gfn(gfn, kvm, 0, 0);
- }
- 
-+/* return true, if the GFN is a secure-GFN backed by a secure-PFN */
- static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
- 				    unsigned long *uvmem_pfn)
- {
-@@ -199,10 +336,10 @@ static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
- 		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
- 			unsigned long index = gfn - p->base_pfn;
- 
--			if (p->pfns[index] & KVMPPC_UVMEM_PFN) {
-+			if (p->pfns[index] & KVMPPC_GFN_UVMEM_PFN) {
- 				if (uvmem_pfn)
- 					*uvmem_pfn = p->pfns[index] &
--						     ~KVMPPC_UVMEM_PFN;
-+						     KVMPPC_GFN_PFN_MASK;
- 				return true;
- 			} else
- 				return false;
-@@ -353,6 +490,7 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
- 
- 		mutex_lock(&kvm->arch.uvmem_lock);
- 		if (!kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+			kvmppc_gfn_remove(gfn, kvm);
- 			mutex_unlock(&kvm->arch.uvmem_lock);
- 			continue;
- 		}
-@@ -360,6 +498,7 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
- 		uvmem_page = pfn_to_page(uvmem_pfn);
- 		pvt = uvmem_page->zone_device_data;
- 		pvt->skip_page_out = skip_page_out;
-+		pvt->remove_gfn = true;
- 		mutex_unlock(&kvm->arch.uvmem_lock);
- 
- 		pfn = gfn_to_pfn(kvm, gfn);
-@@ -429,7 +568,7 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
- 		goto out_clear;
- 
- 	uvmem_pfn = bit + pfn_first;
--	kvmppc_uvmem_pfn_insert(gpa >> PAGE_SHIFT, uvmem_pfn, kvm);
-+	kvmppc_gfn_secure_uvmem_pfn(gpa >> PAGE_SHIFT, uvmem_pfn, kvm);
- 
- 	pvt->gpa = gpa;
- 	pvt->kvm = kvm;
-@@ -524,6 +663,7 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- 		uvmem_page = pfn_to_page(uvmem_pfn);
- 		pvt = uvmem_page->zone_device_data;
- 		pvt->skip_page_out = true;
-+		pvt->remove_gfn = false;
- 	}
- 
- retry:
-@@ -537,12 +677,16 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- 		uvmem_page = pfn_to_page(uvmem_pfn);
- 		pvt = uvmem_page->zone_device_data;
- 		pvt->skip_page_out = true;
-+		pvt->remove_gfn = false;
- 		kvm_release_pfn_clean(pfn);
- 		goto retry;
- 	}
- 
--	if (!uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0, page_shift))
-+	if (!uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0,
-+				page_shift)) {
-+		kvmppc_gfn_shared(gfn, kvm);
- 		ret = H_SUCCESS;
++	list_for_each_entry(p, &kvm->arch.uvmem_pfns, list)
++		if (*gfn >= p->base_pfn && *gfn < p->base_pfn + p->nr_pfns)
++			break;
++	if (!p)
++		goto out;
++	/*
++	 * The code below assumes, one to one correspondence between
++	 * kvmppc_uvmem_slot and memslot.
++	 */
++	for (i = *gfn; i < p->base_pfn + p->nr_pfns; i++) {
++		unsigned long index = i - p->base_pfn;
++
++		if (!(p->pfns[index] & KVMPPC_GFN_FLAG_MASK)) {
++			*gfn = i;
++			ret = true;
++			break;
++		}
 +	}
- 	kvm_release_pfn_clean(pfn);
- 	mutex_unlock(&kvm->arch.uvmem_lock);
- out:
-@@ -598,6 +742,7 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 
- 	if (!kvmppc_svm_page_in(vma, start, end, gpa, kvm, page_shift))
- 		ret = H_SUCCESS;
++out:
++	mutex_unlock(&kvm->arch.uvmem_lock);
++	return ret;
++}
 +
+ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+-		struct kvm_memory_slot *memslot, bool merge)
++		const struct kvm_memory_slot *memslot, bool merge)
+ {
+ 	unsigned long gfn = memslot->base_gfn;
+ 	unsigned long end, start = gfn_to_hva(kvm, gfn);
+@@ -461,12 +499,31 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+ 
+ unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
+ {
++	struct kvm_memslots *slots;
++	struct kvm_memory_slot *memslot;
++	int srcu_idx;
++	long ret = H_SUCCESS;
++
+ 	if (!(kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START))
+ 		return H_UNSUPPORTED;
+ 
++	/* migrate any unmoved normal pfn to device pfns*/
++	srcu_idx = srcu_read_lock(&kvm->srcu);
++	slots = kvm_memslots(kvm);
++	kvm_for_each_memslot(memslot, slots) {
++		ret = kvmppc_uv_migrate_mem_slot(kvm, memslot);
++		if (ret) {
++			ret = H_STATE;
++			goto out;
++		}
++	}
++
+ 	kvm->arch.secure_guest |= KVMPPC_SECURE_INIT_DONE;
+ 	pr_info("LPID %d went secure\n", kvm->arch.lpid);
+-	return H_SUCCESS;
++
++out:
++	srcu_read_unlock(&kvm->srcu, srcu_idx);
++	return ret;
+ }
+ 
+ /*
+@@ -587,12 +644,14 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
+ }
+ 
+ /*
+- * Alloc a PFN from private device memory pool and copy page from normal
+- * memory to secure memory using UV_PAGE_IN uvcall.
++ * Alloc a PFN from private device memory pool. If @pagein is true,
++ * copy page from normal memory to secure memory using UV_PAGE_IN uvcall.
+  */
+-static int kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
+-		   unsigned long end, unsigned long gpa, struct kvm *kvm,
+-		   unsigned long page_shift)
++static int kvmppc_svm_migrate_page(struct vm_area_struct *vma,
++		unsigned long start,
++		unsigned long end, unsigned long gpa, struct kvm *kvm,
++		unsigned long page_shift,
++		bool pagein)
+ {
+ 	unsigned long src_pfn, dst_pfn = 0;
+ 	struct migrate_vma mig;
+@@ -623,11 +682,16 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
+ 		goto out_finalize;
+ 	}
+ 
+-	pfn = *mig.src >> MIGRATE_PFN_SHIFT;
+-	spage = migrate_pfn_to_page(*mig.src);
+-	if (spage)
+-		uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0,
+-			   page_shift);
++	if (pagein) {
++		pfn = *mig.src >> MIGRATE_PFN_SHIFT;
++		spage = migrate_pfn_to_page(*mig.src);
++		if (spage) {
++			ret = uv_page_in(kvm->arch.lpid, pfn << page_shift,
++					gpa, 0, page_shift);
++			if (ret)
++				goto out_finalize;
++		}
++	}
+ 
+ 	*mig.dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+ 	migrate_vma_pages(&mig);
+@@ -636,6 +700,46 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma, unsigned long start,
+ 	return ret;
+ }
+ 
++int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
++		const struct kvm_memory_slot *memslot)
++{
++	unsigned long gfn = memslot->base_gfn;
++	struct vm_area_struct *vma;
++	unsigned long start, end;
++	int ret = 0;
++
++	while (kvmppc_next_nontransitioned_gfn(memslot, kvm, &gfn)) {
++
++		mmap_read_lock(kvm->mm);
++		start = gfn_to_hva(kvm, gfn);
++		if (kvm_is_error_hva(start)) {
++			ret = H_STATE;
++			goto next;
++		}
++
++		end = start + (1UL << PAGE_SHIFT);
++		vma = find_vma_intersection(kvm->mm, start, end);
++		if (!vma || vma->vm_start > start || vma->vm_end < end) {
++			ret = H_STATE;
++			goto next;
++		}
++
++		mutex_lock(&kvm->arch.uvmem_lock);
++		ret = kvmppc_svm_migrate_page(vma, start, end,
++				(gfn << PAGE_SHIFT), kvm, PAGE_SHIFT, false);
++		mutex_unlock(&kvm->arch.uvmem_lock);
++		if (ret)
++			ret = H_STATE;
++
++next:
++		mmap_read_unlock(kvm->mm);
++
++		if (ret)
++			break;
++	}
++	return ret;
++}
++
+ /*
+  * Shares the page with HV, thus making it a normal page.
+  *
+@@ -740,8 +844,11 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+ 	if (!vma || vma->vm_start > start || vma->vm_end < end)
+ 		goto out_unlock;
+ 
+-	if (!kvmppc_svm_page_in(vma, start, end, gpa, kvm, page_shift))
+-		ret = H_SUCCESS;
++	if (kvmppc_svm_migrate_page(vma, start, end, gpa, kvm, page_shift,
++				true))
++		goto out_unlock;
++
++	ret = H_SUCCESS;
+ 
  out_unlock:
  	mutex_unlock(&kvm->arch.uvmem_lock);
- out:
-@@ -706,7 +851,8 @@ static vm_fault_t kvmppc_uvmem_migrate_to_ram(struct vm_fault *vmf)
- /*
-  * Release the device PFN back to the pool
-  *
-- * Gets called when secure page becomes a normal page during H_SVM_PAGE_OUT.
-+ * Gets called when secure GFN tranistions from a secure-PFN
-+ * to a normal PFN during H_SVM_PAGE_OUT.
-  * Gets called with kvm->arch.uvmem_lock held.
-  */
- static void kvmppc_uvmem_page_free(struct page *page)
-@@ -721,7 +867,10 @@ static void kvmppc_uvmem_page_free(struct page *page)
- 
- 	pvt = page->zone_device_data;
- 	page->zone_device_data = NULL;
--	kvmppc_uvmem_pfn_remove(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
-+	if (pvt->remove_gfn)
-+		kvmppc_gfn_remove(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
-+	else
-+		kvmppc_gfn_secure_mem_pfn(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
- 	kfree(pvt);
- }
- 
 -- 
 1.8.3.1
 
