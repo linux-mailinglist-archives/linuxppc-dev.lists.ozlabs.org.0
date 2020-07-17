@@ -2,80 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D613B223705
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 10:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A7622373C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 10:37:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7PTD0wh2zDqhY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 18:30:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7PdB1zdyzDr1Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 18:37:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7PZm4nX2zDqyj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 18:35:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B7PZm0t2dz9CDr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 18:35:28 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4B7PZm0MFyz9sTC; Fri, 17 Jul 2020 18:35:28 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7PR90FBhzDrMp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 18:28:52 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06H83iRK061101; Fri, 17 Jul 2020 04:28:46 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 327u1mfjww-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 04:28:46 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06H8QN1n027122;
- Fri, 17 Jul 2020 08:28:45 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma02dal.us.ibm.com with ESMTP id 32752a39j0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 08:28:45 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06H8SdxJ42992064
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Jul 2020 08:28:39 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D2ACC605A;
- Fri, 17 Jul 2020 08:28:42 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00571C6055;
- Fri, 17 Jul 2020 08:28:41 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.199.61.65])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 17 Jul 2020 08:28:41 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 503862E3026; Fri, 17 Jul 2020 13:58:36 +0530 (IST)
-Date: Fri, 17 Jul 2020 13:58:36 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 11/11] powerpc/smp: Provide an ability to disable coregroup
-Message-ID: <20200717082836.GG32531@in.ibm.com>
-References: <20200714043624.5648-1-srikar@linux.vnet.ibm.com>
- <20200714043624.5648-12-srikar@linux.vnet.ibm.com>
+ by ozlabs.org (Postfix) with ESMTPS id 4B7PZl4P4qz9sR4
+ for <linuxppc-dev@ozlabs.org>; Fri, 17 Jul 2020 18:35:26 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id DF2D5B636;
+ Fri, 17 Jul 2020 08:35:26 +0000 (UTC)
+Date: Fri, 17 Jul 2020 10:35:21 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Daniel Axtens <dja@axtens.net>
+Subject: Re: [PATCH v3] powerpc/pseries: detect secure and trusted boot state
+ of the system.
+Message-ID: <20200717083521.GK32107@kitsune.suse.cz>
+References: <1594813921-12425-1-git-send-email-nayna@linux.ibm.com>
+ <20200716081337.GB32107@kitsune.suse.cz>
+ <87pn8uu1hy.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200714043624.5648-12-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-17_04:2020-07-17,
- 2020-07-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=999
- suspectscore=0 phishscore=0 bulkscore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007170059
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87pn8uu1hy.fsf@dja-thinkpad.axtens.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,80 +64,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
- Michael Ellerman <michaele@au1.ibm.com>, Anton Blanchard <anton@au1.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nick Piggin <npiggin@au1.ibm.com>
+Cc: linuxppc-dev@ozlabs.org, Nayna Jain <nayna@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 14, 2020 at 10:06:24AM +0530, Srikar Dronamraju wrote:
-> If user wants to enable coregroup sched_domain then they can boot with
-> kernel parameter "coregroup_support=on"
+On Fri, Jul 17, 2020 at 03:58:01PM +1000, Daniel Axtens wrote:
+> Michal Suchánek <msuchanek@suse.de> writes:
 > 
-> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> Cc: Michael Ellerman <michaele@au1.ibm.com>
-> Cc: Nick Piggin <npiggin@au1.ibm.com>
-> Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Michael Neuling <mikey@linux.ibm.com>
-> Cc: Anton Blanchard <anton@au1.ibm.com>
-> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > On Wed, Jul 15, 2020 at 07:52:01AM -0400, Nayna Jain wrote:
+> >> The device-tree property to check secure and trusted boot state is
+> >> different for guests(pseries) compared to baremetal(powernv).
+> >> 
+> >> This patch updates the existing is_ppc_secureboot_enabled() and
+> >> is_ppc_trustedboot_enabled() functions to add support for pseries.
+> >> 
+> >> The secureboot and trustedboot state are exposed via device-tree property:
+> >> /proc/device-tree/ibm,secure-boot and /proc/device-tree/ibm,trusted-boot
+> >> 
+> >> The values of ibm,secure-boot under pseries are interpreted as:
+> >                                       ^^^
+> >> 
+> >> 0 - Disabled
+> >> 1 - Enabled in Log-only mode. This patch interprets this value as
+> >> disabled, since audit mode is currently not supported for Linux.
+> >> 2 - Enabled and enforced.
+> >> 3-9 - Enabled and enforcing; requirements are at the discretion of the
+> >> operating system.
+> >> 
+> >> The values of ibm,trusted-boot under pseries are interpreted as:
+> >                                        ^^^
+> > These two should be different I suppose?
+> 
+> I'm not quite sure what you mean? They'll be documented in a future
+> revision of the PAPR, once I get my act together and submit the
+> relevant internal paperwork.
 
+Nevermind, one talks about secure boot, the other about trusted boot.
 
-We need this documented in the
-Documentation/admin-guide/kernel-parameters.txt
+Thanks
 
-Other than that, the patch looks good to me.
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-
-> ---
->  arch/powerpc/kernel/smp.c | 19 ++++++++++++++++++-
->  1 file changed, 18 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index bb25c13bbb79..c43909e6e8e9 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -118,6 +118,23 @@ struct smp_ops_t *smp_ops;
->  volatile unsigned int cpu_callin_map[NR_CPUS];
-> 
->  int smt_enabled_at_boot = 1;
-> +int coregroup_support;
-> +
-> +static int __init early_coregroup(char *p)
-> +{
-> +	if (!p)
-> +		return 0;
-> +
-> +	if (strstr(p, "on"))
-> +		coregroup_support = 1;
-> +
-> +	if (strstr(p, "1"))
-> +		coregroup_support = 1;
-> +
-> +	return 0;
-> +}
-> +
-> +early_param("coregroup_support", early_coregroup);
-> 
->  /*
->   * Returns 1 if the specified cpu should be brought up during boot.
-> @@ -878,7 +895,7 @@ static struct cpumask *cpu_coregroup_mask(int cpu)
-> 
->  static bool has_coregroup_support(void)
->  {
-> -	return coregroup_enabled;
-> +	return coregroup_enabled && coregroup_support;
->  }
-> 
->  static const struct cpumask *cpu_mc_mask(int cpu)
-> -- 
-> 2.17.1
-> 
+Michal
