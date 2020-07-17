@@ -1,45 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC43223190
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 05:23:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53FE2231F9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 06:13:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7Gg25CBDzDqsW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 13:23:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7Hlx0G6mzDqZN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 14:13:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B7Gd248GwzDqTN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 13:21:55 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5723DD6E;
- Thu, 16 Jul 2020 20:21:53 -0700 (PDT)
-Received: from [192.168.0.129] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E0ED73F68F;
- Thu, 16 Jul 2020 20:21:43 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V5 1/4] mm/debug_vm_pgtable: Add tests validating arch
- helpers for core MM features
-To: Steven Price <steven.price@arm.com>, linux-mm@kvack.org
-References: <1594610587-4172-1-git-send-email-anshuman.khandual@arm.com>
- <1594610587-4172-2-git-send-email-anshuman.khandual@arm.com>
- <2ff756c5-28e2-b64a-3788-260ba30c6409@arm.com>
-Message-ID: <efdd0b57-6515-2ee7-a245-a23be6a1d823@arm.com>
-Date: Fri, 17 Jul 2020 08:50:35 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7HjH63J8zDr85
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 14:10:43 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06H434w9173749; Fri, 17 Jul 2020 00:10:29 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32awbrsy0r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Jul 2020 00:10:29 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06H434Pf173782;
+ Fri, 17 Jul 2020 00:10:28 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32awbrsy06-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Jul 2020 00:10:28 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06H3wVbN016625;
+ Fri, 17 Jul 2020 04:10:27 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06fra.de.ibm.com with ESMTP id 328rbqsxj7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Jul 2020 04:10:26 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06H4AOkX23331216
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 Jul 2020 04:10:24 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DBC17AE058;
+ Fri, 17 Jul 2020 04:10:23 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A8C91AE045;
+ Fri, 17 Jul 2020 04:10:19 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.41.4])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 17 Jul 2020 04:10:19 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au, mikey@neuling.org
+Subject: [PATCH v4 00/10] powerpc/watchpoint: Enable 2nd DAWR on baremetal and
+ powervm
+Date: Fri, 17 Jul 2020 09:39:48 +0530
+Message-Id: <20200717040958.70561-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <2ff756c5-28e2-b64a-3788-260ba30c6409@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-16_11:2020-07-16,
+ 2020-07-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
+ score=100 bulkscore=0
+ phishscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0 spamscore=100
+ mlxscore=100 malwarescore=0 clxscore=1015 mlxlogscore=-1000
+ priorityscore=1501 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007170029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,108 +89,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- agordeev@linux.ibm.com, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, x86@kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- gerald.schaefer@de.ibm.com, ziy@nvidia.com,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, cai@lca.pw,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- christophe.leroy@c-s.fr, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- aneesh.kumar@linux.ibm.com, Borislav Petkov <bp@alien8.de>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- rppt@kernel.org
+Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com, apopple@linux.ibm.com,
+ peterz@infradead.org, fweisbec@gmail.com, miltonm@us.ibm.com, oleg@redhat.com,
+ npiggin@gmail.com, linux-kernel@vger.kernel.org, paulus@samba.org,
+ jolsa@kernel.org, jniethe5@gmail.com, pedromfc@br.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Last series[1] was to add basic infrastructure support for more than
+one watchpoint on Book3S powerpc. This series actually enables the 2nd 
+DAWR for baremetal and powervm. Kvm guest is still not supported.
 
+v3: https://lore.kernel.org/lkml/20200708045046.135702-1-ravi.bangoria@linux.ibm.com
 
-On 07/16/2020 07:44 PM, Steven Price wrote:
-> On 13/07/2020 04:23, Anshuman Khandual wrote:
->> This adds new tests validating arch page table helpers for these following
->> core memory features. These tests create and test specific mapping types at
->> various page table levels.
->>
->> 1. SPECIAL mapping
->> 2. PROTNONE mapping
->> 3. DEVMAP mapping
->> 4. SOFTDIRTY mapping
->> 5. SWAP mapping
->> 6. MIGRATION mapping
->> 7. HUGETLB mapping
->> 8. THP mapping
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
->> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
->> Cc: Mike Rapoport <rppt@linux.ibm.com>
->> Cc: Vineet Gupta <vgupta@synopsys.com>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
->> Cc: Vasily Gorbik <gor@linux.ibm.com>
->> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: "H. Peter Anvin" <hpa@zytor.com>
->> Cc: Kirill A. Shutemov <kirill@shutemov.name>
->> Cc: Paul Walmsley <paul.walmsley@sifive.com>
->> Cc: Palmer Dabbelt <palmer@dabbelt.com>
->> Cc: linux-snps-arc@lists.infradead.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: linux-s390@vger.kernel.org
->> Cc: linux-riscv@lists.infradead.org
->> Cc: x86@kernel.org
->> Cc: linux-mm@kvack.org
->> Cc: linux-arch@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Tested-by: Vineet Gupta <vgupta@synopsys.com>    #arc
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   mm/debug_vm_pgtable.c | 302 +++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 301 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->> index 61ab16fb2e36..2fac47db3eb7 100644
->> --- a/mm/debug_vm_pgtable.c
->> +++ b/mm/debug_vm_pgtable.c
-> [...]
->> +
->> +static void __init pte_swap_tests(unsigned long pfn, pgprot_t prot)
->> +{
->> +    swp_entry_t swp;
->> +    pte_t pte;
->> +
->> +    pte = pfn_pte(pfn, prot);
->> +    swp = __pte_to_swp_entry(pte);
-> 
-> Minor issue: this doesn't look necessarily valid - there's no reason a normal PTE can be turned into a swp_entry. In practise this is likely to work on all architectures because there's no reason not to use (at least) all the PFN bits for the swap entry, but it doesn't exactly seem correct.
+v3->v4:
+ - v3 patch #2 is split into two v4 patches: #2 and #3
+ - Few other minor neats suggested by Jordan Niethe
+ - Rebased to powerpc/next
 
-Agreed, that it is a simple test but nonetheless a valid one which
-makes sure that PFN value remained unchanged during pte <---> swp
-conversion.
+[1]: https://lore.kernel.org/linuxppc-dev/20200514111741.97993-1-ravi.bangoria@linux.ibm.com/
 
-> 
-> Can we start with a swp_entry_t (from __swp_entry()) and check the round trip of that?
-> 
-> It would also seem sensible to have a check that is_swap_pte(__swp_entry_to_pte(__swp_entry(x,y))) is true.
+Ravi Bangoria (10):
+  powerpc/watchpoint: Fix 512 byte boundary limit
+  powerpc/watchpoint: Fix DAWR exception constraint
+  powerpc/watchpoint: Fix DAWR exception for CACHEOP
+  powerpc/watchpoint: Enable watchpoint functionality on power10 guest
+  powerpc/dt_cpu_ftrs: Add feature for 2nd DAWR
+  powerpc/watchpoint: Set CPU_FTR_DAWR1 based on pa-features bit
+  powerpc/watchpoint: Rename current H_SET_MODE DAWR macro
+  powerpc/watchpoint: Guest support for 2nd DAWR hcall
+  powerpc/watchpoint: Return available watchpoints dynamically
+  powerpc/watchpoint: Remove 512 byte boundary
 
-From past experiences, getting any these new tests involving platform
-helpers, working on all existing enabled archs is neither trivial nor
-going to be quick. Existing tests here are known to succeed in enabled
-platforms. Nonetheless, proposed tests as in the above suggestions do
-make sense but will try to accommodate them in a later patch.
+ arch/powerpc/include/asm/cputable.h       | 13 ++-
+ arch/powerpc/include/asm/hvcall.h         |  3 +-
+ arch/powerpc/include/asm/hw_breakpoint.h  |  5 +-
+ arch/powerpc/include/asm/machdep.h        |  2 +-
+ arch/powerpc/include/asm/plpar_wrappers.h |  7 +-
+ arch/powerpc/kernel/dawr.c                |  2 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c         |  7 ++
+ arch/powerpc/kernel/hw_breakpoint.c       | 98 +++++++++++++++--------
+ arch/powerpc/kernel/prom.c                |  2 +
+ arch/powerpc/kvm/book3s_hv.c              |  2 +-
+ arch/powerpc/platforms/pseries/setup.c    |  7 +-
+ 11 files changed, 101 insertions(+), 47 deletions(-)
+
+-- 
+2.26.2
+
