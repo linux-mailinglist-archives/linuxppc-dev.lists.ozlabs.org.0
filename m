@@ -1,87 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AFC22382A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 11:23:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6367A223904
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 12:12:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7QfY3z7RzDqCG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 19:23:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7Rk86jC9zDrPZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 20:12:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::143;
+ helo=mail-lf1-x143.google.com; envelope-from=cyrozap@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=rHGsF97w; dkim-atps=neutral
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
+ [IPv6:2a00:1450:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7QXP6JJBzDrNb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 19:18:29 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06H92Q9k187459; Fri, 17 Jul 2020 05:18:15 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32aurb4rsu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 05:18:15 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06H937XA190797;
- Fri, 17 Jul 2020 05:18:14 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32aurb4rs1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 05:18:14 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06H9B2AR018004;
- Fri, 17 Jul 2020 09:18:12 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 32b6jsr2ha-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 09:18:12 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06H9I9Se10224112
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Jul 2020 09:18:09 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6ECF452054;
- Fri, 17 Jul 2020 09:18:09 +0000 (GMT)
-Received: from pratiks-thinkpad.ibmuc.com (unknown [9.85.80.176])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1D2ED5204E;
- Fri, 17 Jul 2020 09:18:06 +0000 (GMT)
-From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-To: rjw@rjwysocki.net, daniel.lezcano@linaro.org, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, srivatsa@csail.mit.edu,
- shuah@kernel.org, npiggin@gmail.com, ego@linux.vnet.ibm.com,
- svaidy@linux.ibm.com, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: [PATCH v2 2/2] selftest/cpuidle: Add support for cpuidle latency
- measurement
-Date: Fri, 17 Jul 2020 14:48:01 +0530
-Message-Id: <20200717091801.29289-3-psampat@linux.ibm.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200717091801.29289-1-psampat@linux.ibm.com>
-References: <20200717091801.29289-1-psampat@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7RhT6kFLzDrMW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 20:10:33 +1000 (AEST)
+Received: by mail-lf1-x143.google.com with SMTP id y18so5699428lfh.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 03:10:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=jfWY5jjkwOivxzVlYNxSL/wnM+Xe26stMAR5QfxU8lI=;
+ b=rHGsF97wKV2dZ9VAw1cxfr2qcURcDnvZuxzYHcMQ9zN4JSARjf7t3kQs+TNjjzBM0d
+ wywss8b5HPMRXwUCSnq36xEJgIM+W94O66fo2szJBz1kiBkizB1WO1pW8RYSqzTlyk0x
+ HUPluuyxrooAgQx0J1xr+ogM00ZBRNH5yRELD27Yqv7OeO7qhuY5adHeHwmTl6/DDOrj
+ eoua2n0KqjrTuvZslcJ4ujgX1Qgk/TNvYW14B4EGnwgjJRvxvOzBPDWPez7xfNfBQB7N
+ MW26w0NZ0BpM5wHBEhR5DckDjZ9Cgayu2J8Ah/kBAjoDR8GI+PCa+LpcrSGSK5L1O1Bw
+ zTKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jfWY5jjkwOivxzVlYNxSL/wnM+Xe26stMAR5QfxU8lI=;
+ b=fO0sG7XIoMv5PP4MrMYsBOstSCzSoVrsMY/Q+I5Yur2giaiVeyWCkB9XZ8q4KbPEeV
+ pq/hEMwjS9nrajWd2NaiMQKdQBMMXVi6Q3i/PQrCtEDc5n0syEdYGKyxIqzmKE/aegYS
+ MFIJvovoydoReBL27SWs8gZ0otpl5XFCjGnAfwPu5mCNIhdrZ2vFJnRCINHd42T6Z+11
+ WI6VhkvJ1GtkZbcy620kvxBKmBqkV4QaQUrJotmxoD7Io/3EFDAQwt07ZU4ZhgVXGvCw
+ Ds9GrSgscHFqakWE/wnbCoMcr0igCxF6Ka7IX1aWkbubY3wJvGSrptf4iCefemALm8U+
+ 0keQ==
+X-Gm-Message-State: AOAM531lrtJZYp2Ntf/4HXL/9sYh1kvo1bFvEo2XFwA+yXURepKQrEIS
+ Q2VFzD8UVQhv37jj+AqNUpOXvMMLvjXX7UflB1s=
+X-Google-Smtp-Source: ABdhPJxPBxHhz4fylBNxu3Ww6ZGTMTiva9W+pOXNqRslqU3UCWrS8ol488xCldxHTdn/S2wx+aKyA2tku+kbLJXnJns=
+X-Received: by 2002:ac2:4183:: with SMTP id z3mr1505854lfh.3.1594980627061;
+ Fri, 17 Jul 2020 03:10:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-17_04:2020-07-17,
- 2020-07-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 clxscore=1015 bulkscore=0 spamscore=0
- phishscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007170066
+References: <CAO3ALPy8_pxVyFROZUWNafEH1vUCP6LVpNmBBuMDSewGitzdLw@mail.gmail.com>
+ <CAOSf1CEOu5jX6KXKWiConBf=TDwF3qdASMxtfDjqSR6vOKN4XA@mail.gmail.com>
+In-Reply-To: <CAOSf1CEOu5jX6KXKWiConBf=TDwF3qdASMxtfDjqSR6vOKN4XA@mail.gmail.com>
+From: Forest Crossman <cyrozap@gmail.com>
+Date: Fri, 17 Jul 2020 05:10:15 -0500
+Message-ID: <CAO3ALPwZPN1vdqHaFsuSpgj63o6Z69VUg0LngmCSnvESrO4kNg@mail.gmail.com>
+Subject: Re: ASMedia USB 3.x host controllers triggering EEH on POWER9
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,325 +73,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-pci <linux-pci@vger.kernel.org>, linux-usb@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch adds support to trace IPI based and timer based wakeup
-latency from idle states
+> In the future you can use this script to automate some of the tedium
+> of parsing the eeh dumps:
+> https://patchwork.ozlabs.org/project/skiboot/patch/20200717044243.1195833-1-oohall@gmail.com/
 
-Latches onto the test-cpuidle_latency kernel module using the debugfs
-interface to send IPIs or schedule a timer based event, which in-turn
-populates the debugfs with the latency measurements.
+Ah, nice, thanks for showing me this! I had written my own parser that
+just dumped a few register names and what bits were set in each, but
+your script seems much more feature-complete.
 
-Currently for the IPI and timer tests; first disable all idle states
-and then test for latency measurements incrementally enabling each state
+> Anyway, for background the way PHB3 and PHB4 handle incoming DMAs goes
+> as follows:
+>
+> 1. Map the 16bit <bus><devfn> number to an IOMMU context, we call
+> those PEs. PE means "partitionable endpoint", but for the purpose of
+> processing DMAs you can ignore that and just treat it as an IOMMU
+> context ID.
+> 2. Use the PE number and some of the upper bits of the DMA address to
+> form the index into the Translation Validation Table.
+> 3. Use the table entry to validate the DMA address is within bounds
+> and whether it should be translated by the IOMMU or used as-is.
+>
+> If the table entry says the DMA needs to be translated by the IOMMU we'll also:
+> 4. Walk the IOMMU table to get the relevant IOMMU table entry.
+> 5. Validate the device has permission to read/write to that address.
+>
+> The "TVT Address Range Error" you're seeing means that the bounds
+> checks done in 3) is failing. OPAL configures the PHB so there's two
+> TVT entries (TVEs for short) assigned to each PE. Bit 59 of the DMA
+> address is used to select which TVE to use. We typically configure
+> TVE#0 to map 0x0...0x8000_0000 so there's a 2GB 32bit DMA window.
+> TVE#1 is configured for no-translate (bypass) mode so you can convert
+> from a system physical address to a DMA address by ORing in bit 59.
 
-Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
----
- tools/testing/selftests/Makefile           |   1 +
- tools/testing/selftests/cpuidle/Makefile   |   6 +
- tools/testing/selftests/cpuidle/cpuidle.sh | 257 +++++++++++++++++++++
- tools/testing/selftests/cpuidle/settings   |   1 +
- 4 files changed, 265 insertions(+)
- create mode 100644 tools/testing/selftests/cpuidle/Makefile
- create mode 100755 tools/testing/selftests/cpuidle/cpuidle.sh
- create mode 100644 tools/testing/selftests/cpuidle/settings
+Thanks for the in-depth explanation, I find these low-level details
+really fascinating.
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 1195bd85af38..ab6cf51f3518 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -7,6 +7,7 @@ TARGETS += capabilities
- TARGETS += cgroup
- TARGETS += clone3
- TARGETS += cpufreq
-+TARGETS += cpuidle
- TARGETS += cpu-hotplug
- TARGETS += drivers/dma-buf
- TARGETS += efivarfs
-diff --git a/tools/testing/selftests/cpuidle/Makefile b/tools/testing/selftests/cpuidle/Makefile
-new file mode 100644
-index 000000000000..72fd5d2e974d
---- /dev/null
-+++ b/tools/testing/selftests/cpuidle/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+all:
-+
-+TEST_PROGS := cpuidle.sh
-+
-+include ../lib.mk
-diff --git a/tools/testing/selftests/cpuidle/cpuidle.sh b/tools/testing/selftests/cpuidle/cpuidle.sh
-new file mode 100755
-index 000000000000..5c313a3abb0c
---- /dev/null
-+++ b/tools/testing/selftests/cpuidle/cpuidle.sh
-@@ -0,0 +1,257 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+LOG=cpuidle.log
-+MODULE=/lib/modules/$(uname -r)/kernel/drivers/cpuidle/test-cpuidle_latency.ko
-+
-+# Kselftest framework requirement - SKIP code is 4.
-+ksft_skip=4
-+
-+helpme()
-+{
-+	printf "Usage: $0 [-h] [-todg args]
-+	[-h <help>]
-+	[-m <location of the module>]
-+	[-o <location of the output>]
-+	\n"
-+	exit 2
-+}
-+
-+parse_arguments()
-+{
-+	while getopts ht:m:o: arg
-+	do
-+		case $arg in
-+			h) # --help
-+				helpme
-+				;;
-+			m) # --mod-file
-+				MODULE=$OPTARG
-+				;;
-+			o) # output log files
-+				LOG=$OPTARG
-+				;;
-+			\?)
-+				helpme
-+				;;
-+		esac
-+	done
-+}
-+
-+ins_mod()
-+{
-+	if [ ! -f "$MODULE" ]; then
-+		printf "$MODULE module does not exist. Exitting\n"
-+		exit $ksft_skip
-+	fi
-+	printf "Inserting $MODULE module\n\n"
-+	insmod $MODULE
-+	if [ $? != 0 ]; then
-+		printf "Insmod $MODULE failed\n"
-+		exit $ksft_skip
-+	fi
-+}
-+
-+compute_average()
-+{
-+	arr=("$@")
-+	sum=0
-+	size=${#arr[@]}
-+	for i in "${arr[@]}"
-+	do
-+		sum=$((sum + i))
-+	done
-+	avg=$((sum/size))
-+}
-+
-+# Disable all stop states
-+disable_idle()
-+{
-+	for ((cpu=0; cpu<NUM_CPUS; cpu++))
-+	do
-+		for ((state=0; state<NUM_STATES; state++))
-+		do
-+			echo 1 > /sys/devices/system/cpu/cpu$cpu/cpuidle/state$state/disable
-+		done
-+	done
-+}
-+
-+# Perform operation on each CPU for the given state
-+# $1 - Operation: enable (0) / disable (1)
-+# $2 - State to enable
-+op_state()
-+{
-+	for ((cpu=0; cpu<NUM_CPUS; cpu++))
-+	do
-+		echo $1 > /sys/devices/system/cpu/cpu$cpu/cpuidle/state$2/disable
-+	done
-+}
-+
-+# Extract latency in microseconds and convert to nanoseconds
-+extract_latency()
-+{
-+	for ((state=0; state<NUM_STATES; state++))
-+	do
-+		latency=$(($(cat /sys/devices/system/cpu/cpu0/cpuidle/state$state/latency) * 1000))
-+		latency_arr+=($latency)
-+	done
-+}
-+
-+# Run the IPI test
-+# $1 run for baseline - busy cpu or regular environment
-+# $2 destination cpu
-+ipi_test_once()
-+{
-+        dest_cpu=$2
-+        if [ "$1" = "baseline" ]; then
-+			# Keep the CPU busy
-+			taskset -c $dest_cpu cat /dev/random > /dev/null &
-+			task_pid=$!
-+			# Wait for the workload to achieve 100% CPU usage
-+			sleep 1
-+        fi
-+        taskset 0x1 echo $dest_cpu > /sys/kernel/debug/latency_test/ipi_cpu_dest
-+        ipi_latency=$(cat /sys/kernel/debug/latency_test/ipi_latency_ns)
-+        src_cpu=$(cat /sys/kernel/debug/latency_test/ipi_cpu_src)
-+        if [ "$1" = "baseline" ]; then
-+			kill $task_pid
-+			wait $task_pid 2>/dev/null
-+        fi
-+}
-+
-+# Incrementally Enable idle states one by one and compute the latency
-+run_ipi_tests()
-+{
-+        extract_latency
-+        disable_idle
-+        declare -a avg_arr
-+        echo -e "--IPI Latency Test---" >> $LOG
-+
-+		echo -e "--Baseline IPI Latency measurement: CPU Busy--" >> $LOG
-+		printf "%s %10s %12s\n" "SRC_CPU" "DEST_CPU" "IPI_Latency(ns)" >> $LOG
-+		for ((cpu=0; cpu<NUM_CPUS; cpu++))
-+		do
-+			ipi_test_once "baseline" $cpu
-+			printf "%-3s %10s %12s\n" $src_cpu $cpu $ipi_latency >> $LOG
-+			avg_arr+=($ipi_latency)
-+		done
-+		compute_average "${avg_arr[@]}"
-+		echo -e "Baseline Average IPI latency(ns): $avg" >> $LOG
-+
-+        for ((state=0; state<NUM_STATES; state++))
-+        do
-+			unset avg_arr
-+			echo -e "---Enabling state: $state---" >> $LOG
-+			op_state 0 $state
-+			printf "%s %10s %12s\n" "SRC_CPU" "DEST_CPU" "IPI_Latency(ns)" >> $LOG
-+			for ((cpu=0; cpu<NUM_CPUS; cpu++))
-+			do
-+				# Running IPI test and logging results
-+				sleep 1
-+				ipi_test_once "test" $cpu
-+				printf "%-3s %10s %12s\n" $src_cpu $cpu $ipi_latency >> $LOG
-+				avg_arr+=($ipi_latency)
-+			done
-+			compute_average "${avg_arr[@]}"
-+			echo -e "Expected IPI latency(ns): ${latency_arr[$state]}" >> $LOG
-+			echo -e "Observed Average IPI latency(ns): $avg" >> $LOG
-+			op_state 1 $state
-+        done
-+}
-+
-+# Extract the residency in microseconds and convert to nanoseconds.
-+# Add 100 ns so that the timer stays for a little longer than the residency
-+extract_residency()
-+{
-+	for ((state=0; state<NUM_STATES; state++))
-+	do
-+		residency=$(($(cat /sys/devices/system/cpu/cpu0/cpuidle/state$state/residency) * 1000 + 200))
-+		residency_arr+=($residency)
-+	done
-+}
-+
-+# Run the Timeout test
-+# $1 run for baseline - busy cpu or regular environment
-+# $2 destination cpu
-+# $3 timeout
-+timeout_test_once()
-+{
-+	dest_cpu=$2
-+	if [ "$1" = "baseline" ]; then
-+		# Keep the CPU busy
-+		taskset -c $dest_cpu cat /dev/random > /dev/null &
-+		task_pid=$!
-+		# Wait for the workload to achieve 100% CPU usage
-+		sleep 1
-+	fi
-+	taskset -c $dest_cpu echo $3 > /sys/kernel/debug/latency_test/timeout_expected_ns
-+	# Wait for the result to populate
-+	sleep 0.1
-+	timeout_diff=$(cat /sys/kernel/debug/latency_test/timeout_diff_ns)
-+	src_cpu=$(cat /sys/kernel/debug/latency_test/timeout_cpu_src)
-+	if [ "$1" = "baseline" ]; then
-+		kill $task_pid
-+		wait $task_pid 2>/dev/null
-+	fi
-+}
-+
-+run_timeout_tests()
-+{
-+	extract_residency
-+	disable_idle
-+	declare -a avg_arr
-+	echo -e "\n--Timeout Latency Test--" >> $LOG
-+
-+	echo -e "--Baseline Timeout Latency measurement: CPU Busy--" >> $LOG
-+	printf "%s %10s %10s\n" "Wakeup_src" "Baseline_delay(ns)">> $LOG
-+	for ((cpu=0; cpu<NUM_CPUS; cpu++))
-+	do
-+		timeout_test_once "baseline" $cpu ${residency_arr[0]}
-+		printf "%-3s %13s\n" $src_cpu $timeout_diff >> $LOG
-+		avg_arr+=($timeout_diff)
-+	done
-+	compute_average "${avg_arr[@]}"
-+	echo -e "Baseline Average timeout diff(ns): $avg" >> $LOG
-+
-+	for ((state=0; state<NUM_STATES; state++))
-+	do
-+		echo -e "---Enabling state: $state---" >> $LOG
-+		op_state 0 $state
-+		printf "%s %10s %10s\n" "Wakeup_src" "Baseline_delay(ns)" "Delay(ns)" >> $LOG
-+		unset avg_arr
-+		for ((cpu=0; cpu<NUM_CPUS; cpu++))
-+		do
-+			timeout_test_once "test" $cpu ${residency_arr[$state]}
-+			printf "%-3s %13s %18s\n" $src_cpu $baseline_timeout_diff $timeout_diff >> $LOG
-+			avg_arr+=($timeout_diff)
-+		done
-+		compute_average "${avg_arr[@]}"
-+		echo -e "Expected timeout(ns): ${residency_arr[$state]}" >> $LOG
-+		echo -e "Observed Average timeout diff(ns): $avg" >> $LOG
-+		op_state 1 $state
-+	done
-+}
-+
-+declare -a residency_arr
-+declare -a latency_arr
-+
-+# Parse arguments
-+parse_arguments $@
-+
-+rm -f $LOG
-+touch $LOG
-+NUM_CPUS=$(nproc --all)
-+NUM_STATES=$(ls -1 /sys/devices/system/cpu/cpu0/cpuidle/ | wc -l)
-+
-+# Insert the module
-+ins_mod $MODULE
-+
-+printf "Started IPI latency tests\n"
-+run_ipi_tests
-+
-+printf "Started Timer latency tests\n"
-+run_timeout_tests
-+
-+printf "Removing $MODULE module\n"
-+printf "Output logged at: $LOG\n"
-+rmmod $MODULE
-diff --git a/tools/testing/selftests/cpuidle/settings b/tools/testing/selftests/cpuidle/settings
-new file mode 100644
-index 000000000000..e7b9417537fb
---- /dev/null
-+++ b/tools/testing/selftests/cpuidle/settings
-@@ -0,0 +1 @@
-+timeout=0
--- 
-2.25.4
+> From word 2 of the PEST entry the faulting DMA address is:
+> 0x0000203974c00000. That address is interesting since it looks a lot
+> like a memory address on the 2nd chip, but it doesn't have bit 59 set
+> so TVE#0 is used to validate it. Obviously that address is above 2GB
+> so we get the error.
 
+Ah, I see. Do you know if the information on the PEST registers is
+documented publicly somewhere? I tried searching for what those
+registers meant in the PHB4 spec but it basically just said, "the PEST
+registers contain PEST data," which isn't particularly helpful.
+
+> What's probably happening is that the ASmedia controller doesn't
+> actually implement all 64 address bits and truncates the upper bits of
+> the DMA address. Doing that is a blatant violation of the PCIe (and
+> probably the xHCI) spec, but it's also pretty common since "it works
+> on x86." Something to try would be booting with the iommu=nobypass in
+> the kernel command line. That'll disable TVE#1 and force all DMAs to
+> go through TVE#0.
+
+Thanks, iommu=nobypass fixed it! Plugging in one or more USB devices
+no longer triggers any EEH errors.
+
+> Assuming the nobypass trick above works, what you really need to do is
+> have the driver report that it can't address all 64bits by setting its
+> DMA mask accordingly. For the xhci driver it looks like this is done
+> in xhci_gen_setup(), there might be a quirks-style interface for
+> working around bugs in specific controllers that you can use. Have a
+> poke around and see what you can find :)
+
+Yup, the xhci driver has a quirks system, and conveniently one of
+those is XHCI_NO_64BIT_SUPPORT. After making a 3-line patch to
+xhci-pci.c to add that quirk for this chip, the host controller is now
+able to work without setting iommu=nobypass in the kernel arguments.
+
+Thank you so much for your help! You've likely saved me several hours
+of reading documentation, as well as several more hours of fiddling
+around with the xhci driver. I'm almost disappointed the fix was so
+simple, but the time savings alone more than makes up for it. I'll
+submit the patch to the USB ML shortly.
+
+Thanks again!
+
+Forest
