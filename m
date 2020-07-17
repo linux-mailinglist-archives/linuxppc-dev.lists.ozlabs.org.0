@@ -1,80 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D511222FB6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 02:07:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C64222FFC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 02:28:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7BJd4y1nzDrFP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 10:07:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7Bmh24PPzDql6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 10:28:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=networkplumber.org (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=stephen@networkplumber.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=networkplumber.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MukQto0j; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ unprotected) header.d=networkplumber-org.20150623.gappssmtp.com
+ header.i=@networkplumber-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=wxlthbCa; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7B8f3qBszDqvW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 10:00:33 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id k27so5764406pgm.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 17:00:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=ImNiZtmXUEslFcxDwYTJ2V9XDT5Gl9sBS0NfevXsnnY=;
- b=MukQto0jRHUB4yiJDf8IKC4tB6sGzWl/LcJo9HLPE/bkd1kmrX9hGCtCDR5//wUoy2
- vRcf0HCTe9AuTFsgW3Sks6FN5aGElPRZIOw8zuUk+KdKriPEH/mIEVvLQzDLTI15AG0q
- mFYQfgsopKFs+/ZFPZnfJNgkxGHYsM+PLZvwWWABKgpflzLAFiu2MRs5Z8uU8NxMzvh2
- 3UB2zjBnZojmtCHtXYsU3Tz2RzCim3B2KUS4X3yT+ydnT2ua6/w1qF1NkQDE9qUJC1QM
- 7nbOar1/6Xd4h/Y75r1K8DiEV6G+5kRKWaJxAvD7p+l3JrRTFqnNib5GoeWwmv6z0wCZ
- G0Nw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7Bkp2967zDr3t
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 10:26:37 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id gc15so3487983pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jul 2020 17:26:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=networkplumber-org.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=sY8+N85oqkl2t0ja+54Zp0Xu2QVORP94+Xr24xEEU4k=;
+ b=wxlthbCasQvJMAzzt74cXg+fGlX+A5EDVO8hNpyWhuulTaIov8ldMi2MzeY54uE2lI
+ 7hO0RZ1tdAUrpLlnT4W8EIbByvkJVQiOZkkIMJuSZ345UbavpNLrAojO75cswZGj3oEI
+ c+qlONHjPMN4vV+UAObzAarAmMz4/eGw8+p2EmLH4Osj0AeuaGIZ7DGyb1sUT/mlnGdI
+ 6YMv6hz21d6rMtP3b/rCIzlOBL7Ve+gnJhcwEEXbqtp6cG/0+F13xFTWbCR7+Kzbv9/D
+ 29q0xhLXlhlHf3Pda5ISyh2gGAbDlaw7+7MZoYLz/oEpTWdYQkbN/3Bz8SPOeXQiaRbB
+ PMEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=ImNiZtmXUEslFcxDwYTJ2V9XDT5Gl9sBS0NfevXsnnY=;
- b=ZMsOfX9tYRmPf9UvnRH25FZSKf58/pvqYMpIGwCsIrzg9DbiApyeKIGOh8sXvjBMv1
- QbkcUqKFtMw9iWsJHFfX8kPV1+wCSAJRoubVSd6KCw/vl1xxtSQpAHKm0FL0XkBxqKF7
- REj5Q26zJrlbKEwJl9s6GfwAStV/Uob7FbC3wZAPKcAwc5wgKvlXekNg/awpdRXPhYF6
- gpVT/3IQoRLRV3HIkWm+x0EM0KcUp/axtyb4Gw+u2F8MP28TQApbKy+78KW2h54klGrg
- Xz3kvtXixkaylGR5u8XsNNutQcNA1Ke7YNinKMqYhx5RBJ5qLQv4QGkXNwJTxcwyJwek
- UaGg==
-X-Gm-Message-State: AOAM530ZHJo076IJLmqtYl721xXb/DgaB77PhC/RyCLiX0d8kCcOLobk
- Cd7PowwY6iARG8a+WB5CHKA=
-X-Google-Smtp-Source: ABdhPJyxJEjlVUAM1TRDOicDFoR9jUfM3MI04m9Y+hFjm51bezMj4uAtGtwPvuODOW9Kom5yT1vlRw==
-X-Received: by 2002:a65:6710:: with SMTP id u16mr6358665pgf.45.1594944030371; 
- Thu, 16 Jul 2020 17:00:30 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id cl17sm953913pjb.50.2020.07.16.17.00.28
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=sY8+N85oqkl2t0ja+54Zp0Xu2QVORP94+Xr24xEEU4k=;
+ b=sd5oKQHibnbzE8Y2s0g/j3Pn0vH6adOTDQQXTXJA5xM2wUWynm+ipTdFxwYs8GmjZa
+ 9uIUp+iCXZVWasRXZFeYNRF+a8oA0os0Opge67ANevR+7SOgXBYvq7MWHo8zoUU55ij1
+ atFeYoKoDJsKpzY07big1Ud80ZLwyNXhUE9wy/48WMw4Av21ArLt1svQAmD7YWXBLhQb
+ 0MOZxFMGMQf3DdOtLsoD0Hetr9HCjBhl7kkWX652dOyJSnpB4YkDZI94eFhVn8Uoro4X
+ 3V3nPax1UmykicH3aMAnRr1KzvZP1cBkcckE16BF5EISgF9Ua/LoF9wHdaNW0E9ewc+J
+ 0DKw==
+X-Gm-Message-State: AOAM530rul6gP1zzVrBJbJatmPEbZfgy8YgQ9JzswUSep6Ti4SvmG4CR
+ IntEXloRKrCIsMhtlvtG2LVZEg==
+X-Google-Smtp-Source: ABdhPJyTmJ7UsZU8Bie9LXJI9JcadsfdH/ShOoZo0ZAIxEB/8gk1EMV/kPb6XU9fT2XX9PV+78eG/g==
+X-Received: by 2002:a17:90a:3689:: with SMTP id
+ t9mr7338441pjb.28.1594945594288; 
+ Thu, 16 Jul 2020 17:26:34 -0700 (PDT)
+Received: from hermes.lan (204-195-22-127.wavecable.com. [204.195.22.127])
+ by smtp.gmail.com with ESMTPSA id s6sm5796856pfd.20.2020.07.16.17.26.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Jul 2020 17:00:29 -0700 (PDT)
-Date: Fri, 17 Jul 2020 10:00:23 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, paulmck
- <paulmck@kernel.org>, Alan Stern <stern@rowland.harvard.edu>
-References: <20200710015646.2020871-1-npiggin@gmail.com>
- <1594613902.1wzayj0p15.astroid@bobo.none>
- <1594647408.wmrazhwjzb.astroid@bobo.none>
- <284592761.9860.1594649601492.JavaMail.zimbra@efficios.com>
- <1594868476.6k5kvx8684.astroid@bobo.none>
- <1594873644.viept6os6j.astroid@bobo.none>
- <1494299304.15894.1594914382695.JavaMail.zimbra@efficios.com>
- <1370747990.15974.1594915396143.JavaMail.zimbra@efficios.com>
- <595582123.17106.1594925921537.JavaMail.zimbra@efficios.com>
-In-Reply-To: <595582123.17106.1594925921537.JavaMail.zimbra@efficios.com>
+ Thu, 16 Jul 2020 17:26:33 -0700 (PDT)
+Date: Thu, 16 Jul 2020 17:26:25 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH net-next] ibmvnic: Increase driver logging
+Message-ID: <20200716172625.2e14a268@hermes.lan>
+In-Reply-To: <20200716132200.37934905@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+References: <1594857115-22380-1-git-send-email-tlfalcon@linux.ibm.com>
+ <20200715170632.11f0bf19@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <20200715.182956.490791427431304861.davem@davemloft.net>
+ <9c9d6e46-240b-8513-08e4-e1c7556cb3c8@linux.ibm.com>
+ <20200716160736.GI32107@kitsune.suse.cz>
+ <20200716132200.37934905@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Message-Id: <1594942495.8qcz211iwc.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,146 +86,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: netdev@vger.kernel.org, Thomas Falcon <tlfalcon@linux.ibm.com>,
+ drt@linux.ibm.com, Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Mathieu Desnoyers's message of July 17, 2020 4:58 am:
-> ----- On Jul 16, 2020, at 12:03 PM, Mathieu Desnoyers mathieu.desnoyers@e=
-fficios.com wrote:
+On Thu, 16 Jul 2020 13:22:00 -0700
+Jakub Kicinski <kuba@kernel.org> wrote:
+
+> On Thu, 16 Jul 2020 18:07:37 +0200 Michal Such=C3=A1nek wrote:
+> > On Thu, Jul 16, 2020 at 10:59:58AM -0500, Thomas Falcon wrote: =20
+> > > On 7/15/20 8:29 PM, David Miller wrote:   =20
+> > > > From: Jakub Kicinski <kuba@kernel.org>
+> > > > Date: Wed, 15 Jul 2020 17:06:32 -0700
+> > > >    =20
+> > > > > On Wed, 15 Jul 2020 18:51:55 -0500 Thomas Falcon wrote:   =20
+> > > > > >   	free_netdev(netdev);
+> > > > > >   	dev_set_drvdata(&dev->dev, NULL);
+> > > > > > +	netdev_info(netdev, "VNIC client device has been successfully=
+ removed.\n");   =20
+> > > > > A step too far, perhaps.
+> > > > >=20
+> > > > > In general this patch looks a little questionable IMHO, this amou=
+nt of
+> > > > > logging output is not commonly seen in drivers. All the the info
+> > > > > messages are just static text, not even carrying any extra inform=
+ation.
+> > > > > In an era of ftrace, and bpftrace, do we really need this?   =20
+> > > > Agreed, this is too much.  This is debugging, and thus suitable for=
+ tracing
+> > > > facilities, at best.   =20
+> > >=20
+> > > Thanks for your feedback. I see now that I was overly aggressive with=
+ this
+> > > patch to be sure, but it would help with narrowing down problems at a=
+ first
+> > > glance, should they arise. The driver in its current state logs very =
+little
+> > > of what is it doing without the use of additional debugging or tracing
+> > > facilities. Would it be worth it to pursue a less aggressive version =
+or
+> > > would that be dead on arrival? What are acceptable driver operations =
+to log
+> > > at this level?   =20
 >=20
->> ----- On Jul 16, 2020, at 11:46 AM, Mathieu Desnoyers
->> mathieu.desnoyers@efficios.com wrote:
->>=20
->>> ----- On Jul 16, 2020, at 12:42 AM, Nicholas Piggin npiggin@gmail.com w=
-rote:
->>>> I should be more complete here, especially since I was complaining
->>>> about unclear barrier comment :)
->>>>=20
->>>>=20
->>>> CPU0                     CPU1
->>>> a. user stuff            1. user stuff
->>>> b. membarrier()          2. enter kernel
->>>> c. smp_mb()              3. smp_mb__after_spinlock(); // in __schedule
->>>> d. read rq->curr         4. rq->curr switched to kthread
->>>> e. is kthread, skip IPI  5. switch_to kthread
->>>> f. return to user        6. rq->curr switched to user thread
->>>> g. user stuff            7. switch_to user thread
->>>>                         8. exit kernel
->>>>                         9. more user stuff
->>>>=20
->>>> What you're really ordering is a, g vs 1, 9 right?
->>>>=20
->>>> In other words, 9 must see a if it sees g, g must see 1 if it saw 9,
->>>> etc.
->>>>=20
->>>> Userspace does not care where the barriers are exactly or what kernel
->>>> memory accesses might be being ordered by them, so long as there is a
->>>> mb somewhere between a and g, and 1 and 9. Right?
->>>=20
->>> This is correct.
->>=20
->> Actually, sorry, the above is not quite right. It's been a while
->> since I looked into the details of membarrier.
->>=20
->> The smp_mb() at the beginning of membarrier() needs to be paired with a
->> smp_mb() _after_ rq->curr is switched back to the user thread, so the
->> memory barrier is between store to rq->curr and following user-space
->> accesses.
->>=20
->> The smp_mb() at the end of membarrier() needs to be paired with the
->> smp_mb__after_spinlock() at the beginning of schedule, which is
->> between accesses to userspace memory and switching rq->curr to kthread.
->>=20
->> As to *why* this ordering is needed, I'd have to dig through additional
->> scenarios from https://lwn.net/Articles/573436/. Or maybe Paul remembers=
- ?
+> Sadly it's much more of an art than hard science. Most networking
+> drivers will print identifying information when they probe the device
+> and then only about major config changes or when link comes up or goes
+> down. And obviously when anything unexpected, like an error happens,
+> that's key.
 >=20
-> Thinking further about this, I'm beginning to consider that maybe we have=
- been
-> overly cautious by requiring memory barriers before and after store to rq=
-->curr.
+> You seem to be adding start / end information for each driver init /
+> deinit stage. I'd say try to focus on the actual errors you're trying
+> to catch.
 >=20
-> If CPU0 observes a CPU1's rq->curr->mm which differs from its own process=
- (current)
-> while running the membarrier system call, it necessarily means that CPU1 =
-had
-> to issue smp_mb__after_spinlock when entering the scheduler, between any =
-user-space
-> loads/stores and update of rq->curr.
+> > Also would it be advisable to add the messages as pr_dbg to be enabled =
+on demand? =20
 >=20
-> Requiring a memory barrier between update of rq->curr (back to current pr=
-ocess's
-> thread) and following user-space memory accesses does not seem to guarant=
-ee
-> anything more than what the initial barrier at the beginning of __schedul=
-e already
-> provides, because the guarantees are only about accesses to user-space me=
-mory.
+> I personally have had a pretty poor experience with pr_debug() because
+> CONFIG_DYNAMIC_DEBUG is not always enabled. Since you're just printing
+> static text there shouldn't be much difference between pr_debug and
+> ftrace and/or bpftrace, honestly.
 >=20
-> Therefore, with the memory barrier at the beginning of __schedule, just o=
-bserving that
-> CPU1's rq->curr differs from current should guarantee that a memory barri=
-er was issued
-> between any sequentially consistent instructions belonging to the current=
- process on
-> CPU1.
->=20
-> Or am I missing/misremembering an important point here ?
+> Again, slightly hard to advise not knowing what you're trying to catch.
 
-I might have mislead you.
-
- CPU0            CPU1
- r1=3Dy            x=3D1
- membarrier()    y=3D1
- r2=3Dx
-
-membarrier provides if r1=3D=3D1 then r2=3D=3D1 (right?)
-
- CPU0
- r1=3Dy
- membarrier()
-   smp_mb();
-   t =3D cpu_rq(1)->curr;
-   if (t->mm =3D=3D mm)
-     IPI(CPU1);
-   smp_mb()
- r2=3Dx
-
- vs
-
- CPU1
-   ...
-   __schedule()
-     smp_mb__after_spinlock()
-     rq->curr =3D kthread
-   ...
-   __schedule()
-     smp_mb__after_spinlock()
-     rq->curr =3D user thread
- exit kernel
- x=3D1
- y=3D1
-
-Now these last 3 stores are not ordered, so CPU0 might see y=3D=3D1 but
-rq->curr =3D=3D kthread, right? Then it will skip the IPI and stores to x=20
-and y will not be ordered.
-
-So we do need a mb after rq->curr store when mm is switching.
-
-I believe for the global membarrier PF_KTHREAD optimisation, we also=20
-need a barrier when switching from a kernel thread to user, for the
-same reason.
-
-So I think I was wrong to say the barrier is not necessary.
-
-I haven't quite worked out why two mb()s are required in membarrier(),
-but at least that's less of a performance concern.
-
-Thanks,
-Nick
+Linux drivers in general are far too noisy.
+In production it is not uncommon to set kernel to suppress all info message=
+s.
