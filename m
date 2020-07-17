@@ -2,74 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0716A223D3F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 15:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C61223E7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 16:44:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7XW95kLGzDrPX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 23:47:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7YmK2vgfzDrP1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 00:44:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=ma1zH3Z6; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7XPL4Y5gzDrP5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 23:42:46 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 5F54929F2A7;
- Fri, 17 Jul 2020 09:42:43 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id jN3jsl16ovkH; Fri, 17 Jul 2020 09:42:43 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 268FE29EE7D;
- Fri, 17 Jul 2020 09:42:43 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 268FE29EE7D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1594993363;
- bh=GC3ddsIx6YDC8lre9W0wbffnyhB0KFZu7j1u1JF1RP4=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=ma1zH3Z6Oeo1HyVTHrIgYu0S5+/f5NlI5oZGjrclUDdUk18Tg4/VuFnjycHtN9Vhl
- sHyN6b0BIuUNyIiFUSS1MpzDqQKdTtspMfIhcqr+R5J0T95VclTBCmJaHvTXKKbS2p
- QJcy0KLegYDbAsdBWn3aNfC3XZun9bz247aORtgXdbBzyO9mQvEhzU3crDU29vaYB8
- GH+77edaFwX31CtCGmKZdb7O6ZUa9Z7muSP11UDvBtwWQohm8m1qDbiyDakxGyYlZO
- WpjPpFk77z+zr2V190Qr197qyRK0Y+ftgdEnM+B/+RFJUG48nt09inMjQ9ndQ7P1Nk
- s6Vt4gmCzqQOQ==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id nr_pEIWotEQc; Fri, 17 Jul 2020 09:42:43 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id 13F0629F31E;
- Fri, 17 Jul 2020 09:42:43 -0400 (EDT)
-Date: Fri, 17 Jul 2020 09:42:43 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <1314561373.18530.1594993363050.JavaMail.zimbra@efficios.com>
-In-Reply-To: <1594906688.ikv6r4gznx.astroid@bobo.none>
-References: <1594868476.6k5kvx8684.astroid@bobo.none>
- <EFAD6E2F-EC08-4EB3-9ECC-2A963C023FC5@amacapital.net>
- <20200716085032.GO10769@hirez.programming.kicks-ass.net>
- <1594892300.mxnq3b9a77.astroid@bobo.none>
- <20200716110038.GA119549@hirez.programming.kicks-ass.net>
- <1594906688.ikv6r4gznx.astroid@bobo.none>
-Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
-Thread-Topic: x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-Thread-Index: tih2wG5S7/k8ds/ZwlGdEfhVUfBRJg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7Ydx2M5gzDrNj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 00:38:44 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06HEWp0O140989; Fri, 17 Jul 2020 10:38:38 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32b9ag0kfs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Jul 2020 10:38:38 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06HEU73d024878;
+ Fri, 17 Jul 2020 14:38:35 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 327527kf7e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Jul 2020 14:38:35 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06HEcV8w12714466
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 Jul 2020 14:38:31 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3376B4C050;
+ Fri, 17 Jul 2020 14:38:31 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7978D4C046;
+ Fri, 17 Jul 2020 14:38:28 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.77.207.73])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 17 Jul 2020 14:38:28 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [v3 00/15] powerpc/perf: Add support for power10 PMU Hardware
+Date: Fri, 17 Jul 2020 10:38:12 -0400
+Message-Id: <1594996707-3727-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-17_06:2020-07-17,
+ 2020-07-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0
+ priorityscore=1501 spamscore=0 mlxscore=0 phishscore=0 suspectscore=1
+ lowpriorityscore=0 impostorscore=0 clxscore=1011 malwarescore=0
+ mlxlogscore=807 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007170108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,38 +79,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Peter Zijlstra <peterz@infradead.org>, x86 <x86@kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Andy Lutomirski <luto@amacapital.net>, linux-mm <linux-mm@kvack.org>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
+ kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, svaidyan@in.ibm.com,
+ acme@kernel.org, jolsa@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Jul 16, 2020, at 7:26 PM, Nicholas Piggin npiggin@gmail.com wrote:
-[...]
-> 
-> membarrier does replace barrier instructions on remote CPUs, which do
-> order accesses performed by the kernel on the user address space. So
-> membarrier should too I guess.
-> 
-> Normal process context accesses like read(2) will do so because they
-> don't get filtered out from IPIs, but kernel threads using the mm may
-> not.
+The patch series adds support for power10 PMU hardware.
 
-But it should not be an issue, because membarrier's ordering is only with respect
-to submit and completion of io_uring requests, which are performed through
-system calls from the context of user-space threads, which are called from the
-right mm.
+Patches 1..3 are the clean up patches which refactors the way how
+PMU SPR's are stored in core-book3s and in KVM book3s, as well as update
+data type for PMU cache_events.
 
-Thanks,
+Patches 12 and 13 adds base support for perf extended register
+capability in powerpc. Support for extended regs in power10 is
+covered in patches 14,15
 
-Mathieu
+Other patches includes main changes to support for power10 PMU.
 
+Anju T Sudhakar (2):
+  powerpc/perf: Add support for outputting extended regs in perf
+    intr_regs
+  tools/perf: Add perf tools support for extended register capability in
+    powerpc
+
+Athira Rajeev (10):
+  powerpc/perf: Update cpu_hw_event to use `struct` for storing MMCR
+    registers
+  KVM: PPC: Book3S HV: Cleanup updates for kvm vcpu MMCR
+  powerpc/perf: Update Power PMU cache_events to u64 type
+  KVM: PPC: Book3S HV: Save/restore new PMU registers
+  powerpc/perf: power10 Performance Monitoring support
+  powerpc/perf: Ignore the BHRB kernel address filtering for P10
+  powerpc/perf: Add Power10 BHRB filter support for
+    PERF_SAMPLE_BRANCH_IND_CALL/COND
+  powerpc/perf: BHRB control to disable BHRB logic when not used
+  powerpc/perf: Add extended regs support for power10 platform
+  tools/perf: Add perf tools support for extended regs in power10
+
+Madhavan Srinivasan (3):
+  powerpc/perf: Add support for ISA3.1 PMU SPRs
+  powerpc/xmon: Add PowerISA v3.1 PMU SPRs
+  powerpc/perf: Add power10_feat to dt_cpu_ftrs
+
+---
+Changes from v2 -> v3
+- Addressed review comments from Michael Neuling,
+  Michael Ellerman, Gautham Shenoy and Paul Mackerras
+
+Changes from v1 -> v2
+- Added support for extended regs in powerpc
+  for power9/power10 platform ( patches 12 to 15)
+- Addressed change/removal of some event codes
+  in the PMU driver
+---
+
+ Documentation/virt/kvm/api.rst                  |   3 +
+ arch/powerpc/include/asm/kvm_book3s_asm.h       |   2 +-
+ arch/powerpc/include/asm/kvm_host.h             |   6 +-
+ arch/powerpc/include/asm/perf_event_server.h    |  22 +-
+ arch/powerpc/include/asm/processor.h            |   4 +
+ arch/powerpc/include/asm/reg.h                  |   9 +
+ arch/powerpc/include/uapi/asm/kvm.h             |   9 +-
+ arch/powerpc/include/uapi/asm/perf_regs.h       |  20 +-
+ arch/powerpc/kernel/asm-offsets.c               |   5 +
+ arch/powerpc/kernel/cpu_setup_power.S           |   8 +
+ arch/powerpc/kernel/dt_cpu_ftrs.c               |  26 ++
+ arch/powerpc/kernel/sysfs.c                     |   8 +
+ arch/powerpc/kvm/book3s_hv.c                    |  38 ++-
+ arch/powerpc/kvm/book3s_hv_interrupts.S         |   8 +
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S         |  36 +-
+ arch/powerpc/perf/Makefile                      |   2 +-
+ arch/powerpc/perf/core-book3s.c                 | 108 ++++--
+ arch/powerpc/perf/generic-compat-pmu.c          |   2 +-
+ arch/powerpc/perf/internal.h                    |   1 +
+ arch/powerpc/perf/isa207-common.c               |  91 +++--
+ arch/powerpc/perf/isa207-common.h               |  37 ++-
+ arch/powerpc/perf/mpc7450-pmu.c                 |  23 +-
+ arch/powerpc/perf/perf_regs.c                   |  44 ++-
+ arch/powerpc/perf/power10-events-list.h         |  70 ++++
+ arch/powerpc/perf/power10-pmu.c                 | 425 ++++++++++++++++++++++++
+ arch/powerpc/perf/power5+-pmu.c                 |  19 +-
+ arch/powerpc/perf/power5-pmu.c                  |  19 +-
+ arch/powerpc/perf/power6-pmu.c                  |  18 +-
+ arch/powerpc/perf/power7-pmu.c                  |  19 +-
+ arch/powerpc/perf/power8-pmu.c                  |   2 +-
+ arch/powerpc/perf/power9-pmu.c                  |   8 +-
+ arch/powerpc/perf/ppc970-pmu.c                  |  26 +-
+ arch/powerpc/platforms/powernv/idle.c           |  22 +-
+ arch/powerpc/xmon/xmon.c                        |  13 +
+ tools/arch/powerpc/include/uapi/asm/kvm.h       |   9 +-
+ tools/arch/powerpc/include/uapi/asm/perf_regs.h |  20 +-
+ tools/perf/arch/powerpc/include/perf_regs.h     |   8 +-
+ tools/perf/arch/powerpc/util/header.c           |   9 +-
+ tools/perf/arch/powerpc/util/perf_regs.c        |  55 +++
+ tools/perf/arch/powerpc/util/utils_header.h     |  15 +
+ 40 files changed, 1117 insertions(+), 152 deletions(-)
+ create mode 100644 arch/powerpc/perf/power10-events-list.h
+ create mode 100644 arch/powerpc/perf/power10-pmu.c
+ create mode 100644 tools/perf/arch/powerpc/util/utils_header.h
 
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+1.8.3.1
+
