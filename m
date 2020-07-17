@@ -2,67 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F8322399F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 12:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6DE223A3A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 13:18:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7SSN4d0SzDrCB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 20:45:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7TBb3gK3zDrQl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 21:18:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
- helo=mail-io1-xd44.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
+ helo=bhuna.collabora.co.uk; envelope-from=arnaud.ferraris@collabora.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Sh5xu9u/; dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7SQl059zzDrNt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 20:43:42 +1000 (AEST)
-Received: by mail-io1-xd44.google.com with SMTP id v6so9949595iob.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 03:43:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=k8uVrhgOhQqs7eK819gJP8Isbzose7d4S6jSpx+aI80=;
- b=Sh5xu9u/wMBK0BIZ3S3CrccFZFXqFVJ4Ty0AQHr0cL8kZHGhS3jOuXUk9jXjaeRefF
- y+C9/gckVZKpTLyBboNKSeD5GSoq5i2gnSTzY9jDo1h3YCoOiz021y7F01Wt1gFKGePd
- ZEIpDHPAYgr9nTouyQ75MdKyfuqMKP/WY7KRH7f6B6cDSyWsBc0eTi6RWbW19OBEIpWR
- 7mu5uRRArsi5V/QNvhzymvCcRP0TD3pa0BJ+pTr2rbnt3ONv6qKPOKajYE/O+NHxx83H
- 7vJ/K9Y/CIfHTKFwaRU7xDEQeKUUtOjYSvtWxNDzSpOm0gdBf9n+IcV7LZJHGe/MSHLZ
- 3vzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=k8uVrhgOhQqs7eK819gJP8Isbzose7d4S6jSpx+aI80=;
- b=Nyazj5rDz6o3Hg2ItnixL9hfcgDZ95ZLQM4OvVXfogtoCTw1BU2sw/HIo1Tguc3W2t
- b0Fr0i4bzyJqQSdz1L3NjorhpECyRRi97Vy79cD1aAGzRKHKjnbPsi2ENmQfZaP22KA8
- +q/fDfItAnzB+EcD4MRlMY2Umo1SE+GSKA4KHD1KTf58zzfXVXnuZpDzNzRHF6YHDfgu
- 3EVP7iEhlygjbhOJjF4Y/v+cJvfRVu7pwdRT6fIodnhr10LOSNFxYQs/s/YXxkLKqxSv
- v06SSRe7Z+Ch6POmp5ks971UIdIaeaCzDtH5+tA08L+jaovJEjTDfn1eZx39jf4Dxe4z
- /QBg==
-X-Gm-Message-State: AOAM5325YGmIS9FQVlvDLR+k03baSDKcq9CTV3StXY0H88EMPgjgqLdR
- Faptfl/RRf6LvMw6dzfz6ar40j6yg0tgZcqQhoM=
-X-Google-Smtp-Source: ABdhPJxtuasrS8D2ZlPmVecjcSsGZsiTpJFsPWZr7RaOLcuYkOg1E6NK9odWW/xu2ORR28QduMslbT/r0b/7WEdeWxM=
-X-Received: by 2002:a6b:c343:: with SMTP id t64mr9228896iof.66.1594982618648; 
- Fri, 17 Jul 2020 03:43:38 -0700 (PDT)
+ dmarc=pass (p=none dis=none) header.from=collabora.com
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7T902dP4zDr7x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 21:16:50 +1000 (AEST)
+Received: from [IPv6:2a01:e35:2fb5:1510:c567:382e:1974:9868] (unknown
+ [IPv6:2a01:e35:2fb5:1510:c567:382e:1974:9868])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested) (Authenticated sender: aferraris)
+ by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 589032A5CA8;
+ Fri, 17 Jul 2020 12:16:45 +0100 (BST)
+Subject: Re: [PATCH 0/4] ASoC: fsl_asrc: allow selecting arbitrary clocks
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+References: <20200702142235.235869-1-arnaud.ferraris@collabora.com>
+ <20200702184226.GA23935@Asurada-Nvidia>
+From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
+ 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
+ xZQG6fKWuIur3RI=
+Message-ID: <abdd7265-43d2-49b5-6afd-70d65baac30e@collabora.com>
+Date: Fri, 17 Jul 2020 13:16:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <CAO3ALPy8_pxVyFROZUWNafEH1vUCP6LVpNmBBuMDSewGitzdLw@mail.gmail.com>
- <CAOSf1CEOu5jX6KXKWiConBf=TDwF3qdASMxtfDjqSR6vOKN4XA@mail.gmail.com>
- <CAO3ALPwZPN1vdqHaFsuSpgj63o6Z69VUg0LngmCSnvESrO4kNg@mail.gmail.com>
-In-Reply-To: <CAO3ALPwZPN1vdqHaFsuSpgj63o6Z69VUg0LngmCSnvESrO4kNg@mail.gmail.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 17 Jul 2020 20:43:27 +1000
-Message-ID: <CAOSf1CEiCOjTQ8XX=cC10eghaC+1xaRG-bju8VBFQStOCaU_xQ@mail.gmail.com>
-Subject: Re: ASMedia USB 3.x host controllers triggering EEH on POWER9
-To: Forest Crossman <cyrozap@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200702184226.GA23935@Asurada-Nvidia>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,66 +95,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci <linux-pci@vger.kernel.org>, linux-usb@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel@vger.kernel.org,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Mark Brown <broonie@kernel.org>, kernel@collabora.com,
+ Fabio Estevam <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 17, 2020 at 8:10 PM Forest Crossman <cyrozap@gmail.com> wrote:
->
-> > From word 2 of the PEST entry the faulting DMA address is:
-> > 0x0000203974c00000. That address is interesting since it looks a lot
-> > like a memory address on the 2nd chip, but it doesn't have bit 59 set
-> > so TVE#0 is used to validate it. Obviously that address is above 2GB
-> > so we get the error.
->
-> Ah, I see. Do you know if the information on the PEST registers is
-> documented publicly somewhere? I tried searching for what those
-> registers meant in the PHB4 spec but it basically just said, "the PEST
-> registers contain PEST data," which isn't particularly helpful.
+Hi Nic,
 
-Most of it is in the IODA spec. See Sec 2.2.6 "Partitionable-Endpoint
-State Table", the only part that isn't documented there is the top
-bits of each word which are documented in the PHB spec for some
-reason. For word one the top bit (PPCBIT(0)) means MMIO is frozen and
-for word two (PPCBIT(64)) the top bit indicates DMA is frozen.
+Le 02/07/2020 à 20:42, Nicolin Chen a écrit :
+> Hi Arnaud,
+> 
+> On Thu, Jul 02, 2020 at 04:22:31PM +0200, Arnaud Ferraris wrote:
+>> The current ASRC driver hardcodes the input and output clocks used for
+>> sample rate conversions. In order to allow greater flexibility and to
+>> cover more use cases, it would be preferable to select the clocks using
+>> device-tree properties.
+> 
+> We recent just merged a new change that auto-selecting internal
+> clocks based on sample rates as the first option -- ideal ratio
+> mode is the fallback mode now. Please refer to:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20200702&id=d0250cf4f2abfbea64ed247230f08f5ae23979f0
 
-> > What's probably happening is that the ASmedia controller doesn't
-> > actually implement all 64 address bits and truncates the upper bits of
-> > the DMA address. Doing that is a blatant violation of the PCIe (and
-> > probably the xHCI) spec, but it's also pretty common since "it works
-> > on x86." Something to try would be booting with the iommu=nobypass in
-> > the kernel command line. That'll disable TVE#1 and force all DMAs to
-> > go through TVE#0.
->
-> Thanks, iommu=nobypass fixed it! Plugging in one or more USB devices
-> no longer triggers any EEH errors.
->
-> > Assuming the nobypass trick above works, what you really need to do is
-> > have the driver report that it can't address all 64bits by setting its
-> > DMA mask accordingly. For the xhci driver it looks like this is done
-> > in xhci_gen_setup(), there might be a quirks-style interface for
-> > working around bugs in specific controllers that you can use. Have a
-> > poke around and see what you can find :)
->
-> Yup, the xhci driver has a quirks system, and conveniently one of
-> those is XHCI_NO_64BIT_SUPPORT. After making a 3-line patch to
-> xhci-pci.c to add that quirk for this chip, the host controller is now
-> able to work without setting iommu=nobypass in the kernel arguments.
+While working on fixing the automatic clock selection (see my v3), I
+came across another potential issue, which would be better explained
+with an example:
+  - Input has sample rate 8kHz and uses clock SSI1 with rate 512kHz
+  - Output has sample rate 16kHz and uses clock SSI2 with rate 1024kHz
 
-Cool
+Let's say my v3 patch is merged, then the selected input clock will be
+SSI1, while the selected output clock will be SSI2. In that case, it's
+all good, as the driver will calculate the dividers right.
 
-> Thank you so much for your help! You've likely saved me several hours
-> of reading documentation, as well as several more hours of fiddling
-> around with the xhci driver.
+Now, suppose a similar board has the input wired to SSI2 and output to
+SSI1, meaning we're now in the following case:
+  - Input has sample rate 8kHz and uses clock SSI2 with rate 512kHz
+  - Output has sample rate 16kHz and uses clock SSI1 with rate 1024kHz
+(the same result is achieved during capture with the initial example
+setup, as input and output properties are then swapped)
 
-> I'm almost disappointed the fix was so
-> simple, but the time savings alone more than makes up for it. I'll
-> submit the patch to the USB ML shortly.
+In that case, the selected clocks will still be SSI1 for input (just
+because it appears first in the clock table), and SSI2 for output,
+meaning the calculated dividers will be:
+  - input: 512 / 16 => 32 (should be 64)
+  - output: 1024 / 8 => 128 (should be 64 here too)
 
-It might be only three lines, but it doesn't mean it's trivial. Most
-bugs like that require a lot of context to understand, let alone fix.
-Thanks for looking into it!
+---
 
-Oliver
+I can't see how the clock selection algorithm could be made smart enough
+to cover cases such as this one, as it would need to be aware of the
+exact relationship between the sample rate and the clock rate (my
+example demonstrates a case where the "sample rate to clock rate"
+multiplier is identical for both input and output, but this can't be
+assumed to be always the case).
+
+Therefore, I still believe being able to force clock selection using
+optional DT properties would make sense, while still using the
+auto-selection by default.
+
+Regards,
+Arnaud
+
+> 
+> Having a quick review at your changes, I think the DT part may
+> not be necessary as it's more likely a software configuration.
+> I personally like the new auto-selecting solution more.
+> 
+>> This series also fix register configuration and clock assignment so
+>> conversion can be conducted effectively in both directions with a good
+>> quality.
+> 
+> If there's any further change that you feel you can improve on
+> the top of mentioned change after rebasing, I'd like to review.
+> 
+> Thanks
+> Nic
+> 
