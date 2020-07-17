@@ -2,42 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB3F223A87
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 13:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8902B223D26
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 15:44:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7TTD0RlczDrBh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 21:30:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7XRC30f7zDrPH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 23:44:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
- envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
+ envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
+ header.s=default header.b=oGIDAZ6E; dkim-atps=neutral
+Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7TRY166VzDrNy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 21:29:26 +1000 (AEST)
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 5F4B79D3570F161523B9;
- Fri, 17 Jul 2020 19:29:17 +0800 (CST)
-Received: from localhost (10.174.179.108) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Fri, 17 Jul 2020
- 19:29:08 +0800
-From: YueHaibing <yuehaibing@huawei.com>
-To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <haren@linux.ibm.com>, <dave.hansen@linux.intel.com>, <npiggin@gmail.com>
-Subject: [PATCH -next] powerpc: Remove unneeded inline functions
-Date: Fri, 17 Jul 2020 19:27:14 +0800
-Message-ID: <20200717112714.19304-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
-In-Reply-To: <20200715031939.31968-1-yuehaibing@huawei.com>
-References: <20200715031939.31968-1-yuehaibing@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7XKb0KkczDrNJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jul 2020 23:39:29 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 1C9DE29F146;
+ Fri, 17 Jul 2020 09:39:26 -0400 (EDT)
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id a15JU_fDvL6I; Fri, 17 Jul 2020 09:39:25 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 97BDF29EF4F;
+ Fri, 17 Jul 2020 09:39:25 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 97BDF29EF4F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1594993165;
+ bh=ho3rQgiZeUOl9J/OSDI/gUB2Ws43sIkMwoNwsX55GPA=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=oGIDAZ6EOIzYWMIZ5+6XDCyoz4E4lrtFs31tP5HpcGze+6LjTM3T0kPAIrN4uUg8s
+ 7kFHqjKF43K3O5IvtcK87G1flnjoG0QUJ5E86lfx17AqcimzhK6xRNvSwHf+AgIo6A
+ VTQ2wZF3iQG+rAu/otjNMFRnvOVWLBqOaP6fNHHa/9OAbOwjjI41BB7GXPSHiVPrWn
+ CRb7rbHFWfvwQlxcPBfZL8R7AHk3SgfbPk5rGherwvbO252Mrypgj0lzJGyvRht8x0
+ 1dkpbYYjyg+w9bVx9a6hbpigNgs9rgFGWum+fLWjUjj1F9F+NksTfndzkaMUql9E1F
+ zM652Us5g+YcQ==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id HrNAfA0SCl91; Fri, 17 Jul 2020 09:39:25 -0400 (EDT)
+Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
+ by mail.efficios.com (Postfix) with ESMTP id 809AA29F380;
+ Fri, 17 Jul 2020 09:39:25 -0400 (EDT)
+Date: Fri, 17 Jul 2020 09:39:25 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Alan Stern <stern@rowland.harvard.edu>
+Message-ID: <1770378591.18523.1594993165391.JavaMail.zimbra@efficios.com>
+In-Reply-To: <20200716212416.GA1126458@rowland.harvard.edu>
+References: <20200710015646.2020871-1-npiggin@gmail.com>
+ <284592761.9860.1594649601492.JavaMail.zimbra@efficios.com>
+ <1594868476.6k5kvx8684.astroid@bobo.none>
+ <1594873644.viept6os6j.astroid@bobo.none>
+ <1494299304.15894.1594914382695.JavaMail.zimbra@efficios.com>
+ <1370747990.15974.1594915396143.JavaMail.zimbra@efficios.com>
+ <595582123.17106.1594925921537.JavaMail.zimbra@efficios.com>
+ <20200716212416.GA1126458@rowland.harvard.edu>
+Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.108]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [167.114.26.124]
+X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
+Thread-Topic: x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+Thread-Index: e+Q5q0VLw7mhLri8n+Io1sYRjSAWBg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,35 +83,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, paulmck <paulmck@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ x86 <x86@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linux-mm <linux-mm@kvack.org>,
+ Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Both of those functions are only called from 64-bit only code, so the
-stubs should not be needed at all.
+----- On Jul 16, 2020, at 5:24 PM, Alan Stern stern@rowland.harvard.edu wrote:
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- arch/powerpc/include/asm/mmu_context.h | 2 --
- 1 file changed, 2 deletions(-)
+> On Thu, Jul 16, 2020 at 02:58:41PM -0400, Mathieu Desnoyers wrote:
+>> ----- On Jul 16, 2020, at 12:03 PM, Mathieu Desnoyers
+>> mathieu.desnoyers@efficios.com wrote:
+>> 
+>> > ----- On Jul 16, 2020, at 11:46 AM, Mathieu Desnoyers
+>> > mathieu.desnoyers@efficios.com wrote:
+>> > 
+>> >> ----- On Jul 16, 2020, at 12:42 AM, Nicholas Piggin npiggin@gmail.com wrote:
+>> >>> I should be more complete here, especially since I was complaining
+>> >>> about unclear barrier comment :)
+>> >>> 
+>> >>> 
+>> >>> CPU0                     CPU1
+>> >>> a. user stuff            1. user stuff
+>> >>> b. membarrier()          2. enter kernel
+>> >>> c. smp_mb()              3. smp_mb__after_spinlock(); // in __schedule
+>> >>> d. read rq->curr         4. rq->curr switched to kthread
+>> >>> e. is kthread, skip IPI  5. switch_to kthread
+>> >>> f. return to user        6. rq->curr switched to user thread
+>> >>> g. user stuff            7. switch_to user thread
+>> >>>                         8. exit kernel
+>> >>>                         9. more user stuff
+>> >>> 
+>> >>> What you're really ordering is a, g vs 1, 9 right?
+>> >>> 
+>> >>> In other words, 9 must see a if it sees g, g must see 1 if it saw 9,
+>> >>> etc.
+>> >>> 
+>> >>> Userspace does not care where the barriers are exactly or what kernel
+>> >>> memory accesses might be being ordered by them, so long as there is a
+>> >>> mb somewhere between a and g, and 1 and 9. Right?
+>> >> 
+>> >> This is correct.
+>> > 
+>> > Actually, sorry, the above is not quite right. It's been a while
+>> > since I looked into the details of membarrier.
+>> > 
+>> > The smp_mb() at the beginning of membarrier() needs to be paired with a
+>> > smp_mb() _after_ rq->curr is switched back to the user thread, so the
+>> > memory barrier is between store to rq->curr and following user-space
+>> > accesses.
+>> > 
+>> > The smp_mb() at the end of membarrier() needs to be paired with the
+>> > smp_mb__after_spinlock() at the beginning of schedule, which is
+>> > between accesses to userspace memory and switching rq->curr to kthread.
+>> > 
+>> > As to *why* this ordering is needed, I'd have to dig through additional
+>> > scenarios from https://lwn.net/Articles/573436/. Or maybe Paul remembers ?
+>> 
+>> Thinking further about this, I'm beginning to consider that maybe we have been
+>> overly cautious by requiring memory barriers before and after store to rq->curr.
+>> 
+>> If CPU0 observes a CPU1's rq->curr->mm which differs from its own process
+>> (current)
+>> while running the membarrier system call, it necessarily means that CPU1 had
+>> to issue smp_mb__after_spinlock when entering the scheduler, between any
+>> user-space
+>> loads/stores and update of rq->curr.
+>> 
+>> Requiring a memory barrier between update of rq->curr (back to current process's
+>> thread) and following user-space memory accesses does not seem to guarantee
+>> anything more than what the initial barrier at the beginning of __schedule
+>> already
+>> provides, because the guarantees are only about accesses to user-space memory.
+>> 
+>> Therefore, with the memory barrier at the beginning of __schedule, just
+>> observing that
+>> CPU1's rq->curr differs from current should guarantee that a memory barrier was
+>> issued
+>> between any sequentially consistent instructions belonging to the current
+>> process on
+>> CPU1.
+>> 
+>> Or am I missing/misremembering an important point here ?
+> 
+> Is it correct to say that the switch_to operations in 5 and 7 include
+> memory barriers?  If they do, then skipping the IPI should be okay.
+> 
+> The reason is as follows: The guarantee you need to enforce is that
+> anything written by CPU0 before the membarrier() will be visible to CPU1
+> after it returns to user mode.  Let's say that a writes to X and 9
+> reads from X.
+> 
+> Then we have an instance of the Store Buffer pattern:
+> 
+>	CPU0			CPU1
+>	a. Write X		6. Write rq->curr for user thread
+>	c. smp_mb()		7. switch_to memory barrier
+>	d. Read rq->curr	9. Read X
+> 
+> In this pattern, the memory barriers make it impossible for both reads
+> to miss their corresponding writes.  Since d does fail to read 6 (it
+> sees the earlier value stored by 4), 9 must read a.
+> 
+> The other guarantee you need is that g on CPU0 will observe anything
+> written by CPU1 in 1.  This is easier to see, using the fact that 3 is a
+> memory barrier and d reads from 4.
 
-diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-index 1a474f6b1992..7f3658a97384 100644
---- a/arch/powerpc/include/asm/mmu_context.h
-+++ b/arch/powerpc/include/asm/mmu_context.h
-@@ -218,8 +218,6 @@ static inline void inc_mm_active_cpus(struct mm_struct *mm) { }
- static inline void dec_mm_active_cpus(struct mm_struct *mm) { }
- static inline void mm_context_add_copro(struct mm_struct *mm) { }
- static inline void mm_context_remove_copro(struct mm_struct *mm) { }
--static inline void mm_context_add_vas_windows(struct mm_struct *mm) { }
--static inline void mm_context_remove_vas_windows(struct mm_struct *mm) { }
- #endif
- 
- 
+Right, and Nick's reply involving pairs of loads/stores on each side
+clarifies the situation even further.
+
+Thanks,
+
+Mathieu
+
+
 -- 
-2.17.1
-
-
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
