@@ -1,85 +1,105 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB612243AA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 21:01:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53812244DC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jul 2020 22:02:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B7gTQ3DGFzDrTP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 05:01:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B7hqq0VrBzDrVP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 06:02:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B7hnC2mJRzDrRM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 06:00:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4B7hnC1Rbbz9CMP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 06:00:31 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4B7hnC0xVqz9sSn; Sat, 18 Jul 2020 06:00:31 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B7gHz6whBzDrPl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 04:53:35 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 4B7hnB48JLz9sRk
+ for <linuxppc-dev@ozlabs.org>; Sat, 18 Jul 2020 06:00:29 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06HIbbD2146416; Fri, 17 Jul 2020 14:53:29 -0400
+ 06HJWejB000636; Fri, 17 Jul 2020 16:00:23 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 327u1mxm38-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32aurbp35e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 14:53:29 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06HI3wLC147345;
- Fri, 17 Jul 2020 14:53:29 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 327u1mxm2s-1
+ Fri, 17 Jul 2020 16:00:23 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06HJWfw6000844;
+ Fri, 17 Jul 2020 16:00:22 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32aurbp345-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 14:53:29 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06HIeKRL002749;
- Fri, 17 Jul 2020 18:53:27 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04ams.nl.ibm.com with ESMTP id 329nmyk7a8-1
+ Fri, 17 Jul 2020 16:00:22 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06HJfp9V015856;
+ Fri, 17 Jul 2020 20:00:20 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 327527y1vn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Jul 2020 18:53:27 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06HIrOm364422340
+ Fri, 17 Jul 2020 20:00:20 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06HK0HWS25625038
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Jul 2020 18:53:24 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9660E5204E;
- Fri, 17 Jul 2020 18:53:24 +0000 (GMT)
-Received: from pratiks-thinkpad.ibmuc.com (unknown [9.85.74.95])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 45A345204F;
- Fri, 17 Jul 2020 18:53:20 +0000 (GMT)
-From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, benh@kernel.crashing.org,
- paulus@samba.org, mikey@neuling.org, ego@linux.vnet.ibm.com,
- svaidy@linux.ibm.com, psampat@linux.ibm.com, pratik.r.sampat@gmail.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] powerpc/powernv/idle: Exclude mfspr on HID1, 4,
- 5 on P9 and above
-Date: Sat, 18 Jul 2020 00:23:06 +0530
-Message-Id: <20200717185306.60607-4-psampat@linux.ibm.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200717185306.60607-1-psampat@linux.ibm.com>
-References: <20200717185306.60607-1-psampat@linux.ibm.com>
+ Fri, 17 Jul 2020 20:00:17 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CB8811C069;
+ Fri, 17 Jul 2020 20:00:17 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 34F8711C04C;
+ Fri, 17 Jul 2020 20:00:14 +0000 (GMT)
+Received: from [9.102.22.153] (unknown [9.102.22.153])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 17 Jul 2020 20:00:13 +0000 (GMT)
+Subject: Re: [PATCH v3 03/12] powerpc/kexec_file: add helper functions for
+ getting memory ranges
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+References: <159466074408.24747.10036072269371204890.stgit@hbathini.in.ibm.com>
+ <159466087136.24747.16494497863685481495.stgit@hbathini.in.ibm.com>
+ <874kq98xo4.fsf@morokweng.localdomain>
+ <0684ed3d-0dde-8dce-f12c-72ef86bc91f9@linux.ibm.com>
+Message-ID: <1b09c0e4-54c9-7dd6-4402-81c9d1ba3ee0@linux.ibm.com>
+Date: Sat, 18 Jul 2020 01:30:13 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <0684ed3d-0dde-8dce-f12c-72ef86bc91f9@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-17_09:2020-07-17,
  2020-07-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=886
- suspectscore=0 phishscore=0 bulkscore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007170128
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
+ score=100 mlxscore=100
+ adultscore=0 mlxlogscore=-1000 suspectscore=0 clxscore=1015 bulkscore=0
+ spamscore=100 phishscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007170131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,46 +111,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Pingfan Liu <piliu@redhat.com>, Petr Tesarik <ptesarik@suse.cz>,
+ Nayna Jain <nayna@linux.ibm.com>, Kexec-ml <kexec@lists.infradead.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-POWER9 onwards the support for the registers HID1, HID4, HID5 has been
-receded.
-Although mfspr on the above registers worked in Power9, In Power10
-simulator is unrecognized. Moving their assignment under the
-check for machines lower than Power9
 
-Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
----
- arch/powerpc/platforms/powernv/idle.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index d439e11af101..d24d6671f3e8 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -73,9 +73,6 @@ static int pnv_save_sprs_for_deep_states(void)
- 	 */
- 	uint64_t lpcr_val	= mfspr(SPRN_LPCR);
- 	uint64_t hid0_val	= mfspr(SPRN_HID0);
--	uint64_t hid1_val	= mfspr(SPRN_HID1);
--	uint64_t hid4_val	= mfspr(SPRN_HID4);
--	uint64_t hid5_val	= mfspr(SPRN_HID5);
- 	uint64_t hmeer_val	= mfspr(SPRN_HMEER);
- 	uint64_t msr_val = MSR_IDLE;
- 	uint64_t psscr_val = pnv_deepest_stop_psscr_val;
-@@ -117,6 +114,9 @@ static int pnv_save_sprs_for_deep_states(void)
- 
- 			/* Only p8 needs to set extra HID regiters */
- 			if (!pvr_version_is(PVR_POWER9)) {
-+				uint64_t hid1_val = mfspr(SPRN_HID1);
-+				uint64_t hid4_val = mfspr(SPRN_HID4);
-+				uint64_t hid5_val = mfspr(SPRN_HID5);
- 
- 				rc = opal_slw_set_reg(pir, SPRN_HID1, hid1_val);
- 				if (rc != 0)
--- 
-2.25.4
+On 17/07/20 10:02 am, Hari Bathini wrote:
+> 
+> 
+> On 15/07/20 5:19 am, Thiago Jung Bauermann wrote:
+>>
+>> Hello Hari,
+>>
+>> Hari Bathini <hbathini@linux.ibm.com> writes:
+>>
+>>> In kexec case, the kernel to be loaded uses the same memory layout as
+>>> the running kernel. So, passing on the DT of the running kernel would
+>>> be good enough.
+>>>
+>>> But in case of kdump, different memory ranges are needed to manage
+>>> loading the kdump kernel, booting into it and exporting the elfcore
+>>> of the crashing kernel. The ranges are exlude memory ranges, usable
+>>
+>> s/exlude/exclude/
+>>
+>>> memory ranges, reserved memory ranges and crash memory ranges.
+>>>
+>>> Exclude memory ranges specify the list of memory ranges to avoid while
+>>> loading kdump segments. Usable memory ranges list the memory ranges
+>>> that could be used for booting kdump kernel. Reserved memory ranges
+>>> list the memory regions for the loading kernel's reserve map. Crash
+>>> memory ranges list the memory ranges to be exported as the crashing
+>>> kernel's elfcore.
+>>>
+>>> Add helper functions for setting up the above mentioned memory ranges.
+>>> This helpers facilitate in understanding the subsequent changes better
+>>> and make it easy to setup the different memory ranges listed above, as
+>>> and when appropriate.
+>>>
+>>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>>> Tested-by: Pingfan Liu <piliu@redhat.com>
+>>
+> 
+> <snip>
+> 
+>>> +/**
+>>> + * add_reserved_ranges - Adds "/reserved-ranges" regions exported by f/w
+>>> + *                       to the given memory ranges list.
+>>> + * @mem_ranges:          Range list to add the memory ranges to.
+>>> + *
+>>> + * Returns 0 on success, negative errno on error.
+>>> + */
+>>> +int add_reserved_ranges(struct crash_mem **mem_ranges)
+>>> +{
+>>> +	int i, len, ret = 0;
+>>> +	const __be32 *prop;
+>>> +
+>>> +	prop = of_get_property(of_root, "reserved-ranges", &len);
+>>> +	if (!prop)
+>>> +		return 0;
+>>> +
+>>> +	/*
+>>> +	 * Each reserved range is an (address,size) pair, 2 cells each,
+>>> +	 * totalling 4 cells per range.
+>>
+>> Can you assume that, or do you need to check the #address-cells and
+>> #size-cells properties of the root node?
+> 
+> Taken from early_reserve_mem_dt() which did not seem to care.
+> Should we be doing any different here?
 
+On second thoughts, wouldn't hurt to be extra cautious. Will use
+#address-cells & #size-cells to parse reserved-ranges.
+
+Thanks
+Hari
