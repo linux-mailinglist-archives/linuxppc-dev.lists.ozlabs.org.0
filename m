@@ -1,46 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BDE224AB3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 12:41:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDAF224AE4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 13:13:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B84Kz0pV0zDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 20:41:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B852s2vVszDrQL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 21:13:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=al2klimov.de
- (client-ip=78.46.175.9; helo=smtp.al2klimov.de;
+ (client-ip=2a01:4f8:c0c:1465::1; helo=smtp.al2klimov.de;
  envelope-from=grandmaster@al2klimov.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=al2klimov.de
-Received: from smtp.al2klimov.de (smtp.al2klimov.de [78.46.175.9])
+Received: from smtp.al2klimov.de (smtp.al2klimov.de
+ [IPv6:2a01:4f8:c0c:1465::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B84JD21ZBzDqSM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 20:40:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B851M3czyzDqW1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 21:12:23 +1000 (AEST)
 Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
- by smtp.al2klimov.de (Postfix) with ESMTPA id 3D570BC064;
- Sat, 18 Jul 2020 10:40:05 +0000 (UTC)
+ by smtp.al2klimov.de (Postfix) with ESMTPA id 214F8BC073;
+ Sat, 18 Jul 2020 11:12:15 +0000 (UTC)
 From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- corbet@lwn.net, herbert@gondor.apana.org.au, davem@davemloft.net,
- leitao@debian.org, nayna@linux.ibm.com, pfsmorigo@gmail.com,
- grandmaster@al2klimov.de, linuxppc-dev@lists.ozlabs.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org
-Subject: [PATCH] powerpc: Replace HTTP links with HTTPS ones
-Date: Sat, 18 Jul 2020 12:39:58 +0200
-Message-Id: <20200718103958.5455-1-grandmaster@al2klimov.de>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, linux-imx@nxp.com,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl: Replace HTTP links with HTTPS ones
+Date: Sat, 18 Jul 2020 13:12:09 +0200
+Message-Id: <20200718111209.11760-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: ++++++
+X-Spam-Level: ******
 Authentication-Results: smtp.al2klimov.de;
  auth=pass smtp.auth=aklimov@al2klimov.de
  smtp.mailfrom=grandmaster@al2klimov.de
-X-Spamd-Bar: /
+X-Spam: Yes
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,6 +54,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -87,78 +90,38 @@ Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
  If you apply the patch, please let me know.
 
 
- Documentation/powerpc/mpc52xx.rst       | 2 +-
- arch/powerpc/crypto/crc32-vpmsum_core.S | 2 +-
- arch/powerpc/include/asm/hydra.h        | 2 +-
- drivers/crypto/vmx/aesp8-ppc.pl         | 2 +-
- drivers/crypto/vmx/ghashp8-ppc.pl       | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/fsl/imx-audmix.c | 4 ++--
+ sound/soc/fsl/imx-audmux.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/powerpc/mpc52xx.rst b/Documentation/powerpc/mpc52xx.rst
-index 8676ac63e077..30260707c3fe 100644
---- a/Documentation/powerpc/mpc52xx.rst
-+++ b/Documentation/powerpc/mpc52xx.rst
-@@ -2,7 +2,7 @@
- Linux 2.6.x on MPC52xx family
- =============================
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index e09b45de0efd..96980cb0497f 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -6,8 +6,8 @@
+  * License. You may obtain a copy of the GNU General Public License
+  * Version 2 or later at the following locations:
+  *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
++ * https://www.opensource.org/licenses/gpl-license.html
++ * https://www.gnu.org/copyleft/gpl.html
+  */
  
--For the latest info, go to http://www.246tNt.com/mpc52xx/
-+For the latest info, go to https://www.246tNt.com/mpc52xx/
+ #include <linux/module.h>
+diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+index 3ce85a43e08f..25c18b9e348f 100644
+--- a/sound/soc/fsl/imx-audmux.c
++++ b/sound/soc/fsl/imx-audmux.c
+@@ -5,7 +5,7 @@
+ // Copyright 2009 Pengutronix, Sascha Hauer <s.hauer@pengutronix.de>
+ //
+ // Initial development of this code was funded by
+-// Phytec Messtechnik GmbH, http://www.phytec.de
++// Phytec Messtechnik GmbH, https://www.phytec.de
  
- To compile/use :
- 
-diff --git a/arch/powerpc/crypto/crc32-vpmsum_core.S b/arch/powerpc/crypto/crc32-vpmsum_core.S
-index c3524eba4d0d..a16a717c809c 100644
---- a/arch/powerpc/crypto/crc32-vpmsum_core.S
-+++ b/arch/powerpc/crypto/crc32-vpmsum_core.S
-@@ -19,7 +19,7 @@
-  * We then use fixed point Barrett reduction to compute a mod n over GF(2)
-  * for n = CRC using POWER8 instructions. We use x = 32.
-  *
-- * http://en.wikipedia.org/wiki/Barrett_reduction
-+ * https://en.wikipedia.org/wiki/Barrett_reduction
-  *
-  * Copyright (C) 2015 Anton Blanchard <anton@au.ibm.com>, IBM
- */
-diff --git a/arch/powerpc/include/asm/hydra.h b/arch/powerpc/include/asm/hydra.h
-index b3b0f2d020f0..ae02eb53d6ef 100644
---- a/arch/powerpc/include/asm/hydra.h
-+++ b/arch/powerpc/include/asm/hydra.h
-@@ -10,7 +10,7 @@
-  *
-  *	© Copyright 1995 Apple Computer, Inc. All rights reserved.
-  *
-- *  It's available online from http://www.cpu.lu/~mlan/ftp/MacTech.pdf
-+ *  It's available online from https://www.cpu.lu/~mlan/ftp/MacTech.pdf
-  *  You can obtain paper copies of this book from computer bookstores or by
-  *  writing Morgan Kaufmann Publishers, Inc., 340 Pine Street, Sixth Floor, San
-  *  Francisco, CA 94104. Reference ISBN 1-55860-393-X.
-diff --git a/drivers/crypto/vmx/aesp8-ppc.pl b/drivers/crypto/vmx/aesp8-ppc.pl
-index db874367b602..50a0a18f35da 100644
---- a/drivers/crypto/vmx/aesp8-ppc.pl
-+++ b/drivers/crypto/vmx/aesp8-ppc.pl
-@@ -50,7 +50,7 @@
- # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
- # project. The module is, however, dual licensed under OpenSSL and
- # CRYPTOGAMS licenses depending on where you obtain it. For further
--# details see http://www.openssl.org/~appro/cryptogams/.
-+# details see https://www.openssl.org/~appro/cryptogams/.
- # ====================================================================
- #
- # This module implements support for AES instructions as per PowerISA
-diff --git a/drivers/crypto/vmx/ghashp8-ppc.pl b/drivers/crypto/vmx/ghashp8-ppc.pl
-index 38b06503ede0..09bba1852eec 100644
---- a/drivers/crypto/vmx/ghashp8-ppc.pl
-+++ b/drivers/crypto/vmx/ghashp8-ppc.pl
-@@ -13,7 +13,7 @@
- # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
- # project. The module is, however, dual licensed under OpenSSL and
- # CRYPTOGAMS licenses depending on where you obtain it. For further
--# details see http://www.openssl.org/~appro/cryptogams/.
-+# details see https://www.openssl.org/~appro/cryptogams/.
- # ====================================================================
- #
- # GHASH for for PowerISA v2.07.
+ #include <linux/clk.h>
+ #include <linux/debugfs.h>
 -- 
 2.27.0
 
