@@ -1,45 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6CA224AA7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 12:35:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F348224ACA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 12:53:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B84Bn2rqDzDr73
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 20:35:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B84bK2XSczDrQM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 20:53:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=hadess.net (client-ip=217.70.178.242; helo=mslow2.mail.gandi.net;
+ envelope-from=hadess@hadess.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=al2klimov.de
- (client-ip=2a01:4f8:c0c:1465::1; helo=smtp.al2klimov.de;
- envelope-from=grandmaster@al2klimov.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=al2klimov.de
-Received: from smtp.al2klimov.de (smtp.al2klimov.de
- [IPv6:2a01:4f8:c0c:1465::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B84940tQ4zDr41
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 20:33:59 +1000 (AEST)
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
- by smtp.al2klimov.de (Postfix) with ESMTPA id 8FF46BC06F;
- Sat, 18 Jul 2020 10:33:50 +0000 (UTC)
-From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To: hadess@hadess.net, jikos@kernel.org, benjamin.tissoires@redhat.com,
- mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- linux-input@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] HID: udraw-ps3: Replace HTTP links with HTTPS ones
-Date: Sat, 18 Jul 2020 12:33:44 +0200
-Message-Id: <20200718103344.3407-1-grandmaster@al2klimov.de>
+ dmarc=none (p=none dis=none) header.from=hadess.net
+Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B84Yl1yjdzDqWX
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 20:51:54 +1000 (AEST)
+Received: from relay5-d.mail.gandi.net (unknown [217.70.183.197])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id 7B62D3A1BE3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 10:39:15 +0000 (UTC)
+X-Originating-IP: 82.255.60.242
+Received: from classic (lns-bzn-39-82-255-60-242.adsl.proxad.net
+ [82.255.60.242]) (Authenticated sender: hadess@hadess.net)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id DF9991C0002;
+ Sat, 18 Jul 2020 10:38:36 +0000 (UTC)
+Message-ID: <c1ce6d1eaeed9e239742c12f4f82c84ad3f36fd4.camel@hadess.net>
+Subject: Re: [PATCH] HID: udraw-ps3: Replace HTTP links with HTTPS ones
+From: Bastien Nocera <hadess@hadess.net>
+To: "Alexander A. Klimov" <grandmaster@al2klimov.de>, jikos@kernel.org, 
+ benjamin.tissoires@redhat.com, mpe@ellerman.id.au,
+ benh@kernel.crashing.org,  paulus@samba.org, linux-input@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,  linux-kernel@vger.kernel.org
+Date: Sat, 18 Jul 2020 12:38:35 +0200
+In-Reply-To: <20200718103344.3407-1-grandmaster@al2klimov.de>
+References: <20200718103344.3407-1-grandmaster@al2klimov.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.3 (3.36.3-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++++
-X-Spam-Level: *****
-Authentication-Results: smtp.al2klimov.de;
- auth=pass smtp.auth=aklimov@al2klimov.de
- smtp.mailfrom=grandmaster@al2klimov.de
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,58 +52,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Alexander A. Klimov" <grandmaster@al2klimov.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rationale:
-Reduces attack surface on kernel devs opening the links for MITM
-as HTTPS traffic is much harder to manipulate.
+On Sat, 2020-07-18 at 12:33 +0200, Alexander A. Klimov wrote:
+> Rationale:
+> Reduces attack surface on kernel devs opening the links for MITM
+> as HTTPS traffic is much harder to manipulate.
+> 
+> Deterministic algorithm:
+> For each file:
+>   If not .svg:
+>     For each line:
+>       If doesn't contain `\bxmlns\b`:
+>         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+>             If both the HTTP and HTTPS versions
+>             return 200 OK and serve the same content:
+>               Replace HTTP with HTTPS.
+> 
+> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 
-Deterministic algorithm:
-For each file:
-  If not .svg:
-    For each line:
-      If doesn't contain `\bxmlns\b`:
-        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
-            If both the HTTP and HTTPS versions
-            return 200 OK and serve the same content:
-              Replace HTTP with HTTPS.
+Looks good!
 
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
----
- Continuing my work started at 93431e0607e5.
- See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
-
- If there are any URLs to be removed completely
- or at least not (just) HTTPSified:
- Just clearly say so and I'll *undo my change*.
- See also: https://lkml.org/lkml/2020/6/27/64
-
- If there are any valid, but yet not changed URLs:
- See: https://lkml.org/lkml/2020/6/26/837
-
- If you apply the patch, please let me know.
-
-
- drivers/hid/hid-udraw-ps3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hid/hid-udraw-ps3.c b/drivers/hid/hid-udraw-ps3.c
-index b0fbd11aa0fc..b2e17ef2ea27 100644
---- a/drivers/hid/hid-udraw-ps3.c
-+++ b/drivers/hid/hid-udraw-ps3.c
-@@ -16,7 +16,7 @@ MODULE_LICENSE("GPL");
- 
- /*
-  * Protocol information from:
-- * http://brandonw.net/udraw/
-+ * https://brandonw.net/udraw/
-  * and the source code of:
-  * https://vvvv.org/contribution/udraw-hid
-  */
--- 
-2.27.0
+Acked-by: Bastien Nocera <hadess@hadess.net>
 
