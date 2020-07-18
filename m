@@ -1,55 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC7F2249BA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 09:52:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4086224A0F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 11:16:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B80Zz6tg9zDrQK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 17:52:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B82R55T72zDqtK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jul 2020 19:16:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
- helo=mail-oi1-f194.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
- [209.85.167.194])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B80Y630CRzDrNH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 17:51:04 +1000 (AEST)
-Received: by mail-oi1-f194.google.com with SMTP id k4so10025133oik.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 00:51:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=KEEvd4u3UvGoBQRrd8r0flfbXnRfcEtkikuqiW2DLRE=;
- b=qWBfIADj/4J0fgeJA2e53W6yOqt9VilN2I1Ct7wnomlpEYyhHtTBHQ11Q5SBwjVGb5
- hKEa/n5tCEcK0iAoxSPYAiCQxVGo3BrTvbK0SGeWnTvWKmF2711mRZhbK4HdwlQixzV8
- Op/S1XF+PQWsyTgOKqODYHu25CTfrEuvGT8YRXSPJzsmraML3UvKLzb2lm09itb/r+EM
- vP3a6jfjFsv0EMVoBCcVFNHfGPZGSGnmL2+Q84K8Prfnj1AN3haiUh+8V+rHlrf+jbUC
- lW5Zh0+YfIwkgZMTSs9V2nMsel7ElHdByuASV3+iwt7+rE7ZNB2+IW5drgSJl/umPGtY
- vNRg==
-X-Gm-Message-State: AOAM531Kz04rXO5KSX+CcOo8GtllVPNSrr5oaDPQSge80TGT3+6bHIYe
- 4k507Iobddw8guR2+De2BWvF4p4kYu5z5K3AKM4=
-X-Google-Smtp-Source: ABdhPJxokjFbAWf+q0y5gqswRgTgqjSY2nJ72G0Xlm5f/Wi/zUxXQcPf5Sb1C4Z8wFeq+35XMwAnzo2pM2Pox1D/rpY=
-X-Received: by 2002:a05:6808:64a:: with SMTP id
- z10mr10530650oih.54.1595058661714; 
- Sat, 18 Jul 2020 00:51:01 -0700 (PDT)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B82P54hbzzDqSt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 19:14:16 +1000 (AEST)
+Received: from mail-qk1-f181.google.com ([209.85.222.181]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MpUIW-1kdQ3o2KdA-00puaL for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul
+ 2020 11:14:08 +0200
+Received: by mail-qk1-f181.google.com with SMTP id b4so10958060qkn.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jul 2020 02:14:07 -0700 (PDT)
+X-Gm-Message-State: AOAM531nRrJ397T3mRUK2Dbvh9KdmOKviBD90XSw3nMgddg/iXT8YBeJ
+ eSHQ5RUjYoU6+NXAEbkuL7p4zpaoHkRn1eJ71j4=
+X-Google-Smtp-Source: ABdhPJxwe+rAXwuvo5qNMMmdZVywOMqejAp891L6qgqpIBl7oiKJsK6nUyLJwXrhbK4R1O2B1G5OJHYrTQLcWCrrZmc=
+X-Received: by 2002:a05:620a:1654:: with SMTP id
+ c20mr12589219qko.138.1595063646520; 
+ Sat, 18 Jul 2020 02:14:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200624035920.835571-1-natechancellor@gmail.com>
-In-Reply-To: <20200624035920.835571-1-natechancellor@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sat, 18 Jul 2020 09:50:50 +0200
-Message-ID: <CAMuHMdU_KfQ-RT_nev5LgN=Vj_P97Fn=nwRoC6ZREFLa3Ysj7w@mail.gmail.com>
+ <1bbb6956-d9de-e0c8-5b45-20b6fecc2189@infradead.org>
+ <CAKwvOd=5nE6fkwp8iw0JqwQFp5KcUaC7RyEf2L6+tkbp9smsvg@mail.gmail.com>
+In-Reply-To: <CAKwvOd=5nE6fkwp8iw0JqwQFp5KcUaC7RyEf2L6+tkbp9smsvg@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Sat, 18 Jul 2020 11:13:50 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1JjQCB9HdRE6chvA5ekOGWUVpSDdPkgqQ+RGz=y06ong@mail.gmail.com>
+Message-ID: <CAK8P3a1JjQCB9HdRE6chvA5ekOGWUVpSDdPkgqQ+RGz=y06ong@mail.gmail.com>
 Subject: Re: [PATCH] powerpc/boot: Use address-of operator on section symbols
-To: Nathan Chancellor <natechancellor@gmail.com>
+To: Nick Desaulniers <ndesaulniers@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:5iF5zAqDQoxf85XtgXp0azAgX66QtODvMMUyaQ2ibm32r3bYC7H
+ 3qROpXxidN6WHr6fzlcSB0RbV1bFNmMLdOcXH0e7GzLyzkKWdfi2d6AshsWHR6GLEheXkeK
+ FZXs3OonzbMH2c/30C/dfo5e+s+Ih3K64YfHd5AuvDFaH2fP73UsydZKOXALYRz2smOqGnG
+ 2EFEsKe5RTl5ilI8kaX2g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8eh+aPHA6Ww=:P5weejW61uILCskLPoTdGK
+ oFrblaHj+G7R5nUqRyY+bzMUiHnqI8eGIeN0+7R9puB4BQoIc8sgeICXmyz5SR5zEYa0rIw4M
+ c4N+VBJz4W4JjkjNzuNO2eitJQwiImc3Gg9g0Oi65NlfMPHBuubiRMdYJi0mQ3LdKLdebqaZc
+ h/OdQHpQkaFQKkPcgpnci1SW8CXTAGNTgbJWfEAoexWnsvppIzguete96UYjr+WX7BN+JTOi6
+ 8bklSQCUpkBdDWGRlDTsh2SwnpPElRhtgujYogTssRo1FuRGWmK+WE4ZJ7n3LgdFWSBpuxV+a
+ ld+TsxIvcdyqvN3uwvXYuCzI5Pa65UxtwBcisGWGUTN1qiHpoLC4upTeIPYBFDNHZzJmrTP2A
+ a17vfPReoc5xqU1u5tpB7h7n2pO9RmO1LNry7dwTF+8bPEoAzvFLlXPbwIWVQJJBZZbTZkkBm
+ GQazvLGkiD2D77w3DKHi2rTynmxzcfkkFg9hERzgC7cr2eAOS2THDxqQrbgWCyQWDneS4rzc3
+ fkLRSftUKBlb5tisxKCmRaFTlq+Yoq23GT7lg6StFdhX5wUhBwKBAK5e7l1WiWMvWxOtScN1o
+ QEj+9f3UqVDRe/8n1qzhqr0JIpryUv1m6pUURUl3hQfRHlgpxMdtboEWwmQAutCvre1JpYy8B
+ gG/MLJdbW52Da8EBLg2ieTKdCuZREpzTJNXqRfKf2usgeKlkWUDT7u7Z5lTOAJ4CAlntNmruw
+ i3dVrbxH8+e5mDuZONbMg9sW6FqImxHzugIkSZly2v18ZyAd4n8uFqRaagV38SaNm2AXMCWWh
+ WghOuyLbPqKZnsR5DNRwlZ9Ur2+XhBJk2EwJ7EKqdIlx6lFZeXEmXlCrM/ivms2juU8vgB0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,74 +74,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Geoff Levand <geoff@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Cc: Geoff Levand <geoff@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
  clang-built-linux <clang-built-linux@googlegroups.com>,
  Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
+ Nathan Chancellor <natechancellor@gmail.com>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nathan,
-
-On Wed, Jun 24, 2020 at 6:02 AM Nathan Chancellor
-<natechancellor@gmail.com> wrote:
-> arch/powerpc/boot/main.c:107:18: warning: array comparison always
-> evaluates to a constant [-Wtautological-compare]
->         if (_initrd_end > _initrd_start) {
->                         ^
-> arch/powerpc/boot/main.c:155:20: warning: array comparison always
-> evaluates to a constant [-Wtautological-compare]
->         if (_esm_blob_end <= _esm_blob_start)
->                           ^
-> 2 warnings generated.
+On Thu, Jun 25, 2020 at 6:32 PM 'Nick Desaulniers' via Clang Built
+Linux <clang-built-linux@googlegroups.com> wrote:
 >
-> These are not true arrays, they are linker defined symbols, which are
-> just addresses.  Using the address of operator silences the warning
-> and does not change the resulting assembly with either clang/ld.lld
-> or gcc/ld (tested with diff + objdump -Dr).
+> On Wed, Jun 24, 2020 at 6:19 PM Geoff Levand <geoff@infradead.org> wrote:
+> >
+> > Hi Nathan,
+> >
+> > On 6/23/20 8:59 PM, Nathan Chancellor wrote:
+> > > These are not true arrays, they are linker defined symbols, which are
+> > > just addresses.  Using the address of operator silences the warning
+> > > and does not change the resulting assembly with either clang/ld.lld
+> > > or gcc/ld (tested with diff + objdump -Dr).
+> >
+> > Thanks for your patch.  I tested this patch applied to v5.8-rc2 on a
+> > PS3 and it seems OK.
 >
-> Link: https://github.com/ClangBuiltLinux/linux/issues/212
-> Reported-by: Joel Stanley <joel@jms.id.au>
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> ---
->  arch/powerpc/boot/main.c | 4 ++--
->  arch/powerpc/boot/ps3.c  | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/boot/main.c b/arch/powerpc/boot/main.c
-> index a9d209135975..cae31a6e8f02 100644
-> --- a/arch/powerpc/boot/main.c
-> +++ b/arch/powerpc/boot/main.c
-> @@ -104,7 +104,7 @@ static struct addr_range prep_initrd(struct addr_range vmlinux, void *chosen,
->  {
->         /* If we have an image attached to us, it overrides anything
->          * supplied by the loader. */
-> -       if (_initrd_end > _initrd_start) {
-> +       if (&_initrd_end > &_initrd_start) {
->
+> PS3?  Folks still have ones that can boot Linux?  Those ****ers took
+> my Yellow Dog Linux away from me; I enjoyed depositing that settlement
+> check!  Hopefully by now, folks have figured out how to roll back the
+> system firmware?
 
-Are you sure that fix is correct?
+I still have the PS3 from Hong Kong with original 1.5 (IIRC) firmware
+that I demoed at LCA2006. Haven't booted it in at least 12 years, and
+never used it for games or movies other than the free "Casino Royale"
+they sent everyone.
 
-    extern char _initrd_start[];
-    extern char _initrd_end[];
-    extern char _esm_blob_start[];
-    extern char _esm_blob_end[];
-
-Of course the result of their comparison is a constant, as the addresses
-are constant.  If clangs warns about it, perhaps that warning should be moved
-to W=1?
-
-But adding "&" is not correct, according to C.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+      Arnd
