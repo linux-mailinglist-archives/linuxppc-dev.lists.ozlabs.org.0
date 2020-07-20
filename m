@@ -2,78 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EF322560E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 05:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C743225648
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 05:47:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B965f4kffzDqq3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 13:04:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B973M2y7pzDqHS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 13:47:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=myC+IRvR; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=20161025 header.b=J4Zx4MgO; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B963z6QSZzDqcM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 13:03:11 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id s26so8336694pfm.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jul 2020 20:03:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B971S6jr7zDqGF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 13:46:04 +1000 (AEST)
+Received: by mail-ot1-x341.google.com with SMTP id w17so11121649otl.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jul 2020 20:46:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=lpszrUk3g++VjwDkyO+kB0nakBB1oFxNo5alny9wgU0=;
- b=myC+IRvRSrv66HdgEQPlUWHOsZTOJPaMknWaQKmuH5kea7GMJebrhfBfK5shocJ7PE
- PbTFzBcDYU6JsNuY0veglvqtKVZRc2OdteWXoXs6j1LUMLCxWBGNex5bm7LZAznIww+M
- DedHXMjUF0Hhn3VXVH6FSTFq7opNi8xo0u1GLPHi0XR+wLucj198wmueAIfPYaYh/8Fg
- 8jlF5d8e7TD837BcvSgddivhN74F2jWyzVvtNisugRI1YKExssY/BOpG2zSuAIz/rjwL
- q3Nr+g54MEA0pJwLAnuUqZILGu8bacFa705Ph3pT0sYF0FPwYnzyfXi4jHkqUTeM/gm0
- BqSA==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=BUo91yORQpmQrJaOYjYlutMzILGTSt8GTjjWtCRYY+Y=;
+ b=J4Zx4MgOZIL/gGkGJMyP+FNGO8dyF8LKnVLl3pQaMc7wo0FnO7t3tO+pQhTVc6fZmJ
+ TAGQGJ1yacVYHJh7J5w5HKFaHv3Fz/b+rc5Wu2Qk/k7vKjAIIKe3Ua9NXby6Rh0QXbmn
+ COtWCMuoyBZjkUJYblsgKyOS4+VfBTE6AO9n/6NHvnfjzhLB2Oz56OXdEdKf3me6ISkj
+ CMiTHZ6niEY7TyizY6v9cHPrvvPX9JRNRT4+BzAqqMxXtdZpZ/CsnVTTBhPFVlYw/6hj
+ Gkv80XPRO0Mzx8ybt5DNeOm9pUTjejxdN23+z9d+pRqF7SpNrH0Bf+PnIn4k628Vql5o
+ EfPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=lpszrUk3g++VjwDkyO+kB0nakBB1oFxNo5alny9wgU0=;
- b=QRgQqpUe5+NI24B1fj4dmhZpUBXAZTyGD5WGKy/r7mnhcAzOtIv3XlCOIt95Lh7EcV
- ATw2r5KJ/S4jwDpkIo531/9Ba8fP5F+axQa5iVPm+oBlkMbGb0F7cI7uZ0+I0t+CfS4w
- 1DdsvfRUr8pEFp5rRH/gLLaXEc0yScLxI/+zFX1DagHh3MwkFHeXlqt+aN3aMdC5aSMY
- 2EXEP4BWKj5dBrY01SeK0msPFTfW0bXQQNSp+E+xSJKI90L4QSDarcqxxV7daStcBN1G
- uQS+3xOSQD6UaVSLC9BN1g8CLshCelZ+dxgaSpF40UX0ixFP+BqaKqmj5Q/isePyKOGW
- 79Zg==
-X-Gm-Message-State: AOAM5337rx+jNk8oGAQaPEVkNpV0hMR432XBjVOL1g5iJUNk3jFPLlqb
- LfBpxqGkqfw7bkG3KSpIgfw=
-X-Google-Smtp-Source: ABdhPJwMg06qZ+4wVzgvV5FRM4DFOwuOxF3uoQRaPM8dKXqbFpuZN/leQ1NFOn0AUHknX5kL6q7syw==
-X-Received: by 2002:a63:d02:: with SMTP id c2mr16849420pgl.338.1595214188892; 
- Sun, 19 Jul 2020 20:03:08 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id u66sm14887329pfb.191.2020.07.19.20.03.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Jul 2020 20:03:08 -0700 (PDT)
-Date: Mon, 20 Jul 2020 13:03:03 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-References: <1594868476.6k5kvx8684.astroid@bobo.none>
- <EFAD6E2F-EC08-4EB3-9ECC-2A963C023FC5@amacapital.net>
- <20200716085032.GO10769@hirez.programming.kicks-ass.net>
- <1594892300.mxnq3b9a77.astroid@bobo.none>
- <20200716110038.GA119549@hirez.programming.kicks-ass.net>
- <1594906688.ikv6r4gznx.astroid@bobo.none>
- <1314561373.18530.1594993363050.JavaMail.zimbra@efficios.com>
-In-Reply-To: <1314561373.18530.1594993363050.JavaMail.zimbra@efficios.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=BUo91yORQpmQrJaOYjYlutMzILGTSt8GTjjWtCRYY+Y=;
+ b=tgwQwjpCYKiJLQHRvqqPpmYcDlgw5yK1irhDQGjET3wHuPy1OYrNV9R8HoFJVvjY3l
+ f/D6rAWJF+kVC/vaE5UfjZCTRtn5ME2ALZngAfKsqVUMagmdi2JaN2tPOsBSfib054+t
+ st1bIuKRA6tzQZT66mf3PYr785dzLkhWTqRlizzuclErdAqT2WfWHio6Se9OF55vuxiC
+ sBxTJH7bo1jr3XCfqqg3dbeAtBU6st4NmmPtPAe1elRYDrUQP7LArDwKSKsqindRa5EJ
+ 1YcyuBf9whaNlUuwbfaEJdlRJmGTYqlTEE/8T0ay/ynSncMDYWbe3FrbIBirBZpzZwdf
+ WcBA==
+X-Gm-Message-State: AOAM533W05eJ4j9dWiEnawKbjiBO3iK88nCn2j4CRL7Tsc3x5TtwFICk
+ 3KjT0KMb7kSSRxMxKIvAu61dyKuOb7QCTHaxXuQ=
+X-Google-Smtp-Source: ABdhPJw9jkRfB/fLMAKvjcGMQ0RpmsQS2Kcfu7xbtbkIOAM7bX0lwvqv7pPKnqhfETHAI3VawfiCv2I1KfiLMyZiQfs=
+X-Received: by 2002:a9d:6a12:: with SMTP id g18mr19560641otn.155.1595216761606; 
+ Sun, 19 Jul 2020 20:46:01 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <1595213677.kxru89dqy2.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20200717040958.70561-1-ravi.bangoria@linux.ibm.com>
+ <20200717040958.70561-10-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20200717040958.70561-10-ravi.bangoria@linux.ibm.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Mon, 20 Jul 2020 13:42:42 +1000
+Message-ID: <CACzsE9r0acLUkV35mVxy1AEK_xObs0yz+fD6UdbNdc6uz=Buqw@mail.gmail.com>
+Subject: Re: [PATCH v4 09/10] powerpc/watchpoint: Return available watchpoints
+ dynamically
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,46 +74,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
- x86 <x86@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
- Andy Lutomirski <luto@amacapital.net>, linux-mm <linux-mm@kvack.org>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, apopple@linux.ibm.com,
+ mikey@neuling.org, miltonm@us.ibm.com, peterz@infradead.org, oleg@redhat.com,
+ Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, jolsa@kernel.org, fweisbec@gmail.com,
+ pedromfc@br.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Mathieu Desnoyers's message of July 17, 2020 11:42 pm:
-> ----- On Jul 16, 2020, at 7:26 PM, Nicholas Piggin npiggin@gmail.com wrot=
-e:
-> [...]
->>=20
->> membarrier does replace barrier instructions on remote CPUs, which do
->> order accesses performed by the kernel on the user address space. So
->> membarrier should too I guess.
->>=20
->> Normal process context accesses like read(2) will do so because they
->> don't get filtered out from IPIs, but kernel threads using the mm may
->> not.
->=20
-> But it should not be an issue, because membarrier's ordering is only with=
- respect
-> to submit and completion of io_uring requests, which are performed throug=
-h
-> system calls from the context of user-space threads, which are called fro=
-m the
-> right mm.
-
-Is that true? Can io completions be written into an address space via a
-kernel thread? I don't know the io_uring code well but it looks like=20
-that's asynchonously using the user mm context.
-
-How about other memory accesses via kthread_use_mm? Presumably there is=20
-still ordering requirement there for membarrier, so I really think
-it's a fragile interface with no real way for the user to know how=20
-kernel threads may use its mm for any particular reason, so membarrier
-should synchronize all possible kernel users as well.
-
-Thanks,
-Nick
+On Fri, Jul 17, 2020 at 2:11 PM Ravi Bangoria
+<ravi.bangoria@linux.ibm.com> wrote:
+>
+> So far Book3S Powerpc supported only one watchpoint. Power10 is
+> introducing 2nd DAWR. Enable 2nd DAWR support for Power10.
+> Availability of 2nd DAWR will depend on CPU_FTR_DAWR1.
+>
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/cputable.h      | 4 +++-
+>  arch/powerpc/include/asm/hw_breakpoint.h | 5 +++--
+>  2 files changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+> index 3445c86e1f6f..36a0851a7a9b 100644
+> --- a/arch/powerpc/include/asm/cputable.h
+> +++ b/arch/powerpc/include/asm/cputable.h
+> @@ -633,7 +633,9 @@ enum {
+>   * Maximum number of hw breakpoint supported on powerpc. Number of
+>   * breakpoints supported by actual hw might be less than this.
+>   */
+> -#define HBP_NUM_MAX    1
+> +#define HBP_NUM_MAX    2
+> +#define HBP_NUM_ONE    1
+> +#define HBP_NUM_TWO    2
+I wonder if these defines are necessary - has it any advantage over
+just using the literal?
+>
+>  #endif /* !__ASSEMBLY__ */
+>
+> diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
+> index cb424799da0d..d4eab1694bcd 100644
+> --- a/arch/powerpc/include/asm/hw_breakpoint.h
+> +++ b/arch/powerpc/include/asm/hw_breakpoint.h
+> @@ -5,10 +5,11 @@
+>   * Copyright 2010, IBM Corporation.
+>   * Author: K.Prasad <prasad@linux.vnet.ibm.com>
+>   */
+> -
+Was removing this line deliberate?
+>  #ifndef _PPC_BOOK3S_64_HW_BREAKPOINT_H
+>  #define _PPC_BOOK3S_64_HW_BREAKPOINT_H
+>
+> +#include <asm/cpu_has_feature.h>
+> +
+>  #ifdef __KERNEL__
+>  struct arch_hw_breakpoint {
+>         unsigned long   address;
+> @@ -46,7 +47,7 @@ struct arch_hw_breakpoint {
+>
+>  static inline int nr_wp_slots(void)
+>  {
+> -       return HBP_NUM_MAX;
+> +       return cpu_has_feature(CPU_FTR_DAWR1) ? HBP_NUM_TWO : HBP_NUM_ONE;
+So it'd be something like:
++       return cpu_has_feature(CPU_FTR_DAWR1) ? HBP_NUM_MAX : 1;
+But thinking that there might be more slots added in the future, it
+may be better to make the number of slots a variable that is set
+during the init and then have this function return that.
+>  }
+>
+>  #ifdef CONFIG_HAVE_HW_BREAKPOINT
+> --
+> 2.26.2
+>
