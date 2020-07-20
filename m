@@ -1,67 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DFB22580C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 08:59:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7F6225853
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 09:22:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9CJG6R84zDqcT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 16:59:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9CqH48dhzDqcK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 17:22:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::344;
- helo=mail-ot1-x344.google.com; envelope-from=jniethe5@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vHa2efVB; dkim-atps=neutral
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9CGc550VzDqLq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 16:57:43 +1000 (AEST)
-Received: by mail-ot1-x344.google.com with SMTP id d4so11372482otk.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jul 2020 23:57:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=G6NUst1rchY94JUB0W3huiU2MUEkso7czGQSShPQ2Fc=;
- b=vHa2efVBkyuXuZfdhY6Q646Xjxnct5NdFDCqm7rb+1P95VXyZ2oDuw0IjG5o6AjwYj
- 8Gsivv0nqtvbhxosSXeUeMJefbCLcJfLcQDv/UZRQWhKMWCnDkyDnZDAti7TBt5jv4Nq
- KyHDci6j19oo6KmiujOAcwfFJUIji12YaVz3PpQ7a8yzxmA3mdYTkvsYjs7ZCNWVqFx9
- VEYwaTRsaKGwEq9tB6a+nVbj+7wWgiaV9xVGZMaRyD/dBE3eVltNnn52+jL1s2EmpU2w
- 1+zwgTyt13s0LbDmecUqrBg1tKaMcAF+WJJu0ydNIqUrSHmtDt4Ql2jgOp1KKwR67tO+
- 1sGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=G6NUst1rchY94JUB0W3huiU2MUEkso7czGQSShPQ2Fc=;
- b=QgrU/Am1jA4nynBIBvE8XK5PpqHBeRc3HbJxB8BKPIAXDMPnW7loOCdK0jlDt+Zl11
- m5V5/ojJm4QlCUrFnFTqZZmuNWOaW0R8NvtmFr1wpiUAjdMSTrLPuYCTssoCl9EBz5+V
- zLWIj+NFPCzKOrsCmHHMD6n1nYzhWfk7/rUnlzgYQodvBq7qV39Y4in+tI3u300cSzPF
- Xh7q5Wz+YcYdOAcNGyAhml4L45CoP0Aj8duC+aUg/8Q1sz9XQT9VbkdtPG2uRK55zmgu
- y/kd1HEHdzU9c5znf4/d3f1pKchIW7D+hlpkWlXRo6qkG1OOIRdgymTW0CbVsPSWBxV0
- Z3hw==
-X-Gm-Message-State: AOAM532JuZjvTkywslb8QxGP6bDfd8oO+EFKiA3fS992e9KlculXd0OP
- paqE9aFKF2e1s2RduZd8rvIiiOOc/ktao4V3UaQ=
-X-Google-Smtp-Source: ABdhPJzRBDfnGqC9iqhGneoqaTRzOpJA0ds7Kv/cYimAuhO4LdnmbLFJQSFTRoMYAS6SES3eYc9ZQ6QwhhN9FbDhfCM=
-X-Received: by 2002:a9d:6a12:: with SMTP id g18mr20006080otn.155.1595228260861; 
- Sun, 19 Jul 2020 23:57:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9Cmw4sV5zDqYM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 17:20:32 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06K73Tm0022041; Mon, 20 Jul 2020 03:20:25 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32bw8yt8dj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Jul 2020 03:20:25 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K7GNA9018955;
+ Mon, 20 Jul 2020 07:20:23 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma05fra.de.ibm.com with ESMTP id 32brq81659-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Jul 2020 07:20:23 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06K7KIQY22872432
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Jul 2020 07:20:18 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7591B4C050;
+ Mon, 20 Jul 2020 07:20:18 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE76F4C044;
+ Mon, 20 Jul 2020 07:20:16 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon, 20 Jul 2020 07:20:16 +0000 (GMT)
+Date: Mon, 20 Jul 2020 12:50:16 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH 04/11] powerpc/smp: Enable small core scheduling sooner
+Message-ID: <20200720072016.GE21103@linux.vnet.ibm.com>
+References: <20200714043624.5648-1-srikar@linux.vnet.ibm.com>
+ <20200714043624.5648-5-srikar@linux.vnet.ibm.com>
+ <20200717054821.GD25851@in.ibm.com>
 MIME-Version: 1.0
-References: <20200717040958.70561-1-ravi.bangoria@linux.ibm.com>
- <20200717040958.70561-11-ravi.bangoria@linux.ibm.com>
-In-Reply-To: <20200717040958.70561-11-ravi.bangoria@linux.ibm.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Mon, 20 Jul 2020 16:54:16 +1000
-Message-ID: <CACzsE9og50tH9jRZjWYDgbFxdTkDXJq3gMuP8uxPWfrrREo=4w@mail.gmail.com>
-Subject: Re: [PATCH v4 10/10] powerpc/watchpoint: Remove 512 byte boundary
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200717054821.GD25851@in.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-20_04:2020-07-17,
+ 2020-07-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 spamscore=0
+ impostorscore=0 malwarescore=0 adultscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007200052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,48 +86,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, apopple@linux.ibm.com,
- mikey@neuling.org, miltonm@us.ibm.com, peterz@infradead.org, oleg@redhat.com,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, jolsa@kernel.org, fweisbec@gmail.com,
- pedromfc@br.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
+ Michael Ellerman <michaele@au1.ibm.com>, Anton Blanchard <anton@au1.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nick Piggin <npiggin@au1.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 17, 2020 at 2:11 PM Ravi Bangoria
-<ravi.bangoria@linux.ibm.com> wrote:
->
-> Power10 has removed 512 bytes boundary from match criteria. i.e. The watch
-> range can cross 512 bytes boundary.
-It looks like this change is not mentioned in ISA v3.1 Book III 9.4
-Data Address Watchpoint. It could be useful to mention that in the
-commit message.
-Also I wonder if could add a test for this to the ptrace-hwbreak selftest?
+* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-07-17 11:18:21]:
 
->
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/hw_breakpoint.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-> index c55e67bab271..1f4a1efa0074 100644
-> --- a/arch/powerpc/kernel/hw_breakpoint.c
-> +++ b/arch/powerpc/kernel/hw_breakpoint.c
-> @@ -418,8 +418,9 @@ static int hw_breakpoint_validate_len(struct arch_hw_breakpoint *hw)
->
->         if (dawr_enabled()) {
->                 max_len = DAWR_MAX_LEN;
-> -               /* DAWR region can't cross 512 bytes boundary */
-> -               if (ALIGN_DOWN(start_addr, SZ_512) != ALIGN_DOWN(end_addr - 1, SZ_512))
-> +               /* DAWR region can't cross 512 bytes boundary on p10 predecessors */
-> +               if (!cpu_has_feature(CPU_FTR_ARCH_31) &&
-> +                   (ALIGN_DOWN(start_addr, SZ_512) != ALIGN_DOWN(end_addr - 1, SZ_512)))
->                         return -EINVAL;
->         } else if (IS_ENABLED(CONFIG_PPC_8xx)) {
->                 /* 8xx can setup a range without limitation */
-> --
-> 2.26.2
->
+> On Tue, Jul 14, 2020 at 10:06:17AM +0530, Srikar Dronamraju wrote:
+> > Enable small core scheduling as soon as we detect that we are in a
+> > system that supports thread group. Doing so would avoid a redundant
+> > check.
+> > 
+> > Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> > Cc: Michael Ellerman <michaele@au1.ibm.com>
+> > Cc: Nick Piggin <npiggin@au1.ibm.com>
+> > Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
+> > Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> > Cc: Michael Neuling <mikey@linux.ibm.com>
+> > Cc: Anton Blanchard <anton@au1.ibm.com>
+> > Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> > Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+> > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> 
+> I don't see a problem with this.
+> 
+> However, since we are now going to be maintaining a single topology
+> structure, wouldn't it be better to collate all the changes being made
+> to the mask_functions/flags/names of this structure within a single
+> function so that it becomes easier to keep track of what all changes
+> are going into the topology and why are we doing it?
+> 
+
+My intent was to move the topology updates early as soon as they are
+detected. Currently the shared_cache want cannot be detected early. 
+But I think its possible to detect shared_cache early with some cleanups.
+And if we do, then we should be able to call this up pretty early.
+
+> 
+> > ---
+> >  arch/powerpc/kernel/smp.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> > index 24529f6134aa..7d430fc536cc 100644
+> > --- a/arch/powerpc/kernel/smp.c
+> > +++ b/arch/powerpc/kernel/smp.c
+> > @@ -892,6 +892,12 @@ static int init_big_cores(void)
+> >  	}
+> > 
+> >  	has_big_cores = true;
+> > +
+> > +#ifdef CONFIG_SCHED_SMT
+> > +	pr_info("Big cores detected. Using small core scheduling\n");
+> > +	powerpc_topology[0].mask = smallcore_smt_mask;
+> > +#endif
+> > +
+> >  	return 0;
+> >  }
+> > 
+> > @@ -1383,12 +1389,6 @@ void __init smp_cpus_done(unsigned int max_cpus)
+> > 
+> >  	dump_numa_cpu_topology();
+> > 
+> > -#ifdef CONFIG_SCHED_SMT
+> > -	if (has_big_cores) {
+> > -		pr_info("Big cores detected but using small core scheduling\n");
+> > -		powerpc_topology[0].mask = smallcore_smt_mask;
+> > -	}
+> > -#endif
+> >  	set_sched_topology(powerpc_topology);
+> >  }
+> > 
+> > -- 
+> > 2.17.1
+> > 
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
