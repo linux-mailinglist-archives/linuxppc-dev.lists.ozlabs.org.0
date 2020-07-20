@@ -2,67 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629E322554A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 03:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 566E322558C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 03:44:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B93l44ZDKzDqqK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 11:18:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B94KB4GmpzDqgP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 11:44:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d43;
- helo=mail-io1-xd43.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=G8RNdA0B; dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
+ header.s=20161025 header.b=lBjd6AuI; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B93hZ35MQzDqPM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 11:16:14 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id e64so15891558iof.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jul 2020 18:16:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B94Hc6ny9zDqdD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 11:43:08 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id 72so10988876otc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jul 2020 18:43:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=au9WXwX08BBTh5LKHhan7lypdLsLLcyPE8UGYw51Kno=;
- b=G8RNdA0B7utkyEKmfbJVIg9ZjTO8HRme5UU5biS9ZC8rzpkXftoN0iM6hWZ/0cOZiH
- tFNgkq4QzWcuyYsBqzEjcBlYzAGqHy5IRyESh+gxjEKShJ7bZufbQGvCQUmYFnrtDtGI
- 6f7Lxjvu17Dx7ITZW4zy5p1rfzxHOSMhfSbjx23EQCvnnxOP+9GZvnFcKMvclRWmwq0O
- FUBclyCjEynD1bnzMUwvWT49V1DFAMhoSgSZ1EVdmQ6PVeiMQu8W+oFm5iOL9CamiBWT
- HRqZ0WMUXvx49UP/kfobhqdDwwz35whKNs2/VivOJN8SFQ6vYIe8bz/oMq/96V9V/fIX
- Gs3g==
+ :cc; bh=/V56vpG6VmCA46P7nYwbFvH9ch6Jbn81Eu33ezKH4EQ=;
+ b=lBjd6AuIheNnitCvLHRoWZ2oDqbEwOMjIx+QaJMcGw6X0fBlzO8TUsb9YNZJmWi0qe
+ WhFmGOdgOj0RDBHIg69RfwnvOAjoOFMIVmGOdiPS/wo5GKMfoh7MgRopanvbxvSVkVgN
+ lEw/WIITspqQd9FW7KwnuUFVoxyBh/4B3wZ4VgwPJQKpqsz5mE5HPW0hKlYaPVHwA81F
+ 9xP4IPmxaEfWrVs8bruRr4kQkx9LcNla/scNRe4eVtu4panA3FQ//eYdpi/rMZ8i7ksK
+ 815vh4RaKZsJpbg1eWLwgTHGrYkVdfSwUsIA5MKvcGpNRHvGf2vCZBUOxFv1xDSj+d2u
+ uwQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=au9WXwX08BBTh5LKHhan7lypdLsLLcyPE8UGYw51Kno=;
- b=angazXpZQqOZWzZc5OM/TngpSuQNewqc9ZT4n2mgkxzZcMVBYd+wTR8iX/64iapKRf
- EkoLWhSxkzbn6xuY+ArsFlFMJVzrAfXXPiUuUHERl3NVYg3W01cByFfL4q52pCXi4GCl
- YFzitYT0L4Web0c5x8EXRAz9r5WB0KcgmK6MyGhNfdyo1xUVMmnu7L9/6+0dh8d9p2Tu
- Md1tkjKmulaj1oBwSysccUYIR+hN5k7TsGGhjcssQ8+C+NZTkYArRXyxI0R8e8LBoL06
- sTx/AqGVETZTFSkeTl2Y3ZPYDrgEnGBrLY1m9j3TsUpZ6p6CtphVcXl8Y/jPXOD10UPd
- kMSA==
-X-Gm-Message-State: AOAM531XCHCij4vQs/im5Em9ZD0WQyMzSmDAqHVrStZjCL0/wjiUWr5X
- usu5PGoTe62N2lDlrl4en12D1u1o8Ls0uzyRQQE=
-X-Google-Smtp-Source: ABdhPJxMrBDfVkpZ+sLYxVqdhO7iy7EoL59rnSUQvECKhq6UqDXY47c2MRunHK7TVLiStoayYJw1ktPDQUX/+0ksUb8=
-X-Received: by 2002:a02:cc24:: with SMTP id o4mr23362603jap.105.1595207770984; 
- Sun, 19 Jul 2020 18:16:10 -0700 (PDT)
+ bh=/V56vpG6VmCA46P7nYwbFvH9ch6Jbn81Eu33ezKH4EQ=;
+ b=VbJBWDrh0+sTE/fpYNGdO/+EUsnNdog6GYcN2ggT2f/BnQaHsuxbbJMiwRMRqSMBP1
+ MlXoAPZKgiIjqajvSHMM7/a5Osw+9hWAnD5dhbKpXHS3hWBahbTJorwIo3hhTzlDNehw
+ hisH99ptY47czzVvwFmNzVrgE1gOe5OIxmJVQjn/RDhp8xPYNuPB8vMk6lziaJAOVisS
+ 1p+5FxqsNgvPWAUODpCqAnhcFdUo1xObP6A43Mw4MzhowmnOy0a0/g8a/b0oidlUF22a
+ 7mxtKHuablbsiugqx0ddmz2ujRlcvVweUp54nRHaJCscCK9iw0Pwhk6AU9eV+yh+jmdF
+ M5ig==
+X-Gm-Message-State: AOAM532VfuePPN0zcjeU+K2Tza/Bt3JmQ+7/uodTUo7fgPBlmD27OHGN
+ yqnAnBu3vNAs9ihW7lL5NGwHdOoV+L9UfV83WWs=
+X-Google-Smtp-Source: ABdhPJz0T2XPbt6RJEE+xqKozWMd00jTLrYdaAnuVRYhHFryyIp8su5E3iKVJSzCuUeSsae1swlIbST9HW09gA1o24c=
+X-Received: by 2002:a9d:6a12:: with SMTP id g18mr19272580otn.155.1595209384681; 
+ Sun, 19 Jul 2020 18:43:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <37af499e-2b8b-7e78-ed4b-0aaf711fcb38@csgroup.eu>
- <20200614233235.121432-1-gthelen@google.com>
- <CAOSf1CHjrFb3J6t0HQXQVVM-PEgAcaCADA8mcwYVi4mpq+f3Yw@mail.gmail.com>
- <xr93sgdo7i2t.fsf@gthelen.svl.corp.google.com>
-In-Reply-To: <xr93sgdo7i2t.fsf@gthelen.svl.corp.google.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Mon, 20 Jul 2020 11:15:59 +1000
-Message-ID: <CAOSf1CGJztzwHX__D0fXkPMXZfDHdwtvU4omwGrWhQfJpBj-Og@mail.gmail.com>
-Subject: Re: [PATCH v2] powerpc/powernv/pci: use ifdef to avoid dead code
-To: Greg Thelen <gthelen@google.com>
+References: <20200717040958.70561-1-ravi.bangoria@linux.ibm.com>
+ <20200717040958.70561-7-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20200717040958.70561-7-ravi.bangoria@linux.ibm.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Mon, 20 Jul 2020 11:39:49 +1000
+Message-ID: <CACzsE9oEB7Gs5bMatvoOs66vFkaFEBwJvj_nhBg2P8zVH8maaQ@mail.gmail.com>
+Subject: Re: [PATCH v4 06/10] powerpc/watchpoint: Set CPU_FTR_DAWR1 based on
+ pa-features bit
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,41 +74,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, apopple@linux.ibm.com,
+ mikey@neuling.org, miltonm@us.ibm.com, peterz@infradead.org, oleg@redhat.com,
+ Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, jolsa@kernel.org, fweisbec@gmail.com,
+ pedromfc@br.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jul 19, 2020 at 5:13 AM Greg Thelen <gthelen@google.com> wrote:
+On Fri, Jul 17, 2020 at 2:10 PM Ravi Bangoria
+<ravi.bangoria@linux.ibm.com> wrote:
 >
-> Oliver O'Halloran <oohall@gmail.com> wrote:
+> As per the PAPR, bit 0 of byte 64 in pa-features property indicates
+> availability of 2nd DAWR registers. i.e. If this bit is set, 2nd
+> DAWR is present, otherwise not. Host generally uses "cpu-features",
+> which masks "pa-features". But "cpu-features" are still not used for
+> guests and thus this change is mostly applicable for guests only.
 >
-> > On Mon, Jun 15, 2020 at 9:33 AM Greg Thelen <gthelen@google.com> wrote:
-> >>
-> >> Commit dc3d8f85bb57 ("powerpc/powernv/pci: Re-work bus PE
-> >> configuration") removed a couple pnv_ioda_setup_bus_dma() calls.  The
-> >> only remaining calls are behind CONFIG_IOMMU_API.  Thus builds without
-> >> CONFIG_IOMMU_API see:
-> >>   arch/powerpc/platforms/powernv/pci-ioda.c:1888:13: error: 'pnv_ioda_setup_bus_dma' defined but not used
-> >>
-> >> Move pnv_ioda_setup_bus_dma() under CONFIG_IOMMU_API to avoid dead code.
-> >
-> > Doh! Thanks for the fix.
-> >
-> > Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+I checked those PAPR values are correct and checked running a powernv
+kernel in p10 mambo with dt_cpu_ftrs=off and it does set the
+CPU_FTR_DAWR1 bit.
+(using p10 skiboot).
+Tested-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+>  arch/powerpc/kernel/prom.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> Is there anything else needed from me on this patch?
-> Given that it fixes a 5.8 commit I figured it'd be 5.8 material.
-
-Oh sorry, I completely forgot about this patch. I sent another series
-that included a more-or-less identical fix after the kbuild robot sent
-a reminder:
-
-http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=187630&state=*
-
-That's current in powerpc/next, but if it's causing a build break then
-I agree it should probably go into 5.8 too.
-
-Oliver
+> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> index 9cc49f265c86..c76c09b97bc8 100644
+> --- a/arch/powerpc/kernel/prom.c
+> +++ b/arch/powerpc/kernel/prom.c
+> @@ -175,6 +175,8 @@ static struct ibm_pa_feature {
+>          */
+>         { .pabyte = 22, .pabit = 0, .cpu_features = CPU_FTR_TM_COMP,
+>           .cpu_user_ftrs2 = PPC_FEATURE2_HTM_COMP | PPC_FEATURE2_HTM_NOSC_COMP },
+> +
+> +       { .pabyte = 64, .pabit = 0, .cpu_features = CPU_FTR_DAWR1 },
+>  };
+>
+>  static void __init scan_features(unsigned long node, const unsigned char *ftrs,
+> --
+> 2.26.2
+>
