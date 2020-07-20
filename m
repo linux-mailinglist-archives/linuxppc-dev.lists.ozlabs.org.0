@@ -2,16 +2,16 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE504225A70
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 10:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B79B225AA2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 11:00:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9Frx3XgLzDqYV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 18:54:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9Fzq2kbFzDqZB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 19:00:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
  header.from=linux.vnet.ibm.com
@@ -19,69 +19,65 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9Fq12BnbzDqW1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 18:52:29 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9Fxr0HCPzDqYp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 18:58:23 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06K8ofZb122606; Mon, 20 Jul 2020 04:52:24 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32d5p8mg7c-1
+ 06K8Ykxg034626; Mon, 20 Jul 2020 04:58:19 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32bwk6vpmd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 04:52:24 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06K8XGKi063452;
- Mon, 20 Jul 2020 04:52:24 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32d5p8mg66-1
+ Mon, 20 Jul 2020 04:58:19 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K8o8t4005789;
+ Mon, 20 Jul 2020 08:58:18 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 32brq8unrr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 04:52:23 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K8oIYB005708;
- Mon, 20 Jul 2020 08:52:21 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03fra.de.ibm.com with ESMTP id 32brq8181t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 08:52:21 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06K8qGLk20382182
+ Mon, 20 Jul 2020 08:58:18 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06K8wGwx55902538
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Jul 2020 08:52:16 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F46AAE051;
- Mon, 20 Jul 2020 08:52:16 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A6E38AE053;
- Mon, 20 Jul 2020 08:52:14 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Mon, 20 Jul 2020 08:52:14 +0000 (GMT)
-Date: Mon, 20 Jul 2020 14:22:14 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH 04/11] powerpc/smp: Enable small core scheduling sooner
-Message-ID: <20200720085214.GG21103@linux.vnet.ibm.com>
+ Mon, 20 Jul 2020 08:58:16 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ADE3FB2064;
+ Mon, 20 Jul 2020 08:58:16 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 130E4B205F;
+ Mon, 20 Jul 2020 08:58:16 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.85.72.83])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 20 Jul 2020 08:58:16 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 893012E48B1; Mon, 20 Jul 2020 14:28:12 +0530 (IST)
+Date: Mon, 20 Jul 2020 14:28:12 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH 05/11] powerpc/smp: Dont assume l2-cache to be superset
+ of sibling
+Message-ID: <20200720085812.GA6680@in.ibm.com>
 References: <20200714043624.5648-1-srikar@linux.vnet.ibm.com>
- <20200714043624.5648-5-srikar@linux.vnet.ibm.com>
- <CACzsE9qoyh++qfTrNq5BXc5eAJeg8Gz2WxrWs4spG40t3c+MBg@mail.gmail.com>
+ <20200714043624.5648-6-srikar@linux.vnet.ibm.com>
+ <20200717060011.GE25851@in.ibm.com>
+ <20200720064504.GD21103@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACzsE9qoyh++qfTrNq5BXc5eAJeg8Gz2WxrWs4spG40t3c+MBg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200720064504.GD21103@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-20_04:2020-07-17,
  2020-07-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 clxscore=1015 adultscore=0 bulkscore=0 impostorscore=0
- mlxscore=0 phishscore=0 priorityscore=1501 suspectscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007200060
+ malwarescore=0 spamscore=0
+ lowpriorityscore=0 clxscore=1015 mlxscore=0 bulkscore=0 adultscore=0
+ phishscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007200065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,7 +89,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Reply-To: ego@linux.vnet.ibm.com
 Cc: Nathan Lynch <nathanl@linux.ibm.com>,
  Gautham R Shenoy <ego@linux.vnet.ibm.com>,
  Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
@@ -104,57 +100,136 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Jordan Niethe <jniethe5@gmail.com> [2020-07-20 17:47:27]:
+Hi Srikar,
 
-> On Tue, Jul 14, 2020 at 2:44 PM Srikar Dronamraju
-> <srikar@linux.vnet.ibm.com> wrote:
-> >
-> > Enable small core scheduling as soon as we detect that we are in a
-> > system that supports thread group. Doing so would avoid a redundant
-> > check.
-> >
-> > Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> > Cc: Michael Ellerman <michaele@au1.ibm.com>
-> > Cc: Nick Piggin <npiggin@au1.ibm.com>
-> > Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
-> > Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> > Cc: Michael Neuling <mikey@linux.ibm.com>
-> > Cc: Anton Blanchard <anton@au1.ibm.com>
-> > Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> > Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-> > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> > ---
-> >  arch/powerpc/kernel/smp.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> > index 24529f6134aa..7d430fc536cc 100644
-> > --- a/arch/powerpc/kernel/smp.c
-> > +++ b/arch/powerpc/kernel/smp.c
-> > @@ -892,6 +892,12 @@ static int init_big_cores(void)
-> >         }
-> >
-> >         has_big_cores = true;
-> > +
-> > +#ifdef CONFIG_SCHED_SMT
-> > +       pr_info("Big cores detected. Using small core scheduling\n");
-> Why change the wording from "Big cores detected but using small core
-> scheduling\n"?
-> > +       powerpc_topology[0].mask = smallcore_smt_mask;
-> > +#endif
-> > +
+On Mon, Jul 20, 2020 at 12:15:04PM +0530, Srikar Dronamraju wrote:
+> * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-07-17 11:30:11]:
+> 
+> > Hi Srikar,
+> > 
+> > On Tue, Jul 14, 2020 at 10:06:18AM +0530, Srikar Dronamraju wrote:
+> > > Current code assumes that cpumask of cpus sharing a l2-cache mask will
+> > > always be a superset of cpu_sibling_mask.
+> > > 
+> > > Lets stop that assumption.
+> > > 
+> > > Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> > > Cc: Michael Ellerman <michaele@au1.ibm.com>
+> > > Cc: Nick Piggin <npiggin@au1.ibm.com>
+> > > Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
+> > > Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> > > Cc: Michael Neuling <mikey@linux.ibm.com>
+> > > Cc: Anton Blanchard <anton@au1.ibm.com>
+> > > Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> > > Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+> > > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > > ---
+> > >  arch/powerpc/kernel/smp.c | 28 +++++++++++++++-------------
+> > >  1 file changed, 15 insertions(+), 13 deletions(-)
+> > > 
+> > > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> > > index 7d430fc536cc..875f57e41355 100644
+> > > --- a/arch/powerpc/kernel/smp.c
+> > > +++ b/arch/powerpc/kernel/smp.c
+> > > @@ -1198,6 +1198,7 @@ static bool update_mask_by_l2(int cpu, struct cpumask *(*mask_fn)(int))
+> > >  	struct device_node *l2_cache, *np;
+> > >  	int i;
+> > > 
+> > > +	cpumask_set_cpu(cpu, mask_fn(cpu));
+> > 
+> > It would be good to comment why do we need to do set the CPU in the
+> > l2-mask if we don't have a l2cache domain.
+> > 
+> 
+> Good Catch, 
+> We should move this after the cpu_to_l2cache.
+> 
+> > >  	l2_cache = cpu_to_l2cache(cpu);
+> > >  	if (!l2_cache)
+> > >  		return false;
+> > > @@ -1284,29 +1285,30 @@ static void add_cpu_to_masks(int cpu)
+> > >  	 * add it to it's own thread sibling mask.
+> > >  	 */
+> > >  	cpumask_set_cpu(cpu, cpu_sibling_mask(cpu));
+> > > +	cpumask_set_cpu(cpu, cpu_core_mask(cpu));
+> > > 
+> > >  	for (i = first_thread; i < first_thread + threads_per_core; i++)
+> > >  		if (cpu_online(i))
+> > >  			set_cpus_related(i, cpu, cpu_sibling_mask);
+> > > 
+> > >  	add_cpu_to_smallcore_masks(cpu);
+> > > -	/*
+> > > -	 * Copy the thread sibling mask into the cache sibling mask
+> > > -	 * and mark any CPUs that share an L2 with this CPU.
+> > > -	 */
+> > > -	for_each_cpu(i, cpu_sibling_mask(cpu))
+> > > -		set_cpus_related(cpu, i, cpu_l2_cache_mask);
+> > >  	update_mask_by_l2(cpu, cpu_l2_cache_mask);
+> > > 
+> > > -	/*
+> > > -	 * Copy the cache sibling mask into core sibling mask and mark
+> > > -	 * any CPUs on the same chip as this CPU.
+> > > -	 */
+> > > -	for_each_cpu(i, cpu_l2_cache_mask(cpu))
+> > > -		set_cpus_related(cpu, i, cpu_core_mask);
+> > > +	if (pkg_id == -1) {
+> > > +		struct cpumask *(*mask)(int) = cpu_sibling_mask;
+> > > +
+> > > +		/*
+> > > +		 * Copy the sibling mask into core sibling mask and
+> > > +		 * mark any CPUs on the same chip as this CPU.
+> > > +		 */
+> > > +		if (shared_caches)
+> > > +			mask = cpu_l2_cache_mask;
+> > > +
+> > 
+> > 
+> > Now that we decoupling the containment relationship between
+> > sibling_mask and l2-cache mask, should we set all the CPUs that are
+> > both in cpu_sibling_mask(cpu) as well as cpu_l2_mask(cpu) in
+> > cpu_core_mask ? 
+> > 
+> 
+> Are you saying instead of setting this cpu in this cpu_core_mask, can we set
+> all the cpus in the mask in cpu_core_mask?
 
-To me, "but" in the message sounded as if we detected Big cores *but* we want
-to continue using smallcore scheduling. However the code was always meaning
-to say, "Since we detected big core, i.e thread grouping within a core, System would
-benefit by using small core scheduling".
+No. What I am referring to is in the for-loop below, you are setting
+the CPUs that are set in mask(cpu) in the cpu_core_mask.
 
-If you think, "but" was adding more info and not misleading, then I can add it back.
+Now, the above code sets
+mask(cpu) == cpu_sibling_mask(cpu) in the absence of shared_caches, and 
+          == cpu_l2_cache_mask(cpu) in the presence of shared_cache.
 
-> >         return 0;
-> >  }
-> >
+Since we have decoupled the assumption that cpu_sibling_mask(cpu) may not
+be contained within cpu_l2_cache_mask(cpu), in the presence of a
+shared-cache, why are we only picking the CPUs in
+cpu_l2_cache_mask(cpu) to be set in cpu_core_maks(cpu) ? It should
+ideally be the superset whose CPUs should be set in
+cpu_core_mask(cpu). And the correct cpuset is
+cpumask_or(cpu_sibling_mask(cpu), cpu_l2_cache_mask(cpu))
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+
+> Currently we dont know if any of the cpus of the mask were already set or
+> not. Plus we need to anyway update cpumask of all other cpus to says they
+> are related. So setting a mask instead of cpu at a time will not change
+> anything for our side.
+> 
+> > > +		for_each_cpu(i, mask(cpu))
+> > > +			set_cpus_related(cpu, i, cpu_core_mask);
+> > > 
+> > > -	if (pkg_id == -1)
+> > >  		return;
+> > > +	}
+> > > 
+> > >  	for_each_cpu(i, cpu_online_mask)
+> > >  		if (get_physical_package_id(i) == pkg_id)
+> > > -- 
+> > > 2.17.1
+> > > 
+> > --
+> > Thanks and Regards
+> > gautham.
+> 
+> -- 
+> Thanks and Regards
+> Srikar Dronamraju
