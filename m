@@ -1,80 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555B12259A2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 10:06:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F022259CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 10:16:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9DnW0S2bzDqCG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 18:06:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9F1p31k0zDqWk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 18:16:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9DlX53cPzDqcH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 18:04:23 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06K83pHF084049; Mon, 20 Jul 2020 04:04:16 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32bwk6u8hf-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9DvJ00RrzDqQY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 18:11:07 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06K82vhq031028; Mon, 20 Jul 2020 04:10:55 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32cea0u2cv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 04:04:15 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06K84EfL085945;
- Mon, 20 Jul 2020 04:04:14 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32bwk6u8fp-1
+ Mon, 20 Jul 2020 04:10:55 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K853vK011110;
+ Mon, 20 Jul 2020 08:09:56 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 32brq7jdw5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 04:04:14 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K7uIWZ015785;
- Mon, 20 Jul 2020 08:04:10 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03fra.de.ibm.com with ESMTP id 32brq817c6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 08:04:10 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06K847DO59899986
+ Mon, 20 Jul 2020 08:09:56 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06K88UPg54919658
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Jul 2020 08:04:07 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 452B4A405F;
- Mon, 20 Jul 2020 08:04:07 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83B82A4054;
- Mon, 20 Jul 2020 08:04:05 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.199.39.97])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 20 Jul 2020 08:04:05 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/pseries: Avoid using addr_to_pfn in realmode
-Date: Mon, 20 Jul 2020 13:33:35 +0530
-Message-Id: <20200720080335.21049-1-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.17.2
+ Mon, 20 Jul 2020 08:08:30 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40076A4059;
+ Mon, 20 Jul 2020 08:09:54 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA615A4051;
+ Mon, 20 Jul 2020 08:09:49 +0000 (GMT)
+Received: from [9.79.219.218] (unknown [9.79.219.218])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 20 Jul 2020 08:09:49 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Message-Id: <E9CBA3E7-A31C-44A8-B4F5-42DF58FE21BE@linux.vnet.ibm.com>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_A5551C5C-F653-4A8F-8DFB-D9ACF0D5F7B6"
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [v3 12/15] powerpc/perf: Add support for outputting extended regs
+ in perf intr_regs
+Date: Mon, 20 Jul 2020 13:39:47 +0530
+In-Reply-To: <202007191932.4rHY8FD8%lkp@intel.com>
+To: kernel test robot <lkp@intel.com>
+References: <1594996707-3727-13-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <202007191932.4rHY8FD8%lkp@intel.com>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-20_04:2020-07-17,
  2020-07-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 bulkscore=0 adultscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007200060
+ suspectscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 mlxscore=0 phishscore=0
+ adultscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxlogscore=999 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007200060
+X-Mailman-Approved-At: Mon, 20 Jul 2020 18:15:07 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,218 +87,637 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, Ganesh Goudar <ganeshgr@linux.ibm.com>,
- npiggin@gmail.com, aneesh.kumar@linux.ibm.com
+Cc: ego <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ maddy@linux.vnet.ibm.com, kbuild-all@lists.01.org, kvm@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, svaidyan@in.ibm.com,
+ clang-built-linux@googlegroups.com, acme@kernel.org, jolsa@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When an UE or memory error exception is encountered the MCE handler
-tries to find the pfn using addr_to_pfn() which takes effective
-address as an argument, later pfn is used to poison the page where
-memory error occurred, recent rework in this area made addr_to_pfn
-to run in realmode, which can be fatal as it may try to access
-memory outside RMO region.
 
-To fix this have separate functions for realmode and virtual mode
-handling and let addr_to_pfn to run in virtual mode.
+--Apple-Mail=_A5551C5C-F653-4A8F-8DFB-D9ACF0D5F7B6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-Without this fix following kernel crash is seen on hitting UE.
 
-[  485.128036] Oops: Kernel access of bad area, sig: 11 [#1]
-[  485.128040] LE SMP NR_CPUS=2048 NUMA pSeries
-[  485.128047] Modules linked in:
-[  485.128067] CPU: 15 PID: 6536 Comm: insmod Kdump: loaded Tainted: G OE 5.7.0 #22
-[  485.128074] NIP:  c00000000009b24c LR: c0000000000398d8 CTR: c000000000cd57c0
-[  485.128078] REGS: c000000003f1f970 TRAP: 0300   Tainted: G OE (5.7.0)
-[  485.128082] MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 28008284  XER: 00000001
-[  485.128088] CFAR: c00000000009b190 DAR: c0000001fab00000 DSISR: 40000000 IRQMASK: 1
-[  485.128088] GPR00: 0000000000000001 c000000003f1fbf0 c000000001634300 0000b0fa01000000
-[  485.128088] GPR04: d000000002220000 0000000000000000 00000000fab00000 0000000000000022
-[  485.128088] GPR08: c0000001fab00000 0000000000000000 c0000001fab00000 c000000003f1fc14
-[  485.128088] GPR12: 0000000000000008 c000000003ff5880 d000000002100008 0000000000000000
-[  485.128088] GPR16: 000000000000ff20 000000000000fff1 000000000000fff2 d0000000021a1100
-[  485.128088] GPR20: d000000002200000 c00000015c893c50 c000000000d49b28 c00000015c893c50
-[  485.128088] GPR24: d0000000021a0d08 c0000000014e5da8 d0000000021a0818 000000000000000a
-[  485.128088] GPR28: 0000000000000008 000000000000000a c0000000017e2970 000000000000000a
-[  485.128125] NIP [c00000000009b24c] __find_linux_pte+0x11c/0x310
-[  485.128130] LR [c0000000000398d8] addr_to_pfn+0x138/0x170
-[  485.128133] Call Trace:
-[  485.128135] Instruction dump:
-[  485.128138] 3929ffff 7d4a3378 7c883c36 7d2907b4 794a1564 7d294038 794af082 3900ffff
-[  485.128144] 79291f24 790af00e 78e70020 7d095214 <7c69502a> 2fa30000 419e011c 70690040
-[  485.128152] ---[ end trace d34b27e29ae0e340 ]---
 
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
-V2: Leave bare metal code and save_mce_event as is.
+> On 19-Jul-2020, at 4:47 PM, kernel test robot <lkp@intel.com> wrote:
+>=20
+> Hi Athira,
+>=20
+> Thank you for the patch! Yet something to improve:
+>=20
+> [auto build test ERROR on powerpc/next]
+> [also build test ERROR on tip/perf/core v5.8-rc5 next-20200717]
+> [If your patch is applied to the wrong git tree, kindly drop us a =
+note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+>=20
+> url:    =
+https://github.com/0day-ci/linux/commits/Athira-Rajeev/powerpc-perf-Add-su=
+pport-for-power10-PMU-Hardware/20200717-224353
+> base:   =
+https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: powerpc64-randconfig-r024-20200719 (attached as .config)
+> compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project =
+ed6b578040a85977026c93bf4188f996148f3218)
+> reproduce (this is a W=3D1 build):
+>        wget =
+https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross =
+-O ~/bin/make.cross
+>        chmod +x ~/bin/make.cross
+>        # install powerpc64 cross compiling tool for clang build
+>        # apt-get install binutils-powerpc64-linux-gnu
+>        # save the attached .config to linux build tree
+>        COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang make.cross =
+ARCH=3Dpowerpc64=20
+>=20
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+>=20
+> All errors (new ones prefixed by >>):
+>=20
+>   arch/powerpc/include/asm/io-defs.h:45:1: warning: performing pointer =
+arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]
+>   DEF_PCI_AC_NORET(insw, (unsigned long p, void *b, unsigned long c),
+>   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   arch/powerpc/include/asm/io.h:601:3: note: expanded from macro =
+'DEF_PCI_AC_NORET'
+>                   __do_##name al;                                 \
+>                   ^~~~~~~~~~~~~~
+>   <scratch space>:221:1: note: expanded from here
+>   __do_insw
+>   ^
+>   arch/powerpc/include/asm/io.h:542:56: note: expanded from macro =
+'__do_insw'
+>   #define __do_insw(p, b, n)      readsw((PCI_IO_ADDR)_IO_BASE+(p), =
+(b), (n))
+>                                          ~~~~~~~~~~~~~~~~~~~~~^
+>   In file included from arch/powerpc/perf/perf_regs.c:10:
+>   In file included from include/linux/perf_event.h:57:
+>   In file included from include/linux/cgroup.h:26:
+>   In file included from include/linux/kernel_stat.h:9:
+>   In file included from include/linux/interrupt.h:11:
+>   In file included from include/linux/hardirq.h:10:
+>   In file included from arch/powerpc/include/asm/hardirq.h:6:
+>   In file included from include/linux/irq.h:20:
+>   In file included from include/linux/io.h:13:
+>   In file included from arch/powerpc/include/asm/io.h:604:
+>   arch/powerpc/include/asm/io-defs.h:47:1: warning: performing pointer =
+arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]
+>   DEF_PCI_AC_NORET(insl, (unsigned long p, void *b, unsigned long c),
+>   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   arch/powerpc/include/asm/io.h:601:3: note: expanded from macro =
+'DEF_PCI_AC_NORET'
+>                   __do_##name al;                                 \
+>                   ^~~~~~~~~~~~~~
+>   <scratch space>:223:1: note: expanded from here
+>   __do_insl
+>   ^
+>   arch/powerpc/include/asm/io.h:543:56: note: expanded from macro =
+'__do_insl'
+>   #define __do_insl(p, b, n)      readsl((PCI_IO_ADDR)_IO_BASE+(p), =
+(b), (n))
+>                                          ~~~~~~~~~~~~~~~~~~~~~^
+>   In file included from arch/powerpc/perf/perf_regs.c:10:
+>   In file included from include/linux/perf_event.h:57:
+>   In file included from include/linux/cgroup.h:26:
+>   In file included from include/linux/kernel_stat.h:9:
+>   In file included from include/linux/interrupt.h:11:
+>   In file included from include/linux/hardirq.h:10:
+>   In file included from arch/powerpc/include/asm/hardirq.h:6:
+>   In file included from include/linux/irq.h:20:
+>   In file included from include/linux/io.h:13:
+>   In file included from arch/powerpc/include/asm/io.h:604:
+>   arch/powerpc/include/asm/io-defs.h:49:1: warning: performing pointer =
+arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]
+>   DEF_PCI_AC_NORET(outsb, (unsigned long p, const void *b, unsigned =
+long c),
+>   =
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
 
-V3: Have separate functions for realmode and virtual mode handling.
----
- arch/powerpc/platforms/pseries/ras.c | 119 ++++++++++++++++-----------
- 1 file changed, 70 insertions(+), 49 deletions(-)
+>   arch/powerpc/include/asm/io.h:601:3: note: expanded from macro =
+'DEF_PCI_AC_NORET'
+>                   __do_##name al;                                 \
+>                   ^~~~~~~~~~~~~~
+>   <scratch space>:225:1: note: expanded from here
+>   __do_outsb
+>   ^
+>   arch/powerpc/include/asm/io.h:544:58: note: expanded from macro =
+'__do_outsb'
+>   #define __do_outsb(p, b, n)     =
+writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+>                                           ~~~~~~~~~~~~~~~~~~~~~^
+>   In file included from arch/powerpc/perf/perf_regs.c:10:
+>   In file included from include/linux/perf_event.h:57:
+>   In file included from include/linux/cgroup.h:26:
+>   In file included from include/linux/kernel_stat.h:9:
+>   In file included from include/linux/interrupt.h:11:
+>   In file included from include/linux/hardirq.h:10:
+>   In file included from arch/powerpc/include/asm/hardirq.h:6:
+>   In file included from include/linux/irq.h:20:
+>   In file included from include/linux/io.h:13:
+>   In file included from arch/powerpc/include/asm/io.h:604:
+>   arch/powerpc/include/asm/io-defs.h:51:1: warning: performing pointer =
+arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]
+>   DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, unsigned =
+long c),
+>   =
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
 
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index f3736fcd98fc..32fe3fad86b8 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -522,18 +522,55 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
- 	return 0; /* need to perform reset */
- }
- 
-+static int mce_handle_err_realmode(int disposition, u8 error_type)
-+{
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	if (disposition == RTAS_DISP_NOT_RECOVERED) {
-+		switch (error_type) {
-+		case	MC_ERROR_TYPE_SLB:
-+		case	MC_ERROR_TYPE_ERAT:
-+			/*
-+			 * Store the old slb content in paca before flushing.
-+			 * Print this when we go to virtual mode.
-+			 * There are chances that we may hit MCE again if there
-+			 * is a parity error on the SLB entry we trying to read
-+			 * for saving. Hence limit the slb saving to single
-+			 * level of recursion.
-+			 */
-+			if (local_paca->in_mce == 1)
-+				slb_save_contents(local_paca->mce_faulty_slbs);
-+			flush_and_reload_slb();
-+			disposition = RTAS_DISP_FULLY_RECOVERED;
-+			break;
-+		default:
-+			break;
-+		}
-+	} else if (disposition == RTAS_DISP_LIMITED_RECOVERY) {
-+		/* Platform corrected itself but could be degraded */
-+		pr_err("MCE: limited recovery, system may be degraded\n");
-+		disposition = RTAS_DISP_FULLY_RECOVERED;
-+	}
-+#endif
-+	return disposition;
-+}
- 
--static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
-+static int mce_handle_err_virtmode(struct pt_regs *regs,
-+				   struct rtas_error_log *errp,
-+				   struct pseries_mc_errorlog *mce_log,
-+				   int disposition)
- {
- 	struct mce_error_info mce_err = { 0 };
--	unsigned long eaddr = 0, paddr = 0;
--	struct pseries_errorlog *pseries_log;
--	struct pseries_mc_errorlog *mce_log;
--	int disposition = rtas_error_disposition(errp);
- 	int initiator = rtas_error_initiator(errp);
- 	int severity = rtas_error_severity(errp);
-+	unsigned long eaddr = 0, paddr = 0;
- 	u8 error_type, err_sub_type;
- 
-+	if (!mce_log)
-+		goto out;
-+
-+	error_type = mce_log->error_type;
-+	err_sub_type = rtas_mc_error_sub_type(mce_log);
-+
- 	if (initiator == RTAS_INITIATOR_UNKNOWN)
- 		mce_err.initiator = MCE_INITIATOR_UNKNOWN;
- 	else if (initiator == RTAS_INITIATOR_CPU)
-@@ -572,18 +609,7 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
- 	mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
- 	mce_err.error_class = MCE_ECLASS_UNKNOWN;
- 
--	if (!rtas_error_extended(errp))
--		goto out;
+>   arch/powerpc/include/asm/io.h:601:3: note: expanded from macro =
+'DEF_PCI_AC_NORET'
+>                   __do_##name al;                                 \
+>                   ^~~~~~~~~~~~~~
+>   <scratch space>:227:1: note: expanded from here
+>   __do_outsw
+>   ^
+>   arch/powerpc/include/asm/io.h:545:58: note: expanded from macro =
+'__do_outsw'
+>   #define __do_outsw(p, b, n)     =
+writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+>                                           ~~~~~~~~~~~~~~~~~~~~~^
+>   In file included from arch/powerpc/perf/perf_regs.c:10:
+>   In file included from include/linux/perf_event.h:57:
+>   In file included from include/linux/cgroup.h:26:
+>   In file included from include/linux/kernel_stat.h:9:
+>   In file included from include/linux/interrupt.h:11:
+>   In file included from include/linux/hardirq.h:10:
+>   In file included from arch/powerpc/include/asm/hardirq.h:6:
+>   In file included from include/linux/irq.h:20:
+>   In file included from include/linux/io.h:13:
+>   In file included from arch/powerpc/include/asm/io.h:604:
+>   arch/powerpc/include/asm/io-defs.h:53:1: warning: performing pointer =
+arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]
+>   DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, unsigned =
+long c),
+>   =
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+
+>   arch/powerpc/include/asm/io.h:601:3: note: expanded from macro =
+'DEF_PCI_AC_NORET'
+>                   __do_##name al;                                 \
+>                   ^~~~~~~~~~~~~~
+>   <scratch space>:229:1: note: expanded from here
+>   __do_outsl
+>   ^
+>   arch/powerpc/include/asm/io.h:546:58: note: expanded from macro =
+'__do_outsl'
+>   #define __do_outsl(p, b, n)     =
+writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
+>                                           ~~~~~~~~~~~~~~~~~~~~~^
+>>> arch/powerpc/perf/perf_regs.c:16:5: error: expected identifier or =
+'('
+>   u64 PERF_REG_EXTENDED_MASK;
+>       ^
+>   include/linux/perf_regs.h:16:32: note: expanded from macro =
+'PERF_REG_EXTENDED_MASK'
+>   #define PERF_REG_EXTENDED_MASK  0
+>                                   ^
+>   12 warnings and 1 error generated.
+>=20
+> vim +16 arch/powerpc/perf/perf_regs.c
+>=20
+>    15=09
+>> 16	u64 PERF_REG_EXTENDED_MASK;
+>    17=09
+
+Hi,
+
+This patch defines PERF_REG_EXTENDED_MASK
+in arch/powerpc/include/asm/perf_event_server.h and this header file is =
+included conditionally based on
+CONFIG_PPC_PERF_CTRS in arch/powerpc/include/asm/perf_event.h.
+So build breaks happens with config having CONFIG_PERF_EVENTS set
+and without CONFIG_PPC_PERF_CTRS.=20
+
+This will be fixed by defining PERF_REG_EXTENDED_MASK in perf_event.h as =
+below:
+
+=E2=80=94
+diff --git a/arch/powerpc/include/asm/perf_event.h =
+b/arch/powerpc/include/asm/perf_event.h
+index eed3954082fa..b1c3a91aa6fa 100644
+--- a/arch/powerpc/include/asm/perf_event.h
++++ b/arch/powerpc/include/asm/perf_event.h
+@@ -38,4 +38,6 @@
+=20
+ /* To support perf_regs sier update */
+ extern bool is_sier_available(void);
++extern u64 PERF_REG_EXTENDED_MASK;
++#define PERF_REG_EXTENDED_MASK	PERF_REG_EXTENDED_MASK
+ #endif
+diff --git a/arch/powerpc/include/asm/perf_event_server.h =
+b/arch/powerpc/include/asm/perf_event_server.h
+index bf85d1a0b59e..5d368e81445f 100644
+--- a/arch/powerpc/include/asm/perf_event_server.h
++++ b/arch/powerpc/include/asm/perf_event_server.h
+@@ -15,9 +15,6 @@
+ #define MAX_EVENT_ALTERNATIVES	8
+ #define MAX_LIMITED_HWCOUNTERS	2
+=20
+-extern u64 PERF_REG_EXTENDED_MASK;
+-#define PERF_REG_EXTENDED_MASK	PERF_REG_EXTENDED_MASK
 -
--	pseries_log = get_pseries_errorlog(errp, PSERIES_ELOG_SECT_ID_MCE);
--	if (pseries_log == NULL)
--		goto out;
--
--	mce_log = (struct pseries_mc_errorlog *)pseries_log->data;
--	error_type = mce_log->error_type;
--	err_sub_type = rtas_mc_error_sub_type(mce_log);
--
--	switch (mce_log->error_type) {
-+	switch (error_type) {
- 	case MC_ERROR_TYPE_UE:
- 		mce_err.error_type = MCE_ERROR_TYPE_UE;
- 		mce_common_process_ue(regs, &mce_err);
-@@ -683,37 +709,32 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
- 		mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
- 		break;
- 	}
-+out:
-+	save_mce_event(regs, disposition == RTAS_DISP_FULLY_RECOVERED,
-+		       &mce_err, regs->nip, eaddr, paddr);
-+	return disposition;
-+}
- 
--#ifdef CONFIG_PPC_BOOK3S_64
--	if (disposition == RTAS_DISP_NOT_RECOVERED) {
--		switch (error_type) {
--		case	MC_ERROR_TYPE_SLB:
--		case	MC_ERROR_TYPE_ERAT:
--			/*
--			 * Store the old slb content in paca before flushing.
--			 * Print this when we go to virtual mode.
--			 * There are chances that we may hit MCE again if there
--			 * is a parity error on the SLB entry we trying to read
--			 * for saving. Hence limit the slb saving to single
--			 * level of recursion.
--			 */
--			if (local_paca->in_mce == 1)
--				slb_save_contents(local_paca->mce_faulty_slbs);
--			flush_and_reload_slb();
--			disposition = RTAS_DISP_FULLY_RECOVERED;
--			break;
--		default:
--			break;
--		}
--	} else if (disposition == RTAS_DISP_LIMITED_RECOVERY) {
--		/* Platform corrected itself but could be degraded */
--		printk(KERN_ERR "MCE: limited recovery, system may "
--		       "be degraded\n");
--		disposition = RTAS_DISP_FULLY_RECOVERED;
--	}
--#endif
-+static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
-+{
-+	struct pseries_errorlog *pseries_log;
-+	struct pseries_mc_errorlog *mce_log = NULL;
-+	int disposition = rtas_error_disposition(errp);
-+	u8 error_type, err_sub_type;
-+
-+	if (!rtas_error_extended(errp))
-+		goto out;
-+
-+	pseries_log = get_pseries_errorlog(errp, PSERIES_ELOG_SECT_ID_MCE);
-+	if (!pseries_log)
-+		goto out;
-+
-+	mce_log = (struct pseries_mc_errorlog *)pseries_log->data;
-+	error_type = mce_log->error_type;
-+	err_sub_type = rtas_mc_error_sub_type(mce_log);
-+
-+	disposition = mce_handle_err_realmode(disposition, error_type);
- 
--out:
- 	/*
- 	 * Enable translation as we will be accessing per-cpu variables
- 	 * in save_mce_event() which may fall outside RMO region, also
-@@ -724,10 +745,10 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
- 	 * Note: All the realmode handling like flushing SLB entries for
- 	 *       SLB multihit is done by now.
- 	 */
-+out:
- 	mtmsr(mfmsr() | MSR_IR | MSR_DR);
--	save_mce_event(regs, disposition == RTAS_DISP_FULLY_RECOVERED,
--			&mce_err, regs->nip, eaddr, paddr);
--
-+	disposition = mce_handle_err_virtmode(regs, errp, mce_log,
-+					      disposition);
- 	return disposition;
- }
- 
--- 
-2.17.2
+ struct perf_event;
+=20
+ struct mmcr_regs {
+=E2=80=94
+
+We also need this patch by Madhavan Sirinivasan : =
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D183203
+to solve similar build break with `is_sier_available`
+
+Thanks
+Athira=20
+
+>=20
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> <.config.gz>
+
+
+--Apple-Mail=_A5551C5C-F653-4A8F-8DFB-D9ACF0D5F7B6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><br =
+class=3D""><div><br class=3D""><blockquote type=3D"cite" class=3D""><div =
+class=3D"">On 19-Jul-2020, at 4:47 PM, kernel test robot &lt;<a =
+href=3D"mailto:lkp@intel.com" class=3D"">lkp@intel.com</a>&gt; =
+wrote:</div><br class=3D"Apple-interchange-newline"><div class=3D""><div =
+class=3D"">Hi Athira,<br class=3D""><br class=3D"">Thank you for the =
+patch! Yet something to improve:<br class=3D""><br class=3D"">[auto =
+build test ERROR on powerpc/next]<br class=3D"">[also build test ERROR =
+on tip/perf/core v5.8-rc5 next-20200717]<br class=3D"">[If your patch is =
+applied to the wrong git tree, kindly drop us a note.<br class=3D"">And =
+when submitting patch, we suggest to use '--base' as documented in<br =
+class=3D""><a href=3D"https://git-scm.com/docs/git-format-patch" =
+class=3D"">https://git-scm.com/docs/git-format-patch</a>]<br =
+class=3D""><br class=3D"">url: &nbsp;&nbsp;&nbsp;<a =
+href=3D"https://github.com/0day-ci/linux/commits/Athira-Rajeev/powerpc-per=
+f-Add-support-for-power10-PMU-Hardware/20200717-224353" =
+class=3D"">https://github.com/0day-ci/linux/commits/Athira-Rajeev/powerpc-=
+perf-Add-support-for-power10-PMU-Hardware/20200717-224353</a><br =
+class=3D"">base: &nbsp;&nbsp;<a =
+href=3D"https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git"=
+ =
+class=3D"">https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.g=
+it</a> next<br class=3D"">config: powerpc64-randconfig-r024-20200719 =
+(attached as .config)<br class=3D"">compiler: clang version 12.0.0 (<a =
+href=3D"https://github.com/llvm/llvm-project" =
+class=3D"">https://github.com/llvm/llvm-project</a> =
+ed6b578040a85977026c93bf4188f996148f3218)<br class=3D"">reproduce (this =
+is a W=3D1 build):<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wget <a =
+href=3D"https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make=
+.cross" =
+class=3D"">https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/m=
+ake.cross</a> -O ~/bin/make.cross<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chmod +x ~/bin/make.cross<br =
+class=3D""> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# install =
+powerpc64 cross compiling tool for clang build<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# apt-get install =
+binutils-powerpc64-linux-gnu<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# save the attached .config to =
+linux build tree<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COMPILER_INSTALL_PATH=3D$HOME/0d=
+ay COMPILER=3Dclang make.cross ARCH=3Dpowerpc64 <br class=3D""><br =
+class=3D"">If you fix the issue, kindly add following tag as =
+appropriate<br class=3D"">Reported-by: kernel test robot &lt;<a =
+href=3D"mailto:lkp@intel.com" class=3D"">lkp@intel.com</a>&gt;<br =
+class=3D""><br class=3D"">All errors (new ones prefixed by &gt;&gt;):<br =
+class=3D""><br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io-defs.h:45:1: warning: performing =
+pointer arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]<br class=3D""> =
+&nbsp;&nbsp;DEF_PCI_AC_NORET(insw, (unsigned long p, void *b, unsigned =
+long c),<br class=3D""> =
+&nbsp;&nbsp;^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~<br class=3D""> &nbsp;&nbsp;arch/powerpc/include/asm/io.h:601:3: =
+note: expanded from macro 'DEF_PCI_AC_NORET'<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__do_##name al; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^~~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;&lt;scratch space&gt;:221:1: note: expanded from here<br =
+class=3D""> &nbsp;&nbsp;__do_insw<br class=3D""> &nbsp;&nbsp;^<br =
+class=3D""> &nbsp;&nbsp;arch/powerpc/include/asm/io.h:542:56: note: =
+expanded from macro '__do_insw'<br class=3D""> &nbsp;&nbsp;#define =
+__do_insw(p, b, n) =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;readsw((PCI_IO_ADDR)_IO_BASE+(p), (b), =
+(n))<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;~~~~~~~~~~~~~~~~~~~~~^<br class=3D""> =
+&nbsp;&nbsp;In file included from arch/powerpc/perf/perf_regs.c:10:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/perf_event.h:57:<br class=3D""> &nbsp;&nbsp;In file =
+included from include/linux/cgroup.h:26:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/kernel_stat.h:9:<br class=3D""> =
+&nbsp;&nbsp;In file included from include/linux/interrupt.h:11:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/hardirq.h:10:<br class=3D""> &nbsp;&nbsp;In file included =
+from arch/powerpc/include/asm/hardirq.h:6:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/irq.h:20:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/io.h:13:<br class=3D""> &nbsp;&nbsp;In =
+file included from arch/powerpc/include/asm/io.h:604:<br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io-defs.h:47:1: warning: performing =
+pointer arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]<br class=3D""> =
+&nbsp;&nbsp;DEF_PCI_AC_NORET(insl, (unsigned long p, void *b, unsigned =
+long c),<br class=3D""> =
+&nbsp;&nbsp;^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~<br class=3D""> &nbsp;&nbsp;arch/powerpc/include/asm/io.h:601:3: =
+note: expanded from macro 'DEF_PCI_AC_NORET'<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__do_##name al; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^~~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;&lt;scratch space&gt;:223:1: note: expanded from here<br =
+class=3D""> &nbsp;&nbsp;__do_insl<br class=3D""> &nbsp;&nbsp;^<br =
+class=3D""> &nbsp;&nbsp;arch/powerpc/include/asm/io.h:543:56: note: =
+expanded from macro '__do_insl'<br class=3D""> &nbsp;&nbsp;#define =
+__do_insl(p, b, n) =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), =
+(n))<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;~~~~~~~~~~~~~~~~~~~~~^<br class=3D""> =
+&nbsp;&nbsp;In file included from arch/powerpc/perf/perf_regs.c:10:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/perf_event.h:57:<br class=3D""> &nbsp;&nbsp;In file =
+included from include/linux/cgroup.h:26:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/kernel_stat.h:9:<br class=3D""> =
+&nbsp;&nbsp;In file included from include/linux/interrupt.h:11:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/hardirq.h:10:<br class=3D""> &nbsp;&nbsp;In file included =
+from arch/powerpc/include/asm/hardirq.h:6:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/irq.h:20:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/io.h:13:<br class=3D""> &nbsp;&nbsp;In =
+file included from arch/powerpc/include/asm/io.h:604:<br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io-defs.h:49:1: warning: performing =
+pointer arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]<br class=3D""> =
+&nbsp;&nbsp;DEF_PCI_AC_NORET(outsb, (unsigned long p, const void *b, =
+unsigned long c),<br class=3D""> =
+&nbsp;&nbsp;^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io.h:601:3: note: expanded from =
+macro 'DEF_PCI_AC_NORET'<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__do_##name al; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^~~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;&lt;scratch space&gt;:225:1: note: expanded from here<br =
+class=3D""> &nbsp;&nbsp;__do_outsb<br class=3D""> &nbsp;&nbsp;^<br =
+class=3D""> &nbsp;&nbsp;arch/powerpc/include/asm/io.h:544:58: note: =
+expanded from macro '__do_outsb'<br class=3D""> &nbsp;&nbsp;#define =
+__do_outsb(p, b, n) =
+&nbsp;&nbsp;&nbsp;&nbsp;writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))<br =
+class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~~~~~~~~~~~~~~~~~~~~~^<br class=3D""> =
+&nbsp;&nbsp;In file included from arch/powerpc/perf/perf_regs.c:10:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/perf_event.h:57:<br class=3D""> &nbsp;&nbsp;In file =
+included from include/linux/cgroup.h:26:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/kernel_stat.h:9:<br class=3D""> =
+&nbsp;&nbsp;In file included from include/linux/interrupt.h:11:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/hardirq.h:10:<br class=3D""> &nbsp;&nbsp;In file included =
+from arch/powerpc/include/asm/hardirq.h:6:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/irq.h:20:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/io.h:13:<br class=3D""> &nbsp;&nbsp;In =
+file included from arch/powerpc/include/asm/io.h:604:<br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io-defs.h:51:1: warning: performing =
+pointer arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]<br class=3D""> =
+&nbsp;&nbsp;DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, =
+unsigned long c),<br class=3D""> =
+&nbsp;&nbsp;^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io.h:601:3: note: expanded from =
+macro 'DEF_PCI_AC_NORET'<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__do_##name al; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^~~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;&lt;scratch space&gt;:227:1: note: expanded from here<br =
+class=3D""> &nbsp;&nbsp;__do_outsw<br class=3D""> &nbsp;&nbsp;^<br =
+class=3D""> &nbsp;&nbsp;arch/powerpc/include/asm/io.h:545:58: note: =
+expanded from macro '__do_outsw'<br class=3D""> &nbsp;&nbsp;#define =
+__do_outsw(p, b, n) =
+&nbsp;&nbsp;&nbsp;&nbsp;writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))<br =
+class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~~~~~~~~~~~~~~~~~~~~~^<br class=3D""> =
+&nbsp;&nbsp;In file included from arch/powerpc/perf/perf_regs.c:10:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/perf_event.h:57:<br class=3D""> &nbsp;&nbsp;In file =
+included from include/linux/cgroup.h:26:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/kernel_stat.h:9:<br class=3D""> =
+&nbsp;&nbsp;In file included from include/linux/interrupt.h:11:<br =
+class=3D""> &nbsp;&nbsp;In file included from =
+include/linux/hardirq.h:10:<br class=3D""> &nbsp;&nbsp;In file included =
+from arch/powerpc/include/asm/hardirq.h:6:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/irq.h:20:<br class=3D""> &nbsp;&nbsp;In =
+file included from include/linux/io.h:13:<br class=3D""> &nbsp;&nbsp;In =
+file included from arch/powerpc/include/asm/io.h:604:<br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io-defs.h:53:1: warning: performing =
+pointer arithmetic on a null pointer has undefined behavior =
+[-Wnull-pointer-arithmetic]<br class=3D""> =
+&nbsp;&nbsp;DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, =
+unsigned long c),<br class=3D""> =
+&nbsp;&nbsp;^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;arch/powerpc/include/asm/io.h:601:3: note: expanded from =
+macro 'DEF_PCI_AC_NORET'<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__do_##name al; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^~~~~~~~~~~~~~<br class=3D""> =
+&nbsp;&nbsp;&lt;scratch space&gt;:229:1: note: expanded from here<br =
+class=3D""> &nbsp;&nbsp;__do_outsl<br class=3D""> &nbsp;&nbsp;^<br =
+class=3D""> &nbsp;&nbsp;arch/powerpc/include/asm/io.h:546:58: note: =
+expanded from macro '__do_outsl'<br class=3D""> &nbsp;&nbsp;#define =
+__do_outsl(p, b, n) =
+&nbsp;&nbsp;&nbsp;&nbsp;writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))<br =
+class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~~~~~~~~~~~~~~~~~~~~~^<br =
+class=3D""><blockquote type=3D"cite" class=3D""><blockquote type=3D"cite" =
+class=3D"">arch/powerpc/perf/perf_regs.c:16:5: error: expected =
+identifier or '('<br class=3D""></blockquote></blockquote> =
+&nbsp;&nbsp;u64 PERF_REG_EXTENDED_MASK;<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br class=3D""> =
+&nbsp;&nbsp;include/linux/perf_regs.h:16:32: note: expanded from macro =
+'PERF_REG_EXTENDED_MASK'<br class=3D""> &nbsp;&nbsp;#define =
+PERF_REG_EXTENDED_MASK &nbsp;0<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br class=3D""> =
+&nbsp;&nbsp;12 warnings and 1 error generated.<br class=3D""><br =
+class=3D"">vim +16 arch/powerpc/perf/perf_regs.c<br class=3D""><br =
+class=3D""> &nbsp;&nbsp;&nbsp;15<span class=3D"Apple-tab-span" =
+style=3D"white-space:pre">	</span><br class=3D""><blockquote =
+type=3D"cite" class=3D"">16<span class=3D"Apple-tab-span" =
+style=3D"white-space:pre">	</span>u64 PERF_REG_EXTENDED_MASK;<br =
+class=3D""></blockquote> &nbsp;&nbsp;&nbsp;17<span =
+class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><br =
+class=3D""></div></div></blockquote><div><br =
+class=3D""></div><div>Hi,</div><div><br class=3D""></div><div><span =
+style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);" class=3D"">This =
+patch defines&nbsp;</span>PERF_REG_EXTENDED_MASK</div><div>in =
+arch/powerpc/include/asm/perf_event_server.h and this header file is =
+included conditionally based on</div><div>CONFIG_PPC_PERF_CTRS in =
+arch/powerpc/include/asm/perf_event.h.</div><div><div>So build breaks =
+happens with config having&nbsp;<span style=3D"caret-color: rgb(0, 0, =
+0); color: rgb(0, 0, 0);" class=3D"">CONFIG_PERF_EVENTS =
+set</span></div><div><font color=3D"#000000" class=3D"">and =
+without&nbsp;</font><span style=3D"caret-color: rgb(0, 0, 0); color: =
+rgb(0, 0, 0);" =
+class=3D"">CONFIG_PPC_PERF_CTRS.&nbsp;</span></div><div><span =
+style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);" class=3D""><br =
+class=3D""></span></div><div><span style=3D"caret-color: rgb(0, 0, 0); =
+color: rgb(0, 0, 0);" class=3D"">This will be fixed by =
+defining&nbsp;</span><span style=3D"caret-color: rgb(0, 0, 0); color: =
+rgb(0, 0, 0);" class=3D"">PERF_REG_EXTENDED_MASK in&nbsp;</span><span =
+style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);" =
+class=3D"">perf_event.h as below:</span></div><div><span =
+style=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);" class=3D""><br =
+class=3D""></span></div><div><font color=3D"#000000" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0);" =
+class=3D"">=E2=80=94</span></font></div><div><div style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;;" class=3D"">diff --git =
+a/arch/powerpc/include/asm/perf_event.h =
+b/arch/powerpc/include/asm/perf_event.h</div><div style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;;" class=3D"">index eed3954082fa..b1c3a91aa6fa =
+100644</div><div style=3D"margin: 0px; font-stretch: normal; =
+line-height: normal; font-family: &quot;Helvetica Neue&quot;;" =
+class=3D"">--- a/arch/powerpc/include/asm/perf_event.h</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">+++ =
+b/arch/powerpc/include/asm/perf_event.h</div><div style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;;" class=3D"">@@ -38,4 +38,6 @@</div><p style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;; min-height: 14px;" class=3D"">&nbsp;<br =
+class=3D"webkit-block-placeholder"></p><div style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;;" class=3D"">&nbsp;/* To support perf_regs sier update =
+*/</div><div style=3D"margin: 0px; font-stretch: normal; line-height: =
+normal; font-family: &quot;Helvetica Neue&quot;;" class=3D"">&nbsp;extern =
+bool is_sier_available(void);</div><div style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;;" class=3D"">+extern u64 PERF_REG_EXTENDED_MASK;</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">+#define =
+PERF_REG_EXTENDED_MASK<span class=3D"Apple-tab-span" =
+style=3D"white-space:pre">	</span>PERF_REG_EXTENDED_MASK</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" =
+class=3D"">&nbsp;#endif</div><div style=3D"margin: 0px; font-stretch: =
+normal; line-height: normal; font-family: &quot;Helvetica Neue&quot;;" =
+class=3D"">diff --git a/arch/powerpc/include/asm/perf_event_server.h =
+b/arch/powerpc/include/asm/perf_event_server.h</div><div style=3D"margin: =
+0px; font-stretch: normal; line-height: normal; font-family: =
+&quot;Helvetica Neue&quot;;" class=3D"">index bf85d1a0b59e..5d368e81445f =
+100644</div><div style=3D"margin: 0px; font-stretch: normal; =
+line-height: normal; font-family: &quot;Helvetica Neue&quot;;" =
+class=3D"">--- a/arch/powerpc/include/asm/perf_event_server.h</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">+++ =
+b/arch/powerpc/include/asm/perf_event_server.h</div><div style=3D"margin: =
+0px; font-stretch: normal; line-height: normal; font-family: =
+&quot;Helvetica Neue&quot;;" class=3D"">@@ -15,9 +15,6 @@</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">&nbsp;#define =
+MAX_EVENT_ALTERNATIVES<span class=3D"Apple-tab-span" =
+style=3D"white-space:pre">	</span>8</div><div style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;;" class=3D"">&nbsp;#define MAX_LIMITED_HWCOUNTERS<span =
+class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>2</div><p =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;; min-height: 14px;" =
+class=3D"">&nbsp;<br class=3D"webkit-block-placeholder"></p><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">-extern u64 =
+PERF_REG_EXTENDED_MASK;</div><div style=3D"margin: 0px; font-stretch: =
+normal; line-height: normal; font-family: &quot;Helvetica Neue&quot;;" =
+class=3D"">-#define PERF_REG_EXTENDED_MASK<span class=3D"Apple-tab-span" =
+style=3D"white-space:pre">	</span>PERF_REG_EXTENDED_MASK</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">-</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">&nbsp;struct =
+perf_event;</div><p style=3D"margin: 0px; font-stretch: normal; =
+line-height: normal; font-family: &quot;Helvetica Neue&quot;; =
+min-height: 14px;" class=3D"">&nbsp;<br =
+class=3D"webkit-block-placeholder"></p><div style=3D"margin: 0px; =
+font-stretch: normal; line-height: normal; font-family: &quot;Helvetica =
+Neue&quot;;" class=3D"">&nbsp;struct mmcr_regs {</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D"">=E2=80=94</div><div =
+style=3D"margin: 0px; font-stretch: normal; line-height: normal; =
+font-family: &quot;Helvetica Neue&quot;;" class=3D""><br =
+class=3D""></div></div><div><span style=3D"caret-color: rgb(0, 0, 0); =
+color: rgb(0, 0, 0);" class=3D"">We also need this patch by Madhavan =
+Sirinivasan :&nbsp;</span><font color=3D"#000000" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0);" class=3D""><a =
+href=3D"https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D1=
+83203" =
+class=3D"">https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D=
+183203</a></span></font></div><div><font color=3D"#000000" class=3D"">to =
+solve similar build break with =
+`is_sier_available`</font></div></div><div><br =
+class=3D""></div><div>Thanks</div><div>Athira&nbsp;</div><br =
+class=3D""><blockquote type=3D"cite" class=3D""><div class=3D""><div =
+class=3D""><br class=3D"">---<br class=3D"">0-DAY CI Kernel Test =
+Service, Intel Corporation<br class=3D""><a =
+href=3D"https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org" =
+class=3D"">https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org</a=
+><br class=3D""><span =
+id=3D"cid:61136650-2C38-4F4C-81B9-B38529B45A87">&lt;.config.gz&gt;</span><=
+/div></div></blockquote></div><br class=3D""></body></html>=
+
+--Apple-Mail=_A5551C5C-F653-4A8F-8DFB-D9ACF0D5F7B6--
 
