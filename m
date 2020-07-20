@@ -2,81 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBB6225AE5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 11:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 673F1225BF7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 11:43:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9GFm2Hy7zDqbp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 19:12:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9GxJ37PqzDqbw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 19:43:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9GCz5XqPzDqbG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 19:10:39 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9Gt34zPHzDqMr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 19:40:11 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06K92SW8162091; Mon, 20 Jul 2020 05:10:33 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32d5p8n0sv-1
+ 06K9YnQ3101084; Mon, 20 Jul 2020 05:40:01 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32d5pedtfy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 05:10:33 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K9AHHu030541;
- Mon, 20 Jul 2020 09:10:32 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 32brq8utb1-1
+ Mon, 20 Jul 2020 05:40:01 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K9Txx8023307;
+ Mon, 20 Jul 2020 09:39:59 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma05fra.de.ibm.com with ESMTP id 32brq818vv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 Jul 2020 09:10:32 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06K9AUeK43647280
+ Mon, 20 Jul 2020 09:39:59 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06K9duJc60686484
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Jul 2020 09:10:30 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7B4E5112063;
- Mon, 20 Jul 2020 09:10:30 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF32D112061;
- Mon, 20 Jul 2020 09:10:29 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.85.72.83])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 20 Jul 2020 09:10:29 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id D38702E3202; Mon, 20 Jul 2020 14:40:25 +0530 (IST)
-Date: Mon, 20 Jul 2020 14:40:25 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 10/11] powerpc/smp: Implement cpu_to_coregroup_id
-Message-ID: <20200720091025.GC6680@in.ibm.com>
-References: <20200714043624.5648-1-srikar@linux.vnet.ibm.com>
- <20200714043624.5648-11-srikar@linux.vnet.ibm.com>
- <20200717082652.GF32531@in.ibm.com>
- <20200720054816.GA21103@linux.vnet.ibm.com>
+ Mon, 20 Jul 2020 09:39:56 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D674311C04A;
+ Mon, 20 Jul 2020 09:39:56 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B36511C054;
+ Mon, 20 Jul 2020 09:39:56 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.81.101])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 20 Jul 2020 09:39:56 +0000 (GMT)
+Subject: Re: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
+ MMIO access, in sprg0 register
+To: Ram Pai <linuxram@us.ibm.com>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <18e3bcee-8a3a-bd13-c995-8e4168471f74@linux.ibm.com>
+Date: Mon, 20 Jul 2020 11:39:56 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200720054816.GA21103@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-20_04:2020-07-17,
+ definitions=2020-07-20_05:2020-07-17,
  2020-07-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 clxscore=1015 adultscore=0 bulkscore=0 impostorscore=0
- mlxscore=0 phishscore=0 priorityscore=1501 suspectscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007200065
+ bulkscore=0 malwarescore=0
+ mlxlogscore=999 suspectscore=0 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 impostorscore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007200071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,117 +88,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
- Michael Ellerman <michaele@au1.ibm.com>, Anton Blanchard <anton@au1.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nick Piggin <npiggin@au1.ibm.com>
+Cc: aik@ozlabs.ru, bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Srikar,
+Le 16/07/2020 à 10:32, Ram Pai a écrit :
+> An instruction accessing a mmio address, generates a HDSI fault.  This fault is
+> appropriately handled by the Hypervisor.  However in the case of secureVMs, the
+> fault is delivered to the ultravisor.
+> 
+> Unfortunately the Ultravisor has no correct-way to fetch the faulting
+> instruction. The PEF architecture does not allow Ultravisor to enable MMU
+> translation. Walking the two level page table to read the instruction can race
+> with other vcpus modifying the SVM's process scoped page table.
+> 
+> This problem can be correctly solved with some help from the kernel.
+> 
+> Capture the faulting instruction in SPRG0 register, before executing the
+> faulting instruction. This enables the ultravisor to easily procure the
+> faulting instruction and emulate it.
+> 
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> ---
+>   arch/powerpc/include/asm/io.h | 85 ++++++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 75 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+> index 635969b..7ef663d 100644
+> --- a/arch/powerpc/include/asm/io.h
+> +++ b/arch/powerpc/include/asm/io.h
+> @@ -35,6 +35,7 @@
+>   #include <asm/mmu.h>
+>   #include <asm/ppc_asm.h>
+>   #include <asm/pgtable.h>
+> +#include <asm/svm.h>
+>   
+>   #define SIO_CONFIG_RA	0x398
+>   #define SIO_CONFIG_RD	0x399
+> @@ -105,34 +106,98 @@
+>   static inline u##size name(const volatile u##size __iomem *addr)	\
+>   {									\
+>   	u##size ret;							\
+> -	__asm__ __volatile__("sync;"#insn" %0,%y1;twi 0,%0,0;isync"	\
+> -		: "=r" (ret) : "Z" (*addr) : "memory");			\
+> +	if (is_secure_guest()) {					\
+> +		__asm__ __volatile__("mfsprg0 %3;"			\
+> +				"lnia %2;"				\
+> +				"ld %2,12(%2);"				\
+> +				"mtsprg0 %2;"				\
+> +				"sync;"					\
+> +				#insn" %0,%y1;"				\
+> +				"twi 0,%0,0;"				\
+> +				"isync;"				\
+> +				"mtsprg0 %3"				\
+> +			: "=r" (ret)					\
+> +			: "Z" (*addr), "r" (0), "r" (0)			\
 
+I'm wondering if SPRG0 is restored to its original value.
+You're using the same register (r0) for parameters 2 and 3, so when doing lnia 
+%2, you're overwriting the SPRG0 value you saved in r0 just earlier.
 
-On Mon, Jul 20, 2020 at 11:18:16AM +0530, Srikar Dronamraju wrote:
-> * Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-07-17 13:56:53]:
-> 
-> > On Tue, Jul 14, 2020 at 10:06:23AM +0530, Srikar Dronamraju wrote:
-> > > Lookup the coregroup id from the associativity array.
-> > > 
-> > > If unable to detect the coregroup id, fallback on the core id.
-> > > This way, ensure sched_domain degenerates and an extra sched domain is
-> > > not created.
-> > > 
-> > > Ideally this function should have been implemented in
-> > > arch/powerpc/kernel/smp.c. However if its implemented in mm/numa.c, we
-> > > don't need to find the primary domain again.
-> > > 
-> > > If the device-tree mentions more than one coregroup, then kernel
-> > > implements only the last or the smallest coregroup, which currently
-> > > corresponds to the penultimate domain in the device-tree.
-> > > 
-> > > Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> > > Cc: Michael Ellerman <michaele@au1.ibm.com>
-> > > Cc: Nick Piggin <npiggin@au1.ibm.com>
-> > > Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
-> > > Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> > > Cc: Michael Neuling <mikey@linux.ibm.com>
-> > > Cc: Anton Blanchard <anton@au1.ibm.com>
-> > > Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> > > Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-> > > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> > > ---
-> > >  arch/powerpc/mm/numa.c | 17 +++++++++++++++++
-> > >  1 file changed, 17 insertions(+)
-> > > 
-> > > diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> > > index d9ab9da85eab..4e85564ef62a 100644
-> > > --- a/arch/powerpc/mm/numa.c
-> > > +++ b/arch/powerpc/mm/numa.c
-> > > @@ -1697,6 +1697,23 @@ static const struct proc_ops topology_proc_ops = {
-> > > 
-> > >  int cpu_to_coregroup_id(int cpu)
-> > >  {
-> > > +	__be32 associativity[VPHN_ASSOC_BUFSIZE] = {0};
-> > > +	int index;
-> > > +
-> > 
-> > It would be good to have an assert here to ensure that we are calling
-> > this function only when coregroups are enabled.
-> > 
-> > Else, we may end up returning the penultimate index which maps to the
-> > chip-id.
-> > 
-> 
-> We have a check below exactly for the same reason. Please look
-below.
+It may be clearer to use explicit registers for %2 and %3 and to mark them as 
+modified for the compiler.
 
-I saw that. However, it would be better to assert within the function
-so that we don't call it from any other context without ascertaining
-first that core_groups are enabled. Or at least a comment in the
-function saying that we should call this only after ascertaining that
-core_groups are enabled.
+This applies to the other macros.
 
+Cheers,
+Laurent.
 
+> +			: "memory");					\
+> +	} else {							\
+> +		__asm__ __volatile__("sync;"				\
+> +				#insn" %0,%y1;"				\
+> +				"twi 0,%0,0;"				\
+> +				"isync"					\
+> +			: "=r" (ret) : "Z" (*addr) : "memory");		\
+> +	}								\
+>   	return ret;							\
+>   }
+>   
+>   #define DEF_MMIO_OUT_X(name, size, insn)				\
+>   static inline void name(volatile u##size __iomem *addr, u##size val)	\
+>   {									\
+> -	__asm__ __volatile__("sync;"#insn" %1,%y0"			\
+> -		: "=Z" (*addr) : "r" (val) : "memory");			\
+> -	mmiowb_set_pending();						\
+> +	if (is_secure_guest()) {					\
+> +		__asm__ __volatile__("mfsprg0 %3;"			\
+> +				"lnia %2;"				\
+> +				"ld %2,12(%2);"				\
+> +				"mtsprg0 %2;"				\
+> +				"sync;"					\
+> +				#insn" %1,%y0;"				\
+> +				"mtsprg0 %3"				\
+> +			: "=Z" (*addr)					\
+> +			: "r" (val), "r" (0), "r" (0)			\
+> +			: "memory");					\
+> +	} else {							\
+> +		__asm__ __volatile__("sync;"				\
+> +				#insn" %1,%y0"				\
+> +			: "=Z" (*addr) : "r" (val) : "memory");         \
+> +		mmiowb_set_pending();					\
+> +	}								\
+>   }
+>   
+>   #define DEF_MMIO_IN_D(name, size, insn)				\
+>   static inline u##size name(const volatile u##size __iomem *addr)	\
+>   {									\
+>   	u##size ret;							\
+> -	__asm__ __volatile__("sync;"#insn"%U1%X1 %0,%1;twi 0,%0,0;isync"\
+> -		: "=r" (ret) : "m" (*addr) : "memory");			\
+> +	if (is_secure_guest()) {					\
+> +		__asm__ __volatile__("mfsprg0 %3;"			\
+> +				"lnia %2;"				\
+> +				"ld %2,12(%2);"				\
+> +				"mtsprg0 %2;"				\
+> +				"sync;"					\
+> +				#insn"%U1%X1 %0,%1;"			\
+> +				"twi 0,%0,0;"				\
+> +				"isync;"				\
+> +				"mtsprg0 %3"				\
+> +			: "=r" (ret)					\
+> +			: "m" (*addr), "r" (0), "r" (0)			\
+> +			: "memory");					\
+> +	} else {							\
+> +		__asm__ __volatile__("sync;"				\
+> +				#insn"%U1%X1 %0,%1;"			\
+> +				"twi 0,%0,0;"				\
+> +				"isync"					\
+> +			: "=r" (ret) : "m" (*addr) : "memory");         \
+> +	}								\
+>   	return ret;							\
+>   }
+>   
+>   #define DEF_MMIO_OUT_D(name, size, insn)				\
+>   static inline void name(volatile u##size __iomem *addr, u##size val)	\
+>   {									\
+> -	__asm__ __volatile__("sync;"#insn"%U0%X0 %1,%0"			\
+> -		: "=m" (*addr) : "r" (val) : "memory");			\
+> -	mmiowb_set_pending();						\
+> +	if (is_secure_guest()) {					\
+> +		__asm__ __volatile__("mfsprg0 %3;"			\
+> +				"lnia %2;"				\
+> +				"ld %2,12(%2);"				\
+> +				"mtsprg0 %2;"				\
+> +				"sync;"					\
+> +				#insn"%U0%X0 %1,%0;"			\
+> +				"mtsprg0 %3"				\
+> +			: "=m" (*addr)					\
+> +			: "r" (val), "r" (0), "r" (0)			\
+> +			: "memory");					\
+> +	} else {							\
+> +		__asm__ __volatile__("sync;"				\
+> +				#insn"%U0%X0 %1,%0"			\
+> +			: "=m" (*addr) : "r" (val) : "memory");		\
+> +		mmiowb_set_pending();					\
+> +	}								\
+>   }
+>   
+>   DEF_MMIO_IN_D(in_8,     8, lbz);
+> 
 
-> 
-> > 
-> > 
-> > > +	if (cpu < 0 || cpu > nr_cpu_ids)
-> > > +		return -1;
-> > > +
-> > > +	if (!firmware_has_feature(FW_FEATURE_VPHN))
-> > > +		goto out;
-> > > +
-> > > +	if (vphn_get_associativity(cpu, associativity))
-> > > +		goto out;
-> > > +
-> > > +	index = of_read_number(associativity, 1);
-> > > +	if ((index > min_common_depth + 1) && coregroup_enabled)
-> > > +		return of_read_number(&associativity[index - 1], 1);
-> 
-> See ^above.
-> 
-> index would be the all the domains in the associativity array, 
-> min_common_depth would be where the primary domain or the chip-id is
-> defined. So we are reading the penultimate domain if and only if the
-> min_common_depth isn't the primary domain aka chip-id. 
-> 
-> What other check /assertions can we add?
-> 
-> 
-> > > +
-> > > +out:
-> > >  	return cpu_to_core_id(cpu);
-> > >  }
-> > > 
-> > > -- 
-> > > 2.17.1
-> > > 
-> 
-> -- 
-> Thanks and Regards
-> Srikar Dronamraju
