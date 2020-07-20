@@ -1,72 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2356225720
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 07:40:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAB822573D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 07:50:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B99Y56h6RzDqN2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 15:40:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B99mw60zCzDqSD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 15:50:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
- helo=mail-wm1-x341.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JYtoSaPN; dkim-atps=neutral
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B99WN4bKpzDqKD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 15:38:40 +1000 (AEST)
-Received: by mail-wm1-x341.google.com with SMTP id a6so11119915wmm.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jul 2020 22:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=WmfcXpqEIL5L7r2Xf5cxWU9ZORjSLUvShgyFFMNVo24=;
- b=JYtoSaPNDACpxnN9O6Hhk5yeU8pyXQk/nTlGiKdFdmvSHsYzmkd1VGlQWBB4lQNYJM
- 4Q6leo32UE1v6n8+ObYzQNe+63jVHJF7nf/xzZyRQ7NBF6UadL1SUQABaJZGAoyFcn8s
- 64S54bpB7JFoZb6c2dAblSuK5dh1gBrmy99/C6OSClj/KrSVroBoOs3nUAXwo5RuLFG/
- MxqRt4DzFkALw7XKTJCeIK9ygWN+Rt6UqElBxxdDbaQQcew5/EQMKgfyJI6GnTFlHvWo
- sjsRYJHlsutGfPt88ovfnD9VguiTdkWVbCBpgIOcXiOveNWYMwX6iv6jL3vuWqfroaSb
- a0CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=WmfcXpqEIL5L7r2Xf5cxWU9ZORjSLUvShgyFFMNVo24=;
- b=Q2JSYjIkhLs2Sfm9rNHPopwdkbUadY8PckE7eb4SvkHeYukPP4VR9eXMIj/BMM0m1h
- Y18Zdr5F2aJjgA8vR4sqwhlR6GiUNXdCUWfh07IUZl6fs80NGpL6dtTWAoNnttmd+rm5
- +Uk98H9IjZbI3jy3YyZPsK1vVLeadn9qHEjBdjYXDsyhBX50zRX5QS0r4X+km5Xr/fnV
- INrjWFUXdsEtj10YDlqA9vHQKfgmHanAC8AtPPJ85ObRq46NVR0B4ZxA7YzUsVxhm4a8
- cR0JKfaORxTGm3bsNagtepMIUMFEB7bJYJFh/z1GJibcRYUeslMtNsFETjV7VagXrOPJ
- uAMA==
-X-Gm-Message-State: AOAM532o3v2Asjqx8xmApTBSQmvaOixzG4Tm2vslgad+u56YUh8I+VH0
- 7vzxOCPgicg5kA6VEwu+LW8=
-X-Google-Smtp-Source: ABdhPJzAoErHxCiTjPMdLWfbvrLGgqY+RquHmcdTaTebpwp4w3Y9DX8Ke0cLLoKn6eimPv9T/RzIAA==
-X-Received: by 2002:a1c:2842:: with SMTP id o63mr19578801wmo.169.1595223516696; 
- Sun, 19 Jul 2020 22:38:36 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id 12sm29174670wmg.6.2020.07.19.22.38.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Jul 2020 22:38:36 -0700 (PDT)
-Date: Mon, 20 Jul 2020 15:38:29 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [FIX PATCH] powerpc/prom: Enable Radix GTSE in cpu pa-features
-To: Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200720044258.863574-1-bharata@linux.ibm.com>
-In-Reply-To: <20200720044258.863574-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B99kl45JyzDqLg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 15:48:31 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06K5X5x0114833; Mon, 20 Jul 2020 01:48:27 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32bwmkfr82-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Jul 2020 01:48:26 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06K5jDM5023665;
+ Mon, 20 Jul 2020 05:48:24 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 32brq7j7d3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Jul 2020 05:48:24 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06K5mJpr25624998
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Jul 2020 05:48:19 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7BA0CAE05A;
+ Mon, 20 Jul 2020 05:48:19 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 99070AE057;
+ Mon, 20 Jul 2020 05:48:17 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon, 20 Jul 2020 05:48:17 +0000 (GMT)
+Date: Mon, 20 Jul 2020 11:18:16 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH 10/11] powerpc/smp: Implement cpu_to_coregroup_id
+Message-ID: <20200720054816.GA21103@linux.vnet.ibm.com>
+References: <20200714043624.5648-1-srikar@linux.vnet.ibm.com>
+ <20200714043624.5648-11-srikar@linux.vnet.ibm.com>
+ <20200717082652.GF32531@in.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1595223290.jz1cmk38dz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200717082652.GF32531@in.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-20_01:2020-07-17,
+ 2020-07-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ priorityscore=1501 phishscore=0 clxscore=1015 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007200040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,61 +86,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, Qian Cai <cai@lca.pw>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
+ Michael Ellerman <michaele@au1.ibm.com>, Anton Blanchard <anton@au1.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nick Piggin <npiggin@au1.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Bharata B Rao's message of July 20, 2020 2:42 pm:
-> From: Nicholas Piggin <npiggin@gmail.com>
->=20
-> When '029ab30b4c0a ("powerpc/mm: Enable radix GTSE only if supported.")'
-> made GTSE an MMU feature, it was enabled by default in
-> powerpc-cpu-features but was missed in pa-features. This causes
-> random memory corruption during boot of PowerNV kernels where
-> CONFIG_PPC_DT_CPU_FTRS isn't enabled.
+* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-07-17 13:56:53]:
 
-Thanks for writing this up, I got a bit bogged down with other things.
+> On Tue, Jul 14, 2020 at 10:06:23AM +0530, Srikar Dronamraju wrote:
+> > Lookup the coregroup id from the associativity array.
+> > 
+> > If unable to detect the coregroup id, fallback on the core id.
+> > This way, ensure sched_domain degenerates and an extra sched domain is
+> > not created.
+> > 
+> > Ideally this function should have been implemented in
+> > arch/powerpc/kernel/smp.c. However if its implemented in mm/numa.c, we
+> > don't need to find the primary domain again.
+> > 
+> > If the device-tree mentions more than one coregroup, then kernel
+> > implements only the last or the smallest coregroup, which currently
+> > corresponds to the penultimate domain in the device-tree.
+> > 
+> > Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> > Cc: Michael Ellerman <michaele@au1.ibm.com>
+> > Cc: Nick Piggin <npiggin@au1.ibm.com>
+> > Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
+> > Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> > Cc: Michael Neuling <mikey@linux.ibm.com>
+> > Cc: Anton Blanchard <anton@au1.ibm.com>
+> > Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> > Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+> > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > ---
+> >  arch/powerpc/mm/numa.c | 17 +++++++++++++++++
+> >  1 file changed, 17 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> > index d9ab9da85eab..4e85564ef62a 100644
+> > --- a/arch/powerpc/mm/numa.c
+> > +++ b/arch/powerpc/mm/numa.c
+> > @@ -1697,6 +1697,23 @@ static const struct proc_ops topology_proc_ops = {
+> > 
+> >  int cpu_to_coregroup_id(int cpu)
+> >  {
+> > +	__be32 associativity[VPHN_ASSOC_BUFSIZE] = {0};
+> > +	int index;
+> > +
+> 
+> It would be good to have an assert here to ensure that we are calling
+> this function only when coregroups are enabled.
+> 
+> Else, we may end up returning the penultimate index which maps to the
+> chip-id.
+> 
 
-> Fixes: 029ab30b4c0a ("powerpc/mm: Enable radix GTSE only if supported.")
-> Reported-by: Qian Cai <cai@lca.pw>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/prom.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 9cc49f265c86..a9594bad572a 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -163,7 +163,8 @@ static struct ibm_pa_feature {
->  	{ .pabyte =3D 0,  .pabit =3D 6, .cpu_features  =3D CPU_FTR_NOEXECUTE },
->  	{ .pabyte =3D 1,  .pabit =3D 2, .mmu_features  =3D MMU_FTR_CI_LARGE_PAG=
-E },
->  #ifdef CONFIG_PPC_RADIX_MMU
-> -	{ .pabyte =3D 40, .pabit =3D 0, .mmu_features  =3D MMU_FTR_TYPE_RADIX }=
-,
-> +	{ .pabyte =3D 40, .pabit =3D 0,
-> +	  .mmu_features  =3D (MMU_FTR_TYPE_RADIX | MMU_FTR_GTSE) },
+We have a check below exactly for the same reason. Please look below.
 
-It might look better like this:
+> 
+> 
+> > +	if (cpu < 0 || cpu > nr_cpu_ids)
+> > +		return -1;
+> > +
+> > +	if (!firmware_has_feature(FW_FEATURE_VPHN))
+> > +		goto out;
+> > +
+> > +	if (vphn_get_associativity(cpu, associativity))
+> > +		goto out;
+> > +
+> > +	index = of_read_number(associativity, 1);
+> > +	if ((index > min_common_depth + 1) && coregroup_enabled)
+> > +		return of_read_number(&associativity[index - 1], 1);
 
-        { .pabyte =3D 1,  .pabit =3D 2, .mmu_features  =3D MMU_FTR_CI_LARGE=
-_PAGE },
-#ifdef CONFIG_PPC_RADIX_MMU
-        { .pabyte =3D 40, .pabit =3D 0, .mmu_features  =3D MMU_FTR_TYPE_RAD=
-IX },
-        { .pabyte =3D 40, .pabit =3D 0, .mmu_features  =3D MMU_FTR_TYPE_RAD=
-IX |
-                                                     MMU_FTR_GTSE },
-#endif
-  	{ .pabyte =3D 1,  .pabit =3D 1, .invert =3D 1, .cpu_features =3D CPU_FTR=
-_NODSISRALIGN },
+See ^above.
 
-But that's bikeshedding a bit and the optional bits already put it out=20
-of alignment.
+index would be the all the domains in the associativity array, 
+min_common_depth would be where the primary domain or the chip-id is
+defined. So we are reading the penultimate domain if and only if the
+min_common_depth isn't the primary domain aka chip-id. 
 
-Thanks,
-Nick
+What other check /assertions can we add?
 
+
+> > +
+> > +out:
+> >  	return cpu_to_core_id(cpu);
+> >  }
+> > 
+> > -- 
+> > 2.17.1
+> > 
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
