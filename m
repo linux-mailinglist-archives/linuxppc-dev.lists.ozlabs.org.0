@@ -2,41 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60778225CEF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 12:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F25225E8E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 14:30:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9JTj701FzDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 20:52:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9Lf65NjHzDqM5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jul 2020 22:30:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=zhangchangzhong@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9JS93HPyzDqcL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 20:51:21 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id AE332B7B3;
- Mon, 20 Jul 2020 10:51:23 +0000 (UTC)
-Date: Mon, 20 Jul 2020 12:51:16 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH] powerpc/fault: kernel can extend a user process's stack
-Message-ID: <20200720105116.GO32107@kitsune.suse.cz>
-References: <20191211014337.28128-1-dja@axtens.net>
- <20191211072806.GI3986@kitsune.suse.cz>
- <8736drciem.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9JxJ1NZ2zDqVv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 21:12:58 +1000 (AEST)
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 4EC88F12689ECCFD9523;
+ Mon, 20 Jul 2020 19:12:42 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.70) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server (TLS)
+ id 14.3.487.0; Mon, 20 Jul 2020 19:12:40 +0800
+From: Zhang Changzhong <zhangchangzhong@huawei.com>
+To: <pantelis.antoniou@gmail.com>, <davem@davemloft.net>, <kuba@kernel.org>
+Subject: [PATCH net-next] net: fs_enet: remove redundant null check
+Date: Mon, 20 Jul 2020 19:12:33 +0800
+Message-ID: <1595243553-12325-1-git-send-email-zhangchangzhong@huawei.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8736drciem.fsf@dja-thinkpad.axtens.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.70]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Mon, 20 Jul 2020 22:27:13 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,77 +47,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tom Lane <tgl@sss.pgh.pa.us>, linuxppc-dev@lists.ozlabs.org,
- Daniel Black <daniel@linux.ibm.com>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Because clk_prepare_enable and clk_disable_unprepare already
+checked NULL clock parameter, so the additional checks are
+unnecessary, just remove them.
 
-On Wed, Dec 11, 2019 at 08:37:21PM +1100, Daniel Axtens wrote:
-> > Fixes: 14cf11af6cf6 ("powerpc: Merge enough to start building in
-> > arch/powerpc.")
-> 
-> Wow, that's pretty ancient! I'm also not sure it's right - in that same
-> patch, arch/ppc64/mm/fault.c contains:
-> 
-> ^1da177e4c3f4 (Linus Torvalds         2005-04-16 15:20:36 -0700 213)            if (address + 2048 < uregs->gpr[1]
-> ^1da177e4c3f4 (Linus Torvalds         2005-04-16 15:20:36 -0700 214)                && (!user_mode(regs) || !store_updates_sp(regs)))
-> ^1da177e4c3f4 (Linus Torvalds         2005-04-16 15:20:36 -0700 215)                    goto bad_area;
-> 
-> Which is the same as the new arch/powerpc/mm/fault.c code:
-> 
-> 14cf11af6cf60 (Paul Mackerras 2005-09-26 16:04:21 +1000 234)            if (address + 2048 < uregs->gpr[1]
-> 14cf11af6cf60 (Paul Mackerras 2005-09-26 16:04:21 +1000 235)                && (!user_mode(regs) || !store_updates_sp(regs)))
-> 14cf11af6cf60 (Paul Mackerras 2005-09-26 16:04:21 +1000 236)                    goto bad_area;
-> 
-> So either they're both right or they're both wrong, either way I'm not
-> sure how this patch is to blame.
+Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+---
+ drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Is there any progress on resolving this?
+diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+index b0d4b198..bf846b4 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
++++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+@@ -1043,8 +1043,7 @@ static int fs_enet_probe(struct platform_device *ofdev)
+ out_free_dev:
+ 	free_netdev(ndev);
+ out_put:
+-	if (fpi->clk_per)
+-		clk_disable_unprepare(fpi->clk_per);
++	clk_disable_unprepare(fpi->clk_per);
+ out_deregister_fixed_link:
+ 	of_node_put(fpi->phy_node);
+ 	if (of_phy_is_fixed_link(ofdev->dev.of_node))
+@@ -1065,8 +1064,7 @@ static int fs_enet_remove(struct platform_device *ofdev)
+ 	fep->ops->cleanup_data(ndev);
+ 	dev_set_drvdata(fep->dev, NULL);
+ 	of_node_put(fep->fpi->phy_node);
+-	if (fep->fpi->clk_per)
+-		clk_disable_unprepare(fep->fpi->clk_per);
++	clk_disable_unprepare(fep->fpi->clk_per);
+ 	if (of_phy_is_fixed_link(ofdev->dev.of_node))
+ 		of_phy_deregister_fixed_link(ofdev->dev.of_node);
+ 	free_netdev(ndev);
+-- 
+1.8.3.1
 
-I did not notice any followup patch nor this one being merged/refuted.
-
-Thanks
-
-Michal
-
-> 
-> I guess we should also cc stable@...
-> 
-> Regards,
-> Daniel
-> 
-> >> Reported-by: Tom Lane <tgl@sss.pgh.pa.us>
-> >> Cc: Daniel Black <daniel@linux.ibm.com>
-> >> Signed-off-by: Daniel Axtens <dja@axtens.net>
-> >> ---
-> >>  arch/powerpc/mm/fault.c | 10 ++++++++++
-> >>  1 file changed, 10 insertions(+)
-> >> 
-> >> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> >> index b5047f9b5dec..00183731ea22 100644
-> >> --- a/arch/powerpc/mm/fault.c
-> >> +++ b/arch/powerpc/mm/fault.c
-> >> @@ -287,7 +287,17 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
-> >>  			if (!res)
-> >>  				return !store_updates_sp(inst);
-> >>  			*must_retry = true;
-> >> +		} else if ((flags & FAULT_FLAG_WRITE) &&
-> >> +			   !(flags & FAULT_FLAG_USER)) {
-> >> +			/*
-> >> +			 * the kernel can also attempt to write beyond the end
-> >> +			 * of a process's stack - for example setting up a
-> >> +			 * signal frame. We assume this is valid, subject to
-> >> +			 * the checks in expand_stack() later.
-> >> +			 */
-> >> +			return false;
-> >>  		}
-> >> +
-> >>  		return true;
-> >>  	}
-> >>  	return false;
-> >> -- 
-> >> 2.20.1
-> >> 
