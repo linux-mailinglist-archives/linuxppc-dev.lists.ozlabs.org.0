@@ -2,92 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF9D2281E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 16:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C29228245
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 16:33:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BB12J4xRwzDqf5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 00:19:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BB1L046BBzDqhm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 00:33:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::341;
+ helo=mail-wm1-x341.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=BuKjOr11; dkim-atps=neutral
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
+ [IPv6:2a00:1450:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BB0zW3Sw4zDqVl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 00:17:27 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06LEABH9056421; Tue, 21 Jul 2020 10:17:06 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32e1vurbve-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 10:17:06 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06LEBM8G062937;
- Tue, 21 Jul 2020 10:17:05 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32e1vurbuf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 10:17:05 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LEBfiP001077;
- Tue, 21 Jul 2020 14:17:03 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 32brbh3wq6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 14:17:03 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06LEH0im9830718
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Jul 2020 14:17:00 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5F4AB4C063;
- Tue, 21 Jul 2020 14:17:00 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A6B6F4C050;
- Tue, 21 Jul 2020 14:16:56 +0000 (GMT)
-Received: from [9.199.35.129] (unknown [9.199.35.129])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Jul 2020 14:16:56 +0000 (GMT)
-Subject: Re: [PATCH v4 05/10] powerpc/dt_cpu_ftrs: Add feature for 2nd DAWR
-To: Michael Ellerman <mpe@ellerman.id.au>, Jordan Niethe <jniethe5@gmail.com>
-References: <20200717040958.70561-1-ravi.bangoria@linux.ibm.com>
- <20200717040958.70561-6-ravi.bangoria@linux.ibm.com>
- <CACzsE9oE+OMnWEXvbZZbq35YzpSzCbBHWEJcjtCgkcq-YrABng@mail.gmail.com>
- <c34b1a66-2db6-c97a-1782-0d473c758502@linux.ibm.com>
- <87mu3trtri.fsf@mpe.ellerman.id.au>
- <62daa2d1-4e11-dcc1-cb1d-805ee4a156e0@linux.ibm.com>
- <87d04prmgc.fsf@mpe.ellerman.id.au>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <a6654419-2438-7f8a-9094-c3decb53c54f@linux.ibm.com>
-Date: Tue, 21 Jul 2020 19:46:55 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BB1GF5fn9zDqLV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 00:30:12 +1000 (AEST)
+Received: by mail-wm1-x341.google.com with SMTP id f18so3094298wml.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 07:30:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=NtR3vJ1N4iGqoNW7LE2c1cXPrbxowMXHvYixqbulC4A=;
+ b=BuKjOr11JAgWbiAF4Sj32zPuFLiD9iRV+uWXQboiosDmEW5UZ0xy9LEwHdcmln3L/w
+ Z4yi4/arnJ6RZmqym+O1wipOeuqgSE/gQ7NyaQhtWKSDNESyouAirTmB7XBlAZtP7cNK
+ ho/3x9QXKzM/HXaUFbrpHKEpUepG36+GVXUo1FGKXksY4ivDE6wzLClaydvaDAnvBNBa
+ 0rolFj5vLpGYFwcf7tSPNgYnMfQyP74LejqxV5QPQEQ2RvpgrT0wv1m5zzFIrzoGBEc9
+ ADgk+yYBe4UqtY2SfkETXxoEfUgH1mo4et8iwb1JyQO1sj85KsMTahA3LqaBH2PWR3Mx
+ Mw+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=NtR3vJ1N4iGqoNW7LE2c1cXPrbxowMXHvYixqbulC4A=;
+ b=BV9j3Fad1Xdaq/aIAc1vzoe8qcGQR9cVolpqkikc3eHZsdhb3D6wZMI6Ny6i4BUdvJ
+ bvp7Z8/k4FDhtM7ptLNy3CygAYTSMRdIublNyYcf4tUpdsiBzP8b33z+8Gd6jL4YVXnx
+ wFh3VtSwaqDff3UYm9KJyCpANCvb+K1Ip41ORx7lKt+XfFZBtMFF1NKr5RUoV791cZ+/
+ HurJ8tMi+yLdpP3VJwViaTLjv1opDo2FbiSBZyIi0HcGrZyiPIES1MMJ7OGl+c/kDmyJ
+ 9exBpTci0T/bctT/C/PJiI9EreCSfbTThVus95e6e/cP0PmUl9rkse6KpWiXFmYC+sJz
+ SxPw==
+X-Gm-Message-State: AOAM532u3Xn3E7S2fvUk3w+HlND/FXUjYhFvEkr7u9cCYYOX0NzWGGDj
+ tKFb92wKJdM+oDJIOv7/ipU=
+X-Google-Smtp-Source: ABdhPJwB9fyGj6S2BjQwyEItOwht6pp2/UOFe0UgTMjlm93I+Hjufyw5bWfBW9fmR+lDu40fsypZXA==
+X-Received: by 2002:a1c:6809:: with SMTP id d9mr4291206wmc.34.1595341809069;
+ Tue, 21 Jul 2020 07:30:09 -0700 (PDT)
+Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id a22sm3655822wmj.9.2020.07.21.07.30.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Jul 2020 07:30:08 -0700 (PDT)
+Date: Wed, 22 Jul 2020 00:30:01 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+References: <1594868476.6k5kvx8684.astroid@bobo.none>
+ <1594892300.mxnq3b9a77.astroid@bobo.none>
+ <20200716110038.GA119549@hirez.programming.kicks-ass.net>
+ <1594906688.ikv6r4gznx.astroid@bobo.none>
+ <1314561373.18530.1594993363050.JavaMail.zimbra@efficios.com>
+ <1595213677.kxru89dqy2.astroid@bobo.none>
+ <2055788870.20749.1595263590675.JavaMail.zimbra@efficios.com>
+ <1595324577.x3bf55tpgu.astroid@bobo.none>
+ <470490605.22057.1595337118562.JavaMail.zimbra@efficios.com>
+In-Reply-To: <470490605.22057.1595337118562.JavaMail.zimbra@efficios.com>
 MIME-Version: 1.0
-In-Reply-To: <87d04prmgc.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-21_08:2020-07-21,
- 2020-07-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
- adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2007210098
+Message-Id: <1595341248.r2i8fnhz28.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,106 +87,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, apopple@linux.ibm.com,
- mikey@neuling.org, miltonm@us.ibm.com, peterz@infradead.org,
- fweisbec@gmail.com, oleg@redhat.com, Nicholas Piggin <npiggin@gmail.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- jolsa@kernel.org, pedromfc@br.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, mingo@kernel.org,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-arch <linux-arch@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
+ x86 <x86@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Andy Lutomirski <luto@amacapital.net>, linux-mm <linux-mm@kvack.org>,
+ Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Mathieu Desnoyers's message of July 21, 2020 11:11 pm:
+> ----- On Jul 21, 2020, at 6:04 AM, Nicholas Piggin npiggin@gmail.com wrot=
+e:
+>=20
+>> Excerpts from Mathieu Desnoyers's message of July 21, 2020 2:46 am:
+> [...]
+>>=20
+>> Yeah you're probably right in this case I think. Quite likely most kerne=
+l
+>> tasks that asynchronously write to user memory would at least have some
+>> kind of producer-consumer barriers.
+>>=20
+>> But is that restriction of all async modifications documented and enforc=
+ed
+>> anywhere?
+>>=20
+>>>> How about other memory accesses via kthread_use_mm? Presumably there i=
+s
+>>>> still ordering requirement there for membarrier,
+>>>=20
+>>> Please provide an example case with memory accesses via kthread_use_mm =
+where
+>>> ordering matters to support your concern.
+>>=20
+>> I think the concern Andy raised with io_uring was less a specific
+>> problem he saw and more a general concern that we have these memory
+>> accesses which are not synchronized with membarrier.
+>>=20
+>>>> so I really think
+>>>> it's a fragile interface with no real way for the user to know how
+>>>> kernel threads may use its mm for any particular reason, so membarrier
+>>>> should synchronize all possible kernel users as well.
+>>>=20
+>>> I strongly doubt so, but perhaps something should be clarified in the
+>>> documentation
+>>> if you have that feeling.
+>>=20
+>> I'd rather go the other way and say if you have reasoning or numbers for
+>> why PF_KTHREAD is an important optimisation above rq->curr =3D=3D rq->id=
+le
+>> then we could think about keeping this subtlety with appropriate
+>> documentation added, otherwise we can just kill it and remove all doubt.
+>>=20
+>> That being said, the x86 sync core gap that I imagined could be fixed
+>> by changing to rq->curr =3D=3D rq->idle test does not actually exist bec=
+ause
+>> the global membarrier does not have a sync core option. So fixing the
+>> exit_lazy_tlb points that this series does *should* fix that. So
+>> PF_KTHREAD may be less problematic than I thought from implementation
+>> point of view, only semantics.
+>=20
+> Today, the membarrier global expedited command explicitly skips kernel th=
+reads,
+> but it happens that membarrier private expedited considers those with the
+> same mm as target for the IPI.
+>=20
+> So we already implement a semantic which differs between private and glob=
+al
+> expedited membarriers.
 
+Which is not a good thing.
 
-On 7/21/20 7:37 PM, Michael Ellerman wrote:
-> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
->> On 7/21/20 4:59 PM, Michael Ellerman wrote:
->>> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
->>>> On 7/17/20 11:14 AM, Jordan Niethe wrote:
->>>>> On Fri, Jul 17, 2020 at 2:10 PM Ravi Bangoria
->>>>> <ravi.bangoria@linux.ibm.com> wrote:
->>>>>>
->>>>>> Add new device-tree feature for 2nd DAWR. If this feature is present,
->>>>>> 2nd DAWR is supported, otherwise not.
->>>>>>
->>>>>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
->>>>>> ---
->>>>>>     arch/powerpc/include/asm/cputable.h | 7 +++++--
->>>>>>     arch/powerpc/kernel/dt_cpu_ftrs.c   | 7 +++++++
->>>>>>     2 files changed, 12 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
->>>>>> index e506d429b1af..3445c86e1f6f 100644
->>>>>> --- a/arch/powerpc/include/asm/cputable.h
->>>>>> +++ b/arch/powerpc/include/asm/cputable.h
->>>>>> @@ -214,6 +214,7 @@ static inline void cpu_feature_keys_init(void) { }
->>>>>>     #define CPU_FTR_P9_TLBIE_ERAT_BUG      LONG_ASM_CONST(0x0001000000000000)
->>>>>>     #define CPU_FTR_P9_RADIX_PREFETCH_BUG  LONG_ASM_CONST(0x0002000000000000)
->>>>>>     #define CPU_FTR_ARCH_31                        LONG_ASM_CONST(0x0004000000000000)
->>>>>> +#define CPU_FTR_DAWR1                  LONG_ASM_CONST(0x0008000000000000)
->>>>>>
->>>>>>     #ifndef __ASSEMBLY__
->>>>>>
->>>>>> @@ -497,14 +498,16 @@ static inline void cpu_feature_keys_init(void) { }
->>>>>>     #define CPU_FTRS_POSSIBLE      \
->>>>>>                (CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | CPU_FTRS_POWER8 | \
->>>>>>                 CPU_FTR_ALTIVEC_COMP | CPU_FTR_VSX_COMP | CPU_FTRS_POWER9 | \
->>>>>> -            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
->>>>>> +            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10 | \
->>>>>> +            CPU_FTR_DAWR1)
->>>>>>     #else
->>>>>>     #define CPU_FTRS_POSSIBLE      \
->>>>>>                (CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
->>>>>>                 CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
->>>>>>                 CPU_FTRS_POWER8 | CPU_FTRS_CELL | CPU_FTRS_PA6T | \
->>>>>>                 CPU_FTR_VSX_COMP | CPU_FTR_ALTIVEC_COMP | CPU_FTRS_POWER9 | \
->>>>>> -            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
->>>>>> +            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10 | \
->>>>>> +            CPU_FTR_DAWR1)
->>>
->>>>> Instead of putting CPU_FTR_DAWR1 into CPU_FTRS_POSSIBLE should it go
->>>>> into CPU_FTRS_POWER10?
->>>>> Then it will be picked up by CPU_FTRS_POSSIBLE.
->>>>
->>>> I remember a discussion about this with Mikey and we decided to do it
->>>> this way. Obviously, the purpose is to make CPU_FTR_DAWR1 independent of
->>>> CPU_FTRS_POWER10 because DAWR1 is an optional feature in p10. I fear
->>>> including CPU_FTR_DAWR1 in CPU_FTRS_POWER10 can make it forcefully enabled
->>>> even when device-tree property is not present or pa-feature bit it not set,
->>>> because we do:
->>>>
->>>>          {       /* 3.1-compliant processor, i.e. Power10 "architected" mode */
->>>>                  .pvr_mask               = 0xffffffff,
->>>>                  .pvr_value              = 0x0f000006,
->>>>                  .cpu_name               = "POWER10 (architected)",
->>>>                  .cpu_features           = CPU_FTRS_POWER10,
->>>
->>> The pa-features logic will turn it off if the feature bit is not set.
->>>
->>> So you should be able to put it in CPU_FTRS_POWER10.
->>>
->>> See for example CPU_FTR_NOEXECUTE.
->>
->> Ah ok. scan_features() clears the feature if the bit is not set in
->> pa-features. So it should work find for powervm. I'll verify the same
->> thing happens in case of baremetal where we use cpu-features not
->> pa-features. If it works in baremetal as well, will put it in
->> CPU_FTRS_POWER10.
-> 
-> When we use DT CPU features we don't use CPU_FTRS_POWER10 at all.
-> 
-> We construct a cpu_spec from scratch with just the base set of features:
-> 
-> static struct cpu_spec __initdata base_cpu_spec = {
-> 	.cpu_name		= NULL,
-> 	.cpu_features		= CPU_FTRS_DT_CPU_BASE,
-> 
-> 
-> And then individual features are enabled via the device tree flags.
+> This can be explained in part by the fact that
+> kthread_use_mm was introduced after 4.16, where the most recent membarrie=
+r
+> commands where introduced. It seems that the effect on membarrier was not
+> considered when kthread_use_mm was introduced.
 
-Ah good. I was under a wrong impression that we use cpu_specs[] for all
-the cases. Thanks mpe for explaining in detail :)
+No it was just renamed, it used to be called use_mm and has been in the=20
+kernel for ~ever.
 
-Ravi
+That you hadn't considered this is actually weight for my point, which=20
+is that there's so much subtle behaviour that's easy to miss we're=20
+better off with simpler and fewer special cases until it's proven=20
+they're needed. Not the other way around.
+
+>=20
+> Looking at membarrier(2) documentation, it states that IPIs are only sent=
+ to
+> threads belonging to the same process as the calling thread. If my unders=
+tanding
+> of the notion of process is correct, this should rule out sending the IPI=
+ to
+> kernel threads, given they are not "part" of the same process, only borro=
+wing
+> the mm. But I agree that the distinction is moot, and should be clarified=
+.
+
+It does if you read it in a user-hostile legalistic way. The reality is=20
+userspace shouldn't and can't know about how the kernel might implement=20
+functionality.
+
+> Without a clear use-case to justify adding a constraint on membarrier, I =
+am
+> tempted to simply clarify documentation of current membarrier commands,
+> stating clearly that they are not guaranteed to affect kernel threads. Th=
+en,
+> if we have a compelling use-case to implement a different behavior which =
+covers
+> kthreads, this could be added consistently across membarrier commands wit=
+h a
+> flag (or by adding new commands).
+>=20
+> Does this approach make sense ?
+
+The other position is without a clear use case for PF_KTHREAD, seeing as=20
+async kernel accesses had not been considered before now, we limit the=20
+optimision to only skipping the idle thread. I think that makes more=20
+sense (unless you have a reason for PF_KTHREAD but it doesn't seem like=20
+there is much of one).
+
+Thanks,
+Nick
