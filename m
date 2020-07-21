@@ -1,88 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F83622841F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 17:46:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEC6228753
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 19:28:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BB2ym06S2zDqjg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:46:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BB5Cy1WWkzDqlS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 03:28:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BB2ls22TwzDqTp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 01:37:29 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06LFV7eU013815; Tue, 21 Jul 2020 11:37:23 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BB59b65WJzDqVv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 03:26:27 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06LH1Ll9096868; Tue, 21 Jul 2020 13:26:23 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1x72sy8-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32e1vgp1g2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 11:37:23 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06LFXRC6023229;
- Tue, 21 Jul 2020 11:37:22 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1x72sxb-1
+ Tue, 21 Jul 2020 13:26:23 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06LH2TEk101896;
+ Tue, 21 Jul 2020 13:26:22 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32e1vgp1fg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 11:37:22 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LFKkx5004483;
- Tue, 21 Jul 2020 15:37:20 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04fra.de.ibm.com with ESMTP id 32dbmn0pas-1
+ Tue, 21 Jul 2020 13:26:22 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LHP8wV023979;
+ Tue, 21 Jul 2020 17:26:21 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 32brq7m4ch-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 15:37:20 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06LFbHiP59703496
+ Tue, 21 Jul 2020 17:26:20 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06LHQIDa58916972
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Jul 2020 15:37:17 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C8035A4057;
- Tue, 21 Jul 2020 15:37:17 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB2ECA4040;
- Tue, 21 Jul 2020 15:37:15 +0000 (GMT)
-Received: from pratiks-thinkpad.ibmuc.com (unknown [9.79.210.59])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Jul 2020 15:37:15 +0000 (GMT)
-From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, benh@kernel.crashing.org,
- paulus@samba.org, mikey@neuling.org, ego@linux.vnet.ibm.com,
- svaidy@linux.ibm.com, psampat@linux.ibm.com, pratik.r.sampat@gmail.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/3] powerpc/powernv/idle: Exclude mfspr on HID1, 4,
- 5 on P9 and above
-Date: Tue, 21 Jul 2020 21:07:08 +0530
-Message-Id: <20200721153708.89057-4-psampat@linux.ibm.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200721153708.89057-1-psampat@linux.ibm.com>
-References: <20200721153708.89057-1-psampat@linux.ibm.com>
-MIME-Version: 1.0
+ Tue, 21 Jul 2020 17:26:18 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1380842045;
+ Tue, 21 Jul 2020 17:26:18 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E9DC042041;
+ Tue, 21 Jul 2020 17:26:16 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.207.143])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Jul 2020 17:26:16 +0000 (GMT)
+Message-ID: <1595352376.5311.8.camel@linux.ibm.com>
+Subject: Re: [PATCH v6] ima: move APPRAISE_BOOTPARAM dependency on
+ ARCH_POLICY to runtime
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Bruno Meneguele <bmeneg@redhat.com>
+Date: Tue, 21 Jul 2020 13:26:16 -0400
+In-Reply-To: <20200720153841.GG10323@glitch>
+References: <20200713164830.101165-1-bmeneg@redhat.com>
+ <d337cbba-e996-e898-1e75-9f142d480e5e@linux.vnet.ibm.com>
+ <1595257015.5055.8.camel@linux.ibm.com> <20200720153841.GG10323@glitch>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-21_09:2020-07-21,
  2020-07-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- impostorscore=0 spamscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- mlxlogscore=783 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007210110
+ mlxscore=0 lowpriorityscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0 adultscore=0
+ malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007210114
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,47 +94,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-s390@vger.kernel.org, Nayna <nayna@linux.vnet.ibm.com>,
+ erichte@linux.ibm.com, nayna@linux.ibm.com, x86@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-POWER9 onwards the support for the registers HID1, HID4, HID5 has been
-receded.
-Although mfspr on the above registers worked in Power9, In Power10
-simulator is unrecognized. Moving their assignment under the
-check for machines lower than Power9
+On Mon, 2020-07-20 at 12:38 -0300, Bruno Meneguele wrote:
+> On Mon, Jul 20, 2020 at 10:56:55AM -0400, Mimi Zohar wrote:
+> > On Mon, 2020-07-20 at 10:40 -0400, Nayna wrote:
+> > > On 7/13/20 12:48 PM, Bruno Meneguele wrote:
+> > > > The IMA_APPRAISE_BOOTPARAM config allows enabling different "ima_appraise="
+> > > > modes - log, fix, enforce - at run time, but not when IMA architecture
+> > > > specific policies are enabled.  This prevents properly labeling the
+> > > > filesystem on systems where secure boot is supported, but not enabled on the
+> > > > platform.  Only when secure boot is actually enabled should these IMA
+> > > > appraise modes be disabled.
+> > > >
+> > > > This patch removes the compile time dependency and makes it a runtime
+> > > > decision, based on the secure boot state of that platform.
+> > > >
+> > > > Test results as follows:
+> > > >
+> > > > -> x86-64 with secure boot enabled
+> > > >
+> > > > [    0.015637] Kernel command line: <...> ima_policy=appraise_tcb ima_appraise=fix
+> > > > [    0.015668] ima: Secure boot enabled: ignoring ima_appraise=fix boot parameter option
+> > > >
+> > 
+> > Is it common to have two colons in the same line?  Is the colon being
+> > used as a delimiter when parsing the kernel logs?  Should the second
+> > colon be replaced with a hyphen?  (No need to repost.  I'll fix it
+> > up.)
+> >  
+> 
+> AFAICS it has been used without any limitations, e.g:
+> 
+> PM: hibernation: Registered nosave memory: [mem 0x00000000-0x00000fff]
+> clocksource: hpet: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 133484873504 ns
+> microcode: CPU0: patch_level=0x08701013
+> Lockdown: modprobe: unsigned module loading is restricted; see man kernel_lockdown.7
+> ...
+> 
+> I'd say we're fine using it.
 
-Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/platforms/powernv/idle.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Ok.  FYI, it's now in next-integrity.
 
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 28462d59a8e1..92098d6106be 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -73,9 +73,6 @@ static int pnv_save_sprs_for_deep_states(void)
- 	 */
- 	uint64_t lpcr_val	= mfspr(SPRN_LPCR);
- 	uint64_t hid0_val	= mfspr(SPRN_HID0);
--	uint64_t hid1_val	= mfspr(SPRN_HID1);
--	uint64_t hid4_val	= mfspr(SPRN_HID4);
--	uint64_t hid5_val	= mfspr(SPRN_HID5);
- 	uint64_t hmeer_val	= mfspr(SPRN_HMEER);
- 	uint64_t msr_val = MSR_IDLE;
- 	uint64_t psscr_val = pnv_deepest_stop_psscr_val;
-@@ -117,6 +114,9 @@ static int pnv_save_sprs_for_deep_states(void)
- 
- 			/* Only p8 needs to set extra HID regiters */
- 			if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
-+				uint64_t hid1_val = mfspr(SPRN_HID1);
-+				uint64_t hid4_val = mfspr(SPRN_HID4);
-+				uint64_t hid5_val = mfspr(SPRN_HID5);
- 
- 				rc = opal_slw_set_reg(pir, SPRN_HID1, hid1_val);
- 				if (rc != 0)
--- 
-2.25.4
-
+Mimi
