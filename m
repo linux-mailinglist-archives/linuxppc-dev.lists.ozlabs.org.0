@@ -1,53 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6184D227FEE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 14:28:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917E4228047
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 14:50:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9yYp34dszDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 22:28:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9z3H31pMzDqJN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 22:50:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9yVx613jzDqJB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 22:26:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=I/aBEgan; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4B9yVx28rLz9sQt;
- Tue, 21 Jul 2020 22:26:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595334361;
- bh=jJi4TkEHInATCzCIyAwnZ7zy/RuaLjzMF2OoRvDmjj4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=I/aBEganzkrqRj5xoMus47bu3g7UUNHY7Q3ws05GBVuN+msYrkkpdmWpUINXwZHL0
- kzKqkOaIHBTSpiyg2dwCR2LxGC3LDY8mHG5+GKX8dMtIu0kQv96fPoWHvGoWMzEHs2
- 7mTj763EjCrF+YebCWQ0GGVFp4bTeg7Hkv0rl1nRmxC5LXhiHN05Bvol4fXYUcaArc
- dE7FFotKNNy19BrLJwp9rIcchfhsSYzJi3ze5fruJ3gNWwCxDd0OjYOG6hOOUFmARf
- bCJsspploc3+HjnQ6h84b1aVQrYN0yZGsoTaa31nU1EpaFVj5rw3xuwSyCbDGIh1xQ
- /S3hONMD6EwZw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: bharata@linux.ibm.com
-Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
-In-Reply-To: <20200721032959.GN7902@in.ibm.com>
-References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
- <87r1tb1rw2.fsf@linux.ibm.com> <87tuy1sksv.fsf@mpe.ellerman.id.au>
- <20200721032959.GN7902@in.ibm.com>
-Date: Tue, 21 Jul 2020 22:25:58 +1000
-Message-ID: <87ft9lrr55.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9ywL0y1JzDqjv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 22:44:33 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06LCXIU1141883; Tue, 21 Jul 2020 08:44:25 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32d5h8r6eh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 08:44:25 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06LCZPoX149175;
+ Tue, 21 Jul 2020 08:44:23 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32d5h8r6dn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 08:44:23 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LCeSXc023133;
+ Tue, 21 Jul 2020 12:44:21 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma02fra.de.ibm.com with ESMTP id 32brq7uywn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 12:44:21 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06LCh3MT60752264
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Jul 2020 12:43:03 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8FE894204B;
+ Tue, 21 Jul 2020 12:43:03 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 105E642047;
+ Tue, 21 Jul 2020 12:43:01 +0000 (GMT)
+Received: from pratiks-thinkpad.ibmuc.com (unknown [9.79.210.59])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Jul 2020 12:43:00 +0000 (GMT)
+From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+To: rjw@rjwysocki.net, daniel.lezcano@linaro.org, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, srivatsa@csail.mit.edu,
+ shuah@kernel.org, npiggin@gmail.com, ego@linux.vnet.ibm.com,
+ svaidy@linux.ibm.com, pratik.r.sampat@gmail.com, psampat@linux.ibm.com,
+ linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: [PATCH v3 0/2] Selftest for cpuidle latency measurement
+Date: Tue, 21 Jul 2020 18:12:58 +0530
+Message-Id: <20200721124300.65615-1-psampat@linux.ibm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-21_08:2020-07-21,
+ 2020-07-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0
+ mlxlogscore=724 spamscore=0 adultscore=0 clxscore=1015 mlxscore=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007210089
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,85 +93,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Bharata B Rao <bharata@linux.ibm.com> writes:
-> On Tue, Jul 21, 2020 at 11:45:20AM +1000, Michael Ellerman wrote:
->> Nathan Lynch <nathanl@linux.ibm.com> writes:
->> > "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->> >> This is the next version of the fixes for memory unplug on radix.
->> >> The issues and the fix are described in the actual patches.
->> >
->> > I guess this isn't actually causing problems at runtime right now, but I
->> > notice calls to resize_hpt_for_hotplug() from arch_add_memory() and
->> > arch_remove_memory(), which ought to be mmu-agnostic:
->> >
->> > int __ref arch_add_memory(int nid, u64 start, u64 size,
->> > 			  struct mhp_params *params)
->> > {
->> > 	unsigned long start_pfn = start >> PAGE_SHIFT;
->> > 	unsigned long nr_pages = size >> PAGE_SHIFT;
->> > 	int rc;
->> >
->> > 	resize_hpt_for_hotplug(memblock_phys_mem_size());
->> >
->> > 	start = (unsigned long)__va(start);
->> > 	rc = create_section_mapping(start, start + size, nid,
->> > 				    params->pgprot);
->> > ...
->> 
->> Hmm well spotted.
->> 
->> That does return early if the ops are not setup:
->> 
->> int resize_hpt_for_hotplug(unsigned long new_mem_size)
->> {
->> 	unsigned target_hpt_shift;
->> 
->> 	if (!mmu_hash_ops.resize_hpt)
->> 		return 0;
->> 
->> 
->> And:
->> 
->> void __init hpte_init_pseries(void)
->> {
->> 	...
->> 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
->> 		mmu_hash_ops.resize_hpt = pseries_lpar_resize_hpt;
->> 
->> And that comes in via ibm,hypertas-functions:
->> 
->> 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
->> 
->> 
->> But firmware is not necessarily going to add/remove that call based on
->> whether we're using hash/radix.
->
-> Correct but hpte_init_pseries() will not be called for radix guests.
+v2: https://lkml.org/lkml/2020/7/17/369
+Changelog v2-->v3
+Based on comments from Gautham R. Shenoy adding the following in the
+selftest,
+1. Grepping modules to determine if already loaded
+2. Wrapper to enable/disable states
+3. Preventing any operation/test on offlined CPUs 
+---
 
-Yeah, duh. You'd think the function name would have been a sufficient
-clue for me :)
+The patch series introduces a mechanism to measure wakeup latency for
+IPI and timer based interrupts
+The motivation behind this series is to find significant deviations
+behind advertised latency and resisdency values
 
->> So I think a follow-up patch is needed to make this more robust.
->> 
->> Aneesh/Bharata what platform did you test this series on? I'm curious
->> how this didn't break.
->
-> I have tested memory hotplug/unplug for radix guest on zz platform and
-> sanity-tested this for hash guest on P8.
->
-> As noted above, mmu_hash_ops.resize_hpt will not be set for radix
-> guest and hence we won't see any breakage.
+To achieve this, we introduce a kernel module and expose its control
+knobs through the debugfs interface that the selftests can engage with.
 
-OK.
+The kernel module provides the following interfaces within
+/sys/kernel/debug/latency_test/ for,
+1. IPI test:
+  ipi_cpu_dest   # Destination CPU for the IPI
+  ipi_cpu_src    # Origin of the IPI
+  ipi_latency_ns # Measured latency time in ns
+2. Timeout test:
+  timeout_cpu_src     # CPU on which the timer to be queued
+  timeout_expected_ns # Timer duration
+  timeout_diff_ns     # Difference of actual duration vs expected timer
+To include the module, check option and include as module
+kernel hacking -> Cpuidle latency selftests
 
-That's probably fine as it is then. Or maybe just a comment in
-resize_hpt_for_hotplug() pointing out that resize_hpt will be NULL if
-we're using radix.
+The selftest inserts the module, disables all the idle states and
+enables them one by one testing the following:
+1. Keeping source CPU constant, iterates through all the CPUS measuring
+   IPI latency for baseline (CPU is busy with
+   "cat /dev/random > /dev/null" workload) and the when the CPU is
+   allowed to be at rest
+2. Iterating through all the CPUs, sending expected timer durations to
+   be equivalent to the residency of the the deepest idle state
+   enabled and extracting the difference in time between the time of
+   wakeup and the expected timer duration
 
-cheers
+Usage
+-----
+Can be used in conjuction to the rest of the selftests.
+Default Output location in: tools/testing/cpuidle/cpuidle.log
+
+To run this test specifically:
+$ make -C tools/testing/selftests TARGETS="cpuidle" run_tests
+
+There are a few optinal arguments too that the script can take
+	[-h <help>]
+	[-m <location of the module>]
+	[-o <location of the output>]
+
+Sample output snippet
+---------------------
+--IPI Latency Test---
+--Baseline IPI Latency measurement: CPU Busy--
+SRC_CPU   DEST_CPU IPI_Latency(ns)
+...
+0            8         1996
+0            9         2125
+0           10         1264
+0           11         1788
+0           12         2045
+Baseline Average IPI latency(ns): 1843
+---Enabling state: 5---
+SRC_CPU   DEST_CPU IPI_Latency(ns)
+0            8       621719
+0            9       624752
+0           10       622218
+0           11       623968
+0           12       621303
+Expected IPI latency(ns): 100000
+Observed Average IPI latency(ns): 622792
+
+--Timeout Latency Test--
+--Baseline Timeout Latency measurement: CPU Busy--
+Wakeup_src Baseline_delay(ns) 
+...
+8            2249
+9            2226
+10           2211
+11           2183
+12           2263
+Baseline Average timeout diff(ns): 2226
+---Enabling state: 5---
+8           10749                   
+9           10911                   
+10          10912                   
+11          12100                   
+12          73276                   
+Expected timeout(ns): 10000200
+Observed Average timeout diff(ns): 23589
+
+Pratik Rajesh Sampat (2):
+  cpuidle: Trace IPI based and timer based wakeup latency from idle
+    states
+  selftest/cpuidle: Add support for cpuidle latency measurement
+
+ drivers/cpuidle/Makefile                   |   1 +
+ drivers/cpuidle/test-cpuidle_latency.c     | 150 ++++++++++
+ lib/Kconfig.debug                          |  10 +
+ tools/testing/selftests/Makefile           |   1 +
+ tools/testing/selftests/cpuidle/Makefile   |   6 +
+ tools/testing/selftests/cpuidle/cpuidle.sh | 310 +++++++++++++++++++++
+ tools/testing/selftests/cpuidle/settings   |   1 +
+ 7 files changed, 479 insertions(+)
+ create mode 100644 drivers/cpuidle/test-cpuidle_latency.c
+ create mode 100644 tools/testing/selftests/cpuidle/Makefile
+ create mode 100755 tools/testing/selftests/cpuidle/cpuidle.sh
+ create mode 100644 tools/testing/selftests/cpuidle/settings
+
+-- 
+2.25.4
+
