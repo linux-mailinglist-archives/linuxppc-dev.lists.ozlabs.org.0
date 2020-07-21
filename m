@@ -1,40 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FA0227750
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 06:02:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0A82277CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 06:55:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9lKr5B9qzDqVd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 14:02:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9mWc5RJzzDqg9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 14:55:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
- helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=telegraphics.com.au
-Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
- [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 4B9lJ02YjXzDqVR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 14:00:47 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by kvm5.telegraphics.com.au (Postfix) with ESMTP id E0F9D29AFB;
- Tue, 21 Jul 2020 00:00:37 -0400 (EDT)
-Date: Tue, 21 Jul 2020 14:00:33 +1000 (AEST)
-From: Finn Thain <fthain@telegraphics.com.au>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH v2 13/16] scripts/kallsyms: move ignored symbol types to
- is_ignored_symbol()
-In-Reply-To: <CAK7LNATVDfHJG=+G6DqkR-vSyVhb8KmxcT0ae+ukdi_otthi8A@mail.gmail.com>
-Message-ID: <alpine.LNX.2.23.453.2007211312530.8@nippy.intranet>
-References: <20191123160444.11251-1-yamada.masahiro@socionext.com>
- <20191123160444.11251-14-yamada.masahiro@socionext.com>
- <alpine.LNX.2.23.453.2007201132240.8@nippy.intranet>
- <CAK7LNATVDfHJG=+G6DqkR-vSyVhb8KmxcT0ae+ukdi_otthi8A@mail.gmail.com>
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9mTv1PfpzDqdf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 14:54:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=Udf9255C; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4B9mTt2d5Zz9sSJ; Tue, 21 Jul 2020 14:54:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1595307266; bh=RQE08isQf+lBELg3C8LRhn+T91bIrsMyhyCDly9itjg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Udf9255C4Pb0JsIeovrxWm1+Cgw67ckgCelFZEEI5ONfcB529BVnIiUek2+i2mUcA
+ cN/1kMZosYyV4sEMOztqQwRWGSS/bhlMtc0tqLWRfHeFmRK8Ql+/I2O7IKYfyzFt+3
+ AKRJwhhYdJGxiV7DAi7kE2G41vSv9nto5+xc8i2/meTd3R0EFXIj75Ubt8fp7JCtMw
+ JKJGLs1+StWjkodJ88zF4QQbQCkt8z5uswJz16Zvmwh1mdDkVJmkDQ8vBpX2S3Fclf
+ OdniE7bhslmcJyWXrig9cq2prnoqonFLNnOFzrN5cAkRgYO3eKkAN0IhS0WSgNwDgu
+ 657tg8jJG7ynQ==
+Date: Tue, 21 Jul 2020 13:54:20 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [v3 02/15] KVM: PPC: Book3S HV: Cleanup updates for kvm vcpu MMCR
+Message-ID: <20200721035420.GA3819606@thinks.paulus.ozlabs.org>
+References: <1594996707-3727-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1594996707-3727-3-git-send-email-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1594996707-3727-3-git-send-email-atrajeev@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,61 +53,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
+ kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, svaidyan@in.ibm.com,
+ acme@kernel.org, jolsa@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 20 Jul 2020, Masahiro Yamada wrote:
+On Fri, Jul 17, 2020 at 10:38:14AM -0400, Athira Rajeev wrote:
+> Currently `kvm_vcpu_arch` stores all Monitor Mode Control registers
+> in a flat array in order: mmcr0, mmcr1, mmcra, mmcr2, mmcrs
+> Split this to give mmcra and mmcrs its own entries in vcpu and
+> use a flat array for mmcr0 to mmcr2. This patch implements this
+> cleanup to make code easier to read.
 
-> 
-> I got a similar report before.
-> 
-> I'd like to know whether or not
-> this is the same issue as fixed by
-> 7883a14339299773b2ce08dcfd97c63c199a9289
-> 
+Changing the way KVM stores these values internally is fine, but
+changing the user ABI is not.  This part:
 
-The problem can be observed with 3d77e6a8804ab ("Linux 5.7").
-So it appears that 7883a14339299 ("scripts/kallsyms: fix wrong 
-kallsyms_relative_base") is not sufficient to fix it.
+> diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+> index 264e266..e55d847 100644
+> --- a/arch/powerpc/include/uapi/asm/kvm.h
+> +++ b/arch/powerpc/include/uapi/asm/kvm.h
+> @@ -510,8 +510,8 @@ struct kvm_ppc_cpu_char {
+>  
+>  #define KVM_REG_PPC_MMCR0	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x10)
+>  #define KVM_REG_PPC_MMCR1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x11)
+> -#define KVM_REG_PPC_MMCRA	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x12)
+> -#define KVM_REG_PPC_MMCR2	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x13)
+> +#define KVM_REG_PPC_MMCR2	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x12)
+> +#define KVM_REG_PPC_MMCRA	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x13)
 
-> 
-> Does your problem happen on the latest kernel?
+means that existing userspace programs that used to work would now be
+broken.  That is not acceptable (breaking the user ABI is only ever
+acceptable with a very compelling reason).  So NAK to this part of the
+patch.
 
-Unfortunately this cross compiler (gcc 4.6.4) is too old to build 
-v5.8-rc1 or later. I will have to upgrade.
-
-> Which version of binutils are you using?
-> 
-
-This toolchain uses binutils 2.22.
-
-In case it helps,
-
-$ powerpc-linux-gnu-nm -n vmlinux |head                  
-         w mach_chrp
-00000005 a LG_CACHELINE_BYTES
-00000005 a LG_CACHELINE_BYTES
-00000005 a LG_CACHELINE_BYTES
-0000000c a Hash_bits
-0000001f a CACHELINE_MASK
-0000001f a CACHELINE_MASK
-0000001f a CACHELINE_MASK
-00000020 a CACHELINE_BYTES
-00000020 a CACHELINE_BYTES
-00000020 a CACHELINE_BYTES
-00000020 a reg
-0003ffc0 a Hash_msk
-c0000000 T _start
-c0000000 A _stext
-c0000000 A _text
-c000000c T __start
-c0000054 t __after_mmu_off
-c0000090 t turn_on_mmu
-c00000c4 T __secondary_hold
-c00000dc T __secondary_hold_spinloop
-c00000e0 T __secondary_hold_acknowledge
-c0000100 t Reset
+Regards,
+Paul.
