@@ -1,83 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89ED7228BDC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 00:15:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3D9228C89
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:13:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBCb036nhzDqjn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 08:15:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBDt96RjczDqkj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:13:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
- helo=mail-qt1-x843.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HI4DG4Ol; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=76.164.61.194; helo=kernel.crashing.org;
+ envelope-from=benh@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from kernel.crashing.org (kernel.crashing.org [76.164.61.194])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBCYF4l91zDq9G
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 08:13:52 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id a32so394733qtb.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 15:13:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=kalVxG8ANnjjy1Dw3YQgCDZ3CtnSjchvQLTtFWwGZEI=;
- b=HI4DG4OlYWFjQ61OejwTOZ7oTYLG7hjW1DsiY3koJJZ8BKbWFzFLCdDota/JQWSQMg
- 5RSHdXAyc62g8Z6RiwbcjsW1QsCnWfAYao7+sX3Tn6e1k56NU+qS10UmEcbR3WAnU/5c
- lUVY9P0VC5T1cPJdjm48ChMbUwGlhqtikkZ2x9DCwLGte83hXvlC0PjNGk8zpVzIq5XY
- mwm2cZfmcjMXuqOgY1ut0BXI3nV3HQwwRQr7l0D7uYqY/xB+h3aDVxTIICyRbOpmlyuy
- P+LcjWw5Eo168umDZpGtAXcF7iHXSLgEmwUty7BPuqtntmRIPeXsLqWVvTg42iaQCjqW
- ux/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=kalVxG8ANnjjy1Dw3YQgCDZ3CtnSjchvQLTtFWwGZEI=;
- b=cpTyUZ1pnUTPvMlm5s6So4975bNKXy9wAoJh4/lPmbyHV5TujpqeHu1byk1vOK7trC
- MDkbQfaFetImrKXTexfz2BtobqG5bXjY2MqudgqUBZvqZ7dGKyS3ea/DlKLWgHa2DthD
- IGZJqzsAOu0OooK5ePDMdAvlnak5A3wwd4Q7XSNWBjqHPo1y4OiTsJLmIV2PqrSwtIxl
- MCcvs8VRlUNEDrqT3CleUylmukwg0cSaJZvUl78KFQdu4PvrBzHJwJL5A5pFSpeWNWs1
- 3A64l6dnkt6+ebd38LUZ8rxHyh+t83Si86oFYWdH1EdE0XFFYU9GNHLgUUUxKWazh/Ub
- RmiQ==
-X-Gm-Message-State: AOAM5311bnSt5OhuH2OUUunqPKmOm/TPZVxodkDl/EKiNMqVaShmy3RL
- EldW+RKC+RkE4xkt2C0HP9k=
-X-Google-Smtp-Source: ABdhPJx0yMa8t58yf/qnLF46Y5HIlOeGBFaAKUODUY+XylBgXMuqyo16Q2hhte1VcrtBV2DZouIbCA==
-X-Received: by 2002:ac8:32b8:: with SMTP id z53mr31042917qta.273.1595369629394; 
- Tue, 21 Jul 2020 15:13:49 -0700 (PDT)
-Received: from LeoBras (179-125-153-225.dynamic.desktop.com.br.
- [179.125.153.225])
- by smtp.gmail.com with ESMTPSA id g4sm22116489qtp.89.2020.07.21.15.13.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jul 2020 15:13:48 -0700 (PDT)
-Message-ID: <0f4c2d84d0958e98e7ada53c25750fe548cadf0b.camel@gmail.com>
-Subject: Re: [PATCH v4 5/7] powerpc/iommu: Move iommu_table cleaning routine
- to iommu_table_clean
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, 
- Christophe Leroy <christophe.leroy@c-s.fr>, Thiago Jung Bauermann
- <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>, Brian King
- <brking@linux.vnet.ibm.com>
-Date: Tue, 21 Jul 2020 19:13:42 -0300
-In-Reply-To: <51235292-a571-8792-c693-d0dc6faeb21c@ozlabs.ru>
-References: <20200716071658.467820-1-leobras.c@gmail.com>
- <20200716071658.467820-6-leobras.c@gmail.com>
- <51235292-a571-8792-c693-d0dc6faeb21c@ozlabs.ru>
-Organization: IBM
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBDrB5TZZzDqcl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 09:11:54 +1000 (AEST)
+Received: from localhost (gate.crashing.org [63.228.1.57])
+ (authenticated bits=0)
+ by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 06LNB4EP017146
+ (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Tue, 21 Jul 2020 18:11:11 -0500
+Message-ID: <54af168083aee9dbda1b531227521a26b77ba2c8.camel@kernel.crashing.org>
+Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To: Alex Ghiti <alex@ghiti.fr>, Palmer Dabbelt <palmer@dabbelt.com>
+Date: Wed, 22 Jul 2020 09:11:02 +1000
+In-Reply-To: <7cb2285e-68ba-6827-5e61-e33a4b65ac03@ghiti.fr>
+References: <mhng-831c4073-aefa-4aa0-a583-6a17f9aff9b7@palmerdabbelt-glaptop1>
+ <d7e3cbb7-c12a-bce2-f1db-c336d15f74bd@ghiti.fr>
+ <7cb2285e-68ba-6827-5e61-e33a4b65ac03@ghiti.fr>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
-MIME-Version: 1.0
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -90,92 +50,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: aou@eecs.berkeley.edu, linux-mm@kvack.org, Anup Patel <Anup.Patel@wdc.com>,
+ linux-kernel@vger.kernel.org, Atish Patra <Atish.Patra@wdc.com>,
+ paulus@samba.org, zong.li@sifive.com, Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-07-21 at 14:59 +1000, Alexey Kardashevskiy wrote:
-> 
-> On 16/07/2020 17:16, Leonardo Bras wrote:
-> > Move the part of iommu_table_free() that does struct iommu_table cleaning
-> > into iommu_table_clean, so we can invoke it separately.
+On Tue, 2020-07-21 at 14:36 -0400, Alex Ghiti wrote:
+> > > I guess I don't understand why this is necessary at all.  
+> > > Specifically: why
+> > > can't we just relocate the kernel within the linear map?  That would 
+> > > let the
+> > > bootloader put the kernel wherever it wants, modulo the physical 
+> > > memory size we
+> > > support.  We'd need to handle the regions that are coupled to the 
+> > > kernel's
+> > > execution address, but we could just put them in an explicit memory 
+> > > region
+> > > which is what we should probably be doing anyway.
 > > 
-> > This new function is useful for cleaning struct iommu_table before
-> > initializing it again with a new DMA window, without having it freed and
-> > allocated again.
+> > Virtual relocation in the linear mapping requires to move the kernel 
+> > physically too. Zong implemented this physical move in its KASLR RFC 
+> > patchset, which is cumbersome since finding an available physical spot 
+> > is harder than just selecting a virtual range in the vmalloc range.
 > > 
-> > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> > ---
-> >  arch/powerpc/kernel/iommu.c | 30 ++++++++++++++++++------------
-> >  1 file changed, 18 insertions(+), 12 deletions(-)
+> > In addition, having the kernel mapping in the linear mapping prevents 
+> > the use of hugepage for the linear mapping resulting in performance loss 
+> > (at least for the GB that encompasses the kernel).
 > > 
-> > diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> > index 9704f3f76e63..c3242253a4e7 100644
-> > --- a/arch/powerpc/kernel/iommu.c
-> > +++ b/arch/powerpc/kernel/iommu.c
-> > @@ -735,21 +735,10 @@ struct iommu_table *iommu_init_table(struct iommu_table *tbl, int nid,
-> >  	return tbl;
-> >  }
-> >  
-> > -static void iommu_table_free(struct kref *kref)
-> > +static void iommu_table_clean(struct iommu_table *tbl)
-> 
-> iommu_table_free() + iommu_init_table() + set_iommu_table_base() should
-> work too, why new helper?
+> > Why do you find this "ugly" ? The vmalloc region is just a bunch of 
+> > available virtual addresses to whatever purpose we want, and as noted by 
+> > Zong, arm64 uses the same scheme.
 
-iommu_table_free() also frees the tbl, which would need allocate it
-again (new address) and to fill it up again, unnecessarily. 
-I think it's a better approach to only change what is needed.
+I don't get it :-)
 
-> There is also iommu_table_clear() which does a different thing so you
-> need a better name.
+At least on powerpc we move the kernel in the linear mapping and it
+works fine with huge pages, what is your problem there ? You rely on
+punching small-page size holes in there ?
 
-I agree.
-I had not noticed this other function before sending the patchset. What
-would be a better name though? __iommu_table_free()? 
+At least in the old days, there were a number of assumptions that
+the kernel text/data/bss resides in the linear mapping.
 
-> Second, iommu_table_free
-> use and it would be ok as we would only see this when hot-unplugging a
-> PE because we always kept the default window.
-> Btw you must be seeing these warnings now every time you create DDW with
-> these patches as at least the first page is reserved, do not you?
+If you change that you need to ensure that it's still physically
+contiguous and you'll have to tweak __va and __pa, which might induce
+extra overhead.
 
-It does not print a warning.
-I noticed other warnings, but not this one from iommu_table_free():
-/* verify that table contains no entries */
-if (!bitmap_empty(tbl->it_ma
-p, tbl->it_size))
-	pr_warn("%s: Unexpected TCEs\n", __func__);
-
-Before that, iommu_table_release_pages(tbl) is supposed to clear the 
-bitmap, so this only tests for a tce that is created in this short period.
-
-> Since we are replacing a table for a device which is still in the
-> system, we should not try messing with its DMA if it already has
-> mappings so the warning should become an error preventing DDW. It is
-> rather hard to trigger in practice but I could hack a driver to ask for
-> 32bit DMA mask first, map few pages and then ask for 64bit DMA mask, it
-> is not illegal, I think. So this needs a new helper - "bool
-> iommu_table_in_use(tbl)" - to use in enable_ddw(). Or I am overthinking
-> this?... Thanks,
-
-As of today, there seems to be nothing like that happening in the
-driver I am testing. 
-I spoke to Brian King on slack, and he mentioned that at the point DDW
-is created there should be no allocations in place.
-
-But I suppose some driver could try to do this.
-
-Maybe a better approach would be removing the mapping only if the
-default window is removed (at the end of enable_ddw, as an else to
-resetting the default DMA window), and having a way to add more
-mappings to those pools. But this last part doesn't look so simple, and
-it would be better to understand if it's necessary investing work in
-this.
-
-What do you think?
-
-Best regards,
-
+Cheers,
+Ben.
+ 
 
