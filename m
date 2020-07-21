@@ -2,41 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42A822836C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 17:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C80D2283AE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 17:25:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BB2Jb4hbhzDqhm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:17:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BB2Tg5bcfzDqkR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:25:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=weiyongjun1@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=1IvOQ6YE; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BB25y03L2zDqf5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 01:08:00 +1000 (AEST)
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id 67FEC4F408849D84850E;
- Tue, 21 Jul 2020 23:07:47 +0800 (CST)
-Received: from kernelci-master.huawei.com (10.175.101.6) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 21 Jul 2020 23:07:38 +0800
-From: Wei Yongjun <weiyongjun1@huawei.com>
-To: Hulk Robot <hulkci@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Tyrel Datwyler <tyreld@linux.ibm.com>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH -next] PCI: rpadlpar: Make some functions static
-Date: Tue, 21 Jul 2020 23:17:35 +0800
-Message-ID: <20200721151735.41181-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BB2Mc4sdMzDqg5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 01:19:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=UDgd79BY7gi8TqLDKkueThe0INr/de8/XZtWeBtTp4g=; b=1IvOQ6YEO1bgDDlBTYlRghsRlv
+ x6BMvXrA/+9IbLHFeVn36I4gukr3Bn0cCKAe98VNUIWChuL16bJjc/bd3hPXxAasHTAKthuU/Zi1L
+ A6hgB1abgU+vFB7TWrZ/bSs2B7H8p8oL09ta8vegyhRMyjcQXB2NF24/OxAecpjm5PhtPH9d3PR4X
+ 8UhJ8Ag99fmvxPY0yXuOIz5+pu46/IdKlobtn7BI2JJUx27uO6IU0a6x+1Z133R8gYvanTD7wecUQ
+ ctczp/CH/WNRGibFW3GSKRLnVLScFDieEdSKBYR2C2N3yfCzMq4p8WGmHOzqQ5neJE9D6AZLrz0aK
+ mAmEF/5g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jxu3Z-0001Uy-MG; Tue, 21 Jul 2020 15:19:49 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 76765301AC6;
+ Tue, 21 Jul 2020 17:19:47 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 691E220107F23; Tue, 21 Jul 2020 17:19:47 +0200 (CEST)
+Date: Tue, 21 Jul 2020 17:19:47 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+Message-ID: <20200721151947.GD10769@hirez.programming.kicks-ass.net>
+References: <1594868476.6k5kvx8684.astroid@bobo.none>
+ <20200716110038.GA119549@hirez.programming.kicks-ass.net>
+ <1594906688.ikv6r4gznx.astroid@bobo.none>
+ <1314561373.18530.1594993363050.JavaMail.zimbra@efficios.com>
+ <1595213677.kxru89dqy2.astroid@bobo.none>
+ <2055788870.20749.1595263590675.JavaMail.zimbra@efficios.com>
+ <1595324577.x3bf55tpgu.astroid@bobo.none>
+ <20200721150656.GN119549@hirez.programming.kicks-ass.net>
+ <616209816.22376.1595344513051.JavaMail.zimbra@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.175.101.6]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <616209816.22376.1595344513051.JavaMail.zimbra@efficios.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,60 +78,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Wei Yongjun <weiyongjun1@huawei.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Jens Axboe <axboe@kernel.dk>, linux-arch <linux-arch@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, x86 <x86@kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@amacapital.net>,
+ linux-mm <linux-mm@kvack.org>, Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The sparse tool report build warnings as follows:
+On Tue, Jul 21, 2020 at 11:15:13AM -0400, Mathieu Desnoyers wrote:
+> ----- On Jul 21, 2020, at 11:06 AM, Peter Zijlstra peterz@infradead.org wrote:
+> 
+> > On Tue, Jul 21, 2020 at 08:04:27PM +1000, Nicholas Piggin wrote:
+> > 
+> >> That being said, the x86 sync core gap that I imagined could be fixed
+> >> by changing to rq->curr == rq->idle test does not actually exist because
+> >> the global membarrier does not have a sync core option. So fixing the
+> >> exit_lazy_tlb points that this series does *should* fix that. So
+> >> PF_KTHREAD may be less problematic than I thought from implementation
+> >> point of view, only semantics.
+> > 
+> > So I've been trying to figure out where that PF_KTHREAD comes from,
+> > commit 227a4aadc75b ("sched/membarrier: Fix p->mm->membarrier_state racy
+> > load") changed 'p->mm' to '!(p->flags & PF_KTHREAD)'.
+> > 
+> > So the first version:
+> > 
+> >  https://lkml.kernel.org/r/20190906031300.1647-5-mathieu.desnoyers@efficios.com
+> > 
+> > appears to unconditionally send the IPI and checks p->mm in the IPI
+> > context, but then v2:
+> > 
+> >  https://lkml.kernel.org/r/20190908134909.12389-1-mathieu.desnoyers@efficios.com
+> > 
+> > has the current code. But I've been unable to find the reason the
+> > 'p->mm' test changed into '!(p->flags & PF_KTHREAD)'.
+> 
+> Looking back at my inbox, it seems like you are the one who proposed to
+> skip all kthreads: 
+> 
+> https://lkml.kernel.org/r/20190904124333.GQ2332@hirez.programming.kicks-ass.net
 
-drivers/pci/hotplug/rpadlpar_core.c:355:5: warning:
- symbol 'dlpar_remove_pci_slot' was not declared. Should it be static?
-drivers/pci/hotplug/rpadlpar_core.c:461:12: warning:
- symbol 'rpadlpar_io_init' was not declared. Should it be static?
-drivers/pci/hotplug/rpadlpar_core.c:473:6: warning:
- symbol 'rpadlpar_io_exit' was not declared. Should it be static?
+I had a feeling it might've been me ;-) I just couldn't find the email.
 
-Those functions are not used outside of this file, so marks them
-static.
-Also mark rpadlpar_io_exit() as __exit.
+> > The comment doesn't really help either; sure we have the whole lazy mm
+> > thing, but that's ->active_mm, not ->mm.
+> > 
+> > Possibly it is because {,un}use_mm() do not have sufficient barriers to
+> > make the remote p->mm test work? Or were we over-eager with the !p->mm
+> > doesn't imply kthread 'cleanups' at the time?
+> 
+> The nice thing about adding back kthreads to the threads considered for membarrier
+> IPI is that it has no observable effect on the user-space ABI. No pre-existing kthread
+> rely on this, and we just provide an additional guarantee for future kthread
+> implementations.
+> 
+> > Also, I just realized, I still have a fix for use_mm() now
+> > kthread_use_mm() that seems to have been lost.
+> 
+> I suspect we need to at least document the memory barriers in kthread_use_mm and
+> kthread_unuse_mm to state that they are required by membarrier if we want to
+> ipi kthreads as well.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/pci/hotplug/rpadlpar_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Right, so going by that email you found it was mostly a case of being
+lazy, but yes, if we audit the kthread_{,un}use_mm() barriers and add
+any other bits that might be needed, covering kthreads should be
+possible.
 
-diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
-index c5eb509c72f0..f979b7098acf 100644
---- a/drivers/pci/hotplug/rpadlpar_core.c
-+++ b/drivers/pci/hotplug/rpadlpar_core.c
-@@ -352,7 +352,7 @@ static int dlpar_remove_vio_slot(char *drc_name, struct device_node *dn)
-  * -ENODEV		Not a valid drc_name
-  * -EIO			Internal PCI Error
-  */
--int dlpar_remove_pci_slot(char *drc_name, struct device_node *dn)
-+static int dlpar_remove_pci_slot(char *drc_name, struct device_node *dn)
- {
- 	struct pci_bus *bus;
- 	struct slot *slot;
-@@ -458,7 +458,7 @@ static inline int is_dlpar_capable(void)
- 	return (int) (rc != RTAS_UNKNOWN_SERVICE);
- }
- 
--int __init rpadlpar_io_init(void)
-+static int __init rpadlpar_io_init(void)
- {
- 
- 	if (!is_dlpar_capable()) {
-@@ -470,7 +470,7 @@ int __init rpadlpar_io_init(void)
- 	return dlpar_sysfs_init();
- }
- 
--void rpadlpar_io_exit(void)
-+static void __exit rpadlpar_io_exit(void)
- {
- 	dlpar_sysfs_exit();
- }
-
+No objections from me for making it so.
