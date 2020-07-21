@@ -1,82 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189EA227F76
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 13:58:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B99227F8D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 14:03:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9xvN72BhzDqCB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 21:58:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9y0X2zdfzDqQB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 22:03:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9xTF6zQlzDqHf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 21:39:29 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9xsf6XfXzDqlK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 21:57:10 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06LBVxeH047274; Tue, 21 Jul 2020 07:39:23 -0400
+ 06LBV9uI112011; Tue, 21 Jul 2020 07:56:56 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32d91v3unm-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32d5k0x2ds-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 07:39:23 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06LBW1W7047352;
- Tue, 21 Jul 2020 07:39:22 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32d91v3un9-1
+ Tue, 21 Jul 2020 07:56:56 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06LBWB61115046;
+ Tue, 21 Jul 2020 07:56:55 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32d5k0x2da-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 07:39:22 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LBZQuS024073;
- Tue, 21 Jul 2020 11:39:20 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 32brq7ktsu-1
+ Tue, 21 Jul 2020 07:56:55 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LBtgVL008126;
+ Tue, 21 Jul 2020 11:56:54 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 32brbh3sud-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 11:39:20 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06LBdGss16056722
+ Tue, 21 Jul 2020 11:56:53 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06LBupNK66584962
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Jul 2020 11:39:16 GMT
+ Tue, 21 Jul 2020 11:56:51 GMT
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A45E4203F;
- Tue, 21 Jul 2020 11:39:16 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D2A9842045;
+ Tue, 21 Jul 2020 11:56:51 +0000 (GMT)
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FE9D42045;
- Tue, 21 Jul 2020 11:39:11 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.85.93.17])
+ by IMSVA (Postfix) with ESMTP id AF64242042;
+ Tue, 21 Jul 2020 11:56:49 +0000 (GMT)
+Received: from [9.79.210.59] (unknown [9.79.210.59])
  by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Jul 2020 11:39:11 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <michaele@au1.ibm.com>
-Subject: [PATCH v2 10/10] powerpc/smp: Implement cpu_to_coregroup_id
-Date: Tue, 21 Jul 2020 17:08:14 +0530
-Message-Id: <20200721113814.32284-11-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
-References: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
+ Tue, 21 Jul 2020 11:56:49 +0000 (GMT)
+Subject: Re: [PATCH v2 2/2] selftest/cpuidle: Add support for cpuidle latency
+ measurement
+To: ego@linux.vnet.ibm.com
+References: <20200717091801.29289-1-psampat@linux.ibm.com>
+ <20200717091801.29289-3-psampat@linux.ibm.com>
+ <20200720055242.GB31497@in.ibm.com>
+From: Pratik Sampat <psampat@linux.ibm.com>
+Message-ID: <9465ac64-1f24-fea5-6c57-59cce00a2ba8@linux.ibm.com>
+Date: Tue, 21 Jul 2020 17:26:49 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <20200720055242.GB31497@in.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-21_05:2020-07-21,
+ definitions=2020-07-21_03:2020-07-21,
  2020-07-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 adultscore=0 suspectscore=0 clxscore=1015
- mlxlogscore=965 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007210077
+ bulkscore=0 phishscore=0
+ mlxlogscore=999 suspectscore=1 priorityscore=1501 mlxscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007210077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,87 +95,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Jordan Niethe <jniethe5@gmail.com>,
- Anton Blanchard <anton@au1.ibm.com>, LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Nick Piggin <npiggin@au1.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: linux-pm@vger.kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, paulus@samba.org,
+ linux-kselftest@vger.kernel.org, shuah@kernel.org, srivatsa@csail.mit.edu,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lookup the coregroup id from the associativity array.
+Hi Gautham, Thanks for the review.
 
-If unable to detect the coregroup id, fallback on the core id.
-This way, ensure sched_domain degenerates and an extra sched domain is
-not created.
 
-Ideally this function should have been implemented in
-arch/powerpc/kernel/smp.c. However if its implemented in mm/numa.c, we
-don't need to find the primary domain again.
+On 20/07/20 11:22 am, Gautham R Shenoy wrote:
+> Hi Pratik,
+>
+>
+> On Fri, Jul 17, 2020 at 02:48:01PM +0530, Pratik Rajesh Sampat wrote:
+>> This patch adds support to trace IPI based and timer based wakeup
+>> latency from idle states
+>>
+>> Latches onto the test-cpuidle_latency kernel module using the debugfs
+>> interface to send IPIs or schedule a timer based event, which in-turn
+>> populates the debugfs with the latency measurements.
+>>
+>> Currently for the IPI and timer tests; first disable all idle states
+>> and then test for latency measurements incrementally enabling each state
+>>
+>> Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+> A few comments below.
+>
+>> ---
+>>   tools/testing/selftests/Makefile           |   1 +
+>>   tools/testing/selftests/cpuidle/Makefile   |   6 +
+>>   tools/testing/selftests/cpuidle/cpuidle.sh | 257 +++++++++++++++++++++
+>>   tools/testing/selftests/cpuidle/settings   |   1 +
+>>   4 files changed, 265 insertions(+)
+>>   create mode 100644 tools/testing/selftests/cpuidle/Makefile
+>>   create mode 100755 tools/testing/selftests/cpuidle/cpuidle.sh
+>>   create mode 100644 tools/testing/selftests/cpuidle/settings
+>>
+> [..skip..]
+>
+>> +
+>> +ins_mod()
+>> +{
+>> +	if [ ! -f "$MODULE" ]; then
+>> +		printf "$MODULE module does not exist. Exitting\n"
+> If the module has been compiled into the kernel (due to a
+> localyesconfig, for instance), then it is unlikely that we will find
+> it in /lib/modules. Perhaps you want to check if the debugfs
+> directories created by the module exist, and if so, print a message
+> saying that the modules is already loaded or some such?
+>
+That's a good idea. I can can grep for this module within /proc/modules
+and not insert it, if it is already there
 
-If the device-tree mentions more than one coregroup, then kernel
-implements only the last or the smallest coregroup, which currently
-corresponds to the penultimate domain in the device-tree.
+>> +		exit $ksft_skip
+>> +	fi
+>> +	printf "Inserting $MODULE module\n\n"
+>> +	insmod $MODULE
+>> +	if [ $? != 0 ]; then
+>> +		printf "Insmod $MODULE failed\n"
+>> +		exit $ksft_skip
+>> +	fi
+>> +}
+>> +
+>> +compute_average()
+>> +{
+>> +	arr=("$@")
+>> +	sum=0
+>> +	size=${#arr[@]}
+>> +	for i in "${arr[@]}"
+>> +	do
+>> +		sum=$((sum + i))
+>> +	done
+>> +	avg=$((sum/size))
+> It would be good to assert that "size" isn't 0 here.
 
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-Cc: Michael Ellerman <michaele@au1.ibm.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Nick Piggin <npiggin@au1.ibm.com>
-Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Michael Neuling <mikey@linux.ibm.com>
-Cc: Anton Blanchard <anton@au1.ibm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-Cc: Jordan Niethe <jniethe5@gmail.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
----
-Changelog v1 -> v2:
-powerpc/smp: Implement cpu_to_coregroup_id
-	Move coregroup_enabled before getting associativity (Gautham)
+Sure
 
- arch/powerpc/mm/numa.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+>> +}
+>> +
+>> +# Disable all stop states
+>> +disable_idle()
+>> +{
+>> +	for ((cpu=0; cpu<NUM_CPUS; cpu++))
+>> +	do
+>> +		for ((state=0; state<NUM_STATES; state++))
+>> +		do
+>> +			echo 1 > /sys/devices/system/cpu/cpu$cpu/cpuidle/state$state/disable
+> So, on offlined CPUs, we won't see
+> /sys/devices/system/cpu/cpu$cpu/cpuidle/state$state directory. You
+> should probably perform this operation only on online CPUs.
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index ef8aa580da21..ae57b68beaee 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -1218,6 +1218,26 @@ int find_and_online_cpu_nid(int cpu)
- 
- int cpu_to_coregroup_id(int cpu)
- {
-+	__be32 associativity[VPHN_ASSOC_BUFSIZE] = {0};
-+	int index;
-+
-+	if (cpu < 0 || cpu > nr_cpu_ids)
-+		return -1;
-+
-+	if (!coregroup_enabled)
-+		goto out;
-+
-+	if (!firmware_has_feature(FW_FEATURE_VPHN))
-+		goto out;
-+
-+	if (vphn_get_associativity(cpu, associativity))
-+		goto out;
-+
-+	index = of_read_number(associativity, 1);
-+	if (index > min_common_depth + 1)
-+		return of_read_number(&associativity[index - 1], 1);
-+
-+out:
- 	return cpu_to_core_id(cpu);
- }
- 
--- 
-2.17.1
+Right. I should make CPU operations only on online CPUs all over the script
+
+[..snip..]
+
+Thanks
+Pratik
 
