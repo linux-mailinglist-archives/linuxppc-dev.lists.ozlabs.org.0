@@ -2,73 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0603B228330
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 17:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC1A228343
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 17:13:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BB25n1gqLzDqZG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:07:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BB2Ck4hQ2zDqcM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:13:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::442;
- helo=mail-wr1-x442.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=R9RGlsgq; dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=rRt75ZQ6; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BB1wv6rBBzDqLw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 01:00:15 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id f7so21540705wrw.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 08:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=gkcdZTp2vhYAj6bOy4b93mUdztEgbAoKRStl6TIAF08=;
- b=R9RGlsgqzV6dj+XgA5tLGi4k+d6eegdhlMqHNZSTpznh+TqDXoiyuhz+daPZSJfUYa
- /4a5pa1wa2Y0goWjd+Wrwn4odA33wh6Z35ODwUBhsDDq83R1Zlh7EdhMFytzEk7aCdCC
- qGtbZTvfbdaHEagPT16HzRuSvceREEgOzsPRaCHFS0N77rfaNhkBR7giM5gyYmCJ/2eP
- Iy3cRScwAcIL0f13FWZvF3xxr5iu9ypG+dGAufGXtT3uxa/sNmS1Qui0oBd525kp9JuK
- 7um+mMi/c6X6A6bYMRI7kejfTJkTWfOgSvdyx1xKm9q6TfHZFOpwC9eI0nqK2km0oWW6
- iEQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=gkcdZTp2vhYAj6bOy4b93mUdztEgbAoKRStl6TIAF08=;
- b=KZO3z5NzWZaPMsOi+N9bq+JnfcW8RYnXi69hW5Pp2MPF9AN17/TqI4FAbnUVM4Z8kz
- UWK30888sB/rWjcy1cGvMbyqKBKZ7a3c0o8cJjnruJOFKjkvxdDBHcDj44v6CuxVOZBG
- WF3vQRk90tY4qGw8ZZwLFE55ABsSzQpmFr+n7bU542VwVVLiI+Y+pta46uXQ0pRZQjwy
- 3nXM8nZQkAyAeIXaMFujMcsKz0LoYJPpwm0EAUHX9Miaz+fbVE0f9x8jF81yqyZYrho/
- TP1x7p/OPXnL6C3yNse0FMs+RUxoo2wdP1cZwLeIMeymhZy48IPKB36ZR36H6TAE4i5V
- os8w==
-X-Gm-Message-State: AOAM530eCbivoOMq3wUoNgcOQi+/6/xWLiB3l3nrWiOR5PzZoH3rzECw
- v0YV5DJIVzNu5uLgxVex+981fGfU
-X-Google-Smtp-Source: ABdhPJzTxDMzbVi+0xwmEzR8lYOBJgczo5MbDu5Ifcdk7/gzjbnhYsKoNgqiQ9aaWprfNpNJ/dSBoQ==
-X-Received: by 2002:adf:bc07:: with SMTP id s7mr13029096wrg.254.1595343611129; 
- Tue, 21 Jul 2020 08:00:11 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id n5sm3722564wmi.34.2020.07.21.08.00.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jul 2020 08:00:10 -0700 (PDT)
-Date: Wed, 22 Jul 2020 01:00:04 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
- MMIO access, in sprg0 register
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Ram Pai
- <linuxram@us.ibm.com>
-References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
-In-Reply-To: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BB24t4L9xzDqgV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 01:07:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=71NowoGixtjq18mdGDFwmexc9Svbvbn0P+0c9pBBqgg=; b=rRt75ZQ6MHmsL8Qdoi91H5eebV
+ dCcz3R9DppcQ2ntNO9cFf8oqJi04KtbpTMehLI39j3dKmmhdAVRH5bVYndvxaJNpA/DqfyVinxYGN
+ 4wCiFh0XHZeoShMLF7IOtAT5tN7oYtFwe1J8e27ORUWy9y4nReRCdHhl7PAu9mkgYWnbz6BnP15t3
+ Kv6TTWUFLONBnnoLGn0gZV0nbzrFMyD5l9wQBGJa/jZXyub+Fh2HmfHHTteNM515Rrc/d7TKsFzus
+ ipKUcf4/8bBgn/bOJuQ33i8snhLjZlyWxrqpo2ZqOzuGIhrUqm3Y/WrBFzGxvivjlB5zxnARHjmHo
+ d1JJ38/g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jxtrA-0007WY-0P; Tue, 21 Jul 2020 15:07:00 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 40027300446;
+ Tue, 21 Jul 2020 17:06:56 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 2C5FB203B8783; Tue, 21 Jul 2020 17:06:56 +0200 (CEST)
+Date: Tue, 21 Jul 2020 17:06:56 +0200
+From: peterz@infradead.org
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
+ membarrier_mm_sync_core_before_usermode
+Message-ID: <20200721150656.GN119549@hirez.programming.kicks-ass.net>
+References: <1594868476.6k5kvx8684.astroid@bobo.none>
+ <EFAD6E2F-EC08-4EB3-9ECC-2A963C023FC5@amacapital.net>
+ <20200716085032.GO10769@hirez.programming.kicks-ass.net>
+ <1594892300.mxnq3b9a77.astroid@bobo.none>
+ <20200716110038.GA119549@hirez.programming.kicks-ass.net>
+ <1594906688.ikv6r4gznx.astroid@bobo.none>
+ <1314561373.18530.1594993363050.JavaMail.zimbra@efficios.com>
+ <1595213677.kxru89dqy2.astroid@bobo.none>
+ <2055788870.20749.1595263590675.JavaMail.zimbra@efficios.com>
+ <1595324577.x3bf55tpgu.astroid@bobo.none>
 MIME-Version: 1.0
-Message-Id: <1595342553.d7hx0ljll3.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1595324577.x3bf55tpgu.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,76 +79,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sukadev@linux.vnet.ibm.com, aik@ozlabs.ru, bharata@linux.ibm.com,
- sathnaga@linux.vnet.ibm.com, ldufour@linux.ibm.com, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: Jens Axboe <axboe@kernel.dk>, linux-arch <linux-arch@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, x86 <x86@kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Andy Lutomirski <luto@amacapital.net>, linux-mm <linux-mm@kvack.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Ram Pai's message of July 16, 2020 6:32 pm:
-> An instruction accessing a mmio address, generates a HDSI fault.  This fa=
-ult is
-> appropriately handled by the Hypervisor.  However in the case of secureVM=
-s, the
-> fault is delivered to the ultravisor.
+On Tue, Jul 21, 2020 at 08:04:27PM +1000, Nicholas Piggin wrote:
 
-Why not a ucall if you're paraultravizing it anyway?
+> That being said, the x86 sync core gap that I imagined could be fixed 
+> by changing to rq->curr == rq->idle test does not actually exist because
+> the global membarrier does not have a sync core option. So fixing the
+> exit_lazy_tlb points that this series does *should* fix that. So
+> PF_KTHREAD may be less problematic than I thought from implementation
+> point of view, only semantics.
 
->=20
-> Unfortunately the Ultravisor has no correct-way to fetch the faulting
-> instruction. The PEF architecture does not allow Ultravisor to enable MMU
-> translation. Walking the two level page table to read the instruction can=
- race
-> with other vcpus modifying the SVM's process scoped page table.
->=20
-> This problem can be correctly solved with some help from the kernel.
->=20
-> Capture the faulting instruction in SPRG0 register, before executing the
-> faulting instruction. This enables the ultravisor to easily procure the
-> faulting instruction and emulate it.
->=20
-> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-> ---
->  arch/powerpc/include/asm/io.h | 85 +++++++++++++++++++++++++++++++++++++=
-+-----
->  1 file changed, 75 insertions(+), 10 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.=
-h
-> index 635969b..7ef663d 100644
-> --- a/arch/powerpc/include/asm/io.h
-> +++ b/arch/powerpc/include/asm/io.h
-> @@ -35,6 +35,7 @@
->  #include <asm/mmu.h>
->  #include <asm/ppc_asm.h>
->  #include <asm/pgtable.h>
-> +#include <asm/svm.h>
-> =20
->  #define SIO_CONFIG_RA	0x398
->  #define SIO_CONFIG_RD	0x399
-> @@ -105,34 +106,98 @@
->  static inline u##size name(const volatile u##size __iomem *addr)	\
->  {									\
->  	u##size ret;							\
-> -	__asm__ __volatile__("sync;"#insn" %0,%y1;twi 0,%0,0;isync"	\
-> -		: "=3Dr" (ret) : "Z" (*addr) : "memory");			\
-> +	if (is_secure_guest()) {					\
-> +		__asm__ __volatile__("mfsprg0 %3;"			\
-> +				"lnia %2;"				\
-> +				"ld %2,12(%2);"				\
-> +				"mtsprg0 %2;"				\
-> +				"sync;"					\
-> +				#insn" %0,%y1;"				\
-> +				"twi 0,%0,0;"				\
-> +				"isync;"				\
-> +				"mtsprg0 %3"				\
+So I've been trying to figure out where that PF_KTHREAD comes from,
+commit 227a4aadc75b ("sched/membarrier: Fix p->mm->membarrier_state racy
+load") changed 'p->mm' to '!(p->flags & PF_KTHREAD)'.
 
-We prefer to use mtspr in new code, and the nia offset should be=20
-calculated with a label I think "(1f - .)(%2)" should work.
+So the first version:
 
-SPRG usage is documented in arch/powerpc/include/asm/reg.h if this=20
-goes past RFC stage. Looks like SPRG0 probably could be used for this.
+  https://lkml.kernel.org/r/20190906031300.1647-5-mathieu.desnoyers@efficios.com
 
-Thanks,
-Nick
+appears to unconditionally send the IPI and checks p->mm in the IPI
+context, but then v2:
+
+  https://lkml.kernel.org/r/20190908134909.12389-1-mathieu.desnoyers@efficios.com
+
+has the current code. But I've been unable to find the reason the
+'p->mm' test changed into '!(p->flags & PF_KTHREAD)'.
+
+The comment doesn't really help either; sure we have the whole lazy mm
+thing, but that's ->active_mm, not ->mm.
+
+Possibly it is because {,un}use_mm() do not have sufficient barriers to
+make the remote p->mm test work? Or were we over-eager with the !p->mm
+doesn't imply kthread 'cleanups' at the time?
+
+Also, I just realized, I still have a fix for use_mm() now
+kthread_use_mm() that seems to have been lost.
+
+
