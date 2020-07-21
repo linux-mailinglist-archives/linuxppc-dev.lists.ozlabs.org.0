@@ -2,77 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AD9227D84
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 12:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BB6227E79
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 13:12:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9wKS0lZTzDqgs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 20:47:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9wt402zlzDqf4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 21:12:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::444;
+ helo=mail-wr1-x444.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=FqYmz9UB; dkim-atps=neutral
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9wCD5c6VzDqYj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 20:42:16 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06LAXNee124166; Tue, 21 Jul 2020 06:42:11 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32d5h8mgqj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 06:42:10 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LAXDft024900;
- Tue, 21 Jul 2020 10:42:08 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 32brbh3qg3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Jul 2020 10:42:08 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06LAg5iY62390432
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Jul 2020 10:42:05 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BEF104C058;
- Tue, 21 Jul 2020 10:42:05 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5B7BD4C064;
- Tue, 21 Jul 2020 10:42:05 +0000 (GMT)
-Received: from pomme.tlslab.ibm.com (unknown [9.145.36.105])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Jul 2020 10:42:05 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, mpe@ellerman.id.au, paulus@samba.org
-Subject: [PATCH v2 2/2] KVM: PPC: Book3S HV: rework secure mem slot dropping
-Date: Tue, 21 Jul 2020 12:42:02 +0200
-Message-Id: <20200721104202.15727-3-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200721104202.15727-1-ldufour@linux.ibm.com>
-References: <20200721104202.15727-1-ldufour@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9wp32JC4zDq72
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 21:08:58 +1000 (AEST)
+Received: by mail-wr1-x444.google.com with SMTP id z2so20828515wrp.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 04:08:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=XunMdMvkWzPxzceSO8589OZZNxbcZ0jXERe3FDXc4Go=;
+ b=FqYmz9UBE4PDn0hc2i03AxdNbgdQuWC26CHX+LTmpFPMyc3D5Tdwionxj0V9wAv1rX
+ 5R1AZXE6ZKQqXTLvZE9IUPRBZDoLgY1Is9uxLpNFrqG6R8tVYU0s+m9hm6WfNPpZF0BI
+ dp3WqItm2fG6M+4OcZjfj2YSlRy0vbZlt418Pt2xXWP5O8D85Gc4xtIQPlRvlCu0o7nB
+ v7b5+223qylm20s3dIAnXRQ7ZuLzJgZU0zGf8k3rVd13tB0HUxwPPSd6CpLqkBOjwI/L
+ 6IkkN4GJGEdPfpBjb4gnmkC4tHt3tPOlup3nvOf2M/0yA1pX0lRqrPCd6mt8s4ZARSdu
+ KZzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=XunMdMvkWzPxzceSO8589OZZNxbcZ0jXERe3FDXc4Go=;
+ b=oUNl1CVh1KcTYZBaRwzuGHrTyzz+Y1Wtc3uC0wgs6LtO3GWzPKpUNhRv8a/z0nuf25
+ Ku1NFUTf7hCCSXfjWGY5uXj5mhgtm15iXa+NdvuHvwEgoNXhKSun0DtTiQPIVrKh0Ytt
+ 1A4V0mLJr8FDHtwdA3Q9ALWDog63k7+30rhiXv6+BOz37ezAo8IG8EI5FgCCO3TO3ZAx
+ /PHPI4iWgiDj/A3lx7OLM4xHt0qNrN9AsSiiDCjzrcpvej0V7tcGKuH2O2gJ3c1ulG/T
+ KeBPnMZu1XDOqGZR3PJOsfercd6HXZx2Lt3S/tsFxEp89LEMoMMw9z/eAeybHr5cwVZD
+ o4ww==
+X-Gm-Message-State: AOAM5304EwWb6xRUne//KhoUgkIbGiA7Cq95J3R+9nqPurcHN4Qy2n2A
+ GIutsw5tH43zpgBY4d4VkFo=
+X-Google-Smtp-Source: ABdhPJxb6Obroh8Tbl1JjXl1VQrrbHCwwmkBeiHvK1odJZa3Wx4Vfqy2xFxD9h9aE7o5NRR8+xd/Fw==
+X-Received: by 2002:a5d:458a:: with SMTP id p10mr25848278wrq.184.1595329734966; 
+ Tue, 21 Jul 2020 04:08:54 -0700 (PDT)
+Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id k131sm3138401wmb.36.2020.07.21.04.08.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Jul 2020 04:08:54 -0700 (PDT)
+Date: Tue, 21 Jul 2020 21:08:47 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 0/6] powerpc: queued spinlocks and rwlocks
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <24f75d2c-60cd-2766-4aab-1a3b1c80646e@redhat.com>
+ <1594101082.hfq9x5yact.astroid@bobo.none>
+ <20200708084106.GE597537@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200708084106.GE597537@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-21_03:2020-07-21,
- 2020-07-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- mlxlogscore=698 spamscore=0 adultscore=0 clxscore=1015 mlxscore=0
- priorityscore=1501 bulkscore=0 impostorscore=0 suspectscore=2
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007210075
+Message-Id: <1595327263.lk78cqolxm.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,119 +81,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sukadev@linux.ibm.com, linuxram@us.ibm.com, bauerman@linux.ibm.com,
- bharata@linux.ibm.com
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a secure memslot is dropped, all the pages backed in the secure device
-(aka really backed by secure memory by the Ultravisor) should be paged out
-to a normal page. Previously, this was achieved by triggering the page
-fault mechanism which is calling kvmppc_svm_page_out() on each pages.
+Excerpts from Peter Zijlstra's message of July 8, 2020 6:41 pm:
+> On Tue, Jul 07, 2020 at 03:57:06PM +1000, Nicholas Piggin wrote:
+>> Yes, powerpc could certainly get more performance out of the slow
+>> paths, and then there are a few parameters to tune.
+>=20
 
-This can't work when hot unplugging a memory slot because the memory slot
-is flagged as invalid and gfn_to_pfn() is then not trying to access the
-page, so the page fault mechanism is not triggered.
+Sorry for the delay, got bogged down and distracted by other things :(
 
-Since the final goal is to make a call to kvmppc_svm_page_out() it seems
-simpler to directly calling it instead of triggering such a mechanism. This
-way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
-memslot.
+> Can you clarify? The slow path is already in use on ARM64 which is weak,
+> so I doubt there's superfluous serialization present. And Will spend a
+> fair amount of time on making that thing guarantee forward progressm, so
+> there just isn't too much room to play.
 
-Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
-the call to __kvmppc_svm_page_out() is made.
-As __kvmppc_svm_page_out needs the vma pointer to migrate the pages, the
-VMA is fetched in a lazy way, to not trigger find_vma() all the time. In
-addition, the mmap_sem is help in read mode during that time, not in write
-mode since the virual memory layout is not impacted, and
-kvm->arch.uvmem_lock prevents concurrent operation on the secure device.
+Sure, the way the pending not-queued slowpath (which I guess is the
+medium-path) is implemented is just poorly structured for LL/SC. It
+has one more atomic than necessary (queued_fetch_set_pending_acquire),
+and a lot of branches in suboptimal order.
 
-Cc: Ram Pai <linuxram@us.ibm.com>
-Cc: Bharata B Rao <bharata@linux.ibm.com>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Attached patch (completely untested just compiled and looked at asm
+so far) is a way we can fix this on powerpc I think. It's actually
+very little generic code change which is good, duplicated medium-path
+logic unfortunately but that's no worse than something like x86
+really.
+
+>> We don't have a good alternate patching for function calls yet, but
+>> that would be something to do for native vs pv.
+>=20
+> Going by your jump_label implementation, support for static_call should
+> be fairly straight forward too, no?
+>=20
+>   https://lkml.kernel.org/r/20200624153024.794671356@infradead.org
+
+Nice, yeah it should be. I've wanted this for ages!
+
+powerpc is kind of annoying to implement that with limited call range,
+Hmm, not sure if we'd need a new linker feature to support it. We'd
+provide call site patch space for indirect branches for those out of
+range of direct call, so that should work fine. The trick would be=20
+patching in the TOC lookup for the function... should be doable somehow.
+
+Thanks,
+Nick
+
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 54 ++++++++++++++++++++----------
- 1 file changed, 37 insertions(+), 17 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 5a4b02d3f651..ba5c7c77cc3a 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -624,35 +624,55 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
-  * fault on them, do fault time migration to replace the device PTEs in
-  * QEMU page table with normal PTEs from newly allocated pages.
-  */
--void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
-+void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
- 			     struct kvm *kvm, bool skip_page_out)
+diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/as=
+m/qspinlock.h
+index b752d34517b3..26d8766a1106 100644
+--- a/arch/powerpc/include/asm/qspinlock.h
++++ b/arch/powerpc/include/asm/qspinlock.h
+@@ -31,16 +31,57 @@ static inline void queued_spin_unlock(struct qspinlock =
+*lock)
+=20
+ #else
+ extern void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
++extern void queued_spin_lock_slowpath_queue(struct qspinlock *lock);
+ #endif
+=20
+ static __always_inline void queued_spin_lock(struct qspinlock *lock)
  {
- 	int i;
- 	struct kvmppc_uvmem_page_pvt *pvt;
--	unsigned long pfn, uvmem_pfn;
--	unsigned long gfn = free->base_gfn;
-+	struct page *uvmem_page;
-+	struct vm_area_struct *vma = NULL;
-+	unsigned long uvmem_pfn, gfn;
-+	unsigned long addr, end;
-+
-+	mmap_read_lock(kvm->mm);
-+
-+	addr = slot->userspace_addr;
-+	end = addr + (slot->npages * PAGE_SIZE);
- 
--	for (i = free->npages; i; --i, ++gfn) {
--		struct page *uvmem_page;
-+	gfn = slot->base_gfn;
-+	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
-+
-+		/* Fetch the VMA if addr is not in the latest fetched one */
-+		if (!vma || (addr < vma->vm_start || addr >= vma->vm_end)) {
-+			vma = find_vma_intersection(kvm->mm, addr, end);
-+			if (!vma ||
-+			    vma->vm_start > addr || vma->vm_end < end) {
-+				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
-+				break;
-+			}
-+		}
- 
- 		mutex_lock(&kvm->arch.uvmem_lock);
--		if (!kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+
-+		if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+			uvmem_page = pfn_to_page(uvmem_pfn);
-+			pvt = uvmem_page->zone_device_data;
-+			pvt->skip_page_out = skip_page_out;
-+			pvt->remove_gfn = true;
-+
-+			if (__kvmppc_svm_page_out(vma, addr, addr + PAGE_SIZE,
-+						  PAGE_SHIFT, kvm, pvt->gpa))
-+				pr_err("Can't page out gpa:0x%lx addr:0x%lx\n",
-+				       pvt->gpa, addr);
-+		} else {
-+			/* Remove the shared flag if any */
- 			kvmppc_gfn_remove(gfn, kvm);
--			mutex_unlock(&kvm->arch.uvmem_lock);
--			continue;
- 		}
- 
--		uvmem_page = pfn_to_page(uvmem_pfn);
--		pvt = uvmem_page->zone_device_data;
--		pvt->skip_page_out = skip_page_out;
--		pvt->remove_gfn = true;
- 		mutex_unlock(&kvm->arch.uvmem_lock);
+-	u32 val =3D 0;
 -
--		pfn = gfn_to_pfn(kvm, gfn);
--		if (is_error_noslot_pfn(pfn))
--			continue;
--		kvm_release_pfn_clean(pfn);
- 	}
+-	if (likely(atomic_try_cmpxchg_lock(&lock->val, &val, _Q_LOCKED_VAL)))
++	atomic_t *a =3D &lock->val;
++	u32 val;
 +
-+	mmap_read_unlock(kvm->mm);
++again:
++	asm volatile(
++"1:\t"	PPC_LWARX(%0,0,%1,1) "	# queued_spin_lock			\n"
++	: "=3D&r" (val)
++	: "r" (&a->counter)
++	: "memory");
++
++	if (likely(val =3D=3D 0)) {
++		asm_volatile_goto(
++	"	stwcx.	%0,0,%1							\n"
++	"	bne-	%l[again]						\n"
++	"\t"	PPC_ACQUIRE_BARRIER "						\n"
++		:
++		: "r"(_Q_LOCKED_VAL), "r" (&a->counter)
++		: "cr0", "memory"
++		: again );
+ 		return;
+-
+-	queued_spin_lock_slowpath(lock, val);
++	}
++
++	if (likely(val =3D=3D _Q_LOCKED_VAL)) {
++		asm_volatile_goto(
++	"	stwcx.	%0,0,%1							\n"
++	"	bne-	%l[again]						\n"
++		:
++		: "r"(_Q_LOCKED_VAL | _Q_PENDING_VAL), "r" (&a->counter)
++		: "cr0", "memory"
++		: again );
++
++		atomic_cond_read_acquire(a, !(VAL & _Q_LOCKED_MASK));
++//		clear_pending_set_locked(lock);
++		WRITE_ONCE(lock->locked_pending, _Q_LOCKED_VAL);
++//		lockevent_inc(lock_pending);
++		return;
++	}
++
++	if (val =3D=3D _Q_PENDING_VAL) {
++		int cnt =3D _Q_PENDING_LOOPS;
++		val =3D atomic_cond_read_relaxed(a,
++					       (VAL !=3D _Q_PENDING_VAL) || !cnt--);
++		if (!(val & ~_Q_LOCKED_MASK))
++			goto again;
++        }
++	queued_spin_lock_slowpath_queue(lock);
  }
- 
- unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
--- 
-2.27.0
-
+ #define queued_spin_lock queued_spin_lock
+=20
+diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
+index b9515fcc9b29..ebcc6f5d99d5 100644
+--- a/kernel/locking/qspinlock.c
++++ b/kernel/locking/qspinlock.c
+@@ -287,10 +287,14 @@ static __always_inline u32  __pv_wait_head_or_lock(st=
+ruct qspinlock *lock,
+=20
+ #ifdef CONFIG_PARAVIRT_SPINLOCKS
+ #define queued_spin_lock_slowpath	native_queued_spin_lock_slowpath
++#define queued_spin_lock_slowpath_queue	native_queued_spin_lock_slowpath_q=
+ueue
+ #endif
+=20
+ #endif /* _GEN_PV_LOCK_SLOWPATH */
+=20
++void queued_spin_lock_slowpath_queue(struct qspinlock *lock);
++static void __queued_spin_lock_slowpath_queue(struct qspinlock *lock);
++
+ /**
+  * queued_spin_lock_slowpath - acquire the queued spinlock
+  * @lock: Pointer to queued spinlock structure
+@@ -314,12 +318,6 @@ static __always_inline u32  __pv_wait_head_or_lock(str=
+uct qspinlock *lock,
+  */
+ void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
+ {
+-	struct mcs_spinlock *prev, *next, *node;
+-	u32 old, tail;
+-	int idx;
+-
+-	BUILD_BUG_ON(CONFIG_NR_CPUS >=3D (1U << _Q_TAIL_CPU_BITS));
+-
+ 	if (pv_enabled())
+ 		goto pv_queue;
+=20
+@@ -397,6 +395,26 @@ void queued_spin_lock_slowpath(struct qspinlock *lock,=
+ u32 val)
+ queue:
+ 	lockevent_inc(lock_slowpath);
+ pv_queue:
++	__queued_spin_lock_slowpath_queue(lock);
++}
++EXPORT_SYMBOL(queued_spin_lock_slowpath);
++
++void queued_spin_lock_slowpath_queue(struct qspinlock *lock)
++{
++	lockevent_inc(lock_slowpath);
++	__queued_spin_lock_slowpath_queue(lock);
++}
++EXPORT_SYMBOL(queued_spin_lock_slowpath_queue);
++
++static void __queued_spin_lock_slowpath_queue(struct qspinlock *lock)
++{
++	struct mcs_spinlock *prev, *next, *node;
++	u32 old, tail;
++	u32 val;
++	int idx;
++
++	BUILD_BUG_ON(CONFIG_NR_CPUS >=3D (1U << _Q_TAIL_CPU_BITS));
++
+ 	node =3D this_cpu_ptr(&qnodes[0].mcs);
+ 	idx =3D node->count++;
+ 	tail =3D encode_tail(smp_processor_id(), idx);
+@@ -559,7 +577,6 @@ void queued_spin_lock_slowpath(struct qspinlock *lock, =
+u32 val)
+ 	 */
+ 	__this_cpu_dec(qnodes[0].mcs.count);
+ }
+-EXPORT_SYMBOL(queued_spin_lock_slowpath);
+=20
+ /*
+  * Generate the paravirt code for queued_spin_unlock_slowpath().
