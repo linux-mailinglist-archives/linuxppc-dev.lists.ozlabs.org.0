@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3D9228C89
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:13:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA44228C94
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 01:15:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBDt96RjczDqkj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:13:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBDwj2Z9wzDqhN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:15:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,22 +19,20 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from kernel.crashing.org (kernel.crashing.org [76.164.61.194])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBDrB5TZZzDqcl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 09:11:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBDt72DwnzDqkR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 09:13:35 +1000 (AEST)
 Received: from localhost (gate.crashing.org [63.228.1.57])
  (authenticated bits=0)
- by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 06LNB4EP017146
+ by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 06LNCxrb017185
  (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Tue, 21 Jul 2020 18:11:11 -0500
-Message-ID: <54af168083aee9dbda1b531227521a26b77ba2c8.camel@kernel.crashing.org>
+ Tue, 21 Jul 2020 18:13:05 -0500
+Message-ID: <6fbea8347bdb8434d91cf3ec2b95b134bd66cfe3.camel@kernel.crashing.org>
 Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
 From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Alex Ghiti <alex@ghiti.fr>, Palmer Dabbelt <palmer@dabbelt.com>
-Date: Wed, 22 Jul 2020 09:11:02 +1000
-In-Reply-To: <7cb2285e-68ba-6827-5e61-e33a4b65ac03@ghiti.fr>
-References: <mhng-831c4073-aefa-4aa0-a583-6a17f9aff9b7@palmerdabbelt-glaptop1>
- <d7e3cbb7-c12a-bce2-f1db-c336d15f74bd@ghiti.fr>
- <7cb2285e-68ba-6827-5e61-e33a4b65ac03@ghiti.fr>
+To: Palmer Dabbelt <palmer@dabbelt.com>, alex@ghiti.fr
+Date: Wed, 22 Jul 2020 09:12:58 +1000
+In-Reply-To: <mhng-08bff01a-ca15-4bbc-8454-2ca3e823fef8@palmerdabbelt-glaptop1>
+References: <mhng-08bff01a-ca15-4bbc-8454-2ca3e823fef8@palmerdabbelt-glaptop1>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 Mime-Version: 1.0
@@ -58,46 +56,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-07-21 at 14:36 -0400, Alex Ghiti wrote:
-> > > I guess I don't understand why this is necessary at all.  
-> > > Specifically: why
-> > > can't we just relocate the kernel within the linear map?  That would 
-> > > let the
-> > > bootloader put the kernel wherever it wants, modulo the physical 
-> > > memory size we
-> > > support.  We'd need to handle the regions that are coupled to the 
-> > > kernel's
-> > > execution address, but we could just put them in an explicit memory 
-> > > region
-> > > which is what we should probably be doing anyway.
-> > 
-> > Virtual relocation in the linear mapping requires to move the kernel 
-> > physically too. Zong implemented this physical move in its KASLR RFC 
-> > patchset, which is cumbersome since finding an available physical spot 
-> > is harder than just selecting a virtual range in the vmalloc range.
-> > 
-> > In addition, having the kernel mapping in the linear mapping prevents 
-> > the use of hugepage for the linear mapping resulting in performance loss 
-> > (at least for the GB that encompasses the kernel).
-> > 
-> > Why do you find this "ugly" ? The vmalloc region is just a bunch of 
-> > available virtual addresses to whatever purpose we want, and as noted by 
-> > Zong, arm64 uses the same scheme.
+On Tue, 2020-07-21 at 12:05 -0700, Palmer Dabbelt wrote:
+> 
+> * We waste vmalloc space on 32-bit systems, where there isn't a lot of it.
+> * On 64-bit systems the VA space around the kernel is precious because it's the
+>   only place we can place text (modules, BPF, whatever). 
 
-I don't get it :-)
+Why ? Branch distance limits ? You can't use trampolines ?
 
-At least on powerpc we move the kernel in the linear mapping and it
-works fine with huge pages, what is your problem there ? You rely on
-punching small-page size holes in there ?
+>  If we start putting
+>   the kernel in the vmalloc space then we either have to pre-allocate a bunch
+>   of space around it (essentially making it a fixed mapping anyway) or it
+>   becomes likely that we won't be able to find space for modules as they're
+>   loaded into running systems.
 
-At least in the old days, there were a number of assumptions that
-the kernel text/data/bss resides in the linear mapping.
+I dislike the kernel being in the vmalloc space (see my other email)
+but I don't understand the specific issue with modules.
 
-If you change that you need to ensure that it's still physically
-contiguous and you'll have to tweak __va and __pa, which might induce
-extra overhead.
+> * Relying on a relocatable kernel for sv48 support introduces a fairly large
+>   performance hit.
 
-Cheers,
-Ben.
- 
+Out of curiosity why would relocatable kernels introduce a significant
+hit ? Where about do you see the overhead coming from ?
+
+> Roughly, my proposal would be to:
+> 
+> * Leave the 32-bit memory map alone.  On 32-bit systems we can load modules
+>   anywhere and we only have one VA width, so we're not really solving any
+>   problems with these changes.
+> * Staticly allocate a 2GiB portion of the VA space for all our text, as its own
+>   region.  We'd link/relocate the kernel here instead of around PAGE_OFFSET,
+>   which would decouple the kernel from the physical memory layout of the system.
+>   This would have the side effect of sorting out a bunch of bootloader headaches
+>   that we currently have.
+> * Sort out how to maintain a linear map as the canonical hole moves around
+>   between the VA widths without adding a bunch of overhead to the virt2phys and
+>   friends.  This is probably going to be the trickiest part, but I think if we
+>   just change the page table code to essentially lie about VAs when an sv39
+>   system runs an sv48+sv39 kernel we could make it work -- there'd be some
+>   logical complexity involved, but it would remain fast.
+> 
+> This doesn't solve the problem of virtually relocatable kernels, but it does
+> let us decouple that from the sv48 stuff.  It also lets us stop relying on a
+> fixed physical address the kernel is loaded into, which is another thing I
+> don't like.
+> 
+> I know this may be a more complicated approach, but there aren't any sv48
+> systems around right now so I just don't see the rush to support them,
+> particularly when there's a cost to what already exists (for those who haven't
+> been watching, so far all the sv48 patch sets have imposed a significant
+> performance penalty on all systems).
 
