@@ -1,77 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7957E2280B3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 15:14:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD76228108
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 15:35:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9zZX0Dh2zDqkq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 23:14:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BB030165TzDql9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 23:35:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=TbeYjfKf; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9zX34NRyzDqkg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 23:12:02 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 38C8F2CB608;
- Tue, 21 Jul 2020 09:11:59 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id PPeQyMfgGubd; Tue, 21 Jul 2020 09:11:58 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id C150F2CB9E3;
- Tue, 21 Jul 2020 09:11:58 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com C150F2CB9E3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1595337118;
- bh=0FzZwzLd/Z/vpUIiWCr7Q1hJk/9TD3I9q2HN7VpjQsk=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=TbeYjfKfvZxAGqtB11GVb5XqOHAKg2eKsbOGMlSNpgsYi78GStsexknzpopA5gYjd
- iHW5pJeBlD9K41JNcKHEhCXFtl6TXTOiuks37rMUgNNyxEtV1JiwhdJOZpmN5BwmOJ
- C1qw7Nz+Z+aXC6F72ruRruWZUTMFaWY8gOg+CohD5g+7k6LkOV5AfuY4EuJgQphMvA
- qyBDRD77CQ3RGF4P9bdqDFNR240kwOmkxFpNqfXOqyByvwnVDzBnBzJ4/JbyMVAlvx
- tv+xyVSuXGIKtSIrbcsom5VY1p1AP5DiuSLr1KmKilBpD6G2v84tT/dYzF0TE8mX4p
- XzC6ra9yQ52zQ==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id ivaCxDrJH8Q5; Tue, 21 Jul 2020 09:11:58 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id A6DDB2CB7D9;
- Tue, 21 Jul 2020 09:11:58 -0400 (EDT)
-Date: Tue, 21 Jul 2020 09:11:58 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <470490605.22057.1595337118562.JavaMail.zimbra@efficios.com>
-In-Reply-To: <1595324577.x3bf55tpgu.astroid@bobo.none>
-References: <1594868476.6k5kvx8684.astroid@bobo.none>
- <1594892300.mxnq3b9a77.astroid@bobo.none>
- <20200716110038.GA119549@hirez.programming.kicks-ass.net>
- <1594906688.ikv6r4gznx.astroid@bobo.none>
- <1314561373.18530.1594993363050.JavaMail.zimbra@efficios.com>
- <1595213677.kxru89dqy2.astroid@bobo.none>
- <2055788870.20749.1595263590675.JavaMail.zimbra@efficios.com>
- <1595324577.x3bf55tpgu.astroid@bobo.none>
-Subject: Re: [RFC PATCH 4/7] x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BB00p09x4zDqXb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 23:33:29 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06LDWKmR091526; Tue, 21 Jul 2020 09:33:16 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32d5h5t7bt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 09:33:16 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06LDWLko091576;
+ Tue, 21 Jul 2020 09:33:14 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32d5h5t7aw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 09:33:14 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LDV9nw005318;
+ Tue, 21 Jul 2020 13:33:12 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 32brq7kxat-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 13:33:12 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06LDX95K16843144
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Jul 2020 13:33:09 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 96ECBAE045;
+ Tue, 21 Jul 2020 13:33:09 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 78BA4AE053;
+ Tue, 21 Jul 2020 13:33:05 +0000 (GMT)
+Received: from [9.199.35.129] (unknown [9.199.35.129])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Jul 2020 13:33:05 +0000 (GMT)
+Subject: Re: [PATCH v4 09/10] powerpc/watchpoint: Return available watchpoints
+ dynamically
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20200717040958.70561-1-ravi.bangoria@linux.ibm.com>
+ <20200717040958.70561-10-ravi.bangoria@linux.ibm.com>
+ <CACzsE9r0acLUkV35mVxy1AEK_xObs0yz+fD6UdbNdc6uz=Buqw@mail.gmail.com>
+ <ccfcf488-0ec9-1737-8368-a848de1d72d1@linux.ibm.com>
+ <87k0yxrtex.fsf@mpe.ellerman.id.au>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Message-ID: <d3e9bcc9-d73e-6726-edb5-cfdb771b1d61@linux.ibm.com>
+Date: Tue, 21 Jul 2020 19:03:04 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <87k0yxrtex.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_3955 (ZimbraWebClient - FF78 (Linux)/8.8.15_GA_3953)
-Thread-Topic: x86: use exit_lazy_tlb rather than
- membarrier_mm_sync_core_before_usermode
-Thread-Index: vi7IW503i62QJHH8I6RRgM2HetIWrA==
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-21_08:2020-07-21,
+ 2020-07-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ mlxlogscore=999 clxscore=1015 mlxscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007210094
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,89 +98,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-arch <linux-arch@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
- x86 <x86@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
- Andy Lutomirski <luto@amacapital.net>, linux-mm <linux-mm@kvack.org>,
- Andy Lutomirski <luto@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, apopple@linux.ibm.com,
+ mikey@neuling.org, miltonm@us.ibm.com, peterz@infradead.org,
+ Jordan Niethe <jniethe5@gmail.com>, oleg@redhat.com,
+ Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, jolsa@kernel.org, fweisbec@gmail.com,
+ pedromfc@br.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, mingo@kernel.org,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Jul 21, 2020, at 6:04 AM, Nicholas Piggin npiggin@gmail.com wrote:
 
-> Excerpts from Mathieu Desnoyers's message of July 21, 2020 2:46 am:
-[...]
-> 
-> Yeah you're probably right in this case I think. Quite likely most kernel
-> tasks that asynchronously write to user memory would at least have some
-> kind of producer-consumer barriers.
-> 
-> But is that restriction of all async modifications documented and enforced
-> anywhere?
-> 
->>> How about other memory accesses via kthread_use_mm? Presumably there is
->>> still ordering requirement there for membarrier,
->> 
->> Please provide an example case with memory accesses via kthread_use_mm where
->> ordering matters to support your concern.
-> 
-> I think the concern Andy raised with io_uring was less a specific
-> problem he saw and more a general concern that we have these memory
-> accesses which are not synchronized with membarrier.
-> 
->>> so I really think
->>> it's a fragile interface with no real way for the user to know how
->>> kernel threads may use its mm for any particular reason, so membarrier
->>> should synchronize all possible kernel users as well.
->> 
->> I strongly doubt so, but perhaps something should be clarified in the
->> documentation
->> if you have that feeling.
-> 
-> I'd rather go the other way and say if you have reasoning or numbers for
-> why PF_KTHREAD is an important optimisation above rq->curr == rq->idle
-> then we could think about keeping this subtlety with appropriate
-> documentation added, otherwise we can just kill it and remove all doubt.
-> 
-> That being said, the x86 sync core gap that I imagined could be fixed
-> by changing to rq->curr == rq->idle test does not actually exist because
-> the global membarrier does not have a sync core option. So fixing the
-> exit_lazy_tlb points that this series does *should* fix that. So
-> PF_KTHREAD may be less problematic than I thought from implementation
-> point of view, only semantics.
 
-Today, the membarrier global expedited command explicitly skips kernel threads,
-but it happens that membarrier private expedited considers those with the
-same mm as target for the IPI.
+On 7/21/20 5:06 PM, Michael Ellerman wrote:
+> Ravi Bangoria <ravi.bangoria@linux.ibm.com> writes:
+>> On 7/20/20 9:12 AM, Jordan Niethe wrote:
+>>> On Fri, Jul 17, 2020 at 2:11 PM Ravi Bangoria
+>>> <ravi.bangoria@linux.ibm.com> wrote:
+>>>>
+>>>> So far Book3S Powerpc supported only one watchpoint. Power10 is
+>>>> introducing 2nd DAWR. Enable 2nd DAWR support for Power10.
+>>>> Availability of 2nd DAWR will depend on CPU_FTR_DAWR1.
+>>>>
+>>>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+>>>> ---
+>>>>    arch/powerpc/include/asm/cputable.h      | 4 +++-
+>>>>    arch/powerpc/include/asm/hw_breakpoint.h | 5 +++--
+>>>>    2 files changed, 6 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+>>>> index 3445c86e1f6f..36a0851a7a9b 100644
+>>>> --- a/arch/powerpc/include/asm/cputable.h
+>>>> +++ b/arch/powerpc/include/asm/cputable.h
+>>>> @@ -633,7 +633,9 @@ enum {
+>>>>     * Maximum number of hw breakpoint supported on powerpc. Number of
+>>>>     * breakpoints supported by actual hw might be less than this.
+>>>>     */
+>>>> -#define HBP_NUM_MAX    1
+>>>> +#define HBP_NUM_MAX    2
+>>>> +#define HBP_NUM_ONE    1
+>>>> +#define HBP_NUM_TWO    2
+> 
+>>> I wonder if these defines are necessary - has it any advantage over
+>>> just using the literal?
+>>
+>> No, not really. Initially I had something like:
+>>
+>> #define HBP_NUM_MAX    2
+>> #define HBP_NUM_P8_P9  1
+>> #define HBP_NUM_P10    2
+>>
+>> But then I thought it's also not right. So I made it _ONE and _TWO.
+>> Now the function that decides nr watchpoints dynamically (nr_wp_slots)
+>> is in different file, I thought to keep it like this so it would be
+>> easier to figure out why _MAX is 2.
+> 
+> I don't think it makes anything clearer.
+> 
+> I had to stare at it thinking there was some sort of mapping or
+> indirection going on, before I realised it's just literally the number
+> of breakpoints.
+> 
+> So please just do:
+> 
+> static inline int nr_wp_slots(void)
+> {
+>         return cpu_has_feature(CPU_FTR_DAWR1) ? 2 : 1;
+> }
+> 
+> If you think HBP_NUM_MAX needs explanation then do that with a comment,
+> it can refer to nr_wp_slots() if that's helpful.
 
-So we already implement a semantic which differs between private and global
-expedited membarriers. This can be explained in part by the fact that
-kthread_use_mm was introduced after 4.16, where the most recent membarrier
-commands where introduced. It seems that the effect on membarrier was not
-considered when kthread_use_mm was introduced.
-
-Looking at membarrier(2) documentation, it states that IPIs are only sent to
-threads belonging to the same process as the calling thread. If my understanding
-of the notion of process is correct, this should rule out sending the IPI to
-kernel threads, given they are not "part" of the same process, only borrowing
-the mm. But I agree that the distinction is moot, and should be clarified.
-
-Without a clear use-case to justify adding a constraint on membarrier, I am
-tempted to simply clarify documentation of current membarrier commands,
-stating clearly that they are not guaranteed to affect kernel threads. Then,
-if we have a compelling use-case to implement a different behavior which covers
-kthreads, this could be added consistently across membarrier commands with a
-flag (or by adding new commands).
-
-Does this approach make sense ?
+Agreed. By adding a comment, we can remove those macros. Will change it.
 
 Thanks,
-
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+Ravi
