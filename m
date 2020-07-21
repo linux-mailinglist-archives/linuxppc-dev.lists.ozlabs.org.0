@@ -1,50 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA43227854
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 07:47:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CAA227858
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 07:51:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9ngR4j38zDqgq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 15:47:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9nlw6MNHzDqhF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 15:51:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::144;
+ helo=mail-lf1-x144.google.com; envelope-from=cyrozap@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=bOK7kcAW; dkim-atps=neutral
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
+ [IPv6:2a00:1450:4864:20::144])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9ndd4jPnzDqbF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 15:46:13 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=bsdq3RgU; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4B9ndd2kFkz9sRW; Tue, 21 Jul 2020 15:46:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1595310373; bh=h5v/z0N4MGFxoJg1GsHzJ0zVrgcj/eMAzSW3netP+R4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=bsdq3RgUQRm3imvD5OnpTg6IhTu+jJ3xjYGQIl1HU9x1bXRs1vF0znu25iSME054t
- kgBNrbyAJd80vhvitaJIyJo082/z0WyZXg3ug8ICzN+m5wlJD9AgGO2uC3STqZfsw3
- vlSPwiGL1mXsSEhB6mFQefmbrZEwzF2kF8SvjxsSJecY9SpZo87vJDZ/kQ9lwyZU4+
- pgu/igX098brmF/Dv7vpkeJ/Hl3Y3RST9TybB2Ds2Tqu4YSQyZRnxNfnBhP2ro2Pai
- NAXJRgsFjD36F8rKRfwJUxkaoWOaINJMey7cIFpL7jmKHVj7x9mx6FJ4pxE1OOjVAY
- MMZJMdokBBUiw==
-Date: Tue, 21 Jul 2020 15:46:09 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH 2/2] KVM: PPC: Book3S HV: rework secure mem slot dropping
-Message-ID: <20200721054609.GB3878639@thinks.paulus.ozlabs.org>
-References: <20200703155914.40262-1-ldufour@linux.ibm.com>
- <20200703155914.40262-3-ldufour@linux.ibm.com>
- <20200708112531.GA7902@in.ibm.com>
- <0588d16a-8548-0f55-1132-400807a390a1@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9nkF0c7zzDqW7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 15:50:12 +1000 (AEST)
+Received: by mail-lf1-x144.google.com with SMTP id j21so11003740lfe.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jul 2020 22:50:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:from:date:message-id:subject:to:cc;
+ bh=dt80hbEOtASF8k7tNC7l6WffPpiCUoKmZ9tNVyqMSXA=;
+ b=bOK7kcAWGZTbReRstO98MjoMLM20jr1puDwabwv/D3lydkSXe+ns4b3Q3GRzgg1gM6
+ blOkZ3vMYBRhayjrN5jDwtMrOI8A9ESd1gQnDKTZTcCZtDxWV5MT/Plcp5J4vhtk0E7y
+ 8nfmlAULuzEeHrpwVbTD8ekx1tiAXf4TJ/CE4FJdwYXasiJ+GUifx7rBhFM67ohW7GiA
+ wPMQZ/PzRf4eUDJU/NkdjeaiEJTwoQLaMcguSI9no/rP7DDwbAb3KYzRhUxW0nLhhDjU
+ QQkt3TrzljAjQRWmsL6kPu1dNM2gwlcG4myYj7W/pkiqgLr3nxxO9zEy4QoeKkgO2NQM
+ nglg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+ bh=dt80hbEOtASF8k7tNC7l6WffPpiCUoKmZ9tNVyqMSXA=;
+ b=kxYQ8jPGzZRFBATxnsI7fi5s35jvwM5hwtAfHS0YFepkWmqlR9WG7q6ZeTxorX5uvT
+ 8B/il1wpP9NPHgKzK+DG9G/QKm2iYDstoipG36cjm8kDiyffyKQwTq+wLYUsQIrQq1No
+ 8Jb0N9/YsfaQ3FkDDiJ16u7f80dsgGtefJCy8P2rsjhg2Kn8T76Vj1qvrhFZ1JZinZb/
+ Mskld7fDiVdZyA7WZy0uiUky6HiJpHh8fR5cRFch8p73VSNzdEjInhSVTgNOPBmLQoJU
+ Hgi/KyNSujR0PVchLp4xRlbusDgAEmgpeEGf7pdaRRo8jzRCVCwH6yREJ8XMs5JX6zmy
+ +82A==
+X-Gm-Message-State: AOAM5328gSd6vwXv6VXUSAB90Qq2ZBqSsoBNZ535lUg1kEyFj6jz4uys
+ lHtry4urP1m56BJVcaoN0hj09S0ZlH0+G5FX/7M=
+X-Google-Smtp-Source: ABdhPJw0BsG4TjWzV4eP2VNRtAnmub/GrcV0vvv9EBrlAUjH4gypW0yhy5+fGOVGwOoPHjZNtLImfZQaX4XMWxyrP88=
+X-Received: by 2002:a19:c7d0:: with SMTP id x199mr7356452lff.205.1595310606453; 
+ Mon, 20 Jul 2020 22:50:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0588d16a-8548-0f55-1132-400807a390a1@linux.ibm.com>
+From: Forest Crossman <cyrozap@gmail.com>
+Date: Tue, 21 Jul 2020 00:49:55 -0500
+Message-ID: <CAO3ALPyB1JDvvC27JGgAoTuHh0w+897tPhmTKX9PQWBFCrrnbQ@mail.gmail.com>
+Subject: ASMedia ASM2142 USB host controller tries to DMA to address zero when
+ doing bulk reads from multiple devices
+To: linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,84 +70,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com,
- sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 08, 2020 at 02:16:36PM +0200, Laurent Dufour wrote:
-> Le 08/07/2020 à 13:25, Bharata B Rao a écrit :
-> > On Fri, Jul 03, 2020 at 05:59:14PM +0200, Laurent Dufour wrote:
-> > > When a secure memslot is dropped, all the pages backed in the secure device
-> > > (aka really backed by secure memory by the Ultravisor) should be paged out
-> > > to a normal page. Previously, this was achieved by triggering the page
-> > > fault mechanism which is calling kvmppc_svm_page_out() on each pages.
-> > > 
-> > > This can't work when hot unplugging a memory slot because the memory slot
-> > > is flagged as invalid and gfn_to_pfn() is then not trying to access the
-> > > page, so the page fault mechanism is not triggered.
-> > > 
-> > > Since the final goal is to make a call to kvmppc_svm_page_out() it seems
-> > > simpler to directly calling it instead of triggering such a mechanism. This
-> > > way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
-> > > memslot.
-> > 
-> > Yes, this appears much simpler.
-> 
-> Thanks Bharata for reviewing this.
-> 
-> > 
-> > > 
-> > > Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
-> > > the call to __kvmppc_svm_page_out() is made.
-> > > As __kvmppc_svm_page_out needs the vma pointer to migrate the pages, the
-> > > VMA is fetched in a lazy way, to not trigger find_vma() all the time. In
-> > > addition, the mmap_sem is help in read mode during that time, not in write
-> > > mode since the virual memory layout is not impacted, and
-> > > kvm->arch.uvmem_lock prevents concurrent operation on the secure device.
-> > > 
-> > > Cc: Ram Pai <linuxram@us.ibm.com>
-> > > Cc: Bharata B Rao <bharata@linux.ibm.com>
-> > > Cc: Paul Mackerras <paulus@ozlabs.org>
-> > > Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> > > ---
-> > >   arch/powerpc/kvm/book3s_hv_uvmem.c | 54 ++++++++++++++++++++----------
-> > >   1 file changed, 37 insertions(+), 17 deletions(-)
-> > > 
-> > > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > > index 852cc9ae6a0b..479ddf16d18c 100644
-> > > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > > @@ -533,35 +533,55 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
-> > >    * fault on them, do fault time migration to replace the device PTEs in
-> > >    * QEMU page table with normal PTEs from newly allocated pages.
-> > >    */
-> > > -void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
-> > > +void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
-> > >   			     struct kvm *kvm, bool skip_page_out)
-> > >   {
-> > >   	int i;
-> > >   	struct kvmppc_uvmem_page_pvt *pvt;
-> > > -	unsigned long pfn, uvmem_pfn;
-> > > -	unsigned long gfn = free->base_gfn;
-> > > +	struct page *uvmem_page;
-> > > +	struct vm_area_struct *vma = NULL;
-> > > +	unsigned long uvmem_pfn, gfn;
-> > > +	unsigned long addr, end;
-> > > +
-> > > +	down_read(&kvm->mm->mmap_sem);
-> > 
-> > You should be using mmap_read_lock(kvm->mm) with recent kernels.
-> 
-> Absolutely, shame on me, I reviewed Michel's series about that!
-> 
-> Paul, Michael, could you fix that when pulling this patch or should I sent a
-> whole new series?
+Hello, again!
 
-Given that Ram has reworked his series, I think it would be best if
-you rebase on top of his new series and re-send your series.
+After fixing the issue in my previous thread using this patch[1], I
+decided to do some stress-testing of the controller to make sure it
+could handle my intended workloads and that there were no further DMA
+address issues that would need to be fixed. Unfortunately, it looks
+like there's still more work to be done: when I try to do long bulk
+reads from multiple devices simultaneously, eventually the host
+controller sends a DMA write to address zero, which then triggers EEH
+in my POWER9 system, causing the controller card to get hotplug-reset,
+which of course kills the disk-reading processes. For more details on
+the EEH errors, you can see my kernel's EEH message log[2]. The
+results of the various tests I performed are listed below.
 
-Thanks,
-Paul.
+Test results (all failures are due to DMA writes to address zero, all
+hubs are USB 3.0/3.1 Gen1 only, and all disks are accessed via the
+usb-storage driver):
+- Reading simultaneously from two or more disks behind a hub connected
+to one port on the host controller:
+  - FAIL after 20-50 GB of data transferred for each device.
+- Reading simultaneously from two disks, each connected directly to
+one port on the host controller:
+  - FAIL after about 800 GB of data transferred for each device.
+- Reading from one disk behind a hub connected to one port on the host
+controller:
+  - OK for at least 2.7 TB of data transferred (I didn't test the
+whole 8 TB disk).
+- Writing simultaneously to two FL2000 dongles (using osmo-fl2k's
+"fl2k_test"), each connected directly to one port on the host
+controller:
+  - OK, was able to write several dozen terabytes to each device over
+the course of a little over 21 hours.
+
+Seeing how simultaneous writes to multiple devices and reads from
+single devices both seem to work fine, I assume that means this is
+being caused by some race condition in the host controller firmware
+when it responds to multiple read requests. I also assume we're not
+going to be able to convince ASMedia to both fix the bug in their
+firmware and release the details on how to flash it from Linux, so I
+guess we'll just have to figure out how to make the driver talk to the
+controller in a way that avoids triggering the bad DMA write. As
+before, I decided to try a little kernel hacking of my own before
+sending this email, and tried separately enabling the
+XHCI_BROKEN_STREAMS and XHCI_ASMEDIA_MODIFY_FLOWCONTROL quirks in an
+attempt to fix this. As you might expect since you're reading this
+message, neither of those quirks fixed the issue, nor did they even
+make the transfers last any longer before failing.
+
+So now I've reached the limits of my understanding, and I need some
+help devising a fix. If anyone has any comments to that effect, or any
+questions about my hardware configuration, testing methodology, etc.,
+please don't hesitate to air them. Also, if anyone needs me to perform
+additional tests, or collect more log information, I'd be happy to do
+that as well.
+
+
+Thanks in advance for your help,
+
+Forest
+
+
+[1]: https://patchwork.kernel.org/patch/11669989/
+[2]: https://paste.debian.net/hidden/2a442aa6
