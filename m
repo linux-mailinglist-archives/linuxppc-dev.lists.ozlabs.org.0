@@ -1,51 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3F92278DA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 08:29:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CA322796A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 09:24:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4B9pbR1y99zDqCh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 16:29:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4B9qq96XXMzDqhN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jul 2020 17:24:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=iFlPVsUQ; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4B9pYb5rMlzDqVT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 16:27:47 +1000 (AEST)
-Received: from localhost (p5486cdb1.dip0.t-ipconnect.de [84.134.205.177])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A90BE20792;
- Tue, 21 Jul 2020 06:27:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1595312865;
- bh=QNZB24Red5nZ7QJEWu/bhYPZ8qCIs0gdeOojRKvwUbc=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=iFlPVsUQ5jp4HkIuNgchaBlEaPwCJ5rAWpOjvYwu24JowCXbqT4Y4NFvV7lOtGvnD
- WbV7+eWsMRVnQhd1iM3mq6FceyBSaNle0jT2YWxIkDhLXp4JxoUmMo59i4zfAF9Dnc
- uSRYRxvcbeeEkz9MKjlUUted4xv+cdHVYaFylSoY=
-Date: Tue, 21 Jul 2020 08:27:43 +0200
-From: Wolfram Sang <wsa@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH 09/20] Documentation: i2c: eliminate duplicated word
-Message-ID: <20200721062743.GC1044@kunai>
-References: <20200707180414.10467-1-rdunlap@infradead.org>
- <20200707180414.10467-10-rdunlap@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4B9qnV4BXPzDqdT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 17:23:10 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06L74nLE122069; Tue, 21 Jul 2020 03:23:01 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32dhpryeue-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 03:23:01 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06L7L94h031502;
+ Tue, 21 Jul 2020 07:22:58 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 32brq7kjvu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Jul 2020 07:22:58 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06L7MuvO53936306
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Jul 2020 07:22:56 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 06BB911C054;
+ Tue, 21 Jul 2020 07:22:56 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9656711C058;
+ Tue, 21 Jul 2020 07:22:55 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.36.105])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Jul 2020 07:22:55 +0000 (GMT)
+Subject: Re: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
+ MMIO access, in sprg0 register
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+ <18e3bcee-8a3a-bd13-c995-8e4168471f74@linux.ibm.com>
+ <20200720201041.GM30544@gate.crashing.org>
+ <20200720202452.GN30544@gate.crashing.org>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <5d912506-5834-db1a-60a1-1ccb213ff37a@linux.ibm.com>
+Date: Tue, 21 Jul 2020 09:22:55 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="KN5l+BnMqAQyZLvT"
-Content-Disposition: inline
-In-Reply-To: <20200707180414.10467-10-rdunlap@infradead.org>
+In-Reply-To: <20200720202452.GN30544@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-21_02:2020-07-21,
+ 2020-07-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ spamscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ clxscore=1011 impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007210048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,78 +90,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- David Airlie <airlied@linux.ie>, kgdb-bugreport@lists.sourceforge.net,
- linux-fpga@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
- dri-devel@lists.freedesktop.org, Douglas Anderson <dianders@chromium.org>,
- Paul Cercueil <paul@crapouillou.net>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
- Pavel Machek <pavel@ucw.cz>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Mihail Atanassov <mihail.atanassov@arm.com>, linux-leds@vger.kernel.org,
- linux-s390@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
- linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Halil Pasic <pasic@linux.ibm.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- James Wang <james.qian.wang@arm.com>, linux-input@vger.kernel.org,
- Mali DP Maintainers <malidp@foss.arm.com>,
- Derek Kiernan <derek.kiernan@xilinx.com>, linux-mips@vger.kernel.org,
- Dragan Cvetic <dragan.cvetic@xilinx.com>, Wu Hao <hao.wu@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, linux-kbuild@vger.kernel.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
- Hannes Reinecke <hare@suse.com>, linux-block@vger.kernel.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>, linux-mm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Jens Axboe <axboe@kernel.dk>, Michal Marek <michal.lkml@markovi.net>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Pierre Morel <pmorel@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>,
- Dan Murphy <dmurphy@ti.com>
+Cc: aik@ozlabs.ru, Ram Pai <linuxram@us.ibm.com>, kvm-ppc@vger.kernel.org,
+ bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Le 20/07/2020 à 22:24, Segher Boessenkool a écrit :
+> On Mon, Jul 20, 2020 at 03:10:41PM -0500, Segher Boessenkool wrote:
+>> On Mon, Jul 20, 2020 at 11:39:56AM +0200, Laurent Dufour wrote:
+>>> Le 16/07/2020 à 10:32, Ram Pai a écrit :
+>>>> +	if (is_secure_guest()) {					\
+>>>> +		__asm__ __volatile__("mfsprg0 %3;"			\
+>>>> +				"lnia %2;"				\
+>>>> +				"ld %2,12(%2);"				\
+>>>> +				"mtsprg0 %2;"				\
+>>>> +				"sync;"					\
+>>>> +				#insn" %0,%y1;"				\
+>>>> +				"twi 0,%0,0;"				\
+>>>> +				"isync;"				\
+>>>> +				"mtsprg0 %3"				\
+>>>> +			: "=r" (ret)					\
+>>>> +			: "Z" (*addr), "r" (0), "r" (0)			\
+>>>
+>>> I'm wondering if SPRG0 is restored to its original value.
+>>> You're using the same register (r0) for parameters 2 and 3, so when doing
+>>> lnia %2, you're overwriting the SPRG0 value you saved in r0 just earlier.
+>>
+>> It is putting the value 0 in the registers the compiler chooses for
+>> operands 2 and 3.  But operand 3 is written, while the asm says it is an
+>> input.  It needs an earlyclobber as well.
 
---KN5l+BnMqAQyZLvT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh nice, I was not aware that compiler may choose registers this way.
+Good to know, thanks for the explanation.
 
-On Tue, Jul 07, 2020 at 11:04:03AM -0700, Randy Dunlap wrote:
-> Drop doubled word "new".
->=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Wolfram Sang <wsa@kernel.org>
-> Cc: linux-i2c@vger.kernel.org
+>>> It may be clearer to use explicit registers for %2 and %3 and to mark them
+>>> as modified for the compiler.
+>>
+>> That is not a good idea, imnsho.
+> 
+> (The explicit register number part, I mean; operand 2 should be an
+> output as well, yes.)
 
-Reviewed-by: Wolfram Sang <wsa@kernel.org>
+Sure if the compiler can choose the registers that's far better.
 
-
---KN5l+BnMqAQyZLvT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl8Wit8ACgkQFA3kzBSg
-Kbar3Q//fOHenQW39TRIGhc1tbL6/xYqSxhK0miywg7rYqY4e2HaJMe10FL+wxre
-DXculy3u/RjkAyVnyWY2E5LJq4GruTUAgQXmjsdWGyTlovKil7fZiOwPvpvFi1TY
-P+aUgZGbCpjf3q3lII5fuj191kVZahsYyJoweFZIXa74x5yf01SkV7WRNejAxx4y
-PqSwNhLQJxvvrouZBFOxL+1s30bTScKiXxBis783G/F4hGBDLt3BglTxhC7cYdrc
-zSIpUcsq94MD3jazLywZlad84tW3QndeLPhb1m5Cq3rQddGsytbstUOGRpKl8oEL
-VU32/ZYGhYGVxUDv0/K4Nc+CJHJ5Y3nH2ty2bGkiPEPufa9P/mqSwCEqHZS9S5+P
-sbc71bTA49VuzvbBJQo8vKJTqmtAlLx0Gp3JYQS4x37FiT/x+HqwE6Rr203fedNg
-dtOgqTre+CjYwD6xA4NWseNoXHtMoqQ7H+d8YKHnVAelI8+vjtAdL721Y0rUqTIZ
-3DnxQeISiGPXtp6lY39hEbLmCewkmxasghnH6yNO2ScldPRyf0cAmcmLYJtAen1B
-kzE7QAgV2kNCSr6+fC9AxrReGHmjwmnTqMZZ5VyzkQseAeqyA6DTO4b5XvKG9lzA
-AxOaVaRCYWuHyrwQosk94FG41iqHEFzDlWndYY+nEKNYIPGMn2w=
-=OoVL
------END PGP SIGNATURE-----
-
---KN5l+BnMqAQyZLvT--
+Cheers,
+Laurent.
