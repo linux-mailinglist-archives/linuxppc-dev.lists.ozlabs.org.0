@@ -2,87 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A91D229174
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 08:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E01122917B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:00:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBRBv3MNYzDqnT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 16:58:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBRFM6ksbzDqq5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 17:00:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=vFwLhs/C; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBR8n45bmzDqDB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 16:56:57 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06M61omV160858; Wed, 22 Jul 2020 02:56:49 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1vrftdq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 02:56:49 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06M6tgg1120457;
- Wed, 22 Jul 2020 02:56:49 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1vrftdg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 02:56:48 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M6p4pH019269;
- Wed, 22 Jul 2020 06:56:48 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma02wdc.us.ibm.com with ESMTP id 32brq99rj3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 06:56:48 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06M6uktE64160134
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jul 2020 06:56:46 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 212097805C;
- Wed, 22 Jul 2020 06:56:46 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4382B7805F;
- Wed, 22 Jul 2020 06:56:45 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.85.82.72])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 22 Jul 2020 06:56:45 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 76D7B2E340E; Wed, 22 Jul 2020 12:26:40 +0530 (IST)
-Date: Wed, 22 Jul 2020 12:26:40 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 06/10] powerpc/smp: Generalize 2nd sched domain
-Message-ID: <20200722065640.GE31038@in.ibm.com>
-References: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
- <20200721113814.32284-7-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBR9R28VRzDqwV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 16:57:30 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id m9so692057pfh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 23:57:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=o4rfS1bZCbTCL2vOis8mrYP6qVcTo/L4J6w7GCGJKaI=;
+ b=vFwLhs/CGOicIvb2nMetVXr0REddX+wXjcNCEAkUvlWPjmJE/tRAOyK9N84/28gpId
+ uZ42TT/FmqQ2Llg+VGWq8T0egQMMyKF5obS0V5tLske60D2t8xgK5QMwmkB2+4J4LA8f
+ Bb6LfgVLDcbvNAFo/0ToePR1WMEydJ+hVToBgcoJ5cDp1nv+uiZRJAr8XPfmzfDOLnkg
+ Syio8gvm0++ehubPNyFapU10SP4ToeNaqZxG/cJtQzJx8OC96VN31fNBlcfInkHZtisd
+ dO+mGE1qQOgRQl4qxXHFBTOZM6MCawAwqm/1PgL+6GW1ea4ebpqp/Q5WmQGYlh60eJTc
+ nk8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=o4rfS1bZCbTCL2vOis8mrYP6qVcTo/L4J6w7GCGJKaI=;
+ b=S7hb+LR+ctYImuQRLN7itLfBWikEmjZ7zCpX8WamBAryIu56uHs2JScdx7UEqa9+UV
+ LOh09hVZSOGkhKF2sDvdhEdSPIea291cV6atLhXL2eyJWTJ7vrKC7iaoj3LkAFvUsJX2
+ NC4Tkrmpo8XvDFuEBSh6K/jLdypdjbcvITid5c9ZIbFGwcqtdT1fHgTBaBTOpQiYOE8S
+ 4yqJrYwj+GOIVCXNMJciUgzTwaFOe/Nbb6z28gYqqtzVV9A+uDuk2t8u++/6aSKUsQxT
+ fqcgIQW4VXEgyyjPq8lEIoWJGungb9XJm+tMJUjNrizLf+VlSo1UJnEI+X2a5p6Pllb3
+ kOwQ==
+X-Gm-Message-State: AOAM532TjvC6ZZZZhPOHR1m2DSo23jLFZuiQDKNeX+mNtGIu1ficojFk
+ GNIo6wIVVD1ymyC0KkVTNzGShUcJBFI=
+X-Google-Smtp-Source: ABdhPJyplZ+kwtr0HZk5fAF4IRn5kkGXPOthPVDmeTiQA3qvwTPCI89BIUWqQt8IxlqXGJMfpPLrjw==
+X-Received: by 2002:a62:e30f:: with SMTP id g15mr26590564pfh.203.1595401047263; 
+ Tue, 21 Jul 2020 23:57:27 -0700 (PDT)
+Received: from localhost.ibm.com (203-219-159-24.tpgi.com.au. [203.219.159.24])
+ by smtp.gmail.com with ESMTPSA id c14sm22645104pfj.82.2020.07.21.23.57.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Jul 2020 23:57:26 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 01/16] powernv/pci: Add pci_bus_to_pnvhb() helper
+Date: Wed, 22 Jul 2020 16:57:00 +1000
+Message-Id: <20200722065715.1432738-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200721113814.32284-7-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-22_02:2020-07-22,
- 2020-07-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0
- mlxlogscore=999 malwarescore=0 priorityscore=1501 adultscore=0 mlxscore=0
- impostorscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007220040
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,143 +76,385 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
- Michael Ellerman <michaele@au1.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
- Jordan Niethe <jniethe5@gmail.com>, Anton Blanchard <anton@au1.ibm.com>,
- LKML <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Nick Piggin <npiggin@au1.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Valentin Schneider <valentin.schneider@arm.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Srikar,
+Add a helper to go from a pci_bus structure to the pnv_phb that hosts that
+bus. There's a lot of instances of the following pattern:
 
-On Tue, Jul 21, 2020 at 05:08:10PM +0530, Srikar Dronamraju wrote:
-> Currently "CACHE" domain happens to be the 2nd sched domain as per
-> powerpc_topology. This domain will collapse if cpumask of l2-cache is
-> same as SMT domain. However we could generalize this domain such that it
-> could mean either be a "CACHE" domain or a "BIGCORE" domain.
-> 
-> While setting up the "CACHE" domain, check if shared_cache is already
-> set.
-> 
-> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> Cc: LKML <linux-kernel@vger.kernel.org>
-> Cc: Michael Ellerman <michaele@au1.ibm.com>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Valentin Schneider <valentin.schneider@arm.com>
-> Cc: Nick Piggin <npiggin@au1.ibm.com>
-> Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Michael Neuling <mikey@linux.ibm.com>
-> Cc: Anton Blanchard <anton@au1.ibm.com>
-> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
-> Cc: Jordan Niethe <jniethe5@gmail.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
-> Changelog v1 -> v2:
-> powerpc/smp: Generalize 2nd sched domain
-> 	Moved shared_cache topology fixup to fixup_topology (Gautham)
->
+	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+	struct pnv_phb *phb = hose->private_data;
 
-Just one comment below.
+Without any other uses of the pci_controller inside the function. This is
+hard to read since it requires you to memorise the contents of the
+private data fields and kind of error prone since it involves blindly
+assigning a void pointer. Add a helper to make it more concise and
+explicit.
 
->  arch/powerpc/kernel/smp.c | 49 ++++++++++++++++++++++++++++-----------
->  1 file changed, 35 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 57468877499a..933ebdf97432 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -85,6 +85,14 @@ EXPORT_PER_CPU_SYMBOL(cpu_l2_cache_map);
->  EXPORT_PER_CPU_SYMBOL(cpu_core_map);
->  EXPORT_SYMBOL_GPL(has_big_cores);
-> 
-> +enum {
-> +#ifdef CONFIG_SCHED_SMT
-> +	smt_idx,
-> +#endif
-> +	bigcore_idx,
-> +	die_idx,
-> +};
-> +
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+v2: no change
+---
+ arch/powerpc/platforms/powernv/pci-ioda.c | 88 +++++++----------------
+ arch/powerpc/platforms/powernv/pci.c      | 14 ++--
+ arch/powerpc/platforms/powernv/pci.h      | 10 +++
+ 3 files changed, 38 insertions(+), 74 deletions(-)
 
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 31c3e6d58c41..687919db0347 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -252,8 +252,7 @@ static int pnv_ioda2_init_m64(struct pnv_phb *phb)
+ static void pnv_ioda_reserve_dev_m64_pe(struct pci_dev *pdev,
+ 					 unsigned long *pe_bitmap)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	struct resource *r;
+ 	resource_size_t base, sgsz, start, end;
+ 	int segno, i;
+@@ -351,8 +350,7 @@ static void pnv_ioda_reserve_m64_pe(struct pci_bus *bus,
+ 
+ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
+ 	struct pnv_ioda_pe *master_pe, *pe;
+ 	unsigned long size, *pe_alloc;
+ 	int i;
+@@ -673,8 +671,7 @@ struct pnv_ioda_pe *pnv_pci_bdfn_to_pe(struct pnv_phb *phb, u16 bdfn)
+ 
+ struct pnv_ioda_pe *pnv_ioda_get_pe(struct pci_dev *dev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(dev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
+ 	struct pci_dn *pdn = pci_get_pdn(dev);
+ 
+ 	if (!pdn)
+@@ -1069,8 +1066,7 @@ static int pnv_pci_vf_resource_shift(struct pci_dev *dev, int offset)
+ 
+ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(dev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
+ 	struct pci_dn *pdn = pci_get_pdn(dev);
+ 	struct pnv_ioda_pe *pe;
+ 
+@@ -1129,8 +1125,7 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
+  */
+ static struct pnv_ioda_pe *pnv_ioda_setup_bus_PE(struct pci_bus *bus, bool all)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
+ 	struct pnv_ioda_pe *pe = NULL;
+ 	unsigned int pe_num;
+ 
+@@ -1196,8 +1191,7 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
+ 	struct pnv_ioda_pe *pe;
+ 	struct pci_dev *gpu_pdev;
+ 	struct pci_dn *npu_pdn;
+-	struct pci_controller *hose = pci_bus_to_host(npu_pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(npu_pdev->bus);
+ 
+ 	/*
+ 	 * Intentionally leak a reference on the npu device (for
+@@ -1300,16 +1294,12 @@ static void pnv_pci_ioda_setup_nvlink(void)
+ #ifdef CONFIG_PCI_IOV
+ static int pnv_pci_vf_release_m64(struct pci_dev *pdev, u16 num_vfs)
+ {
+-	struct pci_bus        *bus;
+-	struct pci_controller *hose;
+ 	struct pnv_phb        *phb;
+ 	struct pci_dn         *pdn;
+ 	int                    i, j;
+ 	int                    m64_bars;
+ 
+-	bus = pdev->bus;
+-	hose = pci_bus_to_host(bus);
+-	phb = hose->private_data;
++	phb = pci_bus_to_pnvhb(pdev->bus);
+ 	pdn = pci_get_pdn(pdev);
+ 
+ 	if (pdn->m64_single_mode)
+@@ -1333,8 +1323,6 @@ static int pnv_pci_vf_release_m64(struct pci_dev *pdev, u16 num_vfs)
+ 
+ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
+ {
+-	struct pci_bus        *bus;
+-	struct pci_controller *hose;
+ 	struct pnv_phb        *phb;
+ 	struct pci_dn         *pdn;
+ 	unsigned int           win;
+@@ -1346,9 +1334,7 @@ static int pnv_pci_vf_assign_m64(struct pci_dev *pdev, u16 num_vfs)
+ 	int                    pe_num;
+ 	int                    m64_bars;
+ 
+-	bus = pdev->bus;
+-	hose = pci_bus_to_host(bus);
+-	phb = hose->private_data;
++	phb = pci_bus_to_pnvhb(pdev->bus);
+ 	pdn = pci_get_pdn(pdev);
+ 	total_vfs = pci_sriov_get_totalvfs(pdev);
+ 
+@@ -1459,15 +1445,11 @@ static void pnv_pci_ioda2_release_dma_pe(struct pci_dev *dev, struct pnv_ioda_pe
+ 
+ static void pnv_ioda_release_vf_PE(struct pci_dev *pdev)
+ {
+-	struct pci_bus        *bus;
+-	struct pci_controller *hose;
+ 	struct pnv_phb        *phb;
+ 	struct pnv_ioda_pe    *pe, *pe_n;
+ 	struct pci_dn         *pdn;
+ 
+-	bus = pdev->bus;
+-	hose = pci_bus_to_host(bus);
+-	phb = hose->private_data;
++	phb = pci_bus_to_pnvhb(pdev->bus);
+ 	pdn = pci_get_pdn(pdev);
+ 
+ 	if (!pdev->is_physfn)
+@@ -1492,16 +1474,12 @@ static void pnv_ioda_release_vf_PE(struct pci_dev *pdev)
+ 
+ static void pnv_pci_sriov_disable(struct pci_dev *pdev)
+ {
+-	struct pci_bus        *bus;
+-	struct pci_controller *hose;
+ 	struct pnv_phb        *phb;
+ 	struct pnv_ioda_pe    *pe;
+ 	struct pci_dn         *pdn;
+ 	u16                    num_vfs, i;
+ 
+-	bus = pdev->bus;
+-	hose = pci_bus_to_host(bus);
+-	phb = hose->private_data;
++	phb = pci_bus_to_pnvhb(pdev->bus);
+ 	pdn = pci_get_pdn(pdev);
+ 	num_vfs = pdn->num_vfs;
+ 
+@@ -1535,17 +1513,13 @@ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
+ 				       struct pnv_ioda_pe *pe);
+ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+ {
+-	struct pci_bus        *bus;
+-	struct pci_controller *hose;
+ 	struct pnv_phb        *phb;
+ 	struct pnv_ioda_pe    *pe;
+ 	int                    pe_num;
+ 	u16                    vf_index;
+ 	struct pci_dn         *pdn;
+ 
+-	bus = pdev->bus;
+-	hose = pci_bus_to_host(bus);
+-	phb = hose->private_data;
++	phb = pci_bus_to_pnvhb(pdev->bus);
+ 	pdn = pci_get_pdn(pdev);
+ 
+ 	if (!pdev->is_physfn)
+@@ -1572,7 +1546,7 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+ 		pe->rid = (vf_bus << 8) | vf_devfn;
+ 
+ 		pe_info(pe, "VF %04d:%02d:%02d.%d associated with PE#%x\n",
+-			hose->global_number, pdev->bus->number,
++			pci_domain_nr(pdev->bus), pdev->bus->number,
+ 			PCI_SLOT(vf_devfn), PCI_FUNC(vf_devfn), pe_num);
+ 
+ 		if (pnv_ioda_configure_pe(phb, pe)) {
+@@ -1602,17 +1576,13 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+ 
+ static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+ {
+-	struct pci_bus        *bus;
+-	struct pci_controller *hose;
+ 	struct pnv_phb        *phb;
+ 	struct pnv_ioda_pe    *pe;
+ 	struct pci_dn         *pdn;
+ 	int                    ret;
+ 	u16                    i;
+ 
+-	bus = pdev->bus;
+-	hose = pci_bus_to_host(bus);
+-	phb = hose->private_data;
++	phb = pci_bus_to_pnvhb(pdev->bus);
+ 	pdn = pci_get_pdn(pdev);
+ 
+ 	if (phb->type == PNV_PHB_IODA2) {
+@@ -1735,8 +1705,7 @@ static int pnv_pcibios_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
+ 
+ static void pnv_pci_ioda_dma_dev_setup(struct pci_dev *pdev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+ 	struct pnv_ioda_pe *pe;
+ 
+@@ -1847,8 +1816,7 @@ static int pnv_pci_ioda_dma_64bit_bypass(struct pnv_ioda_pe *pe)
+ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
+ 		u64 dma_mask)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+ 	struct pnv_ioda_pe *pe;
+ 
+@@ -2766,8 +2734,7 @@ static void pnv_pci_init_ioda_msis(struct pnv_phb *phb)
+ #ifdef CONFIG_PCI_IOV
+ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	const resource_size_t gate = phb->ioda.m64_segsize >> 2;
+ 	struct resource *res;
+ 	int i;
+@@ -3101,10 +3068,9 @@ static void pnv_pci_ioda_fixup(void)
+ static resource_size_t pnv_pci_window_alignment(struct pci_bus *bus,
+ 						unsigned long type)
+ {
+-	struct pci_dev *bridge;
+-	struct pci_controller *hose = pci_bus_to_host(bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
+ 	int num_pci_bridges = 0;
++	struct pci_dev *bridge;
+ 
+ 	bridge = bus->self;
+ 	while (bridge) {
+@@ -3190,8 +3156,7 @@ static void pnv_pci_fixup_bridge_resources(struct pci_bus *bus,
+ 
+ static void pnv_pci_configure_bus(struct pci_bus *bus)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
+ 	struct pci_dev *bridge = bus->self;
+ 	struct pnv_ioda_pe *pe;
+ 	bool all = (bridge && pci_pcie_type(bridge) == PCI_EXP_TYPE_PCI_BRIDGE);
+@@ -3237,8 +3202,7 @@ static resource_size_t pnv_pci_default_alignment(void)
+ static resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
+ 						      int resno)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+ 	resource_size_t align;
+ 
+@@ -3274,8 +3238,7 @@ static resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
+  */
+ static bool pnv_pci_enable_device_hook(struct pci_dev *dev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(dev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
+ 	struct pci_dn *pdn;
+ 
+ 	/* The function is probably called while the PEs have
+@@ -3488,8 +3451,7 @@ static void pnv_ioda_release_pe(struct pnv_ioda_pe *pe)
+ 
+ static void pnv_pci_release_device(struct pci_dev *pdev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	struct pci_dn *pdn = pci_get_pdn(pdev);
+ 	struct pnv_ioda_pe *pe;
+ 
+@@ -3534,8 +3496,7 @@ static void pnv_pci_ioda_shutdown(struct pci_controller *hose)
+ 
+ static void pnv_pci_ioda_dma_bus_setup(struct pci_bus *bus)
+ {
+-	struct pci_controller *hose = bus->sysdata;
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
+ 	struct pnv_ioda_pe *pe;
+ 
+ 	list_for_each_entry(pe, &phb->ioda.pe_list, list) {
+@@ -3873,8 +3834,7 @@ void __init pnv_pci_init_npu2_opencapi_phb(struct device_node *np)
+ 
+ static void pnv_npu2_opencapi_cfg_size_fixup(struct pci_dev *dev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(dev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
+ 
+ 	if (!machine_is(powernv))
+ 		return;
+diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
+index 091fe1cf386b..9b9bca169275 100644
+--- a/arch/powerpc/platforms/powernv/pci.c
++++ b/arch/powerpc/platforms/powernv/pci.c
+@@ -162,8 +162,7 @@ EXPORT_SYMBOL_GPL(pnv_pci_set_power_state);
+ 
+ int pnv_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	struct msi_desc *entry;
+ 	struct msi_msg msg;
+ 	int hwirq;
+@@ -211,8 +210,7 @@ int pnv_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 
+ void pnv_teardown_msi_irqs(struct pci_dev *pdev)
+ {
+-	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+-	struct pnv_phb *phb = hose->private_data;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
+ 	struct msi_desc *entry;
+ 	irq_hw_number_t hwirq;
+ 
+@@ -824,10 +822,9 @@ EXPORT_SYMBOL(pnv_pci_get_phb_node);
+ 
+ int pnv_pci_set_tunnel_bar(struct pci_dev *dev, u64 addr, int enable)
+ {
+-	__be64 val;
+-	struct pci_controller *hose;
+-	struct pnv_phb *phb;
++	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
+ 	u64 tunnel_bar;
++	__be64 val;
+ 	int rc;
+ 
+ 	if (!opal_check_token(OPAL_PCI_GET_PBCQ_TUNNEL_BAR))
+@@ -835,9 +832,6 @@ int pnv_pci_set_tunnel_bar(struct pci_dev *dev, u64 addr, int enable)
+ 	if (!opal_check_token(OPAL_PCI_SET_PBCQ_TUNNEL_BAR))
+ 		return -ENXIO;
+ 
+-	hose = pci_bus_to_host(dev->bus);
+-	phb = hose->private_data;
+-
+ 	mutex_lock(&tunnel_mutex);
+ 	rc = opal_pci_get_pbcq_tunnel_bar(phb->opal_id, &val);
+ 	if (rc != OPAL_SUCCESS) {
+diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
+index 51c254f2f3cb..0727dec9a0d1 100644
+--- a/arch/powerpc/platforms/powernv/pci.h
++++ b/arch/powerpc/platforms/powernv/pci.h
+@@ -260,4 +260,14 @@ extern void pnv_pci_setup_iommu_table(struct iommu_table *tbl,
+ 
+ extern unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb);
+ 
++static inline struct pnv_phb *pci_bus_to_pnvhb(struct pci_bus *bus)
++{
++	struct pci_controller *hose = bus->sysdata;
++
++	if (hose)
++		return hose->private_data;
++
++	return NULL;
++}
++
+ #endif /* __POWERNV_PCI_H */
+-- 
+2.26.2
 
-[..snip..]
-
-> @@ -1339,14 +1345,20 @@ void start_secondary(void *unused)
->  	/* Update topology CPU masks */
->  	add_cpu_to_masks(cpu);
-> 
-> -	if (has_big_cores)
-> -		sibling_mask = cpu_smallcore_mask;
->  	/*
->  	 * Check for any shared caches. Note that this must be done on a
->  	 * per-core basis because one core in the pair might be disabled.
->  	 */
-> -	if (!cpumask_equal(cpu_l2_cache_mask(cpu), sibling_mask(cpu)))
-> -		shared_caches = true;
-> +	if (!shared_caches) {
-> +		struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
-> +		struct cpumask *mask = cpu_l2_cache_mask(cpu);
-> +
-> +		if (has_big_cores)
-> +			sibling_mask = cpu_smallcore_mask;
-> +
-> +		if (cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu)))
-> +			shared_caches = true;
-
-At the risk of repeating my comment to the v1 version of the patch, we
-have shared caches only l2_cache_mask(cpu) is a strict superset of
-sibling_mask(cpu).
-
-"cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu))" does not
-capture this.
-
-Could we please use
-
-      if (!cpumask_equal(sibling_mask(cpu), mask) &&
-      	  cpumask_subset(sibling_mask(cpu), mask) {
-      }
-
-?
-
-
-> +	}
-> 
->  	set_numa_node(numa_cpu_lookup_table[cpu]);
->  	set_numa_mem(local_memory_node(numa_cpu_lookup_table[cpu]));
-> @@ -1374,10 +1386,19 @@ int setup_profiling_timer(unsigned int multiplier)
-> 
->  static void fixup_topology(void)
->  {
-> +	if (shared_caches) {
-> +		pr_info("Using shared cache scheduler topology\n");
-> +		powerpc_topology[bigcore_idx].mask = shared_cache_mask;
-> +#ifdef CONFIG_SCHED_DEBUG
-> +		powerpc_topology[bigcore_idx].name = "CACHE";
-> +#endif
-> +		powerpc_topology[bigcore_idx].sd_flags = powerpc_shared_cache_flags;
-> +	}
-> +
->  #ifdef CONFIG_SCHED_SMT
->  	if (has_big_cores) {
->  		pr_info("Big cores detected but using small core scheduling\n");
-> -		powerpc_topology[0].mask = smallcore_smt_mask;
-> +		powerpc_topology[smt_idx].mask = smallcore_smt_mask;
->  	}
->  #endif
-
-
-Otherwise the patch looks good to me.
-
---
-Thanks and Regards
-gautham.
