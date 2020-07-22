@@ -2,49 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE2522937C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 10:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBB12292F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 10:06:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBTCD6DmJzDqtr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 18:29:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBSjD2clWzDr5R
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 18:06:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBT981Gf0zDqxs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 18:27:24 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=IRUmpXyL; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4BBT975QpBz9sSn; Wed, 22 Jul 2020 18:27:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1595406443;
- bh=5oBiL0zY8LaOsvPSs61/dmYNQNxr4DLYffd2QJrYkdY=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=IRUmpXyLPrLpGuEquB9LP/N6XzynPVWNVJpk8rC9pjK6LmOlNEZmJePiH30Fo8lSK
- ZQs97rhk0+kG5U/kDHw20xz8XXG4O/+4Su6iBGt+J5sLmp759s8ABWylUQOrHmOHVK
- Pr2lyL8yRb4BfEXPzc+3XHbevxbvfy+gBczz3CVI=
-Date: Wed, 22 Jul 2020 17:51:53 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
-Message-ID: <20200722075153.GB5513@umbus.fritz.box>
-References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
- <87r1tb1rw2.fsf@linux.ibm.com> <87tuy1sksv.fsf@mpe.ellerman.id.au>
- <20200721032959.GN7902@in.ibm.com>
- <87ft9lrr55.fsf@mpe.ellerman.id.au>
- <20200722060506.GO7902@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBSfz3jDKzDqQH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 18:04:42 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06M81vrQ126301; Wed, 22 Jul 2020 04:04:35 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32e1vrhkec-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 04:04:35 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06M83NBe131922;
+ Wed, 22 Jul 2020 04:04:34 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32e1vrhkdc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 04:04:34 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M80bY1013216;
+ Wed, 22 Jul 2020 08:04:32 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 32brq84s82-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 08:04:32 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06M84Skv32506278
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Jul 2020 08:04:28 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0276D11C05B;
+ Wed, 22 Jul 2020 08:04:28 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 67F8511C050;
+ Wed, 22 Jul 2020 08:04:25 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 22 Jul 2020 08:04:25 +0000 (GMT)
+Date: Wed, 22 Jul 2020 13:34:24 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <michaele@au1.ibm.com>
+Subject: Re: [PATCH v2 01/10] powerpc/smp: Cache node for reuse
+Message-ID: <20200722080424.GF9290@linux.vnet.ibm.com>
+References: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
+ <20200721113814.32284-2-srikar@linux.vnet.ibm.com>
+ <87imegq9my.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="i9LlY+UWpKt15+FH"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200722060506.GO7902@in.ibm.com>
+In-Reply-To: <87imegq9my.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-22_03:2020-07-22,
+ 2020-07-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 priorityscore=1501 adultscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007220056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,128 +93,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@kernel.org>, Nathan Lynch <nathanl@linux.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Jordan Niethe <jniethe5@gmail.com>,
+ Anton Blanchard <anton@au1.ibm.com>, LKML <linux-kernel@vger.kernel.org>,
+ Nick Piggin <npiggin@au1.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Michael Ellerman <michaele@au1.ibm.com> [2020-07-22 17:41:41]:
 
---i9LlY+UWpKt15+FH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> > While cpu_to_node is inline function with access to per_cpu variable.
+> > However when using repeatedly, it may be cleaner to cache it in a local
+> > variable.
+> 
+> It's not clear what "cleaner" is supposed to mean. Are you saying it
+> makes the source clearer, or the generated code?
+> 
+> I'm not sure it will make any difference to the latter.
 
-On Wed, Jul 22, 2020 at 11:35:06AM +0530, Bharata B Rao wrote:
-> On Tue, Jul 21, 2020 at 10:25:58PM +1000, Michael Ellerman wrote:
-> > Bharata B Rao <bharata@linux.ibm.com> writes:
-> > > On Tue, Jul 21, 2020 at 11:45:20AM +1000, Michael Ellerman wrote:
-> > >> Nathan Lynch <nathanl@linux.ibm.com> writes:
-> > >> > "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> > >> >> This is the next version of the fixes for memory unplug on radix.
-> > >> >> The issues and the fix are described in the actual patches.
-> > >> >
-> > >> > I guess this isn't actually causing problems at runtime right now,=
- but I
-> > >> > notice calls to resize_hpt_for_hotplug() from arch_add_memory() and
-> > >> > arch_remove_memory(), which ought to be mmu-agnostic:
-> > >> >
-> > >> > int __ref arch_add_memory(int nid, u64 start, u64 size,
-> > >> > 			  struct mhp_params *params)
-> > >> > {
-> > >> > 	unsigned long start_pfn =3D start >> PAGE_SHIFT;
-> > >> > 	unsigned long nr_pages =3D size >> PAGE_SHIFT;
-> > >> > 	int rc;
-> > >> >
-> > >> > 	resize_hpt_for_hotplug(memblock_phys_mem_size());
-> > >> >
-> > >> > 	start =3D (unsigned long)__va(start);
-> > >> > 	rc =3D create_section_mapping(start, start + size, nid,
-> > >> > 				    params->pgprot);
-> > >> > ...
-> > >>=20
-> > >> Hmm well spotted.
-> > >>=20
-> > >> That does return early if the ops are not setup:
-> > >>=20
-> > >> int resize_hpt_for_hotplug(unsigned long new_mem_size)
-> > >> {
-> > >> 	unsigned target_hpt_shift;
-> > >>=20
-> > >> 	if (!mmu_hash_ops.resize_hpt)
-> > >> 		return 0;
-> > >>=20
-> > >>=20
-> > >> And:
-> > >>=20
-> > >> void __init hpte_init_pseries(void)
-> > >> {
-> > >> 	...
-> > >> 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
-> > >> 		mmu_hash_ops.resize_hpt =3D pseries_lpar_resize_hpt;
-> > >>=20
-> > >> And that comes in via ibm,hypertas-functions:
-> > >>=20
-> > >> 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
-> > >>=20
-> > >>=20
-> > >> But firmware is not necessarily going to add/remove that call based =
-on
-> > >> whether we're using hash/radix.
-> > >
-> > > Correct but hpte_init_pseries() will not be called for radix guests.
-> >=20
-> > Yeah, duh. You'd think the function name would have been a sufficient
-> > clue for me :)
-> >=20
-> > >> So I think a follow-up patch is needed to make this more robust.
-> > >>=20
-> > >> Aneesh/Bharata what platform did you test this series on? I'm curious
-> > >> how this didn't break.
-> > >
-> > > I have tested memory hotplug/unplug for radix guest on zz platform and
-> > > sanity-tested this for hash guest on P8.
-> > >
-> > > As noted above, mmu_hash_ops.resize_hpt will not be set for radix
-> > > guest and hence we won't see any breakage.
-> >=20
-> > OK.
-> >=20
-> > That's probably fine as it is then. Or maybe just a comment in
-> > resize_hpt_for_hotplug() pointing out that resize_hpt will be NULL if
-> > we're using radix.
->=20
-> Or we could move these calls to hpt-only routines like below?
->=20
-> David - Do you remember if there was any particular reason to have
-> these two hpt-resize calls within powerpc-generic memory hotplug code?
+I meant the source code, I am okay dropping the hunks that try to cache
+cpu_to_node.
 
-I don't remember, sorry.
+> 
+> > Also fix a build error in a some weird config.
+> > "error: _numa_cpu_lookup_table_ undeclared"
+> 
+> Separate patch please.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Okay, will do.
 
---i9LlY+UWpKt15+FH
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> > No functional change
+> 
+> The ifdef change means that's not true.
 
------BEGIN PGP SIGNATURE-----
+Okay
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8X8BYACgkQbDjKyiDZ
-s5JhQxAAmPVnY5hHgvzJE10d8K54XvWiy8uCAFjaKWUb8/dPphgQEBepjWP10ckx
-q1EVNdnRjKrgVgX+duFt9jHbm5SFX6G2RFcSYnrb0t6hPr8v0pOj7v8VUw1QcqSw
-cYgyCq0xFbatw0y39luYMrSpWzuLsXVAT33yi2/jcbwdEA5thvaWovrkpkfU16m/
-7MIYYlyeJaUm7enro5f7o9qfsRYTJ6rUY9RNgHAgvYVo3OB2yuwz9E7wc1DPHcD9
-etuy78Kz3t6xO7/9bDYFu1LzJpIB+LS7wVxmAjCLpfABQlnrVoC2iOiIrx40DYX5
-A2t9TOhEqXQQxvpvc94xYcVu5GU83Jpcl2FbXRTiAd53MqSpMwIQK+66UsEPdWCD
-TELkBEfzIyYGaPJzP3atlJymOeaAX8gfpHi8kPRPyAfIwSIFbA1PWVJ4/sKVrZNG
-rLFpJJI5da5G/TTh9ssqOlPoyWMm8yFep9KR8hM4AjAs6G6dtWqih8/UpcMdxXut
-7PXRgNd9BEwBmYq+/E/hVzKYFMqYO9OHSvqJxqtc6GCnW2vDYkZds/j0vzbM38sd
-eFCVz+UPf+Eqf0gTYCCbzxAlWzwxPM1+knwoj2W2ypwExBK3W+DZ/s+/395VCZY7
-MW4zkaKJf5sHB7BqtVxNUwImu/RETSlHteg70hbw4GGVG/LESpw=
-=4dvk
------END PGP SIGNATURE-----
+> > @@ -854,20 +854,24 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+> >  	cpu_callin_map[boot_cpuid] = 1;
+> >  
+> >  	for_each_possible_cpu(cpu) {
+> > +		int node = cpu_to_node(cpu);
+> > +
+> 
+> Does cpu_to_node() even work here?
 
---i9LlY+UWpKt15+FH--
+Except in the case where NUMA is not enabled, (when cpu_to_node would return
+-1), It should work here since numa initialization would have happened by
+now. It cpu_to_node(cpu) should work once numa_setup_cpu() /
+map_cpu_to_node() gets called.  And those are being called before this.
+
+> 
+> Doesn't look like it to me.
+> 
+> More fallout from 8c272261194d ("powerpc/numa: Enable USE_PERCPU_NUMA_NODE_ID") ?
+> 
+> >  	}
+> >  
+> >  	/* Init the cpumasks so the boot CPU is related to itself */
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
