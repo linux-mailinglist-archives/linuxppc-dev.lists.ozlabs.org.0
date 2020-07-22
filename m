@@ -1,75 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E17422A24D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 00:20:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FDD22A24E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 00:22:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBqf35kXKzDqvy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 08:20:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBqhR2xqczDr41
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 08:22:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::543;
- helo=mail-ed1-x543.google.com; envelope-from=olteanv@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=alliedtelesis.co.nz
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=d0fnGmpq; dkim-atps=neutral
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=QBvO8ncC; 
+ dkim-atps=neutral
+X-Greylist: delayed 64311 seconds by postgrey-1.36 at bilbo;
+ Thu, 23 Jul 2020 08:11:15 AEST
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [IPv6:2001:df5:b000:5::4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBj5H2LlbzDqPM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 03:24:48 +1000 (AEST)
-Received: by mail-ed1-x543.google.com with SMTP id b15so2246649edy.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 10:24:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=IwiK0U+Dhjv5R+D7L68/33/y00cq8SjNmUGfjDZfVnI=;
- b=d0fnGmpqyawQ6ZYxmbsWP6gl4hH8VZ6oUxfyea9jfSgAlL1mLymyW1fokoRJvAxg+H
- nlvajnhjmIzmBmnwyvX5fIjTcEWEPB4zIn0sYqns8vUqTWhFpX9fkQV21VFg7foAKeJm
- KLb48FjP3k9d5Q6Bq0GxgeCjC04cq0vnYj/KDJP94v7UEGtsQdSIaLDi3vOQlC5aVhEV
- qFj9sYBIjqlkHNfabEpR2Yp6ukw/GsWQfMrQHeUwKFlbmgdWiKpyQMmbC2CWDrSEVp+M
- zMyn/VPPsXBwVsmG+3TBI6HR3KTrdmUNyXEaSut29/0TdDxDrCyqwPa9oGLlBijDxvnA
- omsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=IwiK0U+Dhjv5R+D7L68/33/y00cq8SjNmUGfjDZfVnI=;
- b=AT50+QB0I3sskakoa3tB+24tKsy7GdgKFTV4j8c0mJkMi42mgkuZwwaZLZiIdX7Btj
- 9VQ7r4ywmQN6ECd1IFt8oI5hIfsYvGGfzFnxuBySD9YfeLmAP9n6ZoCZcK3RkKc65eNv
- r5ZRnA1sCmQoXE6rs4rccmU4y1lVUOy8ZlkhUVTyCF3gUgDQ6kGbo+E6JwlB5kgVR9KB
- 7nqGBGAWS3PRRCxPskoaM/XJeYhj3V/0TVKlgGy3kTBVGuGbFkM9KsACFNIJa740gg5g
- bSAaWP4xdKu041wNFoS0uqj6vyZLIC5rID/UNj0ysb6i18HZ2vE4KDbQT1dKyxQYlgJI
- nf/g==
-X-Gm-Message-State: AOAM531tuYkOroyb2UcXBzaPSDM5mQjZbzDPGG5jDYS5xEsZQXPe4y9H
- 8s6E/V83aJZC7aSCvqqw2Dg=
-X-Google-Smtp-Source: ABdhPJwN32en1tjwVds6TL6SW0e/xdD/1wt15akze77kDflk28RHrFyCzGDTRIFEKftNULw8jz/XBQ==
-X-Received: by 2002:a50:d55b:: with SMTP id f27mr514751edj.312.1595438684854; 
- Wed, 22 Jul 2020 10:24:44 -0700 (PDT)
-Received: from localhost.localdomain ([188.25.219.134])
- by smtp.gmail.com with ESMTPSA id bt26sm311517edb.17.2020.07.22.10.24.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Jul 2020 10:24:44 -0700 (PDT)
-From: Vladimir Oltean <olteanv@gmail.com>
-To: robh+dt@kernel.org, shawnguo@kernel.org, mpe@ellerman.id.au,
- devicetree@vger.kernel.org
-Subject: [PATCH devicetree 4/4] powerpc: dts: t1040rdb: add ports for Seville
- Ethernet switch
-Date: Wed, 22 Jul 2020 20:24:22 +0300
-Message-Id: <20200722172422.2590489-5-olteanv@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200722172422.2590489-1-olteanv@gmail.com>
-References: <20200722172422.2590489-1-olteanv@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBqRl5hMwzDqY1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 08:11:15 +1000 (AEST)
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 9E7948011F;
+ Thu, 23 Jul 2020 10:11:08 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1595455868;
+ bh=uGLP8GFd1sLG0iTQ4kS9Znwic8dX4tEl85GOUOGN9+Q=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=QBvO8ncCMdrm6GJJfnE5nhz6ijI12eMF4aZVclDKnYVsXx4vAhPd5I8trfpG68qpz
+ seKMzh9+Jxi+B8TTrW6st31UYImkTn5uLP/sQ/yAPB74/91W9jCRYYBylFlR69KK7r
+ vKOuoj+/nhZDpjS5vp8qhz1hL4j5z7DwP82nWh582Uk3DAsRTQRicZ6TMBXKXRaAcB
+ OrttJpU6AxU5SuNLjOhjrghxHauvN/YcT4J3HJ3uSFDvkuNYdHe0sPj176zdV9uTyd
+ l8Ohc1lugq91257RAbO8W3lgcorGU+4waRr97E6QNGpYg6OeOckHq+9MVkKxLpELpx
+ 42mVZg4kQuvyg==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
+ mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5f18b97c0000>; Thu, 23 Jul 2020 10:11:08 +1200
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
+ by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 23 Jul 2020 10:11:08 +1200
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.006; Thu, 23 Jul 2020 10:11:08 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: "robh+dt@kernel.org" <robh+dt@kernel.org>, "frowand.list@gmail.com"
+ <frowand.list@gmail.com>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>, "paulus@samba.org"
+ <paulus@samba.org>, "christophe.leroy@c-s.fr" <christophe.leroy@c-s.fr>
+Subject: Re: OF: Can't handle multiple dma-ranges with different offsets
+Thread-Topic: OF: Can't handle multiple dma-ranges with different offsets
+Thread-Index: AQHWX99COSKGYTheAUmvWcrnzVaQa6kTYRWA
+Date: Wed, 22 Jul 2020 22:11:07 +0000
+Message-ID: <961bc990-c815-1a19-c349-8b03065d5aab@alliedtelesis.co.nz>
+References: <5cb3aaa7-e05e-5fbc-db42-60e07acdaf05@alliedtelesis.co.nz>
+In-Reply-To: <5cb3aaa7-e05e-5fbc-db42-60e07acdaf05@alliedtelesis.co.nz>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FA203FADBCA2084AAC80BAE92F8EA873@atlnz.lc>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 23 Jul 2020 08:08:50 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,145 +85,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: madalin.bucur@oss.nxp.com, linux-kernel@vger.kernel.org,
- radu-andrei.bulie@nxp.com, fido_max@inbox.ru, paulus@samba.org,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Define the network interface names for the switch ports and hook them up
-to the 2 QSGMII PHYs that are onboard.
-
-A conscious decision was taken to go along with the numbers that are
-written on the front panel of the board and not with the hardware
-numbers of the switch chip ports. The 2 are shifted by 4.
-
-Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
----
- arch/powerpc/boot/dts/fsl/t1040rdb.dts | 111 +++++++++++++++++++++++++
- 1 file changed, 111 insertions(+)
-
-diff --git a/arch/powerpc/boot/dts/fsl/t1040rdb.dts b/arch/powerpc/boot/dts/fsl/t1040rdb.dts
-index 40d7126dbe90..28ee06a1706d 100644
---- a/arch/powerpc/boot/dts/fsl/t1040rdb.dts
-+++ b/arch/powerpc/boot/dts/fsl/t1040rdb.dts
-@@ -75,4 +75,115 @@ &mdio0 {
- 	phy_sgmii_2: ethernet-phy@3 {
- 		reg = <0x3>;
- 	};
-+
-+	/* VSC8514 QSGMII PHY */
-+	phy_qsgmii_0: ethernet-phy@4 {
-+		reg = <0x4>;
-+	};
-+
-+	phy_qsgmii_1: ethernet-phy@5 {
-+		reg = <0x5>;
-+	};
-+
-+	phy_qsgmii_2: ethernet-phy@6 {
-+		reg = <0x6>;
-+	};
-+
-+	phy_qsgmii_3: ethernet-phy@7 {
-+		reg = <0x7>;
-+	};
-+
-+	/* VSC8514 QSGMII PHY */
-+	phy_qsgmii_4: ethernet-phy@8 {
-+		reg = <0x8>;
-+	};
-+
-+	phy_qsgmii_5: ethernet-phy@9 {
-+		reg = <0x9>;
-+	};
-+
-+	phy_qsgmii_6: ethernet-phy@a {
-+		reg = <0xa>;
-+	};
-+
-+	phy_qsgmii_7: ethernet-phy@b {
-+		reg = <0xb>;
-+	};
-+};
-+
-+&seville_port0 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_0>;
-+	phy-mode = "qsgmii";
-+	/* ETH4 written on chassis */
-+	label = "swp4";
-+	status = "okay";
-+};
-+
-+&seville_port1 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_1>;
-+	phy-mode = "qsgmii";
-+	/* ETH5 written on chassis */
-+	label = "swp5";
-+	status = "okay";
-+};
-+
-+&seville_port2 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_2>;
-+	phy-mode = "qsgmii";
-+	/* ETH6 written on chassis */
-+	label = "swp6";
-+	status = "okay";
-+};
-+
-+&seville_port3 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_3>;
-+	phy-mode = "qsgmii";
-+	/* ETH7 written on chassis */
-+	label = "swp7";
-+	status = "okay";
-+};
-+
-+&seville_port4 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_4>;
-+	phy-mode = "qsgmii";
-+	/* ETH8 written on chassis */
-+	label = "swp8";
-+	status = "okay";
-+};
-+
-+&seville_port5 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_5>;
-+	phy-mode = "qsgmii";
-+	/* ETH9 written on chassis */
-+	label = "swp9";
-+	status = "okay";
-+};
-+
-+&seville_port6 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_6>;
-+	phy-mode = "qsgmii";
-+	/* ETH10 written on chassis */
-+	label = "swp10";
-+	status = "okay";
-+};
-+
-+&seville_port7 {
-+	managed = "in-band-status";
-+	phy-handle = <&phy_qsgmii_7>;
-+	phy-mode = "qsgmii";
-+	/* ETH11 written on chassis */
-+	label = "swp11";
-+	status = "okay";
-+};
-+
-+&seville_port8 {
-+	ethernet = <&enet0>;
-+	status = "okay";
- };
--- 
-2.25.1
-
+DQpPbiAyMi8wNy8yMCA0OjE5IHBtLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPiBIaSwNCj4NCj4g
+SSd2ZSBqdXN0IGZpcmVkIHVwIGxpbnV4IGtlcm5lbCB2NS43IG9uIGEgcDIwNDAgYmFzZWQgc3lz
+dGVtIGFuZCBJJ20gDQo+IGdldHRpbmcgdGhlIGZvbGxvd2luZyBuZXcgd2FybmluZw0KPg0KPiBP
+RjogQ2FuJ3QgaGFuZGxlIG11bHRpcGxlIGRtYS1yYW5nZXMgd2l0aCBkaWZmZXJlbnQgb2Zmc2V0
+cyBvbiANCj4gbm9kZSgvcGNpZUBmZmUyMDIwMDApDQo+IE9GOiBDYW4ndCBoYW5kbGUgbXVsdGlw
+bGUgZG1hLXJhbmdlcyB3aXRoIGRpZmZlcmVudCBvZmZzZXRzIG9uIA0KPiBub2RlKC9wY2llQGZm
+ZTIwMjAwMCkNCj4NCj4gVGhlIHdhcm5pbmcgaXRzZWxmIHdhcyBhZGRlZCBpbiBjb21taXQgOWQ1
+NWJlYmQ5ODE2ICgib2YvYWRkcmVzczogDQo+IFN1cHBvcnQgbXVsdGlwbGUgJ2RtYS1yYW5nZXMn
+IGVudHJpZXMiKSBidXQgSSBnYXRoZXIgaXQncyBwb2ludGluZyBvdXQgDQo+IHNvbWV0aGluZyBh
+Ym91dCB0aGUgZHRzLiBNeSBib2FyZHMgZHRzIGlzIGJhc2VkIGhlYXZpbHkgb24gDQo+IHAyMDQx
+cmRiLmR0cyBhbmQgdGhlIHJlbGV2YW50IHBjaTIgc2VjdGlvbiBpcyBpZGVudGljYWwgKHJlcHJv
+ZHVjZWQgDQo+IGJlbG93IGZvciByZWZlcmVuY2UpLg0KPg0KPiDCoMKgwqAgcGNpMjogcGNpZUBm
+ZmUyMDIwMDAgew0KPiDCoMKgwqAgwqDCoMKgIHJlZyA9IDwweGYgMHhmZTIwMjAwMCAwIDB4MTAw
+MD47DQo+IMKgwqDCoCDCoMKgwqAgcmFuZ2VzID0gPDB4MDIwMDAwMDAgMCAweGUwMDAwMDAwIDB4
+YyAweDQwMDAwMDAwIDAgMHgyMDAwMDAwMA0KPiDCoMKgwqAgwqDCoMKgIMKgwqDCoCDCoCAweDAx
+MDAwMDAwIDAgMHgwMDAwMDAwMCAweGYgMHhmODAyMDAwMCAwIDB4MDAwMTAwMDA+Ow0KPiDCoMKg
+wqAgwqDCoMKgIHBjaWVAMCB7DQo+IMKgwqDCoCDCoMKgwqAgwqDCoMKgIHJhbmdlcyA9IDwweDAy
+MDAwMDAwIDAgMHhlMDAwMDAwMA0KPiDCoMKgwqAgwqDCoMKgIMKgwqDCoCDCoMKgwqAgwqAgMHgw
+MjAwMDAwMCAwIDB4ZTAwMDAwMDANCj4gwqDCoMKgIMKgwqDCoCDCoMKgwqAgwqDCoMKgIMKgIDAg
+MHgyMDAwMDAwMA0KPg0KPiDCoMKgwqAgwqDCoMKgIMKgwqDCoCDCoMKgwqAgwqAgMHgwMTAwMDAw
+MCAwIDB4MDAwMDAwMDANCj4gwqDCoMKgIMKgwqDCoCDCoMKgwqAgwqDCoMKgIMKgIDB4MDEwMDAw
+MDAgMCAweDAwMDAwMDAwDQo+IMKgwqDCoCDCoMKgwqAgwqDCoMKgIMKgwqDCoCDCoCAwIDB4MDAw
+MTAwMDA+Ow0KPiDCoMKgwqAgwqDCoMKgIH07DQo+IMKgwqDCoCB9Ow0KPg0KPiBJIGhhdmVuJ3Qg
+bm90aWNlZCBhbnkgaWxsIGVmZmVjdCAoYXNpZGUgZnJvbSB0aGUgc2NhcnkgbWVzc2FnZSkuIEkn
+bSANCj4gbm90IHN1cmUgaWYgdGhlcmUncyBzb21ldGhpbmcgbWlzc2luZyBpbiB0aGUgZHRzIG9y
+IGluIHRoZSBjb2RlIHRoYXQgDQo+IGNoZWNrcyB0aGUgcmFuZ2VzLiBBbnkgZ3VpZGFuY2Ugd291
+bGQgYmUgYXBwcmVjaWF0ZWQuDQoNCkkndmUgYWxzbyBqdXN0IGNoZWNrZWQgdGhlIFQyMDgwUkRC
+IG9uIHY1LjcuOSB3aGljaCBzaG93cyBhIHNpbWlsYXIgaXNzdWUNCg0KT0Y6IENhbid0IGhhbmRs
+ZSBtdWx0aXBsZSBkbWEtcmFuZ2VzIHdpdGggZGlmZmVyZW50IG9mZnNldHMgb24gDQpub2RlKC9w
+Y2llQGZmZTI1MDAwMCkNCk9GOiBDYW4ndCBoYW5kbGUgbXVsdGlwbGUgZG1hLXJhbmdlcyB3aXRo
+IGRpZmZlcmVudCBvZmZzZXRzIG9uIA0Kbm9kZSgvcGNpZUBmZmUyNTAwMDApDQpwY2llcG9ydCAw
+MDAwOjAwOjAwLjA6IEludmFsaWQgc2l6ZSAweGZmZmZmOSBmb3IgZG1hLXJhbmdlDQpwY2llcG9y
+dCAwMDAwOjAwOjAwLjA6IEFFUjogZW5hYmxlZCB3aXRoIElSUSAyMQ0KT0Y6IENhbid0IGhhbmRs
+ZSBtdWx0aXBsZSBkbWEtcmFuZ2VzIHdpdGggZGlmZmVyZW50IG9mZnNldHMgb24gDQpub2RlKC9w
+Y2llQGZmZTI3MDAwMCkNCk9GOiBDYW4ndCBoYW5kbGUgbXVsdGlwbGUgZG1hLXJhbmdlcyB3aXRo
+IGRpZmZlcmVudCBvZmZzZXRzIG9uIA0Kbm9kZSgvcGNpZUBmZmUyNzAwMDApDQpwY2llcG9ydCAw
+MDAxOjAwOjAwLjA6IEludmFsaWQgc2l6ZSAweGZmZmZmOSBmb3IgZG1hLXJhbmdlDQpwY2llcG9y
+dCAwMDAxOjAwOjAwLjA6IEFFUjogZW5hYmxlZCB3aXRoIElSUSAyMw0KDQoNCg==
