@@ -2,52 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AB6228F86
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95136228F8E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:10:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBNlq530HzDqwg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:08:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBNnn0FcxzDqXY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:10:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBNWG4qY6zDqvV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 14:57:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::143;
+ helo=mail-il1-x143.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ORAhFp6k; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=DDIWY/B3; dkim-atps=neutral
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com
+ [IPv6:2607:f8b0:4864:20::143])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BBNWG0rcZz9sR4;
- Wed, 22 Jul 2020 14:57:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595393866;
- bh=B8pvBVrzIk29D7BwkDHq1IDzv+qZD9WYtxIsi82itCE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ORAhFp6k3aMjyeZ8pIU35Rov5Q4Vn3tJEvTBD2jdUn9TfHhHe5rU4JappLOidtCTk
- 29nhbOBDsfHkbaPKTcsdnTU6xQHlVqM6dvwEqopapoqmSAH08sOUnxQb9+Kh+nJix2
- MOJq/8j9fBuiCU24jZ8G49/dSx4okeIR0wTI7MylayNp7B+XghCEZaMGNxKY1DMifd
- bJYmaYRszNW7FF5cn27XpFCkRF7eEpEQ2hVZ8cJ0R6rWeU3gRvYY8jDEZdVT+Kbwhf
- Q5IvraAttjLGJhfCV3hXxdwXD0rqzlNycAEy4tfm9sbIHJXJcuahNrGh63HHh6sced
- d35JgWF5L7Jmw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCHv3 2/2] powerpc/pseries: update device tree before ejecting
- hotplug uevents
-In-Reply-To: <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
-References: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
- <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
-Date: Wed, 22 Jul 2020 14:57:45 +1000
-Message-ID: <87pn8oqh86.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBNbf74Y1zDqSS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 15:01:34 +1000 (AEST)
+Received: by mail-il1-x143.google.com with SMTP id t18so224888ilh.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 22:01:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=mZLJXwo1VKlX/iabelcLQZuAW4pn07ejBE0mltf65Z4=;
+ b=DDIWY/B3jkEHldgmmar7sYKPfXtvFSOavr+QvWfRpbq6Z8FRN2iz9RFtLZIRW4RpF+
+ 0ULTKMglk0ohhvdtCaY7tVDxhoF+ghOUdSxFLjO9BBaDPuwoVPc3S9kCJYZIJuUVt3zu
+ UCUbwmYskXJMG4XkbdiTpzk2g6PAk8kb3HFqScWyhVg4lqWs9KiIGVmQoPNt6mISc9Qj
+ iNSoA1/UyC6BJiQXn7bgwY12zFkRH5sxZYor/KPuMUAqP/yE3DXNYFdbdo/xUd/diNcj
+ 182agpo1M5Lk198tZEt5Jrjadv3fCxGCIOz4r83FaVkv3i/4q8wK3Daut9uzlp288P/6
+ MI5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=mZLJXwo1VKlX/iabelcLQZuAW4pn07ejBE0mltf65Z4=;
+ b=iX2TBSuu3JTMEc3GQTJoaRLsCSvzL35NHybRv3MeVndpEDj3AA/tjCj6XnlaSgiojz
+ rQ52SEVoNrSYUJLCiaAw/nRtTc9ZRWD7KiNYDJKa7HTw7dEyYWRGESVG/iOY0SfYwEXg
+ Z8inVZ9eb5ul9GEkeGGq1IB7sLl9wfw6hLwJGajvcomUcz8APuoYTmpc7nWI2abJlANV
+ gr2LLaM+C41CTrgwGaWq5ZT3w6ScS5HOXOELyq8+besB2WLAFbESCCMH65oaqD+YQ7mA
+ Ku9ArBb92yDxov9LwInGcjwkMjksnFyn9MyFSmiTTIWMQ7Qq3tY+V6rFulLGL1q7Yofj
+ gtzA==
+X-Gm-Message-State: AOAM5307VT7Qbxj4785L9/oIEdo3d6kPtgVogYLFFPULrW/wVwPZfgqr
+ cGQ43N1qcZeUl8sswIClQm9qU2nTahidZdiLjO2RIQYQ6VU=
+X-Google-Smtp-Source: ABdhPJy3Kg+mR49R9JNr2mwAHnab/8dH24afl/kp1QsVQXlcP7Rz50W2Ocmqeey8cSYpoNwxFM8NtX4sRc+FcqrFgRo=
+X-Received: by 2002:a92:9a97:: with SMTP id c23mr32158353ill.258.1595394090801; 
+ Tue, 21 Jul 2020 22:01:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200710052340.737567-1-oohall@gmail.com>
+ <20200710052340.737567-6-oohall@gmail.com>
+ <42897409-5788-dfdb-f2dc-76e99a81b662@ozlabs.ru>
+In-Reply-To: <42897409-5788-dfdb-f2dc-76e99a81b662@ozlabs.ru>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 22 Jul 2020 15:01:19 +1000
+Message-ID: <CAOSf1CF0jv_cq5xgVz+7fzf155MjHT72p+VN1EY6HjjW1Nza-w@mail.gmail.com>
+Subject: Re: [PATCH 05/15] powerpc/powernv/sriov: Move SR-IOV into a seperate
+ file
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,117 +75,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, kexec@lists.infradead.org,
- Hari Bathini <hbathini@linux.ibm.com>, Pingfan Liu <kernelfans@gmail.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pingfan Liu <kernelfans@gmail.com> writes:
-> A bug is observed on pseries by taking the following steps on rhel:
-                                                                ^
-                                                                RHEL
-
-I assume it happens on mainline too?
-
-> -1. drmgr -c mem -r -q 5
-> -2. echo c > /proc/sysrq-trigger
+On Tue, Jul 14, 2020 at 7:16 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
 >
-> And then, the failure looks like:
-> kdump: saving to /sysroot//var/crash/127.0.0.1-2020-01-16-02:06:14/
-> kdump: saving vmcore-dmesg.txt
-> kdump: saving vmcore-dmesg.txt complete
-> kdump: saving vmcore
->  Checking for memory holes                         : [  0.0 %] /                   Checking for memory holes                         : [100.0 %] |                   Excluding unnecessary pages                       : [100.0 %] \                   Copying data                                      : [  0.3 %] -          eta: 38s[   44.337636] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
-> [   44.337663] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
-> [   44.337677] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
-> [   44.337692] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
-> [   44.337708] makedumpfile[469]: unhandled signal 7 at 00007fffba400000 nip 00007fffbbc4d7fc lr 000000011356ca3c code 2
-> [   44.338548] Core dump to |/bin/false pipe failed
-> /lib/kdump-lib-initramfs.sh: line 98:   469 Bus error               $CORE_COLLECTOR /proc/vmcore $_mp/$KDUMP_PATH/$HOST_IP-$DATEDIR/vmcore-incomplete
-> kdump: saving vmcore failed
+> On 10/07/2020 15:23, Oliver O'Halloran wrote:
+> > +     align = pci_iov_resource_size(pdev, resno);
+> > +
+> > +     /*
+> > +      * iov can be null if we have an SR-IOV device with IOV BAR that can't
+> > +      * be placed in the m64 space (i.e. The BAR is 32bit or non-prefetch).
+> > +      * In that case we don't allow VFs to be enabled so just return the
+> > +      * default alignment.
+> > +      */
+> > +     if (!iov)
+> > +             return align;
 >
-> * Root cause *
->   After analyzing, it turns out that in the current implementation,
-> when hot-removing lmb, the KOBJ_REMOVE event ejects before the dt updating as
-> the code __remove_memory() comes before drmem_update_dt().
-> So in kdump kernel, when read_from_oldmem() resorts to
-> pSeries_lpar_hpte_insert() to install hpte, but fails with -2 due to
-> non-exist pfn. And finally, low_hash_fault() raise SIGBUS to process, as it
-> can be observed "Bus error"
 >
-> From a viewpoint of listener and publisher, the publisher notifies the
-> listener before data is ready.  This introduces a problem where udev
-> launches kexec-tools (due to KOBJ_REMOVE) and loads a stale dt before
-> updating. And in capture kernel, makedumpfile will access the memory based
-> on the stale dt info, and hit a SIGBUS error due to an un-existed lmb.
->
-> * Fix *
->   In order to fix this issue, update dt before __remove_memory(), and
-> accordingly the same rule in hot-add path.
->
-> This will introduce extra dt updating payload for each involved lmb when hotplug.
-> But it should be fine since drmem_update_dt() is memory based operation and
-> hotplug is not a hot path.
->
-> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> To: linuxppc-dev@lists.ozlabs.org
-> Cc: kexec@lists.infradead.org
-> ---
-> v2 -> v3: rebase onto ppc next-test branch
-> ---
->  arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 1a3ac3b..def8cb3f 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -372,6 +372,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
->  	invalidate_lmb_associativity_index(lmb);
->  	lmb_clear_nid(lmb);
->  	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
-> +	drmem_update_dt();
+> This is the new chunk. What would happen before? Non-prefetch BAR would
+> still go to m64 space?
 
-No error checking?
-
->  	__remove_memory(nid, base_addr, block_sz);
->  
-> @@ -607,6 +608,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
->  
->  	lmb_set_nid(lmb);
->  	lmb->flags |= DRCONF_MEM_ASSIGNED;
-> +	drmem_update_dt();
-
-And here ..
->  
->  	block_sz = memory_block_size_bytes();
->  
-> @@ -625,6 +627,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
->  		invalidate_lmb_associativity_index(lmb);
->  		lmb_clear_nid(lmb);
->  		lmb->flags &= ~DRCONF_MEM_ASSIGNED;
-> +		drmem_update_dt();
-
-
-And here ..
-
->  		__remove_memory(nid, base_addr, block_sz);
->  	}
-> @@ -877,9 +880,6 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
->  		break;
->  	}
->  
-> -	if (!rc)
-> -		rc = drmem_update_dt();
-> -
->  	unlock_device_hotplug();
->  	return rc;
-
-Whereas previously we did check it.
-
-
-cheers
+I don't think there's any real change. Currently if the setup in
+pnv_pci_ioda_fixup_iov_resources() fails then pdn->vfs_expanded will
+be zero. The !iov check here fills the same role, but it's more
+explicit. vfs_expanded has some other behaviour too so we can't get
+rid of it entirely (yet).
