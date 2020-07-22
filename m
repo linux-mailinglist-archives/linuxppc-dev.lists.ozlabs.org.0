@@ -1,90 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F802298BA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 14:55:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA422298C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 14:58:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBb6C2fLpzDqVn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 22:55:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBb9t5qr0zDqwt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 22:58:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBZWP4RMXzDr3t
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 22:28:33 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06MCGnoK126430; Wed, 22 Jul 2020 08:28:24 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32e1wm1303-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 08:28:24 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06MCGprf126621;
- Wed, 22 Jul 2020 08:28:23 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32e1wm12yb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 08:28:23 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06MCI0Gn017249;
- Wed, 22 Jul 2020 12:28:21 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06fra.de.ibm.com with ESMTP id 32brbgthy7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 12:28:21 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06MCSJxK56819778
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jul 2020 12:28:19 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 05EC511C050;
- Wed, 22 Jul 2020 12:28:19 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6918B11C05B;
- Wed, 22 Jul 2020 12:28:15 +0000 (GMT)
-Received: from [9.85.103.169] (unknown [9.85.103.169])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed, 22 Jul 2020 12:28:15 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Message-Id: <A3ED2A4A-636C-4D62-8E2A-A0F9EB86D0F8@linux.vnet.ibm.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E"
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [v3 07/15] powerpc/perf: Add power10_feat to dt_cpu_ftrs
-Date: Wed, 22 Jul 2020 17:58:13 +0530
-In-Reply-To: <CACzsE9p-mNGptKi_+RSOOhvmW5gfLcKEbtoS6ah_5ZmVCThfpQ@mail.gmail.com>
-To: Jordan Niethe <jniethe5@gmail.com>
-References: <1594996707-3727-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1594996707-3727-8-git-send-email-atrajeev@linux.vnet.ibm.com>
- <CACzsE9oBw1ZrJLqOAg1QqPrQgSoVbEdPh_ax7mU_kcWNyfyAcg@mail.gmail.com>
- <9A4E06A2-5686-4C85-B2F7-0904F195B58A@linux.vnet.ibm.com>
- <CACzsE9p-mNGptKi_+RSOOhvmW5gfLcKEbtoS6ah_5ZmVCThfpQ@mail.gmail.com>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-22_05:2020-07-22,
- 2020-07-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- mlxlogscore=999 impostorscore=0 mlxscore=0 suspectscore=0 bulkscore=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007220089
-X-Mailman-Approved-At: Wed, 22 Jul 2020 22:44:44 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBZtb2g9wzDqSn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 22:45:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=sJG5xf51; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BBZtZ29RMz9sSn;
+ Wed, 22 Jul 2020 22:45:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1595421910;
+ bh=zcL3E0CNVqX8VWWTtlfZYefsjM7u0ntmHNGu3ekg2DI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=sJG5xf51yyztBoEsRAOMyQwqKrMVQW51dsVbpwfB0vMzXox69tbMlK2o6MbaNxhDh
+ MX4rIbo4P//2bMEe4+uJZEemHASFYnrwogSs15g7nU88cY1vvCse7B+Lw3AuM8xNBU
+ F29fzkpNFn7cbeyEnBBjUGSKuajUBC0fXOi164DsgyYrWqo44WTScXXA+UEmKeFb4S
+ F8D3RHG60PI1pVQeYjWdF2hPwqgQpv/6WTyvqdXDIPoIpAD2cyagV16U+RS0aXjOvc
+ In9NSaXSk5Hp906fLcxfac39J6D83JtfUYGlHOmY3WJmwe8fD8TZwQuvgSNQ83K8z4
+ PxhWaMZ93/b7w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: RE: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
+ MMIO access, in sprg0 register
+In-Reply-To: <20200722074929.GI7339@oc0525413822.ibm.com>
+References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+ <875zags3qp.fsf@mpe.ellerman.id.au>
+ <20200722074929.GI7339@oc0525413822.ibm.com>
+Date: Wed, 22 Jul 2020 22:45:06 +1000
+Message-ID: <87a6zrra5p.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,721 +60,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
- kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, svaidyan@in.ibm.com,
- acme@kernel.org, jolsa@kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: ldufour@linux.ibm.com, aik@ozlabs.ru, kvm-ppc@vger.kernel.org,
+ bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Ram Pai <linuxram@us.ibm.com> writes:
+> On Wed, Jul 22, 2020 at 12:06:06PM +1000, Michael Ellerman wrote:
+>> Ram Pai <linuxram@us.ibm.com> writes:
+>> > An instruction accessing a mmio address, generates a HDSI fault.  This fault is
+>> > appropriately handled by the Hypervisor.  However in the case of secureVMs, the
+>> > fault is delivered to the ultravisor.
+>> >
+>> > Unfortunately the Ultravisor has no correct-way to fetch the faulting
+>> > instruction. The PEF architecture does not allow Ultravisor to enable MMU
+>> > translation. Walking the two level page table to read the instruction can race
+>> > with other vcpus modifying the SVM's process scoped page table.
+>> 
+>> You're trying to read the guest's kernel text IIUC, that mapping should
+>> be stable. Possibly permissions on it could change over time, but the
+>> virtual -> real mapping should not.
+>
+> Actually the code does not capture the address of the instruction in the
+> sprg0 register. It captures the instruction itself. So should the mapping
+> matter?
 
---Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+Sorry that was talking about reading the instruction by doing the page
+walk, not with this patch applied.
 
-
-
-> On 22-Jul-2020, at 4:19 PM, Jordan Niethe <jniethe5@gmail.com> wrote:
->=20
-> On Wed, Jul 22, 2020 at 5:55 PM Athira Rajeev
-> <atrajeev@linux.vnet.ibm.com <mailto:atrajeev@linux.vnet.ibm.com>> =
-wrote:
->>=20
->>=20
->>=20
->> On 22-Jul-2020, at 10:11 AM, Jordan Niethe <jniethe5@gmail.com> =
-wrote:
->>=20
->> On Sat, Jul 18, 2020 at 1:13 AM Athira Rajeev
->> <atrajeev@linux.vnet.ibm.com> wrote:
->>=20
->>=20
->> From: Madhavan Srinivasan <maddy@linux.ibm.com>
->>=20
->> Add power10 feature function to dt_cpu_ftrs.c along
->> with a power10 specific init() to initialize pmu sprs,
->> sets the oprofile_cpu_type and cpu_features. This will
->> enable performance monitoring unit(PMU) for Power10
->> in CPU features with "performance-monitor-power10".
->>=20
->> For PowerISA v3.1, BHRB disable is controlled via Monitor Mode
->> Control Register A (MMCRA) bit, namely "BHRB Recording Disable
->> (BHRBRD)". This patch initializes MMCRA BHRBRD to disable BHRB
->> feature at boot for power10.
->>=20
->> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> ---
->> arch/powerpc/include/asm/reg.h        |  3 +++
->> arch/powerpc/kernel/cpu_setup_power.S |  8 ++++++++
->> arch/powerpc/kernel/dt_cpu_ftrs.c     | 26 ++++++++++++++++++++++++++
->> 3 files changed, 37 insertions(+)
->>=20
->> diff --git a/arch/powerpc/include/asm/reg.h =
-b/arch/powerpc/include/asm/reg.h
->> index 21a1b2d..900ada1 100644
->> --- a/arch/powerpc/include/asm/reg.h
->> +++ b/arch/powerpc/include/asm/reg.h
->> @@ -1068,6 +1068,9 @@
->> #define MMCR0_PMC2_LOADMISSTIME        0x5
->> #endif
->>=20
->> +/* BHRB disable bit for PowerISA v3.10 */
->> +#define MMCRA_BHRB_DISABLE     0x0000002000000000
->>=20
->> Shouldn't this go under SPRN_MMCRA with the other MMCRA_*.
->>=20
->>=20
->>=20
->> Hi Jordan
->>=20
->> Ok, the definition of MMCRA is under #ifdef for 64 bit .  if I move =
-definition of MMCRA_BHRB_DISABLE along with other SPR's, I also
->> need to define this for 32-bit to satisfy core-book3s to compile as =
-below:
->>=20
->> diff --git a/arch/powerpc/include/asm/reg.h =
-b/arch/powerpc/include/asm/reg.h
->> index 900ada10762c..7e271657b412 100644
->> --- a/arch/powerpc/include/asm/reg.h
->> +++ b/arch/powerpc/include/asm/reg.h
->> @@ -888,6 +888,8 @@
->> #define   MMCRA_SLOT   0x07000000UL /* SLOT bits (37-39) */
->> #define   MMCRA_SLOT_SHIFT     24
->> #define   MMCRA_SAMPLE_ENABLE 0x00000001UL /* enable sampling */
->> +/* BHRB disable bit for PowerISA v3.10 */
->> +#define   MMCRA_BHRB_DISABLE  0x0000002000000000
->> #define   POWER6_MMCRA_SDSYNC 0x0000080000000000ULL    /* SDAR/SIAR =
-synced */
->> #define   POWER6_MMCRA_SIHV   0x0000040000000000ULL
->> #define   POWER6_MMCRA_SIPR   0x0000020000000000ULL
->> @@ -1068,9 +1070,6 @@
->> #define MMCR0_PMC2_LOADMISSTIME        0x5
->> #endif
->>=20
->>=20
->>=20
->> -/* BHRB disable bit for PowerISA v3.10 */
->> -#define MMCRA_BHRB_DISABLE     0x0000002000000000
->> -
->> /*
->>  * SPRG usage:
->>  *
->> diff --git a/arch/powerpc/perf/core-book3s.c =
-b/arch/powerpc/perf/core-book3s.c
->> index 36baae666387..88068f20827c 100644
->> --- a/arch/powerpc/perf/core-book3s.c
->> +++ b/arch/powerpc/perf/core-book3s.c
->> @@ -94,6 +94,7 @@ static unsigned int freeze_events_kernel =3D =
-MMCR0_FCS;
->> #define SPRN_SIER2             0
->> #define SPRN_SIER3             0
->> #define MMCRA_SAMPLE_ENABLE    0
->> +#define MMCRA_BHRB_DISABLE     0
->>=20
->>=20
->>=20
->> static inline unsigned long perf_ip_adjust(struct pt_regs *regs)
->> {
->>=20
->>=20
->>=20
->> +
->> /*
->> * SPRG usage:
->> *
->> diff --git a/arch/powerpc/kernel/cpu_setup_power.S =
-b/arch/powerpc/kernel/cpu_setup_power.S
->> index efdcfa7..b8e0d1e 100644
->> --- a/arch/powerpc/kernel/cpu_setup_power.S
->> +++ b/arch/powerpc/kernel/cpu_setup_power.S
->> @@ -94,6 +94,7 @@ _GLOBAL(__restore_cpu_power8)
->> _GLOBAL(__setup_cpu_power10)
->>       mflr    r11
->>       bl      __init_FSCR_power10
->> +       bl      __init_PMU_ISA31
->>=20
->> So we set MMCRA here but then aren't we still going to call =
-__init_PMU
->> which will overwrite that?
->> Would this setting MMCRA also need to be handled in =
-__restore_cpu_power10?
->>=20
->>=20
->> Thanks for this nice catch !  When I rebased code initial phase, we =
-didn=E2=80=99t had power10 part filled in.
->> It was a miss from my side in adding PMu init functions and thanks =
-for pointing this out.
->> Below patch will call __init_PMU functions in setup and restore. =
-Please check if this looks good
->>=20
->> --
->> diff --git a/arch/powerpc/kernel/cpu_setup_power.S =
-b/arch/powerpc/kernel/cpu_setup_power.S
->> index efdcfa714106..e672a6c5fd7c 100644
->> --- a/arch/powerpc/kernel/cpu_setup_power.S
->> +++ b/arch/powerpc/kernel/cpu_setup_power.S
->> @@ -94,6 +94,9 @@ _GLOBAL(__restore_cpu_power8)
->> _GLOBAL(__setup_cpu_power10)
->>  mflr r11
->>  bl __init_FSCR_power10
->> + bl __init_PMU
->> + bl __init_PMU_ISA31
->> + bl __init_PMU_HV
->>  b 1f
->>=20
->> _GLOBAL(__setup_cpu_power9)
->=20
-> Won't you also need to change where the label 1 is:
-> --- a/arch/powerpc/kernel/cpu_setup_power.S
-> +++ b/arch/powerpc/kernel/cpu_setup_power.S
-> @@ -100,8 +100,8 @@ _GLOBAL(__setup_cpu_power10)
-> _GLOBAL(__setup_cpu_power9)
->        mflr    r11
->        bl      __init_FSCR
-> -1:     bl      __init_PMU
-> -       bl      __init_hvmode_206
-> +       bl      __init_PMU
-> +1:     bl      __init_hvmode_206
->        mtlr    r11
->        beqlr
->        li      r0,0
-
-HI Jordan
-
-I will address these comments and include changes for cpu_setup_power.S =
-in a separate patch as suggested by Michael Ellerman
-
-Thanks
-Athira
->=20
->> @@ -124,6 +127,9 @@ _GLOBAL(__setup_cpu_power9)
->> _GLOBAL(__restore_cpu_power10)
->>  mflr r11
->>  bl __init_FSCR_power10
->> + bl __init_PMU
->> + bl __init_PMU_ISA31
->> + bl __init_PMU_HV
->>  b 1f
->>=20
->> _GLOBAL(__restore_cpu_power9)
->> @@ -233,3 +239,10 @@ __init_PMU_ISA207:
->>  li r5,0
->>  mtspr SPRN_MMCRS,r5
->>  blr
->> +
->> +__init_PMU_ISA31:
->> + li r5,0
->> + mtspr SPRN_MMCR3,r5
->> + LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
->> + mtspr SPRN_MMCRA,r5
->> + blr
->>=20
->> =E2=80=94
->>=20
->>       b       1f
->>=20
->> _GLOBAL(__setup_cpu_power9)
->> @@ -233,3 +234,10 @@ __init_PMU_ISA207:
->>       li      r5,0
->>       mtspr   SPRN_MMCRS,r5
->>       blr
->> +
->> +__init_PMU_ISA31:
->> +       li      r5,0
->> +       mtspr   SPRN_MMCR3,r5
->> +       LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
->> +       mtspr   SPRN_MMCRA,r5
->> +       blr
->> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c =
-b/arch/powerpc/kernel/dt_cpu_ftrs.c
->> index 3a40951..f482286 100644
->> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
->> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
->> @@ -450,6 +450,31 @@ static int __init feat_enable_pmu_power9(struct =
-dt_cpu_feature *f)
->>       return 1;
->> }
->>=20
->> +static void init_pmu_power10(void)
->> +{
->> +       init_pmu_power9();
->> +
->> +       mtspr(SPRN_MMCR3, 0);
->> +       mtspr(SPRN_MMCRA, MMCRA_BHRB_DISABLE);
->> +}
->> +
->> +static int __init feat_enable_pmu_power10(struct dt_cpu_feature *f)
->> +{
->> +       hfscr_pmu_enable();
->> +
->> +       init_pmu_power10();
->> +       init_pmu_registers =3D init_pmu_power10;
->> +
->> +       cur_cpu_spec->cpu_features |=3D CPU_FTR_MMCRA;
->> +       cur_cpu_spec->cpu_user_features |=3D =
-PPC_FEATURE_PSERIES_PERFMON_COMPAT;
->> +
->> +       cur_cpu_spec->num_pmcs          =3D 6;
->> +       cur_cpu_spec->pmc_type          =3D PPC_PMC_IBM;
->> +       cur_cpu_spec->oprofile_cpu_type =3D "ppc64/power10";
->> +
->> +       return 1;
->> +}
->> +
->> static int __init feat_enable_tm(struct dt_cpu_feature *f)
->> {
->> #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->> @@ -639,6 +664,7 @@ struct dt_cpu_feature_match {
->>       {"pc-relative-addressing", feat_enable, 0},
->>       {"machine-check-power9", feat_enable_mce_power9, 0},
->>       {"performance-monitor-power9", feat_enable_pmu_power9, 0},
->> +       {"performance-monitor-power10", feat_enable_pmu_power10, 0},
->>       {"event-based-branch-v3", feat_enable, 0},
->>       {"random-number-generator", feat_enable, 0},
->>       {"system-call-vectored", feat_disable, 0},
->> --
->> 1.8.3.1
-
-
---Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><br =
-class=3D""><div><br class=3D""><blockquote type=3D"cite" class=3D""><div =
-class=3D"">On 22-Jul-2020, at 4:19 PM, Jordan Niethe &lt;<a =
-href=3D"mailto:jniethe5@gmail.com" class=3D"">jniethe5@gmail.com</a>&gt; =
-wrote:</div><br class=3D"Apple-interchange-newline"><div class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;" class=3D"">On Wed, Jul 22, 2020 at 5:55 PM =
-Athira Rajeev</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: normal; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: normal; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;" class=3D"">&lt;</span><a =
-href=3D"mailto:atrajeev@linux.vnet.ibm.com" style=3D"font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: normal; letter-spacing: normal; orphans: auto; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
--webkit-text-stroke-width: 0px;" =
-class=3D"">atrajeev@linux.vnet.ibm.com</a><span style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">&gt; wrote:</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><blockquote type=3D"cite" =
-style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-orphans: auto; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: auto; word-spacing: 0px; =
--webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><br class=3D""><br class=3D""><br =
-class=3D"">On 22-Jul-2020, at 10:11 AM, Jordan Niethe &lt;<a =
-href=3D"mailto:jniethe5@gmail.com" class=3D"">jniethe5@gmail.com</a>&gt; =
-wrote:<br class=3D""><br class=3D"">On Sat, Jul 18, 2020 at 1:13 AM =
-Athira Rajeev<br class=3D"">&lt;<a =
-href=3D"mailto:atrajeev@linux.vnet.ibm.com" =
-class=3D"">atrajeev@linux.vnet.ibm.com</a>&gt; wrote:<br class=3D""><br =
-class=3D""><br class=3D"">From: Madhavan Srinivasan &lt;<a =
-href=3D"mailto:maddy@linux.ibm.com" =
-class=3D"">maddy@linux.ibm.com</a>&gt;<br class=3D""><br class=3D"">Add =
-power10 feature function to dt_cpu_ftrs.c along<br class=3D"">with a =
-power10 specific init() to initialize pmu sprs,<br class=3D"">sets the =
-oprofile_cpu_type and cpu_features. This will<br class=3D"">enable =
-performance monitoring unit(PMU) for Power10<br class=3D"">in CPU =
-features with "performance-monitor-power10".<br class=3D""><br =
-class=3D"">For PowerISA v3.1, BHRB disable is controlled via Monitor =
-Mode<br class=3D"">Control Register A (MMCRA) bit, namely "BHRB =
-Recording Disable<br class=3D"">(BHRBRD)". This patch initializes MMCRA =
-BHRBRD to disable BHRB<br class=3D"">feature at boot for power10.<br =
-class=3D""><br class=3D"">Signed-off-by: Madhavan Srinivasan &lt;<a =
-href=3D"mailto:maddy@linux.ibm.com" =
-class=3D"">maddy@linux.ibm.com</a>&gt;<br class=3D"">---<br =
-class=3D"">arch/powerpc/include/asm/reg.h =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;3 +++<br =
-class=3D"">arch/powerpc/kernel/cpu_setup_power.S | &nbsp;8 ++++++++<br =
-class=3D"">arch/powerpc/kernel/dt_cpu_ftrs.c &nbsp;&nbsp;&nbsp;&nbsp;| =
-26 ++++++++++++++++++++++++++<br class=3D"">3 files changed, 37 =
-insertions(+)<br class=3D""><br class=3D"">diff --git =
-a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h<br =
-class=3D"">index 21a1b2d..900ada1 100644<br class=3D"">--- =
-a/arch/powerpc/include/asm/reg.h<br class=3D"">+++ =
-b/arch/powerpc/include/asm/reg.h<br class=3D"">@@ -1068,6 +1068,9 @@<br =
-class=3D"">#define MMCR0_PMC2_LOADMISSTIME =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x5<br class=3D"">#endif<br =
-class=3D""><br class=3D"">+/* BHRB disable bit for PowerISA v3.10 */<br =
-class=3D"">+#define MMCRA_BHRB_DISABLE =
-&nbsp;&nbsp;&nbsp;&nbsp;0x0000002000000000<br class=3D""><br =
-class=3D"">Shouldn't this go under SPRN_MMCRA with the other MMCRA_*.<br =
-class=3D""><br class=3D""><br class=3D""><br class=3D"">Hi Jordan<br =
-class=3D""><br class=3D"">Ok, the definition of MMCRA is under #ifdef =
-for 64 bit . &nbsp;if I move definition of MMCRA_BHRB_DISABLE along with =
-other SPR's, I also<br class=3D"">need to define this for 32-bit to =
-satisfy core-book3s to compile as below:<br class=3D""><br class=3D"">diff=
- --git a/arch/powerpc/include/asm/reg.h =
-b/arch/powerpc/include/asm/reg.h<br class=3D"">index =
-900ada10762c..7e271657b412 100644<br class=3D"">--- =
-a/arch/powerpc/include/asm/reg.h<br class=3D"">+++ =
-b/arch/powerpc/include/asm/reg.h<br class=3D"">@@ -888,6 +888,8 @@<br =
-class=3D"">#define &nbsp;&nbsp;MMCRA_SLOT &nbsp;&nbsp;0x07000000UL /* =
-SLOT bits (37-39) */<br class=3D"">#define &nbsp;&nbsp;MMCRA_SLOT_SHIFT =
-&nbsp;&nbsp;&nbsp;&nbsp;24<br class=3D"">#define =
-&nbsp;&nbsp;MMCRA_SAMPLE_ENABLE 0x00000001UL /* enable sampling */<br =
-class=3D"">+/* BHRB disable bit for PowerISA v3.10 */<br =
-class=3D"">+#define &nbsp;&nbsp;MMCRA_BHRB_DISABLE =
-&nbsp;0x0000002000000000<br class=3D"">#define =
-&nbsp;&nbsp;POWER6_MMCRA_SDSYNC 0x0000080000000000ULL =
-&nbsp;&nbsp;&nbsp;/* SDAR/SIAR synced */<br class=3D"">#define =
-&nbsp;&nbsp;POWER6_MMCRA_SIHV &nbsp;&nbsp;0x0000040000000000ULL<br =
-class=3D"">#define &nbsp;&nbsp;POWER6_MMCRA_SIPR =
-&nbsp;&nbsp;0x0000020000000000ULL<br class=3D"">@@ -1068,9 +1070,6 @@<br =
-class=3D"">#define MMCR0_PMC2_LOADMISSTIME =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x5<br class=3D"">#endif<br =
-class=3D""><br class=3D""><br class=3D""><br class=3D"">-/* BHRB disable =
-bit for PowerISA v3.10 */<br class=3D"">-#define MMCRA_BHRB_DISABLE =
-&nbsp;&nbsp;&nbsp;&nbsp;0x0000002000000000<br class=3D"">-<br =
-class=3D"">/*<br class=3D"">&nbsp;* SPRG usage:<br class=3D"">&nbsp;*<br =
-class=3D"">diff --git a/arch/powerpc/perf/core-book3s.c =
-b/arch/powerpc/perf/core-book3s.c<br class=3D"">index =
-36baae666387..88068f20827c 100644<br class=3D"">--- =
-a/arch/powerpc/perf/core-book3s.c<br class=3D"">+++ =
-b/arch/powerpc/perf/core-book3s.c<br class=3D"">@@ -94,6 +94,7 @@ static =
-unsigned int freeze_events_kernel =3D MMCR0_FCS;<br class=3D"">#define =
-SPRN_SIER2 =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<=
-br class=3D"">#define SPRN_SIER3 =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<=
-br class=3D"">#define MMCRA_SAMPLE_ENABLE &nbsp;&nbsp;&nbsp;0<br =
-class=3D"">+#define MMCRA_BHRB_DISABLE &nbsp;&nbsp;&nbsp;&nbsp;0<br =
-class=3D""><br class=3D""><br class=3D""><br class=3D"">static inline =
-unsigned long perf_ip_adjust(struct pt_regs *regs)<br class=3D"">{<br =
-class=3D""><br class=3D""><br class=3D""><br class=3D"">+<br =
-class=3D"">/*<br class=3D"">* SPRG usage:<br class=3D"">*<br =
-class=3D"">diff --git a/arch/powerpc/kernel/cpu_setup_power.S =
-b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">index =
-efdcfa7..b8e0d1e 100644<br class=3D"">--- =
-a/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">+++ =
-b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">@@ -94,6 +94,7 @@ =
-_GLOBAL(__restore_cpu_power8)<br =
-class=3D"">_GLOBAL(__setup_cpu_power10)<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mflr =
-&nbsp;&nbsp;&nbsp;r11<br class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl=
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_FSCR_power10<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_PMU_ISA31<br class=3D""><br =
-class=3D"">So we set MMCRA here but then aren't we still going to call =
-__init_PMU<br class=3D"">which will overwrite that?<br class=3D"">Would =
-this setting MMCRA also need to be handled in __restore_cpu_power10?<br =
-class=3D""><br class=3D""><br class=3D"">Thanks for this nice catch ! =
-&nbsp;When I rebased code initial phase, we didn=E2=80=99t had power10 =
-part filled in.<br class=3D"">It was a miss from my side in adding PMu =
-init functions and thanks for pointing this out.<br class=3D"">Below =
-patch will call __init_PMU functions in setup and restore. Please check =
-if this looks good<br class=3D""><br class=3D"">--<br class=3D"">diff =
---git a/arch/powerpc/kernel/cpu_setup_power.S =
-b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">index =
-efdcfa714106..e672a6c5fd7c 100644<br class=3D"">--- =
-a/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">+++ =
-b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">@@ -94,6 +94,9 @@ =
-_GLOBAL(__restore_cpu_power8)<br =
-class=3D"">_GLOBAL(__setup_cpu_power10)<br class=3D"">&nbsp;mflr r11<br =
-class=3D"">&nbsp;bl __init_FSCR_power10<br class=3D"">+ bl __init_PMU<br =
-class=3D"">+ bl __init_PMU_ISA31<br class=3D"">+ bl __init_PMU_HV<br =
-class=3D"">&nbsp;b 1f<br class=3D""><br =
-class=3D"">_GLOBAL(__setup_cpu_power9)<br class=3D""></blockquote><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;" class=3D"">Won't you also need to change =
-where the label 1 is:</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">--- a/arch/powerpc/kernel/cpu_setup_power.S</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;" class=3D"">+++ =
-b/arch/powerpc/kernel/cpu_setup_power.S</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">@@ -100,8 +100,8 @@ _GLOBAL(__setup_cpu_power10)</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;" =
-class=3D"">_GLOBAL(__setup_cpu_power9)</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mflr =
-&nbsp;&nbsp;&nbsp;r11</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_FSCR</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">-1: &nbsp;&nbsp;&nbsp;&nbsp;bl =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_PMU</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_hvmode_206</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;" class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_PMU</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">+1: &nbsp;&nbsp;&nbsp;&nbsp;bl =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_hvmode_206</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;" =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtlr =
-&nbsp;&nbsp;&nbsp;r11</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
-0); font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;" =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beqlr</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: =
-normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;" =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;li =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r0,0</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""></div></blockquote><div><br =
-class=3D""></div>HI Jordan</div><div><br class=3D""></div><div>I will =
-address these comments and include changes for cpu_setup_power.S in a =
-separate patch as suggested by Michael Ellerman</div><div><br =
-class=3D""></div><div>Thanks</div><div>Athira</div><div><blockquote =
-type=3D"cite" class=3D""><div class=3D""><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D""><blockquote type=3D"cite" =
-style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
-orphans: auto; text-align: start; text-indent: 0px; text-transform: =
-none; white-space: normal; widows: auto; word-spacing: 0px; =
--webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
-text-decoration: none;" class=3D"">@@ -124,6 +127,9 @@ =
-_GLOBAL(__setup_cpu_power9)<br =
-class=3D"">_GLOBAL(__restore_cpu_power10)<br class=3D"">&nbsp;mflr =
-r11<br class=3D"">&nbsp;bl __init_FSCR_power10<br class=3D"">+ bl =
-__init_PMU<br class=3D"">+ bl __init_PMU_ISA31<br class=3D"">+ bl =
-__init_PMU_HV<br class=3D"">&nbsp;b 1f<br class=3D""><br =
-class=3D"">_GLOBAL(__restore_cpu_power9)<br class=3D"">@@ -233,3 +239,10 =
-@@ __init_PMU_ISA207:<br class=3D"">&nbsp;li r5,0<br =
-class=3D"">&nbsp;mtspr SPRN_MMCRS,r5<br class=3D"">&nbsp;blr<br =
-class=3D"">+<br class=3D"">+__init_PMU_ISA31:<br class=3D"">+ li r5,0<br =
-class=3D"">+ mtspr SPRN_MMCR3,r5<br class=3D"">+ LOAD_REG_IMMEDIATE(r5, =
-MMCRA_BHRB_DISABLE)<br class=3D"">+ mtspr SPRN_MMCRA,r5<br class=3D"">+ =
-blr<br class=3D""><br class=3D"">=E2=80=94<br class=3D""><br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1f<br class=3D""><br =
-class=3D"">_GLOBAL(__setup_cpu_power9)<br class=3D"">@@ -233,3 +234,10 =
-@@ __init_PMU_ISA207:<br class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;li=
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r5,0<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr =
-&nbsp;&nbsp;SPRN_MMCRS,r5<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blr<br class=3D"">+<br =
-class=3D"">+__init_PMU_ISA31:<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;li =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r5,0<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr &nbsp;&nbsp;SPRN_MMCR3,r5<br =
-class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOAD_REG_IMMEDIATE(r5, =
-MMCRA_BHRB_DISABLE)<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr &nbsp;&nbsp;SPRN_MMCRA,r5<br =
-class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blr<br class=3D"">diff =
---git a/arch/powerpc/kernel/dt_cpu_ftrs.c =
-b/arch/powerpc/kernel/dt_cpu_ftrs.c<br class=3D"">index 3a40951..f482286 =
-100644<br class=3D"">--- a/arch/powerpc/kernel/dt_cpu_ftrs.c<br =
-class=3D"">+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c<br class=3D"">@@ =
--450,6 +450,31 @@ static int __init feat_enable_pmu_power9(struct =
-dt_cpu_feature *f)<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br =
-class=3D"">}<br class=3D""><br class=3D"">+static void =
-init_pmu_power10(void)<br class=3D"">+{<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_pmu_power9();<br class=3D"">+<br =
-class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr(SPRN_MMCR3, =
-0);<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr(SPRN_MMCRA, =
-MMCRA_BHRB_DISABLE);<br class=3D"">+}<br class=3D"">+<br =
-class=3D"">+static int __init feat_enable_pmu_power10(struct =
-dt_cpu_feature *f)<br class=3D"">+{<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hfscr_pmu_enable();<br class=3D"">+<br=
- class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_pmu_power10();<br =
-class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_pmu_registers =3D =
-init_pmu_power10;<br class=3D"">+<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;cpu_features |=3D =
-CPU_FTR_MMCRA;<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;cpu_user_features =
-|=3D PPC_FEATURE_PSERIES_PERFMON_COMPAT;<br class=3D"">+<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;num_pmcs =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=3D 6;<br =
-class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;pmc_type =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=3D =
-PPC_PMC_IBM;<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;oprofile_cpu_type =3D=
- "ppc64/power10";<br class=3D"">+<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br class=3D"">+}<br =
-class=3D"">+<br class=3D"">static int __init feat_enable_tm(struct =
-dt_cpu_feature *f)<br class=3D"">{<br class=3D"">#ifdef =
-CONFIG_PPC_TRANSACTIONAL_MEM<br class=3D"">@@ -639,6 +664,7 @@ struct =
-dt_cpu_feature_match {<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"pc-relative-addressing", =
-feat_enable, 0},<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"machine-check-power9", =
-feat_enable_mce_power9, 0},<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"performance-monitor-power=
-9", feat_enable_pmu_power9, 0},<br class=3D"">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"performance-monitor-power10", =
-feat_enable_pmu_power10, 0},<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"event-based-branch-v3", =
-feat_enable, 0},<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"random-number-generator",=
- feat_enable, 0},<br =
-class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"system-call-vectored", =
-feat_disable, 0},<br class=3D"">--<br =
-class=3D"">1.8.3.1</blockquote></div></blockquote></div><br =
-class=3D""></body></html>=
-
---Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E--
-
+cheers
