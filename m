@@ -2,48 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B548228F82
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AB6228F86
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:08:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBNjz720GzDqyX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:07:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBNlq530HzDqwg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:08:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBNRw1JgszDqGW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 14:54:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBNWG4qY6zDqvV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 14:57:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=B53OnyDO; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4BBNRv6j1qz9sR4; Wed, 22 Jul 2020 14:54:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1595393691; bh=SPr8+lQ/5tRFTDOXTAmNurdJdDePVRoXfmN5P09ctLw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=B53OnyDOFtochptnZj8D7Rr+5yr9+k3vXB6P84hQJkMpACKGcASdubZYp6mAWYi6i
- TB/A47YLeKWbGnAEkuxJmztAZNsSJI50GkrTDTPjxU77jflAo1yFtuq5nSmtfJfJwE
- c+bwiwGYGkpeewoAnostK4rC5NnL3TMOpPKqnAO2bNFy3O8WtE1SHWAoeyU4daPNbM
- SYL8kW8BWG8wwcGJ1vy8agxkiqiFSJPLkTBF8zVhFIXoFIiphGsjvj/7mKFAXj8Ddl
- 2SfHojlzZYFBCWxRwSWVbu4ksvjKZ0D+rNRcqnjto9z5O4U4MigCogrw8xnIkPh+o6
- Wd4vvmk9noaGw==
-Date: Wed, 22 Jul 2020 14:54:48 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [v3 02/15] KVM: PPC: Book3S HV: Cleanup updates for kvm vcpu MMCR
-Message-ID: <20200722045448.GC3878639@thinks.paulus.ozlabs.org>
-References: <1594996707-3727-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1594996707-3727-3-git-send-email-atrajeev@linux.vnet.ibm.com>
- <20200721035420.GA3819606@thinks.paulus.ozlabs.org>
- <B83C440A-1AC4-4737-8AB1-EB9A6B8A474B@linux.vnet.ibm.com>
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ORAhFp6k; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BBNWG0rcZz9sR4;
+ Wed, 22 Jul 2020 14:57:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1595393866;
+ bh=B8pvBVrzIk29D7BwkDHq1IDzv+qZD9WYtxIsi82itCE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=ORAhFp6k3aMjyeZ8pIU35Rov5Q4Vn3tJEvTBD2jdUn9TfHhHe5rU4JappLOidtCTk
+ 29nhbOBDsfHkbaPKTcsdnTU6xQHlVqM6dvwEqopapoqmSAH08sOUnxQb9+Kh+nJix2
+ MOJq/8j9fBuiCU24jZ8G49/dSx4okeIR0wTI7MylayNp7B+XghCEZaMGNxKY1DMifd
+ bJYmaYRszNW7FF5cn27XpFCkRF7eEpEQ2hVZ8cJ0R6rWeU3gRvYY8jDEZdVT+Kbwhf
+ Q5IvraAttjLGJhfCV3hXxdwXD0rqzlNycAEy4tfm9sbIHJXJcuahNrGh63HHh6sced
+ d35JgWF5L7Jmw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCHv3 2/2] powerpc/pseries: update device tree before ejecting
+ hotplug uevents
+In-Reply-To: <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
+References: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
+ <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
+Date: Wed, 22 Jul 2020 14:57:45 +1000
+Message-ID: <87pn8oqh86.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B83C440A-1AC4-4737-8AB1-EB9A6B8A474B@linux.vnet.ibm.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,59 +59,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, Michael Neuling <mikey@neuling.org>,
- maddy@linux.vnet.ibm.com, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
- svaidyan@in.ibm.com, acme@kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, kexec@lists.infradead.org,
+ Hari Bathini <hbathini@linux.ibm.com>, Pingfan Liu <kernelfans@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 22, 2020 at 07:39:26AM +0530, Athira Rajeev wrote:
-> 
-> 
-> > On 21-Jul-2020, at 9:24 AM, Paul Mackerras <paulus@ozlabs.org> wrote:
-> > 
-> > On Fri, Jul 17, 2020 at 10:38:14AM -0400, Athira Rajeev wrote:
-> >> Currently `kvm_vcpu_arch` stores all Monitor Mode Control registers
-> >> in a flat array in order: mmcr0, mmcr1, mmcra, mmcr2, mmcrs
-> >> Split this to give mmcra and mmcrs its own entries in vcpu and
-> >> use a flat array for mmcr0 to mmcr2. This patch implements this
-> >> cleanup to make code easier to read.
-> > 
-> > Changing the way KVM stores these values internally is fine, but
-> > changing the user ABI is not.  This part:
-> > 
-> >> diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
-> >> index 264e266..e55d847 100644
-> >> --- a/arch/powerpc/include/uapi/asm/kvm.h
-> >> +++ b/arch/powerpc/include/uapi/asm/kvm.h
-> >> @@ -510,8 +510,8 @@ struct kvm_ppc_cpu_char {
-> >> 
-> >> #define KVM_REG_PPC_MMCR0	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x10)
-> >> #define KVM_REG_PPC_MMCR1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x11)
-> >> -#define KVM_REG_PPC_MMCRA	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x12)
-> >> -#define KVM_REG_PPC_MMCR2	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x13)
-> >> +#define KVM_REG_PPC_MMCR2	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x12)
-> >> +#define KVM_REG_PPC_MMCRA	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0x13)
-> > 
-> > means that existing userspace programs that used to work would now be
-> > broken.  That is not acceptable (breaking the user ABI is only ever
-> > acceptable with a very compelling reason).  So NAK to this part of the
-> > patch.
-> 
-> Hi Paul
-> 
-> Thanks for checking the patch. I understood your point on user ABI breakage that this particular change can cause.
-> I will retain original KVM_REG_PPC_MMCRA and KVM_REG_PPC_MMCR2 order in `kvm.h`
-> And with that, additionally I will need below change ( on top of current patch ) for my clean up updates for kvm cpu MMCR to work,
-> Because now mmcra and mmcrs will have its own entries in vcpu and is not part of the mmcr[] array
-> Please suggest if this looks good
+Pingfan Liu <kernelfans@gmail.com> writes:
+> A bug is observed on pseries by taking the following steps on rhel:
+                                                                ^
+                                                                RHEL
 
-Yes, that looks fine.
+I assume it happens on mainline too?
 
-By the way, is the new MMCRS register here at all related to the MMCRS
-that there used to be on POWER8, but which wasn't present (as far as I
-know) on POWER9?
+> -1. drmgr -c mem -r -q 5
+> -2. echo c > /proc/sysrq-trigger
+>
+> And then, the failure looks like:
+> kdump: saving to /sysroot//var/crash/127.0.0.1-2020-01-16-02:06:14/
+> kdump: saving vmcore-dmesg.txt
+> kdump: saving vmcore-dmesg.txt complete
+> kdump: saving vmcore
+>  Checking for memory holes                         : [  0.0 %] /                   Checking for memory holes                         : [100.0 %] |                   Excluding unnecessary pages                       : [100.0 %] \                   Copying data                                      : [  0.3 %] -          eta: 38s[   44.337636] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
+> [   44.337663] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
+> [   44.337677] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
+> [   44.337692] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
+> [   44.337708] makedumpfile[469]: unhandled signal 7 at 00007fffba400000 nip 00007fffbbc4d7fc lr 000000011356ca3c code 2
+> [   44.338548] Core dump to |/bin/false pipe failed
+> /lib/kdump-lib-initramfs.sh: line 98:   469 Bus error               $CORE_COLLECTOR /proc/vmcore $_mp/$KDUMP_PATH/$HOST_IP-$DATEDIR/vmcore-incomplete
+> kdump: saving vmcore failed
+>
+> * Root cause *
+>   After analyzing, it turns out that in the current implementation,
+> when hot-removing lmb, the KOBJ_REMOVE event ejects before the dt updating as
+> the code __remove_memory() comes before drmem_update_dt().
+> So in kdump kernel, when read_from_oldmem() resorts to
+> pSeries_lpar_hpte_insert() to install hpte, but fails with -2 due to
+> non-exist pfn. And finally, low_hash_fault() raise SIGBUS to process, as it
+> can be observed "Bus error"
+>
+> From a viewpoint of listener and publisher, the publisher notifies the
+> listener before data is ready.  This introduces a problem where udev
+> launches kexec-tools (due to KOBJ_REMOVE) and loads a stale dt before
+> updating. And in capture kernel, makedumpfile will access the memory based
+> on the stale dt info, and hit a SIGBUS error due to an un-existed lmb.
+>
+> * Fix *
+>   In order to fix this issue, update dt before __remove_memory(), and
+> accordingly the same rule in hot-add path.
+>
+> This will introduce extra dt updating payload for each involved lmb when hotplug.
+> But it should be fine since drmem_update_dt() is memory based operation and
+> hotplug is not a hot path.
+>
+> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> To: linuxppc-dev@lists.ozlabs.org
+> Cc: kexec@lists.infradead.org
+> ---
+> v2 -> v3: rebase onto ppc next-test branch
+> ---
+>  arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 1a3ac3b..def8cb3f 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -372,6 +372,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+>  	invalidate_lmb_associativity_index(lmb);
+>  	lmb_clear_nid(lmb);
+>  	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
+> +	drmem_update_dt();
 
-Paul.
+No error checking?
+
+>  	__remove_memory(nid, base_addr, block_sz);
+>  
+> @@ -607,6 +608,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>  
+>  	lmb_set_nid(lmb);
+>  	lmb->flags |= DRCONF_MEM_ASSIGNED;
+> +	drmem_update_dt();
+
+And here ..
+>  
+>  	block_sz = memory_block_size_bytes();
+>  
+> @@ -625,6 +627,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>  		invalidate_lmb_associativity_index(lmb);
+>  		lmb_clear_nid(lmb);
+>  		lmb->flags &= ~DRCONF_MEM_ASSIGNED;
+> +		drmem_update_dt();
+
+
+And here ..
+
+>  		__remove_memory(nid, base_addr, block_sz);
+>  	}
+> @@ -877,9 +880,6 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
+>  		break;
+>  	}
+>  
+> -	if (!rc)
+> -		rc = drmem_update_dt();
+> -
+>  	unlock_device_hotplug();
+>  	return rc;
+
+Whereas previously we did check it.
+
+
+cheers
