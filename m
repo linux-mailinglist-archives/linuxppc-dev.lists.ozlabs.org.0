@@ -1,73 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A64922921B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:29:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487BF22921D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:31:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBRt30HBGzDqXY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 17:29:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBRwC27GKzDqg7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 17:31:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=oohall@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rAtaviGr; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBRB40jZbzDqv3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 16:58:03 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id g67so690824pgc.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 23:58:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=gYLUIQDudARZS2ppTMcFMprGe8T6RymlErRvYcS+NhM=;
- b=rAtaviGrOwMolVVqU1D9XlB3v5933VsKhh6lA01jOHALnx9XbAufHJq3ivE3y0T9ry
- diqefzccaVT01S822Casoo984eYUzpgIlza+sEGxhmoJyzCdeE/C6dMShWkkeTTAtZOd
- Xf/sSo3EKMPwoubZImsRmWLbHZ9ZzpbRSKgvS4S+WPM1HYjhKKDbFizh/LXUdY8fL7Yl
- hGT4Pf5sU3VEJK297YAx4CwedTuBKeMBmoP40agmO+EHwL4TPBe4+lvktEpctuwofiic
- zBL2/n3eHKcjdedIQxXqZDCMhaoJxFKi8QEngip2Qea4La7G7E1gi6XQL0CJoro9zSaw
- hEng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=gYLUIQDudARZS2ppTMcFMprGe8T6RymlErRvYcS+NhM=;
- b=AUb6dFxSCOQvi4InREZqaHZ6wNa8hDYEBiCd9eiycLw3GjdFkh3LYSiDwd2mEUTJNg
- cKUCqAOdIpvYNKDtEy0f2aWAAzcA+3TXlbbITuHyPnt2rILE0qejy95wdLoPPilKNpV3
- HALREOxRU1wqUraqiFa+58mUvTtyo5Q1SUKi166Q+bm94VWlRdem0l77V8AR1DdnoiYX
- 8VsDiJ9lde4JSNzsQDJj9dBa1QuspBZEUeeJdcVliyUcK9mkzzZf5RKzmxYyJhmVfXXr
- zitDDr/bRfBUrjC0iC8VpbJXRH0RqinabNXIFB3rVRf+8++4V99383+enH1XX2dlBlja
- y+tw==
-X-Gm-Message-State: AOAM533q+P+OA2kUte5Da71PePiuaACWFAq3eu6SpwOL6PNncXJxFm8O
- yA66AzfvFAoMCxh7KGE9jzidAk9AbPk=
-X-Google-Smtp-Source: ABdhPJz4EZ9W24c91caTpH3hTXw0j8Y/W7l7VIpKj13z656hPDgZSwpl3lGHWOkN/B23y2E8XXYa3w==
-X-Received: by 2002:a62:1d90:: with SMTP id
- d138mr27972281pfd.159.1595401081093; 
- Tue, 21 Jul 2020 23:58:01 -0700 (PDT)
-Received: from localhost.ibm.com (203-219-159-24.tpgi.com.au. [203.219.159.24])
- by smtp.gmail.com with ESMTPSA id c14sm22645104pfj.82.2020.07.21.23.57.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Jul 2020 23:58:00 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 16/16] powerpc/powernv/sriov: Remove vfs_expanded
-Date: Wed, 22 Jul 2020 16:57:15 +1000
-Message-Id: <20200722065715.1432738-16-oohall@gmail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200722065715.1432738-1-oohall@gmail.com>
-References: <20200722065715.1432738-1-oohall@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBRB63544zDqpC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 16:58:06 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06M5Wcq8132660; Wed, 22 Jul 2020 02:57:58 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32dn0ywp1k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 02:57:58 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06M6slhU154451;
+ Wed, 22 Jul 2020 02:57:58 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32dn0ywp0w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 02:57:57 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M6psUe017812;
+ Wed, 22 Jul 2020 06:57:55 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 32brbh4mhw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 06:57:55 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06M6vp9N29360618
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Jul 2020 06:57:51 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E2093AE058;
+ Wed, 22 Jul 2020 06:57:50 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 797FAAE045;
+ Wed, 22 Jul 2020 06:57:48 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 22 Jul 2020 06:57:48 +0000 (GMT)
+Date: Wed, 22 Jul 2020 12:27:47 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 05/10] powerpc/smp: Dont assume l2-cache to be
+ superset of sibling
+Message-ID: <20200722065747.GB9290@linux.vnet.ibm.com>
+References: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
+ <20200721113814.32284-6-srikar@linux.vnet.ibm.com>
+ <20200722062114.GD31038@in.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200722062114.GD31038@in.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-22_02:2020-07-22,
+ 2020-07-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007220040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,93 +94,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
+ Michael Ellerman <michaele@au1.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jordan Niethe <jniethe5@gmail.com>, Anton Blanchard <anton@au1.ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Nick Piggin <npiggin@au1.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Previously iov->vfs_expanded was used for two purposes.
+* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2020-07-22 11:51:14]:
 
-1) To work out how much we need to multiple the per-VF BAR size to figure
-   out the total space required for the IOV BAR.
+> Hi Srikar,
+> 
+> > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> > index 72f16dc0cb26..57468877499a 100644
+> > --- a/arch/powerpc/kernel/smp.c
+> > +++ b/arch/powerpc/kernel/smp.c
+> > @@ -1196,6 +1196,7 @@ static bool update_mask_by_l2(int cpu, struct cpumask *(*mask_fn)(int))
+> >  	if (!l2_cache)
+> >  		return false;
+> > 
+> > +	cpumask_set_cpu(cpu, mask_fn(cpu));
+> 
+> 
+> Ok, we need to do this because "cpu" is not yet set in the
+> cpu_online_mask. Prior to your patch the "cpu" was getting set in
+> cpu_l2_cache_map(cpu) as a side-effect of the code that is removed in
+> the patch.
+> 
 
-2) To indicate that IOV is not usable with this device (vfs_expanded == 0).
+Right.
 
-We don't really need the field for either since the multiple in 1) is
-always the number PEs supported by the PHB. Similarly, we don't really need
-it in 2) either since the IOV data field will be NULL if we can't use IOV
-with the device.
+> 
+> >  	for_each_cpu(i, cpu_online_mask) {
+> >  		/*
+> >  		 * when updating the marks the current CPU has not been marked
+> > @@ -1278,29 +1279,30 @@ static void add_cpu_to_masks(int cpu)
+> >  	 * add it to it's own thread sibling mask.
+> >  	 */
+> >  	cpumask_set_cpu(cpu, cpu_sibling_mask(cpu));
+> > +	cpumask_set_cpu(cpu, cpu_core_mask(cpu));
 
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
-v2: New
----
- arch/powerpc/platforms/powernv/pci-sriov.c | 9 +++------
- arch/powerpc/platforms/powernv/pci.h       | 3 ---
- 2 files changed, 3 insertions(+), 9 deletions(-)
+Note: Above, we are explicitly setting the cpu_core_mask.
 
-diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-index 76215d01405b..5742215b4093 100644
---- a/arch/powerpc/platforms/powernv/pci-sriov.c
-+++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-@@ -213,8 +213,6 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
- 		iov->need_shift = true;
- 	}
- 
--	iov->vfs_expanded = mul;
--
- 	return;
- 
- disable_iov:
-@@ -256,6 +254,7 @@ void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
- resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
- 						      int resno)
- {
-+	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
- 	struct pnv_iov_data *iov = pnv_iov_get(pdev);
- 	resource_size_t align;
- 
-@@ -267,8 +266,6 @@ resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
- 	 */
- 	if (!iov)
- 		return align;
--	if (!iov->vfs_expanded)
--		return align;
- 
- 	align = pci_iov_resource_size(pdev, resno);
- 
-@@ -290,7 +287,7 @@ resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
- 	 * If the M64 BAR is in Single PE mode, return the VF BAR size or
- 	 * M64 segment size if IOV BAR size is less.
- 	 */
--	return iov->vfs_expanded * align;
-+	return phb->ioda.total_pe_num * align;
- }
- 
- static int pnv_pci_vf_release_m64(struct pci_dev *pdev, u16 num_vfs)
-@@ -708,7 +705,7 @@ static int pnv_pci_sriov_enable(struct pci_dev *pdev, u16 num_vfs)
- 		return -ENXIO;
- 	}
- 
--	if (!iov->vfs_expanded) {
-+	if (!iov) {
- 		dev_info(&pdev->dev, "don't support this SRIOV device"
- 			" with non 64bit-prefetchable IOV BAR\n");
- 		return -ENOSPC;
-diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-index 902e928c7c22..c8cc152bdf52 100644
---- a/arch/powerpc/platforms/powernv/pci.h
-+++ b/arch/powerpc/platforms/powernv/pci.h
-@@ -234,9 +234,6 @@ void pnv_ioda_free_pe(struct pnv_ioda_pe *pe);
-  * and this structure is used to keep track of it all.
-  */
- struct pnv_iov_data {
--	/* number of VFs IOV BAR expanded. FIXME: rename this to something less bad */
--	u16     vfs_expanded;
--
- 	/* number of VFs enabled */
- 	u16     num_vfs;
- 
+> > 
+> >  	for (i = first_thread; i < first_thread + threads_per_core; i++)
+> >  		if (cpu_online(i))
+> >  			set_cpus_related(i, cpu, cpu_sibling_mask);
+> > 
+> >  	add_cpu_to_smallcore_masks(cpu);
+> > -	/*
+> > -	 * Copy the thread sibling mask into the cache sibling mask
+> > -	 * and mark any CPUs that share an L2 with this CPU.
+> > -	 */
+> > -	for_each_cpu(i, cpu_sibling_mask(cpu))
+> > -		set_cpus_related(cpu, i, cpu_l2_cache_mask);
+> >  	update_mask_by_l2(cpu, cpu_l2_cache_mask);
+> > 
+> > -	/*
+> > -	 * Copy the cache sibling mask into core sibling mask and mark
+> > -	 * any CPUs on the same chip as this CPU.
+> > -	 */
+> > -	for_each_cpu(i, cpu_l2_cache_mask(cpu))
+> > -		set_cpus_related(cpu, i, cpu_core_mask);
+> > +	if (pkg_id == -1) {
+> 
+> I suppose this "if" condition is an optimization, since if pkg_id != -1,
+> we anyway set these CPUs in the cpu_core_mask below.
+> 
+> However...
+
+This is not just an optimization.
+The hunk removed would only work if cpu_l2_cache_mask is bigger than
+cpu_sibling_mask. (this was the previous assumption that we want to break)
+If the cpu_sibling_mask is bigger than cpu_l2_cache_mask and pkg_id is -1,
+then setting only cpu_l2_cache_mask in cpu_core_mask will result in a broken 
+topology.
+
+> 
+> > +		struct cpumask *(*mask)(int) = cpu_sibling_mask;
+> > +
+> > +		/*
+> > +		 * Copy the sibling mask into core sibling mask and
+> > +		 * mark any CPUs on the same chip as this CPU.
+> > +		 */
+> > +		if (shared_caches)
+> > +			mask = cpu_l2_cache_mask;
+> > +
+> > +		for_each_cpu(i, mask(cpu))
+> > +			set_cpus_related(cpu, i, cpu_core_mask);
+> > 
+> > -	if (pkg_id == -1)
+> >  		return;
+> > +	}
+> 
+> 
+> ... since "cpu" is not yet set in the cpu_online_mask, do we not miss setting
+> "cpu" in the cpu_core_mask(cpu) in the for-loop below ?
+> 
+> 
+
+As noted above, we are setting before. So we don't missing the cpu and hence
+have not different from before.
+
+> --
+> Thanks and Regards
+> gautham.
+
 -- 
-2.26.2
-
+Thanks and Regards
+Srikar Dronamraju
