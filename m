@@ -1,67 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFE4228DCA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 03:54:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69142228DCB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 03:55:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBJRM1VrlzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 11:54:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBJTF4QByzDqf5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 11:55:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=kernelfans@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=kernelfans@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pYO6TpN3; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+ header.s=20161025 header.b=W0zV9K1q; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBJPZ1xtXzDqZ2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 11:52:29 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id 8so343566pjj.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 18:52:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBJPZ5JNpzDqbf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 11:52:34 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id m9so369718pfh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 18:52:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=1flvzJIyMu46yQ0CPE4U+mwSVIT5iwrLmgpuQZeTscw=;
- b=pYO6TpN3qaCmJs3O0e+Qr2If9F2OYIsn2xb0Zk1F/M76FgXfFb2azjOAZw7PlqeC4M
- 1NBH7tPl/qCDVsBTEA0wA40eH9l3yS0ZoPlNQd79o0t0m3X/npFn9zlApiPZ0s3+eNw9
- K+Oo8SKOHGbKOlO9SKbnWVzpzhLQkCWogCg/hRe1lKFeyJOULiY3S9GiTkYXN6aOhTIY
- pwBl/h7MHeId+SkTeucAaxoDI+m6KROpPG7AVu2mAOZk78Z3FnVaNW+Bjj/zG5Ml89EK
- cutVSsGdY2W4Mt16S7dZOY3AT3uP+bfmUQtKSAM0DzY3GfeovkloDF4ToFvnurB2uMab
- Z0cA==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=iK8P7ciTYQiTHZiRkUZ2UDN91Jp0neAG81UxDF/u9mI=;
+ b=W0zV9K1qzDquBHyhEIEm4RZIVaJqQzcDaHp5zbiB9VALg+kbXboKpPP80B/ofPirA8
+ MUnjA/JLggYFTt9LOc3GhCwvnxNsMf065ymFKzgR5WmcRtuCgFps9mmZgYt26Q1/xQLd
+ vkKgx2SbRpCz/ifu7G3qPYvRwleDvhSAhv84VBSNgWjbhkN4RX5RsO7LJSX1/6+vKGvr
+ +/rE0/PrIeyIUsVDSLsDpcxUA+sS5OOJKC1Bvi9FZs32EgNvZrLyoTYO80gpEQoXkJYT
+ EaDgB4GnQAC2ndaJ5fBIIn+Tod48qQRLIrzoI5y4NuQlitPMFeP7cjCBQaZDUaiP2mYy
+ Q4PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=1flvzJIyMu46yQ0CPE4U+mwSVIT5iwrLmgpuQZeTscw=;
- b=XddOnWMtI2vwE38QPlis2gz5P06DIzB2tBcEd+BITm9wiyW7L9/Fc64Ny28D3e/qPs
- jjZ1RiJzKItYwCyRDAzL1VL/TRAv5SEGH8wZ3qEcKB5v6AXlAVfRBfaUJZlLH/lQkN0j
- E1jnKe2RaPG8dcPiP6rbe/O41q+k9ugVkJVcquQUxZ3j6VSEr9CkVm25LLRhNCdVLLR1
- SjaA/wvsHd08BBWrzk2uTvGH0wRZ0EtpU644VsTjRfQPBCNsT9z+myI4jQCjzXEP/LWr
- 4lLC5D/5wjCekRlVeJgqpjs59HpdWlNL+AARV50rCO72wt5Ua/Mj6zfmPCLv/84BJOxA
- nfkg==
-X-Gm-Message-State: AOAM532GIcPbW1YNBdTd+W0sWrmC8x8A+5LNvQWDSwkjUpIC/mOaLmNG
- Z5HdJAl/uqMbJ6N5z/J4VKQW0y4=
-X-Google-Smtp-Source: ABdhPJwDE++NhhfIzoQDEhMJqUrq8ChRnsCb/eCUg/Dy9VW7yZFLzte3EAVVL8feEreXy258+Eqewg==
-X-Received: by 2002:a17:90a:8082:: with SMTP id
- c2mr7414158pjn.204.1595382745972; 
- Tue, 21 Jul 2020 18:52:25 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references;
+ bh=iK8P7ciTYQiTHZiRkUZ2UDN91Jp0neAG81UxDF/u9mI=;
+ b=B8mic32517L+UmOLDdh2q/gw9C8SY/4/fpXza5KyiZe79uq88zz0/wIoTz6X4JXnLQ
+ S8qDn3dS+OI8YMTQQhSRYivAe24b5ix6Y/4wV95Z6SWZkkUzcGUfEb/ho0b7UkW0R5RY
+ vv51SIsUhXfzlOChkL70GExI1i8ec23VtxfbD7K9W5lyOzL/cbALyAlotYPKamGe8fov
+ YC9BoLb/+QQoXca/a03EjaK7ZT3nbQ6hHjIILeKuMYOK6wAzn37P/jNoo71wz0piqMS7
+ pRPk0owvU2jmay3ce0E5U0iyZVzDriacTtichX5Wg2fO21LU3qDvQY07w02MM6mWmiYl
+ gV+A==
+X-Gm-Message-State: AOAM530bdNkXi24huDQvNFjVlKcgxCX5nQikdlLBQeSqe9Ixr/Tby+NV
+ DeW+EGBV+tNwCJRNQnL/BQFpSKg=
+X-Google-Smtp-Source: ABdhPJyV51XshsdpqbndJMHojB3nvp2XoQBkiTsuagQ4pHnI3wym3aO3MmcAy4VHpQ+CEf+iUXyJ+w==
+X-Received: by 2002:a63:e80e:: with SMTP id s14mr25496482pgh.32.1595382752073; 
+ Tue, 21 Jul 2020 18:52:32 -0700 (PDT)
 Received: from mylaptop.redhat.com ([209.132.188.80])
- by smtp.gmail.com with ESMTPSA id v22sm21533746pfe.48.2020.07.21.18.52.23
+ by smtp.gmail.com with ESMTPSA id v22sm21533746pfe.48.2020.07.21.18.52.29
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 21 Jul 2020 18:52:25 -0700 (PDT)
+ Tue, 21 Jul 2020 18:52:31 -0700 (PDT)
 From: Pingfan Liu <kernelfans@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCHv3 1/2] powerpc/pseries: group lmb operation and memblock's
-Date: Wed, 22 Jul 2020 09:52:09 +0800
-Message-Id: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
+Subject: [PATCHv3 2/2] powerpc/pseries: update device tree before ejecting
+ hotplug uevents
+Date: Wed, 22 Jul 2020 09:52:10 +0800
+Message-Id: <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
 X-Mailer: git-send-email 2.7.5
+In-Reply-To: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
+References: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,12 +82,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch prepares for the incoming patch which swaps the order of KOBJ_
-uevent and dt's updating.
+A bug is observed on pseries by taking the following steps on rhel:
+-1. drmgr -c mem -r -q 5
+-2. echo c > /proc/sysrq-trigger
 
-It has no functional effect, just groups lmb operation and memblock's in
-order to insert dt updating operation easily, and makes it easier to
-review.
+And then, the failure looks like:
+kdump: saving to /sysroot//var/crash/127.0.0.1-2020-01-16-02:06:14/
+kdump: saving vmcore-dmesg.txt
+kdump: saving vmcore-dmesg.txt complete
+kdump: saving vmcore
+ Checking for memory holes                         : [  0.0 %] /                   Checking for memory holes                         : [100.0 %] |                   Excluding unnecessary pages                       : [100.0 %] \                   Copying data                                      : [  0.3 %] -          eta: 38s[   44.337636] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
+[   44.337663] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
+[   44.337677] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
+[   44.337692] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
+[   44.337708] makedumpfile[469]: unhandled signal 7 at 00007fffba400000 nip 00007fffbbc4d7fc lr 000000011356ca3c code 2
+[   44.338548] Core dump to |/bin/false pipe failed
+/lib/kdump-lib-initramfs.sh: line 98:   469 Bus error               $CORE_COLLECTOR /proc/vmcore $_mp/$KDUMP_PATH/$HOST_IP-$DATEDIR/vmcore-incomplete
+kdump: saving vmcore failed
+
+* Root cause *
+  After analyzing, it turns out that in the current implementation,
+when hot-removing lmb, the KOBJ_REMOVE event ejects before the dt updating as
+the code __remove_memory() comes before drmem_update_dt().
+So in kdump kernel, when read_from_oldmem() resorts to
+pSeries_lpar_hpte_insert() to install hpte, but fails with -2 due to
+non-exist pfn. And finally, low_hash_fault() raise SIGBUS to process, as it
+can be observed "Bus error"
+
+From a viewpoint of listener and publisher, the publisher notifies the
+listener before data is ready.  This introduces a problem where udev
+launches kexec-tools (due to KOBJ_REMOVE) and loads a stale dt before
+updating. And in capture kernel, makedumpfile will access the memory based
+on the stale dt info, and hit a SIGBUS error due to an un-existed lmb.
+
+* Fix *
+  In order to fix this issue, update dt before __remove_memory(), and
+accordingly the same rule in hot-add path.
+
+This will introduce extra dt updating payload for each involved lmb when hotplug.
+But it should be fine since drmem_update_dt() is memory based operation and
+hotplug is not a hot path.
 
 Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
@@ -95,75 +132,47 @@ Cc: kexec@lists.infradead.org
 ---
 v2 -> v3: rebase onto ppc next-test branch
 ---
- arch/powerpc/platforms/pseries/hotplug-memory.c | 26 ++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 5d545b7..1a3ac3b 100644
+index 1a3ac3b..def8cb3f 100644
 --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
 +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -355,7 +355,8 @@ static int dlpar_add_lmb(struct drmem_lmb *);
- static int dlpar_remove_lmb(struct drmem_lmb *lmb)
- {
- 	unsigned long block_sz;
--	int rc;
-+	phys_addr_t base_addr;
-+	int rc, nid;
- 
- 	if (!lmb_is_removable(lmb))
- 		return -EINVAL;
-@@ -364,17 +365,19 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
- 	if (rc)
- 		return rc;
- 
-+	base_addr = lmb->base_addr;
-+	nid = lmb->nid;
- 	block_sz = pseries_memory_block_size();
- 
--	__remove_memory(lmb->nid, lmb->base_addr, block_sz);
--
--	/* Update memory regions for memory remove */
--	memblock_remove(lmb->base_addr, block_sz);
--
+@@ -372,6 +372,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
  	invalidate_lmb_associativity_index(lmb);
  	lmb_clear_nid(lmb);
  	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
++	drmem_update_dt();
  
-+	__remove_memory(nid, base_addr, block_sz);
-+
-+	/* Update memory regions for memory remove */
-+	memblock_remove(base_addr, block_sz);
-+
- 	return 0;
- }
+ 	__remove_memory(nid, base_addr, block_sz);
  
-@@ -603,6 +606,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 	}
+@@ -607,6 +608,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
  
  	lmb_set_nid(lmb);
-+	lmb->flags |= DRCONF_MEM_ASSIGNED;
-+
+ 	lmb->flags |= DRCONF_MEM_ASSIGNED;
++	drmem_update_dt();
+ 
  	block_sz = memory_block_size_bytes();
  
- 	/* Add the memory */
-@@ -614,11 +619,14 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 
- 	rc = dlpar_online_lmb(lmb);
- 	if (rc) {
--		__remove_memory(lmb->nid, lmb->base_addr, block_sz);
-+		int nid = lmb->nid;
-+		phys_addr_t base_addr = lmb->base_addr;
-+
+@@ -625,6 +627,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
  		invalidate_lmb_associativity_index(lmb);
  		lmb_clear_nid(lmb);
--	} else {
--		lmb->flags |= DRCONF_MEM_ASSIGNED;
-+		lmb->flags &= ~DRCONF_MEM_ASSIGNED;
-+
-+		__remove_memory(nid, base_addr, block_sz);
+ 		lmb->flags &= ~DRCONF_MEM_ASSIGNED;
++		drmem_update_dt();
+ 
+ 		__remove_memory(nid, base_addr, block_sz);
+ 	}
+@@ -877,9 +880,6 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
+ 		break;
  	}
  
+-	if (!rc)
+-		rc = drmem_update_dt();
+-
+ 	unlock_device_hotplug();
  	return rc;
+ }
 -- 
 2.7.5
 
