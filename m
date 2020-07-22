@@ -2,85 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21416229897
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 14:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F802298BA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 14:55:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBb2v2jWLzDr7C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 22:52:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBb6C2fLpzDqVn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 22:55:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBX3v3L91zDqxG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 20:38:03 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06MAXKIi115447; Wed, 22 Jul 2020 06:37:57 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBZWP4RMXzDr3t
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 22:28:33 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06MCGnoK126430; Wed, 22 Jul 2020 08:28:24 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1yawduh-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32e1wm1303-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 06:37:57 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06MAXsZb117222;
- Wed, 22 Jul 2020 06:37:56 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1yawdtq-1
+ Wed, 22 Jul 2020 08:28:24 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06MCGprf126621;
+ Wed, 22 Jul 2020 08:28:23 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32e1wm12yb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 06:37:56 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06MAZjYm000867;
- Wed, 22 Jul 2020 10:37:54 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04fra.de.ibm.com with ESMTP id 32dbmn16se-1
+ Wed, 22 Jul 2020 08:28:23 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06MCI0Gn017249;
+ Wed, 22 Jul 2020 12:28:21 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 32brbgthy7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 10:37:53 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06MAaRDN64487916
+ Wed, 22 Jul 2020 12:28:21 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06MCSJxK56819778
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jul 2020 10:36:27 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 905165204E;
- Wed, 22 Jul 2020 10:37:51 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.39.161])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 12EE052057;
- Wed, 22 Jul 2020 10:37:49 +0000 (GMT)
-Subject: Re: [PATCH v3] powerpc/pseries: Avoid using addr_to_pfn in realmode
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <20200720080335.21049-1-ganeshgr@linux.ibm.com>
- <1595325962.zikec6nkw7.astroid@bobo.none>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Message-ID: <824a2942-e1ed-a82d-c619-ef30e48a0d53@linux.ibm.com>
-Date: Wed, 22 Jul 2020 16:07:48 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.3.1
-MIME-Version: 1.0
-In-Reply-To: <1595325962.zikec6nkw7.astroid@bobo.none>
+ Wed, 22 Jul 2020 12:28:19 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05EC511C050;
+ Wed, 22 Jul 2020 12:28:19 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6918B11C05B;
+ Wed, 22 Jul 2020 12:28:15 +0000 (GMT)
+Received: from [9.85.103.169] (unknown [9.85.103.169])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 22 Jul 2020 12:28:15 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Message-Id: <A3ED2A4A-636C-4D62-8E2A-A0F9EB86D0F8@linux.vnet.ibm.com>
 Content-Type: multipart/alternative;
- boundary="------------FE71DCBAEE7307A2CC581B61"
-Content-Language: en-US
+ boundary="Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E"
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [v3 07/15] powerpc/perf: Add power10_feat to dt_cpu_ftrs
+Date: Wed, 22 Jul 2020 17:58:13 +0530
+In-Reply-To: <CACzsE9p-mNGptKi_+RSOOhvmW5gfLcKEbtoS6ah_5ZmVCThfpQ@mail.gmail.com>
+To: Jordan Niethe <jniethe5@gmail.com>
+References: <1594996707-3727-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1594996707-3727-8-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <CACzsE9oBw1ZrJLqOAg1QqPrQgSoVbEdPh_ax7mU_kcWNyfyAcg@mail.gmail.com>
+ <9A4E06A2-5686-4C85-B2F7-0904F195B58A@linux.vnet.ibm.com>
+ <CACzsE9p-mNGptKi_+RSOOhvmW5gfLcKEbtoS6ah_5ZmVCThfpQ@mail.gmail.com>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-22_04:2020-07-22,
+ definitions=2020-07-22_05:2020-07-22,
  2020-07-22 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 adultscore=0 clxscore=1011
- priorityscore=1501 mlxscore=0 mlxlogscore=999 phishscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007220080
+ malwarescore=0 phishscore=0
+ mlxlogscore=999 impostorscore=0 mlxscore=0 suspectscore=0 bulkscore=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007220089
 X-Mailman-Approved-At: Wed, 22 Jul 2020 22:44:44 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -93,498 +96,721 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, mahesh@linux.vnet.ibm.com
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
+ kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, svaidyan@in.ibm.com,
+ acme@kernel.org, jolsa@kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------FE71DCBAEE7307A2CC581B61
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+
+--Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
 
 
-On 7/21/20 3:38 PM, Nicholas Piggin wrote:
-> Excerpts from Ganesh Goudar's message of July 20, 2020 6:03 pm:
->> When an UE or memory error exception is encountered the MCE handler
->> tries to find the pfn using addr_to_pfn() which takes effective
->> address as an argument, later pfn is used to poison the page where
->> memory error occurred, recent rework in this area made addr_to_pfn
->> to run in realmode, which can be fatal as it may try to access
->> memory outside RMO region.
->>
->> To fix this have separate functions for realmode and virtual mode
->> handling and let addr_to_pfn to run in virtual mode.
-> You didn't really explain what you moved around. You added some
-> helper functions, but what does it actually do differently now? Can you
-> explain that in the changelog?
-
-Sure, ill rephrase the changelog, here I have moved all that we can and we must
-do in virtual mode to new helper function which runs in virtual mode, like filling
-mce error info, using addr_to_pfn and calling save_mce_event().
-
->
-> Thanks,
-> Nick
->
->> Without this fix following kernel crash is seen on hitting UE.
->>
->> [  485.128036] Oops: Kernel access of bad area, sig: 11 [#1]
->> [  485.128040] LE SMP NR_CPUS=2048 NUMA pSeries
->> [  485.128047] Modules linked in:
->> [  485.128067] CPU: 15 PID: 6536 Comm: insmod Kdump: loaded Tainted: G OE 5.7.0 #22
->> [  485.128074] NIP:  c00000000009b24c LR: c0000000000398d8 CTR: c000000000cd57c0
->> [  485.128078] REGS: c000000003f1f970 TRAP: 0300   Tainted: G OE (5.7.0)
->> [  485.128082] MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 28008284  XER: 00000001
->> [  485.128088] CFAR: c00000000009b190 DAR: c0000001fab00000 DSISR: 40000000 IRQMASK: 1
->> [  485.128088] GPR00: 0000000000000001 c000000003f1fbf0 c000000001634300 0000b0fa01000000
->> [  485.128088] GPR04: d000000002220000 0000000000000000 00000000fab00000 0000000000000022
->> [  485.128088] GPR08: c0000001fab00000 0000000000000000 c0000001fab00000 c000000003f1fc14
->> [  485.128088] GPR12: 0000000000000008 c000000003ff5880 d000000002100008 0000000000000000
->> [  485.128088] GPR16: 000000000000ff20 000000000000fff1 000000000000fff2 d0000000021a1100
->> [  485.128088] GPR20: d000000002200000 c00000015c893c50 c000000000d49b28 c00000015c893c50
->> [  485.128088] GPR24: d0000000021a0d08 c0000000014e5da8 d0000000021a0818 000000000000000a
->> [  485.128088] GPR28: 0000000000000008 000000000000000a c0000000017e2970 000000000000000a
->> [  485.128125] NIP [c00000000009b24c] __find_linux_pte+0x11c/0x310
->> [  485.128130] LR [c0000000000398d8] addr_to_pfn+0x138/0x170
->> [  485.128133] Call Trace:
->> [  485.128135] Instruction dump:
->> [  485.128138] 3929ffff 7d4a3378 7c883c36 7d2907b4 794a1564 7d294038 794af082 3900ffff
->> [  485.128144] 79291f24 790af00e 78e70020 7d095214 <7c69502a> 2fa30000 419e011c 70690040
->> [  485.128152] ---[ end trace d34b27e29ae0e340 ]---
->>
->> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+> On 22-Jul-2020, at 4:19 PM, Jordan Niethe <jniethe5@gmail.com> wrote:
+>=20
+> On Wed, Jul 22, 2020 at 5:55 PM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com <mailto:atrajeev@linux.vnet.ibm.com>> =
+wrote:
+>>=20
+>>=20
+>>=20
+>> On 22-Jul-2020, at 10:11 AM, Jordan Niethe <jniethe5@gmail.com> =
+wrote:
+>>=20
+>> On Sat, Jul 18, 2020 at 1:13 AM Athira Rajeev
+>> <atrajeev@linux.vnet.ibm.com> wrote:
+>>=20
+>>=20
+>> From: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>=20
+>> Add power10 feature function to dt_cpu_ftrs.c along
+>> with a power10 specific init() to initialize pmu sprs,
+>> sets the oprofile_cpu_type and cpu_features. This will
+>> enable performance monitoring unit(PMU) for Power10
+>> in CPU features with "performance-monitor-power10".
+>>=20
+>> For PowerISA v3.1, BHRB disable is controlled via Monitor Mode
+>> Control Register A (MMCRA) bit, namely "BHRB Recording Disable
+>> (BHRBRD)". This patch initializes MMCRA BHRBRD to disable BHRB
+>> feature at boot for power10.
+>>=20
+>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 >> ---
->> V2: Leave bare metal code and save_mce_event as is.
->>
->> V3: Have separate functions for realmode and virtual mode handling.
->> ---
->>   arch/powerpc/platforms/pseries/ras.c | 119 ++++++++++++++++-----------
->>   1 file changed, 70 insertions(+), 49 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
->> index f3736fcd98fc..32fe3fad86b8 100644
->> --- a/arch/powerpc/platforms/pseries/ras.c
->> +++ b/arch/powerpc/platforms/pseries/ras.c
->> @@ -522,18 +522,55 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
->>   	return 0; /* need to perform reset */
->>   }
->>   
->> +static int mce_handle_err_realmode(int disposition, u8 error_type)
+>> arch/powerpc/include/asm/reg.h        |  3 +++
+>> arch/powerpc/kernel/cpu_setup_power.S |  8 ++++++++
+>> arch/powerpc/kernel/dt_cpu_ftrs.c     | 26 ++++++++++++++++++++++++++
+>> 3 files changed, 37 insertions(+)
+>>=20
+>> diff --git a/arch/powerpc/include/asm/reg.h =
+b/arch/powerpc/include/asm/reg.h
+>> index 21a1b2d..900ada1 100644
+>> --- a/arch/powerpc/include/asm/reg.h
+>> +++ b/arch/powerpc/include/asm/reg.h
+>> @@ -1068,6 +1068,9 @@
+>> #define MMCR0_PMC2_LOADMISSTIME        0x5
+>> #endif
+>>=20
+>> +/* BHRB disable bit for PowerISA v3.10 */
+>> +#define MMCRA_BHRB_DISABLE     0x0000002000000000
+>>=20
+>> Shouldn't this go under SPRN_MMCRA with the other MMCRA_*.
+>>=20
+>>=20
+>>=20
+>> Hi Jordan
+>>=20
+>> Ok, the definition of MMCRA is under #ifdef for 64 bit .  if I move =
+definition of MMCRA_BHRB_DISABLE along with other SPR's, I also
+>> need to define this for 32-bit to satisfy core-book3s to compile as =
+below:
+>>=20
+>> diff --git a/arch/powerpc/include/asm/reg.h =
+b/arch/powerpc/include/asm/reg.h
+>> index 900ada10762c..7e271657b412 100644
+>> --- a/arch/powerpc/include/asm/reg.h
+>> +++ b/arch/powerpc/include/asm/reg.h
+>> @@ -888,6 +888,8 @@
+>> #define   MMCRA_SLOT   0x07000000UL /* SLOT bits (37-39) */
+>> #define   MMCRA_SLOT_SHIFT     24
+>> #define   MMCRA_SAMPLE_ENABLE 0x00000001UL /* enable sampling */
+>> +/* BHRB disable bit for PowerISA v3.10 */
+>> +#define   MMCRA_BHRB_DISABLE  0x0000002000000000
+>> #define   POWER6_MMCRA_SDSYNC 0x0000080000000000ULL    /* SDAR/SIAR =
+synced */
+>> #define   POWER6_MMCRA_SIHV   0x0000040000000000ULL
+>> #define   POWER6_MMCRA_SIPR   0x0000020000000000ULL
+>> @@ -1068,9 +1070,6 @@
+>> #define MMCR0_PMC2_LOADMISSTIME        0x5
+>> #endif
+>>=20
+>>=20
+>>=20
+>> -/* BHRB disable bit for PowerISA v3.10 */
+>> -#define MMCRA_BHRB_DISABLE     0x0000002000000000
+>> -
+>> /*
+>>  * SPRG usage:
+>>  *
+>> diff --git a/arch/powerpc/perf/core-book3s.c =
+b/arch/powerpc/perf/core-book3s.c
+>> index 36baae666387..88068f20827c 100644
+>> --- a/arch/powerpc/perf/core-book3s.c
+>> +++ b/arch/powerpc/perf/core-book3s.c
+>> @@ -94,6 +94,7 @@ static unsigned int freeze_events_kernel =3D =
+MMCR0_FCS;
+>> #define SPRN_SIER2             0
+>> #define SPRN_SIER3             0
+>> #define MMCRA_SAMPLE_ENABLE    0
+>> +#define MMCRA_BHRB_DISABLE     0
+>>=20
+>>=20
+>>=20
+>> static inline unsigned long perf_ip_adjust(struct pt_regs *regs)
+>> {
+>>=20
+>>=20
+>>=20
+>> +
+>> /*
+>> * SPRG usage:
+>> *
+>> diff --git a/arch/powerpc/kernel/cpu_setup_power.S =
+b/arch/powerpc/kernel/cpu_setup_power.S
+>> index efdcfa7..b8e0d1e 100644
+>> --- a/arch/powerpc/kernel/cpu_setup_power.S
+>> +++ b/arch/powerpc/kernel/cpu_setup_power.S
+>> @@ -94,6 +94,7 @@ _GLOBAL(__restore_cpu_power8)
+>> _GLOBAL(__setup_cpu_power10)
+>>       mflr    r11
+>>       bl      __init_FSCR_power10
+>> +       bl      __init_PMU_ISA31
+>>=20
+>> So we set MMCRA here but then aren't we still going to call =
+__init_PMU
+>> which will overwrite that?
+>> Would this setting MMCRA also need to be handled in =
+__restore_cpu_power10?
+>>=20
+>>=20
+>> Thanks for this nice catch !  When I rebased code initial phase, we =
+didn=E2=80=99t had power10 part filled in.
+>> It was a miss from my side in adding PMu init functions and thanks =
+for pointing this out.
+>> Below patch will call __init_PMU functions in setup and restore. =
+Please check if this looks good
+>>=20
+>> --
+>> diff --git a/arch/powerpc/kernel/cpu_setup_power.S =
+b/arch/powerpc/kernel/cpu_setup_power.S
+>> index efdcfa714106..e672a6c5fd7c 100644
+>> --- a/arch/powerpc/kernel/cpu_setup_power.S
+>> +++ b/arch/powerpc/kernel/cpu_setup_power.S
+>> @@ -94,6 +94,9 @@ _GLOBAL(__restore_cpu_power8)
+>> _GLOBAL(__setup_cpu_power10)
+>>  mflr r11
+>>  bl __init_FSCR_power10
+>> + bl __init_PMU
+>> + bl __init_PMU_ISA31
+>> + bl __init_PMU_HV
+>>  b 1f
+>>=20
+>> _GLOBAL(__setup_cpu_power9)
+>=20
+> Won't you also need to change where the label 1 is:
+> --- a/arch/powerpc/kernel/cpu_setup_power.S
+> +++ b/arch/powerpc/kernel/cpu_setup_power.S
+> @@ -100,8 +100,8 @@ _GLOBAL(__setup_cpu_power10)
+> _GLOBAL(__setup_cpu_power9)
+>        mflr    r11
+>        bl      __init_FSCR
+> -1:     bl      __init_PMU
+> -       bl      __init_hvmode_206
+> +       bl      __init_PMU
+> +1:     bl      __init_hvmode_206
+>        mtlr    r11
+>        beqlr
+>        li      r0,0
+
+HI Jordan
+
+I will address these comments and include changes for cpu_setup_power.S =
+in a separate patch as suggested by Michael Ellerman
+
+Thanks
+Athira
+>=20
+>> @@ -124,6 +127,9 @@ _GLOBAL(__setup_cpu_power9)
+>> _GLOBAL(__restore_cpu_power10)
+>>  mflr r11
+>>  bl __init_FSCR_power10
+>> + bl __init_PMU
+>> + bl __init_PMU_ISA31
+>> + bl __init_PMU_HV
+>>  b 1f
+>>=20
+>> _GLOBAL(__restore_cpu_power9)
+>> @@ -233,3 +239,10 @@ __init_PMU_ISA207:
+>>  li r5,0
+>>  mtspr SPRN_MMCRS,r5
+>>  blr
+>> +
+>> +__init_PMU_ISA31:
+>> + li r5,0
+>> + mtspr SPRN_MMCR3,r5
+>> + LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
+>> + mtspr SPRN_MMCRA,r5
+>> + blr
+>>=20
+>> =E2=80=94
+>>=20
+>>       b       1f
+>>=20
+>> _GLOBAL(__setup_cpu_power9)
+>> @@ -233,3 +234,10 @@ __init_PMU_ISA207:
+>>       li      r5,0
+>>       mtspr   SPRN_MMCRS,r5
+>>       blr
+>> +
+>> +__init_PMU_ISA31:
+>> +       li      r5,0
+>> +       mtspr   SPRN_MMCR3,r5
+>> +       LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
+>> +       mtspr   SPRN_MMCRA,r5
+>> +       blr
+>> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c =
+b/arch/powerpc/kernel/dt_cpu_ftrs.c
+>> index 3a40951..f482286 100644
+>> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
+>> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+>> @@ -450,6 +450,31 @@ static int __init feat_enable_pmu_power9(struct =
+dt_cpu_feature *f)
+>>       return 1;
+>> }
+>>=20
+>> +static void init_pmu_power10(void)
 >> +{
->> +#ifdef CONFIG_PPC_BOOK3S_64
->> +	if (disposition == RTAS_DISP_NOT_RECOVERED) {
->> +		switch (error_type) {
->> +		case	MC_ERROR_TYPE_SLB:
->> +		case	MC_ERROR_TYPE_ERAT:
->> +			/*
->> +			 * Store the old slb content in paca before flushing.
->> +			 * Print this when we go to virtual mode.
->> +			 * There are chances that we may hit MCE again if there
->> +			 * is a parity error on the SLB entry we trying to read
->> +			 * for saving. Hence limit the slb saving to single
->> +			 * level of recursion.
->> +			 */
->> +			if (local_paca->in_mce == 1)
->> +				slb_save_contents(local_paca->mce_faulty_slbs);
->> +			flush_and_reload_slb();
->> +			disposition = RTAS_DISP_FULLY_RECOVERED;
->> +			break;
->> +		default:
->> +			break;
->> +		}
->> +	} else if (disposition == RTAS_DISP_LIMITED_RECOVERY) {
->> +		/* Platform corrected itself but could be degraded */
->> +		pr_err("MCE: limited recovery, system may be degraded\n");
->> +		disposition = RTAS_DISP_FULLY_RECOVERED;
->> +	}
->> +#endif
->> +	return disposition;
->> +}
->>   
->> -static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
->> +static int mce_handle_err_virtmode(struct pt_regs *regs,
->> +				   struct rtas_error_log *errp,
->> +				   struct pseries_mc_errorlog *mce_log,
->> +				   int disposition)
->>   {
->>   	struct mce_error_info mce_err = { 0 };
->> -	unsigned long eaddr = 0, paddr = 0;
->> -	struct pseries_errorlog *pseries_log;
->> -	struct pseries_mc_errorlog *mce_log;
->> -	int disposition = rtas_error_disposition(errp);
->>   	int initiator = rtas_error_initiator(errp);
->>   	int severity = rtas_error_severity(errp);
->> +	unsigned long eaddr = 0, paddr = 0;
->>   	u8 error_type, err_sub_type;
->>   
->> +	if (!mce_log)
->> +		goto out;
+>> +       init_pmu_power9();
 >> +
->> +	error_type = mce_log->error_type;
->> +	err_sub_type = rtas_mc_error_sub_type(mce_log);
->> +
->>   	if (initiator == RTAS_INITIATOR_UNKNOWN)
->>   		mce_err.initiator = MCE_INITIATOR_UNKNOWN;
->>   	else if (initiator == RTAS_INITIATOR_CPU)
->> @@ -572,18 +609,7 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
->>   	mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
->>   	mce_err.error_class = MCE_ECLASS_UNKNOWN;
->>   
->> -	if (!rtas_error_extended(errp))
->> -		goto out;
->> -
->> -	pseries_log = get_pseries_errorlog(errp, PSERIES_ELOG_SECT_ID_MCE);
->> -	if (pseries_log == NULL)
->> -		goto out;
->> -
->> -	mce_log = (struct pseries_mc_errorlog *)pseries_log->data;
->> -	error_type = mce_log->error_type;
->> -	err_sub_type = rtas_mc_error_sub_type(mce_log);
->> -
->> -	switch (mce_log->error_type) {
->> +	switch (error_type) {
->>   	case MC_ERROR_TYPE_UE:
->>   		mce_err.error_type = MCE_ERROR_TYPE_UE;
->>   		mce_common_process_ue(regs, &mce_err);
->> @@ -683,37 +709,32 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
->>   		mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
->>   		break;
->>   	}
->> +out:
->> +	save_mce_event(regs, disposition == RTAS_DISP_FULLY_RECOVERED,
->> +		       &mce_err, regs->nip, eaddr, paddr);
->> +	return disposition;
+>> +       mtspr(SPRN_MMCR3, 0);
+>> +       mtspr(SPRN_MMCRA, MMCRA_BHRB_DISABLE);
 >> +}
->>   
->> -#ifdef CONFIG_PPC_BOOK3S_64
->> -	if (disposition == RTAS_DISP_NOT_RECOVERED) {
->> -		switch (error_type) {
->> -		case	MC_ERROR_TYPE_SLB:
->> -		case	MC_ERROR_TYPE_ERAT:
->> -			/*
->> -			 * Store the old slb content in paca before flushing.
->> -			 * Print this when we go to virtual mode.
->> -			 * There are chances that we may hit MCE again if there
->> -			 * is a parity error on the SLB entry we trying to read
->> -			 * for saving. Hence limit the slb saving to single
->> -			 * level of recursion.
->> -			 */
->> -			if (local_paca->in_mce == 1)
->> -				slb_save_contents(local_paca->mce_faulty_slbs);
->> -			flush_and_reload_slb();
->> -			disposition = RTAS_DISP_FULLY_RECOVERED;
->> -			break;
->> -		default:
->> -			break;
->> -		}
->> -	} else if (disposition == RTAS_DISP_LIMITED_RECOVERY) {
->> -		/* Platform corrected itself but could be degraded */
->> -		printk(KERN_ERR "MCE: limited recovery, system may "
->> -		       "be degraded\n");
->> -		disposition = RTAS_DISP_FULLY_RECOVERED;
->> -	}
->> -#endif
->> +static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
+>> +
+>> +static int __init feat_enable_pmu_power10(struct dt_cpu_feature *f)
 >> +{
->> +	struct pseries_errorlog *pseries_log;
->> +	struct pseries_mc_errorlog *mce_log = NULL;
->> +	int disposition = rtas_error_disposition(errp);
->> +	u8 error_type, err_sub_type;
+>> +       hfscr_pmu_enable();
 >> +
->> +	if (!rtas_error_extended(errp))
->> +		goto out;
+>> +       init_pmu_power10();
+>> +       init_pmu_registers =3D init_pmu_power10;
 >> +
->> +	pseries_log = get_pseries_errorlog(errp, PSERIES_ELOG_SECT_ID_MCE);
->> +	if (!pseries_log)
->> +		goto out;
+>> +       cur_cpu_spec->cpu_features |=3D CPU_FTR_MMCRA;
+>> +       cur_cpu_spec->cpu_user_features |=3D =
+PPC_FEATURE_PSERIES_PERFMON_COMPAT;
 >> +
->> +	mce_log = (struct pseries_mc_errorlog *)pseries_log->data;
->> +	error_type = mce_log->error_type;
->> +	err_sub_type = rtas_mc_error_sub_type(mce_log);
+>> +       cur_cpu_spec->num_pmcs          =3D 6;
+>> +       cur_cpu_spec->pmc_type          =3D PPC_PMC_IBM;
+>> +       cur_cpu_spec->oprofile_cpu_type =3D "ppc64/power10";
 >> +
->> +	disposition = mce_handle_err_realmode(disposition, error_type);
->>   
->> -out:
->>   	/*
->>   	 * Enable translation as we will be accessing per-cpu variables
->>   	 * in save_mce_event() which may fall outside RMO region, also
->> @@ -724,10 +745,10 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
->>   	 * Note: All the realmode handling like flushing SLB entries for
->>   	 *       SLB multihit is done by now.
->>   	 */
->> +out:
->>   	mtmsr(mfmsr() | MSR_IR | MSR_DR);
->> -	save_mce_event(regs, disposition == RTAS_DISP_FULLY_RECOVERED,
->> -			&mce_err, regs->nip, eaddr, paddr);
->> -
->> +	disposition = mce_handle_err_virtmode(regs, errp, mce_log,
->> +					      disposition);
->>   	return disposition;
->>   }
->>   
->> -- 
->> 2.17.2
->>
->>
+>> +       return 1;
+>> +}
+>> +
+>> static int __init feat_enable_tm(struct dt_cpu_feature *f)
+>> {
+>> #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>> @@ -639,6 +664,7 @@ struct dt_cpu_feature_match {
+>>       {"pc-relative-addressing", feat_enable, 0},
+>>       {"machine-check-power9", feat_enable_mce_power9, 0},
+>>       {"performance-monitor-power9", feat_enable_pmu_power9, 0},
+>> +       {"performance-monitor-power10", feat_enable_pmu_power10, 0},
+>>       {"event-based-branch-v3", feat_enable, 0},
+>>       {"random-number-generator", feat_enable, 0},
+>>       {"system-call-vectored", feat_disable, 0},
+>> --
+>> 1.8.3.1
 
 
---------------FE71DCBAEE7307A2CC581B61
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+--Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <br>
-    <br>
-    <div class="moz-cite-prefix">On 7/21/20 3:38 PM, Nicholas Piggin
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:1595325962.zikec6nkw7.astroid@bobo.none">
-      <pre class="moz-quote-pre" wrap="">Excerpts from Ganesh Goudar's message of July 20, 2020 6:03 pm:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">When an UE or memory error exception is encountered the MCE handler
-tries to find the pfn using addr_to_pfn() which takes effective
-address as an argument, later pfn is used to poison the page where
-memory error occurred, recent rework in this area made addr_to_pfn
-to run in realmode, which can be fatal as it may try to access
-memory outside RMO region.
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><br =
+class=3D""><div><br class=3D""><blockquote type=3D"cite" class=3D""><div =
+class=3D"">On 22-Jul-2020, at 4:19 PM, Jordan Niethe &lt;<a =
+href=3D"mailto:jniethe5@gmail.com" class=3D"">jniethe5@gmail.com</a>&gt; =
+wrote:</div><br class=3D"Apple-interchange-newline"><div class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;" class=3D"">On Wed, Jul 22, 2020 at 5:55 PM =
+Athira Rajeev</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: normal; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;" class=3D""><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: normal; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none; float: none; display: inline !important;" class=3D"">&lt;</span><a =
+href=3D"mailto:atrajeev@linux.vnet.ibm.com" style=3D"font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: normal; letter-spacing: normal; orphans: auto; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px;" =
+class=3D"">atrajeev@linux.vnet.ibm.com</a><span style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">&gt; wrote:</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><blockquote type=3D"cite" =
+style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+orphans: auto; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: auto; word-spacing: 0px; =
+-webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><br class=3D""><br class=3D""><br =
+class=3D"">On 22-Jul-2020, at 10:11 AM, Jordan Niethe &lt;<a =
+href=3D"mailto:jniethe5@gmail.com" class=3D"">jniethe5@gmail.com</a>&gt; =
+wrote:<br class=3D""><br class=3D"">On Sat, Jul 18, 2020 at 1:13 AM =
+Athira Rajeev<br class=3D"">&lt;<a =
+href=3D"mailto:atrajeev@linux.vnet.ibm.com" =
+class=3D"">atrajeev@linux.vnet.ibm.com</a>&gt; wrote:<br class=3D""><br =
+class=3D""><br class=3D"">From: Madhavan Srinivasan &lt;<a =
+href=3D"mailto:maddy@linux.ibm.com" =
+class=3D"">maddy@linux.ibm.com</a>&gt;<br class=3D""><br class=3D"">Add =
+power10 feature function to dt_cpu_ftrs.c along<br class=3D"">with a =
+power10 specific init() to initialize pmu sprs,<br class=3D"">sets the =
+oprofile_cpu_type and cpu_features. This will<br class=3D"">enable =
+performance monitoring unit(PMU) for Power10<br class=3D"">in CPU =
+features with "performance-monitor-power10".<br class=3D""><br =
+class=3D"">For PowerISA v3.1, BHRB disable is controlled via Monitor =
+Mode<br class=3D"">Control Register A (MMCRA) bit, namely "BHRB =
+Recording Disable<br class=3D"">(BHRBRD)". This patch initializes MMCRA =
+BHRBRD to disable BHRB<br class=3D"">feature at boot for power10.<br =
+class=3D""><br class=3D"">Signed-off-by: Madhavan Srinivasan &lt;<a =
+href=3D"mailto:maddy@linux.ibm.com" =
+class=3D"">maddy@linux.ibm.com</a>&gt;<br class=3D"">---<br =
+class=3D"">arch/powerpc/include/asm/reg.h =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;3 +++<br =
+class=3D"">arch/powerpc/kernel/cpu_setup_power.S | &nbsp;8 ++++++++<br =
+class=3D"">arch/powerpc/kernel/dt_cpu_ftrs.c &nbsp;&nbsp;&nbsp;&nbsp;| =
+26 ++++++++++++++++++++++++++<br class=3D"">3 files changed, 37 =
+insertions(+)<br class=3D""><br class=3D"">diff --git =
+a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h<br =
+class=3D"">index 21a1b2d..900ada1 100644<br class=3D"">--- =
+a/arch/powerpc/include/asm/reg.h<br class=3D"">+++ =
+b/arch/powerpc/include/asm/reg.h<br class=3D"">@@ -1068,6 +1068,9 @@<br =
+class=3D"">#define MMCR0_PMC2_LOADMISSTIME =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x5<br class=3D"">#endif<br =
+class=3D""><br class=3D"">+/* BHRB disable bit for PowerISA v3.10 */<br =
+class=3D"">+#define MMCRA_BHRB_DISABLE =
+&nbsp;&nbsp;&nbsp;&nbsp;0x0000002000000000<br class=3D""><br =
+class=3D"">Shouldn't this go under SPRN_MMCRA with the other MMCRA_*.<br =
+class=3D""><br class=3D""><br class=3D""><br class=3D"">Hi Jordan<br =
+class=3D""><br class=3D"">Ok, the definition of MMCRA is under #ifdef =
+for 64 bit . &nbsp;if I move definition of MMCRA_BHRB_DISABLE along with =
+other SPR's, I also<br class=3D"">need to define this for 32-bit to =
+satisfy core-book3s to compile as below:<br class=3D""><br class=3D"">diff=
+ --git a/arch/powerpc/include/asm/reg.h =
+b/arch/powerpc/include/asm/reg.h<br class=3D"">index =
+900ada10762c..7e271657b412 100644<br class=3D"">--- =
+a/arch/powerpc/include/asm/reg.h<br class=3D"">+++ =
+b/arch/powerpc/include/asm/reg.h<br class=3D"">@@ -888,6 +888,8 @@<br =
+class=3D"">#define &nbsp;&nbsp;MMCRA_SLOT &nbsp;&nbsp;0x07000000UL /* =
+SLOT bits (37-39) */<br class=3D"">#define &nbsp;&nbsp;MMCRA_SLOT_SHIFT =
+&nbsp;&nbsp;&nbsp;&nbsp;24<br class=3D"">#define =
+&nbsp;&nbsp;MMCRA_SAMPLE_ENABLE 0x00000001UL /* enable sampling */<br =
+class=3D"">+/* BHRB disable bit for PowerISA v3.10 */<br =
+class=3D"">+#define &nbsp;&nbsp;MMCRA_BHRB_DISABLE =
+&nbsp;0x0000002000000000<br class=3D"">#define =
+&nbsp;&nbsp;POWER6_MMCRA_SDSYNC 0x0000080000000000ULL =
+&nbsp;&nbsp;&nbsp;/* SDAR/SIAR synced */<br class=3D"">#define =
+&nbsp;&nbsp;POWER6_MMCRA_SIHV &nbsp;&nbsp;0x0000040000000000ULL<br =
+class=3D"">#define &nbsp;&nbsp;POWER6_MMCRA_SIPR =
+&nbsp;&nbsp;0x0000020000000000ULL<br class=3D"">@@ -1068,9 +1070,6 @@<br =
+class=3D"">#define MMCR0_PMC2_LOADMISSTIME =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x5<br class=3D"">#endif<br =
+class=3D""><br class=3D""><br class=3D""><br class=3D"">-/* BHRB disable =
+bit for PowerISA v3.10 */<br class=3D"">-#define MMCRA_BHRB_DISABLE =
+&nbsp;&nbsp;&nbsp;&nbsp;0x0000002000000000<br class=3D"">-<br =
+class=3D"">/*<br class=3D"">&nbsp;* SPRG usage:<br class=3D"">&nbsp;*<br =
+class=3D"">diff --git a/arch/powerpc/perf/core-book3s.c =
+b/arch/powerpc/perf/core-book3s.c<br class=3D"">index =
+36baae666387..88068f20827c 100644<br class=3D"">--- =
+a/arch/powerpc/perf/core-book3s.c<br class=3D"">+++ =
+b/arch/powerpc/perf/core-book3s.c<br class=3D"">@@ -94,6 +94,7 @@ static =
+unsigned int freeze_events_kernel =3D MMCR0_FCS;<br class=3D"">#define =
+SPRN_SIER2 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<=
+br class=3D"">#define SPRN_SIER3 =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<=
+br class=3D"">#define MMCRA_SAMPLE_ENABLE &nbsp;&nbsp;&nbsp;0<br =
+class=3D"">+#define MMCRA_BHRB_DISABLE &nbsp;&nbsp;&nbsp;&nbsp;0<br =
+class=3D""><br class=3D""><br class=3D""><br class=3D"">static inline =
+unsigned long perf_ip_adjust(struct pt_regs *regs)<br class=3D"">{<br =
+class=3D""><br class=3D""><br class=3D""><br class=3D"">+<br =
+class=3D"">/*<br class=3D"">* SPRG usage:<br class=3D"">*<br =
+class=3D"">diff --git a/arch/powerpc/kernel/cpu_setup_power.S =
+b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">index =
+efdcfa7..b8e0d1e 100644<br class=3D"">--- =
+a/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">+++ =
+b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">@@ -94,6 +94,7 @@ =
+_GLOBAL(__restore_cpu_power8)<br =
+class=3D"">_GLOBAL(__setup_cpu_power10)<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mflr =
+&nbsp;&nbsp;&nbsp;r11<br class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl=
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_FSCR_power10<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_PMU_ISA31<br class=3D""><br =
+class=3D"">So we set MMCRA here but then aren't we still going to call =
+__init_PMU<br class=3D"">which will overwrite that?<br class=3D"">Would =
+this setting MMCRA also need to be handled in __restore_cpu_power10?<br =
+class=3D""><br class=3D""><br class=3D"">Thanks for this nice catch ! =
+&nbsp;When I rebased code initial phase, we didn=E2=80=99t had power10 =
+part filled in.<br class=3D"">It was a miss from my side in adding PMu =
+init functions and thanks for pointing this out.<br class=3D"">Below =
+patch will call __init_PMU functions in setup and restore. Please check =
+if this looks good<br class=3D""><br class=3D"">--<br class=3D"">diff =
+--git a/arch/powerpc/kernel/cpu_setup_power.S =
+b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">index =
+efdcfa714106..e672a6c5fd7c 100644<br class=3D"">--- =
+a/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">+++ =
+b/arch/powerpc/kernel/cpu_setup_power.S<br class=3D"">@@ -94,6 +94,9 @@ =
+_GLOBAL(__restore_cpu_power8)<br =
+class=3D"">_GLOBAL(__setup_cpu_power10)<br class=3D"">&nbsp;mflr r11<br =
+class=3D"">&nbsp;bl __init_FSCR_power10<br class=3D"">+ bl __init_PMU<br =
+class=3D"">+ bl __init_PMU_ISA31<br class=3D"">+ bl __init_PMU_HV<br =
+class=3D"">&nbsp;b 1f<br class=3D""><br =
+class=3D"">_GLOBAL(__setup_cpu_power9)<br class=3D""></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;" class=3D"">Won't you also need to change =
+where the label 1 is:</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">--- a/arch/powerpc/kernel/cpu_setup_power.S</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;" class=3D"">+++ =
+b/arch/powerpc/kernel/cpu_setup_power.S</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">@@ -100,8 +100,8 @@ _GLOBAL(__setup_cpu_power10)</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;" =
+class=3D"">_GLOBAL(__setup_cpu_power9)</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mflr =
+&nbsp;&nbsp;&nbsp;r11</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_FSCR</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">-1: &nbsp;&nbsp;&nbsp;&nbsp;bl =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_PMU</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_hvmode_206</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;" class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bl =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_PMU</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">+1: &nbsp;&nbsp;&nbsp;&nbsp;bl =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__init_hvmode_206</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;" =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtlr =
+&nbsp;&nbsp;&nbsp;r11</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><span style=3D"caret-color: rgb(0, 0, =
+0); font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;" =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;beqlr</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;" class=3D""><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;" =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;li =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r0,0</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""></div></blockquote><div><br =
+class=3D""></div>HI Jordan</div><div><br class=3D""></div><div>I will =
+address these comments and include changes for cpu_setup_power.S in a =
+separate patch as suggested by Michael Ellerman</div><div><br =
+class=3D""></div><div>Thanks</div><div>Athira</div><div><blockquote =
+type=3D"cite" class=3D""><div class=3D""><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: normal; letter-spacing: =
+normal; text-align: start; text-indent: 0px; text-transform: none; =
+white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D""><blockquote type=3D"cite" =
+style=3D"font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+orphans: auto; text-align: start; text-indent: 0px; text-transform: =
+none; white-space: normal; widows: auto; word-spacing: 0px; =
+-webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+text-decoration: none;" class=3D"">@@ -124,6 +127,9 @@ =
+_GLOBAL(__setup_cpu_power9)<br =
+class=3D"">_GLOBAL(__restore_cpu_power10)<br class=3D"">&nbsp;mflr =
+r11<br class=3D"">&nbsp;bl __init_FSCR_power10<br class=3D"">+ bl =
+__init_PMU<br class=3D"">+ bl __init_PMU_ISA31<br class=3D"">+ bl =
+__init_PMU_HV<br class=3D"">&nbsp;b 1f<br class=3D""><br =
+class=3D"">_GLOBAL(__restore_cpu_power9)<br class=3D"">@@ -233,3 +239,10 =
+@@ __init_PMU_ISA207:<br class=3D"">&nbsp;li r5,0<br =
+class=3D"">&nbsp;mtspr SPRN_MMCRS,r5<br class=3D"">&nbsp;blr<br =
+class=3D"">+<br class=3D"">+__init_PMU_ISA31:<br class=3D"">+ li r5,0<br =
+class=3D"">+ mtspr SPRN_MMCR3,r5<br class=3D"">+ LOAD_REG_IMMEDIATE(r5, =
+MMCRA_BHRB_DISABLE)<br class=3D"">+ mtspr SPRN_MMCRA,r5<br class=3D"">+ =
+blr<br class=3D""><br class=3D"">=E2=80=94<br class=3D""><br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1f<br class=3D""><br =
+class=3D"">_GLOBAL(__setup_cpu_power9)<br class=3D"">@@ -233,3 +234,10 =
+@@ __init_PMU_ISA207:<br class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;li=
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r5,0<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr =
+&nbsp;&nbsp;SPRN_MMCRS,r5<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blr<br class=3D"">+<br =
+class=3D"">+__init_PMU_ISA31:<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;li =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r5,0<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr &nbsp;&nbsp;SPRN_MMCR3,r5<br =
+class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOAD_REG_IMMEDIATE(r5, =
+MMCRA_BHRB_DISABLE)<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr &nbsp;&nbsp;SPRN_MMCRA,r5<br =
+class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blr<br class=3D"">diff =
+--git a/arch/powerpc/kernel/dt_cpu_ftrs.c =
+b/arch/powerpc/kernel/dt_cpu_ftrs.c<br class=3D"">index 3a40951..f482286 =
+100644<br class=3D"">--- a/arch/powerpc/kernel/dt_cpu_ftrs.c<br =
+class=3D"">+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c<br class=3D"">@@ =
+-450,6 +450,31 @@ static int __init feat_enable_pmu_power9(struct =
+dt_cpu_feature *f)<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br =
+class=3D"">}<br class=3D""><br class=3D"">+static void =
+init_pmu_power10(void)<br class=3D"">+{<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_pmu_power9();<br class=3D"">+<br =
+class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr(SPRN_MMCR3, =
+0);<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtspr(SPRN_MMCRA, =
+MMCRA_BHRB_DISABLE);<br class=3D"">+}<br class=3D"">+<br =
+class=3D"">+static int __init feat_enable_pmu_power10(struct =
+dt_cpu_feature *f)<br class=3D"">+{<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hfscr_pmu_enable();<br class=3D"">+<br=
+ class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_pmu_power10();<br =
+class=3D"">+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_pmu_registers =3D =
+init_pmu_power10;<br class=3D"">+<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;cpu_features |=3D =
+CPU_FTR_MMCRA;<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;cpu_user_features =
+|=3D PPC_FEATURE_PSERIES_PERFMON_COMPAT;<br class=3D"">+<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;num_pmcs =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=3D 6;<br =
+class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;pmc_type =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=3D =
+PPC_PMC_IBM;<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_cpu_spec-&gt;oprofile_cpu_type =3D=
+ "ppc64/power10";<br class=3D"">+<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br class=3D"">+}<br =
+class=3D"">+<br class=3D"">static int __init feat_enable_tm(struct =
+dt_cpu_feature *f)<br class=3D"">{<br class=3D"">#ifdef =
+CONFIG_PPC_TRANSACTIONAL_MEM<br class=3D"">@@ -639,6 +664,7 @@ struct =
+dt_cpu_feature_match {<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"pc-relative-addressing", =
+feat_enable, 0},<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"machine-check-power9", =
+feat_enable_mce_power9, 0},<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"performance-monitor-power=
+9", feat_enable_pmu_power9, 0},<br class=3D"">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"performance-monitor-power10", =
+feat_enable_pmu_power10, 0},<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"event-based-branch-v3", =
+feat_enable, 0},<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"random-number-generator",=
+ feat_enable, 0},<br =
+class=3D"">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"system-call-vectored", =
+feat_disable, 0},<br class=3D"">--<br =
+class=3D"">1.8.3.1</blockquote></div></blockquote></div><br =
+class=3D""></body></html>=
 
-To fix this have separate functions for realmode and virtual mode
-handling and let addr_to_pfn to run in virtual mode.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-You didn't really explain what you moved around. You added some
-helper functions, but what does it actually do differently now? Can you 
-explain that in the changelog?</pre>
-    </blockquote>
-    <pre>Sure, ill rephrase the changelog, here I have moved all that we can and we must
-do in virtual mode to new helper function which runs in virtual mode, like filling
-mce error info, using addr_to_pfn and calling save_mce_event().
-</pre>
-    <blockquote type="cite"
-      cite="mid:1595325962.zikec6nkw7.astroid@bobo.none">
-      <pre class="moz-quote-pre" wrap="">
-
-Thanks,
-Nick
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-Without this fix following kernel crash is seen on hitting UE.
-
-[  485.128036] Oops: Kernel access of bad area, sig: 11 [#1]
-[  485.128040] LE SMP NR_CPUS=2048 NUMA pSeries
-[  485.128047] Modules linked in:
-[  485.128067] CPU: 15 PID: 6536 Comm: insmod Kdump: loaded Tainted: G OE 5.7.0 #22
-[  485.128074] NIP:  c00000000009b24c LR: c0000000000398d8 CTR: c000000000cd57c0
-[  485.128078] REGS: c000000003f1f970 TRAP: 0300   Tainted: G OE (5.7.0)
-[  485.128082] MSR:  8000000000001003 &lt;SF,ME,RI,LE&gt;  CR: 28008284  XER: 00000001
-[  485.128088] CFAR: c00000000009b190 DAR: c0000001fab00000 DSISR: 40000000 IRQMASK: 1
-[  485.128088] GPR00: 0000000000000001 c000000003f1fbf0 c000000001634300 0000b0fa01000000
-[  485.128088] GPR04: d000000002220000 0000000000000000 00000000fab00000 0000000000000022
-[  485.128088] GPR08: c0000001fab00000 0000000000000000 c0000001fab00000 c000000003f1fc14
-[  485.128088] GPR12: 0000000000000008 c000000003ff5880 d000000002100008 0000000000000000
-[  485.128088] GPR16: 000000000000ff20 000000000000fff1 000000000000fff2 d0000000021a1100
-[  485.128088] GPR20: d000000002200000 c00000015c893c50 c000000000d49b28 c00000015c893c50
-[  485.128088] GPR24: d0000000021a0d08 c0000000014e5da8 d0000000021a0818 000000000000000a
-[  485.128088] GPR28: 0000000000000008 000000000000000a c0000000017e2970 000000000000000a
-[  485.128125] NIP [c00000000009b24c] __find_linux_pte+0x11c/0x310
-[  485.128130] LR [c0000000000398d8] addr_to_pfn+0x138/0x170
-[  485.128133] Call Trace:
-[  485.128135] Instruction dump:
-[  485.128138] 3929ffff 7d4a3378 7c883c36 7d2907b4 794a1564 7d294038 794af082 3900ffff
-[  485.128144] 79291f24 790af00e 78e70020 7d095214 &lt;7c69502a&gt; 2fa30000 419e011c 70690040
-[  485.128152] ---[ end trace d34b27e29ae0e340 ]---
-
-Signed-off-by: Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a>
----
-V2: Leave bare metal code and save_mce_event as is.
-
-V3: Have separate functions for realmode and virtual mode handling.
----
- arch/powerpc/platforms/pseries/ras.c | 119 ++++++++++++++++-----------
- 1 file changed, 70 insertions(+), 49 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index f3736fcd98fc..32fe3fad86b8 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -522,18 +522,55 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
- 	return 0; /* need to perform reset */
- }
- 
-+static int mce_handle_err_realmode(int disposition, u8 error_type)
-+{
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	if (disposition == RTAS_DISP_NOT_RECOVERED) {
-+		switch (error_type) {
-+		case	MC_ERROR_TYPE_SLB:
-+		case	MC_ERROR_TYPE_ERAT:
-+			/*
-+			 * Store the old slb content in paca before flushing.
-+			 * Print this when we go to virtual mode.
-+			 * There are chances that we may hit MCE again if there
-+			 * is a parity error on the SLB entry we trying to read
-+			 * for saving. Hence limit the slb saving to single
-+			 * level of recursion.
-+			 */
-+			if (local_paca-&gt;in_mce == 1)
-+				slb_save_contents(local_paca-&gt;mce_faulty_slbs);
-+			flush_and_reload_slb();
-+			disposition = RTAS_DISP_FULLY_RECOVERED;
-+			break;
-+		default:
-+			break;
-+		}
-+	} else if (disposition == RTAS_DISP_LIMITED_RECOVERY) {
-+		/* Platform corrected itself but could be degraded */
-+		pr_err("MCE: limited recovery, system may be degraded\n");
-+		disposition = RTAS_DISP_FULLY_RECOVERED;
-+	}
-+#endif
-+	return disposition;
-+}
- 
--static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
-+static int mce_handle_err_virtmode(struct pt_regs *regs,
-+				   struct rtas_error_log *errp,
-+				   struct pseries_mc_errorlog *mce_log,
-+				   int disposition)
- {
- 	struct mce_error_info mce_err = { 0 };
--	unsigned long eaddr = 0, paddr = 0;
--	struct pseries_errorlog *pseries_log;
--	struct pseries_mc_errorlog *mce_log;
--	int disposition = rtas_error_disposition(errp);
- 	int initiator = rtas_error_initiator(errp);
- 	int severity = rtas_error_severity(errp);
-+	unsigned long eaddr = 0, paddr = 0;
- 	u8 error_type, err_sub_type;
- 
-+	if (!mce_log)
-+		goto out;
-+
-+	error_type = mce_log-&gt;error_type;
-+	err_sub_type = rtas_mc_error_sub_type(mce_log);
-+
- 	if (initiator == RTAS_INITIATOR_UNKNOWN)
- 		mce_err.initiator = MCE_INITIATOR_UNKNOWN;
- 	else if (initiator == RTAS_INITIATOR_CPU)
-@@ -572,18 +609,7 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
- 	mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
- 	mce_err.error_class = MCE_ECLASS_UNKNOWN;
- 
--	if (!rtas_error_extended(errp))
--		goto out;
--
--	pseries_log = get_pseries_errorlog(errp, PSERIES_ELOG_SECT_ID_MCE);
--	if (pseries_log == NULL)
--		goto out;
--
--	mce_log = (struct pseries_mc_errorlog *)pseries_log-&gt;data;
--	error_type = mce_log-&gt;error_type;
--	err_sub_type = rtas_mc_error_sub_type(mce_log);
--
--	switch (mce_log-&gt;error_type) {
-+	switch (error_type) {
- 	case MC_ERROR_TYPE_UE:
- 		mce_err.error_type = MCE_ERROR_TYPE_UE;
- 		mce_common_process_ue(regs, &amp;mce_err);
-@@ -683,37 +709,32 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
- 		mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
- 		break;
- 	}
-+out:
-+	save_mce_event(regs, disposition == RTAS_DISP_FULLY_RECOVERED,
-+		       &amp;mce_err, regs-&gt;nip, eaddr, paddr);
-+	return disposition;
-+}
- 
--#ifdef CONFIG_PPC_BOOK3S_64
--	if (disposition == RTAS_DISP_NOT_RECOVERED) {
--		switch (error_type) {
--		case	MC_ERROR_TYPE_SLB:
--		case	MC_ERROR_TYPE_ERAT:
--			/*
--			 * Store the old slb content in paca before flushing.
--			 * Print this when we go to virtual mode.
--			 * There are chances that we may hit MCE again if there
--			 * is a parity error on the SLB entry we trying to read
--			 * for saving. Hence limit the slb saving to single
--			 * level of recursion.
--			 */
--			if (local_paca-&gt;in_mce == 1)
--				slb_save_contents(local_paca-&gt;mce_faulty_slbs);
--			flush_and_reload_slb();
--			disposition = RTAS_DISP_FULLY_RECOVERED;
--			break;
--		default:
--			break;
--		}
--	} else if (disposition == RTAS_DISP_LIMITED_RECOVERY) {
--		/* Platform corrected itself but could be degraded */
--		printk(KERN_ERR "MCE: limited recovery, system may "
--		       "be degraded\n");
--		disposition = RTAS_DISP_FULLY_RECOVERED;
--	}
--#endif
-+static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
-+{
-+	struct pseries_errorlog *pseries_log;
-+	struct pseries_mc_errorlog *mce_log = NULL;
-+	int disposition = rtas_error_disposition(errp);
-+	u8 error_type, err_sub_type;
-+
-+	if (!rtas_error_extended(errp))
-+		goto out;
-+
-+	pseries_log = get_pseries_errorlog(errp, PSERIES_ELOG_SECT_ID_MCE);
-+	if (!pseries_log)
-+		goto out;
-+
-+	mce_log = (struct pseries_mc_errorlog *)pseries_log-&gt;data;
-+	error_type = mce_log-&gt;error_type;
-+	err_sub_type = rtas_mc_error_sub_type(mce_log);
-+
-+	disposition = mce_handle_err_realmode(disposition, error_type);
- 
--out:
- 	/*
- 	 * Enable translation as we will be accessing per-cpu variables
- 	 * in save_mce_event() which may fall outside RMO region, also
-@@ -724,10 +745,10 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
- 	 * Note: All the realmode handling like flushing SLB entries for
- 	 *       SLB multihit is done by now.
- 	 */
-+out:
- 	mtmsr(mfmsr() | MSR_IR | MSR_DR);
--	save_mce_event(regs, disposition == RTAS_DISP_FULLY_RECOVERED,
--			&amp;mce_err, regs-&gt;nip, eaddr, paddr);
--
-+	disposition = mce_handle_err_virtmode(regs, errp, mce_log,
-+					      disposition);
- 	return disposition;
- }
- 
--- 
-2.17.2
-
-
-</pre>
-      </blockquote>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------FE71DCBAEE7307A2CC581B61--
+--Apple-Mail=_B165C2CD-78CC-401B-A22B-726B6621829E--
 
