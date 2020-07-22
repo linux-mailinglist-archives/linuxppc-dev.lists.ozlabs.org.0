@@ -2,78 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA176229057
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 08:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0D0229071
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 08:23:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBQ522hNQzDr0f
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 16:08:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBQPb0K5TzDqxV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 16:22:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBQ1G48FmzDqS7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 16:05:22 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06M61WTk097858; Wed, 22 Jul 2020 02:05:14 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32e92ks8d8-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBQMv1P7jzDqv1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 16:21:30 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06M61rdi161127; Wed, 22 Jul 2020 02:21:23 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32e1vrf16h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 02:05:14 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M61BEE000636;
- Wed, 22 Jul 2020 06:05:12 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06fra.de.ibm.com with ESMTP id 32brbgtbpj-1
+ Wed, 22 Jul 2020 02:21:23 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06M6GvGL012016;
+ Wed, 22 Jul 2020 02:21:23 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32e1vrf16a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 06:05:12 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06M659f031719862
+ Wed, 22 Jul 2020 02:21:23 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M6K4cL030774;
+ Wed, 22 Jul 2020 06:21:22 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma04dal.us.ibm.com with ESMTP id 32d5dq7qcr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 06:21:22 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06M6LKCD33030484
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jul 2020 06:05:09 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5A744204C;
- Wed, 22 Jul 2020 06:05:09 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A113142042;
- Wed, 22 Jul 2020 06:05:08 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.102.3.172])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed, 22 Jul 2020 06:05:08 +0000 (GMT)
-Date: Wed, 22 Jul 2020 11:35:06 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
-Message-ID: <20200722060506.GO7902@in.ibm.com>
-References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
- <87r1tb1rw2.fsf@linux.ibm.com> <87tuy1sksv.fsf@mpe.ellerman.id.au>
- <20200721032959.GN7902@in.ibm.com>
- <87ft9lrr55.fsf@mpe.ellerman.id.au>
+ Wed, 22 Jul 2020 06:21:20 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E228C6A04F;
+ Wed, 22 Jul 2020 06:21:19 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2FA306A04D;
+ Wed, 22 Jul 2020 06:21:19 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.85.82.72])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 22 Jul 2020 06:21:19 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id A1BEA2E48D7; Wed, 22 Jul 2020 11:51:14 +0530 (IST)
+Date: Wed, 22 Jul 2020 11:51:14 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 05/10] powerpc/smp: Dont assume l2-cache to be
+ superset of sibling
+Message-ID: <20200722062114.GD31038@in.ibm.com>
+References: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
+ <20200721113814.32284-6-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87ft9lrr55.fsf@mpe.ellerman.id.au>
+In-Reply-To: <20200721113814.32284-6-srikar@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-22_02:2020-07-22,
  2020-07-22 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=999 clxscore=1015 mlxscore=0 impostorscore=0 adultscore=0
- lowpriorityscore=0 spamscore=0 phishscore=0 bulkscore=0 suspectscore=1
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007220040
+ spamscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 priorityscore=1501 adultscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007220040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,168 +95,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
+Reply-To: ego@linux.vnet.ibm.com
 Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- david@gibson.dropbear.id.au
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
+ Michael Ellerman <michaele@au1.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jordan Niethe <jniethe5@gmail.com>, Anton Blanchard <anton@au1.ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Nick Piggin <npiggin@au1.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 21, 2020 at 10:25:58PM +1000, Michael Ellerman wrote:
-> Bharata B Rao <bharata@linux.ibm.com> writes:
-> > On Tue, Jul 21, 2020 at 11:45:20AM +1000, Michael Ellerman wrote:
-> >> Nathan Lynch <nathanl@linux.ibm.com> writes:
-> >> > "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> >> >> This is the next version of the fixes for memory unplug on radix.
-> >> >> The issues and the fix are described in the actual patches.
-> >> >
-> >> > I guess this isn't actually causing problems at runtime right now, but I
-> >> > notice calls to resize_hpt_for_hotplug() from arch_add_memory() and
-> >> > arch_remove_memory(), which ought to be mmu-agnostic:
-> >> >
-> >> > int __ref arch_add_memory(int nid, u64 start, u64 size,
-> >> > 			  struct mhp_params *params)
-> >> > {
-> >> > 	unsigned long start_pfn = start >> PAGE_SHIFT;
-> >> > 	unsigned long nr_pages = size >> PAGE_SHIFT;
-> >> > 	int rc;
-> >> >
-> >> > 	resize_hpt_for_hotplug(memblock_phys_mem_size());
-> >> >
-> >> > 	start = (unsigned long)__va(start);
-> >> > 	rc = create_section_mapping(start, start + size, nid,
-> >> > 				    params->pgprot);
-> >> > ...
-> >> 
-> >> Hmm well spotted.
-> >> 
-> >> That does return early if the ops are not setup:
-> >> 
-> >> int resize_hpt_for_hotplug(unsigned long new_mem_size)
-> >> {
-> >> 	unsigned target_hpt_shift;
-> >> 
-> >> 	if (!mmu_hash_ops.resize_hpt)
-> >> 		return 0;
-> >> 
-> >> 
-> >> And:
-> >> 
-> >> void __init hpte_init_pseries(void)
-> >> {
-> >> 	...
-> >> 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
-> >> 		mmu_hash_ops.resize_hpt = pseries_lpar_resize_hpt;
-> >> 
-> >> And that comes in via ibm,hypertas-functions:
-> >> 
-> >> 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
-> >> 
-> >> 
-> >> But firmware is not necessarily going to add/remove that call based on
-> >> whether we're using hash/radix.
-> >
-> > Correct but hpte_init_pseries() will not be called for radix guests.
-> 
-> Yeah, duh. You'd think the function name would have been a sufficient
-> clue for me :)
-> 
-> >> So I think a follow-up patch is needed to make this more robust.
-> >> 
-> >> Aneesh/Bharata what platform did you test this series on? I'm curious
-> >> how this didn't break.
-> >
-> > I have tested memory hotplug/unplug for radix guest on zz platform and
-> > sanity-tested this for hash guest on P8.
-> >
-> > As noted above, mmu_hash_ops.resize_hpt will not be set for radix
-> > guest and hence we won't see any breakage.
-> 
-> OK.
-> 
-> That's probably fine as it is then. Or maybe just a comment in
-> resize_hpt_for_hotplug() pointing out that resize_hpt will be NULL if
-> we're using radix.
+Hi Srikar,
 
-Or we could move these calls to hpt-only routines like below?
+On Tue, Jul 21, 2020 at 05:08:09PM +0530, Srikar Dronamraju wrote:
+> Current code assumes that cpumask of cpus sharing a l2-cache mask will
+> always be a superset of cpu_sibling_mask.
+> 
+> Lets stop that assumption. cpu_l2_cache_mask is a superset of
+> cpu_sibling_mask if and only if shared_caches is set.
+> 
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: LKML <linux-kernel@vger.kernel.org>
+> Cc: Michael Ellerman <michaele@au1.ibm.com>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: Nick Piggin <npiggin@au1.ibm.com>
+> Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Michael Neuling <mikey@linux.ibm.com>
+> Cc: Anton Blanchard <anton@au1.ibm.com>
+> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+> Cc: Jordan Niethe <jniethe5@gmail.com>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> ---
+> Changelog v1 -> v2:
+> powerpc/smp: Dont assume l2-cache to be superset of sibling
+> 	Set cpumask after verifying l2-cache. (Gautham)
+> 
+>  arch/powerpc/kernel/smp.c | 28 +++++++++++++++-------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 72f16dc0cb26..57468877499a 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -1196,6 +1196,7 @@ static bool update_mask_by_l2(int cpu, struct cpumask *(*mask_fn)(int))
+>  	if (!l2_cache)
+>  		return false;
+> 
+> +	cpumask_set_cpu(cpu, mask_fn(cpu));
 
-David - Do you remember if there was any particular reason to have
-these two hpt-resize calls within powerpc-generic memory hotplug code?
 
-diff --git a/arch/powerpc/include/asm/sparsemem.h b/arch/powerpc/include/asm/sparsemem.h
-index c89b32443cff..1e6fa371cc38 100644
---- a/arch/powerpc/include/asm/sparsemem.h
-+++ b/arch/powerpc/include/asm/sparsemem.h
-@@ -17,12 +17,6 @@ extern int create_section_mapping(unsigned long start, unsigned long end,
- 				  int nid, pgprot_t prot);
- extern int remove_section_mapping(unsigned long start, unsigned long end);
- 
--#ifdef CONFIG_PPC_BOOK3S_64
--extern int resize_hpt_for_hotplug(unsigned long new_mem_size);
--#else
--static inline int resize_hpt_for_hotplug(unsigned long new_mem_size) { return 0; }
--#endif
--
- #ifdef CONFIG_NUMA
- extern int hot_add_scn_to_nid(unsigned long scn_addr);
- #else
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index eec6f4e5e481..5daf53ec7600 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -787,7 +787,7 @@ static unsigned long __init htab_get_table_size(void)
- }
- 
- #ifdef CONFIG_MEMORY_HOTPLUG
--int resize_hpt_for_hotplug(unsigned long new_mem_size)
-+static int resize_hpt_for_hotplug(unsigned long new_mem_size)
- {
- 	unsigned target_hpt_shift;
- 
-@@ -821,6 +821,8 @@ int hash__create_section_mapping(unsigned long start, unsigned long end,
- 		return -1;
- 	}
- 
-+	resize_hpt_for_hotplug(memblock_phys_mem_size());
-+
- 	rc = htab_bolt_mapping(start, end, __pa(start),
- 			       pgprot_val(prot), mmu_linear_psize,
- 			       mmu_kernel_ssize);
-@@ -838,6 +840,10 @@ int hash__remove_section_mapping(unsigned long start, unsigned long end)
- 	int rc = htab_remove_mapping(start, end, mmu_linear_psize,
- 				     mmu_kernel_ssize);
- 	WARN_ON(rc < 0);
-+
-+	if (resize_hpt_for_hotplug(memblock_phys_mem_size()) == -ENOSPC)
-+		pr_warn("Hash collision while resizing HPT\n");
-+
- 	return rc;
- }
- #endif /* CONFIG_MEMORY_HOTPLUG */
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index c2c11eb8dcfc..9dafc636588f 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -127,8 +127,6 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
- 	int rc;
- 
--	resize_hpt_for_hotplug(memblock_phys_mem_size());
--
- 	start = (unsigned long)__va(start);
- 	rc = create_section_mapping(start, start + size, nid,
- 				    params->pgprot);
-@@ -161,9 +159,6 @@ void __ref arch_remove_memory(int nid, u64 start, u64 size,
- 	 * hit that section of memory
- 	 */
- 	vm_unmap_aliases();
--
--	if (resize_hpt_for_hotplug(memblock_phys_mem_size()) == -ENOSPC)
--		pr_warn("Hash collision while resizing HPT\n");
- }
- #endif
- 
--- 
-2.26.2
+Ok, we need to do this because "cpu" is not yet set in the
+cpu_online_mask. Prior to your patch the "cpu" was getting set in
+cpu_l2_cache_map(cpu) as a side-effect of the code that is removed in
+the patch.
 
+
+>  	for_each_cpu(i, cpu_online_mask) {
+>  		/*
+>  		 * when updating the marks the current CPU has not been marked
+> @@ -1278,29 +1279,30 @@ static void add_cpu_to_masks(int cpu)
+>  	 * add it to it's own thread sibling mask.
+>  	 */
+>  	cpumask_set_cpu(cpu, cpu_sibling_mask(cpu));
+> +	cpumask_set_cpu(cpu, cpu_core_mask(cpu));
+> 
+>  	for (i = first_thread; i < first_thread + threads_per_core; i++)
+>  		if (cpu_online(i))
+>  			set_cpus_related(i, cpu, cpu_sibling_mask);
+> 
+>  	add_cpu_to_smallcore_masks(cpu);
+> -	/*
+> -	 * Copy the thread sibling mask into the cache sibling mask
+> -	 * and mark any CPUs that share an L2 with this CPU.
+> -	 */
+> -	for_each_cpu(i, cpu_sibling_mask(cpu))
+> -		set_cpus_related(cpu, i, cpu_l2_cache_mask);
+>  	update_mask_by_l2(cpu, cpu_l2_cache_mask);
+> 
+> -	/*
+> -	 * Copy the cache sibling mask into core sibling mask and mark
+> -	 * any CPUs on the same chip as this CPU.
+> -	 */
+> -	for_each_cpu(i, cpu_l2_cache_mask(cpu))
+> -		set_cpus_related(cpu, i, cpu_core_mask);
+> +	if (pkg_id == -1) {
+
+I suppose this "if" condition is an optimization, since if pkg_id != -1,
+we anyway set these CPUs in the cpu_core_mask below.
+
+However...
+
+> +		struct cpumask *(*mask)(int) = cpu_sibling_mask;
+> +
+> +		/*
+> +		 * Copy the sibling mask into core sibling mask and
+> +		 * mark any CPUs on the same chip as this CPU.
+> +		 */
+> +		if (shared_caches)
+> +			mask = cpu_l2_cache_mask;
+> +
+> +		for_each_cpu(i, mask(cpu))
+> +			set_cpus_related(cpu, i, cpu_core_mask);
+> 
+> -	if (pkg_id == -1)
+>  		return;
+> +	}
+
+
+... since "cpu" is not yet set in the cpu_online_mask, do we not miss setting
+"cpu" in the cpu_core_mask(cpu) in the for-loop below ?
+
+
+> 
+>  	for_each_cpu(i, cpu_online_mask)
+>  		if (get_physical_package_id(i) == pkg_id)
+
+
+Before this patch it was unconditionally getting set in
+cpu_core_mask(cpu) because of the fact that it was set in
+cpu_l2_cache_mask(cpu) and we were unconditionally setting all the
+CPUs in cpu_l2_cache_mask(cpu) in cpu_core_mask(cpu).
+
+What am I missing ?
+
+> -- 
+> 2.17.1
+>
+
+--
+Thanks and Regards
+gautham.
