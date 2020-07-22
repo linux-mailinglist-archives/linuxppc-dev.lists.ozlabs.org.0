@@ -2,67 +2,156 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E19229559
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 11:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EED22957E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 11:55:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBVwc339TzDqPb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 19:46:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBW6Z1vT7zDqPR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 19:55:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.187; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=A1qs1pXz; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBVsr6QTZzDqJY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 19:44:15 +1000 (AEST)
-Received: from mail-qt1-f182.google.com ([209.85.160.182]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MryGj-1kdLfL2Usv-00nvEV for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul
- 2020 11:44:10 +0200
-Received: by mail-qt1-f182.google.com with SMTP id 6so1370719qtt.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 02:44:08 -0700 (PDT)
-X-Gm-Message-State: AOAM532Xp5sXwkuzD2OxHXWWF0ikMKzd5LsYBi4WtUf4JsemG/0U94qJ
- tKiKMgKrIa2yZc9K1lUN3yHcnkJmLEanIDgDwDk=
-X-Google-Smtp-Source: ABdhPJxwkYMqqlMOkCtiDhkAnK0U1Z3J/eM92Y3pA2ZYfCjSxZxJC559Vt8UZd0LKulfbnhn81unz3J72RGNNuPEagQ=
-X-Received: by 2002:ac8:7587:: with SMTP id s7mr33522432qtq.304.1595411047084; 
- Wed, 22 Jul 2020 02:44:07 -0700 (PDT)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBW4711bczDqy1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 19:53:09 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id d1so687846plr.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 02:53:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Pzv09xAU8rYRrAXVpG2yy41kpJJ5X5maBWsF/5reV7Y=;
+ b=A1qs1pXz61Gikk0XmDeL7bchf5/x0H/KT+IaBR5Cj+adXNeLzNrLfL3Wh86McUP7R2
+ jrJ9fcIDLTJL3WWAQ+D4mJzbYEB/aqALgJot6kp0aHwbKt85QWr2b9HtezBeDC+O8Zmq
+ duoa9XLlveXxnv52jqXqIOqAaHV1FyIA/wLeqranf4O+aeH9EqZHLb9u9yW1VOEnYPa9
+ m71gnjjkvchjqrEKP7jXOnQAfLwMFLit0dBlPgMumJC/Vgp+CIx2Fixs7nWoxQK5gRBr
+ +kMc6gb/6TbOe+fyl/nMQHj06Ozdr8yYf0E/c3OX03Yxz4naVJOQ+ikUfEx2SZS1XYmO
+ BZMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=Pzv09xAU8rYRrAXVpG2yy41kpJJ5X5maBWsF/5reV7Y=;
+ b=EEBY/KXv/zki2oQ0SnoInTRnI2IfNDiQsgVUo7RGduBCoFRDKGoqA1Y97/uTeeXKTa
+ e+UoN/0wPS8FQNbTox2xabnHYu5Vl53kM44oQiVJbHLxqM0RFeQmUnT4YpY1Yh1ZhUIk
+ zj78nMdJIzw8ozLjKqK+ejkFMHno0NnpcC6Utisj0o6vNWXpvdS/A77kxEujHU+pnBew
+ nkXOhGul7eC/hcJi/LhjQHbdlQIsfQdRc0AYlkA8zel9WNRWkUp52zrPbWiAT1YwKmca
+ PSWQ7dumFt0KuZf6LVOh/RxriwBnMog/BdfZGZIChaZBGIdzs/5K9BGFInc6jWE6eg8P
+ 9S2Q==
+X-Gm-Message-State: AOAM532wnmesm/LNEo1STTw3oL0dzhwzeJN/CcjquXYeEz4sW+03iAr0
+ DkoYkgufQd3wTKtesbYxvLVNO5Oyl0bY6Q==
+X-Google-Smtp-Source: ABdhPJwNBi54cBcZvyuftjRD1DQOZsS+ifQO8izOQNYAmGu5j6EpPdQMiXfV64WvYaLyuPSyrYBElA==
+X-Received: by 2002:a17:90a:ea05:: with SMTP id
+ w5mr9165500pjy.175.1595411585545; 
+ Wed, 22 Jul 2020 02:53:05 -0700 (PDT)
+Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
+ [124.171.83.152])
+ by smtp.gmail.com with ESMTPSA id b10sm22215979pft.59.2020.07.22.02.53.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 22 Jul 2020 02:53:04 -0700 (PDT)
+Subject: Re: [PATCH 05/15] powerpc/powernv/sriov: Move SR-IOV into a seperate
+ file
+To: Oliver O'Halloran <oohall@gmail.com>
+References: <20200710052340.737567-1-oohall@gmail.com>
+ <20200710052340.737567-6-oohall@gmail.com>
+ <42897409-5788-dfdb-f2dc-76e99a81b662@ozlabs.ru>
+ <CAOSf1CF0jv_cq5xgVz+7fzf155MjHT72p+VN1EY6HjjW1Nza-w@mail.gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <226df8bd-1153-cddf-920c-e642887a7a3e@ozlabs.ru>
+Date: Wed, 22 Jul 2020 19:53:01 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <7cb2285e-68ba-6827-5e61-e33a4b65ac03@ghiti.fr>
- <mhng-08bff01a-ca15-4bbc-8454-2ca3e823fef8@palmerdabbelt-glaptop1>
-In-Reply-To: <mhng-08bff01a-ca15-4bbc-8454-2ca3e823fef8@palmerdabbelt-glaptop1>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 22 Jul 2020 11:43:50 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a34sT2bQbkZUjaxaShzCkn+s35pXxS0UNhqGFu+t2hZYw@mail.gmail.com>
-Message-ID: <CAK8P3a34sT2bQbkZUjaxaShzCkn+s35pXxS0UNhqGFu+t2hZYw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
-To: Palmer Dabbelt <palmer@dabbelt.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:JmWDH8h4DStRhFnReUflbxH9RPCKi+pl79JqJzZHWfZwBA+pPLj
- PkcmKf4XKcY62spg3VVP2FW9AalAUhKUygmkcVTWndpigKbvgkcLzoZ4GdJvNEpc1AXIkMC
- uNBZdzAe8YHTCWIVJSt8ziIYYFZcKbov68ruVPeD+kXwc/ZB4blktIe+embBKWDvo9RRsBc
- cvMm7Qi0EdOsI6Ritu/1Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:EGyg96EnxV8=:gI4DhMS1xZPcFZNMDZOd2B
- 1F1UglkTsY+eqrZYq7nfI6T/GKAWgrb45i27u3w+PNeswSKPvHQNCAhUGB0+PL6AHvD2IRUin
- nDlYQeSNbUmpvUith8p6xHqwhgq6gCNysDsQbia2jnFBgCJMpGN8YrS/4IgumHTS54A+zpPdK
- LOhUVKfcVIAVPiZ07errkVIdX2ryu/LVdLsso5MsEFC2lt1Q7eyTPv5rDfmRtXLwkSphxFv+C
- B2K6MVAJpja0etcNdIS6qObuGoMMNuF0LFeAQOyk5TJWRTGWbsPiblALWswvoiRGB+L7e68nf
- uCQYWyWkfNpyR8jlBbGkt92UKxJV2qCLgzKFmdyopj/BqWbtzE3J3B5Km+xFhbCYO/NiLbMb5
- 9eBC92eFOpjO1qOGGqMJQLcpHzRM57WWW/a0gD6BXy2l8hPZ1J5eFa/zNGdTkkNdwn8ShAHaL
- bWX1oHyjqNZJmTBA7rv+yyIE3ywSL8YuSg73IYLSFPmt/tUStRC+O3J6+nQyXFLrunV5mCwIf
- 1OHbhcSbXzH27KwfccsrM+sXV88Ttes0M6oV0zkbQ0tjNAbsgqYuUo+RipWQWakSbfVOSwY8n
- zHEAawAZncI86iRT9j1jrbS53dvUAF+aIsii0CZJSNQM5puHqYZe1wqkh2r22Q8f/brQ8xcfX
- TQQwDGJf6iGsLQf89y0bDU+INlp6H/TGL9pXhmHbJwoW4pAE2Y5j5nF0/vjiVjHkstmETim7e
- B83faNnsfckgHwKCUgsU96Eamj09w52bDAje+eF1OcO8q+b6a7LZuCSmEQWLzMwy2iEjo2fZ6
- Txu6XqZR2toTBMknX8iflFUKXH41l2VGEC6NHXsEZQGfDVSeFec0hM3qCTZafKbrX3OXaKhix
- WrKqWrZ7BiOp9NeqRBOb0w/mtEQGoCVy1SB21W96du6znP3ibw+JTQ0a9V9IwZyZRuvLLYaId
- yTvzKPzRLdwNOL+McTc0xHEtk1WVRIpYKlI0DeKvmMbPKog23ObgJ
+In-Reply-To: <CAOSf1CF0jv_cq5xgVz+7fzf155MjHT72p+VN1EY6HjjW1Nza-w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,60 +163,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Atish Patra <Atish.Patra@wdc.com>, Anup Patel <Anup.Patel@wdc.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Linux-MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, Zong Li <zong.li@sifive.com>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 21, 2020 at 9:06 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
->
-> On Tue, 21 Jul 2020 11:36:10 PDT (-0700), alex@ghiti.fr wrote:
-> > Let's try to make progress here: I add linux-mm in CC to get feedback on
-> > this patch as it blocks sv48 support too.
->
-> Sorry for being slow here.  I haven't replied because I hadn't really fleshed
-> out the design yet, but just so everyone's on the same page my problems with
-> this are:
->
-> * We waste vmalloc space on 32-bit systems, where there isn't a lot of it.
 
-There is actually an ongoing work to make 32-bit Arm kernels move
-vmlinux into the vmalloc space, as part of the move to avoid highmem.
 
-Overall, a 32-bit system would waste about 0.1% of its virtual address space
-by having the kernel be located in both the linear map and the vmalloc area.
-It's not zero, but not that bad either. With the typical split of 3072 MB user,
-768MB linear and 256MB vmalloc, it's also around 1.5% of the available
-vmalloc area (assuming a 4MB vmlinux in a typical 32-bit kernel), but the
-boundaries can be changed arbitrarily if needed.
+On 22/07/2020 15:01, Oliver O'Halloran wrote:
+> On Tue, Jul 14, 2020 at 7:16 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>>
+>> On 10/07/2020 15:23, Oliver O'Halloran wrote:
+>>> +     align = pci_iov_resource_size(pdev, resno);
+>>> +
+>>> +     /*
+>>> +      * iov can be null if we have an SR-IOV device with IOV BAR that can't
+>>> +      * be placed in the m64 space (i.e. The BAR is 32bit or non-prefetch).
+>>> +      * In that case we don't allow VFs to be enabled so just return the
+>>> +      * default alignment.
+>>> +      */
+>>> +     if (!iov)
+>>> +             return align;
+>>
+>>
+>> This is the new chunk. What would happen before? Non-prefetch BAR would
+>> still go to m64 space?
+> 
+> I don't think there's any real change. Currently if the setup in
+> pnv_pci_ioda_fixup_iov_resources() fails then pdn->vfs_expanded will
+> be zero. The !iov check here fills the same role, but it's more
+> explicit. vfs_expanded has some other behaviour too so we can't get
+> rid of it entirely (yet).
 
-The eventual goal is to have a split of 3840MB for either user or linear map
-plus and 256MB for vmalloc, including the kernel. Switching between linear
-and user has a noticeable runtime overhead, but it relaxes both the limits
-for user memory and lowmem, and it provides a somewhat stronger
-address space isolation.
+The check is fine, you have to have one as @iov can be NULL (unlike
+pci_dn). The comment is what bothered me. It would make more sense
+somewhere in pnv_pci_ioda_fixup_iov_resources() near
+"dev_warn(&pdev->dev, "Don't support SR-IOV with"" as now it suggests
+there is one reason for the failed iov configuration only while there
+are two reasons.
 
-Another potential idea would be to completely randomize the physical
-addresses underneath the kernel by using a random permutation of the
-pages in the kernel image. This adds even more overhead (virt_to_phys
-may need to call vmalloc_to_page or similar) and may cause problems
-with DMA into kernel .data across page boundaries,
 
-> * Sort out how to maintain a linear map as the canonical hole moves around
->   between the VA widths without adding a bunch of overhead to the virt2phys and
->   friends.  This is probably going to be the trickiest part, but I think if we
->   just change the page table code to essentially lie about VAs when an sv39
->   system runs an sv48+sv39 kernel we could make it work -- there'd be some
->   logical complexity involved, but it would remain fast.
-
-I assume you can't use the trick that x86 has where all kernel addresses
-are at the top of the 64-bit address space and user addresses are at the
-bottom, regardless of the size of the page tables?
-
-      Arnd
+-- 
+Alexey
