@@ -1,45 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBD7228DF9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 04:25:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC44228E30
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 04:27:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBK7T092jzDqDf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 12:25:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBK9g69pkzDqmq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 12:27:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=76.164.61.194; helo=kernel.crashing.org;
- envelope-from=benh@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from kernel.crashing.org (kernel.crashing.org [76.164.61.194])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBK5T3T3FzDqS0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 12:23:41 +1000 (AEST)
-Received: from localhost (gate.crashing.org [63.228.1.57])
- (authenticated bits=0)
- by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 06M2N9le018584
- (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Tue, 21 Jul 2020 21:23:17 -0500
-Message-ID: <882f86756e78365c62f9ec2c57ef19744e0a3737.camel@kernel.crashing.org>
-Subject: Re: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting
- on MMIO access, in sprg0 register
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, Ram Pai <linuxram@us.ibm.com>,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 22 Jul 2020 12:23:03 +1000
-In-Reply-To: <875zags3qp.fsf@mpe.ellerman.id.au>
-References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
- <875zags3qp.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBK6L3dxNzDqgL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 12:24:26 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ExBlac24; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4BBK6K6M8Jz9sSn; Wed, 22 Jul 2020 12:24:25 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4BBK6K3yPgz9sQt; Wed, 22 Jul 2020 12:24:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1595384665;
+ bh=tc6VBfRXE2dHQ5KHzbE4O46Pohc3DnMzUUSiEW1yezE=;
+ h=From:To:Subject:Date:From;
+ b=ExBlac2479OOZomaLSKsjELAzyDXFIXlWHVkYC89VyGUN8fiW/hfCBm1rvAWAxU9I
+ /1W7OvnXJlGHOzHbYpQnGXvG+MieJW6APS4iwx/0fA/MrRK5flvx6XUlzUpY12Pqbp
+ l2rgyS7vXp6aKo2i/WkPLYvZti3Yp5VyNrmgP8YqX9KRkpWPsZx0TKsdcXN5XV936O
+ rxWiM3IIBeFLk3ucSa2PSlNd9FDv+dvyqx1zBR9mfwfRuRBpGD83RdqQEdcjhv+Rwq
+ IdPAmv3KksGyZr3GuKs0dVNo83jz6SHz/M86uQqexzsOOXp5+NL4DQbc9l0buXD6ud
+ FeOY6hz09XgvQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/40x: Fix assembler warning about r0
+Date: Wed, 22 Jul 2020 12:24:22 +1000
+Message-Id: <20200722022422.825197-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,47 +55,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sukadev@linux.vnet.ibm.com, aik@ozlabs.ru, bharata@linux.ibm.com,
- sathnaga@linux.vnet.ibm.com, ldufour@linux.ibm.com, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-07-22 at 12:06 +1000, Michael Ellerman wrote:
-> Ram Pai <linuxram@us.ibm.com> writes:
-> > An instruction accessing a mmio address, generates a HDSI fault.  This fault is
-> > appropriately handled by the Hypervisor.  However in the case of secureVMs, the
-> > fault is delivered to the ultravisor.
-> > 
-> > Unfortunately the Ultravisor has no correct-way to fetch the faulting
-> > instruction. The PEF architecture does not allow Ultravisor to enable MMU
-> > translation. Walking the two level page table to read the instruction can race
-> > with other vcpus modifying the SVM's process scoped page table.
-> 
-> You're trying to read the guest's kernel text IIUC, that mapping should
-> be stable. Possibly permissions on it could change over time, but the
-> virtual -> real mapping should not.
+The assembler says:
+  arch/powerpc/kernel/head_40x.S:623: Warning: invalid register expression
 
-This will of course no longer work if userspace tries to access MMIO
-but as long as you are ok limiting MMIO usage to the kernel, that's one
-way.
+It's objecting to the use of r0 as the RA argument. That's because
+when RA = 0 the literal value 0 is used, rather than the content of
+r0, making the use of r0 in the source potentially confusing.
 
-iirc MMIO emulation in KVM on powerpc already has that race because of
-HW TLB inval broadcast and it hasn't hurt anybody ... so far.
+Fix it to use a literal 0, the generated code is identical.
 
-> > This problem can be correctly solved with some help from the kernel.
-> > 
-> > Capture the faulting instruction in SPRG0 register, before executing the
-> > faulting instruction. This enables the ultravisor to easily procure the
-> > faulting instruction and emulate it.
-> 
-> This is not something I'm going to merge. Sorry.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/head_40x.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Another approach is to have the guest explicitly switch to using UV
-calls for MMIO.
-
-Cheers,
-Ben.
-
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index 926bfa73586a..5b282d9965a5 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -620,7 +620,7 @@ _ENTRY(saved_ksp_limit)
+ 	ori	r6, r6, swapper_pg_dir@l
+ 	lis	r5, abatron_pteptrs@h
+ 	ori	r5, r5, abatron_pteptrs@l
+-	stw	r5, 0xf0(r0)	/* Must match your Abatron config file */
++	stw	r5, 0xf0(0)	/* Must match your Abatron config file */
+ 	tophys(r5,r5)
+ 	stw	r6, 0(r5)
+ 
+-- 
+2.25.1
 
