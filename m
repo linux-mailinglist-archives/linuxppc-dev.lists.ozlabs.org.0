@@ -1,70 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69142228DCB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 03:55:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD799228DDB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 04:07:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBJTF4QByzDqf5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 11:55:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBJky14tkzDqnB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 12:07:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=kernelfans@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=W0zV9K1q; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBJPZ5JNpzDqbf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 11:52:34 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id m9so369718pfh.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 18:52:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=iK8P7ciTYQiTHZiRkUZ2UDN91Jp0neAG81UxDF/u9mI=;
- b=W0zV9K1qzDquBHyhEIEm4RZIVaJqQzcDaHp5zbiB9VALg+kbXboKpPP80B/ofPirA8
- MUnjA/JLggYFTt9LOc3GhCwvnxNsMf065ymFKzgR5WmcRtuCgFps9mmZgYt26Q1/xQLd
- vkKgx2SbRpCz/ifu7G3qPYvRwleDvhSAhv84VBSNgWjbhkN4RX5RsO7LJSX1/6+vKGvr
- +/rE0/PrIeyIUsVDSLsDpcxUA+sS5OOJKC1Bvi9FZs32EgNvZrLyoTYO80gpEQoXkJYT
- EaDgB4GnQAC2ndaJ5fBIIn+Tod48qQRLIrzoI5y4NuQlitPMFeP7cjCBQaZDUaiP2mYy
- Q4PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=iK8P7ciTYQiTHZiRkUZ2UDN91Jp0neAG81UxDF/u9mI=;
- b=B8mic32517L+UmOLDdh2q/gw9C8SY/4/fpXza5KyiZe79uq88zz0/wIoTz6X4JXnLQ
- S8qDn3dS+OI8YMTQQhSRYivAe24b5ix6Y/4wV95Z6SWZkkUzcGUfEb/ho0b7UkW0R5RY
- vv51SIsUhXfzlOChkL70GExI1i8ec23VtxfbD7K9W5lyOzL/cbALyAlotYPKamGe8fov
- YC9BoLb/+QQoXca/a03EjaK7ZT3nbQ6hHjIILeKuMYOK6wAzn37P/jNoo71wz0piqMS7
- pRPk0owvU2jmay3ce0E5U0iyZVzDriacTtichX5Wg2fO21LU3qDvQY07w02MM6mWmiYl
- gV+A==
-X-Gm-Message-State: AOAM530bdNkXi24huDQvNFjVlKcgxCX5nQikdlLBQeSqe9Ixr/Tby+NV
- DeW+EGBV+tNwCJRNQnL/BQFpSKg=
-X-Google-Smtp-Source: ABdhPJyV51XshsdpqbndJMHojB3nvp2XoQBkiTsuagQ4pHnI3wym3aO3MmcAy4VHpQ+CEf+iUXyJ+w==
-X-Received: by 2002:a63:e80e:: with SMTP id s14mr25496482pgh.32.1595382752073; 
- Tue, 21 Jul 2020 18:52:32 -0700 (PDT)
-Received: from mylaptop.redhat.com ([209.132.188.80])
- by smtp.gmail.com with ESMTPSA id v22sm21533746pfe.48.2020.07.21.18.52.29
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 21 Jul 2020 18:52:31 -0700 (PDT)
-From: Pingfan Liu <kernelfans@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCHv3 2/2] powerpc/pseries: update device tree before ejecting
- hotplug uevents
-Date: Wed, 22 Jul 2020 09:52:10 +0800
-Message-Id: <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
-X-Mailer: git-send-email 2.7.5
-In-Reply-To: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
-References: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBJjG0hnRzDqf4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 12:06:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=SSNY26po; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BBJjF53Wfz9sPB;
+ Wed, 22 Jul 2020 12:06:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1595383569;
+ bh=wqEt1+5/uXnORnuuS8zLv9jBm83d6ZbQUZER04RErfY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=SSNY26poqYoLtT/r6QhXifDRj0sDPXzHqgJDJG3jSR0fO6CznoOfccDnD9VpYmSUR
+ bBcd+IExksIk+zAa9VEljba4kNlu5O5NTF+fFc5oTXiIpHVQjjg3yrWhWvg1R6/5JH
+ 4EjFbiNvNXUyd0OtxeyZHRAiyMb6SP7vy9zVI28XR8ff6ouSsqeUoTbXsdE78YPn04
+ VjHBHRsy+WXkvV+PEleDjSccf6lgukPjYbyX9Rlw6ppyTECe6ViHOSbmb1ZoMQ94vH
+ VwRlMIytDaqsD5ZKpuRDDT/yZ+0XpSg2ob4EMy5gSrsS3ETfnSWmuybe3477C27SuJ
+ iPDsKbn8bxk8A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ram Pai <linuxram@us.ibm.com>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
+ MMIO access, in sprg0 register
+In-Reply-To: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+Date: Wed, 22 Jul 2020 12:06:06 +1000
+Message-ID: <875zags3qp.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,103 +59,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, kexec@lists.infradead.org,
- Hari Bathini <hbathini@linux.ibm.com>, Pingfan Liu <kernelfans@gmail.com>
+Cc: sukadev@linux.vnet.ibm.com, aik@ozlabs.ru, linuxram@us.ibm.com,
+ bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, ldufour@linux.ibm.com,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A bug is observed on pseries by taking the following steps on rhel:
--1. drmgr -c mem -r -q 5
--2. echo c > /proc/sysrq-trigger
+Ram Pai <linuxram@us.ibm.com> writes:
+> An instruction accessing a mmio address, generates a HDSI fault.  This fault is
+> appropriately handled by the Hypervisor.  However in the case of secureVMs, the
+> fault is delivered to the ultravisor.
+>
+> Unfortunately the Ultravisor has no correct-way to fetch the faulting
+> instruction. The PEF architecture does not allow Ultravisor to enable MMU
+> translation. Walking the two level page table to read the instruction can race
+> with other vcpus modifying the SVM's process scoped page table.
 
-And then, the failure looks like:
-kdump: saving to /sysroot//var/crash/127.0.0.1-2020-01-16-02:06:14/
-kdump: saving vmcore-dmesg.txt
-kdump: saving vmcore-dmesg.txt complete
-kdump: saving vmcore
- Checking for memory holes                         : [  0.0 %] /                   Checking for memory holes                         : [100.0 %] |                   Excluding unnecessary pages                       : [100.0 %] \                   Copying data                                      : [  0.3 %] -          eta: 38s[   44.337636] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
-[   44.337663] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
-[   44.337677] hash-mmu: mm: Hashing failure ! EA=0x7fffba400000 access=0x8000000000000004 current=makedumpfile
-[   44.337692] hash-mmu:     trap=0x300 vsid=0x13a109c ssize=1 base psize=2 psize 2 pte=0xc000000050000504
-[   44.337708] makedumpfile[469]: unhandled signal 7 at 00007fffba400000 nip 00007fffbbc4d7fc lr 000000011356ca3c code 2
-[   44.338548] Core dump to |/bin/false pipe failed
-/lib/kdump-lib-initramfs.sh: line 98:   469 Bus error               $CORE_COLLECTOR /proc/vmcore $_mp/$KDUMP_PATH/$HOST_IP-$DATEDIR/vmcore-incomplete
-kdump: saving vmcore failed
+You're trying to read the guest's kernel text IIUC, that mapping should
+be stable. Possibly permissions on it could change over time, but the
+virtual -> real mapping should not.
 
-* Root cause *
-  After analyzing, it turns out that in the current implementation,
-when hot-removing lmb, the KOBJ_REMOVE event ejects before the dt updating as
-the code __remove_memory() comes before drmem_update_dt().
-So in kdump kernel, when read_from_oldmem() resorts to
-pSeries_lpar_hpte_insert() to install hpte, but fails with -2 due to
-non-exist pfn. And finally, low_hash_fault() raise SIGBUS to process, as it
-can be observed "Bus error"
+> This problem can be correctly solved with some help from the kernel.
+>
+> Capture the faulting instruction in SPRG0 register, before executing the
+> faulting instruction. This enables the ultravisor to easily procure the
+> faulting instruction and emulate it.
 
-From a viewpoint of listener and publisher, the publisher notifies the
-listener before data is ready.  This introduces a problem where udev
-launches kexec-tools (due to KOBJ_REMOVE) and loads a stale dt before
-updating. And in capture kernel, makedumpfile will access the memory based
-on the stale dt info, and hit a SIGBUS error due to an un-existed lmb.
+This is not something I'm going to merge. Sorry.
 
-* Fix *
-  In order to fix this issue, update dt before __remove_memory(), and
-accordingly the same rule in hot-add path.
-
-This will introduce extra dt updating payload for each involved lmb when hotplug.
-But it should be fine since drmem_update_dt() is memory based operation and
-hotplug is not a hot path.
-
-Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: kexec@lists.infradead.org
----
-v2 -> v3: rebase onto ppc next-test branch
----
- arch/powerpc/platforms/pseries/hotplug-memory.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 1a3ac3b..def8cb3f 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -372,6 +372,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
- 	invalidate_lmb_associativity_index(lmb);
- 	lmb_clear_nid(lmb);
- 	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
-+	drmem_update_dt();
- 
- 	__remove_memory(nid, base_addr, block_sz);
- 
-@@ -607,6 +608,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 
- 	lmb_set_nid(lmb);
- 	lmb->flags |= DRCONF_MEM_ASSIGNED;
-+	drmem_update_dt();
- 
- 	block_sz = memory_block_size_bytes();
- 
-@@ -625,6 +627,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 		invalidate_lmb_associativity_index(lmb);
- 		lmb_clear_nid(lmb);
- 		lmb->flags &= ~DRCONF_MEM_ASSIGNED;
-+		drmem_update_dt();
- 
- 		__remove_memory(nid, base_addr, block_sz);
- 	}
-@@ -877,9 +880,6 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
- 		break;
- 	}
- 
--	if (!rc)
--		rc = drmem_update_dt();
--
- 	unlock_device_hotplug();
- 	return rc;
- }
--- 
-2.7.5
-
+cheers
