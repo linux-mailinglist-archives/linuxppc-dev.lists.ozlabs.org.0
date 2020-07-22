@@ -2,70 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9889228FDB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C918D22900D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:48:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBPV20qsDzDqtS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:41:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBPdZ74cqzDqjg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:48:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d42;
- helo=mail-io1-xd42.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=palmer@dabbelt.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=dabbelt.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=YTjMKLPj; dkim-atps=neutral
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com
- [IPv6:2607:f8b0:4864:20::d42])
+ unprotected) header.d=dabbelt-com.20150623.gappssmtp.com
+ header.i=@dabbelt-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=fCuEEXu+; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBPS05BrczDqbD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 15:39:58 +1000 (AEST)
-Received: by mail-io1-xd42.google.com with SMTP id e64so1263349iof.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 22:39:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Dye7u7YIC4RfoCt2uGY/m/EW7dDy2cn7/jqaE/CyBZE=;
- b=YTjMKLPjzrxb9Gbngq22sCAmh34PA2l6wYTGk7M4LDTxfBcQKqHm8n4cmPUbarHsEx
- dC7OeAPxGFeXUF2gbMjwlFmHhVhx+BiyR8Uwvca/sJAD/rIo0BhiUYs1Vi/4P4XreNM0
- po8LMFNrd9uSAKgLIl90L/TBWql9WLputZae0XxyjHtNND4EpSe1BjWCQ69r4sU6B/lx
- R5xQy9IWpDuNVFYLzaYLnx30QzIM/f4q8PrnDlenBdkdvIsmLCEqaCIr2RF23HoeKehv
- CL++Un6fAnkmjFh+9Gq4thrJNew2mX2THCp6MYUY0ZKWIgdHTcRsSSNRao11oTdhipEM
- oZ6g==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBPbl4X6PzDqgL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 15:46:43 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id a24so585256pfc.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 22:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+ h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+ :content-transfer-encoding;
+ bh=c3WKCCywdgvLGCz57S7am54sr0h7w7V/JrEMUHUMU/o=;
+ b=fCuEEXu++BATZZEgu63jyhgE+Y1XNFfh/hfRTuYGDp7tRoc6LbkGOtZmRlJEX0Q4mc
+ 58Wx5DrHLgqWGA15ODfmp4BD+A6kqkaXmwBVAcQy7tZT4nC6LrgGJ3lzv06Ej9jur88k
+ XGQBpKOytzyljGp9JTo/2ytrZBP2jJniHbB1MwjDRZhque2NwdZ0aWGsgryRqU+3DE9U
+ m+vgwzNJSvheMii7MxNhJxPUYaZbP4XIj428wVkVonkWkFnWlNi3Hd/UlX/sByadTgHP
+ sXR0VV6uQ74NOk6fTFxzR7f22jvf+xzhKswTeZHjL411qPbZeON+M2WgzsdrCjh868sb
+ i6BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Dye7u7YIC4RfoCt2uGY/m/EW7dDy2cn7/jqaE/CyBZE=;
- b=YNJmnEaJvrx4Ursn7CdifWe66vw2vNMp4ISYMDUOnUUlbUT/OY1iAu1uVUso/jfjMA
- ias+HzurMMiDYuH07QEhbBbuG8q+Gb4V1EM5DloAB7a2/+Lh2b8kfy9VZD518YQrO33G
- uQDKpF9qM9ZgUva6MdpGRnvT7FGat4APvlIXjjpLO4BUY4yGVHLzPeap4YULFKeyA38l
- pslVm+WlP/eGqE9/GJBwkjF6tXz2rVQyAswJs6Pvyd3BKfPZIIRRKTTX8hr6FbsS8So8
- LeFtj/OZn9jEBn+J/7048p8ZgoolFRjgGrf46VVQ46rNHf0GeYw3vcl8QseV4acAb76z
- 6dXQ==
-X-Gm-Message-State: AOAM530Mi/tGlQ2vKpiRpxkxNukMsSJzCefUY4UOHh/B7s8sbst8j3bX
- jlqh1PuYTJKqIhgmT+Bl7faujh7sgBZmPiMyUgB7no8e
-X-Google-Smtp-Source: ABdhPJwu5bdXZhr0/lQiPzW1XFnuOVwHNq1Gb7gTEVKCx+pxjkAEtYa0fJcGwu7+B4rXB9M5AXPP1CWYVuyXdJouxgE=
-X-Received: by 2002:a6b:c410:: with SMTP id y16mr31235296ioa.75.1595396395046; 
- Tue, 21 Jul 2020 22:39:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-16-oohall@gmail.com>
- <c89dfd04-afc2-4d69-00ab-2e743d5bb844@ozlabs.ru>
- <CAOSf1CHL9YoSohwMWm1YkLbLTqOn-WfBMKERZaPYb_5-UKmsuw@mail.gmail.com>
- <25d7fd88-668a-861e-a93c-3188caeac3cf@ozlabs.ru>
-In-Reply-To: <25d7fd88-668a-861e-a93c-3188caeac3cf@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 22 Jul 2020 15:39:43 +1000
-Message-ID: <CAOSf1CF1_Ga1KDhqLGxTgg+ugj6AfrzXbouZq1MiMa0faHZeeg@mail.gmail.com>
-Subject: Re: [PATCH 15/15] powerpc/powernv/sriov: Make single PE mode a
- per-BAR setting
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+ h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+ :mime-version:content-transfer-encoding;
+ bh=c3WKCCywdgvLGCz57S7am54sr0h7w7V/JrEMUHUMU/o=;
+ b=P6G0IT5yATjRRyhYgrbTbq1bzz9fwB6QmcUtUkaYx2WFGHQKblchzHzHeq+wVLMx6h
+ 7ua9ZFSX/+SwMarNihFOBXMAhQjK3zajkRWLNZ8Zvhv5K4xrP133XKkm3a3QuRgq/Gca
+ 4ReQ48HYgAHLiq1q4/ukK0qnvAh2Pu5xzeFTB1a1bzW3zJ2WnMls2Vo/sVotrShq7b/c
+ QMIM58mQf92zDg1l2Mp6LYyXsZY23oH3axLfHMj/HonnMwpyP3JebKYXDH2JP6OGLs2M
+ UiuHWfh55lJNXf5A0JG2zd+6CCrEd9d84Sq827LrUVn1ZgBhgAm79JUfh2JEDk/HSew2
+ sHRA==
+X-Gm-Message-State: AOAM531JHB0XB/8yWN/6o1dJL5fLu7fmh2MgXkeO+rvRFbNDmSQZklT+
+ vHipNs11lmKJ18pDo/F4TbKoqg==
+X-Google-Smtp-Source: ABdhPJwR06FNegYVsAU8o74hwv373Yq9KlDunC4jItd8mIVMPn3zgJSHBlM3MLtzBDjvCEtSQnV5Fg==
+X-Received: by 2002:a62:7505:: with SMTP id q5mr25490271pfc.262.1595396799507; 
+ Tue, 21 Jul 2020 22:46:39 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net.
+ [76.210.143.223])
+ by smtp.gmail.com with ESMTPSA id r16sm22153983pfh.64.2020.07.21.22.46.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 21 Jul 2020 22:46:38 -0700 (PDT)
+Date: Tue, 21 Jul 2020 22:46:38 -0700 (PDT)
+X-Google-Original-Date: Tue, 21 Jul 2020 22:46:37 PDT (-0700)
+Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
+In-Reply-To: <87sgdkqhjx.fsf@mpe.ellerman.id.au>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: mpe@ellerman.id.au
+Message-ID: <mhng-378c6e4e-9eba-4bfd-89d6-b4d2549ff3a1@palmerdabbelt-glaptop1>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,63 +81,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: aou@eecs.berkeley.edu, alex@ghiti.fr, linux-mm@kvack.org,
+ Anup Patel <Anup.Patel@wdc.com>, linux-kernel@vger.kernel.org,
+ Atish Patra <Atish.Patra@wdc.com>, paulus@samba.org, zong.li@sifive.com,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 15, 2020 at 6:00 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+On Tue, 21 Jul 2020 21:50:42 PDT (-0700), mpe@ellerman.id.au wrote:
+> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
+>> On Tue, 2020-07-21 at 16:48 -0700, Palmer Dabbelt wrote:
+>>> > Why ? Branch distance limits ? You can't use trampolines ?
+>>>
+>>> Nothing fundamental, it's just that we don't have a large code model in the C
+>>> compiler.  As a result all the global symbols are resolved as 32-bit
+>>> PC-relative accesses.  We could fix this with a fast large code model, but then
+>>> the kernel would need to relax global symbol references in modules and we don't
+>>> even do that for the simple code models we have now.  FWIW, some of the
+>>> proposed large code models are essentially just split-PLT/GOT and therefor
+>>> don't require relaxation, but at that point we're essentially PIC until we
+>>> have more that 2GiB of kernel text -- and even then, we keep all the
+>>> performance issues.
+>>
+>> My memory might be out of date but I *think* we do it on powerpc
+>> without going to a large code model, but just having the in-kernel
+>> linker insert trampolines.
 >
-> >>>                *
-> >>> -              * Generally, one M64 BAR maps one IOV BAR. To avoid conflict
-> >>> -              * with other devices, IOV BAR size is expanded to be
-> >>> -              * (total_pe * VF_BAR_size).  When VF_BAR_size is half of M64
-> >>> -              * segment size , the expanded size would equal to half of the
-> >>> -              * whole M64 space size, which will exhaust the M64 Space and
-> >>> -              * limit the system flexibility.  This is a design decision to
-> >>> -              * set the boundary to quarter of the M64 segment size.
-> >>> +              * The 1/4 limit is arbitrary and can be tweaked.
-> >>>                */
-> >>> -             if (total_vf_bar_sz > gate) {
-> >>> -                     mul = roundup_pow_of_two(total_vfs);
-> >>> -                     dev_info(&pdev->dev,
-> >>> -                             "VF BAR Total IOV size %llx > %llx, roundup to %d VFs\n",
-> >>> -                             total_vf_bar_sz, gate, mul);
-> >>> -                     iov->m64_single_mode = true;
-> >>> -                     break;
-> >>> -             }
-> >>> -     }
-> >>> +             if (vf_bar_sz > (phb->ioda.m64_segsize >> 2)) {
-> >>> +                     /*
-> >>> +                      * On PHB3, the minimum size alignment of M64 BAR in
-> >>> +                      * single mode is 32MB. If this VF BAR is smaller than
-> >>> +                      * 32MB, but still too large for a segmented window
-> >>> +                      * then we can't map it and need to disable SR-IOV for
-> >>> +                      * this device.
-> >>
-> >>
-> >> Why not use single PE mode for such BAR? Better than nothing.
-> >
-> > Suppose you could, but I figured VFs were mainly interesting since you
-> > could give each VF to a separate guest. If there's multiple VFs under
-> > the same single PE BAR then they'd have to be assigned to the same
+> We build modules with the large code model, and always have AFAIK:
 >
-> True. But with one PE per VF we can still have 15 (or 14?) isolated VFs
-> which is not hundreds but better than 0.
-
-We can only use single PE BARs if the per-VF size is >= 32MB due to
-the alignment requirements on P8. If the per-VF size is smaller then
-we're stuck with multiple VFs inside the same BAR which is bad due to
-the PAPR requirements mentioned below. Sure we could look at doing
-something else, but considering this matches the current behaviour
-it's a bit hard to care...
-
-> > guest in order to retain the freeze/unfreeze behaviour that PAPR
-> > requires. I guess that's how it used to work, but it seems better just
-> > to disable them rather than having VFs which sort of work.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/powerpc/Makefile?commit=4fa640dc52302b5e62b01b05c755b055549633ae#n129
 >
-> Well, realistically the segment size should be 8MB to make this matter
-> (or the whole window 2GB) which does not seem to happen so it does not
-> matter.
+>   # -mcmodel=medium breaks modules because it uses 32bit offsets from
+>   # the TOC pointer to create pointers where possible. Pointers into the
+>   # percpu data area are created by this method.
+>   #
+>   # The kernel module loader relocates the percpu data section from the
+>   # original location (starting with 0xd...) to somewhere in the base
+>   # kernel percpu data space (starting with 0xc...). We need a full
+>   # 64bit relocation for this to work, hence -mcmodel=large.
+>   KBUILD_CFLAGS_MODULE += -mcmodel=large
 
-I'm not sure what you mean.
+Well, a fast large code model would solve a lot of problems :).  Unfortunately
+we just don't have enough people working on this stuff to do that.  It's a
+somewhat tricky thing to do on RISC-V as there aren't any quick sequences for
+long addresses, but I don't think we're that much worse off than everyone else.
+At some point I had a bunch of designs written up, but they probably went along
+with my SiFive computer.  I think we ended up decided that the best bet would
+be to distribute constant tables throughout the text such that they're
+accessible via the 32-bit PC-relative loads at any point -- essentially the
+multi-GOT stuff that MIPS used for big objects.  Doing that well is a lot of
+work and doing it poorly is just as slow as PIC, so we never got around to it.
+
+> We also insert trampolines for branches, but IIUC that's a separate
+> issue.
+
+"PowerPC branch trampolines" points me here
+https://sourceware.org/binutils/docs-2.20/ld/PowerPC-ELF32.html .  That sounds
+like what we're doing already in the medium code models: we have short and
+medium control transfer sequences, linker relaxation optimizes them when
+possible.  Since we rely on linker relaxation pretty heavily we just don't
+bother with the smaller code model: it'd be a 12-bit address space for data and
+a 21-bit address space for text (with 13-bit maximum function size).  Instead
+of building out such a small code model we just spent time improving the linker.
