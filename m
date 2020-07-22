@@ -1,64 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C048122929D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:54:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8426E2292A6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:56:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBSRW6dHpzDr3T
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 17:54:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBSTk2942zDqSc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 17:56:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=CEqxqaNL; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBSG1468rzDqs3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 17:46:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=UtSNhIf2wpJr1Xu6wPJnrBrzTE5gyQVve7CwYw8dNtc=; b=CEqxqaNLXFqUG0/lq8sCbUl+px
- +zsCBZ4wSYjVTZHgYdhKLg3OX0lReiMHBKKpiKdNHddVDCRuFcaH09IDFHyDMEnoZJD0F35A1VWjM
- zgQ517U0gTMd5TwWkv0RPleM/CJ67f7CaDg6F6HaVzN7MuEE4ookPkJSTqF4ysA25IKDXIn+2M8S1
- gDBI70R+Z46A7RgPkPCQtzv1JQnEpRIepHSHWDfQksWAPaJoEU6US7/V7+yeAa9CrDm22fppWKgty
- Y8eOau7gL12wqclb70XhVVWF6gDTvm3EcdveQr/IojyxQtnWhI0l+U5htoxoZAlxpB7fhRHrCP5nv
- 1nxbSJnw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jy9SN-0003eB-MZ; Wed, 22 Jul 2020 07:46:27 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 1C57B303A02;
- Wed, 22 Jul 2020 09:46:24 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id DE71B29A6A87E; Wed, 22 Jul 2020 09:46:24 +0200 (CEST)
-Date: Wed, 22 Jul 2020 09:46:24 +0200
-From: peterz@infradead.org
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 06/10] powerpc/smp: Generalize 2nd sched domain
-Message-ID: <20200722074624.GP119549@hirez.programming.kicks-ass.net>
-References: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
- <20200721113814.32284-7-srikar@linux.vnet.ibm.com>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBSKs0gtFzDqRF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 17:49:52 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06M7VUIJ143166; Wed, 22 Jul 2020 03:49:40 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32e1x7rwn1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 03:49:39 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M7kIaX032222;
+ Wed, 22 Jul 2020 07:49:38 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03fra.de.ibm.com with ESMTP id 32brq82fgb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 07:49:38 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06M7nZGD31326476
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Jul 2020 07:49:35 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2DC765204E;
+ Wed, 22 Jul 2020 07:49:35 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.211.146.165])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 299A452052;
+ Wed, 22 Jul 2020 07:49:31 +0000 (GMT)
+Date: Wed, 22 Jul 2020 00:49:29 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <20200722074929.GI7339@oc0525413822.ibm.com>
+References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
+ <875zags3qp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200721113814.32284-7-srikar@linux.vnet.ibm.com>
+In-Reply-To: <875zags3qp.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+Subject: RE: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
+ MMIO access, in sprg0 register
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-22_03:2020-07-22,
+ 2020-07-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0
+ impostorscore=0 spamscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007220052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,26 +83,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ingo Molnar <mingo@kernel.org>, Nathan Lynch <nathanl@linux.ibm.com>,
- Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
- Michael Ellerman <michaele@au1.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
- Anton Blanchard <anton@au1.ibm.com>, LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nick Piggin <npiggin@au1.ibm.com>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: ldufour@linux.ibm.com, aik@ozlabs.ru, kvm-ppc@vger.kernel.org,
+ bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 21, 2020 at 05:08:10PM +0530, Srikar Dronamraju wrote:
-> Currently "CACHE" domain happens to be the 2nd sched domain as per
-> powerpc_topology. This domain will collapse if cpumask of l2-cache is
-> same as SMT domain. However we could generalize this domain such that it
-> could mean either be a "CACHE" domain or a "BIGCORE" domain.
+On Wed, Jul 22, 2020 at 12:06:06PM +1000, Michael Ellerman wrote:
+> Ram Pai <linuxram@us.ibm.com> writes:
+> > An instruction accessing a mmio address, generates a HDSI fault.  This fault is
+> > appropriately handled by the Hypervisor.  However in the case of secureVMs, the
+> > fault is delivered to the ultravisor.
+> >
+> > Unfortunately the Ultravisor has no correct-way to fetch the faulting
+> > instruction. The PEF architecture does not allow Ultravisor to enable MMU
+> > translation. Walking the two level page table to read the instruction can race
+> > with other vcpus modifying the SVM's process scoped page table.
+> 
+> You're trying to read the guest's kernel text IIUC, that mapping should
+> be stable. Possibly permissions on it could change over time, but the
+> virtual -> real mapping should not.
 
-What's the whole smallcore vs bigcore thing?
+Actually the code does not capture the address of the instruction in the
+sprg0 register. It captures the instruction itself. So should the mapping
+matter?
 
-Would it make sense to have an actual overview of the various topology
-layers somewhere? Because I'm getting lost and can't really make sense
-of the code due to that.
+> 
+> > This problem can be correctly solved with some help from the kernel.
+> >
+> > Capture the faulting instruction in SPRG0 register, before executing the
+> > faulting instruction. This enables the ultravisor to easily procure the
+> > faulting instruction and emulate it.
+> 
+> This is not something I'm going to merge. Sorry.
+
+Ok. Will consider other approaches.
+
+RP
