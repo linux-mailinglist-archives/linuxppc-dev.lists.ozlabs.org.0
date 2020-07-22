@@ -1,75 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0D422A050
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 21:54:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D8522A0B1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 22:24:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBmPg2DS3zDqCx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 05:54:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBn4P4fHWzDr2q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 06:24:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=palmer@dabbelt.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=dabbelt-com.20150623.gappssmtp.com
- header.i=@dabbelt-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Yoy1F4D5; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBmMv4mSBzDqwH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 05:52:42 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id n5so1853621pgf.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 12:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
- h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
- :content-transfer-encoding;
- bh=1cGKIJpjawJti4g8SzXEonfEdlP5yq0CvN8z5K3Dldw=;
- b=Yoy1F4D5SdX59+ds7mcQz5JHUDBl4fr7U9s03rPcO/LhScRFnIG9oYi04943Pyg2ap
- QO8rRLplFMiQLcJhq6abEof80+wc3Cq6YgtwLMpVrrfBBOLBgDW9EtB8SRwK7b5TouNo
- FG7RpEdSt3aWO6VpWh5zPY+WHf6SYyc+NMhPEgpsdu+1hdfzb5rqGk7Mk2vGBCpiLMfk
- M2WMXdpC7+mWmSRDiq6A2yI2qfWzI9/2a5PLaIDTVfkIW+UfI26AMELRrElSVaArF2AH
- f+NZ0cHy9P0lcCkdQ8Agh4YYefdHQyxAnmIhKl992R0eGV3Njth6PWUOMpPlFy1YKm3v
- Muug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
- :mime-version:content-transfer-encoding;
- bh=1cGKIJpjawJti4g8SzXEonfEdlP5yq0CvN8z5K3Dldw=;
- b=mFtinl9ILUHjtI/siuBxnhz4Q8xK1kelAcnXRtuYsiE9vWY5RjHF/nnh7ePASP/+kk
- FrhYOib96bY5TWFSwC1nTrJ+CAjoCBCAyPPKCjfrL6A5Nvv35Mi29lF3E4+YOyEQWyMW
- G+ZXIXhRtgbhYe3gPjlpnUqPBBdKtOmEYGIsef0W4aFM2RD6CmQKT4k+/3nsWN//DEpK
- rf/5YfecIBmVej6HPdBBMpCdsEzcKaajYgDVO/CsFPS3gJ0capdUmcv1vpDgXf+tVKqy
- eofRb2b1V0bCvt2koFNEUOglWZ9CVx2g0yd5hlyH9mupiSF6cLUeld5ejNBhBDLuPVvj
- Gh1A==
-X-Gm-Message-State: AOAM531T6oh7LqNTMUhEEme7tJWYFovwFhZR+eEaR1gQh17U+kUSNh5a
- ezUmsTZDHIHyywpgEutCUcJFlA==
-X-Google-Smtp-Source: ABdhPJzfnsEJ9u3sgDkfEADIkHOoeK603qojzxPEwBQeACIUHuB6n2njWNz3cI4X1mmHVknKJAO4xQ==
-X-Received: by 2002:a63:8c4f:: with SMTP id q15mr1206804pgn.373.1595447560352; 
- Wed, 22 Jul 2020 12:52:40 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net.
- [76.210.143.223])
- by smtp.gmail.com with ESMTPSA id q13sm443560pfk.8.2020.07.22.12.52.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Jul 2020 12:52:39 -0700 (PDT)
-Date: Wed, 22 Jul 2020 12:52:39 -0700 (PDT)
-X-Google-Original-Date: Wed, 22 Jul 2020 12:52:36 PDT (-0700)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBn2d5yhfzDqsb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 06:22:48 +1000 (AEST)
+Received: from mail-qt1-f176.google.com ([209.85.160.176]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1N6bsM-1ksuzt3hl8-0183zV for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul
+ 2020 22:22:44 +0200
+Received: by mail-qt1-f176.google.com with SMTP id s16so2831941qtn.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 13:22:42 -0700 (PDT)
+X-Gm-Message-State: AOAM530ZlSDw6aiaiROrieCWRGhIWr6QRL2noeW4igTSqSnrisvuKRSp
+ CqFq6vZ9gT0s9O6a7qrxPmL5hIHCgvIHqz7/Dzo=
+X-Google-Smtp-Source: ABdhPJzomOuvyv87HLrmnRqLMg+xagc+vFRLOHIlCjUhIO6Ps1D+MblDa1Ac6NHH61/GfVpqpoR58oXKvv+qOpTZNZk=
+X-Received: by 2002:ac8:6743:: with SMTP id n3mr1132159qtp.7.1595449361849;
+ Wed, 22 Jul 2020 13:22:41 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAK8P3a34sT2bQbkZUjaxaShzCkn+s35pXxS0UNhqGFu+t2hZYw@mail.gmail.com>
+ <mhng-820ebe55-b4a3-4ab3-b848-6d3551b43091@palmerdabbelt-glaptop1>
+In-Reply-To: <mhng-820ebe55-b4a3-4ab3-b848-6d3551b43091@palmerdabbelt-glaptop1>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 22 Jul 2020 22:22:25 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2VHXDLK6iba=NxSQ-t=9P7LSwzwx3XrK=N=M+qoX_oeQ@mail.gmail.com>
+Message-ID: <CAK8P3a2VHXDLK6iba=NxSQ-t=9P7LSwzwx3XrK=N=M+qoX_oeQ@mail.gmail.com>
 Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
-In-Reply-To: <CAK8P3a34sT2bQbkZUjaxaShzCkn+s35pXxS0UNhqGFu+t2hZYw@mail.gmail.com>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Message-ID: <mhng-820ebe55-b4a3-4ab3-b848-6d3551b43091@palmerdabbelt-glaptop1>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:igSlMCHB8qHw5Fcfti+sLl7kHvxbFweWd/QG3taVeuXAXJUf+JQ
+ XoZ7a86ZOFYmJubi5TYCcsF2Yjv2+MXzMnZHxc30LEuvQN760T0l11l775YMnAjlfQX69p/
+ ClWiBvEXoKNC95nwJ8fFLXd3geqSZOSWIvn1O8sCwXcjGNhEQr1tRchyxgvkTVPETpibDtF
+ s2qRgYQSPYWR77fwHdT6A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NI5uOhR3Xjk=:r9rqVHc9+px0ggzsSkg12t
+ LvnqoJgTdYJ6hkdNbAc8xyzY6hpmwSyhYHy12f+Sa4VtjevxWXznoZQsf94CApRsvLnGFO0TZ
+ x/c0WMCeGORs4+eXB+96kOMuxUKC5njAmx1pIsroMCquBZjXqhXUGAajhRRCYkX0XGeDCu1Dy
+ Q+urR/h2JDGp8ZH+n/PO+/dBrYFtA+EFJkZz+/BlhOh3gHqSbAyD+RzMrIQ3FX7ixGD5dvTNT
+ stR2fqwZPC5lV1dgR8ONb5kPcQnbJrhy/9Cq+sprGjGjstOvs+LFyCJt0z+xgmhvtGLdW/w3T
+ oEXfmEmsjGqCf6t1tK1XScx83x3YZnT0rhUNL3QiRLHYXAjdZK8l7up4fiD1J62wvEMordJIK
+ HubxIj8anvKaVfr9MUFAQb7WIpOeIYi4ttc6Iob+DkbYsDOFGe7FY0bqsB0piXjlL6J5dYSva
+ geolKG+R7Gc0OUn1oldUEzQiswTZYRroD+s7Gh2sMyr0rQB4KgCIm70utoV7oM0M2YszQiXX1
+ ZBmpPaXtlaoBdLWZg0mZw7srocflgaKIhyPdKF+dBb+WHq+hfHJauVdp0sHouvKkgJ76kp6CM
+ yhCApCJTEzH1hqi3axQ1+A9fy5Hup7m6fQug3oibp4DqA+be0zCaDxLFEcN3oIKmDNAuXSE1v
+ 223ABt8qAeJG1F5BowfjQqp7xzMKFURYO/fZT6G3Uy8TrC+gmNUEnAM7EmimmckUA4bDFkdgk
+ 2aTjsug4i2218ifFLGaQU/Y8ttlGGHAroijp7baGGJTLkgpSbq6ATNTlyPM+6C1yholq0ryY9
+ gbPOLTzqwjEktzI3z0EkgrJXIx/SpkS+YfM2u/ubppPrFKEQWVnIog2g7cF5KNolEfTjSxK
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,71 +72,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aou@eecs.berkeley.edu, alex@ghiti.fr, Atish Patra <Atish.Patra@wdc.com>,
- Anup Patel <Anup.Patel@wdc.com>, linux-kernel@vger.kernel.org,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-mm@kvack.org, paulus@samba.org,
- zong.li@sifive.com, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Atish Patra <Atish.Patra@wdc.com>, Anup Patel <Anup.Patel@wdc.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Linux-MM <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, Zong Li <zong.li@sifive.com>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 22 Jul 2020 02:43:50 PDT (-0700), Arnd Bergmann wrote:
-> On Tue, Jul 21, 2020 at 9:06 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
->>
->> On Tue, 21 Jul 2020 11:36:10 PDT (-0700), alex@ghiti.fr wrote:
->> > Let's try to make progress here: I add linux-mm in CC to get feedback on
->> > this patch as it blocks sv48 support too.
->>
->> Sorry for being slow here.  I haven't replied because I hadn't really fleshed
->> out the design yet, but just so everyone's on the same page my problems with
->> this are:
->>
->> * We waste vmalloc space on 32-bit systems, where there isn't a lot of it.
+On Wed, Jul 22, 2020 at 9:52 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+> On Wed, 22 Jul 2020 02:43:50 PDT (-0700), Arnd Bergmann wrote:
+> > On Tue, Jul 21, 2020 at 9:06 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+> > The eventual goal is to have a split of 3840MB for either user or linear map
+> > plus and 256MB for vmalloc, including the kernel. Switching between linear
+> > and user has a noticeable runtime overhead, but it relaxes both the limits
+> > for user memory and lowmem, and it provides a somewhat stronger
+> > address space isolation.
 >
-> There is actually an ongoing work to make 32-bit Arm kernels move
-> vmlinux into the vmalloc space, as part of the move to avoid highmem.
->
-> Overall, a 32-bit system would waste about 0.1% of its virtual address space
-> by having the kernel be located in both the linear map and the vmalloc area.
-> It's not zero, but not that bad either. With the typical split of 3072 MB user,
-> 768MB linear and 256MB vmalloc, it's also around 1.5% of the available
-> vmalloc area (assuming a 4MB vmlinux in a typical 32-bit kernel), but the
-> boundaries can be changed arbitrarily if needed.
+> Ya, I think we decided not to do that, at least for now.  I guess the right
+> answer there will depend on what 32-bit systems look like, and since we don't
+> have any I'm inclined to just stick to the fast option.
 
-OK, I guess maybe it's not so bad.  Our 32-bit defconfig is 10MiB, but I
-wouldn't really put much weight behind that number as it's just a 64-bit
-defconfig built for 32-bit.  We don't have any 32-bit hardware anyway, so if
-this becomes an issue later I guess we can just deal with it then.
+Makes sense. Actually on 32-bit Arm we see fewer large-memory
+configurations in new machines than we had in the past before 64-bit
+machines were widely available at low cost, so I expect not to see a
+lot new hardware with more than 1GB of DDR3 (two 256Mbit x16 chips)
+for cost reasons, and rv32 is likely going to be similar, so you may never
+really see a need for highmem or the above hack to increase the
+size of the linear mapping.
 
-> The eventual goal is to have a split of 3840MB for either user or linear map
-> plus and 256MB for vmalloc, including the kernel. Switching between linear
-> and user has a noticeable runtime overhead, but it relaxes both the limits
-> for user memory and lowmem, and it provides a somewhat stronger
-> address space isolation.
+I just noticed that rv32 allows 2GB of lowmem rather than just the usual
+768MB or 1GB, at the expense of addressable user memory. This seems
+like an unusual choice, but I also don't see any reason to change this
+or make it more flexible unless actual users appear.
 
-Ya, I think we decided not to do that, at least for now.  I guess the right
-answer there will depend on what 32-bit systems look like, and since we don't
-have any I'm inclined to just stick to the fast option.
-
-> Another potential idea would be to completely randomize the physical
-> addresses underneath the kernel by using a random permutation of the
-> pages in the kernel image. This adds even more overhead (virt_to_phys
-> may need to call vmalloc_to_page or similar) and may cause problems
-> with DMA into kernel .data across page boundaries,
->
->> * Sort out how to maintain a linear map as the canonical hole moves around
->>   between the VA widths without adding a bunch of overhead to the virt2phys and
->>   friends.  This is probably going to be the trickiest part, but I think if we
->>   just change the page table code to essentially lie about VAs when an sv39
->>   system runs an sv48+sv39 kernel we could make it work -- there'd be some
->>   logical complexity involved, but it would remain fast.
->
-> I assume you can't use the trick that x86 has where all kernel addresses
-> are at the top of the 64-bit address space and user addresses are at the
-> bottom, regardless of the size of the page tables?
-
-They have the load in their mapping functions, as far as I can tell that's
-required to do this sort of thing.  We do as well to handle some of the
-implicit boot stuff for now, but I was assuming that we'd want to get rid of
-that for performance reasons.  That said, maybe it just doesn't matter?  
+       Arnd
