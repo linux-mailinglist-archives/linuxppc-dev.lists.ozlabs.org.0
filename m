@@ -2,104 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F866229E97
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 19:36:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0D422A050
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 21:54:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBjLX4QRbzDr3M
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 03:36:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBmPg2DS3zDqCx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 05:54:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=palmer@dabbelt.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=dabbelt.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=dabbelt-com.20150623.gappssmtp.com
+ header.i=@dabbelt-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=Yoy1F4D5; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBjJc0nKvzDqLB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 03:34:40 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BBjJb48Wsz8t9F
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 03:34:39 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BBjJb3jCdz9sRN; Thu, 23 Jul 2020 03:34:39 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BBjJb0558z9sR4
- for <linuxppc-dev@ozlabs.org>; Thu, 23 Jul 2020 03:34:38 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06MHVZgp184421; Wed, 22 Jul 2020 13:33:10 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1x8b71f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 13:33:10 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06MHX9sL188302;
- Wed, 22 Jul 2020 13:33:09 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1x8b70v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 13:33:09 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06MHLpNn018393;
- Wed, 22 Jul 2020 17:33:07 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 32brbh56as-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 17:33:07 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06MHX4Zi52494452
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jul 2020 17:33:04 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BB864A4057;
- Wed, 22 Jul 2020 17:33:04 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27D58A4040;
- Wed, 22 Jul 2020 17:33:01 +0000 (GMT)
-Received: from [9.85.73.85] (unknown [9.85.73.85])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 22 Jul 2020 17:33:00 +0000 (GMT)
-Subject: Re: [PATCH v4 07/12] ppc64/kexec_file: add support to relocate
- purgatory
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <159524918900.20855.17709718993097359220.stgit@hbathini.in.ibm.com>
- <159524956457.20855.12480643681198700190.stgit@hbathini.in.ibm.com>
- <871rl4rxao.fsf@mpe.ellerman.id.au>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Message-ID: <2037fa32-28be-5995-1c22-c8b01cafe088@linux.ibm.com>
-Date: Wed, 22 Jul 2020 23:03:00 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <871rl4rxao.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-22_10:2020-07-22,
- 2020-07-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- impostorscore=0 spamscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007220112
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBmMv4mSBzDqwH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 05:52:42 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id n5so1853621pgf.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 12:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+ h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+ :content-transfer-encoding;
+ bh=1cGKIJpjawJti4g8SzXEonfEdlP5yq0CvN8z5K3Dldw=;
+ b=Yoy1F4D5SdX59+ds7mcQz5JHUDBl4fr7U9s03rPcO/LhScRFnIG9oYi04943Pyg2ap
+ QO8rRLplFMiQLcJhq6abEof80+wc3Cq6YgtwLMpVrrfBBOLBgDW9EtB8SRwK7b5TouNo
+ FG7RpEdSt3aWO6VpWh5zPY+WHf6SYyc+NMhPEgpsdu+1hdfzb5rqGk7Mk2vGBCpiLMfk
+ M2WMXdpC7+mWmSRDiq6A2yI2qfWzI9/2a5PLaIDTVfkIW+UfI26AMELRrElSVaArF2AH
+ f+NZ0cHy9P0lcCkdQ8Agh4YYefdHQyxAnmIhKl992R0eGV3Njth6PWUOMpPlFy1YKm3v
+ Muug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+ :mime-version:content-transfer-encoding;
+ bh=1cGKIJpjawJti4g8SzXEonfEdlP5yq0CvN8z5K3Dldw=;
+ b=mFtinl9ILUHjtI/siuBxnhz4Q8xK1kelAcnXRtuYsiE9vWY5RjHF/nnh7ePASP/+kk
+ FrhYOib96bY5TWFSwC1nTrJ+CAjoCBCAyPPKCjfrL6A5Nvv35Mi29lF3E4+YOyEQWyMW
+ G+ZXIXhRtgbhYe3gPjlpnUqPBBdKtOmEYGIsef0W4aFM2RD6CmQKT4k+/3nsWN//DEpK
+ rf/5YfecIBmVej6HPdBBMpCdsEzcKaajYgDVO/CsFPS3gJ0capdUmcv1vpDgXf+tVKqy
+ eofRb2b1V0bCvt2koFNEUOglWZ9CVx2g0yd5hlyH9mupiSF6cLUeld5ejNBhBDLuPVvj
+ Gh1A==
+X-Gm-Message-State: AOAM531T6oh7LqNTMUhEEme7tJWYFovwFhZR+eEaR1gQh17U+kUSNh5a
+ ezUmsTZDHIHyywpgEutCUcJFlA==
+X-Google-Smtp-Source: ABdhPJzfnsEJ9u3sgDkfEADIkHOoeK603qojzxPEwBQeACIUHuB6n2njWNz3cI4X1mmHVknKJAO4xQ==
+X-Received: by 2002:a63:8c4f:: with SMTP id q15mr1206804pgn.373.1595447560352; 
+ Wed, 22 Jul 2020 12:52:40 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net.
+ [76.210.143.223])
+ by smtp.gmail.com with ESMTPSA id q13sm443560pfk.8.2020.07.22.12.52.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 22 Jul 2020 12:52:39 -0700 (PDT)
+Date: Wed, 22 Jul 2020 12:52:39 -0700 (PDT)
+X-Google-Original-Date: Wed, 22 Jul 2020 12:52:36 PDT (-0700)
+Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
+In-Reply-To: <CAK8P3a34sT2bQbkZUjaxaShzCkn+s35pXxS0UNhqGFu+t2hZYw@mail.gmail.com>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Message-ID: <mhng-820ebe55-b4a3-4ab3-b848-6d3551b43091@palmerdabbelt-glaptop1>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,65 +81,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Pingfan Liu <piliu@redhat.com>,
- Kexec-ml <kexec@lists.infradead.org>, Nayna Jain <nayna@linux.ibm.com>,
- Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Mimi Zohar <zohar@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
- Dave Young <dyoung@redhat.com>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Eric Biederman <ebiederm@xmission.com>
+Cc: aou@eecs.berkeley.edu, alex@ghiti.fr, Atish Patra <Atish.Patra@wdc.com>,
+ Anup Patel <Anup.Patel@wdc.com>, linux-kernel@vger.kernel.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-mm@kvack.org, paulus@samba.org,
+ zong.li@sifive.com, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 22/07/20 9:55 am, Michael Ellerman wrote:
-> Hari Bathini <hbathini@linux.ibm.com> writes:
->> Right now purgatory implementation is only minimal. But if purgatory
->> code is to be enhanced to copy memory to the backup region and verify
->> sha256 digest, relocations may have to be applied to the purgatory.
->> So, add support to relocate purgatory in kexec_file_load system call
->> by setting up TOC pointer and applying RELA relocations as needed.
+On Wed, 22 Jul 2020 02:43:50 PDT (-0700), Arnd Bergmann wrote:
+> On Tue, Jul 21, 2020 at 9:06 PM Palmer Dabbelt <palmer@dabbelt.com> wrote:
 >>
->> Reported-by: kernel test robot <lkp@intel.com>
->> [lkp: In v1, 'struct mem_sym' was declared in parameter list]
->> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
->> ---
+>> On Tue, 21 Jul 2020 11:36:10 PDT (-0700), alex@ghiti.fr wrote:
+>> > Let's try to make progress here: I add linux-mm in CC to get feedback on
+>> > this patch as it blocks sv48 support too.
 >>
->> * Michael, can you share your opinion on the below:
->>     - https://lore.kernel.org/patchwork/patch/1272027/
->>     - My intention in cover note.
-> 
-> It seems like a lot of complexity for little benefit.
-> 
-> AFAICS your final purgatory_64.c is only 36 lines, and all it does is a
-> single (open coded) memcpy().
-> 
-> It seems like we could write that in not many more lines of assembler
-> and avoid all this code.
+>> Sorry for being slow here.  I haven't replied because I hadn't really fleshed
+>> out the design yet, but just so everyone's on the same page my problems with
+>> this are:
+>>
+>> * We waste vmalloc space on 32-bit systems, where there isn't a lot of it.
+>
+> There is actually an ongoing work to make 32-bit Arm kernels move
+> vmlinux into the vmalloc space, as part of the move to avoid highmem.
+>
+> Overall, a 32-bit system would waste about 0.1% of its virtual address space
+> by having the kernel be located in both the linear map and the vmalloc area.
+> It's not zero, but not that bad either. With the typical split of 3072 MB user,
+> 768MB linear and 256MB vmalloc, it's also around 1.5% of the available
+> vmalloc area (assuming a 4MB vmlinux in a typical 32-bit kernel), but the
+> boundaries can be changed arbitrarily if needed.
 
-Hi Michael,
+OK, I guess maybe it's not so bad.  Our 32-bit defconfig is 10MiB, but I
+wouldn't really put much weight behind that number as it's just a 64-bit
+defconfig built for 32-bit.  We don't have any 32-bit hardware anyway, so if
+this becomes an issue later I guess we can just deal with it then.
 
-I am not sure if you would agree with me on this, but I am looking at the
-purgatory code as work in progress. As mentioned in the cover note, I intend
-to add log messaging, sha256 verification into purgatory. And also change it
-to position independent executable after moving common purgatory code (sha256
-verification) to arch-independent code.
+> The eventual goal is to have a split of 3840MB for either user or linear map
+> plus and 256MB for vmalloc, including the kernel. Switching between linear
+> and user has a noticeable runtime overhead, but it relaxes both the limits
+> for user memory and lowmem, and it provides a somewhat stronger
+> address space isolation.
 
-When I initially took this up, I wanted to add all the above changes too, but
-cut down on it, in the interest of time, first to get kdump (kexec -s -p)
-working in v5.9 merge window.
+Ya, I think we decided not to do that, at least for now.  I guess the right
+answer there will depend on what 32-bit systems look like, and since we don't
+have any I'm inclined to just stick to the fast option.
 
-But as the logic in patches 07/12 & 08/12 has been tested in kexec-tools code
-a lot of times and there are unlikely to be any changes to them except for
-__kexec_do_relocs() function (afaics), when -PIE would be used, I submitted them.
-With patch 09/12, I tried for a change that uses relocations while is minimal
-for now.
+> Another potential idea would be to completely randomize the physical
+> addresses underneath the kernel by using a random permutation of the
+> pages in the kernel image. This adds even more overhead (virt_to_phys
+> may need to call vmalloc_to_page or similar) and may cause problems
+> with DMA into kernel .data across page boundaries,
+>
+>> * Sort out how to maintain a linear map as the canonical hole moves around
+>>   between the VA widths without adding a bunch of overhead to the virt2phys and
+>>   friends.  This is probably going to be the trickiest part, but I think if we
+>>   just change the page table code to essentially lie about VAs when an sv39
+>>   system runs an sv48+sv39 kernel we could make it work -- there'd be some
+>>   logical complexity involved, but it would remain fast.
+>
+> I assume you can't use the trick that x86 has where all kernel addresses
+> are at the top of the 64-bit address space and user addresses are at the
+> bottom, regardless of the size of the page tables?
 
-Would you prefer it to be absolutely minimal by dropping patches 7 & 8 for
-now and writing the backup data copy code in assembler?
-
-Thanks
-Hari
+They have the load in their mapping functions, as far as I can tell that's
+required to do this sort of thing.  We do as well to handle some of the
+implicit boot stuff for now, but I was assuming that we'd want to get rid of
+that for performance reasons.  That said, maybe it just doesn't matter?  
