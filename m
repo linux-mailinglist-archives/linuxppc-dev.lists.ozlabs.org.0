@@ -1,66 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1602293FE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 10:51:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9102229417
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 10:54:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBThT5W7HzDr2N
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 18:51:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBTmT4pWvzDqXg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 18:54:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=bAA051jA; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBTfH521LzDqlZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 18:49:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=0MdZWsXfOSzrpphaq5yn3/uApZ2HJH5s2c6LnYTQWjI=; b=bAA051jAuLR40JWxrp848gcYzM
- ZB6Vh98+ib5oHuDcldB6ngF2/JX5hS7H5GQ43X+C3NxI3dqO4r/uxkXI2BxwHX3XKYwu65Ez9aY3g
- xVblQT1hnpuOZNZSXDxLrWfs9jx1XfGeqqFQ+wwliWLZsB44Cy/bCc4hiDjeM3kJ4gg3Wg+EpVVP+
- 7OLxrneq6vb5gxiFOXhm5k4/R34pxD6pLKeT0NDOt6F3fxT3IJEmXXpUj5RTVH6jVtoXzwGDnTqc9
- bBJu6EBN/TSxP9EuUfKwFNrELuBFPQzsa8RC2aQleD6LFrjDroQpvVw+Bt22AG2b1H0Iy91pPsKOO
- Tc3ioxTA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jyAQp-0004OW-1K; Wed, 22 Jul 2020 08:48:55 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7DD403006D0;
- Wed, 22 Jul 2020 10:48:54 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 45D6320140AC8; Wed, 22 Jul 2020 10:48:54 +0200 (CEST)
-Date: Wed, 22 Jul 2020 10:48:54 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 06/10] powerpc/smp: Generalize 2nd sched domain
-Message-ID: <20200722084854.GL10769@hirez.programming.kicks-ass.net>
-References: <20200721113814.32284-1-srikar@linux.vnet.ibm.com>
- <20200721113814.32284-7-srikar@linux.vnet.ibm.com>
- <20200722074624.GP119549@hirez.programming.kicks-ass.net>
- <20200722081822.GG9290@linux.vnet.ibm.com>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBTkQ3cXmzDqlZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 18:52:46 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06M8WucU185680; Wed, 22 Jul 2020 04:52:39 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32dn6yhgxn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 04:52:38 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M8pQBq014533;
+ Wed, 22 Jul 2020 08:52:36 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 32brq7mt77-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Jul 2020 08:52:36 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06M8qX8E32899554
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Jul 2020 08:52:33 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 30254AE053;
+ Wed, 22 Jul 2020 08:52:33 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E813DAE059;
+ Wed, 22 Jul 2020 08:52:30 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.102.3.172])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 22 Jul 2020 08:52:30 +0000 (GMT)
+Date: Wed, 22 Jul 2020 14:22:28 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: Re: [v4 1/5] KVM: PPC: Book3S HV: Disable page merging in
+ H_SVM_INIT_START
+Message-ID: <20200722085228.GP7902@in.ibm.com>
+References: <1594972827-13928-1-git-send-email-linuxram@us.ibm.com>
+ <1594972827-13928-2-git-send-email-linuxram@us.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200722081822.GG9290@linux.vnet.ibm.com>
+In-Reply-To: <1594972827-13928-2-git-send-email-linuxram@us.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-22_03:2020-07-22,
+ 2020-07-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ impostorscore=0 mlxscore=0 malwarescore=0 clxscore=1015 bulkscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxlogscore=969 adultscore=0
+ suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007220065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,71 +85,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ingo Molnar <mingo@kernel.org>, Nathan Lynch <nathanl@linux.ibm.com>,
- Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
- Michael Ellerman <michaele@au1.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
- Anton Blanchard <anton@au1.ibm.com>, LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nick Piggin <npiggin@au1.ibm.com>
+Reply-To: bharata@linux.ibm.com
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 22, 2020 at 01:48:22PM +0530, Srikar Dronamraju wrote:
-> * peterz@infradead.org <peterz@infradead.org> [2020-07-22 09:46:24]:
+On Fri, Jul 17, 2020 at 01:00:23AM -0700, Ram Pai wrote:
+> Page-merging of pages in memory-slots associated with a Secure VM,
+> is disabled in H_SVM_PAGE_IN handler.
 > 
-> > On Tue, Jul 21, 2020 at 05:08:10PM +0530, Srikar Dronamraju wrote:
-> > > Currently "CACHE" domain happens to be the 2nd sched domain as per
-> > > powerpc_topology. This domain will collapse if cpumask of l2-cache is
-> > > same as SMT domain. However we could generalize this domain such that it
-> > > could mean either be a "CACHE" domain or a "BIGCORE" domain.
-> > 
-> > What's the whole smallcore vs bigcore thing?
-> > 
-> > Would it make sense to have an actual overview of the various topology
-> > layers somewhere? Because I'm getting lost and can't really make sense
-> > of the code due to that.
+> This operation should have been done much earlier; the moment the VM
+> is initiated for secure-transition. Delaying this operation, increases
+> the probability for those pages to acquire new references , making it
+> impossible to migrate those pages.
 > 
-> To quote with an example: using (Power 9)
+> Disable page-migration in H_SVM_INIT_START handling.
 > 
-> Power 9 is an SMT 8 core by design. However this 8 thread core can run as 2
-> independent core with threads 0,2,4 and 6 acting like a core, while threads
-> 1,3,5,7 acting as another core.  
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+
+Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
+
+with a few observations below...
+
+> ---
+>  Documentation/powerpc/ultravisor.rst |  1 +
+>  arch/powerpc/kvm/book3s_hv_uvmem.c   | 98 +++++++++++++++++++++++++++---------
+>  2 files changed, 76 insertions(+), 23 deletions(-)
 > 
-> The firmware can decide to showcase them as 2 independent small cores or as
-> one big core. However the LLC (i.e last level of cache) is shared between
-> all the threads of the SMT 8 core. Future power chips, LLC might change, it
-> may be expanded to share with another SMT 8 core or it could be made
-> specific to SMT 4 core.
-> 
-> The smt 8 core is also known as fused core/ Big core.
-> The smaller smt 4 core is known as small core.
-> 
-> So on a Power9 Baremetal, the firmware would show up as SMT4 core.
-> and we have a CACHE level at SMT 8. CACHE level would be very very similar
-> to MC domain in X86.
-> 
-> Hope this is clear.
+> diff --git a/Documentation/powerpc/ultravisor.rst b/Documentation/powerpc/ultravisor.rst
+> index df136c8..a1c8c37 100644
+> --- a/Documentation/powerpc/ultravisor.rst
+> +++ b/Documentation/powerpc/ultravisor.rst
+> @@ -895,6 +895,7 @@ Return values
+>      One of the following values:
+>  
+>  	* H_SUCCESS	 on success.
+> +        * H_STATE        if the VM is not in a position to switch to secure.
+>  
+>  Description
+>  ~~~~~~~~~~~
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index e6f76bc..0baa293 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -211,6 +211,65 @@ static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
+>  	return false;
+>  }
+>  
+> +static int kvmppc_memslot_page_merge(struct kvm *kvm,
+> +		struct kvm_memory_slot *memslot, bool merge)
+> +{
+> +	unsigned long gfn = memslot->base_gfn;
+> +	unsigned long end, start = gfn_to_hva(kvm, gfn);
+> +	int ret = 0;
+> +	struct vm_area_struct *vma;
+> +	int merge_flag = (merge) ? MADV_MERGEABLE : MADV_UNMERGEABLE;
+> +
+> +	if (kvm_is_error_hva(start))
+> +		return H_STATE;
+> +
+> +	end = start + (memslot->npages << PAGE_SHIFT);
+> +
+> +	mmap_write_lock(kvm->mm);
+> +	do {
+> +		vma = find_vma_intersection(kvm->mm, start, end);
+> +		if (!vma) {
+> +			ret = H_STATE;
+> +			break;
+> +		}
+> +		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> +			  merge_flag, &vma->vm_flags);
+> +		if (ret) {
+> +			ret = H_STATE;
+> +			break;
+> +		}
+> +		start = vma->vm_end + 1;
 
-Ooh, that thing. I thought P9 was in actual fact an SMT4 hardware part,
-but to be compatible with P8 it has this fused option where two cores
-act like a single SMT8 part.
+This should be start = vma->vm_end I believe.
 
-The interleaving enumeration is done due to P7 asymmetric cores,
-resuting in schedulers having the preference to use the lower threads.
+> +	} while (end > vma->vm_end);
+> +
+> +	mmap_write_unlock(kvm->mm);
+> +	return ret;
+> +}
+> +
+> +static int __kvmppc_page_merge(struct kvm *kvm, bool merge)
+> +{
+> +	struct kvm_memslots *slots;
+> +	struct kvm_memory_slot *memslot;
+> +	int ret = 0;
+> +
+> +	slots = kvm_memslots(kvm);
+> +	kvm_for_each_memslot(memslot, slots) {
+> +		ret = kvmppc_memslot_page_merge(kvm, memslot, merge);
+> +		if (ret)
+> +			break;
+> +	}
+> +	return ret;
+> +}
 
-Combined that results in a P9-fused configuration using two independent
-full cores when there's only 2 runnable threads.
+You walk through all the slots here to issue kvm_madvise, but...
 
-Which is a subtly different story from yours.
+> +
+> +static inline int kvmppc_disable_page_merge(struct kvm *kvm)
+> +{
+> +	return __kvmppc_page_merge(kvm, false);
+> +}
+> +
+> +static inline int kvmppc_enable_page_merge(struct kvm *kvm)
+> +{
+> +	return __kvmppc_page_merge(kvm, true);
+> +}
+> +
+>  unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>  {
+>  	struct kvm_memslots *slots;
+> @@ -232,11 +291,18 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>  		return H_AUTHORITY;
+>  
+>  	srcu_idx = srcu_read_lock(&kvm->srcu);
+> +
+> +	/* disable page-merging for all memslot */
+> +	ret = kvmppc_disable_page_merge(kvm);
+> +	if (ret)
+> +		goto out;
+> +
+> +	/* register the memslot */
+>  	slots = kvm_memslots(kvm);
+>  	kvm_for_each_memslot(memslot, slots) {
 
-But reading your explanation, it looks like the Linux topology setup
-could actually unravel the fused-faux-SMT8 into two independent SMT4
-parts, negating that firmware option.
+... you are walking thro' the same set of slots here anyway. I think
+it makes sense to issue merge advices from here itself. That will
+help you to share code with kvmppc_memslot_create() in 5/5.
 
-Anyway, a few comments just around there might be helpfull.
+All the below 3 calls are common to both the code paths, I think
+they can be carved out into a separate function if you prefer.
 
+kvmppc_uvmem_slot_init
+kvmppc_memslot_page_merge
+uv_register_mem_slot
 
-Thanks!
+Regards,
+Bharata.
