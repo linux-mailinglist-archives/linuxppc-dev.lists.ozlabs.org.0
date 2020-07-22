@@ -1,69 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95136228F8E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:10:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF13F228F92
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 07:12:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBNnn0FcxzDqXY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:10:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBNqs6NvFzDqQM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 15:12:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::143;
- helo=mail-il1-x143.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DDIWY/B3; dkim-atps=neutral
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com
- [IPv6:2607:f8b0:4864:20::143])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBNbf74Y1zDqSS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 15:01:34 +1000 (AEST)
-Received: by mail-il1-x143.google.com with SMTP id t18so224888ilh.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jul 2020 22:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=mZLJXwo1VKlX/iabelcLQZuAW4pn07ejBE0mltf65Z4=;
- b=DDIWY/B3jkEHldgmmar7sYKPfXtvFSOavr+QvWfRpbq6Z8FRN2iz9RFtLZIRW4RpF+
- 0ULTKMglk0ohhvdtCaY7tVDxhoF+ghOUdSxFLjO9BBaDPuwoVPc3S9kCJYZIJuUVt3zu
- UCUbwmYskXJMG4XkbdiTpzk2g6PAk8kb3HFqScWyhVg4lqWs9KiIGVmQoPNt6mISc9Qj
- iNSoA1/UyC6BJiQXn7bgwY12zFkRH5sxZYor/KPuMUAqP/yE3DXNYFdbdo/xUd/diNcj
- 182agpo1M5Lk198tZEt5Jrjadv3fCxGCIOz4r83FaVkv3i/4q8wK3Daut9uzlp288P/6
- MI5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=mZLJXwo1VKlX/iabelcLQZuAW4pn07ejBE0mltf65Z4=;
- b=iX2TBSuu3JTMEc3GQTJoaRLsCSvzL35NHybRv3MeVndpEDj3AA/tjCj6XnlaSgiojz
- rQ52SEVoNrSYUJLCiaAw/nRtTc9ZRWD7KiNYDJKa7HTw7dEyYWRGESVG/iOY0SfYwEXg
- Z8inVZ9eb5ul9GEkeGGq1IB7sLl9wfw6hLwJGajvcomUcz8APuoYTmpc7nWI2abJlANV
- gr2LLaM+C41CTrgwGaWq5ZT3w6ScS5HOXOELyq8+besB2WLAFbESCCMH65oaqD+YQ7mA
- Ku9ArBb92yDxov9LwInGcjwkMjksnFyn9MyFSmiTTIWMQ7Qq3tY+V6rFulLGL1q7Yofj
- gtzA==
-X-Gm-Message-State: AOAM5307VT7Qbxj4785L9/oIEdo3d6kPtgVogYLFFPULrW/wVwPZfgqr
- cGQ43N1qcZeUl8sswIClQm9qU2nTahidZdiLjO2RIQYQ6VU=
-X-Google-Smtp-Source: ABdhPJy3Kg+mR49R9JNr2mwAHnab/8dH24afl/kp1QsVQXlcP7Rz50W2Ocmqeey8cSYpoNwxFM8NtX4sRc+FcqrFgRo=
-X-Received: by 2002:a92:9a97:: with SMTP id c23mr32158353ill.258.1595394090801; 
- Tue, 21 Jul 2020 22:01:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBNcr6Nq1zDqvx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 15:02:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=LuLH3ggs; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4BBNcr48VYz9sSt; Wed, 22 Jul 2020 15:02:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1595394156; bh=YtTRfCV4UahyLx9Af7pCCXJP0N0KNpM91guqaVdDXQc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=LuLH3ggsM3xwahl7ZiSsX9oFJRX5yuR2rs95boy0b/VEmM5uv7WAPLe0YCwUjsmyg
+ Gc4M0C6UTeVY/mWM8YN0SzosJEf1HX6ovVos38OPQmtj+TPgxLCE76N0nsE3xfEmib
+ SxwYzRrK4gPu9Xk9NdlJMXNOGooqPxZiqMCYAzlw7NVA5WIMSrggqfquvC56UOny1C
+ CA8S/gwWo5ALj8KW2/+X8FcAPkKgEYHQ+7+v+44FHkKI/uopHf1Y2HE98OiybQjcdf
+ 1ewhngXHg1iVwpeSqc3iDsmc6RW+3clDpp9GMeZ9+6D8WrMSOzBsgF59pDi3M95HVa
+ GUOm/hlnoIkfQ==
+Date: Wed, 22 Jul 2020 15:02:32 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: Re: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
+ MMIO access, in sprg0 register
+Message-ID: <20200722050232.GD3878639@thinks.paulus.ozlabs.org>
+References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
 MIME-Version: 1.0
-References: <20200710052340.737567-1-oohall@gmail.com>
- <20200710052340.737567-6-oohall@gmail.com>
- <42897409-5788-dfdb-f2dc-76e99a81b662@ozlabs.ru>
-In-Reply-To: <42897409-5788-dfdb-f2dc-76e99a81b662@ozlabs.ru>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 22 Jul 2020 15:01:19 +1000
-Message-ID: <CAOSf1CF0jv_cq5xgVz+7fzf155MjHT72p+VN1EY6HjjW1Nza-w@mail.gmail.com>
-Subject: Re: [PATCH 05/15] powerpc/powernv/sriov: Move SR-IOV into a seperate
- file
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,31 +53,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: ldufour@linux.ibm.com, aik@ozlabs.ru, kvm-ppc@vger.kernel.org,
+ bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 14, 2020 at 7:16 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->
-> On 10/07/2020 15:23, Oliver O'Halloran wrote:
-> > +     align = pci_iov_resource_size(pdev, resno);
-> > +
-> > +     /*
-> > +      * iov can be null if we have an SR-IOV device with IOV BAR that can't
-> > +      * be placed in the m64 space (i.e. The BAR is 32bit or non-prefetch).
-> > +      * In that case we don't allow VFs to be enabled so just return the
-> > +      * default alignment.
-> > +      */
-> > +     if (!iov)
-> > +             return align;
->
->
-> This is the new chunk. What would happen before? Non-prefetch BAR would
-> still go to m64 space?
+On Thu, Jul 16, 2020 at 01:32:13AM -0700, Ram Pai wrote:
+> An instruction accessing a mmio address, generates a HDSI fault.  This fault is
+> appropriately handled by the Hypervisor.  However in the case of secureVMs, the
+> fault is delivered to the ultravisor.
+> 
+> Unfortunately the Ultravisor has no correct-way to fetch the faulting
+> instruction. The PEF architecture does not allow Ultravisor to enable MMU
+> translation. Walking the two level page table to read the instruction can race
+> with other vcpus modifying the SVM's process scoped page table.
+> 
+> This problem can be correctly solved with some help from the kernel.
+> 
+> Capture the faulting instruction in SPRG0 register, before executing the
+> faulting instruction. This enables the ultravisor to easily procure the
+> faulting instruction and emulate it.
 
-I don't think there's any real change. Currently if the setup in
-pnv_pci_ioda_fixup_iov_resources() fails then pdn->vfs_expanded will
-be zero. The !iov check here fills the same role, but it's more
-explicit. vfs_expanded has some other behaviour too so we can't get
-rid of it entirely (yet).
+Just a comment on the approach of putting the instruction in SPRG0:
+these I/O accessors can be used in interrupt routines, which means
+that if these accessors are ever used with interrupts enabled, there
+is the possibility of an external interrupt occurring between the
+instruction that sets SPRG0 and the load/store instruction that
+faults.  If the handler for that interrupt itself does an I/O access,
+it will overwrite SPRG0, corrupting the value set by the interrupted
+code.
+
+The choices to fix that would seem to be (a) disable interrupts around
+all I/O accesses, (b) have the accessor save and restore SPRG0, or (c)
+solve the problem another way, such as by doing a H_LOGICAL_CI_LOAD
+or H_LOGICAL_CI_STORE hypercall.
+
+Paul.
