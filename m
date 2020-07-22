@@ -2,76 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8426E2292A6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 09:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE2522937C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 10:29:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBSTk2942zDqSc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 17:56:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBTCD6DmJzDqtr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jul 2020 18:29:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBSKs0gtFzDqRF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 17:49:52 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06M7VUIJ143166; Wed, 22 Jul 2020 03:49:40 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32e1x7rwn1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 03:49:39 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06M7kIaX032222;
- Wed, 22 Jul 2020 07:49:38 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03fra.de.ibm.com with ESMTP id 32brq82fgb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Jul 2020 07:49:38 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06M7nZGD31326476
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Jul 2020 07:49:35 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2DC765204E;
- Wed, 22 Jul 2020 07:49:35 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.211.146.165])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 299A452052;
- Wed, 22 Jul 2020 07:49:31 +0000 (GMT)
-Date: Wed, 22 Jul 2020 00:49:29 -0700
-From: Ram Pai <linuxram@us.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Message-ID: <20200722074929.GI7339@oc0525413822.ibm.com>
-References: <1594888333-9370-1-git-send-email-linuxram@us.ibm.com>
- <875zags3qp.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBT981Gf0zDqxs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 18:27:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=IRUmpXyL; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4BBT975QpBz9sSn; Wed, 22 Jul 2020 18:27:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1595406443;
+ bh=5oBiL0zY8LaOsvPSs61/dmYNQNxr4DLYffd2QJrYkdY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=IRUmpXyLPrLpGuEquB9LP/N6XzynPVWNVJpk8rC9pjK6LmOlNEZmJePiH30Fo8lSK
+ ZQs97rhk0+kG5U/kDHw20xz8XXG4O/+4Su6iBGt+J5sLmp759s8ABWylUQOrHmOHVK
+ Pr2lyL8yRb4BfEXPzc+3XHbevxbvfy+gBczz3CVI=
+Date: Wed, 22 Jul 2020 17:51:53 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
+Message-ID: <20200722075153.GB5513@umbus.fritz.box>
+References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
+ <87r1tb1rw2.fsf@linux.ibm.com> <87tuy1sksv.fsf@mpe.ellerman.id.au>
+ <20200721032959.GN7902@in.ibm.com>
+ <87ft9lrr55.fsf@mpe.ellerman.id.au>
+ <20200722060506.GO7902@in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="i9LlY+UWpKt15+FH"
 Content-Disposition: inline
-In-Reply-To: <875zags3qp.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-Subject: RE: [RFC PATCH] powerpc/pseries/svm: capture instruction faulting on
- MMIO access, in sprg0 register
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-22_03:2020-07-22,
- 2020-07-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- impostorscore=0 spamscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007220052
+In-Reply-To: <20200722060506.GO7902@in.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,43 +56,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: ldufour@linux.ibm.com, aik@ozlabs.ru, kvm-ppc@vger.kernel.org,
- bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 22, 2020 at 12:06:06PM +1000, Michael Ellerman wrote:
-> Ram Pai <linuxram@us.ibm.com> writes:
-> > An instruction accessing a mmio address, generates a HDSI fault.  This fault is
-> > appropriately handled by the Hypervisor.  However in the case of secureVMs, the
-> > fault is delivered to the ultravisor.
-> >
-> > Unfortunately the Ultravisor has no correct-way to fetch the faulting
-> > instruction. The PEF architecture does not allow Ultravisor to enable MMU
-> > translation. Walking the two level page table to read the instruction can race
-> > with other vcpus modifying the SVM's process scoped page table.
-> 
-> You're trying to read the guest's kernel text IIUC, that mapping should
-> be stable. Possibly permissions on it could change over time, but the
-> virtual -> real mapping should not.
 
-Actually the code does not capture the address of the instruction in the
-sprg0 register. It captures the instruction itself. So should the mapping
-matter?
+--i9LlY+UWpKt15+FH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> > This problem can be correctly solved with some help from the kernel.
-> >
-> > Capture the faulting instruction in SPRG0 register, before executing the
-> > faulting instruction. This enables the ultravisor to easily procure the
-> > faulting instruction and emulate it.
-> 
-> This is not something I'm going to merge. Sorry.
+On Wed, Jul 22, 2020 at 11:35:06AM +0530, Bharata B Rao wrote:
+> On Tue, Jul 21, 2020 at 10:25:58PM +1000, Michael Ellerman wrote:
+> > Bharata B Rao <bharata@linux.ibm.com> writes:
+> > > On Tue, Jul 21, 2020 at 11:45:20AM +1000, Michael Ellerman wrote:
+> > >> Nathan Lynch <nathanl@linux.ibm.com> writes:
+> > >> > "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> > >> >> This is the next version of the fixes for memory unplug on radix.
+> > >> >> The issues and the fix are described in the actual patches.
+> > >> >
+> > >> > I guess this isn't actually causing problems at runtime right now,=
+ but I
+> > >> > notice calls to resize_hpt_for_hotplug() from arch_add_memory() and
+> > >> > arch_remove_memory(), which ought to be mmu-agnostic:
+> > >> >
+> > >> > int __ref arch_add_memory(int nid, u64 start, u64 size,
+> > >> > 			  struct mhp_params *params)
+> > >> > {
+> > >> > 	unsigned long start_pfn =3D start >> PAGE_SHIFT;
+> > >> > 	unsigned long nr_pages =3D size >> PAGE_SHIFT;
+> > >> > 	int rc;
+> > >> >
+> > >> > 	resize_hpt_for_hotplug(memblock_phys_mem_size());
+> > >> >
+> > >> > 	start =3D (unsigned long)__va(start);
+> > >> > 	rc =3D create_section_mapping(start, start + size, nid,
+> > >> > 				    params->pgprot);
+> > >> > ...
+> > >>=20
+> > >> Hmm well spotted.
+> > >>=20
+> > >> That does return early if the ops are not setup:
+> > >>=20
+> > >> int resize_hpt_for_hotplug(unsigned long new_mem_size)
+> > >> {
+> > >> 	unsigned target_hpt_shift;
+> > >>=20
+> > >> 	if (!mmu_hash_ops.resize_hpt)
+> > >> 		return 0;
+> > >>=20
+> > >>=20
+> > >> And:
+> > >>=20
+> > >> void __init hpte_init_pseries(void)
+> > >> {
+> > >> 	...
+> > >> 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
+> > >> 		mmu_hash_ops.resize_hpt =3D pseries_lpar_resize_hpt;
+> > >>=20
+> > >> And that comes in via ibm,hypertas-functions:
+> > >>=20
+> > >> 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
+> > >>=20
+> > >>=20
+> > >> But firmware is not necessarily going to add/remove that call based =
+on
+> > >> whether we're using hash/radix.
+> > >
+> > > Correct but hpte_init_pseries() will not be called for radix guests.
+> >=20
+> > Yeah, duh. You'd think the function name would have been a sufficient
+> > clue for me :)
+> >=20
+> > >> So I think a follow-up patch is needed to make this more robust.
+> > >>=20
+> > >> Aneesh/Bharata what platform did you test this series on? I'm curious
+> > >> how this didn't break.
+> > >
+> > > I have tested memory hotplug/unplug for radix guest on zz platform and
+> > > sanity-tested this for hash guest on P8.
+> > >
+> > > As noted above, mmu_hash_ops.resize_hpt will not be set for radix
+> > > guest and hence we won't see any breakage.
+> >=20
+> > OK.
+> >=20
+> > That's probably fine as it is then. Or maybe just a comment in
+> > resize_hpt_for_hotplug() pointing out that resize_hpt will be NULL if
+> > we're using radix.
+>=20
+> Or we could move these calls to hpt-only routines like below?
+>=20
+> David - Do you remember if there was any particular reason to have
+> these two hpt-resize calls within powerpc-generic memory hotplug code?
 
-Ok. Will consider other approaches.
+I don't remember, sorry.
 
-RP
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--i9LlY+UWpKt15+FH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8X8BYACgkQbDjKyiDZ
+s5JhQxAAmPVnY5hHgvzJE10d8K54XvWiy8uCAFjaKWUb8/dPphgQEBepjWP10ckx
+q1EVNdnRjKrgVgX+duFt9jHbm5SFX6G2RFcSYnrb0t6hPr8v0pOj7v8VUw1QcqSw
+cYgyCq0xFbatw0y39luYMrSpWzuLsXVAT33yi2/jcbwdEA5thvaWovrkpkfU16m/
+7MIYYlyeJaUm7enro5f7o9qfsRYTJ6rUY9RNgHAgvYVo3OB2yuwz9E7wc1DPHcD9
+etuy78Kz3t6xO7/9bDYFu1LzJpIB+LS7wVxmAjCLpfABQlnrVoC2iOiIrx40DYX5
+A2t9TOhEqXQQxvpvc94xYcVu5GU83Jpcl2FbXRTiAd53MqSpMwIQK+66UsEPdWCD
+TELkBEfzIyYGaPJzP3atlJymOeaAX8gfpHi8kPRPyAfIwSIFbA1PWVJ4/sKVrZNG
+rLFpJJI5da5G/TTh9ssqOlPoyWMm8yFep9KR8hM4AjAs6G6dtWqih8/UpcMdxXut
+7PXRgNd9BEwBmYq+/E/hVzKYFMqYO9OHSvqJxqtc6GCnW2vDYkZds/j0vzbM38sd
+eFCVz+UPf+Eqf0gTYCCbzxAlWzwxPM1+knwoj2W2ypwExBK3W+DZ/s+/395VCZY7
+MW4zkaKJf5sHB7BqtVxNUwImu/RETSlHteg70hbw4GGVG/LESpw=
+=4dvk
+-----END PGP SIGNATURE-----
+
+--i9LlY+UWpKt15+FH--
