@@ -2,74 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF4922B364
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 18:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 512AB22B3EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 18:51:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCHff2hByzDrQZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 02:22:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCJJN5LW6zDr6L
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 02:51:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CLFlyE2I; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCHcX3zsPzDrHG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 02:20:28 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id u5so3239440pfn.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 09:20:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=dWKUB0kRohvexbkkPgRM1qwRkgK/3Sd5V3qmYHkfVHc=;
- b=CLFlyE2INNHRtu0udQhGXB/xueYWvsHUKQOa7BhUp+CQibOINf6pl9x8l8tzZnhdso
- ra1AtKgGgUmh80B1VBWFNou9SX1AkDMjVJPKEd6z7bXtYEtL4VtsWvWBKt85CviMvodt
- BCPDK7o0NLHmmMijpm4MSZoDNzKJgXcYkyPwgQI94LaTdG3ZWY8hKiJp0FQZTwHSGX68
- 03TQQk4bUoK7KOZGgWGPD5qw1ZjGeDnIGEuePIN3oPvkWPaQfDouRmp3sEiQiRAei0kZ
- iuFRqCxyVbeCBhNxZt0y4ohF4dbrYNqIKL71S9OHION9X5XkwajhSEhjg2H7M3QCdc2S
- CGQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=dWKUB0kRohvexbkkPgRM1qwRkgK/3Sd5V3qmYHkfVHc=;
- b=GKwF1oQ/B0xvcEsWpy8qq3XgN4xXoMngMJ6SL/QXwvOBTxUk87hnwdcv6P4hNESzAs
- kRaUNJma8xqOIM/U++4Md8Ds4JcSaqOYG1qAUhKHuH3ttWgTEg60nBu1F0lWIHKkbUxT
- 5BK1s2ng8RhDd5q7pNBiCbZsySx3Tt07pqZF4PPqv7aeAsaPWvcZ6zDm/LHMnF4qr+ra
- mCuIsN21j2CVUoo2SZWjBNwpO49UGHBhw7Lg7jsT1x+PXTIHESQBJ9xOe4g5gEqhworf
- 9ZRjVyN30HPRqYSJITxv13PBT6d9ZMG0uxcm3RFhCeYkfIPeyUJHNM7+L7IauWCAoeKQ
- UVtw==
-X-Gm-Message-State: AOAM531hi2mLzx6XFYdv13NmF7NeYG+V7CfqwBeElOS69w0xAETMcRAR
- cD6qSLVv2M3pVlYXIiWllVY=
-X-Google-Smtp-Source: ABdhPJysDWhvIJQomw/DqEdIwc2bVMwxFcnItkq2Ze5+GnmO9BChUUQuuGE4h+UgCL2QhudHR2afgw==
-X-Received: by 2002:a65:6246:: with SMTP id q6mr4842817pgv.133.1595521226642; 
- Thu, 23 Jul 2020 09:20:26 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id z11sm3376688pfr.71.2020.07.23.09.20.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Jul 2020 09:20:26 -0700 (PDT)
-Date: Fri, 24 Jul 2020 02:20:20 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/2] lockdep: improve current->(hard|soft)irqs_enabled
- synchronisation with actual irq state
-To: Peter Zijlstra <peterz@infradead.org>
-References: <20200723105615.1268126-1-npiggin@gmail.com>
- <20200723114010.GO5523@worktop.programming.kicks-ass.net>
- <1595506730.3mvrxktem5.astroid@bobo.none>
- <20200723145904.GU5523@worktop.programming.kicks-ass.net>
-In-Reply-To: <20200723145904.GU5523@worktop.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCJCH1TJ3zDrQR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 02:47:03 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BCJC36yTGzB09bR;
+ Thu, 23 Jul 2020 18:46:55 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Jaygyj04Nb8u; Thu, 23 Jul 2020 18:46:55 +0200 (CEST)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BCJC33NBqzB09bN;
+ Thu, 23 Jul 2020 18:46:55 +0200 (CEST)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 3746D72B; Thu, 23 Jul 2020 18:48:14 +0200 (CEST)
+Received: from 37-172-34-2.coucou-networks.fr
+ (37-172-34-2.coucou-networks.fr [37.172.34.2]) by messagerie.si.c-s.fr
+ (Horde Framework) with HTTP; Thu, 23 Jul 2020 18:48:14 +0200
+Date: Thu, 23 Jul 2020 18:48:14 +0200
+Message-ID: <20200723184814.Horde.pk5BO9iFqyGX5D4TW5wqmg1@messagerie.si.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 2/2] powerpc/64s: system call support for scv/rfscv
+ instructions
+References: <20200611081203.995112-1-npiggin@gmail.com>
+ <20200611081203.995112-3-npiggin@gmail.com>
+ <871rl2ralk.fsf@mpe.ellerman.id.au>
+In-Reply-To: <871rl2ralk.fsf@mpe.ellerman.id.au>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Message-Id: <1595520766.9z4077xel7.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,66 +60,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-api@vger.kernel.org, musl@lists.openwall.com,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ libc-dev@lists.llvm.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Peter Zijlstra's message of July 24, 2020 12:59 am:
-> On Thu, Jul 23, 2020 at 11:11:03PM +1000, Nicholas Piggin wrote:
->> Excerpts from Peter Zijlstra's message of July 23, 2020 9:40 pm:
->> > On Thu, Jul 23, 2020 at 08:56:14PM +1000, Nicholas Piggin wrote:
->> >=20
->> >> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include=
-/asm/hw_irq.h
->> >> index 3a0db7b0b46e..35060be09073 100644
->> >> --- a/arch/powerpc/include/asm/hw_irq.h
->> >> +++ b/arch/powerpc/include/asm/hw_irq.h
->> >> @@ -200,17 +200,14 @@ static inline bool arch_irqs_disabled(void)
->> >>  #define powerpc_local_irq_pmu_save(flags)			\
->> >>  	 do {							\
->> >>  		raw_local_irq_pmu_save(flags);			\
->> >> -		trace_hardirqs_off();				\
->> >> +		if (!raw_irqs_disabled_flags(flags))		\
->> >> +			trace_hardirqs_off();			\
->> >>  	} while(0)
->> >>  #define powerpc_local_irq_pmu_restore(flags)			\
->> >>  	do {							\
->> >> -		if (raw_irqs_disabled_flags(flags)) {		\
->> >> -			raw_local_irq_pmu_restore(flags);	\
->> >> -			trace_hardirqs_off();			\
->> >> -		} else {					\
->> >> +		if (!raw_irqs_disabled_flags(flags))		\
->> >>  			trace_hardirqs_on();			\
->> >> -			raw_local_irq_pmu_restore(flags);	\
->> >> -		}						\
->> >> +		raw_local_irq_pmu_restore(flags);		\
->> >>  	} while(0)
->> >=20
->> > You shouldn't be calling lockdep from NMI context!
->>=20
->> After this patch it doesn't.
->=20
-> You sure, trace_hardirqs_{on,off}() calls into lockdep.
+Michael Ellerman <mpe@ellerman.id.au> a =C3=A9crit=C2=A0:
 
-At least for irq enable/disable functions yes. NMI runs with
-interrupts disabled so these will never call trace_hardirqs_on/off
-after this patch.
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> diff --git a/arch/powerpc/include/asm/ppc-opcode.h=20=20
+>>=20b/arch/powerpc/include/asm/ppc-opcode.h
+>> index 2a39c716c343..b2bdc4de1292 100644
+>> --- a/arch/powerpc/include/asm/ppc-opcode.h
+>> +++ b/arch/powerpc/include/asm/ppc-opcode.h
+>> @@ -257,6 +257,7 @@
+>>  #define PPC_INST_MFVSRD			0x7c000066
+>>  #define PPC_INST_MTVSRD			0x7c000166
+>>  #define PPC_INST_SC			0x44000002
+>> +#define PPC_INST_SCV			0x44000001
+> ...
+>> @@ -411,6 +412,7 @@
+> ...
+>> +#define __PPC_LEV(l)	(((l) & 0x7f) << 5)
+>
+> These conflicted and didn't seem to be used so I dropped them.
+>
+>> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+>> index 5abe98216dc2..161bfccbc309 100644
+>> --- a/arch/powerpc/lib/sstep.c
+>> +++ b/arch/powerpc/lib/sstep.c
+>> @@ -3378,6 +3382,16 @@ int emulate_step(struct pt_regs *regs,=20=20
+>>=20struct ppc_inst instr)
+>>  		regs->msr =3D MSR_KERNEL;
+>>  		return 1;
+>>
+>> +	case SYSCALL_VECTORED_0:	/* scv 0 */
+>> +		regs->gpr[9] =3D regs->gpr[13];
+>> +		regs->gpr[10] =3D MSR_KERNEL;
+>> +		regs->gpr[11] =3D regs->nip + 4;
+>> +		regs->gpr[12] =3D regs->msr & MSR_MASK;
+>> +		regs->gpr[13] =3D (unsigned long) get_paca();
+>> +		regs->nip =3D (unsigned long) &system_call_vectored_emulate;
+>> +		regs->msr =3D MSR_KERNEL;
+>> +		return 1;
+>> +
+>
+> This broke the ppc64e build:
+>
+>   ld: arch/powerpc/lib/sstep.o:(.toc+0x0): undefined reference to=20=20
+>=20`system_call_vectored_emulate'
+>   make[1]: *** [/home/michael/linux/Makefile:1139: vmlinux] Error 1
+>
+> I wrapped it in #ifdef CONFIG_PPC64_BOOK3S.
 
-> (FWIW they're
-> also broken vs entry ordering, but that's another story).
->=20
->> trace_hardirqs_on/off implementation appears to expect to be called in N=
-MI=20
->> context though, for some reason.
->=20
-> Hurpm, not sure.. I'll have to go grep arch code now :/ The generic NMI
-> code didn't touch that stuff.
->=20
-> Argh, yes, there might be broken there... damn! I'll go frob around.
->=20
+You mean CONFIG_PPC_BOOK3S_64 ?
 
-Thanks,
-Nick
+Christophe
+>
+> cheers
+
+
