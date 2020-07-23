@@ -1,67 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004AB22A9D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 09:44:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC57A22AB23
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 10:54:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC48q0X4lzDqXB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 17:44:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC5jc0T5wzDr7K
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 18:54:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=OC8Tcguz; dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC46P413szDr7J
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 17:42:05 +1000 (AEST)
-Received: by mail-ot1-x341.google.com with SMTP id g37so3691248otb.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 00:42:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=U+8N7GWgEgVv1K50QQ/3loKTT/p4q+9VM8bVlrohMEc=;
- b=OC8TcguzABMfWgxRsgFA2/m+2RD9oKMw3/O3mJm0ZttRo8rI7KmovIAAMPxX4ai8eB
- CWGMDsxHAT88MdBZb8uGIe7KxCtII/oTRU7L2iOMwB+iMycJPzw6fWqkqEQuQyWq8wqp
- ze24vDCPMoNH40/mCDSLm00ekb9T5Uew+nvs42+cISud9JnDySYtucE8vukp+MVaMtcr
- pRAdqxE1ZE3I3BpX1N5umZCRsNYKvf+OrLOCwYBg3G+VpWiavEbeLZKAF9ah7ZX+YEdi
- 6k0DcBOC/ik+sLTlNyJt2emhMU7ZoQRcKd9ZXIWa7p+9lms5StNKEmTCPlncjm6Sf+Kf
- doHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=U+8N7GWgEgVv1K50QQ/3loKTT/p4q+9VM8bVlrohMEc=;
- b=Z5GffVNtODIrE+r5r+d6/0HM8ySN8UQcf4KtHuqQbe/mmppESIaIzLk3K0luK7SK3e
- tjKWxgZqtxeP68vVjLd39u6+fB3z3ABeRbX6Gd2lCHdrH3VUwFF8BaBZbAsGQ2GUmUn1
- 6SAaHMXKmzX7BhXcePHfsxY2r8JtT+Sey/UDHD8kZtQmAEsCY8SXd0cpX4WvPRaGUG60
- Kw20jCu8rCLJFbyzhF2rJ2+pAJ0OcJD9qu8EVaGSmraPCCwIWh8bc03O0R+cENkCQz0z
- upp+JYxsTgo70mqRyOpCKGCCDckdh5pXweTRrioySfeantcFV85dqsQKG79e1ywUp89M
- oUew==
-X-Gm-Message-State: AOAM530Sd29MXmsJy/PCNQJ589blGwsVns8B1+eYbL2hCvgIWVKY4SiV
- 34HkkJjridXDKHctw4x5/vlwT56k7lciQRPn8/2FMw==
-X-Google-Smtp-Source: ABdhPJxTKtycC3xxRmcnVAouqd5evjRX/vXyycCCG29EoIpqjidkT+3UgfR9c5RLHrDTt0OV6PmRSDkCQS9/vQLQLmE=
-X-Received: by 2002:a9d:2041:: with SMTP id n59mr3338343ota.28.1595490121925; 
- Thu, 23 Jul 2020 00:42:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <1595489557-2047-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1595489557-2047-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Thu, 23 Jul 2020 17:40:26 +1000
-Message-ID: <CACzsE9ogrEtmD9=fDZ0vMdFL7Tgo=132wdEb9mHbjoueRLj-dg@mail.gmail.com>
-Subject: Re: [v4] powerpc/perf: Initialize power10 PMU registers in cpu setup
- routine
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC5fw2L5xzDrD2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 18:51:52 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06N8WPm6077415; Thu, 23 Jul 2020 04:51:38 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32f718gnwx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 04:51:38 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06N8WbSq078197;
+ Thu, 23 Jul 2020 04:51:38 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32f718gnw8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 04:51:38 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06N8frml001291;
+ Thu, 23 Jul 2020 08:51:36 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06ams.nl.ibm.com with ESMTP id 32brbh5v59-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 08:51:36 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06N8pYt147120586
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jul 2020 08:51:34 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 090C2AE051;
+ Thu, 23 Jul 2020 08:51:34 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 98A1EAE04D;
+ Thu, 23 Jul 2020 08:51:30 +0000 (GMT)
+Received: from srikart450.in.ibm.com (unknown [9.199.56.65])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Jul 2020 08:51:30 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v3 01/10] powerpc/smp: Fix a warning under !NEED_MULTIPLE_NODES
+Date: Thu, 23 Jul 2020 14:21:07 +0530
+Message-Id: <20200723085116.4731-2-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200723085116.4731-1-srikar@linux.vnet.ibm.com>
+References: <20200723085116.4731-1-srikar@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-23_02:2020-07-22,
+ 2020-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ clxscore=1011 priorityscore=1501 impostorscore=0 adultscore=0
+ suspectscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007230061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,95 +88,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Jordan Niethe <jniethe5@gmail.com>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 23, 2020 at 5:32 PM Athira Rajeev
-<atrajeev@linux.vnet.ibm.com> wrote:
->
-> Initialize Monitor Mode Control Register 3 (MMCR3)
-> SPR which is new in power10. For PowerISA v3.1, BHRB disable
-> is controlled via Monitor Mode Control Register A (MMCRA) bit,
-> namely "BHRB Recording Disable (BHRBRD)". This patch also initializes
-> MMCRA BHRBRD to disable BHRB feature at boot for power10.
->
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Reviewed-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
-> Dependency:
-> - On power10 PMU base enablement series V3:
->   https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=190462
->
-> Changes from v3 -> v4
-> - Addressed review comments from Jordan and Michael Ellerman.
->   This patch was initially part of Power10 PMU base enablement
->   series. Moving this as separate patch as suggested by Michael
->   Ellerman. Hence dependency of initial series Patch 7 which defines
->   MMCRA_BHRB_DISABLE. Addressed review comments from Jordan to make
->   sure existing PMU function (__INIT_PMU) will not overwrite ISA 3.1
->   updates
->
-> Changes from v2 -> v3
-> - Addressed review comment from Michael Ellerman to
->   call PMU init from __setup_cpu_power10
->
->  arch/powerpc/kernel/cpu_setup_power.S | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
-> index efdcfa7..3fa6eef 100644
-> --- a/arch/powerpc/kernel/cpu_setup_power.S
-> +++ b/arch/powerpc/kernel/cpu_setup_power.S
-> @@ -94,13 +94,15 @@ _GLOBAL(__restore_cpu_power8)
->  _GLOBAL(__setup_cpu_power10)
->         mflr    r11
->         bl      __init_FSCR_power10
-> +       bl      __init_PMU
-> +       bl      __init_PMU_ISA31
->         b       1f
->
->  _GLOBAL(__setup_cpu_power9)
->         mflr    r11
->         bl      __init_FSCR
-> -1:     bl      __init_PMU
-> -       bl      __init_hvmode_206
-> +       bl      __init_PMU
-> +1:     bl      __init_hvmode_206
->         mtlr    r11
->         beqlr
->         li      r0,0
-> @@ -124,13 +126,15 @@ _GLOBAL(__setup_cpu_power9)
->  _GLOBAL(__restore_cpu_power10)
->         mflr    r11
->         bl      __init_FSCR_power10
-> +       bl      __init_PMU
-> +       bl      __init_PMU_ISA31
->         b       1f
->
->  _GLOBAL(__restore_cpu_power9)
->         mflr    r11
->         bl      __init_FSCR
-> -1:     bl      __init_PMU
-> -       mfmsr   r3
-> +       bl      __init_PMU
-> +1:     mfmsr   r3
->         rldicl. r0,r3,4,63
->         mtlr    r11
->         beqlr
-> @@ -233,3 +237,10 @@ __init_PMU_ISA207:
->         li      r5,0
->         mtspr   SPRN_MMCRS,r5
->         blr
-> +
-> +__init_PMU_ISA31:
-> +       li      r5,0
-> +       mtspr   SPRN_MMCR3,r5
-> +       LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
-> +       mtspr   SPRN_MMCRA,r5
-> +       blr
-> --
-> 1.8.3.1
->
+Fix a build warning in a non CONFIG_NEED_MULTIPLE_NODES
+"error: _numa_cpu_lookup_table_ undeclared"
+
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: LKML <linux-kernel@vger.kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Anton Blanchard <anton@ozlabs.org>
+Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: Michael Neuling <mikey@neuling.org>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Jordan Niethe <jniethe5@gmail.com>
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+---
+Changelog v2 -> v3:
+	Removed node caching part. Rewrote the Commit msg (Michael Ellerman)
+	Renamed to powerpc/smp: Fix a warning under !NEED_MULTIPLE_NODES
+
+ arch/powerpc/kernel/smp.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 73199470c265..edf94ca64eea 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -860,6 +860,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ 					GFP_KERNEL, cpu_to_node(cpu));
+ 		zalloc_cpumask_var_node(&per_cpu(cpu_core_map, cpu),
+ 					GFP_KERNEL, cpu_to_node(cpu));
++#ifdef CONFIG_NEED_MULTIPLE_NODES
+ 		/*
+ 		 * numa_node_id() works after this.
+ 		 */
+@@ -868,6 +869,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ 			set_cpu_numa_mem(cpu,
+ 				local_memory_node(numa_cpu_lookup_table[cpu]));
+ 		}
++#endif
+ 	}
+ 
+ 	/* Init the cpumasks so the boot CPU is related to itself */
+-- 
+2.18.2
+
