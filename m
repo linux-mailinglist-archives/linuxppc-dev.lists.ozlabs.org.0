@@ -1,89 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7366F22B915
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 00:01:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F7422B937
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 00:14:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCR9T52CVzDrfJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 08:01:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCRSP25XtzDrFC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 08:13:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=longman@redhat.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCRQf26hCzDrQr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 08:12:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=SDqTC81G; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=SDqTC81G; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+ dmarc=fail (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BCRQd6RwTz9BNW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 08:12:25 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BCRQd5nKmz9sRN; Fri, 24 Jul 2020 08:12:25 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCR741JGJzDrK5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 07:58:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1595541532;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=T3T05BblW5qcrnE9EzvsH5COWPH3G8n5S+3dyvDj4j8=;
- b=SDqTC81GNcPZ44vKLAlYZJdE6NGWxCHtbQrn3KgfYiafGtnssxGH7vJC35duf8iiYU80fo
- kNnqqqkkf8XrwARrYbQiJeZcei2a0DahWMTCnpIIGUjQkr0edvRKgPyGVo/VcA5D7geKTf
- 5tpIvIf/jJoeLZNxRJA19ppptc9G7hY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1595541532;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=T3T05BblW5qcrnE9EzvsH5COWPH3G8n5S+3dyvDj4j8=;
- b=SDqTC81GNcPZ44vKLAlYZJdE6NGWxCHtbQrn3KgfYiafGtnssxGH7vJC35duf8iiYU80fo
- kNnqqqkkf8XrwARrYbQiJeZcei2a0DahWMTCnpIIGUjQkr0edvRKgPyGVo/VcA5D7geKTf
- 5tpIvIf/jJoeLZNxRJA19ppptc9G7hY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-309-1wwkHWrOOpOP_vwI3YSGQw-1; Thu, 23 Jul 2020 17:58:47 -0400
-X-MC-Unique: 1wwkHWrOOpOP_vwI3YSGQw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6195D80183C;
- Thu, 23 Jul 2020 21:58:45 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-119-128.rdu2.redhat.com [10.10.119.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D6E245C1D3;
- Thu, 23 Jul 2020 21:58:43 +0000 (UTC)
-Subject: Re: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks for
- SPLPAR
-To: peterz@infradead.org
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <20200706043540.1563616-6-npiggin@gmail.com>
- <874kqhvu1v.fsf@mpe.ellerman.id.au>
- <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
- <20200723140011.GR5523@worktop.programming.kicks-ass.net>
- <845de183-56f5-2958-3159-faa131d46401@redhat.com>
- <20200723184759.GS119549@hirez.programming.kicks-ass.net>
- <6d6279ad-7432-63c1-14c3-18c4cff30bf8@redhat.com>
- <20200723195855.GU119549@hirez.programming.kicks-ass.net>
-From: Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <4fbe47a5-dbc9-427a-5b21-b31b37bc751a@redhat.com>
-Date: Thu, 23 Jul 2020 17:58:43 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by ozlabs.org (Postfix) with ESMTPS id 4BCRQd1LsSz9sRK
+ for <linuxppc-dev@ozlabs.org>; Fri, 24 Jul 2020 08:12:24 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06NM2OA9120750; Thu, 23 Jul 2020 18:12:16 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32fb9bev32-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 18:12:16 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06NM8mKS148551;
+ Thu, 23 Jul 2020 18:12:16 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32fb9bev2s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 18:12:15 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NMAVBG003713;
+ Thu, 23 Jul 2020 22:12:15 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02dal.us.ibm.com with ESMTP id 32brqa3kn5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 22:12:15 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06NMCB0u34144844
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jul 2020 22:12:11 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 94D9578066;
+ Thu, 23 Jul 2020 22:12:13 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 372747809B;
+ Thu, 23 Jul 2020 22:12:10 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.163.53.35])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu, 23 Jul 2020 22:12:09 +0000 (GMT)
+References: <159524918900.20855.17709718993097359220.stgit@hbathini.in.ibm.com>
+ <159524946347.20855.15784642736087777919.stgit@hbathini.in.ibm.com>
+User-agent: mu4e 1.2.0; emacs 26.3
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH v4 03/12] powerpc/kexec_file: add helper functions for
+ getting memory ranges
+In-reply-to: <159524946347.20855.15784642736087777919.stgit@hbathini.in.ibm.com>
+Date: Thu, 23 Jul 2020 19:12:05 -0300
+Message-ID: <878sf96fuy.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <20200723195855.GU119549@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-23_09:2020-07-23,
+ 2020-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ mlxlogscore=999 lowpriorityscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 suspectscore=0 priorityscore=1501 adultscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007230151
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,64 +106,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
- virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, kvm-ppc@vger.kernel.org,
- Will Deacon <will@kernel.org>
+Cc: Pingfan Liu <piliu@redhat.com>, Nayna Jain <nayna@linux.ibm.com>,
+ Kexec-ml <kexec@lists.infradead.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, Petr Tesarik <ptesarik@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/23/20 3:58 PM, peterz@infradead.org wrote:
-> On Thu, Jul 23, 2020 at 03:04:13PM -0400, Waiman Long wrote:
->> On 7/23/20 2:47 PM, peterz@infradead.org wrote:
->>> On Thu, Jul 23, 2020 at 02:32:36PM -0400, Waiman Long wrote:
->>>> BTW, do you have any comment on my v2 lock holder cpu info qspinlock patch?
->>>> I will have to update the patch to fix the reported 0-day test problem, but
->>>> I want to collect other feedback before sending out v3.
->>> I want to say I hate it all, it adds instructions to a path we spend an
->>> aweful lot of time optimizing without really getting anything back for
->>> it.
->> It does add some extra instruction that may slow it down slightly, but I
->> don't agree that it gives nothing back. The cpu lock holder information can
->> be useful in analyzing crash dumps and in some debugging situation. I think
->> it can be useful in RHEL for this readon. How about an x86 config option to
->> allow distros to decide if they want to have it enabled? I will make sure
->> that it will have no performance degradation if the option is not enabled.
-> Config knobs suck too; they create a maintenance burden (we get to make
-> sure all the permutations works/build/etc..) and effectively nobody uses
-> them, since world+dog uses what distros pick.
->
-> Anyway, instead of adding a second per-cpu variable, can you see how
-> horrible something like this is:
->
-> unsigned char adds(unsigned char var, unsigned char val)
-> {
-> 	unsigned short sat = 0xff, tmp = var;
->
-> 	asm ("addb	%[val], %b[var];"
-> 	     "cmovc	%[sat], %[var];"
-> 	     : [var] "+r" (tmp)
-> 	     : [val] "ir" (val), [sat] "r" (sat)
-> 	     );
->
-> 	return tmp;
-> }
->
-> Another thing to try is, instead of threading that lockval throughout
-> the thing, simply:
->
-> #define _Q_LOCKED_VAL	this_cpu_read_stable(cpu_sat)
->
-> or combined with the above
->
-> #define _Q_LOCKED_VAL	adds(this_cpu_read_stable(cpu_number), 2)
->
-> and see if the compiler really makes a mess of things.
->
-Thanks for the suggestion. I will try that out.
 
-Cheers,
-Longman
+Hari Bathini <hbathini@linux.ibm.com> writes:
 
+> In kexec case, the kernel to be loaded uses the same memory layout as
+> the running kernel. So, passing on the DT of the running kernel would
+> be good enough.
+>
+> But in case of kdump, different memory ranges are needed to manage
+> loading the kdump kernel, booting into it and exporting the elfcore
+> of the crashing kernel. The ranges are exclude memory ranges, usable
+> memory ranges, reserved memory ranges and crash memory ranges.
+>
+> Exclude memory ranges specify the list of memory ranges to avoid while
+> loading kdump segments. Usable memory ranges list the memory ranges
+> that could be used for booting kdump kernel. Reserved memory ranges
+> list the memory regions for the loading kernel's reserve map. Crash
+> memory ranges list the memory ranges to be exported as the crashing
+> kernel's elfcore.
+>
+> Add helper functions for setting up the above mentioned memory ranges.
+> This helpers facilitate in understanding the subsequent changes better
+> and make it easy to setup the different memory ranges listed above, as
+> and when appropriate.
+>
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> Tested-by: Pingfan Liu <piliu@redhat.com>
+
+Just one comment below, but regardless:
+
+Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+
+> +/**
+> + * add_htab_mem_range - Adds htab range to the given memory ranges list,
+> + *                      if it exists
+> + * @mem_ranges:         Range list to add the memory range to.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +int add_htab_mem_range(struct crash_mem **mem_ranges)
+> +{
+> +	if (!htab_address)
+> +		return 0;
+> +
+> +	return add_mem_range(mem_ranges, __pa(htab_address), htab_size_bytes);
+> +}
+
+I believe you need to surround this function with `#ifdef
+CONFIG_PPC_BOOK3S_64` and `#endif` to match what is done in
+<asm/kexec_ranges.h>.
+
+--
+Thiago Jung Bauermann
+IBM Linux Technology Center
