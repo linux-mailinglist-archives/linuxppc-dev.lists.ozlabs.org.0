@@ -2,52 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B0E22A912
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 08:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 148C622A91B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 08:49:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC2pT5csMzDrFD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 16:43:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC2x60j3VzDr2w
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 16:48:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC2mv4VMnzDrBg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 16:41:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC2vT3B7BzDrBr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 16:47:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KkEc2t26; 
+ header.a=rsa-sha256 header.s=201909 header.b=F8mQFRtw; 
  dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4BC2vT2cF6z9sRf; Thu, 23 Jul 2020 16:47:33 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BC2mv0s3Wz9sQt;
- Thu, 23 Jul 2020 16:41:51 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BC2vR6Pf2z9sRR;
+ Thu, 23 Jul 2020 16:47:31 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595486511;
- bh=70ZBEEl//SqmVWbpPoZYFncCaDwRhVg5OotUH4dE1HE=;
+ s=201909; t=1595486853;
+ bh=iLCp72MN0Bz7Tijm/DlYPrNZEwgqJ+eZi+r993c2Gas=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=KkEc2t26tQXICDUsb/AYFhskSnQQI+E5sMY4MBO77trGDt1HIsQKH60vMymO3/cns
- 24IRXE7/V4vayG5uRIQqp0TPNqp8V5vohNkwziNcZ/Klb3dY4uZyLw3uy1O2HGCgD1
- JtIxUpPSYWK0PcHMOAs/k6elUdX6yL0xlpxrzb4erU5/iRlFqalUGYXsNP6oXw1lYr
- xh+8sC57zm68BPqQiG14Jq3o4VYwCAVPNJS8vAY6XKfyVQaXkJbP3wWz3Uu1YATQSJ
- s4+777N3vLj8WoasH9St8XyyjyL9xVc666aRxNRLAjsQJ8sC0K8GIYhYN6mAebKaYR
- TIj/t6IDldBOg==
+ b=F8mQFRtw6PH4Q/+W/cXQHWrXJ7h89YyzJrv4PI1hNeDQOHFhaQ2yxkl5BomVcaRK4
+ 0LflFjJsREETVY3Js4225bYdLmOxFtAwYx/GJKne4iL7ZD3gs4/AmvIM9ql69XkCcK
+ nplSgPBkAnX59xKMdAz0ISW8AfP6PUsESdLp2ydqZ0wyPV1bhKtIWAdUgQOQjHgbSt
+ KW8HE9M/c/PHhsIDgI7CS6PfB5zgUqKgDDGL0dPGHK58AdENvdyR8WN72b0WehGnzb
+ f/e+MtcfgzM9Zvqg7SEeFJmwpq4ze7DpzJ+cq0WIkY6Q/1R9fEEftb8wN6WDVwVwyP
+ WY84EN3OjGuHA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Pingfan Liu <kernelfans@gmail.com>
-Subject: Re: [PATCHv3 2/2] powerpc/pseries: update device tree before ejecting
- hotplug uevents
-In-Reply-To: <CAFgQCTsgX9XWJ476dxT2csTuuhpaO3KSZN-EewZiZ0mBj3N4aQ@mail.gmail.com>
-References: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
- <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
- <87pn8oqh86.fsf@mpe.ellerman.id.au>
- <CAFgQCTsgX9XWJ476dxT2csTuuhpaO3KSZN-EewZiZ0mBj3N4aQ@mail.gmail.com>
-Date: Thu, 23 Jul 2020 16:41:50 +1000
-Message-ID: <875zaeravl.fsf@mpe.ellerman.id.au>
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v4 07/12] ppc64/kexec_file: add support to relocate
+ purgatory
+In-Reply-To: <2037fa32-28be-5995-1c22-c8b01cafe088@linux.ibm.com>
+References: <159524918900.20855.17709718993097359220.stgit@hbathini.in.ibm.com>
+ <159524956457.20855.12480643681198700190.stgit@hbathini.in.ibm.com>
+ <871rl4rxao.fsf@mpe.ellerman.id.au>
+ <2037fa32-28be-5995-1c22-c8b01cafe088@linux.ibm.com>
+Date: Thu, 23 Jul 2020 16:47:31 +1000
+Message-ID: <87365iram4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -61,87 +65,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Kexec Mailing List <kexec@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: kernel test robot <lkp@intel.com>, Pingfan Liu <piliu@redhat.com>,
+ Kexec-ml <kexec@lists.infradead.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
+ Dave Young <dyoung@redhat.com>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pingfan Liu <kernelfans@gmail.com> writes:
-> On Wed, Jul 22, 2020 at 12:57 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Pingfan Liu <kernelfans@gmail.com> writes:
->> > A bug is observed on pseries by taking the following steps on rhel:
->>                                                                 ^
->>                                                                 RHEL
->>
->> I assume it happens on mainline too?
-> Yes, it does.
->>
-> [...]
->> > diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
->> > index 1a3ac3b..def8cb3f 100644
->> > --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
->> > +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
->> > @@ -372,6 +372,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
->> >       invalidate_lmb_associativity_index(lmb);
->> >       lmb_clear_nid(lmb);
->> >       lmb->flags &= ~DRCONF_MEM_ASSIGNED;
->> > +     drmem_update_dt();
->>
->> No error checking?
-> Hmm, here should be a more careful design. Please see the comment at the end.
->>
->> >       __remove_memory(nid, base_addr, block_sz);
->> >
->> > @@ -607,6 +608,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
->> >
->> >       lmb_set_nid(lmb);
->> >       lmb->flags |= DRCONF_MEM_ASSIGNED;
->> > +     drmem_update_dt();
->>
->> And here ..
->> >
->> >       block_sz = memory_block_size_bytes();
->> >
->> > @@ -625,6 +627,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
->> >               invalidate_lmb_associativity_index(lmb);
->> >               lmb_clear_nid(lmb);
->> >               lmb->flags &= ~DRCONF_MEM_ASSIGNED;
->> > +             drmem_update_dt();
->>
->>
->> And here ..
->>
->> >               __remove_memory(nid, base_addr, block_sz);
->> >       }
->> > @@ -877,9 +880,6 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
->> >               break;
->> >       }
->> >
->> > -     if (!rc)
->> > -             rc = drmem_update_dt();
->> > -
->> >       unlock_device_hotplug();
->> >       return rc;
->>
->> Whereas previously we did check it.
+Hari Bathini <hbathini@linux.ibm.com> writes:
+> On 22/07/20 9:55 am, Michael Ellerman wrote:
+>> Hari Bathini <hbathini@linux.ibm.com> writes:
+>>> Right now purgatory implementation is only minimal. But if purgatory
+>>> code is to be enhanced to copy memory to the backup region and verify
+>>> sha256 digest, relocations may have to be applied to the purgatory.
+>>> So, add support to relocate purgatory in kexec_file_load system call
+>>> by setting up TOC pointer and applying RELA relocations as needed.
+>>>
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> [lkp: In v1, 'struct mem_sym' was declared in parameter list]
+>>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>>> ---
+>>>
+>>> * Michael, can you share your opinion on the below:
+>>>     - https://lore.kernel.org/patchwork/patch/1272027/
+>>>     - My intention in cover note.
+>> 
+>> It seems like a lot of complexity for little benefit.
+>> 
+>> AFAICS your final purgatory_64.c is only 36 lines, and all it does is a
+>> single (open coded) memcpy().
+>> 
+>> It seems like we could write that in not many more lines of assembler
+>> and avoid all this code.
 >
-> drmem_update_dt() fails iff allocating memory fail.
+> Hi Michael,
+>
+> I am not sure if you would agree with me on this, but I am looking at the
+> purgatory code as work in progress. As mentioned in the cover note, I intend
+> to add log messaging, sha256 verification into purgatory. And also change it
+> to position independent executable after moving common purgatory code (sha256
+> verification) to arch-independent code.
 
-That's true currently, but it might change in future.
+I've never understood the desire to put more logic into purgatory. It's
+the absolute worst place to detect that something's gone wrong, because
+we have no facilities in there to do anything useful. We don't even know
+what platform we're on.
 
-> And in the failed case, even the original code does not roll back the
-> effect of __add_memory()/__remove_memory().
+> When I initially took this up, I wanted to add all the above changes too, but
+> cut down on it, in the interest of time, first to get kdump (kexec -s -p)
+> working in v5.9 merge window.
+>
+> But as the logic in patches 07/12 & 08/12 has been tested in kexec-tools code
+> a lot of times and there are unlikely to be any changes to them except for
+> __kexec_do_relocs() function (afaics), when -PIE would be used, I submitted them.
+> With patch 09/12, I tried for a change that uses relocations while is minimal
+> for now.
+>
+> Would you prefer it to be absolutely minimal by dropping patches 7 & 8 for
+> now and writing the backup data copy code in assembler?
 
-Yeah hard to know what the desired behaviour is. If something fails we
-at least need to print a message though, not silently swallow it.
-
-> And I plan to do the following in V4: if drmem_update_dt() fails in
-> dlpar_add_lmb(), then bails out immediately.
-
-That sounds reasonable.
+Yes please.
 
 cheers
