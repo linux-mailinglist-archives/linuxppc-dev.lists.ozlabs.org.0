@@ -1,88 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB35C22ACFB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 12:50:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2B722AD15
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 12:58:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC8Hw1dsdzDrPK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 20:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC8Ss28j1zDrPZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 20:58:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=c6FyYWFe; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC8Fz5BcNzDr9M
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 20:48:55 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06NAYWW1043310; Thu, 23 Jul 2020 06:48:49 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32ecpbg4wx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 06:48:48 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06NAel08062237;
- Thu, 23 Jul 2020 06:48:48 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32ecpbg4w8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 06:48:48 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NAjRBI001639;
- Thu, 23 Jul 2020 10:48:45 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 32brq7p2u6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 10:48:45 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06NAmfY161407296
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Jul 2020 10:48:41 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C7E64C050;
- Thu, 23 Jul 2020 10:48:41 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 302964C044;
- Thu, 23 Jul 2020 10:48:38 +0000 (GMT)
-Received: from [9.199.40.160] (unknown [9.199.40.160])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 23 Jul 2020 10:48:37 +0000 (GMT)
-Subject: Re: [PATCH 0/7] powerpc/watchpoint: 2nd DAWR kvm enablement +
- selftests
-To: mpe@ellerman.id.au, paulus@samba.org
-References: <20200723102058.312282-1-ravi.bangoria@linux.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <a50f2a17-ccd0-6772-6c55-82a37561bf76@linux.ibm.com>
-Date: Thu, 23 Jul 2020 16:18:37 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC8Qj4zH6zDr6l
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 20:56:29 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id k5so2890646pjg.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 03:56:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=B+mLXieEAfXnO/747XGSjyHkJWweuJW45UcNIGomDRA=;
+ b=c6FyYWFei/GJd4W55hsLdi161Ij5iiz7XoxIgjk8uWEyUHjj+HzhiwHI9g/9lzjL9J
+ 8JwVe3kqr/y5qBDb0HaNVOemR+LFDw7OHJVDnej1EW+fUA91rBUAvZcdivH2wG9HyrMA
+ 3AAZN+m7GRTB8I7TT5YxXOwSvQiUwHnuEDwFGdU/KE5iIQR5Q1gdo2OvaDbfm65T0lE+
+ rsA+aUfoJ3VeW58rSNvW1MOQYbzFEC1qnVTjqZi473T5DG0Scw0qWT1x7keIapAeDtLG
+ b5GZT7JXPChb3Rx5F+XvVny5702h5KhkLCOO/1hUo32rBmHGDcI3qxfKzfi3AoP0TfnW
+ MB7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=B+mLXieEAfXnO/747XGSjyHkJWweuJW45UcNIGomDRA=;
+ b=XY14yDshepSfV5zRF8DSma6g/oK/zaZhL8iBk0k8o8o/xizX3PlL+FXV7Tpu/BYDtt
+ e4L+2Bp/VxKqkSWmY9q1IJT13w6qiSvjc9c0jPdZqZU2ji9OHfvfqlcOCbyrj2i9RO9r
+ Z2k4Cl2E7yqkymlPsW1Eb+q7qQfG1eFT6XgzGL92kDe4iMfYi9dpf1AadUlB3smY2XXw
+ 5tFj4lIJrQGqiACtJfazXo/GWRJLcgnPcbVgw6sUisjmqxHPhIYJY2EY0L9DVLXldlLx
+ xd1XAzChXJ0ozfu9BPVPCyNS4lTODk/i+IY/GLnPpx87TOdiNlQYvwrVzNz8usfJuSNG
+ FSyg==
+X-Gm-Message-State: AOAM530S16f+TfMysWE3uXGMsDJ19jtsADeevgBmKxuxoCMMTWh3SswL
+ g9Os2PzfUy0MGYGy8e8ZBjc=
+X-Google-Smtp-Source: ABdhPJzn2+x7F7ArPwBbfRDcLnhlqdLSyy4lZ9Qn+NY5m6fLUb48Uxpzopafbl3UM+x1jlxLVUSumg==
+X-Received: by 2002:a17:902:b20a:: with SMTP id
+ t10mr3176863plr.185.1595501785905; 
+ Thu, 23 Jul 2020 03:56:25 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (110-174-173-27.tpgi.com.au.
+ [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id 204sm2598009pfx.3.2020.07.23.03.56.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Jul 2020 03:56:25 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] lockdep: improve current->(hard|soft)irqs_enabled
+ synchronisation with actual irq state
+Date: Thu, 23 Jul 2020 20:56:14 +1000
+Message-Id: <20200723105615.1268126-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20200723102058.312282-1-ravi.bangoria@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-23_03:2020-07-23,
- 2020-07-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- impostorscore=0 clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 mlxlogscore=942 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007230076
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,25 +79,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: christophe.leroy@c-s.fr, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- mikey@neuling.org, kvm@vger.kernel.org, jniethe5@gmail.com,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, kvm-ppc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, rogealve@br.ibm.com, pedromfc@br.ibm.com,
- pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+If an interrupt is not masked by local_irq_disable (e.g., a powerpc perf
+interrupt), then it can hit in local_irq_enable() after trace_hardirqs_on()
+and before raw_local_irq_enable().
 
+If that interrupt handler calls local_irq_save(), it will call
+trace_hardirqs_off() but the local_irq_restore() will not call
+trace_hardirqs_on() again because raw_irqs_disabled_flags(flags) is true.
 
-On 7/23/20 3:50 PM, Ravi Bangoria wrote:
-> Patch #1, #2 and #3 enables p10 2nd DAWR feature for Book3S kvm guest. DAWR
-> is a hypervisor resource and thus H_SET_MODE hcall is used to set/unset it.
-> A new case H_SET_MODE_RESOURCE_SET_DAWR1 is introduced in H_SET_MODE hcall
-> for setting/unsetting 2nd DAWR. Also, new capability KVM_CAP_PPC_DAWR1 has
-> been added to query 2nd DAWR support via kvm ioctl.
-> 
-> This feature also needs to be enabled in Qemu to really use it. I'll reply
-> link to qemu patches once I post them in qemu-devel mailing list.
+This can lead lockdep_assert_irqs_enabled() to trigger false positive
+warnings.
 
-Qemu patches: https://lore.kernel.org/kvm/20200723104220.314671-1-ravi.bangoria@linux.ibm.com
+Fix this by being careful to only enable and disable trace_hardirqs with
+the outer-most irq enable/disable.
+
+Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+
+I haven't tested on other architectures but I imagine NMIs in general
+might cause a similar problem.
+
+Other architectures might have to be updated for patch 2, but there's
+a lot of asm around interrupt/return, so I didn't have a very good
+lock. The warnings should be harmless enough and uncover most places
+that need updating.
+
+ arch/powerpc/include/asm/hw_irq.h | 11 ++++-------
+ include/linux/irqflags.h          | 29 ++++++++++++++++++-----------
+ 2 files changed, 22 insertions(+), 18 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+index 3a0db7b0b46e..35060be09073 100644
+--- a/arch/powerpc/include/asm/hw_irq.h
++++ b/arch/powerpc/include/asm/hw_irq.h
+@@ -200,17 +200,14 @@ static inline bool arch_irqs_disabled(void)
+ #define powerpc_local_irq_pmu_save(flags)			\
+ 	 do {							\
+ 		raw_local_irq_pmu_save(flags);			\
+-		trace_hardirqs_off();				\
++		if (!raw_irqs_disabled_flags(flags))		\
++			trace_hardirqs_off();			\
+ 	} while(0)
+ #define powerpc_local_irq_pmu_restore(flags)			\
+ 	do {							\
+-		if (raw_irqs_disabled_flags(flags)) {		\
+-			raw_local_irq_pmu_restore(flags);	\
+-			trace_hardirqs_off();			\
+-		} else {					\
++		if (!raw_irqs_disabled_flags(flags))		\
+ 			trace_hardirqs_on();			\
+-			raw_local_irq_pmu_restore(flags);	\
+-		}						\
++		raw_local_irq_pmu_restore(flags);		\
+ 	} while(0)
+ #else
+ #define powerpc_local_irq_pmu_save(flags)			\
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index 6384d2813ded..571ee29ecefc 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -163,26 +163,33 @@ do {						\
+  * if !TRACE_IRQFLAGS.
+  */
+ #ifdef CONFIG_TRACE_IRQFLAGS
+-#define local_irq_enable() \
+-	do { trace_hardirqs_on(); raw_local_irq_enable(); } while (0)
+-#define local_irq_disable() \
+-	do { raw_local_irq_disable(); trace_hardirqs_off(); } while (0)
++#define local_irq_enable()				\
++	do {						\
++		trace_hardirqs_on();			\
++		raw_local_irq_enable();			\
++	} while (0)
++
++#define local_irq_disable()				\
++	do {						\
++		bool was_disabled = raw_irqs_disabled(); \
++		raw_local_irq_disable();		\
++		if (!was_disabled)			\
++			trace_hardirqs_off();		\
++	} while (0)
++
+ #define local_irq_save(flags)				\
+ 	do {						\
+ 		raw_local_irq_save(flags);		\
+-		trace_hardirqs_off();			\
++		if (!raw_irqs_disabled_flags(flags))	\
++			trace_hardirqs_off();		\
+ 	} while (0)
+ 
+ 
+ #define local_irq_restore(flags)			\
+ 	do {						\
+-		if (raw_irqs_disabled_flags(flags)) {	\
+-			raw_local_irq_restore(flags);	\
+-			trace_hardirqs_off();		\
+-		} else {				\
++		if (!raw_irqs_disabled_flags(flags))	\
+ 			trace_hardirqs_on();		\
+-			raw_local_irq_restore(flags);	\
+-		}					\
++		raw_local_irq_restore(flags);		\
+ 	} while (0)
+ 
+ #define safe_halt()				\
+-- 
+2.23.0
+
