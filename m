@@ -1,85 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9EA22ACB9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 12:40:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B36822ACD1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 12:44:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC8483PjQzDrMT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 20:40:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC88d47z3zDqsh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 20:44:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=HCIWYeHA; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC7gr0dYmzDrMK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 20:22:47 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06NA2lGg039277; Thu, 23 Jul 2020 06:22:36 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32bvqxgwr8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 06:22:36 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06NA3Ncb040852;
- Thu, 23 Jul 2020 06:22:35 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32bvqxgwp9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 06:22:35 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NAGegh014631;
- Thu, 23 Jul 2020 10:22:31 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma02fra.de.ibm.com with ESMTP id 32brq7wfdp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 10:22:31 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06NAMQPX66650388
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Jul 2020 10:22:26 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86D25A4065;
- Thu, 23 Jul 2020 10:22:26 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74090A4069;
- Thu, 23 Jul 2020 10:22:23 +0000 (GMT)
-Received: from bangoria.ibmuc.com (unknown [9.199.40.160])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 23 Jul 2020 10:22:23 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-To: mpe@ellerman.id.au, paulus@samba.org
-Subject: [PATCH 7/7] powerpc/selftests: Add selftest to test concurrent
- perf/ptrace events
-Date: Thu, 23 Jul 2020 15:50:58 +0530
-Message-Id: <20200723102058.312282-8-ravi.bangoria@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200723102058.312282-1-ravi.bangoria@linux.ibm.com>
-References: <20200723102058.312282-1-ravi.bangoria@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC7qg71F7zDrFL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 20:29:35 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id cv18so4154468pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 03:29:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=dSS2hCGEiwlH26/HSnyN9SAIKMm4yn3zwiK0XxrydVs=;
+ b=HCIWYeHAb3ZcWoTUCO67U8N1foyQkyV4c6CTYRxoFKDSWYPipBpyiQhTwwOMoR78FT
+ c1uV8/IrFJ58T1pVR5sGgpmLJAcQJ5eV51Ph9P95WC0oPy7Binx/soyhmKdn0sdRm7Bo
+ dBv9y1Zu6KZKiDJ4g1hN3r5rVZsf3IZLQqrneSJc01xG/VOVcZ2spIB6+v3bR1mwABBG
+ osE4ekOsDwRvcGQvhoj9n1DpHwuMZ4yE36Nl/JP9XW9Qg+32BEXopqZ+q/ftJLvnZRJg
+ KA8g/vlbA04lgvW1pS8P3Eu12I/0D4rVwSO6y4Mv1y7R6h46Bbp6v7cj1s33oo2qgtQw
+ iUpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=dSS2hCGEiwlH26/HSnyN9SAIKMm4yn3zwiK0XxrydVs=;
+ b=pP05KpkZ6nTBwDgxS7tGH1Vv9J3L80Sii4P2wGdke1LtDcsKF/piwXyDyAYH68mVgD
+ ME1LBA8VZ1/VSrTvn/FCvCkFlxSZAKjfrjjJtiLwJvr4qEIoABDqxOT3su9Hkpym27jh
+ cfO6OayxuoBtLLll+PO7wu+BWutZG3RC62lB08p1nXRdhW+QhvMTrB1D+YMVGWc7pz6M
+ 6YsLT2BMDvayN4xumWyUNsMdozC5MYJ5RzhWx6R519R7xZNR6lbE+4WsvaIqY19vDDqn
+ K77cSdCVB12y7HfS0ZnBMInWGRrQUpjr8Fw3KeyRoDrPM6QJ0SmXytN8s3IDuftFphvU
+ BV+w==
+X-Gm-Message-State: AOAM532uHy4p57rwsBDCizEUxpjBbXoLJiQHd/lAvh1LgVDrQWUJbCYy
+ lJdyPDxYViXupCoS+W74KuArKFPT
+X-Google-Smtp-Source: ABdhPJzEIWJSdi1OMuBt4E2MPoqGPOtkVI7YqyTPCJMvKb3TkfVrOyJfehRmLgbggfU0LbprI5AfYQ==
+X-Received: by 2002:a17:902:788b:: with SMTP id
+ q11mr3407120pll.216.1595500171716; 
+ Thu, 23 Jul 2020 03:29:31 -0700 (PDT)
+Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id 17sm2456103pjl.30.2020.07.23.03.29.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Jul 2020 03:29:31 -0700 (PDT)
+Date: Thu, 23 Jul 2020 20:29:25 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s: Fix irq tracing corruption in
+ interrupt/syscall return caused by perf interrupts
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+References: <20200722073437.930521-1-npiggin@gmail.com>
+ <dcf4ee37-202b-794a-189b-895e59293c68@ozlabs.ru>
+In-Reply-To: <dcf4ee37-202b-794a-189b-895e59293c68@ozlabs.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-23_03:2020-07-23,
- 2020-07-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 spamscore=0
- bulkscore=0 impostorscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 clxscore=1015 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007230076
+Message-Id: <1595499918.mg25810wnp.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,735 +81,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com, mikey@neuling.org,
- kvm@vger.kernel.org, jniethe5@gmail.com, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, kvm-ppc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- rogealve@br.ibm.com, pedromfc@br.ibm.com, pbonzini@redhat.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ptrace and perf watchpoints can't co-exists if their address range
-overlaps. See commit 29da4f91c0c1 ("powerpc/watchpoint: Don't allow
-concurrent perf and ptrace events") for more detail. Add selftest
-for the same.
+Excerpts from Alexey Kardashevskiy's message of July 22, 2020 8:50 pm:
+>=20
+>=20
+> On 22/07/2020 17:34, Nicholas Piggin wrote:
+>> Alexey reports lockdep_assert_irqs_enabled() warnings when stress testin=
+g perf, e.g.,
+>>=20
+>> WARNING: CPU: 0 PID: 1556 at kernel/softirq.c:169 __local_bh_enable_ip+0=
+x258/0x270
+>> CPU: 0 PID: 1556 Comm: syz-executor
+>> NIP:  c0000000001ec888 LR: c0000000001ec884 CTR: c000000000ef0610
+>> REGS: c000000022d4f8a0 TRAP: 0700   Not tainted  (5.8.0-rc3-x)
+>> MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28008844  XER: 200400=
+00
+>> CFAR: c0000000001dc1d0 IRQMASK: 0
+>>=20
+>> The interesting thing is MSR[EE] and IRQMASK shows interrupts are enable=
+d,
+>> suggesting the current->hardirqs_enabled irq tracing state is going out =
+of sync
+>> with the actual interrupt enable state.
+>>=20
+>> The cause is a window in interrupt/syscall return where irq tracing stat=
+e is being
+>> adjusted for an irqs-enabled return while MSR[EE] is still enabled. A pe=
+rf
+>> interrupt hits and ends up calling trace_hardirqs_off() when restoring
+>> interrupt flags to a disable state.
+>>=20
+>> Fix this by disabling perf interrupts as well while adjusting irq tracin=
+g state.
+>>=20
+>> Add a debug check that catches the condition sooner.
+>>=20
+>> Fixes: 68b34588e202 ("powerpc/64/sycall: Implement syscall entry/exit lo=
+gic in C")
+>> Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>=20
+>> I can reproduce similar symptoms and this patch fixes my test case,
+>> still trying to confirm Alexey's test case or whether there's another
+>> similar bug causing it.
+>=20
+>=20
+> This does not fix my testcase. I applied this on top of 4fa640dc5230
+> ("Merge tag 'vfio-v5.8-rc7' of git://github.com/awilliam/linux-vfio into
+> master")  without any of my testing code, just to be clear. Sorry...
 
-Sample o/p:
-  # ./ptrace-perf-hwbreak
-  test: ptrace-perf-hwbreak
-  tags: git_version:powerpc-5.8-7-118-g937fa174a15d-dirty
-  perf cpu event -> ptrace thread event (Overlapping): Ok
-  perf cpu event -> ptrace thread event (Non-overlapping): Ok
-  perf thread event -> ptrace same thread event (Overlapping): Ok
-  perf thread event -> ptrace same thread event (Non-overlapping): Ok
-  perf thread event -> ptrace other thread event: Ok
-  ptrace thread event -> perf kernel event: Ok
-  ptrace thread event -> perf same thread event (Overlapping): Ok
-  ptrace thread event -> perf same thread event (Non-overlapping): Ok
-  ptrace thread event -> perf other thread event: Ok
-  ptrace thread event -> perf cpu event (Overlapping): Ok
-  ptrace thread event -> perf cpu event (Non-overlapping): Ok
-  ptrace thread event -> perf same thread & cpu event (Overlapping): Ok
-  ptrace thread event -> perf same thread & cpu event (Non-overlapping): Ok
-  ptrace thread event -> perf other thread & cpu event: Ok
-  success: ptrace-perf-hwbreak
+Okay it seems to be a bigger problem and not actually caused by that
+patch but was possible for lockdep hardirqs_enabled state to get out=20
+of synch with the local_irq_disable() state before that too. Root
+cause is similar -- perf interrupts hitting between updating the two
+different bits of state.
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
----
- .../selftests/powerpc/ptrace/.gitignore       |   1 +
- .../testing/selftests/powerpc/ptrace/Makefile |   2 +-
- .../powerpc/ptrace/ptrace-perf-hwbreak.c      | 659 ++++++++++++++++++
- 3 files changed, 661 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/ptrace/ptrace-perf-hwbreak.c
+Not quite sure why Alexey's test wasn't hitting it before the patch,
+but possibly the way masked interrupts get replayed. But I was able
+to hit the problem with a different assertion.
 
-diff --git a/tools/testing/selftests/powerpc/ptrace/.gitignore b/tools/testing/selftests/powerpc/ptrace/.gitignore
-index 0e96150b7c7e..eb75e5360e31 100644
---- a/tools/testing/selftests/powerpc/ptrace/.gitignore
-+++ b/tools/testing/selftests/powerpc/ptrace/.gitignore
-@@ -14,3 +14,4 @@ perf-hwbreak
- core-pkey
- ptrace-pkey
- ptrace-syscall
-+ptrace-perf-hwbreak
-diff --git a/tools/testing/selftests/powerpc/ptrace/Makefile b/tools/testing/selftests/powerpc/ptrace/Makefile
-index 8d3f006c98cc..a500639da97a 100644
---- a/tools/testing/selftests/powerpc/ptrace/Makefile
-+++ b/tools/testing/selftests/powerpc/ptrace/Makefile
-@@ -2,7 +2,7 @@
- TEST_GEN_PROGS := ptrace-gpr ptrace-tm-gpr ptrace-tm-spd-gpr \
-               ptrace-tar ptrace-tm-tar ptrace-tm-spd-tar ptrace-vsx ptrace-tm-vsx \
-               ptrace-tm-spd-vsx ptrace-tm-spr ptrace-hwbreak ptrace-pkey core-pkey \
--              perf-hwbreak ptrace-syscall
-+              perf-hwbreak ptrace-syscall ptrace-perf-hwbreak
- 
- top_srcdir = ../../../../..
- include ../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-perf-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/ptrace-perf-hwbreak.c
-new file mode 100644
-index 000000000000..6b8804a4942e
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-perf-hwbreak.c
-@@ -0,0 +1,659 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+#include <stdio.h>
-+#include <string.h>
-+#include <signal.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <errno.h>
-+#include <linux/hw_breakpoint.h>
-+#include <linux/perf_event.h>
-+#include <asm/unistd.h>
-+#include <sys/ptrace.h>
-+#include <sys/wait.h>
-+#include "ptrace.h"
-+
-+char data[16];
-+
-+/* Overlapping address range */
-+volatile __u64 *ptrace_data1 = (__u64 *)&data[0];
-+volatile __u64 *perf_data1 = (__u64 *)&data[4];
-+
-+/* Non-overlapping address range */
-+volatile __u64 *ptrace_data2 = (__u64 *)&data[0];
-+volatile __u64 *perf_data2 = (__u64 *)&data[8];
-+
-+static unsigned long pid_max_addr(void)
-+{
-+	FILE *fp;
-+	char *line, *c;
-+	char addr[100];
-+	size_t len = 0;
-+
-+	fp = fopen("/proc/kallsyms", "r");
-+	if (!fp) {
-+		printf("Failed to read /proc/kallsyms. Exiting..\n");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	while (getline(&line, &len, fp) != -1) {
-+		if (!strstr(line, "pid_max") || strstr(line, "pid_max_max") ||
-+		    strstr(line, "pid_max_min"))
-+			continue;
-+
-+		strncpy(addr, line, len < 100 ? len : 100);
-+		c = strchr(addr, ' ');
-+		*c = '\0';
-+		return strtoul(addr, &c, 16);
-+	}
-+	fclose(fp);
-+	printf("Could not find pix_max. Exiting..\n");
-+	exit(EXIT_FAILURE);
-+	return -1;
-+}
-+
-+static void perf_user_event_attr_set(struct perf_event_attr *attr, __u64 addr, __u64 len)
-+{
-+	memset(attr, 0, sizeof(struct perf_event_attr));
-+	attr->type           = PERF_TYPE_BREAKPOINT;
-+	attr->size           = sizeof(struct perf_event_attr);
-+	attr->bp_type        = HW_BREAKPOINT_R;
-+	attr->bp_addr        = addr;
-+	attr->bp_len         = len;
-+	attr->exclude_kernel = 1;
-+	attr->exclude_hv     = 1;
-+}
-+
-+static void perf_kernel_event_attr_set(struct perf_event_attr *attr)
-+{
-+	memset(attr, 0, sizeof(struct perf_event_attr));
-+	attr->type           = PERF_TYPE_BREAKPOINT;
-+	attr->size           = sizeof(struct perf_event_attr);
-+	attr->bp_type        = HW_BREAKPOINT_R;
-+	attr->bp_addr        = pid_max_addr();
-+	attr->bp_len         = sizeof(unsigned long);
-+	attr->exclude_user   = 1;
-+	attr->exclude_hv     = 1;
-+}
-+
-+static int perf_cpu_event_open(int cpu, __u64 addr, __u64 len)
-+{
-+	struct perf_event_attr attr;
-+
-+	perf_user_event_attr_set(&attr, addr, len);
-+	return syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
-+}
-+
-+static int perf_thread_event_open(pid_t child_pid, __u64 addr, __u64 len)
-+{
-+	struct perf_event_attr attr;
-+
-+	perf_user_event_attr_set(&attr, addr, len);
-+	return syscall(__NR_perf_event_open, &attr, child_pid, -1, -1, 0);
-+}
-+
-+static int perf_thread_cpu_event_open(pid_t child_pid, int cpu, __u64 addr, __u64 len)
-+{
-+	struct perf_event_attr attr;
-+
-+	perf_user_event_attr_set(&attr, addr, len);
-+	return syscall(__NR_perf_event_open, &attr, child_pid, cpu, -1, 0);
-+}
-+
-+static int perf_thread_kernel_event_open(pid_t child_pid)
-+{
-+	struct perf_event_attr attr;
-+
-+	perf_kernel_event_attr_set(&attr);
-+	return syscall(__NR_perf_event_open, &attr, child_pid, -1, -1, 0);
-+}
-+
-+static int perf_cpu_kernel_event_open(int cpu)
-+{
-+	struct perf_event_attr attr;
-+
-+	perf_kernel_event_attr_set(&attr);
-+	return syscall(__NR_perf_event_open, &attr, -1, cpu, -1, 0);
-+}
-+
-+static int child(void)
-+{
-+	int ret;
-+
-+	ret = ptrace(PTRACE_TRACEME, 0, NULL, 0);
-+	if (ret) {
-+		printf("Error: PTRACE_TRACEME failed\n");
-+		return 0;
-+	}
-+	kill(getpid(), SIGUSR1); /* --> parent (SIGUSR1) */
-+
-+	return 0;
-+}
-+
-+static void ptrace_ppc_hw_breakpoint(struct ppc_hw_breakpoint *info, int type,
-+				     __u64 addr, int len)
-+{
-+	info->version = 1;
-+	info->trigger_type = type;
-+	info->condition_mode = PPC_BREAKPOINT_CONDITION_NONE;
-+	info->addr = addr;
-+	info->addr2 = addr + len;
-+	info->condition_value = 0;
-+	if (!len)
-+		info->addr_mode = PPC_BREAKPOINT_MODE_EXACT;
-+	else
-+		info->addr_mode = PPC_BREAKPOINT_MODE_RANGE_INCLUSIVE;
-+}
-+
-+static int ptrace_open(pid_t child_pid, __u64 wp_addr, int len)
-+{
-+	struct ppc_hw_breakpoint info;
-+
-+	ptrace_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_RW, wp_addr, len);
-+	return ptrace(PPC_PTRACE_SETHWDEBUG, child_pid, 0, &info);
-+}
-+
-+static int test1(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by ptrace)
-+	 *	if (existing cpu event by perf)
-+	 *		if (addr range overlaps)
-+	 *			fail;
-+	 */
-+
-+	perf_fd = perf_cpu_event_open(0, (__u64)perf_data1, sizeof(*perf_data1));
-+	if (perf_fd < 0)
-+		return -1;
-+
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd > 0 || errno != ENOSPC)
-+		ret = -1;
-+
-+	close(perf_fd);
-+	return ret;
-+}
-+
-+static int test2(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by ptrace)
-+	 *	if (existing cpu event by perf)
-+	 *		if (addr range does not overlaps)
-+	 *			allow;
-+	 */
-+
-+	perf_fd = perf_cpu_event_open(0, (__u64)perf_data2, sizeof(*perf_data2));
-+	if (perf_fd < 0)
-+		return -1;
-+
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data2, sizeof(*ptrace_data2));
-+	if (ptrace_fd < 0) {
-+		ret = -1;
-+		goto perf_close;
-+	}
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+
-+perf_close:
-+	close(perf_fd);
-+	return ret;
-+}
-+
-+static int test3(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by ptrace)
-+	 *	if (existing thread event by perf on the same thread)
-+	 *		if (addr range overlaps)
-+	 *			fail;
-+	 */
-+	perf_fd = perf_thread_event_open(child_pid, (__u64)perf_data1,
-+					 sizeof(*perf_data1));
-+	if (perf_fd < 0)
-+		return -1;
-+
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd > 0 || errno != ENOSPC)
-+		ret = -1;
-+
-+	close(perf_fd);
-+	return ret;
-+}
-+
-+static int test4(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by ptrace)
-+	 *	if (existing thread event by perf on the same thread)
-+	 *		if (addr range does not overlaps)
-+	 *			fail;
-+	 */
-+	perf_fd = perf_thread_event_open(child_pid, (__u64)perf_data2,
-+					 sizeof(*perf_data2));
-+	if (perf_fd < 0)
-+		return -1;
-+
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data2, sizeof(*ptrace_data2));
-+	if (ptrace_fd < 0) {
-+		ret = -1;
-+		goto perf_close;
-+	}
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+
-+perf_close:
-+	close(perf_fd);
-+	return ret;
-+}
-+
-+static int test5(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int cpid;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by ptrace)
-+	 *	if (existing thread event by perf on the different thread)
-+	 *		allow;
-+	 */
-+	cpid = fork();
-+	if (!cpid) {
-+		/* Temporary Child */
-+		pause();
-+		exit(EXIT_SUCCESS);
-+	}
-+
-+	perf_fd = perf_thread_event_open(cpid, (__u64)perf_data1, sizeof(*perf_data1));
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto kill_child;
-+	}
-+
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd < 0) {
-+		ret = -1;
-+		goto perf_close;
-+	}
-+
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+perf_close:
-+	close(perf_fd);
-+kill_child:
-+	kill(cpid, SIGINT);
-+	return ret;
-+}
-+
-+static int test6(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread kernel event by perf)
-+	 *	if (existing thread event by ptrace on the same thread)
-+	 *		allow;
-+	 * -- OR --
-+	 * if (new per cpu kernel event by perf)
-+	 *	if (existing thread event by ptrace)
-+	 *		allow;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	perf_fd = perf_thread_kernel_event_open(child_pid);
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto ptrace_close;
-+	}
-+	close(perf_fd);
-+
-+	perf_fd = perf_cpu_kernel_event_open(0);
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto ptrace_close;
-+	}
-+	close(perf_fd);
-+
-+ptrace_close:
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test7(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by perf)
-+	 *	if (existing thread event by ptrace on the same thread)
-+	 *		if (addr range overlaps)
-+	 *			fail;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	perf_fd = perf_thread_event_open(child_pid, (__u64)perf_data1,
-+					 sizeof(*perf_data1));
-+	if (perf_fd > 0 || errno != ENOSPC)
-+		ret = -1;
-+
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test8(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by perf)
-+	 *	if (existing thread event by ptrace on the same thread)
-+	 *		if (addr range does not overlaps)
-+	 *			allow;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data2, sizeof(*ptrace_data2));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	perf_fd = perf_thread_event_open(child_pid, (__u64)perf_data2,
-+					 sizeof(*perf_data2));
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto ptrace_close;
-+	}
-+	close(perf_fd);
-+
-+ptrace_close:
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test9(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int cpid;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread event by perf)
-+	 *	if (existing thread event by ptrace on the other thread)
-+	 *		allow;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	cpid = fork();
-+	if (!cpid) {
-+		/* Temporary Child */
-+		pause();
-+		exit(EXIT_SUCCESS);
-+	}
-+
-+	perf_fd = perf_thread_event_open(cpid, (__u64)perf_data1, sizeof(*perf_data1));
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto kill_child;
-+	}
-+	close(perf_fd);
-+
-+kill_child:
-+	kill(cpid, SIGINT);
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test10(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per cpu event by perf)
-+	 *	if (existing thread event by ptrace on the same thread)
-+	 *		if (addr range overlaps)
-+	 *			fail;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	perf_fd = perf_cpu_event_open(0, (__u64)perf_data1, sizeof(*perf_data1));
-+	if (perf_fd > 0 || errno != ENOSPC)
-+		ret = -1;
-+
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test11(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per cpu event by perf)
-+	 *	if (existing thread event by ptrace on the same thread)
-+	 *		if (addr range does not overlap)
-+	 *			allow;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data2, sizeof(*ptrace_data2));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	perf_fd = perf_cpu_event_open(0, (__u64)perf_data2, sizeof(*perf_data2));
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto ptrace_close;
-+	}
-+	close(perf_fd);
-+
-+ptrace_close:
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test12(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread and per cpu event by perf)
-+	 *	if (existing thread event by ptrace on the same thread)
-+	 *		if (addr range overlaps)
-+	 *			fail;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	perf_fd = perf_thread_cpu_event_open(child_pid, 0, (__u64)perf_data1,
-+						sizeof(*perf_data1));
-+	if (perf_fd > 0 || errno != ENOSPC)
-+		ret = -1;
-+
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test13(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread and per cpu event by perf)
-+	 *	if (existing thread event by ptrace on the same thread)
-+	 *		if (addr range does not overlap)
-+	 *			allow;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data2, sizeof(*ptrace_data2));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	perf_fd = perf_thread_cpu_event_open(child_pid, 0, (__u64)perf_data2,
-+						sizeof(*perf_data2));
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto ptrace_close;
-+	}
-+	close(perf_fd);
-+
-+ptrace_close:
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+static int test14(pid_t child_pid)
-+{
-+	int perf_fd;
-+	int ptrace_fd;
-+	int cpid;
-+	int ret = 0;
-+
-+	/* Test:
-+	 * if (new per thread and per cpu event by perf)
-+	 *	if (existing thread event by ptrace on the other thread)
-+	 *		allow;
-+	 */
-+	ptrace_fd = ptrace_open(child_pid, (__u64)ptrace_data1, sizeof(*ptrace_data1));
-+	if (ptrace_fd < 0)
-+		return -1;
-+
-+	cpid = fork();
-+	if (!cpid) {
-+		/* Temporary Child */
-+		pause();
-+		exit(EXIT_SUCCESS);
-+	}
-+
-+	perf_fd = perf_thread_cpu_event_open(cpid, 0, (__u64)perf_data1,
-+					     sizeof(*perf_data1));
-+	if (perf_fd < 0) {
-+		ret = -1;
-+		goto kill_child;
-+	}
-+	close(perf_fd);
-+
-+kill_child:
-+	kill(cpid, SIGINT);
-+	ptrace(PPC_PTRACE_DELHWDEBUG, child_pid, 0, ptrace_fd);
-+	return ret;
-+}
-+
-+#define TEST(msg, fun, arg, ret) {		\
-+	int r;					\
-+	r = fun(arg);				\
-+	if (r)					\
-+		printf("%s: Error\n", msg);	\
-+	else					\
-+		printf("%s: Ok\n", msg);	\
-+	ret |= r;				\
-+}
-+
-+char *desc[14] = {
-+	"perf cpu event -> ptrace thread event (Overlapping)",
-+	"perf cpu event -> ptrace thread event (Non-overlapping)",
-+	"perf thread event -> ptrace same thread event (Overlapping)",
-+	"perf thread event -> ptrace same thread event (Non-overlapping)",
-+	"perf thread event -> ptrace other thread event",
-+	"ptrace thread event -> perf kernel event",
-+	"ptrace thread event -> perf same thread event (Overlapping)",
-+	"ptrace thread event -> perf same thread event (Non-overlapping)",
-+	"ptrace thread event -> perf other thread event",
-+	"ptrace thread event -> perf cpu event (Overlapping)",
-+	"ptrace thread event -> perf cpu event (Non-overlapping)",
-+	"ptrace thread event -> perf same thread & cpu event (Overlapping)",
-+	"ptrace thread event -> perf same thread & cpu event (Non-overlapping)",
-+	"ptrace thread event -> perf other thread & cpu event",
-+};
-+
-+static int test(pid_t child_pid)
-+{
-+	int ret = TEST_PASS;
-+
-+	TEST(desc[0], test1, child_pid, ret);
-+	TEST(desc[1], test2, child_pid, ret);
-+	TEST(desc[2], test3, child_pid, ret);
-+	TEST(desc[3], test4, child_pid, ret);
-+	TEST(desc[4], test5, child_pid, ret);
-+	TEST(desc[5], test6, child_pid, ret);
-+	TEST(desc[6], test7, child_pid, ret);
-+	TEST(desc[7], test8, child_pid, ret);
-+	TEST(desc[8], test9, child_pid, ret);
-+	TEST(desc[9], test10, child_pid, ret);
-+	TEST(desc[10], test11, child_pid, ret);
-+	TEST(desc[11], test12, child_pid, ret);
-+	TEST(desc[12], test13, child_pid, ret);
-+	TEST(desc[13], test14, child_pid, ret);
-+
-+	return ret;
-+}
-+
-+static void get_dbginfo(pid_t child_pid, struct ppc_debug_info *dbginfo)
-+{
-+	if (ptrace(PPC_PTRACE_GETHWDBGINFO, child_pid, NULL, dbginfo)) {
-+		perror("Can't get breakpoint info");
-+		exit(-1);
-+	}
-+}
-+
-+static int ptrace_perf_hwbreak(void)
-+{
-+	int ret;
-+	pid_t child_pid;
-+	struct ppc_debug_info dbginfo;
-+
-+	child_pid = fork();
-+	if (!child_pid)
-+		return child();
-+
-+	/* parent */
-+	wait(NULL); /* <-- child (SIGUSR1) */
-+
-+	get_dbginfo(child_pid, &dbginfo);
-+	SKIP_IF(dbginfo.num_data_bps <= 1);
-+
-+	ret = perf_cpu_event_open(0, (__u64)perf_data1, sizeof(*perf_data1));
-+	SKIP_IF(ret < 0);
-+	close(ret);
-+
-+	ret = test(child_pid);
-+
-+	ptrace(PTRACE_CONT, child_pid, NULL, 0);
-+	return ret;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	return test_harness(ptrace_perf_hwbreak, "ptrace-perf-hwbreak");
-+}
--- 
-2.26.2
+I think I have a fix, but it seems to be a generic irq tracing code
+issue. So this patch can be dropped, and it's not an urgent issue for
+the next release (it only triggers warns on rare occasions and only
+when lockdep is enabled).
+
+Thanks,
+Nick
 
