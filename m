@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBE622B79E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 22:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 478B022B7A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 22:25:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCP100zMQzDrCS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 06:23:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCP2z6BQFzDrFh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 06:25:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCNgM29XSzDrS7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 06:08:15 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCNgQ49yFzDrS4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 06:08:18 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06NK1cem097379; Thu, 23 Jul 2020 16:08:08 -0400
+ 06NK3s1x154776; Thu, 23 Jul 2020 16:08:12 -0400
 Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
  [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32faj6vhyv-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32fac3dew0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 16:08:08 -0400
+ Thu, 23 Jul 2020 16:08:12 -0400
 Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NK7YQK010065;
- Thu, 23 Jul 2020 20:08:06 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06fra.de.ibm.com with ESMTP id 32brbgufyx-1
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NK7OXG010037;
+ Thu, 23 Jul 2020 20:08:09 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 32brbgufyy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 20:08:06 +0000
+ Thu, 23 Jul 2020 20:08:09 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06NK83hK32244020
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06NK86xA39911560
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Jul 2020 20:08:03 GMT
+ Thu, 23 Jul 2020 20:08:06 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 253AD4C04A;
+ by IMSVA (Postfix) with ESMTP id A39814C044;
+ Thu, 23 Jul 2020 20:08:06 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 833D84C040;
  Thu, 23 Jul 2020 20:08:03 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D3D274C044;
- Thu, 23 Jul 2020 20:07:59 +0000 (GMT)
 Received: from oc0525413822.ibm.com (unknown [9.211.150.76])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 23 Jul 2020 20:07:59 +0000 (GMT)
+ Thu, 23 Jul 2020 20:08:03 +0000 (GMT)
 From: Ram Pai <linuxram@us.ibm.com>
 To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 6/7] KVM: PPC: Book3S HV: move kvmppc_svm_page_out up
-Date: Thu, 23 Jul 2020 13:07:23 -0700
-Message-Id: <1595534844-16188-7-git-send-email-linuxram@us.ibm.com>
+Subject: [PATCH v5 7/7] KVM: PPC: Book3S HV: rework secure mem slot dropping
+Date: Thu, 23 Jul 2020 13:07:24 -0700
+Message-Id: <1595534844-16188-8-git-send-email-linuxram@us.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1595534844-16188-1-git-send-email-linuxram@us.ibm.com>
 References: <1595534844-16188-1-git-send-email-linuxram@us.ibm.com>
@@ -65,11 +65,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-23_09:2020-07-23,
  2020-07-23 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 spamscore=0 malwarescore=0 impostorscore=0 mlxlogscore=999
- suspectscore=2 bulkscore=0 adultscore=0 mlxscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007230142
+ clxscore=1015 bulkscore=0
+ suspectscore=2 phishscore=0 mlxlogscore=784 priorityscore=1501
+ adultscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007230144
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,209 +91,117 @@ Sender: "Linuxppc-dev"
 
 From: Laurent Dufour <ldufour@linux.ibm.com>
 
-kvmppc_svm_page_out() will need to be called by kvmppc_uvmem_drop_pages()
-so move it upper in this file.
+When a secure memslot is dropped, all the pages backed in the secure
+device (aka really backed by secure memory by the Ultravisor)
+should be paged out to a normal page. Previously, this was
+achieved by triggering the page fault mechanism which is calling
+kvmppc_svm_page_out() on each pages.
 
-Furthermore it will be interesting to call this function when already
-holding the kvm->arch.uvmem_lock, so prefix the original function with __
-and remove the locking in it, and introduce a wrapper which call that
-function with the lock held.
+This can't work when hot unplugging a memory slot because the memory
+slot is flagged as invalid and gfn_to_pfn() is then not trying to access
+the page, so the page fault mechanism is not triggered.
 
-There is no functional change.
+Since the final goal is to make a call to kvmppc_svm_page_out() it seems
+simpler to call directly instead of triggering such a mechanism. This
+way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
+memslot.
+
+Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
+the call to __kvmppc_svm_page_out() is made.  As
+__kvmppc_svm_page_out needs the vma pointer to migrate the pages,
+the VMA is fetched in a lazy way, to not trigger find_vma() all
+the time. In addition, the mmap_sem is held in read mode during
+that time, not in write mode since the virual memory layout is not
+impacted, and kvm->arch.uvmem_lock prevents concurrent operation
+on the secure device.
 
 Cc: Ram Pai <linuxram@us.ibm.com>
 Cc: Bharata B Rao <bharata@linux.ibm.com>
 Cc: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+	[modified the changelog description]
 Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 166 ++++++++++++++++++++-----------------
- 1 file changed, 90 insertions(+), 76 deletions(-)
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 54 ++++++++++++++++++++++++++------------
+ 1 file changed, 37 insertions(+), 17 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index fd9ff6e..c772e92 100644
+index c772e92..daffa6e 100644
 --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
 +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -535,6 +535,96 @@ unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
+@@ -632,35 +632,55 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
+  * fault on them, do fault time migration to replace the device PTEs in
+  * QEMU page table with normal PTEs from newly allocated pages.
+  */
+-void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
++void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
+ 			     struct kvm *kvm, bool skip_page_out)
+ {
+ 	int i;
+ 	struct kvmppc_uvmem_page_pvt *pvt;
+-	unsigned long pfn, uvmem_pfn;
+-	unsigned long gfn = free->base_gfn;
++	struct page *uvmem_page;
++	struct vm_area_struct *vma = NULL;
++	unsigned long uvmem_pfn, gfn;
++	unsigned long addr, end;
++
++	mmap_read_lock(kvm->mm);
++
++	addr = slot->userspace_addr;
++	end = addr + (slot->npages * PAGE_SIZE);
+ 
+-	for (i = free->npages; i; --i, ++gfn) {
+-		struct page *uvmem_page;
++	gfn = slot->base_gfn;
++	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
++
++		/* Fetch the VMA if addr is not in the latest fetched one */
++		if (!vma || (addr < vma->vm_start || addr >= vma->vm_end)) {
++			vma = find_vma_intersection(kvm->mm, addr, end);
++			if (!vma ||
++			    vma->vm_start > addr || vma->vm_end < end) {
++				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
++				break;
++			}
++		}
+ 
+ 		mutex_lock(&kvm->arch.uvmem_lock);
+-		if (!kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
++
++		if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
++			uvmem_page = pfn_to_page(uvmem_pfn);
++			pvt = uvmem_page->zone_device_data;
++			pvt->skip_page_out = skip_page_out;
++			pvt->remove_gfn = true;
++
++			if (__kvmppc_svm_page_out(vma, addr, addr + PAGE_SIZE,
++						  PAGE_SHIFT, kvm, pvt->gpa))
++				pr_err("Can't page out gpa:0x%lx addr:0x%lx\n",
++				       pvt->gpa, addr);
++		} else {
++			/* Remove the shared flag if any */
+ 			kvmppc_gfn_remove(gfn, kvm);
+-			mutex_unlock(&kvm->arch.uvmem_lock);
+-			continue;
+ 		}
+ 
+-		uvmem_page = pfn_to_page(uvmem_pfn);
+-		pvt = uvmem_page->zone_device_data;
+-		pvt->skip_page_out = skip_page_out;
+-		pvt->remove_gfn = true;
+ 		mutex_unlock(&kvm->arch.uvmem_lock);
+-
+-		pfn = gfn_to_pfn(kvm, gfn);
+-		if (is_error_noslot_pfn(pfn))
+-			continue;
+-		kvm_release_pfn_clean(pfn);
+ 	}
++
++	mmap_read_unlock(kvm->mm);
  }
  
- /*
-+ * Provision a new page on HV side and copy over the contents
-+ * from secure memory using UV_PAGE_OUT uvcall.
-+ * Caller must held kvm->arch.uvmem_lock.
-+ */
-+static int __kvmppc_svm_page_out(struct vm_area_struct *vma,
-+		unsigned long start,
-+		unsigned long end, unsigned long page_shift,
-+		struct kvm *kvm, unsigned long gpa)
-+{
-+	unsigned long src_pfn, dst_pfn = 0;
-+	struct migrate_vma mig;
-+	struct page *dpage, *spage;
-+	struct kvmppc_uvmem_page_pvt *pvt;
-+	unsigned long pfn;
-+	int ret = U_SUCCESS;
-+
-+	memset(&mig, 0, sizeof(mig));
-+	mig.vma = vma;
-+	mig.start = start;
-+	mig.end = end;
-+	mig.src = &src_pfn;
-+	mig.dst = &dst_pfn;
-+	mig.src_owner = &kvmppc_uvmem_pgmap;
-+
-+	/* The requested page is already paged-out, nothing to do */
-+	if (!kvmppc_gfn_is_uvmem_pfn(gpa >> page_shift, kvm, NULL))
-+		return ret;
-+
-+	ret = migrate_vma_setup(&mig);
-+	if (ret)
-+		return -1;
-+
-+	spage = migrate_pfn_to_page(*mig.src);
-+	if (!spage || !(*mig.src & MIGRATE_PFN_MIGRATE))
-+		goto out_finalize;
-+
-+	if (!is_zone_device_page(spage))
-+		goto out_finalize;
-+
-+	dpage = alloc_page_vma(GFP_HIGHUSER, vma, start);
-+	if (!dpage) {
-+		ret = -1;
-+		goto out_finalize;
-+	}
-+
-+	lock_page(dpage);
-+	pvt = spage->zone_device_data;
-+	pfn = page_to_pfn(dpage);
-+
-+	/*
-+	 * This function is used in two cases:
-+	 * - When HV touches a secure page, for which we do UV_PAGE_OUT
-+	 * - When a secure page is converted to shared page, we *get*
-+	 *   the page to essentially unmap the device page. In this
-+	 *   case we skip page-out.
-+	 */
-+	if (!pvt->skip_page_out)
-+		ret = uv_page_out(kvm->arch.lpid, pfn << page_shift,
-+				  gpa, 0, page_shift);
-+
-+	if (ret == U_SUCCESS)
-+		*mig.dst = migrate_pfn(pfn) | MIGRATE_PFN_LOCKED;
-+	else {
-+		unlock_page(dpage);
-+		__free_page(dpage);
-+		goto out_finalize;
-+	}
-+
-+	migrate_vma_pages(&mig);
-+
-+out_finalize:
-+	migrate_vma_finalize(&mig);
-+	return ret;
-+}
-+
-+static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
-+				      unsigned long start, unsigned long end,
-+				      unsigned long page_shift,
-+				      struct kvm *kvm, unsigned long gpa)
-+{
-+	int ret;
-+
-+	mutex_lock(&kvm->arch.uvmem_lock);
-+	ret = __kvmppc_svm_page_out(vma, start, end, page_shift, kvm, gpa);
-+	mutex_unlock(&kvm->arch.uvmem_lock);
-+
-+	return ret;
-+}
-+
-+/*
-  * Drop device pages that we maintain for the secure guest
-  *
-  * We first mark the pages to be skipped from UV_PAGE_OUT when there
-@@ -866,82 +956,6 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
- 	return ret;
- }
- 
--/*
-- * Provision a new page on HV side and copy over the contents
-- * from secure memory using UV_PAGE_OUT uvcall.
-- */
--static int kvmppc_svm_page_out(struct vm_area_struct *vma,
--		unsigned long start,
--		unsigned long end, unsigned long page_shift,
--		struct kvm *kvm, unsigned long gpa)
--{
--	unsigned long src_pfn, dst_pfn = 0;
--	struct migrate_vma mig;
--	struct page *dpage, *spage;
--	struct kvmppc_uvmem_page_pvt *pvt;
--	unsigned long pfn;
--	int ret = U_SUCCESS;
--
--	memset(&mig, 0, sizeof(mig));
--	mig.vma = vma;
--	mig.start = start;
--	mig.end = end;
--	mig.src = &src_pfn;
--	mig.dst = &dst_pfn;
--	mig.src_owner = &kvmppc_uvmem_pgmap;
--
--	mutex_lock(&kvm->arch.uvmem_lock);
--	/* The requested page is already paged-out, nothing to do */
--	if (!kvmppc_gfn_is_uvmem_pfn(gpa >> page_shift, kvm, NULL))
--		goto out;
--
--	ret = migrate_vma_setup(&mig);
--	if (ret)
--		goto out;
--
--	spage = migrate_pfn_to_page(*mig.src);
--	if (!spage || !(*mig.src & MIGRATE_PFN_MIGRATE))
--		goto out_finalize;
--
--	if (!is_zone_device_page(spage))
--		goto out_finalize;
--
--	dpage = alloc_page_vma(GFP_HIGHUSER, vma, start);
--	if (!dpage) {
--		ret = -1;
--		goto out_finalize;
--	}
--
--	lock_page(dpage);
--	pvt = spage->zone_device_data;
--	pfn = page_to_pfn(dpage);
--
--	/*
--	 * This function is used in two cases:
--	 * - When HV touches a secure page, for which we do UV_PAGE_OUT
--	 * - When a secure page is converted to shared page, we *get*
--	 *   the page to essentially unmap the device page. In this
--	 *   case we skip page-out.
--	 */
--	if (!pvt->skip_page_out)
--		ret = uv_page_out(kvm->arch.lpid, pfn << page_shift,
--				  gpa, 0, page_shift);
--
--	if (ret == U_SUCCESS)
--		*mig.dst = migrate_pfn(pfn) | MIGRATE_PFN_LOCKED;
--	else {
--		unlock_page(dpage);
--		__free_page(dpage);
--		goto out_finalize;
--	}
--
--	migrate_vma_pages(&mig);
--out_finalize:
--	migrate_vma_finalize(&mig);
--out:
--	mutex_unlock(&kvm->arch.uvmem_lock);
--	return ret;
--}
- 
- /*
-  * Fault handler callback that gets called when HV touches any page that
+ unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
 -- 
 1.8.3.1
 
