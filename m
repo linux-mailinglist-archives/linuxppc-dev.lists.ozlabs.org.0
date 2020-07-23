@@ -2,82 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A70D22AF83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 14:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B657E22B00E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 15:13:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCBfd5N6MzDrQK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 22:36:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCCSf44RPzDrPp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 23:13:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VHCvV4tD; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCBc33nvVzDr7h
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 22:34:43 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06NCYLCb094941; Thu, 23 Jul 2020 08:34:38 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32faj385kx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 08:34:34 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NCEpAO025465;
- Thu, 23 Jul 2020 12:32:34 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 32brq865xn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Jul 2020 12:32:34 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06NCWVwN59703482
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Jul 2020 12:32:31 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 600E111C064;
- Thu, 23 Jul 2020 12:32:31 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CCB0211C054;
- Thu, 23 Jul 2020 12:32:30 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.31.161])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 23 Jul 2020 12:32:30 +0000 (GMT)
-Subject: Re: [PATCH v2 2/2] KVM: PPC: Book3S HV: rework secure mem slot
- dropping
-To: bharata@linux.ibm.com, linuxram@us.ibm.com
-References: <20200721104202.15727-1-ldufour@linux.ibm.com>
- <20200721104202.15727-3-ldufour@linux.ibm.com>
- <20200723033600.GS7902@in.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <4a3caeaf-cd0c-fcd7-0a97-f367a5f78dac@linux.ibm.com>
-Date: Thu, 23 Jul 2020 14:32:30 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCCQC0kYNzDr9B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 23:11:13 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id q17so2536533pls.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 06:11:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=E/e6bkQ7xor2tf39B3HoCRN8UgDNduwN1Zl5yinxqAQ=;
+ b=VHCvV4tDO0Bo5lG2Zc4hPcBRi5ULljYg08PlC0vzAhBt1p+CAjOX0WO/MyIX6FT/Xz
+ AVXqfD1jopjxBj0S7kL4mgO5TWFgxhWjIwgiNW/HnU1AXeN9Wa9A/R9UWkrrkJZDEl9A
+ Y4GRXVfQdi2aBc5if6fb1s/fm8E43m7KFrJmOZ5D4lLx1neR//DLIeK5TXy+RMVs9mWL
+ zXyf0bGiSKnAjEfPXF02FACc0rMk0Ikkzot//SenWG4yCVgqJ4UgWgE4sRgiS6gbaRIH
+ maTuWUdkFpnk4sPb5nhbOtEDUUMLgvXitYsyqxIZqPsm2ZMlXRIHbfw+ZRcAv2LRAGjV
+ wLfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=E/e6bkQ7xor2tf39B3HoCRN8UgDNduwN1Zl5yinxqAQ=;
+ b=YVaztnaRZo8J4zRVruqAZ/UT2ZlR6p1Y5T8h/sVA25DYN5WNFFxttHVH3/Ki530ERg
+ MYdbYzXT/Xk4kndejmPOETezPBSh6NXGqeCShnMTjYVmG3IgjuI3kUkjqDdkOiYnt0Ia
+ cxUeDx7E9Ldk3O+BI2V9Vhv/n8b0WFplGqZHnF//KJlK/G92Kx7749oywn8FTWSHIeS4
+ mrDL57nUwWkCrvyOLiK5L5BLuWwItm/KpjVEJLan7h0UE57jNYMOBABy2WnpthZ6yqQI
+ bCwGMPbr7uR5g+LNT7OemEoLGA2J9OwSjhHTVJsVXa3pdNn2UiTIIVw3UBRfVDExvy/9
+ f+Pg==
+X-Gm-Message-State: AOAM533SI2PB9YxigoKy8+71seMt4YmCjzgU3Yu9XIRXXpjJg+rcxWet
+ 4PH62qYkXfg/zh+Ur3v7uZY=
+X-Google-Smtp-Source: ABdhPJzyDRqU0+pKFo017avcsBGjeFT0wLcR3XwTdTSuoYbBl6djhiXCSDZYxDgTPpeRhvXDAsKYsw==
+X-Received: by 2002:a17:90a:6b02:: with SMTP id
+ v2mr310422pjj.163.1595509869825; 
+ Thu, 23 Jul 2020 06:11:09 -0700 (PDT)
+Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id g18sm3001623pfi.141.2020.07.23.06.11.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 Jul 2020 06:11:09 -0700 (PDT)
+Date: Thu, 23 Jul 2020 23:11:03 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/2] lockdep: improve current->(hard|soft)irqs_enabled
+ synchronisation with actual irq state
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20200723105615.1268126-1-npiggin@gmail.com>
+ <20200723114010.GO5523@worktop.programming.kicks-ass.net>
+In-Reply-To: <20200723114010.GO5523@worktop.programming.kicks-ass.net>
 MIME-Version: 1.0
-In-Reply-To: <20200723033600.GS7902@in.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-23_05:2020-07-23,
- 2020-07-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=2
- phishscore=0 mlxlogscore=964 lowpriorityscore=0 mlxscore=0 clxscore=1015
- spamscore=0 adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007230093
+Message-Id: <1595506730.3mvrxktem5.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,110 +81,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, paulus@samba.org,
- sukadev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: linux-arch@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 23/07/2020 à 05:36, Bharata B Rao a écrit :
-> On Tue, Jul 21, 2020 at 12:42:02PM +0200, Laurent Dufour wrote:
->> When a secure memslot is dropped, all the pages backed in the secure device
->> (aka really backed by secure memory by the Ultravisor) should be paged out
->> to a normal page. Previously, this was achieved by triggering the page
->> fault mechanism which is calling kvmppc_svm_page_out() on each pages.
->>
->> This can't work when hot unplugging a memory slot because the memory slot
->> is flagged as invalid and gfn_to_pfn() is then not trying to access the
->> page, so the page fault mechanism is not triggered.
->>
->> Since the final goal is to make a call to kvmppc_svm_page_out() it seems
->> simpler to directly calling it instead of triggering such a mechanism. This
->> way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
->> memslot.
->>
->> Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
->> the call to __kvmppc_svm_page_out() is made.
->> As __kvmppc_svm_page_out needs the vma pointer to migrate the pages, the
->> VMA is fetched in a lazy way, to not trigger find_vma() all the time. In
->> addition, the mmap_sem is help in read mode during that time, not in write
->> mode since the virual memory layout is not impacted, and
->> kvm->arch.uvmem_lock prevents concurrent operation on the secure device.
->>
->> Cc: Ram Pai <linuxram@us.ibm.com>
->> Cc: Bharata B Rao <bharata@linux.ibm.com>
->> Cc: Paul Mackerras <paulus@ozlabs.org>
->> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
->> ---
->>   arch/powerpc/kvm/book3s_hv_uvmem.c | 54 ++++++++++++++++++++----------
->>   1 file changed, 37 insertions(+), 17 deletions(-)
->>
->> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
->> index 5a4b02d3f651..ba5c7c77cc3a 100644
->> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
->> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
->> @@ -624,35 +624,55 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
->>    * fault on them, do fault time migration to replace the device PTEs in
->>    * QEMU page table with normal PTEs from newly allocated pages.
->>    */
->> -void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
->> +void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
->>   			     struct kvm *kvm, bool skip_page_out)
->>   {
->>   	int i;
->>   	struct kvmppc_uvmem_page_pvt *pvt;
->> -	unsigned long pfn, uvmem_pfn;
->> -	unsigned long gfn = free->base_gfn;
->> +	struct page *uvmem_page;
->> +	struct vm_area_struct *vma = NULL;
->> +	unsigned long uvmem_pfn, gfn;
->> +	unsigned long addr, end;
->> +
->> +	mmap_read_lock(kvm->mm);
->> +
->> +	addr = slot->userspace_addr;
-> 
-> We typically use gfn_to_hva() for that, but that won't work for a
-> memslot that is already marked INVALID which is the case here.
-> I think it is ok to access slot->userspace_addr here of an INVALID
-> memslot, but just thought of explictly bringing this up.
+Excerpts from Peter Zijlstra's message of July 23, 2020 9:40 pm:
+> On Thu, Jul 23, 2020 at 08:56:14PM +1000, Nicholas Piggin wrote:
+>=20
+>> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/as=
+m/hw_irq.h
+>> index 3a0db7b0b46e..35060be09073 100644
+>> --- a/arch/powerpc/include/asm/hw_irq.h
+>> +++ b/arch/powerpc/include/asm/hw_irq.h
+>> @@ -200,17 +200,14 @@ static inline bool arch_irqs_disabled(void)
+>>  #define powerpc_local_irq_pmu_save(flags)			\
+>>  	 do {							\
+>>  		raw_local_irq_pmu_save(flags);			\
+>> -		trace_hardirqs_off();				\
+>> +		if (!raw_irqs_disabled_flags(flags))		\
+>> +			trace_hardirqs_off();			\
+>>  	} while(0)
+>>  #define powerpc_local_irq_pmu_restore(flags)			\
+>>  	do {							\
+>> -		if (raw_irqs_disabled_flags(flags)) {		\
+>> -			raw_local_irq_pmu_restore(flags);	\
+>> -			trace_hardirqs_off();			\
+>> -		} else {					\
+>> +		if (!raw_irqs_disabled_flags(flags))		\
+>>  			trace_hardirqs_on();			\
+>> -			raw_local_irq_pmu_restore(flags);	\
+>> -		}						\
+>> +		raw_local_irq_pmu_restore(flags);		\
+>>  	} while(0)
+>=20
+> You shouldn't be calling lockdep from NMI context!
 
-Which explicitly mentioned above in the patch's description:
+After this patch it doesn't.
 
-This can't work when hot unplugging a memory slot because the memory slot
-is flagged as invalid and gfn_to_pfn() is then not trying to access the
-page, so the page fault mechanism is not triggered.
+trace_hardirqs_on/off implementation appears to expect to be called in NMI=20
+context though, for some reason.
 
-> 
->> +	end = addr + (slot->npages * PAGE_SIZE);
->>   
->> -	for (i = free->npages; i; --i, ++gfn) {
->> -		struct page *uvmem_page;
->> +	gfn = slot->base_gfn;
->> +	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
->> +
->> +		/* Fetch the VMA if addr is not in the latest fetched one */
->> +		if (!vma || (addr < vma->vm_start || addr >= vma->vm_end)) {
->> +			vma = find_vma_intersection(kvm->mm, addr, end);
->> +			if (!vma ||
->> +			    vma->vm_start > addr || vma->vm_end < end) {
->> +				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
->> +				break;
->> +			}
->> +		}
-> 
-> In Ram's series, kvmppc_memslot_page_merge() also walks the VMAs spanning
-> the memslot, but it uses a different logic for the same. Why can't these
-> two cases use the same method to walk the VMAs? Is there anything subtly
-> different between the two cases?
+> That is, I recently
+> added suport for that on x86:
+>=20
+>   https://lkml.kernel.org/r/20200623083721.155449112@infradead.org
+>   https://lkml.kernel.org/r/20200623083721.216740948@infradead.org
+>=20
+> But you need to be very careful on how you order things, as you can see
+> the above relies on preempt_count() already having been incremented with
+> NMI_MASK.
 
-This is probably doable. At the time I wrote that patch, the 
-kvmppc_memslot_page_merge() was not yet introduced AFAIR.
+Hmm. My patch seems simpler.
 
-This being said, I'd help a lot to factorize that code... I let Ram dealing with 
-that ;)
+I don't know this stuff very well, I don't really understand what your patc=
+h=20
+enables for x86 but at least it shouldn't be incompatible with this one=20
+AFAIKS.
 
-Cheers,
-Laurent.
-
-
+Thanks,
+Nick
