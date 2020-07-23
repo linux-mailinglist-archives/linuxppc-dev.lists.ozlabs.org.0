@@ -2,72 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3689922AD1C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 13:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C07A22AD73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 13:16:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC8W62VGFzDr3T
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 21:00:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC8t40jlDzDr9N
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 21:16:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sdNN0zOh; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC8Qm5wwYzDr6l
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 20:56:32 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id z3so2812331pfn.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 03:56:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=PK02Bh4d4aHWKzfhAQVFjFrAIUZm1v12mLEDk9haWJU=;
- b=sdNN0zOhm9Gaw/QM2lx9n1Pr0hg9JdLwTvF7rVA/RlIIC4ACPK5JO9Cy1Atwckk7+9
- CFejqgp3fBmCEibRCSozYV6PU7J+GgU0Ftq3j0qE6swAoXU/Fy9K7aTJFEUd+0REAs6R
- 60ZZKTg/k+AUedcNva3zN2Wk2NvIjc95u/aSaqlZg1JF5mvJz7bN0KXfHD5HWJOLy0cS
- oeFPn3zpBjqZAzako78ANrATkc0M1xwHT4zP7uTkIQUnVTrU+2+CfSp6RjkjaPXGcySF
- HFJi0tb8kVEIXPBKy4EuNIgo6grQl4F2P3uFgDskCjmkimMD7UHkyV7PREwqBfqe2PQg
- Ipbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=PK02Bh4d4aHWKzfhAQVFjFrAIUZm1v12mLEDk9haWJU=;
- b=hYvZ0rRXko8ND2kUix5KFZnd+iAbed45+XJ32ipVXgXhF9P0HMXb/hOzX1sDWjeoVK
- topoq4p60oeY8wegTEbS7h0F3pcBixy4I4EwCrch0qxNPGBO5QbEHB6tDtTg5HgR2NuK
- wPyooNyICxD6vEb+vni+uNQwAPr5Nrh9GTFpsoAaakNfj7yQ6ersDSQtUWVu+QJXUKH+
- h+kuhXjJQ8MK+2N/0BAOqs+/RgW5w5Y2bRvnE6NFsFPUtNSp0znIv1uK58SpSPEEzroy
- dpy4+U3PWIxPQlUn6mPxtzWFx3HE7beUsOXXt1p395zEO2mt5hc6picI9em/v4AD9BGh
- VnlQ==
-X-Gm-Message-State: AOAM53285+cmvZifLWX4iNQuaTMHy1Z1oJzgPcoTQ1c5J2pYKYnOcTDs
- rp+RVc3PrIVivt9A8+YhPqs=
-X-Google-Smtp-Source: ABdhPJymcYwdxtDyk5I5JumOCYmSfFHEpsFhlVU55Xy6fEdzOhOTPKKB1pqhSpPIuB0KuD9bO1C0Uw==
-X-Received: by 2002:a62:8ccb:: with SMTP id m194mr3698446pfd.36.1595501790287; 
- Thu, 23 Jul 2020 03:56:30 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (110-174-173-27.tpgi.com.au.
- [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id 204sm2598009pfx.3.2020.07.23.03.56.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Jul 2020 03:56:29 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] lockdep: warn on redundant or incorrect irq state changes
-Date: Thu, 23 Jul 2020 20:56:15 +1000
-Message-Id: <20200723105615.1268126-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200723105615.1268126-1-npiggin@gmail.com>
-References: <20200723105615.1268126-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC8r34D2XzDr5j
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 21:14:59 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06NB1pho107211; Thu, 23 Jul 2020 07:14:45 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32f6wbvgn1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 07:14:45 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NB6ebv016600;
+ Thu, 23 Jul 2020 11:14:43 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 32brq839fk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 11:14:43 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06NBEe0230277936
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jul 2020 11:14:41 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD5AFA405B;
+ Thu, 23 Jul 2020 11:14:40 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40564A4054;
+ Thu, 23 Jul 2020 11:14:38 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.211.150.76])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 23 Jul 2020 11:14:38 +0000 (GMT)
+Date: Thu, 23 Jul 2020 04:14:35 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [v4 2/5] KVM: PPC: Book3S HV: track the state GFNs associated
+ with secure VMs
+Message-ID: <20200723111435.GA5493@oc0525413822.ibm.com>
+References: <1594972827-13928-1-git-send-email-linuxram@us.ibm.com>
+ <1594972827-13928-3-git-send-email-linuxram@us.ibm.com>
+ <20200723044830.GT7902@in.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200723044830.GT7902@in.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-23_03:2020-07-23,
+ 2020-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0
+ adultscore=0 impostorscore=0 suspectscore=0 phishscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007230081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,224 +87,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With the previous patch, lockdep hardirq state changes should not be
-redundant. Softirq state changes already follow that pattern.
+On Thu, Jul 23, 2020 at 10:18:30AM +0530, Bharata B Rao wrote:
+> On Fri, Jul 17, 2020 at 01:00:24AM -0700, Ram Pai wrote:
+> >  	pvt->gpa = gpa;
+..snip..
+> >  	pvt->kvm = kvm;
+> > @@ -524,6 +663,7 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
+> >  		uvmem_page = pfn_to_page(uvmem_pfn);
+> >  		pvt = uvmem_page->zone_device_data;
+> >  		pvt->skip_page_out = true;
+> > +		pvt->remove_gfn = false;
+> >  	}
+> >  
+> >  retry:
+> > @@ -537,12 +677,16 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
+> >  		uvmem_page = pfn_to_page(uvmem_pfn);
+> >  		pvt = uvmem_page->zone_device_data;
+> >  		pvt->skip_page_out = true;
+> > +		pvt->remove_gfn = false;
+> 
+> This is the case of making an already secure page as shared page.
+> A comment here as to why remove_gfn is set to false here will help.
+> 
+> Also isn't it by default false? Is there a situation where it starts
+> out by default false, becomes true later and you are required to
+> explicitly mark it false here?
 
-So warn on unexpected enable-when-enabled or disable-when-disabled
-conditions, to catch possible errors or sloppy patterns that could
-lead to similar bad behavior due to NMIs etc.
+It is by default false. And will be true when the GFN is
+released/invalidated through kvmppc_uvmem_drop_pages().
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- kernel/locking/lockdep.c           | 80 +++++++++++++-----------------
- kernel/locking/lockdep_internals.h |  4 --
- kernel/locking/lockdep_proc.c      | 10 +---
- 3 files changed, 35 insertions(+), 59 deletions(-)
+It is marked false explicitly here, just to be safe, and protect
+against any implicit changes.
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 29a8de4c50b9..138458fb2234 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -3649,15 +3649,8 @@ void lockdep_hardirqs_on_prepare(unsigned long ip)
- 	if (unlikely(!debug_locks || current->lockdep_recursion))
- 		return;
- 
--	if (unlikely(current->hardirqs_enabled)) {
--		/*
--		 * Neither irq nor preemption are disabled here
--		 * so this is racy by nature but losing one hit
--		 * in a stat is not a big deal.
--		 */
--		__debug_atomic_inc(redundant_hardirqs_on);
-+	if (DEBUG_LOCKS_WARN_ON(current->hardirqs_enabled))
- 		return;
--	}
- 
- 	/*
- 	 * We're enabling irqs and according to our state above irqs weren't
-@@ -3695,15 +3688,8 @@ void noinstr lockdep_hardirqs_on(unsigned long ip)
- 	if (unlikely(!debug_locks || curr->lockdep_recursion))
- 		return;
- 
--	if (curr->hardirqs_enabled) {
--		/*
--		 * Neither irq nor preemption are disabled here
--		 * so this is racy by nature but losing one hit
--		 * in a stat is not a big deal.
--		 */
--		__debug_atomic_inc(redundant_hardirqs_on);
-+	if (DEBUG_LOCKS_WARN_ON(curr->hardirqs_enabled))
- 		return;
--	}
- 
- 	/*
- 	 * We're enabling irqs and according to our state above irqs weren't
-@@ -3738,6 +3724,9 @@ void noinstr lockdep_hardirqs_off(unsigned long ip)
- 	if (unlikely(!debug_locks || curr->lockdep_recursion))
- 		return;
- 
-+	if (DEBUG_LOCKS_WARN_ON(!curr->hardirqs_enabled))
-+		return;
-+
- 	/*
- 	 * So we're supposed to get called after you mask local IRQs, but for
- 	 * some reason the hardware doesn't quite think you did a proper job.
-@@ -3745,17 +3734,13 @@ void noinstr lockdep_hardirqs_off(unsigned long ip)
- 	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
- 		return;
- 
--	if (curr->hardirqs_enabled) {
--		/*
--		 * We have done an ON -> OFF transition:
--		 */
--		curr->hardirqs_enabled = 0;
--		curr->hardirq_disable_ip = ip;
--		curr->hardirq_disable_event = ++curr->irq_events;
--		debug_atomic_inc(hardirqs_off_events);
--	} else {
--		debug_atomic_inc(redundant_hardirqs_off);
--	}
-+	/*
-+	 * We have done an ON -> OFF transition:
-+	 */
-+	curr->hardirqs_enabled = 0;
-+	curr->hardirq_disable_ip = ip;
-+	curr->hardirq_disable_event = ++curr->irq_events;
-+	debug_atomic_inc(hardirqs_off_events);
- }
- EXPORT_SYMBOL_GPL(lockdep_hardirqs_off);
- 
-@@ -3769,6 +3754,9 @@ void lockdep_softirqs_on(unsigned long ip)
- 	if (unlikely(!debug_locks || current->lockdep_recursion))
- 		return;
- 
-+	if (DEBUG_LOCKS_WARN_ON(curr->softirqs_enabled))
-+		return;
-+
- 	/*
- 	 * We fancy IRQs being disabled here, see softirq.c, avoids
- 	 * funny state and nesting things.
-@@ -3776,11 +3764,6 @@ void lockdep_softirqs_on(unsigned long ip)
- 	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
- 		return;
- 
--	if (curr->softirqs_enabled) {
--		debug_atomic_inc(redundant_softirqs_on);
--		return;
--	}
--
- 	current->lockdep_recursion++;
- 	/*
- 	 * We'll do an OFF -> ON transition:
-@@ -3809,26 +3792,26 @@ void lockdep_softirqs_off(unsigned long ip)
- 	if (unlikely(!debug_locks || current->lockdep_recursion))
- 		return;
- 
-+	if (DEBUG_LOCKS_WARN_ON(!curr->softirqs_enabled))
-+		return;
-+
- 	/*
- 	 * We fancy IRQs being disabled here, see softirq.c
- 	 */
- 	if (DEBUG_LOCKS_WARN_ON(!irqs_disabled()))
- 		return;
- 
--	if (curr->softirqs_enabled) {
--		/*
--		 * We have done an ON -> OFF transition:
--		 */
--		curr->softirqs_enabled = 0;
--		curr->softirq_disable_ip = ip;
--		curr->softirq_disable_event = ++curr->irq_events;
--		debug_atomic_inc(softirqs_off_events);
--		/*
--		 * Whoops, we wanted softirqs off, so why aren't they?
--		 */
--		DEBUG_LOCKS_WARN_ON(!softirq_count());
--	} else
--		debug_atomic_inc(redundant_softirqs_off);
-+	/*
-+	 * We have done an ON -> OFF transition:
-+	 */
-+	curr->softirqs_enabled = 0;
-+	curr->softirq_disable_ip = ip;
-+	curr->softirq_disable_event = ++curr->irq_events;
-+	debug_atomic_inc(softirqs_off_events);
-+	/*
-+	 * Whoops, we wanted softirqs off, so why aren't they?
-+	 */
-+	DEBUG_LOCKS_WARN_ON(!softirq_count());
- }
- 
- static int
-@@ -5684,6 +5667,11 @@ void __init lockdep_init(void)
- 
- 	printk(" per task-struct memory footprint: %zu bytes\n",
- 	       sizeof(((struct task_struct *)NULL)->held_locks));
-+
-+	WARN_ON(irqs_disabled());
-+
-+	current->hardirqs_enabled = 1;
-+	current->softirqs_enabled = 1;
- }
- 
- static void
-diff --git a/kernel/locking/lockdep_internals.h b/kernel/locking/lockdep_internals.h
-index baca699b94e9..6dd8b1f06dc4 100644
---- a/kernel/locking/lockdep_internals.h
-+++ b/kernel/locking/lockdep_internals.h
-@@ -180,12 +180,8 @@ struct lockdep_stats {
- 	unsigned int   chain_lookup_misses;
- 	unsigned long  hardirqs_on_events;
- 	unsigned long  hardirqs_off_events;
--	unsigned long  redundant_hardirqs_on;
--	unsigned long  redundant_hardirqs_off;
- 	unsigned long  softirqs_on_events;
- 	unsigned long  softirqs_off_events;
--	unsigned long  redundant_softirqs_on;
--	unsigned long  redundant_softirqs_off;
- 	int            nr_unused_locks;
- 	unsigned int   nr_redundant_checks;
- 	unsigned int   nr_redundant;
-diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
-index 5525cd3ba0c8..98f204220ed9 100644
---- a/kernel/locking/lockdep_proc.c
-+++ b/kernel/locking/lockdep_proc.c
-@@ -172,12 +172,8 @@ static void lockdep_stats_debug_show(struct seq_file *m)
- #ifdef CONFIG_DEBUG_LOCKDEP
- 	unsigned long long hi1 = debug_atomic_read(hardirqs_on_events),
- 			   hi2 = debug_atomic_read(hardirqs_off_events),
--			   hr1 = debug_atomic_read(redundant_hardirqs_on),
--			   hr2 = debug_atomic_read(redundant_hardirqs_off),
- 			   si1 = debug_atomic_read(softirqs_on_events),
--			   si2 = debug_atomic_read(softirqs_off_events),
--			   sr1 = debug_atomic_read(redundant_softirqs_on),
--			   sr2 = debug_atomic_read(redundant_softirqs_off);
-+			   si2 = debug_atomic_read(softirqs_off_events);
- 
- 	seq_printf(m, " chain lookup misses:           %11llu\n",
- 		debug_atomic_read(chain_lookup_misses));
-@@ -196,12 +192,8 @@ static void lockdep_stats_debug_show(struct seq_file *m)
- 
- 	seq_printf(m, " hardirq on events:             %11llu\n", hi1);
- 	seq_printf(m, " hardirq off events:            %11llu\n", hi2);
--	seq_printf(m, " redundant hardirq ons:         %11llu\n", hr1);
--	seq_printf(m, " redundant hardirq offs:        %11llu\n", hr2);
- 	seq_printf(m, " softirq on events:             %11llu\n", si1);
- 	seq_printf(m, " softirq off events:            %11llu\n", si2);
--	seq_printf(m, " redundant softirq ons:         %11llu\n", sr1);
--	seq_printf(m, " redundant softirq offs:        %11llu\n", sr2);
- #endif
- }
- 
--- 
-2.23.0
+> 
+> Otherwise, Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
+> 
+Thanks for the review.
 
+RP
