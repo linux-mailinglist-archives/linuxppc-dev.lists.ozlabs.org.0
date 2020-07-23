@@ -2,77 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1A622A711
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 07:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 209D622A84F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 08:13:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC1b3381rzDrB5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 15:48:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC2825V5YzDrB3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 16:13:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=h1NFcx22; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC1YK0x5jzDqQ9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 15:46:44 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id cv18so3844505pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 22:46:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to
- :user-agent; bh=4Bsv9nIgqKmSYSIOMPedKdrcSWXd/PYFSO2aIq/191g=;
- b=h1NFcx22ZnIuEzuWbSbkC3x7IEN9Y2dN6+57CJu8RbnCZqVp91BCoOWxD1R6Zx93Sb
- lo4nx9IxNGFCzW2Vz6QX3Plltlj4h16/LmJ0YIpIuapYsFxfeqrNXg9VDLvCy2d2UU/J
- haOQ4c/cYL4G2Y4SES+dw1eVWHBr7SQGOS22NA2U1bvjwxKAggTPT31ZqEZ3WTNy+Z7d
- PMLE8ufxcP4Y16XHvH3S/qkr0LjvrGNndguO5t1XbH1XujDd0rCNUBn2mcdMWQrhslMf
- sTP8OF/bVRL/XHpQt9lGLV6hdQRH5BtFSe/3/rFD60TtGwM6GvYDM2P8XIPmb+ZLPh6Y
- afdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to:user-agent;
- bh=4Bsv9nIgqKmSYSIOMPedKdrcSWXd/PYFSO2aIq/191g=;
- b=QuMUDykFlKfpfw+T904E95vYbOeP4YO72UPUrW1HmlNMr0rA5yq/QpMH/1KDC1H4Fx
- PrGDlpmMyhAEeh9yMX/hNWgAJYscIpszzBh56LvJlztt5chBNyD6MHDH2NrFNQqV8mEc
- 1MZeuO+3XHTkyhb5Bni/+paTYfmTMtxXMfGLJDWkjSXNeq1bfqjAz5/WLdr7ALMAr9rw
- xljYONzPfGClw5PlvtzK3JJRcigSBktc7II3QURFryXkFh9eBBH1Rej+6TQWPjbF7ddL
- cU461m0XqHGVrN7HQNfO1W6Vl9Ru9rI/+duMWhOtvqo7l9LquGwFknvxXBkqiJOWyQip
- ktjQ==
-X-Gm-Message-State: AOAM533DIDiupAQgvGs4zqDplZlUeZGP6NLn9OF74Gf87qDzTmWnhjmF
- 2aTPQc3Vaqe+9hsad2yvE+k=
-X-Google-Smtp-Source: ABdhPJyIls34k7x9JFSOkkgOqf1QQEkFiI5YZQPlp/pPPicar1BpkkeJw1obLQi4kxe5E1ASY31oLg==
-X-Received: by 2002:a17:90a:1a02:: with SMTP id
- 2mr2574014pjk.150.1595483201112; 
- Wed, 22 Jul 2020 22:46:41 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id u16sm1295001pfn.52.2020.07.22.22.46.39
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 22 Jul 2020 22:46:40 -0700 (PDT)
-Date: Wed, 22 Jul 2020 22:46:07 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Subject: Re: [PATCH 0/4] ASoC: fsl_asrc: allow selecting arbitrary clocks
-Message-ID: <20200723054604.GC5476@Asurada-Nvidia>
-References: <20200702142235.235869-1-arnaud.ferraris@collabora.com>
- <20200702184226.GA23935@Asurada-Nvidia>
- <abdd7265-43d2-49b5-6afd-70d65baac30e@collabora.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC25F5fRJzDr49
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 16:10:57 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06N62FL0092520; Thu, 23 Jul 2020 02:10:48 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32d91wxd30-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 02:10:47 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06N67w6A002973;
+ Thu, 23 Jul 2020 06:10:45 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06fra.de.ibm.com with ESMTP id 32brbgu1vm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 06:10:45 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06N6AgCb32506242
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jul 2020 06:10:42 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4657E4204B;
+ Thu, 23 Jul 2020 06:10:42 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0A30C42042;
+ Thu, 23 Jul 2020 06:10:40 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.85.75.152])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 23 Jul 2020 06:10:39 +0000 (GMT)
+Date: Thu, 23 Jul 2020 11:40:37 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: Re: [v4 3/5] KVM: PPC: Book3S HV: in H_SVM_INIT_DONE, migrate
+ remaining normal-GFNs to secure-GFNs.
+Message-ID: <20200723061037.GA1082478@in.ibm.com>
+References: <1594972827-13928-1-git-send-email-linuxram@us.ibm.com>
+ <1594972827-13928-4-git-send-email-linuxram@us.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <abdd7265-43d2-49b5-6afd-70d65baac30e@collabora.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <1594972827-13928-4-git-send-email-linuxram@us.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-23_01:2020-07-22,
+ 2020-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 adultscore=0 suspectscore=1 clxscore=1015
+ mlxlogscore=472 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007230044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,57 +84,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Rob Herring <robh+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Mark Brown <broonie@kernel.org>, kernel@collabora.com,
- Fabio Estevam <festevam@gmail.com>
+Reply-To: bharata@linux.ibm.com
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 17, 2020 at 01:16:42PM +0200, Arnaud Ferraris wrote:
-> Hi Nic,
-> 
-> Le 02/07/2020 à 20:42, Nicolin Chen a écrit :
-> > Hi Arnaud,
-> > 
-> > On Thu, Jul 02, 2020 at 04:22:31PM +0200, Arnaud Ferraris wrote:
-> >> The current ASRC driver hardcodes the input and output clocks used for
-> >> sample rate conversions. In order to allow greater flexibility and to
-> >> cover more use cases, it would be preferable to select the clocks using
-> >> device-tree properties.
-> > 
-> > We recent just merged a new change that auto-selecting internal
-> > clocks based on sample rates as the first option -- ideal ratio
-> > mode is the fallback mode now. Please refer to:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20200702&id=d0250cf4f2abfbea64ed247230f08f5ae23979f0
-> 
-> While working on fixing the automatic clock selection (see my v3), I
-> came across another potential issue, which would be better explained
-> with an example:
->   - Input has sample rate 8kHz and uses clock SSI1 with rate 512kHz
->   - Output has sample rate 16kHz and uses clock SSI2 with rate 1024kHz
-> 
-> Let's say my v3 patch is merged, then the selected input clock will be
-> SSI1, while the selected output clock will be SSI2. In that case, it's
-> all good, as the driver will calculate the dividers right.
-> 
-> Now, suppose a similar board has the input wired to SSI2 and output to
-> SSI1, meaning we're now in the following case:
->   - Input has sample rate 8kHz and uses clock SSI2 with rate 512kHz
->   - Output has sample rate 16kHz and uses clock SSI1 with rate 1024kHz
-> (the same result is achieved during capture with the initial example
-> setup, as input and output properties are then swapped)
-> 
-> In that case, the selected clocks will still be SSI1 for input (just
-> because it appears first in the clock table), and SSI2 for output,
-> meaning the calculated dividers will be:
->   - input: 512 / 16 => 32 (should be 64)
->   - output: 1024 / 8 => 128 (should be 64 here too)
+On Fri, Jul 17, 2020 at 01:00:25AM -0700, Ram Pai wrote:
+>  
+> +int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
+> +		const struct kvm_memory_slot *memslot)
 
-I don't get the 32, 128 and 64 parts. Would you please to elaborate
-a bit? What you said sounds to me like the driver calculates wrong
-dividers?
+Don't see any callers for this outside of this file, so why not static?
+
+> +{
+> +	unsigned long gfn = memslot->base_gfn;
+> +	struct vm_area_struct *vma;
+> +	unsigned long start, end;
+> +	int ret = 0;
+> +
+> +	while (kvmppc_next_nontransitioned_gfn(memslot, kvm, &gfn)) {
+
+So you checked the state of gfn under uvmem_lock above, but release
+it too.
+
+> +
+> +		mmap_read_lock(kvm->mm);
+> +		start = gfn_to_hva(kvm, gfn);
+> +		if (kvm_is_error_hva(start)) {
+> +			ret = H_STATE;
+> +			goto next;
+> +		}
+> +
+> +		end = start + (1UL << PAGE_SHIFT);
+> +		vma = find_vma_intersection(kvm->mm, start, end);
+> +		if (!vma || vma->vm_start > start || vma->vm_end < end) {
+> +			ret = H_STATE;
+> +			goto next;
+> +		}
+> +
+> +		mutex_lock(&kvm->arch.uvmem_lock);
+> +		ret = kvmppc_svm_migrate_page(vma, start, end,
+> +				(gfn << PAGE_SHIFT), kvm, PAGE_SHIFT, false);
+
+What is the guarantee that the gfn is in the same earlier state when you do
+do migration here?
+
+Regards,
+Bharata.
