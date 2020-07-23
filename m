@@ -2,47 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BD222A6E2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 07:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3752422A6ED
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 07:34:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC12Y1KsBzDr7V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 15:23:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC1Gq0V3kzDqx4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 15:34:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.183.195; helo=relay3-d.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ghiti.fr
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=YWSfNpBy; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC10t6Q90zDr7K
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 15:22:04 +1000 (AEST)
-X-Originating-IP: 90.112.45.105
-Received: from [192.168.1.14] (lfbn-gre-1-325-105.w90-112.abo.wanadoo.fr
- [90.112.45.105]) (Authenticated sender: alex@ghiti.fr)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 722BD60002;
- Thu, 23 Jul 2020 05:21:51 +0000 (UTC)
-Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Palmer Dabbelt <palmer@dabbelt.com>
-References: <mhng-831c4073-aefa-4aa0-a583-6a17f9aff9b7@palmerdabbelt-glaptop1>
- <d7e3cbb7-c12a-bce2-f1db-c336d15f74bd@ghiti.fr>
- <7cb2285e-68ba-6827-5e61-e33a4b65ac03@ghiti.fr>
- <54af168083aee9dbda1b531227521a26b77ba2c8.camel@kernel.crashing.org>
-From: Alex Ghiti <alex@ghiti.fr>
-Message-ID: <cade70e2-0179-2650-41c5-036679aaf30c@ghiti.fr>
-Date: Thu, 23 Jul 2020 01:21:50 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC1Dv5wD3zDr7Q
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 15:32:31 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id o1so2052692plk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 22:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=Azbmlb+o4Fr+IIKuyAGgLbUxH3riL3SrFDqan1+Q4+M=;
+ b=YWSfNpBy8DiSuE3KFCrrd51VFavpYZSf4IehxS6pt8vfV3qMCkCsreyShiAT+R6fLD
+ 6qcazoBPEvtCcEetZPDLBMsmAkp/v04ZW2cFFN/fKnHjv5h5IrzMocedHYgsxY0o/h1B
+ uPSIU/Hf/OjdnrB+uczzCWgglf1A18DgHCT2oE2nzSi0LbZfLC+RYMLZWZnHPXRkklNE
+ Z4lYNPZPXOTM5HoPTmTowANjCDl5E8vWiEVQkrN2qXyWmD5lNLX6pdb9HBxeuqsKshjL
+ Ap/eOsPLMJZ5hTQECt33KdoA71jPCi+qMVdRx97wTmDFnSSjPPqn8LGMYYaU17giriRU
+ Q8LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=Azbmlb+o4Fr+IIKuyAGgLbUxH3riL3SrFDqan1+Q4+M=;
+ b=cPvMX8uLDM90nL9cnpYhM5QQnehGPda+x4RitTYRC34/YfjAmwzD0EJeQN+eYqxFHj
+ a9LS8Mv+9OAnDB2I29Uev+SE6PtcD6aoElxtIEc70kVaQnk6+G2/beIvNBgVKT/e2sQS
+ sAvrdCG26w+v5XBT9eWm0wOozy76HWBUSXPlYayM1cwacaq6zjI2kvEIKRQLAfz6dTZX
+ wd8aH8WC1cvjeT56uRhRzOaait6Vhqjqb2BISpGxLRLAVqeY0rPtygK2x3T0pLGVj1pn
+ ZtRFYkG/7usrIjJU8DsJRxNrBb6c7hXjb7UfuYIrY884EXcMCfIF2uenmHT9zkUDan5s
+ IVig==
+X-Gm-Message-State: AOAM530fJU7qFFTpS+bXZFTXJAvyR+ZtC5Yyi31Xk/lBkT8V5px/9XYx
+ cyHzgYGwwzOTE/IWYLi9pMQ=
+X-Google-Smtp-Source: ABdhPJy3Ixe5NDssWl2gkYZjneUuDd6lti+TH8cvo414EnOoMUuOEVvaFkXJt4jj5434vavQPR0Wcg==
+X-Received: by 2002:a17:90b:3715:: with SMTP id
+ mg21mr2603075pjb.113.1595482345592; 
+ Wed, 22 Jul 2020 22:32:25 -0700 (PDT)
+Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
+ by smtp.gmail.com with ESMTPSA id y65sm1438245pfb.75.2020.07.22.22.32.25
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Wed, 22 Jul 2020 22:32:25 -0700 (PDT)
+Date: Wed, 22 Jul 2020 22:31:50 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_esai: add IRQF_SHARED for devm_request_irq
+Message-ID: <20200723053150.GA5476@Asurada-Nvidia>
+References: <1595476808-28927-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <54af168083aee9dbda1b531227521a26b77ba2c8.camel@kernel.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1595476808-28927-1-git-send-email-shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,71 +80,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aou@eecs.berkeley.edu, linux-mm@kvack.org, Anup Patel <Anup.Patel@wdc.com>,
- linux-kernel@vger.kernel.org, Atish Patra <Atish.Patra@wdc.com>,
- paulus@samba.org, zong.li@sifive.com, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, perex@perex.cz,
+ broonie@kernel.org, festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Benjamin,
-
-Le 7/21/20 à 7:11 PM, Benjamin Herrenschmidt a écrit :
-> On Tue, 2020-07-21 at 14:36 -0400, Alex Ghiti wrote:
->>>> I guess I don't understand why this is necessary at all.
->>>> Specifically: why
->>>> can't we just relocate the kernel within the linear map?  That would
->>>> let the
->>>> bootloader put the kernel wherever it wants, modulo the physical
->>>> memory size we
->>>> support.  We'd need to handle the regions that are coupled to the
->>>> kernel's
->>>> execution address, but we could just put them in an explicit memory
->>>> region
->>>> which is what we should probably be doing anyway.
->>>
->>> Virtual relocation in the linear mapping requires to move the kernel
->>> physically too. Zong implemented this physical move in its KASLR RFC
->>> patchset, which is cumbersome since finding an available physical spot
->>> is harder than just selecting a virtual range in the vmalloc range.
->>>
->>> In addition, having the kernel mapping in the linear mapping prevents
->>> the use of hugepage for the linear mapping resulting in performance loss
->>> (at least for the GB that encompasses the kernel).
->>>
->>> Why do you find this "ugly" ? The vmalloc region is just a bunch of
->>> available virtual addresses to whatever purpose we want, and as noted by
->>> Zong, arm64 uses the same scheme.
+On Thu, Jul 23, 2020 at 12:00:08PM +0800, Shengjiu Wang wrote:
+> ESAI interfaces may share same interrupt line with EDMA on
+> some platforms (e.g. i.MX8QXP, i.MX8QM).
+> Add IRQF_SHARED flag to allow sharing the irq among several
+> devices
 > 
-> I don't get it :-)
-> 
-> At least on powerpc we move the kernel in the linear mapping and it
-> works fine with huge pages, what is your problem there ? You rely on
-> punching small-page size holes in there ?
-> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Signed-off-by: Viorel Suman <viorel.suman@nxp.com>
 
-ARCH_HAS_STRICT_KERNEL_RWX prevents the use of a hugepage for the kernel 
-mapping in the direct mapping as it sets different permissions to 
-different part of the kernel (data, text..etc).
-
-
-> At least in the old days, there were a number of assumptions that
-> the kernel text/data/bss resides in the linear mapping.
-> 
-> If you change that you need to ensure that it's still physically
-> contiguous and you'll have to tweak __va and __pa, which might induce
-> extra overhead.
-> 
-
-Yes that's done in this patch and indeed there is an overhead to those 
-functions.
-
-> Cheers,
-> Ben.
->   
-> 
-
-Thanks,
-
-Alex
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
