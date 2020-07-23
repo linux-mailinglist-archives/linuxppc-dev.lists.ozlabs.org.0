@@ -1,69 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E277E22A49C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 03:31:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CFC22A52B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 04:14:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BBvv91s8fzDr6x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 11:31:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BBwr44ZDxzDqK1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 12:14:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::243;
- helo=mail-oi1-x243.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=BoO4p+rF; dkim-atps=neutral
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
- [IPv6:2607:f8b0:4864:20::243])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BBvsM2qCPzDqMd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 11:30:15 +1000 (AEST)
-Received: by mail-oi1-x243.google.com with SMTP id y22so3595039oie.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jul 2020 18:30:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=YhLOcjKpCgLt9oimmCJP4UVsxMUg1CDYf6yyYw8HbJ0=;
- b=BoO4p+rFFbuFiuHh5Pqlltm6349FRazyKgxJhgbyowZV+wRbNyCkRmw+0idYJkch4j
- z1xnBYXriUkVfpcQyAfJvHS3zqO+2Nb1qdA3W+Tobh/qpKos+RN25ibIKvo2K6GYexgV
- qLl7v2jh0jiahIHPPSbf4kdLzA6iawc5p8W7SDPvGX8Lcl7iS1colNmrjjIDr33J1rjP
- 1G9MtEFrMX50cYcU4KaAE6JI2ungLdDGfy/WfHBpmRvDlIJ06KDEixpyeNS6A1w2MgY4
- l+GUHqtJ7H+q0Lz+ucwx2EzI8GBWp7GdAgPxFHUwbBbr7wb8VgCzXoPySA1zLm4ZypiO
- BKuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=YhLOcjKpCgLt9oimmCJP4UVsxMUg1CDYf6yyYw8HbJ0=;
- b=N0SaLbKmpwMKSA72yHNoDqfTnbHR1/KfHuI7c5M9gSI8PFnvjmlremyKBJeutSW06X
- c50Y5VzcrVZ+G+5MyDVHx6Pj4ZLDPT4uCOYECLgOzfOA/k2Eg8pzTMlgMIusUtuDL25O
- MBlWX8cPzXfMH/pZmBf9YOIXA9gD6aOIi8R7XMCriCoKcVK3OtbzZ68/45iJrTrSlaih
- XM5QmYb+UmH1LdlPgvLT8nQPTvaukacTDHkHpkxQZ1U4470GkeV0FlS9EKLnI46G/T2D
- 4DFndPa5A+Vmeg8CwI0SHU/5b3xMnxrMlckF2d/uBengkFBd8C/OXBbiQfFmqcA+cC68
- 5Njw==
-X-Gm-Message-State: AOAM530c8aQSMRrEr2s0O/Fe0scUxL1cPf5tnMs+HcaKj8XcZbVc/jRi
- mt0vaJVoOpnEnNPH870p7L6E0y7QHFjIe7/yuB0=
-X-Google-Smtp-Source: ABdhPJyQcxAMRL3JGmj7nO+Tmk2DdxuUkrpSYbyfcTaP3o/PkZYxVRZb84LYpTu8w+cfiAdVLskOmzZaD+midLe430o=
-X-Received: by 2002:a54:4418:: with SMTP id k24mr1987878oiw.126.1595467813141; 
- Wed, 22 Jul 2020 18:30:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BBwLk1MYzzDr3l
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 11:52:12 +1000 (AEST)
+IronPort-SDR: OwRBVVxiNsJOgfBde7nf/otN+oMp/g1qKUnzYZIJEjaTFhiXKT8C6GDGy50GRAuza998xgaaUJ
+ 4lgfFXk0DfxQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9690"; a="150436899"
+X-IronPort-AV: E=Sophos;i="5.75,383,1589266800"; d="scan'208";a="150436899"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2020 18:52:07 -0700
+IronPort-SDR: DSkxf9Mhl+tDb0vmbeJyl5WUQvI5D8NETzjzg+c5o7/S1ilVHzlOgQJvp0d2KRaDsv3kq/f0ar
+ zDh/A6gP33Yw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,383,1589266800"; d="scan'208";a="302147757"
+Received: from schwings-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.252.33.132])
+ by orsmga002.jf.intel.com with ESMTP; 22 Jul 2020 18:51:28 -0700
+Date: Thu, 23 Jul 2020 04:51:27 +0300
+From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
+ move to kernel proper
+Message-ID: <20200723015127.GE45081@linux.intel.com>
+References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
+ <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
+ <20200716184909.Horde.JVRLLcKix_jhrJfiQYRbbQ1@messagerie.si.c-s.fr>
 MIME-Version: 1.0
-References: <1594996707-3727-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1594996707-3727-12-git-send-email-atrajeev@linux.vnet.ibm.com>
- <CACzsE9q-oOhABFWUWH5Jc3BuePpUSmtyrzaJt0x7iJSVpeXH0g@mail.gmail.com>
-In-Reply-To: <CACzsE9q-oOhABFWUWH5Jc3BuePpUSmtyrzaJt0x7iJSVpeXH0g@mail.gmail.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Thu, 23 Jul 2020 11:28:46 +1000
-Message-ID: <CACzsE9qyLvSQs2KFirQoTDRZZeVkirDXQumhXycYQ8Kojc8BLQ@mail.gmail.com>
-Subject: Re: [v3 11/15] powerpc/perf: BHRB control to disable BHRB logic when
- not used
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200716184909.Horde.JVRLLcKix_jhrJfiQYRbbQ1@messagerie.si.c-s.fr>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Mailman-Approved-At: Thu, 23 Jul 2020 12:12:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,180 +63,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
- kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, svaidyan@in.ibm.com,
- acme@kernel.org, jolsa@kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
+ Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
+ Paul Burton <paulburton@kernel.org>,
+ Vincent Whitchurch <vincent.whitchurch@axis.com>,
+ Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Kosina <jkosina@suse.cz>, Anup Patel <anup.patel@wdc.com>,
+ linux-kernel@vger.kernel.org, Philipp Rudo <prudo@linux.ibm.com>,
+ Torsten Duwe <duwe@lst.de>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Vincent Chen <deanbo422@gmail.com>, Omar Sandoval <osandov@fb.com>,
+ "open list:S390" <linux-s390@vger.kernel.org>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>,
+ Andrii Nakryiko <andriin@fb.com>, Thomas Huth <thuth@redhat.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+ Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
+ Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
+ Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Ley Foon Tan <ley.foon.tan@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
+ Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
+ Guan Xuetao <gxt@pku.edu.cn>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ Jessica Yu <jeyu@kernel.org>,
+ "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <bpf@vger.kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, David Howells <dhowells@redhat.com>,
+ Amit Daniel Kachhap <amit.kachhap@arm.com>,
+ Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "open list:SPARC + UltraSPARC sparc/sparc64" <sparclinux@vger.kernel.org>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz>,
+ Sven Schnelle <svens@stackframe.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Anders Roxell <anders.roxell@linaro.org>, Jiri Olsa <jolsa@redhat.com>,
+ "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, KP Singh <kpsingh@chromium.org>,
+ Dmitry Vyukov <dvyukov@google.com>, Nick Hu <nickhu@andestech.com>,
+ "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <netdev@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
+ <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 23, 2020 at 11:26 AM Jordan Niethe <jniethe5@gmail.com> wrote:
->
-> On Sat, Jul 18, 2020 at 1:26 AM Athira Rajeev
-> <atrajeev@linux.vnet.ibm.com> wrote:
-> >
-> > PowerISA v3.1 has few updates for the Branch History Rolling Buffer(BHRB).
-> >
-> > BHRB disable is controlled via Monitor Mode Control Register A (MMCRA)
-> > bit, namely "BHRB Recording Disable (BHRBRD)". This field controls
-> > whether BHRB entries are written when BHRB recording is enabled by other
-> > bits. This patch implements support for this BHRB disable bit.
-> >
-> > By setting 0b1 to this bit will disable the BHRB and by setting 0b0
-> > to this bit will have BHRB enabled. This addresses backward
-> > compatibility (for older OS), since this bit will be cleared and
-> > hardware will be writing to BHRB by default.
-> >
-> > This patch addresses changes to set MMCRA (BHRBRD) at boot for power10
-> > ( there by the core will run faster) and enable this feature only on
-> > runtime ie, on explicit need from user. Also save/restore MMCRA in the
-> > restore path of state-loss idle state to make sure we keep BHRB disabled
-> > if it was not enabled on request at runtime.
-> >
-> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> > ---
-> >  arch/powerpc/perf/core-book3s.c       | 20 ++++++++++++++++----
-> >  arch/powerpc/perf/isa207-common.c     | 12 ++++++++++++
-> >  arch/powerpc/platforms/powernv/idle.c | 22 ++++++++++++++++++++--
-> >  3 files changed, 48 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-> > index bd125fe..31c0535 100644
-> > --- a/arch/powerpc/perf/core-book3s.c
-> > +++ b/arch/powerpc/perf/core-book3s.c
-> > @@ -1218,7 +1218,7 @@ static void write_mmcr0(struct cpu_hw_events *cpuhw, unsigned long mmcr0)
-> >  static void power_pmu_disable(struct pmu *pmu)
-> >  {
-> >         struct cpu_hw_events *cpuhw;
-> > -       unsigned long flags, mmcr0, val;
-> > +       unsigned long flags, mmcr0, val, mmcra;
-> >
-> >         if (!ppmu)
-> >                 return;
-> > @@ -1251,12 +1251,24 @@ static void power_pmu_disable(struct pmu *pmu)
-> >                 mb();
-> >                 isync();
-> >
-> > +               val = mmcra = cpuhw->mmcr.mmcra;
-> > +
-> >                 /*
-> >                  * Disable instruction sampling if it was enabled
-> >                  */
-> > -               if (cpuhw->mmcr.mmcra & MMCRA_SAMPLE_ENABLE) {
-> > -                       mtspr(SPRN_MMCRA,
-> > -                             cpuhw->mmcr.mmcra & ~MMCRA_SAMPLE_ENABLE);
-> > +               if (cpuhw->mmcr.mmcra & MMCRA_SAMPLE_ENABLE)
-> > +                       val &= ~MMCRA_SAMPLE_ENABLE;
-> > +
-> > +               /* Disable BHRB via mmcra (BHRBRD) for p10 */
-> > +               if (ppmu->flags & PPMU_ARCH_310S)
-> > +                       val |= MMCRA_BHRB_DISABLE;
-> > +
-> > +               /*
-> > +                * Write SPRN_MMCRA if mmcra has either disabled
-> > +                * instruction sampling or BHRB.
-> > +                */
-> > +               if (val != mmcra) {
-> > +                       mtspr(SPRN_MMCRA, mmcra);
-> >                         mb();
-> >                         isync();
-> >                 }
-> > diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-> > index 77643f3..964437a 100644
-> > --- a/arch/powerpc/perf/isa207-common.c
-> > +++ b/arch/powerpc/perf/isa207-common.c
-> > @@ -404,6 +404,13 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
-> >
-> >         mmcra = mmcr1 = mmcr2 = mmcr3 = 0;
-> >
-> > +       /*
-> > +        * Disable bhrb unless explicitly requested
-> > +        * by setting MMCRA (BHRBRD) bit.
-> > +        */
-> > +       if (cpu_has_feature(CPU_FTR_ARCH_31))
-> > +               mmcra |= MMCRA_BHRB_DISABLE;
-> > +
-> >         /* Second pass: assign PMCs, set all MMCR1 fields */
-> >         for (i = 0; i < n_ev; ++i) {
-> >                 pmc     = (event[i] >> EVENT_PMC_SHIFT) & EVENT_PMC_MASK;
-> > @@ -479,6 +486,11 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
-> >                         mmcra |= val << MMCRA_IFM_SHIFT;
-> >                 }
-> >
-> > +               /* set MMCRA (BHRBRD) to 0 if there is user request for BHRB */
-> > +               if (cpu_has_feature(CPU_FTR_ARCH_31) &&
-> > +                               (has_branch_stack(pevents[i]) || (event[i] & EVENT_WANTS_BHRB)))
-> > +                       mmcra &= ~MMCRA_BHRB_DISABLE;
-> > +
-> >                 if (pevents[i]->attr.exclude_user)
-> >                         mmcr2 |= MMCR2_FCP(pmc);
-> >
-> > diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-> > index 2dd4673..1c9d0a9 100644
-> > --- a/arch/powerpc/platforms/powernv/idle.c
-> > +++ b/arch/powerpc/platforms/powernv/idle.c
-> > @@ -611,6 +611,7 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
-> >         unsigned long srr1;
-> >         unsigned long pls;
-> >         unsigned long mmcr0 = 0;
-> > +       unsigned long mmcra = 0;
-> >         struct p9_sprs sprs = {}; /* avoid false used-uninitialised */
-> >         bool sprs_saved = false;
-> >
-> > @@ -657,6 +658,21 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
-> >                   */
-> >                 mmcr0           = mfspr(SPRN_MMCR0);
-> >         }
-> > +
-> > +       if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-> > +               /*
-> > +                * POWER10 uses MMCRA (BHRBRD) as BHRB disable bit.
-> > +                * If the user hasn't asked for the BHRB to be
-> > +                * written, the value of MMCRA[BHRBRD] is 1.
-> > +                * On wakeup from stop, MMCRA[BHRBD] will be 0,
-> > +                * since it is previleged resource and will be lost.
-> > +                * Thus, if we do not save and restore the MMCRA[BHRBD],
-> > +                * hardware will be needlessly writing to the BHRB
-> > +                * in problem mode.
-> > +                */
-> > +               mmcra           = mfspr(SPRN_MMCRA);
-> If the only thing that needs to happen is set MMCRA[BHRBRD], why save the MMCRA?
-> > +       }
-> > +
-> >         if ((psscr & PSSCR_RL_MASK) >= pnv_first_spr_loss_level) {
-> >                 sprs.lpcr       = mfspr(SPRN_LPCR);
-> >                 sprs.hfscr      = mfspr(SPRN_HFSCR);
-> > @@ -700,8 +716,6 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
-> >         WARN_ON_ONCE(mfmsr() & (MSR_IR|MSR_DR));
-> >
-> >         if ((srr1 & SRR1_WAKESTATE) != SRR1_WS_NOLOSS) {
-> > -               unsigned long mmcra;
-> > -
-> >                 /*
-> >                  * We don't need an isync after the mtsprs here because the
-> >                  * upcoming mtmsrd is execution synchronizing.
-> > @@ -721,6 +735,10 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
-> >                         mtspr(SPRN_MMCR0, mmcr0);
-> >                 }
-> >
-> > +               /* Reload MMCRA to restore BHRB disable bit for POWER10 */
-> > +               if (cpu_has_feature(CPU_FTR_ARCH_31))
-> > +                       mtspr(SPRN_MMCRA, mmcra);
-> > +
-> >                 /*
-> >                  * DD2.2 and earlier need to set then clear bit 60 in MMCRA
-> >                  * to ensure the PMU starts running.
-> Just below here we have:
->         mmcra = mfspr(SPRN_MMCRA);
->         mmcra |= PPC_BIT(60);
->         mtspr(SPRN_MMCRA, mmcra);
->         mmcra &= ~PPC_BIT(60);
->         mtspr(SPRN_MMCRA, mmcra);
-> It seems MMCRA[BHRBRD] could just be OR'd in someway similar to this
-> for ISA v3.1?
-Oh wait the user could have cleared it, just ignore me.
-> > --
-> > 1.8.3.1
-> >
+On Thu, Jul 16, 2020 at 06:49:09PM +0200, Christophe Leroy wrote:
+> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> a écrit :
+> 
+> > Rename module_alloc() to text_alloc() and module_memfree() to
+> > text_memfree(), and move them to kernel/text.c, which is unconditionally
+> > compiled to the kernel proper. This allows kprobes, ftrace and bpf to
+> > allocate space for executable code without requiring to compile the modules
+> > support (CONFIG_MODULES=y) in.
+> 
+> You are not changing enough in powerpc to have this work.
+> On powerpc 32 bits (6xx), when STRICT_KERNEL_RWX is selected, the vmalloc
+> space is set to NX (no exec) at segment level (ie by 256Mbytes zone) unless
+> CONFIG_MODULES is selected.
+> 
+> Christophe
+
+This has been deduced down to:
+
+https://lore.kernel.org/lkml/20200717030422.679972-1-jarkko.sakkinen@linux.intel.com/
+
+I.e. not intruding PPC anymore :-)
+
+/Jarkko
