@@ -2,52 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BB322A91D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 08:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C629922A9B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 09:31:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC2yy5wQSzDrFD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 16:50:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC3sz46WrzDrBh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 17:31:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC2vt2VkqzDrCJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 16:47:54 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=HohM+0bP; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BC2vr4Zfxz9sQt;
- Thu, 23 Jul 2020 16:47:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595486873;
- bh=OeNPhpHvBcuXZex2aPYrGLTVDAkNiyf0rppWSgiCxS8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=HohM+0bPBvgVW9/HLN4IMf5yi02AnIfVZnPyIdTtAqHC444cFOH1CKBqWpDM7Lwon
- NsM2R52CvAiwEd0oX+42uRFpfb/YABuNwOZBc3DeK4/+VbhCdDG6tHlBPeBneiYZuW
- x/sjp2Pc9GDKywfRjjOwgwst4SPVzzgNXME3MASoNfD6aqfhLT8wAtukHrEuE6y5h5
- 0AOqS5iR7BzgP5uZOc2BfOKaLT4d9hdVadOEuqIlPGilDO/5G5Z+CFWTi+jic2wAc3
- oZ6pwqxKCRUOOvrVii1xzFbG1V85GZ0g85dphJPcJZYxt2e93/P/e/b5BBlJGk5abE
- SUl2R+mpqXtVQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/2] powerpc/64s: system call support for scv/rfscv
- instructions
-In-Reply-To: <20200611081203.995112-3-npiggin@gmail.com>
-References: <20200611081203.995112-1-npiggin@gmail.com>
- <20200611081203.995112-3-npiggin@gmail.com>
-Date: Thu, 23 Jul 2020 16:47:51 +1000
-Message-ID: <871rl2ralk.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC3qv6FDCzDrBH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 17:29:29 +1000 (AEST)
+IronPort-SDR: GcSg9QFz0qqXfUW39I5yKf96X5i3uhDyI37TC6Pwu9rBVvtBQtZFuxsxYd2skbkDFgquG3JlwL
+ 0d+nrT1hXBow==
+X-IronPort-AV: E=McAfee;i="6000,8403,9690"; a="137977271"
+X-IronPort-AV: E=Sophos;i="5.75,385,1589266800"; d="scan'208";a="137977271"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jul 2020 00:29:26 -0700
+IronPort-SDR: NzB0zPcm1rw8BjScRlPbtixH+7CFvemMK+zlTASOXgk4mbxbVNdyINeKMObL97AFti7koZ8dh+
+ ukOVLf9okIaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,385,1589266800"; d="scan'208";a="326941712"
+Received: from lkp-server01.sh.intel.com (HELO 7a9a14fb1d52) ([10.239.97.150])
+ by FMSMGA003.fm.intel.com with ESMTP; 23 Jul 2020 00:29:25 -0700
+Received: from kbuild by 7a9a14fb1d52 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jyVfQ-0000MB-0i; Thu, 23 Jul 2020 07:29:24 +0000
+Date: Thu, 23 Jul 2020 15:28:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS c27fe454aff795023d2f3f90f41eb1a3104e614f
+Message-ID: <5f193c28.9G/v5E4ua8CQYQEH%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,53 +57,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, musl@lists.openwall.com,
- Nicholas Piggin <npiggin@gmail.com>, linux-api@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-> index 2a39c716c343..b2bdc4de1292 100644
-> --- a/arch/powerpc/include/asm/ppc-opcode.h
-> +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> @@ -257,6 +257,7 @@
->  #define PPC_INST_MFVSRD			0x7c000066
->  #define PPC_INST_MTVSRD			0x7c000166
->  #define PPC_INST_SC			0x44000002
-> +#define PPC_INST_SCV			0x44000001
-...
-> @@ -411,6 +412,7 @@
-...
-> +#define __PPC_LEV(l)	(((l) & 0x7f) << 5)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: c27fe454aff795023d2f3f90f41eb1a3104e614f  Automatic merge of 'master', 'next' and 'fixes' (2020-07-21 00:00)
 
-These conflicted and didn't seem to be used so I dropped them.
+elapsed time: 3913m
 
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index 5abe98216dc2..161bfccbc309 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -3378,6 +3382,16 @@ int emulate_step(struct pt_regs *regs, struct ppc_inst instr)
->  		regs->msr = MSR_KERNEL;
->  		return 1;
->  
-> +	case SYSCALL_VECTORED_0:	/* scv 0 */
-> +		regs->gpr[9] = regs->gpr[13];
-> +		regs->gpr[10] = MSR_KERNEL;
-> +		regs->gpr[11] = regs->nip + 4;
-> +		regs->gpr[12] = regs->msr & MSR_MASK;
-> +		regs->gpr[13] = (unsigned long) get_paca();
-> +		regs->nip = (unsigned long) &system_call_vectored_emulate;
-> +		regs->msr = MSR_KERNEL;
-> +		return 1;
-> +
+configs tested: 111
+configs skipped: 2
 
-This broke the ppc64e build:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-  ld: arch/powerpc/lib/sstep.o:(.toc+0x0): undefined reference to `system_call_vectored_emulate'
-  make[1]: *** [/home/michael/linux/Makefile:1139: vmlinux] Error 1
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm                                 defconfig
+sh                          rsk7264_defconfig
+c6x                                 defconfig
+c6x                        evmc6474_defconfig
+arm                         shannon_defconfig
+powerpc                       ppc64_defconfig
+arm                      footbridge_defconfig
+s390                             alldefconfig
+s390                          debug_defconfig
+arm                          pxa3xx_defconfig
+m68k                        m5407c3_defconfig
+sh                          sdk7780_defconfig
+c6x                         dsk6455_defconfig
+arm                           h5000_defconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20200719
+i386                 randconfig-a006-20200719
+i386                 randconfig-a002-20200719
+i386                 randconfig-a005-20200719
+i386                 randconfig-a003-20200719
+i386                 randconfig-a004-20200719
+x86_64               randconfig-a014-20200720
+x86_64               randconfig-a015-20200720
+x86_64               randconfig-a016-20200720
+x86_64               randconfig-a012-20200720
+x86_64               randconfig-a013-20200720
+x86_64               randconfig-a011-20200720
+x86_64               randconfig-a005-20200719
+x86_64               randconfig-a002-20200719
+x86_64               randconfig-a006-20200719
+x86_64               randconfig-a001-20200719
+x86_64               randconfig-a003-20200719
+x86_64               randconfig-a004-20200719
+i386                 randconfig-a015-20200719
+i386                 randconfig-a011-20200719
+i386                 randconfig-a016-20200719
+i386                 randconfig-a012-20200719
+i386                 randconfig-a013-20200719
+i386                 randconfig-a014-20200719
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                                    lkp
+x86_64                              fedora-25
 
-I wrapped it in #ifdef CONFIG_PPC64_BOOK3S.
-
-cheers
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
