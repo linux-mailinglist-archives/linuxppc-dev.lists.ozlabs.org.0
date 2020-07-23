@@ -1,88 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E0B22B09A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 15:37:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFB822B105
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 16:09:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCD0j4p4dzDrGs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 23:37:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCDjT2tSJzDr69
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 00:09:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=aHknsQat; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCCyR0M3QzDrCv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 23:35:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=lIe/aXUu; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BCCyQ54xqz8sfr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 23:35:42 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BCCyQ41H9z9sRR; Thu, 23 Jul 2020 23:35:42 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=lIe/aXUu; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BCCyQ0x4yz9sPf
- for <linuxppc-dev@ozlabs.org>; Thu, 23 Jul 2020 23:35:41 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id m9so3024586pfh.0
- for <linuxppc-dev@ozlabs.org>; Thu, 23 Jul 2020 06:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=cwVPi0Cn4h2WH4C8S19ASg8aJejy3Y+/nEhD+9llv+M=;
- b=lIe/aXUucMOPiz/OXbLJLoTNdmO8U6F//K4bpATeZ7Qvr1NHKFxbt/BidSit7gvdZ4
- jGbUgla6NmnrChfi+XoPbf8qsFRE6R0Xw5CmRO6x5C6GTWuHa8TRw6xIcbRAj9kMX5xC
- Opa8OYI/qeofN7ancNGl5hhstiUdnWZIkfLL8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=cwVPi0Cn4h2WH4C8S19ASg8aJejy3Y+/nEhD+9llv+M=;
- b=pq7cHow8IGaZ02DZMCOzgjkpA4oGUSyTfEo2FiZCmIhYFJRArrsWtqpw1Zbd3RB06A
- gQzxALVZ66VataaT72zTmq85/yv/IVYk7JSaLBqSZsJSGNzsCdehxsBDr/lkO+sPwoCd
- cbfFtki7MEIq5lnBPaEBjCWqK5WWyyy/DaQoEPd91W07heAh4w533Dh5eMoMP5WoIjR8
- 5BY1W+oDgWxdOMG/r+gnPtNyb0imu04FDRQWawd1WUuW/gb4t5e4IZH2gCjIqUCCSXb9
- bLAMoDA6IU6/yMoVYdBxit9qGwcxOW8yRXSwjTQQvZ7bKswG9uGIcmQPdI0FLI2LDXht
- ui7g==
-X-Gm-Message-State: AOAM5330DhLot0QlUinR8+ewTFBu0sO7Dvw4+j1mb0rjyQQ4hWgcNL2n
- 4xMNC+OAN3cnVsWtda8Mxm+F7g==
-X-Google-Smtp-Source: ABdhPJwpmaoVdBtL1TggEkAp2g7fzQLYdBpNl5qWeNK/pKx/DYAV+TaVosTRobJq28Geqe135bCZpw==
-X-Received: by 2002:aa7:930b:: with SMTP id 11mr4359011pfj.320.1595511340121; 
- Thu, 23 Jul 2020 06:35:40 -0700 (PDT)
-Received: from localhost
- (2001-44b8-111e-5c00-8915-8b02-da60-7583.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:8915:8b02:da60:7583])
- by smtp.gmail.com with ESMTPSA id b82sm3064805pfb.215.2020.07.23.06.35.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 Jul 2020 06:35:39 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH 2/5] powerpc: Allow 4096 bytes of stack expansion for the
- signal frame
-In-Reply-To: <20200703141327.1732550-2-mpe@ellerman.id.au>
-References: <20200703141327.1732550-1-mpe@ellerman.id.au>
- <20200703141327.1732550-2-mpe@ellerman.id.au>
-Date: Thu, 23 Jul 2020 23:35:36 +1000
-Message-ID: <87blk6tkuv.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCDVv0dbSzDrK5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 00:00:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=KJdNCW9/AeNTwbi0vonPFAdv6yCODfnRKfbwoV1pAmc=; b=aHknsQattCTLqx9Xifdf0U4KjV
+ ys1rkNEy5yd9BDfxLIPuAhP1o15Re38t9kHAfy53kiCMHm1rrZeULc5Ls6Joh20xna6uoQOrfjAvK
+ xEStBYKjqwu0NspaoQEqh+7FkHDyMdn6aMP4qqpgEgSC085tYzi8O4VJa5cEHx3MvJ+EdWAFyRWde
+ V20QvR719AoWFdEgRqlYfSPdG5BSPlvbty+fnF/w+RFjvsrRDcgNmbdpaZvfz3vhEh5qsusNkgZPd
+ A/zTIwQ73gWoLzUWA7V/MMEOXoE3O2/FmIF1CjP2MqLnR6z1+cJK8LV00dfdvfHJugTPz7EHVir2q
+ q88kG/ng==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=worktop.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jybld-0003bC-Nr; Thu, 23 Jul 2020 14:00:13 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+ id DAFF0983422; Thu, 23 Jul 2020 16:00:11 +0200 (CEST)
+Date: Thu, 23 Jul 2020 16:00:11 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks
+ for SPLPAR
+Message-ID: <20200723140011.GR5523@worktop.programming.kicks-ass.net>
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <20200706043540.1563616-6-npiggin@gmail.com>
+ <874kqhvu1v.fsf@mpe.ellerman.id.au>
+ <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,66 +68,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, hughd@google.com, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+ virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, kvm-ppc@vger.kernel.org,
+ Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Thu, Jul 09, 2020 at 12:06:13PM -0400, Waiman Long wrote:
+> We don't really need to do a pv_spinlocks_init() if pv_kick() isn't
+> supported.
 
-Unfortunately, this patch doesn't completely solve the problem.
-
-Trying the original reproducer, I'm still able to trigger the crash even
-with this patch, although not 100% of the time. (If I turn ASLR off
-outside of tmux it reliably crashes, if I turn ASLR off _inside_ of tmux
-it reliably succeeds; all of this is on a serial console.)
-
-./foo 1241000 & sleep 1; killall -USR1 foo; echo ok
-
-If I add some debugging information, I see that I'm getting
-address + 4096 = 7fffffed0fa0
-gpr1 =           7fffffed1020
-
-So address + 4096 is 0x80 bytes below the 4k window. I haven't been able
-to figure out why, gdb gives me a NIP in __kernel_sigtramp_rt64 but I
-don't know what to make of that.
-
-Kind regards,
-Daniel
-
-P.S. I don't know what your policy on linking to kernel bugzilla is, but
-if you want:
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=205183
-
-
-> Reported-by: Tom Lane <tgl@sss.pgh.pa.us>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/mm/fault.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> index 641fc5f3d7dd..ed01329dd12b 100644
-> --- a/arch/powerpc/mm/fault.c
-> +++ b/arch/powerpc/mm/fault.c
-> @@ -274,7 +274,7 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
->  	/*
->  	 * N.B. The POWER/Open ABI allows programs to access up to
->  	 * 288 bytes below the stack pointer.
-> -	 * The kernel signal delivery code writes up to about 1.5kB
-> +	 * The kernel signal delivery code writes up to 4KB
->  	 * below the stack pointer (r1) before decrementing it.
->  	 * The exec code can write slightly over 640kB to the stack
->  	 * before setting the user r1.  Thus we allow the stack to
-> @@ -299,7 +299,7 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
->  		 * between the last mapped region and the stack will
->  		 * expand the stack rather than segfaulting.
->  		 */
-> -		if (address + 2048 >= uregs->gpr[1])
-> +		if (address + 4096 >= uregs->gpr[1])
->  			return false;
->  
->  		if ((flags & FAULT_FLAG_WRITE) && (flags & FAULT_FLAG_USER) &&
-> -- 
-> 2.25.1
+Waiman, if you cannot explain how not having kick is a sane thing, what
+are you saying here?
