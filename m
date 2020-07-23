@@ -1,41 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DD422B187
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 16:41:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B626822B1B3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 16:44:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCFQK1rHHzDqvn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 00:41:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCFTd1BYHzDr82
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 00:44:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCFKn0gGQzDqsW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 00:37:32 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id DFF4DAD80;
- Thu, 23 Jul 2020 14:37:36 +0000 (UTC)
-Date: Thu, 23 Jul 2020 16:37:27 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 4/6] powerpc/64s: implement queued spinlocks and rwlocks
-Message-ID: <20200723143727.GW32107@kitsune.suse.cz>
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <20200706043540.1563616-5-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCFQF2Qb7zDrRH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 00:41:24 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06NEXvep002156; Thu, 23 Jul 2020 10:41:09 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32f23gak0p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 10:41:08 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06NEXok4001868;
+ Thu, 23 Jul 2020 10:41:08 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32f23gak0a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 10:41:08 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06NEeJIg007129;
+ Thu, 23 Jul 2020 14:41:07 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 32brqa0a4d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 14:41:07 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06NEf6Ui38863356
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jul 2020 14:41:06 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BDE33124058;
+ Thu, 23 Jul 2020 14:41:06 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 80F29124052;
+ Thu, 23 Jul 2020 14:41:06 +0000 (GMT)
+Received: from localhost (unknown [9.160.116.141])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Jul 2020 14:41:06 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Pingfan Liu <kernelfans@gmail.com>
+Subject: Re: [PATCHv3 1/2] powerpc/pseries: group lmb operation and memblock's
+In-Reply-To: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
+References: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
+Date: Thu, 23 Jul 2020 09:41:06 -0500
+Message-ID: <87ft9i1egt.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200706043540.1563616-5-npiggin@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-23_06:2020-07-23,
+ 2020-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=965
+ adultscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 clxscore=1015 suspectscore=1
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007230109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,183 +88,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- virtualization@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
- Waiman Long <longman@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kexec@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 06, 2020 at 02:35:38PM +1000, Nicholas Piggin wrote:
-> These have shown significantly improved performance and fairness when
-> spinlock contention is moderate to high on very large systems.
-> 
->  [ Numbers hopefully forthcoming after more testing, but initial
->    results look good ]
-> 
-> Thanks to the fast path, single threaded performance is not noticably
-> hurt.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/Kconfig                      | 13 ++++++++++++
->  arch/powerpc/include/asm/Kbuild           |  2 ++
->  arch/powerpc/include/asm/qspinlock.h      | 25 +++++++++++++++++++++++
->  arch/powerpc/include/asm/spinlock.h       |  5 +++++
->  arch/powerpc/include/asm/spinlock_types.h |  5 +++++
->  arch/powerpc/lib/Makefile                 |  3 +++
->  include/asm-generic/qspinlock.h           |  2 ++
->  7 files changed, 55 insertions(+)
->  create mode 100644 arch/powerpc/include/asm/qspinlock.h
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 24ac85c868db..17663ea57697 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -146,6 +146,8 @@ config PPC
->  	select ARCH_SUPPORTS_ATOMIC_RMW
->  	select ARCH_USE_BUILTIN_BSWAP
->  	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
-> +	select ARCH_USE_QUEUED_RWLOCKS		if PPC_QUEUED_SPINLOCKS
-> +	select ARCH_USE_QUEUED_SPINLOCKS	if PPC_QUEUED_SPINLOCKS
->  	select ARCH_WANT_IPC_PARSE_VERSION
->  	select ARCH_WEAK_RELEASE_ACQUIRE
->  	select BINFMT_ELF
-> @@ -492,6 +494,17 @@ config HOTPLUG_CPU
->  
->  	  Say N if you are unsure.
->  
-> +config PPC_QUEUED_SPINLOCKS
-> +	bool "Queued spinlocks"
-> +	depends on SMP
-> +	default "y" if PPC_BOOK3S_64
-> +	help
-> +	  Say Y here to use to use queued spinlocks which are more complex
-> +	  but give better salability and fairness on large SMP and NUMA
-                           ^ +c?
-Thanks
+Pingfan Liu <kernelfans@gmail.com> writes:
+> This patch prepares for the incoming patch which swaps the order of KOBJ_
+> uevent and dt's updating.
+>
+> It has no functional effect, just groups lmb operation and memblock's in
+> order to insert dt updating operation easily, and makes it easier to
+> review.
 
-Michal
-> +	  systems.
-> +
-> +	  If unsure, say "Y" if you have lots of cores, otherwise "N".
-> +
->  config ARCH_CPU_PROBE_RELEASE
->  	def_bool y
->  	depends on HOTPLUG_CPU
-> diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
-> index dadbcf3a0b1e..1dd8b6adff5e 100644
-> --- a/arch/powerpc/include/asm/Kbuild
-> +++ b/arch/powerpc/include/asm/Kbuild
-> @@ -6,5 +6,7 @@ generated-y += syscall_table_spu.h
->  generic-y += export.h
->  generic-y += local64.h
->  generic-y += mcs_spinlock.h
-> +generic-y += qrwlock.h
-> +generic-y += qspinlock.h
->  generic-y += vtime.h
->  generic-y += early_ioremap.h
-> diff --git a/arch/powerpc/include/asm/qspinlock.h b/arch/powerpc/include/asm/qspinlock.h
-> new file mode 100644
-> index 000000000000..c49e33e24edd
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/qspinlock.h
-> @@ -0,0 +1,25 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_POWERPC_QSPINLOCK_H
-> +#define _ASM_POWERPC_QSPINLOCK_H
-> +
-> +#include <asm-generic/qspinlock_types.h>
-> +
-> +#define _Q_PENDING_LOOPS	(1 << 9) /* not tuned */
-> +
-> +#define smp_mb__after_spinlock()   smp_mb()
-> +
-> +static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
-> +{
-> +	/*
-> +	 * This barrier was added to simple spinlocks by commit 51d7d5205d338,
-> +	 * but it should now be possible to remove it, asm arm64 has done with
-> +	 * commit c6f5d02b6a0f.
-> +	 */
-> +	smp_mb();
-> +	return atomic_read(&lock->val);
-> +}
-> +#define queued_spin_is_locked queued_spin_is_locked
-> +
-> +#include <asm-generic/qspinlock.h>
-> +
-> +#endif /* _ASM_POWERPC_QSPINLOCK_H */
-> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
-> index 21357fe05fe0..434615f1d761 100644
-> --- a/arch/powerpc/include/asm/spinlock.h
-> +++ b/arch/powerpc/include/asm/spinlock.h
-> @@ -3,7 +3,12 @@
->  #define __ASM_SPINLOCK_H
->  #ifdef __KERNEL__
+...
+
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 5d545b7..1a3ac3b 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -355,7 +355,8 @@ static int dlpar_add_lmb(struct drmem_lmb *);
+>  static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+>  {
+>  	unsigned long block_sz;
+> -	int rc;
+> +	phys_addr_t base_addr;
+> +	int rc, nid;
 >  
-> +#ifdef CONFIG_PPC_QUEUED_SPINLOCKS
-> +#include <asm/qspinlock.h>
-> +#include <asm/qrwlock.h>
-> +#else
->  #include <asm/simple_spinlock.h>
-> +#endif
+>  	if (!lmb_is_removable(lmb))
+>  		return -EINVAL;
+> @@ -364,17 +365,19 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+>  	if (rc)
+>  		return rc;
 >  
->  #endif /* __KERNEL__ */
->  #endif /* __ASM_SPINLOCK_H */
-> diff --git a/arch/powerpc/include/asm/spinlock_types.h b/arch/powerpc/include/asm/spinlock_types.h
-> index 3906f52dae65..c5d742f18021 100644
-> --- a/arch/powerpc/include/asm/spinlock_types.h
-> +++ b/arch/powerpc/include/asm/spinlock_types.h
-> @@ -6,6 +6,11 @@
->  # error "please don't include this file directly"
->  #endif
+> +	base_addr = lmb->base_addr;
+> +	nid = lmb->nid;
+>  	block_sz = pseries_memory_block_size();
 >  
-> +#ifdef CONFIG_PPC_QUEUED_SPINLOCKS
-> +#include <asm-generic/qspinlock_types.h>
-> +#include <asm-generic/qrwlock_types.h>
-> +#else
->  #include <asm/simple_spinlock_types.h>
-> +#endif
+> -	__remove_memory(lmb->nid, lmb->base_addr, block_sz);
+> -
+> -	/* Update memory regions for memory remove */
+> -	memblock_remove(lmb->base_addr, block_sz);
+> -
+>  	invalidate_lmb_associativity_index(lmb);
+>  	lmb_clear_nid(lmb);
+>  	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
 >  
->  #endif
-> diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-> index 5e994cda8e40..d66a645503eb 100644
-> --- a/arch/powerpc/lib/Makefile
-> +++ b/arch/powerpc/lib/Makefile
-> @@ -41,7 +41,10 @@ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
->  obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
->  	   memcpy_64.o memcpy_mcsafe_64.o
->  
-> +ifndef CONFIG_PPC_QUEUED_SPINLOCKS
->  obj64-$(CONFIG_SMP)	+= locks.o
-> +endif
+> +	__remove_memory(nid, base_addr, block_sz);
 > +
->  obj64-$(CONFIG_ALTIVEC)	+= vmx-helper.o
->  obj64-$(CONFIG_KPROBES_SANITY_TEST)	+= test_emulate_step.o \
->  					   test_emulate_step_exec_instr.o
-> diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-> index fde943d180e0..fb0a814d4395 100644
-> --- a/include/asm-generic/qspinlock.h
-> +++ b/include/asm-generic/qspinlock.h
-> @@ -12,6 +12,7 @@
->  
->  #include <asm-generic/qspinlock_types.h>
->  
-> +#ifndef queued_spin_is_locked
->  /**
->   * queued_spin_is_locked - is the spinlock locked?
->   * @lock: Pointer to queued spinlock structure
-> @@ -25,6 +26,7 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
->  	 */
->  	return atomic_read(&lock->val);
+> +	/* Update memory regions for memory remove */
+> +	memblock_remove(base_addr, block_sz);
+> +
+>  	return 0;
 >  }
-> +#endif
->  
->  /**
->   * queued_spin_value_unlocked - is the spinlock structure unlocked?
-> -- 
-> 2.23.0
-> 
+
+I don't understand; the commit message should not claim this has no
+functional effect when it changes the order of operations like
+this. Maybe this is an improvement over the current behavior, but it's
+not explained why it would be.
