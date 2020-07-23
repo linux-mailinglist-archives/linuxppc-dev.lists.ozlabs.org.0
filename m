@@ -2,43 +2,106 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FD722A6FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 07:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EB322A703
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 07:42:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC1PT3Y86zDqpM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 15:39:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC1ST1TH7zDqs2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 15:42:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oss.nxp.com (client-ip=40.107.2.40;
+ helo=eur02-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=madalin.bucur@oss.nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ghiti.fr
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [217.70.183.201])
+ dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=bImpdVRp;
+ dkim-atps=neutral
+Received: from EUR02-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr20040.outbound.protection.outlook.com [40.107.2.40])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC1Kz2vK9zDqss
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 15:36:54 +1000 (AEST)
-X-Originating-IP: 90.112.45.105
-Received: from [192.168.1.14] (lfbn-gre-1-325-105.w90-112.abo.wanadoo.fr
- [90.112.45.105]) (Authenticated sender: alex@ghiti.fr)
- by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id E2EA91BF206;
- Thu, 23 Jul 2020 05:36:45 +0000 (UTC)
-Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
-To: Palmer Dabbelt <palmer@dabbelt.com>, benh@kernel.crashing.org
-References: <mhng-4b49d09a-0267-4879-849f-30c24f26e2c3@palmerdabbelt-glaptop1>
-From: Alex Ghiti <alex@ghiti.fr>
-Message-ID: <970adad4-6eec-dffe-ad1c-bf74646229ad@ghiti.fr>
-Date: Thu, 23 Jul 2020 01:36:45 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC1QZ50K5zDqLT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 15:40:54 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jSmH1szUoLQ4zeuZTaUqMHFI53nELhNVmgERYr3mEuDT52TH8tYnsjnCMP0502IslY/NacXFcx+h+3VA/f17qsOkLoarIAZ190mpl4NeYSz3pKlF/zucEkZK/MHiuzRucoP9q/EsTot2Ty98FQP78KOcONo7YUlBW6GV44qj846lIUBxkwRJnY4FUYceBx+ZQDZM3fqVcOhRqSwI9qFuP9e9xxi/5S4MSoWVecYHCsyeo/R/INAmZHsI38dCTHwh03x2IdgG/KoZRPrGmeJrcPeqx6S6lQGgeEzIRjj9yMsEBE1mM1/Jv3CiLT8Xym7JtZ3yRCNA3aujJokgSGvOIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eaS/TlDo7cqi4FbDalwnmowouBaF73RbMKLUTJpPgcM=;
+ b=RHZyHb8yQTJWZyWE/++6Q/79KwGyostRlDsTFZBXBkLhkPDZtGyMAZX1oIN3uUJ+fSxVHW2xVXhrLgxwl6HaLBW7l73HrRKK1w8HzEQf668r0sbBMJ0hdOXZUkYxBigitA01QQYpfgJm6h6weKbI3zV1OhB8fliejd2Cjhvz9keXpCquNYy/IpICKwyaV1uvQypR4eyQtavuHoTXp5kBlrqRQbftnjjO7lXrQGhisTinHXm8T2t2Uk2Zt+ApydXnXmV5xT4iX4+CTGAZ5ihrLQSJFY1NtCEJ7StbMEgtr7c9g1G6rR5szjyZ84osYo+eG/0dAumDCJYuYc6jzKLA+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eaS/TlDo7cqi4FbDalwnmowouBaF73RbMKLUTJpPgcM=;
+ b=bImpdVRp/VzcFN4ysZDyAbWMJoYyYtBqk8JvB1X5V26CBHAeo9hKHbkbJTyY1pNrMa9vO6O0FcQqOH5e0G13q3rE97iTZpWzyvfNg2E6FH88q2L4OANMik1ademJaeXgRAWGoIbJX5Sq1M+CA7VhSvLarLtqzulh7TcaJcOb9O8=
+Received: from AM6PR04MB3976.eurprd04.prod.outlook.com (2603:10a6:209:3f::17)
+ by AM6PR04MB5079.eurprd04.prod.outlook.com (2603:10a6:20b:4::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.24; Thu, 23 Jul
+ 2020 05:40:48 +0000
+Received: from AM6PR04MB3976.eurprd04.prod.outlook.com
+ ([fe80::51e7:c810:fec7:6943]) by AM6PR04MB3976.eurprd04.prod.outlook.com
+ ([fe80::51e7:c810:fec7:6943%3]) with mapi id 15.20.3174.030; Thu, 23 Jul 2020
+ 05:40:48 +0000
+From: "Madalin Bucur (OSS)" <madalin.bucur@oss.nxp.com>
+To: Vladimir Oltean <olteanv@gmail.com>, "robh+dt@kernel.org"
+ <robh+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>
+Subject: RE: [PATCH devicetree 3/4] powerpc: dts: t1040rdb: put SGMII PHY
+ under &mdio0 label
+Thread-Topic: [PATCH devicetree 3/4] powerpc: dts: t1040rdb: put SGMII PHY
+ under &mdio0 label
+Thread-Index: AQHWYEz+LgZibInI10i2/O6ewv0daakUplWQ
+Date: Thu, 23 Jul 2020 05:40:48 +0000
+Message-ID: <AM6PR04MB39763CA66048BD4F221D0DE4EC760@AM6PR04MB3976.eurprd04.prod.outlook.com>
+References: <20200722172422.2590489-1-olteanv@gmail.com>
+ <20200722172422.2590489-4-olteanv@gmail.com>
+In-Reply-To: <20200722172422.2590489-4-olteanv@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [5.14.204.117]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 30811635-b75a-46a0-1b37-08d82ecaf405
+x-ms-traffictypediagnostic: AM6PR04MB5079:
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM6PR04MB5079AD348F569C950C4E48B8AD760@AM6PR04MB5079.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: /Bv17ujXPqbg74Cv8yFInypvDL1dKa09B0vWwYrgJNpBwuDc14pPIeWHnURs+korboP21mBrOgjuxrFxZyiqqMz12riMx/m1/jp1gdUhb4JL7lRw/PQAzcsqPwRINAgUMamZGpeEaZeQW3ifQ/TB7zczvZexmi7o+z0TQeoNKhbdOWeai6FFcTeUOgH9n7VS3hHRhy4FcDyWZ2473qVQnrnyHPR8OA2goMYjJpntLgd/aB/d9mCFuVBliJ2egIm0OIibWkjaKJ80LCDLxAxJHbEQnoOrgZgmSDhiUVBPxfJnzx9UraWv1RCI2bYAH54+
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM6PR04MB3976.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFTY:;
+ SFS:(4636009)(346002)(376002)(396003)(39860400002)(366004)(136003)(186003)(8936002)(64756008)(66476007)(478600001)(83380400001)(66556008)(2906002)(5660300002)(66446008)(7696005)(7416002)(316002)(33656002)(76116006)(52536014)(8676002)(26005)(110136005)(54906003)(9686003)(86362001)(71200400001)(53546011)(4326008)(6506007)(66946007)(55016002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata: JYal8yjGjhmUpyCL23LXjXcejFQTZ8ako1F/2UL7OOQg/n/HQ2Ew+kIZrKc0/MVxlaw5RSFcDC9XKfxDaCzl4rs6U/2bRo404kTjj+HoXI2r5Oj4++WH94xQdtyH3WnNtUbjS7G99jDnDNHbW6742skjsSM2MfI1kBw9/uFqOCEMH9RdX40JW60hEBY2H0lgkxJisxllhhQxGUneAK7mofLwqPDnz2Oe4gz/NF4KoR+ifqUAysSbbMREgRKQg9sNMGUOmw+kWKak1bL4JtMoxAY7Isi2xrVYj8ohi58kojpQmB4pCK7TQ1UtpQAus3pLSwvnkfCy3ndiP7V9rJg5uvhn10pVtb8gZqT6ttMOseixs+tJDr8YDlExMR2SFCkdbPLRoIuLEKUUskV2oUUHY9kph8L6mQogLDCK3ZrYgZl+D9VTA9m8IauTqDNMyxcgi6uGZM5ox09AWHeCFoQEWOJfa7kPKv5kg1/5EriKLsQ=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <mhng-4b49d09a-0267-4879-849f-30c24f26e2c3@palmerdabbelt-glaptop1>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB3976.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30811635-b75a-46a0-1b37-08d82ecaf405
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jul 2020 05:40:48.3732 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /Ov+hqQMBgJgE5yGTDeKqx9QweO+ZPr4vLyDMnKPW9WCiT5K6cPcI7WqIxksXVo8v49Y3q7v1RAyLmj3FhzUlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB5079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,138 +113,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aou@eecs.berkeley.edu, linux-mm@kvack.org, Anup Patel <Anup.Patel@wdc.com>,
- linux-kernel@vger.kernel.org, Atish Patra <Atish.Patra@wdc.com>,
- paulus@samba.org, zong.li@sifive.com, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: "Madalin Bucur \(OSS\)" <madalin.bucur@oss.nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Radu-andrei Bulie <radu-andrei.bulie@nxp.com>,
+ "fido_max@inbox.ru" <fido_max@inbox.ru>, "paulus@samba.org" <paulus@samba.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+> -----Original Message-----
+> From: Vladimir Oltean <olteanv@gmail.com>
+> Sent: Wednesday, July 22, 2020 8:24 PM
+> To: robh+dt@kernel.org; shawnguo@kernel.org; mpe@ellerman.id.au;
+> devicetree@vger.kernel.org
+> Cc: benh@kernel.crashing.org; paulus@samba.org; linuxppc-
+> dev@lists.ozlabs.org; linux-kernel@vger.kernel.org;
+> netdev@vger.kernel.org; Madalin Bucur (OSS) <madalin.bucur@oss.nxp.com>;
+> Radu-andrei Bulie <radu-andrei.bulie@nxp.com>; fido_max@inbox.ru
+> Subject: [PATCH devicetree 3/4] powerpc: dts: t1040rdb: put SGMII PHY
+> under &mdio0 label
+>=20
+> We're going to add 8 more PHYs in a future patch. It is easier to follow
+> the hardware description if we don't need to fish for the path of the
+> MDIO controllers inside the SoC and just use the labels.
+>=20
 
+Please align to the existing structure, it may be easier to add something
+without paying attention to that but it's better to keep things organized.
+This structure is used across all the device trees of the platforms using
+DPAA, let's not start diverging now.
 
-Le 7/21/20 à 7:36 PM, Palmer Dabbelt a écrit :
-> On Tue, 21 Jul 2020 16:11:02 PDT (-0700), benh@kernel.crashing.org wrote:
->> On Tue, 2020-07-21 at 14:36 -0400, Alex Ghiti wrote:
->>> > > I guess I don't understand why this is necessary at all.
->>> > > Specifically: why
->>> > > can't we just relocate the kernel within the linear map?  That would
->>> > > let the
->>> > > bootloader put the kernel wherever it wants, modulo the physical
->>> > > memory size we
->>> > > support.  We'd need to handle the regions that are coupled to the
->>> > > kernel's
->>> > > execution address, but we could just put them in an explicit memory
->>> > > region
->>> > > which is what we should probably be doing anyway.
->>> >
->>> > Virtual relocation in the linear mapping requires to move the kernel
->>> > physically too. Zong implemented this physical move in its KASLR RFC
->>> > patchset, which is cumbersome since finding an available physical spot
->>> > is harder than just selecting a virtual range in the vmalloc range.
->>> >
->>> > In addition, having the kernel mapping in the linear mapping prevents
->>> > the use of hugepage for the linear mapping resulting in performance 
->>> loss
->>> > (at least for the GB that encompasses the kernel).
->>> >
->>> > Why do you find this "ugly" ? The vmalloc region is just a bunch of
->>> > available virtual addresses to whatever purpose we want, and as 
->>> noted by
->>> > Zong, arm64 uses the same scheme.
->>
->> I don't get it :-)
->>
->> At least on powerpc we move the kernel in the linear mapping and it
->> works fine with huge pages, what is your problem there ? You rely on
->> punching small-page size holes in there ?
-> 
-> That was my original suggestion, and I'm not actually sure it's 
-> invalid.  It
-> would mean that both the kernel's physical and virtual addresses are set 
-> by the
-> bootloader, which may or may not be workable if we want to have an 
-> sv48+sv39
-> kernel.  My initial approach to sv48+sv39 kernels would be to just throw 
-> away
-> the sv39 memory on sv48 kernels, which would preserve the linear map but 
-> mean
-> that there is no single physical address that's accessible for both.  That
-> would require some coordination between the bootloader and the kernel as to
-> where it should be loaded, but maybe there's a better way to design the 
-> linear
-> map.  Right now we have a bunch of unwritten rules about where things 
-> need to
-> be loaded, which is a recipe for disaster.
-> 
-> We could copy the kernel around, but I'm not sure I really like that 
-> idea.  We
-> do zero the BSS right now, so it's not like we entirely rely on the 
-> bootloader
-> to set up the kernel image, but with the hart race boot scheme we have 
-> right
-> now we'd at least need to leave a stub sitting around.  Maybe we just throw
-> away SBI v0.1, though, that's why we called it all legacy in the first 
-> place.
-> 
-> My bigger worry is that anything that involves running the kernel at 
-> arbitrary
-> virtual addresses means we need a PIC kernel, which means every global 
-> symbol
-> needs an indirection.  That's probably not so bad for shared libraries, 
-> but the
-> kernel has a lot of global symbols.  PLT references probably aren't so 
-> scary,
-> as we have an incoherent instruction cache so the virtual function 
-> predictor
-> isn't that hard to build, but making all global data accesses GOT-relative
-> seems like a disaster for performance.  This fixed-VA thing really just 
-> exists
-> so we don't have to be full-on PIC.
-> 
-> In theory I think we could just get away with pretending that medany is 
-> PIC,
-> which I believe works as long as the data and text offset stays 
-> constant, you
-> you don't have any symbols between 2GiB and -2GiB (as those may stay fixed,
-> even in medany), and you deal with GP accordingly (which should work 
-> itself out
-> in the current startup code).  We rely on this for some of the early 
-> boot code
-> (and will soon for kexec), but that's a very controlled code base and we've
-> already had some issues.  I'd be much more comfortable adding an explicit
-> semi-PIC code model, as I tend to miss something when doing these sorts of
-> things and then we could at least add it to the GCC test runs and 
-> guarantee it
-> actually works.  Not really sure I want to deal with that, though.  It 
-> would,
-> however, be the only way to get random virtual addresses during kernel
-> execution.
-> 
->> At least in the old days, there were a number of assumptions that
->> the kernel text/data/bss resides in the linear mapping.
-> 
-> Ya, it terrified me as well.  Alex says arm64 puts the kernel in the 
-> vmalloc
-> region, so assuming that's the case it must be possible.  I didn't get that
-> from reading the arm64 port (I guess it's no secret that pretty much all 
-> I do
-> is copy their code)
+> Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
+> ---
+>  arch/powerpc/boot/dts/fsl/t1040rdb.dts | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/arch/powerpc/boot/dts/fsl/t1040rdb.dts
+> b/arch/powerpc/boot/dts/fsl/t1040rdb.dts
+> index 65ff34c49025..40d7126dbe90 100644
+> --- a/arch/powerpc/boot/dts/fsl/t1040rdb.dts
+> +++ b/arch/powerpc/boot/dts/fsl/t1040rdb.dts
+> @@ -59,12 +59,6 @@ ethernet@e4000 {
+>  				phy-handle =3D <&phy_sgmii_2>;
+>  				phy-connection-type =3D "sgmii";
+>  			};
+> -
+> -			mdio@fc000 {
+> -				phy_sgmii_2: ethernet-phy@3 {
+> -					reg =3D <0x03>;
+> -				};
+> -			};
+>  		};
+>  	};
+>=20
+> @@ -76,3 +70,9 @@ cpld@3,0 {
+>  };
+>=20
+>  #include "t1040si-post.dtsi"
+> +
+> +&mdio0 {
+> +	phy_sgmii_2: ethernet-phy@3 {
+> +		reg =3D <0x3>;
+> +	};
+> +};
+> --
+> 2.25.1
 
-See https://elixir.bootlin.com/linux/latest/source/arch/arm64/mm/mmu.c#L615.
-
-> 
->> If you change that you need to ensure that it's still physically
->> contiguous and you'll have to tweak __va and __pa, which might induce
->> extra overhead.
-> 
-> I'm operating under the assumption that we don't want to add an 
-> additional load
-> to virt2phys conversions.  arm64 bends over backwards to avoid the load, 
-> and
-> I'm assuming they have a reason for doing so.  Of course, if we're PIC then
-> maybe performance just doesn't matter, but I'm not sure I want to just 
-> give up.
-> Distros will probably build the sv48+sv39 kernels as soon as they show 
-> up, even
-> if there's no sv48 hardware for a while.
