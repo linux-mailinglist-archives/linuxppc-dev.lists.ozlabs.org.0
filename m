@@ -1,51 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C629922A9B1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 09:31:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE6522A9B6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 09:34:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BC3sz46WrzDrBh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 17:31:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BC3xQ3Mx2zDrFd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jul 2020 17:34:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BC3qv6FDCzDrBH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 17:29:29 +1000 (AEST)
-IronPort-SDR: GcSg9QFz0qqXfUW39I5yKf96X5i3uhDyI37TC6Pwu9rBVvtBQtZFuxsxYd2skbkDFgquG3JlwL
- 0d+nrT1hXBow==
-X-IronPort-AV: E=McAfee;i="6000,8403,9690"; a="137977271"
-X-IronPort-AV: E=Sophos;i="5.75,385,1589266800"; d="scan'208";a="137977271"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2020 00:29:26 -0700
-IronPort-SDR: NzB0zPcm1rw8BjScRlPbtixH+7CFvemMK+zlTASOXgk4mbxbVNdyINeKMObL97AFti7koZ8dh+
- ukOVLf9okIaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,385,1589266800"; d="scan'208";a="326941712"
-Received: from lkp-server01.sh.intel.com (HELO 7a9a14fb1d52) ([10.239.97.150])
- by FMSMGA003.fm.intel.com with ESMTP; 23 Jul 2020 00:29:25 -0700
-Received: from kbuild by 7a9a14fb1d52 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1jyVfQ-0000MB-0i; Thu, 23 Jul 2020 07:29:24 +0000
-Date: Thu, 23 Jul 2020 15:28:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS c27fe454aff795023d2f3f90f41eb1a3104e614f
-Message-ID: <5f193c28.9G/v5E4ua8CQYQEH%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BC3vl5pSnzDqv1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 17:32:51 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06N7W2aD018454; Thu, 23 Jul 2020 03:32:45 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32f1pp6m2t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 03:32:45 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06N7W62s018736;
+ Thu, 23 Jul 2020 03:32:45 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32f1pp6m25-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 03:32:44 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06N7VO0E005539;
+ Thu, 23 Jul 2020 07:32:43 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 32brq7nwab-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Jul 2020 07:32:43 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06N7Wfej31981656
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Jul 2020 07:32:41 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F16D54C046;
+ Thu, 23 Jul 2020 07:32:40 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BB6DE4C04A;
+ Thu, 23 Jul 2020 07:32:38 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.85.127.236])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 23 Jul 2020 07:32:38 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [v4] powerpc/perf: Initialize power10 PMU registers in cpu setup
+ routine
+Date: Thu, 23 Jul 2020 03:32:37 -0400
+Message-Id: <1595489557-2047-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-23_02:2020-07-22,
+ 2020-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ bulkscore=0 phishscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=800 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007230053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,134 +87,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: jniethe5@gmail.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: c27fe454aff795023d2f3f90f41eb1a3104e614f  Automatic merge of 'master', 'next' and 'fixes' (2020-07-21 00:00)
+Initialize Monitor Mode Control Register 3 (MMCR3)
+SPR which is new in power10. For PowerISA v3.1, BHRB disable
+is controlled via Monitor Mode Control Register A (MMCRA) bit,
+namely "BHRB Recording Disable (BHRBRD)". This patch also initializes
+MMCRA BHRBRD to disable BHRB feature at boot for power10.
 
-elapsed time: 3913m
-
-configs tested: 111
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm                                 defconfig
-sh                          rsk7264_defconfig
-c6x                                 defconfig
-c6x                        evmc6474_defconfig
-arm                         shannon_defconfig
-powerpc                       ppc64_defconfig
-arm                      footbridge_defconfig
-s390                             alldefconfig
-s390                          debug_defconfig
-arm                          pxa3xx_defconfig
-m68k                        m5407c3_defconfig
-sh                          sdk7780_defconfig
-c6x                         dsk6455_defconfig
-arm                           h5000_defconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                              allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20200719
-i386                 randconfig-a006-20200719
-i386                 randconfig-a002-20200719
-i386                 randconfig-a005-20200719
-i386                 randconfig-a003-20200719
-i386                 randconfig-a004-20200719
-x86_64               randconfig-a014-20200720
-x86_64               randconfig-a015-20200720
-x86_64               randconfig-a016-20200720
-x86_64               randconfig-a012-20200720
-x86_64               randconfig-a013-20200720
-x86_64               randconfig-a011-20200720
-x86_64               randconfig-a005-20200719
-x86_64               randconfig-a002-20200719
-x86_64               randconfig-a006-20200719
-x86_64               randconfig-a001-20200719
-x86_64               randconfig-a003-20200719
-x86_64               randconfig-a004-20200719
-i386                 randconfig-a015-20200719
-i386                 randconfig-a011-20200719
-i386                 randconfig-a016-20200719
-i386                 randconfig-a012-20200719
-i386                 randconfig-a013-20200719
-i386                 randconfig-a014-20200719
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                                    lkp
-x86_64                              fedora-25
-
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Dependency:
+- On power10 PMU base enablement series V3:
+  https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=190462
+
+Changes from v3 -> v4
+- Addressed review comments from Jordan and Michael Ellerman.
+  This patch was initially part of Power10 PMU base enablement
+  series. Moving this as separate patch as suggested by Michael
+  Ellerman. Hence dependency of initial series Patch 7 which defines
+  MMCRA_BHRB_DISABLE. Addressed review comments from Jordan to make
+  sure existing PMU function (__INIT_PMU) will not overwrite ISA 3.1
+  updates
+
+Changes from v2 -> v3
+- Addressed review comment from Michael Ellerman to
+  call PMU init from __setup_cpu_power10
+
+ arch/powerpc/kernel/cpu_setup_power.S | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
+index efdcfa7..3fa6eef 100644
+--- a/arch/powerpc/kernel/cpu_setup_power.S
++++ b/arch/powerpc/kernel/cpu_setup_power.S
+@@ -94,13 +94,15 @@ _GLOBAL(__restore_cpu_power8)
+ _GLOBAL(__setup_cpu_power10)
+ 	mflr	r11
+ 	bl	__init_FSCR_power10
++	bl	__init_PMU
++	bl	__init_PMU_ISA31
+ 	b	1f
+ 
+ _GLOBAL(__setup_cpu_power9)
+ 	mflr	r11
+ 	bl	__init_FSCR
+-1:	bl	__init_PMU
+-	bl	__init_hvmode_206
++	bl	__init_PMU
++1:	bl	__init_hvmode_206
+ 	mtlr	r11
+ 	beqlr
+ 	li	r0,0
+@@ -124,13 +126,15 @@ _GLOBAL(__setup_cpu_power9)
+ _GLOBAL(__restore_cpu_power10)
+ 	mflr	r11
+ 	bl	__init_FSCR_power10
++	bl	__init_PMU
++	bl	__init_PMU_ISA31
+ 	b	1f
+ 
+ _GLOBAL(__restore_cpu_power9)
+ 	mflr	r11
+ 	bl	__init_FSCR
+-1:	bl	__init_PMU
+-	mfmsr	r3
++	bl	__init_PMU
++1:	mfmsr	r3
+ 	rldicl.	r0,r3,4,63
+ 	mtlr	r11
+ 	beqlr
+@@ -233,3 +237,10 @@ __init_PMU_ISA207:
+ 	li	r5,0
+ 	mtspr	SPRN_MMCRS,r5
+ 	blr
++
++__init_PMU_ISA31:
++	li	r5,0
++	mtspr	SPRN_MMCR3,r5
++	LOAD_REG_IMMEDIATE(r5, MMCRA_BHRB_DISABLE)
++	mtspr	SPRN_MMCRA,r5
++	blr
+-- 
+1.8.3.1
+
