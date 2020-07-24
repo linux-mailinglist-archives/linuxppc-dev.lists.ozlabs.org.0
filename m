@@ -2,58 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED90522C0A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 10:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E99022C082
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 10:16:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCj684r36zDrp6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 18:29:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BChqp4rWVzDvr8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 18:16:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCgyD6sJ5zDsNT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 17:37:07 +1000 (AEST)
-IronPort-SDR: hgLNAhTz9fIB412AVlL3MacOmdQ0ouMvFs/BEHgYGt0AmuGVnD2LiLiheetx42T3Q6JMvgxTEY
- yJ4rQ1FdKZKA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9691"; a="235550133"
-X-IronPort-AV: E=Sophos;i="5.75,389,1589266800"; d="scan'208";a="235550133"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2020 00:37:02 -0700
-IronPort-SDR: TAB03xecSlI4basjrQIy2hbhaeXXyXKAkMJFtaNhpLJDNY3l0q2EBJc0tt5g94JWjrS8//u4J3
- 0Kk+Cc01yUeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,389,1589266800"; d="scan'208";a="288909362"
-Received: from cbuerkle-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.249.36.184])
- by orsmga006.jf.intel.com with ESMTP; 24 Jul 2020 00:36:23 -0700
-Date: Fri, 24 Jul 2020 10:36:21 +0300
-From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
- move to kernel proper
-Message-ID: <20200724073621.GC1872662@linux.intel.com>
-References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
- <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
- <20200716184909.Horde.JVRLLcKix_jhrJfiQYRbbQ1@messagerie.si.c-s.fr>
- <20200723015127.GE45081@linux.intel.com>
- <CAMj1kXGJhqC+asc6JUNeEkRsHYTzNQVe4-65vKqigbW03gO9Jg@mail.gmail.com>
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.135; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BChnk5gT9zDrNk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 18:14:49 +1000 (AEST)
+Received: from mail-qt1-f180.google.com ([209.85.160.180]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Myb8P-1kkMnZ2z89-00z1Qh for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul
+ 2020 10:14:44 +0200
+Received: by mail-qt1-f180.google.com with SMTP id b25so6346921qto.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 01:14:43 -0700 (PDT)
+X-Gm-Message-State: AOAM530nWv4+7N7Ybb2BebDl56JQgpBFk2HvuMYD5Fw+2Sr18gTjLmLB
+ EYb8kkXExd0LJFVy1n7voDGqQOLQMuZ1PXNJ50g=
+X-Google-Smtp-Source: ABdhPJygisjtG0/T5RZOpGU5w2vxR1Ybi3XIk/oHG1gnkzduo22/qOY0PE84/zvIhSqmrnDmSiaO0gHwgOoBfMX/5hA=
+X-Received: by 2002:ac8:7587:: with SMTP id s7mr8295990qtq.304.1595578483047; 
+ Fri, 24 Jul 2020 01:14:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMj1kXGJhqC+asc6JUNeEkRsHYTzNQVe4-65vKqigbW03gO9Jg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Mailman-Approved-At: Fri, 24 Jul 2020 18:27:16 +1000
+References: <mhng-831c4073-aefa-4aa0-a583-6a17f9aff9b7@palmerdabbelt-glaptop1>
+ <d7e3cbb7-c12a-bce2-f1db-c336d15f74bd@ghiti.fr>
+ <7cb2285e-68ba-6827-5e61-e33a4b65ac03@ghiti.fr>
+ <54af168083aee9dbda1b531227521a26b77ba2c8.camel@kernel.crashing.org>
+ <cade70e2-0179-2650-41c5-036679aaf30c@ghiti.fr>
+ <418d5f3d3f42bbc79c5cf30e18ec89edfe2dbd26.camel@kernel.crashing.org>
+In-Reply-To: <418d5f3d3f42bbc79c5cf30e18ec89edfe2dbd26.camel@kernel.crashing.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 24 Jul 2020 10:14:26 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3dap8tDQVf3B9DdjQm0A_QtCwv3+tW6AUxC1Xq_VoL=A@mail.gmail.com>
+Message-ID: <CAK8P3a3dap8tDQVf3B9DdjQm0A_QtCwv3+tW6AUxC1Xq_VoL=A@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:+9wITevh3p85GTzMrKSyaZtkHw69m24SfgiKosKWUfF3EumwWV0
+ SehbEf029mXlyuBSqX4++EHdVn3jP2g+WPwD0bDSdgNVvidPEbO2GSfLVJ6v7S32jzrdZvy
+ YbLWXyXEoSbumB111E7zQk6sC7ZRnszViujVHHivvg8GPKctoU+aT7SlCFRNVuqagLA6Zh3
+ InOJuJuXKYc5xQTeoQcwQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8K48o2VU+5U=:DfR00JXyieYiVSxZ29VzR5
+ uiM+Ez4jkLw5yN0rguzQj2X1NUg2Ijo3eNM6bB4VkRSG7qj9FtCw01gIa1HxfeeoyYLA/IXeG
+ Dluhnepy1bEgvkTQJgsmFnCwJsBPCjwrErTq4GfeZoHBHP2ms+0MzSnL1kfjMu0hOoa2Ywp7F
+ YIUp6c5NTVfoYTME+MtwFV7EKPWWGzAFiqFarVheZDIB3rLoeGsgJtzsxVupRQIAZG/hhn8ko
+ eBrJu9TVkyKhnKqUvsbzF8dmGdaUMpsZ6zmbskBbTZmKhoqtK+/KlEzkVhk0W+i3wMRBp3EPc
+ arh0CvnK1lFKZpEY7Tw8H9GQzNBdhxJb85laUSJYGzLve7IOAMM0H4HZGxXiiMLYkvF+Cyghn
+ tqgjQcXY25SCIElNsw1pekwlftZixN3ubCDh8zhRw2WMIO7iTWABSBNp2yWPP5w6sIOPlUDRe
+ NQ3K9YYz26QGWVNJQEGLLHroXOYKk5nCDdfwNoFJ1gFhKnmDPqfmnPjODANUu2dNxsmf+1KTw
+ 2IwD+ZQq4VKOk7jnJP1dFuqVKokwCInCkMAljfIYV9I8JE0JLaiYStjlboB/1mtUu6iiiJhVZ
+ wJQl9E0kTLh/IvFiGL0NUWHrypAeTTjPPumqimeZE+mmhE6y0RU+FTMXsjBLpOqEoVeHBQQmT
+ GpAutoihLYLFp3Ejt4yw/GqtKW03vC1u9prtDojfLXYmUOsPNA+2sSGSBg/KqcMKOqnN7AMPU
+ CT5XVE2xpxrnltffUq6Cba25C2j9dRXQtRPGIx8oQRp55D7SaIC2lfEM7wEDzqYcq74NoSAml
+ Z8gf36q0FRsEYA/e6IVQvRSdbPM+XO98i0I+ilVG5eOUrOiw1gEPc4+K+oTHNrH93dn2Wy4OU
+ 5SF0W23r8GiYVadRtKrFSIlzO+toE1mTIPBEFEj0/OIhGq3VgUop/NRcON7lS9dulmBU2Fvbe
+ YhyBhGT4OXhiLr6w7+w99ZG07KKB8o8Sa4MxpV++jgAIbYiH0QtF6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,127 +78,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
- Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
- Paul Burton <paulburton@kernel.org>,
- Vincent Whitchurch <vincent.whitchurch@axis.com>,
- Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Jiri Kosina <jkosina@suse.cz>, Anup Patel <anup.patel@wdc.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Philipp Rudo <prudo@linux.ibm.com>, Torsten Duwe <duwe@lst.de>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Vincent Chen <deanbo422@gmail.com>, Omar Sandoval <osandov@fb.com>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- John Fastabend <john.fastabend@gmail.com>,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>,
- Andrii Nakryiko <andriin@fb.com>, Thomas Huth <thuth@redhat.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
- Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
- Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Ley Foon Tan <ley.foon.tan@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Sami Tolvanen <samitolvanen@google.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
- Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
- Guan Xuetao <gxt@pku.edu.cn>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Jessica Yu <jeyu@kernel.org>,
- "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <bpf@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, David Howells <dhowells@redhat.com>,
- Amit Daniel Kachhap <amit.kachhap@arm.com>,
- Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "open list:SPARC + UltraSPARC sparc/sparc64" <sparclinux@vger.kernel.org>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- Miroslav Benes <mbenes@suse.cz>, Jiri Olsa <jolsa@redhat.com>,
- Tiezhu Yang <yangtiezhu@loongson.cn>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
- "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, KP Singh <kpsingh@chromium.org>,
- Dmitry Vyukov <dvyukov@google.com>, Nick Hu <nickhu@andestech.com>,
- "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <netdev@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alex Ghiti <alex@ghiti.fr>,
+ Atish Patra <Atish.Patra@wdc.com>, Anup Patel <Anup.Patel@wdc.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Zong Li <zong.li@sifive.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 23, 2020 at 03:42:09PM +0300, Ard Biesheuvel wrote:
-> On Thu, 23 Jul 2020 at 04:52, Jarkko Sakkinen
-> <jarkko.sakkinen@linux.intel.com> wrote:
-> >
-> > On Thu, Jul 16, 2020 at 06:49:09PM +0200, Christophe Leroy wrote:
-> > > Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> a écrit :
+On Fri, Jul 24, 2020 at 12:34 AM Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
+> On Thu, 2020-07-23 at 01:21 -0400, Alex Ghiti wrote:
+> > > works fine with huge pages, what is your problem there ? You rely on
+> > > punching small-page size holes in there ?
 > > >
-> > > > Rename module_alloc() to text_alloc() and module_memfree() to
-> > > > text_memfree(), and move them to kernel/text.c, which is unconditionally
-> > > > compiled to the kernel proper. This allows kprobes, ftrace and bpf to
-> > > > allocate space for executable code without requiring to compile the modules
-> > > > support (CONFIG_MODULES=y) in.
-> > >
-> > > You are not changing enough in powerpc to have this work.
-> > > On powerpc 32 bits (6xx), when STRICT_KERNEL_RWX is selected, the vmalloc
-> > > space is set to NX (no exec) at segment level (ie by 256Mbytes zone) unless
-> > > CONFIG_MODULES is selected.
-> > >
-> > > Christophe
 > >
-> > This has been deduced down to:
-> >
-> > https://lore.kernel.org/lkml/20200717030422.679972-1-jarkko.sakkinen@linux.intel.com/
-> >
-> > I.e. not intruding PPC anymore :-)
-> >
-> 
-> Ok, so after the elaborate discussion we had between Jessica, Russell,
-> Peter, Will, Mark, you and myself, where we pointed out that
-> a) a single text_alloc() abstraction for bpf, kprobes and ftrace does
-> not fit other architectures very well, and
-> b) that module_alloc() is not suitable as a default to base text_alloc() on,
+> > ARCH_HAS_STRICT_KERNEL_RWX prevents the use of a hugepage for the kernel
+> > mapping in the direct mapping as it sets different permissions to
+> > different part of the kernel (data, text..etc).
+>
+> Ah ok, that can be solved in a couple of ways...
+>
+> One is to use the linker script to ensure those sections are linked
+> HUGE_PAGE_SIZE appart and moved appropriately by early boot code. One
+> is to selectively degrade just those huge pages.
+>
+> I'm not familiar with the RiscV MMU (I should probably go have a look)
+> but if it's a classic radix tree with huge pages at PUD/PMD level, then
+> you could just degrade the one(s) that cross those boundaries.
 
-In the latest iteration (v5) it is conditionally available only if arch
-defines and fallback has been removed.
+That would work, but if the system can otherwise use 1GB-sized pages,
+that might mean degrading the first gigabyte into a mix of 2MB pages
+and 4KB pages.
 
-> you went ahead and implemented that anyway, but only cc'ing Peter,
-> akpm, Masami and the mm list this time?
+If the kernel is in vmalloc space and vmap is able to use 2MB pages
+for contiguous chunks of the mapping, you get a somewhat better
+TLB usage.
 
-No problems with that. Actually each patch gets everything that
-get_maintainer.pl gives with a cc cmd script, not just the ones
-explicitly listed in the patch.
+However, this also means that a writable mapping exists in the
+linear mapping for any executable part of the kernel (.text in
+both vmlinux and modules). Do we have that on other architectures
+as well, or is this something that ought to be prevented with
+STRICT_KERNEL_RWX/STRICT_MODULE_RWX?
 
-Should I explicitly CC you to the next version? I'm happy to grow
-the list when requested.
-
-> Sorry, but that is not how it works. Once people get pulled into a
-> discussion, you cannot dismiss them or their feedback like that and go
-> off and do your own thing anyway. Generic features like this are
-> tricky to get right, and it will likely take many iterations and input
-> from many different people.
-
-Sure. I'm not expecting this move quickly.
-
-I don't think I've at least purposely done that. As you said it's tricky
-to get this right.
-
-/Jarkko
+     Arnd
