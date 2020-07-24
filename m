@@ -2,87 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570A222BEC4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 09:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA0E22BEFE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 09:22:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCgT36KQTzDqy9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 17:15:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCgdr1hKtzDsVH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 17:22:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCgNW4H3hzDsZ0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 17:11:23 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06O73j6K126520; Fri, 24 Jul 2020 03:11:14 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32fb8y6k2b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 03:11:14 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06O74wo3130104;
- Fri, 24 Jul 2020 03:11:13 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32fb8y6k24-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 03:11:13 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06O7AJPm032602;
- Fri, 24 Jul 2020 07:11:13 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma03dal.us.ibm.com with ESMTP id 32brqa77ca-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 07:11:13 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06O7BCdF19661128
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Jul 2020 07:11:12 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 46120AE062;
- Fri, 24 Jul 2020 07:11:12 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 91C6FAE05C;
- Fri, 24 Jul 2020 07:11:11 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.85.93.226])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 24 Jul 2020 07:11:11 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 1815A2E340E; Fri, 24 Jul 2020 12:41:08 +0530 (IST)
-Date: Fri, 24 Jul 2020 12:41:08 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v3 05/10] powerpc/smp: Dont assume l2-cache to be
- superset of sibling
-Message-ID: <20200724071108.GD21415@in.ibm.com>
-References: <20200723085116.4731-1-srikar@linux.vnet.ibm.com>
- <20200723085116.4731-6-srikar@linux.vnet.ibm.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCgbP64MrzDrqV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 17:20:48 +1000 (AEST)
+Received: from mail-qt1-f176.google.com ([209.85.160.176]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Mq2vS-1kbpTF2Z50-00n5m6 for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul
+ 2020 09:20:43 +0200
+Received: by mail-qt1-f176.google.com with SMTP id a32so6262829qtb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 00:20:42 -0700 (PDT)
+X-Gm-Message-State: AOAM531KnalDnwQbVIHqI7fGjc0l9zu5ImhW5DBIRPAnjC8vZc6K/KZO
+ 7T5+h1ATSDLmsjDuEhRGteMljeR4mGSnW+RsMBc=
+X-Google-Smtp-Source: ABdhPJxmIVXnbEioXbPXSA7ZMWes4VKvilueIEtCY7yjI+BhfVsAWHUQWo3DE1p/ihdJ0qb68PSFrNOEs1zZFP+V6+8=
+X-Received: by 2002:ac8:688e:: with SMTP id m14mr1188191qtq.7.1595575241528;
+ Fri, 24 Jul 2020 00:20:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200723085116.4731-6-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-24_01:2020-07-24,
- 2020-07-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 malwarescore=0 bulkscore=0 adultscore=0 suspectscore=0
- phishscore=0 impostorscore=0 spamscore=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007240052
+References: <CAK8P3a34sT2bQbkZUjaxaShzCkn+s35pXxS0UNhqGFu+t2hZYw@mail.gmail.com>
+ <mhng-820ebe55-b4a3-4ab3-b848-6d3551b43091@palmerdabbelt-glaptop1>
+ <CAK8P3a2VHXDLK6iba=NxSQ-t=9P7LSwzwx3XrK=N=M+qoX_oeQ@mail.gmail.com>
+ <CAOnJCULmX+vUcpEmBd5w7xjtZSFk=Ju2V=wBJCOXHQ8m9yG9-Q@mail.gmail.com>
+In-Reply-To: <CAOnJCULmX+vUcpEmBd5w7xjtZSFk=Ju2V=wBJCOXHQ8m9yG9-Q@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 24 Jul 2020 09:20:25 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2u9Z6wfyRduC7396929t4VnJQ0cXMiMWO7o6tgx_uNOw@mail.gmail.com>
+Message-ID: <CAK8P3a2u9Z6wfyRduC7396929t4VnJQ0cXMiMWO7o6tgx_uNOw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
+To: Atish Patra <atishp@atishpatra.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:rtlTBXJAnM/9MwfGED8/vkYCYN5xxO0C5BFsrnc0GfvBXz216gD
+ 2JWMoQUiQsDIf0H2EqT7jTDs2prGuK8pOJF8OIHDEkQq6v/JJ1ZpBHCvsGD2919FcUZybYb
+ lXLP1aoDu/NXg6LzwT0mt5Ihx8DTSWu4nNK0R+ULv99BuZrhEJlM8vle2GHCMzETHlClZNe
+ NEA6KTH7/LL0lybVPkNxw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0YfiYEKXuSo=:iHBUm5UO1sZmc+wgfp2OdX
+ cS4AeyliiuFjaw/B1p6lzj5YgYPnJRpHZ2VCw+VoeHUUfDsnTH6SGiU5B3NSqs41ZI2bG7J18
+ G5F03Op+F1zwIqIngGMMjYT+vXMO4tAHyPIitxmrAjIr1WlEVbO9X86S/gznj0NXhx9a/Dz0y
+ E5fDl1OSY9Ctgi64CexomukCwBRbck/vOmlQWwtUDTDVTNuFBfhk217xi3gcyGFZeYDzhDjnE
+ AjzUSUobWu6Qe6rJ7jt4joY2Pz+S3zCM7Zaw0Dgvkwla8qlUQ302jdKK+6oz7kJseuTGfyi0M
+ nFOOJOoc01WCaGO+K6VITVAyWyX9Kvq4Efu2PSxjEe8rZacM2fRIKAOzzy1bZVTQSLm3QslQP
+ SS486obGiKPAPwwvBmZWvUa6t3Q3RjODThGRJ6OkAlBSzhJ6+UPPE3zLFM/S0V63lmXCh+Fuh
+ DyCkLql+h8Kc5s8Fp2HRRGVcMJebPpMsz8p4SlawY5mA2wfEJayzQLemm1g+SgQ8remXpB3oj
+ S2i/sZv2J9Si7N+ClvQdbiq+Zn3JVUpLk+7tvejebdwiSSXjg7hmhX/f6Tvu52wPRTKkzquC7
+ eW9wl+Cs3cIxKRapeyiJC0s+PRqnBXCRCxciBfDdDrPn1280BqnPB5oL9cRYKcw8CnFqv8rx0
+ Jtkc2iplHIw5ylduNXDMIWQzTyjtcfPZzfpfkY060yjRyE0+ERA8eMW40TnYBCNIcmxBKcGlf
+ ds/sEqb4SWvPYBDcUl9At+vsE7RnM4R84KXdrp2IY7wUa3KcvTCUowLsC6SjxWlH3tZorVhXL
+ nOK7OpYitPjSTNWped15F1wjq+lfOxzoeD1c70Q1L3ijYqM/spnIdD43pSGRmjh5mix/9JdRp
+ zzTuSPIoe+/cYXuiBRf7a48dyY4hWbbSosickRqxPiaRdpWQexX3Z4TGeFEzU5EOhu2rpfiUH
+ Gh2JVfw6ObwNpBIXZvMwdLuK/KT4R0fmlw29oS+2FUSyTn6BcEXI2
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,106 +76,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
- Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Jordan Niethe <jniethe5@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Linux-MM <linux-mm@kvack.org>, Anup Patel <Anup.Patel@wdc.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Atish Patra <Atish.Patra@wdc.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Zong Li <zong.li@sifive.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Jul 22, 2020 at 11:06 PM Atish Patra <atishp@atishpatra.org> wrote:
+>
+> On Wed, Jul 22, 2020 at 1:23 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > I just noticed that rv32 allows 2GB of lowmem rather than just the usual
+> > 768MB or 1GB, at the expense of addressable user memory. This seems
+> > like an unusual choice, but I also don't see any reason to change this
+> > or make it more flexible unless actual users appear.
+> >
+>
+> I am a bit confused here. As per my understanding, RV32 supports 1GB
+> of lowmem only
+> as the page offset is set to 0xC0000000. The config option
+> MAXPHYSMEM_2GB is misleading
+> as RV32 actually allows 1GB of physical memory only.
 
-On Thu, Jul 23, 2020 at 02:21:11PM +0530, Srikar Dronamraju wrote:
-> Current code assumes that cpumask of cpus sharing a l2-cache mask will
-> always be a superset of cpu_sibling_mask.
-> 
-> Lets stop that assumption. cpu_l2_cache_mask is a superset of
-> cpu_sibling_mask if and only if shared_caches is set.
-> 
-> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> Cc: LKML <linux-kernel@vger.kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Anton Blanchard <anton@ozlabs.org>
-> Cc: Oliver O'Halloran <oohall@gmail.com>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Michael Neuling <mikey@neuling.org>
-> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Valentin Schneider <valentin.schneider@arm.com>
-> Cc: Jordan Niethe <jniethe5@gmail.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Ok, in that case I was apparently misled by the Kconfig option name.
 
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+I just tried building a kernel to see what the boundaries actually are,
+as this is not the only confusing bit. Here is what I see:
 
-> ---
-> Changelog v1 -> v2:
-> 	Set cpumask after verifying l2-cache. (Gautham)
-> 
->  arch/powerpc/kernel/smp.c | 28 +++++++++++++++-------------
->  1 file changed, 15 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index da27f6909be1..d997c7411664 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -1194,6 +1194,7 @@ static bool update_mask_by_l2(int cpu, struct cpumask *(*mask_fn)(int))
->  	if (!l2_cache)
->  		return false;
-> 
-> +	cpumask_set_cpu(cpu, mask_fn(cpu));
->  	for_each_cpu(i, cpu_online_mask) {
->  		/*
->  		 * when updating the marks the current CPU has not been marked
-> @@ -1276,29 +1277,30 @@ static void add_cpu_to_masks(int cpu)
->  	 * add it to it's own thread sibling mask.
->  	 */
->  	cpumask_set_cpu(cpu, cpu_sibling_mask(cpu));
-> +	cpumask_set_cpu(cpu, cpu_core_mask(cpu));
-> 
->  	for (i = first_thread; i < first_thread + threads_per_core; i++)
->  		if (cpu_online(i))
->  			set_cpus_related(i, cpu, cpu_sibling_mask);
-> 
->  	add_cpu_to_smallcore_masks(cpu);
-> -	/*
-> -	 * Copy the thread sibling mask into the cache sibling mask
-> -	 * and mark any CPUs that share an L2 with this CPU.
-> -	 */
-> -	for_each_cpu(i, cpu_sibling_mask(cpu))
-> -		set_cpus_related(cpu, i, cpu_l2_cache_mask);
->  	update_mask_by_l2(cpu, cpu_l2_cache_mask);
-> 
-> -	/*
-> -	 * Copy the cache sibling mask into core sibling mask and mark
-> -	 * any CPUs on the same chip as this CPU.
-> -	 */
-> -	for_each_cpu(i, cpu_l2_cache_mask(cpu))
-> -		set_cpus_related(cpu, i, cpu_core_mask);
-> +	if (pkg_id == -1) {
-> +		struct cpumask *(*mask)(int) = cpu_sibling_mask;
-> +
-> +		/*
-> +		 * Copy the sibling mask into core sibling mask and
-> +		 * mark any CPUs on the same chip as this CPU.
-> +		 */
-> +		if (shared_caches)
-> +			mask = cpu_l2_cache_mask;
-> +
-> +		for_each_cpu(i, mask(cpu))
-> +			set_cpus_related(cpu, i, cpu_core_mask);
-> 
-> -	if (pkg_id == -1)
->  		return;
-> +	}
-> 
->  	for_each_cpu(i, cpu_online_mask)
->  		if (get_physical_package_id(i) == pkg_id)
-> -- 
-> 2.18.2
-> 
+0x9dc00000 TASK_SIZE/FIXADDR_START   /* code comment says 0x9fc00000 */
+0x9e000000 FIXADDR_TOP/PCI_IO_START
+0x9f000000 PCI_IO_END/VMEMMAP_START
+0xa0000000 VMEMMAP_END/VMALLOC_START
+0xc0000000 VMALLOC_END/PAGE_OFFSET
+
+Having exactly 1GB of linear map does make a lot of sense. Having PCI I/O,
+vmemmap and fixmap come out of the user range means you get slightly
+different behavior in user space if there are any changes to that set, but
+that is probably fine as well, if you want the flexibility to go to a 2GB linear
+map and expect user space to deal with that as well.
+
+There is one common trick from arm32 however that you might want to
+consider: if vmalloc was moved above the linear map rather than below,
+the size of the vmalloc area can dynamically depend on the amount of
+RAM that is actually present rather than be set to a fixed value.
+
+On arm32, there is around 240MB of vmalloc space if the linear map
+is fully populated with RAM, but it can grow to use all of the avaialable
+address space if less RAM was detected at boot time (up to 3GB
+depending on CONFIG_VMSPLIT).
+
+> Any memory blocks beyond
+> DRAM + 1GB are removed in setup_bootmem. IMHO, The current config
+> should clarify that.
+>
+> Moreover, we should add 2G split under a separate configuration if we
+> want to support that.
+
+Right. It's probably not needed immediately, but can't hurt either.
+
+    Arnd
