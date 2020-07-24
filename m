@@ -1,59 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAAF22C0AD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 10:30:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EED22C0ED
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 10:37:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCj8G0MN8zDrMH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 18:30:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCjHY5ZmSzDrqX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 18:37:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jeyu@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=iQgxYosI; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BChZx1s2WzDrNn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 18:05:29 +1000 (AEST)
-Received: from linux-8ccs (p57a236d4.dip0.t-ipconnect.de [87.162.54.212])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CA66B20714;
- Fri, 24 Jul 2020 08:05:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1595577926;
- bh=us2W5N9wAnP0SRTf2NETN3sn0PTr7LNBP/LAvhLqDbs=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=iQgxYosIuT/VUzj6+qKIwKf0IR9OKpxSh4OiUa+6rfL2yxtBGsii3LQuRzcoxWYjq
- WmSWWCQKgrWA4hh7O9H3q9SWSEelUNw0KZuaw9jZ0e757JHdQ1Oqyy6N3x0PqIO0Vu
- lguPTAYMJfYhShKoQhGPpNT5RzKACvw/rBbeNwqg=
-Date: Fri, 24 Jul 2020 10:05:08 +0200
-From: Jessica Yu <jeyu@kernel.org>
-To: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
- move to kernel proper
-Message-ID: <20200724080508.GA17719@linux-8ccs>
-References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
- <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
- <20200716184909.Horde.JVRLLcKix_jhrJfiQYRbbQ1@messagerie.si.c-s.fr>
- <20200723015127.GE45081@linux.intel.com>
- <CAMj1kXGJhqC+asc6JUNeEkRsHYTzNQVe4-65vKqigbW03gO9Jg@mail.gmail.com>
- <20200724073621.GC1872662@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCjFq59HSzDrPB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 18:35:43 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06O8X8dd027433; Fri, 24 Jul 2020 04:35:35 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32fat2m9a9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jul 2020 04:35:35 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06O8UKRc014893;
+ Fri, 24 Jul 2020 08:35:33 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma05fra.de.ibm.com with ESMTP id 32brq83w60-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jul 2020 08:35:33 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06O8Y6ZC54985200
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 Jul 2020 08:34:06 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A03ACAE05A;
+ Fri, 24 Jul 2020 08:35:30 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D584AE04D;
+ Fri, 24 Jul 2020 08:35:30 +0000 (GMT)
+Received: from pomme.tlslab.ibm.com (unknown [9.145.182.168])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Jul 2020 08:35:30 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: bharata@linux.ibm.com, linuxram@us.ibm.com
+Subject: [PATCH] KVM: PPC: Book3S HV: rework secure mem slot dropping
+Date: Fri, 24 Jul 2020 10:35:27 +0200
+Message-Id: <20200724083527.28027-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200724030337.GC1082478@in.ibm.com>
+References: <20200724030337.GC1082478@in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200724073621.GC1872662@linux.intel.com>
-X-OS: Linux linux-8ccs 5.5.0-lp150.12.61-default x86_64
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Fri, 24 Jul 2020 18:27:17 +1000
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-24_02:2020-07-24,
+ 2020-07-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=2 spamscore=0
+ phishscore=0 adultscore=0 clxscore=1015 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 mlxlogscore=763
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007240059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,123 +83,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
- Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
- Paul Burton <paulburton@kernel.org>,
- Vincent Whitchurch <vincent.whitchurch@axis.com>,
- Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Jiri Kosina <jkosina@suse.cz>, Anup Patel <anup.patel@wdc.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Philipp Rudo <prudo@linux.ibm.com>, Torsten Duwe <duwe@lst.de>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Vincent Chen <deanbo422@gmail.com>, Omar Sandoval <osandov@fb.com>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- John Fastabend <john.fastabend@gmail.com>,
- Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
- Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>,
- Andrii Nakryiko <andriin@fb.com>, Thomas Huth <thuth@redhat.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
- Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
- Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Ley Foon Tan <ley.foon.tan@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Sami Tolvanen <samitolvanen@google.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
- Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
- Guan Xuetao <gxt@pku.edu.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <bpf@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, David Howells <dhowells@redhat.com>,
- Amit Daniel Kachhap <amit.kachhap@arm.com>,
- Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "open list:SPARC + UltraSPARC sparc/sparc64" <sparclinux@vger.kernel.org>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- Miroslav Benes <mbenes@suse.cz>, Jiri Olsa <jolsa@redhat.com>,
- Ard Biesheuvel <ardb@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
- "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, KP Singh <kpsingh@chromium.org>,
- Dmitry Vyukov <dvyukov@google.com>, Nick Hu <nickhu@andestech.com>,
- "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <netdev@vger.kernel.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com, sukadev@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+++ Jarkko Sakkinen [24/07/20 10:36 +0300]:
->On Thu, Jul 23, 2020 at 03:42:09PM +0300, Ard Biesheuvel wrote:
->> On Thu, 23 Jul 2020 at 04:52, Jarkko Sakkinen
->> <jarkko.sakkinen@linux.intel.com> wrote:
->> >
->> > On Thu, Jul 16, 2020 at 06:49:09PM +0200, Christophe Leroy wrote:
->> > > Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> a écrit :
->> > >
->> > > > Rename module_alloc() to text_alloc() and module_memfree() to
->> > > > text_memfree(), and move them to kernel/text.c, which is unconditionally
->> > > > compiled to the kernel proper. This allows kprobes, ftrace and bpf to
->> > > > allocate space for executable code without requiring to compile the modules
->> > > > support (CONFIG_MODULES=y) in.
->> > >
->> > > You are not changing enough in powerpc to have this work.
->> > > On powerpc 32 bits (6xx), when STRICT_KERNEL_RWX is selected, the vmalloc
->> > > space is set to NX (no exec) at segment level (ie by 256Mbytes zone) unless
->> > > CONFIG_MODULES is selected.
->> > >
->> > > Christophe
->> >
->> > This has been deduced down to:
->> >
->> > https://lore.kernel.org/lkml/20200717030422.679972-1-jarkko.sakkinen@linux.intel.com/
->> >
->> > I.e. not intruding PPC anymore :-)
->> >
->>
->> Ok, so after the elaborate discussion we had between Jessica, Russell,
->> Peter, Will, Mark, you and myself, where we pointed out that
->> a) a single text_alloc() abstraction for bpf, kprobes and ftrace does
->> not fit other architectures very well, and
->> b) that module_alloc() is not suitable as a default to base text_alloc() on,
->
->In the latest iteration (v5) it is conditionally available only if arch
->defines and fallback has been removed.
->
->> you went ahead and implemented that anyway, but only cc'ing Peter,
->> akpm, Masami and the mm list this time?
->
->No problems with that. Actually each patch gets everything that
->get_maintainer.pl gives with a cc cmd script, not just the ones
->explicitly listed in the patch.
->
->Should I explicitly CC you to the next version? I'm happy to grow
->the list when requested.
+When a secure memslot is dropped, all the pages backed in the secure
+device (aka really backed by secure memory by the Ultravisor)
+should be paged out to a normal page. Previously, this was
+achieved by triggering the page fault mechanism which is calling
+kvmppc_svm_page_out() on each pages.
 
-Yes, please CC everybody that was part of the discussion last time
-especially during v2, and please use a consistent CC list for the
-whole patchset. It is difficult to review when you only receive patch
-1 out of 6 with no mention of text_alloc() anywhere and without being
-CC'd on the cover letter.
+This can't work when hot unplugging a memory slot because the memory
+slot is flagged as invalid and gfn_to_pfn() is then not trying to access
+the page, so the page fault mechanism is not triggered.
 
-Jessica
+Since the final goal is to make a call to kvmppc_svm_page_out() it seems
+simpler to call directly instead of triggering such a mechanism. This
+way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
+memslot.
+
+Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
+the call to __kvmppc_svm_page_out() is made.  As
+__kvmppc_svm_page_out needs the vma pointer to migrate the pages,
+the VMA is fetched in a lazy way, to not trigger find_vma() all
+the time. In addition, the mmap_sem is held in read mode during
+that time, not in write mode since the virual memory layout is not
+impacted, and kvm->arch.uvmem_lock prevents concurrent operation
+on the secure device.
+
+Cc: Ram Pai <linuxram@us.ibm.com>
+Cc: Bharata B Rao <bharata@linux.ibm.com>
+Cc: Paul Mackerras <paulus@ozlabs.org>
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+	[modified the changelog description]
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+        [modified check on the VMA in kvmppc_uvmem_drop_pages]
+---
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 53 ++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 17 deletions(-)
+
+diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+index c772e921f769..5dd3e9acdcab 100644
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -632,35 +632,54 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
+  * fault on them, do fault time migration to replace the device PTEs in
+  * QEMU page table with normal PTEs from newly allocated pages.
+  */
+-void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
++void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
+ 			     struct kvm *kvm, bool skip_page_out)
+ {
+ 	int i;
+ 	struct kvmppc_uvmem_page_pvt *pvt;
+-	unsigned long pfn, uvmem_pfn;
+-	unsigned long gfn = free->base_gfn;
++	struct page *uvmem_page;
++	struct vm_area_struct *vma = NULL;
++	unsigned long uvmem_pfn, gfn;
++	unsigned long addr, end;
++
++	mmap_read_lock(kvm->mm);
++
++	addr = slot->userspace_addr;
++	end = addr + (slot->npages * PAGE_SIZE);
+ 
+-	for (i = free->npages; i; --i, ++gfn) {
+-		struct page *uvmem_page;
++	gfn = slot->base_gfn;
++	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
++
++		/* Fetch the VMA if addr is not in the latest fetched one */
++		if (!vma || addr >= vma->vm_end) {
++			vma = find_vma_intersection(kvm->mm, addr, addr+1);
++			if (!vma) {
++				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
++				break;
++			}
++		}
+ 
+ 		mutex_lock(&kvm->arch.uvmem_lock);
+-		if (!kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
++
++		if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
++			uvmem_page = pfn_to_page(uvmem_pfn);
++			pvt = uvmem_page->zone_device_data;
++			pvt->skip_page_out = skip_page_out;
++			pvt->remove_gfn = true;
++
++			if (__kvmppc_svm_page_out(vma, addr, addr + PAGE_SIZE,
++						  PAGE_SHIFT, kvm, pvt->gpa))
++				pr_err("Can't page out gpa:0x%lx addr:0x%lx\n",
++				       pvt->gpa, addr);
++		} else {
++			/* Remove the shared flag if any */
+ 			kvmppc_gfn_remove(gfn, kvm);
+-			mutex_unlock(&kvm->arch.uvmem_lock);
+-			continue;
+ 		}
+ 
+-		uvmem_page = pfn_to_page(uvmem_pfn);
+-		pvt = uvmem_page->zone_device_data;
+-		pvt->skip_page_out = skip_page_out;
+-		pvt->remove_gfn = true;
+ 		mutex_unlock(&kvm->arch.uvmem_lock);
+-
+-		pfn = gfn_to_pfn(kvm, gfn);
+-		if (is_error_noslot_pfn(pfn))
+-			continue;
+-		kvm_release_pfn_clean(pfn);
+ 	}
++
++	mmap_read_unlock(kvm->mm);
+ }
+ 
+ unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
+-- 
+2.27.0
+
