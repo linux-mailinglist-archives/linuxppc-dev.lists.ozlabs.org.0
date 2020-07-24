@@ -2,64 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AD122CDF3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 20:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE1622CE81
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 21:12:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCykh3lw4zF1SB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 04:43:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCzNp0Zh2zF1Ss
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 05:12:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCyhk1hT4zF15P
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 04:41:26 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=longman@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BCyhk0X3Rz8tT4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 04:41:26 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BCyhj6sZWz9sSt; Sat, 25 Jul 2020 04:41:25 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=grrxCMiu; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=grrxCMiu; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BCyhj03Gbz9sRK
- for <linuxppc-dev@ozlabs.org>; Sat, 25 Jul 2020 04:41:21 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BCyhY01t6z9v4fV;
- Fri, 24 Jul 2020 20:41:17 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id akcMa3G__NrR; Fri, 24 Jul 2020 20:41:16 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BCyhX67Mrz9v0k7;
- Fri, 24 Jul 2020 20:41:16 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 3DB015C6; Fri, 24 Jul 2020 20:42:34 +0200 (CEST)
-Received: from 37.167.224.69 ([37.167.224.69]) by messagerie.si.c-s.fr
- (Horde Framework) with HTTP; Fri, 24 Jul 2020 20:42:34 +0200
-Date: Fri, 24 Jul 2020 20:42:34 +0200
-Message-ID: <20200724204234.Horde.hO-ZzrdZK2VFWG6f4BoOPg1@messagerie.si.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 5/9] powerpc/32s: Fix CONFIG_BOOK3S_601 uses
-References: <20200724131728.1643966-1-mpe@ellerman.id.au>
- <20200724131728.1643966-5-mpe@ellerman.id.au>
-In-Reply-To: <20200724131728.1643966-5-mpe@ellerman.id.au>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCzM36xgpzF1Nq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 05:11:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1595617866;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/IKeY6oErXCv4WxvHD12K0X54wE8JqQGDnTdTiMdbbI=;
+ b=grrxCMiujjghWcd/04JA7VVgbUGCG7H7wYQeLoCJmWSz84QLQ2Iac7cWPsGIuXqU95ZsJI
+ SfSEkT4JL901YqhUespBovPX9t4s+BvY/a4Ay2JBsganGevHhjSdSJV9EmrUQuKCecLBek
+ RyMTDkAAQeOWIOfwGbYjjb3xQQhdWFM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1595617866;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/IKeY6oErXCv4WxvHD12K0X54wE8JqQGDnTdTiMdbbI=;
+ b=grrxCMiujjghWcd/04JA7VVgbUGCG7H7wYQeLoCJmWSz84QLQ2Iac7cWPsGIuXqU95ZsJI
+ SfSEkT4JL901YqhUespBovPX9t4s+BvY/a4Ay2JBsganGevHhjSdSJV9EmrUQuKCecLBek
+ RyMTDkAAQeOWIOfwGbYjjb3xQQhdWFM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-114-KSQWmsA2MWyLHLlGSd4LFQ-1; Fri, 24 Jul 2020 15:11:03 -0400
+X-MC-Unique: KSQWmsA2MWyLHLlGSd4LFQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A0ADD8015F4;
+ Fri, 24 Jul 2020 19:11:01 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-117-203.rdu2.redhat.com [10.10.117.203])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 572FD1A835;
+ Fri, 24 Jul 2020 19:11:00 +0000 (UTC)
+Subject: Re: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks for
+ SPLPAR
+To: Will Deacon <will@kernel.org>, peterz@infradead.org
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <20200706043540.1563616-6-npiggin@gmail.com>
+ <874kqhvu1v.fsf@mpe.ellerman.id.au>
+ <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
+ <20200723140011.GR5523@worktop.programming.kicks-ass.net>
+ <845de183-56f5-2958-3159-faa131d46401@redhat.com>
+ <20200723184759.GS119549@hirez.programming.kicks-ass.net>
+ <20200724081647.GA16642@willie-the-truck>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <8532332b-85dd-661b-cf72-81a8ceb70747@redhat.com>
+Date: Fri, 24 Jul 2020 15:10:59 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200724081647.GA16642@willie-the-truck>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,64 +94,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org
+Cc: linux-arch@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ virtualization@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
+ kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> a =C3=A9crit=C2=A0:
+On 7/24/20 4:16 AM, Will Deacon wrote:
+> On Thu, Jul 23, 2020 at 08:47:59PM +0200, peterz@infradead.org wrote:
+>> On Thu, Jul 23, 2020 at 02:32:36PM -0400, Waiman Long wrote:
+>>> BTW, do you have any comment on my v2 lock holder cpu info qspinlock patch?
+>>> I will have to update the patch to fix the reported 0-day test problem, but
+>>> I want to collect other feedback before sending out v3.
+>> I want to say I hate it all, it adds instructions to a path we spend an
+>> aweful lot of time optimizing without really getting anything back for
+>> it.
+>>
+>> Will, how do you feel about it?
+> I can see it potentially being useful for debugging, but I hate the
+> limitation to 256 CPUs. Even arm64 is hitting that now.
 
-> We have two uses of CONFIG_BOOK3S_601, which doesn't exist. Fix them
-> to use CONFIG_PPC_BOOK3S_601 which is the correct symbol.
->
-> Fixes: 12c3f1fd87bf ("powerpc/32s: get rid of CPU_FTR_601 feature")
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->
-> I think the bug in get_cycles() at least demonstrates that no one has
-> booted a 601 since v5.4. Time to drop 601?
+After thinking more about that, I think we can use all the remaining 
+bits in the 16-bit locked_pending. Reserving 1 bit for locked and 1 bit 
+for pending, there are 14 bits left. So as long as NR_CPUS < 16k 
+(requirement for 16-bit locked_pending), we can put all possible cpu 
+numbers into the lock. We can also just use smp_processor_id() without 
+additional percpu data.
 
-Would be great.
-
-I can submit a patch for that in August.
-
-Christophe
-
-> ---
->  arch/powerpc/include/asm/ptrace.h | 2 +-
->  arch/powerpc/include/asm/timex.h  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/powerpc/include/asm/ptrace.h=20=20
->=20b/arch/powerpc/include/asm/ptrace.h
-> index f194339cef3b..155a197c0aa1 100644
-> --- a/arch/powerpc/include/asm/ptrace.h
-> +++ b/arch/powerpc/include/asm/ptrace.h
-> @@ -243,7 +243,7 @@ static inline void set_trap_norestart(struct=20=20
->=20pt_regs *regs)
->  }
->
->  #define arch_has_single_step()	(1)
-> -#ifndef CONFIG_BOOK3S_601
-> +#ifndef CONFIG_PPC_BOOK3S_601
->  #define arch_has_block_step()	(true)
->  #else
->  #define arch_has_block_step()	(false)
-> diff --git a/arch/powerpc/include/asm/timex.h=20=20
->=20b/arch/powerpc/include/asm/timex.h
-> index d2d2c4bd8435..6047402b0a4d 100644
-> --- a/arch/powerpc/include/asm/timex.h
-> +++ b/arch/powerpc/include/asm/timex.h
-> @@ -17,7 +17,7 @@ typedef unsigned long cycles_t;
->
->  static inline cycles_t get_cycles(void)
->  {
-> -	if (IS_ENABLED(CONFIG_BOOK3S_601))
-> +	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
->  		return 0;
->
->  	return mftb();
-> --
-> 2.25.1
+> Also, you're talking ~1% gains here. I think our collective time would
+> be better spent off reviewing the CNA series and trying to make it more
+> deterministic.
 
+I thought you guys are not interested in CNA. I do want to get CNA 
+merged, if possible. Let review the current version again and see if 
+there are ways we can further improve it.
+
+Cheers,
+Longman
 
