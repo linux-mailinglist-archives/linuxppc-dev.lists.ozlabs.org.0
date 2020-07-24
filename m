@@ -2,74 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BE522C04E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 09:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED90522C0A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 10:29:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BChQk6sZ1zDsq3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 17:58:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCj684r36zDrp6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 18:29:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BChNF74SMzDrgb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 17:56:13 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06O7YZZ0031553; Fri, 24 Jul 2020 03:56:07 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32f23h284q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 03:56:07 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06O7tATP026395;
- Fri, 24 Jul 2020 07:56:06 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 32brq9tupj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 07:56:06 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06O7u5ef54133036
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Jul 2020 07:56:05 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E38AAC062;
- Fri, 24 Jul 2020 07:56:05 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 32583AC05E;
- Fri, 24 Jul 2020 07:56:04 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.55.22])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 24 Jul 2020 07:56:03 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/book3s64/radix: Add kernel command line option to
- disable radix GTSE
-Date: Fri, 24 Jul 2020 13:26:00 +0530
-Message-Id: <20200724075600.317640-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCgyD6sJ5zDsNT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 17:37:07 +1000 (AEST)
+IronPort-SDR: hgLNAhTz9fIB412AVlL3MacOmdQ0ouMvFs/BEHgYGt0AmuGVnD2LiLiheetx42T3Q6JMvgxTEY
+ yJ4rQ1FdKZKA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9691"; a="235550133"
+X-IronPort-AV: E=Sophos;i="5.75,389,1589266800"; d="scan'208";a="235550133"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jul 2020 00:37:02 -0700
+IronPort-SDR: TAB03xecSlI4basjrQIy2hbhaeXXyXKAkMJFtaNhpLJDNY3l0q2EBJc0tt5g94JWjrS8//u4J3
+ 0Kk+Cc01yUeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,389,1589266800"; d="scan'208";a="288909362"
+Received: from cbuerkle-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.249.36.184])
+ by orsmga006.jf.intel.com with ESMTP; 24 Jul 2020 00:36:23 -0700
+Date: Fri, 24 Jul 2020 10:36:21 +0300
+From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
+ move to kernel proper
+Message-ID: <20200724073621.GC1872662@linux.intel.com>
+References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
+ <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
+ <20200716184909.Horde.JVRLLcKix_jhrJfiQYRbbQ1@messagerie.si.c-s.fr>
+ <20200723015127.GE45081@linux.intel.com>
+ <CAMj1kXGJhqC+asc6JUNeEkRsHYTzNQVe4-65vKqigbW03gO9Jg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-24_01:2020-07-24,
- 2020-07-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=999
- adultscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 clxscore=1015 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007240055
+In-Reply-To: <CAMj1kXGJhqC+asc6JUNeEkRsHYTzNQVe4-65vKqigbW03gO9Jg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Mailman-Approved-At: Fri, 24 Jul 2020 18:27:16 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,138 +65,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Bharata B Rao <bharata@linux.ibm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
+ Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
+ Paul Burton <paulburton@kernel.org>,
+ Vincent Whitchurch <vincent.whitchurch@axis.com>,
+ Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Kosina <jkosina@suse.cz>, Anup Patel <anup.patel@wdc.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Philipp Rudo <prudo@linux.ibm.com>, Torsten Duwe <duwe@lst.de>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Vincent Chen <deanbo422@gmail.com>, Omar Sandoval <osandov@fb.com>,
+ "open list:S390" <linux-s390@vger.kernel.org>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>,
+ Andrii Nakryiko <andriin@fb.com>, Thomas Huth <thuth@redhat.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+ Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
+ Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
+ Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Ley Foon Tan <ley.foon.tan@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
+ Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
+ Guan Xuetao <gxt@pku.edu.cn>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ Jessica Yu <jeyu@kernel.org>,
+ "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <bpf@vger.kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, David Howells <dhowells@redhat.com>,
+ Amit Daniel Kachhap <amit.kachhap@arm.com>,
+ Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "open list:SPARC + UltraSPARC sparc/sparc64" <sparclinux@vger.kernel.org>,
+ "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+ Miroslav Benes <mbenes@suse.cz>, Jiri Olsa <jolsa@redhat.com>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
+ "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, KP Singh <kpsingh@chromium.org>,
+ Dmitry Vyukov <dvyukov@google.com>, Nick Hu <nickhu@andestech.com>,
+ "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <netdev@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
+ <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds a kernel command line option that can be used to disable GTSE support.
-Disabling GTSE implies kernel will make hcalls to invalidate TLB entries.
+On Thu, Jul 23, 2020 at 03:42:09PM +0300, Ard Biesheuvel wrote:
+> On Thu, 23 Jul 2020 at 04:52, Jarkko Sakkinen
+> <jarkko.sakkinen@linux.intel.com> wrote:
+> >
+> > On Thu, Jul 16, 2020 at 06:49:09PM +0200, Christophe Leroy wrote:
+> > > Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> a écrit :
+> > >
+> > > > Rename module_alloc() to text_alloc() and module_memfree() to
+> > > > text_memfree(), and move them to kernel/text.c, which is unconditionally
+> > > > compiled to the kernel proper. This allows kprobes, ftrace and bpf to
+> > > > allocate space for executable code without requiring to compile the modules
+> > > > support (CONFIG_MODULES=y) in.
+> > >
+> > > You are not changing enough in powerpc to have this work.
+> > > On powerpc 32 bits (6xx), when STRICT_KERNEL_RWX is selected, the vmalloc
+> > > space is set to NX (no exec) at segment level (ie by 256Mbytes zone) unless
+> > > CONFIG_MODULES is selected.
+> > >
+> > > Christophe
+> >
+> > This has been deduced down to:
+> >
+> > https://lore.kernel.org/lkml/20200717030422.679972-1-jarkko.sakkinen@linux.intel.com/
+> >
+> > I.e. not intruding PPC anymore :-)
+> >
+> 
+> Ok, so after the elaborate discussion we had between Jessica, Russell,
+> Peter, Will, Mark, you and myself, where we pointed out that
+> a) a single text_alloc() abstraction for bpf, kprobes and ftrace does
+> not fit other architectures very well, and
+> b) that module_alloc() is not suitable as a default to base text_alloc() on,
 
-This was done so that we can do VM migration between configs that enable/disable
-GTSE support via hypervisor. To migrate a VM from a system that supports
-GTSE to a system that doesn't, we can boot the guest with radix_gtse=off, thereby
-forcing the guest to use hcalls for TLB invalidates.
+In the latest iteration (v5) it is conditionally available only if arch
+defines and fallback has been removed.
 
-The check for hcall availability is done in pSeries_setup_arch so that
-the panic message appears on the console. This should only happen on
-a hypervisor that doesn't force the guest to hash translation even
-though it can't handle the radix GTSE=0 request via CAS. With radix_gtse=off
-if the hypervisor doesn't support hcall_rpt_invalidate hcall it should
-force the LPAR to hash translation.
+> you went ahead and implemented that anyway, but only cc'ing Peter,
+> akpm, Masami and the mm list this time?
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- Documentation/admin-guide/kernel-parameters.txt |  3 +++
- arch/powerpc/include/asm/firmware.h             |  4 +++-
- arch/powerpc/kernel/prom_init.c                 | 13 +++++++++----
- arch/powerpc/platforms/pseries/firmware.c       |  1 +
- arch/powerpc/platforms/pseries/setup.c          |  5 +++++
- 5 files changed, 21 insertions(+), 5 deletions(-)
+No problems with that. Actually each patch gets everything that
+get_maintainer.pl gives with a cc cmd script, not just the ones
+explicitly listed in the patch.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index fb95fad81c79..df20c98a8920 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -896,6 +896,9 @@
- 	disable_radix	[PPC]
- 			Disable RADIX MMU mode on POWER9
- 
-+	radix_gtse=off	[PPC/PSERIES]
-+			Disable RADIX GTSE feature.
-+
- 	disable_tlbie	[PPC]
- 			Disable TLBIE instruction. Currently does not work
- 			with KVM, with HASH MMU, or with coherent accelerators.
-diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
-index 6003c2e533a0..aa6a5ef5d483 100644
---- a/arch/powerpc/include/asm/firmware.h
-+++ b/arch/powerpc/include/asm/firmware.h
-@@ -52,6 +52,7 @@
- #define FW_FEATURE_PAPR_SCM 	ASM_CONST(0x0000002000000000)
- #define FW_FEATURE_ULTRAVISOR	ASM_CONST(0x0000004000000000)
- #define FW_FEATURE_STUFF_TCE	ASM_CONST(0x0000008000000000)
-+#define FW_FEATURE_RPT_INVALIDATE ASM_CONST(0x0000010000000000)
- 
- #ifndef __ASSEMBLY__
- 
-@@ -71,7 +72,8 @@ enum {
- 		FW_FEATURE_TYPE1_AFFINITY | FW_FEATURE_PRRN |
- 		FW_FEATURE_HPT_RESIZE | FW_FEATURE_DRMEM_V2 |
- 		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
--		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR,
-+		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR |
-+		FW_FEATURE_RPT_INVALIDATE,
- 	FW_FEATURE_PSERIES_ALWAYS = 0,
- 	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL | FW_FEATURE_ULTRAVISOR,
- 	FW_FEATURE_POWERNV_ALWAYS = 0,
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index cbc605cfdec0..e7e91965fe6c 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -169,6 +169,7 @@ static unsigned long __prombss prom_tce_alloc_end;
- 
- #ifdef CONFIG_PPC_PSERIES
- static bool __prombss prom_radix_disable;
-+static bool __prombss prom_radix_gtse_disable;
- static bool __prombss prom_xive_disable;
- #endif
- 
-@@ -823,6 +824,12 @@ static void __init early_cmdline_parse(void)
- 	if (prom_radix_disable)
- 		prom_debug("Radix disabled from cmdline\n");
- 
-+	opt = prom_strstr(prom_cmd_line, "radix_gtse=off");
-+	if (opt) {
-+		prom_radix_gtse_disable = true;
-+		prom_debug("Radix GTSE disabled from cmdline\n");
-+	}
-+
- 	opt = prom_strstr(prom_cmd_line, "xive=off");
- 	if (opt) {
- 		prom_xive_disable = true;
-@@ -1285,10 +1292,8 @@ static void __init prom_parse_platform_support(u8 index, u8 val,
- 		prom_parse_mmu_model(val & OV5_FEAT(OV5_MMU_SUPPORT), support);
- 		break;
- 	case OV5_INDX(OV5_RADIX_GTSE): /* Radix Extensions */
--		if (val & OV5_FEAT(OV5_RADIX_GTSE)) {
--			prom_debug("Radix - GTSE supported\n");
--			support->radix_gtse = true;
--		}
-+		if (val & OV5_FEAT(OV5_RADIX_GTSE))
-+			support->radix_gtse = !prom_radix_gtse_disable;
- 		break;
- 	case OV5_INDX(OV5_XIVE_SUPPORT): /* Interrupt mode */
- 		prom_parse_xive_model(val & OV5_FEAT(OV5_XIVE_SUPPORT),
-diff --git a/arch/powerpc/platforms/pseries/firmware.c b/arch/powerpc/platforms/pseries/firmware.c
-index 3e49cc23a97a..4c7b7f5a2ebc 100644
---- a/arch/powerpc/platforms/pseries/firmware.c
-+++ b/arch/powerpc/platforms/pseries/firmware.c
-@@ -65,6 +65,7 @@ hypertas_fw_features_table[] = {
- 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
- 	{FW_FEATURE_BLOCK_REMOVE,	"hcall-block-remove"},
- 	{FW_FEATURE_PAPR_SCM,		"hcall-scm"},
-+	{FW_FEATURE_RPT_INVALIDATE,	"hcall-rpt-invalidate"},
- };
- 
- /* Build up the firmware features bitmask using the contents of
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 2db8469e475f..9e5e098665f7 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -745,6 +745,11 @@ static void __init pSeries_setup_arch(void)
- 	smp_init_pseries();
- 
- 
-+	if (radix_enabled() && !mmu_has_feature(MMU_FTR_GTSE))
-+		if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+			panic("BUG: Radix support requires either GTSE or RPT_INVALIDATE\n");
-+
-+
- 	/* openpic global configuration register (64-bit format). */
- 	/* openpic Interrupt Source Unit pointer (64-bit format). */
- 	/* python0 facility area (mmio) (64-bit format) REAL address. */
--- 
-2.26.2
+Should I explicitly CC you to the next version? I'm happy to grow
+the list when requested.
 
+> Sorry, but that is not how it works. Once people get pulled into a
+> discussion, you cannot dismiss them or their feedback like that and go
+> off and do your own thing anyway. Generic features like this are
+> tricky to get right, and it will likely take many iterations and input
+> from many different people.
+
+Sure. I'm not expecting this move quickly.
+
+I don't think I've at least purposely done that. As you said it's tricky
+to get this right.
+
+/Jarkko
