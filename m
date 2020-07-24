@@ -1,82 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A948222C502
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 14:20:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C1F22C522
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 14:27:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCpF46ysjzF0dd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 22:20:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCpP23tjyzDrqg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 22:27:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::143;
+ helo=mail-il1-x143.google.com; envelope-from=kernelfans@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=QuDuglS2; dkim-atps=neutral
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com
+ [IPv6:2607:f8b0:4864:20::143])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCp9W1VpTzDrq1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 22:17:18 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06OC2WeH168229; Fri, 24 Jul 2020 08:17:11 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32fsbm2ep9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 08:17:10 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06OCGSHP013376;
- Fri, 24 Jul 2020 12:17:09 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma05fra.de.ibm.com with ESMTP id 32brq84121-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 12:17:09 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06OCH60f31523072
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Jul 2020 12:17:06 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42213AE057;
- Fri, 24 Jul 2020 12:17:06 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 26B90AE051;
- Fri, 24 Jul 2020 12:17:05 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.85.193])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 24 Jul 2020 12:17:04 +0000 (GMT)
-Date: Fri, 24 Jul 2020 17:47:02 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
-Message-ID: <20200724121702.GE1082478@in.ibm.com>
-References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
- <87r1tb1rw2.fsf@linux.ibm.com> <87tuy1sksv.fsf@mpe.ellerman.id.au>
- <20200721032959.GN7902@in.ibm.com>
- <87ft9lrr55.fsf@mpe.ellerman.id.au>
- <20200722060506.GO7902@in.ibm.com>
- <87mu3pp1u9.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCpLF4dkDzDrgS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 22:24:51 +1000 (AEST)
+Received: by mail-il1-x143.google.com with SMTP id s21so7040675ilk.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 05:24:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=iz41Wb4g9jFLNHNHr48beAOPKmTQbRh9kIQCMiea/+I=;
+ b=QuDuglS2OyXRJTbLzS/rhCt0ji5bLHqN51RPWYNOAoHcuTXhzLTvbvAc9QP9NYZtNn
+ eJNzX4EzIAv8PgccosdoQ5C0jge4BPmKT6gnno5EDWzLDBg9knlRaulIAqyll8Fwm/nu
+ XmE9PcdrgJZMSRX+xfpcOWj+TANlibL6uIqpf0y/DNqvweYWhPO8fE9P2owClu5GlN9A
+ nNO8Q0MsQ2y+PdGyIYWru6+4vCn5G533LbHNbcVrjL3Di9+bxphwrVV5RuuJtZ4th4+C
+ 8ECg/gqXjT0eFbmMAbVOduy9fTvgM06P9ElXuCjkC0pdPFcxRNBCPJ+QHJK0556KFavM
+ 5INg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=iz41Wb4g9jFLNHNHr48beAOPKmTQbRh9kIQCMiea/+I=;
+ b=pmKpcUQleMBogTDvhZAB4nQceu+noX51O70e2MIWae21+b5118tJ8okBc0TgDfFo77
+ uELT5xH57uGRclP2EQMYiWgWf+SscJwbPV0NUu/6K7KOR+0Iz95zG/rMwNsuAl1FjmJt
+ f2sEw2weg1YQAPMtANeYnJP8ZpAUW2YowBdo/jrUVBOs1Ms75qV2t+n2hLV1dd0QAgLB
+ 3DYB7BonbJzV4uHss0uiJw13XaHwQAu8qJCyNlJrcSW0olq9BfmO7ioyUKlTsWV9vKFF
+ BmozWBehRd7EaC//g7YEVJHr6YSjugtufVtJHglaDOJi5Bdl0O8eg9x5Ew5UV2/Y9p8w
+ qxAQ==
+X-Gm-Message-State: AOAM533Ehbs00CF8Sge7Efz/YKC8fop5VSofMAPqouZxKgbY/5/OuaQ3
+ egw6ToY+PniLJ5ibwD8uKn09WWxeNQZbIEduww==
+X-Google-Smtp-Source: ABdhPJzvZZhMBxJXWl2+g0hkSt9TgwSgXDh6/p8h1uxpj3drfff0+uuydkxOG5Ud7hY9PMF9N4FEGrnU625i6PRXI48=
+X-Received: by 2002:a92:cb10:: with SMTP id s16mr10223389ilo.192.1595593488273; 
+ Fri, 24 Jul 2020 05:24:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87mu3pp1u9.fsf@mpe.ellerman.id.au>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-24_03:2020-07-24,
- 2020-07-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- lowpriorityscore=0 mlxlogscore=999 mlxscore=0 suspectscore=1
- malwarescore=0 adultscore=0 phishscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2007240089
+References: <1595382730-10565-1-git-send-email-kernelfans@gmail.com>
+ <1595382730-10565-2-git-send-email-kernelfans@gmail.com>
+ <87imee1hvt.fsf@linux.ibm.com>
+In-Reply-To: <87imee1hvt.fsf@linux.ibm.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Fri, 24 Jul 2020 20:24:37 +0800
+Message-ID: <CAFgQCTu_QO=50v2J0=aY2iV8P-oM82_Kfw9My600ZARUt01grw@mail.gmail.com>
+Subject: Re: [PATCHv3 2/2] powerpc/pseries: update device tree before ejecting
+ hotplug uevents
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,110 +77,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- david@gibson.dropbear.id.au
+Cc: cheloha@linux.ibm.com, Kexec Mailing List <kexec@lists.infradead.org>,
+ ldufour@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 24, 2020 at 09:52:14PM +1000, Michael Ellerman wrote:
-> Bharata B Rao <bharata@linux.ibm.com> writes:
-> > On Tue, Jul 21, 2020 at 10:25:58PM +1000, Michael Ellerman wrote:
-> >> Bharata B Rao <bharata@linux.ibm.com> writes:
-> >> > On Tue, Jul 21, 2020 at 11:45:20AM +1000, Michael Ellerman wrote:
-> >> >> Nathan Lynch <nathanl@linux.ibm.com> writes:
-> >> >> > "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> >> >> >> This is the next version of the fixes for memory unplug on radix.
-> >> >> >> The issues and the fix are described in the actual patches.
-> >> >> >
-> >> >> > I guess this isn't actually causing problems at runtime right now, but I
-> >> >> > notice calls to resize_hpt_for_hotplug() from arch_add_memory() and
-> >> >> > arch_remove_memory(), which ought to be mmu-agnostic:
-> >> >> >
-> >> >> > int __ref arch_add_memory(int nid, u64 start, u64 size,
-> >> >> > 			  struct mhp_params *params)
-> >> >> > {
-> >> >> > 	unsigned long start_pfn = start >> PAGE_SHIFT;
-> >> >> > 	unsigned long nr_pages = size >> PAGE_SHIFT;
-> >> >> > 	int rc;
-> >> >> >
-> >> >> > 	resize_hpt_for_hotplug(memblock_phys_mem_size());
-> >> >> >
-> >> >> > 	start = (unsigned long)__va(start);
-> >> >> > 	rc = create_section_mapping(start, start + size, nid,
-> >> >> > 				    params->pgprot);
-> >> >> > ...
-> >> >> 
-> >> >> Hmm well spotted.
-> >> >> 
-> >> >> That does return early if the ops are not setup:
-> >> >> 
-> >> >> int resize_hpt_for_hotplug(unsigned long new_mem_size)
-> >> >> {
-> >> >> 	unsigned target_hpt_shift;
-> >> >> 
-> >> >> 	if (!mmu_hash_ops.resize_hpt)
-> >> >> 		return 0;
-> >> >> 
-> >> >> 
-> >> >> And:
-> >> >> 
-> >> >> void __init hpte_init_pseries(void)
-> >> >> {
-> >> >> 	...
-> >> >> 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
-> >> >> 		mmu_hash_ops.resize_hpt = pseries_lpar_resize_hpt;
-> >> >> 
-> >> >> And that comes in via ibm,hypertas-functions:
-> >> >> 
-> >> >> 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
-> >> >> 
-> >> >> 
-> >> >> But firmware is not necessarily going to add/remove that call based on
-> >> >> whether we're using hash/radix.
-> >> >
-> >> > Correct but hpte_init_pseries() will not be called for radix guests.
-> >> 
-> >> Yeah, duh. You'd think the function name would have been a sufficient
-> >> clue for me :)
-> >> 
-> >> >> So I think a follow-up patch is needed to make this more robust.
-> >> >> 
-> >> >> Aneesh/Bharata what platform did you test this series on? I'm curious
-> >> >> how this didn't break.
-> >> >
-> >> > I have tested memory hotplug/unplug for radix guest on zz platform and
-> >> > sanity-tested this for hash guest on P8.
-> >> >
-> >> > As noted above, mmu_hash_ops.resize_hpt will not be set for radix
-> >> > guest and hence we won't see any breakage.
-> >> 
-> >> OK.
-> >> 
-> >> That's probably fine as it is then. Or maybe just a comment in
-> >> resize_hpt_for_hotplug() pointing out that resize_hpt will be NULL if
-> >> we're using radix.
+On Thu, Jul 23, 2020 at 9:27 PM Nathan Lynch <nathanl@linux.ibm.com> wrote:
+>
+> Pingfan Liu <kernelfans@gmail.com> writes:
+> > A bug is observed on pseries by taking the following steps on rhel:
+> > -1. drmgr -c mem -r -q 5
+> > -2. echo c > /proc/sysrq-trigger
 > >
-> > Or we could move these calls to hpt-only routines like below?
-> 
-> That looks like it would be equivalent, and would nicely isolate those
-> calls in hash specific code. So yeah I think that's worth sending as a
-> proper patch, even better if you can test it.
+> > And then, the failure looks like:
+> > kdump: saving to /sysroot//var/crash/127.0.0.1-2020-01-16-02:06:14/
+> > kdump: saving vmcore-dmesg.txt
+> > kdump: saving vmcore-dmesg.txt complete
+> > kdump: saving vmcore
+> >  Checking for memory holes                         : [  0.0 %] /       =
+            Checking for memory holes                         : [100.0 %] |=
+                   Excluding unnecessary pages                       : [100=
+.0 %] \                   Copying data                                     =
+ : [  0.3 %] -          eta: 38s[   44.337636] hash-mmu: mm: Hashing failur=
+e ! EA=3D0x7fffba400000 access=3D0x8000000000000004 current=3Dmakedumpfile
+> > [   44.337663] hash-mmu:     trap=3D0x300 vsid=3D0x13a109c ssize=3D1 ba=
+se psize=3D2 psize 2 pte=3D0xc000000050000504
+> > [   44.337677] hash-mmu: mm: Hashing failure ! EA=3D0x7fffba400000 acce=
+ss=3D0x8000000000000004 current=3Dmakedumpfile
+> > [   44.337692] hash-mmu:     trap=3D0x300 vsid=3D0x13a109c ssize=3D1 ba=
+se psize=3D2 psize 2 pte=3D0xc000000050000504
+> > [   44.337708] makedumpfile[469]: unhandled signal 7 at 00007fffba40000=
+0 nip 00007fffbbc4d7fc lr 000000011356ca3c code 2
+> > [   44.338548] Core dump to |/bin/false pipe failed
+> > /lib/kdump-lib-initramfs.sh: line 98:   469 Bus error               $CO=
+RE_COLLECTOR /proc/vmcore $_mp/$KDUMP_PATH/$HOST_IP-$DATEDIR/vmcore-incompl=
+ete
+> > kdump: saving vmcore failed
+> >
+> > * Root cause *
+> >   After analyzing, it turns out that in the current implementation,
+> > when hot-removing lmb, the KOBJ_REMOVE event ejects before the dt updat=
+ing as
+> > the code __remove_memory() comes before drmem_update_dt().
+> > So in kdump kernel, when read_from_oldmem() resorts to
+> > pSeries_lpar_hpte_insert() to install hpte, but fails with -2 due to
+> > non-exist pfn. And finally, low_hash_fault() raise SIGBUS to process, a=
+s it
+> > can be observed "Bus error"
+> >
+> > From a viewpoint of listener and publisher, the publisher notifies the
+> > listener before data is ready.  This introduces a problem where udev
+> > launches kexec-tools (due to KOBJ_REMOVE) and loads a stale dt before
+> > updating. And in capture kernel, makedumpfile will access the memory ba=
+sed
+> > on the stale dt info, and hit a SIGBUS error due to an un-existed lmb.
+> >
+> > * Fix *
+> >   In order to fix this issue, update dt before __remove_memory(), and
+> > accordingly the same rule in hot-add path.
+> >
+> > This will introduce extra dt updating payload for each involved lmb whe=
+n hotplug.
+> > But it should be fine since drmem_update_dt() is memory based operation=
+ and
+> > hotplug is not a hot path.
+>
+> This is great analysis but the performance implications of the change
+> are grave. The add/remove paths here are already O(n) where n is the
+> quantity of memory assigned to the LP, this change would make it O(n^2):
+>
+> dlpar_memory_add_by_count
+>   for_each_drmem_lmb             <--
+>     dlpar_add_lmb
+>       drmem_update_dt(_v1|_v2)
+>         for_each_drmem_lmb       <--
+>
+> Memory add/remove isn't a hot path but quadratic runtime complexity
+> isn't acceptable. Its current performance is bad enough that I have
+Yes, the quadratic runtime complexity sounds terrible.
+And I am curious about the bug. Does the system have thousands of lmb?
 
-Sure I will send it as a proper patch. I did test minimal hotplug/unplug
-for hash guest with that patch, will do more extensive test and resend.
+> internal bugs open on it.
+>
+> Not to mention we leak memory every time drmem_update_dt is called
+> because we can't safely free device tree properties :-(
+Do you know what block us to free it?
+>
+> Also note that this sort of reverts (fixes?) 063b8b1251fd
+> ("powerpc/pseries/memory-hotplug: Only update DT once per memory DLPAR
+> request").
+Yes. And now, I think I need to bring up another method to fix it.
 
-> 
-> > David - Do you remember if there was any particular reason to have
-> > these two hpt-resize calls within powerpc-generic memory hotplug code?
-> 
-> I think the HPT resizing was developed before or concurrently with the
-> radix support, so I would guess it was just not something we thought
-> about at the time.
-
-Right.
-
-Regards,
-Bharata.
+Thanks,
+Pingfan
