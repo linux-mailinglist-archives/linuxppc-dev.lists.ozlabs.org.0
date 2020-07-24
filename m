@@ -2,52 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EDF22C3AB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 12:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BBB22C3EE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 13:00:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCmDd6CLszF0c7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 20:49:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCmSP3Wx7zF0c5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 21:00:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCmBY31TlzF0TM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 20:48:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=cZVALkkN; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BCmBY1V52z9sSy;
- Fri, 24 Jul 2020 20:48:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595587685;
- bh=BiWI6Gx3zD+eYwA8dq9pKW2TfbxpbvO3yN7QDW+ASAM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=cZVALkkNQ4Giu7I3ZcRlW/chIhziAs4RDawx6epmZy3RBhiXAW8LuEX1qVhQ/HXKI
- Z02vbouIRYr+mPIogt2YHWvIFTiWNvfGanpJ1DdljxFBwQRGqZFXWrx4BBXEyVRZhI
- 1MQ6hfh8jmc/rPINiylTdUS15OJQo8TVcsUMoo0lqb7csbU3QdmtHMLyS9DWXksmAE
- XvyTW7lxQK+awJ4ynvQfRduSfPPTZ6zMEdBARkCWb8ygkxWtxSeyawaEMvgCOWnVAP
- D8g8OSRgjrg7gkkQI1VJSi6zPxC824ISTBcUvNivLoMXFq3Iv2szWODI6FIyYVmLsH
- oY3iGt76Sm1YQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Bill Wendling <morbo@google.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v 1/1] powerpc/64s: allow for clang's objdump differences
-In-Reply-To: <20200724001605.3718561-1-morbo@google.com>
-References: <20200724001605.3718561-1-morbo@google.com>
-Date: Fri, 24 Jul 2020 20:48:04 +1000
-Message-ID: <87sgdhp4t7.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCmQX58KhzDrgc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 20:58:28 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06OAWdfM025736; Fri, 24 Jul 2020 06:58:23 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32fhu028jc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jul 2020 06:58:23 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06OAYEF0030266;
+ Fri, 24 Jul 2020 06:58:22 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32fhu028hj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jul 2020 06:58:22 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06OAwK49024346;
+ Fri, 24 Jul 2020 10:58:20 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06fra.de.ibm.com with ESMTP id 32brbguvsr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jul 2020 10:58:20 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06OAwH3i56098976
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 Jul 2020 10:58:17 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 28576A4051;
+ Fri, 24 Jul 2020 10:58:17 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 608EDA4040;
+ Fri, 24 Jul 2020 10:58:15 +0000 (GMT)
+Received: from srikart450.in.ibm.com (unknown [9.199.57.112])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Jul 2020 10:58:15 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2] powerpc/numa: Limit possible nodes to within
+ num_possible_nodes
+Date: Fri, 24 Jul 2020 16:28:09 +0530
+Message-Id: <20200724105809.24733-1-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-24_03:2020-07-24,
+ 2020-07-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ impostorscore=0 mlxlogscore=999 spamscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007240080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,64 +87,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Bill,
+MAX_NUMNODES is a theoretical maximum number of nodes thats is supported
+by the kernel. Device tree properties exposes the number of possible
+nodes on the current platform. The kernel would detected this and would
+use it for most of its resource allocations.  If the platform now
+increases the nodes to over what was already exposed, then it may lead
+to inconsistencies. Hence limit it to the already exposed nodes.
 
-Bill Wendling <morbo@google.com> writes:
-> Clang's objdump emits slightly different output from GNU's objdump,
-> causing a list of warnings to be emitted during relocatable builds.
-> E.g., clang's objdump emits this:
->
->    c000000000000004: 2c 00 00 48  b  0xc000000000000030
->    ...
->    c000000000005c6c: 10 00 82 40  bf 2, 0xc000000000005c7c
->
-> while GNU objdump emits:
->
->    c000000000000004: 2c 00 00 48  b    c000000000000030 <__start+0x30>
->    ...
->    c000000000005c6c: 10 00 82 40  bne  c000000000005c7c <masked_interrupt+0x3c>
->
-> Adjust llvm-objdump's output to remove the extraneous '0x' and convert
-> 'bf' and 'bt' to 'bne' and 'beq' resp. to more closely match GNU
-> objdump's output.
->
-> Note that clang's objdump doesn't yet output the relocation symbols on
-> PPC.
->
-> Signed-off-by: Bill Wendling <morbo@google.com>
-> ---
->  arch/powerpc/tools/unrel_branch_check.sh | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/powerpc/tools/unrel_branch_check.sh b/arch/powerpc/tools/unrel_branch_check.sh
-> index 77114755dc6f..71ce86b68d18 100755
-> --- a/arch/powerpc/tools/unrel_branch_check.sh
-> +++ b/arch/powerpc/tools/unrel_branch_check.sh
-> @@ -31,6 +31,9 @@ grep -e "^c[0-9a-f]*:[[:space:]]*\([0-9a-f][0-9a-f][[:space:]]\)\{4\}[[:space:]]
->  grep -v '\<__start_initialization_multiplatform>' |
->  grep -v -e 'b.\?.\?ctr' |
->  grep -v -e 'b.\?.\?lr' |
-> +sed 's/\bbt.\?[[:space:]]*[[:digit:]][[:digit:]]*,/beq/' |
-> +sed 's/\bbf.\?[[:space:]]*[[:digit:]][[:digit:]]*,/bne/' |
-> +sed 's/[[:space:]]0x/ /' |
->  sed 's/://' |
+Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Anton Blanchard <anton@ozlabs.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-I know you followed the example in the script of just doing everything
-as a separate entry in the pipeline, but I think we could consolidate
-all the seds into one?
+Changelog v1 -> v2:
+v1: https://lore.kernel.org/linuxppc-dev/20200715120534.3673-1-srikar@linux.vnet.ibm.com/t/#u
+	Use nr_node_ids instead of num_possible_nodes() When nodes are
+	sparse like in PowerNV, nr_node_ids gets the right value unlike
+	num_possible_nodes()
 
-eg:
+Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+---
+ arch/powerpc/mm/numa.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-sed -e 's/\bbt.\?[[:space:]]*[[:digit:]][[:digit:]]*,/beq/' \
-    -e 's/\bbf.\?[[:space:]]*[[:digit:]][[:digit:]]*,/bne/' \
-    -e 's/[[:space:]]0x/ /' \
-    -e 's/://' |
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index e437a9ac4956..383359272270 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -221,7 +221,7 @@ static void initialize_distance_lookup_table(int nid,
+ 	}
+ }
+ 
+-/* Returns nid in the range [0..MAX_NUMNODES-1], or -1 if no useful numa
++/* Returns nid in the range [0..nr_node_ids], or -1 if no useful numa
+  * info is found.
+  */
+ static int associativity_to_nid(const __be32 *associativity)
+@@ -235,7 +235,7 @@ static int associativity_to_nid(const __be32 *associativity)
+ 		nid = of_read_number(&associativity[min_common_depth], 1);
+ 
+ 	/* POWER4 LPAR uses 0xffff as invalid node */
+-	if (nid == 0xffff || nid >= MAX_NUMNODES)
++	if (nid == 0xffff || nid >= nr_node_ids)
+ 		nid = NUMA_NO_NODE;
+ 
+ 	if (nid > 0 &&
+@@ -448,7 +448,7 @@ static int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+ 		index = lmb->aa_index * aa.array_sz + min_common_depth - 1;
+ 		nid = of_read_number(&aa.arrays[index], 1);
+ 
+-		if (nid == 0xffff || nid >= MAX_NUMNODES)
++		if (nid == 0xffff || nid >= nr_node_ids)
+ 			nid = default_nid;
+ 
+ 		if (nid > 0) {
+-- 
+2.17.1
 
-Does that work?
-
-cheers
