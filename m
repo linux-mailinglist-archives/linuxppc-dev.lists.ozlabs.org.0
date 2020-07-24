@@ -2,79 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BBB22C3EE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 13:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FB222C402
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 13:04:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCmSP3Wx7zF0c5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 21:00:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCmYG3v3WzDrTC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 21:04:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCmQX58KhzDrgc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 20:58:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCmW22dq6zDqHJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 21:02:22 +1000 (AEST)
 Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06OAWdfM025736; Fri, 24 Jul 2020 06:58:23 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32fhu028jc-1
+ 06OAWe9M025926; Fri, 24 Jul 2020 07:02:17 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32fhu02cp3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 06:58:23 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06OAYEF0030266;
- Fri, 24 Jul 2020 06:58:22 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32fhu028hj-1
+ Fri, 24 Jul 2020 07:02:17 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06OB08dR022597;
+ Fri, 24 Jul 2020 11:02:15 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma02fra.de.ibm.com with ESMTP id 32brq7x5wq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 06:58:22 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06OAwK49024346;
- Fri, 24 Jul 2020 10:58:20 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06fra.de.ibm.com with ESMTP id 32brbguvsr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 10:58:20 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06OAwH3i56098976
+ Fri, 24 Jul 2020 11:02:14 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06OB2C1540763422
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Jul 2020 10:58:17 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 28576A4051;
- Fri, 24 Jul 2020 10:58:17 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 608EDA4040;
- Fri, 24 Jul 2020 10:58:15 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.199.57.112])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 24 Jul 2020 10:58:15 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/numa: Limit possible nodes to within
- num_possible_nodes
-Date: Fri, 24 Jul 2020 16:28:09 +0530
-Message-Id: <20200724105809.24733-1-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.17.1
+ Fri, 24 Jul 2020 11:02:12 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DADF211C04C;
+ Fri, 24 Jul 2020 11:02:11 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7031811C054;
+ Fri, 24 Jul 2020 11:02:09 +0000 (GMT)
+Received: from [9.199.32.41] (unknown [9.199.32.41])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Jul 2020 11:02:09 +0000 (GMT)
+Subject: Re: [v3 13/15] tools/perf: Add perf tools support for extended
+ register capability in powerpc
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+References: <1594996707-3727-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <1594996707-3727-14-git-send-email-atrajeev@linux.vnet.ibm.com>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Message-ID: <7fcf405f-440a-19dc-7c3a-33fc52c9d1ef@linux.ibm.com>
+Date: Fri, 24 Jul 2020 16:32:08 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <1594996707-3727-14-git-send-email-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-24_03:2020-07-24,
  2020-07-24 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  bulkscore=0 mlxscore=0
- impostorscore=0 mlxlogscore=999 spamscore=0 suspectscore=0 malwarescore=0
+ impostorscore=0 mlxlogscore=811 spamscore=0 suspectscore=0 malwarescore=0
  priorityscore=1501 adultscore=0 lowpriorityscore=0 phishscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007240080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,72 +88,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
+ kvm@vger.kernel.org, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ kvm-ppc@vger.kernel.org, svaidyan@in.ibm.com, acme@kernel.org,
+ jolsa@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-MAX_NUMNODES is a theoretical maximum number of nodes thats is supported
-by the kernel. Device tree properties exposes the number of possible
-nodes on the current platform. The kernel would detected this and would
-use it for most of its resource allocations.  If the platform now
-increases the nodes to over what was already exposed, then it may lead
-to inconsistencies. Hence limit it to the already exposed nodes.
+Hi Athira,
 
-Suggested-by: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Anton Blanchard <anton@ozlabs.org>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+On 7/17/20 8:08 PM, Athira Rajeev wrote:
+> From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
+> 
+> Add extended regs to sample_reg_mask in the tool side to use
+> with `-I?` option. Perf tools side uses extended mask to display
+> the platform supported register names (with -I? option) to the user
+> and also send this mask to the kernel to capture the extended registers
+> in each sample. Hence decide the mask value based on the processor
+> version.
+> 
+> Currently definitions for `mfspr`, `SPRN_PVR` are part of
+> `arch/powerpc/util/header.c`. Move this to a header file so that
+> these definitions can be re-used in other source files as well.
 
-Changelog v1 -> v2:
-v1: https://lore.kernel.org/linuxppc-dev/20200715120534.3673-1-srikar@linux.vnet.ibm.com/t/#u
-	Use nr_node_ids instead of num_possible_nodes() When nodes are
-	sparse like in PowerNV, nr_node_ids gets the right value unlike
-	num_possible_nodes()
+It seems this patch has a regression.
 
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
----
- arch/powerpc/mm/numa.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Without this patch:
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index e437a9ac4956..383359272270 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -221,7 +221,7 @@ static void initialize_distance_lookup_table(int nid,
- 	}
- }
- 
--/* Returns nid in the range [0..MAX_NUMNODES-1], or -1 if no useful numa
-+/* Returns nid in the range [0..nr_node_ids], or -1 if no useful numa
-  * info is found.
-  */
- static int associativity_to_nid(const __be32 *associativity)
-@@ -235,7 +235,7 @@ static int associativity_to_nid(const __be32 *associativity)
- 		nid = of_read_number(&associativity[min_common_depth], 1);
- 
- 	/* POWER4 LPAR uses 0xffff as invalid node */
--	if (nid == 0xffff || nid >= MAX_NUMNODES)
-+	if (nid == 0xffff || nid >= nr_node_ids)
- 		nid = NUMA_NO_NODE;
- 
- 	if (nid > 0 &&
-@@ -448,7 +448,7 @@ static int of_drconf_to_nid_single(struct drmem_lmb *lmb)
- 		index = lmb->aa_index * aa.array_sz + min_common_depth - 1;
- 		nid = of_read_number(&aa.arrays[index], 1);
- 
--		if (nid == 0xffff || nid >= MAX_NUMNODES)
-+		if (nid == 0xffff || nid >= nr_node_ids)
- 			nid = default_nid;
- 
- 		if (nid > 0) {
--- 
-2.17.1
+   $ sudo ./perf record -I
+   ^C[ perf record: Woken up 1 times to write data ]
+   [ perf record: Captured and wrote 0.458 MB perf.data (318 samples) ]
 
+With this patch:
+
+   $ sudo ./perf record -I
+   Error:
+   dummy:HG: PMU Hardware doesn't support sampling/overflow-interrupts. Try 'perf stat'
+
+Ravi
