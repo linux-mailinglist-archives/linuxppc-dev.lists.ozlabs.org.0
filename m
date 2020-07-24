@@ -2,45 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C5622C74B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 16:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A41C22C759
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 16:09:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCrbY2l2rzDscG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 00:06:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCrfP0jNZzDr7P
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 00:09:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCqWF4ymlzF0fg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 23:17:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCqWH2H7DzF0ZM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 23:17:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=BnoCTKiY; 
+ header.a=rsa-sha256 header.s=201909 header.b=im19rQU+; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 4BCqWF2DYqz9sSy; Fri, 24 Jul 2020 23:17:45 +1000 (AEST)
+ id 4BCqWG0Sk3z9sSt; Fri, 24 Jul 2020 23:17:46 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BCqWF0YDCz9sTC; Fri, 24 Jul 2020 23:17:44 +1000 (AEST)
+ id 4BCqWF5jgMz9sTF; Fri, 24 Jul 2020 23:17:45 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
  s=201909; t=1595596665;
- bh=ZLSqpP8+akdOjm2BlY9de1c5AlCdXx2OjouxYzt5/u8=;
+ bh=pHFT9O/+8lqHstChao9yHTOO75nLWxLdyVzlMhXDaU0=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=BnoCTKiYEuYx2ZRFzMzysPDppEK9/b8xV+RornqfmrcXt12I/PH2GZRwhOCfbnKWT
- OtW3R5acxDo9gvO46wIFc6wJVAdMalLO5G2EtFFfKmYa98nbmwOlhl0BS3jG023rkV
- thEUNFCUVm7zthzYE4XLD2sgfnRrqQeKsFKhKImCkZkQ+2n/I5XDPb6cr7Ld1shH5F
- /RKR1czZ2bzWPM2J1Vdxt0rd6IOcOgBk1E/zDDyyRHRjlrazb00MEw56vmdUUi2CXX
- Yab4Gil6Xmufhv24dNMyypQjV6eAP3HwBlYaNYQExvwLMzz5yfPawQcdHzuZuLBZMY
- lTkLBy+Ir0Fgg==
+ b=im19rQU+s7NoKaAQS7iBfE0MvnDdJ4HYspaZX5wz3nWX3FxkhwCguFS5EKaEFltHp
+ WIBSpUocmulQ6XSpRw2o/7Z+TcyLUlZs407DuUsBl/6ouVYNLOqAMSO6097nD4wv9g
+ 1+jUt3kIEVjNkWfMhSsRIncVhNY0OFiZ0ht4PTJUUaSisoKKKne07aT8OkJ8GvGEXd
+ KUYZCgL4ddwfURt9224eXL8CXsCetds4QqHKiSqgngv84r9Q7rAbGeIkgc15RtNvBu
+ Wwqkd7pI1SIZp2Kb5XxwglbRpxeP/1ZC5kpWXItd3EoroOxQkiCV7YFhlHR2LxsHF2
+ j2Y+yFsLBdhYA==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 8/9] powerpc/kvm: Use correct CONFIG symbol in comment
-Date: Fri, 24 Jul 2020 23:17:27 +1000
-Message-Id: <20200724131728.1643966-8-mpe@ellerman.id.au>
+Subject: [PATCH 9/9] powerpc: Drop old comment about CONFIG_POWER
+Date: Fri, 24 Jul 2020 23:17:28 +1000
+Message-Id: <20200724131728.1643966-9-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200724131728.1643966-1-mpe@ellerman.id.au>
 References: <20200724131728.1643966-1-mpe@ellerman.id.au>
@@ -61,29 +61,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This comment refers to the non-existent CONFIG_PPC_BOOK3S_XX, which
-confuses scripts/checkkconfigsymbols.py.
+There's a comment in time.h referring to CONFIG_POWER, which doesn't
+exist. That confuses scripts/checkkconfigsymbols.py.
 
-Change it to use the correct symbol.
+Presumably the comment was referring to a CONFIG_POWER vs CONFIG_PPC,
+in which case for CONFIG_POWER we would #define __USE_RTC to 1. But
+instead we have CONFIG_PPC_BOOK3S_601, and these days we have
+IS_ENABLED().
+
+So the comment is no longer relevant, drop it.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kvm/book3s_interrupts.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/time.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_interrupts.S b/arch/powerpc/kvm/book3s_interrupts.S
-index f7ad99d972ce..607a9b99c334 100644
---- a/arch/powerpc/kvm/book3s_interrupts.S
-+++ b/arch/powerpc/kvm/book3s_interrupts.S
-@@ -26,7 +26,7 @@
- #define FUNC(name)		name
- #define GET_SHADOW_VCPU(reg)	lwz     reg, (THREAD + THREAD_KVM_SVCPU)(r2)
+diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
+index b287cfc2dd85..cb326720a8a1 100644
+--- a/arch/powerpc/include/asm/time.h
++++ b/arch/powerpc/include/asm/time.h
+@@ -39,7 +39,6 @@ struct div_result {
+ };
  
--#endif /* CONFIG_PPC_BOOK3S_XX */
-+#endif /* CONFIG_PPC_BOOK3S_64 */
+ /* Accessor functions for the timebase (RTC on 601) registers. */
+-/* If one day CONFIG_POWER is added just define __USE_RTC as 1 */
+ #define __USE_RTC()	(IS_ENABLED(CONFIG_PPC_BOOK3S_601))
  
- #define VCPU_LOAD_NVGPRS(vcpu) \
- 	PPC_LL	r14, VCPU_GPR(R14)(vcpu); \
+ #ifdef CONFIG_PPC64
 -- 
 2.25.1
 
