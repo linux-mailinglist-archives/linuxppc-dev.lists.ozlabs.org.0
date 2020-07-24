@@ -2,50 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A41C22C759
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 16:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E7822C79E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 16:14:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCrfP0jNZzDr7P
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 00:09:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCrmw2bFgzDrFl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 00:14:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCqWH2H7DzF0ZM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 23:17:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCqgC1ZffzDqMl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 23:24:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=im19rQU+; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BCqWG0Sk3z9sSt; Fri, 24 Jul 2020 23:17:46 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BCqWF5jgMz9sTF; Fri, 24 Jul 2020 23:17:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595596665;
- bh=pHFT9O/+8lqHstChao9yHTOO75nLWxLdyVzlMhXDaU0=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=im19rQU+s7NoKaAQS7iBfE0MvnDdJ4HYspaZX5wz3nWX3FxkhwCguFS5EKaEFltHp
- WIBSpUocmulQ6XSpRw2o/7Z+TcyLUlZs407DuUsBl/6ouVYNLOqAMSO6097nD4wv9g
- 1+jUt3kIEVjNkWfMhSsRIncVhNY0OFiZ0ht4PTJUUaSisoKKKne07aT8OkJ8GvGEXd
- KUYZCgL4ddwfURt9224eXL8CXsCetds4QqHKiSqgngv84r9Q7rAbGeIkgc15RtNvBu
- Wwqkd7pI1SIZp2Kb5XxwglbRpxeP/1ZC5kpWXItd3EoroOxQkiCV7YFhlHR2LxsHF2
- j2Y+yFsLBdhYA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 9/9] powerpc: Drop old comment about CONFIG_POWER
-Date: Fri, 24 Jul 2020 23:17:28 +1000
-Message-Id: <20200724131728.1643966-9-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200724131728.1643966-1-mpe@ellerman.id.au>
-References: <20200724131728.1643966-1-mpe@ellerman.id.au>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ id 4BCqgB1cwsz9sTC; Fri, 24 Jul 2020 23:24:38 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au
+In-Reply-To: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
+References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
+Message-Id: <159559695973.1657499.17782985054188665494.b4-ty@ellerman.id.au>
+Date: Fri, 24 Jul 2020 23:24:38 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,37 +38,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There's a comment in time.h referring to CONFIG_POWER, which doesn't
-exist. That confuses scripts/checkkconfigsymbols.py.
+On Thu, 9 Jul 2020 18:49:21 +0530, Aneesh Kumar K.V wrote:
+> This is the next version of the fixes for memory unplug on radix.
+> The issues and the fix are described in the actual patches.
+> 
+> Changes from v2:
+> - Address review feedback
+> 
+> Changes from v1:
+> - Added back patch to drop split_kernel_mapping
+> - Most of the split_kernel_mapping related issues are now described
+>   in the removal patch
+> - drop pte fragment change
+> - use lmb size as the max mapping size.
+> - Radix baremetal now use memory block size of 1G.
+> 
+> [...]
 
-Presumably the comment was referring to a CONFIG_POWER vs CONFIG_PPC,
-in which case for CONFIG_POWER we would #define __USE_RTC to 1. But
-instead we have CONFIG_PPC_BOOK3S_601, and these days we have
-IS_ENABLED().
+Applied to powerpc/next.
 
-So the comment is no longer relevant, drop it.
+[1/4] powerpc/mm/radix: Fix PTE/PMD fragment count for early page table mappings
+      https://git.kernel.org/powerpc/c/645d5ce2f7d6cb4dcf6a4e087fb550e238d24283
+[2/4] powerpc/mm/radix: Free PUD table when freeing pagetable
+      https://git.kernel.org/powerpc/c/9ce8853b4a735c8115f55ac0e9c2b27a4c8f80b5
+[3/4] powerpc/mm/radix: Remove split_kernel_mapping()
+      https://git.kernel.org/powerpc/c/d6d6ebfc5dbb4008be21baa4ec2ad45606578966
+[4/4] powerpc/mm/radix: Create separate mappings for hot-plugged memory
+      https://git.kernel.org/powerpc/c/af9d00e93a4f062c5f160325d7b8f33336f6744e
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/time.h | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-index b287cfc2dd85..cb326720a8a1 100644
---- a/arch/powerpc/include/asm/time.h
-+++ b/arch/powerpc/include/asm/time.h
-@@ -39,7 +39,6 @@ struct div_result {
- };
- 
- /* Accessor functions for the timebase (RTC on 601) registers. */
--/* If one day CONFIG_POWER is added just define __USE_RTC as 1 */
- #define __USE_RTC()	(IS_ENABLED(CONFIG_PPC_BOOK3S_601))
- 
- #ifdef CONFIG_PPC64
--- 
-2.25.1
-
+cheers
