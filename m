@@ -2,55 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0073122C38F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 12:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92EDF22C3AB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 12:49:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCm9f2cT2zF0Vk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 20:47:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCmDd6CLszF0c7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 20:49:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCm7p3c2HzDsTQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 20:45:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCmBY31TlzF0TM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 20:48:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=fP1j0ehP; 
+ header.a=rsa-sha256 header.s=201909 header.b=cZVALkkN; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BCm7n16n3z9sTC;
- Fri, 24 Jul 2020 20:45:39 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BCmBY1V52z9sSy;
+ Fri, 24 Jul 2020 20:48:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595587542;
- bh=cSDDxsKk+jO/k2dwm07zEZ08Z7nlQ2PpJurgiwDzTaM=;
+ s=201909; t=1595587685;
+ bh=BiWI6Gx3zD+eYwA8dq9pKW2TfbxpbvO3yN7QDW+ASAM=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=fP1j0ehPwKKTZ5HN/V0OdYjpbK4V2kPCZefecMyzQANJTB+hA79mDYk5par/rDHUq
- Uo8NyAmqgFc99Y5JkaTKoiZ4on8iQgaDptXG4ojX681JnFFx5ClWMsBZ4vupz40B69
- +8/tKqAELW35pogsBvMORx7uUofX7MO6iq8YxIoa8iwdp1wA9kNZzLO0qXPnNOmpMq
- zrcbClSoYBFPUsnLy9w5Tl/R+A9Ftqp96MzWgWuuZZze/t2duS8KRSA3Trf9pFud7E
- ALyi6wNdEHqBgLKfonJnWr1RXCiadKIw3ArysUsWlxIX4OqrM8IGusO2A+vV8uo5p9
- JjpH7lGkuD+Ow==
+ b=cZVALkkNQ4Giu7I3ZcRlW/chIhziAs4RDawx6epmZy3RBhiXAW8LuEX1qVhQ/HXKI
+ Z02vbouIRYr+mPIogt2YHWvIFTiWNvfGanpJ1DdljxFBwQRGqZFXWrx4BBXEyVRZhI
+ 1MQ6hfh8jmc/rPINiylTdUS15OJQo8TVcsUMoo0lqb7csbU3QdmtHMLyS9DWXksmAE
+ XvyTW7lxQK+awJ4ynvQfRduSfPPTZ6zMEdBARkCWb8ygkxWtxSeyawaEMvgCOWnVAP
+ D8g8OSRgjrg7gkkQI1VJSi6zPxC824ISTBcUvNivLoMXFq3Iv2szWODI6FIyYVmLsH
+ oY3iGt76Sm1YQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 2/2] powerpc/64s: system call support for scv/rfscv
- instructions
-In-Reply-To: <20200723184814.Horde.pk5BO9iFqyGX5D4TW5wqmg1@messagerie.si.c-s.fr>
-References: <20200611081203.995112-1-npiggin@gmail.com>
- <20200611081203.995112-3-npiggin@gmail.com>
- <871rl2ralk.fsf@mpe.ellerman.id.au>
- <20200723184814.Horde.pk5BO9iFqyGX5D4TW5wqmg1@messagerie.si.c-s.fr>
-Date: Fri, 24 Jul 2020 20:45:36 +1000
-Message-ID: <87v9idp4xb.fsf@mpe.ellerman.id.au>
+To: Bill Wendling <morbo@google.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v 1/1] powerpc/64s: allow for clang's objdump differences
+In-Reply-To: <20200724001605.3718561-1-morbo@google.com>
+References: <20200724001605.3718561-1-morbo@google.com>
+Date: Fri, 24 Jul 2020 20:48:04 +1000
+Message-ID: <87sgdhp4t7.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,68 +59,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-api@vger.kernel.org, musl@lists.openwall.com,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- libc-dev@lists.llvm.org
+Cc: linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Michael Ellerman <mpe@ellerman.id.au> a =C3=A9crit=C2=A0:
+Hi Bill,
+
+Bill Wendling <morbo@google.com> writes:
+> Clang's objdump emits slightly different output from GNU's objdump,
+> causing a list of warnings to be emitted during relocatable builds.
+> E.g., clang's objdump emits this:
 >
->> Nicholas Piggin <npiggin@gmail.com> writes:
->>> diff --git a/arch/powerpc/include/asm/ppc-opcode.h=20=20
->>> b/arch/powerpc/include/asm/ppc-opcode.h
->>> index 2a39c716c343..b2bdc4de1292 100644
->>> --- a/arch/powerpc/include/asm/ppc-opcode.h
->>> +++ b/arch/powerpc/include/asm/ppc-opcode.h
->>> @@ -257,6 +257,7 @@
->>>  #define PPC_INST_MFVSRD			0x7c000066
->>>  #define PPC_INST_MTVSRD			0x7c000166
->>>  #define PPC_INST_SC			0x44000002
->>> +#define PPC_INST_SCV			0x44000001
->> ...
->>> @@ -411,6 +412,7 @@
->> ...
->>> +#define __PPC_LEV(l)	(((l) & 0x7f) << 5)
->>
->> These conflicted and didn't seem to be used so I dropped them.
->>
->>> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
->>> index 5abe98216dc2..161bfccbc309 100644
->>> --- a/arch/powerpc/lib/sstep.c
->>> +++ b/arch/powerpc/lib/sstep.c
->>> @@ -3378,6 +3382,16 @@ int emulate_step(struct pt_regs *regs,=20=20
->>> struct ppc_inst instr)
->>>  		regs->msr =3D MSR_KERNEL;
->>>  		return 1;
->>>
->>> +	case SYSCALL_VECTORED_0:	/* scv 0 */
->>> +		regs->gpr[9] =3D regs->gpr[13];
->>> +		regs->gpr[10] =3D MSR_KERNEL;
->>> +		regs->gpr[11] =3D regs->nip + 4;
->>> +		regs->gpr[12] =3D regs->msr & MSR_MASK;
->>> +		regs->gpr[13] =3D (unsigned long) get_paca();
->>> +		regs->nip =3D (unsigned long) &system_call_vectored_emulate;
->>> +		regs->msr =3D MSR_KERNEL;
->>> +		return 1;
->>> +
->>
->> This broke the ppc64e build:
->>
->>   ld: arch/powerpc/lib/sstep.o:(.toc+0x0): undefined reference to=20=20
->> `system_call_vectored_emulate'
->>   make[1]: *** [/home/michael/linux/Makefile:1139: vmlinux] Error 1
->>
->> I wrapped it in #ifdef CONFIG_PPC64_BOOK3S.
+>    c000000000000004: 2c 00 00 48  b  0xc000000000000030
+>    ...
+>    c000000000005c6c: 10 00 82 40  bf 2, 0xc000000000005c7c
 >
-> You mean CONFIG_PPC_BOOK3S_64 ?
+> while GNU objdump emits:
+>
+>    c000000000000004: 2c 00 00 48  b    c000000000000030 <__start+0x30>
+>    ...
+>    c000000000005c6c: 10 00 82 40  bne  c000000000005c7c <masked_interrupt+0x3c>
+>
+> Adjust llvm-objdump's output to remove the extraneous '0x' and convert
+> 'bf' and 'bt' to 'bne' and 'beq' resp. to more closely match GNU
+> objdump's output.
+>
+> Note that clang's objdump doesn't yet output the relocation symbols on
+> PPC.
+>
+> Signed-off-by: Bill Wendling <morbo@google.com>
+> ---
+>  arch/powerpc/tools/unrel_branch_check.sh | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/powerpc/tools/unrel_branch_check.sh b/arch/powerpc/tools/unrel_branch_check.sh
+> index 77114755dc6f..71ce86b68d18 100755
+> --- a/arch/powerpc/tools/unrel_branch_check.sh
+> +++ b/arch/powerpc/tools/unrel_branch_check.sh
+> @@ -31,6 +31,9 @@ grep -e "^c[0-9a-f]*:[[:space:]]*\([0-9a-f][0-9a-f][[:space:]]\)\{4\}[[:space:]]
+>  grep -v '\<__start_initialization_multiplatform>' |
+>  grep -v -e 'b.\?.\?ctr' |
+>  grep -v -e 'b.\?.\?lr' |
+> +sed 's/\bbt.\?[[:space:]]*[[:digit:]][[:digit:]]*,/beq/' |
+> +sed 's/\bbf.\?[[:space:]]*[[:digit:]][[:digit:]]*,/bne/' |
+> +sed 's/[[:space:]]0x/ /' |
+>  sed 's/://' |
 
-I hope so ...
+I know you followed the example in the script of just doing everything
+as a separate entry in the pipeline, but I think we could consolidate
+all the seds into one?
 
-#### ## ####.
+eg:
 
-Will send a fixup. Thanks for noticing.
+sed -e 's/\bbt.\?[[:space:]]*[[:digit:]][[:digit:]]*,/beq/' \
+    -e 's/\bbf.\?[[:space:]]*[[:digit:]][[:digit:]]*,/bne/' \
+    -e 's/[[:space:]]0x/ /' \
+    -e 's/://' |
+
+Does that work?
 
 cheers
