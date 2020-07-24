@@ -1,71 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE46E22BD48
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 07:03:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9159122BD56
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 07:07:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCcXt0d3QzDrgL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 15:03:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCcdS2XJzzDsF0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 15:07:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=gyTjae71; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20150623 header.b=y1BOrMgh; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCcW44vg8zDrfv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 15:01:52 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id t15so4586292pjq.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 22:01:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCcZy2VBGzDrMC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 15:05:14 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id w126so4277824pfw.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jul 2020 22:05:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=/tn+I80uR9WBLsfIeKOlq68EWgSRdzJ9G/U/7F6B/6c=;
- b=gyTjae71ufGGgzXE9AibPG2siV53fkjpvJb//AIDLYcGefNZC2lEfQgDTr+WbWXjlI
- i/am0OdHipJjBFYd9HzHKxARFzFK3Kd/GWfBpp4QydwesS1ppRLlblFFmr6wXZdJu/9n
- LZq5500KTxy6qrM2BIZkjKnbGvQvclLQNY6d0Pyx/Qqj9IntnGuhDpQks5QBLpR9Y4hv
- XVDHi8Jph18aMoie0v9MlFkqyu/WUtp1m4W6C2tWAk3VaQtF/q9Lu+zeyFZ5kag2PztA
- 8bJbdHYWp2ad3jEzOV/gMJFyoWNJsoETvBkDHoBGq9rKMtEJVb7QVTdfILLgiAvEI7ZE
- ecrQ==
+ bh=wEaxYPVCVk+WUZLEJJ65xMFYfi8Ku0JTFdWaXxaPyVU=;
+ b=y1BOrMgh3TzdNtt4RhxGwCMJaXWdcDo4Gb3pKYG+uAY0PInK11WHCDzsbqOS1FFkT6
+ KoJMDi2joUjHLJvE5R4t0joieinU1HxcKw+dfXsG+uWMcVd2vfNeCHfinovOIABoDRD/
+ ptfqlE8IM5Z/QMhJz1lA0//01gQU66saCGz5I1PLO8GEhLZn+nUtkBBRxX/DcVLZx1c6
+ 7xYiuDPW7V9VDww3EyUdLRYcPdnkoVnaSl5oJiMhkb+95G2Zg3WgJ7/GxRl0PefqCShY
+ 2M/4RoIIE6y43h54fq4W+Cj3hxpXSG1EcLLLWhblbU5nx3YlF5Qy8rjKBD3LpVJ8xKHn
+ EfwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
  :date:user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=/tn+I80uR9WBLsfIeKOlq68EWgSRdzJ9G/U/7F6B/6c=;
- b=cQ/kzw6xHa/yrkYZo9/wPo9J3qBkrt150o7VgC9IHsJrOLZ/RAZ1trK4IKTbNdXBBG
- W+LrohgqUL38NJfQW9B/TWTrNc8U9BrRA90AIabxgFvDa5RMVoV8gEZIoBPDzseH99MM
- A/bIrlTd6WUUy86PJn++ihBISEoamlOa2JwxrivQBHVJBfQHG1t2DhINtAfzQbLYB27W
- bgwK2tsyzvt5WSyJffDINfCevOoR/P9nNefpqAeZDXy+pDdCVefLJW1LAqKCF+EV3kgV
- 7C7u/+KKfcrEnPkFdwAK93UEJHE3OKp1oVPH6/7QOjtHqN2bMAIlqSwmQVs0OgYIFRZ3
- lzfA==
-X-Gm-Message-State: AOAM532dS8+iBgWokZWYVKDbgdUH/OvSQ9DKVs20wJ4ThkmyAzmvfjkI
- RdJ6fXu003RcFvUUjGHMo3dhMzYVKiMCWA==
-X-Google-Smtp-Source: ABdhPJyRj8UOhNtG5CM83ROFekIGrCky2gGHgmmUDTpoWsLZA8HbK9YCFOJPSehiewg1KRNo43FAwQ==
-X-Received: by 2002:a17:90b:247:: with SMTP id
- fz7mr3634185pjb.17.1595566910165; 
- Thu, 23 Jul 2020 22:01:50 -0700 (PDT)
+ bh=wEaxYPVCVk+WUZLEJJ65xMFYfi8Ku0JTFdWaXxaPyVU=;
+ b=DoG/ja077jWH0LUwC8N2WDN3CzW8dwVNioAD+vxGUgXObCFJFxzb1y/UnQcZxHlpri
+ h0mBeZzCCCju8SjoboYPr66UdJ5Np4BH9Wk/PQKIPv8UnAl57Teq6iwY8UXglPn6rqho
+ 7DYNqAGhZjp4L368ShOFZZxgwA51ZHBaGKKN+hefXX5IskeWY//6YRt6oOiNNSxocGLx
+ PrUV2p8LWqFyTf6QVJSlb90NffOK4T9g1PjkDrKspPY3cOPgkHiXZbFOTE8zcDICSmJl
+ Uexs3x/TWPoSSLzxsq/2vf+C3OwyXN+f9daGE2Pw/WdxCt8itrHN+B6Ic9p9jDL38uwv
+ Zv3A==
+X-Gm-Message-State: AOAM532KWjwlJQp/Hf0iHP0KQ2w1xS/+1IV6qn96SqShQbvPvrCekFjy
+ vUo7wCw7CnTpMRFIYO7hsOzzGvryXFG3gg==
+X-Google-Smtp-Source: ABdhPJxr4HVZcmmqT0zoxgZfHsc3X0aNOoy+miTsopLzZFQJRoJXMe/wQ22PifBCYyLdQzRgOAfBiA==
+X-Received: by 2002:a63:3c16:: with SMTP id j22mr7361795pga.335.1595567110333; 
+ Thu, 23 Jul 2020 22:05:10 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id gc23sm4265926pjb.15.2020.07.23.22.01.47
+ by smtp.gmail.com with ESMTPSA id az13sm4245347pjb.34.2020.07.23.22.05.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 Jul 2020 22:01:49 -0700 (PDT)
-Subject: Re: [PATCH v2 14/14] powerpc/eeh: Move PE tree setup into the platform
+ Thu, 23 Jul 2020 22:05:09 -0700 (PDT)
+Subject: Re: [PATCH v2 01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200722042628.1425880-1-oohall@gmail.com>
- <20200722042628.1425880-14-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +138,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <983435c2-0e6b-ded7-d28d-e6728c0a001e@ozlabs.ru>
-Date: Fri, 24 Jul 2020 15:01:46 +1000
+Message-ID: <cd81ba06-eaf2-eea7-5e7e-d39a6bed0d11@ozlabs.ru>
+Date: Fri, 24 Jul 2020 15:05:06 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200722042628.1425880-14-oohall@gmail.com>
+In-Reply-To: <20200722042628.1425880-1-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -167,37 +165,116 @@ Sender: "Linuxppc-dev"
 
 
 On 22/07/2020 14:26, Oliver O'Halloran wrote:
-> The EEH core has a concept of a "PE tree" to support PowerNV. The PE tree
-> follows the PCI bus structures because a reset asserted on an upstream
-> bridge will be propagated to the downstream bridges. On pseries there's a
-> 1-1 correspondence between what the guest sees are a PHB and a PE so the
-> "tree" is really just a single node.
-> 
-> Current the EEH core is reponsible for setting up this PE tree which it
-> does by traversing the pci_dn tree. The structure of the pci_dn tree
-> matches the bus tree on PowerNV which leads to the PE tree being "correct"
-> this setup method doesn't make a whole lot of sense and it's actively
-> confusing for the pseries case where it doesn't really do anything.
-> 
-> We want to remove the dependence on pci_dn anyway so this patch move
-> choosing where to insert a new PE into the platform code rather than
-> being part of the generic EEH code. For PowerNV this simplifies the
-> tree building logic and removes the use of pci_dn. For pseries we
-> keep the existing logic. I'm not really convinced it does anything
-> due to the 1-1 PE-to-PHB correspondence so every device under that
-> PHB should be in the same PE, but I'd rather not remove it entirely
-> until we've had a chance to look at it more deeply.
+> This function is a one line wrapper around eeh_phb_pe_create() and despite
+> the name it doesn't create any eeh_dev structures.
+
+The "eeh_dev_phb_init_dynamic" name does not suggest anything really but
+the comment does.
+
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
+
+> Replace it with direct
+> calls to eeh_phb_pe_create() since that does what it says on the tin
+> and removes a layer of indirection.
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 > ---
-> v2: Reworked pseries PE setup slightly. NOT DONE YET. mostly done needs test
-
-So far it was looking good and now this :)
-
-When is it going to be done? Is this the broken stuff you mentioned
-elsewhere?
-
+> v2: Added sub prototype of eeh_phb_pe_create() for the !CONFIG_EEH case.
+> ---
+>  arch/powerpc/include/asm/eeh.h             |  3 ++-
+>  arch/powerpc/kernel/eeh.c                  |  2 +-
+>  arch/powerpc/kernel/eeh_dev.c              | 13 -------------
+>  arch/powerpc/kernel/of_platform.c          |  4 ++--
+>  arch/powerpc/platforms/pseries/pci_dlpar.c |  2 +-
+>  5 files changed, 6 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+> index 964a54292b36..64487b88c569 100644
+> --- a/arch/powerpc/include/asm/eeh.h
+> +++ b/arch/powerpc/include/asm/eeh.h
+> @@ -294,7 +294,6 @@ const char *eeh_pe_loc_get(struct eeh_pe *pe);
+>  struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe);
+>  
+>  struct eeh_dev *eeh_dev_init(struct pci_dn *pdn);
+> -void eeh_dev_phb_init_dynamic(struct pci_controller *phb);
+>  void eeh_show_enabled(void);
+>  int __init eeh_ops_register(struct eeh_ops *ops);
+>  int __exit eeh_ops_unregister(const char *name);
+> @@ -370,6 +369,8 @@ void pseries_eeh_init_edev_recursive(struct pci_dn *pdn);
+>  #else
+>  static inline void pseries_eeh_add_device_early(struct pci_dn *pdn) { }
+>  static inline void pseries_eeh_add_device_tree_early(struct pci_dn *pdn) { }
+> +
+> +static inline int eeh_phb_pe_create(struct pci_controller *phb) { return 0; }
+>  #endif
+>  
+>  #ifdef CONFIG_PPC64
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index d407981dec76..859f76020256 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1096,7 +1096,7 @@ static int eeh_init(void)
+>  
+>  	/* Initialize PHB PEs */
+>  	list_for_each_entry_safe(hose, tmp, &hose_list, list_node)
+> -		eeh_dev_phb_init_dynamic(hose);
+> +		eeh_phb_pe_create(hose);
+>  
+>  	eeh_addr_cache_init();
+>  
+> diff --git a/arch/powerpc/kernel/eeh_dev.c b/arch/powerpc/kernel/eeh_dev.c
+> index 7370185c7a05..8e159a12f10c 100644
+> --- a/arch/powerpc/kernel/eeh_dev.c
+> +++ b/arch/powerpc/kernel/eeh_dev.c
+> @@ -52,16 +52,3 @@ struct eeh_dev *eeh_dev_init(struct pci_dn *pdn)
+>  
+>  	return edev;
+>  }
+> -
+> -/**
+> - * eeh_dev_phb_init_dynamic - Create EEH devices for devices included in PHB
+> - * @phb: PHB
+> - *
+> - * Scan the PHB OF node and its child association, then create the
+> - * EEH devices accordingly
+> - */
+> -void eeh_dev_phb_init_dynamic(struct pci_controller *phb)
+> -{
+> -	/* EEH PE for PHB */
+> -	eeh_phb_pe_create(phb);
+> -}
+> diff --git a/arch/powerpc/kernel/of_platform.c b/arch/powerpc/kernel/of_platform.c
+> index 71a3f97dc988..f89376ff633e 100644
+> --- a/arch/powerpc/kernel/of_platform.c
+> +++ b/arch/powerpc/kernel/of_platform.c
+> @@ -62,8 +62,8 @@ static int of_pci_phb_probe(struct platform_device *dev)
+>  	/* Init pci_dn data structures */
+>  	pci_devs_phb_init_dynamic(phb);
+>  
+> -	/* Create EEH PEs for the PHB */
+> -	eeh_dev_phb_init_dynamic(phb);
+> +	/* Create EEH PE for the PHB */
+> +	eeh_phb_pe_create(phb);
+>  
+>  	/* Scan the bus */
+>  	pcibios_scan_phb(phb);
+> diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
+> index b3a38f5a6b68..f9ae17e8a0f4 100644
+> --- a/arch/powerpc/platforms/pseries/pci_dlpar.c
+> +++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
+> @@ -34,7 +34,7 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
+>  	pci_devs_phb_init_dynamic(phb);
+>  
+>  	/* Create EEH devices for the PHB */
+> -	eeh_dev_phb_init_dynamic(phb);
+> +	eeh_phb_pe_create(phb);
+>  
+>  	if (dn->child)
+>  		pseries_eeh_init_edev_recursive(PCI_DN(dn));
+> 
 
 -- 
 Alexey
