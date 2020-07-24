@@ -1,80 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF2E22D05C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 23:14:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9326422D1E5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 00:42:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BD24g1M9wzDrRC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 07:13:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BD42x4dyTzF1Yx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 08:42:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::a42;
+ helo=mail-vk1-xa42.google.com; envelope-from=morbo@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=iMiGlJIh; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rbl6rw9g; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=B42vINBN; dkim-atps=neutral
+Received: from mail-vk1-xa42.google.com (mail-vk1-xa42.google.com
+ [IPv6:2607:f8b0:4864:20::a42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BD22F5PnrzF1Tj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 07:11:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1595625105;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tgk0E/B+fKLI4HapciZOOHShfeB4adj+yNndqo5HAqc=;
- b=iMiGlJIhDIn2HDHYXq42UTQ8WnJdHCIAiBmnHGQFnHqFp6QnrqFQjFJRoMDjnzaj46t4FE
- IjZcHE0WPHuvL47mHf3PTeVyq4bNj2Rb/m8fNjcfYNkqIWtFdRUQLPNiu0ENgNwoc3qHgP
- 3FYNh6V44bH2+YFGBtOP9obf/Q3Rf+s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1595625106;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tgk0E/B+fKLI4HapciZOOHShfeB4adj+yNndqo5HAqc=;
- b=Rbl6rw9gld4NUyOMWs426gnD2KkNGHazCj42p/wDb/LJC9yLi0a1WoY97t6kL12m6T7+p6
- HoN6UJKdsuclu23thJ67ZlVhKv55UIYBPLlrAYgIOS+JLVIRDQZtAewinZbvGIPbE5yUaD
- hWLAaFJ6JYlljR+34klkBD+RmcXCEYE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-467-EvQuSqI9Np-gVoJuVaSCpw-1; Fri, 24 Jul 2020 17:11:41 -0400
-X-MC-Unique: EvQuSqI9Np-gVoJuVaSCpw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6ED61106B251;
- Fri, 24 Jul 2020 21:11:39 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-117-203.rdu2.redhat.com [10.10.117.203])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9267410013C2;
- Fri, 24 Jul 2020 21:11:36 +0000 (UTC)
-Subject: Re: [PATCH v4 0/6] powerpc: queued spinlocks and rwlocks
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200724131423.1362108-1-npiggin@gmail.com>
-From: Waiman Long <longman@redhat.com>
-Organization: Red Hat
-Message-ID: <f568c8aa-29b5-dbe9-47b8-ee12ce55cb31@redhat.com>
-Date: Fri, 24 Jul 2020 17:11:36 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BD4195KnlzF1Rw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 08:40:54 +1000 (AEST)
+Received: by mail-vk1-xa42.google.com with SMTP id x187so536643vkc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 15:40:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=SywmoYaZyeOKx6H84LI5dM1wvNKs3szhtS3aRO+7r8s=;
+ b=B42vINBN6rAdrr9c1UO+5AVn0IZsOgODa1QzZZeGJLEcBvMwqgPf8b4uxAobvBY8Ns
+ 5y9CMzvqAP5iJ1klT+xgnukkFAY/pi97qJaHHsn16KQVZUwUljAfZPfUqZwUA6Zt4PXS
+ H3SdpelZ2emnbhKB3y6/C/T8D6XOPFFXxoCuiIfzUCM3vcX9Atu2YoSqYNxZAs7nOoCA
+ KjBNFLxeF9FHAz2ZWiYi3/AL/7Sz4n9T5/Uda9GtaLKra3ToEgiTchQ2yDHa0h/wLNAm
+ qoa0P8niz/Xumu2hRgwVrc8pfTs//pjQlJdJ6kiySvzGDs9ax9JT4YnGunVpzbMBvJCv
+ EX9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=SywmoYaZyeOKx6H84LI5dM1wvNKs3szhtS3aRO+7r8s=;
+ b=bGj/8NUdNvj4nN62EWVRzRvtvHhiUyZR8sbbYDN3WEvHBh2TZNnMAcGwPN+7C4qunh
+ TKXLIqkEbEJHYvOUWq8T+Zv86pV7hzO0JwXyLgPn0wCdurA+Wh+gyapZEKnyJCP5CfCq
+ ftJGhDfyaiMvDA0rZKzMzI3RD4Hb1sZ9ojCQa2FL1IclS8tKTo99eGYBwmos9u6ikN5q
+ owyf5P9Rx7yrWnRTfduyQSPr9fvPj+L6lbCrjFyi0N3quU/gDu2Y3gBh90U02b+lVJtd
+ up8HyUMg71Q3hhOtlejHlaZmy82tpR2siua9zra0qXdOvodWhO4RIzuDX4erSjFj1esx
+ ltfg==
+X-Gm-Message-State: AOAM533VjVGMSafq6O+OxbOAml6rcOOyB2uUYC1JXWwu+vKIgJ9bcMw8
+ ytoK/2hF+uMaV541Szz0lM+6IcVmzcjRaRpRFpqHUxA=
+X-Google-Smtp-Source: ABdhPJz76rOZdl+0K2y5gccsLcmIFME2S3amzCR0RGWGIC7DQtIx37SMpe3r/5DObXKWL3QRoaYtStMkz+KV2WNVufM=
+X-Received: by 2002:a1f:1943:: with SMTP id 64mr9478664vkz.40.1595630450525;
+ Fri, 24 Jul 2020 15:40:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200724131423.1362108-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+References: <20200724001605.3718561-1-morbo@google.com>
+ <87sgdhp4t7.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87sgdhp4t7.fsf@mpe.ellerman.id.au>
+From: Bill Wendling <morbo@google.com>
+Date: Fri, 24 Jul 2020 15:40:39 -0700
+Message-ID: <CAGG=3QW4=SmOEY=9mdtZUPBBvHHzVD4UN7hAz9wC83ctr8XsXQ@mail.gmail.com>
+Subject: Re: [PATCH v 1/1] powerpc/64s: allow for clang's objdump differences
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,71 +73,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org,
- Ingo Molnar <mingo@redhat.com>,
- =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>,
- Will Deacon <will@kernel.org>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/24/20 9:14 AM, Nicholas Piggin wrote:
-> Updated with everybody's feedback (thanks all), and more performance
-> results.
+On Fri, Jul 24, 2020 at 3:48 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
-> What I've found is I might have been measuring the worst load point for
-> the paravirt case, and by looking at a range of loads it's clear that
-> queued spinlocks are overall better even on PV, doubly so when you look
-> at the generally much improved worst case latencies.
+> Hi Bill,
 >
-> I have defaulted it to N even though I'm less concerned about the PV
-> numbers now, just because I think it needs more stress testing. But
-> it's very nicely selectable so should be low risk to include.
+> Bill Wendling <morbo@google.com> writes:
+> > Clang's objdump emits slightly different output from GNU's objdump,
+> > causing a list of warnings to be emitted during relocatable builds.
+> > E.g., clang's objdump emits this:
+> >
+> >    c000000000000004: 2c 00 00 48  b  0xc000000000000030
+> >    ...
+> >    c000000000005c6c: 10 00 82 40  bf 2, 0xc000000000005c7c
+> >
+> > while GNU objdump emits:
+> >
+> >    c000000000000004: 2c 00 00 48  b    c000000000000030 <__start+0x30>
+> >    ...
+> >    c000000000005c6c: 10 00 82 40  bne  c000000000005c7c <masked_interrupt+0x3c>
+> >
+> > Adjust llvm-objdump's output to remove the extraneous '0x' and convert
+> > 'bf' and 'bt' to 'bne' and 'beq' resp. to more closely match GNU
+> > objdump's output.
+> >
+> > Note that clang's objdump doesn't yet output the relocation symbols on
+> > PPC.
+> >
+> > Signed-off-by: Bill Wendling <morbo@google.com>
+> > ---
+> >  arch/powerpc/tools/unrel_branch_check.sh | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/arch/powerpc/tools/unrel_branch_check.sh b/arch/powerpc/tools/unrel_branch_check.sh
+> > index 77114755dc6f..71ce86b68d18 100755
+> > --- a/arch/powerpc/tools/unrel_branch_check.sh
+> > +++ b/arch/powerpc/tools/unrel_branch_check.sh
+> > @@ -31,6 +31,9 @@ grep -e "^c[0-9a-f]*:[[:space:]]*\([0-9a-f][0-9a-f][[:space:]]\)\{4\}[[:space:]]
+> >  grep -v '\<__start_initialization_multiplatform>' |
+> >  grep -v -e 'b.\?.\?ctr' |
+> >  grep -v -e 'b.\?.\?lr' |
+> > +sed 's/\bbt.\?[[:space:]]*[[:digit:]][[:digit:]]*,/beq/' |
+> > +sed 's/\bbf.\?[[:space:]]*[[:digit:]][[:digit:]]*,/bne/' |
+> > +sed 's/[[:space:]]0x/ /' |
+> >  sed 's/://' |
 >
-> All in all this is a very cool technology and great results especially
-> on the big systems but even on smaller ones there are nice gains. Thanks
-> Waiman and everyone who developed it.
+> I know you followed the example in the script of just doing everything
+> as a separate entry in the pipeline, but I think we could consolidate
+> all the seds into one?
 >
-> Thanks,
-> Nick
+> eg:
 >
-> Nicholas Piggin (6):
->    powerpc/pseries: move some PAPR paravirt functions to their own file
->    powerpc: move spinlock implementation to simple_spinlock
->    powerpc/64s: implement queued spinlocks and rwlocks
->    powerpc/pseries: implement paravirt qspinlocks for SPLPAR
->    powerpc/qspinlock: optimised atomic_try_cmpxchg_lock that adds the
->      lock hint
->    powerpc: implement smp_cond_load_relaxed
+> sed -e 's/\bbt.\?[[:space:]]*[[:digit:]][[:digit:]]*,/beq/' \
+>     -e 's/\bbf.\?[[:space:]]*[[:digit:]][[:digit:]]*,/bne/' \
+>     -e 's/[[:space:]]0x/ /' \
+>     -e 's/://' |
 >
->   arch/powerpc/Kconfig                          |  15 +
->   arch/powerpc/include/asm/Kbuild               |   1 +
->   arch/powerpc/include/asm/atomic.h             |  28 ++
->   arch/powerpc/include/asm/barrier.h            |  14 +
->   arch/powerpc/include/asm/paravirt.h           |  87 +++++
->   arch/powerpc/include/asm/qspinlock.h          |  91 ++++++
->   arch/powerpc/include/asm/qspinlock_paravirt.h |   7 +
->   arch/powerpc/include/asm/simple_spinlock.h    | 288 ++++++++++++++++
->   .../include/asm/simple_spinlock_types.h       |  21 ++
->   arch/powerpc/include/asm/spinlock.h           | 308 +-----------------
->   arch/powerpc/include/asm/spinlock_types.h     |  17 +-
->   arch/powerpc/lib/Makefile                     |   3 +
->   arch/powerpc/lib/locks.c                      |  12 +-
->   arch/powerpc/platforms/pseries/Kconfig        |   9 +-
->   arch/powerpc/platforms/pseries/setup.c        |   4 +-
->   include/asm-generic/qspinlock.h               |   4 +
->   16 files changed, 588 insertions(+), 321 deletions(-)
->   create mode 100644 arch/powerpc/include/asm/paravirt.h
->   create mode 100644 arch/powerpc/include/asm/qspinlock.h
->   create mode 100644 arch/powerpc/include/asm/qspinlock_paravirt.h
->   create mode 100644 arch/powerpc/include/asm/simple_spinlock.h
->   create mode 100644 arch/powerpc/include/asm/simple_spinlock_types.h
+> Does that work?
 >
-That patch series looks good to me. Thanks for working on this.
+I'm fine with that. I separated them mostly for my benefit while
+creating the patch to keep things simple. :-) I'll send out an update.
 
-For the series,
-
-Acked-by: Waiman Long <longman@redhat.com>
-
+-bw
