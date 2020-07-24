@@ -2,59 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC0C22E2A2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 22:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F77822E329
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 00:44:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFFST4w1QzF10g
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 06:50:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFJ0b4p2lzDqP5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 08:44:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.94; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0094.hostedemail.com
- [216.40.44.94])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFFQP5zGfzDsP3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 06:48:27 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay07.hostedemail.com (Postfix) with ESMTP id C430D181D337B;
- Sun, 26 Jul 2020 20:48:24 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
- RULES_HIT:41:152:355:379:582:599:800:960:973:982:988:989:1152:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:3138:3139:3140:3141:3142:3353:3865:3866:3867:3868:3870:3871:3872:3873:3874:4321:5007:6119:6261:7875:9036:10004:10400:10848:11232:11658:11914:12043:12297:12740:12895:13069:13071:13311:13357:13894:14180:14181:14659:14685:14721:21060:21080:21324:21451:21627:21740:30030:30054:30070:30091,
- 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
- DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
- LFtime:1, LUA_SUMMARY:none
-X-HE-Tag: salt89_0e0b54526f5b
-X-Filterd-Recvd-Size: 2643
-Received: from perches-mx.perches.com (imap-ext [216.40.42.5])
- (Authenticated sender: webmail@joe@perches.com)
- by omf13.hostedemail.com (Postfix) with ESMTPA;
- Sun, 26 Jul 2020 20:48:24 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCtr625LJzF1RK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 01:47:33 +1000 (AEST)
+IronPort-SDR: JJIkoc4EvWIO4OsYSR4r9ANgAVf6uHiPsiqcYVzZBTK2d/jrjQXVTFZkIinUWwzM6BrwRO2P7L
+ vrwkNnHSIqHQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9692"; a="212272273"
+X-IronPort-AV: E=Sophos;i="5.75,391,1589266800"; d="scan'208";a="212272273"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jul 2020 08:47:27 -0700
+IronPort-SDR: mEEvLVGw49kcLRQfPZFp1jNlLAzx7ijrCWdV0BmV8Ca+I1GMr2U0qQ0Wxo2AzsAPmTcm93xEuQ
+ ZLA3g5xQ9nHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,391,1589266800"; d="scan'208";a="311441549"
+Received: from dschukli-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.252.36.3])
+ by fmsmga004.fm.intel.com with ESMTP; 24 Jul 2020 08:47:00 -0700
+Date: Fri, 24 Jul 2020 18:46:59 +0300
+From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To: Jessica Yu <jeyu@kernel.org>
+Subject: Re: [PATCH v2 1/3] module: Rename module_alloc() to text_alloc() and
+ move to kernel proper
+Message-ID: <20200724154659.GA1879026@linux.intel.com>
+References: <20200714094625.1443261-1-jarkko.sakkinen@linux.intel.com>
+ <20200714094625.1443261-2-jarkko.sakkinen@linux.intel.com>
+ <20200716184909.Horde.JVRLLcKix_jhrJfiQYRbbQ1@messagerie.si.c-s.fr>
+ <20200723015127.GE45081@linux.intel.com>
+ <CAMj1kXGJhqC+asc6JUNeEkRsHYTzNQVe4-65vKqigbW03gO9Jg@mail.gmail.com>
+ <20200724073621.GC1872662@linux.intel.com>
+ <20200724080508.GA17719@linux-8ccs>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Date: Sun, 26 Jul 2020 13:48:23 -0700
-From: Joe Perches <joe@perches.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH 0/9] powerpc: delete duplicated words
-In-Reply-To: <4e505c35-8428-89bb-7f9b-bc819382c3cd@infradead.org>
-References: <20200726162902.Horde.TCqHYaODbkzEpM-rFzDd8A2@messagerie.si.c-s.fr>
- <b796e912-e945-3cb1-03f8-0f38009634a4@infradead.org>
- <add7c13b1ca24c8cb6f243b99d61c19287020efd.camel@perches.com>
- <4e505c35-8428-89bb-7f9b-bc819382c3cd@infradead.org>
-User-Agent: Roundcube Webmail/1.4-rc2
-Message-ID: <8ccba434d98ba1319dbb9a386f7a7450@perches.com>
-X-Sender: joe@perches.com
-X-Originating-IP: [172.58.17.243]
+In-Reply-To: <20200724080508.GA17719@linux-8ccs>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Mailman-Approved-At: Mon, 27 Jul 2020 08:43:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,55 +67,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, Paul Mackerras <paulus@samba.org>,
+ Zong Li <zong.li@sifive.com>, Andi Kleen <ak@linux.intel.com>,
+ Paul Burton <paulburton@kernel.org>,
+ Vincent Whitchurch <vincent.whitchurch@axis.com>,
+ Petr Mladek <pmladek@suse.com>, Brian Gerst <brgerst@gmail.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jiri Kosina <jkosina@suse.cz>, Anup Patel <anup.patel@wdc.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Philipp Rudo <prudo@linux.ibm.com>, Torsten Duwe <duwe@lst.de>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Vincent Chen <deanbo422@gmail.com>, Omar Sandoval <osandov@fb.com>,
+ "open list:S390" <linux-s390@vger.kernel.org>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+ Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>,
+ Andrii Nakryiko <andriin@fb.com>, Thomas Huth <thuth@redhat.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+ Daniel Axtens <dja@axtens.net>, Damien Le Moal <damien.lemoal@wdc.com>,
+ Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ Alexei Starovoitov <ast@kernel.org>, Atish Patra <atish.patra@wdc.com>,
+ Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Ley Foon Tan <ley.foon.tan@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mao Han <han_mao@c-sky.com>,
+ Marco Elver <elver@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Babu Moger <Babu.Moger@amd.com>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Ben Dooks <ben-linux@fluff.org>,
+ Guan Xuetao <gxt@pku.edu.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <bpf@vger.kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, David Howells <dhowells@redhat.com>,
+ Amit Daniel Kachhap <amit.kachhap@arm.com>,
+ Sandipan Das <sandipan@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "open list:SPARC + UltraSPARC sparc/sparc64" <sparclinux@vger.kernel.org>,
+ "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+ Miroslav Benes <mbenes@suse.cz>, Jiri Olsa <jolsa@redhat.com>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Anders Roxell <anders.roxell@linaro.org>, Sven Schnelle <svens@stackframe.org>,
+ "maintainer:X86 ARCHITECTURE 32-BIT AND 64-BIT" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, KP Singh <kpsingh@chromium.org>,
+ Dmitry Vyukov <dvyukov@google.com>, Nick Hu <nickhu@andestech.com>,
+ "open list:BPF JIT for MIPS 32-BIT AND 64-BIT" <netdev@vger.kernel.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
+ <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-07-26 12:08, Randy Dunlap wrote:
-> On 7/26/20 10:49 AM, Joe Perches wrote:
->> On Sun, 2020-07-26 at 10:23 -0700, Randy Dunlap wrote:
->>> On 7/26/20 7:29 AM, Christophe Leroy wrote:
->>>> Randy Dunlap <rdunlap@infradead.org> a Ã©crit :
->>>> 
->>>>> Drop duplicated words in arch/powerpc/ header files.
->>>> 
->>>> How did you detect them ? Do you have some script for tgat, or you 
->>>> just read all comments ?
->>> 
->>> Yes, it's a script that finds lots of false positives, so I have to 
->>> check
->>> each and every one of them for validity.
->> 
->> And it's a lot of work too. (thanks Randy)
->> 
->> It could be something like:
->> 
->> $ grep-2.5.4 -nrP --include=*.[ch] '\b([A-Z]?[a-z]{2,}\b)[ \t]*(?:\n[ 
->> \t]*\*[ \t]*|)\1\b' * | \
->>   grep -vP '\b(?:struct|enum|union)\s+([A-Z]?[a-z]{2,})\s+\*?\s*\1\b' 
->> | \
->>   grep -vP '\blong\s+long\b' | \
->>   grep -vP '\b([A-Z]?[a-z]{2,})(?:\t+| {2,})\1\b'
+On Fri, Jul 24, 2020 at 10:05:08AM +0200, Jessica Yu wrote:
+> +++ Jarkko Sakkinen [24/07/20 10:36 +0300]:
+> > On Thu, Jul 23, 2020 at 03:42:09PM +0300, Ard Biesheuvel wrote:
+> > > On Thu, 23 Jul 2020 at 04:52, Jarkko Sakkinen
+> > > <jarkko.sakkinen@linux.intel.com> wrote:
+> > > >
+> > > > On Thu, Jul 16, 2020 at 06:49:09PM +0200, Christophe Leroy wrote:
+> > > > > Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> a écrit :
+> > > > >
+> > > > > > Rename module_alloc() to text_alloc() and module_memfree() to
+> > > > > > text_memfree(), and move them to kernel/text.c, which is unconditionally
+> > > > > > compiled to the kernel proper. This allows kprobes, ftrace and bpf to
+> > > > > > allocate space for executable code without requiring to compile the modules
+> > > > > > support (CONFIG_MODULES=y) in.
+> > > > >
+> > > > > You are not changing enough in powerpc to have this work.
+> > > > > On powerpc 32 bits (6xx), when STRICT_KERNEL_RWX is selected, the vmalloc
+> > > > > space is set to NX (no exec) at segment level (ie by 256Mbytes zone) unless
+> > > > > CONFIG_MODULES is selected.
+> > > > >
+> > > > > Christophe
+> > > >
+> > > > This has been deduced down to:
+> > > >
+> > > > https://lore.kernel.org/lkml/20200717030422.679972-1-jarkko.sakkinen@linux.intel.com/
+> > > >
+> > > > I.e. not intruding PPC anymore :-)
+> > > >
+> > > 
+> > > Ok, so after the elaborate discussion we had between Jessica, Russell,
+> > > Peter, Will, Mark, you and myself, where we pointed out that
+> > > a) a single text_alloc() abstraction for bpf, kprobes and ftrace does
+> > > not fit other architectures very well, and
+> > > b) that module_alloc() is not suitable as a default to base text_alloc() on,
+> > 
+> > In the latest iteration (v5) it is conditionally available only if arch
+> > defines and fallback has been removed.
+> > 
+> > > you went ahead and implemented that anyway, but only cc'ing Peter,
+> > > akpm, Masami and the mm list this time?
+> > 
+> > No problems with that. Actually each patch gets everything that
+> > get_maintainer.pl gives with a cc cmd script, not just the ones
+> > explicitly listed in the patch.
+> > 
+> > Should I explicitly CC you to the next version? I'm happy to grow
+> > the list when requested.
 > 
-> Hi Joe,
+> Yes, please CC everybody that was part of the discussion last time
+> especially during v2, and please use a consistent CC list for the
+> whole patchset. It is difficult to review when you only receive patch
+> 1 out of 6 with no mention of text_alloc() anywhere and without being
+> CC'd on the cover letter.
+> 
+> Jessica
 
-Hi Randy
+I'll make the following additions to the CC list (in alphabetical
+order):
 
-> (what is grep-2.5.4 ?)
+  Cc: Ard Biesheuvel <ardb@kernel.org>
+  Cc: Jessica Yu <jeyu@kernel.org>
+  Cc: Mark Rutland <mark.rutland@arm.com>,
+  Cc: Mike Rapoport <rppt@kernel.org>
+  Cc: Russell King <linux@armlinux.org.uk>
+  Cc: Will Deacon <will@kernel.org>
 
-It's the last version of grep that allowed spanning multiple lines.
+This is also reflected now in the kprobes branch of
+https://github.com/jsakkine-intel/linux-sgx.git. My candidate patches
+are located in my SGX tree because I mainly use them when poking SGX.
+The patches are kind of sidekick of SGX upstreaming process.
 
-That's to find the comment second lines that start with *
-
-> It looks like you tried a few iterations of this -- since it drops 
-> things
-> like "long long".  There are lots of data types that are repeated & 
-> valid.
-> And many struct names, like "struct kref kref", "struct completion 
-> completion",
-> and "struct mutex mutex".  I handle (ignore) those manually
-
-that's the first exclude pattern.
-
+/Jarkko
