@@ -1,70 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA0E22BEFE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 09:22:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C5722C022
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 09:46:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BCgdr1hKtzDsVH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 17:22:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BCh906pQhzDrHj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jul 2020 17:46:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BCgbP64MrzDrqV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 17:20:48 +1000 (AEST)
-Received: from mail-qt1-f176.google.com ([209.85.160.176]) by
- mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mq2vS-1kbpTF2Z50-00n5m6 for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul
- 2020 09:20:43 +0200
-Received: by mail-qt1-f176.google.com with SMTP id a32so6262829qtb.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 00:20:42 -0700 (PDT)
-X-Gm-Message-State: AOAM531KnalDnwQbVIHqI7fGjc0l9zu5ImhW5DBIRPAnjC8vZc6K/KZO
- 7T5+h1ATSDLmsjDuEhRGteMljeR4mGSnW+RsMBc=
-X-Google-Smtp-Source: ABdhPJxmIVXnbEioXbPXSA7ZMWes4VKvilueIEtCY7yjI+BhfVsAWHUQWo3DE1p/ihdJ0qb68PSFrNOEs1zZFP+V6+8=
-X-Received: by 2002:ac8:688e:: with SMTP id m14mr1188191qtq.7.1595575241528;
- Fri, 24 Jul 2020 00:20:41 -0700 (PDT)
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BCh5j1FCxzDsNT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jul 2020 17:43:36 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06O7Vixb061404; Fri, 24 Jul 2020 03:43:27 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32faj7a8mj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jul 2020 03:43:27 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06O7eR5r006512;
+ Fri, 24 Jul 2020 07:43:25 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma05fra.de.ibm.com with ESMTP id 32brq83v9m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Jul 2020 07:43:25 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06O7hMgA7209304
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 Jul 2020 07:43:22 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CDB8AE055;
+ Fri, 24 Jul 2020 07:43:22 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A5578AE057;
+ Fri, 24 Jul 2020 07:43:21 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.182.168])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Jul 2020 07:43:21 +0000 (GMT)
+Subject: Re: [PATCH v5 7/7] KVM: PPC: Book3S HV: rework secure mem slot
+ dropping
+To: bharata@linux.ibm.com, Ram Pai <linuxram@us.ibm.com>
+References: <1595534844-16188-1-git-send-email-linuxram@us.ibm.com>
+ <1595534844-16188-8-git-send-email-linuxram@us.ibm.com>
+ <20200724030337.GC1082478@in.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <68508568-25dd-ab57-b56c-9ce0dd7ae54d@linux.ibm.com>
+Date: Fri, 24 Jul 2020 09:43:21 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <CAK8P3a34sT2bQbkZUjaxaShzCkn+s35pXxS0UNhqGFu+t2hZYw@mail.gmail.com>
- <mhng-820ebe55-b4a3-4ab3-b848-6d3551b43091@palmerdabbelt-glaptop1>
- <CAK8P3a2VHXDLK6iba=NxSQ-t=9P7LSwzwx3XrK=N=M+qoX_oeQ@mail.gmail.com>
- <CAOnJCULmX+vUcpEmBd5w7xjtZSFk=Ju2V=wBJCOXHQ8m9yG9-Q@mail.gmail.com>
-In-Reply-To: <CAOnJCULmX+vUcpEmBd5w7xjtZSFk=Ju2V=wBJCOXHQ8m9yG9-Q@mail.gmail.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 24 Jul 2020 09:20:25 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2u9Z6wfyRduC7396929t4VnJQ0cXMiMWO7o6tgx_uNOw@mail.gmail.com>
-Message-ID: <CAK8P3a2u9Z6wfyRduC7396929t4VnJQ0cXMiMWO7o6tgx_uNOw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] riscv: Move kernel mapping to vmalloc zone
-To: Atish Patra <atishp@atishpatra.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:rtlTBXJAnM/9MwfGED8/vkYCYN5xxO0C5BFsrnc0GfvBXz216gD
- 2JWMoQUiQsDIf0H2EqT7jTDs2prGuK8pOJF8OIHDEkQq6v/JJ1ZpBHCvsGD2919FcUZybYb
- lXLP1aoDu/NXg6LzwT0mt5Ihx8DTSWu4nNK0R+ULv99BuZrhEJlM8vle2GHCMzETHlClZNe
- NEA6KTH7/LL0lybVPkNxw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0YfiYEKXuSo=:iHBUm5UO1sZmc+wgfp2OdX
- cS4AeyliiuFjaw/B1p6lzj5YgYPnJRpHZ2VCw+VoeHUUfDsnTH6SGiU5B3NSqs41ZI2bG7J18
- G5F03Op+F1zwIqIngGMMjYT+vXMO4tAHyPIitxmrAjIr1WlEVbO9X86S/gznj0NXhx9a/Dz0y
- E5fDl1OSY9Ctgi64CexomukCwBRbck/vOmlQWwtUDTDVTNuFBfhk217xi3gcyGFZeYDzhDjnE
- AjzUSUobWu6Qe6rJ7jt4joY2Pz+S3zCM7Zaw0Dgvkwla8qlUQ302jdKK+6oz7kJseuTGfyi0M
- nFOOJOoc01WCaGO+K6VITVAyWyX9Kvq4Efu2PSxjEe8rZacM2fRIKAOzzy1bZVTQSLm3QslQP
- SS486obGiKPAPwwvBmZWvUa6t3Q3RjODThGRJ6OkAlBSzhJ6+UPPE3zLFM/S0V63lmXCh+Fuh
- DyCkLql+h8Kc5s8Fp2HRRGVcMJebPpMsz8p4SlawY5mA2wfEJayzQLemm1g+SgQ8remXpB3oj
- S2i/sZv2J9Si7N+ClvQdbiq+Zn3JVUpLk+7tvejebdwiSSXjg7hmhX/f6Tvu52wPRTKkzquC7
- eW9wl+Cs3cIxKRapeyiJC0s+PRqnBXCRCxciBfDdDrPn1280BqnPB5oL9cRYKcw8CnFqv8rx0
- Jtkc2iplHIw5ylduNXDMIWQzTyjtcfPZzfpfkY060yjRyE0+ERA8eMW40TnYBCNIcmxBKcGlf
- ds/sEqb4SWvPYBDcUl9At+vsE7RnM4R84KXdrp2IY7wUa3KcvTCUowLsC6SjxWlH3tZorVhXL
- nOK7OpYitPjSTNWped15F1wjq+lfOxzoeD1c70Q1L3ijYqM/spnIdD43pSGRmjh5mix/9JdRp
- zzTuSPIoe+/cYXuiBRf7a48dyY4hWbbSosickRqxPiaRdpWQexX3Z4TGeFEzU5EOhu2rpfiUH
- Gh2JVfw6ObwNpBIXZvMwdLuK/KT4R0fmlw29oS+2FUSyTn6BcEXI2
+In-Reply-To: <20200724030337.GC1082478@in.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-24_01:2020-07-24,
+ 2020-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 spamscore=0 malwarescore=0 impostorscore=0 mlxlogscore=999
+ suspectscore=2 bulkscore=0 adultscore=0 mlxscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007240052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,68 +89,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Linux-MM <linux-mm@kvack.org>, Anup Patel <Anup.Patel@wdc.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Atish Patra <Atish.Patra@wdc.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Zong Li <zong.li@sifive.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 22, 2020 at 11:06 PM Atish Patra <atishp@atishpatra.org> wrote:
->
-> On Wed, Jul 22, 2020 at 1:23 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> >
-> > I just noticed that rv32 allows 2GB of lowmem rather than just the usual
-> > 768MB or 1GB, at the expense of addressable user memory. This seems
-> > like an unusual choice, but I also don't see any reason to change this
-> > or make it more flexible unless actual users appear.
-> >
->
-> I am a bit confused here. As per my understanding, RV32 supports 1GB
-> of lowmem only
-> as the page offset is set to 0xC0000000. The config option
-> MAXPHYSMEM_2GB is misleading
-> as RV32 actually allows 1GB of physical memory only.
+Le 24/07/2020 à 05:03, Bharata B Rao a écrit :
+> On Thu, Jul 23, 2020 at 01:07:24PM -0700, Ram Pai wrote:
+>> From: Laurent Dufour <ldufour@linux.ibm.com>
+>>
+>> When a secure memslot is dropped, all the pages backed in the secure
+>> device (aka really backed by secure memory by the Ultravisor)
+>> should be paged out to a normal page. Previously, this was
+>> achieved by triggering the page fault mechanism which is calling
+>> kvmppc_svm_page_out() on each pages.
+>>
+>> This can't work when hot unplugging a memory slot because the memory
+>> slot is flagged as invalid and gfn_to_pfn() is then not trying to access
+>> the page, so the page fault mechanism is not triggered.
+>>
+>> Since the final goal is to make a call to kvmppc_svm_page_out() it seems
+>> simpler to call directly instead of triggering such a mechanism. This
+>> way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
+>> memslot.
+>>
+>> Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
+>> the call to __kvmppc_svm_page_out() is made.  As
+>> __kvmppc_svm_page_out needs the vma pointer to migrate the pages,
+>> the VMA is fetched in a lazy way, to not trigger find_vma() all
+>> the time. In addition, the mmap_sem is held in read mode during
+>> that time, not in write mode since the virual memory layout is not
+>> impacted, and kvm->arch.uvmem_lock prevents concurrent operation
+>> on the secure device.
+>>
+>> Cc: Ram Pai <linuxram@us.ibm.com>
+>> Cc: Bharata B Rao <bharata@linux.ibm.com>
+>> Cc: Paul Mackerras <paulus@ozlabs.org>
+>> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+>> 	[modified the changelog description]
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kvm/book3s_hv_uvmem.c | 54 ++++++++++++++++++++++++++------------
+>>   1 file changed, 37 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> index c772e92..daffa6e 100644
+>> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+>> @@ -632,35 +632,55 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
+>>    * fault on them, do fault time migration to replace the device PTEs in
+>>    * QEMU page table with normal PTEs from newly allocated pages.
+>>    */
+>> -void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+>> +void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
+>>   			     struct kvm *kvm, bool skip_page_out)
+>>   {
+>>   	int i;
+>>   	struct kvmppc_uvmem_page_pvt *pvt;
+>> -	unsigned long pfn, uvmem_pfn;
+>> -	unsigned long gfn = free->base_gfn;
+>> +	struct page *uvmem_page;
+>> +	struct vm_area_struct *vma = NULL;
+>> +	unsigned long uvmem_pfn, gfn;
+>> +	unsigned long addr, end;
+>> +
+>> +	mmap_read_lock(kvm->mm);
+>> +
+>> +	addr = slot->userspace_addr;
+>> +	end = addr + (slot->npages * PAGE_SIZE);
+>>   
+>> -	for (i = free->npages; i; --i, ++gfn) {
+>> -		struct page *uvmem_page;
+>> +	gfn = slot->base_gfn;
+>> +	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
+>> +
+>> +		/* Fetch the VMA if addr is not in the latest fetched one */
+>> +		if (!vma || (addr < vma->vm_start || addr >= vma->vm_end)) {
+>> +			vma = find_vma_intersection(kvm->mm, addr, end);
+>> +			if (!vma ||
+>> +			    vma->vm_start > addr || vma->vm_end < end) {
+>> +				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
+>> +				break;
+>> +			}
+> 
+> There is a potential issue with the boundary condition check here
+> which I discussed with Laurent yesterday. Guess he hasn't gotten around
+> to look at it yet.
 
-Ok, in that case I was apparently misled by the Kconfig option name.
+Right, I'm working on that..
 
-I just tried building a kernel to see what the boundaries actually are,
-as this is not the only confusing bit. Here is what I see:
 
-0x9dc00000 TASK_SIZE/FIXADDR_START   /* code comment says 0x9fc00000 */
-0x9e000000 FIXADDR_TOP/PCI_IO_START
-0x9f000000 PCI_IO_END/VMEMMAP_START
-0xa0000000 VMEMMAP_END/VMALLOC_START
-0xc0000000 VMALLOC_END/PAGE_OFFSET
-
-Having exactly 1GB of linear map does make a lot of sense. Having PCI I/O,
-vmemmap and fixmap come out of the user range means you get slightly
-different behavior in user space if there are any changes to that set, but
-that is probably fine as well, if you want the flexibility to go to a 2GB linear
-map and expect user space to deal with that as well.
-
-There is one common trick from arm32 however that you might want to
-consider: if vmalloc was moved above the linear map rather than below,
-the size of the vmalloc area can dynamically depend on the amount of
-RAM that is actually present rather than be set to a fixed value.
-
-On arm32, there is around 240MB of vmalloc space if the linear map
-is fully populated with RAM, but it can grow to use all of the avaialable
-address space if less RAM was detected at boot time (up to 3GB
-depending on CONFIG_VMSPLIT).
-
-> Any memory blocks beyond
-> DRAM + 1GB are removed in setup_bootmem. IMHO, The current config
-> should clarify that.
->
-> Moreover, we should add 2G split under a separate configuration if we
-> want to support that.
-
-Right. It's probably not needed immediately, but can't hurt either.
-
-    Arnd
