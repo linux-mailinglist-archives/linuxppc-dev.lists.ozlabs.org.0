@@ -1,89 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF1E22D41A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 05:05:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A91D22D5D7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 09:38:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BD9tJ6WhLzF0yj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 13:05:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BDHxm3TK2zF0jM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 17:38:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BDHw21zFCzF0x5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 17:37:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=URizxht5; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=URizxht5; 
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=l4F/Jxbs; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BD9qf2c7pzF1Sc
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 13:03:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1595646185;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dJKlmgtXl7uNqK+gi01GLPol8dXOhIFF+vRj8dKFHJ4=;
- b=URizxht54as81zYfJsZ6OQ5kEj1I2VZBAMAUaHaDc6sQOAnhmB9V9D5veegmbbXpnI3UxQ
- rEIEUVfjjZRZl/eDd4+Jnt1jd4bAvqByO2HDTO3XGfnz0sdfZO5iwes2xPyIIBY04sTUGh
- ejnj8l2blnl60iCc8m5Adn1SBH4bjAY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1595646185;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dJKlmgtXl7uNqK+gi01GLPol8dXOhIFF+vRj8dKFHJ4=;
- b=URizxht54as81zYfJsZ6OQ5kEj1I2VZBAMAUaHaDc6sQOAnhmB9V9D5veegmbbXpnI3UxQ
- rEIEUVfjjZRZl/eDd4+Jnt1jd4bAvqByO2HDTO3XGfnz0sdfZO5iwes2xPyIIBY04sTUGh
- ejnj8l2blnl60iCc8m5Adn1SBH4bjAY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-388-taJbuqtoOr-9IUyajzXA8A-1; Fri, 24 Jul 2020 23:03:02 -0400
-X-MC-Unique: taJbuqtoOr-9IUyajzXA8A-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AA6B958;
- Sat, 25 Jul 2020 03:03:00 +0000 (UTC)
-Received: from llong.remote.csb (ovpn-117-203.rdu2.redhat.com [10.10.117.203])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B17D18FA2A;
- Sat, 25 Jul 2020 03:02:58 +0000 (UTC)
-Subject: Re: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks for
- SPLPAR
-From: Waiman Long <longman@redhat.com>
-To: Will Deacon <will@kernel.org>, peterz@infradead.org
-References: <20200706043540.1563616-1-npiggin@gmail.com>
- <20200706043540.1563616-6-npiggin@gmail.com>
- <874kqhvu1v.fsf@mpe.ellerman.id.au>
- <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
- <20200723140011.GR5523@worktop.programming.kicks-ass.net>
- <845de183-56f5-2958-3159-faa131d46401@redhat.com>
- <20200723184759.GS119549@hirez.programming.kicks-ass.net>
- <20200724081647.GA16642@willie-the-truck>
- <8532332b-85dd-661b-cf72-81a8ceb70747@redhat.com>
-Organization: Red Hat
-Message-ID: <ccf0c6a6-b7c3-8909-cc8f-0c5e7434c372@redhat.com>
-Date: Fri, 24 Jul 2020 23:02:58 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4BDHw13V5Yz9sRR; Sat, 25 Jul 2020 17:37:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1595662641;
+ bh=W7B4UciZS3FArWv9+3+oQUJGmfZMMOu9I71ixRxl+p0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=l4F/Jxbsipt1EaRAN4bXpC4CmHqZBQOLktbdVcl6vuPrUD0OfCYlv4L0qyFvRKOs5
+ 0YfRdxRMLxl+Dn49/i5Axn8Ah7Lxn1RdlUZVDc3+7ajINdN6QNqjIeAxHNKqUItEUI
+ E3XrFoi7DvqVdjPLs7BcYPg8q4uZ43laRPdCQF3I=
+Date: Sat, 25 Jul 2020 17:37:13 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
+Message-ID: <20200725073713.GB84173@umbus.fritz.box>
+References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
+ <87r1tb1rw2.fsf@linux.ibm.com> <87tuy1sksv.fsf@mpe.ellerman.id.au>
+ <20200721032959.GN7902@in.ibm.com>
+ <87ft9lrr55.fsf@mpe.ellerman.id.au>
+ <20200722060506.GO7902@in.ibm.com>
+ <87mu3pp1u9.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <8532332b-85dd-661b-cf72-81a8ceb70747@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="TakKZr9L6Hm6aLOc"
+Content-Disposition: inline
+In-Reply-To: <87mu3pp1u9.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,43 +57,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- virtualization@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ bharata@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/24/20 3:10 PM, Waiman Long wrote:
-> On 7/24/20 4:16 AM, Will Deacon wrote:
->> On Thu, Jul 23, 2020 at 08:47:59PM +0200, peterz@infradead.org wrote:
->>> On Thu, Jul 23, 2020 at 02:32:36PM -0400, Waiman Long wrote:
->>>> BTW, do you have any comment on my v2 lock holder cpu info 
->>>> qspinlock patch?
->>>> I will have to update the patch to fix the reported 0-day test 
->>>> problem, but
->>>> I want to collect other feedback before sending out v3.
->>> I want to say I hate it all, it adds instructions to a path we spend an
->>> aweful lot of time optimizing without really getting anything back for
->>> it.
->>>
->>> Will, how do you feel about it?
->> I can see it potentially being useful for debugging, but I hate the
->> limitation to 256 CPUs. Even arm64 is hitting that now.
->
-> After thinking more about that, I think we can use all the remaining 
-> bits in the 16-bit locked_pending. Reserving 1 bit for locked and 1 
-> bit for pending, there are 14 bits left. So as long as NR_CPUS < 16k 
-> (requirement for 16-bit locked_pending), we can put all possible cpu 
-> numbers into the lock. We can also just use smp_processor_id() without 
-> additional percpu data. 
 
-Sorry, that doesn't work. The extra bits in the pending byte won't get 
-cleared on unlock. That will have noticeable performance impact. 
-Clearing the pending byte on unlock will cause other performance 
-problem. So I guess we will have to limit the cpu number in the locked byte.
+--TakKZr9L6Hm6aLOc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Longman
+On Fri, Jul 24, 2020 at 09:52:14PM +1000, Michael Ellerman wrote:
+> Bharata B Rao <bharata@linux.ibm.com> writes:
+> > On Tue, Jul 21, 2020 at 10:25:58PM +1000, Michael Ellerman wrote:
+> >> Bharata B Rao <bharata@linux.ibm.com> writes:
+> >> > On Tue, Jul 21, 2020 at 11:45:20AM +1000, Michael Ellerman wrote:
+> >> >> Nathan Lynch <nathanl@linux.ibm.com> writes:
+> >> >> > "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> >> >> >> This is the next version of the fixes for memory unplug on radix.
+> >> >> >> The issues and the fix are described in the actual patches.
+> >> >> >
+> >> >> > I guess this isn't actually causing problems at runtime right now=
+, but I
+> >> >> > notice calls to resize_hpt_for_hotplug() from arch_add_memory() a=
+nd
+> >> >> > arch_remove_memory(), which ought to be mmu-agnostic:
+> >> >> >
+> >> >> > int __ref arch_add_memory(int nid, u64 start, u64 size,
+> >> >> > 			  struct mhp_params *params)
+> >> >> > {
+> >> >> > 	unsigned long start_pfn =3D start >> PAGE_SHIFT;
+> >> >> > 	unsigned long nr_pages =3D size >> PAGE_SHIFT;
+> >> >> > 	int rc;
+> >> >> >
+> >> >> > 	resize_hpt_for_hotplug(memblock_phys_mem_size());
+> >> >> >
+> >> >> > 	start =3D (unsigned long)__va(start);
+> >> >> > 	rc =3D create_section_mapping(start, start + size, nid,
+> >> >> > 				    params->pgprot);
+> >> >> > ...
+> >> >>=20
+> >> >> Hmm well spotted.
+> >> >>=20
+> >> >> That does return early if the ops are not setup:
+> >> >>=20
+> >> >> int resize_hpt_for_hotplug(unsigned long new_mem_size)
+> >> >> {
+> >> >> 	unsigned target_hpt_shift;
+> >> >>=20
+> >> >> 	if (!mmu_hash_ops.resize_hpt)
+> >> >> 		return 0;
+> >> >>=20
+> >> >>=20
+> >> >> And:
+> >> >>=20
+> >> >> void __init hpte_init_pseries(void)
+> >> >> {
+> >> >> 	...
+> >> >> 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
+> >> >> 		mmu_hash_ops.resize_hpt =3D pseries_lpar_resize_hpt;
+> >> >>=20
+> >> >> And that comes in via ibm,hypertas-functions:
+> >> >>=20
+> >> >> 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
+> >> >>=20
+> >> >>=20
+> >> >> But firmware is not necessarily going to add/remove that call based=
+ on
+> >> >> whether we're using hash/radix.
+> >> >
+> >> > Correct but hpte_init_pseries() will not be called for radix guests.
+> >>=20
+> >> Yeah, duh. You'd think the function name would have been a sufficient
+> >> clue for me :)
+> >>=20
+> >> >> So I think a follow-up patch is needed to make this more robust.
+> >> >>=20
+> >> >> Aneesh/Bharata what platform did you test this series on? I'm curio=
+us
+> >> >> how this didn't break.
+> >> >
+> >> > I have tested memory hotplug/unplug for radix guest on zz platform a=
+nd
+> >> > sanity-tested this for hash guest on P8.
+> >> >
+> >> > As noted above, mmu_hash_ops.resize_hpt will not be set for radix
+> >> > guest and hence we won't see any breakage.
+> >>=20
+> >> OK.
+> >>=20
+> >> That's probably fine as it is then. Or maybe just a comment in
+> >> resize_hpt_for_hotplug() pointing out that resize_hpt will be NULL if
+> >> we're using radix.
+> >
+> > Or we could move these calls to hpt-only routines like below?
+>=20
+> That looks like it would be equivalent, and would nicely isolate those
+> calls in hash specific code. So yeah I think that's worth sending as a
+> proper patch, even better if you can test it.
+>=20
+> > David - Do you remember if there was any particular reason to have
+> > these two hpt-resize calls within powerpc-generic memory hotplug code?
+>=20
+> I think the HPT resizing was developed before or concurrently with the
+> radix support, so I would guess it was just not something we thought
+> about at the time.
 
+Sounds about right; I don't remember for certain.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--TakKZr9L6Hm6aLOc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8b4ScACgkQbDjKyiDZ
+s5KfAw/+NTKEt8p9UsK1I51z4z80o4bn4U2rR+3E8l1qzs9Vk6U4mdJGdWNqSZE6
+MdQsRNRzqS51A2A6vLyg9bqC8uoM5VGJ8kArV7nMKVvv1nKIFLIuVLEa7pkJG/da
+zmC/4rbvBMCGhIwAjEdYHXR/yXzaJx4vNEpLQxddDOeR5xTuqot4ouyRE2AtILP5
+QKF9tO5Csbb0iDH2p3hbg4FejyupH4HCzW0E2epTEWj6gVzxnCK+RYFzg4bf3JTA
+wwzfEHYiLVBDoWMQDKcYjGNyjcXfuS0nD+DT0Osi0DsssjpGD+X0RuK9nxH3N8IK
+oTnfGTPfn19yRK+rnFzzv7wwBGkuvFtj3IvGW684G1H07i4U01hcWCd7tqF8HWoZ
+y8GriE9dJEDgLG9fI86RfBzKTKZsjKI0be8h/ELWF88fKdoXdSN4psn/bYJIUR4f
+mPcCJYRW7UyrTucDy8gteoJabNy1Lcj2nPMErwysjqHLNyAeep7X7/P/AoyoBv/6
+K7v70OOm0CeavnToSHG1S1ZEKFtOugkpPTQSVMqKJCf52rkbd/Hi9bc22zdvyh9Z
+OwLykx9f3NEIdqgg+6L5gUFnJrTkGu6TNdN+OtiGi1+O2JMujTKQjNsl++mRMBO7
+OeMbqoJvBy3oO1jO7jbg2weTYPtAWa5vQPF2OvDgA7SeULLAGp4=
+=5T7k
+-----END PGP SIGNATURE-----
+
+--TakKZr9L6Hm6aLOc--
