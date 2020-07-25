@@ -1,51 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A91D22D5D7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 09:38:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762D522D5FE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 10:14:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BDHxm3TK2zF0jM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 17:38:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BDJkr6qwDzF15G
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 18:14:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=XDi7yhId; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BDHw21zFCzF0x5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 17:37:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=l4F/Jxbs; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4BDHw13V5Yz9sRR; Sat, 25 Jul 2020 17:37:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1595662641;
- bh=W7B4UciZS3FArWv9+3+oQUJGmfZMMOu9I71ixRxl+p0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=l4F/Jxbsipt1EaRAN4bXpC4CmHqZBQOLktbdVcl6vuPrUD0OfCYlv4L0qyFvRKOs5
- 0YfRdxRMLxl+Dn49/i5Axn8Ah7Lxn1RdlUZVDc3+7ajINdN6QNqjIeAxHNKqUItEUI
- E3XrFoi7DvqVdjPLs7BcYPg8q4uZ43laRPdCQF3I=
-Date: Sat, 25 Jul 2020 17:37:13 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3 0/4] powerpc/mm/radix: Memory unplug fixes
-Message-ID: <20200725073713.GB84173@umbus.fritz.box>
-References: <20200709131925.922266-1-aneesh.kumar@linux.ibm.com>
- <87r1tb1rw2.fsf@linux.ibm.com> <87tuy1sksv.fsf@mpe.ellerman.id.au>
- <20200721032959.GN7902@in.ibm.com>
- <87ft9lrr55.fsf@mpe.ellerman.id.au>
- <20200722060506.GO7902@in.ibm.com>
- <87mu3pp1u9.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BDJhw73s3zDqcx
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 18:12:48 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id md7so6720910pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 01:12:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=em1rX+rDdO+EZvcNqlC1ieKAjVheu6k8Vunq2/2SWpM=;
+ b=XDi7yhIdw+CtcZgjPTDQe1HSZzVJe9CpV3+Mjpuz8d1Jxr1+lcUf3tzrNUrJdFoBY4
+ lZFCMYJsmn17GVQouefccKxkTAd/WGDkT0paIAT54AzZqjRG6uvc5hFlfCYycFCimgSz
+ rGLwJEhftOP5/7x7+YnamZsqfyqSN0DEZWULR0dbu+DTu0M6gYX55PwaWoWnX2ITx/eG
+ U4My6SD10MHANhS1RKW1IjnkPd6zpUGn0ILj5+TmlDNhL0VmL9mCtFF8+bWMRFNC6dPN
+ nB4t5lH2QGAT8CZDWs+S1Dj8r+sYKVyXZ1yuPmVz3cSoBdGkC6zXWF2QkF0UXD10msF4
+ XcOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=em1rX+rDdO+EZvcNqlC1ieKAjVheu6k8Vunq2/2SWpM=;
+ b=Qwd59kQH9vIQeJIr6XiTzvHsLDhiz5IIDkeFrZ2N0zWeEyZE3i7Pk2hAFwUe7UEAPZ
+ b1SLxYvG1cqoU+0v8Uo2XunNvCEMttUXyUHkA+OIa3UiMQ9RRNPwoSC1ihOuq1DpCC16
+ 6mQ3NrXC6/wvfF3q3+2jY92b/u1i82ESv0wM/yQqTM1laMLgVupkWpGIx8wU3IE47ROn
+ zCx5p9QfCwOH0sOyjZVrNrckLRJjLRhqjC+KmBKgYiHn0fSAOn25G0neut727Cy0IBLv
+ qgY2jv5EXOkSmC/sn4WALsVwrg/3Ughs9tPZNFcsUCL3qmuikYSEyN7lWxAjbhEQbfQs
+ BGMw==
+X-Gm-Message-State: AOAM532zT5KJe5fD0aJQ3ODbO/SjOrbcYg7/7eTlH7ajd5ML5dzjWMgy
+ iByIlBGHjtCpqI9AM5H+OXAQKsCy9uA=
+X-Google-Smtp-Source: ABdhPJxfNjGX5b5x5OKUFalEWS8mI1hxjL73tEFXTECdm8Uixufe9lrlmGBYzf60L0Ak+B579oLOOA==
+X-Received: by 2002:a17:90a:8009:: with SMTP id
+ b9mr9806707pjn.190.1595664764880; 
+ Sat, 25 Jul 2020 01:12:44 -0700 (PDT)
+Received: from localhost.localdomain ([118.210.60.180])
+ by smtp.gmail.com with ESMTPSA id a26sm8647360pgm.20.2020.07.25.01.12.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 25 Jul 2020 01:12:44 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
+Date: Sat, 25 Jul 2020 18:12:18 +1000
+Message-Id: <20200725081231.39076-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="TakKZr9L6Hm6aLOc"
-Content-Disposition: inline
-In-Reply-To: <87mu3pp1u9.fsf@mpe.ellerman.id.au>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,141 +77,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- bharata@linux.ibm.com
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This function is a one line wrapper around eeh_phb_pe_create() and despite
+the name it doesn't create any eeh_dev structures. Replace it with direct
+calls to eeh_phb_pe_create() since that does what it says on the tin
+and removes a layer of indirection.
 
---TakKZr9L6Hm6aLOc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+v2: Added sub prototype of eeh_phb_pe_create() for the !CONFIG_EEH case.
+v3: Same as above, but done properly.
+---
+ arch/powerpc/include/asm/eeh.h             |  2 +-
+ arch/powerpc/kernel/eeh.c                  |  2 +-
+ arch/powerpc/kernel/eeh_dev.c              | 13 -------------
+ arch/powerpc/kernel/of_platform.c          |  4 ++--
+ arch/powerpc/platforms/pseries/pci_dlpar.c |  2 +-
+ 5 files changed, 5 insertions(+), 18 deletions(-)
 
-On Fri, Jul 24, 2020 at 09:52:14PM +1000, Michael Ellerman wrote:
-> Bharata B Rao <bharata@linux.ibm.com> writes:
-> > On Tue, Jul 21, 2020 at 10:25:58PM +1000, Michael Ellerman wrote:
-> >> Bharata B Rao <bharata@linux.ibm.com> writes:
-> >> > On Tue, Jul 21, 2020 at 11:45:20AM +1000, Michael Ellerman wrote:
-> >> >> Nathan Lynch <nathanl@linux.ibm.com> writes:
-> >> >> > "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> >> >> >> This is the next version of the fixes for memory unplug on radix.
-> >> >> >> The issues and the fix are described in the actual patches.
-> >> >> >
-> >> >> > I guess this isn't actually causing problems at runtime right now=
-, but I
-> >> >> > notice calls to resize_hpt_for_hotplug() from arch_add_memory() a=
-nd
-> >> >> > arch_remove_memory(), which ought to be mmu-agnostic:
-> >> >> >
-> >> >> > int __ref arch_add_memory(int nid, u64 start, u64 size,
-> >> >> > 			  struct mhp_params *params)
-> >> >> > {
-> >> >> > 	unsigned long start_pfn =3D start >> PAGE_SHIFT;
-> >> >> > 	unsigned long nr_pages =3D size >> PAGE_SHIFT;
-> >> >> > 	int rc;
-> >> >> >
-> >> >> > 	resize_hpt_for_hotplug(memblock_phys_mem_size());
-> >> >> >
-> >> >> > 	start =3D (unsigned long)__va(start);
-> >> >> > 	rc =3D create_section_mapping(start, start + size, nid,
-> >> >> > 				    params->pgprot);
-> >> >> > ...
-> >> >>=20
-> >> >> Hmm well spotted.
-> >> >>=20
-> >> >> That does return early if the ops are not setup:
-> >> >>=20
-> >> >> int resize_hpt_for_hotplug(unsigned long new_mem_size)
-> >> >> {
-> >> >> 	unsigned target_hpt_shift;
-> >> >>=20
-> >> >> 	if (!mmu_hash_ops.resize_hpt)
-> >> >> 		return 0;
-> >> >>=20
-> >> >>=20
-> >> >> And:
-> >> >>=20
-> >> >> void __init hpte_init_pseries(void)
-> >> >> {
-> >> >> 	...
-> >> >> 	if (firmware_has_feature(FW_FEATURE_HPT_RESIZE))
-> >> >> 		mmu_hash_ops.resize_hpt =3D pseries_lpar_resize_hpt;
-> >> >>=20
-> >> >> And that comes in via ibm,hypertas-functions:
-> >> >>=20
-> >> >> 	{FW_FEATURE_HPT_RESIZE,		"hcall-hpt-resize"},
-> >> >>=20
-> >> >>=20
-> >> >> But firmware is not necessarily going to add/remove that call based=
- on
-> >> >> whether we're using hash/radix.
-> >> >
-> >> > Correct but hpte_init_pseries() will not be called for radix guests.
-> >>=20
-> >> Yeah, duh. You'd think the function name would have been a sufficient
-> >> clue for me :)
-> >>=20
-> >> >> So I think a follow-up patch is needed to make this more robust.
-> >> >>=20
-> >> >> Aneesh/Bharata what platform did you test this series on? I'm curio=
-us
-> >> >> how this didn't break.
-> >> >
-> >> > I have tested memory hotplug/unplug for radix guest on zz platform a=
-nd
-> >> > sanity-tested this for hash guest on P8.
-> >> >
-> >> > As noted above, mmu_hash_ops.resize_hpt will not be set for radix
-> >> > guest and hence we won't see any breakage.
-> >>=20
-> >> OK.
-> >>=20
-> >> That's probably fine as it is then. Or maybe just a comment in
-> >> resize_hpt_for_hotplug() pointing out that resize_hpt will be NULL if
-> >> we're using radix.
-> >
-> > Or we could move these calls to hpt-only routines like below?
->=20
-> That looks like it would be equivalent, and would nicely isolate those
-> calls in hash specific code. So yeah I think that's worth sending as a
-> proper patch, even better if you can test it.
->=20
-> > David - Do you remember if there was any particular reason to have
-> > these two hpt-resize calls within powerpc-generic memory hotplug code?
->=20
-> I think the HPT resizing was developed before or concurrently with the
-> radix support, so I would guess it was just not something we thought
-> about at the time.
+diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+index 964a54292b36..1a19b1bb74c0 100644
+--- a/arch/powerpc/include/asm/eeh.h
++++ b/arch/powerpc/include/asm/eeh.h
+@@ -294,7 +294,6 @@ const char *eeh_pe_loc_get(struct eeh_pe *pe);
+ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe);
+ 
+ struct eeh_dev *eeh_dev_init(struct pci_dn *pdn);
+-void eeh_dev_phb_init_dynamic(struct pci_controller *phb);
+ void eeh_show_enabled(void);
+ int __init eeh_ops_register(struct eeh_ops *ops);
+ int __exit eeh_ops_unregister(const char *name);
+@@ -362,6 +361,7 @@ static inline void eeh_remove_device(struct pci_dev *dev) { }
+ 
+ #define EEH_POSSIBLE_ERROR(val, type) (0)
+ #define EEH_IO_ERROR_VALUE(size) (-1UL)
++static inline int eeh_phb_pe_create(struct pci_controller *phb) { return 0; }
+ #endif /* CONFIG_EEH */
+ 
+ #if defined(CONFIG_PPC_PSERIES) && defined(CONFIG_EEH)
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index d407981dec76..859f76020256 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1096,7 +1096,7 @@ static int eeh_init(void)
+ 
+ 	/* Initialize PHB PEs */
+ 	list_for_each_entry_safe(hose, tmp, &hose_list, list_node)
+-		eeh_dev_phb_init_dynamic(hose);
++		eeh_phb_pe_create(hose);
+ 
+ 	eeh_addr_cache_init();
+ 
+diff --git a/arch/powerpc/kernel/eeh_dev.c b/arch/powerpc/kernel/eeh_dev.c
+index 7370185c7a05..8e159a12f10c 100644
+--- a/arch/powerpc/kernel/eeh_dev.c
++++ b/arch/powerpc/kernel/eeh_dev.c
+@@ -52,16 +52,3 @@ struct eeh_dev *eeh_dev_init(struct pci_dn *pdn)
+ 
+ 	return edev;
+ }
+-
+-/**
+- * eeh_dev_phb_init_dynamic - Create EEH devices for devices included in PHB
+- * @phb: PHB
+- *
+- * Scan the PHB OF node and its child association, then create the
+- * EEH devices accordingly
+- */
+-void eeh_dev_phb_init_dynamic(struct pci_controller *phb)
+-{
+-	/* EEH PE for PHB */
+-	eeh_phb_pe_create(phb);
+-}
+diff --git a/arch/powerpc/kernel/of_platform.c b/arch/powerpc/kernel/of_platform.c
+index 71a3f97dc988..f89376ff633e 100644
+--- a/arch/powerpc/kernel/of_platform.c
++++ b/arch/powerpc/kernel/of_platform.c
+@@ -62,8 +62,8 @@ static int of_pci_phb_probe(struct platform_device *dev)
+ 	/* Init pci_dn data structures */
+ 	pci_devs_phb_init_dynamic(phb);
+ 
+-	/* Create EEH PEs for the PHB */
+-	eeh_dev_phb_init_dynamic(phb);
++	/* Create EEH PE for the PHB */
++	eeh_phb_pe_create(phb);
+ 
+ 	/* Scan the bus */
+ 	pcibios_scan_phb(phb);
+diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
+index b3a38f5a6b68..f9ae17e8a0f4 100644
+--- a/arch/powerpc/platforms/pseries/pci_dlpar.c
++++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
+@@ -34,7 +34,7 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
+ 	pci_devs_phb_init_dynamic(phb);
+ 
+ 	/* Create EEH devices for the PHB */
+-	eeh_dev_phb_init_dynamic(phb);
++	eeh_phb_pe_create(phb);
+ 
+ 	if (dn->child)
+ 		pseries_eeh_init_edev_recursive(PCI_DN(dn));
+-- 
+2.26.2
 
-Sounds about right; I don't remember for certain.
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---TakKZr9L6Hm6aLOc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl8b4ScACgkQbDjKyiDZ
-s5KfAw/+NTKEt8p9UsK1I51z4z80o4bn4U2rR+3E8l1qzs9Vk6U4mdJGdWNqSZE6
-MdQsRNRzqS51A2A6vLyg9bqC8uoM5VGJ8kArV7nMKVvv1nKIFLIuVLEa7pkJG/da
-zmC/4rbvBMCGhIwAjEdYHXR/yXzaJx4vNEpLQxddDOeR5xTuqot4ouyRE2AtILP5
-QKF9tO5Csbb0iDH2p3hbg4FejyupH4HCzW0E2epTEWj6gVzxnCK+RYFzg4bf3JTA
-wwzfEHYiLVBDoWMQDKcYjGNyjcXfuS0nD+DT0Osi0DsssjpGD+X0RuK9nxH3N8IK
-oTnfGTPfn19yRK+rnFzzv7wwBGkuvFtj3IvGW684G1H07i4U01hcWCd7tqF8HWoZ
-y8GriE9dJEDgLG9fI86RfBzKTKZsjKI0be8h/ELWF88fKdoXdSN4psn/bYJIUR4f
-mPcCJYRW7UyrTucDy8gteoJabNy1Lcj2nPMErwysjqHLNyAeep7X7/P/AoyoBv/6
-K7v70OOm0CeavnToSHG1S1ZEKFtOugkpPTQSVMqKJCf52rkbd/Hi9bc22zdvyh9Z
-OwLykx9f3NEIdqgg+6L5gUFnJrTkGu6TNdN+OtiGi1+O2JMujTKQjNsl++mRMBO7
-OeMbqoJvBy3oO1jO7jbg2weTYPtAWa5vQPF2OvDgA7SeULLAGp4=
-=5T7k
------END PGP SIGNATURE-----
-
---TakKZr9L6Hm6aLOc--
