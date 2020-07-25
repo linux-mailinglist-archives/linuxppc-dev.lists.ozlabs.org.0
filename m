@@ -2,101 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C53E22D353
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 02:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF1E22D41A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 05:05:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BD6YD1F3SzF0tS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 10:35:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BD9tJ6WhLzF0yj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 13:05:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BD6WM22ttzDrWY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 10:33:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BD6WM0RZ9z8t7D
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 10:33:51 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BD6WM01TSz9sR4; Sat, 25 Jul 2020 10:33:51 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=URizxht5; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=URizxht5; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BD6WL3Frkz9sPf
- for <linuxppc-dev@ozlabs.org>; Sat, 25 Jul 2020 10:33:49 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06P0VF2K007882; Fri, 24 Jul 2020 20:33:07 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32fsbmmkn7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 20:33:07 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06P0X5YC011232;
- Fri, 24 Jul 2020 20:33:06 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32fsbmmkn1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Jul 2020 20:33:06 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06P0LA8s001214;
- Sat, 25 Jul 2020 00:33:05 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma02wdc.us.ibm.com with ESMTP id 32brqa096d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 25 Jul 2020 00:33:05 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06P0X2la64553358
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 25 Jul 2020 00:33:02 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9335C78060;
- Sat, 25 Jul 2020 00:33:04 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A9AA47805C;
- Sat, 25 Jul 2020 00:33:01 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.163.38.252])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Sat, 25 Jul 2020 00:33:01 +0000 (GMT)
-References: <159524918900.20855.17709718993097359220.stgit@hbathini.in.ibm.com>
- <159524954805.20855.1164928096364700614.stgit@hbathini.in.ibm.com>
- <875zad6ajx.fsf@morokweng.localdomain>
- <77c606da-8eb2-d831-147b-a204b498c7d7@linux.ibm.com>
-User-agent: mu4e 1.2.0; emacs 26.3
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH v4 06/12] ppc64/kexec_file: restrict memory usage of kdump
- kernel
-In-reply-to: <77c606da-8eb2-d831-147b-a204b498c7d7@linux.ibm.com>
-Date: Fri, 24 Jul 2020 21:32:59 -0300
-Message-ID: <874kpwsabo.fsf@morokweng.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BD9qf2c7pzF1Sc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 13:03:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1595646185;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dJKlmgtXl7uNqK+gi01GLPol8dXOhIFF+vRj8dKFHJ4=;
+ b=URizxht54as81zYfJsZ6OQ5kEj1I2VZBAMAUaHaDc6sQOAnhmB9V9D5veegmbbXpnI3UxQ
+ rEIEUVfjjZRZl/eDd4+Jnt1jd4bAvqByO2HDTO3XGfnz0sdfZO5iwes2xPyIIBY04sTUGh
+ ejnj8l2blnl60iCc8m5Adn1SBH4bjAY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1595646185;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dJKlmgtXl7uNqK+gi01GLPol8dXOhIFF+vRj8dKFHJ4=;
+ b=URizxht54as81zYfJsZ6OQ5kEj1I2VZBAMAUaHaDc6sQOAnhmB9V9D5veegmbbXpnI3UxQ
+ rEIEUVfjjZRZl/eDd4+Jnt1jd4bAvqByO2HDTO3XGfnz0sdfZO5iwes2xPyIIBY04sTUGh
+ ejnj8l2blnl60iCc8m5Adn1SBH4bjAY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-388-taJbuqtoOr-9IUyajzXA8A-1; Fri, 24 Jul 2020 23:03:02 -0400
+X-MC-Unique: taJbuqtoOr-9IUyajzXA8A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AA6B958;
+ Sat, 25 Jul 2020 03:03:00 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-117-203.rdu2.redhat.com [10.10.117.203])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B17D18FA2A;
+ Sat, 25 Jul 2020 03:02:58 +0000 (UTC)
+Subject: Re: [PATCH v3 5/6] powerpc/pseries: implement paravirt qspinlocks for
+ SPLPAR
+From: Waiman Long <longman@redhat.com>
+To: Will Deacon <will@kernel.org>, peterz@infradead.org
+References: <20200706043540.1563616-1-npiggin@gmail.com>
+ <20200706043540.1563616-6-npiggin@gmail.com>
+ <874kqhvu1v.fsf@mpe.ellerman.id.au>
+ <8265d782-4e50-a9b2-a908-0cb588ffa09c@redhat.com>
+ <20200723140011.GR5523@worktop.programming.kicks-ass.net>
+ <845de183-56f5-2958-3159-faa131d46401@redhat.com>
+ <20200723184759.GS119549@hirez.programming.kicks-ass.net>
+ <20200724081647.GA16642@willie-the-truck>
+ <8532332b-85dd-661b-cf72-81a8ceb70747@redhat.com>
+Organization: Red Hat
+Message-ID: <ccf0c6a6-b7c3-8909-cc8f-0c5e7434c372@redhat.com>
+Date: Fri, 24 Jul 2020 23:02:58 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-24_10:2020-07-24,
- 2020-07-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- lowpriorityscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- malwarescore=0 adultscore=0 phishscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2007240164
+In-Reply-To: <8532332b-85dd-661b-cf72-81a8ceb70747@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,69 +95,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Petr Tesarik <ptesarik@suse.cz>,
- Nayna Jain <nayna@linux.ibm.com>, Kexec-ml <kexec@lists.infradead.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
+Cc: linux-arch@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ virtualization@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>,
+ kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Hari Bathini <hbathini@linux.ibm.com> writes:
-
-> On 24/07/20 5:36 am, Thiago Jung Bauermann wrote:
->>
->> Hari Bathini <hbathini@linux.ibm.com> writes:
->>
->>> Kdump kernel, used for capturing the kernel core image, is supposed
->>> to use only specific memory regions to avoid corrupting the image to
->>> be captured. The regions are crashkernel range - the memory reserved
->>> explicitly for kdump kernel, memory used for the tce-table, the OPAL
->>> region and RTAS region as applicable. Restrict kdump kernel memory
->>> to use only these regions by setting up usable-memory DT property.
->>> Also, tell the kdump kernel to run at the loaded address by setting
->>> the magic word at 0x5c.
+On 7/24/20 3:10 PM, Waiman Long wrote:
+> On 7/24/20 4:16 AM, Will Deacon wrote:
+>> On Thu, Jul 23, 2020 at 08:47:59PM +0200, peterz@infradead.org wrote:
+>>> On Thu, Jul 23, 2020 at 02:32:36PM -0400, Waiman Long wrote:
+>>>> BTW, do you have any comment on my v2 lock holder cpu info 
+>>>> qspinlock patch?
+>>>> I will have to update the patch to fix the reported 0-day test 
+>>>> problem, but
+>>>> I want to collect other feedback before sending out v3.
+>>> I want to say I hate it all, it adds instructions to a path we spend an
+>>> aweful lot of time optimizing without really getting anything back for
+>>> it.
 >>>
->>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
->>> Tested-by: Pingfan Liu <piliu@redhat.com>
->>> ---
->>>
->>> v3 -> v4:
->>> * Updated get_node_path() to be an iterative function instead of a
->>>   recursive one.
->>> * Added comment explaining why low memory is added to kdump kernel's
->>>   usable memory ranges though it doesn't fall in crashkernel region.
->>> * For correctness, added fdt_add_mem_rsv() for the low memory being
->>>   added to kdump kernel's usable memory ranges.
->>
->> Good idea.
->>
->>> * Fixed prop pointer update in add_usable_mem_property() and changed
->>>   duple to tuple as suggested by Thiago.
->>
->> <snip>
->>
->>> +/**
->>> + * get_node_pathlen - Get the full path length of the given node.
->>> + * @dn:               Node.
->>> + *
->>> + * Also, counts '/' at the end of the path.
->>> + * For example, /memory@0 will be "/memory@0/\0" => 11 bytes.
->>
->> Wouldn't this function return 10 in the case of /memory@0?
+>>> Will, how do you feel about it?
+>> I can see it potentially being useful for debugging, but I hate the
+>> limitation to 256 CPUs. Even arm64 is hitting that now.
 >
-> Actually, it does return 11. +1 while returning is for counting %NUL.
-> On top of that we count an extra '/' for root node.. so, it ends up as 11.
-> ('/'memory@0'/''\0'). Note the extra '/' before '\0'. Let me handle root node
-> separately. That should avoid the confusion.
+> After thinking more about that, I think we can use all the remaining 
+> bits in the 16-bit locked_pending. Reserving 1 bit for locked and 1 
+> bit for pending, there are 14 bits left. So as long as NR_CPUS < 16k 
+> (requirement for 16-bit locked_pending), we can put all possible cpu 
+> numbers into the lock. We can also just use smp_processor_id() without 
+> additional percpu data. 
 
-Ah, that is true. I forgot to count the iteration for the root node.
-Sorry about that.
+Sorry, that doesn't work. The extra bits in the pending byte won't get 
+cleared on unlock. That will have noticeable performance impact. 
+Clearing the pending byte on unlock will cause other performance 
+problem. So I guess we will have to limit the cpu number in the locked byte.
 
---
-Thiago Jung Bauermann
-IBM Linux Technology Center
+Regards,
+Longman
+
