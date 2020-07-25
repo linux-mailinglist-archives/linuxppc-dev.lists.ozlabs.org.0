@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891B922D604
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 10:19:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C0522D60B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 10:21:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BDJrv5ZPczF1R4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 18:19:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BDJvS0F0JzF0bG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jul 2020 18:21:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=J88uH69C; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=HKGn6rQD; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BDJj20nRFzDqcx
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 18:12:53 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id b9so5743631plx.6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 01:12:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BDJj470GZzF14v
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 18:12:56 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id s26so6503911pfm.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 01:12:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=EtnNMRWRkvexQOTkqZ31SnrSAWw1F855iKUH9AQWyww=;
- b=J88uH69CWJ3lu3TvKvDyEYWgXd5hFw2fWBO+1z2/27D4WBb2AMQrMXzUAgQdpqerdl
- DQz3OM7cFieY7fqAejD9s02/mf9gV23YiTXgERt/DNYJA8NpVs9aYpuDRjD585Zm3zJJ
- MYcvqB/xv7g49I/vEgFV2HxTNCJlU1Fu/1frX/Wa6nZ6GmJ61cJzuRgfFZrGW69Rsm1v
- ZcfiWvNwXSwKjzgPdwWanuWqw8nDdTSqdR17CBkSts46l7Qv3+aw44WbBDwRMGlKJ0CU
- aGhZnPJ2tUG/m9YQeuBHgxbl6SxgkcWQ/UeqxjwnFMQpuWU45tpnhKLUKV8vlHGknv++
- ZGPA==
+ bh=sv4HImIExSjO3J544V9iDARZhf98u6/xJnOC0GFK+Gk=;
+ b=HKGn6rQDToc+LwRlTN64osI7uOV4Ue3jeObUMSCyU2T3Y0K1WPIfAq+kvNsxhqjlbt
+ fD/PayWiQvPxM9vhX6jomrVtNn5PIKeATqECNveXVhWQIx2MC/StDFgs2MbtHXhoMv2L
+ OGSOacT8o8+1+lChV9tzmFJ6ii1Ze6e98bCa8po6flFrWd8zRUMK+404Nw+E77oTX2xG
+ t/VeWY0qI4RXMpROHaOhM+vaK0wnRnjNZTt1VN8PomopOFoAi0Eu57CMVmGKv0US3Ok/
+ JoXs+GBWU7H6gzJUJv3NAW78XMfwPJ5WwgfJSHggZUpeZ6pPsdFkyovc4EmhrYg8V+j5
+ gI1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=EtnNMRWRkvexQOTkqZ31SnrSAWw1F855iKUH9AQWyww=;
- b=m6VZsJ+AMG1t748qPQPBNEAnruUBb7ySAmPvtDJDbw67xJYaUzggy10IQ2BkgRHU8/
- Q57qE5HXJJI/q2Jg1AeeaReoiCokaRa08jemhWGvV6JjH8EQ+ZyW3YVKr7tFkmgb9NhF
- MrJKYT518NDBOiJqyHW6OC3pKmJkluyewnRQx/F90nCaHvRrAHstB+1+h9zLpX7juMhz
- IXgnT1+Vk0T8X0CbO7jcsoIlM77reuw6zokkogTt68k9XXHAayVn0xmxK9fZlu/MjoZI
- M5uMrXZaNPbeSBcR/0MJtEaDjY2SBAtdUZpM6qCgbzrnVwFXlxMomxwBexbP7zgPfOtt
- 1p9Q==
-X-Gm-Message-State: AOAM531CcO20AJhIPNtyk5Zz/xxa2h82APqclicv6307a2DAgp4zLVKQ
- MZ6CQCOth6rJ1pG96T3LDmt8J3LJykw=
-X-Google-Smtp-Source: ABdhPJxhduEd2jU5D+R0izvw7iMo8hE59t03l/m9J/wWoGhERc9URHBb9FB2aSJlP28km2/v3hPMPg==
-X-Received: by 2002:a17:90a:dd44:: with SMTP id
- u4mr8504397pjv.203.1595664771806; 
- Sat, 25 Jul 2020 01:12:51 -0700 (PDT)
+ bh=sv4HImIExSjO3J544V9iDARZhf98u6/xJnOC0GFK+Gk=;
+ b=m0T58M9XR7fRRy+ZcogBrZ3La92xxPsYZNvo8AbyVigwgL1lgHbwoE76RpHPA/UCCS
+ 6XTXYErffctMEU4/3N4ZCzDHDxHmC1zQRxXlHiGsx0XOu10YJgjJGMhtQeSIarT5mYLC
+ 4rvd/4GDjFrCtq5R1J5/AQz1Q7dIYCoH9cV7pcQzaGLuIIb6p0mFSViXjFNyzkr2gmhR
+ VhNw6jE3bAdSKCUC+Sp31D3fIALr73vQuJzJlqi2xlcCLnO3SEC+H//IZ0Jfp0is0j4y
+ x/7fqoONo5CoSA4JE08pZEF5gRMNq3SItnB/kbevWUsYRahpTlsZKOaHblctWPkV69Xg
+ pisQ==
+X-Gm-Message-State: AOAM530KEJpl+f07ZmqiFU017udfxQhxIBExuorNgtGLzt48E5lfrgHV
+ hGDJe7harKBsjRctCaYsbGdVMM4kCH8=
+X-Google-Smtp-Source: ABdhPJyNyIgXILmWsaGSkDhHHny9T7jK6dWL/EIiAkw1KyAAJL7q2WPNaoePZO4e8etNhG4TEfrJ4A==
+X-Received: by 2002:a65:6403:: with SMTP id a3mr11916156pgv.246.1595664774119; 
+ Sat, 25 Jul 2020 01:12:54 -0700 (PDT)
 Received: from localhost.localdomain ([118.210.60.180])
- by smtp.gmail.com with ESMTPSA id a26sm8647360pgm.20.2020.07.25.01.12.49
+ by smtp.gmail.com with ESMTPSA id a26sm8647360pgm.20.2020.07.25.01.12.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Jul 2020 01:12:51 -0700 (PDT)
+ Sat, 25 Jul 2020 01:12:53 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 04/14] powerpc/pseries: Stop using pdn->pe_number
-Date: Sat, 25 Jul 2020 18:12:21 +1000
-Message-Id: <20200725081231.39076-4-oohall@gmail.com>
+Subject: [PATCH v3 05/14] powerpc/eeh: Kill off eeh_ops->get_pe_addr()
+Date: Sat, 25 Jul 2020 18:12:22 +1000
+Message-Id: <20200725081231.39076-5-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200725081231.39076-1-oohall@gmail.com>
 References: <20200725081231.39076-1-oohall@gmail.com>
@@ -84,63 +83,144 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pci_dn->pe_number field is mainly used to track the IODA PE number of a
-device on PowerNV. At some point it grew a user in the pseries SR-IOV
-support which muddies the waters a bit, so remove it.
+This is used in precisely one place which is in pseries specific platform
+code.  There's no need to have the callback in eeh_ops since the platform
+chooses the EEH PE addresses anyway. The PowerNV implementation has always
+been a stub too so remove it.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
-v2: no change
+v2: Made "buid" in pseries_eeh_get_pe_addr() an unsigned long to match
+    the pci_controller type.
 v3: no change
 ---
- arch/powerpc/platforms/pseries/eeh_pseries.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ arch/powerpc/include/asm/eeh.h               |  1 -
+ arch/powerpc/platforms/powernv/eeh-powernv.c | 13 ------------
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 22 ++++++++++----------
+ 3 files changed, 11 insertions(+), 25 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+index 2a935db72198..676d499bda42 100644
+--- a/arch/powerpc/include/asm/eeh.h
++++ b/arch/powerpc/include/asm/eeh.h
+@@ -220,7 +220,6 @@ struct eeh_ops {
+ 	int (*init)(void);
+ 	struct eeh_dev *(*probe)(struct pci_dev *pdev);
+ 	int (*set_option)(struct eeh_pe *pe, int option);
+-	int (*get_pe_addr)(struct eeh_pe *pe);
+ 	int (*get_state)(struct eeh_pe *pe, int *delay);
+ 	int (*reset)(struct eeh_pe *pe, int option);
+ 	int (*get_log)(struct eeh_pe *pe, int severity, char *drv_log, unsigned long len);
+diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+index 79409e005fcd..bcd0515d8f79 100644
+--- a/arch/powerpc/platforms/powernv/eeh-powernv.c
++++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+@@ -535,18 +535,6 @@ static int pnv_eeh_set_option(struct eeh_pe *pe, int option)
+ 	return 0;
+ }
+ 
+-/**
+- * pnv_eeh_get_pe_addr - Retrieve PE address
+- * @pe: EEH PE
+- *
+- * Retrieve the PE address according to the given tranditional
+- * PCI BDF (Bus/Device/Function) address.
+- */
+-static int pnv_eeh_get_pe_addr(struct eeh_pe *pe)
+-{
+-	return pe->addr;
+-}
+-
+ static void pnv_eeh_get_phb_diag(struct eeh_pe *pe)
+ {
+ 	struct pnv_phb *phb = pe->phb->private_data;
+@@ -1670,7 +1658,6 @@ static struct eeh_ops pnv_eeh_ops = {
+ 	.init                   = pnv_eeh_init,
+ 	.probe			= pnv_eeh_probe,
+ 	.set_option             = pnv_eeh_set_option,
+-	.get_pe_addr            = pnv_eeh_get_pe_addr,
+ 	.get_state              = pnv_eeh_get_state,
+ 	.reset                  = pnv_eeh_reset,
+ 	.get_log                = pnv_eeh_get_log,
 diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-index ace117f99d94..18a2522b9b5e 100644
+index 18a2522b9b5e..bcc72b9a5309 100644
 --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
 +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-@@ -52,8 +52,6 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
- 	dev_dbg(&pdev->dev, "EEH: Setting up device\n");
- #ifdef CONFIG_PCI_IOV
- 	if (pdev->is_virtfn) {
--		struct pci_dn *physfn_pdn;
--
- 		pdn->device_id  =  pdev->device;
- 		pdn->vendor_id  =  pdev->vendor;
- 		pdn->class_code =  pdev->class;
-@@ -63,8 +61,6 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
- 		 * completion from platform.
- 		 */
- 		pdn->last_allow_rc =  0;
--		physfn_pdn      =  pci_get_pdn(pdev->physfn);
--		pdn->pe_number  =  physfn_pdn->pe_num_map[pdn->vf_index];
- 	}
- #endif
- 	pseries_eeh_init_edev(pdn);
-@@ -772,8 +768,8 @@ int pseries_send_allow_unfreeze(struct pci_dn *pdn,
+@@ -32,6 +32,8 @@
+ #include <asm/ppc-pci.h>
+ #include <asm/rtas.h>
  
- static int pseries_call_allow_unfreeze(struct eeh_dev *edev)
- {
-+	int cur_vfs = 0, rc = 0, vf_index, bus, devfn, vf_pe_num;
- 	struct pci_dn *pdn, *tmp, *parent, *physfn_pdn;
--	int cur_vfs = 0, rc = 0, vf_index, bus, devfn;
- 	u16 *vf_pe_array;
- 
- 	vf_pe_array = kzalloc(RTAS_DATA_BUF_SIZE, GFP_KERNEL);
-@@ -806,8 +802,10 @@ static int pseries_call_allow_unfreeze(struct eeh_dev *edev)
- 			}
- 		} else {
- 			pdn = pci_get_pdn(edev->pdev);
--			vf_pe_array[0] = cpu_to_be16(pdn->pe_number);
- 			physfn_pdn = pci_get_pdn(edev->physfn);
++static int pseries_eeh_get_pe_addr(struct pci_dn *pdn);
 +
-+			vf_pe_num = physfn_pdn->pe_num_map[edev->vf_index];
-+			vf_pe_array[0] = cpu_to_be16(vf_pe_num);
- 			rc = pseries_send_allow_unfreeze(physfn_pdn,
- 							 vf_pe_array, 1);
- 			pdn->last_allow_rc = rc;
+ /* RTAS tokens */
+ static int ibm_set_eeh_option;
+ static int ibm_set_slot_reset;
+@@ -301,7 +303,7 @@ void pseries_eeh_init_edev(struct pci_dn *pdn)
+ 		eeh_edev_dbg(edev, "EEH failed to enable on device (code %d)\n", ret);
+ 	} else {
+ 		/* Retrieve PE address */
+-		edev->pe_config_addr = eeh_ops->get_pe_addr(&pe);
++		edev->pe_config_addr = pseries_eeh_get_pe_addr(pdn);
+ 		pe.addr = edev->pe_config_addr;
+ 
+ 		/* Some older systems (Power4) allow the ibm,set-eeh-option
+@@ -431,8 +433,10 @@ static int pseries_eeh_set_option(struct eeh_pe *pe, int option)
+  * It's notable that zero'ed return value means invalid PE config
+  * address.
+  */
+-static int pseries_eeh_get_pe_addr(struct eeh_pe *pe)
++static int pseries_eeh_get_pe_addr(struct pci_dn *pdn)
+ {
++	int config_addr = rtas_config_addr(pdn->busno, pdn->devfn, 0);
++	unsigned long buid = pdn->phb->buid;
+ 	int ret = 0;
+ 	int rets[3];
+ 
+@@ -443,18 +447,16 @@ static int pseries_eeh_get_pe_addr(struct eeh_pe *pe)
+ 		 * meaningless.
+ 		 */
+ 		ret = rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
+-				pe->config_addr, BUID_HI(pe->phb->buid),
+-				BUID_LO(pe->phb->buid), 1);
++				config_addr, BUID_HI(buid), BUID_LO(buid), 1);
+ 		if (ret || (rets[0] == 0))
+ 			return 0;
+ 
+ 		/* Retrieve the associated PE config address */
+ 		ret = rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
+-				pe->config_addr, BUID_HI(pe->phb->buid),
+-				BUID_LO(pe->phb->buid), 0);
++				config_addr, BUID_HI(buid), BUID_LO(buid), 0);
+ 		if (ret) {
+ 			pr_warn("%s: Failed to get address for PHB#%x-PE#%x\n",
+-				__func__, pe->phb->global_number, pe->config_addr);
++				__func__, pdn->phb->global_number, config_addr);
+ 			return 0;
+ 		}
+ 
+@@ -463,11 +465,10 @@ static int pseries_eeh_get_pe_addr(struct eeh_pe *pe)
+ 
+ 	if (ibm_get_config_addr_info != RTAS_UNKNOWN_SERVICE) {
+ 		ret = rtas_call(ibm_get_config_addr_info, 4, 2, rets,
+-				pe->config_addr, BUID_HI(pe->phb->buid),
+-				BUID_LO(pe->phb->buid), 0);
++				config_addr, BUID_HI(buid), BUID_LO(buid), 0);
+ 		if (ret) {
+ 			pr_warn("%s: Failed to get address for PHB#%x-PE#%x\n",
+-				__func__, pe->phb->global_number, pe->config_addr);
++				__func__, pdn->phb->global_number, config_addr);
+ 			return 0;
+ 		}
+ 
+@@ -839,7 +840,6 @@ static struct eeh_ops pseries_eeh_ops = {
+ 	.init			= pseries_eeh_init,
+ 	.probe			= pseries_eeh_probe,
+ 	.set_option		= pseries_eeh_set_option,
+-	.get_pe_addr		= pseries_eeh_get_pe_addr,
+ 	.get_state		= pseries_eeh_get_state,
+ 	.reset			= pseries_eeh_reset,
+ 	.get_log		= pseries_eeh_get_log,
 -- 
 2.26.2
 
