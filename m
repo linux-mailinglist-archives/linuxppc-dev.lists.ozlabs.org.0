@@ -2,46 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFBC22DE84
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 13:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DA222DED8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 14:01:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BF0xp6FNczF14k
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 21:26:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BF1kc0BJwzDrg1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 22:01:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=ismlg70E; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BF0vq3kw4zDrfS
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 21:24:37 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3470A20047A;
- Sun, 26 Jul 2020 13:24:34 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8EE97200467;
- Sun, 26 Jul 2020 13:24:29 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id AC320402D8;
- Sun, 26 Jul 2020 13:24:23 +0200 (CEST)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: fsl-asoc-card: Remove fsl_asoc_card_set_bias_level
- function
-Date: Sun, 26 Jul 2020 19:20:17 +0800
-Message-Id: <1595762417-2190-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BF1hY5BD2zDq61
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 21:59:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=3Ulcv+XYXDsbe/gQ1QFaymA76fUaf73Ogbakhyf58ME=; b=ismlg70EGIrI2GcxeAyrDWqIpb
+ ERntESs/K7v8oLSLDAyAEvckbFbKb5gDNBysO72uyFZ8Iv9LllqLYbcQq7cYbMNeZdfgEeofsaEr0
+ dOMiZHBiYdzAXlTvErQKqCJLbaJAYj42ZODd6CzzYbBFv1kovJA8FMzXYXQ9RdAh7is1fK6Tj8WYz
+ gIWoY29VXIgaLtBs88qi1Dn1cJYY6dLu93ubtTpChQWEwu7+zMp2SHol91o/Op4GE2ng0AvfW4ozw
+ csLZIUPXqGeS6rK4DmgbMKFKvLwqTQIBR6PCvlLCMET4DGwcyC6C4zs8Id+3T+qrwgXJEv98xYrLZ
+ nFHyab/g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jzfJj-0006ih-6B; Sun, 26 Jul 2020 11:59:47 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E7704304D58;
+ Sun, 26 Jul 2020 13:59:44 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 33A6D284D5CC2; Sun, 26 Jul 2020 13:59:44 +0200 (CEST)
+Date: Sun, 26 Jul 2020 13:59:44 +0200
+From: peterz@infradead.org
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/2] lockdep: improve current->(hard|soft)irqs_enabled
+ synchronisation with actual irq state
+Message-ID: <20200726115944.GB119549@hirez.programming.kicks-ass.net>
+References: <20200723105615.1268126-1-npiggin@gmail.com>
+ <20200725202617.GI10769@hirez.programming.kicks-ass.net>
+ <1595735694.b784cvipam.astroid@bobo.none>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1595735694.b784cvipam.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,267 +72,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With this case:
-aplay -Dhw:x 16khz.wav 24khz.wav
-There is sound distortion for 24khz.wav. The reason is that setting
-PLL of WM8962 with set_bias_level function, the bias level is not
-changed when 24khz.wav is played, then the PLL won't be reset, the
-clock is not correct, so distortion happens.
+On Sun, Jul 26, 2020 at 02:14:34PM +1000, Nicholas Piggin wrote:
+> > Now, x86, and at least arm64 call nmi_enter() before
+> > trace_hardirqs_off(), but AFAICT Power never did that, and that's part
+> > of the problem. nmi_enter() does lockdep_off() and that _used_ to also
+> > kill IRQ tracking.
+> 
+> Power does do nmi_enter -- __perf_event_interrupt()
+> 
+>         nmi = perf_intr_is_nmi(regs);
+>         if (nmi)
+>                 nmi_enter();
+>         else
+>                 irq_enter();
 
-The resolution of this issue is to remove fsl_asoc_card_set_bias_level.
-Move PLL configuration to hw_params and hw_free.
+That's _waaaay_ too late, you've done the trace_hardirqs_{off,on} in
+arch/powerpc/kernel/exceptions-64e.S, you need to _first_ do nmi_enter()
+and _then_ trace_hardirqs_off(), or rather, that's still broken, but
+then we get into the details of entry ordering.
 
-After removing fsl_asoc_card_set_bias_level, also test WM8960 case,
-it can work.
-
-Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl-asoc-card.c | 149 +++++++++++++++-------------------
- 1 file changed, 66 insertions(+), 83 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 4848ba61d083..0517dbb3e908 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -73,6 +73,7 @@ struct cpu_priv {
-  * @codec_priv: CODEC private data
-  * @cpu_priv: CPU private data
-  * @card: ASoC card structure
-+ * @is_stream_in_use: flags for release resource in hw_free
-  * @sample_rate: Current sample rate
-  * @sample_format: Current sample format
-  * @asrc_rate: ASRC sample rate used by Back-Ends
-@@ -89,6 +90,7 @@ struct fsl_asoc_card_priv {
- 	struct codec_priv codec_priv;
- 	struct cpu_priv cpu_priv;
- 	struct snd_soc_card card;
-+	bool is_stream_in_use[2];
- 	u32 sample_rate;
- 	snd_pcm_format_t sample_format;
- 	u32 asrc_rate;
-@@ -151,21 +153,17 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
- 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
- 	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(rtd->card);
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-+	struct codec_priv *codec_priv = &priv->codec_priv;
- 	struct cpu_priv *cpu_priv = &priv->cpu_priv;
- 	struct device *dev = rtd->card->dev;
-+	unsigned int pll_out;
- 	int ret;
- 
- 	priv->sample_rate = params_rate(params);
- 	priv->sample_format = params_format(params);
-+	priv->is_stream_in_use[tx] = true;
- 
--	/*
--	 * If codec-dai is DAI Master and all configurations are already in the
--	 * set_bias_level(), bypass the remaining settings in hw_params().
--	 * Note: (dai_fmt & CBM_CFM) includes CBM_CFM and CBM_CFS.
--	 */
--	if ((priv->card.set_bias_level &&
--	     priv->dai_fmt & SND_SOC_DAIFMT_CBM_CFM) ||
--	    fsl_asoc_card_is_ac97(priv))
-+	if (fsl_asoc_card_is_ac97(priv))
- 		return 0;
- 
- 	/* Specific configurations of DAIs starts from here */
-@@ -185,12 +183,72 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
- 			return ret;
- 		}
- 	}
-+	/* Specific configuration for PLL */
-+	if (codec_priv->pll_id && codec_priv->fll_id) {
-+		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
-+			pll_out = priv->sample_rate * 384;
-+		else
-+			pll_out = priv->sample_rate * 256;
-+
-+		ret = snd_soc_dai_set_pll(asoc_rtd_to_codec(rtd, 0),
-+					  codec_priv->pll_id,
-+					  codec_priv->mclk_id,
-+					  codec_priv->mclk_freq, pll_out);
-+		if (ret) {
-+			dev_err(dev, "failed to start FLL: %d\n", ret);
-+			return ret;
-+		}
-+
-+		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
-+					     codec_priv->fll_id,
-+					     pll_out, SND_SOC_CLOCK_IN);
-+
-+		if (ret && ret != -ENOTSUPP) {
-+			dev_err(dev, "failed to set SYSCLK: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
-+{
-+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-+	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(rtd->card);
-+	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-+	struct codec_priv *codec_priv = &priv->codec_priv;
-+	struct device *dev = rtd->card->dev;
-+	int ret;
-+
-+	priv->is_stream_in_use[tx] = false;
-+
-+	if (!priv->is_stream_in_use[!tx] && codec_priv->pll_id &&
-+	    codec_priv->fll_id) {
-+		/* Force freq to be 0 to avoid error message in codec */
-+		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
-+					     codec_priv->mclk_id,
-+					     0,
-+					     SND_SOC_CLOCK_IN);
-+		if (ret) {
-+			dev_err(dev, "failed to switch away from FLL: %d\n", ret);
-+			return ret;
-+		}
-+
-+		ret = snd_soc_dai_set_pll(asoc_rtd_to_codec(rtd, 0),
-+					  codec_priv->pll_id, 0, 0, 0);
-+		if (ret && ret != -ENOTSUPP) {
-+			dev_err(dev, "failed to stop FLL: %d\n", ret);
-+			return ret;
-+		}
-+	}
- 
- 	return 0;
- }
- 
- static const struct snd_soc_ops fsl_asoc_card_ops = {
- 	.hw_params = fsl_asoc_card_hw_params,
-+	.hw_free = fsl_asoc_card_hw_free,
- };
- 
- static int be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
-@@ -254,75 +312,6 @@ static struct snd_soc_dai_link fsl_asoc_card_dai[] = {
- 	},
- };
- 
--static int fsl_asoc_card_set_bias_level(struct snd_soc_card *card,
--					struct snd_soc_dapm_context *dapm,
--					enum snd_soc_bias_level level)
--{
--	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(card);
--	struct snd_soc_pcm_runtime *rtd;
--	struct snd_soc_dai *codec_dai;
--	struct codec_priv *codec_priv = &priv->codec_priv;
--	struct device *dev = card->dev;
--	unsigned int pll_out;
--	int ret;
--
--	rtd = snd_soc_get_pcm_runtime(card, &card->dai_link[0]);
--	codec_dai = asoc_rtd_to_codec(rtd, 0);
--	if (dapm->dev != codec_dai->dev)
--		return 0;
--
--	switch (level) {
--	case SND_SOC_BIAS_PREPARE:
--		if (dapm->bias_level != SND_SOC_BIAS_STANDBY)
--			break;
--
--		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
--			pll_out = priv->sample_rate * 384;
--		else
--			pll_out = priv->sample_rate * 256;
--
--		ret = snd_soc_dai_set_pll(codec_dai, codec_priv->pll_id,
--					  codec_priv->mclk_id,
--					  codec_priv->mclk_freq, pll_out);
--		if (ret) {
--			dev_err(dev, "failed to start FLL: %d\n", ret);
--			return ret;
--		}
--
--		ret = snd_soc_dai_set_sysclk(codec_dai, codec_priv->fll_id,
--					     pll_out, SND_SOC_CLOCK_IN);
--		if (ret && ret != -ENOTSUPP) {
--			dev_err(dev, "failed to set SYSCLK: %d\n", ret);
--			return ret;
--		}
--		break;
--
--	case SND_SOC_BIAS_STANDBY:
--		if (dapm->bias_level != SND_SOC_BIAS_PREPARE)
--			break;
--
--		ret = snd_soc_dai_set_sysclk(codec_dai, codec_priv->mclk_id,
--					     codec_priv->mclk_freq,
--					     SND_SOC_CLOCK_IN);
--		if (ret && ret != -ENOTSUPP) {
--			dev_err(dev, "failed to switch away from FLL: %d\n", ret);
--			return ret;
--		}
--
--		ret = snd_soc_dai_set_pll(codec_dai, codec_priv->pll_id, 0, 0, 0);
--		if (ret) {
--			dev_err(dev, "failed to stop FLL: %d\n", ret);
--			return ret;
--		}
--		break;
--
--	default:
--		break;
--	}
--
--	return 0;
--}
--
- static int fsl_asoc_card_audmux_init(struct device_node *np,
- 				     struct fsl_asoc_card_priv *priv)
- {
-@@ -611,7 +600,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	/* Diversify the card configurations */
- 	if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
- 		codec_dai_name = "cs42888";
--		priv->card.set_bias_level = NULL;
- 		priv->cpu_priv.sysclk_freq[TX] = priv->codec_priv.mclk_freq;
- 		priv->cpu_priv.sysclk_freq[RX] = priv->codec_priv.mclk_freq;
- 		priv->cpu_priv.sysclk_dir[TX] = SND_SOC_CLOCK_OUT;
-@@ -628,26 +616,22 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
- 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8962")) {
- 		codec_dai_name = "wm8962";
--		priv->card.set_bias_level = fsl_asoc_card_set_bias_level;
- 		priv->codec_priv.mclk_id = WM8962_SYSCLK_MCLK;
- 		priv->codec_priv.fll_id = WM8962_SYSCLK_FLL;
- 		priv->codec_priv.pll_id = WM8962_FLL;
- 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
- 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8960")) {
- 		codec_dai_name = "wm8960-hifi";
--		priv->card.set_bias_level = fsl_asoc_card_set_bias_level;
- 		priv->codec_priv.fll_id = WM8960_SYSCLK_AUTO;
- 		priv->codec_priv.pll_id = WM8960_SYSCLK_AUTO;
- 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
- 	} else if (of_device_is_compatible(np, "fsl,imx-audio-ac97")) {
- 		codec_dai_name = "ac97-hifi";
--		priv->card.set_bias_level = NULL;
- 		priv->dai_fmt = SND_SOC_DAIFMT_AC97;
- 		priv->card.dapm_routes = audio_map_ac97;
- 		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_ac97);
- 	} else if (of_device_is_compatible(np, "fsl,imx-audio-mqs")) {
- 		codec_dai_name = "fsl-mqs-dai";
--		priv->card.set_bias_level = NULL;
- 		priv->dai_fmt = SND_SOC_DAIFMT_LEFT_J |
- 				SND_SOC_DAIFMT_CBS_CFS |
- 				SND_SOC_DAIFMT_NB_NF;
-@@ -657,7 +641,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_tx);
- 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8524")) {
- 		codec_dai_name = "wm8524-hifi";
--		priv->card.set_bias_level = NULL;
- 		priv->dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
- 		priv->dai_link[1].dpcm_capture = 0;
- 		priv->dai_link[2].dpcm_capture = 0;
--- 
-2.27.0
 
