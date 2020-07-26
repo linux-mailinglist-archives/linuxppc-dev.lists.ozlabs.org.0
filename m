@@ -1,74 +1,157 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B0322DBAB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 06:16:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB0822DCF1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 09:42:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BDqPg3hNJzF12M
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 14:16:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BDvyy2B7PzF1Pn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 17:42:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=M7W5Lhxz; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=s/KPhVnJ; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BDqMp4wdCzF0jM
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 14:14:44 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id e8so7528223pgc.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 21:14:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=NaFK/HvQAlrC7LDIbLRf6mGY+l5iAmDEfcE+qmb5VDg=;
- b=M7W5LhxzJcXQLxq1nYyKrilWrWy1XNfMjBlV9bXpDzPhVA6K5rMDIE1V2mPVeyUTws
- y5cq75EQ9HH4TMLotEbpZmUWfMYZ+ynFAcWyATiwnazm1YrbFwYZmQWD3VUauqCT6vOf
- DjAvJzy5aMN3iHQNZbgFW1G1/6V3eUDzuROebY92ON5x0+uYdnyVJCW1bMMsW3SYgJB+
- z7K/gk7EJ1LEoCEcnXV+ARKglSstcyiuXByG14F40ckoC95yfJ56fjQSry4jgJA1O1mC
- o4ggqUqm37AnpRVrFkB0nSW1oXBMQRt4aqxaPsNd1i5bWIA7UYycVn9EFt08odvk3b57
- BCkQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BDvx50VyhzF154
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 17:40:20 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id k18so216487pfp.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 00:40:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Y+A2flPQHiwqj5ZZbya8SNaSpCcA8HeRW8c97QeXxHk=;
+ b=s/KPhVnJL0IArQWKIiK9e7NSI949/MZyKO6b2ljN1hg64XxGSiwwQTJ9S8lwI2cdsE
+ XPVi9FjsEO7RILWetlMNKQkxd9biVoHq8YPOAikCouswpDbkJgtaBlhI/VFbP/2BBOVP
+ Jl8x526x4a4r1C51d345phGmsm17tkB1lrJdGZ/fLLXoTjKahcCTTBHhFpcL8TzCvDe+
+ gqevIFW9wbCvowkffRbC9BH5fuYZCgf4VCe3VJcWeWDXajvhNojs2CDWgCRNgM57N4rG
+ 0PyYSEG6rHvd72NCi3GtkHgD+2Qzut2DPuMb/BcuNyxIvqItCZ5pUhyD2n/YUmSRiNJD
+ Hqpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=NaFK/HvQAlrC7LDIbLRf6mGY+l5iAmDEfcE+qmb5VDg=;
- b=Q9JFcYyHiqQbcPLq7HWL58yK5GKygNd56EiJsC019ZVsQpldwbKr7FoLgzHBc2hXi3
- UQMvVp1o0tUYnQc111wHB+yDOlGbwNiaLOxTKBtbebSa92iP5mK7PKy0nyJHXrc/ULiF
- GotirzRKYm0wBrPq/BONjD+9Qg54WGCbUs50KTpGG8URS6I8LLKpFKpGqi3fycgT1J/G
- VWuHTdlI9l4QHIsIc1fSIo3ROb5xxpUTLBGrvtGYiFeipWlaZLlFllHj8zPyZoaRUIe9
- zrXsKllwwfkPKH8OW9bEJVG02Ms4RZerZW5wrmh/tw4aZiBw3NLEjTxUvBGq5KKZ+wc4
- 9RiA==
-X-Gm-Message-State: AOAM533xKYdI2P1Yja/eJBMKgI4TsMFBeGjnO5hh03rBUmKexSAS6BA5
- +9LhFqjmqEGmLZ+2P3uxLNusJdQp
-X-Google-Smtp-Source: ABdhPJwQi5Jco6i9POh2NO1VNAXMvnHLFEAztqlB9K276iQFTK0wWDev7lSFOpmxXGPSbh5vtd07lQ==
-X-Received: by 2002:a63:5d54:: with SMTP id o20mr14356921pgm.253.1595736880937; 
- Sat, 25 Jul 2020 21:14:40 -0700 (PDT)
-Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id v11sm11846251pfc.108.2020.07.25.21.14.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Jul 2020 21:14:40 -0700 (PDT)
-Date: Sun, 26 Jul 2020 14:14:34 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=Y+A2flPQHiwqj5ZZbya8SNaSpCcA8HeRW8c97QeXxHk=;
+ b=rqH35tMqOA+AfzuErG1bPsnhiGn3dV30caPuACu8UJEWZ0RSPqFBwy+faDNizxasTA
+ Ea2qnoGyyI4MDME8o7qQDyOes9CwPFTro9hDdbRCg+5zPtKmDa0HX/4PtoeOmWRQdiRI
+ DRAnRtshiVlMTTqxxBDtlLQrlEOP0l1jf6FV20vf6JlcY50BO4LKEgiiKW00mu6f4uCp
+ Qzg7tpYVKPR7UeJjIcyhLgaHD4jJy6XLxLWHJrA5byHdZsqXOmTE56MByOROrYfINuWY
+ P/Q4kKeu8JjJkh9LX3GZYDywLW5PliPP9mfDyWdxl0s5gNAC0NlBXhq+HWzGCkXBigkS
+ An7A==
+X-Gm-Message-State: AOAM533df0uszEdTAgla/7lASNgdq0Tx0dWhXHgbeWjevzyOuGqLv9kP
+ cYHQTOsh8XtOLSh3qv/msbCNhQ==
+X-Google-Smtp-Source: ABdhPJxXFYlWjScCxC3Ci5kH5uoaVyJnUg3Ta3pVcZjqORSZG2Uuxa/OczRq8VcZu/SDFmf+Aet5ug==
+X-Received: by 2002:a65:428d:: with SMTP id j13mr15240292pgp.211.1595749216261; 
+ Sun, 26 Jul 2020 00:40:16 -0700 (PDT)
+Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
+ [124.171.83.152])
+ by smtp.gmail.com with ESMTPSA id 7sm10638368pgw.85.2020.07.26.00.40.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 26 Jul 2020 00:40:15 -0700 (PDT)
 Subject: Re: [PATCH 1/2] lockdep: improve current->(hard|soft)irqs_enabled
  synchronisation with actual irq state
-To: Peter Zijlstra <peterz@infradead.org>
+To: Nicholas Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>
 References: <20200723105615.1268126-1-npiggin@gmail.com>
- <20200725202617.GI10769@hirez.programming.kicks-ass.net>
-In-Reply-To: <20200725202617.GI10769@hirez.programming.kicks-ass.net>
+ <20200723114010.GO5523@worktop.programming.kicks-ass.net>
+ <1595506730.3mvrxktem5.astroid@bobo.none>
+ <1884dcea-9ecd-a1f3-21bb-213c655e2480@ozlabs.ru>
+ <1595568105.4eodjnxzwp.astroid@bobo.none>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <600a08a0-4b33-03a5-4749-bda8fa1e572d@ozlabs.ru>
+Date: Sun, 26 Jul 2020 17:40:10 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Message-Id: <1595735694.b784cvipam.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1595568105.4eodjnxzwp.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,114 +163,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Peter Zijlstra's message of July 26, 2020 6:26 am:
-> On Thu, Jul 23, 2020 at 08:56:14PM +1000, Nicholas Piggin wrote:
->> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/as=
-m/hw_irq.h
->> index 3a0db7b0b46e..35060be09073 100644
->> --- a/arch/powerpc/include/asm/hw_irq.h
->> +++ b/arch/powerpc/include/asm/hw_irq.h
->> @@ -200,17 +200,14 @@ static inline bool arch_irqs_disabled(void)
->>  #define powerpc_local_irq_pmu_save(flags)			\
->>  	 do {							\
->>  		raw_local_irq_pmu_save(flags);			\
->> -		trace_hardirqs_off();				\
->> +		if (!raw_irqs_disabled_flags(flags))		\
->> +			trace_hardirqs_off();			\
->>  	} while(0)
->=20
-> So one problem with the above is something like this:
->=20
-> 	raw_local_irq_save();
-> 	<NMI>
-> 	  powerpc_local_irq_pmu_save();
->=20
-> that would now no longer call into tracing/lockdep at all. As a
-> consequence, lockdep and tracing would show the NMI ran with IRQs
-> enabled, which is exceptionally weird..
 
-powerpc perf NMIs will trace_hardirqs_off() if they were enabled,
-and trace_hardirqs_on() at exit in that case too.
 
-Machine check and system reset (like x86's "nmi") don't, but that's
-deliberate to avoid any tracing in those cases which often causes
-more problems than it's worth (and we have flags to prevent ftrace,
-etc too for those cases).
+On 24/07/2020 15:59, Nicholas Piggin wrote:
+> Excerpts from Alexey Kardashevskiy's message of July 24, 2020 2:16 pm:
+>>
+>>
+>> On 23/07/2020 23:11, Nicholas Piggin wrote:
+>>> Excerpts from Peter Zijlstra's message of July 23, 2020 9:40 pm:
+>>>> On Thu, Jul 23, 2020 at 08:56:14PM +1000, Nicholas Piggin wrote:
+>>>>
+>>>>> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+>>>>> index 3a0db7b0b46e..35060be09073 100644
+>>>>> --- a/arch/powerpc/include/asm/hw_irq.h
+>>>>> +++ b/arch/powerpc/include/asm/hw_irq.h
+>>>>> @@ -200,17 +200,14 @@ static inline bool arch_irqs_disabled(void)
+>>>>>  #define powerpc_local_irq_pmu_save(flags)			\
+>>>>>  	 do {							\
+>>>>>  		raw_local_irq_pmu_save(flags);			\
+>>>>> -		trace_hardirqs_off();				\
+>>>>> +		if (!raw_irqs_disabled_flags(flags))		\
+>>>>> +			trace_hardirqs_off();			\
+>>>>>  	} while(0)
+>>>>>  #define powerpc_local_irq_pmu_restore(flags)			\
+>>>>>  	do {							\
+>>>>> -		if (raw_irqs_disabled_flags(flags)) {		\
+>>>>> -			raw_local_irq_pmu_restore(flags);	\
+>>>>> -			trace_hardirqs_off();			\
+>>>>> -		} else {					\
+>>>>> +		if (!raw_irqs_disabled_flags(flags))		\
+>>>>>  			trace_hardirqs_on();			\
+>>>>> -			raw_local_irq_pmu_restore(flags);	\
+>>>>> -		}						\
+>>>>> +		raw_local_irq_pmu_restore(flags);		\
+>>>>>  	} while(0)
+>>>>
+>>>> You shouldn't be calling lockdep from NMI context!
+>>>
+>>> After this patch it doesn't.
+>>>
+>>> trace_hardirqs_on/off implementation appears to expect to be called in NMI 
+>>> context though, for some reason.
+>>>
+>>>> That is, I recently
+>>>> added suport for that on x86:
+>>>>
+>>>>   https://lkml.kernel.org/r/20200623083721.155449112@infradead.org
+>>>>   https://lkml.kernel.org/r/20200623083721.216740948@infradead.org
+>>>>
+>>>> But you need to be very careful on how you order things, as you can see
+>>>> the above relies on preempt_count() already having been incremented with
+>>>> NMI_MASK.
+>>>
+>>> Hmm. My patch seems simpler.
+>>
+>> And your patches fix my error while Peter's do not:
+>>
+>>
+>> IRQs not enabled as expected
+>> WARNING: CPU: 0 PID: 1377 at /home/aik/p/kernel/kernel/softirq.c:169
+>> __local_bh_enable_ip+0x118/0x190
+> 
+> I think they would have needed some powerpc bits as well. 
 
-> Similar problem with:
->=20
-> 	raw_local_irq_disable();
-> 	local_irq_save()
->=20
-> Now, most architectures today seem to do what x86 also did:
->=20
-> 	<NMI>
-> 	  trace_hardirqs_off()
-> 	  ...
-> 	  if (irqs_unmasked(regs))
-> 	    trace_hardirqs_on()
-> 	</NMI>
->=20
-> Which is 'funny' when it interleaves like:
->=20
-> 	local_irq_disable();
-> 	...
-> 	local_irq_enable()
-> 	  trace_hardirqs_on();
-> 	  <NMI/>
-> 	  raw_local_irq_enable();
->=20
-> Because then it will undo the trace_hardirqs_on() we just did. With the
-> result that both tracing and lockdep will see a hardirqs-disable without
-> a matching enable, while the hardware state is enabled.
+True, there is quite a lot to repeat of what x86 does, I was in a hurry
+and did not think it through :)
 
-Seems like an arch problem -- why not disable if it was enabled only?
-I guess the local_irq tracing calls are a mess so maybe they copied=20
-those.
+> But I don't
+> see a reason we can't merge my patches, at least they fix this case and
+> don't seem to make things worse in any way.
 
-> Which is exactly the state Alexey seems to have ran into.
+True. Or we could keep these lockdep_stats::redundant_softirqs_on/etc
+and make powerpc_local_irq_pmu_restore()/local_irq_restore() call
+trace_hardirqs_on() always and let lockdep do reference counting, may be?
 
-No his was what I said, the interruptee's trace_hardirqs_on() in
-local_irq_enable getting lost because the NMI's local_irq_disable
-always disables, but the enable doesn't re-enable.
 
-It's all just weird asymmetrical special case hacks AFAIKS, the
-code should just be symmetric and lockdep handle it's own weirdness.
-
->=20
-> Now, x86, and at least arm64 call nmi_enter() before
-> trace_hardirqs_off(), but AFAICT Power never did that, and that's part
-> of the problem. nmi_enter() does lockdep_off() and that _used_ to also
-> kill IRQ tracking.
-
-Power does do nmi_enter -- __perf_event_interrupt()
-
-        nmi =3D perf_intr_is_nmi(regs);
-        if (nmi)
-                nmi_enter();
-        else
-                irq_enter();
-
-Thanks,
-Nick
-
-> Now, my patch changed that, it makes IRQ tracking not respect
-> lockdep_off(). And that exposed x86 (and everybody else :/) to the same
-> problem you have.
->=20
-> And this is why I made x86 look at software state in NMIs. Because then
-> it all works out. For bonus points, trace_hardirqs_*() also has some
-> do-it-once logic for tracing.
->=20
->=20
->=20
-> Anyway, it's Saturday evening, time for a beer. I'll stare at this more
-> later.
->=20
+-- 
+Alexey
