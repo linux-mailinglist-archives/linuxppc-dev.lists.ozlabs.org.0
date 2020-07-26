@@ -2,68 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED6B22DB99
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 05:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8DF22DB9A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 05:57:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BDpxP2jynzF1Tj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 13:55:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BDpzL4FwMzF0QT
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 13:57:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m15VKabo; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20161025 header.b=bSjbGYSn; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BDpsq4RnnzF0QP
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 13:52:15 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id a9so7321832pjd.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 20:52:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BDpst6FDkzF0QP
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 13:52:18 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id c6so737978pje.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jul 2020 20:52:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=SXPByRIVOtgNt4fMOsCOaJfTq9bG9oPqav6sJdrUadY=;
- b=m15VKaboVQJmAQHrn6KJ1HP3h3LphbkWpyhVro6MPtvNFqzIbC2kAQM5SRy6s7h9Lp
- QdvumwCny0OLDOCGHq2VrDyN3O98IkKicJUMPf5Z6JesVkztDtmS7UsNXa1poL130I4/
- DXpBflhsoERwO1KgX33DGrWhU9zBTBVF9UUryxwYDs/PhH9WzUKdt2u9jn0yRIhRaOo/
- YT9lBTsn5kU/yzBuWjyvWLExHp7u7l/K5O5vsWjeC0QSO6lmHRIkxNLZtoc85Ir57q6O
- ylfgp0XjnO6bhZh5P7w0CiiTyREINrb612ZrbxBnjBXtK1o8kF5Z2Zn4e1Bjq0IAkTfR
- tXbw==
+ bh=nEol4cg4fgvYnjxLbZL4ZZXX5iG5npgMKo8J5imOzG8=;
+ b=bSjbGYSnE0c6uodbKuTJew7DPC0iLZFIBduu4kDh9uI3sy6vjNxGnx6QdkC1c1ug1N
+ OH8CU0Z5ZgTJgseJAheGcdfzVk+uDBSSYEO5j8W04uLAZmYmA/JyvjU/kOAuG+Pe7c84
+ qyjxk5sSdGhOXJr3khHASMGhU2OhVZQYbhnq62dKkvhE82xbqkKR0IPDJMz6KXURTbj5
+ Kw/oboHpfgBxdTVZ38uQBGl8RK7xY0ARuS3IcUPrR4UeCVfwy+yxudfziCosbCWzOfGA
+ ofKJsePkjIjv2vdGQfJwzrIW0nrdHmW3GIAfpyuQbjQfrg1KlfQBR3DmS9G3cJkyciWS
+ 1ykg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=SXPByRIVOtgNt4fMOsCOaJfTq9bG9oPqav6sJdrUadY=;
- b=f61sjt6XBFzKhgB53DROSRK9uADGMdZwUaeL8y7xD35Hnb0rpL7KXLc70MRvbHYU4K
- 2uPTIR2FKeHs5V92H0ESY8/hMh5CMAoRoH2yzpfl3XFe4VgXzNsA1kJG8kqlt1j4H0gZ
- w3grzlwxW/UIaTQ4AebUO2TUuuwYMlMsaSVscG6VEFYvzCoZqZyOQopWGg6Y8EUnR1GO
- evoIBeqEey/JgZBz1Az4MNEZrl/hsefpypBTuhAbcaZ4gZ9tkTfz2ySdgY7ZUsv503Kw
- 0/JmzBRCAhd+or06UOmsGIHD9l5Syomvghc+J8kvGYl9HLGsaK5ubVj6CAYbibVeizpM
- dg9Q==
-X-Gm-Message-State: AOAM531z1Gk9GpkYL4doiMvJ7MW6wM3z8HbQUxiAv8soMwEYi73IdYYP
- JFR8L+lW8y/H3l4RFxsDaKZ6qGaH
-X-Google-Smtp-Source: ABdhPJwEIYxDT5P7kEhC+9qHveHOg/MSxwiF9nsRVj+dQID8OmnH2MVLj85A9WF2p8hTRYlWB2BQUg==
-X-Received: by 2002:a17:902:9f88:: with SMTP id
- g8mr14192485plq.126.1595735532895; 
- Sat, 25 Jul 2020 20:52:12 -0700 (PDT)
+ bh=nEol4cg4fgvYnjxLbZL4ZZXX5iG5npgMKo8J5imOzG8=;
+ b=Cdp8j5N03eTJBNTNpUtpnRR0sYYTOOmWXiG5DMGM18fby/6905mrxa/5ohXZLCXxk8
+ 3M4UXXfG/FaWhdbD5aqHKxQefWJWVyHR+28yvW0CWyxOqTBFIGJOncBin+QJOmtJ+/sa
+ kcP5Vn8Axtd7biP0C6mQBKwQ6gkgmRTlTNcNGXfe13g0effxhM5FBEQaldAnp3626ZMc
+ ysciILcoa26g5G4ygLXTSx3yy2f/3IdvqTYDBxaiAcndSCZL6X1kffJ/NvWVA99S5EJy
+ ejL0VMy6KEhfg085ez9rS7r1psXym/2nbTleG0GCwtRTu+jnBxKH9ZSdGcm5xvMxqpjE
+ TkoA==
+X-Gm-Message-State: AOAM532dqRnojqNv2GuZR7FQPbfabQA3a9RDj5tQTK8XfHubo7LMtkUn
+ OgL5YU76eNG2J02QMAa3d13NctCS
+X-Google-Smtp-Source: ABdhPJzj54leH9G5iKBA/zYgqNMa7RQaCOX/mGUoo3HpPpgcSaU7as8b6XNMoZ8WlhhRsu+rBzAbKw==
+X-Received: by 2002:a17:90b:692:: with SMTP id
+ m18mr1788644pjz.56.1595735536760; 
+ Sat, 25 Jul 2020 20:52:16 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (110-174-173-27.tpgi.com.au.
  [110.174.173.27])
- by smtp.gmail.com with ESMTPSA id p1sm3638860pjp.10.2020.07.25.20.52.09
+ by smtp.gmail.com with ESMTPSA id p1sm3638860pjp.10.2020.07.25.20.52.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Jul 2020 20:52:12 -0700 (PDT)
+ Sat, 25 Jul 2020 20:52:16 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 1/3] powerpc: inline doorbell sending functions
-Date: Sun, 26 Jul 2020 13:51:53 +1000
-Message-Id: <20200726035155.1424103-2-npiggin@gmail.com>
+Subject: [PATCH v3 2/3] powerpc/pseries: Use doorbells even if XIVE is
+ available
+Date: Sun, 26 Jul 2020 13:51:54 +1000
+Message-Id: <20200726035155.1424103-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200726035155.1424103-1-npiggin@gmail.com>
 References: <20200726035155.1424103-1-npiggin@gmail.com>
@@ -89,172 +90,106 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These are only called in one place for a given platform, so inline them
-for performance.
+KVM supports msgsndp in guests by trapping and emulating the
+instruction, so it was decided to always use XIVE for IPIs if it is
+available. However on PowerVM systems, msgsndp can be used and gives
+better performance. On large systems, high XIVE interrupt rates can
+have sub-linear scaling, and using msgsndp can reduce the load on
+the interrupt controller.
+
+So switch to using core local doorbells even if XIVE is available.
+This reduces performance for KVM guests with an SMT topology by
+about 50% for ping-pong context switching between SMT vCPUs. An
+option vector (or dt-cpu-ftrs) could be defined to disable msgsndp
+to get KVM performance back.
 
 Tested-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/dbell.h | 67 ++++++++++++++++++++++++++++++--
- arch/powerpc/kernel/dbell.c      | 55 --------------------------
- 2 files changed, 64 insertions(+), 58 deletions(-)
+ arch/powerpc/platforms/pseries/smp.c | 54 ++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/dbell.h b/arch/powerpc/include/asm/dbell.h
-index 4ce6808deed3..1f04f3de96ba 100644
---- a/arch/powerpc/include/asm/dbell.h
-+++ b/arch/powerpc/include/asm/dbell.h
-@@ -13,6 +13,11 @@
- 
- #include <asm/ppc-opcode.h>
- #include <asm/feature-fixups.h>
-+#ifdef CONFIG_KVM
-+#include <asm/kvm_ppc.h>
-+#else
-+static inline void kvmppc_set_host_ipi(int cpu) {}
-+#endif
- 
- #define PPC_DBELL_MSG_BRDCAST	(0x04000000)
- #define PPC_DBELL_TYPE(x)	(((x) & 0xf) << (63-36))
-@@ -87,9 +92,6 @@ static inline void ppc_msgsync(void)
- 
- #endif /* CONFIG_PPC_BOOK3S */
- 
--extern void doorbell_global_ipi(int cpu);
--extern void doorbell_core_ipi(int cpu);
--extern int doorbell_try_core_ipi(int cpu);
- extern void doorbell_exception(struct pt_regs *regs);
- 
- static inline void ppc_msgsnd(enum ppc_dbell type, u32 flags, u32 tag)
-@@ -100,4 +102,63 @@ static inline void ppc_msgsnd(enum ppc_dbell type, u32 flags, u32 tag)
- 	_ppc_msgsnd(msg);
+diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
+index 6891710833be..67e6ad5076ce 100644
+--- a/arch/powerpc/platforms/pseries/smp.c
++++ b/arch/powerpc/platforms/pseries/smp.c
+@@ -188,13 +188,16 @@ static int pseries_smp_prepare_cpu(int cpu)
+ 	return 0;
  }
  
-+#ifdef CONFIG_SMP
+-static void smp_pseries_cause_ipi(int cpu)
++/* Cause IPI as setup by the interrupt controller (xics or xive) */
++static void (*ic_cause_ipi)(int cpu) __ro_after_init;
 +
-+/*
-+ * Doorbells must only be used if CPU_FTR_DBELL is available.
-+ * msgsnd is used in HV, and msgsndp is used in !HV.
-+ *
-+ * These should be used by platform code that is aware of restrictions.
-+ * Other arch code should use ->cause_ipi.
-+ *
-+ * doorbell_global_ipi() sends a dbell to any target CPU.
-+ * Must be used only by architectures that address msgsnd target
-+ * by PIR/get_hard_smp_processor_id.
-+ */
-+static inline void doorbell_global_ipi(int cpu)
-+{
-+	u32 tag = get_hard_smp_processor_id(cpu);
-+
-+	kvmppc_set_host_ipi(cpu);
-+	/* Order previous accesses vs. msgsnd, which is treated as a store */
-+	ppc_msgsnd_sync();
-+	ppc_msgsnd(PPC_DBELL_MSGTYPE, 0, tag);
-+}
-+
-+/*
-+ * doorbell_core_ipi() sends a dbell to a target CPU in the same core.
-+ * Must be used only by architectures that address msgsnd target
-+ * by TIR/cpu_thread_in_core.
-+ */
-+static inline void doorbell_core_ipi(int cpu)
-+{
-+	u32 tag = cpu_thread_in_core(cpu);
-+
-+	kvmppc_set_host_ipi(cpu);
-+	/* Order previous accesses vs. msgsnd, which is treated as a store */
-+	ppc_msgsnd_sync();
-+	ppc_msgsnd(PPC_DBELL_MSGTYPE, 0, tag);
-+}
-+
-+/*
-+ * Attempt to cause a core doorbell if destination is on the same core.
-+ * Returns 1 on success, 0 on failure.
-+ */
-+static inline int doorbell_try_core_ipi(int cpu)
-+{
-+	int this_cpu = get_cpu();
-+	int ret = 0;
-+
-+	if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
-+		doorbell_core_ipi(cpu);
-+		ret = 1;
-+	}
-+
-+	put_cpu();
-+
-+	return ret;
-+}
-+
-+#endif /* CONFIG_SMP */
-+
- #endif /* _ASM_POWERPC_DBELL_H */
-diff --git a/arch/powerpc/kernel/dbell.c b/arch/powerpc/kernel/dbell.c
-index f17ff1200eaa..52680cf07c9d 100644
---- a/arch/powerpc/kernel/dbell.c
-+++ b/arch/powerpc/kernel/dbell.c
-@@ -18,61 +18,6 @@
- 
- #ifdef CONFIG_SMP
- 
--/*
-- * Doorbells must only be used if CPU_FTR_DBELL is available.
-- * msgsnd is used in HV, and msgsndp is used in !HV.
-- *
-- * These should be used by platform code that is aware of restrictions.
-- * Other arch code should use ->cause_ipi.
-- *
-- * doorbell_global_ipi() sends a dbell to any target CPU.
-- * Must be used only by architectures that address msgsnd target
-- * by PIR/get_hard_smp_processor_id.
-- */
--void doorbell_global_ipi(int cpu)
--{
--	u32 tag = get_hard_smp_processor_id(cpu);
--
--	kvmppc_set_host_ipi(cpu);
--	/* Order previous accesses vs. msgsnd, which is treated as a store */
--	ppc_msgsnd_sync();
--	ppc_msgsnd(PPC_DBELL_MSGTYPE, 0, tag);
--}
--
--/*
-- * doorbell_core_ipi() sends a dbell to a target CPU in the same core.
-- * Must be used only by architectures that address msgsnd target
-- * by TIR/cpu_thread_in_core.
-- */
--void doorbell_core_ipi(int cpu)
--{
--	u32 tag = cpu_thread_in_core(cpu);
--
--	kvmppc_set_host_ipi(cpu);
--	/* Order previous accesses vs. msgsnd, which is treated as a store */
--	ppc_msgsnd_sync();
--	ppc_msgsnd(PPC_DBELL_MSGTYPE, 0, tag);
--}
--
--/*
-- * Attempt to cause a core doorbell if destination is on the same core.
-- * Returns 1 on success, 0 on failure.
-- */
--int doorbell_try_core_ipi(int cpu)
--{
--	int this_cpu = get_cpu();
--	int ret = 0;
--
--	if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu))) {
--		doorbell_core_ipi(cpu);
--		ret = 1;
--	}
--
--	put_cpu();
--
--	return ret;
--}
--
- void doorbell_exception(struct pt_regs *regs)
++/* Use msgsndp doorbells target is a sibling, else use interrupt controller */
++static void dbell_or_ic_cause_ipi(int cpu)
  {
- 	struct pt_regs *old_regs = set_irq_regs(regs);
+-	/* POWER9 should not use this handler */
+ 	if (doorbell_try_core_ipi(cpu))
+ 		return;
+ 
+-	icp_ops->cause_ipi(cpu);
++	ic_cause_ipi(cpu);
+ }
+ 
+ static int pseries_cause_nmi_ipi(int cpu)
+@@ -218,26 +221,41 @@ static int pseries_cause_nmi_ipi(int cpu)
+ 	return 0;
+ }
+ 
+-static __init void pSeries_smp_probe_xics(void)
+-{
+-	xics_smp_probe();
+-
+-	if (cpu_has_feature(CPU_FTR_DBELL) && !is_secure_guest())
+-		smp_ops->cause_ipi = smp_pseries_cause_ipi;
+-	else
+-		smp_ops->cause_ipi = icp_ops->cause_ipi;
+-}
+-
+ static __init void pSeries_smp_probe(void)
+ {
+ 	if (xive_enabled())
+-		/*
+-		 * Don't use P9 doorbells when XIVE is enabled. IPIs
+-		 * using MMIOs should be faster
+-		 */
+ 		xive_smp_probe();
+ 	else
+-		pSeries_smp_probe_xics();
++		xics_smp_probe();
++
++	/* No doorbell facility, must use the interrupt controller for IPIs */
++	if (!cpu_has_feature(CPU_FTR_DBELL))
++		return;
++
++	/* Doorbells can only be used for IPIs between SMT siblings */
++	if (!cpu_has_feature(CPU_FTR_SMT))
++		return;
++
++	/*
++	 * KVM emulates doorbells by disabling FSCR[MSGP] so msgsndp faults
++	 * to the hypervisor which then reads the instruction from guest
++	 * memory. This can't be done if the guest is secure, so don't use
++	 * doorbells in secure guests.
++	 *
++	 * Under PowerVM, FSCR[MSGP] is enabled so doorbells could be used
++	 * by secure guests if we distinguished this from KVM.
++	 */
++	if (is_secure_guest())
++		return;
++
++	/*
++	 * The guest can use doobells for SMT sibling IPIs, which stay in
++	 * the core rather than going to the interrupt controller. This
++	 * tends to be slower under KVM where doorbells are emulated, but
++	 * faster for PowerVM where they're enabled.
++	 */
++	ic_cause_ipi = smp_ops->cause_ipi;
++	smp_ops->cause_ipi = dbell_or_ic_cause_ipi;
+ }
+ 
+ static struct smp_ops_t pseries_smp_ops = {
 -- 
 2.23.0
 
