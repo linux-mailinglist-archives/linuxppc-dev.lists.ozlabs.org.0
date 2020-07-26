@@ -2,65 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B420122DEE7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 14:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453C422DEF0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 14:22:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BF20H6lCJzF0PV
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 22:13:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BF2By3CwLzF0Vf
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 22:22:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=sP1/Yjfm; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BF1yF2q65zDqCZ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 22:11:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=xA3Hnz+mwiXbGsGPSLX5kHfDe9+CoKBCym0WXsIlDDo=; b=sP1/Yjfm/lG5EQn9AxmxZdauaJ
- MxUY80ZJ40JT45IWrg88x3weHFXoDis8wKOuWPpaMIKIHT08gNY7ds8XI+dxwzg/7jpjPM5iU3K2a
- fp+AniTB/M1sw3UKSnx+aNRJC078VCBq9AdVx7ousLRNjP3pvlfP78klqSV0BgalGdz6OA1Z+sNsB
- Pdlh4P7ZYXdDJN5EdIY3uw5oUbRhUZ2nn575NPj46hthp++5huQ5fcxEiK1rkElZeDTP+ReSLIUI/
- 0KbZrzjPc0Kv5ZJ+TYr8ZZQvtgIhBbBqfpHnOyaokMhJJixAzDdIdFV42GrzYf3XwrXS/bGClBsAG
- nzv6UgBA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jzfVD-0001ia-Rc; Sun, 26 Jul 2020 12:11:40 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 37A07301AC6;
- Sun, 26 Jul 2020 14:11:38 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 1BD78285770B1; Sun, 26 Jul 2020 14:11:38 +0200 (CEST)
-Date: Sun, 26 Jul 2020 14:11:38 +0200
-From: peterz@infradead.org
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/2] lockdep: improve current->(hard|soft)irqs_enabled
- synchronisation with actual irq state
-Message-ID: <20200726121138.GC119549@hirez.programming.kicks-ass.net>
-References: <20200723105615.1268126-1-npiggin@gmail.com>
- <20200725202617.GI10769@hirez.programming.kicks-ass.net>
- <1595735694.b784cvipam.astroid@bobo.none>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BF28g55GWzDsNn
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 22:20:51 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06QC37Tw065500; Sun, 26 Jul 2020 08:20:42 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32gdmbmg07-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 26 Jul 2020 08:20:41 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06QC541Q068942;
+ Sun, 26 Jul 2020 08:20:41 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32gdmbmfyd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 26 Jul 2020 08:20:41 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06QCC7sJ030975;
+ Sun, 26 Jul 2020 12:20:39 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06ams.nl.ibm.com with ESMTP id 32gcqgh6n6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 26 Jul 2020 12:20:39 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06QCJBw266388354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 26 Jul 2020 12:19:11 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4359A11C050;
+ Sun, 26 Jul 2020 12:20:36 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0391511C04A;
+ Sun, 26 Jul 2020 12:20:33 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.81.63])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Sun, 26 Jul 2020 12:20:32 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Sun, 26 Jul 2020 17:50:31 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [RESEND PATCH v2 0/2] powerpc/papr_scm: add support for reporting
+ NVDIMM 'life_used_percentage' metric
+Date: Sun, 26 Jul 2020 17:50:28 +0530
+Message-Id: <20200726122030.31529-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1595735694.b784cvipam.astroid@bobo.none>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-26_03:2020-07-24,
+ 2020-07-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ adultscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0 mlxscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007260093
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,72 +91,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Santosh Sivaraj <santosh@fossix.org>, Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jul 26, 2020 at 02:14:34PM +1000, Nicholas Piggin wrote:
-> Excerpts from Peter Zijlstra's message of July 26, 2020 6:26 am:
+Changes since v2[1]:
 
-> > Which is 'funny' when it interleaves like:
-> > 
-> > 	local_irq_disable();
-> > 	...
-> > 	local_irq_enable()
-> > 	  trace_hardirqs_on();
-> > 	  <NMI/>
-> > 	  raw_local_irq_enable();
-> > 
-> > Because then it will undo the trace_hardirqs_on() we just did. With the
-> > result that both tracing and lockdep will see a hardirqs-disable without
-> > a matching enable, while the hardware state is enabled.
-> 
-> Seems like an arch problem -- why not disable if it was enabled only?
-> I guess the local_irq tracing calls are a mess so maybe they copied 
-> those.
+* Rebased the patch series on latest ppc-next tree located [2]
 
-Because, as I wrote earlier, then we can miss updating software state.
-So your proposal has:
+[1] https://lore.kernel.org/linux-nvdimm/20200701133510.4613-1-vaibhav@linux.ibm.com/
+[2] git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+---
 
-	raw_local_irq_disable()
-	<NMI>
-	  if (!arch_irqs_disabled(regs->flags) // false
-	    trace_hardirqs_off();
+This small patchset implements kernel side support for reporting
+'life_used_percentage' metric in NDCTL with dimm health output for
+papr-scm NVDIMMs. With corresponding NDCTL side changes output for
+should be like:
 
-	  // tracing/lockdep still think IRQs are enabled
-	  // hardware IRQ state is disabled.
+$ sudo ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "life_used_percentage":0,
+      "shutdown_state":"clean"
+    }
+  }
+]
 
-With the current code we have:
+PHYP supports H_SCM_PERFORMANCE_STATS hcall through which an LPAR can
+fetch various performance stats including 'fuel_gauge' percentage for
+an NVDIMM. 'fuel_gauge' metric indicates the usable life remaining of
+an NVDIMM expressed as percentage and  'life_used_percentage' can be
+calculated as 'life_used_percentage = 100 - fuel_gauge'.
 
-	local_irq_enable()
-	  trace_hardirqs_on();
-	  <NMI>
-	    trace_hardirqs_off();
-	    ...
-	    if (!arch_irqs_disabled(regs->flags)) // false
-	      trace_hardirqs_on();
-	  </NMI>
-	  // and now the NMI disabled software state again
-	  // while we're about to enable the hardware state
-	  raw_local_irq_enable();
+Structure of the patchset
+=========================
+First patch implements necessary scaffolding needed to issue the
+H_SCM_PERFORMANCE_STATS hcall and fetch performance stats
+catalogue. The patch also implements support for 'perf_stats' sysfs
+attribute to report the full catalogue of supported performance stats
+by PHYP.
 
-> > Which is exactly the state Alexey seems to have ran into.
-> 
-> No his was what I said, the interruptee's trace_hardirqs_on() in
-> local_irq_enable getting lost because the NMI's local_irq_disable
-> always disables, but the enable doesn't re-enable.
+Second and final patch implements support for sending this value to
+libndctl by extending the PAPR_PDSM_HEALTH pdsm payload to add a new
+field named 'dimm_fuel_gauge' to it.
 
-That's _exactly_ the case above. It doesn't re-enable because hardirqs
-are actually still disabled. You _cannot_ rely on hardirq state for
-NMIs, that'll get you wrong state.
+Vaibhav Jain (2):
+  powerpc/papr_scm: Fetch nvdimm performance stats from PHYP
+  powerpc/papr_scm: Add support for fetching nvdimm 'fuel-gauge' metric
 
-> It's all just weird asymmetrical special case hacks AFAIKS, the
-> code should just be symmetric and lockdep handle it's own weirdness.
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 +++
+ arch/powerpc/include/uapi/asm/papr_pdsm.h     |   9 +
+ arch/powerpc/platforms/pseries/papr_scm.c     | 184 ++++++++++++++++++
+ 3 files changed, 220 insertions(+)
 
-It's for non-maskable exceptions/interrupts, because there the hardware
-and software state changes non-atomically. For maskable interrupts doing
-the software state transitions inside the disabled region makes perfect
-sense, because that keeps it atomic.
+-- 
+2.26.2
+
