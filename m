@@ -1,75 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4943B22DF76
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 15:28:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACD422DF8D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 15:52:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BF3f655WSzDvrL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 23:27:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BF4B40F4ZzDrP6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jul 2020 23:52:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BF3bH0PgszDqcG
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 23:25:30 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06QD2OZn161646; Sun, 26 Jul 2020 09:25:24 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32gevpuu6u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 26 Jul 2020 09:25:24 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06QDLCoJ015079;
- Sun, 26 Jul 2020 13:25:23 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma01dal.us.ibm.com with ESMTP id 32gcy2mfta-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 26 Jul 2020 13:25:23 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06QDPIve4719130
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 26 Jul 2020 13:25:18 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF5E113605D;
- Sun, 26 Jul 2020 13:25:21 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6149D13604F;
- Sun, 26 Jul 2020 13:25:20 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.32.81])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sun, 26 Jul 2020 13:25:20 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/book3s64/pkey: Disable pkey on POWER6 and before
-Date: Sun, 26 Jul 2020 18:55:17 +0530
-Message-Id: <20200726132517.399076-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BF44Q5RWBzF0fc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jul 2020 23:47:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=VNyKa+oA; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BF44P6nZFz9sPf;
+ Sun, 26 Jul 2020 23:47:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1595771238;
+ bh=q3BkqJblFZLbFVD43sGIBhbWqSe5Y3XVkMWMw/GH8xE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=VNyKa+oAomJJjyVxGTna1G9YsgIszk6k6EaVtNIq1sTb30u7Yg+RPLyIHDJO2CiQT
+ jMt4K4SIA/K56C5RFftW1e0rZV0XPM/ctHyxpO/wEa3PsCapFW6K/snqXARQrkNIm4
+ DdZsU87rrkoIBFw15LVWkrrM5BXBGiLtzKu/zG0cU9rLUevPf44Kop/4sFWlyDT7JP
+ GkQPmrewkXeA0CgE9ztdLi1FrkPRHEM1A63Sy4ajJHnyaTTdmLWAE7pnoh9TWe3Da0
+ KmBTrZbJmxZxMKQdqe+3jzLbhuCgXbf8deroZSscEvqzxWFwW9+pfCrmNuSHtIgXUu
+ hDkPhkUFSFxng==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 1/3] powerpc: inline doorbell sending functions
+In-Reply-To: <20200726035155.1424103-2-npiggin@gmail.com>
+References: <20200726035155.1424103-1-npiggin@gmail.com>
+ <20200726035155.1424103-2-npiggin@gmail.com>
+Date: Sun, 26 Jul 2020 23:47:16 +1000
+Message-ID: <875zaagzh7.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-26_04:2020-07-24,
- 2020-07-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- mlxlogscore=758 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007260096
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,43 +58,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
+ Anton Blanchard <anton@linux.ibm.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-POWER6 only support AMR update via privileged mode(MSR[PR] = 0, SPRN_AMR=29)
-The PR=1 alias for that SPR (SPRN_AMR=13) was only supported
-from POWER7. Since we don't allow userspace modifying of AMR value
-we should disable pkey support on P6 and before.
+Nicholas Piggin <npiggin@gmail.com> writes:
+> diff --git a/arch/powerpc/include/asm/dbell.h b/arch/powerpc/include/asm/dbell.h
+> index 4ce6808deed3..1f04f3de96ba 100644
+> --- a/arch/powerpc/include/asm/dbell.h
+> +++ b/arch/powerpc/include/asm/dbell.h
+> @@ -100,4 +102,63 @@ static inline void ppc_msgsnd(enum ppc_dbell type, u32 flags, u32 tag)
+>  	_ppc_msgsnd(msg);
+>  }
+>  
+> +#ifdef CONFIG_SMP
+> +
+> +/*
+> + * Doorbells must only be used if CPU_FTR_DBELL is available.
+> + * msgsnd is used in HV, and msgsndp is used in !HV.
+> + *
+> + * These should be used by platform code that is aware of restrictions.
+> + * Other arch code should use ->cause_ipi.
+> + *
+> + * doorbell_global_ipi() sends a dbell to any target CPU.
+> + * Must be used only by architectures that address msgsnd target
+> + * by PIR/get_hard_smp_processor_id.
+> + */
+> +static inline void doorbell_global_ipi(int cpu)
+> +{
+> +	u32 tag = get_hard_smp_processor_id(cpu);
+> +
+> +	kvmppc_set_host_ipi(cpu);
+> +	/* Order previous accesses vs. msgsnd, which is treated as a store */
+> +	ppc_msgsnd_sync();
+> +	ppc_msgsnd(PPC_DBELL_MSGTYPE, 0, tag);
+> +}
+> +
+> +/*
+> + * doorbell_core_ipi() sends a dbell to a target CPU in the same core.
+> + * Must be used only by architectures that address msgsnd target
+> + * by TIR/cpu_thread_in_core.
+> + */
+> +static inline void doorbell_core_ipi(int cpu)
+> +{
+> +	u32 tag = cpu_thread_in_core(cpu);
 
-The hypervisor will still report pkey support via ibm,processor-storage-keys.
-Hence check for P7 CPU_FTR bit to decide on pkey support.
+corenet64_smp_defconfig gives me:
 
-Fixes: a24204c30796 ("powerpc/book3s64/pkeys: kill cpu feature key CPU_FTR_PKEY")
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/book3s64/pkeys.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+  In file included from /linux/arch/powerpc/kernel/asm-offsets.c:38:
+  /linux/arch/powerpc/include/asm/dbell.h: In function 'doorbell_core_ipi':
+  /linux/arch/powerpc/include/asm/dbell.h:135:12: error: implicit declaration of function 'cpu_thread_in_core' [-Werror=implicit-function-declaration]
+    135 |  u32 tag = cpu_thread_in_core(cpu);
+        |            ^~~~~~~~~~~~~~~~~~
 
-diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index 792b36aa9619..69a6b87f2bb4 100644
---- a/arch/powerpc/mm/book3s64/pkeys.c
-+++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -73,6 +73,12 @@ static int scan_pkey_feature(void)
- 	if (early_radix_enabled())
- 		return 0;
- 
-+	/*
-+	 * Only P7 and above supports SPRN_AMR update with MSR[PR] = 1
-+	 */
-+	if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
-+		return 0;
-+
- 	ret = of_scan_flat_dt(dt_scan_storage_keys, &pkeys_total);
- 	if (ret == 0) {
- 		/*
--- 
-2.26.2
 
+Fixed by including cputhreads.h, but then that results in errors due to
+your addition of kvmppc_set_host_ipi().
+
+Removing that gets us back to the fault_dear error.
+
+I think I see a way around it, will do some build tests.
+
+cheers
