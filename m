@@ -1,32 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6351322E69C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:31:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3945122E6AB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:36:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFWh12J3szDr95
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:31:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFWny4nHjzF1Pp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:36:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWZs4Kz5zDqjc
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWZv70sDzDqjc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BFWZs0tKYz9sRW; Mon, 27 Jul 2020 17:26:45 +1000 (AEST)
+ id 4BFWZt61TFz9sTR; Mon, 27 Jul 2020 17:26:46 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <1595489557-2047-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1595489557-2047-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [v4] powerpc/perf: Initialize power10 PMU registers in cpu setup
- routine
-Message-Id: <159583478028.602200.658606248160921457.b4-ty@ellerman.id.au>
-Date: Mon, 27 Jul 2020 17:26:45 +1000 (AEST)
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+In-Reply-To: <610d6b1a60ad0bedef865a90153c1110cfaa507e.1593429426.git.christophe.leroy@csgroup.eu>
+References: <610d6b1a60ad0bedef865a90153c1110cfaa507e.1593429426.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 1/2] powerpc/ptdump: Refactor update of st->last_pa
+Message-Id: <159583478842.602200.992568816713944364.b4-ty@ellerman.id.au>
+Date: Mon, 27 Jul 2020 17:26:46 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,22 +40,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 23 Jul 2020 03:32:37 -0400, Athira Rajeev wrote:
-> Initialize Monitor Mode Control Register 3 (MMCR3)
-> SPR which is new in power10. For PowerISA v3.1, BHRB disable
-> is controlled via Monitor Mode Control Register A (MMCRA) bit,
-> namely "BHRB Recording Disable (BHRBRD)". This patch also initializes
-> MMCRA BHRBRD to disable BHRB feature at boot for power10.
+On Mon, 29 Jun 2020 11:17:18 +0000 (UTC), Christophe Leroy wrote:
+> st->last_pa is always updated in note_page() so it can
+> be done outside the if/elseif/else block.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/perf: Initialize power10 PMU registers in cpu setup routine
-      https://git.kernel.org/powerpc/c/65156f2b1d9d5bf3fd0eac54b0a7fd515c92773c
+[1/2] powerpc/ptdump: Refactor update of st->last_pa
+      https://git.kernel.org/powerpc/c/846feeace51bce13f5c645d5bf162455b89841fd
+[2/2] powerpc/ptdump: Refactor update of pg_state
+      https://git.kernel.org/powerpc/c/e54e30bca40233139290aecfce932dea9b996516
 
 cheers
