@@ -2,74 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0776022F915
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 21:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 268C822FA17
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 22:30:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFqgy35dVzDq9W
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 05:32:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFrz73wtDzF1g3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 06:30:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gustavoars@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=wgH46tyr; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFqYS6MFPzF1dp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 05:26:36 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06RJFHo6179490; Mon, 27 Jul 2020 15:26:30 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32hs1c7bc4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 15:26:30 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06RJLWOk011848;
- Mon, 27 Jul 2020 19:26:27 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06fra.de.ibm.com with ESMTP id 32gcye9hpu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 19:26:27 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06RJQPcC32964866
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Jul 2020 19:26:25 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC9514C040;
- Mon, 27 Jul 2020 19:26:24 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E060B4C044;
- Mon, 27 Jul 2020 19:26:21 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.163.69.7])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 27 Jul 2020 19:26:21 +0000 (GMT)
-From: Ram Pai <linuxram@us.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] KVM: PPC: Book3S HV: rework secure mem slot dropping
-Date: Mon, 27 Jul 2020 12:24:29 -0700
-Message-Id: <1595877869-2746-3-git-send-email-linuxram@us.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1595877869-2746-1-git-send-email-linuxram@us.ibm.com>
-References: <1595877869-2746-1-git-send-email-linuxram@us.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-27_13:2020-07-27,
- 2020-07-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 suspectscore=2 impostorscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=815 phishscore=0 spamscore=0
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007270129
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFrwm6yKtzF0RK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 06:28:24 +1000 (AEST)
+Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4696E206E7;
+ Mon, 27 Jul 2020 20:28:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1595881702;
+ bh=aYSeVSHouvNAoh4D27QzelNJE605X6Pqy1mo5TW2Y4A=;
+ h=Date:From:To:Cc:Subject:From;
+ b=wgH46tyrQPCV701y9bxUNPMT8OdNFXzLfyld1hCA4blHuT/HLRdEptgxWAipDur7F
+ svTK/RHIq7+4i481ud8/+UxPIjPbKzrS9oxzbTb3Wc44rvBpz4Z2thZQzcqBlF1Xnp
+ jWJHJWacMYwHzUVAZSemKQ/34bZu2ZZttiiyGdxo=
+Date: Mon, 27 Jul 2020 15:34:13 -0500
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Vinod Koul <vkoul@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
+ Yonghong Song <yhs@fb.com>, Andrii Nakryiko <andriin@fb.com>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@chromium.org>
+Subject: [PATCH][next] dmaengine: Use fallthrough pseudo-keyword
+Message-ID: <20200727203413.GA6245@embeddedor>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,127 +63,242 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ldufour@linux.ibm.com, linuxram@us.ibm.com, cclaudio@linux.ibm.com,
- bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, dmaengine@vger.kernel.org,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Laurent Dufour <ldufour@linux.ibm.com>
+Replace the existing /* fall through */ comments and its variants with
+the new pseudo-keyword macro fallthrough[1]. Also, remove unnecessary
+fall-through markings when it is the case.
 
-When a secure memslot is dropped, all the pages backed in the secure
-device (aka really backed by secure memory by the Ultravisor)
-should be paged out to a normal page. Previously, this was
-achieved by triggering the page fault mechanism which is calling
-kvmppc_svm_page_out() on each pages.
+[1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
 
-This can't work when hot unplugging a memory slot because the memory
-slot is flagged as invalid and gfn_to_pfn() is then not trying to access
-the page, so the page fault mechanism is not triggered.
-
-Since the final goal is to make a call to kvmppc_svm_page_out() it seems
-simpler to call directly instead of triggering such a mechanism. This
-way kvmppc_uvmem_drop_pages() can be called even when hot unplugging a
-memslot.
-
-Since kvmppc_uvmem_drop_pages() is already holding kvm->arch.uvmem_lock,
-the call to __kvmppc_svm_page_out() is made.  As
-__kvmppc_svm_page_out needs the vma pointer to migrate the pages,
-the VMA is fetched in a lazy way, to not trigger find_vma() all
-the time. In addition, the mmap_sem is held in read mode during
-that time, not in write mode since the virual memory layout is not
-impacted, and kvm->arch.uvmem_lock prevents concurrent operation
-on the secure device.
-
-Cc: Ram Pai <linuxram@us.ibm.com>
-Cc: Bharata B Rao <bharata@linux.ibm.com>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-	[modified the changelog description]
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-        [modified check on the VMA in kvmppc_uvmem_drop_pages]
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 52 +++++++++++++++++++++++++-------------
- 1 file changed, 35 insertions(+), 17 deletions(-)
+ drivers/dma/amba-pl08x.c    | 10 +++++-----
+ drivers/dma/fsldma.c        |  2 +-
+ drivers/dma/imx-dma.c       |  2 +-
+ drivers/dma/iop-adma.h      | 12 ++++++------
+ drivers/dma/nbpfaxi.c       |  2 +-
+ drivers/dma/pl330.c         | 10 +++-------
+ drivers/dma/sh/shdma-base.c |  2 +-
+ 7 files changed, 18 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 565f24b..0d49e34 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -594,35 +594,53 @@ static inline int kvmppc_svm_page_out(struct vm_area_struct *vma,
-  * fault on them, do fault time migration to replace the device PTEs in
-  * QEMU page table with normal PTEs from newly allocated pages.
-  */
--void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
-+void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *slot,
- 			     struct kvm *kvm, bool skip_page_out)
- {
- 	int i;
- 	struct kvmppc_uvmem_page_pvt *pvt;
--	unsigned long pfn, uvmem_pfn;
--	unsigned long gfn = free->base_gfn;
-+	struct page *uvmem_page;
-+	struct vm_area_struct *vma = NULL;
-+	unsigned long uvmem_pfn, gfn;
-+	unsigned long addr;
-+
-+	mmap_read_lock(kvm->mm);
-+
-+	addr = slot->userspace_addr;
- 
--	for (i = free->npages; i; --i, ++gfn) {
--		struct page *uvmem_page;
-+	gfn = slot->base_gfn;
-+	for (i = slot->npages; i; --i, ++gfn, addr += PAGE_SIZE) {
-+
-+		/* Fetch the VMA if addr is not in the latest fetched one */
-+		if (!vma || addr >= vma->vm_end) {
-+			vma = find_vma_intersection(kvm->mm, addr, addr+1);
-+			if (!vma) {
-+				pr_err("Can't find VMA for gfn:0x%lx\n", gfn);
-+				break;
-+			}
-+		}
- 
- 		mutex_lock(&kvm->arch.uvmem_lock);
--		if (!kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+
-+		if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-+			uvmem_page = pfn_to_page(uvmem_pfn);
-+			pvt = uvmem_page->zone_device_data;
-+			pvt->skip_page_out = skip_page_out;
-+			pvt->remove_gfn = true;
-+
-+			if (__kvmppc_svm_page_out(vma, addr, addr + PAGE_SIZE,
-+						  PAGE_SHIFT, kvm, pvt->gpa))
-+				pr_err("Can't page out gpa:0x%lx addr:0x%lx\n",
-+				       pvt->gpa, addr);
-+		} else {
-+			/* Remove the shared flag if any */
- 			kvmppc_gfn_remove(gfn, kvm);
--			mutex_unlock(&kvm->arch.uvmem_lock);
--			continue;
+diff --git a/drivers/dma/amba-pl08x.c b/drivers/dma/amba-pl08x.c
+index 9adc7a2fa3d3..a24882ba3764 100644
+--- a/drivers/dma/amba-pl08x.c
++++ b/drivers/dma/amba-pl08x.c
+@@ -1767,7 +1767,7 @@ static u32 pl08x_memcpy_cctl(struct pl08x_driver_data *pl08x)
+ 	default:
+ 		dev_err(&pl08x->adev->dev,
+ 			"illegal burst size for memcpy, set to 1\n");
+-		/* Fall through */
++		fallthrough;
+ 	case PL08X_BURST_SZ_1:
+ 		cctl |= PL080_BSIZE_1 << PL080_CONTROL_SB_SIZE_SHIFT |
+ 			PL080_BSIZE_1 << PL080_CONTROL_DB_SIZE_SHIFT;
+@@ -1806,7 +1806,7 @@ static u32 pl08x_memcpy_cctl(struct pl08x_driver_data *pl08x)
+ 	default:
+ 		dev_err(&pl08x->adev->dev,
+ 			"illegal bus width for memcpy, set to 8 bits\n");
+-		/* Fall through */
++		fallthrough;
+ 	case PL08X_BUS_WIDTH_8_BITS:
+ 		cctl |= PL080_WIDTH_8BIT << PL080_CONTROL_SWIDTH_SHIFT |
+ 			PL080_WIDTH_8BIT << PL080_CONTROL_DWIDTH_SHIFT;
+@@ -1850,7 +1850,7 @@ static u32 pl08x_ftdmac020_memcpy_cctl(struct pl08x_driver_data *pl08x)
+ 	default:
+ 		dev_err(&pl08x->adev->dev,
+ 			"illegal bus width for memcpy, set to 8 bits\n");
+-		/* Fall through */
++		fallthrough;
+ 	case PL08X_BUS_WIDTH_8_BITS:
+ 		cctl |= PL080_WIDTH_8BIT << FTDMAC020_LLI_SRC_WIDTH_SHIFT |
+ 			PL080_WIDTH_8BIT << FTDMAC020_LLI_DST_WIDTH_SHIFT;
+@@ -2612,7 +2612,7 @@ static int pl08x_of_probe(struct amba_device *adev,
+ 	switch (val) {
+ 	default:
+ 		dev_err(&adev->dev, "illegal burst size for memcpy, set to 1\n");
+-		/* Fall through */
++		fallthrough;
+ 	case 1:
+ 		pd->memcpy_burst_size = PL08X_BURST_SZ_1;
+ 		break;
+@@ -2647,7 +2647,7 @@ static int pl08x_of_probe(struct amba_device *adev,
+ 	switch (val) {
+ 	default:
+ 		dev_err(&adev->dev, "illegal bus width for memcpy, set to 8 bits\n");
+-		/* Fall through */
++		fallthrough;
+ 	case 8:
+ 		pd->memcpy_bus_width = PL08X_BUS_WIDTH_8_BITS;
+ 		break;
+diff --git a/drivers/dma/fsldma.c b/drivers/dma/fsldma.c
+index ad72b3f42ffa..e342cf52d296 100644
+--- a/drivers/dma/fsldma.c
++++ b/drivers/dma/fsldma.c
+@@ -1163,7 +1163,7 @@ static int fsl_dma_chan_probe(struct fsldma_device *fdev,
+ 	switch (chan->feature & FSL_DMA_IP_MASK) {
+ 	case FSL_DMA_IP_85XX:
+ 		chan->toggle_ext_pause = fsl_chan_toggle_ext_pause;
+-		/* Fall through */
++		fallthrough;
+ 	case FSL_DMA_IP_83XX:
+ 		chan->toggle_ext_start = fsl_chan_toggle_ext_start;
+ 		chan->set_src_loop_size = fsl_chan_set_src_loop_size;
+diff --git a/drivers/dma/imx-dma.c b/drivers/dma/imx-dma.c
+index 5c0fb3134825..88717506c1f6 100644
+--- a/drivers/dma/imx-dma.c
++++ b/drivers/dma/imx-dma.c
+@@ -556,7 +556,7 @@ static int imxdma_xfer_desc(struct imxdma_desc *d)
+ 		 * We fall-through here intentionally, since a 2D transfer is
+ 		 * similar to MEMCPY just adding the 2D slot configuration.
+ 		 */
+-		/* Fall through */
++		fallthrough;
+ 	case IMXDMA_DESC_MEMCPY:
+ 		imx_dmav1_writel(imxdma, d->src, DMA_SAR(imxdmac->channel));
+ 		imx_dmav1_writel(imxdma, d->dest, DMA_DAR(imxdmac->channel));
+diff --git a/drivers/dma/iop-adma.h b/drivers/dma/iop-adma.h
+index c499c9578f00..d44eabb6f5eb 100644
+--- a/drivers/dma/iop-adma.h
++++ b/drivers/dma/iop-adma.h
+@@ -496,7 +496,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
  		}
+ 		hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = edcr;
+ 		src_cnt = 24;
+-		/* fall through */
++		fallthrough;
+ 	case 17 ... 24:
+ 		if (!u_desc_ctrl.field.blk_ctrl) {
+ 			hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
+@@ -510,7 +510,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
+ 		}
+ 		hw_desc->src_edc[AAU_EDCR1_IDX].e_desc_ctrl = edcr;
+ 		src_cnt = 16;
+-		/* fall through */
++		fallthrough;
+ 	case 9 ... 16:
+ 		if (!u_desc_ctrl.field.blk_ctrl)
+ 			u_desc_ctrl.field.blk_ctrl = 0x2; /* use EDCR0 */
+@@ -522,7 +522,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
+ 		}
+ 		hw_desc->src_edc[AAU_EDCR0_IDX].e_desc_ctrl = edcr;
+ 		src_cnt = 8;
+-		/* fall through */
++		fallthrough;
+ 	case 2 ... 8:
+ 		shift = 1;
+ 		for (i = 0; i < src_cnt; i++) {
+@@ -602,19 +602,19 @@ iop_desc_init_null_xor(struct iop_adma_desc_slot *desc, int src_cnt,
+ 	case 25 ... 32:
+ 		u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
+ 		hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
+-		/* fall through */
++		fallthrough;
+ 	case 17 ... 24:
+ 		if (!u_desc_ctrl.field.blk_ctrl) {
+ 			hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
+ 			u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
+ 		}
+ 		hw_desc->src_edc[AAU_EDCR1_IDX].e_desc_ctrl = 0;
+-		/* fall through */
++		fallthrough;
+ 	case 9 ... 16:
+ 		if (!u_desc_ctrl.field.blk_ctrl)
+ 			u_desc_ctrl.field.blk_ctrl = 0x2; /* use EDCR0 */
+ 		hw_desc->src_edc[AAU_EDCR0_IDX].e_desc_ctrl = 0;
+-		/* fall through */
++		fallthrough;
+ 	case 1 ... 8:
+ 		if (!u_desc_ctrl.field.blk_ctrl && src_cnt > 4)
+ 			u_desc_ctrl.field.blk_ctrl = 0x1; /* use mini-desc */
+diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
+index 74df621402e1..ca4e0930207a 100644
+--- a/drivers/dma/nbpfaxi.c
++++ b/drivers/dma/nbpfaxi.c
+@@ -483,7 +483,7 @@ static size_t nbpf_xfer_size(struct nbpf_device *nbpf,
  
--		uvmem_page = pfn_to_page(uvmem_pfn);
--		pvt = uvmem_page->zone_device_data;
--		pvt->skip_page_out = skip_page_out;
--		pvt->remove_gfn = true;
- 		mutex_unlock(&kvm->arch.uvmem_lock);
--
--		pfn = gfn_to_pfn(kvm, gfn);
--		if (is_error_noslot_pfn(pfn))
--			continue;
--		kvm_release_pfn_clean(pfn);
+ 	default:
+ 		pr_warn("%s(): invalid bus width %u\n", __func__, width);
+-		/* fall through */
++		fallthrough;
+ 	case DMA_SLAVE_BUSWIDTH_1_BYTE:
+ 		size = burst;
  	}
-+
-+	mmap_read_unlock(kvm->mm);
- }
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 2c508ee672b9..9b69716172a4 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -1061,16 +1061,16 @@ static bool _start(struct pl330_thread *thrd)
  
- unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
+ 		if (_state(thrd) == PL330_STATE_KILLING)
+ 			UNTIL(thrd, PL330_STATE_STOPPED)
+-		/* fall through */
++		fallthrough;
+ 
+ 	case PL330_STATE_FAULTING:
+ 		_stop(thrd);
+-		/* fall through */
++		fallthrough;
+ 
+ 	case PL330_STATE_KILLING:
+ 	case PL330_STATE_COMPLETING:
+ 		UNTIL(thrd, PL330_STATE_STOPPED)
+-		/* fall through */
++		fallthrough;
+ 
+ 	case PL330_STATE_STOPPED:
+ 		return _trigger(thrd);
+@@ -1121,7 +1121,6 @@ static u32 _emit_load(unsigned int dry_run, u8 buf[],
+ 
+ 	switch (direction) {
+ 	case DMA_MEM_TO_MEM:
+-		/* fall through */
+ 	case DMA_MEM_TO_DEV:
+ 		off += _emit_LD(dry_run, &buf[off], cond);
+ 		break;
+@@ -1155,7 +1154,6 @@ static inline u32 _emit_store(unsigned int dry_run, u8 buf[],
+ 
+ 	switch (direction) {
+ 	case DMA_MEM_TO_MEM:
+-		/* fall through */
+ 	case DMA_DEV_TO_MEM:
+ 		off += _emit_ST(dry_run, &buf[off], cond);
+ 		break;
+@@ -1216,7 +1214,6 @@ static int _bursts(struct pl330_dmac *pl330, unsigned dry_run, u8 buf[],
+ 
+ 	switch (pxs->desc->rqtype) {
+ 	case DMA_MEM_TO_DEV:
+-		/* fall through */
+ 	case DMA_DEV_TO_MEM:
+ 		off += _ldst_peripheral(pl330, dry_run, &buf[off], pxs, cyc,
+ 			cond);
+@@ -1266,7 +1263,6 @@ static int _dregs(struct pl330_dmac *pl330, unsigned int dry_run, u8 buf[],
+ 
+ 	switch (pxs->desc->rqtype) {
+ 	case DMA_MEM_TO_DEV:
+-		/* fall through */
+ 	case DMA_DEV_TO_MEM:
+ 		off += _emit_MOV(dry_run, &buf[off], CCR, dregs_ccr);
+ 		off += _ldst_peripheral(pl330, dry_run, &buf[off], pxs, 1,
+diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
+index 2deeaab078a4..788d696323bb 100644
+--- a/drivers/dma/sh/shdma-base.c
++++ b/drivers/dma/sh/shdma-base.c
+@@ -383,7 +383,7 @@ static dma_async_tx_callback __ld_cleanup(struct shdma_chan *schan, bool all)
+ 			switch (desc->mark) {
+ 			case DESC_COMPLETED:
+ 				desc->mark = DESC_WAITING;
+-				/* Fall through */
++				fallthrough;
+ 			case DESC_WAITING:
+ 				if (head_acked)
+ 					async_tx_ack(&desc->async_tx);
 -- 
-1.8.3.1
+2.27.0
 
