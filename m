@@ -1,84 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FCB22E797
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 10:19:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0425A22E79D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 10:21:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFXm55mVGzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 18:19:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFXp92C9YzDr0L
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 18:21:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFXHj5sNWzDqJq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:58:41 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06R7YcUo128842; Mon, 27 Jul 2020 03:56:45 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32hrnkkgk9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 03:56:45 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06R7lTDM170602;
- Mon, 27 Jul 2020 03:56:45 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32hrnkkgju-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 03:56:45 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06R7t1T8023670;
- Mon, 27 Jul 2020 07:56:43 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma02fra.de.ibm.com with ESMTP id 32gcq0s6hj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 07:56:43 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06R7ueiC61931744
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Jul 2020 07:56:41 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7F25AE056;
- Mon, 27 Jul 2020 07:56:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5B483AE04D;
- Mon, 27 Jul 2020 07:56:38 +0000 (GMT)
-Received: from srikart450.in.ibm.com (unknown [9.199.36.96])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 27 Jul 2020 07:56:38 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFXSy0ZjHzDqym
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 18:06:40 +1000 (AEST)
+IronPort-SDR: W7+VbYpesGczpqsd6QQPrPgREVy8r48Ivo/1UlT1iminWhTR62Y7kdgAC8+p3sFXD1vYQIGxHc
+ 91G474zsEZIA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9694"; a="148447386"
+X-IronPort-AV: E=Sophos;i="5.75,401,1589266800"; d="scan'208";a="148447386"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2020 01:06:37 -0700
+IronPort-SDR: Py+eCuS1uufBOBdUa9ulgf7i0COO8Xh49UskXfuqzFFNVKQdhfdUGg3t3ysOlYguK1IoCkJZX2
+ hHAbnaWCs0ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,401,1589266800"; d="scan'208";a="312130677"
+Received: from lkp-server01.sh.intel.com (HELO df0563f96c37) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 27 Jul 2020 01:06:36 -0700
+Received: from kbuild by df0563f96c37 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jzy9b-0001rf-H5; Mon, 27 Jul 2020 08:06:35 +0000
+Date: Mon, 27 Jul 2020 16:05:44 +0800
+From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 7/7] powerpc/smp: Depend on cpu_l1_cache_map when adding cpus
-Date: Mon, 27 Jul 2020 13:25:32 +0530
-Message-Id: <20200727075532.30058-8-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200727075532.30058-1-srikar@linux.vnet.ibm.com>
-References: <20200727075532.30058-1-srikar@linux.vnet.ibm.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 78807804b0854ecb7dc6906e379fc688aca36456
+Message-ID: <5f1e8ad8.DDd1NGAvUU5gkqBs%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-27_04:2020-07-27,
- 2020-07-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- mlxlogscore=999 adultscore=0 clxscore=1015 impostorscore=0 phishscore=0
- mlxscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007270051
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,66 +58,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently on hotplug/hotunplug, the cpu iterates through all the cpus in
-its core to find threads in its thread group. However this info is
-already captured in cpu_l1_cache_map. Hence we could reduce the
-iteration and cleanup add_cpu_to_smallcore_masks function.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: 78807804b0854ecb7dc6906e379fc688aca36456  selftests/powerpc: Add test for pkey siginfo verification
 
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Anton Blanchard <anton@ozlabs.org>
-Cc: Oliver O'Halloran <oohall@gmail.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Michael Neuling <mikey@neuling.org>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+elapsed time: 1065m
+
+configs tested: 58
+configs skipped: 1
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                            allyesconfig
+arm64                               defconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+xtensa                              defconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a016-20200727
+i386                 randconfig-a013-20200727
+i386                 randconfig-a012-20200727
+i386                 randconfig-a015-20200727
+i386                 randconfig-a011-20200727
+i386                 randconfig-a014-20200727
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+sparc64                             defconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                              defconfig
+
 ---
- arch/powerpc/kernel/smp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index eceb7aa0f4b8..22f4b3856470 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1276,16 +1276,15 @@ static void remove_cpu_from_masks(int cpu)
- 
- static inline void add_cpu_to_smallcore_masks(int cpu)
- {
--	struct cpumask *this_l1_cache_map = per_cpu(cpu_l1_cache_map, cpu);
--	int i, first_thread = cpu_first_thread_sibling(cpu);
-+	int i;
- 
- 	if (!has_big_cores)
- 		return;
- 
- 	cpumask_set_cpu(cpu, cpu_smallcore_mask(cpu));
- 
--	for (i = first_thread; i < first_thread + threads_per_core; i++) {
--		if (cpu_online(i) && cpumask_test_cpu(i, this_l1_cache_map))
-+	for_each_cpu(i, per_cpu(cpu_l1_cache_map, cpu)) {
-+		if (cpu_online(i))
- 			set_cpus_related(i, cpu, cpu_smallcore_mask);
- 	}
- }
--- 
-2.17.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
