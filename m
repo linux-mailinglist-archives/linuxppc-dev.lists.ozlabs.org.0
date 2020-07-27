@@ -1,73 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6267822ED09
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 15:20:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF95222EDC5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 15:45:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFgQR2yJpzDqtl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 23:19:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFgzF1w6szDqrW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 23:44:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::641;
- helo=mail-ej1-x641.google.com; envelope-from=mingo.kernel.org@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.196;
+ helo=mail-oi1-f196.google.com; envelope-from=rjwysocki@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m9lNB2hw; dkim-atps=neutral
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com
- [IPv6:2a00:1450:4864:20::641])
+Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com
+ [209.85.167.196])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFgMr4v0nzDqtS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 23:17:39 +1000 (AEST)
-Received: by mail-ej1-x641.google.com with SMTP id qc22so2235176ejb.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 06:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=iNBgboLv8PrTHcQjEn6Y9Jz21Y45h4oiyFqkeuFiwIo=;
- b=m9lNB2hwvTAN4kqxBWcMSgc2vgMnClGnzEA91il0qX2jUYtR538v0I2sE26G/ytH/P
- T4RpMxw+ereB4LMTBg2ajmg9kqdKW0PgzzSeU8sTmBmdVnTqfF+APt1NR6U7rTn935Vq
- RQz9PBK/vu4qFbPbvkHcqKwFfkOzCuJ4h+lGMYyZXSMcIcrTC+SXb72CDkt1H97ma2U4
- dxl6QtFhkWvIB5irb0Xg+cpAMxL/blcAidpAhInbfCNTpdTTjQPSxxB84V3NvhskyUdN
- m/7dCRpV+nbGGnpwKuOtMgwrYNVnDEROAp6X0BETYaS+7C3vmXsY7wLNy0rSb/5F4ZFM
- L7YQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFgwz71Z2zDvrL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 23:42:59 +1000 (AEST)
+Received: by mail-oi1-f196.google.com with SMTP id q4so2614779oia.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 06:42:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to;
- bh=iNBgboLv8PrTHcQjEn6Y9Jz21Y45h4oiyFqkeuFiwIo=;
- b=TcedtUTCw5pTpEbOiv5+sPFxKuz7jBl4BJgPxPUNqwiZ5jzcaP2cBYSC256Ec2Rjy2
- GB8sl3wk8KxPMZyIWNMr+7a/yt2HZlm1NvrGDRaUgGqfLUOXZSdd2CyocfvBL0ZI8yfy
- 3wn+WrIrFeIEIxls4Uf6NQT6/67S4zjnh/8bho42NJ38GoNCdxQiNlS3d27iSfIBSToI
- okbB5DVDKnRdtfiBN5H2BpRXrC2VyXwO3MvDxJNnETZbjyE53M79FgbfEXB8asjFmuvT
- BbVH3gmkwC3P8knuqGS1pmaipjXpmCLkT8DmGJhH57OFyqnZOTvWXLBi97/qjeNbIxOp
- DKtA==
-X-Gm-Message-State: AOAM5306rMfGtBkFVz0YLi/fmKcxxpdVG/uHmYTdccyODxDEZ5q7vaQ+
- 4wYscHxK2pL1ftJ+yzgndiU=
-X-Google-Smtp-Source: ABdhPJyVxWiINoqkfFlfIcdrJsa1NvE979dm5Bc7LcNowaJCcOqoBIdVfKcSurwauXtjizprI63uuQ==
-X-Received: by 2002:a17:906:1751:: with SMTP id
- d17mr20468545eje.140.1595855854375; 
- Mon, 27 Jul 2020 06:17:34 -0700 (PDT)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
- by smtp.gmail.com with ESMTPSA id y7sm6961705ejd.73.2020.07.27.06.17.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Jul 2020 06:17:33 -0700 (PDT)
-Date: Mon, 27 Jul 2020 15:17:31 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: peterz@infradead.org
-Subject: Re: [PATCH] lockdep: Fix TRACE_IRQFLAGS vs NMIs
-Message-ID: <20200727131731.GB105139@gmail.com>
-References: <20200727124852.GK119549@hirez.programming.kicks-ass.net>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=pvPzBZVgDAopAS1lI3CQpjCsa8HFcE1uN9uVOKEOSpk=;
+ b=tBd0UUxuDm2CEZgdk1Zpb4cfaFRRVeJDKHtfkxgr52lv5gBtw2tzh0kocTJL6O5CBN
+ 1rUdsxfIgJ5i4Czl9JjG1HEPc7fJUvC3FgJ0U82B38L0zLcugeVu1aKjzToQkeBYU0Jv
+ OndAbVe6QbNlMu2RkZW8OtSu+qJQe2pKuQdDDQ28ArOZiQboHGZG2N0b+ZYumv40xBpr
+ djrTZtZaFHFdtQi2qf0WXyFWUHK7dHk3gqiDgw5cTtxcphs1s5ceVq7+3HaTWHFKsDip
+ aAJen+U8E74ISbh/98B+7xpVkPyQoZoUcdwBaiD65HLvHTnyPRcX3xbnC/reEMcjWrXx
+ tjWg==
+X-Gm-Message-State: AOAM530tb02D+2/XMT8b5+ppWOeJwk/5Ss1S1T98FBwWXKaOtUUK9qZl
+ r2Cvo4gP162OZJMNSGeJjqm6+XsqI3fs/+xTYT8=
+X-Google-Smtp-Source: ABdhPJz0TvSVaNc8ulOS2JvmYwwhi/DIqKubE/aaIFsIH15FU8fiOFKiVgnLscHnh52p8XsoInOL/jOpCFJUMU7AFHE=
+X-Received: by 2002:aca:3646:: with SMTP id d67mr6786735oia.68.1595857376945; 
+ Mon, 27 Jul 2020 06:42:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200727124852.GK119549@hirez.programming.kicks-ass.net>
+References: <20200721124300.65615-1-psampat@linux.ibm.com>
+ <20200721124300.65615-2-psampat@linux.ibm.com>
+In-Reply-To: <20200721124300.65615-2-psampat@linux.ibm.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 27 Jul 2020 15:42:46 +0200
+Message-ID: <CAJZ5v0j3ip77opkaW3Rtn0cqT7VTL_8goctFBDVehWoZowDY0Q@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] cpuidle: Trace IPI based and timer based wakeup
+ latency from idle states
+To: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,65 +62,256 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-sh@vger.kernel.org, jcmvbkbc@gmail.com,
- Will Deacon <will@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, borntraeger@de.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, pratik.r.sampat@gmail.com,
+ Linux PM <linux-pm@vger.kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ srivatsa@csail.mit.edu,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Jul 21, 2020 at 2:43 PM Pratik Rajesh Sampat
+<psampat@linux.ibm.com> wrote:
+>
+> Fire directed smp_call_function_single IPIs from a specified source
+> CPU to the specified target CPU to reduce the noise we have to wade
+> through in the trace log.
 
-* peterz@infradead.org <peterz@infradead.org> wrote:
+And what's the purpose of it?
 
-> 
-> Prior to commit 859d069ee1dd ("lockdep: Prepare for NMI IRQ state
-> tracking") IRQ state tracking was disabled in NMIs due to nmi_enter()
-> doing lockdep_off() -- with the obvious requirement that NMI entry
-> call nmi_enter() before trace_hardirqs_off().
-> 
-> [ afaict, PowerPC and SH violate this order on their NMI entry ]
-> 
-> However, that commit explicitly changed lockdep_hardirqs_*() to ignore
-> lockdep_off() and breaks every architecture that has irq-tracing in
-> it's NMI entry that hasn't been fixed up (x86 being the only fixed one
-> at this point).
-> 
-> The reason for this change is that by ignoring lockdep_off() we can:
-> 
->   - get rid of 'current->lockdep_recursion' in lockdep_assert_irqs*()
->     which was going to to give header-recursion issues with the
->     seqlock rework.
-> 
->   - allow these lockdep_assert_*() macros to function in NMI context.
-> 
-> Restore the previous state of things and allow an architecture to
-> opt-in to the NMI IRQ tracking support, however instead of relying on
-> lockdep_off(), rely on in_nmi(), both are part of nmi_enter() and so
-> over-all entry ordering doesn't need to change.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> The module is based on the idea written by Srivatsa Bhat and maintained
+> by Vaidyanathan Srinivasan internally.
+>
+> Queue HR timer and measure jitter. Wakeup latency measurement for idle
+> states using hrtimer.  Echo a value in ns to timer_test_function and
+> watch trace. A HRtimer will be queued and when it fires the expected
+> wakeup vs actual wakeup is computes and delay printed in ns.
+>
+> Implemented as a module which utilizes debugfs so that it can be
+> integrated with selftests.
+>
+> To include the module, check option and include as module
+> kernel hacking -> Cpuidle latency selftests
+>
+> [srivatsa.bhat@linux.vnet.ibm.com: Initial implementation in
+>  cpidle/sysfs]
+>
+> [svaidy@linux.vnet.ibm.com: wakeup latency measurements using hrtimer
+>  and fix some of the time calculation]
+>
+> [ego@linux.vnet.ibm.com: Fix some whitespace and tab errors and
+>  increase the resolution of IPI wakeup]
+>
+> Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 > ---
->  arch/x86/Kconfig.debug   |    3 +++
->  kernel/locking/lockdep.c |    8 +++++++-
->  lib/Kconfig.debug        |    6 ++++++
->  3 files changed, 16 insertions(+), 1 deletion(-)
+>  drivers/cpuidle/Makefile               |   1 +
+>  drivers/cpuidle/test-cpuidle_latency.c | 150 +++++++++++++++++++++++++
+>  lib/Kconfig.debug                      |  10 ++
+>  3 files changed, 161 insertions(+)
+>  create mode 100644 drivers/cpuidle/test-cpuidle_latency.c
+>
+> diff --git a/drivers/cpuidle/Makefile b/drivers/cpuidle/Makefile
+> index f07800cbb43f..2ae05968078c 100644
+> --- a/drivers/cpuidle/Makefile
+> +++ b/drivers/cpuidle/Makefile
+> @@ -8,6 +8,7 @@ obj-$(CONFIG_ARCH_NEEDS_CPU_IDLE_COUPLED) += coupled.o
+>  obj-$(CONFIG_DT_IDLE_STATES)             += dt_idle_states.o
+>  obj-$(CONFIG_ARCH_HAS_CPU_RELAX)         += poll_state.o
+>  obj-$(CONFIG_HALTPOLL_CPUIDLE)           += cpuidle-haltpoll.o
+> +obj-$(CONFIG_IDLE_LATENCY_SELFTEST)      += test-cpuidle_latency.o
+>
+>  ##################################################################################
+>  # ARM SoC drivers
+> diff --git a/drivers/cpuidle/test-cpuidle_latency.c b/drivers/cpuidle/test-cpuidle_latency.c
+> new file mode 100644
+> index 000000000000..61574665e972
+> --- /dev/null
+> +++ b/drivers/cpuidle/test-cpuidle_latency.c
+> @@ -0,0 +1,150 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Module-based API test facility for cpuidle latency using IPIs and timers
 
-Tree management side note: to apply this I've created a new 
-tip:locking/nmi branch, which is based off the existing NMI vs. IRQ 
-tracing commits included in locking/core:
+I'd like to see a more detailed description of what it does and how it
+works here.
 
-ed00495333cc: ("locking/lockdep: Fix TRACE_IRQFLAGS vs. NMIs")
-ba1f2b2eaa2a: ("x86/entry: Fix NMI vs IRQ state tracking")
-859d069ee1dd: ("lockdep: Prepare for NMI IRQ state tracking")
-248591f5d257: ("kcsan: Make KCSAN compatible with new IRQ state tracking")
-e1bcad609f5a: ("Merge branch 'tip/x86/entry'")
-b037b09b9058: ("x86/entry: Rename idtentry_enter/exit_cond_rcu() to idtentry_enter/exit()")
-dcb7fd82c75e: ("Linux 5.8-rc4")
+> + */
+> +
+> +#include <linux/debugfs.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +
+> +/* IPI based wakeup latencies */
+> +struct latency {
+> +       unsigned int src_cpu;
+> +       unsigned int dest_cpu;
+> +       ktime_t time_start;
+> +       ktime_t time_end;
+> +       u64 latency_ns;
+> +} ipi_wakeup;
+> +
+> +static void measure_latency(void *info)
+> +{
+> +       struct latency *v;
+> +       ktime_t time_diff;
+> +
+> +       v = (struct latency *)info;
+> +       v->time_end = ktime_get();
+> +       time_diff = ktime_sub(v->time_end, v->time_start);
+> +       v->latency_ns = ktime_to_ns(time_diff);
+> +}
+> +
+> +void run_smp_call_function_test(unsigned int cpu)
+> +{
+> +       ipi_wakeup.src_cpu = smp_processor_id();
+> +       ipi_wakeup.dest_cpu = cpu;
+> +       ipi_wakeup.time_start = ktime_get();
+> +       smp_call_function_single(cpu, measure_latency, &ipi_wakeup, 1);
+> +}
+> +
+> +/* Timer based wakeup latencies */
+> +struct timer_data {
+> +       unsigned int src_cpu;
+> +       u64 timeout;
+> +       ktime_t time_start;
+> +       ktime_t time_end;
+> +       struct hrtimer timer;
+> +       u64 timeout_diff_ns;
+> +} timer_wakeup;
+> +
+> +static enum hrtimer_restart timer_called(struct hrtimer *hrtimer)
+> +{
+> +       struct timer_data *w;
+> +       ktime_t time_diff;
+> +
+> +       w = container_of(hrtimer, struct timer_data, timer);
+> +       w->time_end = ktime_get();
+> +
+> +       time_diff = ktime_sub(w->time_end, w->time_start);
+> +       time_diff = ktime_sub(time_diff, ns_to_ktime(w->timeout));
+> +       w->timeout_diff_ns = ktime_to_ns(time_diff);
+> +       return HRTIMER_NORESTART;
+> +}
+> +
+> +static void run_timer_test(unsigned int ns)
+> +{
+> +       hrtimer_init(&timer_wakeup.timer, CLOCK_MONOTONIC,
+> +                    HRTIMER_MODE_REL);
+> +       timer_wakeup.timer.function = timer_called;
+> +       timer_wakeup.time_start = ktime_get();
+> +       timer_wakeup.src_cpu = smp_processor_id();
+> +       timer_wakeup.timeout = ns;
+> +
+> +       hrtimer_start(&timer_wakeup.timer, ns_to_ktime(ns),
+> +                     HRTIMER_MODE_REL_PINNED);
+> +}
+> +
+> +static struct dentry *dir;
+> +
+> +static int cpu_read_op(void *data, u64 *value)
+> +{
+> +       *value = ipi_wakeup.dest_cpu;
+> +       return 0;
+> +}
+> +
+> +static int cpu_write_op(void *data, u64 value)
+> +{
+> +       run_smp_call_function_test(value);
+> +       return 0;
+> +}
+> +DEFINE_SIMPLE_ATTRIBUTE(ipi_ops, cpu_read_op, cpu_write_op, "%llu\n");
+> +
+> +static int timeout_read_op(void *data, u64 *value)
+> +{
+> +       *value = timer_wakeup.timeout;
+> +       return 0;
+> +}
+> +
+> +static int timeout_write_op(void *data, u64 value)
+> +{
+> +       run_timer_test(value);
+> +       return 0;
+> +}
+> +DEFINE_SIMPLE_ATTRIBUTE(timeout_ops, timeout_read_op, timeout_write_op, "%llu\n");
+> +
+> +static int __init latency_init(void)
+> +{
+> +       struct dentry *temp;
+> +
+> +       dir = debugfs_create_dir("latency_test", 0);
+> +       if (!dir) {
+> +               pr_alert("latency_test: failed to create /sys/kernel/debug/latency_test\n");
+> +               return -1;
+> +       }
+> +       temp = debugfs_create_file("ipi_cpu_dest",
+> +                                  0666,
+> +                                  dir,
+> +                                  NULL,
+> +                                  &ipi_ops);
+> +       if (!temp) {
+> +               pr_alert("latency_test: failed to create /sys/kernel/debug/ipi_cpu_dest\n");
+> +               return -1;
+> +       }
+> +       debugfs_create_u64("ipi_latency_ns", 0444, dir, &ipi_wakeup.latency_ns);
+> +       debugfs_create_u32("ipi_cpu_src", 0444, dir, &ipi_wakeup.src_cpu);
+> +
+> +       temp = debugfs_create_file("timeout_expected_ns",
+> +                                  0666,
+> +                                  dir,
+> +                                  NULL,
+> +                                  &timeout_ops);
+> +       if (!temp) {
+> +               pr_alert("latency_test: failed to create /sys/kernel/debug/timeout_expected_ns\n");
+> +               return -1;
+> +       }
+> +       debugfs_create_u64("timeout_diff_ns", 0444, dir, &timer_wakeup.timeout_diff_ns);
+> +       debugfs_create_u32("timeout_cpu_src", 0444, dir, &timer_wakeup.src_cpu);
+> +       pr_info("Latency Test module loaded\n");
+> +       return 0;
+> +}
+> +
+> +static void __exit latency_cleanup(void)
+> +{
+> +       pr_info("Cleaning up Latency Test module.\n");
+> +       debugfs_remove_recursive(dir);
+> +}
+> +
+> +module_init(latency_init);
+> +module_exit(latency_cleanup);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("IBM Corporation");
+> +MODULE_DESCRIPTION("Measuring idle latency for IPIs and Timers");
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index d74ac0fd6b2d..e2283790245a 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -1375,6 +1375,16 @@ config DEBUG_KOBJECT
+>           If you say Y here, some extra kobject debugging messages will be sent
+>           to the syslog.
+>
+> +config IDLE_LATENCY_SELFTEST
+> +       tristate "Cpuidle latency selftests"
+> +       depends on CPU_IDLE
+> +       help
+> +         This option provides a kernel module that runs tests using the IPI and
+> +         timers to measure latency.
 
-This locking/nmi branch can then be merged into irq/entry (there's a 
-bunch of conflicts between them), without coupling all of v5.9's 
-locking changes to Thomas's generic entry work.
+What latency does it measure?
 
-Thanks,
-
-	Ingo
+> +
+> +         Say M if you want these self tests to build as a module.
+> +         Say N if you are unsure.
+> +
+>  config DEBUG_KOBJECT_RELEASE
+>         bool "kobject release debugging"
+>         depends on DEBUG_OBJECTS_TIMERS
+> --
+> 2.25.4
+>
