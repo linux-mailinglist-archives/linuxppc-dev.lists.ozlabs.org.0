@@ -2,68 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A059622F017
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 16:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B3422F60E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 19:05:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFhnt4f0rzF1Q6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 00:21:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFmPv2tCfzDqSC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 03:04:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFhdH3s8NzDqnM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 00:14:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=weiyongjun1@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BFhdG3gJvz8t9F
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 00:14:26 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BFhdG1wNcz9t0P; Tue, 28 Jul 2020 00:14:26 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
- envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
- [209.85.210.65])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BFhdG05Bdz9syB;
- Tue, 28 Jul 2020 00:14:25 +1000 (AEST)
-Received: by mail-ot1-f65.google.com with SMTP id w17so12414542otl.4;
- Mon, 27 Jul 2020 07:14:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=RwV/fYC6R5PVghDc7Xcfm5xADtIIp1K2tl3Z3YbTId0=;
- b=nsJGhLPe7c+CHcj8bHfR1yEtNNRuzcHpWBUwCq1h7uP5pP/AsuvXermHi4dtZQ79oZ
- 1q6oKFMSqUYoD0RymBDQihEbKGWx2THeaEzjqPsxE7MrZ/pPpqQr1eYQtsxBsw9Kv7gy
- aNjFoIJbTxM1RLPm7SFE1YETvAef2EI2CUgXT3hGI1D53eapZNYnFw+XC6RaAjfUYmRD
- Z5CSXFdCx3atOQrAdOhGppzKdPxVIaJwNa9onQHc7jkBbm0e9Tt3N2eib2fI212dR5qB
- HkwQf01/H35jFIZQiMBOpMMC9WlTu3AeiskGutNP/em9dXMwlWeFJ7/jj+J1TgpIlzTi
- NJHQ==
-X-Gm-Message-State: AOAM531Cx9cc1VmZtrOnH096LGyKE7Gig279C+7I93aIF+3x/r/Yli0h
- S/0Ubr8UoRhdNf4rL8nN0Bksf+LBGidkmx1Acfc=
-X-Google-Smtp-Source: ABdhPJy3IQ4gWoo3GVjFr2jd6qToC3wtimm7RFwI0aGYMQzT7H7gS+icm3pzzCk7LtxkYZm+IgVNdSPw5XxX9M393tU=
-X-Received: by 2002:a9d:590a:: with SMTP id t10mr20554597oth.262.1595859262962; 
- Mon, 27 Jul 2020 07:14:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFmLF0xCVzF146
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:01:38 +1000 (AEST)
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 30A38974B87AF2C0C6FF;
+ Tue, 28 Jul 2020 01:01:32 +0800 (CST)
+Received: from kernelci-master.huawei.com (10.175.101.6) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 28 Jul 2020 01:01:21 +0800
+From: Wei Yongjun <weiyongjun1@huawei.com>
+To: Hulk Robot <hulkci@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Oliver O'Halloran <oohall@gmail.com>, Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: [PATCH -next] powerpc/powernv/sriov: Remove unused but set variable
+ 'phb'
+Date: Tue, 28 Jul 2020 01:11:12 +0800
+Message-ID: <20200727171112.2781-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <1594120299-31389-1-git-send-email-ego@linux.vnet.ibm.com>
- <20200707113235.GM14120@in.ibm.com>
-In-Reply-To: <20200707113235.GM14120@in.ibm.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 27 Jul 2020 16:14:12 +0200
-Message-ID: <CAJZ5v0jA20TJyxRwtBu31zF5otkqbTW9R03Na3LgJsWB3nDmoQ@mail.gmail.com>
-Subject: Re: [PATCH 0/5] cpuidle-pseries: Parse extended CEDE information for
- idle.
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.175.101.6]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,37 +49,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Michael Neuling <mikey@neuling.org>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- Linux PM <linux-pm@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Wei Yongjun <weiyongjun1@huawei.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 7, 2020 at 1:32 PM Gautham R Shenoy <ego@linux.vnet.ibm.com> wrote:
->
-> Hi,
->
-> On Tue, Jul 07, 2020 at 04:41:34PM +0530, Gautham R. Shenoy wrote:
-> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-> >
-> > Hi,
-> >
-> >
-> >
-> >
-> > Gautham R. Shenoy (5):
-> >   cpuidle-pseries: Set the latency-hint before entering CEDE
-> >   cpuidle-pseries: Add function to parse extended CEDE records
-> >   cpuidle-pseries : Fixup exit latency for CEDE(0)
-> >   cpuidle-pseries : Include extended CEDE states in cpuidle framework
-> >   cpuidle-pseries: Block Extended CEDE(1) which adds no additional
-> >     value.
->
-> Forgot to mention that these patches are on top of Nathan's series to
-> remove extended CEDE offline and bogus topology update code :
-> https://lore.kernel.org/linuxppc-dev/20200612051238.1007764-1-nathanl@linux.ibm.com/
+Gcc report warning as follows:
 
-OK, so this is targeted at the powerpc maintainers, isn't it?
+arch/powerpc/platforms/powernv/pci-sriov.c:602:25: warning:
+ variable 'phb' set but not used [-Wunused-but-set-variable]
+  602 |  struct pnv_phb        *phb;
+      |                         ^~~
+
+This variable is not used, so this commit removing it.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ arch/powerpc/platforms/powernv/pci-sriov.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+index 8404d8c3901d..7894745fd4f8 100644
+--- a/arch/powerpc/platforms/powernv/pci-sriov.c
++++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+@@ -599,10 +599,8 @@ static int pnv_pci_vf_resource_shift(struct pci_dev *dev, int offset)
+ static void pnv_pci_sriov_disable(struct pci_dev *pdev)
+ {
+ 	u16                    num_vfs, base_pe;
+-	struct pnv_phb        *phb;
+ 	struct pnv_iov_data   *iov;
+ 
+-	phb = pci_bus_to_pnvhb(pdev->bus);
+ 	iov = pnv_iov_get(pdev);
+ 	num_vfs = iov->num_vfs;
+ 	base_pe = iov->vf_pe_arr[0].pe_number;
+
