@@ -1,78 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E614522E492
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 05:57:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B18822E498
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 06:02:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFQxC2cLzzF0k7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 13:57:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFR3T3CPNzF0c5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 14:02:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFQvQ3fHWzDsNT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 13:55:46 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06R3X7jh111156; Sun, 26 Jul 2020 23:55:40 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFR1P6p2rzF0dl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 14:00:57 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06R3WEJ4106789; Mon, 27 Jul 2020 00:00:47 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32gevq9d7w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Jul 2020 00:00:47 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06R3e1vd124978;
+ Mon, 27 Jul 2020 00:00:47 -0400
 Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32gf29h1p6-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32gevq9d70-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 26 Jul 2020 23:55:40 -0400
+ Mon, 27 Jul 2020 00:00:47 -0400
 Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06R3qbZH014797;
- Mon, 27 Jul 2020 03:55:38 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 32gcqghrv8-1
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06R3qbZU014797;
+ Mon, 27 Jul 2020 04:00:45 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06ams.nl.ibm.com with ESMTP id 32gcqghryj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 03:55:38 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06R3tZIs28180856
+ Mon, 27 Jul 2020 04:00:45 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06R3xHCB54067600
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Jul 2020 03:55:35 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3DF7D4203F;
- Mon, 27 Jul 2020 03:55:35 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44AF242041;
- Mon, 27 Jul 2020 03:55:32 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.81.241])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 27 Jul 2020 03:55:32 +0000 (GMT)
-Date: Mon, 27 Jul 2020 09:25:29 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH v5 5/7] KVM: PPC: Book3S HV: migrate hot plugged memory
-Message-ID: <20200727035529.GH1082478@in.ibm.com>
-References: <1595534844-16188-1-git-send-email-linuxram@us.ibm.com>
- <1595534844-16188-6-git-send-email-linuxram@us.ibm.com>
+ Mon, 27 Jul 2020 03:59:17 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 97AC95204F;
+ Mon, 27 Jul 2020 04:00:42 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 538F552057;
+ Mon, 27 Jul 2020 04:00:41 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2 0/6] Improvements to pkey tests
+Date: Mon, 27 Jul 2020 09:30:34 +0530
+Message-Id: <cover.1595821792.git.sandipan@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1595534844-16188-6-git-send-email-linuxram@us.ibm.com>
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-27_02:2020-07-24,
  2020-07-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999
- priorityscore=1501 adultscore=0 suspectscore=5 mlxscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007270023
+ impostorscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 clxscore=1015
+ bulkscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ mlxlogscore=866 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007270021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,89 +85,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 23, 2020 at 01:07:22PM -0700, Ram Pai wrote:
-> From: Laurent Dufour <ldufour@linux.ibm.com>
-> 
-> When a memory slot is hot plugged to a SVM, PFNs associated with the
-> GFNs in that slot must be migrated to the secure-PFNs, aka device-PFNs.
-> 
-> Call kvmppc_uv_migrate_mem_slot() to accomplish this.
-> Disable page-merge for all pages in the memory slot.
-> 
-> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-> [rearranged the code, and modified the commit log]
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/kvm_book3s_uvmem.h | 14 ++++++++++++++
->  arch/powerpc/kvm/book3s_hv.c                | 10 ++--------
->  arch/powerpc/kvm/book3s_hv_uvmem.c          | 23 +++++++++++++++++++----
->  3 files changed, 35 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-> index f229ab5..59c17ca 100644
-> --- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-> +++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-> @@ -25,6 +25,10 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
->  			     struct kvm *kvm, bool skip_page_out);
->  int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
->  			const struct kvm_memory_slot *memslot);
-> +int kvmppc_uvmem_memslot_create(struct kvm *kvm,
-> +		const struct kvm_memory_slot *new);
-> +void kvmppc_uvmem_memslot_delete(struct kvm *kvm,
-> +		const struct kvm_memory_slot *old);
->  #else
->  static inline int kvmppc_uvmem_init(void)
->  {
-> @@ -84,5 +88,15 @@ static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
->  static inline void
->  kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
->  			struct kvm *kvm, bool skip_page_out) { }
-> +
-> +static inline int  kvmppc_uvmem_memslot_create(struct kvm *kvm,
-> +		const struct kvm_memory_slot *new)
-> +{
-> +	return H_UNSUPPORTED;
-> +}
-> +
-> +static inline void  kvmppc_uvmem_memslot_delete(struct kvm *kvm,
-> +		const struct kvm_memory_slot *old) { }
-> +
->  #endif /* CONFIG_PPC_UV */
->  #endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index d331b46..b1485ca 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4515,16 +4515,10 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
->  
->  	switch (change) {
->  	case KVM_MR_CREATE:
-> -		if (kvmppc_uvmem_slot_init(kvm, new))
-> -			return;
-> -		uv_register_mem_slot(kvm->arch.lpid,
-> -				     new->base_gfn << PAGE_SHIFT,
-> -				     new->npages * PAGE_SIZE,
-> -				     0, new->id);
-> +		kvmppc_uvmem_memslot_create(kvm, new);
+Based on recent bugs found in the pkey infrastructure, this
+improves the test for execute-disabled pkeys and adds a new
+test for detecting inconsistencies with the pkey reported by
+the signal information upon getting a fault.
 
-Only concern is that kvmppc_uvmem_memslot_create() can fail due
-to multiple reasons but we ignore them and go ahead with memory
-hotplug.
+Previous versions can be found at:
+v1: https://lore.kernel.org/linuxppc-dev/cover.1594897099.git.sandipan@linux.ibm.com/
 
-May be this hasn't been observed in reality but if we can note this
-as a TODO in the comments to dig further and explore the possibility
-of recovering from here, then
+Changes in v2:
+- Added a wrapper for the gettid syscall based on suggestions
+  from Michael and Christophe.
 
-Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
+Sandipan Das (6):
+  selftests/powerpc: Move pkey helpers to headers
+  selftests/powerpc: Add pkey helpers for rights
+  selftests/powerpc: Harden test for execute-disabled pkeys
+  selftests/powerpc: Add helper to exit on failure
+  selftests/powerpc: Add wrapper for gettid
+  selftests/powerpc: Add test for pkey siginfo verification
 
-Regards,
-Bharata.
+ .../testing/selftests/powerpc/include/pkeys.h | 136 +++++++
+ .../testing/selftests/powerpc/include/utils.h |  23 ++
+ tools/testing/selftests/powerpc/mm/.gitignore |   1 +
+ tools/testing/selftests/powerpc/mm/Makefile   |   5 +-
+ .../selftests/powerpc/mm/pkey_exec_prot.c     | 210 +++--------
+ .../selftests/powerpc/mm/pkey_siginfo.c       | 332 ++++++++++++++++++
+ 6 files changed, 554 insertions(+), 153 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/include/pkeys.h
+ create mode 100644 tools/testing/selftests/powerpc/mm/pkey_siginfo.c
+
+-- 
+2.25.1
+
