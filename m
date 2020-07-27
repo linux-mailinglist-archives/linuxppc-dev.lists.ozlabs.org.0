@@ -1,33 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671BF22E700
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:56:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BE122E722
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:59:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFXDd4M9qzDqJq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:56:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFXJ01zMszDqH4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:58:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb66DDdzDqrM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWbB5zCmzDqq0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:27:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BFWb52cR4z9sTm; Mon, 27 Jul 2020 17:26:56 +1000 (AEST)
+ id 4BFWb71j4Yz9sV7; Mon, 27 Jul 2020 17:26:57 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-In-Reply-To: <20200724105809.24733-1-srikar@linux.vnet.ibm.com>
-References: <20200724105809.24733-1-srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] powerpc/numa: Limit possible nodes to within
- num_possible_nodes
-Message-Id: <159583478336.602200.18251206166089177032.b4-ty@ellerman.id.au>
-Date: Mon, 27 Jul 2020 17:26:56 +1000 (AEST)
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, Wei Yongjun <weiyongjun1@huawei.com>,
+ Dan Williams <dan.j.williams@intel.com>, Hulk Robot <hulkci@huawei.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Santosh Sivaraj <santosh@fossix.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200725091949.75234-1-weiyongjun1@huawei.com>
+References: <20200725091949.75234-1-weiyongjun1@huawei.com>
+Subject: Re: [PATCH -next] powerpc/papr_scm: Make some symbols static
+Message-Id: <159583478705.602200.4759051429110235059.b4-ty@ellerman.id.au>
+Date: Mon, 27 Jul 2020 17:26:57 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,26 +40,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 24 Jul 2020 16:28:09 +0530, Srikar Dronamraju wrote:
-> MAX_NUMNODES is a theoretical maximum number of nodes thats is supported
-> by the kernel. Device tree properties exposes the number of possible
-> nodes on the current platform. The kernel would detected this and would
-> use it for most of its resource allocations.  If the platform now
-> increases the nodes to over what was already exposed, then it may lead
-> to inconsistencies. Hence limit it to the already exposed nodes.
+On Sat, 25 Jul 2020 17:19:49 +0800, Wei Yongjun wrote:
+> The sparse tool complains as follows:
+> 
+> arch/powerpc/platforms/pseries/papr_scm.c:97:1: warning:
+>  symbol 'papr_nd_regions' was not declared. Should it be static?
+> arch/powerpc/platforms/pseries/papr_scm.c:98:1: warning:
+>  symbol 'papr_ndr_lock' was not declared. Should it be static?
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/numa: Limit possible nodes to within num_possible_nodes
-      https://git.kernel.org/powerpc/c/dbce456280857f329af9069af5e48a9b6ebad146
+[1/1] powerpc/papr_scm: Make some symbols static
+      https://git.kernel.org/powerpc/c/19a551b254e6c308348a46a65332aa03c01767ed
 
 cheers
