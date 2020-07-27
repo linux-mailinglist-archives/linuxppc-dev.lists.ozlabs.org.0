@@ -2,88 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7101F22F6B1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 19:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC88F22F768
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 20:12:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFn1P5FT0zF1YK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 03:32:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFnvw3x3pzF1Rl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 04:12:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFmnn5cHDzDr09
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:22:05 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06RH29xd021177; Mon, 27 Jul 2020 13:22:00 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32j2pah2ba-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFnpT2CXvzDrdH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 04:07:44 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06RI1eCY123752; Mon, 27 Jul 2020 14:07:33 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32hs0scby0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 13:21:59 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06RH2Mk7022611;
- Mon, 27 Jul 2020 13:21:59 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32j2pah2ac-1
+ Mon, 27 Jul 2020 14:07:33 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06RI57bW009618;
+ Mon, 27 Jul 2020 18:07:32 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 32gcy4jh71-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 13:21:59 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06RHJdVc018974;
- Mon, 27 Jul 2020 17:21:57 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 32gcpx2gxf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 17:21:57 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06RHLtXP18022776
+ Mon, 27 Jul 2020 18:07:31 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06RI7T3J34275606
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Jul 2020 17:21:55 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD70EA4060;
- Mon, 27 Jul 2020 17:21:54 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B4C24A405F;
- Mon, 27 Jul 2020 17:21:53 +0000 (GMT)
-Received: from [9.102.1.173] (unknown [9.102.1.173])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 27 Jul 2020 17:21:53 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
-Subject: Re: [PATCH] powerpc/64s/hash: Fix hash_preload running with
- interrupts enabled
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <87k0yp6sqh.fsf@mpe.ellerman.id.au>
-Date: Mon, 27 Jul 2020 22:51:50 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9A09C920-D61C-41DC-BCCC-702F9D4BB055@linux.vnet.ibm.com>
-References: <20200727060947.10060-1-npiggin@gmail.com>
- <4925309C-A338-4C0F-90E3-4522643021CB@linux.vnet.ibm.com>
- <87k0yp6sqh.fsf@mpe.ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-X-Mailer: Apple Mail (2.3608.120.23.2.1)
+ Mon, 27 Jul 2020 18:07:29 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE925A4040;
+ Mon, 27 Jul 2020 18:07:28 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB895A4057;
+ Mon, 27 Jul 2020 18:07:25 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.163.69.7])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 27 Jul 2020 18:07:25 +0000 (GMT)
+From: Ram Pai <linuxram@us.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v6 0/5] Migrate non-migrated pages of a SVM.
+Date: Mon, 27 Jul 2020 11:07:13 -0700
+Message-Id: <1595873238-26184-1-git-send-email-linuxram@us.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-27_12:2020-07-27,
  2020-07-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0 adultscore=0
- spamscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 mlxscore=0 suspectscore=0 lowpriorityscore=0
- phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007270111
+ bulkscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ mlxscore=0 priorityscore=1501 impostorscore=0 suspectscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007270118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,123 +79,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: ldufour@linux.ibm.com, linuxram@us.ibm.com, cclaudio@linux.ibm.com,
+ bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The time to switch a VM to Secure-VM, increases by the size of the VM.
+A 100GB VM takes about 7minutes. This is unacceptable.  This linear
+increase is caused by a suboptimal behavior by the Ultravisor and the
+Hypervisor.  The Ultravisor unnecessarily migrates all the GFN of the
+VM from normal-memory to secure-memory. It has to just migrate the
+necessary and sufficient GFNs.
+
+However when the optimization is incorporated in the Ultravisor, the
+Hypervisor starts misbehaving. The Hypervisor has a inbuilt assumption
+that the Ultravisor will explicitly request to migrate, each and every
+GFN of the VM. If only necessary and sufficient GFNs are requested for
+migration, the Hypervisor continues to manage the remaining GFNs as
+normal GFNs. This leads to memory corruption; manifested
+consistently when the SVM reboots.
+
+The same is true, when a memory slot is hotplugged into a SVM. The
+Hypervisor expects the ultravisor to request migration of all GFNs to
+secure-GFN.  But the hypervisor cannot handle any H_SVM_PAGE_IN
+requests from the Ultravisor, done in the context of
+UV_REGISTER_MEM_SLOT ucall.  This problem manifests as random errors
+in the SVM, when a memory-slot is hotplugged.
+
+This patch series automatically migrates the non-migrated pages of a
+SVM, and thus solves the problem.
+
+Testing: Passed rigorous testing using various sized SVMs.
+
+Changelog:
+
+v6:     . rearrangement of functions in book3s_hv_uvmem.c. No functional
+		change.
+	. decoupling this patch series from Laurent's memory-hotplug/unplug,
+		since the memhotplug/unplug/hotplug/reboot test is failing.
+
+v5:  .  This patch series includes Laurent's fix for memory hotplug/unplug
+	  . drop pages first and then delete the memslot. Otherwise
+	  	the memslot does not get cleanly deleted, causing
+		problems during reboot.
+	  . recreatable through the following set of commands
+	     . device_add pc-dimm,id=dimm1,memdev=mem1
+	     . device_del dimm1
+	     . device_add pc-dimm,id=dimm1,memdev=mem1
+	Further incorporates comments from Bharata:
+	. fix for off-by-one while disabling migration.
+	. code-reorganized to maximize sharing in init_start path
+       		and in memory-hotplug path
+	. locking adjustments in mass-page migration during H_SVM_INIT_DONE.
+	. improved recovery on error paths.
+	. additional comments in the code for better understanding.
+	. removed the retry-on-migration-failure code.
+	. re-added the initial patch that adjust some prototype to overcome
+	   a git problem, where it messes up the code context. Had
+		accidently dropped the patch in the last version.
+
+v4:  .  Incorported Bharata's comments:
+	- Optimization -- replace write mmap semaphore with read mmap semphore.
+	- disable page-merge during memory hotplug.
+	- rearranged the patches. consolidated the page-migration-retry logic
+		in a single patch.
+
+v3: . Optimized the page-migration retry-logic. 
+    . Relax and relinquish the cpu regularly while bulk migrating
+    	the non-migrated pages. This issue was causing soft-lockups.
+	Fixed it.
+    . Added a new patch, to retry page-migration a couple of times
+    	before returning H_BUSY in H_SVM_PAGE_IN. This issue was
+	seen a few times in a 24hour continuous reboot test of the SVMs.
+
+v2: . fixed a bug observed by Laurent. The state of the GFN's associated
+	with Secure-VMs were not reset during memslot flush.
+    . Re-organized the code, for easier review.
+    . Better description of the patch series.
+
+v1: . fixed a bug observed by Bharata. Pages that where paged-in and later
+	paged-out must also be skipped from migration during H_SVM_INIT_DONE.
 
 
-> On 27-Jul-2020, at 6:05 PM, Michael Ellerman <mpe@ellerman.id.au> =
-wrote:
->=20
-> Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
->>> On 27-Jul-2020, at 11:39 AM, Nicholas Piggin <npiggin@gmail.com> =
-wrote:
->>>=20
->>> Commit 2f92447f9f96 ("powerpc/book3s64/hash: Use the pte_t address =
-from the
->>> caller") removed the local_irq_disable from hash_preload, but it was
->>> required for more than just the page table walk: the hash pte busy =
-bit is
->>> effectively a lock which may be taken in interrupt context, and the =
-local
->>> update flag test must not be preempted before it's used.
->>>=20
->>> This solves apparent lockups with perf interrupting __hash_page_64K. =
-If
->>> get_perf_callchain then also takes a hash fault on the same page =
-while it
->>> is already locked, it will loop forever taking hash faults, which =
-looks like
->>> this:
->>>=20
->>> cpu 0x49e: Vector: 100 (System Reset) at [c00000001a4f7d70]
->>>   pc: c000000000072dc8: hash_page_mm+0x8/0x800
->>>   lr: c00000000000c5a4: do_hash_page+0x24/0x38
->>>   sp: c0002ac1cc69ac70
->>>  msr: 8000000000081033
->>> current =3D 0xc0002ac1cc602e00
->>> paca    =3D 0xc00000001de1f280   irqmask: 0x03   irq_happened: 0x01
->>>   pid   =3D 20118, comm =3D pread2_processe
->>> Linux version 5.8.0-rc6-00345-g1fad14f18bc6
->>> 49e:mon> t
->>> [c0002ac1cc69ac70] c00000000000c5a4 do_hash_page+0x24/0x38 =
-(unreliable)
->>> --- Exception: 300 (Data Access) at c00000000008fa60 =
-__copy_tofrom_user_power7+0x20c/0x7ac
->>> [link register   ] c000000000335d10 =
-copy_from_user_nofault+0xf0/0x150
->>> [c0002ac1cc69af70] c00032bf9fa3c880 (unreliable)
->>> [c0002ac1cc69afa0] c000000000109df0 read_user_stack_64+0x70/0xf0
->>> [c0002ac1cc69afd0] c000000000109fcc =
-perf_callchain_user_64+0x15c/0x410
->>> [c0002ac1cc69b060] c000000000109c00 perf_callchain_user+0x20/0x40
->>> [c0002ac1cc69b080] c00000000031c6cc get_perf_callchain+0x25c/0x360
->>> [c0002ac1cc69b120] c000000000316b50 perf_callchain+0x70/0xa0
->>> [c0002ac1cc69b140] c000000000316ddc perf_prepare_sample+0x25c/0x790
->>> [c0002ac1cc69b1a0] c000000000317350 =
-perf_event_output_forward+0x40/0xb0
->>> [c0002ac1cc69b220] c000000000306138 __perf_event_overflow+0x88/0x1a0
->>> [c0002ac1cc69b270] c00000000010cf70 record_and_restart+0x230/0x750
->>> [c0002ac1cc69b620] c00000000010d69c perf_event_interrupt+0x20c/0x510
->>> [c0002ac1cc69b730] c000000000027d9c =
-performance_monitor_exception+0x4c/0x60
->>> [c0002ac1cc69b750] c00000000000b2f8 =
-performance_monitor_common_virt+0x1b8/0x1c0
->>> --- Exception: f00 (Performance Monitor) at c0000000000cb5b0 =
-pSeries_lpar_hpte_insert+0x0/0x160
->>> [link register   ] c0000000000846f0 __hash_page_64K+0x210/0x540
->>> [c0002ac1cc69ba50] 0000000000000000 (unreliable)
->>> [c0002ac1cc69bb00] c000000000073ae0 update_mmu_cache+0x390/0x3a0
->>> [c0002ac1cc69bb70] c00000000037f024 wp_page_copy+0x364/0xce0
->>> [c0002ac1cc69bc20] c00000000038272c do_wp_page+0xdc/0xa60
->>> [c0002ac1cc69bc70] c0000000003857bc handle_mm_fault+0xb9c/0x1b60
->>> [c0002ac1cc69bd50] c00000000006c434 __do_page_fault+0x314/0xc90
->>> [c0002ac1cc69be20] c00000000000c5c8 handle_page_fault+0x10/0x2c
->>> --- Exception: 300 (Data Access) at 00007fff8c861fe8
->>> SP (7ffff6b19660) is in userspace
->>>=20
->>> Reported-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>> Reported-by: Anton Blanchard <anton@ozlabs.org>
->>> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> Fixes: 2f92447f9f96 ("powerpc/book3s64/hash: Use the pte_t address =
-from the
->>> caller")
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>=20
->>=20
->> Hi,
->>=20
->> Tested with the patch and it fixes the lockups I was seeing with my =
-test run.
->> Thanks for the fix.
->>=20
->> Tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->=20
-> Thanks for testing.
->=20
-> What test are you running?
+Laurent Dufour (1):
+  KVM: PPC: Book3S HV: migrate hot plugged memory
 
-Hi Michael
+Ram Pai (4):
+  KVM: PPC: Book3S HV: Fix function definition in book3s_hv_uvmem.c
+  KVM: PPC: Book3S HV: Disable page merging in H_SVM_INIT_START
+  KVM: PPC: Book3S HV: track the state GFNs associated with secure VMs
+  KVM: PPC: Book3S HV: in H_SVM_INIT_DONE, migrate remaining normal-GFNs
+    to secure-GFNs.
 
-I was running  =E2=80=9Cperf record=E2=80=9D  and Unixbench tests ( =
-https://github.com/kdlucas/byte-unixbench ) in parallel where we were =
-getting soft lockups
+ Documentation/powerpc/ultravisor.rst        |   3 +
+ arch/powerpc/include/asm/kvm_book3s_uvmem.h |  14 +
+ arch/powerpc/kvm/book3s_hv.c                |  14 +-
+ arch/powerpc/kvm/book3s_hv_uvmem.c          | 498 +++++++++++++++++++++++-----
+ 4 files changed, 437 insertions(+), 92 deletions(-)
 
-1. Perf command run:
-# perf record -a -g -c 10000000 -o <data_file> sleep 60
-
-2. Unixbench tests
-# Run -q -c <nr_threads> spawn
-
-Wtth the fix, perf completes successfully.
-
-Thanks
-Athira
-
->=20
-> cheers
+-- 
+1.8.3.1
 
