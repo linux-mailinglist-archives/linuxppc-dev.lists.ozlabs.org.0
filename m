@@ -2,54 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D7722EC30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 14:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F12822EC49
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 14:37:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFfKp6BB3zDqxh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 22:30:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFfTP4Vk6zF1Pn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 22:37:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFfGg3KH1zDrDY
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 22:28:11 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFfQv4vnfzDqwg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 22:35:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=EWr+X3jv; 
+ header.a=rsa-sha256 header.s=201909 header.b=RMjOSeS5; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BFfGf6HzJz9sRW; Mon, 27 Jul 2020 22:28:10 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BFfGf4B1wz9sRN;
- Mon, 27 Jul 2020 22:28:10 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BFfQv2rRjz9sPB;
+ Mon, 27 Jul 2020 22:35:19 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595852890;
- bh=j7IswI7LeuXrByn9IRbR3NmoDK1ZKhlctszqUmkC7uE=;
+ s=201909; t=1595853319;
+ bh=VW535eLE0IS10Lj1UNv1vamKShQhHMZ7sokiUzcPGzE=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=EWr+X3jvsCyLG4bhtvXSK0U+qEdG7lQGAjFKGLEDOhXnpWIYEX+YcDUPWf2BUVtla
- +8ag4sQMY/VB2/KwFAb/8kLKZT5s0UzFv2aOi/SCBOpdcXDmr2/nKZypxtKkqvnlQo
- HWktAq7rZMfSuGZEwHEdjKEn0lb64/vPaMVZQ13PTztXXqhh2rKcIzsRrto9Gv9MDn
- 9IVzQf9rzb1GplxBId+TIJA80jgX7aQ/Fj4se1cL/C57nn9bUXSuF4AOiGxUrEygRR
- EttPAOJhO0ebEOlm1gkoKxaLZpmv+04Zdm/nar2Y1IP6Y5no9KXdnLKxF3f9KZ5J0e
- k1gw4x3Yc4cpQ==
+ b=RMjOSeS5E06avd2/fouqEOSPd/yO/k75J9iwzhpDTHxteq7DxF54O3ZeJ0H8nvJte
+ h+M2UYn9OaUXJnyKA0eyikfpH/YzrBQ8sS/8K5CYkB8Nv4AS2h7BO266D9MPqUz7Zz
+ 2l2PNoN0eNv2BQzeJmA3oLu+dSCvLHO3/qrqyP5GJSMKQNnMIlfQDEijJjP9iQ+oAO
+ a3j6CAa+3O7hejF/g/m8+qVLNKnw5BqNVdYYnG+ViIayGywBOskpZoZLyTdDdYtSXX
+ /b+5qR/7afeAFRW4HYRJ7YEIOhNC6mbnyMeEFn6o7C8uOHR8P4xCYLkwZKQhlTk8Vp
+ rF4WTWHQ21SRg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gabriel Paubert <paubert@iram.es>
-Subject: Re: [PATCH v2 2/5] powerpc: Allow 4224 bytes of stack expansion for
- the signal frame
-In-Reply-To: <20200727082331.GA2110@lt-gp.iram.es>
-References: <20200724092528.1578671-1-mpe@ellerman.id.au>
- <20200724092528.1578671-2-mpe@ellerman.id.au>
- <20200727082331.GA2110@lt-gp.iram.es>
-Date: Mon, 27 Jul 2020 22:28:09 +1000
-Message-ID: <87mu3l6t2e.fsf@mpe.ellerman.id.au>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s/hash: Fix hash_preload running with
+ interrupts enabled
+In-Reply-To: <4925309C-A338-4C0F-90E3-4522643021CB@linux.vnet.ibm.com>
+References: <20200727060947.10060-1-npiggin@gmail.com>
+ <4925309C-A338-4C0F-90E3-4522643021CB@linux.vnet.ibm.com>
+Date: Mon, 27 Jul 2020 22:35:18 +1000
+Message-ID: <87k0yp6sqh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,51 +60,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org, dja@axtens.net
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gabriel Paubert <paubert@iram.es> writes:
-> On Fri, Jul 24, 2020 at 07:25:25PM +1000, Michael Ellerman wrote:
->> We have powerpc specific logic in our page fault handling to decide if
->> an access to an unmapped address below the stack pointer should expand
->> the stack VMA.
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+>> On 27-Jul-2020, at 11:39 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
 >> 
->> The code was originally added in 2004 "ported from 2.4". The rough
->> logic is that the stack is allowed to grow to 1MB with no extra
->> checking. Over 1MB the access must be within 2048 bytes of the stack
->> pointer, or be from a user instruction that updates the stack pointer.
+>> Commit 2f92447f9f96 ("powerpc/book3s64/hash: Use the pte_t address from the
+>> caller") removed the local_irq_disable from hash_preload, but it was
+>> required for more than just the page table walk: the hash pte busy bit is
+>> effectively a lock which may be taken in interrupt context, and the local
+>> update flag test must not be preempted before it's used.
 >> 
->> The 2048 byte allowance below the stack pointer is there to cover the
->> 288 byte "red zone" as well as the "about 1.5kB" needed by the signal
->> delivery code.
+>> This solves apparent lockups with perf interrupting __hash_page_64K. If
+>> get_perf_callchain then also takes a hash fault on the same page while it
+>> is already locked, it will loop forever taking hash faults, which looks like
+>> this:
 >> 
->> Unfortunately since then the signal frame has expanded, and is now
->> 4224 bytes on 64-bit kernels with transactional memory enabled.
+>> cpu 0x49e: Vector: 100 (System Reset) at [c00000001a4f7d70]
+>>    pc: c000000000072dc8: hash_page_mm+0x8/0x800
+>>    lr: c00000000000c5a4: do_hash_page+0x24/0x38
+>>    sp: c0002ac1cc69ac70
+>>   msr: 8000000000081033
+>>  current = 0xc0002ac1cc602e00
+>>  paca    = 0xc00000001de1f280   irqmask: 0x03   irq_happened: 0x01
+>>    pid   = 20118, comm = pread2_processe
+>> Linux version 5.8.0-rc6-00345-g1fad14f18bc6
+>> 49e:mon> t
+>> [c0002ac1cc69ac70] c00000000000c5a4 do_hash_page+0x24/0x38 (unreliable)
+>> --- Exception: 300 (Data Access) at c00000000008fa60 __copy_tofrom_user_power7+0x20c/0x7ac
+>> [link register   ] c000000000335d10 copy_from_user_nofault+0xf0/0x150
+>> [c0002ac1cc69af70] c00032bf9fa3c880 (unreliable)
+>> [c0002ac1cc69afa0] c000000000109df0 read_user_stack_64+0x70/0xf0
+>> [c0002ac1cc69afd0] c000000000109fcc perf_callchain_user_64+0x15c/0x410
+>> [c0002ac1cc69b060] c000000000109c00 perf_callchain_user+0x20/0x40
+>> [c0002ac1cc69b080] c00000000031c6cc get_perf_callchain+0x25c/0x360
+>> [c0002ac1cc69b120] c000000000316b50 perf_callchain+0x70/0xa0
+>> [c0002ac1cc69b140] c000000000316ddc perf_prepare_sample+0x25c/0x790
+>> [c0002ac1cc69b1a0] c000000000317350 perf_event_output_forward+0x40/0xb0
+>> [c0002ac1cc69b220] c000000000306138 __perf_event_overflow+0x88/0x1a0
+>> [c0002ac1cc69b270] c00000000010cf70 record_and_restart+0x230/0x750
+>> [c0002ac1cc69b620] c00000000010d69c perf_event_interrupt+0x20c/0x510
+>> [c0002ac1cc69b730] c000000000027d9c performance_monitor_exception+0x4c/0x60
+>> [c0002ac1cc69b750] c00000000000b2f8 performance_monitor_common_virt+0x1b8/0x1c0
+>> --- Exception: f00 (Performance Monitor) at c0000000000cb5b0 pSeries_lpar_hpte_insert+0x0/0x160
+>> [link register   ] c0000000000846f0 __hash_page_64K+0x210/0x540
+>> [c0002ac1cc69ba50] 0000000000000000 (unreliable)
+>> [c0002ac1cc69bb00] c000000000073ae0 update_mmu_cache+0x390/0x3a0
+>> [c0002ac1cc69bb70] c00000000037f024 wp_page_copy+0x364/0xce0
+>> [c0002ac1cc69bc20] c00000000038272c do_wp_page+0xdc/0xa60
+>> [c0002ac1cc69bc70] c0000000003857bc handle_mm_fault+0xb9c/0x1b60
+>> [c0002ac1cc69bd50] c00000000006c434 __do_page_fault+0x314/0xc90
+>> [c0002ac1cc69be20] c00000000000c5c8 handle_page_fault+0x10/0x2c
+>> --- Exception: 300 (Data Access) at 00007fff8c861fe8
+>> SP (7ffff6b19660) is in userspace
+>> 
+>> Reported-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> Reported-by: Anton Blanchard <anton@ozlabs.org>
+>> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>> Fixes: 2f92447f9f96 ("powerpc/book3s64/hash: Use the pte_t address from the
+>> caller")
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >
-> Are there really users of transactional memory in the wild? 
+>
+> Hi,
+>
+> Tested with the patch and it fixes the lockups I was seeing with my test run.
+> Thanks for the fix.
+>
+> Tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Not many that I've heard of, but some.
+Thanks for testing.
 
-Though anything that does use it needs to be written to fallback to
-regular locking if TM is not available anyway.
-
-> Just asking because Power10 removes TM, and Power9 has had some issues
-> with it AFAICT.
-
-It varies on different Power9 chip levels. For guests it should work.
-
-> Getting rid of it (if possible) would result in smaller signal frames,
-> with simpler signal delivery code (probably slightly faster also).
-
-All the kernel code should be behind CONFIG_PPC_TRANSACTIONAL_MEM.
-
-Deciding to disable that is really a distro decision.
-
-In upstream we tend not to drop support for existing hardware while
-people are still using it. But we could make a special case for TM,
-because it's quite intrusive. I think we'd wait for a major distro to
-ship without TM enabled before we did that though.
+What test are you running?
 
 cheers
