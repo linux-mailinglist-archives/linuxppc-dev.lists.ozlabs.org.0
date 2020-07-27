@@ -2,29 +2,29 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A755122E6E5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C48A322E6E4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:47:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFX5871qVzDqRL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:49:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFX3B63GMzF09h
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:47:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb15pBFzDqpr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb14N9fzDqq0
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BFWb14KLgz9sTj; Mon, 27 Jul 2020 17:26:53 +1000 (AEST)
+ id 4BFWb02Q01z9sTX; Mon, 27 Jul 2020 17:26:52 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
-In-Reply-To: <20200725081231.39076-1-oohall@gmail.com>
-References: <20200725081231.39076-1-oohall@gmail.com>
-Subject: Re: [PATCH v3 01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
-Message-Id: <159583478673.602200.11886445248182540490.b4-ty@ellerman.id.au>
+In-Reply-To: <20200722065715.1432738-1-oohall@gmail.com>
+References: <20200722065715.1432738-1-oohall@gmail.com>
+Subject: Re: [PATCH v2 01/16] powernv/pci: Add pci_bus_to_pnvhb() helper
+Message-Id: <159583478012.602200.3216230399674309576.b4-ty@ellerman.id.au>
 Date: Mon, 27 Jul 2020 17:26:52 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -41,41 +41,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 25 Jul 2020 18:12:18 +1000, Oliver O'Halloran wrote:
-> This function is a one line wrapper around eeh_phb_pe_create() and despite
-> the name it doesn't create any eeh_dev structures. Replace it with direct
-> calls to eeh_phb_pe_create() since that does what it says on the tin
-> and removes a layer of indirection.
+On Wed, 22 Jul 2020 16:57:00 +1000, Oliver O'Halloran wrote:
+> Add a helper to go from a pci_bus structure to the pnv_phb that hosts that
+> bus. There's a lot of instances of the following pattern:
+> 
+> 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> 	struct pnv_phb *phb = hose->private_data;
+> 
+> Without any other uses of the pci_controller inside the function. This is
+> hard to read since it requires you to memorise the contents of the
+> private data fields and kind of error prone since it involves blindly
+> assigning a void pointer. Add a helper to make it more concise and
+> explicit.
 
 Applied to powerpc/next.
 
-[01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
-        https://git.kernel.org/powerpc/c/475028efc708880e16e61cc4cbbc00af784cb39b
-[02/14] powerpc/eeh: Remove eeh_dev.c
-        https://git.kernel.org/powerpc/c/d74ee8e9d12e2071014ecec96a1ce2744f77639d
-[03/14] powerpc/eeh: Move vf_index out of pci_dn and into eeh_dev
-        https://git.kernel.org/powerpc/c/dffa91539e80355402c0716a91af17fc8ddd1abf
-[04/14] powerpc/pseries: Stop using pdn->pe_number
-        https://git.kernel.org/powerpc/c/c408ce9075b8e1533f30fd3a113b75fb745f722f
-[05/14] powerpc/eeh: Kill off eeh_ops->get_pe_addr()
-        https://git.kernel.org/powerpc/c/a40db934312cb2a4bef16b3edc962bc8c7f6462f
-[06/14] powerpc/eeh: Remove VF config space restoration
-        https://git.kernel.org/powerpc/c/21b43bd59c7838825b94eea288333affb53dd399
-[07/14] powerpc/eeh: Pass eeh_dev to eeh_ops->restore_config()
-        https://git.kernel.org/powerpc/c/0c2c76523c04ac184c7d7bbb8756f603375b7fc4
-[08/14] powerpc/eeh: Pass eeh_dev to eeh_ops->resume_notify()
-        https://git.kernel.org/powerpc/c/8225d543dc0170e5b61af8559af07ec4f26f0bd6
-[09/14] powerpc/eeh: Pass eeh_dev to eeh_ops->{read|write}_config()
-        https://git.kernel.org/powerpc/c/17d2a4870467bc8e8966304c08980571da943558
-[10/14] powerpc/eeh: Remove spurious use of pci_dn in eeh_dump_dev_log
-        https://git.kernel.org/powerpc/c/1a303d8844d082ef58ff5fc3005b99621a3263ba
-[11/14] powerpc/eeh: Remove class code field from edev
-        https://git.kernel.org/powerpc/c/768a42845b9ecdb28ba1991e17088b7eeb23a3eb
-[12/14] powerpc/eeh: Rename eeh_{add_to|remove_from}_parent_pe()
-        https://git.kernel.org/powerpc/c/d923ab7a96fcc2b46aac9b2fc38ffdca72436fd1
-[13/14] powerpc/eeh: Drop pdn use in eeh_pe_tree_insert()
-        https://git.kernel.org/powerpc/c/31595ae5aece519be5faa2e2013278ce45894d26
-[14/14] powerpc/eeh: Move PE tree setup into the platform
-        https://git.kernel.org/powerpc/c/a131bfc69bc868083a6c7f9b5dad1331902a3534
+[01/16] powerpc/powernv/pci: Add pci_bus_to_pnvhb() helper
+        https://git.kernel.org/powerpc/c/5609ffddd19dd52019d78b197e86b0331aeef8ae
+[02/16] powerpc/powernv/pci: Always tear down DMA windows on PE release
+        https://git.kernel.org/powerpc/c/7a52ffabe867c0d93e47af113e5107340974047a
+[03/16] powerpc/powernv/pci: Add explicit tracking of the DMA setup state
+        https://git.kernel.org/powerpc/c/01e12629af4e0e4864ed4d83e07783d7cb5b06be
+[04/16] powerpc/powernv/pci: Initialise M64 for IODA1 as a 1-1 window
+        https://git.kernel.org/powerpc/c/369633654fcb9639cd4cd0e1a448ffde3533d776
+[05/16] powerpc/powernv/sriov: Move SR-IOV into a separate file
+        https://git.kernel.org/powerpc/c/37b59ef08c546c6f54cdc52eed749f494619a102
+[06/16] powerpc/powernv/sriov: Explain how SR-IOV works on PowerNV
+        https://git.kernel.org/powerpc/c/ff79e11af0979b25ecb38e4c843779d4a759a4e2
+[07/16] powerpc/powernv/sriov: Rename truncate_iov
+        https://git.kernel.org/powerpc/c/fac248f8119170e3f8f54900985498ff6ee560bf
+[08/16] powerpc/powernv/sriov: Simplify used window tracking
+        https://git.kernel.org/powerpc/c/ad9add529d99d195195c27abf99e42d4965d35e2
+[09/16] powerpc/powernv/sriov: Factor out M64 BAR setup
+        https://git.kernel.org/powerpc/c/a610d35cc8780e781321ea8d002d5fef8484bf59
+[10/16] powerpc/powernv/pci: Refactor pnv_ioda_alloc_pe()
+        https://git.kernel.org/powerpc/c/a4bc676ed5c3f53781cc342b73097eb7e8d43fa5
+[11/16] powerpc/powernv/sriov: Drop iov->pe_num_map[]
+        https://git.kernel.org/powerpc/c/d29a2488d2c020032fdb1fe052347a6021e3591d
+[12/16] powerpc/powernv/sriov: De-indent setup and teardown
+        https://git.kernel.org/powerpc/c/052da31d45fc71238ea8bed7e9a84648a1ee0bf3
+[13/16] powerpc/powernv/sriov: Move M64 BAR allocation into a helper
+        https://git.kernel.org/powerpc/c/39efc03e3ee8f41909b7542be70b4061b38ca277
+[14/16] powerpc/powernv/sriov: Refactor M64 BAR setup
+        https://git.kernel.org/powerpc/c/a0be516f8160fdb4836237cba037229e88a1de7d
+[15/16] powerpc/powernv/sriov: Make single PE mode a per-BAR setting
+        https://git.kernel.org/powerpc/c/4c51f3e1e8702cbd0e53159fc3d1f54c20c70574
+[16/16] powerpc/powernv/sriov: Remove vfs_expanded
+        https://git.kernel.org/powerpc/c/84d8505ed1dafb2e62d49fca5e7aa7d96cfcec49
 
 cheers
