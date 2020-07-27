@@ -1,31 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CAB22E6D3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:44:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9149522E6E1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:46:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFWym3869zDr2N
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:44:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFX1F5m9RzDrq8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:46:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4BFWb02QmQzDqpr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb103Y4zDqpr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BFWZy5Z2Tz9sRW; Mon, 27 Jul 2020 17:26:50 +1000 (AEST)
+ id 4BFWZz6K44z9sTZ; Mon, 27 Jul 2020 17:26:51 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
-In-Reply-To: <20200724131423.1362108-1-npiggin@gmail.com>
-References: <20200724131423.1362108-1-npiggin@gmail.com>
-Subject: Re: [PATCH v4 0/6] powerpc: queued spinlocks and rwlocks
-Message-Id: <159583478430.602200.10525784837560757158.b4-ty@ellerman.id.au>
-Date: Mon, 27 Jul 2020 17:26:50 +1000 (AEST)
+To: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
+In-Reply-To: <20200722042628.1425880-1-oohall@gmail.com>
+References: <20200722042628.1425880-1-oohall@gmail.com>
+Subject: Re: [PATCH v2 01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
+Message-Id: <159583477725.602200.17371356742597086381.b4-ty@ellerman.id.au>
+Date: Mon, 27 Jul 2020 17:26:51 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,35 +37,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, virtualization@lists.linux-foundation.org, Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, Michal Suchánek <msuchanek@suse.de>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 24 Jul 2020 23:14:17 +1000, Nicholas Piggin wrote:
-> Updated with everybody's feedback (thanks all), and more performance
-> results.
-> 
-> What I've found is I might have been measuring the worst load point for
-> the paravirt case, and by looking at a range of loads it's clear that
-> queued spinlocks are overall better even on PV, doubly so when you look
-> at the generally much improved worst case latencies.
-> 
-> [...]
+On Wed, 22 Jul 2020 14:26:15 +1000, Oliver O'Halloran wrote:
+> This function is a one line wrapper around eeh_phb_pe_create() and despite
+> the name it doesn't create any eeh_dev structures. Replace it with direct
+> calls to eeh_phb_pe_create() since that does what it says on the tin
+> and removes a layer of indirection.
 
 Applied to powerpc/next.
 
-[1/6] powerpc/pseries: Move some PAPR paravirt functions to their own file
-      https://git.kernel.org/powerpc/c/20d444d06f97504d165b08558678b4737dcefb02
-[2/6] powerpc: Move spinlock implementation to simple_spinlock
-      https://git.kernel.org/powerpc/c/12d0b9d6c843e7dbe739ebefcf16c7e4a45e4e78
-[3/6] powerpc/64s: Implement queued spinlocks and rwlocks
-      https://git.kernel.org/powerpc/c/aa65ff6b18e0366db1790609956a4ac7308c5668
-[4/6] powerpc/pseries: Implement paravirt qspinlocks for SPLPAR
-      https://git.kernel.org/powerpc/c/20c0e8269e9d515e677670902c7e1cc0209d6ad9
-[5/6] powerpc/qspinlock: Optimised atomic_try_cmpxchg_lock() that adds the lock hint
-      https://git.kernel.org/powerpc/c/2f6560e652dfdbdb59df28b45a3458bf36d3c580
-[6/6] powerpc: Implement smp_cond_load_relaxed()
-      https://git.kernel.org/powerpc/c/49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe
+[01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
+        https://git.kernel.org/powerpc/c/475028efc708880e16e61cc4cbbc00af784cb39b
+[02/14] powerpc/eeh: Remove eeh_dev.c
+        https://git.kernel.org/powerpc/c/d74ee8e9d12e2071014ecec96a1ce2744f77639d
+[03/14] powerpc/eeh: Move vf_index out of pci_dn and into eeh_dev
+        https://git.kernel.org/powerpc/c/dffa91539e80355402c0716a91af17fc8ddd1abf
+[04/14] powerpc/pseries: Stop using pdn->pe_number
+        https://git.kernel.org/powerpc/c/c408ce9075b8e1533f30fd3a113b75fb745f722f
+[05/14] powerpc/eeh: Kill off eeh_ops->get_pe_addr()
+        https://git.kernel.org/powerpc/c/a40db934312cb2a4bef16b3edc962bc8c7f6462f
+[06/14] powerpc/eeh: Remove VF config space restoration
+        https://git.kernel.org/powerpc/c/21b43bd59c7838825b94eea288333affb53dd399
+[07/14] powerpc/eeh: Pass eeh_dev to eeh_ops->restore_config()
+        https://git.kernel.org/powerpc/c/0c2c76523c04ac184c7d7bbb8756f603375b7fc4
+[08/14] powerpc/eeh: Pass eeh_dev to eeh_ops->resume_notify()
+        https://git.kernel.org/powerpc/c/8225d543dc0170e5b61af8559af07ec4f26f0bd6
+[09/14] powerpc/eeh: Pass eeh_dev to eeh_ops->{read|write}_config()
+        https://git.kernel.org/powerpc/c/17d2a4870467bc8e8966304c08980571da943558
+[10/14] powerpc/eeh: Remove spurious use of pci_dn in eeh_dump_dev_log
+        https://git.kernel.org/powerpc/c/1a303d8844d082ef58ff5fc3005b99621a3263ba
+[11/14] powerpc/eeh: Remove class code field from edev
+        https://git.kernel.org/powerpc/c/768a42845b9ecdb28ba1991e17088b7eeb23a3eb
+[12/14] powerpc/eeh: Rename eeh_{add_to|remove_from}_parent_pe()
+        https://git.kernel.org/powerpc/c/d923ab7a96fcc2b46aac9b2fc38ffdca72436fd1
+[13/14] powerpc/eeh: Drop pdn use in eeh_pe_tree_insert()
+        https://git.kernel.org/powerpc/c/31595ae5aece519be5faa2e2013278ce45894d26
+[14/14] powerpc/eeh: Move PE tree setup into the platform
+        https://git.kernel.org/powerpc/c/a131bfc69bc868083a6c7f9b5dad1331902a3534
 
 cheers
