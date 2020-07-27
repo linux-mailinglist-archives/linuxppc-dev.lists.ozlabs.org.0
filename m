@@ -1,31 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9149522E6E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:46:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A755122E6E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:49:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFX1F5m9RzDrq8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:46:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFX5871qVzDqRL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:49:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb103Y4zDqpr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb15pBFzDqpr
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BFWZz6K44z9sTZ; Mon, 27 Jul 2020 17:26:51 +1000 (AEST)
+ id 4BFWb14KLgz9sTj; Mon, 27 Jul 2020 17:26:53 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
-In-Reply-To: <20200722042628.1425880-1-oohall@gmail.com>
-References: <20200722042628.1425880-1-oohall@gmail.com>
-Subject: Re: [PATCH v2 01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
-Message-Id: <159583477725.602200.17371356742597086381.b4-ty@ellerman.id.au>
-Date: Mon, 27 Jul 2020 17:26:51 +1000 (AEST)
+In-Reply-To: <20200725081231.39076-1-oohall@gmail.com>
+References: <20200725081231.39076-1-oohall@gmail.com>
+Subject: Re: [PATCH v3 01/14] powerpc/eeh: Remove eeh_dev_phb_init_dynamic()
+Message-Id: <159583478673.602200.11886445248182540490.b4-ty@ellerman.id.au>
+Date: Mon, 27 Jul 2020 17:26:52 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,7 +41,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 22 Jul 2020 14:26:15 +1000, Oliver O'Halloran wrote:
+On Sat, 25 Jul 2020 18:12:18 +1000, Oliver O'Halloran wrote:
 > This function is a one line wrapper around eeh_phb_pe_create() and despite
 > the name it doesn't create any eeh_dev structures. Replace it with direct
 > calls to eeh_phb_pe_create() since that does what it says on the tin
