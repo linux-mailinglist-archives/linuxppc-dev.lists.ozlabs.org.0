@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E8722E638
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9BA22E661
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:18:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFW6C6MQGzDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:05:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFWPb4hSlzF0wk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:18:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFW4N1TGKzDqLy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:03:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=HpvZNPsk; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BFW4N09z1z9sPf; Mon, 27 Jul 2020 17:03:48 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BFW4M6Njwz9sRN; Mon, 27 Jul 2020 17:03:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595833427;
- bh=+e33N9pjwOy31NI/YW2FuUMpO+mYa8EuyUkN9D07Z74=;
- h=From:To:Subject:Date:From;
- b=HpvZNPskLYF7kPgWiZaenn0qOvaL+19dSKDuh1qENbBUg8C4ji+yiCRgiA72CN5hN
- U6Wdlc4IzWSjr5cWQSPYoLJM0Oj14xF1v7uvB3jvkmBPD1BdJmzZZM1BIVGt672WSF
- TzKHNNjQZ+m2d2ij2QbAjYMlNatQdaOROHfDKJ+ARLANLxbC6visPRnLFBt9eR+7aO
- ZpS8fuyu5CqpGtdLRf89QOl5c+ffR0qCdFYlZGPMFs4FtiyOEqQRCfk8ojrUvVt7hN
- zzdbSrrmamhIq5fw28HTzRffRP3gfz/H7YyQLKeDtrC8YPMrUXRozZmdrYhqAepmPM
- 40YOrLUhsgGQw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/fadump: Fix build error with CONFIG_PRESERVE_FA_DUMP=y
-Date: Mon, 27 Jul 2020 17:03:41 +1000
-Message-Id: <20200727070341.595634-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWM13DHMzDsbF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:16:24 +1000 (AEST)
+IronPort-SDR: QMDVTgRvLHyzRq3Kh7PIVeLhZSWnAXYQYnR0uWQEiYUBA/0PfcM4t9q2Vq7MsXEqq2hcTR8tVj
+ izKaBtZKIV0g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9694"; a="148442163"
+X-IronPort-AV: E=Sophos;i="5.75,401,1589266800"; d="scan'208";a="148442163"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2020 00:16:18 -0700
+IronPort-SDR: bUVRDh5IIeFuQs/ZBlBcG+AJJvLLVLyAj6XvTg2NNshIVGuaREInnx4eijyLsJLzw1mVzIyOPp
+ Kf9KMYTvLIzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,401,1589266800"; d="scan'208";a="489877047"
+Received: from lkp-server01.sh.intel.com (HELO df0563f96c37) ([10.239.97.150])
+ by fmsmga005.fm.intel.com with ESMTP; 27 Jul 2020 00:16:16 -0700
+Received: from kbuild by df0563f96c37 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jzxMt-0001qV-CX; Mon, 27 Jul 2020 07:16:15 +0000
+Date: Mon, 27 Jul 2020 15:15:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 163c4334d6564fc8cb638d9f816ef5e1db1b8f1d
+Message-ID: <5f1e7f03.d/XKuSLqLmeZAVdI%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,41 +57,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-skiroot_defconfig fails:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 163c4334d6564fc8cb638d9f816ef5e1db1b8f1d  Automatic merge of 'master', 'next' and 'fixes' (2020-07-26 23:57)
 
-arch/powerpc/kernel/fadump.c:48:17: error: ‘cpus_in_fadump’ defined but not used
-   48 | static atomic_t cpus_in_fadump;
+elapsed time: 1017m
 
-Fix it by moving the definition into the #ifdef where it's used.
+configs tested: 58
+configs skipped: 1
 
-Fixes: ba608c4fa12c ("powerpc/fadump: fix race between pstore write and fadump crash trigger")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm64                               defconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+xtensa                              defconfig
+arc                                 defconfig
+sh                               allmodconfig
+arc                              allyesconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+nios2                               defconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a016-20200727
+i386                 randconfig-a013-20200727
+i386                 randconfig-a012-20200727
+i386                 randconfig-a015-20200727
+i386                 randconfig-a011-20200727
+i386                 randconfig-a014-20200727
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+sparc64                             defconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                              defconfig
+
 ---
- arch/powerpc/kernel/fadump.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 1858896d6809..10ebb4bf71ad 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -45,10 +45,12 @@ static struct fw_dump fw_dump;
- static void __init fadump_reserve_crash_area(u64 base);
- 
- struct kobject *fadump_kobj;
--static atomic_t cpus_in_fadump;
- 
- #ifndef CONFIG_PRESERVE_FA_DUMP
-+
-+static atomic_t cpus_in_fadump;
- static DEFINE_MUTEX(fadump_mutex);
-+
- struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0, false };
- 
- #define RESERVED_RNGS_SZ	16384 /* 16K - 128 entries */
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
