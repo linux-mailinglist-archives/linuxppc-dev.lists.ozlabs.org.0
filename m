@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A6922E563
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 07:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734BE22E570
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 07:35:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFT3J3f6gzDqTx
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 15:32:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFT630phpzDsgr
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 15:35:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFSlX0sYwzDsMs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 15:19:03 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06R53vwJ039151; Mon, 27 Jul 2020 01:18:52 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFSlc035szDrS9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 15:19:07 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06R533kX052950; Mon, 27 Jul 2020 01:18:55 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32hrct0e2c-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32ggwwrf3r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 01:18:51 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06R5IeqO082068;
- Mon, 27 Jul 2020 01:18:51 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32hrct0e1t-1
+ Mon, 27 Jul 2020 01:18:55 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06R53HnB054136;
+ Mon, 27 Jul 2020 01:18:55 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32ggwwrf38-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 01:18:51 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06R5Ebat013149;
- Mon, 27 Jul 2020 05:18:49 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03fra.de.ibm.com with ESMTP id 32gcr0h3t1-1
+ Mon, 27 Jul 2020 01:18:54 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06R5FajI003198;
+ Mon, 27 Jul 2020 05:18:53 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 32gcpx1u87-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 05:18:49 +0000
+ Mon, 27 Jul 2020 05:18:53 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06R5IkjB25887066
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06R5HQVJ64487878
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Jul 2020 05:18:46 GMT
+ Mon, 27 Jul 2020 05:17:26 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B12D1A4040;
- Mon, 27 Jul 2020 05:18:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0AB07A4055;
+ Mon, 27 Jul 2020 05:18:51 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D64CA404D;
- Mon, 27 Jul 2020 05:18:43 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 314E5A4040;
+ Mon, 27 Jul 2020 05:18:47 +0000 (GMT)
 Received: from srikart450.in.ibm.com (unknown [9.85.97.241])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 27 Jul 2020 05:18:43 +0000 (GMT)
+ Mon, 27 Jul 2020 05:18:46 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v4 08/10] powerpc/smp: Allocate cpumask only after searching
- thread group
-Date: Mon, 27 Jul 2020 10:48:03 +0530
-Message-Id: <20200727051805.16728-9-srikar@linux.vnet.ibm.com>
+Subject: [PATCH v4 09/10] Powerpc/smp: Create coregroup domain
+Date: Mon, 27 Jul 2020 10:48:04 +0530
+Message-Id: <20200727051805.16728-10-srikar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200727051805.16728-1-srikar@linux.vnet.ibm.com>
 References: <20200727051805.16728-1-srikar@linux.vnet.ibm.com>
@@ -75,10 +74,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-27_03:2020-07-27,
  2020-07-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ malwarescore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 mlxlogscore=999
+ phishscore=0 impostorscore=0 clxscore=1015 bulkscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007270032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,9 +102,9 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If allocated earlier and the search fails, then cpumask need to be
-freed. However cpu_l1_cache_map can be allocated after we search thread
-group.
+Add percpu coregroup maps and masks to create coregroup domain.
+If a coregroup doesn't exist, the coregroup domain will be degenerated
+in favour of SMT/CACHE domain.
 
 Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Cc: LKML <linux-kernel@vger.kernel.org>
@@ -120,37 +119,177 @@ Cc: Ingo Molnar <mingo@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Valentin Schneider <valentin.schneider@arm.com>
 Cc: Jordan Niethe <jniethe5@gmail.com>
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 ---
- arch/powerpc/kernel/smp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Changelog v3 ->v4:
+	if coregroup_support doesn't exist, update MC mask to the next
+	smaller domain mask.
 
+Changelog v2 -> v3:
+	Add optimization for mask updation under coregroup_support
+
+Changelog v1 -> v2:
+	Moved coregroup topology fixup to fixup_topology (Gautham)
+
+ arch/powerpc/include/asm/topology.h | 10 ++++++
+ arch/powerpc/kernel/smp.c           | 48 +++++++++++++++++++++++++++++
+ arch/powerpc/mm/numa.c              |  5 +++
+ 3 files changed, 63 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+index f0b6300e7dd3..6609174918ab 100644
+--- a/arch/powerpc/include/asm/topology.h
++++ b/arch/powerpc/include/asm/topology.h
+@@ -88,12 +88,22 @@ static inline int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
+ 
+ #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
+ extern int find_and_online_cpu_nid(int cpu);
++extern int cpu_to_coregroup_id(int cpu);
+ #else
+ static inline int find_and_online_cpu_nid(int cpu)
+ {
+ 	return 0;
+ }
+ 
++static inline int cpu_to_coregroup_id(int cpu)
++{
++#ifdef CONFIG_SMP
++	return cpu_to_core_id(cpu);
++#else
++	return 0;
++#endif
++}
++
+ #endif /* CONFIG_NUMA && CONFIG_PPC_SPLPAR */
+ 
+ #include <asm-generic/topology.h>
 diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 698000c7f76f..dab96a1203ec 100644
+index dab96a1203ec..95f0bf72e283 100644
 --- a/arch/powerpc/kernel/smp.c
 +++ b/arch/powerpc/kernel/smp.c
-@@ -797,10 +797,6 @@ static int init_cpu_l1_cache_map(int cpu)
- 	if (err)
- 		goto out;
+@@ -80,6 +80,7 @@ DEFINE_PER_CPU(cpumask_var_t, cpu_sibling_map);
+ DEFINE_PER_CPU(cpumask_var_t, cpu_smallcore_map);
+ DEFINE_PER_CPU(cpumask_var_t, cpu_l2_cache_map);
+ DEFINE_PER_CPU(cpumask_var_t, cpu_core_map);
++DEFINE_PER_CPU(cpumask_var_t, cpu_coregroup_map);
  
--	zalloc_cpumask_var_node(&per_cpu(cpu_l1_cache_map, cpu),
--				GFP_KERNEL,
--				cpu_to_node(cpu));
--
- 	cpu_group_start = get_cpu_thread_group_start(cpu, &tg);
+ EXPORT_PER_CPU_SYMBOL(cpu_sibling_map);
+ EXPORT_PER_CPU_SYMBOL(cpu_l2_cache_map);
+@@ -91,6 +92,7 @@ enum {
+ 	smt_idx,
+ #endif
+ 	bigcore_idx,
++	mc_idx,
+ 	die_idx,
+ };
  
- 	if (unlikely(cpu_group_start == -1)) {
-@@ -809,6 +805,9 @@ static int init_cpu_l1_cache_map(int cpu)
- 		goto out;
- 	}
+@@ -869,6 +871,21 @@ static const struct cpumask *smallcore_smt_mask(int cpu)
+ }
+ #endif
  
-+	zalloc_cpumask_var_node(&per_cpu(cpu_l1_cache_map, cpu),
-+				GFP_KERNEL, cpu_to_node(cpu));
++static struct cpumask *cpu_coregroup_mask(int cpu)
++{
++	return per_cpu(cpu_coregroup_map, cpu);
++}
 +
- 	for (i = first_thread; i < first_thread + threads_per_core; i++) {
- 		int i_group_start = get_cpu_thread_group_start(i, &tg);
++static bool has_coregroup_support(void)
++{
++	return coregroup_enabled;
++}
++
++static const struct cpumask *cpu_mc_mask(int cpu)
++{
++	return cpu_coregroup_mask(cpu);
++}
++
+ static const struct cpumask *cpu_bigcore_mask(int cpu)
+ {
+ 	return per_cpu(cpu_sibling_map, cpu);
+@@ -879,6 +896,7 @@ static struct sched_domain_topology_level powerpc_topology[] = {
+ 	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
+ #endif
+ 	{ cpu_bigcore_mask, SD_INIT_NAME(BIGCORE) },
++	{ cpu_mc_mask, SD_INIT_NAME(MC) },
+ 	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
+ 	{ NULL, },
+ };
+@@ -925,6 +943,10 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ 					GFP_KERNEL, cpu_to_node(cpu));
+ 		zalloc_cpumask_var_node(&per_cpu(cpu_core_map, cpu),
+ 					GFP_KERNEL, cpu_to_node(cpu));
++		if (has_coregroup_support())
++			zalloc_cpumask_var_node(&per_cpu(cpu_coregroup_map, cpu),
++						GFP_KERNEL, cpu_to_node(cpu));
++
+ #ifdef CONFIG_NEED_MULTIPLE_NODES
+ 		/*
+ 		 * numa_node_id() works after this.
+@@ -942,6 +964,9 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+ 	cpumask_set_cpu(boot_cpuid, cpu_l2_cache_mask(boot_cpuid));
+ 	cpumask_set_cpu(boot_cpuid, cpu_core_mask(boot_cpuid));
  
++	if (has_coregroup_support())
++		cpumask_set_cpu(boot_cpuid, cpu_coregroup_mask(boot_cpuid));
++
+ 	init_big_cores();
+ 	if (has_big_cores) {
+ 		cpumask_set_cpu(boot_cpuid,
+@@ -1233,6 +1258,8 @@ static void remove_cpu_from_masks(int cpu)
+ 		set_cpus_unrelated(cpu, i, cpu_sibling_mask);
+ 		if (has_big_cores)
+ 			set_cpus_unrelated(cpu, i, cpu_smallcore_mask);
++		if (has_coregroup_support())
++			set_cpus_unrelated(cpu, i, cpu_coregroup_mask);
+ 	}
+ }
+ #endif
+@@ -1293,6 +1320,20 @@ static void add_cpu_to_masks(int cpu)
+ 	add_cpu_to_smallcore_masks(cpu);
+ 	update_mask_by_l2(cpu, cpu_l2_cache_mask);
+ 
++	if (has_coregroup_support()) {
++		int coregroup_id = cpu_to_coregroup_id(cpu);
++
++		cpumask_set_cpu(cpu, cpu_coregroup_mask(cpu));
++		for_each_cpu_and(i, cpu_online_mask, cpu_cpu_mask(cpu)) {
++			int fcpu = cpu_first_thread_sibling(i);
++
++			if (fcpu == first_thread)
++				set_cpus_related(cpu, i, cpu_coregroup_mask);
++			else if (coregroup_id == cpu_to_coregroup_id(i))
++				set_cpus_related(cpu, i, cpu_coregroup_mask);
++		}
++	}
++
+ 	if (pkg_id == -1) {
+ 		struct cpumask *(*mask)(int) = cpu_sibling_mask;
+ 
+@@ -1398,6 +1439,9 @@ static void fixup_topology(void)
+ 		powerpc_topology[bigcore_idx].name = "CACHE";
+ #endif
+ 	}
++
++	if (!has_coregroup_support())
++		powerpc_topology[mc_idx].mask = powerpc_topology[bigcore_idx].mask;
+ }
+ 
+ void __init smp_cpus_done(unsigned int max_cpus)
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 51cb672f113b..0d57779e7942 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1216,6 +1216,11 @@ int find_and_online_cpu_nid(int cpu)
+ 	return new_nid;
+ }
+ 
++int cpu_to_coregroup_id(int cpu)
++{
++	return cpu_to_core_id(cpu);
++}
++
+ static int topology_update_init(void)
+ {
+ 	topology_inited = 1;
 -- 
 2.17.1
 
