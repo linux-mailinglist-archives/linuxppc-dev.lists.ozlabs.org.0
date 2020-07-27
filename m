@@ -1,43 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B3422F60E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 19:05:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E37D922F671
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 19:18:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFmPv2tCfzDqSC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 03:04:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFmjd27rjzF1QC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 03:18:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
- envelope-from=weiyongjun1@huawei.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFmLF0xCVzF146
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:01:38 +1000 (AEST)
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 30A38974B87AF2C0C6FF;
- Tue, 28 Jul 2020 01:01:32 +0800 (CST)
-Received: from kernelci-master.huawei.com (10.175.101.6) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.487.0; Tue, 28 Jul 2020 01:01:21 +0800
-From: Wei Yongjun <weiyongjun1@huawei.com>
-To: Hulk Robot <hulkci@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Oliver O'Halloran <oohall@gmail.com>, Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: [PATCH -next] powerpc/powernv/sriov: Remove unused but set variable
- 'phb'
-Date: Tue, 28 Jul 2020 01:11:12 +0800
-Message-ID: <20200727171112.2781-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.175.101.6]
-X-CFilter-Loop: Reflected
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFmgY1hmvzDrcQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:16:41 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06RH2mV1130357; Mon, 27 Jul 2020 13:16:35 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32hsqute75-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Jul 2020 13:16:35 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06RGxbcX030161;
+ Mon, 27 Jul 2020 17:16:31 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 32gcpx2gt7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Jul 2020 17:16:31 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06RHF4IG64684352
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Jul 2020 17:15:04 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D06004C044;
+ Mon, 27 Jul 2020 17:16:28 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 640734C040;
+ Mon, 27 Jul 2020 17:16:26 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.102.1.173])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 27 Jul 2020 17:16:26 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au, acme@kernel.org, jolsa@kernel.org
+Subject: [PATCH V5 0/4] powerpc/perf: Add support for perf extended regs in
+ powerpc
+Date: Mon, 27 Jul 2020 13:16:20 -0400
+Message-Id: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-27_12:2020-07-27,
+ 2020-07-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ impostorscore=0 lowpriorityscore=0 phishscore=0 mlxscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007270111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,40 +80,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Wei Yongjun <weiyongjun1@huawei.com>,
- linux-kernel@vger.kernel.org
+Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gcc report warning as follows:
+Patch set to add support for perf extended register capability in
+powerpc. The capability flag PERF_PMU_CAP_EXTENDED_REGS, is used to
+indicate the PMU which support extended registers. The generic code
+define the mask of extended registers as 0 for non supported architectures.
 
-arch/powerpc/platforms/powernv/pci-sriov.c:602:25: warning:
- variable 'phb' set but not used [-Wunused-but-set-variable]
-  602 |  struct pnv_phb        *phb;
-      |                         ^~~
+Patches 1 and 2 are the kernel side changes needed to include
+base support for extended regs in powerpc and in power10.
+Patches 3 and 4 are the perf tools side changes needed to support the
+extended registers.
 
-This variable is not used, so this commit removing it.
+patch 1/4 defines the PERF_PMU_CAP_EXTENDED_REGS mask to output the
+values of mmcr0,mmcr1,mmcr2 for POWER9. Defines `PERF_REG_EXTENDED_MASK`
+at runtime which contains mask value of the supported registers under
+extended regs.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- arch/powerpc/platforms/powernv/pci-sriov.c | 2 --
- 1 file changed, 2 deletions(-)
+patch 2/4 adds the extended regs support for power10 and exposes
+MMCR3, SIER2, SIER3 registers as part of extended regs.
 
-diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-index 8404d8c3901d..7894745fd4f8 100644
---- a/arch/powerpc/platforms/powernv/pci-sriov.c
-+++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-@@ -599,10 +599,8 @@ static int pnv_pci_vf_resource_shift(struct pci_dev *dev, int offset)
- static void pnv_pci_sriov_disable(struct pci_dev *pdev)
- {
- 	u16                    num_vfs, base_pe;
--	struct pnv_phb        *phb;
- 	struct pnv_iov_data   *iov;
- 
--	phb = pci_bus_to_pnvhb(pdev->bus);
- 	iov = pnv_iov_get(pdev);
- 	num_vfs = iov->num_vfs;
- 	base_pe = iov->vf_pe_arr[0].pe_number;
+Patch 3/4 and 4/4 adds extended regs to sample_reg_mask in the tool
+side to use with `-I?` option for power9 and power10 respectively.
+
+Ravi bangoria found an issue with `perf record -I` while testing the
+changes. The same issue is currently being worked on here:
+https://lkml.org/lkml/2020/7/19/413 and will be resolved once fix
+from Jin Yao is merged.
+
+This patch series is based on powerpc/next
+
+Changelog:
+
+Changes from v4 -> v5
+- initialize `perf_reg_extended_max` to work on
+  all platforms as suggested by Ravi Bangoria
+- Added Reviewed-and-Tested-by from Ravi Bangoria
+
+Changes from v3 -> v4
+- Split the series and send extended regs as separate patch set here.
+  Link to previous series :
+  https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=190462&state=*
+  Other PMU patches are already merged in powerpc/next.
+
+- Fixed kernel build issue when using config having
+  CONFIG_PERF_EVENTS set and without CONFIG_PPC_PERF_CTRS
+  reported by kernel build bot.
+- Included Reviewed-by from Kajol Jain.
+- Addressed review comments from Ravi Bangoria to initialize `perf_reg_extended_max`
+  and define it in lowercase since it is local variable.
+
+Anju T Sudhakar (2):
+  powerpc/perf: Add support for outputting extended regs in perf
+    intr_regs
+  tools/perf: Add perf tools support for extended register capability in
+    powerpc
+
+Athira Rajeev (2):
+  powerpc/perf: Add extended regs support for power10 platform
+  tools/perf: Add perf tools support for extended regs in power10
+
+ arch/powerpc/include/asm/perf_event.h           |  3 ++
+ arch/powerpc/include/asm/perf_event_server.h    |  5 +++
+ arch/powerpc/include/uapi/asm/perf_regs.h       | 20 ++++++++-
+ arch/powerpc/perf/core-book3s.c                 |  1 +
+ arch/powerpc/perf/perf_regs.c                   | 44 ++++++++++++++++++--
+ arch/powerpc/perf/power10-pmu.c                 |  6 +++
+ arch/powerpc/perf/power9-pmu.c                  |  6 +++
+ tools/arch/powerpc/include/uapi/asm/perf_regs.h | 20 ++++++++-
+ tools/perf/arch/powerpc/include/perf_regs.h     |  8 +++-
+ tools/perf/arch/powerpc/util/header.c           |  9 +---
+ tools/perf/arch/powerpc/util/perf_regs.c        | 55 +++++++++++++++++++++++++
+ tools/perf/arch/powerpc/util/utils_header.h     | 15 +++++++
+ 12 files changed, 178 insertions(+), 14 deletions(-)
+ create mode 100644 tools/perf/arch/powerpc/util/utils_header.h
+
+-- 
+1.8.3.1
 
