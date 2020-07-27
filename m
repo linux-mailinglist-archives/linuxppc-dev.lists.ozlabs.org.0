@@ -2,30 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48A322E6E4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FE722E6F0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 09:52:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFX3B63GMzF09h
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:47:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFX816y1rzDqwl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 17:52:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb14N9fzDqq0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFWb40p4lzDqpr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jul 2020 17:26:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BFWb02Q01z9sTX; Mon, 27 Jul 2020 17:26:52 +1000 (AEST)
+ id 4BFWb25p3jz9sTk; Mon, 27 Jul 2020 17:26:54 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
-In-Reply-To: <20200722065715.1432738-1-oohall@gmail.com>
-References: <20200722065715.1432738-1-oohall@gmail.com>
-Subject: Re: [PATCH v2 01/16] powernv/pci: Add pci_bus_to_pnvhb() helper
-Message-Id: <159583478012.602200.3216230399674309576.b4-ty@ellerman.id.au>
-Date: Mon, 27 Jul 2020 17:26:52 +1000 (AEST)
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
+ mpe@ellerman.id.au
+In-Reply-To: <20200723090813.303838-1-ravi.bangoria@linux.ibm.com>
+References: <20200723090813.303838-1-ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH v5 00/10] powerpc/watchpoint: Enable 2nd DAWR on baremetal
+ and powervm
+Message-Id: <159583477476.602200.17205445120834427421.b4-ty@ellerman.id.au>
+Date: Mon, 27 Jul 2020 17:26:54 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,56 +39,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: christophe.leroy@c-s.fr, miltonm@us.ibm.com, rogealve@br.ibm.com,
+ peterz@infradead.org, fweisbec@gmail.com, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, oleg@redhat.com, paulus@samba.org, jolsa@kernel.org,
+ jniethe5@gmail.com, pedromfc@br.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 22 Jul 2020 16:57:00 +1000, Oliver O'Halloran wrote:
-> Add a helper to go from a pci_bus structure to the pnv_phb that hosts that
-> bus. There's a lot of instances of the following pattern:
+On Thu, 23 Jul 2020 14:38:03 +0530, Ravi Bangoria wrote:
+> Last series[1] was to add basic infrastructure support for more than
+> one watchpoint on Book3S powerpc. This series actually enables the 2nd
+> DAWR for baremetal and powervm. Kvm guest is still not supported.
 > 
-> 	struct pci_controller *hose = pci_bus_to_host(pdev->bus);
-> 	struct pnv_phb *phb = hose->private_data;
+> v4: https://lore.kernel.org/r/20200717040958.70561-1-ravi.bangoria@linux.ibm.com
 > 
-> Without any other uses of the pci_controller inside the function. This is
-> hard to read since it requires you to memorise the contents of the
-> private data fields and kind of error prone since it involves blindly
-> assigning a void pointer. Add a helper to make it more concise and
-> explicit.
+> v4->v5:
+>  - Using hardcoded values instead of macros HBP_NUM_ONE and HBP_NUM_TWO.
+>    Comment above HBP_NUM_MAX changed to explain it's value.
+>  - Included CPU_FTR_DAWR1 into CPU_FTRS_POWER10
+>  - Using generic function feat_enable() instead of
+>    feat_enable_debug_facilities_v31() to enable CPU_FTR_DAWR1.
+>  - ISA still includes 512B boundary in match criteria. But that's a
+>    documentation mistake. Mentioned about this in the last patch.
+>  - Rebased to powerpc/next
+>  - Added Jordan's Reviewed-by/Tested-by tags
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[01/16] powerpc/powernv/pci: Add pci_bus_to_pnvhb() helper
-        https://git.kernel.org/powerpc/c/5609ffddd19dd52019d78b197e86b0331aeef8ae
-[02/16] powerpc/powernv/pci: Always tear down DMA windows on PE release
-        https://git.kernel.org/powerpc/c/7a52ffabe867c0d93e47af113e5107340974047a
-[03/16] powerpc/powernv/pci: Add explicit tracking of the DMA setup state
-        https://git.kernel.org/powerpc/c/01e12629af4e0e4864ed4d83e07783d7cb5b06be
-[04/16] powerpc/powernv/pci: Initialise M64 for IODA1 as a 1-1 window
-        https://git.kernel.org/powerpc/c/369633654fcb9639cd4cd0e1a448ffde3533d776
-[05/16] powerpc/powernv/sriov: Move SR-IOV into a separate file
-        https://git.kernel.org/powerpc/c/37b59ef08c546c6f54cdc52eed749f494619a102
-[06/16] powerpc/powernv/sriov: Explain how SR-IOV works on PowerNV
-        https://git.kernel.org/powerpc/c/ff79e11af0979b25ecb38e4c843779d4a759a4e2
-[07/16] powerpc/powernv/sriov: Rename truncate_iov
-        https://git.kernel.org/powerpc/c/fac248f8119170e3f8f54900985498ff6ee560bf
-[08/16] powerpc/powernv/sriov: Simplify used window tracking
-        https://git.kernel.org/powerpc/c/ad9add529d99d195195c27abf99e42d4965d35e2
-[09/16] powerpc/powernv/sriov: Factor out M64 BAR setup
-        https://git.kernel.org/powerpc/c/a610d35cc8780e781321ea8d002d5fef8484bf59
-[10/16] powerpc/powernv/pci: Refactor pnv_ioda_alloc_pe()
-        https://git.kernel.org/powerpc/c/a4bc676ed5c3f53781cc342b73097eb7e8d43fa5
-[11/16] powerpc/powernv/sriov: Drop iov->pe_num_map[]
-        https://git.kernel.org/powerpc/c/d29a2488d2c020032fdb1fe052347a6021e3591d
-[12/16] powerpc/powernv/sriov: De-indent setup and teardown
-        https://git.kernel.org/powerpc/c/052da31d45fc71238ea8bed7e9a84648a1ee0bf3
-[13/16] powerpc/powernv/sriov: Move M64 BAR allocation into a helper
-        https://git.kernel.org/powerpc/c/39efc03e3ee8f41909b7542be70b4061b38ca277
-[14/16] powerpc/powernv/sriov: Refactor M64 BAR setup
-        https://git.kernel.org/powerpc/c/a0be516f8160fdb4836237cba037229e88a1de7d
-[15/16] powerpc/powernv/sriov: Make single PE mode a per-BAR setting
-        https://git.kernel.org/powerpc/c/4c51f3e1e8702cbd0e53159fc3d1f54c20c70574
-[16/16] powerpc/powernv/sriov: Remove vfs_expanded
-        https://git.kernel.org/powerpc/c/84d8505ed1dafb2e62d49fca5e7aa7d96cfcec49
+[01/10] powerpc/watchpoint: Fix 512 byte boundary limit
+        https://git.kernel.org/powerpc/c/3190ecbfeeb2ab17778887ce3fa964615d6460fd
+[02/10] powerpc/watchpoint: Fix DAWR exception constraint
+        https://git.kernel.org/powerpc/c/f6780ce619f8daa285760302d56e95892087bd1f
+[03/10] powerpc/watchpoint: Fix DAWR exception for CACHEOP
+        https://git.kernel.org/powerpc/c/f3c832f1350bcf1e6906113ee3168066f4235dbe
+[04/10] powerpc/watchpoint: Enable watchpoint functionality on power10 guest
+        https://git.kernel.org/powerpc/c/8f460a8175e6d85537d581734e9fa7ef97036b1a
+[05/10] powerpc/dt_cpu_ftrs: Add feature for 2nd DAWR
+        https://git.kernel.org/powerpc/c/dc1cedca54704d336c333b5398daaf13b23e391b
+[06/10] powerpc/watchpoint: Set CPU_FTR_DAWR1 based on pa-features bit
+        https://git.kernel.org/powerpc/c/8f45ca3f8b87c4810674fbfe65de6d041ee0baee
+[07/10] powerpc/watchpoint: Rename current H_SET_MODE DAWR macro
+        https://git.kernel.org/powerpc/c/6f3fe297f95134e9b2386dae0067bf530e1ddca0
+[08/10] powerpc/watchpoint: Guest support for 2nd DAWR hcall
+        https://git.kernel.org/powerpc/c/03f3e54abd95061ea11bdb4eedbe3cab6553704f
+[09/10] powerpc/watchpoint: Return available watchpoints dynamically
+        https://git.kernel.org/powerpc/c/deb2bd9bcc8428d4b65b6ba640ba8b57c1b20b17
+[10/10] powerpc/watchpoint: Remove 512 byte boundary
+        https://git.kernel.org/powerpc/c/3f31e49dc4588d396023028791e36c23235e1334
 
 cheers
