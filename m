@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3941A22F6A2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 19:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7101F22F6B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 19:32:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFmyS6t7KzF1Yx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 03:29:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFn1P5FT0zF1YK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 03:32:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,57 +19,70 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFmgp22zbzF1KZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:16:54 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFmnn5cHDzDr09
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:22:05 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06RH2WZt014597; Mon, 27 Jul 2020 13:16:47 -0400
+ 06RH29xd021177; Mon, 27 Jul 2020 13:22:00 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32j2pah2ba-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Jul 2020 13:21:59 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06RH2Mk7022611;
+ Mon, 27 Jul 2020 13:21:59 -0400
 Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32j213a8e5-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32j2pah2ac-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 13:16:46 -0400
+ Mon, 27 Jul 2020 13:21:59 -0400
 Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06RGxbcY030161;
- Mon, 27 Jul 2020 17:16:44 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 32gcpx2gtb-1
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06RHJdVc018974;
+ Mon, 27 Jul 2020 17:21:57 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 32gcpx2gxf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Jul 2020 17:16:44 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06RHGfxx62980430
+ Mon, 27 Jul 2020 17:21:57 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06RHLtXP18022776
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Jul 2020 17:16:41 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7FDA04C052;
- Mon, 27 Jul 2020 17:16:41 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 862484C046;
- Mon, 27 Jul 2020 17:16:39 +0000 (GMT)
-Received: from localhost.localdomain.localdomain (unknown [9.102.1.173])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 27 Jul 2020 17:16:39 +0000 (GMT)
+ Mon, 27 Jul 2020 17:21:55 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD70EA4060;
+ Mon, 27 Jul 2020 17:21:54 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4C24A405F;
+ Mon, 27 Jul 2020 17:21:53 +0000 (GMT)
+Received: from [9.102.1.173] (unknown [9.102.1.173])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 27 Jul 2020 17:21:53 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Subject: Re: [PATCH] powerpc/64s/hash: Fix hash_preload running with
+ interrupts enabled
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au, acme@kernel.org, jolsa@kernel.org
-Subject: [PATCH V5 4/4] tools/perf: Add perf tools support for extended regs
- in power10
-Date: Mon, 27 Jul 2020 13:16:24 -0400
-Message-Id: <1595870184-1460-5-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <87k0yp6sqh.fsf@mpe.ellerman.id.au>
+Date: Mon, 27 Jul 2020 22:51:50 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9A09C920-D61C-41DC-BCCC-702F9D4BB055@linux.vnet.ibm.com>
+References: <20200727060947.10060-1-npiggin@gmail.com>
+ <4925309C-A338-4C0F-90E3-4522643021CB@linux.vnet.ibm.com>
+ <87k0yp6sqh.fsf@mpe.ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-27_12:2020-07-27,
  2020-07-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- clxscore=1015 priorityscore=1501 phishscore=0 bulkscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ malwarescore=0 adultscore=0
+ spamscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015
+ priorityscore=1501 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007270111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,96 +95,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, kjain@linux.ibm.com
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Added support for supported regs which are new in power10
-( MMCR3, SIER2, SIER3 ) to sample_reg_mask in the tool side
-to use with `-I?` option. Also added PVR check to send extended
-mask for power10 at kernel while capturing extended regs in
-each sample.
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
----
- tools/arch/powerpc/include/uapi/asm/perf_regs.h | 6 ++++++
- tools/perf/arch/powerpc/include/perf_regs.h     | 3 +++
- tools/perf/arch/powerpc/util/perf_regs.c        | 6 ++++++
- 3 files changed, 15 insertions(+)
 
-diff --git a/tools/arch/powerpc/include/uapi/asm/perf_regs.h b/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-index 225c64c..bdf5f10 100644
---- a/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-+++ b/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-@@ -52,6 +52,9 @@ enum perf_event_powerpc_regs {
- 	PERF_REG_POWERPC_MMCR0,
- 	PERF_REG_POWERPC_MMCR1,
- 	PERF_REG_POWERPC_MMCR2,
-+	PERF_REG_POWERPC_MMCR3,
-+	PERF_REG_POWERPC_SIER2,
-+	PERF_REG_POWERPC_SIER3,
- 	/* Max regs without the extended regs */
- 	PERF_REG_POWERPC_MAX = PERF_REG_POWERPC_MMCRA + 1,
- };
-@@ -60,6 +63,9 @@ enum perf_event_powerpc_regs {
- 
- /* PERF_REG_EXTENDED_MASK value for CPU_FTR_ARCH_300 */
- #define PERF_REG_PMU_MASK_300   (((1ULL << (PERF_REG_POWERPC_MMCR2 + 1)) - 1) - PERF_REG_PMU_MASK)
-+/* PERF_REG_EXTENDED_MASK value for CPU_FTR_ARCH_31 */
-+#define PERF_REG_PMU_MASK_31   (((1ULL << (PERF_REG_POWERPC_SIER3 + 1)) - 1) - PERF_REG_PMU_MASK)
- 
- #define PERF_REG_MAX_ISA_300   (PERF_REG_POWERPC_MMCR2 + 1)
-+#define PERF_REG_MAX_ISA_31    (PERF_REG_POWERPC_SIER3 + 1)
- #endif /* _UAPI_ASM_POWERPC_PERF_REGS_H */
-diff --git a/tools/perf/arch/powerpc/include/perf_regs.h b/tools/perf/arch/powerpc/include/perf_regs.h
-index 46ed00d..63f3ac9 100644
---- a/tools/perf/arch/powerpc/include/perf_regs.h
-+++ b/tools/perf/arch/powerpc/include/perf_regs.h
-@@ -68,6 +68,9 @@
- 	[PERF_REG_POWERPC_MMCR0] = "mmcr0",
- 	[PERF_REG_POWERPC_MMCR1] = "mmcr1",
- 	[PERF_REG_POWERPC_MMCR2] = "mmcr2",
-+	[PERF_REG_POWERPC_MMCR3] = "mmcr3",
-+	[PERF_REG_POWERPC_SIER2] = "sier2",
-+	[PERF_REG_POWERPC_SIER3] = "sier3",
- };
- 
- static inline const char *perf_reg_name(int id)
-diff --git a/tools/perf/arch/powerpc/util/perf_regs.c b/tools/perf/arch/powerpc/util/perf_regs.c
-index d64ba0c..2b6d470 100644
---- a/tools/perf/arch/powerpc/util/perf_regs.c
-+++ b/tools/perf/arch/powerpc/util/perf_regs.c
-@@ -14,6 +14,7 @@
- #include <linux/kernel.h>
- 
- #define PVR_POWER9		0x004E
-+#define PVR_POWER10		0x0080
- 
- const struct sample_reg sample_reg_masks[] = {
- 	SMPL_REG(r0, PERF_REG_POWERPC_R0),
-@@ -64,6 +65,9 @@
- 	SMPL_REG(mmcr0, PERF_REG_POWERPC_MMCR0),
- 	SMPL_REG(mmcr1, PERF_REG_POWERPC_MMCR1),
- 	SMPL_REG(mmcr2, PERF_REG_POWERPC_MMCR2),
-+	SMPL_REG(mmcr3, PERF_REG_POWERPC_MMCR3),
-+	SMPL_REG(sier2, PERF_REG_POWERPC_SIER2),
-+	SMPL_REG(sier3, PERF_REG_POWERPC_SIER3),
- 	SMPL_REG_END
- };
- 
-@@ -194,6 +198,8 @@ uint64_t arch__intr_reg_mask(void)
- 	version = (((mfspr(SPRN_PVR)) >>  16) & 0xFFFF);
- 	if (version == PVR_POWER9)
- 		extended_mask = PERF_REG_PMU_MASK_300;
-+	else if (version == PVR_POWER10)
-+		extended_mask = PERF_REG_PMU_MASK_31;
- 	else
- 		return mask;
- 
--- 
-1.8.3.1
+> On 27-Jul-2020, at 6:05 PM, Michael Ellerman <mpe@ellerman.id.au> =
+wrote:
+>=20
+> Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+>>> On 27-Jul-2020, at 11:39 AM, Nicholas Piggin <npiggin@gmail.com> =
+wrote:
+>>>=20
+>>> Commit 2f92447f9f96 ("powerpc/book3s64/hash: Use the pte_t address =
+from the
+>>> caller") removed the local_irq_disable from hash_preload, but it was
+>>> required for more than just the page table walk: the hash pte busy =
+bit is
+>>> effectively a lock which may be taken in interrupt context, and the =
+local
+>>> update flag test must not be preempted before it's used.
+>>>=20
+>>> This solves apparent lockups with perf interrupting __hash_page_64K. =
+If
+>>> get_perf_callchain then also takes a hash fault on the same page =
+while it
+>>> is already locked, it will loop forever taking hash faults, which =
+looks like
+>>> this:
+>>>=20
+>>> cpu 0x49e: Vector: 100 (System Reset) at [c00000001a4f7d70]
+>>>   pc: c000000000072dc8: hash_page_mm+0x8/0x800
+>>>   lr: c00000000000c5a4: do_hash_page+0x24/0x38
+>>>   sp: c0002ac1cc69ac70
+>>>  msr: 8000000000081033
+>>> current =3D 0xc0002ac1cc602e00
+>>> paca    =3D 0xc00000001de1f280   irqmask: 0x03   irq_happened: 0x01
+>>>   pid   =3D 20118, comm =3D pread2_processe
+>>> Linux version 5.8.0-rc6-00345-g1fad14f18bc6
+>>> 49e:mon> t
+>>> [c0002ac1cc69ac70] c00000000000c5a4 do_hash_page+0x24/0x38 =
+(unreliable)
+>>> --- Exception: 300 (Data Access) at c00000000008fa60 =
+__copy_tofrom_user_power7+0x20c/0x7ac
+>>> [link register   ] c000000000335d10 =
+copy_from_user_nofault+0xf0/0x150
+>>> [c0002ac1cc69af70] c00032bf9fa3c880 (unreliable)
+>>> [c0002ac1cc69afa0] c000000000109df0 read_user_stack_64+0x70/0xf0
+>>> [c0002ac1cc69afd0] c000000000109fcc =
+perf_callchain_user_64+0x15c/0x410
+>>> [c0002ac1cc69b060] c000000000109c00 perf_callchain_user+0x20/0x40
+>>> [c0002ac1cc69b080] c00000000031c6cc get_perf_callchain+0x25c/0x360
+>>> [c0002ac1cc69b120] c000000000316b50 perf_callchain+0x70/0xa0
+>>> [c0002ac1cc69b140] c000000000316ddc perf_prepare_sample+0x25c/0x790
+>>> [c0002ac1cc69b1a0] c000000000317350 =
+perf_event_output_forward+0x40/0xb0
+>>> [c0002ac1cc69b220] c000000000306138 __perf_event_overflow+0x88/0x1a0
+>>> [c0002ac1cc69b270] c00000000010cf70 record_and_restart+0x230/0x750
+>>> [c0002ac1cc69b620] c00000000010d69c perf_event_interrupt+0x20c/0x510
+>>> [c0002ac1cc69b730] c000000000027d9c =
+performance_monitor_exception+0x4c/0x60
+>>> [c0002ac1cc69b750] c00000000000b2f8 =
+performance_monitor_common_virt+0x1b8/0x1c0
+>>> --- Exception: f00 (Performance Monitor) at c0000000000cb5b0 =
+pSeries_lpar_hpte_insert+0x0/0x160
+>>> [link register   ] c0000000000846f0 __hash_page_64K+0x210/0x540
+>>> [c0002ac1cc69ba50] 0000000000000000 (unreliable)
+>>> [c0002ac1cc69bb00] c000000000073ae0 update_mmu_cache+0x390/0x3a0
+>>> [c0002ac1cc69bb70] c00000000037f024 wp_page_copy+0x364/0xce0
+>>> [c0002ac1cc69bc20] c00000000038272c do_wp_page+0xdc/0xa60
+>>> [c0002ac1cc69bc70] c0000000003857bc handle_mm_fault+0xb9c/0x1b60
+>>> [c0002ac1cc69bd50] c00000000006c434 __do_page_fault+0x314/0xc90
+>>> [c0002ac1cc69be20] c00000000000c5c8 handle_page_fault+0x10/0x2c
+>>> --- Exception: 300 (Data Access) at 00007fff8c861fe8
+>>> SP (7ffff6b19660) is in userspace
+>>>=20
+>>> Reported-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>>> Reported-by: Anton Blanchard <anton@ozlabs.org>
+>>> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>> Fixes: 2f92447f9f96 ("powerpc/book3s64/hash: Use the pte_t address =
+from the
+>>> caller")
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>=20
+>>=20
+>> Hi,
+>>=20
+>> Tested with the patch and it fixes the lockups I was seeing with my =
+test run.
+>> Thanks for the fix.
+>>=20
+>> Tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>=20
+> Thanks for testing.
+>=20
+> What test are you running?
+
+Hi Michael
+
+I was running  =E2=80=9Cperf record=E2=80=9D  and Unixbench tests ( =
+https://github.com/kdlucas/byte-unixbench ) in parallel where we were =
+getting soft lockups
+
+1. Perf command run:
+# perf record -a -g -c 10000000 -o <data_file> sleep 60
+
+2. Unixbench tests
+# Run -q -c <nr_threads> spawn
+
+Wtth the fix, perf completes successfully.
+
+Thanks
+Athira
+
+>=20
+> cheers
 
