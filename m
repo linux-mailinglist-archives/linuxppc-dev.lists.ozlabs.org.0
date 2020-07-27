@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268C822FA17
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jul 2020 22:30:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3677B22FC46
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 00:37:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BFrz73wtDzF1g3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 06:30:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BFvp75vnzzDrc9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 08:37:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,38 +16,31 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=wgH46tyr; dkim-atps=neutral
+ header.s=default header.b=SCZYQOjG; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BFrwm6yKtzF0RK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 06:28:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BFvmC1GhHzDqr6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 08:36:10 +1000 (AEST)
 Received: from embeddedor (187-162-31-110.static.axtel.net [187.162.31.110])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4696E206E7;
- Mon, 27 Jul 2020 20:28:20 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 18524206D7;
+ Mon, 27 Jul 2020 22:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1595881702;
- bh=aYSeVSHouvNAoh4D27QzelNJE605X6Pqy1mo5TW2Y4A=;
+ s=default; t=1595889368;
+ bh=xH/2W2HYXueBgpFbXH6T7J94Jk224b7or73aw7CZnI4=;
  h=Date:From:To:Cc:Subject:From;
- b=wgH46tyrQPCV701y9bxUNPMT8OdNFXzLfyld1hCA4blHuT/HLRdEptgxWAipDur7F
- svTK/RHIq7+4i481ud8/+UxPIjPbKzrS9oxzbTb3Wc44rvBpz4Z2thZQzcqBlF1Xnp
- jWJHJWacMYwHzUVAZSemKQ/34bZu2ZZttiiyGdxo=
-Date: Mon, 27 Jul 2020 15:34:13 -0500
+ b=SCZYQOjGindndaZIZWJs98kb88zQD1ytiM857gDvGLH9QRFHwhq846rviv9r9kZCZ
+ Lckp54IMoHX+H2tKnZzKjToZ32Utb2LCeaikAMurD44D5NhtoGPXApox7MPWg28INK
+ 2ZM1A/pZZwljFOVbRmnnm37CbU/RacAMw0hEVq6E=
+Date: Mon, 27 Jul 2020 17:42:01 -0500
 From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Vinod Koul <vkoul@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
- Yonghong Song <yhs@fb.com>, Andrii Nakryiko <andriin@fb.com>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@chromium.org>
-Subject: [PATCH][next] dmaengine: Use fallthrough pseudo-keyword
-Message-ID: <20200727203413.GA6245@embeddedor>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: [PATCH][next] powerpc: Use fallthrough pseudo-keyword
+Message-ID: <20200727224201.GA10133@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -63,10 +56,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, dmaengine@vger.kernel.org,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -79,226 +70,97 @@ fall-through markings when it is the case.
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/dma/amba-pl08x.c    | 10 +++++-----
- drivers/dma/fsldma.c        |  2 +-
- drivers/dma/imx-dma.c       |  2 +-
- drivers/dma/iop-adma.h      | 12 ++++++------
- drivers/dma/nbpfaxi.c       |  2 +-
- drivers/dma/pl330.c         | 10 +++-------
- drivers/dma/sh/shdma-base.c |  2 +-
- 7 files changed, 18 insertions(+), 22 deletions(-)
+ arch/powerpc/kernel/align.c                 | 8 ++++----
+ arch/powerpc/platforms/powermac/feature.c   | 2 +-
+ arch/powerpc/platforms/powernv/opal-async.c | 2 +-
+ arch/powerpc/platforms/pseries/hvcserver.c  | 2 +-
+ arch/powerpc/xmon/xmon.c                    | 2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/dma/amba-pl08x.c b/drivers/dma/amba-pl08x.c
-index 9adc7a2fa3d3..a24882ba3764 100644
---- a/drivers/dma/amba-pl08x.c
-+++ b/drivers/dma/amba-pl08x.c
-@@ -1767,7 +1767,7 @@ static u32 pl08x_memcpy_cctl(struct pl08x_driver_data *pl08x)
+diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
+index 1f1ce8b86d5b..c7797eb958c7 100644
+--- a/arch/powerpc/kernel/align.c
++++ b/arch/powerpc/kernel/align.c
+@@ -178,11 +178,11 @@ static int emulate_spe(struct pt_regs *regs, unsigned int reg,
+ 			ret |= __get_user_inatomic(temp.v[1], p++);
+ 			ret |= __get_user_inatomic(temp.v[2], p++);
+ 			ret |= __get_user_inatomic(temp.v[3], p++);
+-			/* fall through */
++			fallthrough;
+ 		case 4:
+ 			ret |= __get_user_inatomic(temp.v[4], p++);
+ 			ret |= __get_user_inatomic(temp.v[5], p++);
+-			/* fall through */
++			fallthrough;
+ 		case 2:
+ 			ret |= __get_user_inatomic(temp.v[6], p++);
+ 			ret |= __get_user_inatomic(temp.v[7], p++);
+@@ -263,11 +263,11 @@ static int emulate_spe(struct pt_regs *regs, unsigned int reg,
+ 			ret |= __put_user_inatomic(data.v[1], p++);
+ 			ret |= __put_user_inatomic(data.v[2], p++);
+ 			ret |= __put_user_inatomic(data.v[3], p++);
+-			/* fall through */
++			fallthrough;
+ 		case 4:
+ 			ret |= __put_user_inatomic(data.v[4], p++);
+ 			ret |= __put_user_inatomic(data.v[5], p++);
+-			/* fall through */
++			fallthrough;
+ 		case 2:
+ 			ret |= __put_user_inatomic(data.v[6], p++);
+ 			ret |= __put_user_inatomic(data.v[7], p++);
+diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
+index 181caa3f6717..5c77b9a24c0e 100644
+--- a/arch/powerpc/platforms/powermac/feature.c
++++ b/arch/powerpc/platforms/powermac/feature.c
+@@ -1465,7 +1465,7 @@ static long g5_i2s_enable(struct device_node *node, long param, long value)
+ 	case 2:
+ 		if (macio->type == macio_shasta)
+ 			break;
+-		/* fall through */
++		fallthrough;
  	default:
- 		dev_err(&pl08x->adev->dev,
- 			"illegal burst size for memcpy, set to 1\n");
--		/* Fall through */
-+		fallthrough;
- 	case PL08X_BURST_SZ_1:
- 		cctl |= PL080_BSIZE_1 << PL080_CONTROL_SB_SIZE_SHIFT |
- 			PL080_BSIZE_1 << PL080_CONTROL_DB_SIZE_SHIFT;
-@@ -1806,7 +1806,7 @@ static u32 pl08x_memcpy_cctl(struct pl08x_driver_data *pl08x)
- 	default:
- 		dev_err(&pl08x->adev->dev,
- 			"illegal bus width for memcpy, set to 8 bits\n");
--		/* Fall through */
-+		fallthrough;
- 	case PL08X_BUS_WIDTH_8_BITS:
- 		cctl |= PL080_WIDTH_8BIT << PL080_CONTROL_SWIDTH_SHIFT |
- 			PL080_WIDTH_8BIT << PL080_CONTROL_DWIDTH_SHIFT;
-@@ -1850,7 +1850,7 @@ static u32 pl08x_ftdmac020_memcpy_cctl(struct pl08x_driver_data *pl08x)
- 	default:
- 		dev_err(&pl08x->adev->dev,
- 			"illegal bus width for memcpy, set to 8 bits\n");
--		/* Fall through */
-+		fallthrough;
- 	case PL08X_BUS_WIDTH_8_BITS:
- 		cctl |= PL080_WIDTH_8BIT << FTDMAC020_LLI_SRC_WIDTH_SHIFT |
- 			PL080_WIDTH_8BIT << FTDMAC020_LLI_DST_WIDTH_SHIFT;
-@@ -2612,7 +2612,7 @@ static int pl08x_of_probe(struct amba_device *adev,
- 	switch (val) {
- 	default:
- 		dev_err(&adev->dev, "illegal burst size for memcpy, set to 1\n");
--		/* Fall through */
-+		fallthrough;
- 	case 1:
- 		pd->memcpy_burst_size = PL08X_BURST_SZ_1;
- 		break;
-@@ -2647,7 +2647,7 @@ static int pl08x_of_probe(struct amba_device *adev,
- 	switch (val) {
- 	default:
- 		dev_err(&adev->dev, "illegal bus width for memcpy, set to 8 bits\n");
--		/* Fall through */
-+		fallthrough;
- 	case 8:
- 		pd->memcpy_bus_width = PL08X_BUS_WIDTH_8_BITS;
- 		break;
-diff --git a/drivers/dma/fsldma.c b/drivers/dma/fsldma.c
-index ad72b3f42ffa..e342cf52d296 100644
---- a/drivers/dma/fsldma.c
-+++ b/drivers/dma/fsldma.c
-@@ -1163,7 +1163,7 @@ static int fsl_dma_chan_probe(struct fsldma_device *fdev,
- 	switch (chan->feature & FSL_DMA_IP_MASK) {
- 	case FSL_DMA_IP_85XX:
- 		chan->toggle_ext_pause = fsl_chan_toggle_ext_pause;
--		/* Fall through */
-+		fallthrough;
- 	case FSL_DMA_IP_83XX:
- 		chan->toggle_ext_start = fsl_chan_toggle_ext_start;
- 		chan->set_src_loop_size = fsl_chan_set_src_loop_size;
-diff --git a/drivers/dma/imx-dma.c b/drivers/dma/imx-dma.c
-index 5c0fb3134825..88717506c1f6 100644
---- a/drivers/dma/imx-dma.c
-+++ b/drivers/dma/imx-dma.c
-@@ -556,7 +556,7 @@ static int imxdma_xfer_desc(struct imxdma_desc *d)
- 		 * We fall-through here intentionally, since a 2D transfer is
- 		 * similar to MEMCPY just adding the 2D slot configuration.
- 		 */
--		/* Fall through */
-+		fallthrough;
- 	case IMXDMA_DESC_MEMCPY:
- 		imx_dmav1_writel(imxdma, d->src, DMA_SAR(imxdmac->channel));
- 		imx_dmav1_writel(imxdma, d->dest, DMA_DAR(imxdmac->channel));
-diff --git a/drivers/dma/iop-adma.h b/drivers/dma/iop-adma.h
-index c499c9578f00..d44eabb6f5eb 100644
---- a/drivers/dma/iop-adma.h
-+++ b/drivers/dma/iop-adma.h
-@@ -496,7 +496,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
- 		}
- 		hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = edcr;
- 		src_cnt = 24;
--		/* fall through */
-+		fallthrough;
- 	case 17 ... 24:
- 		if (!u_desc_ctrl.field.blk_ctrl) {
- 			hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
-@@ -510,7 +510,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
- 		}
- 		hw_desc->src_edc[AAU_EDCR1_IDX].e_desc_ctrl = edcr;
- 		src_cnt = 16;
--		/* fall through */
-+		fallthrough;
- 	case 9 ... 16:
- 		if (!u_desc_ctrl.field.blk_ctrl)
- 			u_desc_ctrl.field.blk_ctrl = 0x2; /* use EDCR0 */
-@@ -522,7 +522,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
- 		}
- 		hw_desc->src_edc[AAU_EDCR0_IDX].e_desc_ctrl = edcr;
- 		src_cnt = 8;
--		/* fall through */
-+		fallthrough;
- 	case 2 ... 8:
- 		shift = 1;
- 		for (i = 0; i < src_cnt; i++) {
-@@ -602,19 +602,19 @@ iop_desc_init_null_xor(struct iop_adma_desc_slot *desc, int src_cnt,
- 	case 25 ... 32:
- 		u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
- 		hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
--		/* fall through */
-+		fallthrough;
- 	case 17 ... 24:
- 		if (!u_desc_ctrl.field.blk_ctrl) {
- 			hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
- 			u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
- 		}
- 		hw_desc->src_edc[AAU_EDCR1_IDX].e_desc_ctrl = 0;
--		/* fall through */
-+		fallthrough;
- 	case 9 ... 16:
- 		if (!u_desc_ctrl.field.blk_ctrl)
- 			u_desc_ctrl.field.blk_ctrl = 0x2; /* use EDCR0 */
- 		hw_desc->src_edc[AAU_EDCR0_IDX].e_desc_ctrl = 0;
--		/* fall through */
-+		fallthrough;
- 	case 1 ... 8:
- 		if (!u_desc_ctrl.field.blk_ctrl && src_cnt > 4)
- 			u_desc_ctrl.field.blk_ctrl = 0x1; /* use mini-desc */
-diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
-index 74df621402e1..ca4e0930207a 100644
---- a/drivers/dma/nbpfaxi.c
-+++ b/drivers/dma/nbpfaxi.c
-@@ -483,7 +483,7 @@ static size_t nbpf_xfer_size(struct nbpf_device *nbpf,
- 
- 	default:
- 		pr_warn("%s(): invalid bus width %u\n", __func__, width);
--		/* fall through */
-+		fallthrough;
- 	case DMA_SLAVE_BUSWIDTH_1_BYTE:
- 		size = burst;
+ 		return -ENODEV;
  	}
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index 2c508ee672b9..9b69716172a4 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1061,16 +1061,16 @@ static bool _start(struct pl330_thread *thrd)
- 
- 		if (_state(thrd) == PL330_STATE_KILLING)
- 			UNTIL(thrd, PL330_STATE_STOPPED)
+diff --git a/arch/powerpc/platforms/powernv/opal-async.c b/arch/powerpc/platforms/powernv/opal-async.c
+index 1656e8965d6b..c094fdf5825c 100644
+--- a/arch/powerpc/platforms/powernv/opal-async.c
++++ b/arch/powerpc/platforms/powernv/opal-async.c
+@@ -104,7 +104,7 @@ static int __opal_async_release_token(int token)
+ 	 */
+ 	case ASYNC_TOKEN_DISPATCHED:
+ 		opal_async_tokens[token].state = ASYNC_TOKEN_ABANDONED;
+-		/* Fall through */
++		fallthrough;
+ 	default:
+ 		rc = 1;
+ 	}
+diff --git a/arch/powerpc/platforms/pseries/hvcserver.c b/arch/powerpc/platforms/pseries/hvcserver.c
+index 267139b13530..96e18d3b2fcf 100644
+--- a/arch/powerpc/platforms/pseries/hvcserver.c
++++ b/arch/powerpc/platforms/pseries/hvcserver.c
+@@ -45,7 +45,7 @@ static int hvcs_convert(long to_convert)
+ 		case H_LONG_BUSY_ORDER_10_SEC:
+ 		case H_LONG_BUSY_ORDER_100_SEC:
+ 			return -EBUSY;
+-		case H_FUNCTION: /* fall through */
++		case H_FUNCTION:
+ 		default:
+ 			return -EPERM;
+ 	}
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 8fb1f857c11c..ed1a9f43709d 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -4278,7 +4278,7 @@ static int do_spu_cmd(void)
+ 		subcmd = inchar();
+ 		if (isxdigit(subcmd) || subcmd == '\n')
+ 			termch = subcmd;
 -		/* fall through */
 +		fallthrough;
- 
- 	case PL330_STATE_FAULTING:
- 		_stop(thrd);
--		/* fall through */
-+		fallthrough;
- 
- 	case PL330_STATE_KILLING:
- 	case PL330_STATE_COMPLETING:
- 		UNTIL(thrd, PL330_STATE_STOPPED)
--		/* fall through */
-+		fallthrough;
- 
- 	case PL330_STATE_STOPPED:
- 		return _trigger(thrd);
-@@ -1121,7 +1121,6 @@ static u32 _emit_load(unsigned int dry_run, u8 buf[],
- 
- 	switch (direction) {
- 	case DMA_MEM_TO_MEM:
--		/* fall through */
- 	case DMA_MEM_TO_DEV:
- 		off += _emit_LD(dry_run, &buf[off], cond);
- 		break;
-@@ -1155,7 +1154,6 @@ static inline u32 _emit_store(unsigned int dry_run, u8 buf[],
- 
- 	switch (direction) {
- 	case DMA_MEM_TO_MEM:
--		/* fall through */
- 	case DMA_DEV_TO_MEM:
- 		off += _emit_ST(dry_run, &buf[off], cond);
- 		break;
-@@ -1216,7 +1214,6 @@ static int _bursts(struct pl330_dmac *pl330, unsigned dry_run, u8 buf[],
- 
- 	switch (pxs->desc->rqtype) {
- 	case DMA_MEM_TO_DEV:
--		/* fall through */
- 	case DMA_DEV_TO_MEM:
- 		off += _ldst_peripheral(pl330, dry_run, &buf[off], pxs, cyc,
- 			cond);
-@@ -1266,7 +1263,6 @@ static int _dregs(struct pl330_dmac *pl330, unsigned int dry_run, u8 buf[],
- 
- 	switch (pxs->desc->rqtype) {
- 	case DMA_MEM_TO_DEV:
--		/* fall through */
- 	case DMA_DEV_TO_MEM:
- 		off += _emit_MOV(dry_run, &buf[off], CCR, dregs_ccr);
- 		off += _ldst_peripheral(pl330, dry_run, &buf[off], pxs, 1,
-diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
-index 2deeaab078a4..788d696323bb 100644
---- a/drivers/dma/sh/shdma-base.c
-+++ b/drivers/dma/sh/shdma-base.c
-@@ -383,7 +383,7 @@ static dma_async_tx_callback __ld_cleanup(struct shdma_chan *schan, bool all)
- 			switch (desc->mark) {
- 			case DESC_COMPLETED:
- 				desc->mark = DESC_WAITING;
--				/* Fall through */
-+				fallthrough;
- 			case DESC_WAITING:
- 				if (head_acked)
- 					async_tx_ack(&desc->async_tx);
+ 	case 'f':
+ 		scanhex(&num);
+ 		if (num >= XMON_NUM_SPUS || !spu_info[num].spu) {
 -- 
 2.27.0
 
