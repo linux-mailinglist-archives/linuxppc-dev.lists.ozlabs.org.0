@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71DF2301B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:29:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D790C2301BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:31:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BG4x60XJJzDqSB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:29:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BG4zb3NqczDr5Q
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:31:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=YAjIiROU; dkim-atps=neutral
+ header.s=default header.b=lm11f6W8; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4ZM1SHpzDr1G
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:13:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4ZY5nm1zDr1F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:13:25 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B649522B45;
- Tue, 28 Jul 2020 05:13:03 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8DAC422B4B;
+ Tue, 28 Jul 2020 05:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1595913193;
- bh=w0NUYCkRPztxWdauIZ7iYp1zOp1jLcG8AD5t4PqIxsg=;
+ s=default; t=1595913202;
+ bh=VFCNoINiV/6S6XOOU0JrFdtc5FxR22TwcA9ornig1+M=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YAjIiROU+83p25BDNEgIN9KISlKJXThut30Rs4cNno1O6shiBCHaHk29LQKLS7Ax5
- Ejyf6BAz+viwYwWWCNj69uR3Ffj9ovcm+78DaXms94OZuxA4yw2XiA7huGDx/Xn9eG
- FxVpJAd03+F3yNWhAm0fZShWCJUQp1/pDjBxfrnc=
+ b=lm11f6W8H5Kt1f4GF53UuB9StgNeXXYMOzCHMtSc6ip+HxivUfHkIzQp4H7kbBfiQ
+ R4w5HP/auPjqJ3VOOs7h6yurNCYT5/NX/RKpovw7T59wzfCV3lZd8arOEtF2QHEPMO
+ EVQjpZ2a9wkqFdb/sI6Zv2AmZmV/w/5C6sQ4Yc28=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 06/15] powerpc: fadamp: simplify fadump_reserve_crash_area()
-Date: Tue, 28 Jul 2020 08:11:44 +0300
-Message-Id: <20200728051153.1590-7-rppt@kernel.org>
+Subject: [PATCH 07/15] riscv: drop unneeded node initialization
+Date: Tue, 28 Jul 2020 08:11:45 +0300
+Message-Id: <20200728051153.1590-8-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200728051153.1590-1-rppt@kernel.org>
 References: <20200728051153.1590-1-rppt@kernel.org>
@@ -79,49 +79,37 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-fadump_reserve_crash_area() reserves memory from a specified base address
-till the end of the RAM.
+RISC-V does not (yet) support NUMA  and for UMA architectures node 0 is
+used implicitly during early memory initialization.
 
-Replace iteration through the memblock.memory with a single call to
-memblock_reserve() with appropriate  that will take care of proper memory
-reservation.
+There is no need to call memblock_set_node(), remove this call and the
+surrounding code.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/powerpc/kernel/fadump.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ arch/riscv/mm/init.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 78ab9a6ee6ac..2446a61e3c25 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1658,25 +1658,7 @@ int __init fadump_reserve_mem(void)
- /* Preserve everything above the base address */
- static void __init fadump_reserve_crash_area(u64 base)
- {
--	struct memblock_region *reg;
--	u64 mstart, msize;
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 79e9d55bdf1a..7440ba2cdaaa 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -191,15 +191,6 @@ void __init setup_bootmem(void)
+ 	early_init_fdt_scan_reserved_mem();
+ 	memblock_allow_resize();
+ 	memblock_dump_all();
 -
 -	for_each_memblock(memory, reg) {
--		mstart = reg->base;
--		msize  = reg->size;
+-		unsigned long start_pfn = memblock_region_memory_base_pfn(reg);
+-		unsigned long end_pfn = memblock_region_memory_end_pfn(reg);
 -
--		if ((mstart + msize) < base)
--			continue;
--
--		if (mstart < base) {
--			msize -= (base - mstart);
--			mstart = base;
--		}
--
--		pr_info("Reserving %lluMB of memory at %#016llx for preserving crash data",
--			(msize >> 20), mstart);
--		memblock_reserve(mstart, msize);
+-		memblock_set_node(PFN_PHYS(start_pfn),
+-				  PFN_PHYS(end_pfn - start_pfn),
+-				  &memblock.memory, 0);
 -	}
-+	memblock_reserve(base, memblock_end_of_DRAM() - base);
  }
  
- unsigned long __init arch_reserved_kernel_pages(void)
+ #ifdef CONFIG_MMU
 -- 
 2.26.2
 
