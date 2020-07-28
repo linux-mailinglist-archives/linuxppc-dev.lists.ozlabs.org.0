@@ -2,70 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBB9230AF4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F550230AFD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:09:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGH5M2JXKzDqHJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 23:07:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGH886qTVzDqcc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 23:09:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGH1C2BXtzDqS4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 23:03:42 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06SD0oAq114696; Tue, 28 Jul 2020 09:03:37 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGH1G0FzXzDqS4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 23:03:45 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06SD1iEg106779; Tue, 28 Jul 2020 09:03:40 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32jkw51h6a-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32hs0t772c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 09:03:37 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06SD1ESs117141;
- Tue, 28 Jul 2020 09:03:36 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32jkw51h4y-1
+ Tue, 28 Jul 2020 09:03:40 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06SD1rwg107674;
+ Tue, 28 Jul 2020 09:03:39 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32hs0t76ya-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 09:03:36 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06SD18dC003224;
- Tue, 28 Jul 2020 13:03:34 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04fra.de.ibm.com with ESMTP id 32gcpwa84t-1
+ Tue, 28 Jul 2020 09:03:39 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06SCuHXb004125;
+ Tue, 28 Jul 2020 13:03:37 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06ams.nl.ibm.com with ESMTP id 32gcqgkp25-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 13:03:34 +0000
+ Tue, 28 Jul 2020 13:03:37 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06SD3V1S62456022
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06SD29e759572496
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Jul 2020 13:03:31 GMT
+ Tue, 28 Jul 2020 13:02:09 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 605F34C04E;
+ by IMSVA (Postfix) with ESMTP id 557D44C050;
+ Tue, 28 Jul 2020 13:03:34 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA9F04C044;
  Tue, 28 Jul 2020 13:03:31 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C495D4C058;
- Tue, 28 Jul 2020 13:03:28 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.79.208.115])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 28 Jul 2020 13:03:28 +0000 (GMT)
+ Tue, 28 Jul 2020 13:03:31 +0000 (GMT)
 From: Balamuruhan S <bala24@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH v4 0/3] Add support for divde[.] and divdeu[.] instruction
- emulation
-Date: Tue, 28 Jul 2020 18:33:05 +0530
-Message-Id: <20200728130308.1790982-1-bala24@linux.ibm.com>
+Subject: [PATCH v4 1/3] powerpc ppc-opcode: add divde and divdeu opcodes
+Date: Tue, 28 Jul 2020 18:33:06 +0530
+Message-Id: <20200728130308.1790982-2-bala24@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200728130308.1790982-1-bala24@linux.ibm.com>
+References: <20200728130308.1790982-1-bala24@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -74,11 +75,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-28_07:2020-07-28,
  2020-07-28 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- impostorscore=0 suspectscore=1 spamscore=0 mlxlogscore=998
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 clxscore=1015
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2007280095
+ malwarescore=0 adultscore=0
+ bulkscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=765 spamscore=0
+ mlxscore=0 priorityscore=1501 impostorscore=0 suspectscore=1 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007280095
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,84 +98,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi All,
+include instruction opcodes for divde and divdeu as macros.
 
-This patchset adds support to emulate divde, divde., divdeu and divdeu.
-instructions and testcases for it.
+Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
+Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+---
+ arch/powerpc/include/asm/ppc-opcode.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Resend v4: rebased on latest powerpc next branch
-
-Changes in v4:
--------------
-Fix review comments from Naveen,
-* replace TEST_DIVDEU() instead of wrongly used TEST_DIVDEU_DOT() in
-  divdeu testcase.
-* Include `acked-by` tag from Naveen for the series.
-* Rebase it on latest mpe's merge tree.
-
-Changes in v3:
--------------
-* Fix suggestion from Sandipan to remove `PPC_INST_DIVDE_DOT` and
-  `PPC_INST_DIVDEU_DOT` opcode macros defined in ppc-opcode.h, reuse
-  `PPC_INST_DIVDE` and `PPC_INST_DIVDEU` in test_emulate_step.c to
-  derive them respectively.
-
-Changes in v2:
--------------
-* Fix review comments from Paul to make divde_dot and divdeu_dot simple
-  by using divde and divdeu, then goto `arith_done` instead of
-  `compute_done`.
-* Include `Reviewed-by` tag from Sandipan Das.
-* Rebase with recent mpe's merge tree.
-
-I would request for your review and suggestions for making it better.
-
-Boot Log:
---------
-:: ::
-:: ::
-291494043: (291493996): [    0.352649][    T1] emulate_step_test: divde          : RA = LONG_MIN, RB = LONG_MIN                       PASS
-291517665: (291517580): [    0.352695][    T1] emulate_step_test: divde          : RA = 1L, RB = 0                                    PASS
-291541357: (291541234): [    0.352742][    T1] emulate_step_test: divde          : RA = LONG_MIN, RB = LONG_MAX                       PASS
-291565107: (291564946): [    0.352788][    T1] emulate_step_test: divde.         : RA = LONG_MIN, RB = LONG_MIN                       PASS
-291588757: (291588558): [    0.352834][    T1] emulate_step_test: divde.         : RA = 1L, RB = 0                                    PASS
-291612477: (291612240): [    0.352881][    T1] emulate_step_test: divde.         : RA = LONG_MIN, RB = LONG_MAX                       PASS
-291636201: (291635926): [    0.352927][    T1] emulate_step_test: divdeu         : RA = LONG_MIN, RB = LONG_MIN                       PASS
-291659830: (291659517): [    0.352973][    T1] emulate_step_test: divdeu         : RA = 1L, RB = 0                                    PASS
-291683529: (291683178): [    0.353019][    T1] emulate_step_test: divdeu         : RA = LONG_MIN, RB = LONG_MAX                       PASS
-291707248: (291706859): [    0.353066][    T1] emulate_step_test: divdeu         : RA = LONG_MAX - 1, RB = LONG_MAX                   PASS
-291730962: (291730535): [    0.353112][    T1] emulate_step_test: divdeu         : RA = LONG_MIN + 1, RB = LONG_MIN                   PASS
-291754714: (291754249): [    0.353158][    T1] emulate_step_test: divdeu.        : RA = LONG_MIN, RB = LONG_MIN                       PASS
-291778371: (291777868): [    0.353205][    T1] emulate_step_test: divdeu.        : RA = 1L, RB = 0                                    PASS
-291802098: (291801557): [    0.353251][    T1] emulate_step_test: divdeu.        : RA = LONG_MIN, RB = LONG_MAX                       PASS
-291825844: (291825265): [    0.353297][    T1] emulate_step_test: divdeu.        : RA = LONG_MAX - 1, RB = LONG_MAX                   PASS
-291849586: (291848969): [    0.353344][    T1] emulate_step_test: divdeu.        : RA = LONG_MIN + 1, RB = LONG_MIN                   PASS
-:: ::
-:: ::
-292520225: (292519608): [    0.354654][    T1] registered taskstats version 1
-292584751: (292584134): [    0.354780][    T1] pstore: Using crash dump compression: deflate
-296454422: (296453805): [    0.362338][    T1] Freeing unused kernel memory: 1408K
-296467838: (296467221): [    0.362364][    T1] This architecture does not have kernel memory protection.
-296485387: (296484770): [    0.362398][    T1] Run /init as init process
-297987339: (297986761): [    0.365332][   T46] mount (46) used greatest stack depth: 12512 bytes left
-298889548: (298888992): [    0.367094][   T47] mount (47) used greatest stack depth: 11824 bytes left
-
-355356256: (355355821): Welcome to Buildroot
-355376898: (355376463): buildroot login:
-
-Balamuruhan S (3):
-  powerpc ppc-opcode: add divde and divdeu opcodes
-  powerpc sstep: add support for divde[.] and divdeu[.] instructions
-  powerpc test_emulate_step: add testcases for divde[.] and divdeu[.]
-    instructions
-
- arch/powerpc/include/asm/ppc-opcode.h |   6 +
- arch/powerpc/lib/sstep.c              |  13 ++-
- arch/powerpc/lib/test_emulate_step.c  | 156 ++++++++++++++++++++++++++
- 3 files changed, 174 insertions(+), 1 deletion(-)
-
-
-base-commit: 7a9912e4cf048b607c8fafcfbdca7566660f1d78
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index 4c0bdafb6a7b..a6e3700c4566 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -466,6 +466,10 @@
+ #define PPC_RAW_MULI(d, a, i)		(0x1c000000 | ___PPC_RT(d) | ___PPC_RA(a) | IMM_L(i))
+ #define PPC_RAW_DIVWU(d, a, b)		(0x7c000396 | ___PPC_RT(d) | ___PPC_RA(a) | ___PPC_RB(b))
+ #define PPC_RAW_DIVDU(d, a, b)		(0x7c000392 | ___PPC_RT(d) | ___PPC_RA(a) | ___PPC_RB(b))
++#define PPC_RAW_DIVDE(t, a, b)		(0x7c000352 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
++#define PPC_RAW_DIVDE_DOT(t, a, b)	(0x7c000352 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | 0x1)
++#define PPC_RAW_DIVDEU(t, a, b)		(0x7c000312 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b))
++#define PPC_RAW_DIVDEU_DOT(t, a, b)	(0x7c000312 | ___PPC_RT(t) | ___PPC_RA(a) | ___PPC_RB(b) | 0x1)
+ #define PPC_RAW_AND(d, a, b)		(0x7c000038 | ___PPC_RA(d) | ___PPC_RS(a) | ___PPC_RB(b))
+ #define PPC_RAW_ANDI(d, a, i)		(0x70000000 | ___PPC_RA(d) | ___PPC_RS(a) | IMM_L(i))
+ #define PPC_RAW_AND_DOT(d, a, b)	(0x7c000039 | ___PPC_RA(d) | ___PPC_RS(a) | ___PPC_RB(b))
+@@ -510,6 +514,8 @@
+ #define PPC_DARN(t, l)		stringify_in_c(.long PPC_RAW_DARN(t, l))
+ #define	PPC_DCBAL(a, b)		stringify_in_c(.long PPC_RAW_DCBAL(a, b))
+ #define	PPC_DCBZL(a, b)		stringify_in_c(.long PPC_RAW_DCBZL(a, b))
++#define	PPC_DIVDE(t, a, b)	stringify_in_c(.long PPC_RAW_DIVDE(t, a, b))
++#define	PPC_DIVDEU(t, a, b)	stringify_in_c(.long PPC_RAW_DIVDEU(t, a, b))
+ #define PPC_LQARX(t, a, b, eh)	stringify_in_c(.long PPC_RAW_LQARX(t, a, b, eh))
+ #define PPC_LDARX(t, a, b, eh)	stringify_in_c(.long PPC_RAW_LDARX(t, a, b, eh))
+ #define PPC_LWARX(t, a, b, eh)	stringify_in_c(.long PPC_RAW_LWARX(t, a, b, eh))
 -- 
 2.24.1
 
