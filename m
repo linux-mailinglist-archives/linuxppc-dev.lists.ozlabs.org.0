@@ -1,57 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE38B230C42
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 16:17:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8A9230C4B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 16:21:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGJfp1WbTzDqD4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 00:17:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGJlP6qNwzDqb0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 00:21:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=QgGc4X7Y; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGJWk2x3tzDqwD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 00:11:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oXeGPn+K; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BGJWj6QRBz9sVp; Wed, 29 Jul 2020 00:11:45 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BGJWh4sw9z9sVb;
- Wed, 29 Jul 2020 00:11:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595945505;
- bh=Jr1H6AmsOFd6wTE49i8eBM9OqNwxXtvoMSicvum3Wvo=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oXeGPn+KVCSQFACUnb2GXogPgbHjKrsSt0TsKxBJyKHYiMPL1s/86Yga4cFrQN9HS
- //9iBGFHmZOw97SSVu+3JOVYUeYTnsIPcr2d4EsrpagQzKCRdVfWa39PWCgfNbXOjN
- SQYRNCtM+EF9evN9kMgecsSmIVXH1SYnJbpHa2kE1I18JTtFPjCnR+J/o/z+5319zJ
- h/iqffcIA1XoHRg7WD40C58vA3RDgwTO5sEfo5Bmj0uNZiW9fYKgAYSxpxsHQ1aK4S
- t/nsfraMM2C6O0i7eFT4keDyCoDI1Uxsloy/h77l7BeUE/Ln0L9jQLuFSF32j2iW6t
- dL9BJrYyRRwvA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Hari Bathini <hbathini@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [RESEND PATCH v5 08/11] ppc64/kexec_file: setup backup region for
- kdump kernel
-In-Reply-To: <159579235754.5790.5203600072984600891.stgit@hbathini>
-References: <159579157320.5790.6748078824637688685.stgit@hbathini>
- <159579235754.5790.5203600072984600891.stgit@hbathini>
-Date: Wed, 29 Jul 2020 00:11:43 +1000
-Message-ID: <87y2n36868.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGJc74SHGzDqDm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 00:15:35 +1000 (AEST)
+Received: from kernel.org (unknown [87.71.40.38])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7BC04206F5;
+ Tue, 28 Jul 2020 14:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1595945719;
+ bh=lUPY2x+FC7QKHEsbHiDvmWaDq+mpMmmwkd+OggYom1s=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=QgGc4X7YUZ1ckDx2DS7TV0wJ9kprJKWkAHEon+OMgHl2R1sb+tkMTAcVnCBfWfbCy
+ 0OtC+wiVDREvJNkkA1XcIE7jDME0kzNs1q63GPOaIsM59WTD15P6atSjYRp+nh+npo
+ fGSf3gFWEKzBxONEs1GYYDPsR5qUaUEQHRNOUSzo=
+Date: Tue, 28 Jul 2020 17:15:04 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Baoquan He <bhe@redhat.com>
+Subject: Re: [PATCH 14/15] x86/numa: remove redundant iteration over
+ memblock.reserved
+Message-ID: <20200728141504.GC3655207@kernel.org>
+References: <20200728051153.1590-1-rppt@kernel.org>
+ <20200728051153.1590-15-rppt@kernel.org>
+ <20200728110254.GA14854@MiWiFi-R3L-srv>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200728110254.GA14854@MiWiFi-R3L-srv>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,116 +58,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
- Mimi Zohar <zohar@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>, Eric Biederman <ebiederm@xmission.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>
+Cc: linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Stafford Horne <shorne@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Mike Rapoport <rppt@linux.ibm.com>, clang-built-linux@googlegroups.com,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Michal Simek <monstr@monstr.eu>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-> index a5c1442590b2..88408b17a7f6 100644
-> --- a/arch/powerpc/kexec/file_load_64.c
-> +++ b/arch/powerpc/kexec/file_load_64.c
-> @@ -697,6 +699,69 @@ static int update_usable_mem_fdt(void *fdt, struct crash_mem *usable_mem)
->  	return ret;
->  }
->  
-> +/**
-> + * load_backup_segment - Locate a memory hole to place the backup region.
-> + * @image:               Kexec image.
-> + * @kbuf:                Buffer contents and memory parameters.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +static int load_backup_segment(struct kimage *image, struct kexec_buf *kbuf)
-> +{
-> +	void *buf;
-> +	int ret;
-> +
-> +	/* Setup a segment for backup region */
-> +	buf = vzalloc(BACKUP_SRC_SIZE);
+On Tue, Jul 28, 2020 at 07:02:54PM +0800, Baoquan He wrote:
+> On 07/28/20 at 08:11am, Mike Rapoport wrote:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > numa_clear_kernel_node_hotplug() function first traverses numa_meminfo
+> > regions to set node ID in memblock.reserved and than traverses
+> > memblock.reserved to update reserved_nodemask to include node IDs that were
+> > set in the first loop.
+> > 
+> > Remove redundant traversal over memblock.reserved and update
+> > reserved_nodemask while iterating over numa_meminfo.
+> > 
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > ---
+> >  arch/x86/mm/numa.c | 26 ++++++++++----------------
+> >  1 file changed, 10 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > index 8ee952038c80..4078abd33938 100644
+> > --- a/arch/x86/mm/numa.c
+> > +++ b/arch/x86/mm/numa.c
+> > @@ -498,31 +498,25 @@ static void __init numa_clear_kernel_node_hotplug(void)
+> >  	 * and use those ranges to set the nid in memblock.reserved.
+> >  	 * This will split up the memblock regions along node
+> >  	 * boundaries and will set the node IDs as well.
+> > +	 *
+> > +	 * The nid will also be set in reserved_nodemask which is later
+> > +	 * used to clear MEMBLOCK_HOTPLUG flag.
+> > +	 *
+> > +	 * [ Note, when booting with mem=nn[kMG] or in a kdump kernel,
+> > +	 *   numa_meminfo might not include all memblock.reserved
+> > +	 *   memory ranges, because quirks such as trim_snb_memory()
+> > +	 *   reserve specific pages for Sandy Bridge graphics.
+> > +	 *   These ranges will remain with nid == MAX_NUMNODES. ]
+> >  	 */
+> >  	for (i = 0; i < numa_meminfo.nr_blks; i++) {
+> >  		struct numa_memblk *mb = numa_meminfo.blk + i;
+> >  		int ret;
+> >  
+> >  		ret = memblock_set_node(mb->start, mb->end - mb->start, &memblock.reserved, mb->nid);
+> > +		node_set(mb->nid, reserved_nodemask);
+> 
+> Really? This will set all node id into reserved_nodemask. But in the
+> current code, it's setting nid into memblock reserved region which
+> interleaves with numa_memoinfo, then get those nid and set it in
+> reserved_nodemask. This is so different, with my understanding. Please
+> correct me if I am wrong.
 
-This worried me initially, because we can't copy from physically
-discontiguous pages in real mode.
+You are right, I've missed the intersections of numa_meminfo with
+memblock.reserved.
 
-But as you explained this buffer is not used for copying.
+x86 interaction with membock is so, hmm, interesting...
+ 
+> Thanks
+> Baoquan
+> 
+> >  		WARN_ON_ONCE(ret);
+> >  	}
+> >  
+> > -	/*
+> > -	 * Now go over all reserved memblock regions, to construct a
+> > -	 * node mask of all kernel reserved memory areas.
+> > -	 *
+> > -	 * [ Note, when booting with mem=nn[kMG] or in a kdump kernel,
+> > -	 *   numa_meminfo might not include all memblock.reserved
+> > -	 *   memory ranges, because quirks such as trim_snb_memory()
+> > -	 *   reserve specific pages for Sandy Bridge graphics. ]
+> > -	 */
+> > -	for_each_memblock(reserved, mb_region) {
+> > -		int nid = memblock_get_region_node(mb_region);
+> > -
+> > -		if (nid != MAX_NUMNODES)
+> > -			node_set(nid, reserved_nodemask);
+> > -	}
+> > -
+> >  	/*
+> >  	 * Finally, clear the MEMBLOCK_HOTPLUG flag for all memory
+> >  	 * belonging to the reserved node mask.
+> > -- 
+> > 2.26.2
+> > 
+> > 
+> 
 
-I think if you move the large comment below up here, it would be
-clearer.
-
-
-> diff --git a/arch/powerpc/purgatory/trampoline_64.S b/arch/powerpc/purgatory/trampoline_64.S
-> index 464af8e8a4cb..d4b52961f592 100644
-> --- a/arch/powerpc/purgatory/trampoline_64.S
-> +++ b/arch/powerpc/purgatory/trampoline_64.S
-> @@ -43,14 +44,38 @@ master:
->  	mr	%r17,%r3	/* save cpu id to r17 */
->  	mr	%r15,%r4	/* save physical address in reg15 */
->  
-> +	bl	0f		/* Work out where we're running */
-> +0:	mflr	%r18
-
-I know you just moved it, but this should use:
-
-	bcl	20, 31, $+4
-	mflr	%r18
-
-Which is a special form of branch and link that doesn't unbalance the
-link stack in the chip.
-
-> +	/*
-> +	 * Copy BACKUP_SRC_SIZE bytes from BACKUP_SRC_START to
-> +	 * backup_start 8 bytes at a time.
-> +	 *
-> +	 * Use r3 = dest, r4 = src, r5 = size, r6 = count
-> +	 */
-> +	ld	%r3,(backup_start - 0b)(%r18)
-> +	cmpdi	%cr0,%r3,0
-
-I prefer spaces or tabs between arguments, eg:
-
-	cmpdi	%cr0, %r3, 0
-
-> +	beq	80f		/* skip if there is no backup region */
-
-Local labels will make this clearer I think. eg:
-
-	beq	.Lskip_copy
-
-> +	lis	%r5,BACKUP_SRC_SIZE@h
-> +	ori	%r5,%r5,BACKUP_SRC_SIZE@l
-> +	cmpdi	%cr0,%r5,0
-> +	beq	80f		/* skip if copy size is zero */
-> +	lis	%r4,BACKUP_SRC_START@h
-> +	ori	%r4,%r4,BACKUP_SRC_START@l
-> +	li	%r6,0
-> +70:
-
-.Lcopy_loop:
-
-> +	ldx	%r0,%r6,%r4
-> +	stdx	%r0,%r6,%r3
-> +	addi	%r6,%r6,8
-> +	cmpld	%cr0,%r6,%r5
-> +	blt	70b
-
-	blt	.Lcopy_loop
-
-> +
-
-.Lskip_copy:
-
-> +80:
->  	or	%r3,%r3,%r3	/* ok now to high priority, lets boot */
->  	lis	%r6,0x1
->  	mtctr	%r6		/* delay a bit for slaves to catch up */
->  	bdnz	.		/* before we overwrite 0-100 again */
-
-
-cheers
+-- 
+Sincerely yours,
+Mike.
