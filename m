@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935C02301E7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:38:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E382301EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:40:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BG57N61J0zDr6L
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:38:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BG59d1bh8zDqL8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:40:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=yyfhBe3Z; dkim-atps=neutral
+ header.s=default header.b=ekzq732X; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4b62gc7zDr1N
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:13:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4bJ64hbzDr1x
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:14:04 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0CFBB22B47;
- Tue, 28 Jul 2020 05:13:42 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id D8C9D2250E;
+ Tue, 28 Jul 2020 05:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1595913232;
- bh=s4TGTb+OM6aK8pYTyThZeMLhanWPb/uc+gXtOdjiGYU=;
+ s=default; t=1595913242;
+ bh=/P/lupA3C4FmvMBK6FgIXaCKoFOV5sz/UYytaknOuEQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=yyfhBe3Z1JOta7OKxVWMIjsqyELV3KSSG1sXhvTcAKiT2I+Tz0B/4ePu+iHQ0G/YT
- +Gk2OSGadKLdM9EQX8uTc6+YvhZVTdsuYDsaZckXNsXzKQPx24T8YMJ6VUpwVCnnqn
- 6ux6E67Q5PAxPVGr1U4/qfs1AON/1+OS5GECpvHk=
+ b=ekzq732XLM7rZfBBWAAa33F6g3rHV+mO9Fg/LM+KQ4w/RzQPvjwepYwzmsb/XoBCy
+ R3fxzP5eCFMU+VlLwKua74V7ztxqjN3g1jfg1aKz0z7pGC4wLm9HOldlh3tZl65Pw9
+ 4if1i5cNzR0aZwsP0WdD+b3nm7gRU4We1i0oxnuA=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 10/15] memblock: make memblock_debug and related functionality
- private
-Date: Tue, 28 Jul 2020 08:11:48 +0300
-Message-Id: <20200728051153.1590-11-rppt@kernel.org>
+Subject: [PATCH 11/15] memblock: reduce number of parameters in
+ for_each_mem_range()
+Date: Tue, 28 Jul 2020 08:11:49 +0300
+Message-Id: <20200728051153.1590-12-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200728051153.1590-1-rppt@kernel.org>
 References: <20200728051153.1590-1-rppt@kernel.org>
@@ -80,108 +80,154 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-The only user of memblock_dbg() outside memblock was s390 setup code and it
-is converted to use pr_debug() instead.
-This allows to stop exposing memblock_debug and memblock_dbg() to the rest
-of the kernel.
+Currently for_each_mem_range() iterator is the most generic way to traverse
+memblock regions. As such, it has 8 parameters and it is hardly convenient
+to users. Most users choose to utilize one of its wrappers and the only
+user that actually needs most of the parameters outside memblock is s390
+crash dump implementation.
+
+To avoid yet another naming for memblock iterators, rename the existing
+for_each_mem_range() to __for_each_mem_range() and add a new
+for_each_mem_range() wrapper with only index, start and end parameters.
+
+The new wrapper nicely fits into init_unavailable_mem() and will be used in
+upcoming changes to simplify memblock traversals.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/s390/kernel/setup.c |  4 ++--
- include/linux/memblock.h | 12 +-----------
- mm/memblock.c            | 13 +++++++++++--
- 3 files changed, 14 insertions(+), 15 deletions(-)
+ .clang-format                          |  1 +
+ arch/arm64/kernel/machine_kexec_file.c |  6 ++----
+ arch/s390/kernel/crash_dump.c          |  8 ++++----
+ include/linux/memblock.h               | 18 ++++++++++++++----
+ mm/page_alloc.c                        |  3 +--
+ 5 files changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-index 07aa15ba43b3..8b284cf6e199 100644
---- a/arch/s390/kernel/setup.c
-+++ b/arch/s390/kernel/setup.c
-@@ -776,8 +776,8 @@ static void __init memblock_add_mem_detect_info(void)
- 	unsigned long start, end;
- 	int i;
+diff --git a/.clang-format b/.clang-format
+index a0a96088c74f..52ededab25ce 100644
+--- a/.clang-format
++++ b/.clang-format
+@@ -205,6 +205,7 @@ ForEachMacros:
+   - 'for_each_memblock_type'
+   - 'for_each_memcg_cache_index'
+   - 'for_each_mem_pfn_range'
++  - '__for_each_mem_range'
+   - 'for_each_mem_range'
+   - 'for_each_mem_range_rev'
+   - 'for_each_migratetype_order'
+diff --git a/arch/arm64/kernel/machine_kexec_file.c b/arch/arm64/kernel/machine_kexec_file.c
+index 361a1143e09e..5b0e67b93cdc 100644
+--- a/arch/arm64/kernel/machine_kexec_file.c
++++ b/arch/arm64/kernel/machine_kexec_file.c
+@@ -215,8 +215,7 @@ static int prepare_elf_headers(void **addr, unsigned long *sz)
+ 	phys_addr_t start, end;
  
--	memblock_dbg("physmem info source: %s (%hhd)\n",
--		     get_mem_info_source(), mem_detect.info_source);
-+	pr_debug("physmem info source: %s (%hhd)\n",
-+		 get_mem_info_source(), mem_detect.info_source);
- 	/* keep memblock lists close to the kernel */
- 	memblock_set_bottom_up(true);
- 	for_each_mem_detect_block(i, &start, &end) {
+ 	nr_ranges = 1; /* for exclusion of crashkernel region */
+-	for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+-					MEMBLOCK_NONE, &start, &end, NULL)
++	for_each_mem_range(i, &start, &end)
+ 		nr_ranges++;
+ 
+ 	cmem = kmalloc(struct_size(cmem, ranges, nr_ranges), GFP_KERNEL);
+@@ -225,8 +224,7 @@ static int prepare_elf_headers(void **addr, unsigned long *sz)
+ 
+ 	cmem->max_nr_ranges = nr_ranges;
+ 	cmem->nr_ranges = 0;
+-	for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
+-					MEMBLOCK_NONE, &start, &end, NULL) {
++	for_each_mem_range(i, &start, &end) {
+ 		cmem->ranges[cmem->nr_ranges].start = start;
+ 		cmem->ranges[cmem->nr_ranges].end = end - 1;
+ 		cmem->nr_ranges++;
+diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
+index f96a5857bbfd..e28085c725ff 100644
+--- a/arch/s390/kernel/crash_dump.c
++++ b/arch/s390/kernel/crash_dump.c
+@@ -549,8 +549,8 @@ static int get_mem_chunk_cnt(void)
+ 	int cnt = 0;
+ 	u64 idx;
+ 
+-	for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
+-			   MEMBLOCK_NONE, NULL, NULL, NULL)
++	__for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
++			     MEMBLOCK_NONE, NULL, NULL, NULL)
+ 		cnt++;
+ 	return cnt;
+ }
+@@ -563,8 +563,8 @@ static void loads_init(Elf64_Phdr *phdr, u64 loads_offset)
+ 	phys_addr_t start, end;
+ 	u64 idx;
+ 
+-	for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
+-			   MEMBLOCK_NONE, &start, &end, NULL) {
++	__for_each_mem_range(idx, &memblock.physmem, &oldmem_type, NUMA_NO_NODE,
++			     MEMBLOCK_NONE, &start, &end, NULL) {
+ 		phdr->p_filesz = end - start;
+ 		phdr->p_type = PT_LOAD;
+ 		phdr->p_offset = start;
 diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 220b5f0dad42..e6a23b3db696 100644
+index e6a23b3db696..d70c2835e913 100644
 --- a/include/linux/memblock.h
 +++ b/include/linux/memblock.h
-@@ -90,7 +90,6 @@ struct memblock {
- };
- 
- extern struct memblock memblock;
--extern int memblock_debug;
- 
- #ifndef CONFIG_ARCH_KEEP_MEMBLOCK
- #define __init_memblock __meminit
-@@ -102,9 +101,6 @@ void memblock_discard(void);
- static inline void memblock_discard(void) {}
- #endif
- 
--#define memblock_dbg(fmt, ...) \
--	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
--
- phys_addr_t memblock_find_in_range(phys_addr_t start, phys_addr_t end,
- 				   phys_addr_t size, phys_addr_t align);
- void memblock_allow_resize(void);
-@@ -456,13 +452,7 @@ bool memblock_is_region_memory(phys_addr_t base, phys_addr_t size);
- bool memblock_is_reserved(phys_addr_t addr);
- bool memblock_is_region_reserved(phys_addr_t base, phys_addr_t size);
- 
--extern void __memblock_dump_all(void);
--
--static inline void memblock_dump_all(void)
--{
--	if (memblock_debug)
--		__memblock_dump_all();
--}
-+void memblock_dump_all(void);
+@@ -142,7 +142,7 @@ void __next_reserved_mem_region(u64 *idx, phys_addr_t *out_start,
+ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
  
  /**
-  * memblock_set_current_limit - Set the current allocation limit to allow
-diff --git a/mm/memblock.c b/mm/memblock.c
-index a5b9b3df81fc..824938849f6d 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -134,7 +134,10 @@ struct memblock memblock __initdata_memblock = {
- 	     i < memblock_type->cnt;					\
- 	     i++, rgn = &memblock_type->regions[i])
+- * for_each_mem_range - iterate through memblock areas from type_a and not
++ * __for_each_mem_range - iterate through memblock areas from type_a and not
+  * included in type_b. Or just type_a if type_b is NULL.
+  * @i: u64 used as loop variable
+  * @type_a: ptr to memblock_type to iterate
+@@ -153,7 +153,7 @@ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
+  * @p_end: ptr to phys_addr_t for end address of the range, can be %NULL
+  * @p_nid: ptr to int for nid of the range, can be %NULL
+  */
+-#define for_each_mem_range(i, type_a, type_b, nid, flags,		\
++#define __for_each_mem_range(i, type_a, type_b, nid, flags,		\
+ 			   p_start, p_end, p_nid)			\
+ 	for (i = 0, __next_mem_range(&i, nid, flags, type_a, type_b,	\
+ 				     p_start, p_end, p_nid);		\
+@@ -182,6 +182,16 @@ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
+ 	     __next_mem_range_rev(&i, nid, flags, type_a, type_b,	\
+ 				  p_start, p_end, p_nid))
  
--int memblock_debug __initdata_memblock;
-+#define memblock_dbg(fmt, ...) \
-+	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
++/**
++ * for_each_mem_range - iterate through memory areas.
++ * @i: u64 used as loop variable
++ * @p_start: ptr to phys_addr_t for start address of the range, can be %NULL
++ * @p_end: ptr to phys_addr_t for end address of the range, can be %NULL
++ */
++#define for_each_mem_range(i, p_start, p_end) \
++	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,	\
++			     MEMBLOCK_NONE, p_start, p_end, NULL)
 +
-+static int memblock_debug __initdata_memblock;
- static bool system_has_some_mirror __initdata_memblock = false;
- static int memblock_can_resize __initdata_memblock;
- static int memblock_memory_in_slab __initdata_memblock = 0;
-@@ -1919,7 +1922,7 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
- 	}
- }
+ /**
+  * for_each_reserved_mem_region - iterate over all reserved memblock areas
+  * @i: u64 used as loop variable
+@@ -287,8 +297,8 @@ int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask);
+  * soon as memblock is initialized.
+  */
+ #define for_each_free_mem_range(i, nid, flags, p_start, p_end, p_nid)	\
+-	for_each_mem_range(i, &memblock.memory, &memblock.reserved,	\
+-			   nid, flags, p_start, p_end, p_nid)
++	__for_each_mem_range(i, &memblock.memory, &memblock.reserved,	\
++			     nid, flags, p_start, p_end, p_nid)
  
--void __init_memblock __memblock_dump_all(void)
-+static void __init_memblock __memblock_dump_all(void)
- {
- 	pr_info("MEMBLOCK configuration:\n");
- 	pr_info(" memory size = %pa reserved size = %pa\n",
-@@ -1933,6 +1936,12 @@ void __init_memblock __memblock_dump_all(void)
- #endif
- }
- 
-+void __init_memblock memblock_dump_all(void)
-+{
-+	if (memblock_debug)
-+		__memblock_dump_all();
-+}
-+
- void __init memblock_allow_resize(void)
- {
- 	memblock_can_resize = 1;
+ /**
+  * for_each_free_mem_range_reverse - rev-iterate through free memblock areas
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e028b87ce294..95af111d69d3 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6972,8 +6972,7 @@ static void __init init_unavailable_mem(void)
+ 	 * Loop through unavailable ranges not covered by memblock.memory.
+ 	 */
+ 	pgcnt = 0;
+-	for_each_mem_range(i, &memblock.memory, NULL,
+-			NUMA_NO_NODE, MEMBLOCK_NONE, &start, &end, NULL) {
++	for_each_mem_range(i, &start, &end) {
+ 		if (next < start)
+ 			pgcnt += init_unavailable_range(PFN_DOWN(next),
+ 							PFN_UP(start));
 -- 
 2.26.2
 
