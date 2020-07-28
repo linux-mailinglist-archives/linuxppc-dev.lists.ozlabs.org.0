@@ -1,57 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED84230AD3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:00:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBB9230AF4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:07:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGGxt2wFfzDqwN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 23:00:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGH5M2JXKzDqHJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 23:07:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGGv02vBPzDqwF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 22:58:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=cJ4OP5mM; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BGGtz6p3fz9sT6; Tue, 28 Jul 2020 22:58:19 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BGGtz14vHz9sRX;
- Tue, 28 Jul 2020 22:58:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1595941099;
- bh=bD2rycoJ0hiwGk7Z/KL447U0tALy2QIjw0hCWG8FMC4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=cJ4OP5mM0kwBMaNLh2945qpFlgdChwEGOZk4QVM6Ysbuel7WNRg2JS6u0D7xU8KFI
- NO1rCzdb9/sEn+QSCdHk53wQsJp1MsWWr3m1NgxR7uz6Mbj5fpKI7AniW13fqQ5+V7
- 5dIhnUUsd22E5y1KQ+IuOiTYVaZLsfIJ87Qpaxbrjd0pdY90wGyuyFF26RLOVEXAQ7
- tYRFNXOcE0dp5UMjSRvqafE4obJmrlshkZLg4zkqX5jf2xU8vLVZh7cq00UHxCX5Py
- Ft/E5JmY83XBMkrU5vlB4XcFuqvLmvogfaJqhN9i/cglUs+shGp5kgHs5OecRFXDTk
- 3Bj63msjWs4TQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Hari Bathini <hbathini@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [RESEND PATCH v5 03/11] powerpc/kexec_file: add helper functions
- for getting memory ranges
-In-Reply-To: <159579222211.5790.10294144969496171475.stgit@hbathini>
-References: <159579157320.5790.6748078824637688685.stgit@hbathini>
- <159579222211.5790.10294144969496171475.stgit@hbathini>
-Date: Tue, 28 Jul 2020 22:58:15 +1000
-Message-ID: <87a6zj7q54.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGH1C2BXtzDqS4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 23:03:42 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06SD0oAq114696; Tue, 28 Jul 2020 09:03:37 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jkw51h6a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Jul 2020 09:03:37 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06SD1ESs117141;
+ Tue, 28 Jul 2020 09:03:36 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jkw51h4y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Jul 2020 09:03:36 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06SD18dC003224;
+ Tue, 28 Jul 2020 13:03:34 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 32gcpwa84t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Jul 2020 13:03:34 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06SD3V1S62456022
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Jul 2020 13:03:31 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 605F34C04E;
+ Tue, 28 Jul 2020 13:03:31 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C495D4C058;
+ Tue, 28 Jul 2020 13:03:28 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.79.208.115])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 28 Jul 2020 13:03:28 +0000 (GMT)
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v4 0/3] Add support for divde[.] and divdeu[.] instruction
+ emulation
+Date: Tue, 28 Jul 2020 18:33:05 +0530
+Message-Id: <20200728130308.1790982-1-bala24@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-28_07:2020-07-28,
+ 2020-07-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ impostorscore=0 suspectscore=1 spamscore=0 mlxlogscore=998
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007280095
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,453 +90,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
- Mimi Zohar <zohar@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
- Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Eric Biederman <ebiederm@xmission.com>
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com,
+ Balamuruhan S <bala24@linux.ibm.com>, paulus@samba.org, sandipan@linux.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Hari,
+Hi All,
 
-Some comments inline ...
+This patchset adds support to emulate divde, divde., divdeu and divdeu.
+instructions and testcases for it.
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-> new file mode 100644
-> index 000000000000..21bea1b78443
-> --- /dev/null
-> +++ b/arch/powerpc/kexec/ranges.c
-> @@ -0,0 +1,417 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * powerpc code to implement the kexec_file_load syscall
-> + *
-> + * Copyright (C) 2004  Adam Litke (agl@us.ibm.com)
-> + * Copyright (C) 2004  IBM Corp.
-> + * Copyright (C) 2004,2005  Milton D Miller II, IBM Corporation
-> + * Copyright (C) 2005  R Sharada (sharada@in.ibm.com)
-> + * Copyright (C) 2006  Mohan Kumar M (mohan@in.ibm.com)
-> + * Copyright (C) 2020  IBM Corporation
-> + *
-> + * Based on kexec-tools' kexec-ppc64.c, fs2dt.c.
-> + * Heavily modified for the kernel by
-> + * Hari Bathini <hbathini@linux.ibm.com>.
+Resend v4: rebased on latest powerpc next branch
 
-Please just use your name, email addresses bit rot. It's in the commit
-log anyway.
+Changes in v4:
+-------------
+Fix review comments from Naveen,
+* replace TEST_DIVDEU() instead of wrongly used TEST_DIVDEU_DOT() in
+  divdeu testcase.
+* Include `acked-by` tag from Naveen for the series.
+* Rebase it on latest mpe's merge tree.
 
-> + */
-> +
-> +#undef DEBUG
-    ^
-Dont do that in new code please.
+Changes in v3:
+-------------
+* Fix suggestion from Sandipan to remove `PPC_INST_DIVDE_DOT` and
+  `PPC_INST_DIVDEU_DOT` opcode macros defined in ppc-opcode.h, reuse
+  `PPC_INST_DIVDE` and `PPC_INST_DIVDEU` in test_emulate_step.c to
+  derive them respectively.
 
-> +#define pr_fmt(fmt) "kexec ranges: " fmt
-> +
-> +#include <linux/sort.h>
-> +#include <linux/kexec.h>
-> +#include <linux/of_device.h>
-> +#include <linux/slab.h>
-> +#include <asm/sections.h>
-> +#include <asm/kexec_ranges.h>
-> +
-> +/**
-> + * get_max_nr_ranges - Get the max no. of ranges crash_mem structure
-> + *                     could hold, given the size allocated for it.
-> + * @size:              Allocation size of crash_mem structure.
-> + *
-> + * Returns the maximum no. of ranges.
-> + */
-> +static inline unsigned int get_max_nr_ranges(size_t size)
-> +{
-> +	return ((size - sizeof(struct crash_mem)) /
-> +		sizeof(struct crash_mem_range));
-> +}
-> +
-> +/**
-> + * get_mem_rngs_size - Get the allocated size of mrngs based on
-> + *                     max_nr_ranges and chunk size.
-> + * @mrngs:             Memory ranges.
+Changes in v2:
+-------------
+* Fix review comments from Paul to make divde_dot and divdeu_dot simple
+  by using divde and divdeu, then goto `arith_done` instead of
+  `compute_done`.
+* Include `Reviewed-by` tag from Sandipan Das.
+* Rebase with recent mpe's merge tree.
 
-mrngs is not a great name, what about memory_ranges or ranges?
+I would request for your review and suggestions for making it better.
 
-Ditto everywhere else you use mrngs.
+Boot Log:
+--------
+:: ::
+:: ::
+291494043: (291493996): [    0.352649][    T1] emulate_step_test: divde          : RA = LONG_MIN, RB = LONG_MIN                       PASS
+291517665: (291517580): [    0.352695][    T1] emulate_step_test: divde          : RA = 1L, RB = 0                                    PASS
+291541357: (291541234): [    0.352742][    T1] emulate_step_test: divde          : RA = LONG_MIN, RB = LONG_MAX                       PASS
+291565107: (291564946): [    0.352788][    T1] emulate_step_test: divde.         : RA = LONG_MIN, RB = LONG_MIN                       PASS
+291588757: (291588558): [    0.352834][    T1] emulate_step_test: divde.         : RA = 1L, RB = 0                                    PASS
+291612477: (291612240): [    0.352881][    T1] emulate_step_test: divde.         : RA = LONG_MIN, RB = LONG_MAX                       PASS
+291636201: (291635926): [    0.352927][    T1] emulate_step_test: divdeu         : RA = LONG_MIN, RB = LONG_MIN                       PASS
+291659830: (291659517): [    0.352973][    T1] emulate_step_test: divdeu         : RA = 1L, RB = 0                                    PASS
+291683529: (291683178): [    0.353019][    T1] emulate_step_test: divdeu         : RA = LONG_MIN, RB = LONG_MAX                       PASS
+291707248: (291706859): [    0.353066][    T1] emulate_step_test: divdeu         : RA = LONG_MAX - 1, RB = LONG_MAX                   PASS
+291730962: (291730535): [    0.353112][    T1] emulate_step_test: divdeu         : RA = LONG_MIN + 1, RB = LONG_MIN                   PASS
+291754714: (291754249): [    0.353158][    T1] emulate_step_test: divdeu.        : RA = LONG_MIN, RB = LONG_MIN                       PASS
+291778371: (291777868): [    0.353205][    T1] emulate_step_test: divdeu.        : RA = 1L, RB = 0                                    PASS
+291802098: (291801557): [    0.353251][    T1] emulate_step_test: divdeu.        : RA = LONG_MIN, RB = LONG_MAX                       PASS
+291825844: (291825265): [    0.353297][    T1] emulate_step_test: divdeu.        : RA = LONG_MAX - 1, RB = LONG_MAX                   PASS
+291849586: (291848969): [    0.353344][    T1] emulate_step_test: divdeu.        : RA = LONG_MIN + 1, RB = LONG_MIN                   PASS
+:: ::
+:: ::
+292520225: (292519608): [    0.354654][    T1] registered taskstats version 1
+292584751: (292584134): [    0.354780][    T1] pstore: Using crash dump compression: deflate
+296454422: (296453805): [    0.362338][    T1] Freeing unused kernel memory: 1408K
+296467838: (296467221): [    0.362364][    T1] This architecture does not have kernel memory protection.
+296485387: (296484770): [    0.362398][    T1] Run /init as init process
+297987339: (297986761): [    0.365332][   T46] mount (46) used greatest stack depth: 12512 bytes left
+298889548: (298888992): [    0.367094][   T47] mount (47) used greatest stack depth: 11824 bytes left
 
-> + *
-> + * Returns the maximum size of @mrngs.
-> + */
-> +static inline size_t get_mem_rngs_size(struct crash_mem *mrngs)
-> +{
-> +	size_t size;
-> +
-> +	if (!mrngs)
-> +		return 0;
-> +
-> +	size = (sizeof(struct crash_mem) +
-> +		(mrngs->max_nr_ranges * sizeof(struct crash_mem_range)));
-> +
-> +	/*
-> +	 * Memory is allocated in size multiple of MEM_RANGE_CHUNK_SZ.
-> +	 * So, align to get the actual length.
-> +	 */
-> +	return ALIGN(size, MEM_RANGE_CHUNK_SZ);
-> +}
-> +
-> +/**
-> + * __add_mem_range - add a memory range to memory ranges list.
-> + * @mem_ranges:      Range list to add the memory range to.
-> + * @base:            Base address of the range to add.
-> + * @size:            Size of the memory range to add.
-> + *
-> + * (Re)allocates memory, if needed.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +static int __add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
-> +{
-> +	struct crash_mem *mrngs = *mem_ranges;
-> +
-> +	if ((mrngs == NULL) || (mrngs->nr_ranges == mrngs->max_nr_ranges)) {
+355356256: (355355821): Welcome to Buildroot
+355376898: (355376463): buildroot login:
 
-(mrngs == NULL) should just be !mrngs.
+Balamuruhan S (3):
+  powerpc ppc-opcode: add divde and divdeu opcodes
+  powerpc sstep: add support for divde[.] and divdeu[.] instructions
+  powerpc test_emulate_step: add testcases for divde[.] and divdeu[.]
+    instructions
 
-> +		mrngs = realloc_mem_ranges(mem_ranges);
-> +		if (!mrngs)
-> +			return -ENOMEM;
-> +	}
-> +
-> +	mrngs->ranges[mrngs->nr_ranges].start = base;
-> +	mrngs->ranges[mrngs->nr_ranges].end = base + size - 1;
-> +	pr_debug("Added memory range [%#016llx - %#016llx] at index %d\n",
-> +		 base, base + size - 1, mrngs->nr_ranges);
-> +	mrngs->nr_ranges++;
-> +	return 0;
-> +}
-> +
-> +/**
-> + * __merge_memory_ranges - Merges the given memory ranges list.
-> + * @mem_ranges:            Range list to merge.
-> + *
-> + * Assumes a sorted range list.
-> + *
-> + * Returns nothing.
-> + */
-
-A lot of this code is annoyingly similar to the memblock code, though
-the internals of that are all static these days.
-
-I guess for now we'll just have to add all this. Maybe in future it can
-be consolidated.
-
-> +static void __merge_memory_ranges(struct crash_mem *mrngs)
-> +{
-> +	struct crash_mem_range *rngs;
-> +	int i, idx;
-> +
-> +	if (!mrngs)
-> +		return;
-> +
-> +	idx = 0;
-> +	rngs = &mrngs->ranges[0];
-> +	for (i = 1; i < mrngs->nr_ranges; i++) {
-> +		if (rngs[i].start <= (rngs[i-1].end + 1))
-> +			rngs[idx].end = rngs[i].end;
-> +		else {
-> +			idx++;
-> +			if (i == idx)
-> +				continue;
-> +
-> +			rngs[idx] = rngs[i];
-> +		}
-> +	}
-> +	mrngs->nr_ranges = idx + 1;
-> +}
-> +
-> +/**
-> + * realloc_mem_ranges - reallocate mem_ranges with size incremented
-> + *                      by MEM_RANGE_CHUNK_SZ. Frees up the old memory,
-> + *                      if memory allocation fails.
-> + * @mem_ranges:         Memory ranges to reallocate.
-> + *
-> + * Returns pointer to reallocated memory on success, NULL otherwise.
-> + */
-> +struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges)
-> +{
-> +	struct crash_mem *mrngs = *mem_ranges;
-> +	unsigned int nr_ranges;
-> +	size_t size;
-> +
-> +	size = get_mem_rngs_size(mrngs);
-> +	nr_ranges = mrngs ? mrngs->nr_ranges : 0;
-> +
-> +	size += MEM_RANGE_CHUNK_SZ;
-> +	mrngs = krealloc(*mem_ranges, size, GFP_KERNEL);
-> +	if (!mrngs) {
-> +		kfree(*mem_ranges);
-> +		*mem_ranges = NULL;
-> +		return NULL;
-> +	}
-> +
-> +	mrngs->nr_ranges = nr_ranges;
-> +	mrngs->max_nr_ranges = get_max_nr_ranges(size);
-> +	*mem_ranges = mrngs;
-> +
-> +	return mrngs;
-> +}
-> +
-> +/**
-> + * add_mem_range - Updates existing memory range, if there is an overlap.
-> + *                 Else, adds a new memory range.
-> + * @mem_ranges:    Range list to add the memory range to.
-> + * @base:          Base address of the range to add.
-> + * @size:          Size of the memory range to add.
-> + *
-> + * (Re)allocates memory, if needed.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
-> +{
-> +	struct crash_mem *mrngs = *mem_ranges;
-> +	u64 mstart, mend, end;
-> +	unsigned int i;
-> +
-> +	if (!size)
-> +		return 0;
-> +
-> +	end = base + size - 1;
-> +
-> +	if ((mrngs == NULL) || (mrngs->nr_ranges == 0))
-> +		return __add_mem_range(mem_ranges, base, size);
-> +
-> +	for (i = 0; i < mrngs->nr_ranges; i++) {
-> +		mstart = mrngs->ranges[i].start;
-> +		mend = mrngs->ranges[i].end;
-> +		if (base < mend && end > mstart) {
-> +			if (base < mstart)
-> +				mrngs->ranges[i].start = base;
-> +			if (end > mend)
-> +				mrngs->ranges[i].end = end;
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	return __add_mem_range(mem_ranges, base, size);
-> +}
-> +
-> +/**
-> + * add_tce_mem_ranges - Adds tce-table range to the given memory ranges list.
-> + * @mem_ranges:         Range list to add the memory range(s) to.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_tce_mem_ranges(struct crash_mem **mem_ranges)
-
-Not sure this and the other add_foo_mem_ranges() really belong in this patch.
-
-> +{
-> +	struct device_node *dn;
-> +	int ret = 0;
-> +
-> +	for_each_node_by_type(dn, "pci") {
-> +		u64 base;
-> +		u32 size;
-> +		int rc;
-
-Do you really need ret and rc?
-
-> +		/*
-> +		 * It is ok to have pci nodes without tce. So, ignore
-> +		 * any read errors here.
-> +		 */
-> +		rc = of_property_read_u64(dn, "linux,tce-base", &base);
-> +		rc |= of_property_read_u32(dn, "linux,tce-size", &size);
-> +		if (rc)
-> +			continue;
-> +
-> +		ret = add_mem_range(mem_ranges, base, size);
-> +		if (ret)
-> +			break;
-                        ^
-                        dn leaked.
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * add_initrd_mem_range - Adds initrd range to the given memory ranges list,
-> + *                        if the initrd was retained.
-> + * @mem_ranges:           Range list to add the memory range to.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_initrd_mem_range(struct crash_mem **mem_ranges)
-> +{
-> +	u64 base, end;
-> +	char *str;
-> +	int ret;
-> +
-> +	/* This range means something only if initrd was retained */
-> +	str = strstr(saved_command_line, "retain_initrd");
-> +	if (!str)
-> +		return 0;
-
-Unfortunate that we have to go and scan the command line again. But I
-don't see a better way ATM.
-
-Could be more concise:
-
-	if (!strstr(saved_command_line, "retain_initrd"))
-		return 0;
-
-> +
-> +	ret = of_property_read_u64(of_chosen, "linux,initrd-start", &base);
-> +	ret |= of_property_read_u64(of_chosen, "linux,initrd-end", &end);
-> +	if (!ret)
-> +		ret = add_mem_range(mem_ranges, base, end - base + 1);
-> +	return ret;
-> +}
-> +
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +/**
-> + * add_htab_mem_range - Adds htab range to the given memory ranges list,
-> + *                      if it exists
-> + * @mem_ranges:         Range list to add the memory range to.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_htab_mem_range(struct crash_mem **mem_ranges)
-> +{
-> +	if (!htab_address)
-> +		return 0;
-> +
-> +	return add_mem_range(mem_ranges, __pa(htab_address), htab_size_bytes);
-> +}
-> +#endif
-> +
-> +/**
-> + * add_kernel_mem_range - Adds kernel text region to the given
-> + *                        memory ranges list.
-> + * @mem_ranges:           Range list to add the memory range to.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_kernel_mem_range(struct crash_mem **mem_ranges)
-> +{
-> +	return add_mem_range(mem_ranges, 0, __pa(_end));
-> +}
-> +
-> +/**
-> + * add_rtas_mem_range - Adds RTAS region to the given memory ranges list.
-> + * @mem_ranges:         Range list to add the memory range to.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_rtas_mem_range(struct crash_mem **mem_ranges)
-> +{
-> +	struct device_node *dn;
-> +	int ret = 0;
-> +
-> +	dn = of_find_node_by_path("/rtas");
-> +	if (dn) {
-> +		u32 base, size;
-> +
-> +		ret = of_property_read_u32(dn, "linux,rtas-base", &base);
-> +		ret |= of_property_read_u32(dn, "rtas-size", &size);
-> +		if (ret)
-> +			goto out;
-> +
-> +		ret = add_mem_range(mem_ranges, base, size);
-> +	}
-> +
-> +out:
-> +	of_node_put(dn);
-> +	return ret;
-> +}
-
-Or:
-	struct device_node *dn;
-        u32 base, size;
-	int rc;
-
-	dn = of_find_node_by_path("/rtas");
-	if (!dn)
-        	return 0;
-
-	rc  = of_property_read_u32(dn, "linux,rtas-base", &base);
-	rc |= of_property_read_u32(dn, "rtas-size", &size);
-	if (rc == 0)
-		rc = add_mem_range(mem_ranges, base, size);
-
-	of_node_put(dn);
-	return rc;
-}
+ arch/powerpc/include/asm/ppc-opcode.h |   6 +
+ arch/powerpc/lib/sstep.c              |  13 ++-
+ arch/powerpc/lib/test_emulate_step.c  | 156 ++++++++++++++++++++++++++
+ 3 files changed, 174 insertions(+), 1 deletion(-)
 
 
-> +
-> +/**
-> + * add_opal_mem_range - Adds OPAL region to the given memory ranges list.
-> + * @mem_ranges:         Range list to add the memory range to.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_opal_mem_range(struct crash_mem **mem_ranges)
-> +{
-> +	struct device_node *dn;
-> +	int ret = 0;
-> +
-> +	dn = of_find_node_by_path("/ibm,opal");
-> +	if (dn) {
-> +		u64 base, size;
-> +
-> +		ret = of_property_read_u64(dn, "opal-base-address", &base);
-> +		ret |= of_property_read_u64(dn, "opal-runtime-size", &size);
-> +		if (ret)
-> +			goto out;
-> +
-> +		ret = add_mem_range(mem_ranges, base, size);
-> +	}
-> +
-> +out:
-> +	of_node_put(dn);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * add_reserved_ranges - Adds "/reserved-ranges" regions exported by f/w
-> + *                       to the given memory ranges list.
-> + * @mem_ranges:          Range list to add the memory ranges to.
-> + *
-> + * Returns 0 on success, negative errno on error.
-> + */
-> +int add_reserved_ranges(struct crash_mem **mem_ranges)
-> +{
-> +	int n_mem_addr_cells, n_mem_size_cells, i, len, cells, ret = 0;
-> +	const __be32 *prop;
-> +
-> +	prop = of_get_property(of_root, "reserved-ranges", &len);
-> +	if (!prop)
-> +		return 0;
-> +
-> +	of_node_get(of_root);
+base-commit: 7a9912e4cf048b607c8fafcfbdca7566660f1d78
+-- 
+2.24.1
 
-You shouldn't need to get the root node, you already used it above anyway.
-
-> +	n_mem_addr_cells = of_n_addr_cells(of_root);
-> +	n_mem_size_cells = of_n_size_cells(of_root);
-> +	cells = n_mem_addr_cells + n_mem_size_cells;
-> +
-> +	/* Each reserved range is an (address,size) pair */
-> +	for (i = 0; i < (len / (sizeof(*prop) * cells)); i++) {
-                                       ^
-                                       just u32 would be clearer I think.
-
-
-
-cheers
