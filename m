@@ -1,90 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A036230B84
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:33:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8842230BBC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:46:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGHgC1rVczDr3j
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 23:33:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGHz21S6MzDqyq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 23:46:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGHcK3v8YzDqyY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 23:30:41 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06SD2W2h044543; Tue, 28 Jul 2020 09:30:21 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32j0a5ujc6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 09:30:21 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06SD2kka045277;
- Tue, 28 Jul 2020 09:30:20 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32j0a5ujb4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 09:30:20 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06SDP7Tv019695;
- Tue, 28 Jul 2020 13:30:19 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04ams.nl.ibm.com with ESMTP id 32gcy4kqy0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 13:30:18 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 06SDSpkP66584934
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Jul 2020 13:28:51 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C319A406D;
- Tue, 28 Jul 2020 13:30:16 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE116A4057;
- Tue, 28 Jul 2020 13:30:13 +0000 (GMT)
-Received: from [9.102.29.60] (unknown [9.102.29.60])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 28 Jul 2020 13:30:13 +0000 (GMT)
-Subject: Re: [PATCH v3 1/2] cpuidle: Trace IPI based and timer based wakeup
- latency from idle states
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20200721124300.65615-1-psampat@linux.ibm.com>
- <20200721124300.65615-2-psampat@linux.ibm.com>
- <CAJZ5v0j3ip77opkaW3Rtn0cqT7VTL_8goctFBDVehWoZowDY0Q@mail.gmail.com>
-From: Pratik Sampat <psampat@linux.ibm.com>
-Message-ID: <9dfff062-9e68-c91f-f36c-8699e8c3fc1b@linux.ibm.com>
-Date: Tue, 28 Jul 2020 19:00:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGHwG2tcgzDqyg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 23:44:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=DRzlt961; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4BGHwG1Bbgz9sT6; Tue, 28 Jul 2020 23:44:30 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BGHwF3Dgmz9sSd;
+ Tue, 28 Jul 2020 23:44:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1595943869;
+ bh=MrYFLzyzzNR1flrVLAvt4u4I1wO1atlhsgBLq8NOHBA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=DRzlt9613FocqjoZ94fmIMb49x38wzKg+f74LvdOwKncfOcoUNq3hjgXx/twoBPvK
+ 8uovlgDVsbew2Xo5Qxp0QTZZe1hc++7aqHg0Ee0OoV0tev1D8I6byVVpUimzzy7U3T
+ 0+hA5MnMN3rJ+a5UuwZ0RRcikR3oujYcwscFs0a8Wcq9soKETAq4SAl04z7im2UVW2
+ hCbtMWqZA9CJY8SH0AD17/UqWjSe2ZeuWVhD/L86lRGHZfafSDTpjiJZvJn6Ciro/2
+ wUkX0mqBGdcfCPGQen8F6XTfiyiNcXxGPRHO2rVvCLmT3lio/FDJNVaO1dOWoyVAfi
+ F5dIF0Txx6x6A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Hari Bathini <hbathini@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [RESEND PATCH v5 06/11] ppc64/kexec_file: restrict memory usage
+ of kdump kernel
+In-Reply-To: <159579231812.5790.16096865978767385505.stgit@hbathini>
+References: <159579157320.5790.6748078824637688685.stgit@hbathini>
+ <159579231812.5790.16096865978767385505.stgit@hbathini>
+Date: Tue, 28 Jul 2020 23:44:26 +1000
+Message-ID: <875za77o05.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0j3ip77opkaW3Rtn0cqT7VTL_8goctFBDVehWoZowDY0Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-28_07:2020-07-28,
- 2020-07-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0 adultscore=0
- mlxscore=0 mlxlogscore=999 malwarescore=0 clxscore=1011 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007280095
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,283 +63,297 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, pratik.r.sampat@gmail.com,
- Linux PM <linux-pm@vger.kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
- srivatsa@csail.mit.edu,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
+ Mimi Zohar <zohar@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Eric Biederman <ebiederm@xmission.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
+ Vivek Goyal <vgoyal@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Rafael,
+Hari Bathini <hbathini@linux.ibm.com> writes:
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index 2df6f4273ddd..8df085a22fd7 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -17,9 +17,21 @@
+>  #include <linux/kexec.h>
+>  #include <linux/of_fdt.h>
+>  #include <linux/libfdt.h>
+> +#include <linux/of_device.h>
+>  #include <linux/memblock.h>
+> +#include <linux/slab.h>
+> +#include <asm/drmem.h>
+>  #include <asm/kexec_ranges.h>
+>  
+> +struct umem_info {
+> +	uint64_t *buf; /* data buffer for usable-memory property */
+> +	uint32_t idx;  /* current index */
+> +	uint32_t size; /* size allocated for the data buffer */
+
+Use kernel types please, u64, u32.
+
+> +	/* usable memory ranges to look up */
+> +	const struct crash_mem *umrngs;
+
+"umrngs".
+
+Given it's part of the umem_info struct could it just be "ranges"?
+
+> +};
+> +
+>  const struct kexec_file_ops * const kexec_file_loaders[] = {
+>  	&kexec_elf64_ops,
+>  	NULL
+> @@ -74,6 +86,42 @@ static int get_exclude_memory_ranges(struct crash_mem **mem_ranges)
+>  	return ret;
+>  }
+>  
+> +/**
+> + * get_usable_memory_ranges - Get usable memory ranges. This list includes
+> + *                            regions like crashkernel, opal/rtas & tce-table,
+> + *                            that kdump kernel could use.
+> + * @mem_ranges:               Range list to add the memory ranges to.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int get_usable_memory_ranges(struct crash_mem **mem_ranges)
+> +{
+> +	int ret;
+> +
+> +	/*
+> +	 * prom code doesn't take kindly to missing low memory. So, add
+
+I don't know what that's referring to, "prom code" is too vague.
+
+> +	 * [0, crashk_res.end] instead of [crashk_res.start, crashk_res.end]
+> +	 * to keep it happy.
+> +	 */
+> +	ret = add_mem_range(mem_ranges, 0, crashk_res.end + 1);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_rtas_mem_range(mem_ranges);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_opal_mem_range(mem_ranges);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = add_tce_mem_ranges(mem_ranges);
+> +out:
+> +	if (ret)
+> +		pr_err("Failed to setup usable memory ranges\n");
+> +	return ret;
+> +}
+> +
+>  /**
+>   * __locate_mem_hole_top_down - Looks top down for a large enough memory hole
+>   *                              in the memory regions between buf_min & buf_max
+> @@ -273,6 +321,382 @@ static int locate_mem_hole_bottom_up_ppc64(struct kexec_buf *kbuf,
+>  	return ret;
+>  }
+>  
+> +/**
+> + * check_realloc_usable_mem - Reallocate buffer if it can't accommodate entries
+> + * @um_info:                  Usable memory buffer and ranges info.
+> + * @cnt:                      No. of entries to accommodate.
+> + *
+> + * Frees up the old buffer if memory reallocation fails.
+> + *
+> + * Returns buffer on success, NULL on error.
+> + */
+> +static uint64_t *check_realloc_usable_mem(struct umem_info *um_info, int cnt)
+> +{
+> +	void *tbuf;
+> +
+> +	if (um_info->size >=
+> +	    ((um_info->idx + cnt) * sizeof(*(um_info->buf))))
+> +		return um_info->buf;
+
+This is awkward.
+
+AFAICS you only use um_info->size here, so instead why not store the
+number of u64s you have space for, as num for example.
+
+Then the above comparison becomes:
+
+	if (um_info->num >= (um_info->idx + count))
+
+Then you only have to calculate the size internally here for the
+realloc.
+
+> +
+> +	um_info->size += MEM_RANGE_CHUNK_SZ;
+
+	new_size = um_info->size + MEM_RANGE_CHUNK_SZ;
+	tbuf = krealloc(um_info->buf, new_size, GFP_KERNEL);
+
+> +	tbuf = krealloc(um_info->buf, um_info->size, GFP_KERNEL);
+> +	if (!tbuf) {
+> +		um_info->size -= MEM_RANGE_CHUNK_SZ;
+
+Then you can drop this.
+
+> +		return NULL;
+> +	}
+
+	um_info->size = new_size;
+
+> +
+> +	memset(tbuf + um_info->idx, 0, MEM_RANGE_CHUNK_SZ);
+
+Just pass __GFP_ZERO to krealloc?
+
+> +	return tbuf;
+> +}
+> +
+> +/**
+> + * add_usable_mem - Add the usable memory ranges within the given memory range
+> + *                  to the buffer
+> + * @um_info:        Usable memory buffer and ranges info.
+> + * @base:           Base address of memory range to look for.
+> + * @end:            End address of memory range to look for.
+> + * @cnt:            No. of usable memory ranges added to buffer.
+
+One caller never uses this AFAICS.
+
+Couldn't the other caller just compare the um_info->idx before and after
+the call, and avoid another pass by reference parameter.
+
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int add_usable_mem(struct umem_info *um_info, uint64_t base,
+> +			  uint64_t end, int *cnt)
+> +{
+> +	uint64_t loc_base, loc_end, *buf;
+> +	const struct crash_mem *umrngs;
+> +	int i, add;
+
+add should be bool.
+
+> +	*cnt = 0;
+> +	umrngs = um_info->umrngs;
+> +	for (i = 0; i < umrngs->nr_ranges; i++) {
+> +		add = 0;
+> +		loc_base = umrngs->ranges[i].start;
+> +		loc_end = umrngs->ranges[i].end;
+> +		if (loc_base >= base && loc_end <= end)
+> +			add = 1;
+> +		else if (base < loc_end && end > loc_base) {
+> +			if (loc_base < base)
+> +				loc_base = base;
+> +			if (loc_end > end)
+> +				loc_end = end;
+> +			add = 1;
+> +		}
+> +
+> +		if (add) {
+> +			buf = check_realloc_usable_mem(um_info, 2);
+> +			if (!buf)
+> +				return -ENOMEM;
+> +
+> +			um_info->buf = buf;
+> +			buf[um_info->idx++] = cpu_to_be64(loc_base);
+> +			buf[um_info->idx++] =
+> +					cpu_to_be64(loc_end - loc_base + 1);
+> +			(*cnt)++;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * kdump_setup_usable_lmb - This is a callback function that gets called by
+> + *                          walk_drmem_lmbs for every LMB to set its
+> + *                          usable memory ranges.
+> + * @lmb:                    LMB info.
+> + * @usm:                    linux,drconf-usable-memory property value.
+> + * @data:                   Pointer to usable memory buffer and ranges info.
+> + *
+> + * Returns 0 on success, negative errno on error.
+> + */
+> +static int kdump_setup_usable_lmb(struct drmem_lmb *lmb, const __be32 **usm,
+> +				  void *data)
+> +{
+> +	struct umem_info *um_info;
+> +	uint64_t base, end, *buf;
+> +	int cnt, tmp_idx, ret;
+> +
+> +	/*
+> +	 * kdump load isn't supported on kernels already booted with
+> +	 * linux,drconf-usable-memory property.
+> +	 */
+> +	if (*usm) {
+> +		pr_err("linux,drconf-usable-memory property already exists!");
+> +		return -EINVAL;
+> +	}
+> +
+> +	um_info = data;
+> +	tmp_idx = um_info->idx;
+> +	buf = check_realloc_usable_mem(um_info, 1);
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	um_info->idx++;
+> +	um_info->buf = buf;
+> +	base = lmb->base_addr;
+> +	end = base + drmem_lmb_size() - 1;
+> +	ret = add_usable_mem(um_info, base, end, &cnt);
+> +	if (!ret)
+> +		um_info->buf[tmp_idx] = cpu_to_be64(cnt);
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * get_node_path_size - Get the full path length of the given node.
+> + * @dn:                 Device Node.
+> + *
+> + * Also, counts '\0' at the end of the path.
+> + * For example, /memory@0 will be "/memory@0\0" => 10 bytes.
+> + *
+> + * Returns the string size of the node's full path.
+> + */
+> +static int get_node_path_size(struct device_node *dn)
+> +{
+> +	int len = 0;
+> +
+> +	if (!dn)
+> +		return 0;
+> +
+> +	/* Root node */
+> +	if (!(dn->parent))
+> +		return 2;
+> +
+> +	while (dn) {
+> +		len += strlen(dn->full_name) + 1;
+> +		dn = dn->parent;
+> +	}
+> +
+> +	return len;
+> +}
+> +
+> +/**
+> + * get_node_path - Get the full path of the given node.
+> + * @node:          Device node.
+> + *
+> + * Allocates buffer for node path. The caller must free the buffer
+> + * after use.
+> + *
+> + * Returns buffer with path on success, NULL otherwise.
+> + */
+> +static char *get_node_path(struct device_node *node)
+> +{
 
 
-On 27/07/20 7:12 pm, Rafael J. Wysocki wrote:
-> On Tue, Jul 21, 2020 at 2:43 PM Pratik Rajesh Sampat
-> <psampat@linux.ibm.com> wrote:
->> Fire directed smp_call_function_single IPIs from a specified source
->> CPU to the specified target CPU to reduce the noise we have to wade
->> through in the trace log.
-> And what's the purpose of it?
+As discussed this can probably be replaced with snprintf(buf, "%pOF") ?
 
-The idea for this comes from that fact that estimating wake-up
-latencies and residencies for stop states is not an easy task.
 
-The purpose is essentially to determine wakeup latencies, that are
-caused by either, an IPI or a timer and compare with the advertised
-wakeup latencies for each stop state.
-
-This might help in determining the accuracy of our advertised values
-and/or if they need any re-calibration.
-
->> The module is based on the idea written by Srivatsa Bhat and maintained
->> by Vaidyanathan Srinivasan internally.
->>
->> Queue HR timer and measure jitter. Wakeup latency measurement for idle
->> states using hrtimer.  Echo a value in ns to timer_test_function and
->> watch trace. A HRtimer will be queued and when it fires the expected
->> wakeup vs actual wakeup is computes and delay printed in ns.
->>
->> Implemented as a module which utilizes debugfs so that it can be
->> integrated with selftests.
->>
->> To include the module, check option and include as module
->> kernel hacking -> Cpuidle latency selftests
->>
->> [srivatsa.bhat@linux.vnet.ibm.com: Initial implementation in
->>   cpidle/sysfs]
->>
->> [svaidy@linux.vnet.ibm.com: wakeup latency measurements using hrtimer
->>   and fix some of the time calculation]
->>
->> [ego@linux.vnet.ibm.com: Fix some whitespace and tab errors and
->>   increase the resolution of IPI wakeup]
->>
->> Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
->> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
->> ---
->>   drivers/cpuidle/Makefile               |   1 +
->>   drivers/cpuidle/test-cpuidle_latency.c | 150 +++++++++++++++++++++++++
->>   lib/Kconfig.debug                      |  10 ++
->>   3 files changed, 161 insertions(+)
->>   create mode 100644 drivers/cpuidle/test-cpuidle_latency.c
->>
->> diff --git a/drivers/cpuidle/Makefile b/drivers/cpuidle/Makefile
->> index f07800cbb43f..2ae05968078c 100644
->> --- a/drivers/cpuidle/Makefile
->> +++ b/drivers/cpuidle/Makefile
->> @@ -8,6 +8,7 @@ obj-$(CONFIG_ARCH_NEEDS_CPU_IDLE_COUPLED) += coupled.o
->>   obj-$(CONFIG_DT_IDLE_STATES)             += dt_idle_states.o
->>   obj-$(CONFIG_ARCH_HAS_CPU_RELAX)         += poll_state.o
->>   obj-$(CONFIG_HALTPOLL_CPUIDLE)           += cpuidle-haltpoll.o
->> +obj-$(CONFIG_IDLE_LATENCY_SELFTEST)      += test-cpuidle_latency.o
->>
->>   ##################################################################################
->>   # ARM SoC drivers
->> diff --git a/drivers/cpuidle/test-cpuidle_latency.c b/drivers/cpuidle/test-cpuidle_latency.c
->> new file mode 100644
->> index 000000000000..61574665e972
->> --- /dev/null
->> +++ b/drivers/cpuidle/test-cpuidle_latency.c
->> @@ -0,0 +1,150 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * Module-based API test facility for cpuidle latency using IPIs and timers
-> I'd like to see a more detailed description of what it does and how it
-> works here.
-
-Right, I'll add that.
-Based on comments from Daniel I have also been working on a
-user-space only variant of this test as that does seem like
-a better way to go.
-
-The only downside is that the latency will be higher, but as we are
-taking baseline measurements the diff of that from our observed reading
-should still remain the same. Just that the test will take longer to run.
-I'm yet to accurately confirm this.
-
-I would appreciate your thoughts on that.
-
->> + */
->> +
->> +#include <linux/debugfs.h>
->> +#include <linux/kernel.h>
->> +#include <linux/module.h>
->> +
->> +/* IPI based wakeup latencies */
->> +struct latency {
->> +       unsigned int src_cpu;
->> +       unsigned int dest_cpu;
->> +       ktime_t time_start;
->> +       ktime_t time_end;
->> +       u64 latency_ns;
->> +} ipi_wakeup;
->> +
->> +static void measure_latency(void *info)
->> +{
->> +       struct latency *v;
->> +       ktime_t time_diff;
->> +
->> +       v = (struct latency *)info;
->> +       v->time_end = ktime_get();
->> +       time_diff = ktime_sub(v->time_end, v->time_start);
->> +       v->latency_ns = ktime_to_ns(time_diff);
->> +}
->> +
->> +void run_smp_call_function_test(unsigned int cpu)
->> +{
->> +       ipi_wakeup.src_cpu = smp_processor_id();
->> +       ipi_wakeup.dest_cpu = cpu;
->> +       ipi_wakeup.time_start = ktime_get();
->> +       smp_call_function_single(cpu, measure_latency, &ipi_wakeup, 1);
->> +}
->> +
->> +/* Timer based wakeup latencies */
->> +struct timer_data {
->> +       unsigned int src_cpu;
->> +       u64 timeout;
->> +       ktime_t time_start;
->> +       ktime_t time_end;
->> +       struct hrtimer timer;
->> +       u64 timeout_diff_ns;
->> +} timer_wakeup;
->> +
->> +static enum hrtimer_restart timer_called(struct hrtimer *hrtimer)
->> +{
->> +       struct timer_data *w;
->> +       ktime_t time_diff;
->> +
->> +       w = container_of(hrtimer, struct timer_data, timer);
->> +       w->time_end = ktime_get();
->> +
->> +       time_diff = ktime_sub(w->time_end, w->time_start);
->> +       time_diff = ktime_sub(time_diff, ns_to_ktime(w->timeout));
->> +       w->timeout_diff_ns = ktime_to_ns(time_diff);
->> +       return HRTIMER_NORESTART;
->> +}
->> +
->> +static void run_timer_test(unsigned int ns)
->> +{
->> +       hrtimer_init(&timer_wakeup.timer, CLOCK_MONOTONIC,
->> +                    HRTIMER_MODE_REL);
->> +       timer_wakeup.timer.function = timer_called;
->> +       timer_wakeup.time_start = ktime_get();
->> +       timer_wakeup.src_cpu = smp_processor_id();
->> +       timer_wakeup.timeout = ns;
->> +
->> +       hrtimer_start(&timer_wakeup.timer, ns_to_ktime(ns),
->> +                     HRTIMER_MODE_REL_PINNED);
->> +}
->> +
->> +static struct dentry *dir;
->> +
->> +static int cpu_read_op(void *data, u64 *value)
->> +{
->> +       *value = ipi_wakeup.dest_cpu;
->> +       return 0;
->> +}
->> +
->> +static int cpu_write_op(void *data, u64 value)
->> +{
->> +       run_smp_call_function_test(value);
->> +       return 0;
->> +}
->> +DEFINE_SIMPLE_ATTRIBUTE(ipi_ops, cpu_read_op, cpu_write_op, "%llu\n");
->> +
->> +static int timeout_read_op(void *data, u64 *value)
->> +{
->> +       *value = timer_wakeup.timeout;
->> +       return 0;
->> +}
->> +
->> +static int timeout_write_op(void *data, u64 value)
->> +{
->> +       run_timer_test(value);
->> +       return 0;
->> +}
->> +DEFINE_SIMPLE_ATTRIBUTE(timeout_ops, timeout_read_op, timeout_write_op, "%llu\n");
->> +
->> +static int __init latency_init(void)
->> +{
->> +       struct dentry *temp;
->> +
->> +       dir = debugfs_create_dir("latency_test", 0);
->> +       if (!dir) {
->> +               pr_alert("latency_test: failed to create /sys/kernel/debug/latency_test\n");
->> +               return -1;
->> +       }
->> +       temp = debugfs_create_file("ipi_cpu_dest",
->> +                                  0666,
->> +                                  dir,
->> +                                  NULL,
->> +                                  &ipi_ops);
->> +       if (!temp) {
->> +               pr_alert("latency_test: failed to create /sys/kernel/debug/ipi_cpu_dest\n");
->> +               return -1;
->> +       }
->> +       debugfs_create_u64("ipi_latency_ns", 0444, dir, &ipi_wakeup.latency_ns);
->> +       debugfs_create_u32("ipi_cpu_src", 0444, dir, &ipi_wakeup.src_cpu);
->> +
->> +       temp = debugfs_create_file("timeout_expected_ns",
->> +                                  0666,
->> +                                  dir,
->> +                                  NULL,
->> +                                  &timeout_ops);
->> +       if (!temp) {
->> +               pr_alert("latency_test: failed to create /sys/kernel/debug/timeout_expected_ns\n");
->> +               return -1;
->> +       }
->> +       debugfs_create_u64("timeout_diff_ns", 0444, dir, &timer_wakeup.timeout_diff_ns);
->> +       debugfs_create_u32("timeout_cpu_src", 0444, dir, &timer_wakeup.src_cpu);
->> +       pr_info("Latency Test module loaded\n");
->> +       return 0;
->> +}
->> +
->> +static void __exit latency_cleanup(void)
->> +{
->> +       pr_info("Cleaning up Latency Test module.\n");
->> +       debugfs_remove_recursive(dir);
->> +}
->> +
->> +module_init(latency_init);
->> +module_exit(latency_cleanup);
->> +
->> +MODULE_LICENSE("GPL");
->> +MODULE_AUTHOR("IBM Corporation");
->> +MODULE_DESCRIPTION("Measuring idle latency for IPIs and Timers");
->> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
->> index d74ac0fd6b2d..e2283790245a 100644
->> --- a/lib/Kconfig.debug
->> +++ b/lib/Kconfig.debug
->> @@ -1375,6 +1375,16 @@ config DEBUG_KOBJECT
->>            If you say Y here, some extra kobject debugging messages will be sent
->>            to the syslog.
->>
->> +config IDLE_LATENCY_SELFTEST
->> +       tristate "Cpuidle latency selftests"
->> +       depends on CPU_IDLE
->> +       help
->> +         This option provides a kernel module that runs tests using the IPI and
->> +         timers to measure latency.
-> What latency does it measure?
-
-It measures latencies incurred on wakeup after an IPI and a timer interrupt.
-
->> +
->> +         Say M if you want these self tests to build as a module.
->> +         Say N if you are unsure.
->> +
->>   config DEBUG_KOBJECT_RELEASE
->>          bool "kobject release debugging"
->>          depends on DEBUG_OBJECTS_TIMERS
->> --
->> 2.25.4
->>
-Thanks,
-Pratik
-
+cheers
