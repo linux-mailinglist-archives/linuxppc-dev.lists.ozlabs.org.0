@@ -2,45 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B268223021A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3536A230325
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 08:40:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BG5TR5lwgzDqgn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:54:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BG6VN5PF4zDr4N
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 16:39:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BG5RS3tQJzDqW9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:52:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=ay5dsS9/; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4BG5RS0PTBz9sTm; Tue, 28 Jul 2020 15:52:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1595915540; bh=+4m+nip6A1Fn0hjlDbrbBLcZlqpgnvDS+IvWIylIUoM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=ay5dsS9/nml08EXtk/F7vGZhCVU7DszWdML4byQEKIHcxOlW9J+tLzRDW9WkaOJGW
- eAg1Q+nToPJCAzECLhEHktA7yy52iBwJNTQzs+vjci893uit6NQt+fV/BTt9m4d/CC
- NSNupufIUHS1wnD4azy97HsfLugKmuxU32D9BF/rXoXWh9SemJ3uQzIpxDJbJHeWnw
- MqwFIahGF7EeANpoZtUXEG91UBzgAYcKt6ZRxfo0fOp5lVSYcXGQQXhSrE6EmUftU5
- ch6mDVGYINSladlsZkQzTvVDPZ+1RTD5Q3+XdJk8G+6OkBvLFoshqcPthPiaKtHf8j
- jyF5m5mFDZP5w==
-Date: Tue, 28 Jul 2020 15:52:15 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH v2 0/2] Rework secure memslot dropping
-Message-ID: <20200728055215.GC2460422@thinks.paulus.ozlabs.org>
-References: <1595877869-2746-1-git-send-email-linuxram@us.ibm.com>
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BG6S505NzzDr1X
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 16:37:56 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id EF4D868B05; Tue, 28 Jul 2020 08:37:49 +0200 (CEST)
+Date: Tue, 28 Jul 2020 08:37:49 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH 02/15] dma-contiguous: simplify cma_early_percent_memory()
+Message-ID: <20200728063749.GA21221@lst.de>
+References: <20200728051153.1590-1-rppt@kernel.org>
+ <20200728051153.1590-3-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1595877869-2746-1-git-send-email-linuxram@us.ibm.com>
+In-Reply-To: <20200728051153.1590-3-rppt@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,40 +45,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Stafford Horne <shorne@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Mike Rapoport <rppt@linux.ibm.com>, clang-built-linux@googlegroups.com,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Michal Simek <monstr@monstr.eu>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 27, 2020 at 12:24:27PM -0700, Ram Pai wrote:
-> From: Laurent Dufour <ldufour@linux.ibm.com>
+On Tue, Jul 28, 2020 at 08:11:40AM +0300, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
 > 
-> When doing memory hotplug on a secure VM, the secure pages are not well
-> cleaned from the secure device when dropping the memslot.  This silent
-> error, is then preventing the SVM to reboot properly after the following
-> sequence of commands are run in the Qemu monitor:
+> The memory size calculation in cma_early_percent_memory() traverses
+> memblock.memory rather than simply call memblock_phys_mem_size(). The
+> comment in that function suggests that at some point there should have been
+> call to memblock_analyze() before memblock_phys_mem_size() could be used.
+> As of now, there is no memblock_analyze() at all and
+> memblock_phys_mem_size() can be used as soon as cold-plug memory is
+> registerd with memblock.
 > 
-> device_add pc-dimm,id=dimm1,memdev=mem1
-> device_del dimm1
-> device_add pc-dimm,id=dimm1,memdev=mem1
+> Replace loop over memblock.memory with a call to memblock_phys_mem_size().
 > 
-> At reboot time, when the kernel is booting again and switching to the
-> secure mode, the page_in is failing for the pages in the memslot because
-> the cleanup was not done properly, because the memslot is flagged as
-> invalid during the hot unplug and thus the page fault mechanism is not
-> triggered.
-> 
-> To prevent that during the memslot dropping, instead of belonging on the
-> page fault mechanism to trigger the page out of the secured pages, it seems
-> simpler to directly call the function doing the page out. This way the
-> state of the memslot is not interfering on the page out process.
-> 
-> This series applies on top of the Ram's one titled:
-> "[v6 0/5] Migrate non-migrated pages of a SVM."
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Thanks, series applied to my kvm-ppc-next branch and pull request sent.
+Looks good:
 
-Paul.
+Reviewed-by: Christoph Hellwig <hch@lst.de>
