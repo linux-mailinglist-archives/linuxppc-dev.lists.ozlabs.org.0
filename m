@@ -2,73 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B0A23080C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 12:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF69523082F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 12:55:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGCzM0sVJzDr3L
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 20:46:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGD931QwVzDqH6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 20:55:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::542;
- helo=mail-ed1-x542.google.com; envelope-from=mingo.kernel.org@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rFUcMCUj; dkim-atps=neutral
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
+ header.s=20161025 header.b=LOlyux90; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGCwz0RHyzDqFs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 20:44:50 +1000 (AEST)
-Received: by mail-ed1-x542.google.com with SMTP id v22so3662151edy.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:44:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGD722WcRzDqnF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 20:53:33 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id c6so4722957pje.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 03:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=3Jtd/NLDfEi5mS55S0K4WbnSIzqpGJbZScZKeEtsXAQ=;
- b=rFUcMCUj2AwdC69csGGjJVjr3K/8WS4HC4QuFwZtg451Qj4L37BpO16QBPnCSOnEqP
- 0XLFh6CAcMNi+86g1xCyy/bqdVTYRHcM+S9kEIZb7EWJKKOmGB7fGMyBy9goHLKaJvij
- l3J//FegCgxfC20hSO+SeOOi0ojcNdANd874jllkW9bgWXdBSGjDZ+KKsJ5ItnWu5ElM
- TutsV7Y/UWKyR2rEXX1BEUlxaWMHKF0PMaSsOZWNK/0D0ZH9xxW9nIbDP8AygACtKk6q
- SuVbplxJKZehbky/ztC2U7bihOneNjqjj52Fn1yyk39lDMDQeAEZqoI3viUUxFXSv5vl
- 9XJg==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=agRMqGGlf6WEhzng1JHJTfSL3lgFlGnxzJ0Cav+bYwY=;
+ b=LOlyux900DwySJrPY4APfRX1lil/nI28/QfYF1AYlmE+78dPK5RYl6rQ+sD5+x5MA7
+ playMugBZGJPi4cNxmeP+cB0atQX1/GTXF03Pb/x2CQuKNPkiq1Waz1Ky+uypI3zPBSW
+ YxU5r/gfiPvvENminX12cG6746FlKyqgYVwOqF0W5IlOPxW4T/F2yNlR2vFRm8/RzuPL
+ P1B0c7lbUooXxICuyibePBquJuQisL8LvIEyaJISfFRcWpoYQESGRDwq8TevCKApJ6e/
+ fJla/uli1Og8SbOWaKOadogeThM5RYLbSZ5LSpD9XEG3FW2zmhtctXWhQqI+shiRcdy8
+ 7X2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to;
- bh=3Jtd/NLDfEi5mS55S0K4WbnSIzqpGJbZScZKeEtsXAQ=;
- b=CQsm+0WOSqkkGr8cxjC5D2QzFswawfTT9vEb9619gUJsWkDvDJQsPUSBIwel9x51Nz
- DneVBOya3aszyqT/4O49okwm2E9+XZGfc5CcoTwexLyoBI4yHtXLwmo3WcjThYLJLCOk
- VCGnQNGIn5Gs/Z4T5XpeS+REXP0gk380USmoAfUMg4cvV3B1BfszbzAx4qfmR8+JSfgC
- aHuGYUZ3eVJQHVpPE6dElp4+Nwr9c26Bybxhf3pOjsS6QQrCzF+7jI2AALnjo8PUdZNK
- mutVdUknnLEHVcB58O4tu9biBMDm0f/74riBkABYGxjCnbeDEEe0w8wNLvoq5rf2Cwfv
- zfSw==
-X-Gm-Message-State: AOAM533mJj/ISeSnKaOllNNUpWfBtMlwh6KuCE3jhCC1imDK2CtOaCeP
- ylAStMn+/FnvxgPvRXXiycs=
-X-Google-Smtp-Source: ABdhPJztizS2/FT37W5GVOnd6egL7RbIXP7ubjCB3LMqpraJ3F9fNNOV7TQhtwANWplTQvf13TbOQg==
-X-Received: by 2002:aa7:dd15:: with SMTP id i21mr12013673edv.153.1595933084517; 
- Tue, 28 Jul 2020 03:44:44 -0700 (PDT)
-Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
- by smtp.gmail.com with ESMTPSA id cf10sm460841ejb.4.2020.07.28.03.44.42
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=agRMqGGlf6WEhzng1JHJTfSL3lgFlGnxzJ0Cav+bYwY=;
+ b=Q16e0phO8gWuyYJSOdcZEbXQltKqRtN34Bt3FwDmwCzgIAh07upff0pgWdkC7i7nxE
+ zEuyiWFasm2rIhCJcSFfbUvyXyutvBbBmUFd2CCl+5mfp5gMD+b6Yg1LnJTB//itts4V
+ +Bpr7VZ76xYEE+cpohfMuARsKFCbGnUiRO7kwabmc1N2HK8oUrCU0aBjgNc1P76cJRVR
+ ZBcKrjc1QuyrolvqwV3WGM1TsV4/I2Z1aQGAZUVmbF6OBA3W9LpEq+zXmjikB7sCqzWA
+ quTWhCD66LgrhnW5Wse0j4gHMnDnkHcfkYCYL4/heMSb2kf31sO2oCUmsnbpZoPSlMy6
+ lJHw==
+X-Gm-Message-State: AOAM532lbtgaAVlSNG3k2hVeApgSvlumuocXBCgUiD5qPBAu9Ad5D8pF
+ VmeLuWZfzvIOWWdGWq/xz/o=
+X-Google-Smtp-Source: ABdhPJzDyUiZdoRIhWil/eQB9vL3D+ZkGma3UEEEz2L1OSFLOod9x5RLtms6ZoVyeVTnVsDId/pLZw==
+X-Received: by 2002:a17:902:fe10:: with SMTP id
+ g16mr955299plj.227.1595933609963; 
+ Tue, 28 Jul 2020 03:53:29 -0700 (PDT)
+Received: from localhost (110-174-173-27.tpgi.com.au. [110.174.173.27])
+ by smtp.gmail.com with ESMTPSA id z11sm17894138pfk.46.2020.07.28.03.53.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Jul 2020 03:44:43 -0700 (PDT)
-Date: Tue, 28 Jul 2020 12:44:40 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 14/15] x86/numa: remove redundant iteration over
- memblock.reserved
-Message-ID: <20200728104440.GA222284@gmail.com>
-References: <20200728051153.1590-1-rppt@kernel.org>
- <20200728051153.1590-15-rppt@kernel.org>
+ Tue, 28 Jul 2020 03:53:29 -0700 (PDT)
+Date: Tue, 28 Jul 2020 20:53:23 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [patch 01/15] mm/memory.c: avoid access flag update TLB flush for
+ retried page fault
+To: linux-arch <linux-arch@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Yang Shi <yang.shi@linux.alibaba.com>
+References: <20200723211432.b31831a0df3bc2cbdae31b40@linux-foundation.org>
+ <20200724041508.QlTbrHnfh%akpm@linux-foundation.org>
+ <CAHk-=wguPA=pDskR-eMMjwR5LDEaMXrqbmDbrKr0u=wV1LE4rg@mail.gmail.com>
+ <CAHk-=wh4kmU5FdT=Yy7N9wA=se=ALbrquCrOkjCMhiQnOBLvDA@mail.gmail.com>
+ <0323de82-cfbd-8506-fa9c-a702703dd654@linux.alibaba.com>
+ <20200727110512.GB25400@gaia>
+ <39560818-463f-da3a-fc9e-3a4a0a082f61@linux.alibaba.com>
+ <eb1f5cb4-7c3d-df42-f4aa-804e12df45e2@linux.alibaba.com>
+ <CAHk-=wha6f0gF1SJg96R77h0oTuc_oO7-37wD=mYGy6TyJOwbQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wha6f0gF1SJg96R77h0oTuc_oO7-37wD=mYGy6TyJOwbQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200728051153.1590-15-rppt@kernel.org>
+Message-Id: <1595932767.wga6c4yy6a.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,50 +89,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, Stafford Horne <shorne@gmail.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Mike Rapoport <rppt@linux.ibm.com>, clang-built-linux@googlegroups.com,
- Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Michal Simek <monstr@monstr.eu>, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
+Cc: Hillf Danton <hdanton@sina.com>, mm-commits@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Hugh Dickins <hughd@google.com>,
+ Josef Bacik <josef@toxicpanda.com>, Will Deacon <will.deacon@arm.com>,
+ Linux-MM <linux-mm@kvack.org>, Matthew Wilcox <willy@infradead.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yu Xu <xuyu@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Linus Torvalds's message of July 28, 2020 4:37 am:
+> [ Adding linux-arch, just to make other architectures aware of this issue=
+ too.
+>=20
+>   We have a "flush_tlb_fix_spurious_fault()" thing to take care of the
+> "TLB may contain stale entries, we can't take the same fault over and
+> over again" situation.
+>=20
+>   On x86, it's a no-op, because x86 doesn't do that. x86 will re-walk
+> the page tables - or possibly just always invalidate the faulting TLB
+> entry - before taking a fault, so there can be no long-term stale
+> TLB's.
 
-* Mike Rapoport <rppt@kernel.org> wrote:
+[snip]
 
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> numa_clear_kernel_node_hotplug() function first traverses numa_meminfo
-> regions to set node ID in memblock.reserved and than traverses
-> memblock.reserved to update reserved_nodemask to include node IDs that were
-> set in the first loop.
-> 
-> Remove redundant traversal over memblock.reserved and update
-> reserved_nodemask while iterating over numa_meminfo.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/x86/mm/numa.c | 26 ++++++++++----------------
->  1 file changed, 10 insertions(+), 16 deletions(-)
+>   It looks like powerpc people at least thought about this, and only
+> do it if there is a coprocessor. Which sounds a bit confused, but I
+> don't know the rules.
 
-I suspect you'd like to carry this in the -mm tree?
+I'm not sure about ppc32 and 64e, I'm almost certain they should do a=20
+local flush if anyting, and someone with a good understanding of the=20
+ISAs and CPUs might be able to nop it entirely. I agree global can't=20
+ever really make sense (except as a default because we have no generic=20
+local flush).
 
-Acked-by: Ingo Molnar <mingo@kernel.org>
+powerpc/64s reloads translations after taking a fault, so it's fine with=20
+a nop here.
+
+The quirk is a problem with coprocessor where it's supposed to=20
+invalidate the translation after a fault but it doesn't, so we can get a=20
+read-only TLB stuck after something else does a RO->RW upgrade on the=20
+TLB. Something like that IIRC.  Coprocessors have their own MMU which=20
+lives in the nest not the core, so you need a global TLB flush to
+invalidate that thing.
 
 Thanks,
-
-	Ingo
+Nick
