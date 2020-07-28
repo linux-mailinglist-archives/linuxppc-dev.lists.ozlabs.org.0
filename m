@@ -1,105 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE3E2312CB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 21:36:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD9123159D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 00:36:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGRkm0BW6zDqQ6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 05:36:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGWkY59BJzDqy1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 08:36:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGRhG42D8zDqnV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 05:34:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BGRhG3Zf5z8t3H
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 05:34:38 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BGRhG2tQqz9sRN; Wed, 29 Jul 2020 05:34:38 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gromero@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
+Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BGRhF6rJ3z9sR4
- for <linuxppc-dev@ozlabs.org>; Wed, 29 Jul 2020 05:34:37 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGWhb4YlSzDqw0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 08:35:10 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06SJX1aO120680; Tue, 28 Jul 2020 15:34:33 -0400
+ 06SMX8CO099048
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 18:35:08 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32jkw2dfpy-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jj2wtk19-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 18:35:08 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06SMXHrQ099366
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 18:35:08 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jj2wtk0v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 15:34:32 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06SJY200123410;
- Tue, 28 Jul 2020 15:34:32 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32jkw2dfnq-1
+ Tue, 28 Jul 2020 18:35:08 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06SMTiFE020881;
+ Tue, 28 Jul 2020 22:35:06 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma04wdc.us.ibm.com with ESMTP id 32gcprd2qf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 15:34:32 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06SJOcrn028997;
- Tue, 28 Jul 2020 19:34:29 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma02fra.de.ibm.com with ESMTP id 32gcq0thxh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Jul 2020 19:34:29 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06SJYQfe27001110
+ Tue, 28 Jul 2020 22:35:06 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06SMZ5p320185388
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Jul 2020 19:34:26 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CFA5542045;
- Tue, 28 Jul 2020 19:34:26 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 930E94203F;
- Tue, 28 Jul 2020 19:34:23 +0000 (GMT)
-Received: from [9.85.75.143] (unknown [9.85.75.143])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 28 Jul 2020 19:34:23 +0000 (GMT)
-Subject: Re: [RESEND PATCH v5 06/11] ppc64/kexec_file: restrict memory usage
- of kdump kernel
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <159579157320.5790.6748078824637688685.stgit@hbathini>
- <159579231812.5790.16096865978767385505.stgit@hbathini>
- <875za77o05.fsf@mpe.ellerman.id.au>
-From: Hari Bathini <hbathini@linux.ibm.com>
-Message-ID: <23c4e7a2-6fbc-8007-5e9a-35c3a4d3898b@linux.ibm.com>
-Date: Wed, 29 Jul 2020 01:04:22 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <875za77o05.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ Tue, 28 Jul 2020 22:35:05 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 63B22BE074;
+ Tue, 28 Jul 2020 22:35:05 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CB4EBE075;
+ Tue, 28 Jul 2020 22:35:03 +0000 (GMT)
+Received: from pub.ltc.br.ibm.com (unknown [9.80.219.128])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 28 Jul 2020 22:35:02 +0000 (GMT)
+From: Gustavo Romero <gromero@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/powernv/pci: Fix build of pci-ioda.o
+Date: Tue, 28 Jul 2020 19:33:37 -0300
+Message-Id: <20200728223337.40447-1-gromero@linux.ibm.com>
+X-Mailer: git-send-email 2.17.1
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-28_16:2020-07-28,
+ definitions=2020-07-28_17:2020-07-28,
  2020-07-28 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 spamscore=0 clxscore=1015 malwarescore=0
- priorityscore=1501 impostorscore=0 suspectscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007280139
+ mlxscore=0 phishscore=0
+ impostorscore=0 mlxlogscore=915 priorityscore=1501 lowpriorityscore=0
+ clxscore=1011 bulkscore=0 suspectscore=1 adultscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007280160
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,65 +87,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Pingfan Liu <piliu@redhat.com>, Kexec-ml <kexec@lists.infradead.org>,
- Nayna Jain <nayna@linux.ibm.com>, Petr Tesarik <ptesarik@suse.cz>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Sourabh Jain <sourabhjain@linux.ibm.com>, Vivek Goyal <vgoyal@redhat.com>,
- Dave Young <dyoung@redhat.com>, Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Eric Biederman <ebiederm@xmission.com>
+Cc: oohall@gmail.com, gromero@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Currently pnv_ioda_setup_bus_dma() is outside of a CONFIG_IOMMU_API guard
+and if CONFIG_IOMMU_API=n the build can fail if the compiler sets
+-Werror=unused-function, because pnv_ioda_setup_bus_dma() is only used in
+functions guarded by a CONFIG_IOMMU_API guard.
 
+That issue can be easily reproduced using the skiroot_defconfig. For other
+configs, like powernv_defconfig, that issue is hidden by the fact that
+if CONFIG_IOMMU_SUPPORT is enabled plus other common IOMMU options, like
+CONFIG_OF_IOMMU, by default CONFIG_IOMMU_API is enabled as well. Hence, for
+powernv_defconfig, it's necessary to set CONFIG_IOMMU_SUPPORT=n to make the
+build fail, because CONFIG_PCI=y and pci-ioda.c is included in the build,
+but since CONFIG_IOMMU_SUPPORT=n the CONFIG_IOMMU_API is disabled, breaking
+the build.
 
-On 28/07/20 7:14 pm, Michael Ellerman wrote:
-> Hari Bathini <hbathini@linux.ibm.com> writes:
->> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
->> index 2df6f4273ddd..8df085a22fd7 100644
->> --- a/arch/powerpc/kexec/file_load_64.c
->> +++ b/arch/powerpc/kexec/file_load_64.c
->> @@ -17,9 +17,21 @@
->>   #include <linux/kexec.h>
->>   #include <linux/of_fdt.h>
->>   #include <linux/libfdt.h>
->> +#include <linux/of_device.h>
->>   #include <linux/memblock.h>
->> +#include <linux/slab.h>
->> +#include <asm/drmem.h>
->>   #include <asm/kexec_ranges.h>
->>   
->> +struct umem_info {
->> +	uint64_t *buf; /* data buffer for usable-memory property */
->> +	uint32_t idx;  /* current index */
->> +	uint32_t size; /* size allocated for the data buffer */
-> 
-> Use kernel types please, u64, u32.
-> 
->> +	/* usable memory ranges to look up */
->> +	const struct crash_mem *umrngs;
-> 
-> "umrngs".
-> 
-> Given it's part of the umem_info struct could it just be "ranges"?
+This commit fixes that build issue by moving the pnv_ioda_setup_bus_dma()
+inside a CONFIG_IOMMU_API guard, so when CONFIG_IOMMU_API is disabled that
+function is not defined.
 
-True. Actually, having crash_mem_range *ranges + u32 nr_ranges and 
-populating them seems better. Will do that..
+Signed-off-by: Gustavo Romero <gromero@linux.ibm.com>
+---
+ arch/powerpc/platforms/powernv/pci-ioda.c | 26 +++++++++++------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
->> +		return NULL;
->> +	}
-> 
-> 	um_info->size = new_size;
-> 
->> +
->> +	memset(tbuf + um_info->idx, 0, MEM_RANGE_CHUNK_SZ);
-> 
-> Just pass __GFP_ZERO to krealloc?
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 73a63efcf855..743d840712da 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1885,19 +1885,6 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
+ 	return false;
+ }
+ 
+-static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
+-{
+-	struct pci_dev *dev;
+-
+-	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		set_iommu_table_base(&dev->dev, pe->table_group.tables[0]);
+-		dev->dev.archdata.dma_offset = pe->tce_bypass_base;
+-
+-		if ((pe->flags & PNV_IODA_PE_BUS_ALL) && dev->subordinate)
+-			pnv_ioda_setup_bus_dma(pe, dev->subordinate);
+-	}
+-}
+-
+ static inline __be64 __iomem *pnv_ioda_get_inval_reg(struct pnv_phb *phb,
+ 						     bool real_mode)
+ {
+@@ -2501,6 +2488,19 @@ static long pnv_pci_ioda2_unset_window(struct iommu_table_group *table_group,
+ #endif
+ 
+ #ifdef CONFIG_IOMMU_API
++static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
++{
++	struct pci_dev *dev;
++
++	list_for_each_entry(dev, &bus->devices, bus_list) {
++		set_iommu_table_base(&dev->dev, pe->table_group.tables[0]);
++		dev->dev.archdata.dma_offset = pe->tce_bypass_base;
++
++		if ((pe->flags & PNV_IODA_PE_BUS_ALL) && dev->subordinate)
++			pnv_ioda_setup_bus_dma(pe, dev->subordinate);
++	}
++}
++
+ unsigned long pnv_pci_ioda2_get_table_size(__u32 page_shift,
+ 		__u64 window_size, __u32 levels)
+ {
+-- 
+2.17.1
 
-There are patches submitted to stable fixing a few modules that use 
-krealloc with __GFP_ZERO. Also, this zeroing is not really needed.
-I will drop the memset instead..
-
-Thanks
-Hari
