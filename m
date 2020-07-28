@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D790C2301BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 392612301CE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:33:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BG4zb3NqczDr5Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:31:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BG51t3YxlzDqBZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:33:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=lm11f6W8; dkim-atps=neutral
+ header.s=default header.b=BIqPSBvj; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4ZY5nm1zDr1F
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:13:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4Zl0PbVzDr2K
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:13:35 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8DAC422B4B;
- Tue, 28 Jul 2020 05:13:13 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 626FD21D95;
+ Tue, 28 Jul 2020 05:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1595913202;
- bh=VFCNoINiV/6S6XOOU0JrFdtc5FxR22TwcA9ornig1+M=;
+ s=default; t=1595913212;
+ bh=HXplIo2+gHV+5Rh8qlUVMl6HMHdXi6PCG7vTxqabI+Q=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=lm11f6W8H5Kt1f4GF53UuB9StgNeXXYMOzCHMtSc6ip+HxivUfHkIzQp4H7kbBfiQ
- R4w5HP/auPjqJ3VOOs7h6yurNCYT5/NX/RKpovw7T59wzfCV3lZd8arOEtF2QHEPMO
- EVQjpZ2a9wkqFdb/sI6Zv2AmZmV/w/5C6sQ4Yc28=
+ b=BIqPSBvjTdf4uuqv4MKH2hwzpl2XAGh4bPniDdkdx6FTrspJLz2LKCyaDcKO9wB4N
+ IIrpPqlGIFPqWgrRE4nVY4ePSA6qQhEOkMtLDDcy7nB1Uj1EGyg1Fn9e6n9om1ZFOc
+ Zpsz0c0dsztYiTDKK1XWk2S+W/uNLAwFNqNHrQrw=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 07/15] riscv: drop unneeded node initialization
-Date: Tue, 28 Jul 2020 08:11:45 +0300
-Message-Id: <20200728051153.1590-8-rppt@kernel.org>
+Subject: [PATCH 08/15] mircoblaze: drop unneeded NUMA and sparsemem
+ initializations
+Date: Tue, 28 Jul 2020 08:11:46 +0300
+Message-Id: <20200728051153.1590-9-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200728051153.1590-1-rppt@kernel.org>
 References: <20200728051153.1590-1-rppt@kernel.org>
@@ -79,37 +80,53 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-RISC-V does not (yet) support NUMA  and for UMA architectures node 0 is
-used implicitly during early memory initialization.
+microblaze does not support neither NUMA not SPARSMEM, so there is no point
+to call memblock_set_node() and sparse_memory_present_with_active_regions()
+functions during microblaze memory initialization.
 
-There is no need to call memblock_set_node(), remove this call and the
-surrounding code.
+Remove these calls and the surrounding code.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/riscv/mm/init.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ arch/microblaze/mm/init.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 79e9d55bdf1a..7440ba2cdaaa 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -191,15 +191,6 @@ void __init setup_bootmem(void)
- 	early_init_fdt_scan_reserved_mem();
- 	memblock_allow_resize();
- 	memblock_dump_all();
+diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
+index 521b59ba716c..49e0c241f9b1 100644
+--- a/arch/microblaze/mm/init.c
++++ b/arch/microblaze/mm/init.c
+@@ -105,9 +105,8 @@ static void __init paging_init(void)
+ 
+ void __init setup_memory(void)
+ {
+-	struct memblock_region *reg;
 -
+ #ifndef CONFIG_MMU
++	struct memblock_region *reg;
+ 	u32 kernel_align_start, kernel_align_size;
+ 
+ 	/* Find main memory where is the kernel */
+@@ -161,20 +160,6 @@ void __init setup_memory(void)
+ 	pr_info("%s: max_low_pfn: %#lx\n", __func__, max_low_pfn);
+ 	pr_info("%s: max_pfn: %#lx\n", __func__, max_pfn);
+ 
+-	/* Add active regions with valid PFNs */
 -	for_each_memblock(memory, reg) {
--		unsigned long start_pfn = memblock_region_memory_base_pfn(reg);
--		unsigned long end_pfn = memblock_region_memory_end_pfn(reg);
+-		unsigned long start_pfn, end_pfn;
 -
--		memblock_set_node(PFN_PHYS(start_pfn),
--				  PFN_PHYS(end_pfn - start_pfn),
+-		start_pfn = memblock_region_memory_base_pfn(reg);
+-		end_pfn = memblock_region_memory_end_pfn(reg);
+-		memblock_set_node(start_pfn << PAGE_SHIFT,
+-				  (end_pfn - start_pfn) << PAGE_SHIFT,
 -				  &memblock.memory, 0);
 -	}
+-
+-	/* XXX need to clip this if using highmem? */
+-	sparse_memory_present_with_active_regions(0);
+-
+ 	paging_init();
  }
  
- #ifdef CONFIG_MMU
 -- 
 2.26.2
 
