@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4012301D1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935C02301E7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 07:38:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BG5460V9JzDqMx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:35:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BG57N61J0zDr6L
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jul 2020 15:38:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=pe560+Wm; dkim-atps=neutral
+ header.s=default header.b=yyfhBe3Z; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4Zx4nV4zDr1X
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:13:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BG4b62gc7zDr1N
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jul 2020 15:13:54 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3889F21883;
- Tue, 28 Jul 2020 05:13:33 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0CFBB22B47;
+ Tue, 28 Jul 2020 05:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1595913222;
- bh=VR/BXCbAGDXiTc2rrw4BtAkWHkepE699HsOgdQ8rv0s=;
+ s=default; t=1595913232;
+ bh=s4TGTb+OM6aK8pYTyThZeMLhanWPb/uc+gXtOdjiGYU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=pe560+Wm3RFnEmULaa53wH76qBJxCszvYnNevCYd1rvmCATos0eyeEG3MuKsU+rh7
- ZASD4r+m+7eL0vyMwJb5sE+ZH1uE1hodcDEHLpAyf64FfWaU40NfwmcAEsw6YVkzSg
- CxXRY9P9LZrUbR8Rgo3jRZCAkUWh5kJKutjxM4CU=
+ b=yyfhBe3Z1JOta7OKxVWMIjsqyELV3KSSG1sXhvTcAKiT2I+Tz0B/4ePu+iHQ0G/YT
+ +Gk2OSGadKLdM9EQX8uTc6+YvhZVTdsuYDsaZckXNsXzKQPx24T8YMJ6VUpwVCnnqn
+ 6ux6E67Q5PAxPVGr1U4/qfs1AON/1+OS5GECpvHk=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 09/15] memblock: make for_each_memblock_type() iterator private
-Date: Tue, 28 Jul 2020 08:11:47 +0300
-Message-Id: <20200728051153.1590-10-rppt@kernel.org>
+Subject: [PATCH 10/15] memblock: make memblock_debug and related functionality
+ private
+Date: Tue, 28 Jul 2020 08:11:48 +0300
+Message-Id: <20200728051153.1590-11-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200728051153.1590-1-rppt@kernel.org>
 References: <20200728051153.1590-1-rppt@kernel.org>
@@ -79,47 +80,108 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-for_each_memblock_type() is not used outside mm/memblock.c, move it there
-from include/linux/memblock.h
+The only user of memblock_dbg() outside memblock was s390 setup code and it
+is converted to use pr_debug() instead.
+This allows to stop exposing memblock_debug and memblock_dbg() to the rest
+of the kernel.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- include/linux/memblock.h | 5 -----
- mm/memblock.c            | 5 +++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/s390/kernel/setup.c |  4 ++--
+ include/linux/memblock.h | 12 +-----------
+ mm/memblock.c            | 13 +++++++++++--
+ 3 files changed, 14 insertions(+), 15 deletions(-)
 
+diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+index 07aa15ba43b3..8b284cf6e199 100644
+--- a/arch/s390/kernel/setup.c
++++ b/arch/s390/kernel/setup.c
+@@ -776,8 +776,8 @@ static void __init memblock_add_mem_detect_info(void)
+ 	unsigned long start, end;
+ 	int i;
+ 
+-	memblock_dbg("physmem info source: %s (%hhd)\n",
+-		     get_mem_info_source(), mem_detect.info_source);
++	pr_debug("physmem info source: %s (%hhd)\n",
++		 get_mem_info_source(), mem_detect.info_source);
+ 	/* keep memblock lists close to the kernel */
+ 	memblock_set_bottom_up(true);
+ 	for_each_mem_detect_block(i, &start, &end) {
 diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 017fae833d4a..220b5f0dad42 100644
+index 220b5f0dad42..e6a23b3db696 100644
 --- a/include/linux/memblock.h
 +++ b/include/linux/memblock.h
-@@ -532,11 +532,6 @@ static inline unsigned long memblock_region_reserved_end_pfn(const struct memblo
- 	     region < (memblock.memblock_type.regions + memblock.memblock_type.cnt);	\
- 	     region++)
- 
--#define for_each_memblock_type(i, memblock_type, rgn)			\
--	for (i = 0, rgn = &memblock_type->regions[0];			\
--	     i < memblock_type->cnt;					\
--	     i++, rgn = &memblock_type->regions[i])
--
- extern void *alloc_large_system_hash(const char *tablename,
- 				     unsigned long bucketsize,
- 				     unsigned long numentries,
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 39aceafc57f6..a5b9b3df81fc 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -129,6 +129,11 @@ struct memblock memblock __initdata_memblock = {
- 	.current_limit		= MEMBLOCK_ALLOC_ANYWHERE,
+@@ -90,7 +90,6 @@ struct memblock {
  };
  
-+#define for_each_memblock_type(i, memblock_type, rgn)			\
-+	for (i = 0, rgn = &memblock_type->regions[0];			\
-+	     i < memblock_type->cnt;					\
-+	     i++, rgn = &memblock_type->regions[i])
+ extern struct memblock memblock;
+-extern int memblock_debug;
+ 
+ #ifndef CONFIG_ARCH_KEEP_MEMBLOCK
+ #define __init_memblock __meminit
+@@ -102,9 +101,6 @@ void memblock_discard(void);
+ static inline void memblock_discard(void) {}
+ #endif
+ 
+-#define memblock_dbg(fmt, ...) \
+-	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+-
+ phys_addr_t memblock_find_in_range(phys_addr_t start, phys_addr_t end,
+ 				   phys_addr_t size, phys_addr_t align);
+ void memblock_allow_resize(void);
+@@ -456,13 +452,7 @@ bool memblock_is_region_memory(phys_addr_t base, phys_addr_t size);
+ bool memblock_is_reserved(phys_addr_t addr);
+ bool memblock_is_region_reserved(phys_addr_t base, phys_addr_t size);
+ 
+-extern void __memblock_dump_all(void);
+-
+-static inline void memblock_dump_all(void)
+-{
+-	if (memblock_debug)
+-		__memblock_dump_all();
+-}
++void memblock_dump_all(void);
+ 
+ /**
+  * memblock_set_current_limit - Set the current allocation limit to allow
+diff --git a/mm/memblock.c b/mm/memblock.c
+index a5b9b3df81fc..824938849f6d 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -134,7 +134,10 @@ struct memblock memblock __initdata_memblock = {
+ 	     i < memblock_type->cnt;					\
+ 	     i++, rgn = &memblock_type->regions[i])
+ 
+-int memblock_debug __initdata_memblock;
++#define memblock_dbg(fmt, ...) \
++	if (memblock_debug) printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
 +
- int memblock_debug __initdata_memblock;
++static int memblock_debug __initdata_memblock;
  static bool system_has_some_mirror __initdata_memblock = false;
  static int memblock_can_resize __initdata_memblock;
+ static int memblock_memory_in_slab __initdata_memblock = 0;
+@@ -1919,7 +1922,7 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
+ 	}
+ }
+ 
+-void __init_memblock __memblock_dump_all(void)
++static void __init_memblock __memblock_dump_all(void)
+ {
+ 	pr_info("MEMBLOCK configuration:\n");
+ 	pr_info(" memory size = %pa reserved size = %pa\n",
+@@ -1933,6 +1936,12 @@ void __init_memblock __memblock_dump_all(void)
+ #endif
+ }
+ 
++void __init_memblock memblock_dump_all(void)
++{
++	if (memblock_debug)
++		__memblock_dump_all();
++}
++
+ void __init memblock_allow_resize(void)
+ {
+ 	memblock_can_resize = 1;
 -- 
 2.26.2
 
