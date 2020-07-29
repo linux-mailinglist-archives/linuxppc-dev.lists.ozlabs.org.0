@@ -2,93 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66909232140
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 17:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97261232220
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 18:06:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGxmj2VjDzDqk5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 01:10:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGz1Q3MMczDql2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 02:06:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGxdd23cRzDqmX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 01:04:05 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BGxdc5CFMz8t3x
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 01:04:04 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BGxdc0gv9z9sRX; Thu, 30 Jul 2020 01:04:04 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=gromero@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BGxdZ1qRBz9sRN;
- Thu, 30 Jul 2020 01:04:00 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06TF2JlX125924; Wed, 29 Jul 2020 11:03:56 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32j7sypmv9-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGyyn1VDgzDqcg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 02:04:00 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06TG3753116550; Wed, 29 Jul 2020 12:03:53 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32k9q55kqk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jul 2020 11:03:56 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06TExM3e019837;
- Wed, 29 Jul 2020 15:03:56 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02wdc.us.ibm.com with ESMTP id 32gcq12r4k-1
+ Wed, 29 Jul 2020 12:03:53 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06TG1HWS005287;
+ Wed, 29 Jul 2020 16:03:51 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 32gcy4n8bf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jul 2020 15:03:56 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06TF3tFp40829426
+ Wed, 29 Jul 2020 16:03:51 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06TG3kba32899498
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 Jul 2020 15:03:55 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 95483AC05B;
- Wed, 29 Jul 2020 15:03:55 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F21CDAC059;
- Wed, 29 Jul 2020 15:03:53 +0000 (GMT)
-Received: from oc6336877782.ibm.com (unknown [9.80.219.128])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 29 Jul 2020 15:03:53 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/fadump: Fix build error with
- CONFIG_PRESERVE_FA_DUMP=y
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20200727070341.595634-1-mpe@ellerman.id.au>
-From: Gustavo Romero <gromero@linux.vnet.ibm.com>
-Message-ID: <ef69b1e6-5a53-c364-dd62-e35f39d595b5@linux.vnet.ibm.com>
-Date: Wed, 29 Jul 2020 12:03:51 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Wed, 29 Jul 2020 16:03:46 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6FB742047;
+ Wed, 29 Jul 2020 16:03:46 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E0E042045;
+ Wed, 29 Jul 2020 16:03:45 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 29 Jul 2020 16:03:45 +0000 (GMT)
+Date: Wed, 29 Jul 2020 21:33:44 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Sandipan Das <sandipan@linux.ibm.com>
+Subject: Re: [PATCH v2] selftests: powerpc: Fix online CPU selection
+Message-ID: <20200729160344.GB14603@linux.vnet.ibm.com>
+References: <20200609073733.997643-1-sandipan@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200727070341.595634-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200609073733.997643-1-sandipan@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-29_10:2020-07-29,
  2020-07-29 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0
- clxscore=1011 phishscore=0 malwarescore=0 impostorscore=0 adultscore=0
- bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2007290099
+ impostorscore=0 phishscore=0
+ suspectscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
+ bulkscore=0 spamscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007290108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,46 +83,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: kamalesh@linux.vnet.ibm.com, shiganta@in.ibm.com, nasastry@in.ibm.com,
+ harish@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/27/20 4:03 AM, Michael Ellerman wrote:
-> skiroot_defconfig fails:
+* Sandipan Das <sandipan@linux.ibm.com> [2020-06-09 13:07:33]:
+
+> The size of the CPU affinity mask must be large enough for
+> systems with a very large number of CPUs. Otherwise, tests
+> which try to determine the first online CPU by calling
+> sched_getaffinity() will fail. This makes sure that the size
+> of the allocated affinity mask is dependent on the number of
+> CPUs as reported by get_nprocs().
 > 
-> arch/powerpc/kernel/fadump.c:48:17: error: ‘cpus_in_fadump’ defined but not used
->     48 | static atomic_t cpus_in_fadump;
-> 
-> Fix it by moving the definition into the #ifdef where it's used.
-> 
-> Fixes: ba608c4fa12c ("powerpc/fadump: fix race between pstore write and fadump crash trigger")
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Fixes: 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs")
+> Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
+> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+> Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
 > ---
->   arch/powerpc/kernel/fadump.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+> Previous versions can be found at:
+> v1: https://lore.kernel.org/linuxppc-dev/20200608144212.985144-1-sandipan@linux.ibm.com/
 > 
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 1858896d6809..10ebb4bf71ad 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -45,10 +45,12 @@ static struct fw_dump fw_dump;
->   static void __init fadump_reserve_crash_area(u64 base);
+> @@ -88,28 +89,40 @@ void *get_auxv_entry(int type)
 > 
->   struct kobject *fadump_kobj;
-> -static atomic_t cpus_in_fadump;
-> 
->   #ifndef CONFIG_PRESERVE_FA_DUMP
+>  int pick_online_cpu(void)
+>  {
+> -	cpu_set_t mask;
+> -	int cpu;
+> +	int ncpus, cpu = -1;
+> +	cpu_set_t *mask;
+> +	size_t size;
 > +
-> +static atomic_t cpus_in_fadump;
->   static DEFINE_MUTEX(fadump_mutex);
-> +
->   struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0, false };
+> +	ncpus = get_nprocs();
+
+Please use get_nprocs_conf or sysconf(_SC_NPROCESSORS_CONF). The manpage
+seems to suggest the latter. Not sure how accurate the manpage is.
+
+get_nprocs is returning online cpus and when smt is off, the cpu numbers
+would be sparse and hence the result from get_nprocs wouldn't be ideal for
+allocating cpumask. However get_nprocs_conf would return the max configured
+cpus and would be able to handle it. 
+
+I think this was the same situation hit by Michael Ellerman.
+
+> +	size = CPU_ALLOC_SIZE(ncpus);
+> +	mask = CPU_ALLOC(ncpus);
+> +	if (!mask) {
+> +		perror("malloc");
+> +		return -1;
+> +	}
 > 
->   #define RESERVED_RNGS_SZ	16384 /* 16K - 128 entries */
-> 
 
-Tested-by: Gustavo Romero <gromero@linux.ibm.com>
-
-
-Thanks,
-Gustavo
+-- 
+Thanks and Regards
+Srikar Dronamraju
