@@ -2,47 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7C5231B90
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 10:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447FB231C8F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 12:15:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGnL93xyjzDqw2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 18:50:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGqDg0ZZJzDqsl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 20:15:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=185.176.76.210; helo=huawei.com;
- envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=Huawei.com
-Received: from huawei.com (lhrrgout.huawei.com [185.176.76.210])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGnJV6xQgzDqgd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 18:48:40 +1000 (AEST)
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
- by Forcepoint Email with ESMTP id 2439AD46260FB3D2AD69;
- Wed, 29 Jul 2020 09:31:58 +0100 (IST)
-Received: from localhost (10.52.120.141) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Wed, 29 Jul
- 2020 09:31:56 +0100
-Date: Wed, 29 Jul 2020 09:30:31 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 04/15] arm64: numa: simplify dummy_numa_init()
-Message-ID: <20200729093031.0000316b@Huawei.com>
-In-Reply-To: <20200728051153.1590-5-rppt@kernel.org>
-References: <20200728051153.1590-1-rppt@kernel.org>
- <20200728051153.1590-5-rppt@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGqBw0lnHzDqrj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 20:13:59 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06TA302a142797; Wed, 29 Jul 2020 06:13:52 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jy8vmhvd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Jul 2020 06:13:52 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06TA9qXG024752;
+ Wed, 29 Jul 2020 10:13:50 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 32gcpx4x8y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Jul 2020 10:13:50 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06TADm1C56819864
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Jul 2020 10:13:48 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1A21D11C054;
+ Wed, 29 Jul 2020 10:13:48 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 11EC811C05B;
+ Wed, 29 Jul 2020 10:13:47 +0000 (GMT)
+Received: from [9.199.51.42] (unknown [9.199.51.42])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 29 Jul 2020 10:13:46 +0000 (GMT)
+Subject: Re: [PATCH] powerpc: Fix MMCRA_BHRB_DISABLE define to work with
+ binutils version < 2.28
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
+References: <1595996214-5833-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Message-ID: <c0222a2d-de0f-49a3-5bd5-4e6feff8021a@linux.ibm.com>
+Date: Wed, 29 Jul 2020 15:43:46 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <1595996214-5833-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.120.141]
-X-ClientProxiedBy: lhreml738-chm.china.huawei.com (10.201.108.188) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-29_04:2020-07-29,
+ 2020-07-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 mlxscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 suspectscore=0 mlxlogscore=922
+ spamscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2007290068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,175 +87,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, Paul
- Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Mike Rapoport <rppt@linux.ibm.com>, clang-built-linux@googlegroups.com,
- Ingo Molnar <mingo@redhat.com>, Christoph Hellwig <hch@lst.de>,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
- Michal Simek <monstr@monstr.eu>, linux-mm@kvack.org,
- linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org, Palmer
- Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 28 Jul 2020 08:11:42 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
-
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> dummy_numa_init() loops over memblock.memory and passes nid=0 to
-> numa_add_memblk() which essentially wraps memblock_set_node(). However,
-> memblock_set_node() can cope with entire memory span itself, so the loop
-> over memblock.memory regions is redundant.
-> 
-> Replace the loop with a single call to memblock_set_node() to the entire
-> memory.
-
-Hi Mike,
-
-I had a similar patch I was going to post shortly so can add a bit more
-on the advantages of this one.
-
-Beyond cleaning up, it also fixes an issue with a buggy ACPI firmware in which the SRAT
-table covers some but not all of the memory in the EFI memory map.  Stealing bits
-from the draft cover letter I had for that...
-
-> This issue can be easily triggered by having an SRAT table which fails
-> to cover all elements of the EFI memory map.
-> 
-> This firmware error is detected and a warning printed. e.g.
-> "NUMA: Warning: invalid memblk node 64 [mem 0x240000000-0x27fffffff]"
-> At that point we fall back to dummy_numa_init().
-> 
-> However, the failed ACPI init has left us with our memblocks all broken
-> up as we split them when trying to assign them to NUMA nodes.
-> 
-> We then iterate over the memblocks and add them to node 0.
-> 
-> for_each_memblock(memory, mblk) {
-> 	ret = numa_add_memblk(0, mblk->base, mblk->base + mblk->size);
-> 	if (!ret)
-> 		continue;
-> 	pr_err("NUMA init failed\n");
-> 	return ret;
-> }
-> 
-> numa_add_memblk() calls memblock_set_node() which merges regions that
-> were previously split up during the earlier attempt to add them to different
-> nodes during parsing of SRAT.
-> 
-> This means elements are moved in the memblock array and we can end up
-> in a different memblock after the call to numa_add_memblk().
-> Result is:
-> 
-> Unable to handle kernel paging request at virtual address 0000000000003a40
-> Mem abort info:
->   ESR = 0x96000004
->   EC = 0x25: DABT (current EL), IL = 32 bits
->   SET = 0, FnV = 0
->   EA = 0, S1PTW = 0
-> Data abort info:
->   ISV = 0, ISS = 0x00000004
->   CM = 0, WnR = 0
-> [0000000000003a40] user address but active_mm is swapper
-> Internal error: Oops: 96000004 [#1] PREEMPT SMP
-> 
-> ...
-> 
-> Call trace:
->   sparse_init_nid+0x5c/0x2b0
->   sparse_init+0x138/0x170
->   bootmem_init+0x80/0xe0
->   setup_arch+0x2a0/0x5fc
->   start_kernel+0x8c/0x648
-> 
-> As an illustrative example:
-> EFI table has one block of memory.
-> memblks[0] = [0...0x2f]  so we start with a single memblock.
-> 
-> SRAT has
-> [0x00...0x0f] in node 0
-> [0x10...0x1f] in node 1
-> but no entry covering 
-> [0x20...0x2f].
-> 
-> Whilst parsing SRAT the single memblock is broken into 3.
-> memblks[0] = [0x00...0x0f] in node 0
-> memblks[1] = [0x10...0x1f] in node 1
-> memblks[2] = [0x20...0x2f] in node MAX_NUM_NODES (invalid value)
-> 
-> A sanity check parse then detects the invalid section and acpi_numa_init
-> fails.  We then fall back to the dummy path.
-> 
-> That iterates over the memblocks.  We'll use i an index in the array of memblocks
-> 
-> i = 0;
-> memblks[0] = [0x00...0x0f] set to node0.
->    merge doesn't do anything because the neighbouring memblock is still in node1.
-> 
-> i = 1
-> memblks[1] = [0x10...0x1f] set to node 0.
->    merge combines memblock 0 and 1 to give a new set of memblocks.
-> 
-> memblks[0] = [0x00..0x1f] in node 0
-> memblks[1] = [0x20..0x2f] in node MAX_NUM_NODES.
-> 
-> i = 2 off the end of the now reduced array of memblocks, so exit the loop.
-> (if we restart the loop here everything will be fine).
-> 
-> Later sparse_init_nid tries to use the node of the second memblock to index
-> somethings and boom.
 
 
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+On 7/29/20 9:46 AM, Athira Rajeev wrote:
+> commit 9908c826d5ed ("powerpc/perf: Add Power10 PMU feature to
+> DT CPU features") defines MMCRA_BHRB_DISABLE as `0x2000000000UL`.
+> Binutils version less than 2.28 doesn't support UL suffix.
+>
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S: Assembler messages:
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: junk at end of line, first unrecognized character is `L'
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: junk at end of line, first unrecognized character is `L'
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+> linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: operand out of range (0x0000002000000000 is not between 0xffffffffffff8000 and 0x000000000000ffff)
+>
+> Fix this by wrapping it around `_UL` macro.
+Looks fine to me.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 
+
+>
+> Fixes: 9908c826d5ed ("Add Power10 PMU feature to DT CPU features")
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
 > ---
->  arch/arm64/mm/numa.c | 13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-> index aafcee3e3f7e..0cbdbcc885fb 100644
-> --- a/arch/arm64/mm/numa.c
-> +++ b/arch/arm64/mm/numa.c
-> @@ -423,19 +423,16 @@ static int __init numa_init(int (*init_func)(void))
->   */
->  static int __init dummy_numa_init(void)
->  {
-> +	phys_addr_t start = memblock_start_of_DRAM();
-> +	phys_addr_t end = memblock_end_of_DRAM();
->  	int ret;
-> -	struct memblock_region *mblk;
->  
->  	if (numa_off)
->  		pr_info("NUMA disabled\n"); /* Forced off on command line. */
-> -	pr_info("Faking a node at [mem %#018Lx-%#018Lx]\n",
-> -		memblock_start_of_DRAM(), memblock_end_of_DRAM() - 1);
-> -
-> -	for_each_memblock(memory, mblk) {
-> -		ret = numa_add_memblk(0, mblk->base, mblk->base + mblk->size);
-> -		if (!ret)
-> -			continue;
-> +	pr_info("Faking a node at [mem %#018Lx-%#018Lx]\n", start, end - 1);
->  
-> +	ret = numa_add_memblk(0, start, end);
-> +	if (ret) {
->  		pr_err("NUMA init failed\n");
->  		return ret;
->  	}
-
+>   arch/powerpc/include/asm/reg.h | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+> index ae71027..41419f1 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -12,6 +12,7 @@
+>   #ifdef __KERNEL__
+>
+>   #include <linux/stringify.h>
+> +#include <linux/const.h>
+>   #include <asm/cputable.h>
+>   #include <asm/asm-const.h>
+>   #include <asm/feature-fixups.h>
+> @@ -888,7 +889,7 @@
+>   #define   MMCRA_SLOT	0x07000000UL /* SLOT bits (37-39) */
+>   #define   MMCRA_SLOT_SHIFT	24
+>   #define   MMCRA_SAMPLE_ENABLE 0x00000001UL /* enable sampling */
+> -#define   MMCRA_BHRB_DISABLE  0x2000000000UL // BHRB disable bit for ISA v3.1
+> +#define   MMCRA_BHRB_DISABLE  _UL(0x2000000000) // BHRB disable bit for ISA v3.1
+>   #define   POWER6_MMCRA_SDSYNC 0x0000080000000000ULL	/* SDAR/SIAR synced */
+>   #define   POWER6_MMCRA_SIHV   0x0000040000000000ULL
+>   #define   POWER6_MMCRA_SIPR   0x0000020000000000ULL
 
