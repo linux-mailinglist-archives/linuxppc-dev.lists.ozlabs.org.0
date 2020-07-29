@@ -2,66 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF25231F43
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 15:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A4D231F93
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 15:50:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGvRT22K2zDqHb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 23:25:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGw033xyfzDq9y
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 23:49:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12d;
- helo=mail-il1-x12d.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hKZrJADi; dkim-atps=neutral
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com
- [IPv6:2607:f8b0:4864:20::12d])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGvN95jbHzDqwh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 23:22:15 +1000 (AEST)
-Received: by mail-il1-x12d.google.com with SMTP id z17so4245115ill.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 06:22:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UCWyTb1UTyujoVaF6C3YpPKXd4JjrUv7/CB4E1zkf9w=;
- b=hKZrJADiVsm/IX/0/KeAKFW2lQUV7eHmkEUjKrW/O+KZ7kcJaEMn7TLakTNMIysjpx
- yNfxAf/UojmnXDuwarQCxQ5RmAbX5RLbF8TqjM8qw3AR1qygkhNH/kEg9/PfEktbRMWh
- nXjgl1BDNfkOSGvVBiI9SAlyaggS1CTf9XvKAt0Vvp2FIcIbmv03XHwN5fPEP428S4MS
- anTuaJmTPrsQz5h5hdPubCT4gCK1wP9wfeHVLR2Ox8/lJvy6qOSLJl4bh7YI3b5T/rM5
- j0t0GGLTEKOkksIU1vxNX3R6/Ut1Bqp8Av8HAZy4KP4+hsD+QU3ReKc+33q5C58NeotD
- 0m0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=UCWyTb1UTyujoVaF6C3YpPKXd4JjrUv7/CB4E1zkf9w=;
- b=Clda3GuZ0jQiowdDYXq3pCMFb0f9j2OQ+2IFzy/BahXQM1eo8nYjKTzedHu+T1Eyas
- IrRD0xbb6tXnikJVIvUa9lHxY0G550i2k4aH2x8Mmpr5HPoaNlfEMYmAgoK00dxyMNsk
- VTlF5GBzVNUTT5c3EBvAqAbFxa4885hJBORztXPTr5gX2aosAlKMk3GhiizdxZ20i1UI
- EfuUxgLQCg+ajK+oCNHi5dt2qJ/z3Ieic1+6ZS70bjpWedH/iv+EA22AvVKSh6wFJIcZ
- C38o9e/ke4E+l4wgHqPvCDuARyYNcGuRIX5ClsgHoyELTk3Du0eiuVALRXAgZbVEv8IN
- 9/Ag==
-X-Gm-Message-State: AOAM533jOhLff2nDmikmUQL0B47z7FbiQo5ghcozoWhk18zzc3ZucrVP
- +4yWBUfCS+qAI2tobZhMS3SJEmnKjdCoW21WJZc=
-X-Google-Smtp-Source: ABdhPJwz7AwbZaKcZG+071c5rlaimIUQzDi2+r2Ez7FbdmfHJm8QOAG5+VtfNRLP9LQef44ZP+WkP1quHRkUEA8ghk0=
-X-Received: by 2002:a92:d607:: with SMTP id w7mr3268612ilm.149.1596028932333; 
- Wed, 29 Jul 2020 06:22:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGvxN2mSczDqnv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 23:47:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=dYPqJdCE; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BGvxM2fYqz9sRK;
+ Wed, 29 Jul 2020 23:47:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1596030455;
+ bh=GaTHvhFdf26Dk+QiL2pveJ88cVeSI5t3KlOCfti+NC8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=dYPqJdCEv0p2JZ7098lT5cx+NsbsB8sfJ/6BuAe2bUV9OHkK2Y8k5sq8VhKFFDyk/
+ +Lmj4CzCjmqF5Q16G4FSyQDdSyNjHMpfdE/TnoL+Eupo+FW18r34w4hVyzGeeb4HVN
+ MQFfKfQPmARExnTxcsCudgF7LYTCa/wAPKbwFVcOTXLDO7YBqgEF9wYZTAx002gmWt
+ 32xVFHgscWGcGGp41mHhPL7/fYMNV/Cktn8TFXAgWjJ4caWt0Z5ZPfkw/IcJZIam5e
+ 8XArYp2SrP8gE8sC1acTQCYNhIFxTEsb4T3H2NmGncTLhXF/200CXeYb/MV1FCdmoF
+ Sm+LSFmNPDK/A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sandipan Das <sandipan@linux.ibm.com>
+Subject: Re: [PATCH v2] selftests: powerpc: Fix online CPU selection
+In-Reply-To: <20200609073733.997643-1-sandipan@linux.ibm.com>
+References: <20200609073733.997643-1-sandipan@linux.ibm.com>
+Date: Wed, 29 Jul 2020 23:47:31 +1000
+Message-ID: <87r1su5t70.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <CAO3ALPyB1JDvvC27JGgAoTuHh0w+897tPhmTKX9PQWBFCrrnbQ@mail.gmail.com>
-In-Reply-To: <CAO3ALPyB1JDvvC27JGgAoTuHh0w+897tPhmTKX9PQWBFCrrnbQ@mail.gmail.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 29 Jul 2020 23:22:01 +1000
-Message-ID: <CAOSf1CEkHLamLXK3HOAZ+w0K=2hTOjn=x5KpDdmRZ4BXVy+P2A@mail.gmail.com>
-Subject: Re: ASMedia ASM2142 USB host controller tries to DMA to address zero
- when doing bulk reads from multiple devices
-To: Forest Crossman <cyrozap@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,88 +57,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linux-usb@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: srikar@linux.vnet.ibm.com, kamalesh@linux.vnet.ibm.com, shiganta@in.ibm.com,
+ nasastry@in.ibm.com, harish@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 21, 2020 at 3:51 PM Forest Crossman <cyrozap@gmail.com> wrote:
+Sandipan Das <sandipan@linux.ibm.com> writes:
+> The size of the CPU affinity mask must be large enough for
+> systems with a very large number of CPUs. Otherwise, tests
+> which try to determine the first online CPU by calling
+> sched_getaffinity() will fail. This makes sure that the size
+> of the allocated affinity mask is dependent on the number of
+> CPUs as reported by get_nprocs().
 >
-> Hello, again!
+> Fixes: 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs")
+> Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
+> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+> Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+> ---
+> Previous versions can be found at:
+> v1: https://lore.kernel.org/linuxppc-dev/20200608144212.985144-1-sandipan@linux.ibm.com/
 >
-> After fixing the issue in my previous thread using this patch[1], I
-> decided to do some stress-testing of the controller to make sure it
-> could handle my intended workloads and that there were no further DMA
-> address issues that would need to be fixed. Unfortunately, it looks
-> like there's still more work to be done: when I try to do long bulk
-> reads from multiple devices simultaneously, eventually the host
-> controller sends a DMA write to address zero, which then triggers EEH
-> in my POWER9 system, causing the controller card to get hotplug-reset,
-> which of course kills the disk-reading processes. For more details on
-> the EEH errors, you can see my kernel's EEH message log[2].
+> Changes in v2:
+> - Added NULL check for the affinity mask as suggested by Kamalesh.
+> - Changed "cpu set" to "CPU affinity mask" in the commit message.
 
-Take the logged address with a grain of salt. If an error occurs while
-translating the DMA address the PHB logs all zeros as the "DMA
-Address" because it only keeps around the bits that it needs to fetch
-the next level of the TCE table. The EEH dump says the error is due to
-a TCE permission mis-match so odds the ASmedia controller is writing
-to an address that's already been DMA unmapped, hence the logged
-address being zeros.
+This sometimes breaks, eg:
 
-Sorry, I probably should have mentioned that quirk in the last mail.
+  # ./count_instructions 
+  test: count_instructions
+  tags: git_version:v5.8-rc2-327-g9a1d992a7eb7
+  sched_getaffinity: Invalid argument
+  [FAIL] Test FAILED on line 123
+  failure: count_instructions
 
-> The results of the various tests I performed are listed below.
->
-> Test results (all failures are due to DMA writes to address zero, all
-> hubs are USB 3.0/3.1 Gen1 only, and all disks are accessed via the
-> usb-storage driver):
-> - Reading simultaneously from two or more disks behind a hub connected
-> to one port on the host controller:
->   - FAIL after 20-50 GB of data transferred for each device.
-> - Reading simultaneously from two disks, each connected directly to
-> one port on the host controller:
->   - FAIL after about 800 GB of data transferred for each device.
-> - Reading from one disk behind a hub connected to one port on the host
-> controller:
->   - OK for at least 2.7 TB of data transferred (I didn't test the
-> whole 8 TB disk).
-> - Writing simultaneously to two FL2000 dongles (using osmo-fl2k's
-> "fl2k_test"), each connected directly to one port on the host
-> controller:
->   - OK, was able to write several dozen terabytes to each device over
-> the course of a little over 21 hours.
->
-> Seeing how simultaneous writes to multiple devices and reads from
-> single devices both seem to work fine, I assume that means this is
-> being caused by some race condition in the host controller firmware
-> when it responds to multiple read requests.
 
-Most likely. It's possible it's a platform specific race with DMA
-map/unmap too, but I think we would be seeing similar issues with
-other devices if it was.
+This system has a messed up SMT setup, but the old code was able to cope
+with it:
 
-> I also assume we're not
-> going to be able to convince ASMedia to both fix the bug in their
-> firmware and release the details on how to flash it from Linux, so I
-> guess we'll just have to figure out how to make the driver talk to the
-> controller in a way that avoids triggering the bad DMA write. As
-> before, I decided to try a little kernel hacking of my own before
-> sending this email, and tried separately enabling the
-> XHCI_BROKEN_STREAMS and XHCI_ASMEDIA_MODIFY_FLOWCONTROL quirks in an
-> attempt to fix this. As you might expect since you're reading this
-> message, neither of those quirks fixed the issue, nor did they even
-> make the transfers last any longer before failing.
->
-> So now I've reached the limits of my understanding, and I need some
-> help devising a fix. If anyone has any comments to that effect, or any
-> questions about my hardware configuration, testing methodology, etc.,
-> please don't hesitate to air them. Also, if anyone needs me to perform
-> additional tests, or collect more log information, I'd be happy to do
-> that as well.
+  # ppc64_cpu --info
+  Core   0:    0*    1*    2     3     4     5     6     7  
+  Core   1:    8     9    10*   11*   12    13    14    15  
+  Core   2:   16    17    18    19    20    21    22    23  
+  Core   3:   24    25    26    27    28    29    30    31  
+  Core   4:   32    33    34    35    36    37    38    39  
+  Core   5:   40    41    42    43    44    45    46    47  
+  Core   6:   48    49    50    51    52    53    54    55  
+  Core   7:   56    57    58    59    60    61    62    63  
+  Core   8:   64    65    66    67    68    69    70    71  
+  Core   9:   72    73    74    75    76    77    78    79  
+  Core  10:   80    81    82    83    84    85    86    87  
+  Core  11:   88    89    90    91    92    93    94    95  
+  Core  12:   96    97    98    99   100*  101*  102*  103* 
+  Core  13:  104*  105*  106*  107*  108*  109*  110*  111* 
+  Core  14:  112*  113*  114*  115*  116*  117*  118*  119* 
+  Core  15:  120   121   122   123   124   125   126   127  
+  Core  16:  128   129   130   131   132   133   134   135  
+  Core  17:  136   137   138   139   140   141   142   143  
+  Core  18:  144   145   146   147   148   149   150   151  
+  Core  19:  152   153   154   155   156   157   158   159 
 
-I started writing a tool a while ago to use the internal trace bus to
-log incoming TLPs. Something like that might allow you to get a better
-idea what the faulting access pattern is, but you would still need to
-find a way to mitigate the issue. I'm not all that familiar with USB3
-so I'm not much help on that front.
+cheers
