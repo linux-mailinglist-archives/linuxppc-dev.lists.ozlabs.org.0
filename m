@@ -2,80 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467DB2327A8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 00:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54052327AF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 00:46:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BH7m557sjzDqkf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 08:40:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BH7vG45FXzDqND
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 08:46:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BH7j15nBBzDqpg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 08:37:41 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06TMXBOl022754; Wed, 29 Jul 2020 18:37:39 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32k2sbsber-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jul 2020 18:37:38 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06TMZvHD009671;
- Wed, 29 Jul 2020 22:37:37 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma01wdc.us.ibm.com with ESMTP id 32gcycwd03-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 Jul 2020 22:37:37 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06TMbaWJ3343010
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 Jul 2020 22:37:36 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8FA64BE056;
- Wed, 29 Jul 2020 22:37:36 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B8DBBBE054;
- Wed, 29 Jul 2020 22:37:35 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.160.109.59])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 29 Jul 2020 22:37:35 +0000 (GMT)
-Subject: Re: [PATCH net] ibmvnic: Fix IRQ mapping disposal in error path
-To: Jakub Kicinski <kuba@kernel.org>
-References: <1596058592-12025-1-git-send-email-tlfalcon@linux.ibm.com>
- <20200729152820.79c00fe7@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <e8d8d91d-2fd6-27af-9fec-2f855e581b78@linux.ibm.com>
-Date: Wed, 29 Jul 2020 17:37:34 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20200729152820.79c00fe7@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-29_14:2020-07-29,
- 2020-07-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- adultscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 mlxlogscore=942 spamscore=0 priorityscore=1501
- phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007290151
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BH7ry6Ln1zDqPC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 08:44:33 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 06TMiTG1009810;
+ Wed, 29 Jul 2020 17:44:29 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 06TMiS25009808;
+ Wed, 29 Jul 2020 17:44:28 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 29 Jul 2020 17:44:27 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Vladis Dronov <vdronov@redhat.com>
+Subject: Re: [PATCH] powerpc: fix function annotations to avoid section
+ mismatch warnings with gcc-10
+Message-ID: <20200729224427.GI17447@gate.crashing.org>
+References: <20200729133741.62789-1-vdronov@redhat.com>
+ <20200729144949.GF17447@gate.crashing.org>
+ <584129967.9672326.1596051896801.JavaMail.zimbra@redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <584129967.9672326.1596051896801.JavaMail.zimbra@redhat.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,23 +52,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: drt@linux.ibm.com, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Jul 29, 2020 at 03:44:56PM -0400, Vladis Dronov wrote:
+> > > Certain warnings are emitted for powerpc code when building with a gcc-10
+> > > toolset:
+> > > 
+> > >     WARNING: modpost: vmlinux.o(.text.unlikely+0x377c): Section mismatch in
+> > >     reference from the function remove_pmd_table() to the function
+> > >     .meminit.text:split_kernel_mapping()
+> > >     The function remove_pmd_table() references
+> > >     the function __meminit split_kernel_mapping().
+> > >     This is often because remove_pmd_table lacks a __meminit
+> > >     annotation or the annotation of split_kernel_mapping is wrong.
+> > > 
+> > > Add the appropriate __init and __meminit annotations to make modpost not
+> > > complain. In all the cases there are just a single callsite from another
+> > > __init or __meminit function:
+> > > 
+> > > __meminit remove_pagetable() -> remove_pud_table() -> remove_pmd_table()
+> > > __init prom_init() -> setup_secure_guest()
+> > > __init xive_spapr_init() -> xive_spapr_disabled()
+> > 
+> > So what changed?  These functions were inlined with older compilers, but
+> > not anymore?
+> 
+> Yes, exactly. Gcc-10 does not inline them anymore. If this is because of my
+> build system, this can happen to others also.
+> 
+> The same thing was fixed by Linus in e99332e7b4cd ("gcc-10: mark more functions
+> __init to avoid section mismatch warnings").
 
-On 7/29/20 5:28 PM, Jakub Kicinski wrote:
-> On Wed, 29 Jul 2020 16:36:32 -0500 Thomas Falcon wrote:
->> RX queue IRQ mappings are disposed in both the TX IRQ and RX IRQ
->> error paths. Fix this and dispose of TX IRQ mappings correctly in
->> case of an error.
->>
->> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-> Thomas, please remember about Fixes tags (for networking patches,
-> at least):
->
-> Fixes: ea22d51a7831 ("ibmvnic: simplify and improve driver probe function")
+It sounds like this is part of "-finline-functions was retuned" on
+<https://gcc.gnu.org/gcc-10/changes.html>?  So everyone should see it
+(no matter what config or build system), and it is a good thing too :-)
 
-Sorry, Jakub, I will try not to forget next time. Thanks.
+Thanks for the confirmation,
 
+
+Segher
