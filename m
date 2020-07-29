@@ -1,46 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E7E231860
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 06:10:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB957231872
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 06:18:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BGg710LvfzDqcY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 14:10:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BGgJp3LDyzDqtv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jul 2020 14:18:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BGg5G2nsqzDqnv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 14:08:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=MH1PJ8cX; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1010)
- id 4BGg5G11ymz9sSy; Wed, 29 Jul 2020 14:08:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1595995714; bh=Ofg+eWEhy45ydhx9GFvHihWATzC2e2SSgjrlTwUHvNo=;
- h=From:To:Cc:Subject:Date:From;
- b=MH1PJ8cXhpqRX1ofza4UwFL+ePd6P9mwQ6awGELHPG+ciIgKwPFvfiPAZ7jWOCi0K
- sCrVxf4RPkM1T48A69FlNvqI2QJdh/zq4rJmPZ9A3IylFi1LjOdixFAkK9sTQWpc74
- 0K74di3KVmlzXsu2/SQp6Om+gHV16XFaxNJcLoeMoCCldaewvMN75OyxDnPALu09uN
- sP3bWdQAbxk/uoTkhF+AfVNeJRN1BhyW9a246kE878cQxwlNd7DRbbv744rIAhRtzg
- 7xYEjhserFSuxndjYi02cNuEeQikE+dZATxnq64qnuhxkzUwW3JRBftRbMrRK3TnCP
- kpCu8HBJl0iLg==
-From: Anton Blanchard <anton@ozlabs.org>
-To: benh@kernel.crashing.org,
-	paulus@samba.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] powerpc/configs: Add BLK_DEV_NVME to pseries_defconfig
-Date: Wed, 29 Jul 2020 14:08:28 +1000
-Message-Id: <20200729040828.2312966-1-anton@ozlabs.org>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BGgH70ywtzDqst
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jul 2020 14:17:06 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06T42Xav007157; Wed, 29 Jul 2020 00:17:02 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jj2juk71-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Jul 2020 00:17:01 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06T4BmoZ013315;
+ Wed, 29 Jul 2020 04:16:59 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06fra.de.ibm.com with ESMTP id 32jgvprt8u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Jul 2020 04:16:59 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06T4Gvkm30277902
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Jul 2020 04:16:57 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F1EBD4C046;
+ Wed, 29 Jul 2020 04:16:56 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E65E14C040;
+ Wed, 29 Jul 2020 04:16:55 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.210.172])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 29 Jul 2020 04:16:55 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc: Fix MMCRA_BHRB_DISABLE define to work with binutils
+ version < 2.28
+Date: Wed, 29 Jul 2020 00:16:54 -0400
+Message-Id: <1595996214-5833-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-29_01:2020-07-28,
+ 2020-07-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 phishscore=0
+ clxscore=1015 mlxlogscore=724 suspectscore=1 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007290025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,32 +80,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I've forgotten to manual enable NVME when building pseries kernels
-for machines with NVME adapters. Since it's a reasonably common
-configuration, enable it by default.
+commit 9908c826d5ed ("powerpc/perf: Add Power10 PMU feature to
+DT CPU features") defines MMCRA_BHRB_DISABLE as `0x2000000000UL`.
+Binutils version less than 2.28 doesn't support UL suffix.
 
-Signed-off-by: Anton Blanchard <anton@ozlabs.org>
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S: Assembler messages:
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: junk at end of line, first unrecognized character is `L'
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: junk at end of line, first unrecognized character is `L'
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: found 'L', expected: ')'
+linux-ppc/arch/powerpc/kernel/cpu_setup_power.S:250: Error: operand out of range (0x0000002000000000 is not between 0xffffffffffff8000 and 0x000000000000ffff)
+
+Fix this by wrapping it around `_UL` macro.
+
+Fixes: 9908c826d5ed ("Add Power10 PMU feature to DT CPU features")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/configs/pseries_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/include/asm/reg.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
-index dfa4a726333b..358642d6f46d 100644
---- a/arch/powerpc/configs/pseries_defconfig
-+++ b/arch/powerpc/configs/pseries_defconfig
-@@ -94,6 +94,7 @@ CONFIG_BLK_DEV_NBD=m
- CONFIG_BLK_DEV_RAM=y
- CONFIG_BLK_DEV_RAM_SIZE=65536
- CONFIG_VIRTIO_BLK=m
-+CONFIG_BLK_DEV_NVME=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_CHR_DEV_ST=m
- CONFIG_BLK_DEV_SR=y
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index ae71027..41419f1 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -12,6 +12,7 @@
+ #ifdef __KERNEL__
+ 
+ #include <linux/stringify.h>
++#include <linux/const.h>
+ #include <asm/cputable.h>
+ #include <asm/asm-const.h>
+ #include <asm/feature-fixups.h>
+@@ -888,7 +889,7 @@
+ #define   MMCRA_SLOT	0x07000000UL /* SLOT bits (37-39) */
+ #define   MMCRA_SLOT_SHIFT	24
+ #define   MMCRA_SAMPLE_ENABLE 0x00000001UL /* enable sampling */
+-#define   MMCRA_BHRB_DISABLE  0x2000000000UL // BHRB disable bit for ISA v3.1
++#define   MMCRA_BHRB_DISABLE  _UL(0x2000000000) // BHRB disable bit for ISA v3.1
+ #define   POWER6_MMCRA_SDSYNC 0x0000080000000000ULL	/* SDAR/SIAR synced */
+ #define   POWER6_MMCRA_SIHV   0x0000040000000000ULL
+ #define   POWER6_MMCRA_SIPR   0x0000020000000000ULL
 -- 
-2.26.2
+1.8.3.1
 
