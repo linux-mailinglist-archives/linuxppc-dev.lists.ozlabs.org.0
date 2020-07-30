@@ -1,56 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC032331AB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 14:08:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E222331E9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 14:18:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHTht2dbtzDqwb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 22:08:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHTwW1pCjzDqN3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 22:18:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHTbz2nGpzDqvh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 22:04:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=CYke0PcA; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BHTbx1lczz9sSd;
- Thu, 30 Jul 2020 22:04:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1596110670;
- bh=z0WIyR/mZG9ZjQNWeL5HzLGtq1gOYwd4LC1GYXLfzlQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=CYke0PcAF/Ees6uRtYzVeoJVbRvmwbMwl2Sd7v10oKOJf1C9sXfUqjLwsGKxbg2iN
- RAP1SfNDOZUOTofug5H9MHFA1Ojd4rnvgWumBThOibNO/QahMAOO6kQOGAW/mxhFEp
- VlAA7sCX09gdJklvvelzUK04jG2bQFRjCx/bycCFnUf5+aCDEdKixCNSGH/BIEOS80
- i1GRuRf1pRLDEG3gKREmiQAdv+U8+ARHRH4vKqbYvHm/Qd005UzrQY1Waz5tNZW6jf
- nPwHOJe23D3mf8eYl9UcWRlpJoj3vp3tKfaVZ/+pjYxMiMCTYamxgAdY6E9WnyA49G
- yZNpnalCUpdGQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>,
- Vladis Dronov <vdronov@redhat.com>
-Subject: Re: [PATCH] powerpc: fix function annotations to avoid section
- mismatch warnings with gcc-10
-In-Reply-To: <20200729224427.GI17447@gate.crashing.org>
-References: <20200729133741.62789-1-vdronov@redhat.com>
- <20200729144949.GF17447@gate.crashing.org>
- <584129967.9672326.1596051896801.JavaMail.zimbra@redhat.com>
- <20200729224427.GI17447@gate.crashing.org>
-Date: Thu, 30 Jul 2020 22:04:27 +1000
-Message-ID: <87ft995hv8.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHTpP5kFXzDqc1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 22:13:33 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06UC3d1f109102; Thu, 30 Jul 2020 08:13:19 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32krethy2a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 08:13:18 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06UC4Bxb112196;
+ Thu, 30 Jul 2020 08:13:18 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32krethy1j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 08:13:18 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06UC9gR1011508;
+ Thu, 30 Jul 2020 12:13:16 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 32gcy4p50t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 12:13:15 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06UCDDgU20316424
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Jul 2020 12:13:13 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EC333AE056;
+ Thu, 30 Jul 2020 12:13:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BD301AE04D;
+ Thu, 30 Jul 2020 12:13:09 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.89.216])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 30 Jul 2020 12:13:09 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Thu, 30 Jul 2020 17:43:08 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [PATCH v3 0/2] powerpc/papr_scm: add support for reporting NVDIMM
+ 'life_used_percentage' metric
+Date: Thu, 30 Jul 2020 17:43:01 +0530
+Message-Id: <20200730121303.134230-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-30_09:2020-07-30,
+ 2020-07-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007300086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,48 +91,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>
+Cc: Santosh Sivaraj <santosh@fossix.org>, Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> On Wed, Jul 29, 2020 at 03:44:56PM -0400, Vladis Dronov wrote:
->> > > Certain warnings are emitted for powerpc code when building with a gcc-10
->> > > toolset:
->> > > 
->> > >     WARNING: modpost: vmlinux.o(.text.unlikely+0x377c): Section mismatch in
->> > >     reference from the function remove_pmd_table() to the function
->> > >     .meminit.text:split_kernel_mapping()
->> > >     The function remove_pmd_table() references
->> > >     the function __meminit split_kernel_mapping().
->> > >     This is often because remove_pmd_table lacks a __meminit
->> > >     annotation or the annotation of split_kernel_mapping is wrong.
->> > > 
->> > > Add the appropriate __init and __meminit annotations to make modpost not
->> > > complain. In all the cases there are just a single callsite from another
->> > > __init or __meminit function:
->> > > 
->> > > __meminit remove_pagetable() -> remove_pud_table() -> remove_pmd_table()
->> > > __init prom_init() -> setup_secure_guest()
->> > > __init xive_spapr_init() -> xive_spapr_disabled()
->> > 
->> > So what changed?  These functions were inlined with older compilers, but
->> > not anymore?
->> 
->> Yes, exactly. Gcc-10 does not inline them anymore. If this is because of my
->> build system, this can happen to others also.
->> 
->> The same thing was fixed by Linus in e99332e7b4cd ("gcc-10: mark more functions
->> __init to avoid section mismatch warnings").
->
-> It sounds like this is part of "-finline-functions was retuned" on
-> <https://gcc.gnu.org/gcc-10/changes.html>?  So everyone should see it
-> (no matter what config or build system), and it is a good thing too :-)
+Changes since v2[1]:
 
-I haven't seen it in my GCC 10 builds, so there must be some other
-subtlety. Probably it depends on details of the .config.
+* Updated drc_pmem_query_stats() to reduce the number of input args
+  to the function based suggestions from Aneesh.
 
-cheers
+[1] https://lore.kernel.org/linux-nvdimm/20200726122030.31529-1-vaibhav@linux.ibm.com
+---
+
+This small patchset implements kernel side support for reporting
+'life_used_percentage' metric in NDCTL with dimm health output for
+papr-scm NVDIMMs. With corresponding NDCTL side changes output for
+should be like:
+
+$ sudo ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "life_used_percentage":0,
+      "shutdown_state":"clean"
+    }
+  }
+]
+
+PHYP supports H_SCM_PERFORMANCE_STATS hcall through which an LPAR can
+fetch various performance stats including 'fuel_gauge' percentage for
+an NVDIMM. 'fuel_gauge' metric indicates the usable life remaining of
+an NVDIMM expressed as percentage and  'life_used_percentage' can be
+calculated as 'life_used_percentage = 100 - fuel_gauge'.
+
+Structure of the patchset
+=========================
+First patch implements necessary scaffolding needed to issue the
+H_SCM_PERFORMANCE_STATS hcall and fetch performance stats
+catalogue. The patch also implements support for 'perf_stats' sysfs
+attribute to report the full catalogue of supported performance stats
+by PHYP.
+
+Second and final patch implements support for sending this value to
+libndctl by extending the PAPR_PDSM_HEALTH pdsm payload to add a new
+field named 'dimm_fuel_gauge' to it.
+
+Vaibhav Jain (2):
+  powerpc/papr_scm: Fetch nvdimm performance stats from PHYP
+  powerpc/papr_scm: Add support for fetching nvdimm 'fuel-gauge' metric
+
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 +++
+ arch/powerpc/include/uapi/asm/papr_pdsm.h     |   9 +
+ arch/powerpc/platforms/pseries/papr_scm.c     | 199 ++++++++++++++++++
+ 3 files changed, 235 insertions(+)
+
+-- 
+2.26.2
+
