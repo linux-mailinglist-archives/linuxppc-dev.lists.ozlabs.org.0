@@ -1,104 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC45B232B71
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 07:40:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345B5232B82
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 07:45:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHK4m6VZ2zDqkL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:40:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHKBW175PzDqQm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:45:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHJwh4fJHzDqn2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:33:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHK2Q1TNpzDqvr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:38:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BHJwg3qfKz9CLb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:33:23 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BHK2P6Mm9z8tDK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:38:21 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 4BHJwg1vR8z9sRK; Thu, 30 Jul 2020 15:33:23 +1000 (AEST)
+ id 4BHK2P487Tz9sRX; Thu, 30 Jul 2020 15:38:21 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org; dmarc=fail (p=none dis=none)
  header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BHJwf450qz9sSd;
- Thu, 30 Jul 2020 15:33:21 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06U5W4AR075059; Thu, 30 Jul 2020 01:33:19 -0400
+ by ozlabs.org (Postfix) with ESMTPS id 4BHK2P0802z9sRW;
+ Thu, 30 Jul 2020 15:38:20 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06U5VmcH162354; Thu, 30 Jul 2020 01:38:18 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32ke626p0r-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32jg24x865-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 01:33:18 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06U5WGip076106;
- Thu, 30 Jul 2020 01:33:18 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32ke626p0h-1
+ Thu, 30 Jul 2020 01:38:18 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06U5W8rR165925;
+ Thu, 30 Jul 2020 01:38:18 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32jg24x85w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 01:33:18 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U5OhcZ020524;
+ Thu, 30 Jul 2020 01:38:18 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U5OXKq017179;
  Thu, 30 Jul 2020 05:33:17 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 32gcy4sre1-1
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 32gcy7hqu3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 30 Jul 2020 05:33:17 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06U5XGHt44958002
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06U5XG109306462
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 30 Jul 2020 05:33:16 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5741F6A057;
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A2A4F28058;
  Thu, 30 Jul 2020 05:33:16 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F8E16A04D;
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B9F482805E;
  Thu, 30 Jul 2020 05:33:15 +0000 (GMT)
 Received: from sofia.ibm.com (unknown [9.102.0.230])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
  Thu, 30 Jul 2020 05:33:15 +0000 (GMT)
 Received: by sofia.ibm.com (Postfix, from userid 1000)
- id E6F5D2E2F45; Thu, 30 Jul 2020 11:03:09 +0530 (IST)
+ id F41B02E2FB3; Thu, 30 Jul 2020 11:03:09 +0530 (IST)
 From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, Anton Blanchard <anton@ozlabs.org>,
  Nathan Lynch <nathanl@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Michael Neuling <mikey@neuling.org>,
  Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
-Subject: [PATCH v3 2/3] cpuidle-pseries: Add function to parse extended CEDE
- records
-Date: Thu, 30 Jul 2020 11:02:56 +0530
-Message-Id: <1596087177-30329-3-git-send-email-ego@linux.vnet.ibm.com>
+Subject: [PATCH v3 3/3] cpuidle-pseries : Fixup exit latency for CEDE(0)
+Date: Thu, 30 Jul 2020 11:02:57 +0530
+Message-Id: <1596087177-30329-4-git-send-email-ego@linux.vnet.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1596087177-30329-1-git-send-email-ego@linux.vnet.ibm.com>
 References: <1596087177-30329-1-git-send-email-ego@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-30_03:2020-07-29,
  2020-07-30 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- clxscore=1015 priorityscore=1501 adultscore=0 bulkscore=0 spamscore=0
- impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1015 mlxscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 spamscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007300038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -119,210 +114,156 @@ Sender: "Linuxppc-dev"
 
 From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-Currently we use CEDE with latency-hint 0 as the only other idle state
-on a dedicated LPAR apart from the polling "snooze" state.
+We are currently assuming that CEDE(0) has exit latency 10us, since
+there is no way for us to query from the platform.  However, if the
+wakeup latency of an Extended CEDE state is smaller than 10us, then we
+can be sure that the exit latency of CEDE(0) cannot be more than that.
+that.
 
-The platform might support additional extended CEDE idle states, which
-can be discovered through the "ibm,get-system-parameter" rtas-call
-made with CEDE_LATENCY_TOKEN.
+In this patch, we fix the exit latency of CEDE(0) if we discover an
+Extended CEDE state with wakeup latency smaller than 10us.
 
-This patch adds a function to obtain information about the extended
-CEDE idle states from the platform and parse the contents to populate
-an array of extended CEDE states. These idle states thus discovered
-will be added to the cpuidle framework in the next patch.
+Benchmark results:
 
-dmesg on a POWER8 and POWER9 LPAR, demonstrating the output of parsing
-the extended CEDE latency parameters are as follows
+On POWER8, this patch does not have any impact since the advertized
+latency of Extended CEDE (1) is 30us which is higher than the default
+latency of CEDE (0) which is 10us.
 
-POWER8
-[   10.093279] xcede : xcede_record_size = 10
-[   10.093285] xcede : Record 0 : hint = 1, latency = 0x3c00 tb ticks, Wake-on-irq = 1
-[   10.093291] xcede : Record 1 : hint = 2, latency = 0x4e2000 tb ticks, Wake-on-irq = 0
-[   10.093297] cpuidle : Skipping the 2 Extended CEDE idle states
+On POWER9 we see improvement the single-threaded performance of ebizzy,
+and no regression in the wakeup latency or the number of
+context-switches.
 
-POWER9
-[    5.913180] xcede : xcede_record_size = 10
-[    5.913183] xcede : Record 0 : hint = 1, latency = 0x400 tb ticks, Wake-on-irq = 1
-[    5.913188] xcede : Record 1 : hint = 2, latency = 0x3e8000 tb ticks, Wake-on-irq = 0
-[    5.913193] cpuidle : Skipping the 2 Extended CEDE idle states
+ebizzy:
+2 ebizzy threads bound to the same big-core. 25% improvement in the
+avg records/s with patch.
+x without_patch
+* with_patch
+    N           Min           Max        Median           Avg        Stddev
+x  10       2491089       5834307       5398375       4244335     1596244.9
+*  10       2893813       5834474       5832448     5327281.3     1055941.4
+
+context_switch2 :
+There is no major regression observed with this patch as seen from the
+context_switch2 benchmark.
+
+context_switch2 across CPU0 CPU1 (Both belong to same big-core, but different
+small cores). We observe a minor 0.14% regression in the number of
+context-switches (higher is better).
+x without_patch
+* with_patch
+    N           Min           Max        Median           Avg        Stddev
+x 500        348872        362236        354712     354745.69      2711.827
+* 500        349422        361452        353942      354215.4     2576.9258
+Difference at 99.0% confidence
+    -530.288 +/- 430.963
+    -0.149484% +/- 0.121485%
+    (Student's t, pooled s = 2645.24)
+
+context_switch2 across CPU0 CPU8 (Different big-cores). We observe a 0.37%
+improvement in the number of context-switches (higher is better).
+x without_patch
+* with_patch
+    N           Min           Max        Median           Avg        Stddev
+x 500        287956        294940        288896     288977.23     646.59295
+* 500        288300        294646        289582     290064.76     1161.9992
+Difference at 99.0% confidence
+    1087.53 +/- 153.194
+    0.376337% +/- 0.0530125%
+    (Student's t, pooled s = 940.299)
+
+schbench:
+No major difference could be seen until the 99.9th percentile.
+
+Without-patch
+Latency percentiles (usec)
+	50.0th: 29
+	75.0th: 39
+	90.0th: 49
+	95.0th: 59
+	*99.0th: 13104
+	99.5th: 14672
+	99.9th: 15824
+	min=0, max=17993
+
+With-patch:
+Latency percentiles (usec)
+	50.0th: 29
+	75.0th: 40
+	90.0th: 50
+	95.0th: 61
+	*99.0th: 13648
+	99.5th: 14768
+	99.9th: 15664
+	min=0, max=29812
 
 Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 ---
-v2-->v3 : Cleaned up parse_cede_parameters(). Silenced some sparse warnings.
-drivers/cpuidle/cpuidle-pseries.c | 142 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 142 insertions(+)
+v2-->v3 : Made notation consistent with first two patches.
+ drivers/cpuidle/cpuidle-pseries.c | 41 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
-index f5865a2..f528da7 100644
+index f528da7..8d19820 100644
 --- a/drivers/cpuidle/cpuidle-pseries.c
 +++ b/drivers/cpuidle/cpuidle-pseries.c
-@@ -21,6 +21,7 @@
- #include <asm/runlatch.h>
- #include <asm/idle.h>
- #include <asm/plpar_wrappers.h>
-+#include <asm/rtas.h>
- 
- static struct cpuidle_driver pseries_idle_driver = {
- 	.name             = "pseries_idle",
-@@ -87,6 +88,137 @@ static void check_and_cede_processor(void)
- }
- 
- #define NR_DEDICATED_STATES	2 /* snooze, CEDE */
-+/*
-+ * XCEDE : Extended CEDE states discovered through the
-+ *         "ibm,get-systems-parameter" rtas-call with the token
-+ *         CEDE_LATENCY_TOKEN
-+ */
-+#define MAX_XCEDE_STATES		4
-+#define	XCEDE_LATENCY_RECORD_SIZE	10
-+#define XCEDE_LATENCY_PARAM_MAX_LENGTH	(2 + 2 + \
-+					(MAX_XCEDE_STATES * XCEDE_LATENCY_RECORD_SIZE))
-+
-+/*
-+ * Section 7.3.16 System Parameters Option of PAPR version 2.8.1 has a
-+ * table with all the parameters to ibm,get-system-parameters.
-+ * CEDE_LATENCY_TOKEN corresponds to the token value for Cede Latency
-+ * Settings Information.
-+ */
-+#define CEDE_LATENCY_TOKEN		45
-+
-+/*
-+ * If the platform supports the cede latency settings
-+ * information system parameter it must provide the following
-+ * information in the NULL terminated parameter string:
-+ *
-+ * a. The first byte is the length “N” of each cede
-+ *    latency setting record minus one (zero indicates a length
-+ *    of 1 byte).
-+ *
-+ * b. For each supported cede latency setting a cede latency
-+ *    setting record consisting of the first “N” bytes as per
-+ *    the following table.
-+ *
-+ *	-----------------------------
-+ *	| Field           | Field  |
-+ *	| Name            | Length |
-+ *	-----------------------------
-+ *	| Cede Latency    | 1 Byte |
-+ *	| Specifier Value |        |
-+ *	-----------------------------
-+ *	| Maximum wakeup  |        |
-+ *	| latency in      | 8 Bytes|
-+ *	| tb-ticks        |        |
-+ *	-----------------------------
-+ *	| Responsive to   |        |
-+ *	| external        | 1 Byte |
-+ *	| interrupts      |        |
-+ *	-----------------------------
-+ *
-+ * This version has cede latency record size = 10.
-+ *
-+ * The structure xcede_latency_payload represents a) and b) with
-+ * xcede_latency_record representing the table in b).
-+ *
-+ * xcede_latency_parameter is what gets returned by
-+ * ibm,get-systems-parameter rtas-call when made with
-+ * CEDE_LATENCY_TOKEN.
-+ *
-+ * These structures are only used to represent the data sent obtained
-+ * by the rtas-call. The data is in Big-Endian.
-+ */
-+struct xcede_latency_record {
-+	u8	hint;
-+	__be64	latency_ticks;
-+	u8	wake_on_irqs;
-+} __packed;
-+
-+struct xcede_latency_payload {
-+	u8     record_size;
-+	struct xcede_latency_record records[MAX_XCEDE_STATES];
-+} __packed;
-+
-+struct xcede_latency_parameter {
-+	__be16  payload_size;
-+	struct xcede_latency_payload payload;
-+	u8 null_char;
-+} __packed;
-+
-+static unsigned int nr_xcede_records;
-+static struct xcede_latency_parameter xcede_latency_parameter __initdata;
-+
-+static int __init parse_cede_parameters(void)
-+{
-+	int ret, i;
-+	u16 payload_size;
-+	u8 xcede_record_size;
-+	u32 total_xcede_records_size;
-+	struct xcede_latency_payload *payload;
-+
-+	memset(&xcede_latency_parameter, 0, sizeof(xcede_latency_parameter));
-+
-+	ret = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
-+			NULL, CEDE_LATENCY_TOKEN, __pa(&xcede_latency_parameter),
-+			sizeof(xcede_latency_parameter));
-+
-+	if (ret) {
-+		pr_err("xcede: Error parsing CEDE_LATENCY_TOKEN\n");
-+		return ret;
-+	}
-+
-+	payload_size = be16_to_cpu(xcede_latency_parameter.payload_size);
-+	payload = &xcede_latency_parameter.payload;
-+
-+	xcede_record_size = payload->record_size + 1;
-+
-+	if (xcede_record_size != XCEDE_LATENCY_RECORD_SIZE) {
-+		pr_err("xcede : Expected record-size %d. Observed size %d.\n",
-+		       XCEDE_LATENCY_RECORD_SIZE, xcede_record_size);
-+		return -EINVAL;
-+	}
-+
-+	pr_info("xcede : xcede_record_size = %d\n", xcede_record_size);
-+
-+	/*
-+	 * Since the payload_length includes the last NULL byte and
-+	 * the xcede_record_size, the remaining bytes correspond to
-+	 * array of all cede_latency settings.
-+	 */
-+	total_xcede_records_size = payload_size - 2;
-+	nr_xcede_records = total_xcede_records_size / xcede_record_size;
-+
-+	for (i = 0; i < nr_xcede_records; i++) {
-+		struct xcede_latency_record *record = &payload->records[i];
-+		u8 hint = record->hint;
-+		u8 wake_on_irqs = record->wake_on_irqs;
-+		u64 latency_ticks = be64_to_cpu(record->latency_ticks);
-+
-+		pr_info("xcede : Record %d : hint = %u, latency = 0x%llx tb ticks, Wake-on-irq = %u\n",
-+			i, hint, latency_ticks, wake_on_irqs);
-+	}
-+
-+	return 0;
-+}
- 
- u8 cede_latency_hint[NR_DEDICATED_STATES];
- static int dedicated_cede_loop(struct cpuidle_device *dev,
-@@ -218,6 +350,15 @@ static int pseries_cpuidle_driver_init(void)
+@@ -350,13 +350,50 @@ static int pseries_cpuidle_driver_init(void)
  	return 0;
  }
  
-+static void __init parse_xcede_idle_states(void)
-+{
-+	if (parse_cede_parameters())
-+		return;
+-static void __init parse_xcede_idle_states(void)
++static void __init fixup_cede0_latency(void)
+ {
++	int i;
++	u64 min_latency_us = dedicated_states[1].exit_latency; /* CEDE latency */
++	struct xcede_latency_payload *payload;
 +
-+	pr_info("cpuidle : Skipping the %d Extended CEDE idle states\n",
-+		nr_xcede_records);
-+}
+ 	if (parse_cede_parameters())
+ 		return;
+ 
+ 	pr_info("cpuidle : Skipping the %d Extended CEDE idle states\n",
+ 		nr_xcede_records);
 +
++	payload = &xcede_latency_parameter.payload;
++	for (i = 0; i < nr_xcede_records; i++) {
++		struct xcede_latency_record *record = &payload->records[i];
++		u64 latency_tb = be64_to_cpu(record->latency_ticks);
++		u64 latency_us = tb_to_ns(latency_tb) / NSEC_PER_USEC;
++
++		if (latency_us < min_latency_us)
++			min_latency_us = latency_us;
++	}
++
++	/*
++	 * By default, we assume that CEDE(0) has exit latency 10us,
++	 * since there is no way for us to query from the platform.
++	 *
++	 * However, if the wakeup latency of an Extended CEDE state is
++	 * smaller than 10us, then we can be sure that CEDE(0)
++	 * requires no more than that.
++	 *
++	 * Perform the fix-up.
++	 */
++	if (min_latency_us < dedicated_states[1].exit_latency) {
++		u64 cede0_latency = min_latency_us - 1;
++
++		if (cede0_latency <= 0)
++			cede0_latency = min_latency_us;
++
++		dedicated_states[1].exit_latency = cede0_latency;
++		dedicated_states[1].target_residency = 10 * (cede0_latency);
++		pr_info("cpuidle : Fixed up CEDE exit latency to %llu us\n",
++			cede0_latency);
++	}
++
+ }
+ 
  /*
-  * pseries_idle_probe()
-  * Choose state table for shared versus dedicated partition
-@@ -239,6 +380,7 @@ static int pseries_idle_probe(void)
+@@ -380,7 +417,7 @@ static int pseries_idle_probe(void)
  			cpuidle_state_table = shared_states;
  			max_idle_state = ARRAY_SIZE(shared_states);
  		} else {
-+			parse_xcede_idle_states();
+-			parse_xcede_idle_states();
++			fixup_cede0_latency();
  			cpuidle_state_table = dedicated_states;
  			max_idle_state = NR_DEDICATED_STATES;
  		}
