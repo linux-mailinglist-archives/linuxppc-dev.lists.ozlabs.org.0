@@ -2,34 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45C1233333
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4F3233345
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:41:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHWhg1kYZzDqJ3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 23:38:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHWm918KGzDqNG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 23:41:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHVfg5bs3zDqxQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 22:51:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
+ helo=fornost.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 4BHVfg212Kz9sSt; Thu, 30 Jul 2020 22:51:55 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BHVff52Mbz9sSy; Thu, 30 Jul 2020 22:51:50 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20200727070341.595634-1-mpe@ellerman.id.au>
-References: <20200727070341.595634-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/fadump: Fix build error with
- CONFIG_PRESERVE_FA_DUMP=y
-Message-Id: <159611349908.1605534.13544680784147570902.b4-ty@ellerman.id.au>
-Date: Thu, 30 Jul 2020 22:51:50 +1000 (AEST)
+ header.from=gondor.apana.org.au
+Received: from fornost.hmeau.com (unknown [216.24.177.18])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHVhM6DkqzDr0C
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 22:53:21 +1000 (AEST)
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+ by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+ id 1k183P-0006Z9-Of; Thu, 30 Jul 2020 22:53:00 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation);
+ Thu, 30 Jul 2020 22:52:59 +1000
+Date: Thu, 30 Jul 2020 22:52:59 +1000
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] soc: fsl: Remove bogus packed attributes from qman.h
+Message-ID: <20200730125259.GA8948@gondor.apana.org.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,17 +51,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 27 Jul 2020 17:03:41 +1000, Michael Ellerman wrote:
-> skiroot_defconfig fails:
-> 
-> arch/powerpc/kernel/fadump.c:48:17: error: ‘cpus_in_fadump’ defined but not used
->    48 | static atomic_t cpus_in_fadump;
-> 
-> Fix it by moving the definition into the #ifdef where it's used.
+There are two __packed attributes in qman.h that are both unnecessary
+and causing compiler warnings because they're conflicting with
+explicit alignment requirements set on members within the structure.
 
-Applied to powerpc/next.
+This patch removes them both.
 
-[1/1] powerpc/fadump: Fix build error with CONFIG_PRESERVE_FA_DUMP=y
-      https://git.kernel.org/powerpc/c/5f987caec521cbb00d4ba2dc641ac8074626b762
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-cheers
+diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
+index cfe00e08e85b..d81ff185dc0b 100644
+--- a/include/soc/fsl/qman.h
++++ b/include/soc/fsl/qman.h
+@@ -256,7 +256,7 @@ struct qm_dqrr_entry {
+ 	__be32 context_b;
+ 	struct qm_fd fd;
+ 	u8 __reserved4[32];
+-} __packed;
++};
+ #define QM_DQRR_VERB_VBIT		0x80
+ #define QM_DQRR_VERB_MASK		0x7f	/* where the verb contains; */
+ #define QM_DQRR_VERB_FRAME_DEQUEUE	0x60	/* "this format" */
+@@ -289,7 +289,7 @@ union qm_mr_entry {
+ 		__be32 tag;
+ 		struct qm_fd fd;
+ 		u8 __reserved1[32];
+-	} __packed ern;
++	} ern;
+ 	struct {
+ 		u8 verb;
+ 		u8 fqs;		/* Frame Queue Status */
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
