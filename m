@@ -2,76 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B894E232B99
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 07:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8EF232BB1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 08:08:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHKVw57JMzDqxQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:59:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHKhf0nV1zDqdV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 16:08:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHKdj0jYxzDqd3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 16:05:29 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BHKdj02s7z9BNN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 16:05:29 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BHKdh6V3hz9sRX; Thu, 30 Jul 2020 16:05:28 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHKSC6JQFzDql6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:57:15 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 4BHKdh3Sqhz9sRW
+ for <linuxppc-dev@ozlabs.org>; Thu, 30 Jul 2020 16:05:28 +1000 (AEST)
 Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06U5WbRK139586; Thu, 30 Jul 2020 01:57:03 -0400
+ 06U5Wafr139489; Thu, 30 Jul 2020 02:05:18 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32k9qv98as-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32k9qv9guh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 01:57:03 -0400
+ Thu, 30 Jul 2020 02:05:18 -0400
 Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06U5Wrxm140823;
- Thu, 30 Jul 2020 01:57:02 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32k9qv989x-1
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06U5j1N9025907;
+ Thu, 30 Jul 2020 02:05:18 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32k9qv9gt7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 01:57:02 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U5oOp8030969;
- Thu, 30 Jul 2020 05:55:22 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 32gcq1swjn-1
+ Thu, 30 Jul 2020 02:05:17 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U65Fdq005152;
+ Thu, 30 Jul 2020 06:05:15 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 32gcy4nupm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 05:55:22 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06U5tLX155509472
+ Thu, 30 Jul 2020 06:05:15 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06U65CPF31064358
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Jul 2020 05:55:21 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFBE3AE05F;
- Thu, 30 Jul 2020 05:55:21 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27445AE060;
- Thu, 30 Jul 2020 05:55:21 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.102.0.230])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 30 Jul 2020 05:55:21 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 26C122E2D91; Thu, 30 Jul 2020 11:25:17 +0530 (IST)
-Date: Thu, 30 Jul 2020 11:25:17 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 06/10] powerpc/smp: Generalize 2nd sched domain
-Message-ID: <20200730055517.GA29623@in.ibm.com>
-References: <20200727053230.19753-1-srikar@linux.vnet.ibm.com>
- <20200727053230.19753-7-srikar@linux.vnet.ibm.com>
+ Thu, 30 Jul 2020 06:05:12 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05A31A406F;
+ Thu, 30 Jul 2020 06:05:12 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 499B2A4065;
+ Thu, 30 Jul 2020 06:05:08 +0000 (GMT)
+Received: from [9.102.24.129] (unknown [9.102.24.129])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Jul 2020 06:05:08 +0000 (GMT)
+Subject: Re: [RESEND PATCH v5 00/11] ppc64: enable kdump support for
+ kexec_file_load syscall
+To: piliu <piliu@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <159579157320.5790.6748078824637688685.stgit@hbathini>
+ <23911b9d-7534-031c-6f98-80f90439c834@redhat.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+Message-ID: <df8f1d6f-d85b-f2fb-548b-ecdaddec311c@linux.ibm.com>
+Date: Thu, 30 Jul 2020 11:35:07 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200727053230.19753-7-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <23911b9d-7534-031c-6f98-80f90439c834@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-30_03:2020-07-29,
@@ -93,155 +110,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
- Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Jordan Niethe <jniethe5@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: kernel test robot <lkp@intel.com>, Kexec-ml <kexec@lists.infradead.org>,
+ Mimi Zohar <zohar@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>,
+ Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>, lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Vivek Goyal <vgoyal@redhat.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Dave Young <dyoung@redhat.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Eric Biederman <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 27, 2020 at 11:02:26AM +0530, Srikar Dronamraju wrote:
-> Currently "CACHE" domain happens to be the 2nd sched domain as per
-> powerpc_topology. This domain will collapse if cpumask of l2-cache is
-> same as SMT domain. However we could generalize this domain such that it
-> could mean either be a "CACHE" domain or a "BIGCORE" domain.
-> 
-> While setting up the "CACHE" domain, check if shared_cache is already
-> set.
-> 
-> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> Cc: LKML <linux-kernel@vger.kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Anton Blanchard <anton@ozlabs.org>
-> Cc: Oliver O'Halloran <oohall@gmail.com>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Michael Neuling <mikey@neuling.org>
-> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Valentin Schneider <valentin.schneider@arm.com>
-> Cc: Jordan Niethe <jniethe5@gmail.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 
-> ---
-> Changelog v1 -> v2:
-> 	Moved shared_cache topology fixup to fixup_topology (Gautham)
+On 28/07/20 8:02 am, piliu wrote:
 > 
->  arch/powerpc/kernel/smp.c | 48 +++++++++++++++++++++++++++------------
->  1 file changed, 34 insertions(+), 14 deletions(-)
 > 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index d997c7411664..3c5ccf6d2b1c 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -85,6 +85,14 @@ EXPORT_PER_CPU_SYMBOL(cpu_l2_cache_map);
->  EXPORT_PER_CPU_SYMBOL(cpu_core_map);
->  EXPORT_SYMBOL_GPL(has_big_cores);
-> 
-> +enum {
-> +#ifdef CONFIG_SCHED_SMT
-> +	smt_idx,
-> +#endif
-> +	bigcore_idx,
-> +	die_idx,
-> +};
-> +
->  #define MAX_THREAD_LIST_SIZE	8
->  #define THREAD_GROUP_SHARE_L1   1
->  struct thread_groups {
-> @@ -851,13 +859,7 @@ static int powerpc_shared_cache_flags(void)
->   */
->  static const struct cpumask *shared_cache_mask(int cpu)
->  {
-> -	if (shared_caches)
-> -		return cpu_l2_cache_mask(cpu);
-> -
-> -	if (has_big_cores)
-> -		return cpu_smallcore_mask(cpu);
-> -
-> -	return per_cpu(cpu_sibling_map, cpu);
-> +	return per_cpu(cpu_l2_cache_map, cpu);
->  }
-> 
->  #ifdef CONFIG_SCHED_SMT
-> @@ -867,11 +869,16 @@ static const struct cpumask *smallcore_smt_mask(int cpu)
->  }
->  #endif
-> 
-> +static const struct cpumask *cpu_bigcore_mask(int cpu)
-> +{
-> +	return per_cpu(cpu_sibling_map, cpu);
-> +}
-> +
->  static struct sched_domain_topology_level powerpc_topology[] = {
->  #ifdef CONFIG_SCHED_SMT
->  	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
->  #endif
-> -	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
-> +	{ cpu_bigcore_mask, SD_INIT_NAME(BIGCORE) },
->  	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
->  	{ NULL, },
->  };
-> @@ -1311,7 +1318,6 @@ static void add_cpu_to_masks(int cpu)
->  void start_secondary(void *unused)
->  {
->  	unsigned int cpu = smp_processor_id();
-> -	struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
-> 
->  	mmgrab(&init_mm);
->  	current->active_mm = &init_mm;
-> @@ -1337,14 +1343,20 @@ void start_secondary(void *unused)
->  	/* Update topology CPU masks */
->  	add_cpu_to_masks(cpu);
-> 
-> -	if (has_big_cores)
-> -		sibling_mask = cpu_smallcore_mask;
->  	/*
->  	 * Check for any shared caches. Note that this must be done on a
->  	 * per-core basis because one core in the pair might be disabled.
->  	 */
-> -	if (!cpumask_equal(cpu_l2_cache_mask(cpu), sibling_mask(cpu)))
-> -		shared_caches = true;
-> +	if (!shared_caches) {
-> +		struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
-> +		struct cpumask *mask = cpu_l2_cache_mask(cpu);
-> +
-> +		if (has_big_cores)
-> +			sibling_mask = cpu_smallcore_mask;
-> +
-> +		if (cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu)))
-> +			shared_caches = true;
-> +	}
-> 
->  	set_numa_node(numa_cpu_lookup_table[cpu]);
->  	set_numa_mem(local_memory_node(numa_cpu_lookup_table[cpu]));
-> @@ -1375,9 +1387,17 @@ static void fixup_topology(void)
->  #ifdef CONFIG_SCHED_SMT
->  	if (has_big_cores) {
->  		pr_info("Big cores detected but using small core scheduling\n");
-> -		powerpc_topology[0].mask = smallcore_smt_mask;
-> +		powerpc_topology[smt_idx].mask = smallcore_smt_mask;
->  	}
->  #endif
-> +	if (shared_caches) {
-> +		pr_info("Using shared cache scheduler topology\n");
-> +		powerpc_topology[bigcore_idx].mask = shared_cache_mask;
-> +		powerpc_topology[bigcore_idx].sd_flags = powerpc_shared_cache_flags;
-> +#ifdef CONFIG_SCHED_DEBUG
-> +		powerpc_topology[bigcore_idx].name = "CACHE";
-> +#endif
-> +	}
->  }
-> 
->  void __init smp_cpus_done(unsigned int max_cpus)
-> -- 
-> 2.17.1
-> 
+> On 07/27/2020 03:36 AM, Hari Bathini wrote:
+>> Sorry! There was a gateway issue on my system while posting v5, due to
+>> which some patches did not make it through. Resending...
+>>
+>> This patch series enables kdump support for kexec_file_load system
+>> call (kexec -s -p) on PPC64. The changes are inspired from kexec-tools
+>> code but heavily modified for kernel consumption.
+>>
+>> The first patch adds a weak arch_kexec_locate_mem_hole() function to
+>> override locate memory hole logic suiting arch needs. There are some
+>> special regions in ppc64 which should be avoided while loading buffer
+>> & there are multiple callers to kexec_add_buffer making it complicated
+>> to maintain range sanity and using generic lookup at the same time.
+>>
+>> The second patch marks ppc64 specific code within arch/powerpc/kexec
+>> and arch/powerpc/purgatory to make the subsequent code changes easy
+>> to understand.
+>>
+>> The next patch adds helper function to setup different memory ranges
+>> needed for loading kdump kernel, booting into it and exporting the
+>> crashing kernel's elfcore.
+>>
+>> The fourth patch overrides arch_kexec_locate_mem_hole() function to
+>> locate memory hole for kdump segments by accounting for the special
+>> memory regions, referred to as excluded memory ranges, and sets
+>> kbuf->mem when a suitable memory region is found.
+>>
+>> The fifth patch moves walk_drmem_lmbs() out of .init section with
+>> a few changes to reuse it for setting up kdump kernel's usable memory
+>> ranges. The next patch uses walk_drmem_lmbs() to look up the LMBs
+>> and set linux,drconf-usable-memory & linux,usable-memory properties
+>> in order to restrict kdump kernel's memory usage.
+>>
+>> The seventh patch updates purgatory to setup r8 & r9 with opal base
+>> and opal entry addresses respectively to aid kernels built with
+>> CONFIG_PPC_EARLY_DEBUG_OPAL enabled. The next patch setups up backup
+>> region as a kexec segment while loading kdump kernel and teaches
+>> purgatory to copy data from source to destination.
+>>
+>> Patch 09 builds the elfcore header for the running kernel & passes
+>> the info to kdump kernel via "elfcorehdr=" parameter to export as
+>> /proc/vmcore file. The next patch sets up the memory reserve map
+>> for the kexec kernel and also claims kdump support for kdump as
+>> all the necessary changes are added.
+>>
+>> The last patch fixes a lookup issue for `kexec -l -s` case when
+>> memory is reserved for crashkernel.
+>>
+>> Tested the changes successfully on P8, P9 lpars, couple of OpenPOWER
+>> boxes, one with secureboot enabled, KVM guest and a simulator.
+>>
+>> v4 -> v5:
+>> * Dropped patches 07/12 & 08/12 and updated purgatory to do everything
+>>    in assembly.
+
+Hello Pingfan,
+
+Sorry, I missed out on responding to this.
+
+
+> I guess you achieve this by carefully selecting instruction to avoid
+> relocation issue, right?
+
+Yes. No far branching or reference to data from elsewhere.
+
+Thanks
+Hari
