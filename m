@@ -1,75 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D0E232B34
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 07:11:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4BE9232B6D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 07:38:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHJRH12ZfzDqfM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:11:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHK2D0XXvzDqV8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:38:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHJwd6D0DzDqn2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:33:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BHJwc5S1jz8sxX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:33:20 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BHJwc3wYxz9sSd; Thu, 30 Jul 2020 15:33:20 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHJNW4sX5zDqft
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:08:59 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTPS id 4BHJwb6Xprz9sRK;
+ Thu, 30 Jul 2020 15:33:19 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06U533pg060999; Thu, 30 Jul 2020 01:08:55 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32jw2m4eev-1
+ 06U5W9Y3088741; Thu, 30 Jul 2020 01:33:17 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jw724p5n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 01:08:55 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U57NhK019205;
- Thu, 30 Jul 2020 05:08:53 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 32gcqgntd9-1
+ Thu, 30 Jul 2020 01:33:16 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06U5WJbJ089679;
+ Thu, 30 Jul 2020 01:33:16 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jw724p50-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 05:08:52 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06U58mRv19333412
+ Thu, 30 Jul 2020 01:33:16 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U5Oh7d020529;
+ Thu, 30 Jul 2020 05:33:15 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02dal.us.ibm.com with ESMTP id 32gcy4srdu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 05:33:15 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06U5XEXs50004444
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Jul 2020 05:08:48 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C22FA404D;
- Thu, 30 Jul 2020 05:08:48 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C29D5A405D;
- Thu, 30 Jul 2020 05:08:46 +0000 (GMT)
-Received: from fir03.in.ibm.com (unknown [9.121.59.65])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 30 Jul 2020 05:08:46 +0000 (GMT)
-From: Sandipan Das <sandipan@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v3] selftests: powerpc: Fix online CPU selection
-Date: Thu, 30 Jul 2020 10:38:46 +0530
-Message-Id: <a408c4b8e9a23bb39b539417a21eb0ff47bb5127.1596084858.git.sandipan@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ Thu, 30 Jul 2020 05:33:14 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F7CF28059;
+ Thu, 30 Jul 2020 05:33:14 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ECED428058;
+ Thu, 30 Jul 2020 05:33:13 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.102.0.230])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Jul 2020 05:33:13 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id C80BB2E2D91; Thu, 30 Jul 2020 11:03:09 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, Anton Blanchard <anton@ozlabs.org>,
+ Nathan Lynch <nathanl@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michael Neuling <mikey@neuling.org>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Subject: [PATCH v3 0/3] cpuidle-pseries: Parse extended CEDE information for
+ idle.
+Date: Thu, 30 Jul 2020 11:02:54 +0530
+Message-Id: <1596087177-30329-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-30_03:2020-07-29,
  2020-07-30 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0
- impostorscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
- lowpriorityscore=0 phishscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007300038
+ clxscore=1015 bulkscore=0
+ spamscore=0 impostorscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 phishscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007300038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,106 +105,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: srikar@linux.vnet.ibm.com, kamalesh@linux.vnet.ibm.com, shiganta@in.ibm.com,
- nasastry@in.ibm.com, harish@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@ozlabs.org, "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The size of the CPU affinity mask must be large enough for
-systems with a very large number of CPUs. Otherwise, tests
-which try to determine the first online CPU by calling
-sched_getaffinity() will fail. This makes sure that the size
-of the allocated affinity mask is dependent on the number of
-CPUs as reported by get_nprocs_conf().
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-Fixes: 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs")
-Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
-Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
----
-Previous versions can be found at:
-v2: https://lore.kernel.org/linuxppc-dev/20200609073733.997643-1-sandipan@linux.ibm.com/
-v1: https://lore.kernel.org/linuxppc-dev/20200608144212.985144-1-sandipan@linux.ibm.com/
+This is a v3 of the patch series to parse the extended CEDE
+information in the pseries-cpuidle driver.
 
-Changes in v3:
-- Use get_nprocs_conf() instead of get_nprocs() as suggested by
-  Srikar to cope with test failures that Michael reported for
-  sparse SMT setups.
+The previous two versions of the patches can be found here:
 
-Changes in v2:
-- Added NULL check for the affinity mask as suggested by Kamalesh.
-- Changed "cpu set" to "CPU affinity mask" in the commit message.
+v2: https://lore.kernel.org/lkml/1596005254-25753-1-git-send-email-ego@linux.vnet.ibm.com/
 
----
- tools/testing/selftests/powerpc/utils.c | 37 +++++++++++++++++--------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+v1: https://lore.kernel.org/linuxppc-dev/1594120299-31389-1-git-send-email-ego@linux.vnet.ibm.com/
 
-diff --git a/tools/testing/selftests/powerpc/utils.c b/tools/testing/selftests/powerpc/utils.c
-index 933678f1ed0a0..18b6a773d5c73 100644
---- a/tools/testing/selftests/powerpc/utils.c
-+++ b/tools/testing/selftests/powerpc/utils.c
-@@ -16,6 +16,7 @@
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
-+#include <sys/sysinfo.h>
- #include <sys/types.h>
- #include <sys/utsname.h>
- #include <unistd.h>
-@@ -88,28 +89,40 @@ void *get_auxv_entry(int type)
+The change from v2 --> v1 :
+
+ * Patch 1: Got rid of some #define-s which were needed mainly for Patches4 and
+   5 of v1, but were retained in v2.
+
+ * Patch 2:
+
+  	* Based on feedback from Michael Ellerman, rewrote the
+	  function to parse the extended idle states by explicitly
+	  defining the structure of the object that is returned by
+	  ibm,get-system-parameters(CEDE_LATENCY_TOKEN) rtas-call. In
+	  the previous versions we were passing a character array and
+	  subsequently parsing the individual elements which can be
+	  bug-prone. This also gets rid of the excessive (cast *)ing
+	  that was in the previous versions.
+
+	  * Marked some of the functions static and annotated some of
+	  the functions with __init and data with __initdata. This
+	  makes Sparse happy.
+
+	  * Added comments for CEDE_LATENCY_TOKEN.
+
+	  * Renamed add_pseries_idle_states() to
+            parse_xcede_idle_states(). Again, this is because Patch 4
+            and 5 from v1 are no longer there.
+
+ * Patch 3: No functional changes, but minor changes to be consistent
+   with Patch 1 and 2 of this series.
  
- int pick_online_cpu(void)
- {
--	cpu_set_t mask;
--	int cpu;
-+	int ncpus, cpu = -1;
-+	cpu_set_t *mask;
-+	size_t size;
-+
-+	ncpus = get_nprocs_conf();
-+	size = CPU_ALLOC_SIZE(ncpus);
-+	mask = CPU_ALLOC(ncpus);
-+	if (!mask) {
-+		perror("malloc");
-+		return -1;
-+	}
- 
--	CPU_ZERO(&mask);
-+	CPU_ZERO_S(size, mask);
- 
--	if (sched_getaffinity(0, sizeof(mask), &mask)) {
-+	if (sched_getaffinity(0, size, mask)) {
- 		perror("sched_getaffinity");
--		return -1;
-+		goto done;
- 	}
- 
- 	/* We prefer a primary thread, but skip 0 */
--	for (cpu = 8; cpu < CPU_SETSIZE; cpu += 8)
--		if (CPU_ISSET(cpu, &mask))
--			return cpu;
-+	for (cpu = 8; cpu < ncpus; cpu += 8)
-+		if (CPU_ISSET_S(cpu, size, mask))
-+			goto done;
- 
- 	/* Search for anything, but in reverse */
--	for (cpu = CPU_SETSIZE - 1; cpu >= 0; cpu--)
--		if (CPU_ISSET(cpu, &mask))
--			return cpu;
-+	for (cpu = ncpus - 1; cpu >= 0; cpu--)
-+		if (CPU_ISSET_S(cpu, size, mask))
-+			goto done;
- 
- 	printf("No cpus in affinity mask?!\n");
--	return -1;
-+
-+done:
-+	CPU_FREE(mask);
-+	return cpu;
- }
- 
- bool is_ppc64le(void)
+I have additionally tested the code on POWER8 dedicated LPAR and found
+that it has no impact, since the wakeup latency of CEDE(1) is 30us
+which is greater that default latency that we are assuming for
+CEDE(0). So we do not need to fixup CEDE(0) latency on POWER8.
+
+Vaidy, I have removed your Reviewed-by for v1, since the code has
+changed a little bit.
+
+Gautham R. Shenoy (3):
+  cpuidle-pseries: Set the latency-hint before entering CEDE
+  cpuidle-pseries: Add function to parse extended CEDE records
+  cpuidle-pseries : Fixup exit latency for CEDE(0)
+
+ drivers/cpuidle/cpuidle-pseries.c | 190 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 188 insertions(+), 2 deletions(-)
+
 -- 
-2.25.1
+1.9.4
 
