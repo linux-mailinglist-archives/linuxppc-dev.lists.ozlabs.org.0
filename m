@@ -1,52 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6571A232B81
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 07:43:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B894E232B99
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 07:59:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHK7z39jXzDqqJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:43:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHKVw57JMzDqxQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 15:59:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ehFzBJE0; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHK1N5y8GzDqbf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:37:28 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 10E3F20838;
- Thu, 30 Jul 2020 05:37:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1596087446;
- bh=QxvHKd0NyjuSLYu6cchEZo7GWM16xcMsonJiweZ+jDs=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=ehFzBJE096zIpEJXI1t7tggEmZg440Fg9mgKJWOoLAJMErEOCapDacGzuckH+Okkb
- Ae/nNLjNgNofvgmAVkB9FIhv9lL4Ymj3O+qM2VU+0qzbmXsppVvEgJHuZM3cqmsUbM
- v5movnmOqRlPPCSzv/0lt/HKH8Vibz+69sertXfM=
-Date: Thu, 30 Jul 2020 07:37:16 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] powerpc/vio: drop bus_type from parent device
-Message-ID: <20200730053716.GA3862178@kroah.com>
-References: <20200406155748.6761-1-cascardo@canonical.com>
- <87ime56bax.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHKSC6JQFzDql6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 15:57:15 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06U5WbRK139586; Thu, 30 Jul 2020 01:57:03 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32k9qv98as-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 01:57:03 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06U5Wrxm140823;
+ Thu, 30 Jul 2020 01:57:02 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32k9qv989x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 01:57:02 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U5oOp8030969;
+ Thu, 30 Jul 2020 05:55:22 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 32gcq1swjn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 05:55:22 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06U5tLX155509472
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Jul 2020 05:55:21 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BFBE3AE05F;
+ Thu, 30 Jul 2020 05:55:21 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27445AE060;
+ Thu, 30 Jul 2020 05:55:21 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.102.0.230])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Jul 2020 05:55:21 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 26C122E2D91; Thu, 30 Jul 2020 11:25:17 +0530 (IST)
+Date: Thu, 30 Jul 2020 11:25:17 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 06/10] powerpc/smp: Generalize 2nd sched domain
+Message-ID: <20200730055517.GA29623@in.ibm.com>
+References: <20200727053230.19753-1-srikar@linux.vnet.ibm.com>
+ <20200727053230.19753-7-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87ime56bax.fsf@mpe.ellerman.id.au>
+In-Reply-To: <20200727053230.19753-7-srikar@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-30_03:2020-07-29,
+ 2020-07-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0
+ phishscore=0 clxscore=1015 bulkscore=0 impostorscore=0 mlxlogscore=999
+ adultscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007300042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,77 +93,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- Peter Rajnoha <prajnoha@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Reply-To: ego@linux.vnet.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Jordan Niethe <jniethe5@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 30, 2020 at 11:28:38AM +1000, Michael Ellerman wrote:
-> [ Added Peter & Greg to Cc ]
+On Mon, Jul 27, 2020 at 11:02:26AM +0530, Srikar Dronamraju wrote:
+> Currently "CACHE" domain happens to be the 2nd sched domain as per
+> powerpc_topology. This domain will collapse if cpumask of l2-cache is
+> same as SMT domain. However we could generalize this domain such that it
+> could mean either be a "CACHE" domain or a "BIGCORE" domain.
 > 
-> Thadeu Lima de Souza Cascardo <cascardo@canonical.com> writes:
-> > Commit df44b479654f62b478c18ee4d8bc4e9f897a9844 ("kobject: return error
-> > code if writing /sys/.../uevent fails") started returning failure when
-> > writing to /sys/devices/vio/uevent.
-> >
-> > This causes an early udevadm trigger to fail. On some installer versions of
-> > Ubuntu, this will cause init to exit, thus panicing the system very early
-> > during boot.
-> >
-> > Removing the bus_type from the parent device will remove some of the extra
-> > empty files from /sys/devices/vio/, but will keep the rest of the layout
-> > for vio devices, keeping them under /sys/devices/vio/.
+> While setting up the "CACHE" domain, check if shared_cache is already
+> set.
 > 
-> What exactly does it change?
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: LKML <linux-kernel@vger.kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Anton Blanchard <anton@ozlabs.org>
+> Cc: Oliver O'Halloran <oohall@gmail.com>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Michael Neuling <mikey@neuling.org>
+> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: Jordan Niethe <jniethe5@gmail.com>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+
+> ---
+> Changelog v1 -> v2:
+> 	Moved shared_cache topology fixup to fixup_topology (Gautham)
 > 
-> I'm finding it hard to evaluate if this change is going to cause a
-> regression somehow.
+>  arch/powerpc/kernel/smp.c | 48 +++++++++++++++++++++++++++------------
+>  1 file changed, 34 insertions(+), 14 deletions(-)
 > 
-> I'm also not clear on why removing the bus type is correct, apart from
-> whether it fixes the bug you're seeing.
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index d997c7411664..3c5ccf6d2b1c 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -85,6 +85,14 @@ EXPORT_PER_CPU_SYMBOL(cpu_l2_cache_map);
+>  EXPORT_PER_CPU_SYMBOL(cpu_core_map);
+>  EXPORT_SYMBOL_GPL(has_big_cores);
 > 
-> > It has been tested that uevents for vio devices don't change after this
-> > fix, they still contain MODALIAS.
-> >
-> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-> > Fixes: df44b479654f ("kobject: return error code if writing /sys/.../uevent fails")
+> +enum {
+> +#ifdef CONFIG_SCHED_SMT
+> +	smt_idx,
+> +#endif
+> +	bigcore_idx,
+> +	die_idx,
+> +};
+> +
+>  #define MAX_THREAD_LIST_SIZE	8
+>  #define THREAD_GROUP_SHARE_L1   1
+>  struct thread_groups {
+> @@ -851,13 +859,7 @@ static int powerpc_shared_cache_flags(void)
+>   */
+>  static const struct cpumask *shared_cache_mask(int cpu)
+>  {
+> -	if (shared_caches)
+> -		return cpu_l2_cache_mask(cpu);
+> -
+> -	if (has_big_cores)
+> -		return cpu_smallcore_mask(cpu);
+> -
+> -	return per_cpu(cpu_sibling_map, cpu);
+> +	return per_cpu(cpu_l2_cache_map, cpu);
+>  }
 > 
-> AFAICS there haven't been any other fixes for that commit. Do we know
-> why it is only vio that was affected? (possibly because it's a fake bus
-> to begin with?)
-
-So there was an error previously, the core was ignoring it, and now it
-isn't and to fix that you want to remove describing what bus a device is
-on?
-
-Huh???
-
+>  #ifdef CONFIG_SCHED_SMT
+> @@ -867,11 +869,16 @@ static const struct cpumask *smallcore_smt_mask(int cpu)
+>  }
+>  #endif
 > 
-> cheers
+> +static const struct cpumask *cpu_bigcore_mask(int cpu)
+> +{
+> +	return per_cpu(cpu_sibling_map, cpu);
+> +}
+> +
+>  static struct sched_domain_topology_level powerpc_topology[] = {
+>  #ifdef CONFIG_SCHED_SMT
+>  	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
+>  #endif
+> -	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
+> +	{ cpu_bigcore_mask, SD_INIT_NAME(BIGCORE) },
+>  	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
+>  	{ NULL, },
+>  };
+> @@ -1311,7 +1318,6 @@ static void add_cpu_to_masks(int cpu)
+>  void start_secondary(void *unused)
+>  {
+>  	unsigned int cpu = smp_processor_id();
+> -	struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
 > 
-> > diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
-> > index 37f1f25ba804..a94dab3972a0 100644
-> > --- a/arch/powerpc/platforms/pseries/vio.c
-> > +++ b/arch/powerpc/platforms/pseries/vio.c
-> > @@ -36,7 +36,6 @@ static struct vio_dev vio_bus_device  = { /* fake "parent" device */
-> >  	.name = "vio",
-> >  	.type = "",
-> >  	.dev.init_name = "vio",
-> > -	.dev.bus = &vio_bus_type,
-> >  };
-
-Wait, a static 'struct device'?  You all are playing with fire there.
-That's a reference counted object, and should never be declared like
-that at all.
-
-I see you register it, but never unregister it, why?  Why is it even
-needed?
-
-And if you remove the bus type of it, it will show up in a different
-part of sysfs, so I think this patch will show a user-visable change,
-right?
-
-thanks,
-
-greg k-h
+>  	mmgrab(&init_mm);
+>  	current->active_mm = &init_mm;
+> @@ -1337,14 +1343,20 @@ void start_secondary(void *unused)
+>  	/* Update topology CPU masks */
+>  	add_cpu_to_masks(cpu);
+> 
+> -	if (has_big_cores)
+> -		sibling_mask = cpu_smallcore_mask;
+>  	/*
+>  	 * Check for any shared caches. Note that this must be done on a
+>  	 * per-core basis because one core in the pair might be disabled.
+>  	 */
+> -	if (!cpumask_equal(cpu_l2_cache_mask(cpu), sibling_mask(cpu)))
+> -		shared_caches = true;
+> +	if (!shared_caches) {
+> +		struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
+> +		struct cpumask *mask = cpu_l2_cache_mask(cpu);
+> +
+> +		if (has_big_cores)
+> +			sibling_mask = cpu_smallcore_mask;
+> +
+> +		if (cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu)))
+> +			shared_caches = true;
+> +	}
+> 
+>  	set_numa_node(numa_cpu_lookup_table[cpu]);
+>  	set_numa_mem(local_memory_node(numa_cpu_lookup_table[cpu]));
+> @@ -1375,9 +1387,17 @@ static void fixup_topology(void)
+>  #ifdef CONFIG_SCHED_SMT
+>  	if (has_big_cores) {
+>  		pr_info("Big cores detected but using small core scheduling\n");
+> -		powerpc_topology[0].mask = smallcore_smt_mask;
+> +		powerpc_topology[smt_idx].mask = smallcore_smt_mask;
+>  	}
+>  #endif
+> +	if (shared_caches) {
+> +		pr_info("Using shared cache scheduler topology\n");
+> +		powerpc_topology[bigcore_idx].mask = shared_cache_mask;
+> +		powerpc_topology[bigcore_idx].sd_flags = powerpc_shared_cache_flags;
+> +#ifdef CONFIG_SCHED_DEBUG
+> +		powerpc_topology[bigcore_idx].name = "CACHE";
+> +#endif
+> +	}
+>  }
+> 
+>  void __init smp_cpus_done(unsigned int max_cpus)
+> -- 
+> 2.17.1
+> 
