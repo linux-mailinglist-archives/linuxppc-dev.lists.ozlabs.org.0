@@ -2,45 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54052327AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 00:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 067AE232949
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 03:00:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BH7vG45FXzDqND
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 08:46:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHBs81MGnzDqqJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 10:59:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHBpb50BLzDqf0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 10:57:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BH7ry6Ln1zDqPC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 08:44:33 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 06TMiTG1009810;
- Wed, 29 Jul 2020 17:44:29 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 06TMiS25009808;
- Wed, 29 Jul 2020 17:44:28 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 29 Jul 2020 17:44:27 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Vladis Dronov <vdronov@redhat.com>
-Subject: Re: [PATCH] powerpc: fix function annotations to avoid section
- mismatch warnings with gcc-10
-Message-ID: <20200729224427.GI17447@gate.crashing.org>
-References: <20200729133741.62789-1-vdronov@redhat.com>
- <20200729144949.GF17447@gate.crashing.org>
- <584129967.9672326.1596051896801.JavaMail.zimbra@redhat.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <584129967.9672326.1596051896801.JavaMail.zimbra@redhat.com>
-User-Agent: Mutt/1.4.2.3i
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=XXby88pg; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BHBpZ102Qz9sRN;
+ Thu, 30 Jul 2020 10:57:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1596070662;
+ bh=rY7j/lpAaiE/yJIIG3Dv4Q34+OGeOt90Rrtbh9eLqm4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=XXby88pgcFASWvlRTD75nfrIeuVipbFcU/1yJ3aaryWOBiwCaH0lIQ0g7CuaPdiJu
+ 6/y/AKmWEqCnySq6BC+4Dkqa2k6xaSIqF8G9DJ/1tsjB+2DGBGafOCyS+p8uNeiPCN
+ xf3pPHX/LlkAKSSLbd7jDcvLroJFw0GhZHbOX7fZLb4ua4xzAkyGH1SV+7WjtjOobx
+ Jfxj3WlxQydeC8EZIJhX3XeNl3iSew3Fvjf3udQ32OSIwnu+FHmPhA5V6Z0VZp8iY2
+ B5iQDp2xlsTNzoWLKtDHVyv4AH1Xw0IegIOYhejLKedozP8RANk1C/olCSpCJcs9RE
+ /0ALNlxxLi/tA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: explicitly reschedule during drmem_lmb
+ list traversal
+In-Reply-To: <878sf31m8k.fsf@linux.ibm.com>
+References: <20200728173741.717372-1-nathanl@linux.ibm.com>
+ <bd9225f2-40c9-0460-ba45-c29c920b5f91@linux.ibm.com>
+ <878sf31m8k.fsf@linux.ibm.com>
+Date: Thu, 30 Jul 2020 10:57:38 +1000
+Message-ID: <87lfj16cql.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,47 +62,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>
+Cc: tyreld@linux.ibm.com, cheloha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 29, 2020 at 03:44:56PM -0400, Vladis Dronov wrote:
-> > > Certain warnings are emitted for powerpc code when building with a gcc-10
-> > > toolset:
-> > > 
-> > >     WARNING: modpost: vmlinux.o(.text.unlikely+0x377c): Section mismatch in
-> > >     reference from the function remove_pmd_table() to the function
-> > >     .meminit.text:split_kernel_mapping()
-> > >     The function remove_pmd_table() references
-> > >     the function __meminit split_kernel_mapping().
-> > >     This is often because remove_pmd_table lacks a __meminit
-> > >     annotation or the annotation of split_kernel_mapping is wrong.
-> > > 
-> > > Add the appropriate __init and __meminit annotations to make modpost not
-> > > complain. In all the cases there are just a single callsite from another
-> > > __init or __meminit function:
-> > > 
-> > > __meminit remove_pagetable() -> remove_pud_table() -> remove_pmd_table()
-> > > __init prom_init() -> setup_secure_guest()
-> > > __init xive_spapr_init() -> xive_spapr_disabled()
-> > 
-> > So what changed?  These functions were inlined with older compilers, but
-> > not anymore?
-> 
-> Yes, exactly. Gcc-10 does not inline them anymore. If this is because of my
-> build system, this can happen to others also.
-> 
-> The same thing was fixed by Linus in e99332e7b4cd ("gcc-10: mark more functions
-> __init to avoid section mismatch warnings").
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>> Le 28/07/2020 =C3=A0 19:37, Nathan Lynch a =C3=A9crit=C2=A0:
+>>> The drmem lmb list can have hundreds of thousands of entries, and
+>>> unfortunately lookups take the form of linear searches. As long as
+>>> this is the case, traversals have the potential to monopolize the CPU
+>>> and provoke lockup reports, workqueue stalls, and the like unless
+>>> they explicitly yield.
+>>>=20
+>>> Rather than placing cond_resched() calls within various
+>>> for_each_drmem_lmb() loop blocks in the code, put it in the iteration
+>>> expression of the loop macro itself so users can't omit it.
+>>
+>> Is that not too much to call cond_resched() on every LMB?
+>>
+>> Could that be less frequent, every 10, or 100, I don't really know ?
+>
+> Everything done within for_each_drmem_lmb is relatively heavyweight
+> already. E.g. calling dlpar_remove_lmb()/dlpar_add_lmb() can take dozens
+> of milliseconds. I don't think cond_resched() is an expensive check in
+> this context.
 
-It sounds like this is part of "-finline-functions was retuned" on
-<https://gcc.gnu.org/gcc-10/changes.html>?  So everyone should see it
-(no matter what config or build system), and it is a good thing too :-)
+Hmm, mostly.
 
-Thanks for the confirmation,
+But there are quite a few cases like drmem_update_dt_v1():
 
+	for_each_drmem_lmb(lmb) {
+		dr_cell->base_addr =3D cpu_to_be64(lmb->base_addr);
+		dr_cell->drc_index =3D cpu_to_be32(lmb->drc_index);
+		dr_cell->aa_index =3D cpu_to_be32(lmb->aa_index);
+		dr_cell->flags =3D cpu_to_be32(drmem_lmb_flags(lmb));
 
-Segher
+		dr_cell++;
+	}
+
+Which will compile to a pretty tight loop at the moment.
+
+Or drmem_update_dt_v2() which has two loops over all lmbs.
+
+And although the actual TIF check is cheap the function call to do it is
+not free.
+
+So I worry this is going to make some of those long loops take even longer.
+
+At the same time I don't see an easy way to batch the calls to
+cond_resched() without more intrusive changes.
+
+cheers
