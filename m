@@ -1,78 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D724232CBD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 09:56:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4224E232FDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 11:53:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHN6865n6zDr4F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 17:56:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHQhF6Yv4zDqvr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 19:53:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHN430FbGzDqWj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 17:54:58 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06U7XV61100597; Thu, 30 Jul 2020 03:54:50 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32jw2m8kmq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 03:54:50 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U7pEfK027677;
- Thu, 30 Jul 2020 07:54:48 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04ams.nl.ibm.com with ESMTP id 32gcy4nxnv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Jul 2020 07:54:47 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06U7sjKb40239188
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Jul 2020 07:54:45 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 38F7752051;
- Thu, 30 Jul 2020 07:54:45 +0000 (GMT)
-Received: from [9.85.117.159] (unknown [9.85.117.159])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id B61895204E;
- Thu, 30 Jul 2020 07:54:42 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
-Subject: Re: [PATCH V5 0/4] powerpc/perf: Add support for perf extended regs
- in powerpc
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-Date: Thu, 30 Jul 2020 13:24:40 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <27D1CE26-A506-4CFF-B1C2-E0545F26E637@linux.vnet.ibm.com>
-References: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>
-X-Mailer: Apple Mail (2.3608.120.23.2.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-30_04:2020-07-30,
- 2020-07-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0
- impostorscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
- lowpriorityscore=0 phishscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007300054
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHQfY2JgszDqsH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 19:51:31 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id F3FD01A03AA;
+ Thu, 30 Jul 2020 11:51:26 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5BEF61A04C3;
+ Thu, 30 Jul 2020 11:51:22 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 8FD26402AA;
+ Thu, 30 Jul 2020 11:51:16 +0200 (CEST)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ASoC: fsl-asoc-card: Remove fsl_asoc_card_set_bias_level
+ function
+Date: Thu, 30 Jul 2020 17:47:02 +0800
+Message-Id: <1596102422-14010-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,109 +53,285 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, kjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+With this case:
+aplay -Dhw:x 16khz.wav 24khz.wav
+There is sound distortion for 24khz.wav. The reason is that setting
+PLL of WM8962 with set_bias_level function, the bias level is not
+changed when 24khz.wav is played, then the PLL won't be reset, the
+clock is not correct, so distortion happens.
 
+The resolution of this issue is to remove fsl_asoc_card_set_bias_level.
+Move PLL configuration to hw_params and hw_free.
 
-> On 27-Jul-2020, at 10:46 PM, Athira Rajeev =
-<atrajeev@linux.vnet.ibm.com> wrote:
->=20
-> Patch set to add support for perf extended register capability in
-> powerpc. The capability flag PERF_PMU_CAP_EXTENDED_REGS, is used to
-> indicate the PMU which support extended registers. The generic code
-> define the mask of extended registers as 0 for non supported =
-architectures.
->=20
-> Patches 1 and 2 are the kernel side changes needed to include
-> base support for extended regs in powerpc and in power10.
-> Patches 3 and 4 are the perf tools side changes needed to support the
-> extended registers.
->=20
+After removing fsl_asoc_card_set_bias_level, also test WM8960 case,
+it can work.
 
-Hi Arnaldo, Jiri
+Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+changes in v2
+- replace is_stream_in_use with streams
+- add "out" error handler in hw_params()
 
-please let me know if you have any comments/suggestions on this patch =
-series to add support for perf extended regs.
+ sound/soc/fsl/fsl-asoc-card.c | 155 ++++++++++++++++------------------
+ 1 file changed, 71 insertions(+), 84 deletions(-)
 
-Thanks
-Athira
-
-> patch 1/4 defines the PERF_PMU_CAP_EXTENDED_REGS mask to output the
-> values of mmcr0,mmcr1,mmcr2 for POWER9. Defines =
-`PERF_REG_EXTENDED_MASK`
-> at runtime which contains mask value of the supported registers under
-> extended regs.
->=20
-> patch 2/4 adds the extended regs support for power10 and exposes
-> MMCR3, SIER2, SIER3 registers as part of extended regs.
->=20
-> Patch 3/4 and 4/4 adds extended regs to sample_reg_mask in the tool
-> side to use with `-I?` option for power9 and power10 respectively.
->=20
-> Ravi bangoria found an issue with `perf record -I` while testing the
-> changes. The same issue is currently being worked on here:
-> https://lkml.org/lkml/2020/7/19/413 and will be resolved once fix
-> from Jin Yao is merged.
->=20
-> This patch series is based on powerpc/next
->=20
-> Changelog:
->=20
-> Changes from v4 -> v5
-> - initialize `perf_reg_extended_max` to work on
->  all platforms as suggested by Ravi Bangoria
-> - Added Reviewed-and-Tested-by from Ravi Bangoria
->=20
-> Changes from v3 -> v4
-> - Split the series and send extended regs as separate patch set here.
->  Link to previous series :
->  =
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D190462&st=
-ate=3D*
->  Other PMU patches are already merged in powerpc/next.
->=20
-> - Fixed kernel build issue when using config having
->  CONFIG_PERF_EVENTS set and without CONFIG_PPC_PERF_CTRS
->  reported by kernel build bot.
-> - Included Reviewed-by from Kajol Jain.
-> - Addressed review comments from Ravi Bangoria to initialize =
-`perf_reg_extended_max`
->  and define it in lowercase since it is local variable.
->=20
-> Anju T Sudhakar (2):
->  powerpc/perf: Add support for outputting extended regs in perf
->    intr_regs
->  tools/perf: Add perf tools support for extended register capability =
-in
->    powerpc
->=20
-> Athira Rajeev (2):
->  powerpc/perf: Add extended regs support for power10 platform
->  tools/perf: Add perf tools support for extended regs in power10
->=20
-> arch/powerpc/include/asm/perf_event.h           |  3 ++
-> arch/powerpc/include/asm/perf_event_server.h    |  5 +++
-> arch/powerpc/include/uapi/asm/perf_regs.h       | 20 ++++++++-
-> arch/powerpc/perf/core-book3s.c                 |  1 +
-> arch/powerpc/perf/perf_regs.c                   | 44 =
-++++++++++++++++++--
-> arch/powerpc/perf/power10-pmu.c                 |  6 +++
-> arch/powerpc/perf/power9-pmu.c                  |  6 +++
-> tools/arch/powerpc/include/uapi/asm/perf_regs.h | 20 ++++++++-
-> tools/perf/arch/powerpc/include/perf_regs.h     |  8 +++-
-> tools/perf/arch/powerpc/util/header.c           |  9 +---
-> tools/perf/arch/powerpc/util/perf_regs.c        | 55 =
-+++++++++++++++++++++++++
-> tools/perf/arch/powerpc/util/utils_header.h     | 15 +++++++
-> 12 files changed, 178 insertions(+), 14 deletions(-)
-> create mode 100644 tools/perf/arch/powerpc/util/utils_header.h
->=20
-> --=20
-> 1.8.3.1
->=20
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 4848ba61d083..b6a2a527dc04 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -73,6 +73,7 @@ struct cpu_priv {
+  * @codec_priv: CODEC private data
+  * @cpu_priv: CPU private data
+  * @card: ASoC card structure
++ * @streams: Mask of current active streams
+  * @sample_rate: Current sample rate
+  * @sample_format: Current sample format
+  * @asrc_rate: ASRC sample rate used by Back-Ends
+@@ -89,6 +90,7 @@ struct fsl_asoc_card_priv {
+ 	struct codec_priv codec_priv;
+ 	struct cpu_priv cpu_priv;
+ 	struct snd_soc_card card;
++	u8 streams;
+ 	u32 sample_rate;
+ 	snd_pcm_format_t sample_format;
+ 	u32 asrc_rate;
+@@ -151,21 +153,17 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
+ 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+ 	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(rtd->card);
+ 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
++	struct codec_priv *codec_priv = &priv->codec_priv;
+ 	struct cpu_priv *cpu_priv = &priv->cpu_priv;
+ 	struct device *dev = rtd->card->dev;
++	unsigned int pll_out;
+ 	int ret;
+ 
+ 	priv->sample_rate = params_rate(params);
+ 	priv->sample_format = params_format(params);
++	priv->streams |= BIT(substream->stream);
+ 
+-	/*
+-	 * If codec-dai is DAI Master and all configurations are already in the
+-	 * set_bias_level(), bypass the remaining settings in hw_params().
+-	 * Note: (dai_fmt & CBM_CFM) includes CBM_CFM and CBM_CFS.
+-	 */
+-	if ((priv->card.set_bias_level &&
+-	     priv->dai_fmt & SND_SOC_DAIFMT_CBM_CFM) ||
+-	    fsl_asoc_card_is_ac97(priv))
++	if (fsl_asoc_card_is_ac97(priv))
+ 		return 0;
+ 
+ 	/* Specific configurations of DAIs starts from here */
+@@ -174,7 +172,7 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
+ 				     cpu_priv->sysclk_dir[tx]);
+ 	if (ret && ret != -ENOTSUPP) {
+ 		dev_err(dev, "failed to set sysclk for cpu dai\n");
+-		return ret;
++		goto out;
+ 	}
+ 
+ 	if (cpu_priv->slot_width) {
+@@ -182,6 +180,69 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
+ 					       cpu_priv->slot_width);
+ 		if (ret && ret != -ENOTSUPP) {
+ 			dev_err(dev, "failed to set TDM slot for cpu dai\n");
++			goto out;
++		}
++	}
++
++	/* Specific configuration for PLL */
++	if (codec_priv->pll_id && codec_priv->fll_id) {
++		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
++			pll_out = priv->sample_rate * 384;
++		else
++			pll_out = priv->sample_rate * 256;
++
++		ret = snd_soc_dai_set_pll(asoc_rtd_to_codec(rtd, 0),
++					  codec_priv->pll_id,
++					  codec_priv->mclk_id,
++					  codec_priv->mclk_freq, pll_out);
++		if (ret) {
++			dev_err(dev, "failed to start FLL: %d\n", ret);
++			goto out;
++		}
++
++		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
++					     codec_priv->fll_id,
++					     pll_out, SND_SOC_CLOCK_IN);
++
++		if (ret && ret != -ENOTSUPP) {
++			dev_err(dev, "failed to set SYSCLK: %d\n", ret);
++			goto out;
++		}
++	}
++
++	return 0;
++
++out:
++	priv->streams &= ~BIT(substream->stream);
++	return ret;
++}
++
++static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
++{
++	struct snd_soc_pcm_runtime *rtd = substream->private_data;
++	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(rtd->card);
++	struct codec_priv *codec_priv = &priv->codec_priv;
++	struct device *dev = rtd->card->dev;
++	int ret;
++
++	priv->streams &= ~BIT(substream->stream);
++
++	if (!priv->streams && codec_priv->pll_id &&
++	    codec_priv->fll_id) {
++		/* Force freq to be 0 to avoid error message in codec */
++		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
++					     codec_priv->mclk_id,
++					     0,
++					     SND_SOC_CLOCK_IN);
++		if (ret) {
++			dev_err(dev, "failed to switch away from FLL: %d\n", ret);
++			return ret;
++		}
++
++		ret = snd_soc_dai_set_pll(asoc_rtd_to_codec(rtd, 0),
++					  codec_priv->pll_id, 0, 0, 0);
++		if (ret && ret != -ENOTSUPP) {
++			dev_err(dev, "failed to stop FLL: %d\n", ret);
+ 			return ret;
+ 		}
+ 	}
+@@ -191,6 +252,7 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
+ 
+ static const struct snd_soc_ops fsl_asoc_card_ops = {
+ 	.hw_params = fsl_asoc_card_hw_params,
++	.hw_free = fsl_asoc_card_hw_free,
+ };
+ 
+ static int be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+@@ -254,75 +316,6 @@ static struct snd_soc_dai_link fsl_asoc_card_dai[] = {
+ 	},
+ };
+ 
+-static int fsl_asoc_card_set_bias_level(struct snd_soc_card *card,
+-					struct snd_soc_dapm_context *dapm,
+-					enum snd_soc_bias_level level)
+-{
+-	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(card);
+-	struct snd_soc_pcm_runtime *rtd;
+-	struct snd_soc_dai *codec_dai;
+-	struct codec_priv *codec_priv = &priv->codec_priv;
+-	struct device *dev = card->dev;
+-	unsigned int pll_out;
+-	int ret;
+-
+-	rtd = snd_soc_get_pcm_runtime(card, &card->dai_link[0]);
+-	codec_dai = asoc_rtd_to_codec(rtd, 0);
+-	if (dapm->dev != codec_dai->dev)
+-		return 0;
+-
+-	switch (level) {
+-	case SND_SOC_BIAS_PREPARE:
+-		if (dapm->bias_level != SND_SOC_BIAS_STANDBY)
+-			break;
+-
+-		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
+-			pll_out = priv->sample_rate * 384;
+-		else
+-			pll_out = priv->sample_rate * 256;
+-
+-		ret = snd_soc_dai_set_pll(codec_dai, codec_priv->pll_id,
+-					  codec_priv->mclk_id,
+-					  codec_priv->mclk_freq, pll_out);
+-		if (ret) {
+-			dev_err(dev, "failed to start FLL: %d\n", ret);
+-			return ret;
+-		}
+-
+-		ret = snd_soc_dai_set_sysclk(codec_dai, codec_priv->fll_id,
+-					     pll_out, SND_SOC_CLOCK_IN);
+-		if (ret && ret != -ENOTSUPP) {
+-			dev_err(dev, "failed to set SYSCLK: %d\n", ret);
+-			return ret;
+-		}
+-		break;
+-
+-	case SND_SOC_BIAS_STANDBY:
+-		if (dapm->bias_level != SND_SOC_BIAS_PREPARE)
+-			break;
+-
+-		ret = snd_soc_dai_set_sysclk(codec_dai, codec_priv->mclk_id,
+-					     codec_priv->mclk_freq,
+-					     SND_SOC_CLOCK_IN);
+-		if (ret && ret != -ENOTSUPP) {
+-			dev_err(dev, "failed to switch away from FLL: %d\n", ret);
+-			return ret;
+-		}
+-
+-		ret = snd_soc_dai_set_pll(codec_dai, codec_priv->pll_id, 0, 0, 0);
+-		if (ret) {
+-			dev_err(dev, "failed to stop FLL: %d\n", ret);
+-			return ret;
+-		}
+-		break;
+-
+-	default:
+-		break;
+-	}
+-
+-	return 0;
+-}
+-
+ static int fsl_asoc_card_audmux_init(struct device_node *np,
+ 				     struct fsl_asoc_card_priv *priv)
+ {
+@@ -611,7 +604,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	/* Diversify the card configurations */
+ 	if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
+ 		codec_dai_name = "cs42888";
+-		priv->card.set_bias_level = NULL;
+ 		priv->cpu_priv.sysclk_freq[TX] = priv->codec_priv.mclk_freq;
+ 		priv->cpu_priv.sysclk_freq[RX] = priv->codec_priv.mclk_freq;
+ 		priv->cpu_priv.sysclk_dir[TX] = SND_SOC_CLOCK_OUT;
+@@ -628,26 +620,22 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
+ 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8962")) {
+ 		codec_dai_name = "wm8962";
+-		priv->card.set_bias_level = fsl_asoc_card_set_bias_level;
+ 		priv->codec_priv.mclk_id = WM8962_SYSCLK_MCLK;
+ 		priv->codec_priv.fll_id = WM8962_SYSCLK_FLL;
+ 		priv->codec_priv.pll_id = WM8962_FLL;
+ 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
+ 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8960")) {
+ 		codec_dai_name = "wm8960-hifi";
+-		priv->card.set_bias_level = fsl_asoc_card_set_bias_level;
+ 		priv->codec_priv.fll_id = WM8960_SYSCLK_AUTO;
+ 		priv->codec_priv.pll_id = WM8960_SYSCLK_AUTO;
+ 		priv->dai_fmt |= SND_SOC_DAIFMT_CBM_CFM;
+ 	} else if (of_device_is_compatible(np, "fsl,imx-audio-ac97")) {
+ 		codec_dai_name = "ac97-hifi";
+-		priv->card.set_bias_level = NULL;
+ 		priv->dai_fmt = SND_SOC_DAIFMT_AC97;
+ 		priv->card.dapm_routes = audio_map_ac97;
+ 		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_ac97);
+ 	} else if (of_device_is_compatible(np, "fsl,imx-audio-mqs")) {
+ 		codec_dai_name = "fsl-mqs-dai";
+-		priv->card.set_bias_level = NULL;
+ 		priv->dai_fmt = SND_SOC_DAIFMT_LEFT_J |
+ 				SND_SOC_DAIFMT_CBS_CFS |
+ 				SND_SOC_DAIFMT_NB_NF;
+@@ -657,7 +645,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_tx);
+ 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8524")) {
+ 		codec_dai_name = "wm8524-hifi";
+-		priv->card.set_bias_level = NULL;
+ 		priv->dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
+ 		priv->dai_link[1].dpcm_capture = 0;
+ 		priv->dai_link[2].dpcm_capture = 0;
+-- 
+2.27.0
 
