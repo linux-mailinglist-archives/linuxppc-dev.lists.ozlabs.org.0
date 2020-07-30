@@ -1,51 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2428233692
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 18:20:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5800A2336B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 18:26:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHbHY2KSJzDqNd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 02:20:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHbPx1BD2zDqD3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 02:26:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=HjKiDMPw; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHb7464ZjzDr6Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 02:13:15 +1000 (AEST)
-IronPort-SDR: qq8hi0+8yf17oxTOBnAO+/DO/eOCemTT4f9/fqwzhPj5aQkTkeQqdY3uDWWJBpB/0cV69ThYAE
- C+nCbBj2QZgg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9698"; a="131194781"
-X-IronPort-AV: E=Sophos;i="5.75,415,1589266800"; d="scan'208";a="131194781"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2020 09:13:12 -0700
-IronPort-SDR: Qm5j5g4YpzW5J/gVILvMQANKfQOnvkMVYHOPID+7PPRHO3TyDZA73LUWlD4TfqP3QRdvVSwRCR
- H+6tKtafRKgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,415,1589266800"; d="scan'208";a="304626231"
-Received: from lkp-server02.sh.intel.com (HELO d4d86dd808e0) ([10.239.97.151])
- by orsmga002.jf.intel.com with ESMTP; 30 Jul 2020 09:13:10 -0700
-Received: from kbuild by d4d86dd808e0 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1k1BB7-00009e-HF; Thu, 30 Jul 2020 16:13:09 +0000
-Date: Fri, 31 Jul 2020 00:12:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS cf1ae052e073c7ef6cf1a783a6427f7228253bd3
-Message-ID: <5f22f16c.aUfo+eKMGKFCoFHc%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHbC84zg4zDr7W
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 02:16:52 +1000 (AEST)
+Received: from localhost (mobile-166-175-62-240.mycingular.net
+ [166.175.62.240])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 925452072A;
+ Thu, 30 Jul 2020 16:16:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1596125809;
+ bh=hNfjKS+QR4p8l07gd55PXLnckFNFqYkpyTOwjMmoaSA=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=HjKiDMPwCoi7NJ0Jz+lypkIjYiHzaqqEMdVa2qeT2bX1EJ8XMPQmSMm3N8TTlWjAZ
+ mprTQhhuobed38hEWxNtazyYchMzB9pCo7YrSzNaFClPDPdzevsQsDD7JoC9YKr6BR
+ n3lPugWvDcQkidk96W5jq2v68qfrj8SHGLSknx6U=
+Date: Thu, 30 Jul 2020 11:16:48 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Wei Yongjun <weiyongjun1@huawei.com>
+Subject: Re: [PATCH -next] PCI: rpadlpar: Make some functions static
+Message-ID: <20200730161648.GA2044795@bjorn-Precision-5520>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200721151735.41181-1-weiyongjun1@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,77 +55,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci@vger.kernel.org,
+ Hulk Robot <hulkci@huawei.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: cf1ae052e073c7ef6cf1a783a6427f7228253bd3  powerpc/powernv/sriov: Remove unused but set variable 'phb'
+On Tue, Jul 21, 2020 at 11:17:35PM +0800, Wei Yongjun wrote:
+> The sparse tool report build warnings as follows:
+> 
+> drivers/pci/hotplug/rpadlpar_core.c:355:5: warning:
+>  symbol 'dlpar_remove_pci_slot' was not declared. Should it be static?
+> drivers/pci/hotplug/rpadlpar_core.c:461:12: warning:
+>  symbol 'rpadlpar_io_init' was not declared. Should it be static?
+> drivers/pci/hotplug/rpadlpar_core.c:473:6: warning:
+>  symbol 'rpadlpar_io_exit' was not declared. Should it be static?
+> 
+> Those functions are not used outside of this file, so marks them
+> static.
+> Also mark rpadlpar_io_exit() as __exit.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-elapsed time: 1486m
+Applied to pci/hotplug for v5.9, thanks!
 
-configs tested: 54
-configs skipped: 1
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a016-20200730
-i386                 randconfig-a012-20200730
-i386                 randconfig-a014-20200730
-i386                 randconfig-a015-20200730
-i386                 randconfig-a011-20200730
-i386                 randconfig-a013-20200730
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> ---
+>  drivers/pci/hotplug/rpadlpar_core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
+> index c5eb509c72f0..f979b7098acf 100644
+> --- a/drivers/pci/hotplug/rpadlpar_core.c
+> +++ b/drivers/pci/hotplug/rpadlpar_core.c
+> @@ -352,7 +352,7 @@ static int dlpar_remove_vio_slot(char *drc_name, struct device_node *dn)
+>   * -ENODEV		Not a valid drc_name
+>   * -EIO			Internal PCI Error
+>   */
+> -int dlpar_remove_pci_slot(char *drc_name, struct device_node *dn)
+> +static int dlpar_remove_pci_slot(char *drc_name, struct device_node *dn)
+>  {
+>  	struct pci_bus *bus;
+>  	struct slot *slot;
+> @@ -458,7 +458,7 @@ static inline int is_dlpar_capable(void)
+>  	return (int) (rc != RTAS_UNKNOWN_SERVICE);
+>  }
+>  
+> -int __init rpadlpar_io_init(void)
+> +static int __init rpadlpar_io_init(void)
+>  {
+>  
+>  	if (!is_dlpar_capable()) {
+> @@ -470,7 +470,7 @@ int __init rpadlpar_io_init(void)
+>  	return dlpar_sysfs_init();
+>  }
+>  
+> -void rpadlpar_io_exit(void)
+> +static void __exit rpadlpar_io_exit(void)
+>  {
+>  	dlpar_sysfs_exit();
+>  }
+> 
