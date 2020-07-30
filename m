@@ -2,51 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D75233583
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 17:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 976902335BB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 17:41:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHZFQ1r5gzDrBH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 01:33:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHZPk60xKzDqf2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 01:40:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=vdronov@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=OGsGhXCx; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=OGsGhXCx; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHZC603sfzDr43
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 01:31:38 +1000 (AEST)
-IronPort-SDR: JZ0MVh9Zj75VP0yMe48MfOX0+9prN6cm5eZM+2PvN+NZelKQn4qWKuZs8GuFNTb+0pzdEVkZKv
- TxYwz/nMNCsQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9698"; a="216093061"
-X-IronPort-AV: E=Sophos;i="5.75,414,1589266800"; d="scan'208";a="216093061"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2020 08:31:34 -0700
-IronPort-SDR: 6NlV0vE+0pbz983/0wTHzON9yZOwdahuimUjclg2U86WlfGXcGxik1mrJ7FDsrex4eh3lq4oTz
- j2cIs11fT+9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,414,1589266800"; d="scan'208";a="465280536"
-Received: from lkp-server02.sh.intel.com (HELO d4d86dd808e0) ([10.239.97.151])
- by orsmga005.jf.intel.com with ESMTP; 30 Jul 2020 08:31:32 -0700
-Received: from kbuild by d4d86dd808e0 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1k1AWp-00008X-Vz; Thu, 30 Jul 2020 15:31:31 +0000
-Date: Thu, 30 Jul 2020 23:30:34 +0800
-From: kernel test robot <lkp@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHZGF36LBzDr5k
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 01:34:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1596123265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ghDMhL6A2KNLEilKh/KJ4TUbwSrfsjv+yDVIoZhA6qw=;
+ b=OGsGhXCxWAjhXZ+oFNOzbW5cNot8QTcfpvyt9z9fDkD9Ef7qHBEYP1/1EJJ4WVhBVIUgq0
+ 25UmpqoJ8bCnfRdj0VsLZLQ4726sefiX0j8q3CjEVqt+C7rTz8kOFlq+oNlq0tk5Dqg0Ee
+ oWUelarRh8bRiNn5cvmERvA8djSMypM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1596123265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ghDMhL6A2KNLEilKh/KJ4TUbwSrfsjv+yDVIoZhA6qw=;
+ b=OGsGhXCxWAjhXZ+oFNOzbW5cNot8QTcfpvyt9z9fDkD9Ef7qHBEYP1/1EJJ4WVhBVIUgq0
+ 25UmpqoJ8bCnfRdj0VsLZLQ4726sefiX0j8q3CjEVqt+C7rTz8kOFlq+oNlq0tk5Dqg0Ee
+ oWUelarRh8bRiNn5cvmERvA8djSMypM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-467-_DUX7MZhOA-VCkkh1Qrrpg-1; Thu, 30 Jul 2020 11:34:19 -0400
+X-MC-Unique: _DUX7MZhOA-VCkkh1Qrrpg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AC8D5100CCC3;
+ Thu, 30 Jul 2020 15:34:17 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7795287E00;
+ Thu, 30 Jul 2020 15:34:17 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com
+ (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id 12BC395A72;
+ Thu, 30 Jul 2020 15:34:16 +0000 (UTC)
+Date: Thu, 30 Jul 2020 11:34:16 -0400 (EDT)
+From: Vladis Dronov <vdronov@redhat.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 909adfc66b9a1db21b5e8733e9ebfa6cd5135d74
-Message-ID: <5f22e79a.HcSe0W4OW8nzJpLr%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Message-ID: <842212692.9780293.1596123256621.JavaMail.zimbra@redhat.com>
+In-Reply-To: <87ft995hv8.fsf@mpe.ellerman.id.au>
+References: <20200729133741.62789-1-vdronov@redhat.com>
+ <20200729144949.GF17447@gate.crashing.org>
+ <584129967.9672326.1596051896801.JavaMail.zimbra@redhat.com>
+ <20200729224427.GI17447@gate.crashing.org>
+ <87ft995hv8.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH] powerpc: fix function annotations to avoid section
+ mismatch warnings with gcc-10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.40.208.60, 10.4.195.18]
+Thread-Topic: powerpc: fix function annotations to avoid section mismatch
+ warnings with gcc-10
+Thread-Index: rKp81qyk4KEAfYe/qAP0qUT6DQV0IQ==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,125 +96,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: 909adfc66b9a1db21b5e8733e9ebfa6cd5135d74  powerpc/64s/hash: Fix hash_preload running with interrupts enabled
+Hello, Michael,
 
-elapsed time: 4429m
+----- Original Message -----
+> From: "Michael Ellerman" <mpe@ellerman.id.au>
+> Subject: Re: [PATCH] powerpc: fix function annotations to avoid section mismatch warnings with gcc-10
+> 
+...
+> >> > So what changed?  These functions were inlined with older compilers, but
+> >> > not anymore?
+> >> 
+> >> Yes, exactly. Gcc-10 does not inline them anymore. If this is because of
+> >> my
+> >> build system, this can happen to others also.
+> >> 
+> >> The same thing was fixed by Linus in e99332e7b4cd ("gcc-10: mark more
+> >> functions
+> >> __init to avoid section mismatch warnings").
+> >
+> > It sounds like this is part of "-finline-functions was retuned" on
+> > <https://gcc.gnu.org/gcc-10/changes.html>?  So everyone should see it
+> > (no matter what config or build system), and it is a good thing too :-)
+> 
+> I haven't seen it in my GCC 10 builds, so there must be some other
+> subtlety. Probably it depends on details of the .config.
+> 
 
-configs tested: 102
-configs skipped: 3
+I've just had this building the latest upstream for the ppc64le with a derivative
+of the RHEL-8 config. This can probably be a compiler/linker setting, like -O2
+versus -O3.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> cheers
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                          r7785rp_defconfig
-mips                         tb0226_defconfig
-mips                      loongson3_defconfig
-um                            kunit_defconfig
-nds32                            alldefconfig
-arm                       imx_v4_v5_defconfig
-mips                           gcw0_defconfig
-mips                      fuloong2e_defconfig
-arm                      pxa255-idp_defconfig
-s390                                defconfig
-arm                          prima2_defconfig
-arm                      footbridge_defconfig
-mips                        nlm_xlr_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-x86_64               randconfig-a005-20200727
-x86_64               randconfig-a004-20200727
-x86_64               randconfig-a003-20200727
-x86_64               randconfig-a006-20200727
-x86_64               randconfig-a002-20200727
-x86_64               randconfig-a001-20200727
-i386                 randconfig-a003-20200728
-i386                 randconfig-a004-20200728
-i386                 randconfig-a005-20200728
-i386                 randconfig-a002-20200728
-i386                 randconfig-a006-20200728
-i386                 randconfig-a001-20200728
-i386                 randconfig-a003-20200727
-i386                 randconfig-a005-20200727
-i386                 randconfig-a004-20200727
-i386                 randconfig-a006-20200727
-i386                 randconfig-a002-20200727
-i386                 randconfig-a001-20200727
-x86_64               randconfig-a014-20200728
-x86_64               randconfig-a012-20200728
-x86_64               randconfig-a015-20200728
-x86_64               randconfig-a016-20200728
-x86_64               randconfig-a013-20200728
-x86_64               randconfig-a011-20200728
-i386                 randconfig-a016-20200728
-i386                 randconfig-a012-20200728
-i386                 randconfig-a013-20200728
-i386                 randconfig-a014-20200728
-i386                 randconfig-a011-20200728
-i386                 randconfig-a015-20200728
-i386                 randconfig-a016-20200727
-i386                 randconfig-a013-20200727
-i386                 randconfig-a012-20200727
-i386                 randconfig-a015-20200727
-i386                 randconfig-a011-20200727
-i386                 randconfig-a014-20200727
-i386                 randconfig-a016-20200730
-i386                 randconfig-a012-20200730
-i386                 randconfig-a014-20200730
-i386                 randconfig-a015-20200730
-i386                 randconfig-a011-20200730
-i386                 randconfig-a013-20200730
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Best regards,
+Vladis Dronov | Red Hat, Inc. | The Core Kernel | Senior Software Engineer
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
