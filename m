@@ -2,67 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C807E232C83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 09:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D724232CBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 09:56:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHMQf6PvVzDqr5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 17:26:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHN6865n6zDr4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jul 2020 17:56:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::842;
- helo=mail-qt1-x842.google.com; envelope-from=shengjiu.wang@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HXYQQMgf; dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHMNR08DZzDqws
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 17:24:06 +1000 (AEST)
-Received: by mail-qt1-x842.google.com with SMTP id x12so11136678qtp.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 00:24:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UONcGtH87E3a5kjHLIWiuODkuzooKxlCqVfEhVFntOs=;
- b=HXYQQMgfzlVEj3WUkqkBrSxkEmTJohgn7cWeafHTC4o/k0JKSoPBxzLQZWVlUdWtSb
- /nP2n5lgXaR5sD9xSWYxzj4aw05lcL0G8vj1vYgxB5qViOBgNbPKMdj7Jfg+/recddQE
- xCgbYFo3KRM/t5/hPKE5YXNb3NYWa4OVLfs+HJ2WWSOyU8m1y4rXbZLUUruYm0QY6pd3
- shQtNvR2f9mvm8rok3XR5Aoj2nzJaqEIYlSXhjZX4d2Tnz1pDr2AKkBwHAANzATN5iDs
- TQFsqc3+O/EmhKFxilWouZ5mFNL2M9Vcib5o7lGLIeDAP4uCBujIJXoJwzXkIGVd7ehd
- xl5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=UONcGtH87E3a5kjHLIWiuODkuzooKxlCqVfEhVFntOs=;
- b=Dkxl61cMtAjpLhvp+VizQdWkzTzoSDn4/Say3TZrCPRfjUPAu2RnHXHmA0At9gHRSy
- E1jF2L3WeX6xQLj0Ui2Rl4m6IsdwkEb1k1KrsQjncHhx1L0lr8huHyrV50ke5TuWQ8+9
- 5kQalmpW22RP+9mM7cgScmf/VylbeZUuiV3p89BqYZIoTi9emFhzYjtY3tY2FhTmTyax
- L3V0mGBbMlPKGYFxSX3uONr2BwG4xaRsoL9a2u1qWj/IR/oem1WT7Zvl9HFw5sn7cLh5
- x9Y2eK0UEgcYjAdkkkwI6Of8PQ/fo5VZJaGnyZ7a3jE14GIzJfKcsKGEyBzw6t8az1J/
- +7ag==
-X-Gm-Message-State: AOAM531wT3Jhme8P7/FdeTr/yTMHwgVZBQnJYYI3+9MUQZETeUvBSWqP
- E49iY+2VOdYnoic7fv/o4rBglvYT4HBILv/A1y0=
-X-Google-Smtp-Source: ABdhPJwyTxUPfHh/W6tv9g29pHFtPJF1Ko5E5uzGhYAwkdfNZ3VBu0oUQIo+AE2x1GxX7qRobBU900hB2OKzukb53L4=
-X-Received: by 2002:ac8:6d0f:: with SMTP id o15mr1543191qtt.121.1596093838176; 
- Thu, 30 Jul 2020 00:23:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <1595762417-2190-1-git-send-email-shengjiu.wang@nxp.com>
- <20200727005558.GA30124@Asurada-Nvidia>
-In-Reply-To: <20200727005558.GA30124@Asurada-Nvidia>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 30 Jul 2020 15:23:47 +0800
-Message-ID: <CAA+D8AMiarV+FovE8ZTTe8zagSz8-XDcck7Z4W2TfbOvzgrLpw@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl-asoc-card: Remove fsl_asoc_card_set_bias_level
- function
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHN430FbGzDqWj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jul 2020 17:54:58 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06U7XV61100597; Thu, 30 Jul 2020 03:54:50 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32jw2m8kmq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 03:54:50 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06U7pEfK027677;
+ Thu, 30 Jul 2020 07:54:48 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma04ams.nl.ibm.com with ESMTP id 32gcy4nxnv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Jul 2020 07:54:47 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 06U7sjKb40239188
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Jul 2020 07:54:45 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 38F7752051;
+ Thu, 30 Jul 2020 07:54:45 +0000 (GMT)
+Received: from [9.85.117.159] (unknown [9.85.117.159])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id B61895204E;
+ Thu, 30 Jul 2020 07:54:42 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+Subject: Re: [PATCH V5 0/4] powerpc/perf: Add support for perf extended regs
+ in powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+Date: Thu, 30 Jul 2020 13:24:40 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <27D1CE26-A506-4CFF-B1C2-E0545F26E637@linux.vnet.ibm.com>
+References: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>
+X-Mailer: Apple Mail (2.3608.120.23.2.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-30_04:2020-07-30,
+ 2020-07-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0
+ impostorscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015
+ lowpriorityscore=0 phishscore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007300054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,67 +84,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 27, 2020 at 8:58 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> On Sun, Jul 26, 2020 at 07:20:17PM +0800, Shengjiu Wang wrote:
-> > With this case:
-> > aplay -Dhw:x 16khz.wav 24khz.wav
-> > There is sound distortion for 24khz.wav. The reason is that setting
-> > PLL of WM8962 with set_bias_level function, the bias level is not
-> > changed when 24khz.wav is played, then the PLL won't be reset, the
-> > clock is not correct, so distortion happens.
-> >
-> > The resolution of this issue is to remove fsl_asoc_card_set_bias_level.
-> > Move PLL configuration to hw_params and hw_free.
->
-> Hmm...using set_bias_level() instead of hw_params/hw_free() was
-> strongly suggested by Mark when I got imx-wm8962 machine driver
-> upstream. So we will need his input here, although I personally
-> don't have a problem with it...
->
-> > After removing fsl_asoc_card_set_bias_level, also test WM8960 case,
-> > it can work.
-> >
-> > Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  sound/soc/fsl/fsl-asoc-card.c | 149 +++++++++++++++-------------------
-> >  1 file changed, 66 insertions(+), 83 deletions(-)
-> >
-> > diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-> > index 4848ba61d083..0517dbb3e908 100644
-> > --- a/sound/soc/fsl/fsl-asoc-card.c
-> > +++ b/sound/soc/fsl/fsl-asoc-card.c
-> > @@ -73,6 +73,7 @@ struct cpu_priv {
-> >   * @codec_priv: CODEC private data
-> >   * @cpu_priv: CPU private data
-> >   * @card: ASoC card structure
-> > + * @is_stream_in_use: flags for release resource in hw_free
->
-> Would love to see something shorter... Could we reuse similar
-> one below, borrowing from fsl_ssi driver?
->
->  * @streams: Mask of current active streams: BIT(TX) and BIT(RX)
->
 
-will send v2 for this change.
 
-> >  static int fsl_asoc_card_audmux_init(struct device_node *np,
-> >                                    struct fsl_asoc_card_priv *priv)
-> >  {
-> > @@ -611,7 +600,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
-> >       /* Diversify the card configurations */
-> >       if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
-> >               codec_dai_name = "cs42888";
-> > -             priv->card.set_bias_level = NULL;
->
-> Can check if set_bias_level is still being used with this change.
+> On 27-Jul-2020, at 10:46 PM, Athira Rajeev =
+<atrajeev@linux.vnet.ibm.com> wrote:
+>=20
+> Patch set to add support for perf extended register capability in
+> powerpc. The capability flag PERF_PMU_CAP_EXTENDED_REGS, is used to
+> indicate the PMU which support extended registers. The generic code
+> define the mask of extended registers as 0 for non supported =
+architectures.
+>=20
+> Patches 1 and 2 are the kernel side changes needed to include
+> base support for extended regs in powerpc and in power10.
+> Patches 3 and 4 are the perf tools side changes needed to support the
+> extended registers.
+>=20
+
+Hi Arnaldo, Jiri
+
+please let me know if you have any comments/suggestions on this patch =
+series to add support for perf extended regs.
+
+Thanks
+Athira
+
+> patch 1/4 defines the PERF_PMU_CAP_EXTENDED_REGS mask to output the
+> values of mmcr0,mmcr1,mmcr2 for POWER9. Defines =
+`PERF_REG_EXTENDED_MASK`
+> at runtime which contains mask value of the supported registers under
+> extended regs.
+>=20
+> patch 2/4 adds the extended regs support for power10 and exposes
+> MMCR3, SIER2, SIER3 registers as part of extended regs.
+>=20
+> Patch 3/4 and 4/4 adds extended regs to sample_reg_mask in the tool
+> side to use with `-I?` option for power9 and power10 respectively.
+>=20
+> Ravi bangoria found an issue with `perf record -I` while testing the
+> changes. The same issue is currently being worked on here:
+> https://lkml.org/lkml/2020/7/19/413 and will be resolved once fix
+> from Jin Yao is merged.
+>=20
+> This patch series is based on powerpc/next
+>=20
+> Changelog:
+>=20
+> Changes from v4 -> v5
+> - initialize `perf_reg_extended_max` to work on
+>  all platforms as suggested by Ravi Bangoria
+> - Added Reviewed-and-Tested-by from Ravi Bangoria
+>=20
+> Changes from v3 -> v4
+> - Split the series and send extended regs as separate patch set here.
+>  Link to previous series :
+>  =
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D190462&st=
+ate=3D*
+>  Other PMU patches are already merged in powerpc/next.
+>=20
+> - Fixed kernel build issue when using config having
+>  CONFIG_PERF_EVENTS set and without CONFIG_PPC_PERF_CTRS
+>  reported by kernel build bot.
+> - Included Reviewed-by from Kajol Jain.
+> - Addressed review comments from Ravi Bangoria to initialize =
+`perf_reg_extended_max`
+>  and define it in lowercase since it is local variable.
+>=20
+> Anju T Sudhakar (2):
+>  powerpc/perf: Add support for outputting extended regs in perf
+>    intr_regs
+>  tools/perf: Add perf tools support for extended register capability =
+in
+>    powerpc
+>=20
+> Athira Rajeev (2):
+>  powerpc/perf: Add extended regs support for power10 platform
+>  tools/perf: Add perf tools support for extended regs in power10
+>=20
+> arch/powerpc/include/asm/perf_event.h           |  3 ++
+> arch/powerpc/include/asm/perf_event_server.h    |  5 +++
+> arch/powerpc/include/uapi/asm/perf_regs.h       | 20 ++++++++-
+> arch/powerpc/perf/core-book3s.c                 |  1 +
+> arch/powerpc/perf/perf_regs.c                   | 44 =
+++++++++++++++++++--
+> arch/powerpc/perf/power10-pmu.c                 |  6 +++
+> arch/powerpc/perf/power9-pmu.c                  |  6 +++
+> tools/arch/powerpc/include/uapi/asm/perf_regs.h | 20 ++++++++-
+> tools/perf/arch/powerpc/include/perf_regs.h     |  8 +++-
+> tools/perf/arch/powerpc/util/header.c           |  9 +---
+> tools/perf/arch/powerpc/util/perf_regs.c        | 55 =
++++++++++++++++++++++++++
+> tools/perf/arch/powerpc/util/utils_header.h     | 15 +++++++
+> 12 files changed, 178 insertions(+), 14 deletions(-)
+> create mode 100644 tools/perf/arch/powerpc/util/utils_header.h
+>=20
+> --=20
+> 1.8.3.1
+>=20
+
