@@ -2,77 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2065B233E5C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 06:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F96233F27
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 08:34:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHvcQ2W1TzDqCR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 14:36:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHyDr6LZMzDqYq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 16:34:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHvZH34ykzDqXd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 14:34:31 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06V4WkZL112544; Fri, 31 Jul 2020 00:34:22 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32krgeqtjj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 31 Jul 2020 00:34:20 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06V4TwSI018729;
- Fri, 31 Jul 2020 04:33:42 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 32gcpx6ukc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 31 Jul 2020 04:33:42 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06V4XdJZ12124530
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 31 Jul 2020 04:33:39 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D1A842047;
- Fri, 31 Jul 2020 04:33:39 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0825F42042;
- Fri, 31 Jul 2020 04:33:37 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.199.52.65])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 31 Jul 2020 04:33:36 +0000 (GMT)
-Date: Fri, 31 Jul 2020 10:03:34 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Define H_PAGE_IN_NONSHARED for
- H_SVM_PAGE_IN hcall
-Message-ID: <20200731043334.GB20199@in.ibm.com>
-References: <alpine.DEB.2.22.394.2007301231140.2548@hadrien>
- <20200730232101.GB5882@oc0525413822.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200730232101.GB5882@oc0525413822.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-07-31_01:2020-07-30,
- 2020-07-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011
- priorityscore=1501 mlxlogscore=905 mlxscore=0 adultscore=0 bulkscore=0
- suspectscore=1 impostorscore=0 phishscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007310031
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHyBj6zmBzDqXr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 16:32:43 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A71972003B3;
+ Fri, 31 Jul 2020 08:32:40 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3CEF52003BA;
+ Fri, 31 Jul 2020 08:32:36 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 6B8BE402BF;
+ Fri, 31 Jul 2020 08:32:30 +0200 (CEST)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_sai: Fix value of FSL_SAI_CR1_RFW_MASK
+Date: Fri, 31 Jul 2020 14:28:15 +0800
+Message-Id: <1596176895-28724-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,33 +52,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: ldufour@linux.ibm.com, linux-doc@vger.kernel.org, corbet@lwn.net,
- kvm-ppc@vger.kernel.org, Julia Lawall <julia.lawall@inria.fr>,
- sathnaga@linux.vnet.ibm.com, sukadev@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 30, 2020 at 04:21:01PM -0700, Ram Pai wrote:
-> H_SVM_PAGE_IN hcall takes a flag parameter. This parameter specifies the
-> way in which a page will be treated.  H_PAGE_IN_NONSHARED indicates
-> that the page will be shared with the Secure VM, and H_PAGE_IN_SHARED
-> indicates that the page will not be shared but its contents will
-> be copied.
+The fifo_depth is 64 on i.MX8QM/i.MX8QXP, 128 on i.MX8MQ, 16 on
+i.MX7ULP.
 
-Looks like you got the definitions of shared and non-shared interchanged.
+Original FSL_SAI_CR1_RFW_MASK value 0x1F is not suitable for
+these platform, the FIFO watermark mask should be updated
+according to the fifo_depth.
 
-> 
-> However H_PAGE_IN_NONSHARED is not defined in the header file, though
-> it is defined and documented in the API captured in
-> Documentation/powerpc/ultravisor.rst
-> 
-> Define H_PAGE_IN_NONSHARED in the header file.
+Fixes: a860fac42097 ("ASoC: fsl_sai: Add support for imx7ulp/imx8mq")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_sai.c | 5 +++--
+ sound/soc/fsl/fsl_sai.h | 2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-What is the use of defining this? Is this used directly in any place?
-Or, are youp planning to introduce such a usage?
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index a22562f2df47..cdff739924e2 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -680,10 +680,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
+ 	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
+ 
+ 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
+-			   FSL_SAI_CR1_RFW_MASK,
++			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
+ 			   sai->soc_data->fifo_depth - FSL_SAI_MAXBURST_TX);
+ 	regmap_update_bits(sai->regmap, FSL_SAI_RCR1(ofs),
+-			   FSL_SAI_CR1_RFW_MASK, FSL_SAI_MAXBURST_RX - 1);
++			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
++			   FSL_SAI_MAXBURST_RX - 1);
+ 
+ 	snd_soc_dai_init_dma_data(cpu_dai, &sai->dma_params_tx,
+ 				&sai->dma_params_rx);
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index 76b15deea80c..6aba7d28f5f3 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -94,7 +94,7 @@
+ #define FSL_SAI_CSR_FRDE	BIT(0)
+ 
+ /* SAI Transmit and Receive Configuration 1 Register */
+-#define FSL_SAI_CR1_RFW_MASK	0x1f
++#define FSL_SAI_CR1_RFW_MASK(x)	((x) - 1)
+ 
+ /* SAI Transmit and Receive Configuration 2 Register */
+ #define FSL_SAI_CR2_SYNC	BIT(30)
+-- 
+2.27.0
 
-Regards,
-Bharata.
