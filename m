@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A849234072
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 09:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB0E234082
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 09:52:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BHzsX682bzDqc8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 17:48:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BHzy522xyzDqVT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 17:51:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BHzpv5s8HzDqTW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 17:45:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BHzvm58SrzDqVH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 17:49:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jJvACsDT; 
+ header.a=rsa-sha256 header.s=201909 header.b=Eb4adLDM; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BHzpt30HJz9sTC;
- Fri, 31 Jul 2020 17:45:42 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BHzvm3NhBz9sRK;
+ Fri, 31 Jul 2020 17:49:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1596181543;
- bh=VEuy/KiA5hGn+AVseo5tlQxiC2CSqodE1h2fmmQal3M=;
+ s=201909; t=1596181796;
+ bh=vgtrJGuvJCtQtz6V9aSKtpyUkKz3RW8OCC7iYMgVatA=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jJvACsDTmDI9lVdq3hJFB2iU9IFVxWVFgw7BvuU8CKcAl1HiqJY6XSB2q2N4KwkX3
- BmQ7CR+Wuo3qFlwQWdKoxvzZkaeEm1C6V4+nf7G0UQH3087jEoxn2FZr7aAvch6PfX
- Q4OWRPk8cm0Bc2JNsybKxjRngWB8cqymCEhk+ZOhSnq2arAhxgAAZmmDIaFcyvJXXn
- oKk7qJ3LyrZLM0gFTWhQU3urH8lAgorABFxQ0v0XlVGpXmzyp9mWoHKEoMsGm3iBq5
- qtOUXpEKj6TIQacq174O4O+EGAsnk0/SYTc4BHO3SDEXKoyo6vNPJXyzLn4WNhiF5Z
- FYuF2MkMJPdvA==
+ b=Eb4adLDMncuvoJsfXDgzwZkTlK6c7QJEQpW9tDwGSEUqHy4195obPsJMK9r49D524
+ S3lNErNX6QpE0MVLd7JIMgC/3MwQcZWPqQ3zUDYdiwR4MYhISX9ciT4EnQ2gdpNoyC
+ vnsymo1WsK/FL7ynJyYVUMf8VZcPOWCrglYL85A5ZJMewCM9b/A44okPvsXEFtFRJw
+ TjmZXZiJuK3Jhbcf7+WhX3dQFL2lt9GAOHQtClBp43pCn/E4FfaNY3EfS9KgUiymve
+ 39z2HJnIACR3a4d06P1QqXNe/kiWigwciGcE+fe9f5dyqcgYuk/oVHEzCk6904zFM/
+ eHl5fkSbXS7gg==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 06/10] powerpc/smp: Generalize 2nd sched domain
-In-Reply-To: <20200727053230.19753-7-srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 07/10] Powerpc/numa: Detect support for coregroup
+In-Reply-To: <20200727053230.19753-8-srikar@linux.vnet.ibm.com>
 References: <20200727053230.19753-1-srikar@linux.vnet.ibm.com>
- <20200727053230.19753-7-srikar@linux.vnet.ibm.com>
-Date: Fri, 31 Jul 2020 17:45:37 +1000
-Message-ID: <875za45dr2.fsf@mpe.ellerman.id.au>
+ <20200727053230.19753-8-srikar@linux.vnet.ibm.com>
+Date: Fri, 31 Jul 2020 17:49:55 +1000
+Message-ID: <8736585djw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,27 +71,25 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> Currently "CACHE" domain happens to be the 2nd sched domain as per
-> powerpc_topology. This domain will collapse if cpumask of l2-cache is
-> same as SMT domain. However we could generalize this domain such that it
-> could mean either be a "CACHE" domain or a "BIGCORE" domain.
->
-> While setting up the "CACHE" domain, check if shared_cache is already
-> set.
+> Add support for grouping cores based on the device-tree classification.
+> - The last domain in the associativity domains always refers to the
+> core.
+> - If primary reference domain happens to be the penultimate domain in
+> the associativity domains device-tree property, then there are no
+> coregroups. However if its not a penultimate domain, then there are
+> coregroups. There can be more than one coregroup. For now we would be
+> interested in the last or the smallest coregroups.
 
-PeterZ asked for some overview of what you're doing and why, you
-responded to his mail, but I was expecting to see that text incorporated
-here somewhere.
+This still doesn't tell me what a coregroup actually represents.
 
-He also asked for some comments, which I would also like to see.
+I get that it's a grouping of cores, and that the device tree specifies
+it for us, but grouping based on what?
 
+I think the answer is we aren't being told by firmware, it's just a
+grouping based on some opaque performance characteristic and we just
+have to take that as given.
 
-I'm also not clear why we want to rename it to "bigcore", that's not a
-commonly understood term, I don't think it's clear to new readers what
-it means.
-
-Leaving it as the shared cache domain, and having a comment mentioning
-that "bigcores" share a cache, would be clearer I think.
+But please explain that clearly in the change log and the code comments.
 
 cheers
 
@@ -109,117 +107,99 @@ cheers
 > Cc: Peter Zijlstra <peterz@infradead.org>
 > Cc: Valentin Schneider <valentin.schneider@arm.com>
 > Cc: Jordan Niethe <jniethe5@gmail.com>
+> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 > ---
 > Changelog v1 -> v2:
-> 	Moved shared_cache topology fixup to fixup_topology (Gautham)
+> 	Explained Coregroup in commit msg (Michael Ellerman)
 >
->  arch/powerpc/kernel/smp.c | 48 +++++++++++++++++++++++++++------------
->  1 file changed, 34 insertions(+), 14 deletions(-)
+>  arch/powerpc/include/asm/smp.h |  1 +
+>  arch/powerpc/kernel/smp.c      |  1 +
+>  arch/powerpc/mm/numa.c         | 34 +++++++++++++++++++++-------------
+>  3 files changed, 23 insertions(+), 13 deletions(-)
 >
+> diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
+> index 49a25e2400f2..5bdc17a7049f 100644
+> --- a/arch/powerpc/include/asm/smp.h
+> +++ b/arch/powerpc/include/asm/smp.h
+> @@ -28,6 +28,7 @@
+>  extern int boot_cpuid;
+>  extern int spinning_secondaries;
+>  extern u32 *cpu_to_phys_id;
+> +extern bool coregroup_enabled;
+>  
+>  extern void cpu_die(void);
+>  extern int cpu_to_chip_id(int cpu);
 > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index d997c7411664..3c5ccf6d2b1c 100644
+> index 3c5ccf6d2b1c..698000c7f76f 100644
 > --- a/arch/powerpc/kernel/smp.c
 > +++ b/arch/powerpc/kernel/smp.c
-> @@ -85,6 +85,14 @@ EXPORT_PER_CPU_SYMBOL(cpu_l2_cache_map);
->  EXPORT_PER_CPU_SYMBOL(cpu_core_map);
->  EXPORT_SYMBOL_GPL(has_big_cores);
+> @@ -74,6 +74,7 @@ static DEFINE_PER_CPU(int, cpu_state) = { 0 };
 >  
-> +enum {
-> +#ifdef CONFIG_SCHED_SMT
-> +	smt_idx,
-> +#endif
-> +	bigcore_idx,
-> +	die_idx,
-> +};
-> +
->  #define MAX_THREAD_LIST_SIZE	8
->  #define THREAD_GROUP_SHARE_L1   1
->  struct thread_groups {
-> @@ -851,13 +859,7 @@ static int powerpc_shared_cache_flags(void)
->   */
->  static const struct cpumask *shared_cache_mask(int cpu)
+>  struct task_struct *secondary_current;
+>  bool has_big_cores;
+> +bool coregroup_enabled;
+>  
+>  DEFINE_PER_CPU(cpumask_var_t, cpu_sibling_map);
+>  DEFINE_PER_CPU(cpumask_var_t, cpu_smallcore_map);
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index 2298899a0f0a..51cb672f113b 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -886,7 +886,9 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+>  static void __init find_possible_nodes(void)
 >  {
-> -	if (shared_caches)
-> -		return cpu_l2_cache_mask(cpu);
-> -
-> -	if (has_big_cores)
-> -		return cpu_smallcore_mask(cpu);
-> -
-> -	return per_cpu(cpu_sibling_map, cpu);
-> +	return per_cpu(cpu_l2_cache_map, cpu);
->  }
+>  	struct device_node *rtas;
+> -	u32 numnodes, i;
+> +	const __be32 *domains;
+> +	int prop_length, max_nodes;
+> +	u32 i;
 >  
->  #ifdef CONFIG_SCHED_SMT
-> @@ -867,11 +869,16 @@ static const struct cpumask *smallcore_smt_mask(int cpu)
->  }
->  #endif
+>  	if (!numa_enabled)
+>  		return;
+> @@ -895,25 +897,31 @@ static void __init find_possible_nodes(void)
+>  	if (!rtas)
+>  		return;
 >  
-> +static const struct cpumask *cpu_bigcore_mask(int cpu)
-> +{
-> +	return per_cpu(cpu_sibling_map, cpu);
-> +}
-> +
->  static struct sched_domain_topology_level powerpc_topology[] = {
->  #ifdef CONFIG_SCHED_SMT
->  	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
->  #endif
-> -	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
-> +	{ cpu_bigcore_mask, SD_INIT_NAME(BIGCORE) },
->  	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
->  	{ NULL, },
->  };
-> @@ -1311,7 +1318,6 @@ static void add_cpu_to_masks(int cpu)
->  void start_secondary(void *unused)
->  {
->  	unsigned int cpu = smp_processor_id();
-> -	struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
->  
->  	mmgrab(&init_mm);
->  	current->active_mm = &init_mm;
-> @@ -1337,14 +1343,20 @@ void start_secondary(void *unused)
->  	/* Update topology CPU masks */
->  	add_cpu_to_masks(cpu);
->  
-> -	if (has_big_cores)
-> -		sibling_mask = cpu_smallcore_mask;
->  	/*
->  	 * Check for any shared caches. Note that this must be done on a
->  	 * per-core basis because one core in the pair might be disabled.
->  	 */
-> -	if (!cpumask_equal(cpu_l2_cache_mask(cpu), sibling_mask(cpu)))
-> -		shared_caches = true;
-> +	if (!shared_caches) {
-> +		struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
-> +		struct cpumask *mask = cpu_l2_cache_mask(cpu);
-> +
-> +		if (has_big_cores)
-> +			sibling_mask = cpu_smallcore_mask;
-> +
-> +		if (cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu)))
-> +			shared_caches = true;
-> +	}
->  
->  	set_numa_node(numa_cpu_lookup_table[cpu]);
->  	set_numa_mem(local_memory_node(numa_cpu_lookup_table[cpu]));
-> @@ -1375,9 +1387,17 @@ static void fixup_topology(void)
->  #ifdef CONFIG_SCHED_SMT
->  	if (has_big_cores) {
->  		pr_info("Big cores detected but using small core scheduling\n");
-> -		powerpc_topology[0].mask = smallcore_smt_mask;
-> +		powerpc_topology[smt_idx].mask = smallcore_smt_mask;
+> -	if (of_property_read_u32_index(rtas, "ibm,current-associativity-domains",
+> -				min_common_depth, &numnodes)) {
+> -		/*
+> -		 * ibm,current-associativity-domains is a fairly recent
+> -		 * property. If it doesn't exist, then fallback on
+> -		 * ibm,max-associativity-domains. Current denotes what the
+> -		 * platform can support compared to max which denotes what the
+> -		 * Hypervisor can support.
+> -		 */
+> -		if (of_property_read_u32_index(rtas, "ibm,max-associativity-domains",
+> -				min_common_depth, &numnodes))
+> +	/*
+> +	 * ibm,current-associativity-domains is a fairly recent property. If
+> +	 * it doesn't exist, then fallback on ibm,max-associativity-domains.
+> +	 * Current denotes what the platform can support compared to max
+> +	 * which denotes what the Hypervisor can support.
+> +	 */
+> +	domains = of_get_property(rtas, "ibm,current-associativity-domains",
+> +					&prop_length);
+> +	if (!domains) {
+> +		domains = of_get_property(rtas, "ibm,max-associativity-domains",
+> +					&prop_length);
+> +		if (!domains)
+>  			goto out;
 >  	}
->  #endif
-> +	if (shared_caches) {
-> +		pr_info("Using shared cache scheduler topology\n");
-> +		powerpc_topology[bigcore_idx].mask = shared_cache_mask;
-> +		powerpc_topology[bigcore_idx].sd_flags = powerpc_shared_cache_flags;
-> +#ifdef CONFIG_SCHED_DEBUG
-> +		powerpc_topology[bigcore_idx].name = "CACHE";
-> +#endif
-> +	}
->  }
 >  
->  void __init smp_cpus_done(unsigned int max_cpus)
+> -	for (i = 0; i < numnodes; i++) {
+> +	max_nodes = of_read_number(&domains[min_common_depth], 1);
+> +	for (i = 0; i < max_nodes; i++) {
+>  		if (!node_possible(i))
+>  			node_set(i, node_possible_map);
+>  	}
+>  
+> +	prop_length /= sizeof(int);
+> +	if (prop_length > min_common_depth + 2)
+> +		coregroup_enabled = 1;
+> +
+>  out:
+>  	of_node_put(rtas);
+>  }
 > -- 
 > 2.17.1
