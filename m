@@ -1,79 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A221C234150
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 10:39:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7589223425B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 11:21:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ10S0TzSzDqd7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 18:39:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ1x50pPZzDqf3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 19:21:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ0yR6lFjzDqWk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 18:37:19 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ1tv2NpnzDqbY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 19:19:18 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06V8VM9c032523; Fri, 31 Jul 2020 04:37:11 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32mdjsbu5p-1
+ 06V92TAr083266; Fri, 31 Jul 2020 05:19:08 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32ma2psb0m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 31 Jul 2020 04:37:11 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06V8ZOeP015588;
- Fri, 31 Jul 2020 08:37:09 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04fra.de.ibm.com with ESMTP id 32gcpwcajk-1
+ Fri, 31 Jul 2020 05:19:07 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06V9IfRR126224;
+ Fri, 31 Jul 2020 05:19:07 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32ma2psayc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 31 Jul 2020 08:37:09 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06V8b6rk25297156
+ Fri, 31 Jul 2020 05:19:07 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06V9Exfp001391;
+ Fri, 31 Jul 2020 09:19:04 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma02fra.de.ibm.com with ESMTP id 32gcq0vbv6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 31 Jul 2020 09:19:04 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06V9HaPP64946670
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 31 Jul 2020 08:37:06 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5B72642045;
- Fri, 31 Jul 2020 08:37:06 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A0EE942049;
- Fri, 31 Jul 2020 08:37:03 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.211.129.132])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 31 Jul 2020 08:37:03 +0000 (GMT)
-Date: Fri, 31 Jul 2020 01:37:00 -0700
-From: Ram Pai <linuxram@us.ibm.com>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: fix a oops in
- kvmppc_uvmem_page_free()
-Message-ID: <20200731083700.GB5787@oc0525413822.ibm.com>
-References: <1596151526-4374-1-git-send-email-linuxram@us.ibm.com>
- <20200731042940.GA20199@in.ibm.com>
+ Fri, 31 Jul 2020 09:17:37 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 771ADAE04D;
+ Fri, 31 Jul 2020 09:19:02 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 31C24AE045;
+ Fri, 31 Jul 2020 09:19:00 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 31 Jul 2020 09:19:00 +0000 (GMT)
+Date: Fri, 31 Jul 2020 14:48:59 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v4 07/10] Powerpc/numa: Detect support for coregroup
+Message-ID: <20200731091859.GG14603@linux.vnet.ibm.com>
+References: <20200727053230.19753-1-srikar@linux.vnet.ibm.com>
+ <20200727053230.19753-8-srikar@linux.vnet.ibm.com>
+ <8736585djw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200731042940.GA20199@in.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <8736585djw.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-31_02:2020-07-31,
  2020-07-31 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- lowpriorityscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0
- malwarescore=0 suspectscore=2 phishscore=0 mlxscore=0 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2007310059
+ phishscore=0 malwarescore=0 mlxlogscore=971 lowpriorityscore=0
+ impostorscore=0 mlxscore=0 suspectscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007310063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,139 +93,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
- sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jordan Niethe <jniethe5@gmail.com>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 31, 2020 at 09:59:40AM +0530, Bharata B Rao wrote:
-> On Thu, Jul 30, 2020 at 04:25:26PM -0700, Ram Pai wrote:
-> > Observed the following oops while stress-testing, using multiple
-> > secureVM on a distro kernel. However this issue theoritically exists in
-> > 5.5 kernel and later.
-> > 
-> > This issue occurs when the total number of requested device-PFNs exceed
-> > the total-number of available device-PFNs.  PFN migration fails to
-> > allocate a device-pfn, which causes migrate_vma_finalize() to trigger
-> > kvmppc_uvmem_page_free() on a page, that is not associated with any
-> > device-pfn.  kvmppc_uvmem_page_free() blindly tries to access the
-> > contents of the private data which can be null, leading to the following
-> > kernel fault.
-> > 
-> >  --------------------------------------------------------------------------
-> >  Unable to handle kernel paging request for data at address 0x00000011
-> >  Faulting instruction address: 0xc00800000e36e110
-> >  Oops: Kernel access of bad area, sig: 11 [#1]
-> >  LE SMP NR_CPUS=2048 NUMA PowerNV
-> > ....
-> >  MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>
-> > 		 CR: 24424822  XER: 00000000
-> >  CFAR: c000000000e3d764 DAR: 0000000000000011 DSISR: 40000000 IRQMASK: 0
-> >  GPR00: c00800000e36e0a4 c000001f1d59f610 c00800000e38a400 0000000000000000
-> >  GPR04: c000001fa5000000 fffffffffffffffe ffffffffffffffff c000201fffeaf300
-> >  GPR08: 00000000000001f0 0000000000000000 0000000000000f80 c00800000e373608
-> >  GPR12: c000000000e3d710 c000201fffeaf300 0000000000000001 00007fef87360000
-> >  GPR16: 00007fff97db4410 c000201c3b66a578 ffffffffffffffff 0000000000000000
-> >  GPR20: 0000000119db9ad0 000000000000000a fffffffffffffffc 0000000000000001
-> >  GPR24: c000201c3b660000 c000001f1d59f7a0 c0000000004cffb0 0000000000000001
-> >  GPR28: 0000000000000000 c00a001ff003e000 c00800000e386150 0000000000000f80
-> >  NIP [c00800000e36e110] kvmppc_uvmem_page_free+0xc8/0x210 [kvm_hv]
-> >  LR [c00800000e36e0a4] kvmppc_uvmem_page_free+0x5c/0x210 [kvm_hv]
-> >  Call Trace:
-> >  [c000000000512010] free_devmap_managed_page+0xd0/0x100
-> >  [c0000000003f71d0] put_devmap_managed_page+0xa0/0xc0
-> >  [c0000000004d24bc] migrate_vma_finalize+0x32c/0x410
-> >  [c00800000e36e828] kvmppc_svm_page_in.constprop.5+0xa0/0x460 [kvm_hv]
-> >  [c00800000e36eddc] kvmppc_uv_migrate_mem_slot.isra.2+0x1f4/0x230 [kvm_hv]
-> >  [c00800000e36fa98] kvmppc_h_svm_init_done+0x90/0x170 [kvm_hv]
-> >  [c00800000e35bb14] kvmppc_pseries_do_hcall+0x1ac/0x10a0 [kvm_hv]
-> >  [c00800000e35edf4] kvmppc_vcpu_run_hv+0x83c/0x1060 [kvm_hv]
-> >  [c00800000e95eb2c] kvmppc_vcpu_run+0x34/0x48 [kvm]
-> >  [c00800000e95a2dc] kvm_arch_vcpu_ioctl_run+0x374/0x830 [kvm]
-> >  [c00800000e9433b4] kvm_vcpu_ioctl+0x45c/0x7c0 [kvm]
-> >  [c0000000005451d0] do_vfs_ioctl+0xe0/0xaa0
-> >  [c000000000545d64] sys_ioctl+0xc4/0x160
-> >  [c00000000000b408] system_call+0x5c/0x70
-> >  Instruction dump:
-> >  a12d1174 2f890000 409e0158 a1271172 3929ffff b1271172 7c2004ac 39200000
-> >  913e0140 39200000 e87d0010 f93d0010 <89230011> e8c30000 e9030008 2f890000
-> >  --------------------------------------------------------------------------
-> > 
-> >  Fix the oops..
-> > 
-> > fixes: ca9f49 ("KVM: PPC: Book3S HV: Support for running secure guests")
-> > Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-> > ---
-> >  arch/powerpc/kvm/book3s_hv_uvmem.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > index 2806983..f4002bf 100644
-> > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> > @@ -1018,13 +1018,15 @@ static void kvmppc_uvmem_page_free(struct page *page)
-> >  {
-> >  	unsigned long pfn = page_to_pfn(page) -
-> >  			(kvmppc_uvmem_pgmap.res.start >> PAGE_SHIFT);
-> > -	struct kvmppc_uvmem_page_pvt *pvt;
-> > +	struct kvmppc_uvmem_page_pvt *pvt = page->zone_device_data;
-> > +
-> > +	if (!pvt)
-> > +		return;
-> >  
-> >  	spin_lock(&kvmppc_uvmem_bitmap_lock);
-> >  	bitmap_clear(kvmppc_uvmem_bitmap, pfn, 1);
-> >  	spin_unlock(&kvmppc_uvmem_bitmap_lock);
-> >  
-> > -	pvt = page->zone_device_data;
-> >  	page->zone_device_data = NULL;
-> >  	if (pvt->remove_gfn)
-> >  		kvmppc_gfn_remove(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
+* Michael Ellerman <mpe@ellerman.id.au> [2020-07-31 17:49:55]:
+
+> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> > Add support for grouping cores based on the device-tree classification.
+> > - The last domain in the associativity domains always refers to the
+> > core.
+> > - If primary reference domain happens to be the penultimate domain in
+> > the associativity domains device-tree property, then there are no
+> > coregroups. However if its not a penultimate domain, then there are
+> > coregroups. There can be more than one coregroup. For now we would be
+> > interested in the last or the smallest coregroups.
 > 
-> In our case, device pages that are in use are always associated with a valid
-> pvt member. See kvmppc_uvmem_get_page() which returns failure if it
-> runs out of device pfns and that will result in proper failure of
-> page-in calls.
-
-looked at the code, and yes that code path looks correct. So my
-reasoning behind the root cause of this bug is incorrect. However the
-bug is surfacing and there must be a reason.
-
+> This still doesn't tell me what a coregroup actually represents.
 > 
-> For the case where we run out of device pfns, migrate_vma_finalize() will
-> restore the original PTE and will not replace the PTE with device private PTE.
+> I get that it's a grouping of cores, and that the device tree specifies
+> it for us, but grouping based on what?
 > 
-> Also kvmppc_uvmem_page_free() (=dev_pagemap_ops.page_free()) is never
-> called for non-device-private pages.
 
-Yes. it should not be called. But as seen above in the stack trace, it is called. 
+We have just abstracted the fact that we are creating a sub-group of cores
+within a DIE. We are limiting to one sub-group per core. However this would
+allow the firmware the flexibility to vary the grouping. Once the firmware
+starts using this group, we could add more code to detect the type of
+grouping and adjust the sd domain flags accordingly.
 
-What would cause the HMM to call ->page_free() on a page that is not
-associated with that device's pfn?
-
+> I think the answer is we aren't being told by firmware, it's just a
+> grouping based on some opaque performance characteristic and we just
+> have to take that as given.
 > 
-> This could be a use-after-free case possibly arising out of the new state
-> changes in HV. If so, this fix will only mask the bug and not address the
-> original problem.
 
-I can verify by rerunning the tests, without the new state changes. But
-I do not see how those changes can cause this fault?
+This is partially true. At this time, we dont have firmwares that can
+exploit this code. Once the firmwares start using this grouping, we could
+add more code to align the grouping to the scheduler topology.
 
-This could also be caused by a duplicate ->page_free() call due to some
-bug in the migrate_page path? Could there be a race between
-migrate_page() and a page_fault ?
-
-
-Regardless, kvmppc_uvmem_page_free() needs to be fixed. It should not
-access contents of pvt, without verifing pvt is valid.
-
+> But please explain that clearly in the change log and the code comments.
 > 
-> Regards,
-> Bharata.
+
+Okay, I will do the needful.
+
+> cheers
+> 
 
 -- 
-Ram Pai
+Thanks and Regards
+Srikar Dronamraju
