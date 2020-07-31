@@ -1,78 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C3A23412F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 10:27:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A221C234150
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 10:39:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ0kq5j0dzDqdL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 18:27:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ10S0TzSzDqd7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 18:39:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ0WD04PHzDqc4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 18:17:11 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ0yR6lFjzDqWk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 18:37:19 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 06V84utS129016; Fri, 31 Jul 2020 04:17:06 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32m3wurt4g-1
+ 06V8VM9c032523; Fri, 31 Jul 2020 04:37:11 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32mdjsbu5p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 31 Jul 2020 04:17:05 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06V8GvGR016954;
- Fri, 31 Jul 2020 08:17:03 GMT
+ Fri, 31 Jul 2020 04:37:11 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06V8ZOeP015588;
+ Fri, 31 Jul 2020 08:37:09 GMT
 Received: from b06cxnps3075.portsmouth.uk.ibm.com
  (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06ams.nl.ibm.com with ESMTP id 32gcqgq0yg-1
+ by ppma04fra.de.ibm.com with ESMTP id 32gcpwcajk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 31 Jul 2020 08:17:03 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
+ Fri, 31 Jul 2020 08:37:09 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
  by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 06V8H0lj22544712
+ 06V8b6rk25297156
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 31 Jul 2020 08:17:00 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C271911C058;
- Fri, 31 Jul 2020 08:17:00 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F20E811C052;
- Fri, 31 Jul 2020 08:16:58 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.77.199.67])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 31 Jul 2020 08:16:58 +0000 (GMT)
-From: Balamuruhan S <bala24@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v3 4/4] powerpc sstep: add testcases for vsx load/store
- instructions
-Date: Fri, 31 Jul 2020 13:46:37 +0530
-Message-Id: <20200731081637.1837559-5-bala24@linux.ibm.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200731081637.1837559-1-bala24@linux.ibm.com>
-References: <20200731081637.1837559-1-bala24@linux.ibm.com>
+ Fri, 31 Jul 2020 08:37:06 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B72642045;
+ Fri, 31 Jul 2020 08:37:06 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A0EE942049;
+ Fri, 31 Jul 2020 08:37:03 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.211.129.132])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 31 Jul 2020 08:37:03 +0000 (GMT)
+Date: Fri, 31 Jul 2020 01:37:00 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: fix a oops in
+ kvmppc_uvmem_page_free()
+Message-ID: <20200731083700.GB5787@oc0525413822.ibm.com>
+References: <1596151526-4374-1-git-send-email-linuxram@us.ibm.com>
+ <20200731042940.GA20199@in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200731042940.GA20199@in.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-07-31_02:2020-07-31,
  2020-07-31 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=1 bulkscore=0
- impostorscore=0 spamscore=0 mlxscore=0 adultscore=0 priorityscore=1501
- phishscore=0 mlxlogscore=999 clxscore=1015 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ lowpriorityscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0
+ malwarescore=0 suspectscore=2 phishscore=0 mlxscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007310059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,297 +85,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, Balamuruhan S <bala24@linux.ibm.com>,
- paulus@samba.org, sandipan@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: ldufour@linux.ibm.com, cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org,
+ sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-add testcases for vsx load/store vector paired instructions,
-        * Load VSX Vector Paired (lxvp)
-        * Load VSX Vector Paired Indexed (lxvpx)
-        * Prefixed Load VSX Vector Paired (plxvp)
-        * Store VSX Vector Paired (stxvp)
-        * Store VSX Vector Paired Indexed (stxvpx)
-        * Prefixed Store VSX Vector Paired (pstxvp)
+On Fri, Jul 31, 2020 at 09:59:40AM +0530, Bharata B Rao wrote:
+> On Thu, Jul 30, 2020 at 04:25:26PM -0700, Ram Pai wrote:
+> > Observed the following oops while stress-testing, using multiple
+> > secureVM on a distro kernel. However this issue theoritically exists in
+> > 5.5 kernel and later.
+> > 
+> > This issue occurs when the total number of requested device-PFNs exceed
+> > the total-number of available device-PFNs.  PFN migration fails to
+> > allocate a device-pfn, which causes migrate_vma_finalize() to trigger
+> > kvmppc_uvmem_page_free() on a page, that is not associated with any
+> > device-pfn.  kvmppc_uvmem_page_free() blindly tries to access the
+> > contents of the private data which can be null, leading to the following
+> > kernel fault.
+> > 
+> >  --------------------------------------------------------------------------
+> >  Unable to handle kernel paging request for data at address 0x00000011
+> >  Faulting instruction address: 0xc00800000e36e110
+> >  Oops: Kernel access of bad area, sig: 11 [#1]
+> >  LE SMP NR_CPUS=2048 NUMA PowerNV
+> > ....
+> >  MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>
+> > 		 CR: 24424822  XER: 00000000
+> >  CFAR: c000000000e3d764 DAR: 0000000000000011 DSISR: 40000000 IRQMASK: 0
+> >  GPR00: c00800000e36e0a4 c000001f1d59f610 c00800000e38a400 0000000000000000
+> >  GPR04: c000001fa5000000 fffffffffffffffe ffffffffffffffff c000201fffeaf300
+> >  GPR08: 00000000000001f0 0000000000000000 0000000000000f80 c00800000e373608
+> >  GPR12: c000000000e3d710 c000201fffeaf300 0000000000000001 00007fef87360000
+> >  GPR16: 00007fff97db4410 c000201c3b66a578 ffffffffffffffff 0000000000000000
+> >  GPR20: 0000000119db9ad0 000000000000000a fffffffffffffffc 0000000000000001
+> >  GPR24: c000201c3b660000 c000001f1d59f7a0 c0000000004cffb0 0000000000000001
+> >  GPR28: 0000000000000000 c00a001ff003e000 c00800000e386150 0000000000000f80
+> >  NIP [c00800000e36e110] kvmppc_uvmem_page_free+0xc8/0x210 [kvm_hv]
+> >  LR [c00800000e36e0a4] kvmppc_uvmem_page_free+0x5c/0x210 [kvm_hv]
+> >  Call Trace:
+> >  [c000000000512010] free_devmap_managed_page+0xd0/0x100
+> >  [c0000000003f71d0] put_devmap_managed_page+0xa0/0xc0
+> >  [c0000000004d24bc] migrate_vma_finalize+0x32c/0x410
+> >  [c00800000e36e828] kvmppc_svm_page_in.constprop.5+0xa0/0x460 [kvm_hv]
+> >  [c00800000e36eddc] kvmppc_uv_migrate_mem_slot.isra.2+0x1f4/0x230 [kvm_hv]
+> >  [c00800000e36fa98] kvmppc_h_svm_init_done+0x90/0x170 [kvm_hv]
+> >  [c00800000e35bb14] kvmppc_pseries_do_hcall+0x1ac/0x10a0 [kvm_hv]
+> >  [c00800000e35edf4] kvmppc_vcpu_run_hv+0x83c/0x1060 [kvm_hv]
+> >  [c00800000e95eb2c] kvmppc_vcpu_run+0x34/0x48 [kvm]
+> >  [c00800000e95a2dc] kvm_arch_vcpu_ioctl_run+0x374/0x830 [kvm]
+> >  [c00800000e9433b4] kvm_vcpu_ioctl+0x45c/0x7c0 [kvm]
+> >  [c0000000005451d0] do_vfs_ioctl+0xe0/0xaa0
+> >  [c000000000545d64] sys_ioctl+0xc4/0x160
+> >  [c00000000000b408] system_call+0x5c/0x70
+> >  Instruction dump:
+> >  a12d1174 2f890000 409e0158 a1271172 3929ffff b1271172 7c2004ac 39200000
+> >  913e0140 39200000 e87d0010 f93d0010 <89230011> e8c30000 e9030008 2f890000
+> >  --------------------------------------------------------------------------
+> > 
+> >  Fix the oops..
+> > 
+> > fixes: ca9f49 ("KVM: PPC: Book3S HV: Support for running secure guests")
+> > Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> > ---
+> >  arch/powerpc/kvm/book3s_hv_uvmem.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > index 2806983..f4002bf 100644
+> > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > @@ -1018,13 +1018,15 @@ static void kvmppc_uvmem_page_free(struct page *page)
+> >  {
+> >  	unsigned long pfn = page_to_pfn(page) -
+> >  			(kvmppc_uvmem_pgmap.res.start >> PAGE_SHIFT);
+> > -	struct kvmppc_uvmem_page_pvt *pvt;
+> > +	struct kvmppc_uvmem_page_pvt *pvt = page->zone_device_data;
+> > +
+> > +	if (!pvt)
+> > +		return;
+> >  
+> >  	spin_lock(&kvmppc_uvmem_bitmap_lock);
+> >  	bitmap_clear(kvmppc_uvmem_bitmap, pfn, 1);
+> >  	spin_unlock(&kvmppc_uvmem_bitmap_lock);
+> >  
+> > -	pvt = page->zone_device_data;
+> >  	page->zone_device_data = NULL;
+> >  	if (pvt->remove_gfn)
+> >  		kvmppc_gfn_remove(pvt->gpa >> PAGE_SHIFT, pvt->kvm);
+> 
+> In our case, device pages that are in use are always associated with a valid
+> pvt member. See kvmppc_uvmem_get_page() which returns failure if it
+> runs out of device pfns and that will result in proper failure of
+> page-in calls.
 
-Suggested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
----
- arch/powerpc/lib/test_emulate_step.c | 252 +++++++++++++++++++++++++++
- 1 file changed, 252 insertions(+)
+looked at the code, and yes that code path looks correct. So my
+reasoning behind the root cause of this bug is incorrect. However the
+bug is surfacing and there must be a reason.
 
-diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
-index d242e9f72e0c..f16934b80511 100644
---- a/arch/powerpc/lib/test_emulate_step.c
-+++ b/arch/powerpc/lib/test_emulate_step.c
-@@ -612,6 +612,255 @@ static void __init test_lxvd2x_stxvd2x(void)
- }
- #endif /* CONFIG_VSX */
- 
-+#ifdef CONFIG_VSX
-+static void __init test_lxvp_stxvp(void)
-+{
-+	struct pt_regs regs;
-+	union {
-+		vector128 a;
-+		u32 b[4];
-+	} c[2];
-+	u32 cached_b[8];
-+	int stepped = -1;
-+
-+	init_pt_regs(&regs);
-+
-+	/*** lxvp ***/
-+
-+	cached_b[0] = c[0].b[0] = 18233;
-+	cached_b[1] = c[0].b[1] = 34863571;
-+	cached_b[2] = c[0].b[2] = 834;
-+	cached_b[3] = c[0].b[3] = 6138911;
-+	cached_b[4] = c[1].b[0] = 1234;
-+	cached_b[5] = c[1].b[1] = 5678;
-+	cached_b[6] = c[1].b[2] = 91011;
-+	cached_b[7] = c[1].b[3] = 121314;
-+
-+	regs.gpr[4] = (unsigned long)&c[0].a;
-+
-+	/*
-+	 * lxvp XTp,DQ(RA)
-+	 * XTp = 32×TX + 2×Tp
-+	 * let TX=1 Tp=1 RA=4 DQ=0
-+	 */
-+	stepped = emulate_step(&regs, ppc_inst(PPC_LXVP(1, 1, 4, 0)));
-+
-+	if (stepped == 1 && cpu_has_feature(CPU_FTR_VSX)) {
-+		show_result("lxvp", "PASS");
-+	} else {
-+		if (!cpu_has_feature(CPU_FTR_VSX))
-+			show_result("lxvp", "PASS (!CPU_FTR_VSX)");
-+		else
-+			show_result("lxvp", "FAIL");
-+	}
-+
-+	/*** stxvp ***/
-+
-+	c[0].b[0] = 21379463;
-+	c[0].b[1] = 87;
-+	c[0].b[2] = 374234;
-+	c[0].b[3] = 4;
-+	c[1].b[0] = 90;
-+	c[1].b[1] = 122;
-+	c[1].b[2] = 555;
-+	c[1].b[3] = 32144;
-+
-+	/*
-+	 * stxvp XSp,DQ(RA)
-+	 * XSp = 32×SX + 2×Sp
-+	 * let SX=1 Sp=1 RA=4 DQ=0
-+	 */
-+	stepped = emulate_step(&regs, ppc_inst(PPC_STXVP(1, 1, 4, 0)));
-+
-+	if (stepped == 1 && cached_b[0] == c[0].b[0] && cached_b[1] == c[0].b[1] &&
-+	    cached_b[2] == c[0].b[2] && cached_b[3] == c[0].b[3] &&
-+	    cached_b[4] == c[1].b[0] && cached_b[5] == c[1].b[1] &&
-+	    cached_b[6] == c[1].b[2] && cached_b[7] == c[1].b[3] &&
-+	    cpu_has_feature(CPU_FTR_VSX)) {
-+		show_result("stxvp", "PASS");
-+	} else {
-+		if (!cpu_has_feature(CPU_FTR_VSX))
-+			show_result("stxvp", "PASS (!CPU_FTR_VSX)");
-+		else
-+			show_result("stxvp", "FAIL");
-+	}
-+}
-+#else
-+static void __init test_lxvp_stxvp(void)
-+{
-+	show_result("lxvp", "SKIP (CONFIG_VSX is not set)");
-+	show_result("stxvp", "SKIP (CONFIG_VSX is not set)");
-+}
-+#endif /* CONFIG_VSX */
-+
-+#ifdef CONFIG_VSX
-+static void __init test_lxvpx_stxvpx(void)
-+{
-+	struct pt_regs regs;
-+	union {
-+		vector128 a;
-+		u32 b[4];
-+	} c[2];
-+	u32 cached_b[8];
-+	int stepped = -1;
-+
-+	init_pt_regs(&regs);
-+
-+	/*** lxvpx ***/
-+
-+	cached_b[0] = c[0].b[0] = 18233;
-+	cached_b[1] = c[0].b[1] = 34863571;
-+	cached_b[2] = c[0].b[2] = 834;
-+	cached_b[3] = c[0].b[3] = 6138911;
-+	cached_b[4] = c[1].b[0] = 1234;
-+	cached_b[5] = c[1].b[1] = 5678;
-+	cached_b[6] = c[1].b[2] = 91011;
-+	cached_b[7] = c[1].b[3] = 121314;
-+
-+	regs.gpr[3] = (unsigned long)&c[0].a;
-+	regs.gpr[4] = 0;
-+
-+	/*
-+	 * lxvpx XTp,RA,RB
-+	 * XTp = 32×TX + 2×Tp
-+	 * let TX=1 Tp=1 RA=3 RB=4
-+	 */
-+	stepped = emulate_step(&regs, ppc_inst(PPC_LXVPX(1, 1, 3, 4)));
-+
-+	if (stepped == 1 && cpu_has_feature(CPU_FTR_VSX)) {
-+		show_result("lxvpx", "PASS");
-+	} else {
-+		if (!cpu_has_feature(CPU_FTR_VSX))
-+			show_result("lxvpx", "PASS (!CPU_FTR_VSX)");
-+		else
-+			show_result("lxvpx", "FAIL");
-+	}
-+
-+	/*** stxvpx ***/
-+
-+	c[0].b[0] = 21379463;
-+	c[0].b[1] = 87;
-+	c[0].b[2] = 374234;
-+	c[0].b[3] = 4;
-+	c[1].b[0] = 90;
-+	c[1].b[1] = 122;
-+	c[1].b[2] = 555;
-+	c[1].b[3] = 32144;
-+
-+	/*
-+	 * stxvpx XSp,RA,RB
-+	 * XSp = 32×SX + 2×Sp
-+	 * let SX=1 Sp=1 RA=3 RB=4
-+	 */
-+	stepped = emulate_step(&regs, ppc_inst(PPC_STXVPX(1, 1, 3, 4)));
-+
-+	if (stepped == 1 && cached_b[0] == c[0].b[0] && cached_b[1] == c[0].b[1] &&
-+	    cached_b[2] == c[0].b[2] && cached_b[3] == c[0].b[3] &&
-+	    cached_b[4] == c[1].b[0] && cached_b[5] == c[1].b[1] &&
-+	    cached_b[6] == c[1].b[2] && cached_b[7] == c[1].b[3] &&
-+	    cpu_has_feature(CPU_FTR_VSX)) {
-+		show_result("stxvpx", "PASS");
-+	} else {
-+		if (!cpu_has_feature(CPU_FTR_VSX))
-+			show_result("stxvpx", "PASS (!CPU_FTR_VSX)");
-+		else
-+			show_result("stxvpx", "FAIL");
-+	}
-+}
-+#else
-+static void __init test_lxvpx_stxvpx(void)
-+{
-+	show_result("lxvpx", "SKIP (CONFIG_VSX is not set)");
-+	show_result("stxvpx", "SKIP (CONFIG_VSX is not set)");
-+}
-+#endif /* CONFIG_VSX */
-+
-+#ifdef CONFIG_VSX
-+static void __init test_plxvp_pstxvp(void)
-+{
-+	struct ppc_inst instr;
-+	struct pt_regs regs;
-+	union {
-+		vector128 a;
-+		u32 b[4];
-+	} c[2];
-+	u32 cached_b[8];
-+	int stepped = -1;
-+
-+	/*
-+	 * plxvp XTp,D(RA),R
-+	 * XSp = 32×SX + 2×Sp
-+	 * let RA=3 R=0 D=d0||d1=0 R=0 Sp=1 SX=1
-+	 */
-+	instr = ppc_inst_prefix(PPC_PLXVP(3, 0, 0, 1, 1) >> 32,
-+			PPC_PLXVP(3, 0, 0, 1, 1) & 0xffffffff);
-+
-+	/*** plxvpx ***/
-+
-+	cached_b[0] = c[0].b[0] = 18233;
-+	cached_b[1] = c[0].b[1] = 34863571;
-+	cached_b[2] = c[0].b[2] = 834;
-+	cached_b[3] = c[0].b[3] = 6138911;
-+	cached_b[4] = c[1].b[0] = 1234;
-+	cached_b[5] = c[1].b[1] = 5678;
-+	cached_b[6] = c[1].b[2] = 91011;
-+	cached_b[7] = c[1].b[3] = 121314;
-+
-+	init_pt_regs(&regs);
-+	regs.gpr[3] = (unsigned long)&c[0].a;
-+
-+	stepped = emulate_step(&regs, instr);
-+	if (stepped == 1 && cpu_has_feature(CPU_FTR_VSX)) {
-+		show_result("plxvpx", "PASS");
-+	} else {
-+		if (!cpu_has_feature(CPU_FTR_VSX))
-+			show_result("plxvpx", "PASS (!CPU_FTR_VSX)");
-+		else
-+			show_result("plxvpx", "FAIL");
-+	}
-+
-+	/*** pstxvpx ***/
-+
-+	c[0].b[0] = 21379463;
-+	c[0].b[1] = 87;
-+	c[0].b[2] = 374234;
-+	c[0].b[3] = 4;
-+	c[1].b[0] = 90;
-+	c[1].b[1] = 122;
-+	c[1].b[2] = 555;
-+	c[1].b[3] = 32144;
-+
-+	/*
-+	 * pstxvpx XTp,D(RA),R
-+	 * XSp = 32×SX + 2×Sp
-+	 * let RA=3 D=d0||d1=0 R=0 Sp=1 SX=1
-+	 */
-+	instr = ppc_inst_prefix(PPC_PSTXVP(3, 0, 0, 1, 1) >> 32,
-+			PPC_PSTXVP(3, 0, 0, 1, 1) & 0xffffffff);
-+
-+	stepped = emulate_step(&regs, instr);
-+
-+	if (stepped == 1 && cached_b[0] == c[0].b[0] && cached_b[1] == c[0].b[1] &&
-+	    cached_b[2] == c[0].b[2] && cached_b[3] == c[0].b[3] &&
-+	    cached_b[4] == c[1].b[0] && cached_b[5] == c[1].b[1] &&
-+	    cached_b[6] == c[1].b[2] && cached_b[7] == c[1].b[3] &&
-+	    cpu_has_feature(CPU_FTR_VSX)) {
-+		show_result("pstxvpx", "PASS");
-+	} else {
-+		if (!cpu_has_feature(CPU_FTR_VSX))
-+			show_result("pstxvpx", "PASS (!CPU_FTR_VSX)");
-+		else
-+			show_result("pstxvpx", "FAIL");
-+	}
-+}
-+#else
-+static void __init test_plxvp_pstxvp(void)
-+{
-+	show_result("plxvpx", "SKIP (CONFIG_VSX is not set)");
-+	show_result("pstxvpx", "SKIP (CONFIG_VSX is not set)");
-+}
-+#endif /* CONFIG_VSX */
-+
- static void __init run_tests_load_store(void)
- {
- 	test_ld();
-@@ -628,6 +877,9 @@ static void __init run_tests_load_store(void)
- 	test_plfd_pstfd();
- 	test_lvx_stvx();
- 	test_lxvd2x_stxvd2x();
-+	test_lxvp_stxvp();
-+	test_lxvpx_stxvpx();
-+	test_plxvp_pstxvp();
- }
- 
- struct compute_test {
+> 
+> For the case where we run out of device pfns, migrate_vma_finalize() will
+> restore the original PTE and will not replace the PTE with device private PTE.
+> 
+> Also kvmppc_uvmem_page_free() (=dev_pagemap_ops.page_free()) is never
+> called for non-device-private pages.
+
+Yes. it should not be called. But as seen above in the stack trace, it is called. 
+
+What would cause the HMM to call ->page_free() on a page that is not
+associated with that device's pfn?
+
+> 
+> This could be a use-after-free case possibly arising out of the new state
+> changes in HV. If so, this fix will only mask the bug and not address the
+> original problem.
+
+I can verify by rerunning the tests, without the new state changes. But
+I do not see how those changes can cause this fault?
+
+This could also be caused by a duplicate ->page_free() call due to some
+bug in the migrate_page path? Could there be a race between
+migrate_page() and a page_fault ?
+
+
+Regardless, kvmppc_uvmem_page_free() needs to be fixed. It should not
+access contents of pvt, without verifing pvt is valid.
+
+> 
+> Regards,
+> Bharata.
+
 -- 
-2.24.1
-
+Ram Pai
