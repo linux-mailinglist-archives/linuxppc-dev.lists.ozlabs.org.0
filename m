@@ -2,51 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9D92340C3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 10:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CB52340EA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 10:13:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ0DM5hJjzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 18:04:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ0QX1YTVzDqZR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 18:13:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ0B84FLdzDqJs
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 18:02:24 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=pPeyl5/N; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BJ0B64wr3z9sTM;
- Fri, 31 Jul 2020 18:02:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1596182544;
- bh=VIvlFmLeEbazI6X4NrR2A4yECMiZVAa1vCybgh1Mduk=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=pPeyl5/NlC4K+MRg9yrpan6haPOfQboM84UFywQ+27jiRB4Must46goJhWYfneqsu
- 1XXxWssioctiie7J4pqqq0j82L9DowqWmz/t5CPrb04JcnDIB8+MYnCSISCaX21r7k
- u0f8C5XhEMU79kJe5jmL2nHyQhxBumAeP01uS22XlMe6bvgDDHBgUidQhfXSV/KSPF
- 9Wy8MWamdDLnJ6rQ0ioFp+OyTSVYKlmmCtUaliXRwX4vX35GGhe904HqzGmXuYeTSZ
- LIsPpgbPzfc+9O6W5OdjiOM5lL8D++64sV6bPTGp3qeOYvcGW/o4f01d+qd4iZlNQw
- lA8SX9b6z+spw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 10/10] powerpc/smp: Implement cpu_to_coregroup_id
-In-Reply-To: <20200727053230.19753-11-srikar@linux.vnet.ibm.com>
-References: <20200727053230.19753-1-srikar@linux.vnet.ibm.com>
- <20200727053230.19753-11-srikar@linux.vnet.ibm.com>
-Date: Fri, 31 Jul 2020 18:02:21 +1000
-Message-ID: <87wo2k3yeq.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ0NB4f6wzDqZD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 18:11:06 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 06V81uqv102565; Fri, 31 Jul 2020 04:10:56 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32mfb8gcrd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 31 Jul 2020 04:10:56 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06V859t6019431;
+ Fri, 31 Jul 2020 08:10:54 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma05fra.de.ibm.com with ESMTP id 32gcqk49te-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 31 Jul 2020 08:10:53 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 06V8ApnT63898038
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 31 Jul 2020 08:10:51 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EBDE511C050;
+ Fri, 31 Jul 2020 08:10:50 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E37C211C04C;
+ Fri, 31 Jul 2020 08:10:47 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.211.129.132])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 31 Jul 2020 08:10:47 +0000 (GMT)
+Date: Fri, 31 Jul 2020 01:10:44 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Define H_PAGE_IN_NONSHARED for
+ H_SVM_PAGE_IN hcall
+Message-ID: <20200731081044.GA5787@oc0525413822.ibm.com>
+References: <alpine.DEB.2.22.394.2007301231140.2548@hadrien>
+ <20200730232101.GB5882@oc0525413822.ibm.com>
+ <20200731043334.GB20199@in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200731043334.GB20199@in.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-07-31_02:2020-07-30,
+ 2020-07-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0
+ mlxscore=0 mlxlogscore=996 adultscore=0 bulkscore=0 lowpriorityscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007310054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,94 +87,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Jordan Niethe <jniethe5@gmail.com>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: ldufour@linux.ibm.com, linux-doc@vger.kernel.org, corbet@lwn.net,
+ kvm-ppc@vger.kernel.org, Julia Lawall <julia.lawall@inria.fr>,
+ sathnaga@linux.vnet.ibm.com, sukadev@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> Lookup the coregroup id from the associativity array.
+On Fri, Jul 31, 2020 at 10:03:34AM +0530, Bharata B Rao wrote:
+> On Thu, Jul 30, 2020 at 04:21:01PM -0700, Ram Pai wrote:
+> > H_SVM_PAGE_IN hcall takes a flag parameter. This parameter specifies the
+> > way in which a page will be treated.  H_PAGE_IN_NONSHARED indicates
+> > that the page will be shared with the Secure VM, and H_PAGE_IN_SHARED
+> > indicates that the page will not be shared but its contents will
+> > be copied.
+> 
+> Looks like you got the definitions of shared and non-shared interchanged.
 
-It's slightly strange that this is called in patch 9, but only properly
-implemented here in patch 10.
+Yes. Realized it after sending the patch. Will fix it.
 
-I'm not saying you have to squash them together, but it would be good if
-the change log for patch 9 mentioned that a subsequent commit will
-complete the implementation and how that affects the behaviour.
+> 
+> > 
+> > However H_PAGE_IN_NONSHARED is not defined in the header file, though
+> > it is defined and documented in the API captured in
+> > Documentation/powerpc/ultravisor.rst
+> > 
+> > Define H_PAGE_IN_NONSHARED in the header file.
+> 
+> What is the use of defining this? Is this used directly in any place?
+> Or, are youp planning to introduce such a usage?
 
-cheers
+I know the Hypervisor code currently has no use for that define.
+It assumes  H_PAGE_IN_NONSHARED to be !H_PAGE_IN_SHARED.
 
-> If unable to detect the coregroup id, fallback on the core id.
-> This way, ensure sched_domain degenerates and an extra sched domain is
-> not created.
->
-> Ideally this function should have been implemented in
-> arch/powerpc/kernel/smp.c. However if its implemented in mm/numa.c, we
-> don't need to find the primary domain again.
->
-> If the device-tree mentions more than one coregroup, then kernel
-> implements only the last or the smallest coregroup, which currently
-> corresponds to the penultimate domain in the device-tree.
->
-> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-> Cc: LKML <linux-kernel@vger.kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Anton Blanchard <anton@ozlabs.org>
-> Cc: Oliver O'Halloran <oohall@gmail.com>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Michael Neuling <mikey@neuling.org>
-> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Valentin Schneider <valentin.schneider@arm.com>
-> Cc: Jordan Niethe <jniethe5@gmail.com>
-> Reviewed-by : Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> ---
-> Changelog v1 -> v2:
-> 	Move coregroup_enabled before getting associativity (Gautham)
->
->  arch/powerpc/mm/numa.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index 0d57779e7942..8b3b3ec7fcc4 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -1218,6 +1218,26 @@ int find_and_online_cpu_nid(int cpu)
->  
->  int cpu_to_coregroup_id(int cpu)
->  {
-> +	__be32 associativity[VPHN_ASSOC_BUFSIZE] = {0};
-> +	int index;
-> +
-> +	if (cpu < 0 || cpu > nr_cpu_ids)
-> +		return -1;
-> +
-> +	if (!coregroup_enabled)
-> +		goto out;
-> +
-> +	if (!firmware_has_feature(FW_FEATURE_VPHN))
-> +		goto out;
-> +
-> +	if (vphn_get_associativity(cpu, associativity))
-> +		goto out;
-> +
-> +	index = of_read_number(associativity, 1);
-> +	if (index > min_common_depth + 1)
-> +		return of_read_number(&associativity[index - 1], 1);
-> +
-> +out:
->  	return cpu_to_core_id(cpu);
->  }
->  
-> -- 
-> 2.17.1
+But H_PAGE_IN_NONSHARED is defined in the Ultravisor API, and hence has
+to be captured in the header, to stay consistent.
+
+RP
