@@ -1,76 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5A023453A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 14:05:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51698234595
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 14:17:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ5ZP0dnpzDqMG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 22:05:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BJ5r65CtTzDqMk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jul 2020 22:17:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::644;
- helo=mail-ej1-x644.google.com; envelope-from=refactormyself@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IV77SFHd; dkim-atps=neutral
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
- [IPv6:2a00:1450:4864:20::644])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ5W421DdzDqdq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 22:02:22 +1000 (AEST)
-Received: by mail-ej1-x644.google.com with SMTP id kq25so18214861ejb.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 05:02:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=ZPoeO3tTC7ewTWnbFijLfWrL4pIpzl5ZB76dv/p6S+8=;
- b=IV77SFHdlJClAFDI4KSZtVJdC2DAtGrxQmIzbw7GOFGworBySBIYMfm9Yv26Y/SKyP
- rJ/5xlxCVrVFPq8kGTy8sYSnl8lJJRNSCrGsHmSuT/Q/6f6ZNhMo+IUMump4oyHXnbT4
- zdg6GnXC6I2EnnmIO+QWUt/QBdgUQDiMTBzZ1MF6LcHzPH6p6WiuMJRqgKLwdVXr0w6T
- A41vxNL3Pbxy7zwarGyvn0JkT7Sx1d9otfI42XD75uRhNvxzHSotK52Z7UcRx/7L0KoB
- ev5oiKfqKrPihVeHMlZvAQD8DrotfvZAdy9sCn3f87cYflYMriFMzeKWHMdJMTvHmefD
- 7wSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=ZPoeO3tTC7ewTWnbFijLfWrL4pIpzl5ZB76dv/p6S+8=;
- b=aXXQJeoFZ8NxDpcGBZ3V9GtL9nqKbY0QrIKjX4+J4r60mUrcKNnlPeeORbztJ0WJGp
- pesDJU9febn9BMC5U7cTKmoJBAl+reFLnENmL9QqACjclOIK7kfeXcXmAo+82Cud3ohm
- uN6qjsFUdrW8gLIVoA1p9Eg7BOyib9V1hGPD2G0mDfCWy4vkIwVIHCSKck4ouZLtXuxX
- zSWQlXmJmCctEDBCzGiCr5j75w+p1QuaQwE1rlhIo8eoBi7MXZH+/UqoUpWXZNI0xrN7
- esZHvJJfpnpbBM0D//ebslcpSsyE7kIMrbD9BHXpWFrokI4I0HVqt0Sxuhubp9LznRBj
- a3eQ==
-X-Gm-Message-State: AOAM530Ehwkhdh7qwUIiWE8TDF8SJiTLOsu+YLEJRgIFPtcQObcbOTPz
- XSA+wR6vFCX3qTqZv72ZtNE=
-X-Google-Smtp-Source: ABdhPJzjoTcnAvyDzlAqwJiXlviIPrdknthesuHRXw6Drk1Mxsa9h9E21KaWBpHYtCNmp+wuQyAJqg==
-X-Received: by 2002:a17:906:d7b1:: with SMTP id
- pk17mr3684852ejb.554.1596196936900; 
- Fri, 31 Jul 2020 05:02:16 -0700 (PDT)
-Received: from net.saheed (95C84E0A.dsl.pool.telekom.hu. [149.200.78.10])
- by smtp.gmail.com with ESMTPSA id j5sm9091734ejk.87.2020.07.31.05.02.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 Jul 2020 05:02:16 -0700 (PDT)
-From: "Saheed O. Bolarinwa" <refactormyself@gmail.com>
-To: helgaas@kernel.org, Mike Marciniszyn <mike.marciniszyn@intel.com>,
- Dennis Dalessandro <dennis.dalessandro@intel.com>,
- Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "David S. Miller" <davem@davemloft.net>, Kalle Valo <kvalo@codeaurora.org>,
- Jakub Kicinski <kuba@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Len Brown <lenb@kernel.org>, Russell Currey <ruscur@russell.cc>,
- Sam Bobroff <sbobroff@linux.ibm.com>,
- "Oliver O'Halloran" <oohall@gmail.com>
-Subject: [PATCH v4 00/12] PCI: Remove '*val = 0' from pcie_capability_read_*()
-Date: Fri, 31 Jul 2020 13:02:28 +0200
-Message-Id: <20200731110240.98326-1-refactormyself@gmail.com>
-X-Mailer: git-send-email 2.18.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BJ5mm0JghzDqSD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jul 2020 22:14:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=PiZsXOsY; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BJ5ml2LN3z9s1x;
+ Fri, 31 Jul 2020 22:14:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1596197655;
+ bh=zl7Kp+BGNFfBts1EjllIogLiwRs96Vwctn66ZH8tpps=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=PiZsXOsYAL7n272reYQOMNJhDNwWpssZqR1XrI9PcXNOm9miwoQzY7vkbAczMA2mR
+ veL4hHCGhckOA1fppwEAIThEN3r5XfV4NKi5jqtuCxcXEIxIe9pvKsKKxYq5TQe8Xv
+ gjklhM/2lahd6X83wJ+VLZPJYw8K5WkT4DUqsLFY8YYoTtVt7Vp/g/8EIRDb09/oxS
+ ACMesE+gaswVgRyyeOEGG4wYa7xYeQ0gMtl6v+ciaHNN2k1GHilVClzDvKlJDScYOF
+ 0HiZvfLU7BLTB2wHqH5Pt1uGqRFGNrlMbYn7gLYoIVJdrwm3ZVZxuqh5H53tWqjmQz
+ hvqP6f482dgkQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 08/10] powerpc/smp: Allocate cpumask only after
+ searching thread group
+In-Reply-To: <20200731094938.GA18776@linux.vnet.ibm.com>
+References: <20200727053230.19753-1-srikar@linux.vnet.ibm.com>
+ <20200727053230.19753-9-srikar@linux.vnet.ibm.com>
+ <87zh7g3yvk.fsf@mpe.ellerman.id.au>
+ <20200731094938.GA18776@linux.vnet.ibm.com>
+Date: Fri, 31 Jul 2020 22:14:11 +1000
+Message-ID: <87o8nv51bg.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,131 +61,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-rdma@vger.kernel.org,
- "Saheed O. Bolarinwa" <refactormyself@gmail.com>, skhan@linuxfoundation.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
- linux-acpi@vger.kernel.org, netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- bjorn@helgaas.com, linux-kernel-mentees@lists.linuxfoundation.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Peter Zijlstra <peterz@infradead.org>, Jordan Niethe <jniethe5@gmail.com>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-v4 CHANGES:
-- Drop uses of pcie_capability_read_*() return value. This related to
-  [1] which is pointing towards making the accessors return void.
-- Remove patches found to be unnecessary
-- Reword some commit messages
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> * Michael Ellerman <mpe@ellerman.id.au> [2020-07-31 17:52:15]:
+>
+>> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>> > If allocated earlier and the search fails, then cpumask need to be
+>> > freed. However cpu_l1_cache_map can be allocated after we search thread
+>> > group.
+>> 
+>> It's not freed anywhere AFAICS?
+>
+> Yes, its never freed. Infact we are never checking if
+> zalloc_cpumask_var_node fails. Its not just this cpumask, but historically
+> all the other existing cpumasks in arch/powerpc/kernel/smp.c are never
+> freed/checked. I did dig into this a bit and it appears that ..
+> (Please do correct me if I am wrong!! )
 
-v3 CHANGES:
-- Split previous PATCH 6/13 into two : PATCH 6/14 and PATCH 7/14
-- Fix commit message of PATCH 5/14
-- Update Patch numbering and Commit messages
-- Add 'Acked by Greg KH' to PATCH 2/14
-- Add PATCH version
+That's correct.
 
-v2 CHANGES:
-- Fix missing comma, causing the email cc error
-- Fix typos and numbering errors in commit messages
-- Add commit message to 13/13
-- Add two more patches: PATCH 3/13 and PATCH 4/13
+> Powerpc using cpumask_var_t for all of the percpu variables. And it dont seem
+> to enable CONFIG_CPUMASK_OFFSTACK even from the MAXSMP config.
 
-MERGING:
-- Patch 6/12 depends on Patch 5/12. However Patch 5/12 has no dependency.
-  Please, merge PATCH 6/12 only after Patch 5/12.
-- Patch 12/12 depends on all preceding patches. Please merge Patch 12/12
-  only after other patches in this series have been merged.
-- All other patches have no dependencies besides those mentioned above and
-  can be merge individually.
+I remember Rusty adding that code, but I don't know if we ever
+considered enabling CPUMASK_OFFSTACK.
 
-PATCH 5/12:
-Set the default case in the switch-statement to set status
-to "Power On".
+Probably we meant to but never got around to doing it.
 
-PATCH 1/12 to 11/12:
-Use the value read by pcie_capability_read_*() to determine success or
-failure. This is done by checking if it is ~0, while maintaining the
-functions' behaviour. This ensures that the changes in PATCH 12/12 does
-not introduce any bug.
+> So from include/linux/cpumask.h
+>
+> typedef struct cpumask cpumask_var_t[1];
+> and
+> zalloc_cpumask_var_node ends up being cpumask_clear
+>
+> So I think we are historically we seem to assume we are always
+> !CPUMASK_OFFSTACK and hence we dont need to check for return as well as
+> free..
 
-PATCH 12/12:
-There are several reasons why a PCI capability read may fail whether the
-device is present or not. If this happens, pcie_capability_read_*() will
-return -EINVAL/PCIBIOS_BAD_REGISTER_NUMBER or PCIBIOS_DEVICE_NOT_FOUND
-and *val is set to 0.
+Right.
 
-This behaviour if further ensured by this code inside
-pcie_capability_read_*()
+> I would look forward to your comments on how we should handle this going
+> forward. But I would keep this the same for this patchset.
 
- ret = pci_read_config_dword(dev, pci_pcie_cap(dev) + pos, val);
- /*
-  * Reset *val to 0 if pci_read_config_dword() fails, it may
-  * have been written as 0xFFFFFFFF if hardware error happens
-  * during pci_read_config_dword().
-  */
- if (ret)
-	 *val = 0;
- return ret;
+Agreed, just clarify in the change log that it's not freed at the moment
+because of CPU_MASK_OFFSTACK=n
 
-a) Since all pci_generic_config_read() does is read a register value,
-it may return success after reading a ~0 which *may* have been fabricated
-by the PCI host bridge due to a read timeout. Hence pci_read_config_*() 
-will return success with a fabricated ~0 in *val, indicating a problem.
-In this case, the assumed behaviour of  pcie_capability_read_*() will be
-wrong. To avoid error slipping through, more checks are necessary.
+> One of the questions that I have is if we most likely are to be in
+> !CONFIG_CPUMASK_OFFSTACK, then should be migrate to cpumask_t for percpu
+> variables. 
 
-b) pci_read_config_*() will return PCIBIOS_DEVICE_NOT_FOUND only if 
-dev->error_state = pci_channel_io_perm_failure (i.e. 
-pci_dev_is_disconnected()) or if pci_generic_config_read() can't find the
-device. In both cases *val is initially set to ~0 but as shown in the code
-above pcie_capability_read_*() resets it back to 0. Even with this effort,
-drivers still have to perform validation checks more so if 0 is a valid
-value.
+I don't think so, cpumask_t is semi-deprecated AIUI.
+  
+> The reason being we end up using NR_CPU cpumask for each percpu cpumask
+> variable instead of using NR_CPU cpumask_t pointer.
 
-Most drivers only consider the case (b) and in some cases, there is the 
-expectation that on timeout *val has a fabricated value of ~0, which *may*
-not always be true as explained in (a).
+Our current defconfigs have NR_CPUS=2048, which is probably just small
+enough to continue using OFFSTACK=n.
 
-In any case, checks need to be done to validate the value read and maybe
-confirm which error has occurred. It is better left to the drivers to do.
+But we allow configuring NR_CPUS up to 8192, which surely would need
+OFFSTACK=y in order to work.
 
-Check the return value of pcie_capability_read_dword() to ensure success
-and avoid bug as a result of Patch 14/14.
-Remove the reset of *val to 0 when pci_read_config_*() fails.
+So I think we need to stick with cpumask_var_t, but we should test with
+OFFSTACK=y, and should probably be a bit more careful with checking the
+allocations succeed.
 
-[1] https://lore.kernel.org/linux-pci/20200714234625.GA428442@bjorn-Precision-5520/
+And then we should select OFFSTACK=y for NR_CPUS above some threshold.
 
-
-Saheed O. Bolarinwa (12):
-  IB/hfi1: Check if pcie_capability_read_*() reads ~0
-  misc: rtsx: Check if pcie_capability_read_*() reads ~0
-  ath9k: Check if pcie_capability_read_*() reads ~0
-  iwlegacy: Check if pcie_capability_read_*() reads ~0
-  PCI: pciehp: Set "Power On" as the default get_power_status
-  PCI: pciehp: Check if pcie_capability_read_*() reads ~0
-  PCI/ACPI: Check if pcie_capability_read_*() reads ~0
-  PCI: Check if pcie_capability_read_*() reads ~0
-  PCI/PM: Check if pcie_capability_read_*() reads ~0
-  PCI/AER: Check if pcie_capability_read_*() reads ~0
-  PCI/ASPM: Check if pcie_capability_read_*() reads ~0
-  PCI: Remove '*val = 0' from pcie_capability_read_*()
-
- drivers/infiniband/hw/hfi1/aspm.c            |  6 ++--
- drivers/misc/cardreader/rts5227.c            |  2 +-
- drivers/misc/cardreader/rts5249.c            |  2 +-
- drivers/misc/cardreader/rts5260.c            |  2 +-
- drivers/misc/cardreader/rts5261.c            |  2 +-
- drivers/net/wireless/ath/ath9k/pci.c         |  3 +-
- drivers/net/wireless/intel/iwlegacy/common.c |  2 +-
- drivers/pci/access.c                         | 14 --------
- drivers/pci/hotplug/pciehp_hpc.c             | 13 +++++---
- drivers/pci/pci-acpi.c                       |  4 +--
- drivers/pci/pci.c                            | 34 ++++++++++++++------
- drivers/pci/pcie/aer.c                       |  2 +-
- drivers/pci/pcie/aspm.c                      | 10 +++---
- drivers/pci/probe.c                          | 12 +++----
- 14 files changed, 56 insertions(+), 52 deletions(-)
-
--- 
-2.18.4
-
+cheers
