@@ -2,74 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DD8235119
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Aug 2020 10:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E08582351A7
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Aug 2020 12:20:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BJc7N3qYtzDqMG
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Aug 2020 18:02:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BJgCQ1mwgzDqNH
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Aug 2020 20:20:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CEJxdjnQ; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=BOX5CM31; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BJc555LPczDqBP
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Aug 2020 18:00:07 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id e22so8873261pjt.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Aug 2020 01:00:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=i64OqGOKUX2vRbPCdcwPu4hJ7VHYiYruzv3gOuWclhA=;
- b=CEJxdjnQCINWOcopnZ4Wu5K7tT+eBGOPqTLjCGe07JxfaHDZnQ4FDVxWeQr/je90Mf
- KYxMbtfrx6Pk8e7SeDv57mGg6JGW/Zv0G1af6LAmKB3EkEYNCfu76G86T9uIQPJ7eFgK
- 0lk4PK/El+KSfNGOYoSpeflHAns3aqDX8cfwxnfv1H9pnwQnjCG0K+KVrbGmf3mFhn+2
- p6s69ml2dp/5goOx1TBru+VHAwmiAJUHKaw1d3ZP61ofCwm2XiO4mDrY08EUWMU81Fgd
- avj3VZOBOgTE2APc8mLX3jz+3T/oDph4xsU0bBFu20PGvvxrjp4cb43ZlhSapub8Kd7t
- oBeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=i64OqGOKUX2vRbPCdcwPu4hJ7VHYiYruzv3gOuWclhA=;
- b=FJVC9oxc+LWRcLLKWA45E9YL1URGE2abdURQTAt7wcpztjUzzRs1OzXh7q7mOeE0pY
- C523a5fwX/JPRL5Ow5VEVQ3GhfJwQ5H6LNbVZB+5Imd9whzoNlNMj/8QltBzYAoCz26+
- XZYuRZEQkiA/gkuOYDkGaIJBDTBTEYsV6+hFpSG9+rtm5DsBtsr0yJvHix6+5sfGyVKY
- FF5xHcpzEFRGKqgkBjo/stBfANvLuAW9kbMrTTa7YAK8/XdW89eYQpPuwcZteq2VrnSH
- ICNNVxUUzLJIH9ijg9+Chau8vDU8JbMCh7ylQ2xpXxdL8+Vld0WJDvnNpsu3cDtf58RA
- vvkA==
-X-Gm-Message-State: AOAM530f8CFQfjKKob3rZesPI/3hFY6MLtI384UNyTMNU032GQ/UmLzP
- jngp0flN4Z19yjNsTEhPOjA=
-X-Google-Smtp-Source: ABdhPJyX87jF7+C/BEL9ElATQshMUqsrjaIT8uJiXDwTgR1Lg3kd7vr7cKVtr/cp+/DBXHYU2vE0KA==
-X-Received: by 2002:a17:902:7688:: with SMTP id
- m8mr6794990pll.12.1596268803816; 
- Sat, 01 Aug 2020 01:00:03 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id f6sm13342385pfa.23.2020.08.01.01.00.03
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Sat, 01 Aug 2020 01:00:03 -0700 (PDT)
-Date: Sat, 1 Aug 2020 00:59:54 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2] ASoC: fsl-asoc-card: Remove
- fsl_asoc_card_set_bias_level function
-Message-ID: <20200801075954.GA19629@Asurada-Nvidia>
-References: <1596102422-14010-1-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BJg9Y1jkwzDqSh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Aug 2020 20:19:13 +1000 (AEST)
+Received: from kernel.org (unknown [87.70.91.42])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5ED692087C;
+ Sat,  1 Aug 2020 10:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1596277150;
+ bh=jQD0i2dEJRPR8dDJK6vZOAFdpUe2Ho5YLvcSFtENhXg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=BOX5CM31age4ZqR8WpA9Tu6Sib3TWB8q0axiVZJ9476Af21jQMyZgnRXNsbolGSGn
+ pWpwQlO3I1Ym/ZhVqWnuEZ70zJ8p8UgBgfsl0uitfuYMEFBB9GFeRHX0dU8VC7876G
+ 1GC7zC28lCBEAGXT18VZfRnXSGNcrY6WFAZx7Yv0=
+Date: Sat, 1 Aug 2020 13:18:54 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 06/15] powerpc: fadamp: simplify
+ fadump_reserve_crash_area()
+Message-ID: <20200801101854.GD534153@kernel.org>
+References: <20200728051153.1590-1-rppt@kernel.org>
+ <20200728051153.1590-7-rppt@kernel.org>
+ <87d04d5hda.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1596102422-14010-1-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <87d04d5hda.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,71 +58,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Hari Bathini <hbathini@in.ibm.com>,
+ linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Stafford Horne <shorne@gmail.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Michal Simek <monstr@monstr.eu>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Thu, Jul 30, 2020 at 10:15:13PM +1000, Michael Ellerman wrote:
+> Mike Rapoport <rppt@kernel.org> writes:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> >
+> > fadump_reserve_crash_area() reserves memory from a specified base address
+> > till the end of the RAM.
+> >
+> > Replace iteration through the memblock.memory with a single call to
+> > memblock_reserve() with appropriate  that will take care of proper memory
+>                                      ^
+>                                      parameters?
+> > reservation.
+> >
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > ---
+> >  arch/powerpc/kernel/fadump.c | 20 +-------------------
+> >  1 file changed, 1 insertion(+), 19 deletions(-)
+> 
+> I think this looks OK to me, but I don't have a setup to test it easily.
+> I've added Hari to Cc who might be able to.
+> 
+> But I'll give you an ack in the hope that it works :)
 
-Having two nits and one question, inline:
+Actually, I did some digging in the git log and the traversal was added
+there on purpose by the commit b71a693d3db3 ("powerpc/fadump: exclude
+memory holes while reserving memory in second kernel")
+Presuming this is still reqruired I'm going to drop this patch and will
+simply replace for_each_memblock() with for_each_mem_range() in v2.
+ 
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> 
+> 
+> > diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> > index 78ab9a6ee6ac..2446a61e3c25 100644
+> > --- a/arch/powerpc/kernel/fadump.c
+> > +++ b/arch/powerpc/kernel/fadump.c
+> > @@ -1658,25 +1658,7 @@ int __init fadump_reserve_mem(void)
+> >  /* Preserve everything above the base address */
+> >  static void __init fadump_reserve_crash_area(u64 base)
+> >  {
+> > -	struct memblock_region *reg;
+> > -	u64 mstart, msize;
+> > -
+> > -	for_each_memblock(memory, reg) {
+> > -		mstart = reg->base;
+> > -		msize  = reg->size;
+> > -
+> > -		if ((mstart + msize) < base)
+> > -			continue;
+> > -
+> > -		if (mstart < base) {
+> > -			msize -= (base - mstart);
+> > -			mstart = base;
+> > -		}
+> > -
+> > -		pr_info("Reserving %lluMB of memory at %#016llx for preserving crash data",
+> > -			(msize >> 20), mstart);
+> > -		memblock_reserve(mstart, msize);
+> > -	}
+> > +	memblock_reserve(base, memblock_end_of_DRAM() - base);
+> >  }
+> >  
+> >  unsigned long __init arch_reserved_kernel_pages(void)
+> > -- 
+> > 2.26.2
 
-On Thu, Jul 30, 2020 at 05:47:02PM +0800, Shengjiu Wang wrote:
-> @@ -182,6 +180,69 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
->  					       cpu_priv->slot_width);
->  		if (ret && ret != -ENOTSUPP) {
->  			dev_err(dev, "failed to set TDM slot for cpu dai\n");
-> +			goto out;
-> +		}
-> +	}
-> +
-> +	/* Specific configuration for PLL */
-> +	if (codec_priv->pll_id && codec_priv->fll_id) {
-> +		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
-> +			pll_out = priv->sample_rate * 384;
-> +		else
-> +			pll_out = priv->sample_rate * 256;
-> +
-> +		ret = snd_soc_dai_set_pll(asoc_rtd_to_codec(rtd, 0),
-> +					  codec_priv->pll_id,
-> +					  codec_priv->mclk_id,
-> +					  codec_priv->mclk_freq, pll_out);
-> +		if (ret) {
-> +			dev_err(dev, "failed to start FLL: %d\n", ret);
-> +			goto out;
-> +		}
-> +
-> +		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
-> +					     codec_priv->fll_id,
-> +					     pll_out, SND_SOC_CLOCK_IN);
-
-Just came into my mind: do we need some protection here to prevent
-PLL/SYSCLK reconfiguration if TX/RX end up with different values?
-
-> +	return 0;
-> +
-> +out:
-> +	priv->streams &= ~BIT(substream->stream);
-> +	return ret;
-
-Rather than "out:" which doesn't explicitly indicate an error-out,
-"fail:" would be better, following what we used in probe().
-
-> +static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
-> +{
-> +	struct snd_soc_pcm_runtime *rtd = substream->private_data;
-> +	struct fsl_asoc_card_priv *priv = snd_soc_card_get_drvdata(rtd->card);
-> +	struct codec_priv *codec_priv = &priv->codec_priv;
-> +	struct device *dev = rtd->card->dev;
-> +	int ret;
-> +
-> +	priv->streams &= ~BIT(substream->stream);
-> +
-
-> +	if (!priv->streams && codec_priv->pll_id &&
-> +	    codec_priv->fll_id) {
-
-This now can fit into single line :)
+-- 
+Sincerely yours,
+Mike.
