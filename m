@@ -1,70 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC62235470
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Aug 2020 23:44:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2CD623547B
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Aug 2020 23:59:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BJyMp6lCqzDqQx
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 07:44:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BJyjc1L8MzDqRt
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 07:59:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=yahoo.com (client-ip=66.163.189.84;
- helo=sonic306-22.consmr.mail.ne1.yahoo.com; envelope-from=ecs_dn@yahoo.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::244;
+ helo=mail-lj1-x244.google.com; envelope-from=cyrozap@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=yahoo.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256
- header.s=s2048 header.b=FrDkf9R4; dkim-atps=neutral
-Received: from sonic306-22.consmr.mail.ne1.yahoo.com
- (sonic306-22.consmr.mail.ne1.yahoo.com [66.163.189.84])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Ds6ik7S5; dkim-atps=neutral
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BJyKK2NSxzDqQx
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Aug 2020 07:41:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
- t=1596318104; bh=/k4OSGhjfShCWgin373xsALQXqhB8hhrTniSmsKptIc=;
- h=Date:From:To:Cc:In-Reply-To:Subject:References:From:Subject;
- b=FrDkf9R49959pLstaQ+O/5VJeyppmiH+m7l3vNo5a16iiGrjuvsgbI/wL3+nvOctVJ4UByHBRYKUTHz0YVuqTqiZJrGV5zQId04NSF2TFCTItheu4xOghXrRwFBa9x4K2TGFJUHfYoM64BerHIxZDIc+cVkCrhUH2ZEB81rIFzjGaQ3FstIKvqRihSm2xvAlhft5p/zTxG+A+3iSLwlrqBejxvcGaiKMsBeiV0cnRx+G8t1YuUo8IekUekS45nzaga5zFtXhOPiPT2TxIexaDfhOZYWJOwp1dYA58sar9fn6ojbXnEKvsSmgDDcNtdG5NHcxyLmMKlhqkojr4M4+Mw==
-X-YMail-OSG: Z6Gndm4VM1l3Vnb9h2OOWKSp4oRA7TcS2VCAwEgyHk.fJFlFLKe1S7QOjvsEMRF
- EasJDWTjKLlQfmBIyuqSVEgmJcYVSXqSXVm1Ci.kIomWPKPgArRJObHtU0cZwUOR.kN.2dmJ0K5O
- SpO9xjOy0ksML7Yr8UTIK2msruOLfoOTQfBcVO1zQPDY7HnmUsBe0_AIM0U3LS84xCc4wgQ6TdFo
- WSG4XPBPnawLkOJYvbG2pLSdQ5jcL3ovCxQjOI16zPtGDAnKtZwJkgJ914LOCdNWK9odITQHpRvn
- LXCwClv..z1AZXMu6RF7ew7Tc9pFsdlu4MT6NVhegXvOu_RdjW.oxYEj0VipgQUULEBKJZLfnl14
- Kp13i9VqlU7nzi4dGf3r8PrOkRyjo9O8MNQoJymDZ6aoY7RccX7_ZxWvhh.134c_bgyT15_Uh5ck
- BKjcQvQTHmDjSCOObE5yVnXSETiNSl3tJwBGkiGlJMxrCuU.egbbAZZAnya6tv4LclzEN1SMxKIv
- OfEYhnM8WrzDogffw6LF8rhXrGW3WQD2RjY2PbYyvj1SSngEtlo6tDb0IhyQK0dzVGFVhVVwp2lC
- RdsHDCOzyKgul6hs3q2EgdzVU.a1i4Or1w.LFuVcym1j0XMumCn3rqWw0A79ajLrCtTnjFiTbd95
- tCIlj0YsT2VFyCdukgTo1StNw0QsvOcwocYO8P13KiCwfR0WgO3vl42k4UBvGO8YrjlQ2oGxipjL
- PpT1EBqdDJ57KclwZ0Xwa74SEbqaXqhXPDU.i8s_BHS0SG_VXgLZ3oPIezwm.LeyZDMD4J5IqpvX
- 8keVo9df8yzl_gdPlLPXXqeKJdckXW_YL9O5sUqD5FxPnf9753MVRECZY8e8_Snsi4wHiSm2pPS1
- 0VOlbplNAOJzwscQflYI4BjLpxr1dIjfgFo3jbGNNt0W4pWXZrG29q5mxLe6ky81rx1ZMvLJhXDA
- NlJraEl.g8t5nF3grnmE1WT0CQlxhaXqCfLqr3opPf8jfiXtKjKFIZkk6p0i9HCJnSe4w5WboCt6
- ditRW4sKIUQw5rqgC21vC0e1OplDMwGdAcaiGWLr9eYNKAn3ACIdnbyXLGq1LokU1oXqWum2oYN3
- teAkS4INQyFhXHUvafmIOyvKFhErI7SZgMiiZlIOjG82bPQ1NJiG1nQCZwtHM_L_js_H5Y0sUlIT
- 4dAOVDVdao609kR7uGPqOqL2vT6NXUB8JagvwPtgD9honLSKtQ98S7Q8HJAcDXWsGhxnMxZUBvq1
- wMUmXlPnO0VQIc3gqZYBf3CljY7.y3VUJx3Kf_eKkeh_otrkIGCoDU7JrnHZYioYchnyvmm29SYa
- Q5RKD9OLVLt.tXupj4FYpVe2DWHT_m64quINCTVWg
-Received: from sonic.gate.mail.ne1.yahoo.com by
- sonic306.consmr.mail.ne1.yahoo.com with HTTP; Sat, 1 Aug 2020 21:41:44 +0000
-Received: by smtp410.mail.bf1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA
- ID 313a0681a8c3d6433bba6ad382ce1718; 
- Sat, 01 Aug 2020 21:41:40 +0000 (UTC)
-Date: Sat, 1 Aug 2020 14:41:26 -0700 (PDT)
-From: thefirst ECS <ecs_dn@yahoo.com>
-To: linuxppc-dev@lists.ozlabs.org
-Message-ID: <3103222.25048.1596318084416.JavaMail.Dan@DanHP>
-In-Reply-To: <11049609.25021.1596315320093.JavaMail.Dan@DanHP>
-Subject: Scott Wood fix for SysRQ Crash over Serial Console on Linux PowerPC
- 2.6.32 kernel?
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BJyh63Z9RzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Aug 2020 07:58:13 +1000 (AEST)
+Received: by mail-lj1-x244.google.com with SMTP id t6so22986694ljk.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Aug 2020 14:58:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=IqZxQaiay3zz4XT/GEF4YNkpUfdLIPuG9OhUVrjgqN8=;
+ b=Ds6ik7S56VtYmYcA7pY8lhD/r9kz/5BLU7jkiRYBpvIfM0szTzvaUBd83+KU/76mbM
+ ClpjswbzEq8LOkB6nxvXU2n9GhKnW/2zyJLXv7hTiaBqU9fkNj+m93ZOKvZVb1n+wXWt
+ iX9KJkOFaaB2umLkJ8Kv2zYmBJn4ZMrADre/u2JWTguoRr7rcUf9mAeSE+X48G8RQCT0
+ Q0XHHfXCaxnUGj5kxBxJeKLR9QHrr/eBYkdOOc5wlILYif2kzGa43yVRtqstOYgZ5HfF
+ /ys5K+DCKutfDUdrsoXjfv6ES0tmcBQu3CNEhPitnp+Fz9YoqohekR/ChNviJdxA4vgM
+ ouyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=IqZxQaiay3zz4XT/GEF4YNkpUfdLIPuG9OhUVrjgqN8=;
+ b=i7fQXAkeEY6KGiol8PBlnMd7P6RzYuxMasn4JOozoLAIX2xL/SVvLbZnnHsQ0E5XE/
+ 5gr9LcfudRyNUxfDYWppDfdD+1IsXaUoJZ91Qz+fpzHL9f6WaGX0AfzcMzKC8+KlAaSE
+ q3EjV2827bYa7HMBwGq2meiF0R7EtGF0E86vbcVKGztPP4uUGX8YwIkjIXHrr7h6RxDv
+ TsDkGluwmg+F26YDvjErnjzrxb55oJS3sdpiOH0gufRXyDQyRbnT+gqQF54VFIM3VL3z
+ XFAA6eHLZkGN+Z63H/tJcs3wBk8D+cVdTMSzOm8y23AZyWU+ZUEGhvQSIbh6D26vr1/M
+ b7sg==
+X-Gm-Message-State: AOAM532HejAikkrqkMNklC3RGS2iE7jY/NIoQqXt8rwXNYMJ8bhCKZum
+ kqjJMQimjNRFrbTai2nHUF8O/CwB1dgZ3VMUm9g=
+X-Google-Smtp-Source: ABdhPJzfcl+DUjqxMWgh3+xjnjOMhuEFHMZP2fG+eoQhwALnf3jC6YPLLabO4O1DueauXzfpxYi4Ayii7LQNL6rIyu4=
+X-Received: by 2002:a2e:999a:: with SMTP id w26mr4797896lji.242.1596319088452; 
+ Sat, 01 Aug 2020 14:58:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-References: <3103222.25048.1596318084416.JavaMail.Dan.ref@DanHP>
-X-Mailer: WebService/1.1.16271 hermes_yahoo Apache-HttpAsyncClient/4.1.4
- (Java/11.0.7)
+References: <CAO3ALPyB1JDvvC27JGgAoTuHh0w+897tPhmTKX9PQWBFCrrnbQ@mail.gmail.com>
+ <CAOSf1CEkHLamLXK3HOAZ+w0K=2hTOjn=x5KpDdmRZ4BXVy+P2A@mail.gmail.com>
+In-Reply-To: <CAOSf1CEkHLamLXK3HOAZ+w0K=2hTOjn=x5KpDdmRZ4BXVy+P2A@mail.gmail.com>
+From: Forest Crossman <cyrozap@gmail.com>
+Date: Sat, 1 Aug 2020 16:57:56 -0500
+Message-ID: <CAO3ALPxou56Y8cvBzC9qOAkBLkTAxodan1PhQ1WSBgWubamJGQ@mail.gmail.com>
+Subject: Re: ASMedia ASM2142 USB host controller tries to DMA to address zero
+ when doing bulk reads from multiple devices
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,100 +74,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: scottwood@freescale.com
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linux-usb@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On Wed, Jul 29, 2020 at 8:22 AM Oliver O'Halloran <oohall@gmail.com> wrote:
+>
+> On Tue, Jul 21, 2020 at 3:51 PM Forest Crossman <cyrozap@gmail.com> wrote:
+> >
+> > Hello, again!
+> >
+> > After fixing the issue in my previous thread using this patch[1], I
+> > decided to do some stress-testing of the controller to make sure it
+> > could handle my intended workloads and that there were no further DMA
+> > address issues that would need to be fixed. Unfortunately, it looks
+> > like there's still more work to be done: when I try to do long bulk
+> > reads from multiple devices simultaneously, eventually the host
+> > controller sends a DMA write to address zero, which then triggers EEH
+> > in my POWER9 system, causing the controller card to get hotplug-reset,
+> > which of course kills the disk-reading processes. For more details on
+> > the EEH errors, you can see my kernel's EEH message log[2].
+>
+> Take the logged address with a grain of salt. If an error occurs while
+> translating the DMA address the PHB logs all zeros as the "DMA
+> Address" because it only keeps around the bits that it needs to fetch
+> the next level of the TCE table. The EEH dump says the error is due to
+> a TCE permission mis-match so odds the ASmedia controller is writing
+> to an address that's already been DMA unmapped, hence the logged
+> address being zeros.
 
-I've been fighting with SysRq over serial for a while now and can't win, regardless of where I call emergency_restart or __handle_sysrq('b', NULL, 0); I can't seem to get it to reboot to U-Boot but instead I get a hung/crashed system:
+Interesting, that's good to know. I saw that the RXE_TCE_FESR had the
+"TCE Response Page Access Error" bit set, and had originally assumed
+that just meant the DMA to address zero was triggering that error
+since it wasn't in a mapped page, but after reading that bit's
+description again I think I understand it now.
 
-SysRq : Resetting
-Kernel BUG at c00bbe80 [verbose debug info unavailable]
-Oops: Exception in kernel mode, sig: 5 [#1]
-...
+> Sorry, I probably should have mentioned that quirk in the last mail.
+>
+> > The results of the various tests I performed are listed below.
+> >
+> > Test results (all failures are due to DMA writes to address zero, all
+> > hubs are USB 3.0/3.1 Gen1 only, and all disks are accessed via the
+> > usb-storage driver):
+> > - Reading simultaneously from two or more disks behind a hub connected
+> > to one port on the host controller:
+> >   - FAIL after 20-50 GB of data transferred for each device.
+> > - Reading simultaneously from two disks, each connected directly to
+> > one port on the host controller:
+> >   - FAIL after about 800 GB of data transferred for each device.
+> > - Reading from one disk behind a hub connected to one port on the host
+> > controller:
+> >   - OK for at least 2.7 TB of data transferred (I didn't test the
+> > whole 8 TB disk).
+> > - Writing simultaneously to two FL2000 dongles (using osmo-fl2k's
+> > "fl2k_test"), each connected directly to one port on the host
+> > controller:
+> >   - OK, was able to write several dozen terabytes to each device over
+> > the course of a little over 21 hours.
+> >
+> > Seeing how simultaneous writes to multiple devices and reads from
+> > single devices both seem to work fine, I assume that means this is
+> > being caused by some race condition in the host controller firmware
+> > when it responds to multiple read requests.
+>
+> Most likely. It's possible it's a platform specific race with DMA
+> map/unmap too, but I think we would be seeing similar issues with
+> other devices if it was.
 
-The NIP is always c00bbe80. 
+Yeah, I have several other xHCI controllers connected to this system,
+and I've never experienced this issue with any of them. If the problem
+was a POWER-specific DMA map/unmap race I would expect to be having
+problems with those controllers as well.
 
-The strange part is that echo b > /proc/sysrq-trigger works perfectly fine and quickly soft-reboots system.
+> > I also assume we're not
+> > going to be able to convince ASMedia to both fix the bug in their
+> > firmware and release the details on how to flash it from Linux, so I
+> > guess we'll just have to figure out how to make the driver talk to the
+> > controller in a way that avoids triggering the bad DMA write. As
+> > before, I decided to try a little kernel hacking of my own before
+> > sending this email, and tried separately enabling the
+> > XHCI_BROKEN_STREAMS and XHCI_ASMEDIA_MODIFY_FLOWCONTROL quirks in an
+> > attempt to fix this. As you might expect since you're reading this
+> > message, neither of those quirks fixed the issue, nor did they even
+> > make the transfers last any longer before failing.
+> >
+> > So now I've reached the limits of my understanding, and I need some
+> > help devising a fix. If anyone has any comments to that effect, or any
+> > questions about my hardware configuration, testing methodology, etc.,
+> > please don't hesitate to air them. Also, if anyone needs me to perform
+> > additional tests, or collect more log information, I'd be happy to do
+> > that as well.
+>
+> I started writing a tool a while ago to use the internal trace bus to
+> log incoming TLPs. Something like that might allow you to get a better
+> idea what the faulting access pattern is, but you would still need to
+> find a way to mitigate the issue. I'm not all that familiar with USB3
+> so I'm not much help on that front.
 
-Does writing to procfs somehow FIX some issue created when sending a BREAK signal over serial console? 
+Oh, interesting, I remember seeing the trace registers in the PHB4
+spec, but I wasn't sure how to access them without writing a kernel
+driver. I'd love to be able to log and dissect TLPs in Wireshark the
+same way I do for USB packets, since it makes reverse engineering
+protocols and debugging drivers so much easier. This would also be
+especially helpful because I haven't yet figured out how to get Qemu
+to intercept certain types of PCIe accesses (I forget if it was DMA or
+PIO or something, it was a quite while ago), and PCIe protocol
+analyzer hardware is prohibitively expensive (when it's even available
+for purchase). So if you've uploaded your code anywhere, I'd be really
+interested in seeing it, even if it's incomplete, since even with
+incomplete code I could use that as a reference for a Wireshark plugin
+or something. But if it's not online or if you'd prefer not to share
+it in its current state, I'll understand.
 
-Because I don't get it, I see that the same exact code is called inside drivers/char/sysrq.c ie by __handle_sysrq(key, NULL, 0); (which is executed upon write_sysrq_trigger via echo b > /proc/sysrq-trigger) as when I also manually call it via __handle_sysrq('b', NULL, 0); 
 
-And I hard coded to 'b' when I called it myself from drivers/serial/8250.c or sysrq.c due to another issue with normal way somehow not waiting or giving the supposed "5 seconds" to enter a letter after the BREAK signal. So it was almost impossible to trigger BREAK via Ctrl-A B by gnuscreen.
+Thanks again for your help,
 
-I can't figure out why the same code is called but giving completely different outcomes, other than maybe sending BREAK signal over serial console changes something with some interrupts in a way that's then magically fixed/undone by userland writing to procfs /proc/sysrq-trigger?
-
-Or maybe some sort of race condition since I'm triggering the actual "b" reboot more or less at same time as the actual "BREAK" signal? (Because otherwise with original kernel code I was only once able to trigger SysRq reboot and that crashed same way, I triggered it by pressing b very quick after Ctrl-B i think. Otherwise usually I would just get SyRq: HELP menu and the 'b' would be printed to my terminal...)
-
-I stumbled upon an old post at:
-https://www.mail-archive.com/linuxppc-dev@lists.ozlabs.org/msg75979.html
-
-And in there Scott Wood said he had done some fix for SysRq over serial console it seems for powerpc but apparently my kernel doesn't have his fix since seems our dts doesn't have "compatible = "fsl,ns16550", "ns16550";"  but only has "ns16550" and my kernel (2.6.32) config doesn't have any CONFIG_SERIAL_8250_FSL. I was wondering if anyone knew if my issue would be helped by Scott's fix and where I could find it and perhaps try to port it to our kernel.
-
-So again, echo m or c or b etc to /proc/sysrq-trigger works fine but triggering the same __handle_sysrq('b', NULL, 0) separately, crashes/hangs system and requires a hard reboot, power-cycle regardless of where I call it from after detecting a "BREAK" signal over serial console.
-
-Below is an example of a successful reboot via echo b > /proc/sysrq-trigger 
-
-SysRq : Resetting
-BUG: sleeping function called from invalid context at mm/slub.c:1719
-pcnt: 1 0 in_atomic(): 1, irqs_disabled(): 1, pid: 2471, name: bash
-Call Trace:
-[ec8d7d10] [c0007ec0] show_stack+0x54/0x16c (unreliable)
-[ec8d7d40] [c0037c48] __might_sleep+0xe8/0x10c
-[ec8d7d50] [c00c6e00] kmem_cache_alloc+0xa4/0xe0
-[ec8d7d80] [c00bbecc] __get_vm_area_node+0x84/0x10c
-[ec8d7db0] [c00148e8] __ioremap_caller+0x114/0x124
-[ec8d7de0] [c039ab68] ourcustom_spi_init+0x24/0xa0
-[ec8d7e20] [c039af3c] ourcustom_spi_reset+0x14/0xac
-[ec8d7e40] [c0018f90] fsl_rstcr_restart+0x14/0x18
-[ec8d7e50] [c0010114] machine_restart+0x30/0x4c
-[ec8d7e60] [c005cd6c] emergency_restart+0x30/0x6c
-[ec8d7e70] [c03211dc] sysrq_handle_reboot+0x14/0x24
-[ec8d7e80] [c0321418] __handle_sysrq+0xac/0x15c
-[ec8d7eb0] [c032153c] write_sysrq_trigger+0x74/0x80
-[ec8d7ec0] [c0122704] proc_reg_write+0x80/0xb4
-[ec8d7ef0] [c00d3b7c] vfs_write+0xb4/0x184
-[ec8d7f10] [c00d3d34] sys_write+0x4c/0x90
-[ec8d7f40] [c0011180] ret_from_syscall+0x0/0x3c
-
-COMPARED to an example of when I try to trigger via sending BREAK signal (Ctrl-A b with screen):
-
-NIP [c00bbe80] __get_vm_area_node+0x38/0x10c
-LR [c00148e8] __ioremap_caller+0x114/0x124
-Call Trace:
-[c0667c60] [c004eabc] irq_exit+0x68/0xa4 (unreliable)
-[c0667c90] [c00148e8] __ioremap_caller+0x114/0x124
-[c0667cc0] [c039abdc] ourcustom_spi_init+0x24/0xa0
-[c0667d00] [c039afb0] ourcustom_spi_reset+0x14/0xac
-[c0667d20] [c0018f90] fsl_rstcr_restart+0x14/0x18
-[c0667d30] [c0010114] machine_restart+0x30/0x4c
-[c0667d40] [c005cd6c] emergency_restart+0x30/0x6c
-[c0667d50] [c03211dc] sysrq_handle_reboot+0x14/0x24
-[c0667d60] [c032143c] __handle_sysrq+0xd0/0x1d0
-[c0667d90] [c03286e4] receive_chars+0x298/0x3e4
-[c0667de0] [c0329650] serial8250_handle_port+0x84/0xdc
-[c0667e00] [c0329958] serial8250_interrupt+0x90/0x128
-[c0667e30] [c008e6fc] handle_irq_action+0x8c/0xa0
-[c0667e50] [c008e774] handle_IRQ_event+0x64/0x13c
-[c0667e80] [c00910e4] handle_fasteoi_irq+0x94/0x17c
-[c0667ea0] [c00051b4] do_IRQ+0xc4/0xec
-[c0667ec0] [c00118ec] ret_from_except+0x0/0x18
-[c0667f80] [c0009310] cpu_idle+0x94/0x184
-[c0667fb0] [c00023cc] rest_init+0xa0/0xb4
-[c0667fc0] [c06089ec] start_kernel+0x33c/0x350
-[c0667ff0] [c00003f4] skpinv+0x30c/0x348
-Instruction dump:
-bee1000c 542b0024 90010034 7c9f2378 7cbe2b78 7cd93378 800b000c 7cfa3b78 
-7d1b4378 7d3c4b78 7d585378 5400016e <0f000000> 70a00001 41820018 7c600034 
-Kernel panic - not syncing: Fatal exception in interrupt
-Rebooting in 5 seconds..
-------------[ cut here ]------------
-Kernel BUG at c00bbe80 [verbose debug info unavailable]
-Oops: Exception in kernel mode, sig: 5 [#2]
-...
-
-Thanks,
-     -Dan
+Forest
