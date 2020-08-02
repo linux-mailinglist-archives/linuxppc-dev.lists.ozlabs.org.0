@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F875235971
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 19:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 637D2235974
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 19:13:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKSGz0bxKzDqLV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 03:11:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKSKC4DpkzDqLg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 03:13:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=LeAsAzWK; dkim-atps=neutral
+ header.s=default header.b=expYlg32; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKRYY64dtzDqQ6
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 02:39:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKRYs14DWzDqPy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 02:39:29 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9C6F7207BB;
- Sun,  2 Aug 2020 16:39:00 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7CDE02086A;
+ Sun,  2 Aug 2020 16:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1596386350;
- bh=gqBMOJufupVT6nwjCYDhdQzDn7YpaiO3JM6cP/9C3wE=;
+ s=default; t=1596386361;
+ bh=4D18U4LqzeXJ7rz+8d0QKOKWX/v62M4XIaiFZKMrU2g=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LeAsAzWKRP59PigJoeA+XtS0FJGWFVUdDhjkFEKClGxmxsaW6+DxphUxN6CoYMYaT
- tl2WX65cznSnalnk9ZwonQBu35jxUPNSqyzIs2PyJpU9XishZghg1BraDKduHM2ouD
- WedM8Ivn0Ro/l/b30nFV0/UkeZIodRQvAC8k7/4U=
+ b=expYlg32VKO393ycu/8mgvTP8o7aTQ0t+w3y+ImhCOBmcHrMgKsHPWZrIbJLNgfgC
+ Bm2vjh0nkZR+iuadKG9/iuI0LX7a8yAWHL7in80/MdMtdUm7db6niZEyjtfTAFy76P
+ C8qr+uEz5cJ6hO9r0B0W6Jn6zW/HAt2qdvztbZp0=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 16/17] memblock: implement for_each_reserved_mem_region()
- using __next_mem_region()
-Date: Sun,  2 Aug 2020 19:36:00 +0300
-Message-Id: <20200802163601.8189-17-rppt@kernel.org>
+Subject: [PATCH v2 17/17] memblock: use separate iterators for memory and
+ reserved regions
+Date: Sun,  2 Aug 2020 19:36:01 +0300
+Message-Id: <20200802163601.8189-18-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200802163601.8189-1-rppt@kernel.org>
 References: <20200802163601.8189-1-rppt@kernel.org>
@@ -84,182 +84,190 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-Iteration over memblock.reserved with for_each_reserved_mem_region() used
-__next_reserved_mem_region() that implemented a subset of
-__next_mem_region().
+for_each_memblock() is used to iterate over memblock.memory in
+a few places that use data from memblock_region rather than the memory
+ranges.
 
-Use __for_each_mem_range() and, essentially, __next_mem_region() with
-appropriate parameters to reduce code duplication.
-
-While on it, rename for_each_reserved_mem_region() to
-for_each_reserved_mem_range() for consistency.
+Introduce separate for_each_mem_region() and for_each_reserved_mem_region()
+to improve encapsulation of memblock internals from its users.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- .clang-format                    |  2 +-
- arch/arm64/kernel/setup.c        |  2 +-
- drivers/irqchip/irq-gic-v3-its.c |  2 +-
- include/linux/memblock.h         | 12 +++------
- mm/memblock.c                    | 46 +++++++-------------------------
- 5 files changed, 17 insertions(+), 47 deletions(-)
+ .clang-format                  |  3 ++-
+ arch/arm64/kernel/setup.c      |  2 +-
+ arch/arm64/mm/numa.c           |  2 +-
+ arch/mips/netlogic/xlp/setup.c |  2 +-
+ arch/x86/mm/numa.c             |  2 +-
+ include/linux/memblock.h       | 19 ++++++++++++++++---
+ mm/memblock.c                  |  4 ++--
+ mm/page_alloc.c                |  8 ++++----
+ 8 files changed, 28 insertions(+), 14 deletions(-)
 
 diff --git a/.clang-format b/.clang-format
-index 52ededab25ce..e28a849a1c58 100644
+index e28a849a1c58..cff71d345456 100644
 --- a/.clang-format
 +++ b/.clang-format
-@@ -266,7 +266,7 @@ ForEachMacros:
-   - 'for_each_process_thread'
+@@ -201,7 +201,7 @@ ForEachMacros:
+   - 'for_each_matching_node'
+   - 'for_each_matching_node_and_match'
+   - 'for_each_member'
+-  - 'for_each_memblock'
++  - 'for_each_mem_region'
+   - 'for_each_memblock_type'
+   - 'for_each_memcg_cache_index'
+   - 'for_each_mem_pfn_range'
+@@ -267,6 +267,7 @@ ForEachMacros:
    - 'for_each_property_of_node'
    - 'for_each_registered_fb'
--  - 'for_each_reserved_mem_region'
-+  - 'for_each_reserved_mem_range'
+   - 'for_each_reserved_mem_range'
++  - 'for_each_reserved_mem_region'
    - 'for_each_rtd_codec_dais'
    - 'for_each_rtd_codec_dais_rollback'
    - 'for_each_rtd_components'
 diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index 93b3844cf442..f3aec7244aab 100644
+index f3aec7244aab..52ea2f1a7184 100644
 --- a/arch/arm64/kernel/setup.c
 +++ b/arch/arm64/kernel/setup.c
-@@ -257,7 +257,7 @@ static int __init reserve_memblock_reserved_regions(void)
- 		if (!memblock_is_region_reserved(mem->start, mem_size))
- 			continue;
+@@ -217,7 +217,7 @@ static void __init request_standard_resources(void)
+ 	if (!standard_resources)
+ 		panic("%s: Failed to allocate %zu bytes\n", __func__, res_size);
  
--		for_each_reserved_mem_region(j, &r_start, &r_end) {
-+		for_each_reserved_mem_range(j, &r_start, &r_end) {
- 			resource_size_t start, end;
+-	for_each_memblock(memory, region) {
++	for_each_mem_region(region) {
+ 		res = &standard_resources[i++];
+ 		if (memblock_is_nomap(region)) {
+ 			res->name  = "reserved";
+diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+index 0cbdbcc885fb..f121e42246a6 100644
+--- a/arch/arm64/mm/numa.c
++++ b/arch/arm64/mm/numa.c
+@@ -350,7 +350,7 @@ static int __init numa_register_nodes(void)
+ 	struct memblock_region *mblk;
  
- 			start = max(PFN_PHYS(PFN_DOWN(r_start)), mem->start);
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index beac4caefad9..9971fd8cf6b6 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -2192,7 +2192,7 @@ static bool gic_check_reserved_range(phys_addr_t addr, unsigned long size)
+ 	/* Check that valid nid is set to memblks */
+-	for_each_memblock(memory, mblk) {
++	for_each_mem_region(mblk) {
+ 		int mblk_nid = memblock_get_region_node(mblk);
  
- 	addr_end = addr + size - 1;
+ 		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
+diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
+index 1a0fc5b62ba4..6e3102bcd2f1 100644
+--- a/arch/mips/netlogic/xlp/setup.c
++++ b/arch/mips/netlogic/xlp/setup.c
+@@ -70,7 +70,7 @@ static void nlm_fixup_mem(void)
+ 	const int pref_backup = 512;
+ 	struct memblock_region *mem;
  
--	for_each_reserved_mem_region(i, &start, &end) {
-+	for_each_reserved_mem_range(i, &start, &end) {
- 		if (addr >= start && addr_end <= end)
- 			return true;
+-	for_each_memblock(memory, mem) {
++	for_each_mem_region(mem) {
+ 		memblock_remove(mem->base + mem->size - pref_backup,
+ 			pref_backup);
  	}
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 8ee952038c80..fe6ea18d6923 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -516,7 +516,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
+ 	 *   memory ranges, because quirks such as trim_snb_memory()
+ 	 *   reserve specific pages for Sandy Bridge graphics. ]
+ 	 */
+-	for_each_memblock(reserved, mb_region) {
++	for_each_reserved_mem_region(mb_region) {
+ 		int nid = memblock_get_region_node(mb_region);
+ 
+ 		if (nid != MAX_NUMNODES)
 diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index ec2fd8f32a19..9e51b3fd4134 100644
+index 9e51b3fd4134..a6970e058bd7 100644
 --- a/include/linux/memblock.h
 +++ b/include/linux/memblock.h
-@@ -136,9 +136,6 @@ void __next_mem_range_rev(u64 *idx, int nid, enum memblock_flags flags,
- 			  struct memblock_type *type_b, phys_addr_t *out_start,
- 			  phys_addr_t *out_end, int *out_nid);
- 
--void __next_reserved_mem_region(u64 *idx, phys_addr_t *out_start,
--				phys_addr_t *out_end);
--
- void __memblock_free_late(phys_addr_t base, phys_addr_t size);
- 
- /**
-@@ -193,7 +190,7 @@ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
- 			     MEMBLOCK_NONE, p_start, p_end, NULL)
- 
- /**
-- * for_each_reserved_mem_region - iterate over all reserved memblock areas
-+ * for_each_reserved_mem_range - iterate over all reserved memblock areas
-  * @i: u64 used as loop variable
-  * @p_start: ptr to phys_addr_t for start address of the range, can be %NULL
-  * @p_end: ptr to phys_addr_t for end address of the range, can be %NULL
-@@ -201,10 +198,9 @@ void __memblock_free_late(phys_addr_t base, phys_addr_t size);
-  * Walks over reserved areas of memblock. Available as soon as memblock
-  * is initialized.
-  */
--#define for_each_reserved_mem_region(i, p_start, p_end)			\
--	for (i = 0UL, __next_reserved_mem_region(&i, p_start, p_end);	\
--	     i != (u64)ULLONG_MAX;					\
--	     __next_reserved_mem_region(&i, p_start, p_end))
-+#define for_each_reserved_mem_range(i, p_start, p_end)			\
-+	__for_each_mem_range(i, &memblock.reserved, NULL, NUMA_NO_NODE,	\
-+			     MEMBLOCK_NONE, p_start, p_end, NULL)
- 
- static inline bool memblock_is_hotpluggable(struct memblock_region *m)
- {
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 48d614352b25..dadf579f7c53 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -946,42 +946,16 @@ int __init_memblock memblock_clear_nomap(phys_addr_t base, phys_addr_t size)
- 	return memblock_setclr_flag(base, size, 0, MEMBLOCK_NOMAP);
+@@ -522,9 +522,22 @@ static inline unsigned long memblock_region_reserved_end_pfn(const struct memblo
+ 	return PFN_UP(reg->base + reg->size);
  }
  
--/**
-- * __next_reserved_mem_region - next function for for_each_reserved_region()
-- * @idx: pointer to u64 loop variable
-- * @out_start: ptr to phys_addr_t for start address of the region, can be %NULL
-- * @out_end: ptr to phys_addr_t for end address of the region, can be %NULL
-- *
-- * Iterate over all reserved memory regions.
-- */
--void __init_memblock __next_reserved_mem_region(u64 *idx,
--					   phys_addr_t *out_start,
--					   phys_addr_t *out_end)
--{
--	struct memblock_type *type = &memblock.reserved;
--
--	if (*idx < type->cnt) {
--		struct memblock_region *r = &type->regions[*idx];
--		phys_addr_t base = r->base;
--		phys_addr_t size = r->size;
--
--		if (out_start)
--			*out_start = base;
--		if (out_end)
--			*out_end = base + size - 1;
--
--		*idx += 1;
--		return;
--	}
--
--	/* signal end of iteration */
--	*idx = ULLONG_MAX;
--}
--
--static bool should_skip_region(struct memblock_region *m, int nid, int flags)
-+static bool __init_memblock should_skip_region(struct memblock_type *type,
-+					       struct memblock_region *m,
-+					       int nid, int flags)
- {
- 	int m_nid = memblock_get_region_node(m);
- 
-+	/* we never skip regions when iterating memblock.reserved */
-+	if (type == &memblock.reserved)
-+		return false;
+-#define for_each_memblock(memblock_type, region)					\
+-	for (region = memblock.memblock_type.regions;					\
+-	     region < (memblock.memblock_type.regions + memblock.memblock_type.cnt);	\
++/**
++ * for_each_mem_region - itereate over registered memory regions
++ * @region: loop variable
++ */
++#define for_each_mem_region(region)					\
++	for (region = memblock.memory.regions;				\
++	     region < (memblock.memory.regions + memblock.memory.cnt);	\
++	     region++)
 +
- 	/* only memory regions are associated with nodes, check it */
- 	if (nid != NUMA_NO_NODE && nid != m_nid)
- 		return true;
-@@ -1048,7 +1022,7 @@ void __init_memblock __next_mem_range(u64 *idx, int nid,
- 		phys_addr_t m_end = m->base + m->size;
- 		int	    m_nid = memblock_get_region_node(m);
++/**
++ * for_each_reserved_mem_region - itereate over reserved memory regions
++ * @region: loop variable
++ */
++#define for_each_reserved_mem_region(region)				\
++	for (region = memblock.reserved.regions;			\
++	     region < (memblock.reserved.regions + memblock.reserved.cnt); \
+ 	     region++)
  
--		if (should_skip_region(m, nid, flags))
-+		if (should_skip_region(type_a, m, nid, flags))
- 			continue;
+ extern void *alloc_large_system_hash(const char *tablename,
+diff --git a/mm/memblock.c b/mm/memblock.c
+index dadf579f7c53..7d30db5c539f 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1653,7 +1653,7 @@ static phys_addr_t __init_memblock __find_max_addr(phys_addr_t limit)
+ 	 * the memory memblock regions, if the @limit exceeds the total size
+ 	 * of those regions, max_addr will keep original value PHYS_ADDR_MAX
+ 	 */
+-	for_each_memblock(memory, r) {
++	for_each_mem_region(r) {
+ 		if (limit <= r->size) {
+ 			max_addr = r->base + limit;
+ 			break;
+@@ -1823,7 +1823,7 @@ void __init_memblock memblock_trim_memory(phys_addr_t align)
+ 	phys_addr_t start, end, orig_start, orig_end;
+ 	struct memblock_region *r;
  
- 		if (!type_b) {
-@@ -1152,7 +1126,7 @@ void __init_memblock __next_mem_range_rev(u64 *idx, int nid,
- 		phys_addr_t m_end = m->base + m->size;
- 		int m_nid = memblock_get_region_node(m);
+-	for_each_memblock(memory, r) {
++	for_each_mem_region(r) {
+ 		orig_start = r->base;
+ 		orig_end = r->base + r->size;
+ 		start = round_up(orig_start, align);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 95af111d69d3..948c7a754cdb 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5927,7 +5927,7 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
  
--		if (should_skip_region(m, nid, flags))
-+		if (should_skip_region(type_a, m, nid, flags))
- 			continue;
+ 	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
+ 		if (!r || *pfn >= memblock_region_memory_end_pfn(r)) {
+-			for_each_memblock(memory, r) {
++			for_each_mem_region(r) {
+ 				if (*pfn < memblock_region_memory_end_pfn(r))
+ 					break;
+ 			}
+@@ -6528,7 +6528,7 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
+ 		unsigned long start_pfn, end_pfn;
+ 		struct memblock_region *r;
  
- 		if (!type_b) {
-@@ -1977,7 +1951,7 @@ static unsigned long __init free_low_memory_core_early(void)
+-		for_each_memblock(memory, r) {
++		for_each_mem_region(r) {
+ 			start_pfn = clamp(memblock_region_memory_base_pfn(r),
+ 					  zone_start_pfn, zone_end_pfn);
+ 			end_pfn = clamp(memblock_region_memory_end_pfn(r),
+@@ -7122,7 +7122,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+ 	 * options.
+ 	 */
+ 	if (movable_node_is_enabled()) {
+-		for_each_memblock(memory, r) {
++		for_each_mem_region(r) {
+ 			if (!memblock_is_hotpluggable(r))
+ 				continue;
  
- 	memblock_clear_hotplug(0, -1);
+@@ -7143,7 +7143,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+ 	if (mirrored_kernelcore) {
+ 		bool mem_below_4gb_not_mirrored = false;
  
--	for_each_reserved_mem_region(i, &start, &end)
-+	for_each_reserved_mem_range(i, &start, &end)
- 		reserve_bootmem_region(start, end);
+-		for_each_memblock(memory, r) {
++		for_each_mem_region(r) {
+ 			if (memblock_is_mirror(r))
+ 				continue;
  
- 	/*
 -- 
 2.26.2
 
