@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C0E235916
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 18:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3DF235949
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 18:45:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKRdh37k5zDqRK
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 02:42:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKRhl0xMCzDqL5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 02:45:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=LCVbBqUy; dkim-atps=neutral
+ header.s=default header.b=SOgVggGM; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKRVN6HW3zDqPy
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 02:36:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKRVb5Qs8zDqQG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 02:36:39 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8CB07208B3;
- Sun,  2 Aug 2020 16:36:16 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6A00E207BB;
+ Sun,  2 Aug 2020 16:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1596386186;
- bh=4WuJOQlNfEjZEgWh7mIgx+GQ0z3C84AGorDeAuZhOK8=;
+ s=default; t=1596386197;
+ bh=xcGEWjGQ/q+Opr/28a2ZIyYFBp4V7lSmr/sGm/UAQ8k=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LCVbBqUyTpTcklPw3QEPBUmjv+Mt1qQf7Et+tJ1c8TdhfSluYQvZX/m4M7OG4sZ3k
- pxTM46y59Y1+F61mBTppc2pAWy1KG3NU0wjGQvFquSk7OKaXsTrG0BvQ7S9Ag7ksb0
- MpC9MHAhLgGU02MkEZXWU7/oN8AvazuUaSdI2H+k=
+ b=SOgVggGMxb05aldaV4gL3FEB6ytnfwQ2Hfm+aVpQEhS2YGYbhdfAH/QPMj7HPwMI5
+ XeDdGGe8NG9Bu+bKWfKtRHFHzAo7hMYHFjPAEpwDsXjCnkv+BRSh91vwkb3pCHvFSs
+ nw74lyhHI2uN7uS39+6+ts/f3izbiKTGZDfFdKRE=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 01/17] KVM: PPC: Book3S HV: simplify kvm_cma_reserve()
-Date: Sun,  2 Aug 2020 19:35:45 +0300
-Message-Id: <20200802163601.8189-2-rppt@kernel.org>
+Subject: [PATCH v2 02/17] dma-contiguous: simplify cma_early_percent_memory()
+Date: Sun,  2 Aug 2020 19:35:46 +0300
+Message-Id: <20200802163601.8189-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200802163601.8189-1-rppt@kernel.org>
 References: <20200802163601.8189-1-rppt@kernel.org>
@@ -83,10 +83,10 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-The memory size calculation in kvm_cma_reserve() traverses memblock.memory
-rather than simply call memblock_phys_mem_size(). The comment in that
-function suggests that at some point there should have been call to
-memblock_analyze() before memblock_phys_mem_size() could be used.
+The memory size calculation in cma_early_percent_memory() traverses
+memblock.memory rather than simply call memblock_phys_mem_size(). The
+comment in that function suggests that at some point there should have been
+call to memblock_analyze() before memblock_phys_mem_size() could be used.
 As of now, there is no memblock_analyze() at all and
 memblock_phys_mem_size() can be used as soon as cold-plug memory is
 registerd with memblock.
@@ -94,39 +94,33 @@ registerd with memblock.
 Replace loop over memblock.memory with a call to memblock_phys_mem_size().
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/powerpc/kvm/book3s_hv_builtin.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ kernel/dma/contiguous.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-index 7cd3cf3d366b..56ab0d28de2a 100644
---- a/arch/powerpc/kvm/book3s_hv_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-@@ -95,22 +95,15 @@ EXPORT_SYMBOL_GPL(kvm_free_hpt_cma);
- void __init kvm_cma_reserve(void)
- {
- 	unsigned long align_size;
--	struct memblock_region *reg;
--	phys_addr_t selected_size = 0;
-+	phys_addr_t selected_size;
+diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+index 15bc5026c485..1992afd8ca7b 100644
+--- a/kernel/dma/contiguous.c
++++ b/kernel/dma/contiguous.c
+@@ -73,16 +73,7 @@ early_param("cma", early_cma);
  
- 	/*
- 	 * We need CMA reservation only when we are in HV mode
- 	 */
- 	if (!cpu_has_feature(CPU_FTR_HVMODE))
- 		return;
+ static phys_addr_t __init __maybe_unused cma_early_percent_memory(void)
+ {
+-	struct memblock_region *reg;
+-	unsigned long total_pages = 0;
+-
 -	/*
 -	 * We cannot use memblock_phys_mem_size() here, because
 -	 * memblock_analyze() has not been called yet.
 -	 */
 -	for_each_memblock(memory, reg)
--		selected_size += memblock_region_memory_end_pfn(reg) -
--				 memblock_region_memory_base_pfn(reg);
+-		total_pages += memblock_region_memory_end_pfn(reg) -
+-			       memblock_region_memory_base_pfn(reg);
++	unsigned long total_pages = PHYS_PFN(memblock_phys_mem_size());
  
-+	selected_size = PHYS_PFN(memblock_phys_mem_size());
- 	selected_size = (selected_size * kvm_cma_resv_ratio / 100) << PAGE_SHIFT;
- 	if (selected_size) {
- 		pr_debug("%s: reserving %ld MiB for global area\n", __func__,
+ 	return (total_pages * CONFIG_CMA_SIZE_PERCENTAGE / 100) << PAGE_SHIFT;
+ }
 -- 
 2.26.2
 
