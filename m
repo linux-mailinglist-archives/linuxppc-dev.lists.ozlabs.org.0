@@ -2,49 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637D2235974
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 19:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A40523597F
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 19:30:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKSKC4DpkzDqLg
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 03:13:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKShD2rPxzDqRR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 03:30:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=expYlg32; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKRYs14DWzDqPy
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 02:39:29 +1000 (AEST)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 7CDE02086A;
- Sun,  2 Aug 2020 16:39:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1596386361;
- bh=4D18U4LqzeXJ7rz+8d0QKOKWX/v62M4XIaiFZKMrU2g=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=expYlg32VKO393ycu/8mgvTP8o7aTQ0t+w3y+ImhCOBmcHrMgKsHPWZrIbJLNgfgC
- Bm2vjh0nkZR+iuadKG9/iuI0LX7a8yAWHL7in80/MdMtdUm7db6niZEyjtfTAFy76P
- C8qr+uEz5cJ6hO9r0B0W6Jn6zW/HAt2qdvztbZp0=
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 17/17] memblock: use separate iterators for memory and
- reserved regions
-Date: Sun,  2 Aug 2020 19:36:01 +0300
-Message-Id: <20200802163601.8189-18-rppt@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200802163601.8189-1-rppt@kernel.org>
-References: <20200802163601.8189-1-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKSfY2MbdzDqNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 03:28:36 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 072H2tuk122131
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 2 Aug 2020 13:28:33 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32nwujv0h9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Aug 2020 13:28:33 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 072HQ6tq000828
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 2 Aug 2020 17:28:31 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 32n0181byb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Aug 2020 17:28:31 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 072HSSdt61342170
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 2 Aug 2020 17:28:29 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E472AAE045;
+ Sun,  2 Aug 2020 17:28:28 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 366F0AE051;
+ Sun,  2 Aug 2020 17:28:28 +0000 (GMT)
+Received: from [9.199.44.56] (unknown [9.199.44.56])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun,  2 Aug 2020 17:28:27 +0000 (GMT)
+Subject: Re: [merge] Build failure selftest/powerpc/mm/pkey_exec_prot
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>
+References: <37C1E196-B35D-46C4-AAA7-BC250078E4F2@linux.vnet.ibm.com>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <63dc2f90-9a16-21f8-51fa-cfef9df80676@linux.ibm.com>
+Date: Sun, 2 Aug 2020 22:58:27 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <37C1E196-B35D-46C4-AAA7-BC250078E4F2@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-02_14:2020-07-31,
+ 2020-08-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008020133
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,218 +87,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Emil Renner Berthing <kernel@esmil.dk>, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- Baoquan He <bhe@redhat.com>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>,
- Michal Simek <monstr@monstr.eu>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Hi Sachin,
 
-for_each_memblock() is used to iterate over memblock.memory in
-a few places that use data from memblock_region rather than the memory
-ranges.
+On 02/08/20 4:45 pm, Sachin Sant wrote:
+> pkey_exec_prot test from linuxppc merge branch (3f68564f1f5a) fails to
+> build due to following error:
+> 
+> gcc -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1276-g3f68564f1f5a"' -I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    pkey_exec_prot.c /home/sachin/linux/tools/testing/selftests/kselftest_harness.h /home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c ../utils.c  -o /home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot
+> In file included from pkey_exec_prot.c:18:
+> /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
+>  #define SYS_pkey_mprotect 386
+>  
+> In file included from /usr/include/sys/syscall.h:31,
+>                  from /home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+>                  from /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+>                  from pkey_exec_prot.c:18:
+> /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+>  # define SYS_pkey_mprotect __NR_pkey_mprotect
+> 
+> commit 128d3d021007 introduced this error.
+> selftests/powerpc: Move pkey helpers to headers
+> 
+> Possibly the # defines for sys calls can be retained in pkey_exec_prot.c or
+> 
 
-Introduce separate for_each_mem_region() and for_each_reserved_mem_region()
-to improve encapsulation of memblock internals from its users.
+I am unable to reproduce this on the latest merge branch (HEAD at f59195f7faa4).
+I don't see any redefinitions in pkey_exec_prot.c either.
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- .clang-format                  |  3 ++-
- arch/arm64/kernel/setup.c      |  2 +-
- arch/arm64/mm/numa.c           |  2 +-
- arch/mips/netlogic/xlp/setup.c |  2 +-
- arch/x86/mm/numa.c             |  2 +-
- include/linux/memblock.h       | 19 ++++++++++++++++---
- mm/memblock.c                  |  4 ++--
- mm/page_alloc.c                |  8 ++++----
- 8 files changed, 28 insertions(+), 14 deletions(-)
-
-diff --git a/.clang-format b/.clang-format
-index e28a849a1c58..cff71d345456 100644
---- a/.clang-format
-+++ b/.clang-format
-@@ -201,7 +201,7 @@ ForEachMacros:
-   - 'for_each_matching_node'
-   - 'for_each_matching_node_and_match'
-   - 'for_each_member'
--  - 'for_each_memblock'
-+  - 'for_each_mem_region'
-   - 'for_each_memblock_type'
-   - 'for_each_memcg_cache_index'
-   - 'for_each_mem_pfn_range'
-@@ -267,6 +267,7 @@ ForEachMacros:
-   - 'for_each_property_of_node'
-   - 'for_each_registered_fb'
-   - 'for_each_reserved_mem_range'
-+  - 'for_each_reserved_mem_region'
-   - 'for_each_rtd_codec_dais'
-   - 'for_each_rtd_codec_dais_rollback'
-   - 'for_each_rtd_components'
-diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index f3aec7244aab..52ea2f1a7184 100644
---- a/arch/arm64/kernel/setup.c
-+++ b/arch/arm64/kernel/setup.c
-@@ -217,7 +217,7 @@ static void __init request_standard_resources(void)
- 	if (!standard_resources)
- 		panic("%s: Failed to allocate %zu bytes\n", __func__, res_size);
- 
--	for_each_memblock(memory, region) {
-+	for_each_mem_region(region) {
- 		res = &standard_resources[i++];
- 		if (memblock_is_nomap(region)) {
- 			res->name  = "reserved";
-diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-index 0cbdbcc885fb..f121e42246a6 100644
---- a/arch/arm64/mm/numa.c
-+++ b/arch/arm64/mm/numa.c
-@@ -350,7 +350,7 @@ static int __init numa_register_nodes(void)
- 	struct memblock_region *mblk;
- 
- 	/* Check that valid nid is set to memblks */
--	for_each_memblock(memory, mblk) {
-+	for_each_mem_region(mblk) {
- 		int mblk_nid = memblock_get_region_node(mblk);
- 
- 		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
-diff --git a/arch/mips/netlogic/xlp/setup.c b/arch/mips/netlogic/xlp/setup.c
-index 1a0fc5b62ba4..6e3102bcd2f1 100644
---- a/arch/mips/netlogic/xlp/setup.c
-+++ b/arch/mips/netlogic/xlp/setup.c
-@@ -70,7 +70,7 @@ static void nlm_fixup_mem(void)
- 	const int pref_backup = 512;
- 	struct memblock_region *mem;
- 
--	for_each_memblock(memory, mem) {
-+	for_each_mem_region(mem) {
- 		memblock_remove(mem->base + mem->size - pref_backup,
- 			pref_backup);
- 	}
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 8ee952038c80..fe6ea18d6923 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -516,7 +516,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
- 	 *   memory ranges, because quirks such as trim_snb_memory()
- 	 *   reserve specific pages for Sandy Bridge graphics. ]
- 	 */
--	for_each_memblock(reserved, mb_region) {
-+	for_each_reserved_mem_region(mb_region) {
- 		int nid = memblock_get_region_node(mb_region);
- 
- 		if (nid != MAX_NUMNODES)
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 9e51b3fd4134..a6970e058bd7 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -522,9 +522,22 @@ static inline unsigned long memblock_region_reserved_end_pfn(const struct memblo
- 	return PFN_UP(reg->base + reg->size);
- }
- 
--#define for_each_memblock(memblock_type, region)					\
--	for (region = memblock.memblock_type.regions;					\
--	     region < (memblock.memblock_type.regions + memblock.memblock_type.cnt);	\
-+/**
-+ * for_each_mem_region - itereate over registered memory regions
-+ * @region: loop variable
-+ */
-+#define for_each_mem_region(region)					\
-+	for (region = memblock.memory.regions;				\
-+	     region < (memblock.memory.regions + memblock.memory.cnt);	\
-+	     region++)
-+
-+/**
-+ * for_each_reserved_mem_region - itereate over reserved memory regions
-+ * @region: loop variable
-+ */
-+#define for_each_reserved_mem_region(region)				\
-+	for (region = memblock.reserved.regions;			\
-+	     region < (memblock.reserved.regions + memblock.reserved.cnt); \
- 	     region++)
- 
- extern void *alloc_large_system_hash(const char *tablename,
-diff --git a/mm/memblock.c b/mm/memblock.c
-index dadf579f7c53..7d30db5c539f 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1653,7 +1653,7 @@ static phys_addr_t __init_memblock __find_max_addr(phys_addr_t limit)
- 	 * the memory memblock regions, if the @limit exceeds the total size
- 	 * of those regions, max_addr will keep original value PHYS_ADDR_MAX
- 	 */
--	for_each_memblock(memory, r) {
-+	for_each_mem_region(r) {
- 		if (limit <= r->size) {
- 			max_addr = r->base + limit;
- 			break;
-@@ -1823,7 +1823,7 @@ void __init_memblock memblock_trim_memory(phys_addr_t align)
- 	phys_addr_t start, end, orig_start, orig_end;
- 	struct memblock_region *r;
- 
--	for_each_memblock(memory, r) {
-+	for_each_mem_region(r) {
- 		orig_start = r->base;
- 		orig_end = r->base + r->size;
- 		start = round_up(orig_start, align);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 95af111d69d3..948c7a754cdb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5927,7 +5927,7 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
- 
- 	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
- 		if (!r || *pfn >= memblock_region_memory_end_pfn(r)) {
--			for_each_memblock(memory, r) {
-+			for_each_mem_region(r) {
- 				if (*pfn < memblock_region_memory_end_pfn(r))
- 					break;
- 			}
-@@ -6528,7 +6528,7 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
- 		unsigned long start_pfn, end_pfn;
- 		struct memblock_region *r;
- 
--		for_each_memblock(memory, r) {
-+		for_each_mem_region(r) {
- 			start_pfn = clamp(memblock_region_memory_base_pfn(r),
- 					  zone_start_pfn, zone_end_pfn);
- 			end_pfn = clamp(memblock_region_memory_end_pfn(r),
-@@ -7122,7 +7122,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
- 	 * options.
- 	 */
- 	if (movable_node_is_enabled()) {
--		for_each_memblock(memory, r) {
-+		for_each_mem_region(r) {
- 			if (!memblock_is_hotpluggable(r))
- 				continue;
- 
-@@ -7143,7 +7143,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
- 	if (mirrored_kernelcore) {
- 		bool mem_below_4gb_not_mirrored = false;
- 
--		for_each_memblock(memory, r) {
-+		for_each_mem_region(r) {
- 			if (memblock_is_mirror(r))
- 				continue;
- 
--- 
-2.26.2
-
+- Sandipan
