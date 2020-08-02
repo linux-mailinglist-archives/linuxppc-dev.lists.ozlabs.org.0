@@ -2,72 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402BC2359B3
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 20:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4FE2359B4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Aug 2020 20:07:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKTSf2cQgzDqS6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 04:05:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKTW45p8FzDqLW
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 04:07:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::544;
- helo=mail-ed1-x544.google.com; envelope-from=mingo.kernel.org@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::642;
+ helo=mail-ej1-x642.google.com; envelope-from=mingo.kernel.org@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uIs7/vU9; dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
+ header.s=20161025 header.b=NClt20d7; dkim-atps=neutral
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
+ [IPv6:2a00:1450:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKTPg1mJSzDqRm
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 04:02:30 +1000 (AEST)
-Received: by mail-ed1-x544.google.com with SMTP id i6so50327edy.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Aug 2020 11:02:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKTQS4PwGzDqJf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 04:03:12 +1000 (AEST)
+Received: by mail-ej1-x642.google.com with SMTP id o23so8883786ejr.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Aug 2020 11:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=sender:date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=hIidJgHuEfm+QUxSjJcyWhB4lu2Xjl7LW3yKbJJeIh0=;
- b=uIs7/vU9Kx/pklkEtgD7hBiuHs6a0R+dGlNTjUGRPw721sRkbKusjxGi7PfHcXOJ+P
- EjAE8Vd54opYw74GdBkeR4XNF5IP2MPUk9fmgk6V6Ahfe99oRVQ2eTOjx4V/HNnjxo1p
- 8JTL4om9ZC3cnlFf7IvLus1+6HB/iVpPvgkNBuxCV3vkFTVqsYvmHOwMCmyNnjJul9R4
- NyUbZELRb/+vAfU647duOFbumJn5NHcHvq2jBsmvofhPXlaOdyNnECGIYrfm3l1GH6Kt
- lYQels7sHnZLCY218xDI/G+/wAKH/pz8dPVH6DrvKapbnVTrwoCPcuTqLRUxp8GcwS18
- 4m4w==
+ bh=fQZKbY0rONiHjM83HibQy63AEJaxpKeGQhQtY04gDSU=;
+ b=NClt20d7Ft+K6FkgUCUu4JaE3tIZQCut3LntjJUJhXUsmJc9/hAN8f1uhRfdf1xDS4
+ v+mVxDX9o4kozVR+Ah8Xum0mBupoLJJ8sGRFuq+zGUPap92vHCw3QWRVbrRdpExOLg1f
+ PfYSYoa+08lkV+ejUHsbzm11vb6ZXDx9wG5OH/PIC6kGD+/IwmcMBK0f+S9Q47Ilfp0r
+ CnDK0w5UJZcBtyEbi0uelKFQBUpbqi9svF4nCggxxWbCeGrL/RSClOw7dY42O+RKurT4
+ SeQmDc1qACQRwd/qkF4Bl6+EBF1g484NpzCeNGAZebTMM88+MrzhcW/7+ogo+dclYvqf
+ xJRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
  :references:mime-version:content-disposition:in-reply-to;
- bh=hIidJgHuEfm+QUxSjJcyWhB4lu2Xjl7LW3yKbJJeIh0=;
- b=tJOoMtqgtELlsY+H9+VbAjH5qbvKD9VnUqkC/M07QjSfF21lOWGZJrJdT/jbuNczqH
- RvrLU35loeSPHgyd4DRkHjXdIG9c2oBiWJbYxk4saWfZm5hlwGRi/WMT8b7OX+w5ySvK
- LWDREY/Hgz+N3aFLB7pnhodfg/C/lPvQwBIJ/F4JNfcq9GsdajCxbAC8LX5JmcIeca58
- OMbO0Mrrmk7pxnBCvkP+B9+/yL9qWirtAUSGC0VbsfO8yT2F5du+YVZiINezlSF5pvBi
- O7lachL3PeD4CsFVo24EKVVZroeAhSkQwnN6DpFlw5vsBW0wBUAH1Av9yADCAWm+rKrX
- NANg==
-X-Gm-Message-State: AOAM533NT+0gbpW2A6kZ1njcOoYgQH5d2M9LWo/0LSLoqBIKiT2shWDv
- jRIzOYd/Bp/BDvgRUCAh2Pk=
-X-Google-Smtp-Source: ABdhPJxqUvJyL87Stg26v1+JoHbkpad0yhpL8P6CjttoB9bwnL2tuiWl2R60zFRBWtP21v7K7J2UFg==
-X-Received: by 2002:aa7:cb15:: with SMTP id s21mr12929126edt.175.1596391346876; 
- Sun, 02 Aug 2020 11:02:26 -0700 (PDT)
+ bh=fQZKbY0rONiHjM83HibQy63AEJaxpKeGQhQtY04gDSU=;
+ b=fimrAnmXq2CF6333s4kb4m4nQk42hdNL74kEdMejxQeyzAp79FQOohTQ0T7umk7JEM
+ VDKYk/Fa1DpRt4JfJjJ1M3KaYXrV1DtYMlsCpqWWueTtyhWOFwx/Ousw2aJVcdAigFwB
+ 9VXyyt+1akccJHaaE9WZ42wGQwKlBgqsRP0jnddckwpPDq1sKlvHC6IbVZOhvJeaRdcf
+ FcHc8ftzAEzT5Tsjwg76x8cQ8TVt3WcmXemHYqwTGasqZj0weM7C7wd2WzXaSntpqHKZ
+ rHlU7K/GJphjSIXfP4QZjgbFbHaHsg/qkrJ+OnW0TXpnuwIX5nnvYdcErebdt/E1U8aO
+ 2JeA==
+X-Gm-Message-State: AOAM533ZApXKuW0hfb6/a2TUyIA5MPMhw9zsRdojmcixKnh6OkMnl8IT
+ BdPXkmifB+wE3JEqiGCcE1w=
+X-Google-Smtp-Source: ABdhPJwRVVa9oTHFz53Gep6kufj7aL7kFTxC9FLC9t+X6tOc6fXoy+b82cv+AC/Z1BhRkxvbjIG1Og==
+X-Received: by 2002:a17:907:94ce:: with SMTP id
+ dn14mr12944760ejc.351.1596391388538; 
+ Sun, 02 Aug 2020 11:03:08 -0700 (PDT)
 Received: from gmail.com (54033286.catv.pool.telekom.hu. [84.3.50.134])
- by smtp.gmail.com with ESMTPSA id j21sm14090092edq.20.2020.08.02.11.02.24
+ by smtp.gmail.com with ESMTPSA id x1sm13599477ejc.119.2020.08.02.11.03.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Aug 2020 11:02:26 -0700 (PDT)
-Date: Sun, 2 Aug 2020 20:02:23 +0200
+ Sun, 02 Aug 2020 11:03:07 -0700 (PDT)
+Date: Sun, 2 Aug 2020 20:03:04 +0200
 From: Ingo Molnar <mingo@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 14/17] x86/setup: simplify reserve_crashkernel()
-Message-ID: <20200802180223.GB86614@gmail.com>
+Subject: Re: [PATCH v2 17/17] memblock: use separate iterators for memory and
+ reserved regions
+Message-ID: <20200802180304.GC86614@gmail.com>
 References: <20200802163601.8189-1-rppt@kernel.org>
- <20200802163601.8189-15-rppt@kernel.org>
+ <20200802163601.8189-18-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200802163601.8189-15-rppt@kernel.org>
+In-Reply-To: <20200802163601.8189-18-rppt@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,16 +112,26 @@ Sender: "Linuxppc-dev"
 
 > From: Mike Rapoport <rppt@linux.ibm.com>
 > 
-> * Replace magic numbers with defines
-> * Replace memblock_find_in_range() + memblock_reserve() with
->   memblock_phys_alloc_range()
-> * Stop checking for low memory size in reserve_crashkernel_low(). The
->   allocation from limited range will anyway fail if there is no enough
->   memory, so there is no need for extra traversal of memblock.memory
+> for_each_memblock() is used to iterate over memblock.memory in
+> a few places that use data from memblock_region rather than the memory
+> ranges.
+> 
+> Introduce separate for_each_mem_region() and for_each_reserved_mem_region()
+> to improve encapsulation of memblock internals from its users.
 > 
 > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  .clang-format                  |  3 ++-
+>  arch/arm64/kernel/setup.c      |  2 +-
+>  arch/arm64/mm/numa.c           |  2 +-
+>  arch/mips/netlogic/xlp/setup.c |  2 +-
+>  arch/x86/mm/numa.c             |  2 +-
+>  include/linux/memblock.h       | 19 ++++++++++++++++---
+>  mm/memblock.c                  |  4 ++--
+>  mm/page_alloc.c                |  8 ++++----
+>  8 files changed, 28 insertions(+), 14 deletions(-)
 
-Assuming that this got or will get tested with a crash kernel:
+The x86 part:
 
 Acked-by: Ingo Molnar <mingo@kernel.org>
 
