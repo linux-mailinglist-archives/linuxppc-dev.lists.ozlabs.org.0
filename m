@@ -2,72 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB7A239F2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 07:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10878239F32
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 07:45:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKmwz4md2zDqGJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 15:42:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKn0D4Qj9zDqNm
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 15:45:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=nicoleotsuka@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=K186TuiU; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKmvS2vHNzDqGJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 15:40:52 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id f193so7166760pfa.12
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Aug 2020 22:40:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=FhbpD1GOOiuI1h2KLYGhIc+Q4nrSHyP4h81W7KBJFqA=;
- b=K186TuiUMKQPdqAxCXhqtmALF9pZVrrem7PSJKHN2TVp6X/DGU7ghf9/BJMgBlUhh9
- jS5/KukDzLHwp2Tdh4NSv/i8naoGe9A3lUIZtoYE8DaWtRKIWGLC17qgWRsBuZ3JbkXD
- oI8zW7cC4xb3BZI+vs/9AmJvJY9r0ii6/sp00L/jDAKIi60G5674s+5a07y3LVR+IYv+
- deXVnc3aHNRNX7yQY4FFTNiSAUxBcTIDHNsWd3W3SkG+OiQQgnX8qlAqr3PJu9juma9t
- ZOSyPHOQaDxAdPbVnDMa/p63b0pwNeNG3aWsDaeHmhNXIVHXLUvlwT1LaFoiZtLXcwQy
- s+PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=FhbpD1GOOiuI1h2KLYGhIc+Q4nrSHyP4h81W7KBJFqA=;
- b=bgkwPnrNi5EaI20jH6muLuxLk1Q7entvK6uFMsGk9RZPsJEJds1umogPrNCx3FxsML
- kDyJ9UOKqKhx+rLWQfrdZP8EI7HcGg99I+wQJoppRK2DcWw2gnEVHsBXn7ns/N8iR/iw
- ai6AKmtGXhOy5qzTK/0joFOpQroLLJrBEO2/GxNDaUDO1hdhAAW7R8g7oVR+JV2qIvgB
- ccgdLDO+uYhfL63wfBlszqyYIf5izZOijKigXos2B2Wng9KFJrvNV1uNqekePGIeRvAl
- ejUmsY66jFRhfQE4iUkGLDqznAvX4pUMXJt1UdbixQFqzkOV51TBGwnXQ9w68xrGaZlf
- wqcQ==
-X-Gm-Message-State: AOAM530V1MrTHLWOFsdjYSaN1aCrd0e46kTX3JTVJyx+QuE7h04zT1kZ
- 9pQ1zK26ERrG8L7TeuXcz/DI8oxzZbYUWg==
-X-Google-Smtp-Source: ABdhPJwtNZAtl8+czzRAcH8w3sZ9OYQlR+w7v7GG79nlmxqjy27pa7NblOV/FHvTJ6hTl+lyzxlnOg==
-X-Received: by 2002:a63:444b:: with SMTP id t11mr13955435pgk.134.1596433249969; 
- Sun, 02 Aug 2020 22:40:49 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id m190sm16926096pfm.89.2020.08.02.22.40.48
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 02 Aug 2020 22:40:49 -0700 (PDT)
-Date: Sun, 2 Aug 2020 22:40:37 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Clean code for synchronize mode
-Message-ID: <20200803054037.GA1056@Asurada-Nvidia>
-References: <1596424674-32127-1-git-send-email-shengjiu.wang@nxp.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1596424674-32127-1-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKmyS6M9vzDqGM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 15:43:28 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0735XEN1087228
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Aug 2020 01:43:25 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32pa5ru5yr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Aug 2020 01:43:24 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0735ZLNe009095
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 3 Aug 2020 05:43:23 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma05fra.de.ibm.com with ESMTP id 32n017s38m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Aug 2020 05:43:22 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0735hKsm24248792
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 3 Aug 2020 05:43:20 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B147AE055;
+ Mon,  3 Aug 2020 05:43:20 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DEE80AE056;
+ Mon,  3 Aug 2020 05:43:18 +0000 (GMT)
+Received: from [9.85.107.151] (unknown [9.85.107.151])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  3 Aug 2020 05:43:18 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.15\))
+Subject: Re: [merge] Build failure selftest/powerpc/mm/pkey_exec_prot
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <63dc2f90-9a16-21f8-51fa-cfef9df80676@linux.ibm.com>
+Date: Mon, 3 Aug 2020 11:13:17 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C44DC5C2-5133-49AA-BAA6-58E334EB70BA@linux.vnet.ibm.com>
+References: <37C1E196-B35D-46C4-AAA7-BC250078E4F2@linux.vnet.ibm.com>
+ <63dc2f90-9a16-21f8-51fa-cfef9df80676@linux.ibm.com>
+To: Sandipan Das <sandipan@linux.ibm.com>
+X-Mailer: Apple Mail (2.3445.104.15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-03_04:2020-07-31,
+ 2020-08-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ mlxlogscore=999 impostorscore=0 mlxscore=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 suspectscore=2 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2008030037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,53 +87,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 03, 2020 at 11:17:54AM +0800, Shengjiu Wang wrote:
-> TX synchronous with RX: The RMR is no need to be changed when
-> Tx is enabled, the other configuration in hw_params() is enough for
 
-Probably you should explain why RMR can be removed, like what
-it really does so as to make it clear that there's no such a
-relationship between RMR and clock generating.
 
-Anyway, this is against the warning comments in the driver:
-	/*
-	 * For SAI master mode, when Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will
-	 * generate bclk and frame clock for Tx(Rx), we should set RCR4(TCR4),
-	 * RCR5(TCR5) and RMR(TMR) for playback(capture), or there will be sync
-	 * error.
-	 */
+> On 02-Aug-2020, at 10:58 PM, Sandipan Das <sandipan@linux.ibm.com> =
+wrote:
+>=20
+> Hi Sachin,
+>=20
+> On 02/08/20 4:45 pm, Sachin Sant wrote:
+>> pkey_exec_prot test from linuxppc merge branch (3f68564f1f5a) fails =
+to
+>> build due to following error:
+>>=20
+>> gcc -std=3Dgnu99 -O2 -Wall -Werror =
+-DGIT_VERSION=3D'"v5.8-rc7-1276-g3f68564f1f5a"' =
+-I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    =
+pkey_exec_prot.c =
+/home/sachin/linux/tools/testing/selftests/kselftest_harness.h =
+/home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c =
+../utils.c  -o =
+/home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot
+>> In file included from pkey_exec_prot.c:18:
+>> =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: =
+error: "SYS_pkey_mprotect" redefined [-Werror]
+>> #define SYS_pkey_mprotect 386
+>>=20
+>> In file included from /usr/include/sys/syscall.h:31,
+>>                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+>>                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+>>                 from pkey_exec_prot.c:18:
+>> /usr/include/bits/syscall.h:1583: note: this is the location of the =
+previous definition
+>> # define SYS_pkey_mprotect __NR_pkey_mprotect
+>>=20
+>> commit 128d3d021007 introduced this error.
+>> selftests/powerpc: Move pkey helpers to headers
+>>=20
+>> Possibly the # defines for sys calls can be retained in =
+pkey_exec_prot.c or
+>>=20
+>=20
+> I am unable to reproduce this on the latest merge branch (HEAD at =
+f59195f7faa4).
+> I don't see any redefinitions in pkey_exec_prot.c either.
+>=20
 
-So would need to update it.
+I can still see this problem on latest merge branch.
+I have following gcc version
 
-> clock generation. The TCSR.TE is no need to enabled when only RX
-> is enabled.
+gcc version 8.3.1 20191121
 
-You are correct if there's only RX running without TX joining.
-However, that's something we can't guarantee. Then we'd enable
-TE after RE is enabled, which is against what RM recommends:
+# git show
+commit f59195f7faa4896b7c1d947ac2dba29ec18ad569 (HEAD -> merge, =
+origin/merge)
+Merge: 70ce795dac09 ac3a0c847296
+Author: Michael Ellerman <mpe@ellerman.id.au>
+Date:   Sun Aug 2 23:18:03 2020 +1000
 
-# From 54.3.3.1 Synchronous mode in IMX6SXRM
-# If the receiver bit clock and frame sync are to be used by
-# both the transmitter and receiver, it is recommended that
-# the receiver is the last enabled and the first disabled.
+    Automatic merge of 'master', 'next' and 'fixes' (2020-08-02 23:18)
 
-I remember I did this "ugly" design by strictly following what
-RM says. If hardware team has updated the RM or removed this
-limitation, please quote in the commit logs.
+# make -C powerpc
+=E2=80=A6=E2=80=A6
+=E2=80=A6...
+BUILD_TARGET=3D/home/sachin/linux/tools/testing/selftests/powerpc/mm; =
+mkdir -p $BUILD_TARGET; make OUTPUT=3D$BUILD_TARGET -k -C mm all
+make[1]: Entering directory =
+'/home/sachin/linux/tools/testing/selftests/powerpc/mm'
+gcc -std=3Dgnu99 -O2 -Wall -Werror =
+-DGIT_VERSION=3D'"v5.8-rc7-1456-gf59195f7faa4"' =
+-I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    =
+pkey_exec_prot.c =
+/home/sachin/linux/tools/testing/selftests/kselftest_harness.h =
+/home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c =
+../utils.c  -o =
+/home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot
+In file included from pkey_exec_prot.c:18:
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: =
+error: "SYS_pkey_mprotect" redefined [-Werror]
+ #define SYS_pkey_mprotect 386
+=20
+In file included from /usr/include/sys/syscall.h:31,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+                 from pkey_exec_prot.c:18:
+/usr/include/bits/syscall.h:1583: note: this is the location of the =
+previous definition
+ # define SYS_pkey_mprotect __NR_pkey_mprotect
+=20
+In file included from pkey_exec_prot.c:18:
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:35: =
+error: "SYS_pkey_alloc" redefined [-Werror]
+ #define SYS_pkey_alloc  384
+=20
+In file included from /usr/include/sys/syscall.h:31,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+                 from pkey_exec_prot.c:18:
+/usr/include/bits/syscall.h:1575: note: this is the location of the =
+previous definition
+ # define SYS_pkey_alloc __NR_pkey_alloc
+=20
+In file included from pkey_exec_prot.c:18:
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:36: =
+error: "SYS_pkey_free" redefined [-Werror]
+ #define SYS_pkey_free  385
+=20
+In file included from /usr/include/sys/syscall.h:31,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+                 from pkey_exec_prot.c:18:
+/usr/include/bits/syscall.h:1579: note: this is the location of the =
+previous definition
+ # define SYS_pkey_free __NR_pkey_free
+=20
+cc1: all warnings being treated as errors
+make[1]: *** [../../lib.mk:142: =
+/home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot] =
+Error 1
+gcc -std=3Dgnu99 -O2 -Wall -Werror =
+-DGIT_VERSION=3D'"v5.8-rc7-1456-gf59195f7faa4"' =
+-I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    =
+pkey_siginfo.c =
+/home/sachin/linux/tools/testing/selftests/kselftest_harness.h =
+/home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c =
+../utils.c -lpthread -o =
+/home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_siginfo
+In file included from pkey_siginfo.c:22:
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: =
+error: "SYS_pkey_mprotect" redefined [-Werror]
+ #define SYS_pkey_mprotect 386
+=20
+In file included from /usr/include/sys/syscall.h:31,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+                 from pkey_siginfo.c:22:
+/usr/include/bits/syscall.h:1583: note: this is the location of the =
+previous definition
+ # define SYS_pkey_mprotect __NR_pkey_mprotect
+=20
+In file included from pkey_siginfo.c:22:
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:35: =
+error: "SYS_pkey_alloc" redefined [-Werror]
+ #define SYS_pkey_alloc  384
+=20
+In file included from /usr/include/sys/syscall.h:31,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+                 from pkey_siginfo.c:22:
+/usr/include/bits/syscall.h:1575: note: this is the location of the =
+previous definition
+ # define SYS_pkey_alloc __NR_pkey_alloc
+=20
+In file included from pkey_siginfo.c:22:
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:36: =
+error: "SYS_pkey_free" redefined [-Werror]
+ #define SYS_pkey_free  385
+=20
+In file included from /usr/include/sys/syscall.h:31,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+                 from =
+/home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+                 from pkey_siginfo.c:22:
+/usr/include/bits/syscall.h:1579: note: this is the location of the =
+previous definition
+ # define SYS_pkey_free __NR_pkey_free
+=20
+cc1: all warnings being treated as errors
+make[1]: *** [../../lib.mk:142: =
+/home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_siginfo] =
+Error 1
+make[1]: Target 'all' not remade because of errors.
+make[1]: Leaving directory =
+'/home/sachin/linux/tools/testing/selftests/powerpc/mm'
+make: *** [Makefile:41: mm] Error 2
+make: Leaving directory =
+'/home/sachin/linux/tools/testing/selftests/powerpc'
+#=20
 
-> +		if (!sai->synchronous[TX] && sai->synchronous[RX] && !tx) {
-> +			regmap_update_bits(sai->regmap, FSL_SAI_xCSR((!tx), ofs),
-> +					   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
-> +		} else if (!sai->synchronous[RX] && sai->synchronous[TX] && tx) {
-> +			regmap_update_bits(sai->regmap, FSL_SAI_xCSR((!tx), ofs),
-> +					   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
-
-Two identical regmap_update_bits calls -- both on !tx (RX?)
+Thanks
+-Sachin=
