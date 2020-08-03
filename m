@@ -1,79 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2726023A81A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 16:11:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FB123A8C4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 16:45:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BL0DD2619zDqRp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 00:11:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BL0zs2XZpzDqTP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 00:45:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BL08K16lJzDqNW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 00:07:44 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 073E2J5F064414; Mon, 3 Aug 2020 10:07:39 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32pkyfr9b9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Aug 2020 10:07:38 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 073E2GhG004842;
- Mon, 3 Aug 2020 14:07:36 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06fra.de.ibm.com with ESMTP id 32mynh9cnq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Aug 2020 14:07:36 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 073E7XIP18743596
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 3 Aug 2020 14:07:33 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9B6A6A405F;
- Mon,  3 Aug 2020 14:07:33 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD6C3A406B;
- Mon,  3 Aug 2020 14:07:32 +0000 (GMT)
-Received: from [9.85.70.149] (unknown [9.85.70.149])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  3 Aug 2020 14:07:32 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.15\))
-Subject: Re: [PATCH v3] selftests/powerpc: Fix pkey syscall redefinitions
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <1bb744b0c7ed3985a5b73289f4de629ac0aeaf7c.1596453627.git.sandipan@linux.ibm.com>
-Date: Mon, 3 Aug 2020 19:37:31 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BL0wf1yB9zDqRD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 00:42:41 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-106-KJ_ZqZ_BMJa-la9zEBILew-1; Mon, 03 Aug 2020 15:42:29 +0100
+X-MC-Unique: KJ_ZqZ_BMJa-la9zEBILew-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 3 Aug 2020 15:42:28 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Mon, 3 Aug 2020 15:42:28 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Michael Ellerman' <mpe@ellerman.id.au>, Sandipan Das
+ <sandipan@linux.ibm.com>
+Subject: RE: [PATCH v2] selftests/powerpc: Fix pkey syscall redefinitions
+Thread-Topic: [PATCH v2] selftests/powerpc: Fix pkey syscall redefinitions
+Thread-Index: AQHWaYYCOhNCfOwYKEO2Mi+a24qmuqkmdPrA
+Date: Mon, 3 Aug 2020 14:42:28 +0000
+Message-ID: <bf3af71622474f8fb379da28e05470b2@AcuMS.aculab.com>
+References: <566dde119ce71f00f9642807ba30ceb7f54c9bfa.1596441105.git.sandipan@linux.ibm.com>
+ <8736540z3w.fsf@mpe.ellerman.id.au>
+In-Reply-To: <8736540z3w.fsf@mpe.ellerman.id.au>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <AAE4925C-88D8-44C4-8472-A4D3153D8414@linux.vnet.ibm.com>
-References: <1bb744b0c7ed3985a5b73289f4de629ac0aeaf7c.1596453627.git.sandipan@linux.ibm.com>
-To: Sandipan Das <sandipan@linux.ibm.com>
-X-Mailer: Apple Mail (2.3445.104.15)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-03_13:2020-08-03,
- 2020-08-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=829 phishscore=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008030102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,26 +66,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: "sachinp@linux.vnet.ibm.com" <sachinp@linux.vnet.ibm.com>,
+ "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On 03-Aug-2020, at 4:53 PM, Sandipan Das <sandipan@linux.ibm.com> =
-wrote:
+> > +#undef SYS_pkey_mprotect
+> >  #define SYS_pkey_mprotect=09386
 >=20
-> On some distros, there are conflicts w.r.t to redefinition
-> of pkey syscall numbers which cause build failures. This
-> fixes them.
+> We shouldn't undef them.
 >=20
-> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-> =E2=80=94
+> They should obviously never change, but if the system headers already
+> have a definition then we should use that, so I think it should be:
+>=20
+> #ifndef SYS_pkey_mprotect
+> #define SYS_pkey_mprotect=09386
+> #endif
 
-Thanks for the fix.
+If the definitions are identical the compiler won't complain.
+So you probably actually want a matching definition so that,
+provided at least one compile picks up both headers, you know
+that the definitions actually match.
 
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
