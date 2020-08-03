@@ -2,59 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FB123A8C4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 16:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE7C23A9F1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 17:55:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BL0zs2XZpzDqTP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 00:45:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BL2XM3hvnzDqVB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 01:55:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=GJfBCVCE; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BL0wf1yB9zDqRD
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 00:42:41 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-106-KJ_ZqZ_BMJa-la9zEBILew-1; Mon, 03 Aug 2020 15:42:29 +0100
-X-MC-Unique: KJ_ZqZ_BMJa-la9zEBILew-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 3 Aug 2020 15:42:28 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Mon, 3 Aug 2020 15:42:28 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Michael Ellerman' <mpe@ellerman.id.au>, Sandipan Das
- <sandipan@linux.ibm.com>
-Subject: RE: [PATCH v2] selftests/powerpc: Fix pkey syscall redefinitions
-Thread-Topic: [PATCH v2] selftests/powerpc: Fix pkey syscall redefinitions
-Thread-Index: AQHWaYYCOhNCfOwYKEO2Mi+a24qmuqkmdPrA
-Date: Mon, 3 Aug 2020 14:42:28 +0000
-Message-ID: <bf3af71622474f8fb379da28e05470b2@AcuMS.aculab.com>
-References: <566dde119ce71f00f9642807ba30ceb7f54c9bfa.1596441105.git.sandipan@linux.ibm.com>
- <8736540z3w.fsf@mpe.ellerman.id.au>
-In-Reply-To: <8736540z3w.fsf@mpe.ellerman.id.au>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
-MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BL2Tz0J0VzDqQx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 01:53:10 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 595502072A;
+ Mon,  3 Aug 2020 15:53:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1596469986;
+ bh=XeYM1rRZOkWuIGWs2dZo48AiU58GKKjioVDTipaaTp4=;
+ h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+ b=GJfBCVCERYczWrzRwIKu61UKHM57s5ntL+rWpDdYN0ZhK3ZstcH3QIQisS6vNUikc
+ ke7JZAqeDR34Cqspn0Xa61dQHl+uRVNKPoGzimarFLVS7FQS6p1vKkqLfwVRpoD7NR
+ 2NdyngBPn5egBEmzDsuwocTAeFvLY8HaNOvRk+p0=
+Date: Mon, 03 Aug 2020 16:52:46 +0100
+From: Mark Brown <broonie@kernel.org>
+To: tiwai@suse.com, festevam@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz,
+ Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, timur@kernel.org, lgirdwood@gmail.com,
+ alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1596420811-16690-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1596420811-16690-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v3] ASoC: fsl-asoc-card: Remove
+ fsl_asoc_card_set_bias_level function
+Message-Id: <159646994087.2524.15435181634413034183.b4-ty@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,34 +56,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "sachinp@linux.vnet.ibm.com" <sachinp@linux.vnet.ibm.com>,
- "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> > +#undef SYS_pkey_mprotect
-> >  #define SYS_pkey_mprotect=09386
->=20
-> We shouldn't undef them.
->=20
-> They should obviously never change, but if the system headers already
-> have a definition then we should use that, so I think it should be:
->=20
-> #ifndef SYS_pkey_mprotect
-> #define SYS_pkey_mprotect=09386
-> #endif
+On Mon, 3 Aug 2020 10:13:31 +0800, Shengjiu Wang wrote:
+> With this case:
+> aplay -Dhw:x 16khz.wav 24khz.wav
+> There is sound distortion for 24khz.wav. The reason is that setting
+> PLL of WM8962 with set_bias_level function, the bias level is not
+> changed when 24khz.wav is played, then the PLL won't be reset, the
+> clock is not correct, so distortion happens.
+> 
+> [...]
 
-If the definitions are identical the compiler won't complain.
-So you probably actually want a matching definition so that,
-provided at least one compile picks up both headers, you know
-that the definitions actually match.
+Applied to
 
-=09David
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+Thanks!
 
+[1/1] ASoC: fsl-asoc-card: Remove fsl_asoc_card_set_bias_level function
+      commit: f36e8edb95734c03134db628afa25ee23b8e0d95
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
