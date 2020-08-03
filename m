@@ -2,73 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA363239DCE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 05:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BF5239DD4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 05:24:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKjfH636RzDqST
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 13:14:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKjt06PdfzDqSg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 13:24:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=acxpzdL1; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKjc746jkzDqSC
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 13:12:23 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id o13so19147601pgf.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Aug 2020 20:12:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=pqH4xv/zgdnQFeooWFmsVR6/ZHVzntVgyMsibxvmXWY=;
- b=acxpzdL1bbItPmnT/RyUVyi9BBGxsth39Fs/4E3YDPQLwgcw/EFVW69/ykgtFURgvL
- DnsHAfxza5CEv6nL3V5jw8mdQ0A2mpr1UoR1Z54iESGC/hiVmKlE5HAkiEvscqzffLGZ
- 27+8T18hbT24cgN4QOMJ959mztebaiWQt6hq8/WHLOJK6MmNj41gE6P5etE/P9ZUcXEt
- T213U6Euj/24EZgdq3R5cPxXcbimpweAwFMO5oqg4v6KEAXFLOxC/P5uBbA2hyAc9LsJ
- nCxDxcuT2PUDRLvChqWb2sO61s1R2+kL7VVIWmZom5eJBC8FBcKo8Z2jNqOdx09mQPLh
- fm8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=pqH4xv/zgdnQFeooWFmsVR6/ZHVzntVgyMsibxvmXWY=;
- b=qecNDf+kXOeN1ud/d0Q2wO2AZxj2pkb/Bw9INg0MPYVfqXoHkF9wWjfKUOk3ICxdnC
- D3CrdASG3vsWHE00PBtdtVJDGwr8Lu62LCVUnY/4fd2sg9jMhnYyiaICMbpvAa7KJOgl
- nNKQMRZKIgVOo5yl2f1mQggbbfg75zrUE07ut0QHdMWVuXuYytg+DFvpaha0VoLTzqbq
- /6fCTI7TOUIB67aw8p8SMajur9R2cFYwJ4cLBIAqlpIOHodXPGlRvQI9PbwRvWScooGZ
- 4uqD0EtwlOXxCiW5hy4xKLFzsVj7pZHFGabUB8VZxBvvkwYkXBSvTwzHLHHHHqA38XQL
- O26A==
-X-Gm-Message-State: AOAM5322s5c68xyhqpr4i/fGgz4TeZ4kePnBOmkFujLqF++sUKbg4gfH
- 1tNMOpnWzBLQKZYmKnTfwRI=
-X-Google-Smtp-Source: ABdhPJxkW69u4758fMnybzasE3bFymgtHmmra2XXahudLeTVKS5ejJspO5JAQaQ123pvUuYtFeDZjA==
-X-Received: by 2002:a62:206:: with SMTP id 6mr10419191pfc.228.1596424339410;
- Sun, 02 Aug 2020 20:12:19 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id v22sm17795945pfe.48.2020.08.02.20.12.18
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 02 Aug 2020 20:12:19 -0700 (PDT)
-Date: Sun, 2 Aug 2020 20:12:07 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v3] ASoC: fsl-asoc-card: Remove
- fsl_asoc_card_set_bias_level function
-Message-ID: <20200803031206.GA28838@Asurada-Nvidia>
-References: <1596420811-16690-1-git-send-email-shengjiu.wang@nxp.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1596420811-16690-1-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKjqt1kZFzDqSJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 13:22:32 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 840432000E8;
+ Mon,  3 Aug 2020 05:22:29 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 189D82000F7;
+ Mon,  3 Aug 2020 05:22:25 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 0A4ED402DE;
+ Mon,  3 Aug 2020 05:22:18 +0200 (CEST)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_sai: Clean code for synchronize mode
+Date: Mon,  3 Aug 2020 11:17:54 +0800
+Message-Id: <1596424674-32127-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,29 +52,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 03, 2020 at 10:13:31AM +0800, Shengjiu Wang wrote:
-> With this case:
-> aplay -Dhw:x 16khz.wav 24khz.wav
-> There is sound distortion for 24khz.wav. The reason is that setting
-> PLL of WM8962 with set_bias_level function, the bias level is not
-> changed when 24khz.wav is played, then the PLL won't be reset, the
-> clock is not correct, so distortion happens.
-> 
-> The resolution of this issue is to remove fsl_asoc_card_set_bias_level.
-> Move PLL configuration to hw_params and hw_free.
-> 
-> After removing fsl_asoc_card_set_bias_level, also test WM8960 case,
-> it can work.
-> 
-> Fixes: 708b4351f08c ("ASoC: fsl: Add Freescale Generic ASoC Sound Card with ASRC support")
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+TX synchronous with RX: The RMR is no need to be changed when
+Tx is enabled, the other configuration in hw_params() is enough for
+clock generation. The TCSR.TE is no need to enabled when only RX
+is enabled.
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+RX synchronous with TX: The TMR is no need to be changed when
+Rx is enabled, the other configuration in hw_params() is enough for
+clock generation. The RCSR.RE is no need to enabled when only TX
+is enabled.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_sai.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index cdff739924e2..a210c9836a9a 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -482,8 +482,6 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 			regmap_update_bits(sai->regmap, FSL_SAI_TCR5(ofs),
+ 				FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
+ 				FSL_SAI_CR5_FBT_MASK, val_cr5);
+-			regmap_write(sai->regmap, FSL_SAI_TMR,
+-				~0UL - ((1 << channels) - 1));
+ 		} else if (!sai->synchronous[RX] && sai->synchronous[TX] && tx) {
+ 			regmap_update_bits(sai->regmap, FSL_SAI_RCR4(ofs),
+ 				FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK,
+@@ -491,8 +489,6 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 			regmap_update_bits(sai->regmap, FSL_SAI_RCR5(ofs),
+ 				FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
+ 				FSL_SAI_CR5_FBT_MASK, val_cr5);
+-			regmap_write(sai->regmap, FSL_SAI_RMR,
+-				~0UL - ((1 << channels) - 1));
+ 		}
+ 	}
+ 
+@@ -553,11 +549,18 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+ 		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+ 				   FSL_SAI_CSR_FRDE, FSL_SAI_CSR_FRDE);
+ 
+-		regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
+-				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
+-		regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
++		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+ 				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
+ 
++		/* Enable opposite direction when necessarily */
++		if (!sai->synchronous[TX] && sai->synchronous[RX] && !tx) {
++			regmap_update_bits(sai->regmap, FSL_SAI_xCSR((!tx), ofs),
++					   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
++		} else if (!sai->synchronous[RX] && sai->synchronous[TX] && tx) {
++			regmap_update_bits(sai->regmap, FSL_SAI_xCSR((!tx), ofs),
++					   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
++		}
++
+ 		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+ 				   FSL_SAI_CSR_xIE_MASK, FSL_SAI_FLAGS);
+ 		break;
+-- 
+2.27.0
+
