@@ -1,51 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDBE239DD8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 05:31:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4B5239DE9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 05:47:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKk1n12gczDqLW
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 13:31:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKkNk4lNFzDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 13:47:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKjtQ1PMzzDqGn
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 13:24:44 +1000 (AEST)
-IronPort-SDR: aT6Uer0XfcdM8S4qrYCCWEPyC44srV9M2KK9kihI2XHzEJ0f/T6bnwE5+QtH8fx7W2TuRd7HG5
- zQcGigPTD+Fw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9701"; a="139616379"
-X-IronPort-AV: E=Sophos;i="5.75,428,1589266800"; d="scan'208";a="139616379"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Aug 2020 20:24:40 -0700
-IronPort-SDR: oe6pZaoZ3lYtFfBwBBD7gQdIFHf3hxKstPlKcM+RZNp9FBfxSVM9x4xARxyhqR0y/hEP4FNC2P
- +E31Ji2GCqhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,428,1589266800"; d="scan'208";a="436059495"
-Received: from lkp-server01.sh.intel.com (HELO e21119890065) ([10.239.97.150])
- by orsmga004.jf.intel.com with ESMTP; 02 Aug 2020 20:24:39 -0700
-Received: from kbuild by e21119890065 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1k2R5a-0001ov-RI; Mon, 03 Aug 2020 03:24:38 +0000
-Date: Mon, 03 Aug 2020 11:23:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS f59195f7faa4896b7c1d947ac2dba29ec18ad569
-Message-ID: <5f27834d.qi7etErtgvl/pv4z%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ spf=pass (sender SPF authorized) smtp.mailfrom=1wt.eu
+ (client-ip=62.212.114.60; helo=1wt.eu; envelope-from=w@1wt.eu;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=1wt.eu
+Received: from 1wt.eu (wtarreau.pck.nerim.net [62.212.114.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BKkM04GRpzDqSK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 13:46:04 +1000 (AEST)
+Received: (from willy@localhost)
+ by pcw.home.local (8.15.2/8.15.2/Submit) id 0733jlX7015511;
+ Mon, 3 Aug 2020 05:45:47 +0200
+Date: Mon, 3 Aug 2020 05:45:47 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: powerpc: build failures in Linus' tree
+Message-ID: <20200803034547.GA15501@1wt.eu>
+References: <20200802204842.36bca162@canb.auug.org.au>
+ <20200802172019.GB26677@1wt.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="+QahgC5+KEYLbs62"
+Content-Disposition: inline
+In-Reply-To: <20200802172019.GB26677@1wt.eu>
+User-Agent: Mutt/1.6.1 (2016-04-27)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,122 +44,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linux-kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Paul Mackerras <paulus@samba.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: f59195f7faa4896b7c1d947ac2dba29ec18ad569  Automatic merge of 'master', 'next' and 'fixes' (2020-08-02 23:18)
 
-elapsed time: 801m
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-configs tested: 99
-configs skipped: 10
+Hi again Stephen,
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+On Sun, Aug 02, 2020 at 07:20:19PM +0200, Willy Tarreau wrote:
+> On Sun, Aug 02, 2020 at 08:48:42PM +1000, Stephen Rothwell wrote:
+> > Hi all,
+> > 
+> > We are getting build failures in some PowerPC configs for Linus' tree.
+> > See e.g. http://kisskb.ellerman.id.au/kisskb/buildresult/14306515/
+> > 
+> > In file included from /kisskb/src/arch/powerpc/include/asm/paca.h:18,
+> >                  from /kisskb/src/arch/powerpc/include/asm/percpu.h:13,
+> >                  from /kisskb/src/include/linux/random.h:14,
+> >                  from /kisskb/src/include/linux/net.h:18,
+> >                  from /kisskb/src/net/ipv6/ip6_fib.c:20:
+> > /kisskb/src/arch/powerpc/include/asm/mmu.h:139:22: error: unknown type name 'next_tlbcam_idx'
+> >   139 | DECLARE_PER_CPU(int, next_tlbcam_idx);
+> > 
+> > I assume this is caused by commit
+> > 
+> >   1c9df907da83 ("random: fix circular include dependency on arm64 after addition of percpu.h")
+> > 
+> > But I can't see how, sorry.
+> 
+> So there, asm/mmu.h includes asm/percpu.h, which includes asm/paca.h, which
+> includes asm/mmu.h.
+> 
+> I suspect that we can remove asm/paca.h from asm/percpu.h as it *seems*
+> to be only used by the #define __my_cpu_offset but I don't know if anything
+> will break further, especially if this __my_cpu_offset is used anywhere
+> without this paca definition.
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                      chrp32_defconfig
-arc                 nsimosci_hs_smp_defconfig
-arm                          pxa910_defconfig
-sh                        sh7757lcr_defconfig
-arm                       aspeed_g4_defconfig
-sh                                  defconfig
-mips                     decstation_defconfig
-sh                           se7343_defconfig
-mips                           gcw0_defconfig
-arm                      pxa255-idp_defconfig
-arm                        mini2440_defconfig
-sh                      rts7751r2d1_defconfig
-nios2                         3c120_defconfig
-c6x                        evmc6457_defconfig
-h8300                               defconfig
-arm                        shmobile_defconfig
-arm                            pleb_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arm                            zeus_defconfig
-c6x                         dsk6455_defconfig
-sh                         ap325rxa_defconfig
-nios2                         10m50_defconfig
-powerpc64                           defconfig
-m68k                       bvme6000_defconfig
-mips                         tb0226_defconfig
-sh                           se7780_defconfig
-arc                    vdk_hs38_smp_defconfig
-arm                   milbeaut_m10v_defconfig
-c6x                        evmc6472_defconfig
-mips                          ath79_defconfig
-mips                  cavium_octeon_defconfig
-powerpc                       ppc64_defconfig
-mips                  mips_paravirt_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a004-20200802
-i386                 randconfig-a005-20200802
-i386                 randconfig-a001-20200802
-i386                 randconfig-a002-20200802
-i386                 randconfig-a003-20200802
-i386                 randconfig-a006-20200802
-i386                 randconfig-a011-20200802
-i386                 randconfig-a012-20200802
-i386                 randconfig-a015-20200802
-i386                 randconfig-a014-20200802
-i386                 randconfig-a013-20200802
-i386                 randconfig-a016-20200802
-x86_64               randconfig-a006-20200802
-x86_64               randconfig-a001-20200802
-x86_64               randconfig-a004-20200802
-x86_64               randconfig-a003-20200802
-x86_64               randconfig-a002-20200802
-x86_64               randconfig-a005-20200802
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+I tried this and it fixed 5.8 for me with your config above. I'm appending
+a patch that does just this. I didn't test other configs as I don't know
+which ones to test though. If it fixes the problem for you, maybe it can
+be picked by the PPC maintainers.
 
+Willy
+
+--+QahgC5+KEYLbs62
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="0001-powerpc-fix-circular-dependency-in-percpu.h.patch"
+
+From bcd64a7d0f3445c9a75d3b4dc4837d2ce61660c9 Mon Sep 17 00:00:00 2001
+From: Willy Tarreau <w@1wt.eu>
+Date: Mon, 3 Aug 2020 05:27:57 +0200
+Subject: powerpc: fix circular dependency in percpu.h
+
+After random.h started to include percpu.h (commit f227e3e), several
+archs broke in circular dependencies around percpu.h.
+
+In https://lore.kernel.org/lkml/20200802204842.36bca162@canb.auug.org.au/
+Stephen Rothwell reported breakage for powerpc with CONFIG_PPC_FSL_BOOK3E.
+
+It turns out that asm/percpu.h includes asm/paca.h, which itself
+includes mmu.h, which includes percpu.h when CONFIG_PPC_FSL_BOOK3E=y.
+
+Percpu seems to include asm/paca.h only for local_paca which is used in
+the __my_cpu_offset macro. Removing this include solves the issue for
+this config.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: f227e3e ("random32: update the net random state on interrupt and activity")
+Link: https://lore.kernel.org/lkml/20200802204842.36bca162@canb.auug.org.au/
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Signed-off-by: Willy Tarreau <w@1wt.eu>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ arch/powerpc/include/asm/percpu.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
+index dce863a..cd3f6e5 100644
+--- a/arch/powerpc/include/asm/percpu.h
++++ b/arch/powerpc/include/asm/percpu.h
+@@ -10,8 +10,6 @@
+ 
+ #ifdef CONFIG_SMP
+ 
+-#include <asm/paca.h>
+-
+ #define __my_cpu_offset local_paca->data_offset
+ 
+ #endif /* CONFIG_SMP */
+-- 
+2.9.0
+
+
+--+QahgC5+KEYLbs62--
