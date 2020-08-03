@@ -2,55 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B44239F5A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 07:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39796239F61
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 08:03:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKnJ22P0MzDqTs
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 15:58:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKnNy5FdjzDqW9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 16:02:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKnGP5m6wzDqQ4
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 15:57:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=a7mlrlG8; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BKnGN4mkNz9sTb;
- Mon,  3 Aug 2020 15:57:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1596434236;
- bh=F0bSc6jrjeKr0IDKY7K+/CZpnea8KGB+kABjPGz7rqU=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=a7mlrlG8miMj/2o6SYs/srEk/ykRBFqHEPHQXAC2UmXaRJPX2M6sSpcBGNlUv0IHI
- zCt4VMR1sVXCl9ye3sdhQd9I3n+Ah1SAF/4LHa8GlhW/cZnZend1h/aGd2WhS8yX92
- sj0x+fiAxP/BpRw/O+NMvdBv5ifI6HZM1/hVIp0TnUx0ylfW5ok0c965rnlw6ZvqSw
- JQgnvopmBzWhpvESlx61BN5n/4E4n3EWHSEH+49ZHNRewL3KDWYSCDCTx3rkO7gnbi
- DDQwqobcFiUyzC1pwmP+o9zz7nG0sxmK5M4i5W3xsRfxvjBBvnMG7XYo8KApLfSep+
- pQSMJJvlhiYFw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Chancellor <natechancellor@gmail.com>
-Subject: Re: [PATCH v2 15/16] powerpc/powernv/sriov: Make single PE mode a
- per-BAR setting
-In-Reply-To: <20200803044609.GB195@Ryzen-9-3900X.localdomain>
-References: <20200722065715.1432738-1-oohall@gmail.com>
- <20200722065715.1432738-15-oohall@gmail.com>
- <20200801061823.GA1203340@ubuntu-n2-xlarge-x86>
- <87r1sp19ag.fsf@mpe.ellerman.id.au>
- <20200803044609.GB195@Ryzen-9-3900X.localdomain>
-Date: Mon, 03 Aug 2020 15:57:11 +1000
-Message-ID: <87k0yg1dc8.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKnM748VMzDqPT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 16:01:23 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0735WxrU026871; Mon, 3 Aug 2020 02:01:11 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32p9bncj67-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Aug 2020 02:01:11 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0735YWYI029971;
+ Mon, 3 Aug 2020 02:01:10 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32p9bncj55-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Aug 2020 02:01:10 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0735pAQ4026967;
+ Mon, 3 Aug 2020 06:01:08 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04fra.de.ibm.com with ESMTP id 32n01893vu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Aug 2020 06:01:08 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0735xdPn59900208
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 3 Aug 2020 05:59:39 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A8236A405B;
+ Mon,  3 Aug 2020 06:01:05 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3C947A4062;
+ Mon,  3 Aug 2020 06:01:03 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon,  3 Aug 2020 06:01:03 +0000 (GMT)
+Date: Mon, 3 Aug 2020 11:31:02 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Valentin Schneider <valentin.schneider@arm.com>
+Subject: Re: [PATCH v4 09/10] Powerpc/smp: Create coregroup domain
+Message-ID: <20200803060102.GD24375@linux.vnet.ibm.com>
+References: <20200727053230.19753-1-srikar@linux.vnet.ibm.com>
+ <20200727053230.19753-10-srikar@linux.vnet.ibm.com>
+ <jhjr1sviswg.mognet@arm.com>
+ <20200729061355.GA14603@linux.vnet.ibm.com>
+ <jhjlfj0ijeg.mognet@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <jhjlfj0ijeg.mognet@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-03_04:2020-07-31,
+ 2020-08-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
+ priorityscore=1501 clxscore=1011 mlxscore=0 bulkscore=0 impostorscore=0
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008030041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,112 +95,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>,
- clang-built-linux@googlegroups.com
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Morten Rasmussen <morten.rasmussen@arm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Jordan Niethe <jniethe5@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Chancellor <natechancellor@gmail.com> writes:
-> On Sun, Aug 02, 2020 at 11:12:23PM +1000, Michael Ellerman wrote:
->> Nathan Chancellor <natechancellor@gmail.com> writes:
->> > On Wed, Jul 22, 2020 at 04:57:14PM +1000, Oliver O'Halloran wrote:
->> >> Using single PE BARs to map an SR-IOV BAR is really a choice about what
->> >> strategy to use when mapping a BAR. It doesn't make much sense for this to
->> >> be a global setting since a device might have one large BAR which needs to
->> >> be mapped with single PE windows and another smaller BAR that can be mapped
->> >> with a regular segmented window. Make the segmented vs single decision a
->> >> per-BAR setting and clean up the logic that decides which mode to use.
->> >> 
->> >> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
->> >> ---
->> >> v2: Dropped unused total_vfs variables in pnv_pci_ioda_fixup_iov_resources()
->> >>     Dropped bar_no from pnv_pci_iov_resource_alignment()
->> >>     Minor re-wording of comments.
->> >> ---
->> >>  arch/powerpc/platforms/powernv/pci-sriov.c | 131 ++++++++++-----------
->> >>  arch/powerpc/platforms/powernv/pci.h       |  11 +-
->> >>  2 files changed, 73 insertions(+), 69 deletions(-)
->> >> 
->> >> diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
->> >> index ce8ad6851d73..76215d01405b 100644
->> >> --- a/arch/powerpc/platforms/powernv/pci-sriov.c
->> >> +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
->> >> @@ -260,42 +256,40 @@ void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
->> >>  resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
->> >>  						      int resno)
->> >>  {
->> >> -	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
->> >>  	struct pnv_iov_data *iov = pnv_iov_get(pdev);
->> >>  	resource_size_t align;
->> >>  
->> >> +	/*
->> >> +	 * iov can be null if we have an SR-IOV device with IOV BAR that can't
->> >> +	 * be placed in the m64 space (i.e. The BAR is 32bit or non-prefetch).
->> >> +	 * In that case we don't allow VFs to be enabled since one of their
->> >> +	 * BARs would not be placed in the correct PE.
->> >> +	 */
->> >> +	if (!iov)
->> >> +		return align;
->> >> +	if (!iov->vfs_expanded)
->> >> +		return align;
->> >> +
->> >> +	align = pci_iov_resource_size(pdev, resno);
->> 
->> That's, oof.
->> 
->> > I am not sure if it has been reported yet but clang points out that
->> > align is initialized after its use:
->> >
->> > arch/powerpc/platforms/powernv/pci-sriov.c:267:10: warning: variable 'align' is uninitialized when used here [-Wuninitialized]
->> >                 return align;
->> >                        ^~~~~
->> > arch/powerpc/platforms/powernv/pci-sriov.c:258:23: note: initialize the variable 'align' to silence this warning
->> >         resource_size_t align;
->> >                              ^
->> >                               = 0
->> > 1 warning generated.
->> 
->> But I can't get gcc to warn about it?
->> 
->> It produces some code, so it's not like the whole function has been
->> elided or something. I'm confused.
->
-> -Wmaybe-uninitialized was disabled in commit 78a5255ffb6a ("Stop the
-> ad-hoc games with -Wno-maybe-initialized") upstream so GCC won't warn on
-> stuff like this anymore.
+> > Also in the current P9 itself, two neighbouring core-pairs form a quad.
+> > Cache latency within a quad is better than a latency to a distant core-pair.
+> > Cache latency within a core pair is way better than latency within a quad.
+> > So if we have only 4 threads running on a DIE all of them accessing the same
+> > cache-lines, then we could probably benefit if all the tasks were to run
+> > within the quad aka MC/Coregroup.
+> >
+> 
+> Did you test this? WRT load balance we do try to balance "load" over the
+> different domain spans, so if you represent quads as their own MC domain,
+> you would AFAICT end up spreading tasks over the quads (rather than packing
+> them) when balancing at e.g. DIE level. The desired behaviour might be
+> hackable with some more ASYM_PACKING, but I'm not sure I should be
+> suggesting that :-)
+> 
 
-Seems so. Just that there's no "maybe" here, it's very uninitialised.
+Agree, load balance will try to spread the load across the quads. In my hack,
+I was explicitly marking QUAD domains as !SD_PREFER_SIBLING + relaxing few
+load spreading rules when SD_PREFER_SIBLING was not set. And this was on a
+slightly older kernel (without recent Vincent's load balance overhaul).
 
-> I would assume the function should still be generated since those checks
-> are relevant, just the return value is bogus.
+> > I have found some benchmarks which are latency sensitive to benefit by
+> > having a grouping a quad level (using kernel hacks and not backed by
+> > firmware changes). Gautham also found similar results in his experiments
+> > but he only used binding within the stock kernel.
+> >
+> 
+> IIUC you reflect this "fabric quirk" (i.e. coregroups) using this DT
+> binding thing.
+> 
+> That's also where things get interesting (for me) because I experienced
+> something similar on another arm64 platform (ThunderX1). This was more
+> about cache bandwidth than cache latency, but IMO it's in the same bag of
+> fabric quirks. I blabbered a bit about this at last LPC [1], but kind of
+> gave up on it given the TX1 was the only (arm64) platform where I could get
+> both significant and reproducible results.
+> 
+> Now, if you folks are seeing this on completely different hardware and have
+> "real" workloads that truly benefit from this kind of domain partitioning,
+> this might be another incentive to try and sort of generalize this. That's
+> outside the scope of your series, but your findings give me some hope!
+> 
+> I think what I had in mind back then was that if enough folks cared about
+> it, we might get some bits added to the ACPI spec; something along the
+> lines of proximity domains for the caches described in PPTT, IOW a cache
+> distance matrix. I don't really know what it'll take to get there, but I
+> figured I'd dump this in case someone's listening :-)
+> 
 
-Yeah, just sometimes missing warnings boil down to the compiler eliding
-whole sections of code, if it can convince itself they're unreachable.
+Very interesting.
 
-AFAICS there's nothing weird going on here that should confuse GCC, it's
-about as straight forward as it gets.
+> > I am not setting SD_SHARE_PKG_RESOURCES in MC/Coregroup sd_flags as in MC
+> > domain need not be LLC domain for Power.
+> 
+> From what I understood your MC domain does seem to map to LLC; but in any
+> case, shouldn't you set that flag at least for BIGCORE (i.e. L2)? AIUI with
+> your changes your sd_llc is gonna be SMT, and that's not going to be a very
+> big mask. IMO you do want to correctly reflect your LLC situation via this
+> flag to make cpus_share_cache() work properly.
 
-Actually I can reproduce it with:
+I detect if the LLC is shared at BIGCORE, and if they are shared at BIGCORE,
+then I dynamically rename the DOMAIN as CACHE and enable
+SD_SHARE_PKG_RESOURCES in that domain.
 
-$ cat > test.c <<EOF
-int foo(void *p)
-{
-        unsigned align;
+> 
+> [1]: https://linuxplumbersconf.org/event/4/contributions/484/
 
-        if (!p)
-                return align;
+Thanks for the pointer.
 
-        return 0;
-}
-EOF
-
-$ gcc -Wall -Wno-maybe-uninitialized -c test.c
-$
-
-No warning.
-
-But I guess that's behaving as documented. The compiler can't prove that
-foo() will be called with p == NULL, so it doesn't warn.
-
-cheers
+-- 
+Thanks and Regards
+Srikar Dronamraju
