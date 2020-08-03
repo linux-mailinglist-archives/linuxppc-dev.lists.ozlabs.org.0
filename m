@@ -1,76 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A03239E6E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 06:47:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB12239E86
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 07:01:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BKlk20pjZzDqSy
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 14:47:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BKm1Y1JmqzDqRt
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Aug 2020 15:01:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=natechancellor@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jPM8pxVG; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BKlhP6xSqzDqRj
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 14:46:13 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id j19so19200062pgm.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Aug 2020 21:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=M0EXqVvvU7EURtyvH7wo3HHy7rzmVEpMvCzVpEfbXzU=;
- b=jPM8pxVGUM8GhFZhyDDPpI8zElulFUNTrBdYW4M26LfHGm8vw70DVdUjPGrKXPjLyx
- spUHgt3qLYBAn60G/0sMxdYC69duUFqueI8XOO8fjvzMYG7IOaHhN8upFn35tkWkCvUy
- ReG9K6gvnSSY40epzKeUMxkDyvDHcSdgNjaqny356rh0ENLVmc7YDVCAfZliXCQxOdra
- fYlsLIEUsC3sxcKog+fNicds9rMv8xxgRe4Bx85BgnTJ9ZfbW4RdNSz6tgjjfyLQm5tY
- BdJkweF5PPldt1JfUMU61D3p6XPkMfi7K0bKjk6lifnxMHGTl3XKc0k5PHs/MRtjIxw8
- uvTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=M0EXqVvvU7EURtyvH7wo3HHy7rzmVEpMvCzVpEfbXzU=;
- b=B72Fd+zl88B4ZXsT7t2cTcVM37gZGzIUFDiLASl/VopBWXI1hvLVut1OCeg4J+GmH6
- U3tIkRd4UjOj02uIu9ZFGhamEvfWwNiiyazegQAYIQuTMK7kpuTq8gKkIeNT9o6dKeQB
- jQz8du9hY0UJWumWSDmODXgjfClzjupH9ksFTRD353UmwMVhWFSLFkcEOiX4gr/zeLt/
- 68dtgvd529XoHoynO+oxu5sWZf/NvnubUf2hgIp7wXaOUT6LKn9SCD8ybQI2OkVN5/Kd
- PjFaVm2BiowfosjRIZBgjahbiy3hlRXOr2+n2SdawdjA9oC7LpsAlEU2rZPklq8RUCvy
- /ulg==
-X-Gm-Message-State: AOAM533lmfnixAaUa23jw29lRC8q/6Fs9iS2yNao3OdMucgshHXVhUfE
- tORQwrvAgJhIJGc0P/C5knQ=
-X-Google-Smtp-Source: ABdhPJxCqpM7enw7DF1yVc5p4f+M/FI+dz6bS4/vgHw0EOqflzTequz9Ed2B4z1fOyxMWCTLoGZ7xw==
-X-Received: by 2002:a62:387:: with SMTP id 129mr14750803pfd.187.1596429970262; 
- Sun, 02 Aug 2020 21:46:10 -0700 (PDT)
-Received: from Ryzen-9-3900X.localdomain ([89.46.114.147])
- by smtp.gmail.com with ESMTPSA id v77sm15947707pfc.137.2020.08.02.21.46.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Aug 2020 21:46:09 -0700 (PDT)
-Date: Sun, 2 Aug 2020 21:46:09 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BKlzZ4vpczDqRr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Aug 2020 14:59:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=QQAcTy+N; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BKlzY1RNmz9s1x;
+ Mon,  3 Aug 2020 14:59:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1596430762;
+ bh=MPhLnoYZ1H5ZvLDWHdju+j3itySzNLNR+DZxYy9IYNw=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=QQAcTy+NeF/H+YtJdcgnyqiwVBl+3dAeUgIc/CElGZRCnphjUhbGe5K9KcHunBFpR
+ tCbo/SeRBBZS8I9wVXYEkjymC2cFBLpa8xcxN+zQiEopmTuVd1EXOyjbUSotq3yViw
+ AgC+AQb7rer1tNoxVwP9eX4g4qm4tJwZd6aWLqnodhNATEWxOujoVE2aVlLqoLk8Aa
+ BHqGkn3hxhM1m/i+yfc9P7MMv/MA7aq6oTXhnuqDgGdUi3IEVXPd+Bo+OuuHXwdhz1
+ tkoBoEE2oo+1S2yzA1owsIiYwg2Goev88O56jWESos4Coz9KUiGESLMcduyQLldQLZ
+ icRQJTv35wb6g==
+Date: Mon, 3 Aug 2020 14:59:20 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 15/16] powerpc/powernv/sriov: Make single PE mode a
- per-BAR setting
-Message-ID: <20200803044609.GB195@Ryzen-9-3900X.localdomain>
-References: <20200722065715.1432738-1-oohall@gmail.com>
- <20200722065715.1432738-15-oohall@gmail.com>
- <20200801061823.GA1203340@ubuntu-n2-xlarge-x86>
- <87r1sp19ag.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH] powerpc: fix up PPC_FSL_BOOK3E build
+Message-ID: <20200803145920.72a6fa4b@canb.auug.org.au>
+In-Reply-To: <20200803135447.3833067d@canb.auug.org.au>
+References: <20200803135447.3833067d@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r1sp19ag.fsf@mpe.ellerman.id.au>
+Content-Type: multipart/signed; boundary="Sig_/_a6zgj=YiioLKMMN9YZ42FX";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,84 +58,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>,
- clang-built-linux@googlegroups.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Linux PowerPC List <linuxppc-dev@lists.ozlabs.org>, Willy Tarreau <w@1wt.eu>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 02, 2020 at 11:12:23PM +1000, Michael Ellerman wrote:
-> Nathan Chancellor <natechancellor@gmail.com> writes:
-> > On Wed, Jul 22, 2020 at 04:57:14PM +1000, Oliver O'Halloran wrote:
-> >> Using single PE BARs to map an SR-IOV BAR is really a choice about what
-> >> strategy to use when mapping a BAR. It doesn't make much sense for this to
-> >> be a global setting since a device might have one large BAR which needs to
-> >> be mapped with single PE windows and another smaller BAR that can be mapped
-> >> with a regular segmented window. Make the segmented vs single decision a
-> >> per-BAR setting and clean up the logic that decides which mode to use.
-> >> 
-> >> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> >> ---
-> >> v2: Dropped unused total_vfs variables in pnv_pci_ioda_fixup_iov_resources()
-> >>     Dropped bar_no from pnv_pci_iov_resource_alignment()
-> >>     Minor re-wording of comments.
-> >> ---
-> >>  arch/powerpc/platforms/powernv/pci-sriov.c | 131 ++++++++++-----------
-> >>  arch/powerpc/platforms/powernv/pci.h       |  11 +-
-> >>  2 files changed, 73 insertions(+), 69 deletions(-)
-> >> 
-> >> diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-> >> index ce8ad6851d73..76215d01405b 100644
-> >> --- a/arch/powerpc/platforms/powernv/pci-sriov.c
-> >> +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-> >> @@ -260,42 +256,40 @@ void pnv_pci_ioda_fixup_iov(struct pci_dev *pdev)
-> >>  resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
-> >>  						      int resno)
-> >>  {
-> >> -	struct pnv_phb *phb = pci_bus_to_pnvhb(pdev->bus);
-> >>  	struct pnv_iov_data *iov = pnv_iov_get(pdev);
-> >>  	resource_size_t align;
-> >>  
-> >> +	/*
-> >> +	 * iov can be null if we have an SR-IOV device with IOV BAR that can't
-> >> +	 * be placed in the m64 space (i.e. The BAR is 32bit or non-prefetch).
-> >> +	 * In that case we don't allow VFs to be enabled since one of their
-> >> +	 * BARs would not be placed in the correct PE.
-> >> +	 */
-> >> +	if (!iov)
-> >> +		return align;
-> >> +	if (!iov->vfs_expanded)
-> >> +		return align;
-> >> +
-> >> +	align = pci_iov_resource_size(pdev, resno);
-> 
-> That's, oof.
-> 
-> > I am not sure if it has been reported yet but clang points out that
-> > align is initialized after its use:
-> >
-> > arch/powerpc/platforms/powernv/pci-sriov.c:267:10: warning: variable 'align' is uninitialized when used here [-Wuninitialized]
-> >                 return align;
-> >                        ^~~~~
-> > arch/powerpc/platforms/powernv/pci-sriov.c:258:23: note: initialize the variable 'align' to silence this warning
-> >         resource_size_t align;
-> >                              ^
-> >                               = 0
-> > 1 warning generated.
-> 
-> But I can't get gcc to warn about it?
-> 
-> It produces some code, so it's not like the whole function has been
-> elided or something. I'm confused.
-> 
-> cheers
+--Sig_/_a6zgj=YiioLKMMN9YZ42FX
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
--Wmaybe-uninitialized was disabled in commit 78a5255ffb6a ("Stop the
-ad-hoc games with -Wno-maybe-initialized") upstream so GCC won't warn on
-stuff like this anymore.
+Hi all,
 
-I would assume the function should still be generated since those checks
-are relevant, just the return value is bogus.
+On Mon, 3 Aug 2020 13:54:47 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>
+> Commit
+>=20
+>   1c9df907da83 ("random: fix circular include dependency on arm64 after a=
+ddition of percpu.h")
+>=20
+> exposed a curcular include dependency:
+>=20
+> asm/mmu.h includes asm/percpu.h, which includes asm/paca.h, which
+> includes asm/mmu.h
+>=20
+> So fix it by extracting the small part of asm/mmu.h that needs
+> asm/percu.h into a new file and including that where necessary.
+>=20
+> Cc: Willy Tarreau <w@1wt.eu>
+> Cc: <stable@kernel.org>
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
 
+I should have put:
+
+Fixes: 1c9df907da83 ("random: fix circular include dependency on arm64 afte=
+r addition of percpu.h")
+
+--=20
 Cheers,
-Nathan
+Stephen Rothwell
+
+--Sig_/_a6zgj=YiioLKMMN9YZ42FX
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8nmagACgkQAVBC80lX
+0GzdnAf/efDjHOIC93+8ioQY0UcLlTfk9I7vm8keK3/kCYBUUFSV0y/ewUjRYz4s
+4WYVm0Xj00VX9FkiGB8lhoO0nGsf+P9O2k59Y6kQwndAldplPwcjzIgsSDSx+LBm
+/aBItNNDfabEUMp67T2ybKCfy1h08wsInmM9gl0V2z1Mo1r4ax3StistxUzQwGj5
+fScto/C2aistdWaybnT3Y8AQTMJhxBXkuZoc4s2aMEYC7JxVN/goi3ItOyC37GLL
+LR8a1XvjS3sdDZ7gGsY8PXBSB4AmDMx5UPNHAxQk0vKFOQqveoSNxoskOWUEKNrZ
+Px72hWk/2AInQqviFzFMMzsPmqw3og==
+=Ghwq
+-----END PGP SIGNATURE-----
+
+--Sig_/_a6zgj=YiioLKMMN9YZ42FX--
