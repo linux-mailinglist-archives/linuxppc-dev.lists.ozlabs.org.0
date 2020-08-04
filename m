@@ -1,49 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFD323BAE0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 15:08:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D7123BB3A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 15:37:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLZnz5yb6zDqb9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 23:08:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLbQX23LYzDqYt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 23:37:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12a;
+ helo=mail-il1-x12a.google.com; envelope-from=kernelfans@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=iIcb534I; dkim-atps=neutral
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com
+ [IPv6:2607:f8b0:4864:20::12a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLZkl1sCHzDqYS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 23:06:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Ikr9LOjr; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BLZkk2Kmlz9sRR; Tue,  4 Aug 2020 23:06:06 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BLZkk07WTz9sSt; Tue,  4 Aug 2020 23:06:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1596546366;
- bh=BIrtZ3Ncm4EsIDLrzsPmCx0+XObjuXXq6JeakjKawLY=;
- h=From:To:Cc:Subject:Date:From;
- b=Ikr9LOjr4IG7bf3HK5beKXdtz6V6hcfdlJiROcoigu1ibPLxpT6djXXjIe5mY8uXM
- 50wKkHXl/ChHYupro04Zzr/NZb+uDSkWiIcdlFlQ6gLOdCE3vze3yc22PkN3HsTFuP
- QIUfSR5U8GHIL/i4Xf02MRrmPJfWRB2yBiirdJYR2em+KzRkP3bmMYsulx/IWSs5xk
- iI6bEr/b4DhWC1T6iv5vU7fOKt2C5y/1egodZPy241HXchhy7jg1GSGa5oG/G/uv7r
- 1pEPHqvuCdqJOlzMKt2GPyT0rsGJxcueXwpF7GsvCBup5TFsX+lAfqFwClY6PAtGMe
- TFmiNrPEDzWRQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc: Fix circular dependency between percpu.h and mmu.h
-Date: Tue,  4 Aug 2020 23:05:58 +1000
-Message-Id: <20200804130558.292328-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLbLs52vszDqRR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 23:33:56 +1000 (AEST)
+Received: by mail-il1-x12a.google.com with SMTP id c16so22355451ils.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 06:33:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=xhClNq/HCpBReOShm+4lUZuMrYELtFHHHjv0pGdQMRM=;
+ b=iIcb534IqNJBFEMOF1kGXzLFTz4dxADZjibG2aHxkVMkgyrkeFyk5ZMTBDi8kxZqfx
+ DTqX8NijQiecdB1kyfFjUUUXqUxUT5Fyzf9boGfCjFuRzZ6wcn/0r+kbC2HNiQvCAvuj
+ GDyy/h8z1246DwlJcBRE4bFrEftOO702jfV954R+3DWlaLJaRSfpgWfR8XfOB7GkDTGm
+ HbsgMqwynXzxU1jTymKThZ12lKShZBf9QxAHRTlfp67Po4FA30ECFXhk+3/jA2iYymTd
+ qF01K2vYhNvCjnXMBPNjTus8q9o3ZYvDFdbNW1R3gE1PozftTUuAV/jVdHpGysZfsBBe
+ Xtqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=xhClNq/HCpBReOShm+4lUZuMrYELtFHHHjv0pGdQMRM=;
+ b=bFbmsrF6oUZGT+tkccFLoWqC+jcBTzRuxMFf4KyfTQtjQuh6xTlmAHLDrqhvrOsJxK
+ VD2pssm/DJt8GqzMVivXqP7rq/9jThcZA2NT562+0FCp8Ja+PkBueiBtAOGIKMV5ODMr
+ eHRhjJ3UFTz/30Kaq5MVGpB988RhExwQU1xkKSmvzIkn5ME5M9ZHnEC0pgPspCSRtPOW
+ dJlqlIuvQ/bSH+WM1ihdUfv09MyNHEHCZ49kQ4X42wCAMZ35nHp1NwO4RzEulxrCkZOg
+ usgS7FrLUrdAhYQES1SDPH/ni5Fk2V1cS/tp/R6Xa21EmwPVbxAu0Bh+C0+zRcCH7rHY
+ V/QA==
+X-Gm-Message-State: AOAM530BEf+eNelgG+clul3W0iR5LPZa2tFCyztqcFVUNqF2Zl+gu0vb
+ kFsMt4IhCytUHVFL/JsuLwcGW06YhHcQkg22tg==
+X-Google-Smtp-Source: ABdhPJwfP/rdGT43T5vsBM32yQb752R74rbUuWewCoTKACJMnJwoLKMAJ4CMjfZZ7O13ofKd20OCZNsR+N0Mza2x91c=
+X-Received: by 2002:a05:6e02:1002:: with SMTP id
+ n2mr4667029ilj.117.1596548030311; 
+ Tue, 04 Aug 2020 06:33:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1596116005-27511-1-git-send-email-kernelfans@gmail.com>
+ <ee585548-aefc-ff3f-6a79-e616b9e04f12@linux.ibm.com>
+In-Reply-To: <ee585548-aefc-ff3f-6a79-e616b9e04f12@linux.ibm.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Tue, 4 Aug 2020 21:33:39 +0800
+Message-ID: <CAFgQCTt=qjaYtOUvt7sy1PiSo1sDdGn9Dktyu9O26QXagvbNFQ@mail.gmail.com>
+Subject: Re: [PATCHv4 1/2] powerpc/pseries: group lmb operation and memblock's
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,66 +74,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, w@1wt.eu
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Kexec Mailing List <kexec@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Recently random.h started including percpu.h (see commit
-f227e3ec3b5c ("random32: update the net random state on interrupt and
-activity")), which broke corenet64_smp_defconfig:
+On Mon, Aug 3, 2020 at 9:52 PM Laurent Dufour <ldufour@linux.ibm.com> wrote:
+>
+> > @@ -603,6 +606,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+> >         }
+> >
+> >         lmb_set_nid(lmb);
+> > +       lmb->flags |= DRCONF_MEM_ASSIGNED;
+> > +
+> >         block_sz = memory_block_size_bytes();
+> >
+> >         /* Add the memory */
+>
+> Since the lmb->flags is now set earlier, you should unset it in the case the
+> call to __add_memory() fails, something like:
+>
+> @@ -614,6 +614,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>         rc = __add_memory(lmb->nid, lmb->base_addr, block_sz);
+>         if (rc) {
+>                 invalidate_lmb_associativity_index(lmb);
+> +               lmb->flags &= ~DRCONF_MEM_ASSIGNED;
+You are right. I will fix it in V5.
 
-  In file included from /linux/arch/powerpc/include/asm/paca.h:18,
-                   from /linux/arch/powerpc/include/asm/percpu.h:13,
-                   from /linux/include/linux/random.h:14,
-                   from /linux/lib/uuid.c:14:
-  /linux/arch/powerpc/include/asm/mmu.h:139:22: error: unknown type name 'next_tlbcam_idx'
-    139 | DECLARE_PER_CPU(int, next_tlbcam_idx);
-
-This is due to a circular header dependency:
-  asm/mmu.h includes asm/percpu.h, which includes asm/paca.h, which
-  includes asm/mmu.h
-
-Which means DECLARE_PER_CPU() isn't defined when mmu.h needs it.
-
-We can fix it by moving the include of paca.h below the include of
-asm-generic/percpu.h.
-
-This moves the include of paca.h out of the #ifdef __powerpc64__, but
-that is OK because paca.h is almost entirely inside #ifdef
-CONFIG_PPC64 anyway.
-
-It also moves the include of paca.h out of the #ifdef CONFIG_SMP,
-which could possibly break something, but seems to have no ill
-effects.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Fixes: f227e3ec3b5c ("random32: update the net random state on interrupt and activity")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/percpu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
-index dce863a7635c..8e5b7d0b851c 100644
---- a/arch/powerpc/include/asm/percpu.h
-+++ b/arch/powerpc/include/asm/percpu.h
-@@ -10,8 +10,6 @@
- 
- #ifdef CONFIG_SMP
- 
--#include <asm/paca.h>
--
- #define __my_cpu_offset local_paca->data_offset
- 
- #endif /* CONFIG_SMP */
-@@ -19,4 +17,6 @@
- 
- #include <asm-generic/percpu.h>
- 
-+#include <asm/paca.h>
-+
- #endif /* _ASM_POWERPC_PERCPU_H_ */
--- 
-2.25.1
-
+Thanks,
+Pingfan
