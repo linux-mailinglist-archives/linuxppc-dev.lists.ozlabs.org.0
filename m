@@ -1,83 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E2023B56B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 09:11:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B2423B59B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 09:26:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLQs95FHBzDqLB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 17:11:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLRCP1MY9zDqX1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 17:26:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=nicoleotsuka@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FJxWR+qO; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLQpK1QFjzDqWR
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 17:08:39 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id u10so12841324plr.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 00:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=mzXdPa02PNZzMci8IWENzcnutMB+4gkEmRjStQUBDRM=;
- b=FJxWR+qOBFsh8CQGiDEQC8hToTRhgA/qqWs7y8eQUAmKiS8qZGtnYHWm7UGrC4VXwI
- nKd/gEwt7T3y2Pc7p2FHBCPVC59iPibzT40Y6Sifh1NvqOV63ysCzcOAtLhqFmu2UoeQ
- uJ37ZDv4XOoXTEiz7UnGpDHuTqFMMYsywPgoOsx7X5eoQ6UYpBcAHD+jyvHyKr6qKcVK
- bqyYJyuXYBM1dazvCGekdJLZqof+OG8wgX3UGb54IMl/mO6V1jmdPROXI6Nt/3TCkntw
- buqZVTgvcIMZoLoJthtCGICijJk1BggUvkNb9hHEWEMSIPY3mQzfBwW7c91cKfQv7RUC
- aC5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=mzXdPa02PNZzMci8IWENzcnutMB+4gkEmRjStQUBDRM=;
- b=HFpdTU/rAG7+JPPF8EWmimf19ZZw8DhlI2EGqQTuAbZZVrLs4aB5dohsuO2agHod6i
- uLOZPu+U5mrd2KoqkpppGtkKTbTJzknOm5HG8EHGsQYAa/aXnguEsCOs9c3GiKBi7O1I
- AtzHtH4UUkdymKPQZUBWXXz3vf+exIrr0JbLEqV+IYvxCuue5HVD0jqQUxVLSOhWTE/G
- 8NHLLI3p4XTu5rMRHjn1nZmozHsjR7KEcco9D7acgEHmiv8e9UFYrhNdgd0cx3IUIq1J
- ktuQ1p1GAZFElxd8d3Jfy3TAsw6nV1FrJbiLh87mwkDzyNo2DkaRP4pjZ4UpfMBLGifc
- /BpA==
-X-Gm-Message-State: AOAM532Mj2roVptL+yUCiIAiT7NGW9Uf0V5SpIqYMYG9L50HP1wjh0NI
- 4Gf9+c6TyZC9uRQHBwlYVkk=
-X-Google-Smtp-Source: ABdhPJzoO2sSiVYAeTFp6Xafg+M195gcnGBGyWqm7EBvLEW9UKTZpQq+/QC5jiS32PNmce7SBnexKg==
-X-Received: by 2002:a17:902:fe10:: with SMTP id
- g16mr3514973plj.43.1596524916406; 
- Tue, 04 Aug 2020 00:08:36 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id b22sm13846476pfb.52.2020.08.04.00.08.35
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 04 Aug 2020 00:08:36 -0700 (PDT)
-Date: Tue, 4 Aug 2020 00:08:25 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Clean code for synchronize mode
-Message-ID: <20200804070825.GB27658@Asurada-Nvidia>
-References: <20200803054037.GA1056@Asurada-Nvidia>
- <CAA+D8AOGF44UUq=P1S-M5TUwDUaOnqVmHJKPDBM9DAzt1nVzmQ@mail.gmail.com>
- <20200803215735.GA5461@Asurada-Nvidia>
- <CAA+D8ANQxnvR2bOyHVRs5h2NJhMeVh4gjLPknaz7aQ86MtL0sQ@mail.gmail.com>
- <20200804021114.GA15390@Asurada-Nvidia>
- <CAA+D8ANagfMXPAkK4-vBDY9rZMukVUXs8FfBCHS0avXt57pekA@mail.gmail.com>
- <20200804030004.GA27028@Asurada-Nvidia>
- <CAA+D8ANuLQuUO+VsABjt2t1ccK+LGayq13d6EEcV18=4KNaC+w@mail.gmail.com>
- <CAA+D8AP=27SdR68T-LiQHkJ0_dJaqtgcS-oi9d8arUzvTz5GwA@mail.gmail.com>
- <20200804070345.GA27658@Asurada-Nvidia>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLR9Y25dfzDqQv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 17:25:21 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07473pdk087756; Tue, 4 Aug 2020 03:25:13 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32pxcgxtv5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Aug 2020 03:25:13 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0747KiTa016220;
+ Tue, 4 Aug 2020 07:25:12 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06fra.de.ibm.com with ESMTP id 32mynh9uvp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Aug 2020 07:25:11 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0747P8eC16908788
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Aug 2020 07:25:09 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB2964203F;
+ Tue,  4 Aug 2020 07:25:08 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C76BA42049;
+ Tue,  4 Aug 2020 07:25:07 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Tue,  4 Aug 2020 07:25:07 +0000 (GMT)
+Date: Tue, 4 Aug 2020 12:55:07 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [RFC PATCH 1/2] powerpc/numa: Introduce logical numa id
+Message-ID: <20200804072507.GI24375@linux.vnet.ibm.com>
+References: <20200731111916.243569-1-aneesh.kumar@linux.ibm.com>
+ <20200801052059.GA24375@linux.vnet.ibm.com>
+ <87h7tl162y.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200804070345.GA27658@Asurada-Nvidia>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <87h7tl162y.fsf@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-04_02:2020-08-03,
+ 2020-08-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ adultscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 clxscore=1015 mlxscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008040048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,149 +86,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 04, 2020 at 12:03:46AM -0700, Nicolin Chen wrote:
-> On Tue, Aug 04, 2020 at 12:22:53PM +0800, Shengjiu Wang wrote:
+* Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> [2020-08-02 19:51:41]:
+> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> > * Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> [2020-07-31 16:49:14]:
+> >
+> >
+> > If its just to eliminate node 0, then we have 2 other probably better
+> > solutions.
+> > 1. Dont mark node 0 as spl (currently still in mm-tree and a result in
+> > linux-next)
+> > 2. powerpc specific: explicitly clear node 0 during numa bringup.
+> >
 > 
-> > > > Btw, do we need similar change for TRIGGER_STOP?
-> > >
-> > > This is a good question. It is better to do change for STOP,
-> > > but I am afraid that there is no much test to guarantee the result.
 > 
-> > Maybe we can do this change for STOP.
+> I am not sure I consider them better. But yes, those patches are good
+> and also resolves the node 0 initialization when the firmware didn't
+> indicate the presence of such a node.
 > 
-> The idea looks good to me...(check inline comments)
->  
-> > diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> > index 1c0e06bb3783..6e4be398eaee 100644
-> > --- a/sound/soc/fsl/fsl_sai.c
-> > +++ b/sound/soc/fsl/fsl_sai.c
-> > @@ -517,6 +517,37 @@ static int fsl_sai_hw_free(struct
-> > snd_pcm_substream *substream,
-> >         return 0;
-> >  }
-> > 
-> > +static void fsl_sai_config_disable(struct fsl_sai *sai, bool tx)
-> > +{
-> > +       unsigned int ofs = sai->soc_data->reg_offset;
-> > +       u32 xcsr, count = 100;
-> > +
-> > +       regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
-> > +                          FSL_SAI_CSR_TERE, 0);
-> > +
-> > +       /* TERE will remain set till the end of current frame */
-> > +       do {
-> > +               udelay(10);
-> > +               regmap_read(sai->regmap, FSL_SAI_xCSR(tx, ofs), &xcsr);
-> > +       } while (--count && xcsr & FSL_SAI_CSR_TERE);
-> > +
-> > +       regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
-> > +                          FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
-> > +
-> > +       /*
-> > +        * For sai master mode, after several open/close sai,
-> > +        * there will be no frame clock, and can't recover
-> > +        * anymore. Add software reset to fix this issue.
-> > +        * This is a hardware bug, and will be fix in the
-> > +        * next sai version.
-> > +        */
-> > +       if (!sai->is_slave_mode) {
-> > +               /* Software Reset for both Tx and Rx */
+> This patch in addition make sure that we get the same topolgy report
+> across reboot on a virtualized partitions as longs as the cpu/memory
+> ratio per powervm domains remain the same. This should also help to
+> avoid confusion after an LPM migration once we start applying topology
+> updates. 
 > 
-> Remove "for both Tx and Rx"
-> 
-> >                 /* Check if the opposite FRDE is also disabled */
-> >                 regmap_read(sai->regmap, FSL_SAI_xCSR(!tx, ofs), &xcsr);
-> > +               if (sai->synchronous[tx] && !sai->synchronous[!tx] && !(xcsr & FSL_SAI_CSR_FRDE))
-> > +                       fsl_sai_config_disable(sai, !tx);
-> 
-> > +               if (sai->synchronous[tx] || !sai->synchronous[!tx] || !(xcsr & FSL_SAI_CSR_FRDE))
-> > +                       fsl_sai_config_disable(sai, tx);
-> 
-> The first "||" should probably be "&&".
-> 
-> The trigger() logic is way more complicated than a simple cleanup
-> in my opinion. Would suggest to split RMR part out of this change.
-> 
-> And for conditions like "sync[tx] && !sync[!tx]", it'd be better
-> to have a helper function to improve readability:
-> 
-> /**
->  * fsl_sai_dir_is_synced - Check if stream is synced by the opposite stream
->  *
->  * SAI supports synchronous mode using bit/frame clocks of either Transmitter's
->  * or Receiver's for both streams. This function is used to check if clocks of
->  * current stream's are synced by the opposite stream.
 
-Aww..this should be a generic function, so drop "current":
+What do we mean by cpu/memory ratio. The topology across reboot would have
+changed only if PowerVM would have allocated resources differently by
+scrambling/unscrambling. We are no more processing topology updates at
+runtime. As far as I know, after LPM, the source topology is maintained.
 
-  * or Receiver's for both streams. This function is used to check if clocks of
-  * the stream's are synced by the opposite stream.
+> >> This can  be resolved by mapping the firmware provided group id to a logical Linux
+> >> NUMA id. In this patch, we do this only for pseries platforms considering the
+> >
+> > On PowerVM, as you would know the nid is already a logical or a flattened
+> > chip-id and not the actual hardware chip-id.
+> 
+> Yes. But then they are derived based on PowerVM resources AKA domains.
+> Now based on the available resource on a system, we could end up with
+> different node numbers with same toplogy across reboots. Making it
+> logical at OS level prevent that. 
 
->  *
->  * @sai: SAI context
->  * @dir: direction of current stream
+The above statement kind of gives an impression, that topology changes
+across every reboot.  We only end up with different node numbers if and only
+if the underlying topology has changed and that case is very rare. Or am I
+missing something?
 
-Ditto:
-   * @dir: stream direction
+> 
+> >> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> >> index e437a9ac4956..6c659aada55b 100644
+> >> --- a/arch/powerpc/mm/numa.c
+> >> +++ b/arch/powerpc/mm/numa.c
+> >> @@ -221,25 +221,51 @@ static void initialize_distance_lookup_table(int nid,
+> >>  	}
+> >>  }
+> >> 
+> >> +static u32 nid_map[MAX_NUMNODES] = {[0 ... MAX_NUMNODES - 1] =  NUMA_NO_NODE};
+> >> +
+> >> +int firmware_group_id_to_nid(int firmware_gid)
+> >> +{
+> >> +	static int last_nid = 0;
+> >> +
+> >> +	/*
+> >> +	 * For PowerNV we don't change the node id. This helps to avoid
+> >> +	 * confusion w.r.t the expected node ids. On pseries, node numbers
+> >> +	 * are virtualized. Hence do logical node id for pseries.
+> >> +	 */
+> >> +	if (!firmware_has_feature(FW_FEATURE_LPAR))
+> >> +		return firmware_gid;
+> >> +
+> >> +	if (firmware_gid ==  -1)
+> >> +		return NUMA_NO_NODE;
+> >> +
+> >> +	if (nid_map[firmware_gid] == NUMA_NO_NODE)
+> >> +		nid_map[firmware_gid] = last_nid++;
+> >
+> > How do we ensure 2 simultaneous firmware_group_id_to_nid() calls dont end up
+> > at this place in parallel?
+> 
+> Do we have a code path where we do that? All the node id init should
+> happen early and there should not be two cpus doing node init at the
+> same time. I might be mistaken. Can you point to the code path where you
+> expect this to be called in parallel?
+> 
 
-Thanks.
------
-   
->  */
-> static inline bool fsl_sai_dir_is_synced(struct fsl_sai *sai, int dir)
-> {
-> 	int adir = (dir == TX) ? RX : TX;
+associativity_to_nid gets called the first time a cpu is being made present
+from offline. So it need not be in boot path. We may to verify if cpu
+hotplug, dlpar, operations are synchronized. For example a memory hotadd and
+cpu hotplug are they synchronized? I am not sure if they are synchronized at
+this time.
+
+> >
+> >> +
+> >> +	return nid_map[firmware_gid];
+> >> +}
+> >> +
+> >>  /* Returns nid in the range [0..MAX_NUMNODES-1], or -1 if no useful numa
+> >>   * info is found.
+> >>   */
+> >>  static int associativity_to_nid(const __be32 *associativity)
+> >>  {
+> >>  	int nid = NUMA_NO_NODE;
+> >> +	int firmware_gid = -1;
+> >> 
+> >>  	if (!numa_enabled)
+> >>  		goto out;
+> >> 
+> >>  	if (of_read_number(associativity, 1) >= min_common_depth)
+> >> -		nid = of_read_number(&associativity[min_common_depth], 1);
+> >> +		firmware_gid = of_read_number(&associativity[min_common_depth], 1);
+> >> 
+> >>  	/* POWER4 LPAR uses 0xffff as invalid node */
+> >> -	if (nid == 0xffff || nid >= MAX_NUMNODES)
+> >> -		nid = NUMA_NO_NODE;
+> >> +	if (firmware_gid == 0xffff || firmware_gid >= MAX_NUMNODES)
+> >> +		firmware_gid = -1;
+> >
+> > Lets assume two or more invocations of associativity_to_nid for the same
+> > associativity, end up with -1, In each case aren't giving different
+> > nids?
 > 
-> 	/* current dir in async mode while opposite dir in sync mode */
-> 	return !sai->synchronous[dir] && sai->synchronous[adir];
-> }
 > 
-> Then add more comments in trigger:
+> I didn't quiet get the comment here. But I assume you are indicating the
+> same one you mentioned above?
 > 
-> static ...trigger()
-> {
-> 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-> 	int adir = tx ? RX : TX;
-> 	int dir = tx ? TX : RX;
-> 
-> 	// ....
-> 	{
-> 		// ...
-> 
-> 		/* Check if the opposite FRDE is also disabled */
-> 		regmap_read(sai->regmap, FSL_SAI_xCSR(!tx, ofs), &xcsr);
-> 
-> 		/*
-> 		 * If opposite stream provides clocks for synchronous mode and
-> 		 * it is inactive, disable it before disabling the current one
-> 		 */
-> 		if (fsl_sai_dir_is_synced(adir) && !(xcsr & FSL_SAI_CSR_FRDE))
-> 			fsl_sai_config_disable(sai, adir);
-> 
-> 		/*
-> 		 * Disable current stream if either of:
-> 		 * 1. current stream doesn't provide clocks for synchronous mode
-> 		 * 2. current stream provides clocks for synchronous mode but no
-> 		 *    more stream is active.
-> 		 */
-> 		if (!fsl_sai_dir_is_synced(dir) || !(xcsr & FSL_SAI_CSR_FRDE))
-> 			fsl_sai_config_disable(sai, dir);
-> 
-> 		// ...
-> 	}
-> 	// ....
-> }
-> 
-> Note, in fsl_sai_config_disable(sai, dir):
-> 	bool tx = dir == TX;
-> 
-> Above all, I am just drafting, so please test it thoroughly :)
+
+No its not related to the above comment.
+We are incrementing the nid_map table for every unique firmware_gid or for
+every -1 (aka invalid associativities). If there are sufficiently large
+number of associativities that end up returning invalid associativities,
+then don't we quickly overflow the nid_map table? Not only about the
+overflow but a 8 node machine may soon look like a 80 node machine.
+
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
