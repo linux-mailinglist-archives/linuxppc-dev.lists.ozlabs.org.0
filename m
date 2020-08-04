@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16BE23B217
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 03:05:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 334B223B218
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 03:07:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLGlD0B2xzDqWP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 11:05:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLGnS3pR5zDqQ6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 11:07:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=n9Xitv8Y; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20161025 header.b=pjoBEqPL; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLGVj4hmvzDqLv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 10:54:37 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id y206so8976969pfb.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Aug 2020 17:54:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLGVn3qDFzDqSy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 10:54:41 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id g33so3747030pgb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Aug 2020 17:54:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=kNwAgRS2T9QG6C7q2tNzunePdKUgTtVz+OuWMgOTKaI=;
- b=n9Xitv8YwDK4zuOryomHPbPJkNXM0f5kZArHrYWmCU6x5JizJqt1d376UpTOm4CzRc
- YIrX+BTUhAyyMAKC7bywBROYcZSy3QDqVGxYz2mXDvPpk3Yvovaf9sjO8FdE3vas3NkY
- eBVv8HgDKsXfCAPlNAA5WnVpFXEwSvN02ID5d2JLmhvGcy7xuggKT8qFDnhsqxRjQGw1
- EwBRppjS2uakoOLe2FQAHGjcNgVlrMgYG0LY/FWFP/EoUCi8RoXKZTySX3sXoK/tHB+k
- bNXBOAPVYFUDReSuDNFCXIFToC/slVCy0NfYNp3o9JrXqsfWUeHCEjLCoWE16pPYsW/O
- ElAA==
+ bh=TU3SRRU1yviRNCjMLAnsKlr/sUkaBRch6YksoB3RDVw=;
+ b=pjoBEqPLaruyg/LZ6s/J23+vFMqLCUPA+pKWLP1lxSBpVGvfr6RIc7CaG5jSnwBbjT
+ IvhrGm9e2JHp6MzQ9CaUxtICcPQf+v+j92IduA2RtVUfjFpq6pRzAPXDGcdzdS7NvoGF
+ gzcAUEvhrWwTSli+rIA+0D+TfVf8wwJQnW/vbCFYNhWysAfL0Yln+B1ZxP3A2aTztLvW
+ OMdxp6zc2uK8lSrmELIiN9nGKorYLkYSTNPQJo4I6kUOwaXcHJMpLFJtSo1quNJ0iRBW
+ /OvNL6orO7+StsBsIo2hiRxnuVAsZCEV27jBNKZp5LMhmdYcxdkKB4smo9VlM7LYPybn
+ LQsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=kNwAgRS2T9QG6C7q2tNzunePdKUgTtVz+OuWMgOTKaI=;
- b=LOBrvDDnSA4hwwbtdkOZmtU4lPtTgMJoY7QL1FFOU1K1IyYGmyulws/LitB7uBOe0Z
- qvf12IG44yfkoxBhAd4rCUAfGsoBnFREH9qZ6zvn+gxG5urqPFtLoeD2vmDkUTbvjPqr
- SbKFZS2X0/ueGBjwM9leI+fucQBEAj8ihS0KdB1y1zY2tEc1kYJk3vmqIGmAE4/4Qj7M
- qS94Xut/KELYAK8QDIcPWl0WmpcY748AbFbLTetv5QLgTcnBsJhPjw4v688NwOkrvJe1
- w+8+iZSay2PBIzNAN4vtdM8xYDc8afyy6CWanHgQINSMUOfkyY3B/a82me+rZu/VCTQa
- lfag==
-X-Gm-Message-State: AOAM533y/w0BOnQzqU9R3fLaWJttFlxvwKApjE91XAyT17r1q/479KNg
- M17jJgTBEBFmav0LitSYdlBA2V7/
-X-Google-Smtp-Source: ABdhPJzBwaqING7JeV98mUXrLrlSFiZPXsGkvwzdhRWpqgOGap+0QrR1fH7s0VFThncVyCA6ddAI+g==
-X-Received: by 2002:aa7:9904:: with SMTP id z4mr10926030pff.32.1596502475534; 
- Mon, 03 Aug 2020 17:54:35 -0700 (PDT)
+ bh=TU3SRRU1yviRNCjMLAnsKlr/sUkaBRch6YksoB3RDVw=;
+ b=DUkArtbUHQY/+bRX6SguTFn4BvlIX5Tc+wpsTtFR1u9quEJb5gb7zFuH9+9IGOXsZr
+ A/CdaoXDpsc2yjrULt7fkODBu3Yf7U0kVUtMEQjiWPQt52KMug2twWV9w4Y7LEjsVHfc
+ wsSSv5iwbhKMr6C5It335aT2GchM8eZV4XuoV5Wk8Do6uOf45Y+jwotHIQ+zRGK3Oi9+
+ Aqs6FTeLhR98oQfRXBCiZjCp4lqK82S4oDXRL+rJZMXYmXH4LNImY4uXVR4b4EjFIBUM
+ onXFqVfTA9dThWT/JmxiwOm/U4ziUslmjFsoBOZNW2sJaYD+CbXIf80+wSpL1YzEhBZD
+ HnAQ==
+X-Gm-Message-State: AOAM531ZrHCyI6s/ImqF5zJxP/Y8tzVPu9BxsVpnRTakxp/D1Qe76Ela
+ 4JSRhuSBhR/BEgyacqsCEXYi0qwJ
+X-Google-Smtp-Source: ABdhPJzSPrsFLBTSJ3rX0mfIPsICDI9SieEJJM+Vhteaorfkrep3T4ZSBc3IBUY6wIXHM9WUPzRKOQ==
+X-Received: by 2002:a62:4c7:: with SMTP id 190mr3227823pfe.103.1596502478625; 
+ Mon, 03 Aug 2020 17:54:38 -0700 (PDT)
 Received: from localhost.ibm.com ([120.17.110.210])
- by smtp.gmail.com with ESMTPSA id 80sm10381327pfy.147.2020.08.03.17.54.33
+ by smtp.gmail.com with ESMTPSA id 80sm10381327pfy.147.2020.08.03.17.54.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Aug 2020 17:54:35 -0700 (PDT)
+ Mon, 03 Aug 2020 17:54:38 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/6] powerpc/powernv: Fix spurious kerneldoc warnings in
- opal-prd.c
-Date: Tue,  4 Aug 2020 10:54:08 +1000
-Message-Id: <20200804005410.146094-5-oohall@gmail.com>
+Subject: [PATCH 5/6] powerpc/powernv/pci: Drop unused parent variable
+Date: Tue,  4 Aug 2020 10:54:09 +1000
+Message-Id: <20200804005410.146094-6-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200804005410.146094-1-oohall@gmail.com>
 References: <20200804005410.146094-1-oohall@gmail.com>
@@ -84,34 +83,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Comments opening with /** are parsed by kerneldoc and this causes the
-following warning to be printed:
-
-	arch/powerpc/platforms/powernv/opal-prd.c:31: warning: cannot understand
-	function prototype: 'struct opal_prd_msg_queue_item '
-
-opal_prd_mesg_queue_item is an internal data structure so there's no real
-need for it to be documented at all. Fix up the comment to squash the
-warning.
+The "parent" variable in pnv_pci_ioda_configure_pe() isn't used for
+anything anymore and can be dropped.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/opal-prd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-prd.c b/arch/powerpc/platforms/powernv/opal-prd.c
-index 45f4223a790f..deddaebf8c14 100644
---- a/arch/powerpc/platforms/powernv/opal-prd.c
-+++ b/arch/powerpc/platforms/powernv/opal-prd.c
-@@ -24,7 +24,7 @@
- #include <linux/uaccess.h>
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index c9c25fb0783c..6d48155bd885 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -894,7 +894,6 @@ int pnv_ioda_deconfigure_pe(struct pnv_phb *phb, struct pnv_ioda_pe *pe)
  
+ int pnv_ioda_configure_pe(struct pnv_phb *phb, struct pnv_ioda_pe *pe)
+ {
+-	struct pci_dev *parent;
+ 	uint8_t bcomp, dcomp, fcomp;
+ 	long rc, rid_end, rid;
  
--/**
-+/*
-  * The msg member must be at the end of the struct, as it's followed by the
-  * message data.
-  */
+@@ -904,7 +903,6 @@ int pnv_ioda_configure_pe(struct pnv_phb *phb, struct pnv_ioda_pe *pe)
+ 
+ 		dcomp = OPAL_IGNORE_RID_DEVICE_NUMBER;
+ 		fcomp = OPAL_IGNORE_RID_FUNCTION_NUMBER;
+-		parent = pe->pbus->self;
+ 		if (pe->flags & PNV_IODA_PE_BUS_ALL)
+ 			count = resource_size(&pe->pbus->busn_res);
+ 		else
+@@ -925,12 +923,6 @@ int pnv_ioda_configure_pe(struct pnv_phb *phb, struct pnv_ioda_pe *pe)
+ 		}
+ 		rid_end = pe->rid + (count << 8);
+ 	} else {
+-#ifdef CONFIG_PCI_IOV
+-		if (pe->flags & PNV_IODA_PE_VF)
+-			parent = pe->parent_dev;
+-		else
+-#endif /* CONFIG_PCI_IOV */
+-			parent = pe->pdev->bus->self;
+ 		bcomp = OpalPciBusAll;
+ 		dcomp = OPAL_COMPARE_RID_DEVICE_NUMBER;
+ 		fcomp = OPAL_COMPARE_RID_FUNCTION_NUMBER;
 -- 
 2.26.2
 
