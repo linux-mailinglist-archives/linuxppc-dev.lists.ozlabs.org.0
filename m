@@ -1,59 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5423523BC26
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 16:29:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3E823BE59
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 18:47:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLcZx2gGWzDqPl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 00:29:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLgfb43YgzDqZT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 02:47:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
- helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=groug@kaod.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 489 seconds by postgrey-1.36 at bilbo;
- Wed, 05 Aug 2020 00:24:27 AEST
-Received: from smtpout1.mo804.mail-out.ovh.net
- (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLcT73T2MzDqPg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 00:24:26 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.138.179])
- by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 5E81F53A4293;
- Tue,  4 Aug 2020 16:16:10 +0200 (CEST)
-Received: from kaod.org (37.59.142.95) by DAG8EX1.mxp5.local (172.16.2.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Tue, 4 Aug 2020
- 16:16:10 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-95G001e3151918-35f1-4b55-810d-923abeda6b80,
- 8D702D8D1A8AFA4BF73756F32E969A291ABE5FDC) smtp.auth=groug@kaod.org
-Date: Tue, 4 Aug 2020 16:16:09 +0200
-From: Greg Kurz <groug@kaod.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLgcN1L02zDqWG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 02:45:55 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 074GXZXF183245; Tue, 4 Aug 2020 12:45:47 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32q9sm3dxy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Aug 2020 12:45:47 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 074GeMCi023519;
+ Tue, 4 Aug 2020 16:45:45 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 32n0183gmp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Aug 2020 16:45:44 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 074GjgR626476854
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Aug 2020 16:45:42 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4240A404D;
+ Tue,  4 Aug 2020 16:45:42 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0E1D9A4057;
+ Tue,  4 Aug 2020 16:45:42 +0000 (GMT)
+Received: from [9.199.38.35] (unknown [9.199.38.35])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Aug 2020 16:45:41 +0000 (GMT)
+Subject: Re: [merge] Build failure selftest/powerpc/mm/pkey_exec_prot
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pseries/hotplug-cpu: increase wait time for
- vCPU death
-Message-ID: <20200804161609.6cb2cb71@bahia.lan>
-In-Reply-To: <873652zg8h.fsf@mpe.ellerman.id.au>
-References: <20200804032937.7235-1-mdroth@linux.vnet.ibm.com>
- <873652zg8h.fsf@mpe.ellerman.id.au>
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+References: <37C1E196-B35D-46C4-AAA7-BC250078E4F2@linux.vnet.ibm.com>
+ <63dc2f90-9a16-21f8-51fa-cfef9df80676@linux.ibm.com>
+ <C44DC5C2-5133-49AA-BAA6-58E334EB70BA@linux.vnet.ibm.com>
+ <875za00z75.fsf@mpe.ellerman.id.au>
+ <3ada0268-9474-5ee6-b1aa-82e8d245615d@linux.ibm.com>
+ <87mu3bz083.fsf@mpe.ellerman.id.au>
+ <185c2277-91fd-74eb-3c04-75caeb90ed9e@linux.ibm.com>
+ <877duezjk3.fsf@mpe.ellerman.id.au>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <a2e6d27e-7e92-ff33-a930-9bb132392759@linux.ibm.com>
+Date: Tue, 4 Aug 2020 22:15:41 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <877duezjk3.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.95]
-X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG8EX1.mxp5.local
- (172.16.2.71)
-X-Ovh-Tracer-GUID: dc4a2545-135d-4a9d-823a-b1901d9ff165
-X-Ovh-Tracer-Id: 7902128499820042534
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrjeeigdejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnheptdefkedvudduieffjeeijefhvedukeeuvdeiheevueeiveeftdefieekiedtgeetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdprhgvughhrghtrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-04_04:2020-08-03,
+ 2020-08-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=999
+ spamscore=0 malwarescore=0 suspectscore=2 priorityscore=1501 bulkscore=0
+ impostorscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008040123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,133 +93,169 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Michael Roth <mdroth@linux.vnet.ibm.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Cedric Le Goater <clg@kaod.org>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 04 Aug 2020 23:35:10 +1000
-Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-> Hi Mike,
+On 04/08/20 5:53 pm, Michael Ellerman wrote:
+> Sandipan Das <sandipan@linux.ibm.com> writes:
+>> On 04/08/20 6:38 am, Michael Ellerman wrote:
+>>> Sandipan Das <sandipan@linux.ibm.com> writes:
+>>>> On 03/08/20 4:32 pm, Michael Ellerman wrote:
+>>>>> Sachin Sant <sachinp@linux.vnet.ibm.com> writes:
+>>>>>>> On 02-Aug-2020, at 10:58 PM, Sandipan Das <sandipan@linux.ibm.com> wrote:
+>>>>>>> On 02/08/20 4:45 pm, Sachin Sant wrote:
+>>>>>>>> pkey_exec_prot test from linuxppc merge branch (3f68564f1f5a) fails to
+>>>>>>>> build due to following error:
+>>>>>>>>
+>>>>>>>> gcc -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1276-g3f68564f1f5a"' -I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    pkey_exec_prot.c /home/sachin/linux/tools/testing/selftests/kselftest_harness.h /home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c ../utils.c  -o /home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot
+>>>>>>>> In file included from pkey_exec_prot.c:18:
+>>>>>>>> /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
+>>>>>>>> #define SYS_pkey_mprotect 386
+>>>>>>>>
+>>>>>>>> In file included from /usr/include/sys/syscall.h:31,
+>>>>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+>>>>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+>>>>>>>>                 from pkey_exec_prot.c:18:
+>>>>>>>> /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+>>>>>>>> # define SYS_pkey_mprotect __NR_pkey_mprotect
+>>>>>>>>
+>>>>>>>> commit 128d3d021007 introduced this error.
+>>>>>>>> selftests/powerpc: Move pkey helpers to headers
+>>>>>>>>
+>>>>>>>> Possibly the # defines for sys calls can be retained in pkey_exec_prot.c or
+>>>>>>>>
+>>>>>>>
+>>>>>>> I am unable to reproduce this on the latest merge branch (HEAD at f59195f7faa4).
+>>>>>>> I don't see any redefinitions in pkey_exec_prot.c either.
+>>>>>>>
+>>>>>>
+>>>>>> I can still see this problem on latest merge branch.
+>>>>>> I have following gcc version
+>>>>>>
+>>>>>> gcc version 8.3.1 20191121
+>>>>>
+>>>>> What libc version? Or just the distro & version?
+>>>>
+>>>> Sachin observed this on RHEL 8.2 with glibc-2.28.
+>>>> I couldn't reproduce it on Ubuntu 20.04 and Fedora 32 and both these distros
+>>>> are using glibc-2.31.
+>>>
+>>> OK odd. Usually it's newer glibc that hits this problem.
+>>>
+>>> I guess on RHEL 8.2 we're getting the asm-generic version? But that
+>>> would be quite wrong if that's what's happening.
+>>
+>> If I let GCC dump all the headers that are being used for the source file, I always
+>> see syscall.h being included on the RHEL 8.2 system. That is the header with the
+>> conflicting definition.
+>>
+>>   $ cd tools/testing/selftests/powerpc/mm
+>>   $ gcc -H -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1456-gf59195f7faa4-dirty"' \
+>>         -I../include -m64 pkey_exec_prot.c ../../kselftest_harness.h ../../kselftest.h ../harness.c ../utils.c \
+>>         -o pkey_exec_prot 2>&1 | grep syscall
+>>
+>> On Ubuntu 20.04 and Fedora 32, grep doesn't find any matching text.
+>> On RHEL 8.2, it shows the following.
+>>   ... /usr/include/sys/syscall.h
+>>   .... /usr/include/bits/syscall.h
+>>   In file included from /usr/include/sys/syscall.h:31,
+>>   /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+>>   In file included from /usr/include/sys/syscall.h:31,
+>>   /usr/include/bits/syscall.h:1575: note: this is the location of the previous definition
+>>   In file included from /usr/include/sys/syscall.h:31,
+>>   /usr/include/bits/syscall.h:1579: note: this is the location of the previous definition
+>>   /usr/include/bits/syscall.h
+>>   .. /usr/include/sys/syscall.h
+>>   ... /usr/include/bits/syscall.h
+>>   /usr/include/bits/syscall.h
+>>   .. /usr/include/sys/syscall.h
+>>   ... /usr/include/bits/syscall.h
+>>   /usr/include/bits/syscall.h
+>>
+>> So utils.h is also including /usr/include/sys/syscall.h for glibc versions older than 2.30
+>> because of commit 743f3544fffb ("selftests/powerpc: Add wrapper for gettid") :)
 > 
-> There is a bit of history to this code, but not in a good way :)
+> Haha, of course. :facepalm_emoji:
 > 
-> Michael Roth <mdroth@linux.vnet.ibm.com> writes:
-> > For a power9 KVM guest with XIVE enabled, running a test loop
-> > where we hotplug 384 vcpus and then unplug them, the following traces
-> > can be seen (generally within a few loops) either from the unplugged
-> > vcpu:
-> >
-> >   [ 1767.353447] cpu 65 (hwid 65) Ready to die...
-> >   [ 1767.952096] Querying DEAD? cpu 66 (66) shows 2
-> >   [ 1767.952311] list_del corruption. next->prev should be c00a000002470208, but was c00a000002470048
-> ...
-> >
-> > At that point the worker thread assumes the unplugged CPU is in some
-> > unknown/dead state and procedes with the cleanup, causing the race with
-> > the XIVE cleanup code executed by the unplugged CPU.
-> >
-> > Fix this by inserting an msleep() after each RTAS call to avoid
+>> [...]
+>> . ../include/pkeys.h
+>> [...]
+>> .. ../include/utils.h
+>> [...]
+>> ... /usr/include/sys/syscall.h
+>> .... /usr/include/asm/unistd.h
+>> .... /usr/include/bits/syscall.h
+>> In file included from pkey_exec_prot.c:18:
+>> ../include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
+>>  #define SYS_pkey_mprotect 386
+>>
+>> In file included from /usr/include/sys/syscall.h:31,
+>>                  from ../include/utils.h:47,
+>>                  from ../include/pkeys.h:12,
+>>                  from pkey_exec_prot.c:18:
+>> /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+>>  # define SYS_pkey_mprotect __NR_pkey_mprotect
 > 
-> We previously had an msleep(), but it was removed:
+> Aha, that explains why redefining gives us an error, because we're
+> defining it to the literal 386 whereas the system header is defining it
+> to the __NR value.
 > 
->   b906cfa397fd ("powerpc/pseries: Fix cpu hotplug")
+> Is there a reason to use the SYS_ name?
 > 
 
-Ah, I hadn't seen that one...
+That's just something I borrowed from the pkey tests under selftests/vm
+... but without the #ifndefs
 
-> > pseries_cpu_die() returning prematurely, and double the number of
-> > attempts so we wait at least a total of 5 seconds. While this isn't an
-> > ideal solution, it is similar to how we dealt with a similar issue for
-> > cede_offline mode in the past (940ce422a3).
-> 
-> Thiago tried to fix this previously but there was a bit of discussion
-> that didn't quite resolve:
-> 
->   https://lore.kernel.org/linuxppc-dev/20190423223914.3882-1-bauerman@linux.ibm.com/
+> Typically we just use the __NR value directly, and that would avoid any
+> problems with redefinition I think, as long as we're using the same
+> value as the system header (which we always should be).
 > 
 
-Yeah it appears that the motivation at the time was to make the "Querying DEAD?"
-messages to disappear and to avoid potentially concurrent calls to rtas-stop-self
-which is prohibited by PAPR... not fixing actual crashes.
+Agreed. David Laight suggested this too. Will send v4 with these changes.
 
+- Sandipan
+
+> eg:
 > 
-> Spinning forever seems like a bad idea, but as has been demonstrated at
-> least twice now, continuing when we don't know the state of the other
-> CPU can lead to straight up crashes.
+> diff --git a/tools/testing/selftests/powerpc/include/pkeys.h b/tools/testing/selftests/powerpc/include/pkeys.h
+> index 6ba95039a034..3312cb1b058d 100644
+> --- a/tools/testing/selftests/powerpc/include/pkeys.h
+> +++ b/tools/testing/selftests/powerpc/include/pkeys.h
+> @@ -31,9 +31,9 @@
+>  
+>  #define SI_PKEY_OFFSET	0x20
+>  
+> -#define SYS_pkey_mprotect	386
+> -#define SYS_pkey_alloc		384
+> -#define SYS_pkey_free		385
+> +#define __NR_pkey_mprotect	386
+> +#define __NR_pkey_alloc		384
+> +#define __NR_pkey_free		385
+>  
+>  #define PKEY_BITS_PER_PKEY	2
+>  #define NR_PKEYS		32
+> @@ -62,17 +62,17 @@ void pkey_set_rights(int pkey, unsigned long rights)
+>  
+>  int sys_pkey_mprotect(void *addr, size_t len, int prot, int pkey)
+>  {
+> -	return syscall(SYS_pkey_mprotect, addr, len, prot, pkey);
+> +	return syscall(__NR_pkey_mprotect, addr, len, prot, pkey);
+>  }
+>  
+>  int sys_pkey_alloc(unsigned long flags, unsigned long rights)
+>  {
+> -	return syscall(SYS_pkey_alloc, flags, rights);
+> +	return syscall(__NR_pkey_alloc, flags, rights);
+>  }
+>  
+>  int sys_pkey_free(int pkey)
+>  {
+> -	return syscall(SYS_pkey_free, pkey);
+> +	return syscall(__NR_pkey_free, pkey);
+>  }
+>  
+>  int pkeys_unsupported(void)
 > 
-> So I think I'm persuaded that it's preferable to have the kernel stuck
-> spinning rather than oopsing.
-> 
-
-+1
-
-> I'm 50/50 on whether we should have a cond_resched() in the loop. My
-> first instinct is no, if we're stuck here for 20s a stack trace would be
-> good. But then we will probably hit that on some big and/or heavily
-> loaded machine.
-> 
-> So possibly we should call cond_resched() but have some custom logic in
-> the loop to print a warning if we are stuck for more than some
-> sufficiently long amount of time.
-> 
-
-How long should that be ?
-
-> 
-> > Fixes: eac1e731b59ee ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
-> > Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1856588
-> 
-> This is not public.
-> 
-
-I'll have a look at changing that.
-
-> I tend to trim Bugzilla links from the change log, because I'm not
-> convinced they will last forever, but it is good to have them in the
-> mail archive.
-> 
-> cheers
-> 
-
-Cheers,
-
---
-Greg
-
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Cedric Le Goater <clg@kaod.org>
-> > Cc: Greg Kurz <groug@kaod.org>
-> > Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> > Signed-off-by: Michael Roth <mdroth@linux.vnet.ibm.com>
-> > ---
-> >  arch/powerpc/platforms/pseries/hotplug-cpu.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> > index c6e0d8abf75e..3cb172758052 100644
-> > --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> > +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> > @@ -111,13 +111,12 @@ static void pseries_cpu_die(unsigned int cpu)
-> >  	int cpu_status = 1;
-> >  	unsigned int pcpu = get_hard_smp_processor_id(cpu);
-> >  
-> > -	for (tries = 0; tries < 25; tries++) {
-> > +	for (tries = 0; tries < 50; tries++) {
-> >  		cpu_status = smp_query_cpu_stopped(pcpu);
-> >  		if (cpu_status == QCSS_STOPPED ||
-> >  		    cpu_status == QCSS_HARDWARE_ERROR)
-> >  			break;
-> > -		cpu_relax();
-> > -
-> > +		msleep(100);
-> >  	}
-> >  
-> >  	if (cpu_status != 0) {
-> > -- 
-> > 2.17.1
-
