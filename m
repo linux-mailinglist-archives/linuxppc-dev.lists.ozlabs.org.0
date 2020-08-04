@@ -2,51 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C7423B45F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 07:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827B123B511
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 08:37:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLNSz0P91zDqWc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 15:23:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLQ6B4QslzDqY7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 16:37:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLNLx2wBHzDqRj
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 15:18:17 +1000 (AEST)
-IronPort-SDR: NFpU83g2GkwpuBlGg6k2H1MkgBowCTRNe8mpxIWkFaoM89k0CHZYltLm0dHqVwN5baxkfOZHMr
- w+e4KS96pA2g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9702"; a="140172294"
-X-IronPort-AV: E=Sophos;i="5.75,432,1589266800"; d="scan'208";a="140172294"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2020 22:18:08 -0700
-IronPort-SDR: sdIiZJLSrcNPY9J85IgkQZYQztUjUyJyYrzPPI4KiU1TQs/3ypoghO8gvhHKZwfsrDaraPOJJ4
- pBq5m7knTnYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,432,1589266800"; d="scan'208";a="330484063"
-Received: from lkp-server02.sh.intel.com (HELO 84ccfe698a63) ([10.239.97.151])
- by FMSMGA003.fm.intel.com with ESMTP; 03 Aug 2020 22:18:05 -0700
-Received: from kbuild by 84ccfe698a63 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1k2pKv-0000RN-BR; Tue, 04 Aug 2020 05:18:05 +0000
-Date: Tue, 04 Aug 2020 13:17:15 +0800
-From: kernel test robot <lkp@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLQ4347vWzDqW7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 16:35:31 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0746WChO005716; Tue, 4 Aug 2020 02:35:20 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32pypj3ywm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Aug 2020 02:35:20 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0746NVWY002145;
+ Tue, 4 Aug 2020 06:35:18 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06fra.de.ibm.com with ESMTP id 32mynh9u3r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Aug 2020 06:35:18 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0746ZGJU37159266
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Aug 2020 06:35:16 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8ACCEA4055;
+ Tue,  4 Aug 2020 06:35:16 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B031FA4040;
+ Tue,  4 Aug 2020 06:35:15 +0000 (GMT)
+Received: from [9.199.38.35] (unknown [9.199.38.35])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Aug 2020 06:35:15 +0000 (GMT)
+Subject: Re: [merge] Build failure selftest/powerpc/mm/pkey_exec_prot
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- dbbd7a68c8d47293bd8d027841b06dd5137e0fcc
-Message-ID: <5f28ef5b.jIY2q63gqIkUgYSS%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+References: <37C1E196-B35D-46C4-AAA7-BC250078E4F2@linux.vnet.ibm.com>
+ <63dc2f90-9a16-21f8-51fa-cfef9df80676@linux.ibm.com>
+ <C44DC5C2-5133-49AA-BAA6-58E334EB70BA@linux.vnet.ibm.com>
+ <875za00z75.fsf@mpe.ellerman.id.au>
+ <3ada0268-9474-5ee6-b1aa-82e8d245615d@linux.ibm.com>
+ <87mu3bz083.fsf@mpe.ellerman.id.au>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <185c2277-91fd-74eb-3c04-75caeb90ed9e@linux.ibm.com>
+Date: Tue, 4 Aug 2020 12:05:14 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <87mu3bz083.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-04_02:2020-08-03,
+ 2020-08-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ lowpriorityscore=0 spamscore=0 clxscore=1015 phishscore=0 malwarescore=0
+ mlxscore=0 impostorscore=0 suspectscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008040045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,122 +91,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: dbbd7a68c8d47293bd8d027841b06dd5137e0fcc  powerpc: Fix P10 PVR revision in /proc/cpuinfo for SMT4 cores
+Hi Michael,
 
-elapsed time: 986m
+On 04/08/20 6:38 am, Michael Ellerman wrote:
+> Sandipan Das <sandipan@linux.ibm.com> writes:
+>> On 03/08/20 4:32 pm, Michael Ellerman wrote:
+>>> Sachin Sant <sachinp@linux.vnet.ibm.com> writes:
+>>>>> On 02-Aug-2020, at 10:58 PM, Sandipan Das <sandipan@linux.ibm.com> wrote:
+>>>>> On 02/08/20 4:45 pm, Sachin Sant wrote:
+>>>>>> pkey_exec_prot test from linuxppc merge branch (3f68564f1f5a) fails to
+>>>>>> build due to following error:
+>>>>>>
+>>>>>> gcc -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1276-g3f68564f1f5a"' -I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    pkey_exec_prot.c /home/sachin/linux/tools/testing/selftests/kselftest_harness.h /home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c ../utils.c  -o /home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot
+>>>>>> In file included from pkey_exec_prot.c:18:
+>>>>>> /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
+>>>>>> #define SYS_pkey_mprotect 386
+>>>>>>
+>>>>>> In file included from /usr/include/sys/syscall.h:31,
+>>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+>>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+>>>>>>                 from pkey_exec_prot.c:18:
+>>>>>> /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+>>>>>> # define SYS_pkey_mprotect __NR_pkey_mprotect
+>>>>>>
+>>>>>> commit 128d3d021007 introduced this error.
+>>>>>> selftests/powerpc: Move pkey helpers to headers
+>>>>>>
+>>>>>> Possibly the # defines for sys calls can be retained in pkey_exec_prot.c or
+>>>>>>
+>>>>>
+>>>>> I am unable to reproduce this on the latest merge branch (HEAD at f59195f7faa4).
+>>>>> I don't see any redefinitions in pkey_exec_prot.c either.
+>>>>>
+>>>>
+>>>> I can still see this problem on latest merge branch.
+>>>> I have following gcc version
+>>>>
+>>>> gcc version 8.3.1 20191121
+>>>
+>>> What libc version? Or just the distro & version?
+>>
+>> Sachin observed this on RHEL 8.2 with glibc-2.28.
+>> I couldn't reproduce it on Ubuntu 20.04 and Fedora 32 and both these distros
+>> are using glibc-2.31.
+> 
+> OK odd. Usually it's newer glibc that hits this problem.
+> 
+> I guess on RHEL 8.2 we're getting the asm-generic version? But that
+> would be quite wrong if that's what's happening.
+> 
 
-configs tested: 99
-configs skipped: 6
+If I let GCC dump all the headers that are being used for the source file, I always
+see syscall.h being included on the RHEL 8.2 system. That is the header with the
+conflicting definition.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+  $ cd tools/testing/selftests/powerpc/mm
+  $ gcc -H -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1456-gf59195f7faa4-dirty"' \
+        -I../include -m64 pkey_exec_prot.c ../../kselftest_harness.h ../../kselftest.h ../harness.c ../utils.c \
+        -o pkey_exec_prot 2>&1 | grep syscall
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-ia64                        generic_defconfig
-m68k                       bvme6000_defconfig
-arm                          pxa168_defconfig
-powerpc                  mpc885_ads_defconfig
-m68k                             alldefconfig
-mips                  decstation_64_defconfig
-arm                        neponset_defconfig
-arm                      jornada720_defconfig
-sh                     magicpanelr2_defconfig
-arm                          moxart_defconfig
-sh                        sh7763rdp_defconfig
-sh                         microdev_defconfig
-arm                        magician_defconfig
-arm                       aspeed_g4_defconfig
-arc                          axs101_defconfig
-powerpc                    amigaone_defconfig
-sh                   sh7770_generic_defconfig
-mips                        bcm47xx_defconfig
-h8300                    h8300h-sim_defconfig
-nds32                             allnoconfig
-powerpc                          alldefconfig
-mips                      bmips_stb_defconfig
-arm                             pxa_defconfig
-sh                             sh03_defconfig
-mips                         db1xxx_defconfig
-arm                        trizeps4_defconfig
-parisc                           alldefconfig
-mips                           ip32_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-i386                 randconfig-a004-20200803
-i386                 randconfig-a005-20200803
-i386                 randconfig-a001-20200803
-i386                 randconfig-a002-20200803
-i386                 randconfig-a003-20200803
-i386                 randconfig-a006-20200803
-x86_64               randconfig-a006-20200804
-x86_64               randconfig-a001-20200804
-x86_64               randconfig-a004-20200804
-x86_64               randconfig-a005-20200804
-x86_64               randconfig-a002-20200804
-x86_64               randconfig-a003-20200804
-x86_64               randconfig-a013-20200803
-x86_64               randconfig-a011-20200803
-x86_64               randconfig-a012-20200803
-x86_64               randconfig-a016-20200803
-x86_64               randconfig-a015-20200803
-x86_64               randconfig-a014-20200803
-i386                 randconfig-a011-20200803
-i386                 randconfig-a012-20200803
-i386                 randconfig-a015-20200803
-i386                 randconfig-a014-20200803
-i386                 randconfig-a013-20200803
-i386                 randconfig-a016-20200803
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+On Ubuntu 20.04 and Fedora 32, grep doesn't find any matching text.
+On RHEL 8.2, it shows the following.
+  ... /usr/include/sys/syscall.h
+  .... /usr/include/bits/syscall.h
+  In file included from /usr/include/sys/syscall.h:31,
+  /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+  In file included from /usr/include/sys/syscall.h:31,
+  /usr/include/bits/syscall.h:1575: note: this is the location of the previous definition
+  In file included from /usr/include/sys/syscall.h:31,
+  /usr/include/bits/syscall.h:1579: note: this is the location of the previous definition
+  /usr/include/bits/syscall.h
+  .. /usr/include/sys/syscall.h
+  ... /usr/include/bits/syscall.h
+  /usr/include/bits/syscall.h
+  .. /usr/include/sys/syscall.h
+  ... /usr/include/bits/syscall.h
+  /usr/include/bits/syscall.h
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+So utils.h is also including /usr/include/sys/syscall.h for glibc versions older than 2.30
+because of commit 743f3544fffb ("selftests/powerpc: Add wrapper for gettid") :)
+
+[...]
+. ../include/pkeys.h
+[...]
+.. ../include/utils.h
+[...]
+... /usr/include/sys/syscall.h
+.... /usr/include/asm/unistd.h
+.... /usr/include/bits/syscall.h
+In file included from pkey_exec_prot.c:18:
+../include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
+ #define SYS_pkey_mprotect 386
+
+In file included from /usr/include/sys/syscall.h:31,
+                 from ../include/utils.h:47,
+                 from ../include/pkeys.h:12,
+                 from pkey_exec_prot.c:18:
+/usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+ # define SYS_pkey_mprotect __NR_pkey_mprotect
+[...]
+
+
+- Sandipan
