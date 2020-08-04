@@ -2,72 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3B023B21B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 03:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2282A23B21F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 03:11:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLGqp0vJGzDqWR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 11:09:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLGt33Y3hzDqQT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 11:11:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=AWz9F0s4; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLGVr1zJ4zDqSy
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 10:54:44 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id k18so12038261pfp.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Aug 2020 17:54:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=gCggWDJmmZiEpdFvZXOJd9pzebHi529tEcDc58/8THU=;
- b=AWz9F0s4q5b82e5zUy0cwTglCaiDhE4g/Ceooy98m0ZclFUvDXYQCvs/Nb8o1GG62w
- lr5CJUKzD4YPf6hSSwrrXB25gY+cq7vCEAG5j10e4jj4zyx/f9s40+1aG8wdblJSgE+F
- 2afRywYdn5UtVjY7EkLfqF2BebPjvcz5PYX2jJXnhewsHuK3nvE5Oy87DQIpihufkGxI
- 5GeQXk/ja2P2ahZGJkj/S24z8x5VAbbwvDSWg5TkmRNqx7wbR5jrL9snZ+4yCrKuvy6N
- DrS1Ji0h6emMeQalwc5Dh/2WvX3N+SXxv1IGmirkiC/PMI9DGIkP2AeYeQxyHiXFHJYP
- iAqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=gCggWDJmmZiEpdFvZXOJd9pzebHi529tEcDc58/8THU=;
- b=Z0ZPKCGVN0N7cvRAUCNPVDFqiNoBEBtdHCT39NOuwqpqdYkEiIu9xBICLlOlk6Lhju
- 1E9EcWT40uagB5lB7CylBiBnVg0XJCTijmOKOs1+p5KUoVeWNr1g0rZlZa/bK191g8of
- Q/xHxWPg6ef5AKFvhIsEmRs6spcYwXAm+KsWlVnoMvjOzme1o5NvMoOFjI4mSIJBvlYf
- FCRHaT8mkdaTzBpiiS9PbHcqsInDavFfk43oP6YTkGZiNRqme5O4zy2qpQHy0dTotuwF
- 7zGpgTU7aS9rDsGiOnbH1gR3PwqpBq86AC3sHjjkXk/CndCx7VoGt2McegWSqtU6/qlc
- 3jiA==
-X-Gm-Message-State: AOAM532WBiMWUrtogXf38a1jzRyaE6knHXm1jLiPDl/ci9FfrB3XIW34
- ZF8HaZgr626NZEyyK9T+9PCJ0/IW
-X-Google-Smtp-Source: ABdhPJwcTzkRdxk9an8DTqnAXdlz+PO9ZC0r9AhK7jco6szcmSX+9/gH+cRfP1AWziFUJgGTJy8bZw==
-X-Received: by 2002:a62:ee03:: with SMTP id e3mr17099194pfi.10.1596502481885; 
- Mon, 03 Aug 2020 17:54:41 -0700 (PDT)
-Received: from localhost.ibm.com ([120.17.110.210])
- by smtp.gmail.com with ESMTPSA id 80sm10381327pfy.147.2020.08.03.17.54.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Aug 2020 17:54:41 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 6/6] powerpc/nx: Don't pack struct coprocessor_request_block
-Date: Tue,  4 Aug 2020 10:54:10 +1000
-Message-Id: <20200804005410.146094-7-oohall@gmail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200804005410.146094-1-oohall@gmail.com>
-References: <20200804005410.146094-1-oohall@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLGq21Q0yzDqWl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 11:08:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=c+EXgEgQ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BLGq14X6yz9sR4;
+ Tue,  4 Aug 2020 11:08:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1596503325;
+ bh=sqTTqnxaoPbSzcfsW1zeiYdS8SzOZrkg3yBL7fd8tmg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=c+EXgEgQB9LSYABZaDL9irA+UJWTYe9zF47F2+sUTCqAlrfdjD8+qae5ggxTrNmiG
+ UUQ4UazScgVlDRqAaX0SXJx0+5s5ovhiKLYqrAnqGykbb9mJYZ8DiXz3HYZ/YN28Qz
+ gY7vV7mnO7sMX4+e8n6isdmaoeUKE8RmeCjxPVDyHW1PlL6ScYy4ZPZTEw94uA/iyx
+ ksE89SioGBTw/hQ7yLU4a+psT9R4GWOBozk7krkK24dBl+Z3Ea08dIF/5fYYWZ8rUw
+ pT4xiKOmn8EnabUK4kqU1eHSMMTTmK1IQ1MSCp1U3LGud4+AlutFCEJEBeeJD6waTz
+ SjmmnfG/IKmBw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sandipan Das <sandipan@linux.ibm.com>
+Subject: Re: [merge] Build failure selftest/powerpc/mm/pkey_exec_prot
+In-Reply-To: <3ada0268-9474-5ee6-b1aa-82e8d245615d@linux.ibm.com>
+References: <37C1E196-B35D-46C4-AAA7-BC250078E4F2@linux.vnet.ibm.com>
+ <63dc2f90-9a16-21f8-51fa-cfef9df80676@linux.ibm.com>
+ <C44DC5C2-5133-49AA-BAA6-58E334EB70BA@linux.vnet.ibm.com>
+ <875za00z75.fsf@mpe.ellerman.id.au>
+ <3ada0268-9474-5ee6-b1aa-82e8d245615d@linux.ibm.com>
+Date: Tue, 04 Aug 2020 11:08:44 +1000
+Message-ID: <87mu3bz083.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,75 +61,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>,
- Haren Myneni <haren@linux.vnet.ibm.com>, Dan Streetman <ddstreet@ieee.org>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Building with W=1 results in the following warning:
+Sandipan Das <sandipan@linux.ibm.com> writes:
+> On 03/08/20 4:32 pm, Michael Ellerman wrote:
+>> Sachin Sant <sachinp@linux.vnet.ibm.com> writes:
+>>>> On 02-Aug-2020, at 10:58 PM, Sandipan Das <sandipan@linux.ibm.com> wrote:
+>>>> On 02/08/20 4:45 pm, Sachin Sant wrote:
+>>>>> pkey_exec_prot test from linuxppc merge branch (3f68564f1f5a) fails to
+>>>>> build due to following error:
+>>>>>
+>>>>> gcc -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1276-g3f68564f1f5a"' -I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    pkey_exec_prot.c /home/sachin/linux/tools/testing/selftests/kselftest_harness.h /home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c ../utils.c  -o /home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot
+>>>>> In file included from pkey_exec_prot.c:18:
+>>>>> /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
+>>>>> #define SYS_pkey_mprotect 386
+>>>>>
+>>>>> In file included from /usr/include/sys/syscall.h:31,
+>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
+>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
+>>>>>                 from pkey_exec_prot.c:18:
+>>>>> /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
+>>>>> # define SYS_pkey_mprotect __NR_pkey_mprotect
+>>>>>
+>>>>> commit 128d3d021007 introduced this error.
+>>>>> selftests/powerpc: Move pkey helpers to headers
+>>>>>
+>>>>> Possibly the # defines for sys calls can be retained in pkey_exec_prot.c or
+>>>>>
+>>>>
+>>>> I am unable to reproduce this on the latest merge branch (HEAD at f59195f7faa4).
+>>>> I don't see any redefinitions in pkey_exec_prot.c either.
+>>>>
+>>>
+>>> I can still see this problem on latest merge branch.
+>>> I have following gcc version
+>>>
+>>> gcc version 8.3.1 20191121
+>> 
+>> What libc version? Or just the distro & version?
+>
+> Sachin observed this on RHEL 8.2 with glibc-2.28.
+> I couldn't reproduce it on Ubuntu 20.04 and Fedora 32 and both these distros
+> are using glibc-2.31.
 
-In file included from arch/powerpc/platforms/powernv/vas-fault.c:16:
-./arch/powerpc/include/asm/icswx.h:159:1: error: alignment 1 of ‘struct
-	coprocessor_request_block’ is less than 16 [-Werror=packed-not-aligned]
-  159 | } __packed;
-      | ^
-./arch/powerpc/include/asm/icswx.h:159:1: error: alignment 1 of ‘struct
-	coprocessor_request_block’ is less than 16 [-Werror=packed-not-aligned]
-./arch/powerpc/include/asm/icswx.h:159:1: error: alignment 1 of ‘struct
-	coprocessor_request_block’ is less than 16 [-Werror=packed-not-aligned]
-./arch/powerpc/include/asm/icswx.h:159:1: error: alignment 1 of ‘struct
-	coprocessor_request_block’ is less than 16 [-Werror=packed-not-aligned]
-cc1: all warnings being treated as errors
+OK odd. Usually it's newer glibc that hits this problem.
 
-This happens because coprocessor_request_block includes several
-sub-structures with an alignment specified using the __aligned(XX)
-attribute. The problem comes from coprocessor_request_block having the
-__packed attribute. Packing the structure causes the preferred alignment of
-the nested structures to be ignored and we get the warnings as a result.
+I guess on RHEL 8.2 we're getting the asm-generic version? But that
+would be quite wrong if that's what's happening.
 
-This isn't a problem in practice since the struct is defined with explicit
-padding in the form of reserved fields, but we'd like to get rid of the
-spurious warnings. The simplest solution is to remove the packed attribute
-and use a BUILD_BUG_ON() to ensure the struct is the correct (expected by
-HW) size compile time.
-
-Also add a __aligned(128) to the request block structure since Book4 for P8
-suggests the HW requires it to be aligned to a 128 byte boundary. There's a
-similar requirement for P9 since the COPY and PASTE instructions used to
-invoke VAS/NX accelerators operates on a cache line boundary.
-
-Cc: Dan Streetman <ddstreet@ieee.org>
-Cc: Haren Myneni <haren@linux.vnet.ibm.com>
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- arch/powerpc/include/asm/icswx.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/icswx.h b/arch/powerpc/include/asm/icswx.h
-index b0c70a35fd0e..f6599ccb3012 100644
---- a/arch/powerpc/include/asm/icswx.h
-+++ b/arch/powerpc/include/asm/icswx.h
-@@ -156,8 +156,7 @@ struct coprocessor_request_block {
- 	u8 reserved[32];
- 
- 	struct coprocessor_status_block csb;
--} __packed;
--
-+} __aligned(128);
- 
- /* RFC02167 Initiate Coprocessor Instructions document
-  * Chapter 8.2.1.1.1 RS
-@@ -188,6 +187,9 @@ static inline int icswx(__be32 ccw, struct coprocessor_request_block *crb)
- 	__be64 ccw_reg = ccw;
- 	u32 cr;
- 
-+	/* NB: the same structures are used by VAS-NX */
-+	BUILD_BUG_ON(sizeof(*crb) != 128);
-+
- 	__asm__ __volatile__(
- 	PPC_ICSWX(%1,0,%2) "\n"
- 	"mfcr %0\n"
--- 
-2.26.2
-
+cheers
