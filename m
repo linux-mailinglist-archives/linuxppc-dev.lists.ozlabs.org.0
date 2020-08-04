@@ -2,81 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD05023B607
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 09:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B56CE23B624
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 09:55:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLRjc06GfzDqY0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 17:49:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLRrj5PnqzDqZb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 17:55:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=eysYRozR; dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLRgr6HFczDqWm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 17:48:08 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0747WsJC015806; Tue, 4 Aug 2020 03:48:01 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32q1gyudk7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Aug 2020 03:48:01 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0747dqFg014161;
- Tue, 4 Aug 2020 07:48:00 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma01dal.us.ibm.com with ESMTP id 32n0193waa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Aug 2020 07:48:00 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0747lxYf53936586
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Aug 2020 07:47:59 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50F556E050;
- Tue,  4 Aug 2020 07:47:59 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C26F56E04C;
- Tue,  4 Aug 2020 07:47:58 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.85.92.71])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue,  4 Aug 2020 07:47:58 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 310492E2EE7; Tue,  4 Aug 2020 13:17:51 +0530 (IST)
-Date: Tue, 4 Aug 2020 13:17:51 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [RFC PATCH 2/2] powerpc/powernv/cpufreq: Don't assume chip id is
- same as Linux node id
-Message-ID: <20200804074751.GB8058@in.ibm.com>
-References: <20200731111916.243569-1-aneesh.kumar@linux.ibm.com>
- <20200731112205.245716-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLRpm1KggzDqCw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 17:54:06 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id d27so30229654qtg.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 00:54:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=pvk2qNJvO4GyMY2u27NANNM906H79e7FKsYTERAdnHs=;
+ b=eysYRozRxiQ0O/eMhXGkxC1m3FgN4Jt0xHrm4uYJtWyGG7WjOqRIlTB8gdny8xLP6A
+ u7Cn8L1W3Mc7uu+D5/u3m+yx9DXNuA2huNax+By2Pxi1IsNpncHuICg0rCObHzZsTBOS
+ QQFQ889zRHK9ooUTBzN+nToW6VypY+rY8vnkUoPeWav2WnOadMVqNsMVYTp2jYFTKqMe
+ qrR2wNv7IO3bzcXN0Ao6N8NkLzEMfov2TG1XAcCtd2u45HkZeZJDmtvxP+5x6G3GqOcc
+ JSmW+9liUjRTPh6nU2ienoROfCE0FU1PRm+ZDnyqgzo/htm4F1SpTs+10d5Qt9SHnjix
+ 1EQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=pvk2qNJvO4GyMY2u27NANNM906H79e7FKsYTERAdnHs=;
+ b=SKp8wcNOrHCsFFdiio96Xq7Naqd9IczH4tvPJqYUnSEPG9ssKC0j33GWj4JONbAEr+
+ kZA/k/LLRg10VUtbZg5gjGSm1MURFS5W3D3A54/ZZUIVVjy3hVGOOkriFp50o1YZEpIZ
+ Fo5TkN4P84Ko2r/hCNOxHf7fNXtHlRmxVuSrZ4+qX9ricFp5s1L8+tgqfSZE946L4e8f
+ CxA5ffWikhIfoLIIUsLNu4T5az73XvJIaNw1gq6oZy6S1QGCTbrOL0Sb7VgWiLoEOnCy
+ jqiD5CmS3arCBI09LLbkye0oQMqvXQKmzl1S8Pbxg8+WzTsbu6hpdr+GiI62EIvZ9fW/
+ afnA==
+X-Gm-Message-State: AOAM531WvkaOpymos7kFMnhUrecxwQBU0VQY0BnVeCnjwqrSPg9Q1QgR
+ alLN5HQksHVA5DsH3pTIr1mOe6MsWEbliYOvN/s=
+X-Google-Smtp-Source: ABdhPJwoa5DLrSm+W2b1xh4wQw7NjhToyJBBLi3p9xIFguNDLPkDzaHtItg0/IPC5AOH6cXxxN5AKvNEE3xnih+beLw=
+X-Received: by 2002:ac8:564f:: with SMTP id 15mr20407066qtt.54.1596527642821; 
+ Tue, 04 Aug 2020 00:54:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200731112205.245716-1-aneesh.kumar@linux.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-04_02:2020-08-03,
- 2020-08-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 bulkscore=0 impostorscore=0 spamscore=0
- phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008040050
+References: <1596424674-32127-1-git-send-email-shengjiu.wang@nxp.com>
+ <20200803054037.GA1056@Asurada-Nvidia>
+ <CAA+D8AOGF44UUq=P1S-M5TUwDUaOnqVmHJKPDBM9DAzt1nVzmQ@mail.gmail.com>
+ <20200803215735.GA5461@Asurada-Nvidia>
+ <CAA+D8ANQxnvR2bOyHVRs5h2NJhMeVh4gjLPknaz7aQ86MtL0sQ@mail.gmail.com>
+ <20200804021114.GA15390@Asurada-Nvidia>
+ <CAA+D8ANagfMXPAkK4-vBDY9rZMukVUXs8FfBCHS0avXt57pekA@mail.gmail.com>
+ <20200804030004.GA27028@Asurada-Nvidia>
+ <CAA+D8ANuLQuUO+VsABjt2t1ccK+LGayq13d6EEcV18=4KNaC+w@mail.gmail.com>
+ <CAA+D8AP=27SdR68T-LiQHkJ0_dJaqtgcS-oi9d8arUzvTz5GwA@mail.gmail.com>
+ <20200804070345.GA27658@Asurada-Nvidia>
+In-Reply-To: <20200804070345.GA27658@Asurada-Nvidia>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 4 Aug 2020 15:53:51 +0800
+Message-ID: <CAA+D8ANodghXDbUVOqpf9uq8A5FVbDFEFkf4dWdyMUNDTPaJ7A@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: Clean code for synchronize mode
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,60 +82,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 31, 2020 at 04:52:05PM +0530, Aneesh Kumar K.V wrote:
-> On PowerNV platforms we always have 1:1 mapping between chip ID and
-> firmware group id. Use the helper to convert firmware group id to
-> node id instead of directly using chip ID as Linux node id.
-> 
-> NOTE: This doesn't have any functional change. On PowerNV platforms
-> we continue to have 1:1 mapping between firmware group id and
-> Linux node id.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  drivers/cpufreq/powernv-cpufreq.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-> index 8646eb197cd9..ca82b6ac0989 100644
-> --- a/drivers/cpufreq/powernv-cpufreq.c
-> +++ b/drivers/cpufreq/powernv-cpufreq.c
-> @@ -27,6 +27,7 @@
->  #include <asm/reg.h>
->  #include <asm/smp.h> /* Required for cpu_sibling_mask() in UP configs */
->  #include <asm/opal.h>
-> +#include <asm/topology.h>
->  #include <linux/timer.h>
-> 
->  #define POWERNV_MAX_PSTATES_ORDER  8
-> @@ -1069,8 +1070,14 @@ static int init_chip_info(void)
->  	}
-> 
->  	for (i = 0; i < nr_chips; i++) {
-> +		unsigned int nid;
-> +
->  		chips[i].id = chip[i];
-> -		cpumask_copy(&chips[i].mask, cpumask_of_node(chip[i]));
-> +		/*
-> +		 * On powervn platforms firmware group id is same as chipd id.
+On Tue, Aug 4, 2020 at 3:04 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+>
+> On Tue, Aug 04, 2020 at 12:22:53PM +0800, Shengjiu Wang wrote:
+>
+> > > > Btw, do we need similar change for TRIGGER_STOP?
+> > >
+> > > This is a good question. It is better to do change for STOP,
+> > > but I am afraid that there is no much test to guarantee the result.
+>
+> > Maybe we can do this change for STOP.
+>
+> The idea looks good to me...(check inline comments)
+>
+> > diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> > index 1c0e06bb3783..6e4be398eaee 100644
+> > --- a/sound/soc/fsl/fsl_sai.c
+> > +++ b/sound/soc/fsl/fsl_sai.c
+> > @@ -517,6 +517,37 @@ static int fsl_sai_hw_free(struct
+> > snd_pcm_substream *substream,
+> >         return 0;
+> >  }
+> >
+> > +static void fsl_sai_config_disable(struct fsl_sai *sai, bool tx)
+> > +{
+> > +       unsigned int ofs = sai->soc_data->reg_offset;
+> > +       u32 xcsr, count = 100;
+> > +
+> > +       regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+> > +                          FSL_SAI_CSR_TERE, 0);
+> > +
+> > +       /* TERE will remain set till the end of current frame */
+> > +       do {
+> > +               udelay(10);
+> > +               regmap_read(sai->regmap, FSL_SAI_xCSR(tx, ofs), &xcsr);
+> > +       } while (--count && xcsr & FSL_SAI_CSR_TERE);
+> > +
+> > +       regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+> > +                          FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
+> > +
+> > +       /*
+> > +        * For sai master mode, after several open/close sai,
+> > +        * there will be no frame clock, and can't recover
+> > +        * anymore. Add software reset to fix this issue.
+> > +        * This is a hardware bug, and will be fix in the
+> > +        * next sai version.
+> > +        */
+> > +       if (!sai->is_slave_mode) {
+> > +               /* Software Reset for both Tx and Rx */
+>
+> Remove "for both Tx and Rx"
+>
+> >                 /* Check if the opposite FRDE is also disabled */
+> >                 regmap_read(sai->regmap, FSL_SAI_xCSR(!tx, ofs), &xcsr);
+> > +               if (sai->synchronous[tx] && !sai->synchronous[!tx] && !(xcsr & FSL_SAI_CSR_FRDE))
+> > +                       fsl_sai_config_disable(sai, !tx);
+>
+> > +               if (sai->synchronous[tx] || !sai->synchronous[!tx] || !(xcsr & FSL_SAI_CSR_FRDE))
+> > +                       fsl_sai_config_disable(sai, tx);
+>
+> The first "||" should probably be "&&".
 
-But doesn't hurt to be safe :-)
+No. it is !(!sai->synchronous[tx] && sai->synchronous[!tx] && (xcsr &
+FSL_SAI_CSR_FRDE))
+so then convert to
+(sai->synchronous[tx] || !sai->synchronous[!tx] || !(xcsr & FSL_SAI_CSR_FRDE))
 
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+if change to &&, then it won't work for:
+sai->synchronous[tx] = false, sai->synchronous[!tx]=false.
+or
+sai->synchronous[tx] = true, sai->synchronous[!tx]=true.
+(even we don't have such a case).
 
-> +		 */
-> +		nid = firmware_group_id_to_nid(chip[i]);
-> +		cpumask_copy(&chips[i].mask, cpumask_of_node(nid));
->  		INIT_WORK(&chips[i].throttle, powernv_cpufreq_work_fn);
->  		for_each_cpu(cpu, &chips[i].mask)
->  			per_cpu(chip_info, cpu) =  &chips[i];
-> -- 
-> 2.26.2
-> 
+>
+> The trigger() logic is way more complicated than a simple cleanup
+> in my opinion. Would suggest to split RMR part out of this change.
+>
+> And for conditions like "sync[tx] && !sync[!tx]", it'd be better
+> to have a helper function to improve readability:
+>
+> /**
+>  * fsl_sai_dir_is_synced - Check if stream is synced by the opposite stream
+>  *
+>  * SAI supports synchronous mode using bit/frame clocks of either Transmitter's
+>  * or Receiver's for both streams. This function is used to check if clocks of
+>  * current stream's are synced by the opposite stream.
+>  *
+>  * @sai: SAI context
+>  * @dir: direction of current stream
+>  */
+> static inline bool fsl_sai_dir_is_synced(struct fsl_sai *sai, int dir)
+> {
+>         int adir = (dir == TX) ? RX : TX;
+>
+>         /* current dir in async mode while opposite dir in sync mode */
+>         return !sai->synchronous[dir] && sai->synchronous[adir];
+> }
+>
+> Then add more comments in trigger:
+>
+> static ...trigger()
+> {
+>         bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
+>         int adir = tx ? RX : TX;
+>         int dir = tx ? TX : RX;
+>
+>         // ....
+>         {
+>                 // ...
+>
+>                 /* Check if the opposite FRDE is also disabled */
+>                 regmap_read(sai->regmap, FSL_SAI_xCSR(!tx, ofs), &xcsr);
+>
+>                 /*
+>                  * If opposite stream provides clocks for synchronous mode and
+>                  * it is inactive, disable it before disabling the current one
+>                  */
+>                 if (fsl_sai_dir_is_synced(adir) && !(xcsr & FSL_SAI_CSR_FRDE))
+>                         fsl_sai_config_disable(sai, adir);
+>
+>                 /*
+>                  * Disable current stream if either of:
+>                  * 1. current stream doesn't provide clocks for synchronous mode
+>                  * 2. current stream provides clocks for synchronous mode but no
+>                  *    more stream is active.
+>                  */
+>                 if (!fsl_sai_dir_is_synced(dir) || !(xcsr & FSL_SAI_CSR_FRDE))
+>                         fsl_sai_config_disable(sai, dir);
+>
+>                 // ...
+>         }
+>         // ....
+> }
+>
+> Note, in fsl_sai_config_disable(sai, dir):
+>         bool tx = dir == TX;
+>
+> Above all, I am just drafting, so please test it thoroughly :)
