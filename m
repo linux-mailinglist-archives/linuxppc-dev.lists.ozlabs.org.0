@@ -1,85 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827B123B511
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 08:37:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 455C123B54E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 08:59:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLQ6B4QslzDqY7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 16:37:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLQc917PTzDqRD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Aug 2020 16:59:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::141;
+ helo=mail-il1-x141.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=cEpKAJv0; dkim-atps=neutral
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com
+ [IPv6:2607:f8b0:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLQ4347vWzDqW7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 16:35:31 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0746WChO005716; Tue, 4 Aug 2020 02:35:20 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32pypj3ywm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Aug 2020 02:35:20 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0746NVWY002145;
- Tue, 4 Aug 2020 06:35:18 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06fra.de.ibm.com with ESMTP id 32mynh9u3r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Aug 2020 06:35:18 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0746ZGJU37159266
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Aug 2020 06:35:16 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8ACCEA4055;
- Tue,  4 Aug 2020 06:35:16 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B031FA4040;
- Tue,  4 Aug 2020 06:35:15 +0000 (GMT)
-Received: from [9.199.38.35] (unknown [9.199.38.35])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  4 Aug 2020 06:35:15 +0000 (GMT)
-Subject: Re: [merge] Build failure selftest/powerpc/mm/pkey_exec_prot
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <37C1E196-B35D-46C4-AAA7-BC250078E4F2@linux.vnet.ibm.com>
- <63dc2f90-9a16-21f8-51fa-cfef9df80676@linux.ibm.com>
- <C44DC5C2-5133-49AA-BAA6-58E334EB70BA@linux.vnet.ibm.com>
- <875za00z75.fsf@mpe.ellerman.id.au>
- <3ada0268-9474-5ee6-b1aa-82e8d245615d@linux.ibm.com>
- <87mu3bz083.fsf@mpe.ellerman.id.au>
-From: Sandipan Das <sandipan@linux.ibm.com>
-Message-ID: <185c2277-91fd-74eb-3c04-75caeb90ed9e@linux.ibm.com>
-Date: Tue, 4 Aug 2020 12:05:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLQZZ2wYpzDqW2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Aug 2020 16:58:30 +1000 (AEST)
+Received: by mail-il1-x141.google.com with SMTP id l17so23065572ilq.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Aug 2020 23:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=pIh5KT4J3I0vWN5BTHSBXBuj/RvwuVvx1DEt8ERJDFE=;
+ b=cEpKAJv0CNJmE18UXIFnjn59SrpSMun3BbYDcdjNPS+mASWTKVOiS/YFrWt8Lmdree
+ +jpG6RynI1vL7LOggcJYv0YI4LNdUED3qQECaBl9lifd7pRXQVy1xrK/n8xlsfaUE6WL
+ zXPIlI9btxWrMZaw5nA5RNrSYUrz0IOLmfYLmU5KxiVzAWeTL1JuBOTB3AfsjK8aGzYC
+ TogNVHLb5DebKrp87hG28mU24XImRUVNyIDOYMOiTcMHWe/wMbhPGI96537Cx79gtZkM
+ 6eZADf9L4+dqnAQhcCSZ1MSH9JUcVdHlcmWJWaWVwbT43NpRP5N3ouGND3ChznOSmEDW
+ 5XhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=pIh5KT4J3I0vWN5BTHSBXBuj/RvwuVvx1DEt8ERJDFE=;
+ b=nwGG2KMAl9U9fCCcE1s0UlMVoBva8Cc2SJt2r8yhlYoLl/Pyv7yKnQrdjL0v/dLrN7
+ a8XXLNQ7eB4Ya5V1M3WTR9o8DN7GZP4rykb8mhCrdmvL25W/mqZV0irY16XDh1WdK0Z0
+ 5f3d6uSW8xjPpsF7nscLLWxQ9alCrpsWEbK69PMm0TYNjEifuJYslJeZ66XdkSTjPLHI
+ d9Pss1tDmWMSRwBJ/yOtNJrM7QBbHS7EmstcWz1EILp2ihb4bWYdkSmdruqtiptjdG+D
+ dBr2IUvCYtuA/q+r2BZgZ/aaVN3nHeKAt/DNu620CHEICYC0u4NXIDqJn3wu0abiFQsp
+ w+8w==
+X-Gm-Message-State: AOAM5317/PT0GFYpRiHNv/GpSvuqTBj9LhVcF3A7PwzhNBt0hGd9h3pU
+ KEUqAVbg9YHyF93vJj8scgdwNpD3tpcL+6T4Ur6XIQ==
+X-Google-Smtp-Source: ABdhPJwY7PWG6QkBQ8n2pXSVnAfn22MZWg0foUZC3Lg9RjJZIgHkx3aNieTsxEDakSxAk2fhUiEpNB7ZnSaKtMbxXaA=
+X-Received: by 2002:a05:6e02:148:: with SMTP id
+ j8mr3130405ilr.186.1596524306179; 
+ Mon, 03 Aug 2020 23:58:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87mu3bz083.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-04_02:2020-08-03,
- 2020-08-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- lowpriorityscore=0 spamscore=0 clxscore=1015 phishscore=0 malwarescore=0
- mlxscore=0 impostorscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008040045
+References: <20200804005410.146094-1-oohall@gmail.com>
+ <20200804005410.146094-2-oohall@gmail.com>
+ <CACPK8XfoZ8+SUG6cuWuEJqdTfmxePsBGFGgqyrPvmn1WyRVyjA@mail.gmail.com>
+In-Reply-To: <CACPK8XfoZ8+SUG6cuWuEJqdTfmxePsBGFGgqyrPvmn1WyRVyjA@mail.gmail.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 4 Aug 2020 16:58:14 +1000
+Message-ID: <CAOSf1CFr8_X62mFDGNXNao0xdt_+44i+MOYe3NWgSf_1yYuWHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/6] powerpc/powernv/smp: Fix spurious DBG() warning
+To: Joel Stanley <joel@jms.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,110 +75,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Tue, Aug 4, 2020 at 12:07 PM Joel Stanley <joel@jms.id.au> wrote:
+>
+> Messy:
+>
+> $ git grep "define DBG(" arch/powerpc/ |grep -v print
+> arch/powerpc/kernel/crash_dump.c:#define DBG(fmt...)
+> arch/powerpc/kernel/iommu.c:#define DBG(...)
+> arch/powerpc/kernel/legacy_serial.c:#define DBG(fmt...) do { } while(0)
+> arch/powerpc/kernel/prom.c:#define DBG(fmt...)
+> arch/powerpc/kernel/setup-common.c:#define DBG(fmt...)
+> arch/powerpc/kernel/setup_32.c:#define DBG(fmt...)
+> arch/powerpc/kernel/smp.c:#define DBG(fmt...)
+> arch/powerpc/kernel/vdso.c:#define DBG(fmt...)
+> arch/powerpc/kvm/book3s_hv_rm_xive.c:#define DBG(fmt...) do { } while(0)
+> arch/powerpc/mm/book3s64/hash_utils.c:#define DBG(fmt...)
+> arch/powerpc/platforms/83xx/mpc832x_mds.c:#define DBG(fmt...)
+> arch/powerpc/platforms/83xx/mpc832x_rdb.c:#define DBG(fmt...)
+> arch/powerpc/platforms/83xx/mpc836x_mds.c:#define DBG(fmt...)
+> arch/powerpc/platforms/85xx/mpc85xx_ds.c:#define DBG(fmt, args...)
+> arch/powerpc/platforms/85xx/mpc85xx_mds.c:#define DBG(fmt...)
+> arch/powerpc/platforms/85xx/mpc85xx_rdb.c:#define DBG(fmt, args...)
+> arch/powerpc/platforms/86xx/mpc86xx_hpcn.c:#define DBG(fmt...) do { } while(0)
+> arch/powerpc/platforms/cell/setup.c:#define DBG(fmt...)
+> arch/powerpc/platforms/cell/smp.c:#define DBG(fmt...)
+> arch/powerpc/platforms/embedded6xx/mpc7448_hpc2.c:#define DBG(fmt...)
+> do { } while(0)
+> arch/powerpc/platforms/maple/pci.c:#define DBG(x...)
+> arch/powerpc/platforms/maple/setup.c:#define DBG(fmt...)
+> arch/powerpc/platforms/maple/time.c:#define DBG(x...)
+> arch/powerpc/platforms/powermac/bootx_init.c:#define DBG(fmt...) do { } while(0)
+> arch/powerpc/platforms/powermac/feature.c:#define DBG(fmt...)
+> arch/powerpc/platforms/powermac/low_i2c.c:#define DBG(x...) do {\
+> arch/powerpc/platforms/powermac/low_i2c.c:#define DBG(x...)
+> arch/powerpc/platforms/powermac/nvram.c:#define DBG(x...)
+> arch/powerpc/platforms/powermac/pci.c:#define DBG(x...)
+> arch/powerpc/platforms/powermac/pfunc_base.c:#define DBG(fmt...)
+> arch/powerpc/platforms/powermac/pfunc_core.c:#define DBG(fmt...)
+> arch/powerpc/platforms/powermac/smp.c:#define DBG(fmt...)
+> arch/powerpc/platforms/powermac/time.c:#define DBG(x...)
+> arch/powerpc/platforms/powernv/smp.c:#define DBG(fmt...)
+> arch/powerpc/sysdev/dart_iommu.c:#define DBG(...)
+> arch/powerpc/sysdev/ge/ge_pic.c:#define DBG(fmt...) do { } while (0)
+> arch/powerpc/sysdev/mpic.c:#define DBG(fmt...)
+> arch/powerpc/sysdev/tsi108_dev.c:#define DBG(fmt...) do { } while(0)
+> arch/powerpc/sysdev/tsi108_pci.c:#define DBG(x...)
 
-On 04/08/20 6:38 am, Michael Ellerman wrote:
-> Sandipan Das <sandipan@linux.ibm.com> writes:
->> On 03/08/20 4:32 pm, Michael Ellerman wrote:
->>> Sachin Sant <sachinp@linux.vnet.ibm.com> writes:
->>>>> On 02-Aug-2020, at 10:58 PM, Sandipan Das <sandipan@linux.ibm.com> wrote:
->>>>> On 02/08/20 4:45 pm, Sachin Sant wrote:
->>>>>> pkey_exec_prot test from linuxppc merge branch (3f68564f1f5a) fails to
->>>>>> build due to following error:
->>>>>>
->>>>>> gcc -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1276-g3f68564f1f5a"' -I/home/sachin/linux/tools/testing/selftests/powerpc/include  -m64    pkey_exec_prot.c /home/sachin/linux/tools/testing/selftests/kselftest_harness.h /home/sachin/linux/tools/testing/selftests/kselftest.h ../harness.c ../utils.c  -o /home/sachin/linux/tools/testing/selftests/powerpc/mm/pkey_exec_prot
->>>>>> In file included from pkey_exec_prot.c:18:
->>>>>> /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
->>>>>> #define SYS_pkey_mprotect 386
->>>>>>
->>>>>> In file included from /usr/include/sys/syscall.h:31,
->>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/utils.h:47,
->>>>>>                 from /home/sachin/linux/tools/testing/selftests/powerpc/include/pkeys.h:12,
->>>>>>                 from pkey_exec_prot.c:18:
->>>>>> /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
->>>>>> # define SYS_pkey_mprotect __NR_pkey_mprotect
->>>>>>
->>>>>> commit 128d3d021007 introduced this error.
->>>>>> selftests/powerpc: Move pkey helpers to headers
->>>>>>
->>>>>> Possibly the # defines for sys calls can be retained in pkey_exec_prot.c or
->>>>>>
->>>>>
->>>>> I am unable to reproduce this on the latest merge branch (HEAD at f59195f7faa4).
->>>>> I don't see any redefinitions in pkey_exec_prot.c either.
->>>>>
->>>>
->>>> I can still see this problem on latest merge branch.
->>>> I have following gcc version
->>>>
->>>> gcc version 8.3.1 20191121
->>>
->>> What libc version? Or just the distro & version?
->>
->> Sachin observed this on RHEL 8.2 with glibc-2.28.
->> I couldn't reproduce it on Ubuntu 20.04 and Fedora 32 and both these distros
->> are using glibc-2.31.
-> 
-> OK odd. Usually it's newer glibc that hits this problem.
-> 
-> I guess on RHEL 8.2 we're getting the asm-generic version? But that
-> would be quite wrong if that's what's happening.
-> 
-
-If I let GCC dump all the headers that are being used for the source file, I always
-see syscall.h being included on the RHEL 8.2 system. That is the header with the
-conflicting definition.
-
-  $ cd tools/testing/selftests/powerpc/mm
-  $ gcc -H -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v5.8-rc7-1456-gf59195f7faa4-dirty"' \
-        -I../include -m64 pkey_exec_prot.c ../../kselftest_harness.h ../../kselftest.h ../harness.c ../utils.c \
-        -o pkey_exec_prot 2>&1 | grep syscall
-
-On Ubuntu 20.04 and Fedora 32, grep doesn't find any matching text.
-On RHEL 8.2, it shows the following.
-  ... /usr/include/sys/syscall.h
-  .... /usr/include/bits/syscall.h
-  In file included from /usr/include/sys/syscall.h:31,
-  /usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
-  In file included from /usr/include/sys/syscall.h:31,
-  /usr/include/bits/syscall.h:1575: note: this is the location of the previous definition
-  In file included from /usr/include/sys/syscall.h:31,
-  /usr/include/bits/syscall.h:1579: note: this is the location of the previous definition
-  /usr/include/bits/syscall.h
-  .. /usr/include/sys/syscall.h
-  ... /usr/include/bits/syscall.h
-  /usr/include/bits/syscall.h
-  .. /usr/include/sys/syscall.h
-  ... /usr/include/bits/syscall.h
-  /usr/include/bits/syscall.h
-
-So utils.h is also including /usr/include/sys/syscall.h for glibc versions older than 2.30
-because of commit 743f3544fffb ("selftests/powerpc: Add wrapper for gettid") :)
-
-[...]
-. ../include/pkeys.h
-[...]
-.. ../include/utils.h
-[...]
-... /usr/include/sys/syscall.h
-.... /usr/include/asm/unistd.h
-.... /usr/include/bits/syscall.h
-In file included from pkey_exec_prot.c:18:
-../include/pkeys.h:34: error: "SYS_pkey_mprotect" redefined [-Werror]
- #define SYS_pkey_mprotect 386
-
-In file included from /usr/include/sys/syscall.h:31,
-                 from ../include/utils.h:47,
-                 from ../include/pkeys.h:12,
-                 from pkey_exec_prot.c:18:
-/usr/include/bits/syscall.h:1583: note: this is the location of the previous definition
- # define SYS_pkey_mprotect __NR_pkey_mprotect
-[...]
-
-
-- Sandipan
+I started off writing a patch that fixed all these too. When I went to
+test it I discovered there's a giant pile of other W=1 warnings from
+other parts of arch/powerpc/ so I figured I'd start with something
+less ambitious.
