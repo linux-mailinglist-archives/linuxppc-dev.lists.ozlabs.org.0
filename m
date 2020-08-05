@@ -2,81 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E43523CE0E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 20:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 648CD23CE9F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 20:43:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMKRc2Ql8zDqgx
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 04:10:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BML8y60K8zDqhm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 04:42:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f43;
- helo=mail-qv1-xf43.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hWqfthpN; dkim-atps=neutral
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com
- [IPv6:2607:f8b0:4864:20::f43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMKPd4CY6zDqfc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 04:08:53 +1000 (AEST)
-Received: by mail-qv1-xf43.google.com with SMTP id r19so12660658qvw.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Aug 2020 11:08:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=TKYRPGPLHCWrMIu7pyuuJy9bkPwY7mqum0/IqDLNX9Q=;
- b=hWqfthpN1kxgRdozFdigqWZhlrxM3Bq1/DKEB+wrmgW9FCiv+nTg28h85JfxbOgHfC
- v0ucln+sfvTxDLrxy1ePEG/JlHAlg1qJw55Ug67MVO3aRIoUii7J+1tSAQN6cpRwMvv1
- mEJ4tOMcLyuUYE73d7ak3ql37HdoU+Mum9Kt7dcX3CgEj7aa8qPDzxVVvkz0IxiTM0PU
- mRW58XLvYxRYNaw/w8nqo5r8IcG/uXrQHK9FdTkt8tzAIcI+etjkH2HpNR5u1yDxrQCb
- xk1OdDdHDJa6fVPvt1+f/tHKyZwxgAj0iYv17wCws+h54H8NqPoazwhYXap/HQVax9IN
- vBhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=TKYRPGPLHCWrMIu7pyuuJy9bkPwY7mqum0/IqDLNX9Q=;
- b=C/L4jzkkp+mQ2RZmabPzqrZBbpexQG5flUun1dFkOSdUbeI3BpwG3Rfmyhu3XD+wvK
- pqhaikh4lxRjV/8K8wKFfzv4WxvEo4b7V2jfqN7zPRLj0vxIHODQzvC81G8sTWxwVswe
- HMQJPKJbfNkHCwM8MDb9t4KBOhWh/g+8+deStFA3/9K5xsxDUmbVwLJgn6LaPRhNfJZv
- zwRQKMY8Xp9qM/CyRiDfJ8ZSl/4dapePjh/MexgHEAxI4oiQ/K1lzhuH6LIZlrmVEY+t
- hqjU++o2f/SjFCtEyvWpeNgt4MjcvCKwgxpJI6aW3WZhVwixMVA8ukVL+KNaPve0qsGr
- Bg3Q==
-X-Gm-Message-State: AOAM532FfY8Cr7trc88d9/Oemf4VMQKSVc6P14tSEa7tWYZU5jeLDY+f
- Lz0KAII36SuVsSdllHPM0Jo=
-X-Google-Smtp-Source: ABdhPJw0E/iVtQf8MQPZ3yxGZTwFzEI5nzK94oaCcxa5kXq+Gaoi4HeL8nChAJTI+0bZaA1JiLqI+Q==
-X-Received: by 2002:ad4:446d:: with SMTP id s13mr4966591qvt.183.1596650929271; 
- Wed, 05 Aug 2020 11:08:49 -0700 (PDT)
-Received: from LeoBras (179-125-154-168.dynamic.desktop.com.br.
- [179.125.154.168])
- by smtp.gmail.com with ESMTPSA id c33sm2744722qtk.40.2020.08.05.11.08.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Aug 2020 11:08:48 -0700 (PDT)
-Message-ID: <e60591c023173ac04057293962c498a09acc1fc1.camel@gmail.com>
-Subject: Re: [PATCH v5 0/4] Allow bigger 64bit window by removing default
- DMA window
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Alexey
- Kardashevskiy <aik@ozlabs.ru>, Thiago Jung Bauermann
- <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>, Brian King
- <brking@linux.vnet.ibm.com>, Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-Date: Wed, 05 Aug 2020 15:08:42 -0300
-In-Reply-To: <20200805030455.123024-1-leobras.c@gmail.com>
-References: <20200805030455.123024-1-leobras.c@gmail.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BML7N1YVYzDqd2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 04:41:35 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 075Ieuu6004765;
+ Wed, 5 Aug 2020 13:40:56 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 075IesOr004764;
+ Wed, 5 Aug 2020 13:40:54 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 5 Aug 2020 13:40:54 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v10 2/5] powerpc/vdso: Prepare for switching VDSO to
+ generic C implementation.
+Message-ID: <20200805184054.GQ6753@gate.crashing.org>
+References: <cover.1596611196.git.christophe.leroy@csgroup.eu>
+ <348528c33cd4007f3fee7fe643ef160843d09a6c.1596611196.git.christophe.leroy@csgroup.eu>
+ <20200805140307.GO6753@gate.crashing.org>
+ <3db2a590-b842-83db-ed2b-f3ee62595f18@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3db2a590-b842-83db-ed2b-f3ee62595f18@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,12 +53,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: nathanl@linux.ibm.com, linux-arch@vger.kernel.org,
+ vincenzo.frascino@arm.com, arnd@arndb.de, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, luto@kernel.org, tglx@linutronix.de,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Travis reported successful compilation with mpe/merge:
+Hi!
 
-https://travis-ci.org/github/LeoBras/linux-ppc/builds/715028857
+On Wed, Aug 05, 2020 at 04:40:16PM +0000, Christophe Leroy wrote:
+> >It cannot optimise it because it does not know shift < 32.  The code
+> >below is incorrect for shift equal to 32, fwiw.
+> 
+> Is there a way to tell it ?
 
+Sure, for example the &31 should work (but it doesn't, with the GCC
+version you used -- which version is that?)
+
+> >What does the compiler do for just
+> >
+> >static __always_inline u64 vdso_shift_ns(u64 ns, unsigned long shift)
+> >	return ns >> (shift & 31);
+> >}
+> >
+> 
+> Worse:
+
+I cannot make heads or tails of all that branch spaghetti, sorry.
+
+>  73c:	55 8c 06 fe 	clrlwi  r12,r12,27
+>  740:	7f c8 f0 14 	addc    r30,r8,r30
+>  744:	7c c6 4a 14 	add     r6,r6,r9
+>  748:	7c c6 e1 14 	adde    r6,r6,r28
+>  74c:	34 6c ff e0 	addic.  r3,r12,-32
+>  750:	41 80 00 70 	blt     7c0 <__c_kernel_clock_gettime+0x114>
+
+This branch is always true.  Hrm.
+
+
+Segher
