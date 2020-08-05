@@ -1,48 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18C623C385
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 04:34:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C1323C3DD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:07:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLwgQ4WcDzDqb5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 12:34:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLxP50TlJzDqdD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:07:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
+ helo=mail-qk1-x742.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Sks840nK; dkim-atps=neutral
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLwXm0j73zDqZS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 12:28:39 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 257AD20138C;
- Wed,  5 Aug 2020 04:28:37 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 4741320019A;
- Wed,  5 Aug 2020 04:28:32 +0200 (CEST)
-Received: from 10.192.242.69 (shlinux2.ap.freescale.net [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5AF1640302;
- Wed,  5 Aug 2020 04:28:26 +0200 (CEST)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] ASoC: fsl_sai: Refine enable and disable sequence for
- synchronous mode
-Date: Wed,  5 Aug 2020 10:23:53 +0800
-Message-Id: <1596594233-13489-3-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1596594233-13489-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1596594233-13489-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLxLw1GQ6zDqRR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:05:10 +1000 (AEST)
+Received: by mail-qk1-x742.google.com with SMTP id 77so8169269qkm.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 20:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=WtXwfpDFreDLwGVsqvsaCTe1LWZg8pmE0dEw2EJKlf0=;
+ b=Sks840nKMOrcyH24HC/3BAqdEuA0rkgkLlLBy5HCVvWfWag5qxd5TGH/DvTp+PFCjw
+ TDBw61DiWcwU+p836z/cGcL9YceKYcS4k1CTd53ub09Z/GoAK5EVqi9k3OhwazvppyF9
+ J4DARGGWfSBmMO3XEe9ksbYWt1v54qBzzTpHj6Rr/GneGlr+eBJxs3m80oXTkHuxorF2
+ 1jIfhcAIz/87HGHJ4trc7lrQ628DxOziEZ6DAlyGHqEMo4AqMyS36fCkUqg46nyxava1
+ Aa8WDFVGb0n0RA3v/jt5/kZ3vWFIPHEzT7Ysw7rgeR4fB3ZtL2OrI3/zhm3wWNqpeb2w
+ gy9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=WtXwfpDFreDLwGVsqvsaCTe1LWZg8pmE0dEw2EJKlf0=;
+ b=qtpC8vInfCS/iMpMaGDIrAtZ6k3LK5keYdUTwy09d1BWX1qa40IcqL0TyYxULuG96r
+ +y7EC9W0xCLhxZ1AvzJ8BTm9aHJ1acU3QGvII/DGtDmkhSiJTL3ANR+OlZD4TlwSFbfx
+ Xqk/frZNHR3KgN8rq6Qrbt35aAwhzKTGWM6Gh5Q7OAikZw7hLkZF2yr2FVWWlg+/7n0H
+ j/H/5IamR0w4Pbv83vcEWtpj1rZVVHhMMP2QblBigi1EHq/myX28/AZmYyVy+DO6b4bG
+ RkeX33THmJBu+CbOfVTZvQE0Z+LYSGcgkc2faWekiWXtdw7qvRdUQo+3Gz7sz0uYp9oh
+ HcOA==
+X-Gm-Message-State: AOAM530ajePMLgFoMAjJdzgc7wvarQNzjJt1En3TwbRuLo8jUSAFC6gj
+ 8MNXVPm0I6n6GyNxY+8HZa0=
+X-Google-Smtp-Source: ABdhPJz/t43SflkR0lrII1YXGkv4uIywPsyddfdoGsBWxixbEQtoh7SeuFc8DYVpx9PqQcHow7FN4g==
+X-Received: by 2002:a05:620a:1436:: with SMTP id
+ k22mr1333392qkj.308.1596596705317; 
+ Tue, 04 Aug 2020 20:05:05 -0700 (PDT)
+Received: from LeoBras.ibmuc.com (179-125-154-168.dynamic.desktop.com.br.
+ [179.125.154.168])
+ by smtp.gmail.com with ESMTPSA id n4sm869946qtr.73.2020.08.04.20.05.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Aug 2020 20:05:04 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
+ Murilo Fossa Vicentini <muvic@linux.ibm.com>,
+ David Dai <zdai@linux.vnet.ibm.com>
+Subject: [PATCH v5 0/4] Allow bigger 64bit window by removing default DMA
+ window
+Date: Wed,  5 Aug 2020 00:04:51 -0300
+Message-Id: <20200805030455.123024-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.25.4
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,182 +86,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tx synchronous with Rx:
-The TCSR.TE is no need to enabled when only Rx is going to be enabled.
-Check if need to disable RSCR.RE before disabling TCSR.TE.
+There are some devices in which a hypervisor may only allow 1 DMA window
+to exist at a time, and in those cases, a DDW is never created to them,
+since the default DMA window keeps using this resource.
 
-Rx synchronous with Tx:
-The RCSR.RE is no need to enabled when only Tx is going to be enabled.
-Check if need to disable TSCR.RE before disabling RCSR.TE.
+LoPAR recommends this procedure:
+1. Remove the default DMA window,
+2. Query for which configs the DDW can be created,
+3. Create a DDW.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Patch #1:
+Create defines for outputs of ibm,ddw-applicable, so it's easier to
+identify them.
+
+Patch #2:
+- After LoPAR level 2.8, there is an extension that can make
+  ibm,query-pe-dma-windows to have 6 outputs instead of 5. This changes the
+  order of the outputs, and that can cause some trouble. 
+- query_ddw() was updated to check how many outputs the 
+  ibm,query-pe-dma-windows is supposed to have, update the rtas_call() and
+  deal correctly with the outputs in both cases.
+- This patch looks somehow unrelated to the series, but it can avoid future
+  problems on DDW creation.
+
+Patch #3 moves the window-removing code from remove_ddw() to
+remove_dma_window(), creating a way to delete any DMA window, so it can be
+used to delete the default DMA window.
+
+Patch #4 makes use of the remove_dma_window() from patch #3 to remove the
+default DMA window before query_ddw(). It also implements a new rtas call
+to recover the default DMA window, in case anything fails after it was
+removed, and a DDW couldn't be created.
+
 ---
- sound/soc/fsl/fsl_sai.c | 126 +++++++++++++++++++++++++++-------------
- 1 file changed, 85 insertions(+), 41 deletions(-)
+Changes since v4:
+- Removed patches 5+ in order to deal with a feature at a time
+- Remove unnecessary parentesis in patch #4
+- Changed patch #4 title from 
+  "Remove default DMA window before creating DDW"
+- Included David Dai tested-by
+- v4 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=190051&state=%2A&archive=both
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 84714fe7144c..f30c4e7b5221 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -517,6 +517,56 @@ static int fsl_sai_hw_free(struct snd_pcm_substream *substream,
- 	return 0;
- }
- 
-+/**
-+ * fsl_sai_dir_is_synced - Check if stream is synced by the opposite stream
-+ *
-+ * SAI supports synchronous mode using bit/frame clocks of either Transmitter's
-+ * or Receiver's for both streams. This function is used to check if clocks of
-+ * the stream's are synced by the opposite stream.
-+ *
-+ * @sai: SAI context
-+ * @dir: stream direction
-+ */
-+static inline bool fsl_sai_dir_is_synced(struct fsl_sai *sai, int dir)
-+{
-+	int adir = (dir == TX) ? RX : TX;
-+
-+	/* current dir in async mode while opposite dir in sync mode */
-+	return !sai->synchronous[dir] && sai->synchronous[adir];
-+}
-+
-+static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
-+{
-+	unsigned int ofs = sai->soc_data->reg_offset;
-+	bool tx = dir == TX;
-+	u32 xcsr, count = 100;
-+
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
-+			   FSL_SAI_CSR_TERE, 0);
-+
-+	/* TERE will remain set till the end of current frame */
-+	do {
-+		udelay(10);
-+		regmap_read(sai->regmap, FSL_SAI_xCSR(tx, ofs), &xcsr);
-+	} while (--count && xcsr & FSL_SAI_CSR_TERE);
-+
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
-+			   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
-+
-+	/*
-+	 * For sai master mode, after several open/close sai,
-+	 * there will be no frame clock, and can't recover
-+	 * anymore. Add software reset to fix this issue.
-+	 * This is a hardware bug, and will be fix in the
-+	 * next sai version.
-+	 */
-+	if (!sai->is_slave_mode) {
-+		/* Software Reset */
-+		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
-+		/* Clear SR bit to finish the reset */
-+		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
-+	}
-+}
- 
- static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 		struct snd_soc_dai *cpu_dai)
-@@ -525,7 +575,9 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 	unsigned int ofs = sai->soc_data->reg_offset;
- 
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
--	u32 xcsr, count = 100;
-+	int adir = tx ? RX : TX;
-+	int dir = tx ? TX : RX;
-+	u32 xcsr;
- 
- 	/*
- 	 * Asynchronous mode: Clear SYNC for both Tx and Rx.
-@@ -548,10 +600,22 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
- 				   FSL_SAI_CSR_FRDE, FSL_SAI_CSR_FRDE);
- 
--		regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
--				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
--		regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
-+		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
- 				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
-+		/*
-+		 * Enable the opposite direction for synchronous mode
-+		 * 1. Tx sync with Rx: only set RE for Rx; set TE & RE for Tx
-+		 * 2. Rx sync with Tx: only set TE for Tx; set RE & TE for Rx
-+		 *
-+		 * RM recommends to enable RE after TE for case 1 and to enable
-+		 * TE after RE for case 2, but we here may not always guarantee
-+		 * that happens: "arecord 1.wav; aplay 2.wav" in case 1 enables
-+		 * TE after RE, which is against what RM recommends but should
-+		 * be safe to do, judging by years of testing results.
-+		 */
-+		if (fsl_sai_dir_is_synced(sai, adir))
-+			regmap_update_bits(sai->regmap, FSL_SAI_xCSR((!tx), ofs),
-+					   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
- 
- 		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
- 				   FSL_SAI_CSR_xIE_MASK, FSL_SAI_FLAGS);
-@@ -566,43 +630,23 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 
- 		/* Check if the opposite FRDE is also disabled */
- 		regmap_read(sai->regmap, FSL_SAI_xCSR(!tx, ofs), &xcsr);
--		if (!(xcsr & FSL_SAI_CSR_FRDE)) {
--			/* Disable both directions and reset their FIFOs */
--			regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
--					   FSL_SAI_CSR_TERE, 0);
--			regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
--					   FSL_SAI_CSR_TERE, 0);
--
--			/* TERE will remain set till the end of current frame */
--			do {
--				udelay(10);
--				regmap_read(sai->regmap,
--					    FSL_SAI_xCSR(tx, ofs), &xcsr);
--			} while (--count && xcsr & FSL_SAI_CSR_TERE);
--
--			regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
--					   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
--			regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
--					   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
--
--			/*
--			 * For sai master mode, after several open/close sai,
--			 * there will be no frame clock, and can't recover
--			 * anymore. Add software reset to fix this issue.
--			 * This is a hardware bug, and will be fix in the
--			 * next sai version.
--			 */
--			if (!sai->is_slave_mode) {
--				/* Software Reset for both Tx and Rx */
--				regmap_write(sai->regmap, FSL_SAI_TCSR(ofs),
--					     FSL_SAI_CSR_SR);
--				regmap_write(sai->regmap, FSL_SAI_RCSR(ofs),
--					     FSL_SAI_CSR_SR);
--				/* Clear SR bit to finish the reset */
--				regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--				regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
--			}
--		}
-+
-+		/*
-+		 * If opposite stream provides clocks for synchronous mode and
-+		 * it is inactive, disable it before disabling the current one
-+		 */
-+		if (fsl_sai_dir_is_synced(sai, adir) && !(xcsr & FSL_SAI_CSR_FRDE))
-+			fsl_sai_config_disable(sai, adir);
-+
-+		/*
-+		 * Disable current stream if either of:
-+		 * 1. current stream doesn't provide clocks for synchronous mode
-+		 * 2. current stream provides clocks for synchronous mode but no
-+		 *    more stream is active.
-+		 */
-+		if (!fsl_sai_dir_is_synced(sai, dir) || !(xcsr & FSL_SAI_CSR_FRDE))
-+			fsl_sai_config_disable(sai, dir);
-+
- 		break;
- 	default:
- 		return -EINVAL;
+Changes since v3:
+- Introduces new patch #5, to prepare for an important change in #6
+- struct iommu_table was not being updated, so include a way to do this
+  in patch #6.
+- Improved patch #4 based in a suggestion from Alexey, to make code
+  more easily understandable
+- v3 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=187348&state=%2A&archive=both
+
+Changes since v2:
+- Change the way ibm,ddw-extensions is accessed, using a proper function
+  instead of doing this inline everytime it's used.
+- Remove previous patch #6, as it doesn't look like it would be useful.
+- Add new patch, for changing names from direct* to dma*, as indirect 
+  mapping can be used from now on.
+- Fix some typos, corrects some define usage.
+- v2 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=185433&state=%2A&archive=both
+
+Changes since v1:
+- Add defines for ibm,ddw-applicable and ibm,ddw-extensions outputs
+- Merge aux function query_ddw_out_sz() into query_ddw()
+- Merge reset_dma_window() patch (prev. #2) into remove default DMA
+  window patch (#4).
+- Keep device_node *np name instead of using pdn in remove_*()
+- Rename 'device_node *pdn' into 'parent' in new functions
+- Rename dfl_win to default_win
+- Only remove the default DMA window if there is no window available
+  in first query.
+- Check if default DMA window can be restored before removing it.
+- Fix 'unitialized use' (found by travis mpe:ci-test)
+- New patches #5 and #6
+- v1 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=184420&state=%2A&archive=both
+
+Special thanks for Alexey Kardashevskiy, Brian King and
+Oliver O'Halloran for the feedback provided!
+
+
+Leonardo Bras (4):
+  powerpc/pseries/iommu: Create defines for operations in
+    ibm,ddw-applicable
+  powerpc/pseries/iommu: Update call to ibm,query-pe-dma-windows
+  powerpc/pseries/iommu: Move window-removing part of remove_ddw into
+    remove_dma_window
+  powerpc/pseries/iommu: Allow bigger 64bit window by removing default
+    DMA window
+
+ arch/powerpc/platforms/pseries/iommu.c | 242 ++++++++++++++++++++-----
+ 1 file changed, 195 insertions(+), 47 deletions(-)
+
 -- 
-2.27.0
+2.25.4
 
