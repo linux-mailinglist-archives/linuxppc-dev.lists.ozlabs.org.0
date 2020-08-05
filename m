@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626EE23CA20
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E879323CA25
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:05:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BM7yd29B6zDqjn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 21:03:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BM80W75BlzDqYh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 21:04:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,25 +15,25 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=alpha.franken.de
 Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BM7wt43HvzDqKl
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BM7wt46K9zDqLn
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 21:01:48 +1000 (AEST)
 Received: from uucp (helo=alpha)
  by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1k3HAl-0001HW-00; Wed, 05 Aug 2020 13:01:27 +0200
+ id 1k3HAl-0001HW-01; Wed, 05 Aug 2020 13:01:27 +0200
 Received: by alpha.franken.de (Postfix, from userid 1000)
- id 27D27C0BF1; Wed,  5 Aug 2020 12:58:44 +0200 (CEST)
-Date: Wed, 5 Aug 2020 12:58:44 +0200
+ id 899DDC0C25; Wed,  5 Aug 2020 13:00:35 +0200 (CEST)
+Date: Wed, 5 Aug 2020 13:00:35 +0200
 From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 17/17] memblock: use separate iterators for memory and
- reserved regions
-Message-ID: <20200805105844.GA11658@alpha.franken.de>
+Subject: Re: [PATCH v2 12/17] arch, drivers: replace for_each_membock() with
+ for_each_mem_range()
+Message-ID: <20200805110035.GB11658@alpha.franken.de>
 References: <20200802163601.8189-1-rppt@kernel.org>
- <20200802163601.8189-18-rppt@kernel.org>
+ <20200802163601.8189-13-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200802163601.8189-18-rppt@kernel.org>
+In-Reply-To: <20200802163601.8189-13-rppt@kernel.org>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -72,19 +72,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 02, 2020 at 07:36:01PM +0300, Mike Rapoport wrote:
+On Sun, Aug 02, 2020 at 07:35:56PM +0300, Mike Rapoport wrote:
 > From: Mike Rapoport <rppt@linux.ibm.com>
 > 
-> for_each_memblock() is used to iterate over memblock.memory in
-> a few places that use data from memblock_region rather than the memory
-> ranges.
+> There are several occurrences of the following pattern:
 > 
-> Introduce separate for_each_mem_region() and for_each_reserved_mem_region()
-> to improve encapsulation of memblock internals from its users.
+> 	for_each_memblock(memory, reg) {
+> 		start = __pfn_to_phys(memblock_region_memory_base_pfn(reg);
+> 		end = __pfn_to_phys(memblock_region_memory_end_pfn(reg));
+> 
+> 		/* do something with start and end */
+> 	}
+> 
+> Using for_each_mem_range() iterator is more appropriate in such cases and
+> allows simpler and cleaner code.
 > 
 > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 > ---
->  arch/mips/netlogic/xlp/setup.c |  2 +-
+>  arch/mips/cavium-octeon/dma-octeon.c     | 12 +++---
+>  arch/mips/kernel/setup.c                 | 31 +++++++--------
 
 Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
