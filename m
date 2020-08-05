@@ -1,40 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E879323CA25
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:05:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA23123CA9B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 14:26:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BM80W75BlzDqYh
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 21:04:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BM9q25vNCzDqfS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 22:26:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
- envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=alpha.franken.de
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BM7wt46K9zDqLn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 21:01:48 +1000 (AEST)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1k3HAl-0001HW-01; Wed, 05 Aug 2020 13:01:27 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id 899DDC0C25; Wed,  5 Aug 2020 13:00:35 +0200 (CEST)
-Date: Wed, 5 Aug 2020 13:00:35 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 12/17] arch, drivers: replace for_each_membock() with
- for_each_mem_range()
-Message-ID: <20200805110035.GB11658@alpha.franken.de>
-References: <20200802163601.8189-1-rppt@kernel.org>
- <20200802163601.8189-13-rppt@kernel.org>
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BM9ls4TNjzDqSl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 22:24:09 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 075C3m1P124605; Wed, 5 Aug 2020 08:24:02 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32qqt1gv3p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Aug 2020 08:24:02 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 075CFrNY010087;
+ Wed, 5 Aug 2020 12:24:00 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma05fra.de.ibm.com with ESMTP id 32n017tmb7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Aug 2020 12:23:59 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 075CMULl54460840
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 5 Aug 2020 12:22:30 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0406411C04C;
+ Wed,  5 Aug 2020 12:23:57 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 149FC11C052;
+ Wed,  5 Aug 2020 12:23:56 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.52.198])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  5 Aug 2020 12:23:55 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/drmem: Don't compute the NUMA node for each LMB
+To: kernel test robot <lkp@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20200805092858.64143-1-ldufour@linux.ibm.com>
+ <202008051807.Vi8NDJtX%lkp@intel.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <ee7f5b73-81ee-ecc1-d7a1-9cdb3eceaf0b@linux.ibm.com>
+Date: Wed, 5 Aug 2020 14:23:55 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200802163601.8189-13-rppt@kernel.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <202008051807.Vi8NDJtX%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-05_09:2020-08-03,
+ 2020-08-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ lowpriorityscore=0 clxscore=1011 priorityscore=1501 bulkscore=0
+ spamscore=0 mlxscore=0 phishscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2008050101
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,56 +88,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Emil Renner Berthing <kernel@esmil.dk>, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- Baoquan He <bhe@redhat.com>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>,
- Michal Simek <monstr@monstr.eu>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, cheloha@linux.ibm.com, kbuild-all@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 02, 2020 at 07:35:56PM +0300, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
+Le 05/08/2020 à 12:43, kernel test robot a écrit :
+> Hi Laurent,
 > 
-> There are several occurrences of the following pattern:
+> Thank you for the patch! Yet something to improve:
 > 
-> 	for_each_memblock(memory, reg) {
-> 		start = __pfn_to_phys(memblock_region_memory_base_pfn(reg);
-> 		end = __pfn_to_phys(memblock_region_memory_end_pfn(reg));
+> [auto build test ERROR on powerpc/next]
+> [also build test ERROR on linux/master linus/master v5.8 next-20200804]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
 > 
-> 		/* do something with start and end */
-> 	}
+> url:    https://github.com/0day-ci/linux/commits/Laurent-Dufour/powerpc-drmem-Don-t-compute-the-NUMA-node-for-each-LMB/20200805-173213
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: powerpc-mpc885_ads_defconfig (attached as .config)
+> compiler: powerpc-linux-gcc (GCC) 9.3.0
+> reproduce (this is a W=1 build):
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # save the attached .config to linux build tree
+>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=powerpc
 > 
-> Using for_each_mem_range() iterator is more appropriate in such cases and
-> allows simpler and cleaner code.
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
 > 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> All errors (new ones prefixed by >>):
+> 
+>     arch/powerpc/mm/drmem.c: In function 'init_drmem_v2_lmbs':
+>>> arch/powerpc/mm/drmem.c:457:8: error: 'struct drmem_lmb' has no member named 'nid'
+>       457 |     lmb->nid = first->nid;
+>           |        ^~
+>     arch/powerpc/mm/drmem.c:457:21: error: 'struct drmem_lmb' has no member named 'nid'
+>       457 |     lmb->nid = first->nid;
+>           |                     ^~
+
+My mistake, the nid member is only present when CONFIG_MEMORY_HOTPLUG is set.
+
+I'll send a new version fixing this.
+
+
+> vim +457 arch/powerpc/mm/drmem.c
+> 
+>     397	
+>     398	static void __init init_drmem_v2_lmbs(const __be32 *prop)
+>     399	{
+>     400		struct drmem_lmb *lmb, *first;
+>     401		struct of_drconf_cell_v2 dr_cell;
+>     402		const __be32 *p;
+>     403		u32 i, j, lmb_sets;
+>     404		int lmb_index;
+>     405	
+>     406		lmb_sets = of_read_number(prop++, 1);
+>     407		if (lmb_sets == 0)
+>     408			return;
+>     409	
+>     410		/* first pass, calculate the number of LMBs */
+>     411		p = prop;
+>     412		for (i = 0; i < lmb_sets; i++) {
+>     413			read_drconf_v2_cell(&dr_cell, &p);
+>     414			drmem_info->n_lmbs += dr_cell.seq_lmbs;
+>     415		}
+>     416	
+>     417		drmem_info->lmbs = kcalloc(drmem_info->n_lmbs, sizeof(*lmb),
+>     418					   GFP_KERNEL);
+>     419		if (!drmem_info->lmbs)
+>     420			return;
+>     421	
+>     422		/* second pass, read in the LMB information */
+>     423		lmb_index = 0;
+>     424		p = prop;
+>     425		first = NULL;
+>     426	
+>     427		for (i = 0; i < lmb_sets; i++) {
+>     428			read_drconf_v2_cell(&dr_cell, &p);
+>     429	
+>     430			/*
+>     431			 * Fetch the NUMA node id for the fist set or if the
+>     432			 * associativity index is different from the previous set.
+>     433			 */
+>     434			if (first && dr_cell.aa_index != first->aa_index)
+>     435				first = NULL;
+>     436	
+>     437			for (j = 0; j < dr_cell.seq_lmbs; j++) {
+>     438				lmb = &drmem_info->lmbs[lmb_index++];
+>     439	
+>     440				lmb->base_addr = dr_cell.base_addr;
+>     441				dr_cell.base_addr += drmem_info->lmb_size;
+>     442	
+>     443				lmb->drc_index = dr_cell.drc_index;
+>     444				dr_cell.drc_index++;
+>     445	
+>     446				lmb->aa_index = dr_cell.aa_index;
+>     447				lmb->flags = dr_cell.flags;
+>     448	
+>     449				/*
+>     450				 * All the LMB in the set share the same NUMA
+>     451				 * associativity property. So read that node only once.
+>     452				 */
+>     453				if (!first) {
+>     454					lmb_set_nid(lmb);
+>     455					first = lmb;
+>     456				} else {
+>   > 457					lmb->nid = first->nid;
+>     458				}
+>     459			}
+>     460		}
+>     461	}
+>     462	
+> 
 > ---
->  arch/mips/cavium-octeon/dma-octeon.c     | 12 +++---
->  arch/mips/kernel/setup.c                 | 31 +++++++--------
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
 
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
