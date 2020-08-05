@@ -2,78 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0856E23D3F5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 00:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEB723D3FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 00:39:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMRHr3XybzDqhD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 08:34:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMRPw3JnTzDqgx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 08:39:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::243;
- helo=mail-oi1-x243.google.com; envelope-from=flukshun@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=q5QXpzf3; dkim-atps=neutral
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
- [IPv6:2607:f8b0:4864:20::243])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMRDs0YLGzDqhD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 08:31:40 +1000 (AEST)
-Received: by mail-oi1-x243.google.com with SMTP id u63so29328408oie.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Aug 2020 15:31:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:mime-version:content-transfer-encoding:to:from:in-reply-to
- :cc:references:message-id:user-agent:subject:date;
- bh=BHj9iwd0lUlXRvCQURQ8/CZjLe9lBdhxl7Kim12W45Q=;
- b=q5QXpzf3KcrvO5Sr2S9utSUrS1MM7ujbXNMlKyDikQ2A/qA47LlGp+tDnBXLr6X49I
- IQ61q/pQEOrJuKWqadjEkSUhnWGha9Xq7G2JDmL1ZsqntRbQCoLzzaQAVvGMzfdQWXTx
- GPEMy90Jjx1p0xkaMt/IB/X/dV6O7iq5K/IKUW4IvTseqfexaIxB9aFU/UhqMcPQwjWE
- U+KQNVIIgL67xaH666TeRUnkg/S+BFNyuu5QEZtfK4FODssmbgndYTh15z9ePIdIUC1v
- IV4Ajk/sBUtuyjRidGqXuKvixx/o4cbv0ieSo2HGvvBx3ojCO5q2oMParDsz/2vHyCOQ
- SJxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:mime-version:content-transfer-encoding:to
- :from:in-reply-to:cc:references:message-id:user-agent:subject:date;
- bh=BHj9iwd0lUlXRvCQURQ8/CZjLe9lBdhxl7Kim12W45Q=;
- b=N+WcSCrRLQBG2sTOaMFOCT5nvVcGpRwbC/0/2hp3gl7mSfDsVBAAtfJmo8Af+P1s7K
- W+qw8P5DTqlV0breArJ5rkiEa2rL8AiP39kB7HhYRWzgjMADgNZZDaSqFPjfzXDViaPq
- O9pJZVMUM/mEeBKZYM5ofPRA1+kmwxptGjS8v7Kh/+TPQ1cRlkU5vykrtESFC0sJYetr
- byVu72YOs3G4w1LyHLzTGs72QgzWKClSc2qCRUd96UhztH96DKBaYgfYAJSna1m6zGne
- /T92llsGU5hv02bbqp0SVh08N1f3pkuSMVVR+e+yL4LjyaVyjpRjcGP38iRgZgoOHNKB
- JrYQ==
-X-Gm-Message-State: AOAM532MJQXU97cAR1JR05nnQTHw7MI59HOtv5kih8tVrRpzkRj1ljyo
- KsF5nzVKO+g4QsDnSmT9C+hx/7c2
-X-Google-Smtp-Source: ABdhPJx/HJkYVbjj2DSN8T0fKapa5yXEM8K0TBuZJDVfjWoz7SL+jJnr+mTzjbYZFQGbTwYm6Vmf8w==
-X-Received: by 2002:aca:1c0c:: with SMTP id c12mr2981031oic.73.1596666697287; 
- Wed, 05 Aug 2020 15:31:37 -0700 (PDT)
-Received: from localhost (76-251-165-188.lightspeed.austtx.sbcglobal.net.
- [76.251.165.188])
- by smtp.gmail.com with ESMTPSA id c196sm722351oib.58.2020.08.05.15.31.36
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Wed, 05 Aug 2020 15:31:36 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMRMm1FTkzDqYh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 08:37:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BMRMl6Z0Cz8sWN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 08:37:39 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BMRMl6CPxz9sTM; Thu,  6 Aug 2020 08:37:39 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4BMRMk6g5Hz9sPC
+ for <linuxppc-dev@ozlabs.org>; Thu,  6 Aug 2020 08:37:38 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 075MW6dV087169
+ for <linuxppc-dev@ozlabs.org>; Wed, 5 Aug 2020 18:37:36 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32r383kmsd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 05 Aug 2020 18:37:36 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 075MYixm011174
+ for <linuxppc-dev@ozlabs.org>; Wed, 5 Aug 2020 22:37:36 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 32n019dkes-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Wed, 05 Aug 2020 22:37:35 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 075MbV0023003586
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 5 Aug 2020 22:37:31 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F6F86E066;
+ Wed,  5 Aug 2020 22:37:34 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 936E16E05E;
+ Wed,  5 Aug 2020 22:37:33 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.114.20])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed,  5 Aug 2020 22:37:33 +0000 (GMT)
+Subject: Re: [PATCH v2 1/2] powerpc/perf: consolidate GPCI hcall structs into
+ asm/hvcall.h
+To: Scott Cheloha <cheloha@linux.ibm.com>, linuxppc-dev@ozlabs.org
+References: <20200727184605.2945095-1-cheloha@linux.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <44fe3f95-5516-05da-8fcb-a3ad60d3127d@linux.ibm.com>
+Date: Wed, 5 Aug 2020 15:37:32 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-To: Greg Kurz <groug@kaod.org>, Michael Ellerman <mpe@ellerman.id.au>
-From: Michael Roth <mdroth@linux.vnet.ibm.com>
-In-Reply-To: <159666656828.15440.9097316124875217814@sif>
-References: <20200804032937.7235-1-mdroth@linux.vnet.ibm.com>
- <873652zg8h.fsf@mpe.ellerman.id.au> <20200804161609.6cb2cb71@bahia.lan>
- <87zh79yen7.fsf@mpe.ellerman.id.au>
- <159660225263.15440.2633856149684894440@sif>
- <159666656828.15440.9097316124875217814@sif>
-Message-ID: <159666669258.15440.14245414671328173128@sif>
-User-Agent: alot/0.7
-Subject: Re: [PATCH] powerpc/pseries/hotplug-cpu: increase wait time for vCPU
- death
-Date: Wed, 05 Aug 2020 17:31:32 -0500
+In-Reply-To: <20200727184605.2945095-1-cheloha@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-05_18:2020-08-03,
+ 2020-08-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1011 mlxscore=0 suspectscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008050162
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,129 +102,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Cedric Le Goater <clg@kaod.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Quoting Michael Roth (2020-08-05 17:29:28)
-> Quoting Michael Roth (2020-08-04 23:37:32)
-> > Quoting Michael Ellerman (2020-08-04 22:07:08)
-> > > Greg Kurz <groug@kaod.org> writes:
-> > > > On Tue, 04 Aug 2020 23:35:10 +1000
-> > > > Michael Ellerman <mpe@ellerman.id.au> wrote:
-> > > >> Spinning forever seems like a bad idea, but as has been demonstrat=
-ed at
-> > > >> least twice now, continuing when we don't know the state of the ot=
-her
-> > > >> CPU can lead to straight up crashes.
-> > > >> =
+On 7/27/20 11:46 AM, Scott Cheloha wrote:
+> The H_GetPerformanceCounterInfo (GPCI) hypercall input/output structs are
+> useful to modules outside of perf/, so move them into asm/hvcall.h to live
+> alongside the other powerpc hypercall structs.
+> 
+> Leave the perf-specific GPCI stuff in perf/hv-gpci.h.
+> 
+> Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/hvcall.h | 36 +++++++++++++++++++++++++++++++
+>  arch/powerpc/perf/hv-gpci.c       |  9 --------
+>  arch/powerpc/perf/hv-gpci.h       | 27 -----------------------
+>  3 files changed, 36 insertions(+), 36 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+> index e90c073e437e..c338480b4551 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -527,6 +527,42 @@ struct hv_guest_state {
+>  /* Latest version of hv_guest_state structure */
+>  #define HV_GUEST_STATE_VERSION	1
+>  
+> +/*
+> + * From the document "H_GetPerformanceCounterInfo Interface" v1.07
+> + *
+> + * H_GET_PERF_COUNTER_INFO argument
+> + */
+> +struct hv_get_perf_counter_info_params {
+> +	__be32 counter_request; /* I */
+> +	__be32 starting_index;  /* IO */
+> +	__be16 secondary_index; /* IO */
+> +	__be16 returned_values; /* O */
+> +	__be32 detail_rc; /* O, only needed when called via *_norets() */
+> +
+> +	/*
+> +	 * O, size each of counter_value element in bytes, only set for version
+> +	 * >= 0x3
+> +	 */
+> +	__be16 cv_element_size;
+> +
+> +	/* I, 0 (zero) for versions < 0x3 */
+> +	__u8 counter_info_version_in;
+> +
+> +	/* O, 0 (zero) if version < 0x3. Must be set to 0 when making hcall */
+> +	__u8 counter_info_version_out;
+> +	__u8 reserved[0xC];
+> +	__u8 counter_value[];
+> +} __packed;
+> +
+> +#define HGPCI_REQ_BUFFER_SIZE	4096
+> +#define HGPCI_MAX_DATA_BYTES \
+> +	(HGPCI_REQ_BUFFER_SIZE - sizeof(struct hv_get_perf_counter_info_params))
+> +
+> +struct hv_gpci_request_buffer {
+> +	struct hv_get_perf_counter_info_params params;
+> +	uint8_t bytes[HGPCI_MAX_DATA_BYTES];
+> +} __packed;
+> +
+>  #endif /* __ASSEMBLY__ */
+>  #endif /* __KERNEL__ */
+>  #endif /* _ASM_POWERPC_HVCALL_H */
+> diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
+> index 6884d16ec19b..1667315b82e9 100644
+> --- a/arch/powerpc/perf/hv-gpci.c
+> +++ b/arch/powerpc/perf/hv-gpci.c
+> @@ -123,17 +123,8 @@ static const struct attribute_group *attr_groups[] = {
+>  	NULL,
+>  };
+>  
+> -#define HGPCI_REQ_BUFFER_SIZE	4096
+> -#define HGPCI_MAX_DATA_BYTES \
+> -	(HGPCI_REQ_BUFFER_SIZE - sizeof(struct hv_get_perf_counter_info_params))
+> -
+>  static DEFINE_PER_CPU(char, hv_gpci_reqb[HGPCI_REQ_BUFFER_SIZE]) __aligned(sizeof(uint64_t));
+>  
+> -struct hv_gpci_request_buffer {
+> -	struct hv_get_perf_counter_info_params params;
+> -	uint8_t bytes[HGPCI_MAX_DATA_BYTES];
+> -} __packed;
+> -
+>  static unsigned long single_gpci_request(u32 req, u32 starting_index,
+>  		u16 secondary_index, u8 version_in, u32 offset, u8 length,
+>  		u64 *value)
+> diff --git a/arch/powerpc/perf/hv-gpci.h b/arch/powerpc/perf/hv-gpci.h
+> index a3053eda5dcc..4d108262bed7 100644
+> --- a/arch/powerpc/perf/hv-gpci.h
+> +++ b/arch/powerpc/perf/hv-gpci.h
+> @@ -2,33 +2,6 @@
+>  #ifndef LINUX_POWERPC_PERF_HV_GPCI_H_
+>  #define LINUX_POWERPC_PERF_HV_GPCI_H_
+>  
+> -#include <linux/types.h>
+> -
+> -/* From the document "H_GetPerformanceCounterInfo Interface" v1.07 */
+> -
+> -/* H_GET_PERF_COUNTER_INFO argument */
+> -struct hv_get_perf_counter_info_params {
+> -	__be32 counter_request; /* I */
+> -	__be32 starting_index;  /* IO */
+> -	__be16 secondary_index; /* IO */
+> -	__be16 returned_values; /* O */
+> -	__be32 detail_rc; /* O, only needed when called via *_norets() */
+> -
+> -	/*
+> -	 * O, size each of counter_value element in bytes, only set for version
+> -	 * >= 0x3
+> -	 */
+> -	__be16 cv_element_size;
+> -
+> -	/* I, 0 (zero) for versions < 0x3 */
+> -	__u8 counter_info_version_in;
+> -
+> -	/* O, 0 (zero) if version < 0x3. Must be set to 0 when making hcall */
+> -	__u8 counter_info_version_out;
+> -	__u8 reserved[0xC];
+> -	__u8 counter_value[];
+> -} __packed;
+> -
 
-> > > >> So I think I'm persuaded that it's preferable to have the kernel s=
-tuck
-> > > >> spinning rather than oopsing.
-> > > >> =
+Hmm, this pretty much guts this header which normally I'd be inclined to suggest
+moving the whole thing. The remainder of that header for context:
 
-> > > >
-> > > > +1
-> > > >
-> > > >> I'm 50/50 on whether we should have a cond_resched() in the loop. =
-My
-> > > >> first instinct is no, if we're stuck here for 20s a stack trace wo=
-uld be
-> > > >> good. But then we will probably hit that on some big and/or heavily
-> > > >> loaded machine.
-> > > >> =
+>  /*
+>   * counter info version => fw version/reference (spec version)
+>   *
+>
+ * 8 => power8 (1.07)
+ * [7 is skipped by spec 1.07]
+ * 6 => TLBIE (1.07)
+ * 5 => v7r7m0.phyp (1.05)
+ * [4 skipped]
+ * 3 => v7r6m0.phyp (?)
+ * [1,2 skipped]
+ * 0 => v7r{2,3,4}m0.phyp (?)
+ */
+#define COUNTER_INFO_VERSION_CURRENT 0x8
 
-> > > >> So possibly we should call cond_resched() but have some custom log=
-ic in
-> > > >> the loop to print a warning if we are stuck for more than some
-> > > >> sufficiently long amount of time.
-> > > >
-> > > > How long should that be ?
-> > > =
+/* capability mask masks. */
+enum {
+        HV_GPCI_CM_GA = (1 << 7),
+        HV_GPCI_CM_EXPANDED = (1 << 6),
+        HV_GPCI_CM_LAB = (1 << 5)
+};
 
-> > > Yeah good question.
-> > > =
+#define REQUEST_FILE "../hv-gpci-requests.h"
+#define NAME_LOWER hv_gpci
+#define NAME_UPPER HV_GPCI
+#include "req-gen/perf.h"
+#undef REQUEST_FILE
+#undef NAME_LOWER
+#undef NAME_UPPER
 
-> > > I guess step one would be seeing how long it can take on the 384 vcpu
-> > > machine. And we can probably test on some other big machines.
-> > > =
+The side effect of moving seems that we would have to drag "hv-gpci-requests.h"
+along as well. So, maybe its best just moving the struct as you've done so it
+can be used by code outside of perf.
 
-> > > Hopefully Nathan can give us some idea of how long he's seen it take =
-on
-> > > large systems? I know he was concerned about the 20s timeout of the
-> > > softlockup detector.
-> > > =
-
-> > > Maybe a minute or two?
-> > =
-
-> > Hmm, so I took a stab at this where I called cond_resched() after
-> > every 5 seconds of polling and printed a warning at the same time (FWIW
-> > that doesn't seem to trigger any warnings on a loaded 96-core mihawk
-> > system using KVM running the 384vcpu unplug loop)
-> > =
-
-> > But it sounds like that's not quite what you had in mind. How frequently
-> > do you think we should call cond_resched()? Maybe after 25 iterations
-> > of polling smp_query_cpu_stopped() to keep original behavior somewhat
-> > similar?
-> > =
-
-> > I'll let the current patch run on the mihawk system overnight in the
-> > meantime so we at least have that data point, but would be good to
-> > know what things look like a large pHyp machine.
-> =
-
-> At one point I did manage to get the system in a state where unplug
-> operations were taking 1-2s, but still not enough to trigger any
-> 5s warning, and I wasn't able to reproduce that in subsequent runs.
-> =
-
-> I also tried reworking the patch so that we print a warning and
-> cond_resched() after 200 ms to make sure that path gets executed, but
-> only managed to trigger the warning twice after a few hours.
-> =
-
-> So, if we print a warning after a couple minutes, that seems pretty
-> conservative as far as avoiding spurious warnings. And if we
-> cond_resched() after 25 loops of polling (~0.1 ms in the cases
-
-~0.1 seconds I mean
-
-> that caused the original crash), that would avoid most of the
-> default RCU/lockup warnings.
-> =
-
-> But having a second timeout to trigger the cond_resched() after some
-> set interval like 2s seems more deterministic since we're less
-> susceptible to longer delays due to things like the RTAS calls
-> contending for QEMU's global mutex in the the KVM case.
-> =
-
-> =
-
-> > =
-
-> > Thanks!
-> > =
-
-> > > =
-
-> > > >> > Fixes: eac1e731b59ee ("powerpc/xive: guest exploitation of the X=
-IVE interrupt controller")
-> > > >> > Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=3D1856588
-> > > >> =
-
-> > > >> This is not public.
-> > > >
-> > > > I'll have a look at changing that.
-> > > =
-
-> > > Thanks.
-> > > =
-
-> > > cheers
+-Tyrel
