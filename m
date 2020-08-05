@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC98723CCF2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 19:12:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB9B23CD00
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 19:15:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMJ8m2x39zDqfk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 03:12:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMJCp3yClzDqHg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 03:15:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::142;
- helo=mail-lf1-x142.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::244;
+ helo=mail-lj1-x244.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=RdzmbMML; dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
+ header.s=20161025 header.b=oziJJooK; dkim-atps=neutral
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMJ685M6zzDqYB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 03:10:20 +1000 (AEST)
-Received: by mail-lf1-x142.google.com with SMTP id b11so24668647lfe.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Aug 2020 10:10:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMJ7k5gB7zDqbB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 03:11:46 +1000 (AEST)
+Received: by mail-lj1-x244.google.com with SMTP id h19so48562642ljg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Aug 2020 10:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=q+69HNPUBLn+0j8xa7ztNqSpAC3bH5kdSFM7se7mw/Y=;
- b=RdzmbMMLETEqNtoVgyRCKj1pU2wD/0M8qEqvRXNRRNY+b914UvXZkxoVgayVQubBPC
- CE/souAwCoROj7cmbTcH2Md3LKEYbq7hyPYtIYReTO92nMUXfSeWszPI988KPS2REOZ/
- x8Lg5axuTOlNvJMwV7URNblxu16MjbinauMnuxvVDwlqKDPHVH06HlMC2htBpXCjb11y
- 71kjYcUyosO0NzQGNjoXOZVONMcKv4BHAUmemA/OfyAvVhCb2Eag/fpp10a8cB3ymmQm
- ukYz/pLgzNQdHe5F/wMNFpu3aiLl6i8gq8ye/o/O6zNgd9JR7Oi+/mkdZRJPFt4uOCZ/
- Wj4A==
+ :cc; bh=wXACrCF85ppHwQuHqdOjCkc1N78NkRlSijLNjTow210=;
+ b=oziJJooKYyQ5sG761r04I5LKIuXOAb4zkqQY0rWC/xo2s+cTYTs9U7RyQWnqJ5pq1v
+ Nbi4cMvrIp/CIcHu8pIr+eoqlm0BvwqSZf/j11GWMus1IVdOI8eFA+JP3OpxAqxrqH8K
+ 4U3LrHkbnbOlDfybyMuly/WmuqEo0ptHsHBq2XUlda4WU2cHiLw7ZD+AnmV8uuOJ/jgu
+ 3gjhgLG0ATcZI4I3fwTk7ZEPoMTcfQVSsz4xqNOlCB6RK7j7M3zBxlIMpYdsF8DV3rrq
+ yNVU9YFhsTtYiIivGSgzfm9XcHZ9fq/Ugzzwuzkf0diKBR/hJ5MKs2YpE9NsOoFGUM2c
+ kG+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=q+69HNPUBLn+0j8xa7ztNqSpAC3bH5kdSFM7se7mw/Y=;
- b=UHH2NN3dvQO9xnBqkWXSmCL8cJA1vW1cqDDQTUKY5PSxAQc+2RD9jCnWpsfaQ+wJGX
- l5k4HooTyWb3zmIT0hvCuHdBErMDAEMVw1rIJ51QmdZLWFXDXTj6XrZyLpt2D+lA1Bf1
- kQdrv1jJ/OnQ8LE1fdPpmxjEwFGDv4tDJ43qAZ9ytWcCDuNMXRVQqgBIpfMC92w66XGn
- FSo76awdOukkVG/VlEuQw8/4itUrt3xUG8UDNjfCj5IeuKYot/oC2Q9Wy75KehF1mAnv
- UCBhmlewZZHvNNzCMUWpN6ODr+BZD0gnICuRdBG9B1GSlhcN+R/5qp8hq8I3DdDAfQKs
- Q6WA==
-X-Gm-Message-State: AOAM530RwaLEFNszDVgcIv/bHzskdBW1L8D9B33VO2wN9EP9HZbJ+39r
- BlWr7Pt2a3vtjRw5FnW+4smriHMaVZt+2ZPBM24=
-X-Google-Smtp-Source: ABdhPJwrfD4lQmBmRhZhj4oSbWRKgm3lTiWKFBcnnoErai4/oJd38wR2GismiRK0iE3hYzt+6N6iDQ3Zkito0n/twrM=
-X-Received: by 2002:a05:6512:3b7:: with SMTP id
- v23mr2064439lfp.10.1596647415748; 
- Wed, 05 Aug 2020 10:10:15 -0700 (PDT)
+ bh=wXACrCF85ppHwQuHqdOjCkc1N78NkRlSijLNjTow210=;
+ b=Mi8eWkIMDcvxWbtv19gIj+sYekKIgTKeo8YFvuJRLLcowgYBkZ+MY7iXtCVaCI4ba+
+ T3/ek2ooFaQbbYFY3YJaVaAoHXk4s2wb8OJCsQGq2W2uG6jaKxJMjk8m1j7MEcrlbBrk
+ JU8/9SJeU73BTgrSfvlFZ7+PfUb+VupUck1Kti0TQ14lfilK/QPCnpAwpJUhIlb4zu2f
+ ITf6ZKJmulSpVp2XhFgBglE5z3Qz+2GBNpzdjdDZmj/DOPxCnv0UPczeSIYfu2FU09Rg
+ 2AaPecYaoEtKpxGsap1XPf1UfOfjItnEcAVj6Gb1O3+3tkvbP12ikkk7PjjYIS43K0VK
+ OXvw==
+X-Gm-Message-State: AOAM532BKlKB1VDd2lWbS09+CgIxscOD/hVOKFeWr/YcwMDoKP1iEWjJ
+ 2wlJlI1HrJSuOGVWkBgeysUx6yfNWjj4HO9KxQI=
+X-Google-Smtp-Source: ABdhPJwaicIhf8YdyAekvXwX7eOOzcHPiY2LvmIo6u440HJ6sOevFi0lA9FP0nbD1iVE8pjbKUmnQK8GBjMj1kpsXT0=
+X-Received: by 2002:a2e:b814:: with SMTP id u20mr1829339ljo.202.1596647501750; 
+ Wed, 05 Aug 2020 10:11:41 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200802163601.8189-1-rppt@kernel.org>
- <20200802163601.8189-18-rppt@kernel.org>
-In-Reply-To: <20200802163601.8189-18-rppt@kernel.org>
+ <20200802163601.8189-17-rppt@kernel.org>
+In-Reply-To: <20200802163601.8189-17-rppt@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 5 Aug 2020 19:10:04 +0200
-Message-ID: <CANiq72kaw7EMePMbgYyKMCkBC+7CgERq4FV2Lp-fH+ea3H12vg@mail.gmail.com>
-Subject: Re: [PATCH v2 17/17] memblock: use separate iterators for memory and
- reserved regions
+Date: Wed, 5 Aug 2020 19:11:30 +0200
+Message-ID: <CANiq72k-hZwbnttADQhi3+NrHkLDVe95jxLAPvLbvSOW41+HaQ@mail.gmail.com>
+Subject: Re: [PATCH v2 16/17] memblock: implement
+ for_each_reserved_mem_region() using __next_mem_region()
 To: Mike Rapoport <rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -103,9 +102,9 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 2, 2020 at 6:41 PM Mike Rapoport <rppt@kernel.org> wrote:
+On Sun, Aug 2, 2020 at 6:40 PM Mike Rapoport <rppt@kernel.org> wrote:
 >
->  .clang-format                  |  3 ++-
+>  .clang-format                    |  2 +-
 
 The .clang-format bit:
 
