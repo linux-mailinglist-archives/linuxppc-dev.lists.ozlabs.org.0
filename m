@@ -2,59 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A7A23CC95
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 18:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC98723CCF2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 19:12:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMHkq3j2QzDqfc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 02:53:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMJ8m2x39zDqfk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 03:12:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::142;
+ helo=mail-lf1-x142.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=RdzmbMML; dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMHhn4GJgzDqf9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 02:51:51 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BMHhd05b5z9vB7v;
- Wed,  5 Aug 2020 18:51:45 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id XDMUEKcHu9Nb; Wed,  5 Aug 2020 18:51:44 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BMHhc689vz9vB7t;
- Wed,  5 Aug 2020 18:51:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0D6838B7ED;
- Wed,  5 Aug 2020 18:51:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Y_J6TVisphoA; Wed,  5 Aug 2020 18:51:46 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3EFD58B7EC;
- Wed,  5 Aug 2020 18:51:46 +0200 (CEST)
-Subject: Re: [PATCH v10 2/5] powerpc/vdso: Prepare for switching VDSO to
- generic C implementation.
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <cover.1596611196.git.christophe.leroy@csgroup.eu>
- <348528c33cd4007f3fee7fe643ef160843d09a6c.1596611196.git.christophe.leroy@csgroup.eu>
- <20200805140307.GO6753@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <7d409421-6396-8eba-8250-b6c9ff8232d9@csgroup.eu>
-Date: Wed, 5 Aug 2020 18:51:44 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMJ685M6zzDqYB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 03:10:20 +1000 (AEST)
+Received: by mail-lf1-x142.google.com with SMTP id b11so24668647lfe.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Aug 2020 10:10:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=q+69HNPUBLn+0j8xa7ztNqSpAC3bH5kdSFM7se7mw/Y=;
+ b=RdzmbMMLETEqNtoVgyRCKj1pU2wD/0M8qEqvRXNRRNY+b914UvXZkxoVgayVQubBPC
+ CE/souAwCoROj7cmbTcH2Md3LKEYbq7hyPYtIYReTO92nMUXfSeWszPI988KPS2REOZ/
+ x8Lg5axuTOlNvJMwV7URNblxu16MjbinauMnuxvVDwlqKDPHVH06HlMC2htBpXCjb11y
+ 71kjYcUyosO0NzQGNjoXOZVONMcKv4BHAUmemA/OfyAvVhCb2Eag/fpp10a8cB3ymmQm
+ ukYz/pLgzNQdHe5F/wMNFpu3aiLl6i8gq8ye/o/O6zNgd9JR7Oi+/mkdZRJPFt4uOCZ/
+ Wj4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=q+69HNPUBLn+0j8xa7ztNqSpAC3bH5kdSFM7se7mw/Y=;
+ b=UHH2NN3dvQO9xnBqkWXSmCL8cJA1vW1cqDDQTUKY5PSxAQc+2RD9jCnWpsfaQ+wJGX
+ l5k4HooTyWb3zmIT0hvCuHdBErMDAEMVw1rIJ51QmdZLWFXDXTj6XrZyLpt2D+lA1Bf1
+ kQdrv1jJ/OnQ8LE1fdPpmxjEwFGDv4tDJ43qAZ9ytWcCDuNMXRVQqgBIpfMC92w66XGn
+ FSo76awdOukkVG/VlEuQw8/4itUrt3xUG8UDNjfCj5IeuKYot/oC2Q9Wy75KehF1mAnv
+ UCBhmlewZZHvNNzCMUWpN6ODr+BZD0gnICuRdBG9B1GSlhcN+R/5qp8hq8I3DdDAfQKs
+ Q6WA==
+X-Gm-Message-State: AOAM530RwaLEFNszDVgcIv/bHzskdBW1L8D9B33VO2wN9EP9HZbJ+39r
+ BlWr7Pt2a3vtjRw5FnW+4smriHMaVZt+2ZPBM24=
+X-Google-Smtp-Source: ABdhPJwrfD4lQmBmRhZhj4oSbWRKgm3lTiWKFBcnnoErai4/oJd38wR2GismiRK0iE3hYzt+6N6iDQ3Zkito0n/twrM=
+X-Received: by 2002:a05:6512:3b7:: with SMTP id
+ v23mr2064439lfp.10.1596647415748; 
+ Wed, 05 Aug 2020 10:10:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200805140307.GO6753@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20200802163601.8189-1-rppt@kernel.org>
+ <20200802163601.8189-18-rppt@kernel.org>
+In-Reply-To: <20200802163601.8189-18-rppt@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 5 Aug 2020 19:10:04 +0200
+Message-ID: <CANiq72kaw7EMePMbgYyKMCkBC+7CgERq4FV2Lp-fH+ea3H12vg@mail.gmail.com>
+Subject: Re: [PATCH v2 17/17] memblock: use separate iterators for memory and
+ reserved regions
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,35 +75,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linux-arch@vger.kernel.org,
- vincenzo.frascino@arm.com, arnd@arndb.de, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, luto@kernel.org, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ Emil Renner Berthing <kernel@esmil.dk>, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ linux-arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Baoquan He <bhe@redhat.com>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Ingo Molnar <mingo@redhat.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Stafford Horne <shorne@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ Michal Simek <monstr@monstr.eu>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Linux-MM <linux-mm@kvack.org>, linux-kernel <linux-kernel@vger.kernel.org>,
+ iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Again,
+On Sun, Aug 2, 2020 at 6:41 PM Mike Rapoport <rppt@kernel.org> wrote:
+>
+>  .clang-format                  |  3 ++-
 
-Le 05/08/2020 à 16:03, Segher Boessenkool a écrit :
-> Hi!
-> 
-> On Wed, Aug 05, 2020 at 07:09:23AM +0000, Christophe Leroy wrote:
->> +/*
->> + * The macros sets two stack frames, one for the caller and one for the callee
->> + * because there are no requirement for the caller to set a stack frame when
->> + * calling VDSO so it may have omitted to set one, especially on PPC64
->> + */
-> 
-> If the caller follows the ABI, there always is a stack frame.  So what
-> is going on?
+The .clang-format bit:
 
-Looks like it is not the case. See discussion at 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/2a67c333893454868bbfda773ba4b01c20272a5d.1588079622.git.christophe.leroy@c-s.fr/
+Acked-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 
-Seems like GCC uses the redzone and doesn't set a stack frame. I guess 
-it doesn't know that the inline assembly contains a function call so it 
-doesn't set the frame.
-
-
-Christophe
+Cheers,
+Miguel
