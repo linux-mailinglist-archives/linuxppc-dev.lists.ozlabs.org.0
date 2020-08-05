@@ -2,50 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B3623C4C7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 06:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC15023C4D1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 06:57:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLzjW73QmzDqgL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 14:51:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLzrx62glzDqf1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 14:57:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLzdj17RDzDqdM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 14:48:08 +1000 (AEST)
-IronPort-SDR: bgADRj4mcGcBW1AAisPUwyp/fwV4/YmKZ3s1Sp6tZhbeNDVeodt5xm3np8EKnUaqwkykfXcyFZ
- 3V9DORLfYuHg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9703"; a="132024738"
-X-IronPort-AV: E=Sophos;i="5.75,436,1589266800"; d="scan'208";a="132024738"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2020 21:48:04 -0700
-IronPort-SDR: v1fXdXlwTYPTIZgCtt+pMJ8rHlrZ9+orI9mB0t9kv67MhMK5VIZ8Eg5YiZxO6+BvBdufSSPriF
- lnwc4uw40x0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,436,1589266800"; d="scan'208";a="330818163"
-Received: from lkp-server02.sh.intel.com (HELO 37a337f97289) ([10.239.97.151])
- by FMSMGA003.fm.intel.com with ESMTP; 04 Aug 2020 21:48:03 -0700
-Received: from kbuild by 37a337f97289 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1k3BLO-0000Zy-Fb; Wed, 05 Aug 2020 04:48:02 +0000
-Date: Wed, 05 Aug 2020 12:47:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 0c83b277ada72b585e6a3e52b067669df15bcedb
-Message-ID: <5f2a39fb.glh5Bx25s9LcqQdF%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLzqJ4gbGzDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 14:56:28 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0754X1tX171658; Wed, 5 Aug 2020 00:56:17 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32qcf1vtw4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Aug 2020 00:56:17 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0754txw0022017;
+ Wed, 5 Aug 2020 04:56:15 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03fra.de.ibm.com with ESMTP id 32nyyd1n42-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Aug 2020 04:56:15 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0754uDld34210222
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 5 Aug 2020 04:56:13 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E87D911C050;
+ Wed,  5 Aug 2020 04:56:12 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 096CC11C04A;
+ Wed,  5 Aug 2020 04:56:12 +0000 (GMT)
+Received: from [9.85.68.248] (unknown [9.85.68.248])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  5 Aug 2020 04:56:11 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.15\))
+Subject: Re: [PATCH v4] selftests/powerpc: Fix pkey syscall redefinitions
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <a4956d838bf59b0a71a2553c5ca81131ea8b49b9.1596561758.git.sandipan@linux.ibm.com>
+Date: Wed, 5 Aug 2020 10:26:11 +0530
 Content-Transfer-Encoding: 7bit
+Message-Id: <6E920CCA-7931-4C93-9147-C9D80A74F943@linux.vnet.ibm.com>
+References: <a4956d838bf59b0a71a2553c5ca81131ea8b49b9.1596561758.git.sandipan@linux.ibm.com>
+To: Sandipan Das <sandipan@linux.ibm.com>
+X-Mailer: Apple Mail (2.3445.104.15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-05_03:2020-08-03,
+ 2020-08-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0
+ mlxlogscore=832 priorityscore=1501 spamscore=0 malwarescore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1011 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008050040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,135 +85,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: David Laight <david.laight@aculab.com>, linuxppc-dev@lists.ozlabs.org,
+ aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: 0c83b277ada72b585e6a3e52b067669df15bcedb  powerpc: Fix circular dependency between percpu.h and mmu.h
 
-elapsed time: 925m
 
-configs tested: 112
-configs skipped: 7
+> On 04-Aug-2020, at 11:01 PM, Sandipan Das <sandipan@linux.ibm.com> wrote:
+> 
+> On distros using older glibc versions, the pkey tests
+> encounter build failures due to redefinition of the
+> pkey syscall numbers.
+> 
+> For compatibility, commit 743f3544fffb added a wrapper
+> for the gettid() syscall and included syscall.h if the
+> version of glibc used is older than 2.30. This leads
+> to different definitions of SYS_pkey_* as the ones in
+> the pkey test header set numeric constants where as the
+> ones from syscall.h reuse __NR_pkey_*. The compiler
+> complains about redefinitions since they are different.
+> 
+> This replaces SYS_pkey_* definitions with __NR_pkey_*
+> such that the definitions in both syscall.h and pkeys.h
+> are alike. This way, if syscall.h has to be included
+> for compatibility reasons, builds will still succeed.
+> 
+> Fixes: 743f3544fffb ("selftests/powerpc: Add wrapper for gettid")
+> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Suggested-by: David Laight <david.laight@aculab.com>
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                           se7750_defconfig
-mips                            gpr_defconfig
-arm                       spear13xx_defconfig
-mips                      maltasmvp_defconfig
-sh                           se7206_defconfig
-arm                           spitz_defconfig
-arm                        neponset_defconfig
-arm                  colibri_pxa300_defconfig
-arm                       netwinder_defconfig
-arm                       versatile_defconfig
-powerpc                mpc7448_hpc2_defconfig
-mips                        bcm63xx_defconfig
-sh                          r7785rp_defconfig
-sh                            shmin_defconfig
-arm                        multi_v7_defconfig
-powerpc                      chrp32_defconfig
-powerpc                     powernv_defconfig
-sh                          sdk7786_defconfig
-arm                     eseries_pxa_defconfig
-m68k                          atari_defconfig
-powerpc                       holly_defconfig
-arm                        keystone_defconfig
-powerpc                     mpc83xx_defconfig
-sh                         ap325rxa_defconfig
-arm                             mxs_defconfig
-sh                            titan_defconfig
-arc                              alldefconfig
-m68k                        mvme147_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a006-20200804
-x86_64               randconfig-a001-20200804
-x86_64               randconfig-a004-20200804
-x86_64               randconfig-a005-20200804
-x86_64               randconfig-a002-20200804
-x86_64               randconfig-a003-20200804
-i386                 randconfig-a005-20200805
-i386                 randconfig-a004-20200805
-i386                 randconfig-a001-20200805
-i386                 randconfig-a003-20200805
-i386                 randconfig-a002-20200805
-i386                 randconfig-a006-20200805
-i386                 randconfig-a005-20200804
-i386                 randconfig-a004-20200804
-i386                 randconfig-a006-20200804
-i386                 randconfig-a001-20200804
-i386                 randconfig-a003-20200804
-i386                 randconfig-a002-20200804
-x86_64               randconfig-a013-20200805
-x86_64               randconfig-a011-20200805
-x86_64               randconfig-a012-20200805
-x86_64               randconfig-a016-20200805
-x86_64               randconfig-a015-20200805
-x86_64               randconfig-a014-20200805
-i386                 randconfig-a011-20200804
-i386                 randconfig-a012-20200804
-i386                 randconfig-a013-20200804
-i386                 randconfig-a014-20200804
-i386                 randconfig-a015-20200804
-i386                 randconfig-a016-20200804
-i386                 randconfig-a014-20200805
-i386                 randconfig-a015-20200805
-i386                 randconfig-a016-20200805
-i386                 randconfig-a011-20200805
-i386                 randconfig-a012-20200805
-i386                 randconfig-a013-20200805
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks
+-Sachin
