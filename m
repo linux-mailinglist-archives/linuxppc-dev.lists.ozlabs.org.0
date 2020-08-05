@@ -2,33 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A7E23C2BF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 02:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EA323C2AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 02:44:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLtGJ10gYzDqNg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 10:46:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLtCy3HmDzDqc6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 10:43:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLtBC0TjKzDqXZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 10:42:27 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLtBB3wWFzDqXT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 10:42:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix)
- id 4BLtBC02Drz9sPC; Wed,  5 Aug 2020 10:42:27 +1000 (AEST)
+ id 4BLtBB2MCcz9sPC; Wed,  5 Aug 2020 10:42:26 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BLtBB6KrTz9sT6; Wed,  5 Aug 2020 10:42:26 +1000 (AEST)
+ id 4BLtBB1ns1z9sRK; Wed,  5 Aug 2020 10:42:26 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20200803020719.96114-1-mpe@ellerman.id.au>
-References: <20200803020719.96114-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] selftests/powerpc: Skip vmx/vsx/tar/etc tests on older
- CPUs
-Message-Id: <159658812635.351125.100298740346288319.b4-ty@ellerman.id.au>
+In-Reply-To: <20200722022422.825197-1-mpe@ellerman.id.au>
+References: <20200722022422.825197-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/40x: Fix assembler warning about r0
+Message-Id: <159658812616.351125.6131435370355606642.b4-ty@ellerman.id.au>
 Date: Wed,  5 Aug 2020 10:42:26 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -45,16 +44,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 3 Aug 2020 12:07:19 +1000, Michael Ellerman wrote:
-> Some of our tests use VSX or newer VMX instructions, so need to be
-> skipped on older CPUs to avoid SIGILL'ing.
+On Wed, 22 Jul 2020 12:24:22 +1000, Michael Ellerman wrote:
+> The assembler says:
+>   arch/powerpc/kernel/head_40x.S:623: Warning: invalid register expression
 > 
-> Similarly TAR was added in v2.07, and the PMU event used in the stcx
-> fail test only works on Power8 or later.
+> It's objecting to the use of r0 as the RA argument. That's because
+> when RA = 0 the literal value 0 is used, rather than the content of
+> r0, making the use of r0 in the source potentially confusing.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] selftests/powerpc: Skip vmx/vsx/tar/etc tests on older CPUs
-      https://git.kernel.org/powerpc/c/872d11bca9c29ed19595c993b9f552ffe9b63dcb
+[1/1] powerpc/40x: Fix assembler warning about r0
+      https://git.kernel.org/powerpc/c/8d8a629d00a5283874b81b594f31f8d436dc57d8
 
 cheers
