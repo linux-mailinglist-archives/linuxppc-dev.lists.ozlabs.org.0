@@ -1,75 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B5423C40E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:44:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C12923C42C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:52:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLyDX55sczDqdn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:44:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLyPv367xzDqRF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:52:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qIlbbKG9; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=EpqpRnxl; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpqpRnxl; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLyBv0XKNzDqW3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:43:18 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id ha11so3561776pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 20:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=iQ39NfCRpC8old6W/LK5W1TFVyUKRmxvr/lOL0aiW4s=;
- b=qIlbbKG9h9yj25xaWWwslH5pEhAoXFvHvxxdw1Lh1QPQZU8yZgiaKSSZO+XsBwLO3J
- G9rr6Qo+kjErZl0BXLMensSNIEAHM110mIuipHLfCax3qtPL4K3UOxdHndx4RxuWqTYC
- u5Lm+wo8vzZeubksd+gF5yl0FATX/WAkjgvQBr8N5sgvFRwkFtjOivoNTaGHqKs/kVS+
- 5ksKFDdTm3OyzEH/RgiiTds8n0fs+AUtam5cKALYneqHx0XA+juoBXXQAc5k2hDdO37d
- av8tQClndNBX0wGCNWWreOaQJ/aExs5UDhWiK9b1oQO5knq08q+RZZw57834nQAxNvB8
- R3Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=iQ39NfCRpC8old6W/LK5W1TFVyUKRmxvr/lOL0aiW4s=;
- b=Uw+EV09EgtK6DzlAE58IQIwdbPRIU6dlDkMOJjYo8UG4TukAHjOVHfE4EJPOut2Q+m
- cRKYaJTSZx48oqF07u1SaQFq8KfpFkiZTNb+IUXP4w86vwjXFqSp9LhejE+b34wbDTSK
- u0EI2SWHbILKKQTAuWnwdks7rO+RXGnRO4m1I3c0irHQylspPTf5NSeY4pI7dqD4Sk7o
- i6xPIow/4A/jTK8NZvEdXPwj0z0OcOKc6A2vQ87FvX+4LOLpQzPrBhGZL6uiVQCrrMmr
- 9grfYe01DP1ZGhw0L27Plbx4YpJvva6oqhsz5SoCpFjgUoPsKEACDPXXDBMYpXrXlZol
- ul/g==
-X-Gm-Message-State: AOAM53132kc1WLXe6qul5zv/jFBfpYexXSxFYuYJRnAeMIvwnD+ja9sA
- 7d9nA5q7eELkPUFCkBagvgU=
-X-Google-Smtp-Source: ABdhPJxqLYWvll9i8XBUjWuZrkB2d4SKoLlGUSOgZFb5VKeAkUJl9BcJtGw96aePleICT4meo2KXVQ==
-X-Received: by 2002:a17:902:9f85:: with SMTP id
- g5mr1222539plq.13.1596598994895; 
- Tue, 04 Aug 2020 20:43:14 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id b13sm879344pjl.7.2020.08.04.20.43.14
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 04 Aug 2020 20:43:14 -0700 (PDT)
-Date: Tue, 4 Aug 2020 20:43:00 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2 1/2] ASoC: fsl_sai: Clean code for synchronous mode
-Message-ID: <20200805034300.GA10174@Asurada-Nvidia>
-References: <1596594233-13489-1-git-send-email-shengjiu.wang@nxp.com>
- <1596594233-13489-2-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLyMV3wH0zDqGc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:50:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1596599441;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PBRFUAvhtw5NCrkPVOAd8K2sp2Oav4oQ9F6n5x6FCHA=;
+ b=EpqpRnxlyFlrjlyw7bkaQaUpWOIT9jx/4C19hWNepyupGYYcajnOtvCObEUC2XGNdjQ9vn
+ uJmxFXEE7fMaVz2lR3eQEA/RXH440BKOjEvx5OY3HbcQl4SerTeiACcz4a5Jb2qJt7TBLo
+ cjEHrvRh9CTzwQnBBpQT7xNOtjNMI4Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1596599441;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PBRFUAvhtw5NCrkPVOAd8K2sp2Oav4oQ9F6n5x6FCHA=;
+ b=EpqpRnxlyFlrjlyw7bkaQaUpWOIT9jx/4C19hWNepyupGYYcajnOtvCObEUC2XGNdjQ9vn
+ uJmxFXEE7fMaVz2lR3eQEA/RXH440BKOjEvx5OY3HbcQl4SerTeiACcz4a5Jb2qJt7TBLo
+ cjEHrvRh9CTzwQnBBpQT7xNOtjNMI4Y=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-185-xI0_yRdGMPGizyxDuo-nyA-1; Tue, 04 Aug 2020 23:50:36 -0400
+X-MC-Unique: xI0_yRdGMPGizyxDuo-nyA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8CFAE102C7EC;
+ Wed,  5 Aug 2020 03:50:30 +0000 (UTC)
+Received: from localhost (ovpn-12-71.pek2.redhat.com [10.72.12.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 17E4F8AC06;
+ Wed,  5 Aug 2020 03:50:27 +0000 (UTC)
+Date: Wed, 5 Aug 2020 11:50:24 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v2 02/17] dma-contiguous: simplify
+ cma_early_percent_memory()
+Message-ID: <20200805035024.GR10792@MiWiFi-R3L-srv>
+References: <20200802163601.8189-1-rppt@kernel.org>
+ <20200802163601.8189-3-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1596594233-13489-2-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200802163601.8189-3-rppt@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,27 +82,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: Emil Renner Berthing <kernel@esmil.dk>, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Stafford Horne <shorne@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
+ Michal Simek <monstr@monstr.eu>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 05, 2020 at 10:23:52AM +0800, Shengjiu Wang wrote:
-> Tx synchronous with Rx: The RMR is the word mask register, it is used
-> to mask any word in the frame, it is not relating to clock generation,
-> So it is no need to be changed when Tx is going to be enabled.
+On 08/02/20 at 07:35pm, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
 > 
-> Rx synchronous with Tx: The TMR is the word mask register, it is used
-> to mask any word in the frame, it is not relating to clock generation,
-> So it is no need to be changed when Rx is going to be enabled.
+> The memory size calculation in cma_early_percent_memory() traverses
+> memblock.memory rather than simply call memblock_phys_mem_size(). The
+> comment in that function suggests that at some point there should have been
+> call to memblock_analyze() before memblock_phys_mem_size() could be used.
+> As of now, there is no memblock_analyze() at all and
+> memblock_phys_mem_size() can be used as soon as cold-plug memory is
+> registerd with memblock.
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Replace loop over memblock.memory with a call to memblock_phys_mem_size().
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  kernel/dma/contiguous.c | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
+> 
+> diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+> index 15bc5026c485..1992afd8ca7b 100644
+> --- a/kernel/dma/contiguous.c
+> +++ b/kernel/dma/contiguous.c
+> @@ -73,16 +73,7 @@ early_param("cma", early_cma);
+>  
+>  static phys_addr_t __init __maybe_unused cma_early_percent_memory(void)
+>  {
+> -	struct memblock_region *reg;
+> -	unsigned long total_pages = 0;
+> -
+> -	/*
+> -	 * We cannot use memblock_phys_mem_size() here, because
+> -	 * memblock_analyze() has not been called yet.
+> -	 */
+> -	for_each_memblock(memory, reg)
+> -		total_pages += memblock_region_memory_end_pfn(reg) -
+> -			       memblock_region_memory_base_pfn(reg);
+> +	unsigned long total_pages = PHYS_PFN(memblock_phys_mem_size());
 
-Can you rename the PATCH subject to something more specific?
-For example, "Drop TMR/RMR settings for synchronous mode".
+Reviewed-by: Baoquan He <bhe@redhat.com>
 
-Please add this once it's addressed:
-Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
+>  
+>  	return (total_pages * CONFIG_CMA_SIZE_PERCENTAGE / 100) << PAGE_SHIFT;
+>  }
+> -- 
+> 2.26.2
+> 
+
