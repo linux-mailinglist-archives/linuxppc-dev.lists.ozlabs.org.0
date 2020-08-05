@@ -1,81 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8628A23C3E4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:14:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA9C23C3E9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:16:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLxYQ706fzDqW3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:14:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLxbc6RLhzDqW9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:16:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
- helo=mail-qt1-x843.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SDr30cOr; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLxM93XFnzDqZp
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:05:25 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id h21so26282271qtp.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 20:05:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=FHVfOCrTYMIyp/yDwtpHYrzGhqVPdI+0ppzTBFsHaGA=;
- b=SDr30cOrPPrZYzCmHSo4oEPMGN3I5/rZsla9OZMOm9PntE/t1BJHvFMlXcRk6+mjZD
- Kncqs0o0wYrUJ6ull6q1DDNHqUKZdUCsDq997qoQTmh9OqIMEzjnNB2ZviJiCQ0CU7H5
- MC49G2KZ59LLpJOCQvGQZugxqR60osZDVU4wjOycCAaOClvspfKizKF97OguRvHv29ms
- crJlF1rPmmMGQzqb1Y8xf+RmwLLP4dKeO5xvoHFyEDLqVcgX50dryHE6ryOz4/oBK6HA
- UqesV4EUjDyulEMRlGs4Kmwd4/bXPTQ090k4f6VucU6g9Qyb3fdHpAI8co3277hsPbCJ
- OMXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=FHVfOCrTYMIyp/yDwtpHYrzGhqVPdI+0ppzTBFsHaGA=;
- b=Ddi32czYNLJsYRKOoPyni+UCSnYbx3UQhnos6qpZKiKd6CW0OOY/SnEtKd0KqqB5Ov
- Zp1mxnA0iTUoRw1YUN2jZXGcLp6o8/TtgC6ATJVkbCYiLzBmF8OdIKL0P0oBYYDnWI5N
- UqCk7yxwjGPlP+SeRNze09bDj91J+z7GjY0yWTX0OMZe41N2vEuk8sIt3sckyRL8BNZ/
- N5yOiyLzvjwKtqhyDuDPycGvdfJ/bTv5A86q7UR+bBk1rLJdSVO2k8SFX2GvfPXudZ9w
- h9lU2RPuQgdmykXLo/qLm3+ynNfcFlsZSoWzNoCJfVNqdfDBZehIoK/uEOkOObS4lA5S
- N74g==
-X-Gm-Message-State: AOAM532S072RvCsVe/Jgbi2qJzRgfErI/WHdFosKiOxBCbkSp/CjnJ5B
- 7Ououq2yzHMTVmhh/v7tQ5U=
-X-Google-Smtp-Source: ABdhPJzNtehPgt1cATjgfHbP2JS1QBrBnY1eNrCAtHYIpCI11soyyzLkI8wwF29/EsW7yYjTEPmXdQ==
-X-Received: by 2002:ac8:4741:: with SMTP id k1mr1259519qtp.41.1596596722106;
- Tue, 04 Aug 2020 20:05:22 -0700 (PDT)
-Received: from LeoBras.ibmuc.com (179-125-154-168.dynamic.desktop.com.br.
- [179.125.154.168])
- by smtp.gmail.com with ESMTPSA id n4sm869946qtr.73.2020.08.04.20.05.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Aug 2020 20:05:21 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
- Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-Subject: [PATCH v5 4/4] powerpc/pseries/iommu: Allow bigger 64bit window by
- removing default DMA window
-Date: Wed,  5 Aug 2020 00:04:55 -0300
-Message-Id: <20200805030455.123024-5-leobras.c@gmail.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200805030455.123024-1-leobras.c@gmail.com>
-References: <20200805030455.123024-1-leobras.c@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLxPB4ZlkzDqZk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:07:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=h2/1diyM; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BLxP904K2z9sR4;
+ Wed,  5 Aug 2020 13:07:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1596596829;
+ bh=cFnOx9MLQDAqDwbnGPI2ZmfS5spxvaNeWSCSo9hMxag=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=h2/1diyMDAwiQxGA6H1jgJ9kmhVmy0uG0MDsBMuebFNASEQXitbNgwI4s494iWK4D
+ nmN1FJya2ptM7fxL1PRY2wsb1Z35yBEXMCbwiEj7ethGQ5B2Cr5LHhyGKoC5BhO2ol
+ d3zfbexRVOwwD6s+HdC4MuRsdTnTejyiSzz7pVL+bRjMXoyu8oDmOe8FCjDIx9l3D1
+ nMf2BrhKUNI5J/uE1NXz5fqlO9wfvV19ut9f+T0v4jW5n5tjUHoVxluZTaZOAU3czM
+ PwHS32Jwib9t0RIoDZQa3Frg1xL7gdVIoVsPPf3LVYL2OUELuY2Yh7AkDQx488+88y
+ U6czWI61Th9/w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Greg Kurz <groug@kaod.org>
+Subject: Re: [PATCH] powerpc/pseries/hotplug-cpu: increase wait time for vCPU
+ death
+In-Reply-To: <20200804161609.6cb2cb71@bahia.lan>
+References: <20200804032937.7235-1-mdroth@linux.vnet.ibm.com>
+ <873652zg8h.fsf@mpe.ellerman.id.au> <20200804161609.6cb2cb71@bahia.lan>
+Date: Wed, 05 Aug 2020 13:07:08 +1000
+Message-ID: <87zh79yen7.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,144 +59,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Michael Roth <mdroth@linux.vnet.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Cedric Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On LoPAR "DMA Window Manipulation Calls", it's recommended to remove the
-default DMA window for the device, before attempting to configure a DDW,
-in order to make the maximum resources available for the next DDW to be
-created.
+Greg Kurz <groug@kaod.org> writes:
+> On Tue, 04 Aug 2020 23:35:10 +1000
+> Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> There is a bit of history to this code, but not in a good way :)
+>> 
+>> Michael Roth <mdroth@linux.vnet.ibm.com> writes:
+>> > For a power9 KVM guest with XIVE enabled, running a test loop
+>> > where we hotplug 384 vcpus and then unplug them, the following traces
+>> > can be seen (generally within a few loops) either from the unplugged
+>> > vcpu:
+>> >
+>> >   [ 1767.353447] cpu 65 (hwid 65) Ready to die...
+>> >   [ 1767.952096] Querying DEAD? cpu 66 (66) shows 2
+>> >   [ 1767.952311] list_del corruption. next->prev should be c00a000002470208, but was c00a000002470048
+>> ...
+>> >
+>> > At that point the worker thread assumes the unplugged CPU is in some
+>> > unknown/dead state and procedes with the cleanup, causing the race with
+>> > the XIVE cleanup code executed by the unplugged CPU.
+>> >
+>> > Fix this by inserting an msleep() after each RTAS call to avoid
+>> 
+>> We previously had an msleep(), but it was removed:
+>> 
+>>   b906cfa397fd ("powerpc/pseries: Fix cpu hotplug")
+>
+> Ah, I hadn't seen that one...
+>
+>> > pseries_cpu_die() returning prematurely, and double the number of
+>> > attempts so we wait at least a total of 5 seconds. While this isn't an
+>> > ideal solution, it is similar to how we dealt with a similar issue for
+>> > cede_offline mode in the past (940ce422a3).
+>> 
+>> Thiago tried to fix this previously but there was a bit of discussion
+>> that didn't quite resolve:
+>> 
+>>   https://lore.kernel.org/linuxppc-dev/20190423223914.3882-1-bauerman@linux.ibm.com/
+>
+> Yeah it appears that the motivation at the time was to make the "Querying DEAD?"
+> messages to disappear and to avoid potentially concurrent calls to rtas-stop-self
+> which is prohibited by PAPR... not fixing actual crashes.
 
-This is a requirement for using DDW on devices in which hypervisor
-allows only one DMA window.
+I'm pretty sure at one point we were triggering crashes *in* RTAS via
+this path, I think that got resolved.
 
-If setting up a new DDW fails anywhere after the removal of this
-default DMA window, it's needed to restore the default DMA window.
-For this, an implementation of ibm,reset-pe-dma-windows rtas call is
-needed:
+>> Spinning forever seems like a bad idea, but as has been demonstrated at
+>> least twice now, continuing when we don't know the state of the other
+>> CPU can lead to straight up crashes.
+>> 
+>> So I think I'm persuaded that it's preferable to have the kernel stuck
+>> spinning rather than oopsing.
+>> 
+>
+> +1
+>
+>> I'm 50/50 on whether we should have a cond_resched() in the loop. My
+>> first instinct is no, if we're stuck here for 20s a stack trace would be
+>> good. But then we will probably hit that on some big and/or heavily
+>> loaded machine.
+>> 
+>> So possibly we should call cond_resched() but have some custom logic in
+>> the loop to print a warning if we are stuck for more than some
+>> sufficiently long amount of time.
+>
+> How long should that be ?
 
-Platforms supporting the DDW option starting with LoPAR level 2.7 implement
-ibm,ddw-extensions. The first extension available (index 2) carries the
-token for ibm,reset-pe-dma-windows rtas call, which is used to restore
-the default DMA window for a device, if it has been deleted.
+Yeah good question.
 
-It does so by resetting the TCE table allocation for the PE to it's
-boot time value, available in "ibm,dma-window" device tree node.
+I guess step one would be seeing how long it can take on the 384 vcpu
+machine. And we can probably test on some other big machines.
 
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-Tested-by: David Dai <zdai@linux.vnet.ibm.com>
----
- arch/powerpc/platforms/pseries/iommu.c | 73 +++++++++++++++++++++++---
- 1 file changed, 66 insertions(+), 7 deletions(-)
+Hopefully Nathan can give us some idea of how long he's seen it take on
+large systems? I know he was concerned about the 20s timeout of the
+softlockup detector.
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 4e33147825cc..e4198700ed1a 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1066,6 +1066,38 @@ static phys_addr_t ddw_memory_hotplug_max(void)
- 	return max_addr;
- }
- 
-+/*
-+ * Platforms supporting the DDW option starting with LoPAR level 2.7 implement
-+ * ibm,ddw-extensions, which carries the rtas token for
-+ * ibm,reset-pe-dma-windows.
-+ * That rtas-call can be used to restore the default DMA window for the device.
-+ */
-+static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
-+{
-+	int ret;
-+	u32 cfg_addr, reset_dma_win;
-+	u64 buid;
-+	struct device_node *dn;
-+	struct pci_dn *pdn;
-+
-+	ret = ddw_read_ext(par_dn, DDW_EXT_RESET_DMA_WIN, &reset_dma_win);
-+	if (ret)
-+		return;
-+
-+	dn = pci_device_to_OF_node(dev);
-+	pdn = PCI_DN(dn);
-+	buid = pdn->phb->buid;
-+	cfg_addr = (pdn->busno << 16) | (pdn->devfn << 8);
-+
-+	ret = rtas_call(reset_dma_win, 3, 1, NULL, cfg_addr, BUID_HI(buid),
-+			BUID_LO(buid));
-+	if (ret)
-+		dev_info(&dev->dev,
-+			 "ibm,reset-pe-dma-windows(%x) %x %x %x returned %d ",
-+			 reset_dma_win, cfg_addr, BUID_HI(buid), BUID_LO(buid),
-+			 ret);
-+}
-+
- /*
-  * If the PE supports dynamic dma windows, and there is space for a table
-  * that can map all pages in a linear offset, then setup such a table,
-@@ -1090,6 +1122,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	struct property *win64;
- 	struct dynamic_dma_window_prop *ddwprop;
- 	struct failed_ddw_pdn *fpdn;
-+	bool default_win_removed = false;
- 
- 	mutex_lock(&direct_window_init_mutex);
- 
-@@ -1133,14 +1166,38 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	if (ret != 0)
- 		goto out_failed;
- 
-+	/*
-+	 * If there is no window available, remove the default DMA window,
-+	 * if it's present. This will make all the resources available to the
-+	 * new DDW window.
-+	 * If anything fails after this, we need to restore it, so also check
-+	 * for extensions presence.
-+	 */
- 	if (query.windows_available == 0) {
--		/*
--		 * no additional windows are available for this device.
--		 * We might be able to reallocate the existing window,
--		 * trading in for a larger page size.
--		 */
--		dev_dbg(&dev->dev, "no free dynamic windows");
--		goto out_failed;
-+		struct property *default_win;
-+		int reset_win_ext;
-+
-+		default_win = of_find_property(pdn, "ibm,dma-window", NULL);
-+		if (!default_win)
-+			goto out_failed;
-+
-+		reset_win_ext = ddw_read_ext(pdn, DDW_EXT_RESET_DMA_WIN, NULL);
-+		if (reset_win_ext)
-+			goto out_failed;
-+
-+		remove_dma_window(pdn, ddw_avail, default_win);
-+		default_win_removed = true;
-+
-+		/* Query again, to check if the window is available */
-+		ret = query_ddw(dev, ddw_avail, &query, pdn);
-+		if (ret != 0)
-+			goto out_failed;
-+
-+		if (query.windows_available == 0) {
-+			/* no windows are available for this device. */
-+			dev_dbg(&dev->dev, "no free dynamic windows");
-+			goto out_failed;
-+		}
- 	}
- 	if (query.page_size & 4) {
- 		page_shift = 24; /* 16MB */
-@@ -1231,6 +1288,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	kfree(win64);
- 
- out_failed:
-+	if (default_win_removed)
-+		reset_dma_window(dev, pdn);
- 
- 	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
- 	if (!fpdn)
--- 
-2.25.4
+Maybe a minute or two?
 
+>> > Fixes: eac1e731b59ee ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
+>> > Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1856588
+>> 
+>> This is not public.
+>
+> I'll have a look at changing that.
+
+Thanks.
+
+cheers
