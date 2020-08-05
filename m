@@ -1,77 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C014223CB09
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 15:37:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC9123CB0D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 15:40:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMCNP1NRtzDqfS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 23:37:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMCRS5rKjzDqQm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 23:40:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMCKv6X6bzDqS4
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 23:35:15 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 075DMYiJ001183; Wed, 5 Aug 2020 09:35:09 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32qwkcrar0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Aug 2020 09:35:09 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 075DZ7d8014782;
- Wed, 5 Aug 2020 13:35:07 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 32n018aq0r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Aug 2020 13:35:06 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 075DZ4aO26280306
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 Aug 2020 13:35:04 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA59C11C058;
- Wed,  5 Aug 2020 13:35:03 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 992E911C064;
- Wed,  5 Aug 2020 13:35:03 +0000 (GMT)
-Received: from pomme.tlslab.ibm.com (unknown [9.145.52.198])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  5 Aug 2020 13:35:03 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] powerpc/drmem: Don't compute the NUMA node for each LMB
-Date: Wed,  5 Aug 2020 15:35:02 +0200
-Message-Id: <20200805133502.33723-1-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <202008051807.Vi8NDJtX%lkp@intel.com>
-References: <202008051807.Vi8NDJtX%lkp@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-05_09:2020-08-03,
- 2020-08-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 adultscore=0 mlxscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 phishscore=0 spamscore=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2008050108
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BMCLj5fpkzDqf2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 23:35:57 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 075DZ7fT020629;
+ Wed, 5 Aug 2020 08:35:08 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 075DZ5lG020627;
+ Wed, 5 Aug 2020 08:35:05 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 5 Aug 2020 08:35:05 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v8 5/8] powerpc/vdso: Prepare for switching VDSO to
+ generic C implementation.
+Message-ID: <20200805133505.GN6753@gate.crashing.org>
+References: <cover.1588079622.git.christophe.leroy@c-s.fr>
+ <2a67c333893454868bbfda773ba4b01c20272a5d.1588079622.git.christophe.leroy@c-s.fr>
+ <878sflvbad.fsf@mpe.ellerman.id.au>
+ <65fd7823-cc9d-c05a-0816-c34882b5d55a@csgroup.eu>
+ <87wo2dy5in.fsf@mpe.ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wo2dy5in.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,77 +54,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, cheloha@linux.ibm.com
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, nathanl@linux.ibm.com,
+ arnd@arndb.de, linux-kernel@vger.kernel.org,
+ Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, luto@kernel.org, linux-arch@vger.kernel.org,
+ tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All the LMB from the same set of ibm,dynamic-memory-v2 property are
-sharing the same NUMA node. Don't compute that node for each one.
+Hi!
 
-Tested on a system with 1022 LMBs spread on 4 NUMA nodes, only 4 calls to
-lmb_set_nid() have been made instead of 1022.
+On Wed, Aug 05, 2020 at 04:24:16PM +1000, Michael Ellerman wrote:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> > Indeed, 32-bit doesn't have a redzone, so I believe it needs a stack 
+> > frame whenever it has anything to same.
+> 
+> Yeah OK that would explain it.
+> 
+> > Here is what I have in libc.so:
+> >
+> > 000fbb60 <__clock_gettime>:
+> >     fbb60:	94 21 ff e0 	stwu    r1,-32(r1)
 
-This should prevent some soft lockups when starting large guests
+This is the *only* place where you can use a negative offset from r1:
+in the stwu to extend the stack (set up a new stack frame, or make the
+current one bigger).
 
-Code has meaning only if CONFIG_MEMORY_HOTPLUG is set, otherwise the nid
-field is not present in the drmem_lmb structure.
+> > diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h 
+> > b/arch/powerpc/include/asm/vdso/gettimeofday.h
+> > index a0712a6e80d9..0b6fa245d54e 100644
+> > --- a/arch/powerpc/include/asm/vdso/gettimeofday.h
+> > +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
+> > @@ -10,6 +10,7 @@
+> >     .cfi_startproc
+> >   	PPC_STLU	r1, -STACK_FRAME_OVERHEAD(r1)
+> >   	mflr		r0
+> > +	PPC_STLU	r1, -STACK_FRAME_OVERHEAD(r1)
+> >     .cfi_register lr, r0
+> 
+> The cfi_register should come directly after the mflr I think.
 
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
----
- arch/powerpc/mm/drmem.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+That is the idiomatic way to write it, and most obviously correct.  But
+as long as the value in LR at function entry is available in multiple
+places (like, in LR and in R0 here), it is fine to use either for
+unwinding.  Sometimes you can use this to optimise the unwind tables a
+bit -- not really worth it in hand-written code, it's more important to
+make it legible ;-)
 
-diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-index b2eeea39684c..c11b6ec99ea3 100644
---- a/arch/powerpc/mm/drmem.c
-+++ b/arch/powerpc/mm/drmem.c
-@@ -402,6 +402,9 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
- 	const __be32 *p;
- 	u32 i, j, lmb_sets;
- 	int lmb_index;
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+	struct drmem_lmb *first = NULL;
-+#endif
- 
- 	lmb_sets = of_read_number(prop++, 1);
- 	if (lmb_sets == 0)
-@@ -426,6 +429,15 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
- 	for (i = 0; i < lmb_sets; i++) {
- 		read_drconf_v2_cell(&dr_cell, &p);
- 
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+		/*
-+		 * Fetch the NUMA node id for the fist set or if the
-+		 * associativity index is different from the previous set.
-+		 */
-+		if (first && dr_cell.aa_index != first->aa_index)
-+			first = NULL;
-+#endif
-+
- 		for (j = 0; j < dr_cell.seq_lmbs; j++) {
- 			lmb = &drmem_info->lmbs[lmb_index++];
- 
-@@ -438,7 +450,18 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
- 			lmb->aa_index = dr_cell.aa_index;
- 			lmb->flags = dr_cell.flags;
- 
--			lmb_set_nid(lmb);
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+			/*
-+			 * All the LMB in the set share the same NUMA
-+			 * associativity property. So read that node only once.
-+			 */
-+			if (!first) {
-+				lmb_set_nid(lmb);
-+				first = lmb;
-+			} else {
-+				lmb->nid = first->nid;
-+			}
-+#endif
- 		}
- 	}
- }
--- 
-2.28.0
+> >> There's also no code to load/restore the TOC pointer on BE, which I
+> >> think we'll need to handle.
+> >
+> > I see no code in the generated vdso64.so doing anything with r2, but if 
+> > you think that's needed, just let's do it:
+> 
+> Hmm, true.
+> 
+> The compiler will use the toc for globals (and possibly also for large
+> constants?)
 
+And anything else it bloody well wants to, yeah :-)
+
+> AFAIK there's no way to disable use of the toc, or make it a build error
+> if it's needed.
+
+Yes.
+
+> At the same time it's much safer for us to just save/restore r2, and
+> probably in the noise performance wise.
+
+If you want a function to be able to work with ABI-compliant code safely
+(in all cases), you'll have to make it itself ABI-compliant as well,
+yes :-)
+
+> So yeah we should probably do as below.
+
+[ snip ]
+
+Looks good yes.
+
+
+Segher
