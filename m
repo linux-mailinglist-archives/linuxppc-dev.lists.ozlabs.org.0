@@ -2,63 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C1323C3DD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4704023C3E0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:09:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLxP50TlJzDqdD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:07:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLxRJ6GmFzDqbg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:09:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Sks840nK; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
+ header.s=20161025 header.b=tsDrwsn6; dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLxLw1GQ6zDqRR
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:05:10 +1000 (AEST)
-Received: by mail-qk1-x742.google.com with SMTP id 77so8169269qkm.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 20:05:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLxLw1N5nzDqRj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:05:12 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id x12so24163176qtp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 20:05:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=WtXwfpDFreDLwGVsqvsaCTe1LWZg8pmE0dEw2EJKlf0=;
- b=Sks840nKMOrcyH24HC/3BAqdEuA0rkgkLlLBy5HCVvWfWag5qxd5TGH/DvTp+PFCjw
- TDBw61DiWcwU+p836z/cGcL9YceKYcS4k1CTd53ub09Z/GoAK5EVqi9k3OhwazvppyF9
- J4DARGGWfSBmMO3XEe9ksbYWt1v54qBzzTpHj6Rr/GneGlr+eBJxs3m80oXTkHuxorF2
- 1jIfhcAIz/87HGHJ4trc7lrQ628DxOziEZ6DAlyGHqEMo4AqMyS36fCkUqg46nyxava1
- Aa8WDFVGb0n0RA3v/jt5/kZ3vWFIPHEzT7Ysw7rgeR4fB3ZtL2OrI3/zhm3wWNqpeb2w
- gy9w==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=KZZhp6G/Nvdr8CubS5lc2IdWicGU//2bZ5AuIAz3WYY=;
+ b=tsDrwsn6dw9H9iUUR3XvrWEQiOYRfexsj6w/btAB7+ZzsHuM2fIRTkEUdV2w0KaSFC
+ h+IX6i/BpNognd2NP9nnDY28By5W++Z9D1wKijXnSEaKeFvsTyoAQiSC0GISyOn6VkO6
+ /izKrL2Lw4lhEwm6j0911VfV/BfOxL8Vu4qTPLxz8EnxznS8EDelcL5ChjBKc0CIhK6a
+ 50HRa/GfTvzfXdeWKBrxjr9rpKlMUeXzixQoKOKKe2vjT43XaBcKASUqXJsFWR23r4Uo
+ c3RAWn0op7UzU+dPXtz4YMyCP/dtAAUsvsAZkbdQ36dh7Ap8Fj2FoLUVktHDcd6czgfh
+ eN3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=WtXwfpDFreDLwGVsqvsaCTe1LWZg8pmE0dEw2EJKlf0=;
- b=qtpC8vInfCS/iMpMaGDIrAtZ6k3LK5keYdUTwy09d1BWX1qa40IcqL0TyYxULuG96r
- +y7EC9W0xCLhxZ1AvzJ8BTm9aHJ1acU3QGvII/DGtDmkhSiJTL3ANR+OlZD4TlwSFbfx
- Xqk/frZNHR3KgN8rq6Qrbt35aAwhzKTGWM6Gh5Q7OAikZw7hLkZF2yr2FVWWlg+/7n0H
- j/H/5IamR0w4Pbv83vcEWtpj1rZVVHhMMP2QblBigi1EHq/myX28/AZmYyVy+DO6b4bG
- RkeX33THmJBu+CbOfVTZvQE0Z+LYSGcgkc2faWekiWXtdw7qvRdUQo+3Gz7sz0uYp9oh
- HcOA==
-X-Gm-Message-State: AOAM530ajePMLgFoMAjJdzgc7wvarQNzjJt1En3TwbRuLo8jUSAFC6gj
- 8MNXVPm0I6n6GyNxY+8HZa0=
-X-Google-Smtp-Source: ABdhPJz/t43SflkR0lrII1YXGkv4uIywPsyddfdoGsBWxixbEQtoh7SeuFc8DYVpx9PqQcHow7FN4g==
-X-Received: by 2002:a05:620a:1436:: with SMTP id
- k22mr1333392qkj.308.1596596705317; 
- Tue, 04 Aug 2020 20:05:05 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=KZZhp6G/Nvdr8CubS5lc2IdWicGU//2bZ5AuIAz3WYY=;
+ b=sQ/GE+RK+ktUUPz6S5m+0h1mgSSTrgoBtGepQqYmoyA26i+QwaUIlWvgTenJqzeWV9
+ 6rnOTWtWAET+oHPK7beTCeyW+p7pQ4RKqs1o3JjajpYHPrcVov1f6WniKbBl012TB9Mj
+ dMCalQPbswkPF0BBc7xarAMdekrXaRsK8p/mRh29BN0W3ZlBDVyE9SPN2D+5FYyWxsl2
+ K+LZ1X88IJtTYX4idZ0s1RcElfqZqjmidBjz04YPndKmYaDue5sLAoPO6zn7AcEKogmx
+ mxsMZuB5rxdPVnFJXKSYI0C5j1rrN8AjMvU+SODI9V1bIcRGL3aPanxvpdZf61ZWKSJ8
+ VggA==
+X-Gm-Message-State: AOAM530X3TZuu8KDz7dWp9bekIq5cuLqdUPJIoxc9YHYmNO1D3RaVhzi
+ 52QspL9tPA7KBOYFzpHyj/o=
+X-Google-Smtp-Source: ABdhPJwEJlDXMiqIxjJ8NWBXOAzyEnPfjVEOVS1TpGiB9pkJhcOwymUcwPehjylHnqE+u6vPhAyQIA==
+X-Received: by 2002:ac8:4643:: with SMTP id f3mr1275598qto.128.1596596709387; 
+ Tue, 04 Aug 2020 20:05:09 -0700 (PDT)
 Received: from LeoBras.ibmuc.com (179-125-154-168.dynamic.desktop.com.br.
  [179.125.154.168])
- by smtp.gmail.com with ESMTPSA id n4sm869946qtr.73.2020.08.04.20.05.00
+ by smtp.gmail.com with ESMTPSA id n4sm869946qtr.73.2020.08.04.20.05.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Aug 2020 20:05:04 -0700 (PDT)
+ Tue, 04 Aug 2020 20:05:08 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -68,11 +67,13 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Ram Pai <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
-Subject: [PATCH v5 0/4] Allow bigger 64bit window by removing default DMA
- window
-Date: Wed,  5 Aug 2020 00:04:51 -0300
-Message-Id: <20200805030455.123024-1-leobras.c@gmail.com>
+Subject: [PATCH v5 1/4] powerpc/pseries/iommu: Create defines for operations
+ in ibm, ddw-applicable
+Date: Wed,  5 Aug 2020 00:04:52 -0300
+Message-Id: <20200805030455.123024-2-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.25.4
+In-Reply-To: <20200805030455.123024-1-leobras.c@gmail.com>
+References: <20200805030455.123024-1-leobras.c@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -91,95 +92,125 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are some devices in which a hypervisor may only allow 1 DMA window
-to exist at a time, and in those cases, a DDW is never created to them,
-since the default DMA window keeps using this resource.
+Create defines to help handling ibm,ddw-applicable values, avoiding
+confusion about the index of given operations.
 
-LoPAR recommends this procedure:
-1. Remove the default DMA window,
-2. Query for which configs the DDW can be created,
-3. Create a DDW.
-
-Patch #1:
-Create defines for outputs of ibm,ddw-applicable, so it's easier to
-identify them.
-
-Patch #2:
-- After LoPAR level 2.8, there is an extension that can make
-  ibm,query-pe-dma-windows to have 6 outputs instead of 5. This changes the
-  order of the outputs, and that can cause some trouble. 
-- query_ddw() was updated to check how many outputs the 
-  ibm,query-pe-dma-windows is supposed to have, update the rtas_call() and
-  deal correctly with the outputs in both cases.
-- This patch looks somehow unrelated to the series, but it can avoid future
-  problems on DDW creation.
-
-Patch #3 moves the window-removing code from remove_ddw() to
-remove_dma_window(), creating a way to delete any DMA window, so it can be
-used to delete the default DMA window.
-
-Patch #4 makes use of the remove_dma_window() from patch #3 to remove the
-default DMA window before query_ddw(). It also implements a new rtas call
-to recover the default DMA window, in case anything fails after it was
-removed, and a DDW couldn't be created.
-
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+Tested-by: David Dai <zdai@linux.vnet.ibm.com>
 ---
-Changes since v4:
-- Removed patches 5+ in order to deal with a feature at a time
-- Remove unnecessary parentesis in patch #4
-- Changed patch #4 title from 
-  "Remove default DMA window before creating DDW"
-- Included David Dai tested-by
-- v4 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=190051&state=%2A&archive=both
+ arch/powerpc/platforms/pseries/iommu.c | 43 ++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 17 deletions(-)
 
-Changes since v3:
-- Introduces new patch #5, to prepare for an important change in #6
-- struct iommu_table was not being updated, so include a way to do this
-  in patch #6.
-- Improved patch #4 based in a suggestion from Alexey, to make code
-  more easily understandable
-- v3 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=187348&state=%2A&archive=both
-
-Changes since v2:
-- Change the way ibm,ddw-extensions is accessed, using a proper function
-  instead of doing this inline everytime it's used.
-- Remove previous patch #6, as it doesn't look like it would be useful.
-- Add new patch, for changing names from direct* to dma*, as indirect 
-  mapping can be used from now on.
-- Fix some typos, corrects some define usage.
-- v2 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=185433&state=%2A&archive=both
-
-Changes since v1:
-- Add defines for ibm,ddw-applicable and ibm,ddw-extensions outputs
-- Merge aux function query_ddw_out_sz() into query_ddw()
-- Merge reset_dma_window() patch (prev. #2) into remove default DMA
-  window patch (#4).
-- Keep device_node *np name instead of using pdn in remove_*()
-- Rename 'device_node *pdn' into 'parent' in new functions
-- Rename dfl_win to default_win
-- Only remove the default DMA window if there is no window available
-  in first query.
-- Check if default DMA window can be restored before removing it.
-- Fix 'unitialized use' (found by travis mpe:ci-test)
-- New patches #5 and #6
-- v1 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=184420&state=%2A&archive=both
-
-Special thanks for Alexey Kardashevskiy, Brian King and
-Oliver O'Halloran for the feedback provided!
-
-
-Leonardo Bras (4):
-  powerpc/pseries/iommu: Create defines for operations in
-    ibm,ddw-applicable
-  powerpc/pseries/iommu: Update call to ibm,query-pe-dma-windows
-  powerpc/pseries/iommu: Move window-removing part of remove_ddw into
-    remove_dma_window
-  powerpc/pseries/iommu: Allow bigger 64bit window by removing default
-    DMA window
-
- arch/powerpc/platforms/pseries/iommu.c | 242 ++++++++++++++++++++-----
- 1 file changed, 195 insertions(+), 47 deletions(-)
-
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 6d47b4a3ce39..ac0d6376bdad 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -39,6 +39,14 @@
+ 
+ #include "pseries.h"
+ 
++enum {
++	DDW_QUERY_PE_DMA_WIN  = 0,
++	DDW_CREATE_PE_DMA_WIN = 1,
++	DDW_REMOVE_PE_DMA_WIN = 2,
++
++	DDW_APPLICABLE_SIZE
++};
++
+ static struct iommu_table_group *iommu_pseries_alloc_group(int node)
+ {
+ 	struct iommu_table_group *table_group;
+@@ -771,12 +779,12 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
+ {
+ 	struct dynamic_dma_window_prop *dwp;
+ 	struct property *win64;
+-	u32 ddw_avail[3];
++	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+ 	u64 liobn;
+ 	int ret = 0;
+ 
+ 	ret = of_property_read_u32_array(np, "ibm,ddw-applicable",
+-					 &ddw_avail[0], 3);
++					 &ddw_avail[0], DDW_APPLICABLE_SIZE);
+ 
+ 	win64 = of_find_property(np, DIRECT64_PROPNAME, NULL);
+ 	if (!win64)
+@@ -798,15 +806,15 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
+ 		pr_debug("%pOF successfully cleared tces in window.\n",
+ 			 np);
+ 
+-	ret = rtas_call(ddw_avail[2], 1, 1, NULL, liobn);
++	ret = rtas_call(ddw_avail[DDW_REMOVE_PE_DMA_WIN], 1, 1, NULL, liobn);
+ 	if (ret)
+ 		pr_warn("%pOF: failed to remove direct window: rtas returned "
+ 			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
+-			np, ret, ddw_avail[2], liobn);
++			np, ret, ddw_avail[DDW_REMOVE_PE_DMA_WIN], liobn);
+ 	else
+ 		pr_debug("%pOF: successfully removed direct window: rtas returned "
+ 			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
+-			np, ret, ddw_avail[2], liobn);
++			np, ret, ddw_avail[DDW_REMOVE_PE_DMA_WIN], liobn);
+ 
+ delprop:
+ 	if (remove_prop)
+@@ -889,11 +897,11 @@ static int query_ddw(struct pci_dev *dev, const u32 *ddw_avail,
+ 	buid = pdn->phb->buid;
+ 	cfg_addr = ((pdn->busno << 16) | (pdn->devfn << 8));
+ 
+-	ret = rtas_call(ddw_avail[0], 3, 5, (u32 *)query,
+-		  cfg_addr, BUID_HI(buid), BUID_LO(buid));
++	ret = rtas_call(ddw_avail[DDW_QUERY_PE_DMA_WIN], 3, 5, (u32 *)query,
++			cfg_addr, BUID_HI(buid), BUID_LO(buid));
+ 	dev_info(&dev->dev, "ibm,query-pe-dma-windows(%x) %x %x %x"
+-		" returned %d\n", ddw_avail[0], cfg_addr, BUID_HI(buid),
+-		BUID_LO(buid), ret);
++		" returned %d\n", ddw_avail[DDW_QUERY_PE_DMA_WIN], cfg_addr,
++		 BUID_HI(buid), BUID_LO(buid), ret);
+ 	return ret;
+ }
+ 
+@@ -920,15 +928,16 @@ static int create_ddw(struct pci_dev *dev, const u32 *ddw_avail,
+ 
+ 	do {
+ 		/* extra outputs are LIOBN and dma-addr (hi, lo) */
+-		ret = rtas_call(ddw_avail[1], 5, 4, (u32 *)create,
+-				cfg_addr, BUID_HI(buid), BUID_LO(buid),
+-				page_shift, window_shift);
++		ret = rtas_call(ddw_avail[DDW_CREATE_PE_DMA_WIN], 5, 4,
++				(u32 *)create, cfg_addr, BUID_HI(buid),
++				BUID_LO(buid), page_shift, window_shift);
+ 	} while (rtas_busy_delay(ret));
+ 	dev_info(&dev->dev,
+ 		"ibm,create-pe-dma-window(%x) %x %x %x %x %x returned %d "
+-		"(liobn = 0x%x starting addr = %x %x)\n", ddw_avail[1],
+-		 cfg_addr, BUID_HI(buid), BUID_LO(buid), page_shift,
+-		 window_shift, ret, create->liobn, create->addr_hi, create->addr_lo);
++		"(liobn = 0x%x starting addr = %x %x)\n",
++		 ddw_avail[DDW_CREATE_PE_DMA_WIN], cfg_addr, BUID_HI(buid),
++		 BUID_LO(buid), page_shift, window_shift, ret, create->liobn,
++		 create->addr_hi, create->addr_lo);
+ 
+ 	return ret;
+ }
+@@ -996,7 +1005,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	int page_shift;
+ 	u64 dma_addr, max_addr;
+ 	struct device_node *dn;
+-	u32 ddw_avail[3];
++	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+ 	struct direct_window *window;
+ 	struct property *win64;
+ 	struct dynamic_dma_window_prop *ddwprop;
+@@ -1029,7 +1038,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	 * the property is actually in the parent, not the PE
+ 	 */
+ 	ret = of_property_read_u32_array(pdn, "ibm,ddw-applicable",
+-					 &ddw_avail[0], 3);
++					 &ddw_avail[0], DDW_APPLICABLE_SIZE);
+ 	if (ret)
+ 		goto out_failed;
+ 
 -- 
 2.25.4
 
