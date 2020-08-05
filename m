@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648CD23CE9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 20:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EDC23D352
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 22:58:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BML8y60K8zDqhm
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 04:42:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMP956lrgzDqhF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 06:58:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,30 +17,31 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=kernel.crashing.org
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BML7N1YVYzDqd2
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 04:41:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BMP743r5NzDqKg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 06:56:32 +1000 (AEST)
 Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 075Ieuu6004765;
- Wed, 5 Aug 2020 13:40:56 -0500
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 075KtxCR012156;
+ Wed, 5 Aug 2020 15:55:59 -0500
 Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 075IesOr004764;
- Wed, 5 Aug 2020 13:40:54 -0500
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 075KtuFg012155;
+ Wed, 5 Aug 2020 15:55:56 -0500
 X-Authentication-Warning: gate.crashing.org: segher set sender to
  segher@kernel.crashing.org using -f
-Date: Wed, 5 Aug 2020 13:40:54 -0500
+Date: Wed, 5 Aug 2020 15:55:56 -0500
 From: Segher Boessenkool <segher@kernel.crashing.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Subject: Re: [PATCH v10 2/5] powerpc/vdso: Prepare for switching VDSO to
  generic C implementation.
-Message-ID: <20200805184054.GQ6753@gate.crashing.org>
+Message-ID: <20200805205556.GR6753@gate.crashing.org>
 References: <cover.1596611196.git.christophe.leroy@csgroup.eu>
  <348528c33cd4007f3fee7fe643ef160843d09a6c.1596611196.git.christophe.leroy@csgroup.eu>
  <20200805140307.GO6753@gate.crashing.org>
- <3db2a590-b842-83db-ed2b-f3ee62595f18@csgroup.eu>
+ <7d409421-6396-8eba-8250-b6c9ff8232d9@csgroup.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <3db2a590-b842-83db-ed2b-f3ee62595f18@csgroup.eu>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7d409421-6396-8eba-8250-b6c9ff8232d9@csgroup.eu>
 User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,34 +64,39 @@ Sender: "Linuxppc-dev"
 
 Hi!
 
-On Wed, Aug 05, 2020 at 04:40:16PM +0000, Christophe Leroy wrote:
-> >It cannot optimise it because it does not know shift < 32.  The code
-> >below is incorrect for shift equal to 32, fwiw.
-> 
-> Is there a way to tell it ?
-
-Sure, for example the &31 should work (but it doesn't, with the GCC
-version you used -- which version is that?)
-
-> >What does the compiler do for just
+On Wed, Aug 05, 2020 at 06:51:44PM +0200, Christophe Leroy wrote:
+> Le 05/08/2020 à 16:03, Segher Boessenkool a écrit :
+> >On Wed, Aug 05, 2020 at 07:09:23AM +0000, Christophe Leroy wrote:
+> >>+/*
+> >>+ * The macros sets two stack frames, one for the caller and one for the 
+> >>callee
+> >>+ * because there are no requirement for the caller to set a stack frame 
+> >>when
+> >>+ * calling VDSO so it may have omitted to set one, especially on PPC64
+> >>+ */
 > >
-> >static __always_inline u64 vdso_shift_ns(u64 ns, unsigned long shift)
-> >	return ns >> (shift & 31);
-> >}
-> >
+> >If the caller follows the ABI, there always is a stack frame.  So what
+> >is going on?
 > 
-> Worse:
+> Looks like it is not the case. See discussion at 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/2a67c333893454868bbfda773ba4b01c20272a5d.1588079622.git.christophe.leroy@c-s.fr/
+> 
+> Seems like GCC uses the redzone and doesn't set a stack frame. I guess 
+> it doesn't know that the inline assembly contains a function call so it 
+> doesn't set the frame.
 
-I cannot make heads or tails of all that branch spaghetti, sorry.
+Yes, that is the problem.  See
+https://gcc.gnu.org/onlinedocs/gcc-10.2.0/gcc/Extended-Asm.html#AssemblerTemplate
+where this is (briefly) discussed:
+  "Accessing data from C programs without using input/output operands
+  (such as by using global symbols directly from the assembler
+  template) may not work as expected. Similarly, calling functions
+  directly from an assembler template requires a detailed understanding
+  of the target assembler and ABI."
 
->  73c:	55 8c 06 fe 	clrlwi  r12,r12,27
->  740:	7f c8 f0 14 	addc    r30,r8,r30
->  744:	7c c6 4a 14 	add     r6,r6,r9
->  748:	7c c6 e1 14 	adde    r6,r6,r28
->  74c:	34 6c ff e0 	addic.  r3,r12,-32
->  750:	41 80 00 70 	blt     7c0 <__c_kernel_clock_gettime+0x114>
-
-This branch is always true.  Hrm.
+I don't know of a good way to tell GCC some function needs a frame (that
+is, one that doesn't result in extra code other than to set up the
+frame).  I'll think about it.
 
 
 Segher
