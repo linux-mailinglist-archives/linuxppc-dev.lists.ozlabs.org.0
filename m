@@ -1,97 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C13223D401
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 00:44:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D718423D439
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 01:41:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMRW82wxWzDqhF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 08:44:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMSnp5bXPzDqjv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 09:41:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMRTG4093zDqg5
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 08:42:26 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BMRTG2qt3z8sfr
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 08:42:26 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BMRTG2GnPz9sPC; Thu,  6 Aug 2020 08:42:26 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BMRTF6DW1z9sPB
- for <linuxppc-dev@ozlabs.org>; Thu,  6 Aug 2020 08:42:25 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 075MXo2l102804
- for <linuxppc-dev@ozlabs.org>; Wed, 5 Aug 2020 18:42:24 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32qu0vkjn8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 05 Aug 2020 18:42:24 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 075Mf1Xw030627
- for <linuxppc-dev@ozlabs.org>; Wed, 5 Aug 2020 22:42:23 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02dal.us.ibm.com with ESMTP id 32n019nhhh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Wed, 05 Aug 2020 22:42:23 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 075MgJv717891952
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 Aug 2020 22:42:19 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE5906E065;
- Wed,  5 Aug 2020 22:42:21 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D78D6E04C;
- Wed,  5 Aug 2020 22:42:21 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.114.20])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  5 Aug 2020 22:42:20 +0000 (GMT)
-Subject: Re: [PATCH v2 2/2] powerpc/pseries: new lparcfg key/value pair:
- partition_affinity_score
-To: Scott Cheloha <cheloha@linux.ibm.com>, linuxppc-dev@ozlabs.org
-References: <20200727184605.2945095-1-cheloha@linux.ibm.com>
- <20200727184605.2945095-2-cheloha@linux.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <bc9858c9-7d55-88c0-1f85-157af48e1d8c@linux.ibm.com>
-Date: Wed, 5 Aug 2020 15:42:20 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMSlr24hhzDqgZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 09:40:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=qExdT6B7; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BMSlp0VCMz9sR4;
+ Thu,  6 Aug 2020 09:40:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1596670808;
+ bh=TdkG1vT9yZEKFN0XCtbZ+7HMVEJsNm9Xzz0nNd1K2eM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=qExdT6B7jJf7qQAVSnc05Zqb9z8kkG8nLZI+XL78nxLH9EgiWPOD7X8G1Z4VfkS/s
+ 9PaxYhEQa/d1lTy6TIc2jMk46g52crWeDa54/4vulMUITBfl19V703/3vMGZP+MTHY
+ IZzfnoOObW/iZo6NAtjozmUqzob2rMkoxGgtOQjaRO+FPzddD5rx0O4g1EoiiJw9B7
+ m0w6MD/TgSKz5O8MLh6n8gd19tueFxA0A1jrOqnEYfoqIZeJFwTcL+7uI8e8Mp/Gnm
+ sapuNnVmqfxsmKRFtyhskq330MlSwHQACVq/pWWOAFfpZZjZf8EkqivZdrzXU5cHUl
+ gpTYje0b+FaLA==
+Date: Thu, 6 Aug 2020 09:40:05 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Greg KH <greg@kroah.com>, Arnd Bergmann <arnd@arndb.de>, Michael
+ Ellerman <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: linux-next: manual merge of the char-misc tree with the powerpc
+ tree
+Message-ID: <20200806094005.29296b53@canb.auug.org.au>
+In-Reply-To: <20200803165546.6ab5ab6f@canb.auug.org.au>
+References: <20200803165546.6ab5ab6f@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <20200727184605.2945095-2-cheloha@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-05_18:2020-08-03,
- 2020-08-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
- phishscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008050164
+Content-Type: multipart/signed; boundary="Sig_/YpRe1X4DL6Z4XGZOpqE8aXS";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,86 +60,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Lee Jones <lee.jones@linaro.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Alastair D'Silva <alastair@d-silva.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/27/20 11:46 AM, Scott Cheloha wrote:
-> The H_GetPerformanceCounterInfo (GPCI) PHYP hypercall has a subcall,
-> Affinity_Domain_Info_By_Partition, which returns, among other things,
-> a "partition affinity score" for a given LPAR.  This score, a value on
-> [0-100], represents the processor-memory affinity for the LPAR in
-> question.  A score of 0 indicates the worst possible affinity while a
-> score of 100 indicates perfect affinity.  The score can be used to
-> reason about performance.
-> 
-> This patch adds the score for the local LPAR to the lparcfg procfile
-> under a new 'partition_affinity_score' key.
-> 
-> Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+--Sig_/YpRe1X4DL6Z4XGZOpqE8aXS
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I was hoping Michael would chime in the first time around on this patch series
-about adding another key/value pair to lparcfg. So, barring a NACK from mpe:
+Hi all,
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+On Mon, 3 Aug 2020 16:55:46 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>
+> Today's linux-next merge of the char-misc tree got a conflict in:
+>=20
+>   drivers/misc/ocxl/config.c
+>=20
+> between commit:
+>=20
+>   3591538a31af ("ocxl: Address kernel doc errors & warnings")
+>=20
+> from the powerpc tree and commit:
+>=20
+>   28fc491e9be6 ("misc: ocxl: config: Provide correct formatting to functi=
+on headers")
+>=20
+> from the char-misc tree.
+>=20
+> I fixed it up (as it was just differences in comments, I just arbitrarily
+> chose the latter version) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
 
-> ---
->  arch/powerpc/platforms/pseries/lparcfg.c | 35 ++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-> index b8d28ab88178..e278390ab28d 100644
-> --- a/arch/powerpc/platforms/pseries/lparcfg.c
-> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
-> @@ -136,6 +136,39 @@ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
->  	return rc;
->  }
->  
-> +static void show_gpci_data(struct seq_file *m)
-> +{
-> +	struct hv_gpci_request_buffer *buf;
-> +	unsigned int affinity_score;
-> +	long ret;
-> +
-> +	buf = kmalloc(sizeof(*buf), GFP_KERNEL);
-> +	if (buf == NULL)
-> +		return;
-> +
-> +	/*
-> +	 * Show the local LPAR's affinity score.
-> +	 *
-> +	 * 0xB1 selects the Affinity_Domain_Info_By_Partition subcall.
-> +	 * The score is at byte 0xB in the output buffer.
-> +	 */
-> +	memset(&buf->params, 0, sizeof(buf->params));
-> +	buf->params.counter_request = cpu_to_be32(0xB1);
-> +	buf->params.starting_index = cpu_to_be32(-1);	/* local LPAR */
-> +	buf->params.counter_info_version_in = 0x5;	/* v5+ for score */
-> +	ret = plpar_hcall_norets(H_GET_PERF_COUNTER_INFO, virt_to_phys(buf),
-> +				 sizeof(*buf));
-> +	if (ret != H_SUCCESS) {
-> +		pr_debug("hcall failed: H_GET_PERF_COUNTER_INFO: %ld, %x\n",
-> +			 ret, be32_to_cpu(buf->params.detail_rc));
-> +		goto out;
-> +	}
-> +	affinity_score = buf->bytes[0xB];
-> +	seq_printf(m, "partition_affinity_score=%u\n", affinity_score);
-> +out:
-> +	kfree(buf);
-> +}
-> +
->  static unsigned h_pic(unsigned long *pool_idle_time,
->  		      unsigned long *num_procs)
->  {
-> @@ -487,6 +520,8 @@ static int pseries_lparcfg_data(struct seq_file *m, void *v)
->  			   partition_active_processors * 100);
->  	}
->  
-> +	show_gpci_data(m);
-> +
->  	seq_printf(m, "partition_active_processors=%d\n",
->  		   partition_active_processors);
->  
-> 
+This is now a conflict between the powerpc tree and Linus' tree.
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/YpRe1X4DL6Z4XGZOpqE8aXS
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl8rQ1UACgkQAVBC80lX
+0GxKcAgAh9MsxkEzKH36US4RjkNvMuK3i1Mbivu0awyiu/pTkhV3wXb3PX+4cAX+
+odIcjjAMxHtTHiN3OJqmCtywz9vzKdtjKo7d7SLetB7bcNQqgaOtpk8ZMtmOLxOJ
+QF6q7rvcFrWGY9OPi2Y+GGLIHhyWr9z+IeC5SAJ1fPnVTn9HYGbSs2cutd2a5K9y
+Qm7xcasc5CiYAEdhRmfwllSoBXx0Huq3k8D9ltTtRZLxyQkWh0nT32p6me2sHyOv
+yQwnqTx+3CpEujw2I8d5OxTJgbXjdMkSsHds6G+okXBpj3n2xafRiN7NFfltXFjF
+RdiGuazkFVmJ9WSwgTCF4cTGE8OftQ==
+=Yve7
+-----END PGP SIGNATURE-----
+
+--Sig_/YpRe1X4DL6Z4XGZOpqE8aXS--
