@@ -1,160 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068AE23C3F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:23:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B5423C40E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 05:44:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BLxmK1Q76zDqRy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:23:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BLyDX55sczDqdn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 13:44:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=HrwLUW3S; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=qIlbbKG9; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BLxd54f6ZzDqXf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:17:29 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id j21so4897539pgi.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 20:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=5+hOP4ytfVQN8Kj8YI6quLpCmg9mum71n25GrauloZ4=;
- b=HrwLUW3SABH0l9Dr3ycNSTkItF8jP5p1Tz3ef8RLygodQJMzdUakB3cc+11vPFrQGs
- /tLTzBSv+R6tCsZdw3dIk4i+9OOenq2EV3a9oZnaM8T5+DYq+V8ql2Z1BBYT4HKRiHZg
- cdiGh+PJp0wY/+31wXRKnv0RsYlfYZsbLknytOfSAtK4omKnuLk+9Yq8ufGB2LDN0YE2
- brVgN92ISoV/pV+kxSxT3ZTEFsMGZSOO20BMX5eeclGGj7OpbjqI+AehiyobFlsWAlgI
- +OjXSZ091k/bpPjd1CNQOJ1IL22fuvyLFi1Ycq47j4EMfxcNVoi1jgjfLbLU4Im3i3SH
- FmmQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BLyBv0XKNzDqW3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 13:43:18 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id ha11so3561776pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Aug 2020 20:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=iQ39NfCRpC8old6W/LK5W1TFVyUKRmxvr/lOL0aiW4s=;
+ b=qIlbbKG9h9yj25xaWWwslH5pEhAoXFvHvxxdw1Lh1QPQZU8yZgiaKSSZO+XsBwLO3J
+ G9rr6Qo+kjErZl0BXLMensSNIEAHM110mIuipHLfCax3qtPL4K3UOxdHndx4RxuWqTYC
+ u5Lm+wo8vzZeubksd+gF5yl0FATX/WAkjgvQBr8N5sgvFRwkFtjOivoNTaGHqKs/kVS+
+ 5ksKFDdTm3OyzEH/RgiiTds8n0fs+AUtam5cKALYneqHx0XA+juoBXXQAc5k2hDdO37d
+ av8tQClndNBX0wGCNWWreOaQJ/aExs5UDhWiK9b1oQO5knq08q+RZZw57834nQAxNvB8
+ R3Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=5+hOP4ytfVQN8Kj8YI6quLpCmg9mum71n25GrauloZ4=;
- b=C0CU5zZv6SC/Ia7x4ESvYfKJgq0AUMj6cFphQ2SDR2xHTi9XLIu9U77aZq3XqGDRQb
- YRBVC5tN3xCE2PpkCF2ap72uOVejc9+TzC+zJiayKWxgl/WfM90yND/dViFZsJC6/eOt
- Meipr4TApFz3gja1wVr4t3pJ8sNFCbuf4zstr36zZt0OftjOiRuS0gmpVOz69qhuqVq8
- C8arZJImjqP1u8kjTIjxJkzH/LR3CZlxTBHJJLL3zpUAR2Vqx3JqqK9VriQ24DTBwL9r
- 1xh/QfVjX7zjeVnMxOYKhwYbaCcZfc4l1v1Zpmja5Vtm+UurwTLpYVjP4zCwiPnmZvn/
- JLkw==
-X-Gm-Message-State: AOAM533KCV1kTuu7caAPZZqVDpY81B90LYMm+pRJOcog6eWWarTKt6BW
- xZu7q9SYIXE4WRKLXJGczS+DoQ==
-X-Google-Smtp-Source: ABdhPJxydqDvENp2DRiTf0EWax91jxrVYvsMBQjiwZ9yqeETb3xqXczcvv4TRbrlibFT7b6HHm8fdQ==
-X-Received: by 2002:a63:eb58:: with SMTP id b24mr1215535pgk.174.1596597446801; 
- Tue, 04 Aug 2020 20:17:26 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id i14sm740996pjz.25.2020.08.04.20.17.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Aug 2020 20:17:25 -0700 (PDT)
-Subject: Re: [PATCH v5 4/4] powerpc/pseries/iommu: Allow bigger 64bit window
- by removing default DMA window
-To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
- <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
- Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-References: <20200805030455.123024-1-leobras.c@gmail.com>
- <20200805030455.123024-5-leobras.c@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <c4b173cc-9994-3d30-69d2-d665b6ca788f@ozlabs.ru>
-Date: Wed, 5 Aug 2020 13:17:20 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=iQ39NfCRpC8old6W/LK5W1TFVyUKRmxvr/lOL0aiW4s=;
+ b=Uw+EV09EgtK6DzlAE58IQIwdbPRIU6dlDkMOJjYo8UG4TukAHjOVHfE4EJPOut2Q+m
+ cRKYaJTSZx48oqF07u1SaQFq8KfpFkiZTNb+IUXP4w86vwjXFqSp9LhejE+b34wbDTSK
+ u0EI2SWHbILKKQTAuWnwdks7rO+RXGnRO4m1I3c0irHQylspPTf5NSeY4pI7dqD4Sk7o
+ i6xPIow/4A/jTK8NZvEdXPwj0z0OcOKc6A2vQ87FvX+4LOLpQzPrBhGZL6uiVQCrrMmr
+ 9grfYe01DP1ZGhw0L27Plbx4YpJvva6oqhsz5SoCpFjgUoPsKEACDPXXDBMYpXrXlZol
+ ul/g==
+X-Gm-Message-State: AOAM53132kc1WLXe6qul5zv/jFBfpYexXSxFYuYJRnAeMIvwnD+ja9sA
+ 7d9nA5q7eELkPUFCkBagvgU=
+X-Google-Smtp-Source: ABdhPJxqLYWvll9i8XBUjWuZrkB2d4SKoLlGUSOgZFb5VKeAkUJl9BcJtGw96aePleICT4meo2KXVQ==
+X-Received: by 2002:a17:902:9f85:: with SMTP id
+ g5mr1222539plq.13.1596598994895; 
+ Tue, 04 Aug 2020 20:43:14 -0700 (PDT)
+Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
+ by smtp.gmail.com with ESMTPSA id b13sm879344pjl.7.2020.08.04.20.43.14
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 04 Aug 2020 20:43:14 -0700 (PDT)
+Date: Tue, 4 Aug 2020 20:43:00 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 1/2] ASoC: fsl_sai: Clean code for synchronous mode
+Message-ID: <20200805034300.GA10174@Asurada-Nvidia>
+References: <1596594233-13489-1-git-send-email-shengjiu.wang@nxp.com>
+ <1596594233-13489-2-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-In-Reply-To: <20200805030455.123024-5-leobras.c@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1596594233-13489-2-git-send-email-shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -166,154 +81,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 05/08/2020 13:04, Leonardo Bras wrote:
-> On LoPAR "DMA Window Manipulation Calls", it's recommended to remove the
-> default DMA window for the device, before attempting to configure a DDW,
-> in order to make the maximum resources available for the next DDW to be
-> created.
+On Wed, Aug 05, 2020 at 10:23:52AM +0800, Shengjiu Wang wrote:
+> Tx synchronous with Rx: The RMR is the word mask register, it is used
+> to mask any word in the frame, it is not relating to clock generation,
+> So it is no need to be changed when Tx is going to be enabled.
 > 
-> This is a requirement for using DDW on devices in which hypervisor
-> allows only one DMA window.
+> Rx synchronous with Tx: The TMR is the word mask register, it is used
+> to mask any word in the frame, it is not relating to clock generation,
+> So it is no need to be changed when Rx is going to be enabled.
 > 
-> If setting up a new DDW fails anywhere after the removal of this
-> default DMA window, it's needed to restore the default DMA window.
-> For this, an implementation of ibm,reset-pe-dma-windows rtas call is
-> needed:
-> 
-> Platforms supporting the DDW option starting with LoPAR level 2.7 implement
-> ibm,ddw-extensions. The first extension available (index 2) carries the
-> token for ibm,reset-pe-dma-windows rtas call, which is used to restore
-> the default DMA window for a device, if it has been deleted.
-> 
-> It does so by resetting the TCE table allocation for the PE to it's
-> boot time value, available in "ibm,dma-window" device tree node.
-> 
-> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> Tested-by: David Dai <zdai@linux.vnet.ibm.com>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
+Can you rename the PATCH subject to something more specific?
+For example, "Drop TMR/RMR settings for synchronous mode".
 
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-> ---
->  arch/powerpc/platforms/pseries/iommu.c | 73 +++++++++++++++++++++++---
->  1 file changed, 66 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index 4e33147825cc..e4198700ed1a 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -1066,6 +1066,38 @@ static phys_addr_t ddw_memory_hotplug_max(void)
->  	return max_addr;
->  }
->  
-> +/*
-> + * Platforms supporting the DDW option starting with LoPAR level 2.7 implement
-> + * ibm,ddw-extensions, which carries the rtas token for
-> + * ibm,reset-pe-dma-windows.
-> + * That rtas-call can be used to restore the default DMA window for the device.
-> + */
-> +static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
-> +{
-> +	int ret;
-> +	u32 cfg_addr, reset_dma_win;
-> +	u64 buid;
-> +	struct device_node *dn;
-> +	struct pci_dn *pdn;
-> +
-> +	ret = ddw_read_ext(par_dn, DDW_EXT_RESET_DMA_WIN, &reset_dma_win);
-> +	if (ret)
-> +		return;
-> +
-> +	dn = pci_device_to_OF_node(dev);
-> +	pdn = PCI_DN(dn);
-> +	buid = pdn->phb->buid;
-> +	cfg_addr = (pdn->busno << 16) | (pdn->devfn << 8);
-> +
-> +	ret = rtas_call(reset_dma_win, 3, 1, NULL, cfg_addr, BUID_HI(buid),
-> +			BUID_LO(buid));
-> +	if (ret)
-> +		dev_info(&dev->dev,
-> +			 "ibm,reset-pe-dma-windows(%x) %x %x %x returned %d ",
-> +			 reset_dma_win, cfg_addr, BUID_HI(buid), BUID_LO(buid),
-> +			 ret);
-> +}
-> +
->  /*
->   * If the PE supports dynamic dma windows, and there is space for a table
->   * that can map all pages in a linear offset, then setup such a table,
-> @@ -1090,6 +1122,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->  	struct property *win64;
->  	struct dynamic_dma_window_prop *ddwprop;
->  	struct failed_ddw_pdn *fpdn;
-> +	bool default_win_removed = false;
->  
->  	mutex_lock(&direct_window_init_mutex);
->  
-> @@ -1133,14 +1166,38 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->  	if (ret != 0)
->  		goto out_failed;
->  
-> +	/*
-> +	 * If there is no window available, remove the default DMA window,
-> +	 * if it's present. This will make all the resources available to the
-> +	 * new DDW window.
-> +	 * If anything fails after this, we need to restore it, so also check
-> +	 * for extensions presence.
-> +	 */
->  	if (query.windows_available == 0) {
-> -		/*
-> -		 * no additional windows are available for this device.
-> -		 * We might be able to reallocate the existing window,
-> -		 * trading in for a larger page size.
-> -		 */
-> -		dev_dbg(&dev->dev, "no free dynamic windows");
-> -		goto out_failed;
-> +		struct property *default_win;
-> +		int reset_win_ext;
-> +
-> +		default_win = of_find_property(pdn, "ibm,dma-window", NULL);
-> +		if (!default_win)
-> +			goto out_failed;
-> +
-> +		reset_win_ext = ddw_read_ext(pdn, DDW_EXT_RESET_DMA_WIN, NULL);
-> +		if (reset_win_ext)
-> +			goto out_failed;
-> +
-> +		remove_dma_window(pdn, ddw_avail, default_win);
-> +		default_win_removed = true;
-> +
-> +		/* Query again, to check if the window is available */
-> +		ret = query_ddw(dev, ddw_avail, &query, pdn);
-> +		if (ret != 0)
-> +			goto out_failed;
-> +
-> +		if (query.windows_available == 0) {
-> +			/* no windows are available for this device. */
-> +			dev_dbg(&dev->dev, "no free dynamic windows");
-> +			goto out_failed;
-> +		}
->  	}
->  	if (query.page_size & 4) {
->  		page_shift = 24; /* 16MB */
-> @@ -1231,6 +1288,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->  	kfree(win64);
->  
->  out_failed:
-> +	if (default_win_removed)
-> +		reset_dma_window(dev, pdn);
->  
->  	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
->  	if (!fpdn)
-> 
-
--- 
-Alexey
+Please add this once it's addressed:
+Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
