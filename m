@@ -2,74 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1021423C92E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 11:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E2E23C938
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 11:33:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BM5wF2CvPzDqbX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 19:31:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BM5yy3gKGzDqgf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Aug 2020 19:33:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhe@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=aUOxTUPp; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=aUOxTUPp; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BM5t26kvjzDqWv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 19:29:14 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07593bLX140147; Wed, 5 Aug 2020 05:29:05 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32qkenswe1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Aug 2020 05:29:05 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0759FupD009998;
- Wed, 5 Aug 2020 09:29:03 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04ams.nl.ibm.com with ESMTP id 32n01847h8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Aug 2020 09:29:03 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0759T0eg27394370
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 Aug 2020 09:29:01 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF2B1A4053;
- Wed,  5 Aug 2020 09:29:00 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 799E0A4055;
- Wed,  5 Aug 2020 09:29:00 +0000 (GMT)
-Received: from pomme.tlslab.ibm.com (unknown [9.145.52.198])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  5 Aug 2020 09:29:00 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/drmem: Don't compute the NUMA node for each LMB
-Date: Wed,  5 Aug 2020 11:28:58 +0200
-Message-Id: <20200805092858.64143-1-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.28.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BM5v16HmnzDqf9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Aug 2020 19:30:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1596619802;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KGrNYVry5FOInRW/Xy0yFMiPNeyHmg20qhVD8oGfJJ4=;
+ b=aUOxTUPpBPd48TQUNVSosUBrx0RpYWwrCSGKn8GWTGhB28sC3H1gVhK3g5jDWcq7hb1KLW
+ HZC/Y/5rDZbbpdfxZ99aYgN5c7MepdlUlLdBcuzSbWncjo6uHbrkf+n4c9F1jMaqB2oSnv
+ k3iBr7h6S4pqZcnEQhPLETOc35VuQnc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1596619802;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KGrNYVry5FOInRW/Xy0yFMiPNeyHmg20qhVD8oGfJJ4=;
+ b=aUOxTUPpBPd48TQUNVSosUBrx0RpYWwrCSGKn8GWTGhB28sC3H1gVhK3g5jDWcq7hb1KLW
+ HZC/Y/5rDZbbpdfxZ99aYgN5c7MepdlUlLdBcuzSbWncjo6uHbrkf+n4c9F1jMaqB2oSnv
+ k3iBr7h6S4pqZcnEQhPLETOc35VuQnc=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-470-ZnwKN9E9NxSzYumJ2rNNrw-1; Wed, 05 Aug 2020 05:29:58 -0400
+X-MC-Unique: ZnwKN9E9NxSzYumJ2rNNrw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 24BE680183C;
+ Wed,  5 Aug 2020 09:29:53 +0000 (UTC)
+Received: from localhost (ovpn-12-71.pek2.redhat.com [10.72.12.71])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 068AF726A5;
+ Wed,  5 Aug 2020 09:29:51 +0000 (UTC)
+Date: Wed, 5 Aug 2020 17:29:48 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v2 17/17] memblock: use separate iterators for memory and
+ reserved regions
+Message-ID: <20200805092948.GX10792@MiWiFi-R3L-srv>
+References: <20200802163601.8189-1-rppt@kernel.org>
+ <20200802163601.8189-18-rppt@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-05_05:2020-08-03,
- 2020-08-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 spamscore=0
- impostorscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
- phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008050072
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200802163601.8189-18-rppt@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,74 +83,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, cheloha@linux.ibm.com
+Cc: Emil Renner Berthing <kernel@esmil.dk>, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Stafford Horne <shorne@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
+ Michal Simek <monstr@monstr.eu>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All the LMB from the same set of ibm,dynamic-memory-v2 property are
-sharing the same NUMA node. Don't compute that node for each one.
+On 08/02/20 at 07:36pm, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> for_each_memblock() is used to iterate over memblock.memory in
+> a few places that use data from memblock_region rather than the memory
+> ranges.
+> 
+> Introduce separate for_each_mem_region() and for_each_reserved_mem_region()
+> to improve encapsulation of memblock internals from its users.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  .clang-format                  |  3 ++-
+>  arch/arm64/kernel/setup.c      |  2 +-
+>  arch/arm64/mm/numa.c           |  2 +-
+>  arch/mips/netlogic/xlp/setup.c |  2 +-
+>  arch/x86/mm/numa.c             |  2 +-
+>  include/linux/memblock.h       | 19 ++++++++++++++++---
+>  mm/memblock.c                  |  4 ++--
+>  mm/page_alloc.c                |  8 ++++----
+>  8 files changed, 28 insertions(+), 14 deletions(-)
+> 
+...
 
-Tested on a system with 1022 LMBs spread on 4 NUMA nodes, only 4 calls to
-lmb_set_nid() have been made instead of 1022.
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 9e51b3fd4134..a6970e058bd7 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -522,9 +522,22 @@ static inline unsigned long memblock_region_reserved_end_pfn(const struct memblo
+>  	return PFN_UP(reg->base + reg->size);
+>  }
+>  
+> -#define for_each_memblock(memblock_type, region)					\
+> -	for (region = memblock.memblock_type.regions;					\
+> -	     region < (memblock.memblock_type.regions + memblock.memblock_type.cnt);	\
+> +/**
+> + * for_each_mem_region - itereate over registered memory regions
+                                          ~~~~~~~~~~~~~~~~~
 
-This should prevent some soft lockups when starting large guests
+Wonder why emphasize 'registered' memory.
 
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
----
- arch/powerpc/mm/drmem.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+Other than this confusion to me, this patch looks good.
 
-diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-index b2eeea39684c..3819c523c65b 100644
---- a/arch/powerpc/mm/drmem.c
-+++ b/arch/powerpc/mm/drmem.c
-@@ -397,7 +397,7 @@ static void __init init_drmem_v1_lmbs(const __be32 *prop)
- 
- static void __init init_drmem_v2_lmbs(const __be32 *prop)
- {
--	struct drmem_lmb *lmb;
-+	struct drmem_lmb *lmb, *first;
- 	struct of_drconf_cell_v2 dr_cell;
- 	const __be32 *p;
- 	u32 i, j, lmb_sets;
-@@ -422,10 +422,18 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
- 	/* second pass, read in the LMB information */
- 	lmb_index = 0;
- 	p = prop;
-+	first = NULL;
- 
- 	for (i = 0; i < lmb_sets; i++) {
- 		read_drconf_v2_cell(&dr_cell, &p);
- 
-+		/*
-+		 * Fetch the NUMA node id for the fist set or if the
-+		 * associativity index is different from the previous set.
-+		 */
-+		if (first && dr_cell.aa_index != first->aa_index)
-+			first = NULL;
-+
- 		for (j = 0; j < dr_cell.seq_lmbs; j++) {
- 			lmb = &drmem_info->lmbs[lmb_index++];
- 
-@@ -438,7 +446,16 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
- 			lmb->aa_index = dr_cell.aa_index;
- 			lmb->flags = dr_cell.flags;
- 
--			lmb_set_nid(lmb);
-+			/*
-+			 * All the LMB in the set share the same NUMA
-+			 * associativity property. So read that node only once.
-+			 */
-+			if (!first) {
-+				lmb_set_nid(lmb);
-+				first = lmb;
-+			} else {
-+				lmb->nid = first->nid;
-+			}
- 		}
- 	}
- }
--- 
-2.28.0
+Reviewed-by: Baoquan He <bhe@redhat.com>
 
