@@ -2,52 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A357923D6AE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 08:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B83C23D7A3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 09:46:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMdGL5RGczDqk7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 16:03:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMgXr3FPlzDqjx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 17:46:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMdDF0y57zDqY4
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 16:01:47 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BMdD63yZtz9v07Z;
- Thu,  6 Aug 2020 08:01:42 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id GJc8k4XBDR3v; Thu,  6 Aug 2020 08:01:42 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BMdD635Dwz9v07Y;
- Thu,  6 Aug 2020 08:01:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 59A288B770;
- Thu,  6 Aug 2020 08:01:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Wvmoq1VYrzQX; Thu,  6 Aug 2020 08:01:43 +0200 (CEST)
-Received: from po16052vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B36D8B75E;
- Thu,  6 Aug 2020 08:01:43 +0200 (CEST)
-Received: by po16052vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 0854F65BC8; Thu,  6 Aug 2020 06:01:42 +0000 (UTC)
-Message-Id: <2b69ac8e1cddff6f808fc7415907179eab4aae9e.1596693679.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/32s: Fix assembler warning about r0
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  6 Aug 2020 06:01:42 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMgVp1LQzzDqhT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 17:44:33 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7FCC41A08EB;
+ Thu,  6 Aug 2020 09:44:29 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CB7F81A0901;
+ Thu,  6 Aug 2020 09:44:24 +0200 (CEST)
+Received: from 10.192.242.69 (shlinux2.ap.freescale.net [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id D574D402D0;
+ Thu,  6 Aug 2020 09:44:18 +0200 (CEST)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl-asoc-card: Get "extal" clock rate by clk_get_rate
+Date: Thu,  6 Aug 2020 15:39:45 +0800
+Message-Id: <1596699585-27429-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,38 +51,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The assembler says:
-  arch/powerpc/kernel/head_32.S:1095: Warning: invalid register expression
+On some platform(.e.g. i.MX8QM MEK), the "extal" clock is different
+with the mclk of codec, then the clock rate is also different.
+So it is better to get clock rate of "extal" rate by clk_get_rate,
+don't reuse the clock rate of mclk.
 
-It's objecting to the use of r0 as the RA argument. That's because
-when RA = 0 the literal value 0 is used, rather than the content of
-r0, making the use of r0 in the source potentially confusing.
-
-Fix it to use a literal 0, the generated code is identical.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- arch/powerpc/kernel/head_32.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl-asoc-card.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
-index f3ab94d73936..5624db0e09a1 100644
---- a/arch/powerpc/kernel/head_32.S
-+++ b/arch/powerpc/kernel/head_32.S
-@@ -1092,7 +1092,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- 	 */
- 	lis	r5, abatron_pteptrs@h
- 	ori	r5, r5, abatron_pteptrs@l
--	stw	r5, 0xf0(r0)	/* This much match your Abatron config */
-+	stw	r5, 0xf0(0)	/* This much match your Abatron config */
- 	lis	r6, swapper_pg_dir@h
- 	ori	r6, r6, swapper_pg_dir@l
- 	tophys(r5, r5)
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 52adedc03245..2c92a5efad61 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -696,6 +696,13 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 			goto asrc_fail;
+ 		}
+ 	} else if (of_node_name_eq(cpu_np, "esai")) {
++		struct clk *esai_clk = clk_get(&cpu_pdev->dev, "extal");
++
++		if (!IS_ERR(esai_clk)) {
++			priv->cpu_priv.sysclk_freq[TX] = clk_get_rate(esai_clk);
++			priv->cpu_priv.sysclk_freq[RX] = clk_get_rate(esai_clk);
++			clk_put(esai_clk);
++		}
+ 		priv->cpu_priv.sysclk_id[1] = ESAI_HCKT_EXTAL;
+ 		priv->cpu_priv.sysclk_id[0] = ESAI_HCKR_EXTAL;
+ 	} else if (of_node_name_eq(cpu_np, "sai")) {
 -- 
-2.25.0
+2.27.0
 
