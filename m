@@ -2,96 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6427C23DB0B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 16:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9E23DB50
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 17:20:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMr6g4LsgzDqsD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 00:12:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMscH26LszDqs6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 01:19:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMsY311WtzDqnn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 01:17:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=biM7AnJd; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=BZxrTWh3; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BMsY23shyz8sWN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 01:17:10 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BMsY22mR6z9sTM; Fri,  7 Aug 2020 01:17:10 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BZxrTWh3; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMr3w4FpxzDqp7
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 00:10:20 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 076E1IGX080885; Thu, 6 Aug 2020 10:10:03 -0400
+ by ozlabs.org (Postfix) with ESMTPS id 4BMsY167VZz9sSG;
+ Fri,  7 Aug 2020 01:17:09 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 076F3aTf017464; Thu, 6 Aug 2020 11:17:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=oaAEJb826W7ksaLamBDtymDY8M970iPeRS07nHJ31qQ=;
- b=biM7AnJdvEOH5cMoMa8In/ItG0EFHlyb05YodG6AakRTQaw8UhG1aA6ic2SMVjxSoyDC
- e37JyDNcs998CosuDb37vftuEVv391ydUZo5JtPHwE2jGU6p+bjmzfQAk8KTX4U+6BsI
- kLNHT++BRgg2bEay8eBo7mVTDjzUN4P1D2Hss1sLp8DREY0SlJMyWtfgwZF9gfWUs0u1
- otVrtG5uGQKbcrNhBrNOdPEsMbJ2F3DCKV0xoamWzGMCf4uINHheuqIgODIudczp46dN
- KZUpJFtE/MptPk6sFv3I5nXn5bQWKotFdkwpIGiz6f4E/7crh2ev2mDPtrS+Puj4Ax0f 4g== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32r9wtyt7y-1
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=qPmXld4Ke04dydgA8tu+gDibMhgtyNOUctYgq5sdLeI=;
+ b=BZxrTWh38buhtmW8yyP32VxeaNzy6Edx5yy8R6qMXD5ce110raXVaO+XSnejGLKrQpNh
+ w3kISDOvYHg8crN116o3x3gBy22MvVANSslTlgLga4X6FB32sYk5s5X1vxEgoZTxairB
+ uS8U6W/0qxZgDwqPUMuA3XBLE5xvlppL2k1Qlyb1Z2DdfKarfNGWK2VYQxDjLx3XBLtD
+ CEvVBfLhpHVn2J1Kd+m/FQKYyzAkbKLSZHX0QsBUPerKaB5OR8IlH+1f2IWl69p/00IL
+ fpNS6ZQ2Ys+ojbG+oI6W78uYnsQX6Tii3TM8cEE5FqsvO4A8ril/EL259G9WSQ+cRt2z eg== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32raves5hw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 10:10:03 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 076E772b025010;
- Thu, 6 Aug 2020 14:10:01 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 32mynh5hw5-1
+ Thu, 06 Aug 2020 11:17:06 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 076FA1SY028296;
+ Thu, 6 Aug 2020 15:17:05 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma05wdc.us.ibm.com with ESMTP id 32nxe515cy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 14:10:01 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 076E9xKF65012028
+ Thu, 06 Aug 2020 15:17:05 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 076FH5F752101476
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Aug 2020 14:09:59 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 19B2AA405F;
- Thu,  6 Aug 2020 14:09:59 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8ED15A4060;
- Thu,  6 Aug 2020 14:09:56 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu,  6 Aug 2020 14:09:56 +0000 (GMT)
-Date: Thu, 6 Aug 2020 19:39:55 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: peterz@infradead.org
-Subject: Re: [PATCH 1/2] sched/topology: Allow archs to override cpu_smt_mask
-Message-ID: <20200806140955.GC31068@linux.vnet.ibm.com>
-References: <20200804033307.76111-1-srikar@linux.vnet.ibm.com>
- <20200804104520.GB2657@hirez.programming.kicks-ass.net>
- <20200804121007.GJ24375@linux.vnet.ibm.com>
- <20200804124755.GJ2674@hirez.programming.kicks-ass.net>
- <87ft90z6dy.fsf@mpe.ellerman.id.au>
- <20200806085429.GX2674@hirez.programming.kicks-ass.net>
- <87d044yn9z.fsf@mpe.ellerman.id.au>
- <20200806131547.GC2674@hirez.programming.kicks-ass.net>
+ Thu, 6 Aug 2020 15:17:05 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 12E10B2064;
+ Thu,  6 Aug 2020 15:17:05 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D9620B2065;
+ Thu,  6 Aug 2020 15:17:04 +0000 (GMT)
+Received: from localhost (unknown [9.65.243.213])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Aug 2020 15:17:04 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 2/2] powerpc/pseries: new lparcfg key/value pair:
+ partition_affinity_score
+In-Reply-To: <871rkkymd5.fsf@mpe.ellerman.id.au>
+References: <20200727184605.2945095-1-cheloha@linux.ibm.com>
+ <20200727184605.2945095-2-cheloha@linux.ibm.com>
+ <bc9858c9-7d55-88c0-1f85-157af48e1d8c@linux.ibm.com>
+ <871rkkymd5.fsf@mpe.ellerman.id.au>
+Date: Thu, 06 Aug 2020 10:17:04 -0500
+Message-ID: <87y2mrztvz.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20200806131547.GC2674@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-06_09:2020-08-06,
  2020-08-06 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=999
- lowpriorityscore=0 spamscore=0 impostorscore=0 mlxscore=0 phishscore=0
- clxscore=1015 malwarescore=0 suspectscore=1 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008060096
+ suspectscore=0 bulkscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 adultscore=0 impostorscore=0
+ phishscore=0 clxscore=1011 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008060104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,50 +114,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>,
- Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Mel Gorman <mgorman@techsingularity.net>,
- Ingo Molnar <mingo@kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Scott Cheloha <cheloha@linux.ibm.com>, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* peterz@infradead.org <peterz@infradead.org> [2020-08-06 15:15:47]:
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
+>> On 7/27/20 11:46 AM, Scott Cheloha wrote:
+>>> The H_GetPerformanceCounterInfo (GPCI) PHYP hypercall has a subcall,
+>>> Affinity_Domain_Info_By_Partition, which returns, among other things,
+>>> a "partition affinity score" for a given LPAR.  This score, a value on
+>>> [0-100], represents the processor-memory affinity for the LPAR in
+>>> question.  A score of 0 indicates the worst possible affinity while a
+>>> score of 100 indicates perfect affinity.  The score can be used to
+>>> reason about performance.
+>>> 
+>>> This patch adds the score for the local LPAR to the lparcfg procfile
+>>> under a new 'partition_affinity_score' key.
+>>> 
+>>> Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+>>
+>> I was hoping Michael would chime in the first time around on this patch series
+>> about adding another key/value pair to lparcfg.
+>
+> That guy is so unreliable.
+>
+> I don't love adding new stuff in lparcfg, but given the file already
+> exists and there's no prospect of removing it, it's probably not worth
+> the effort to put the new field anywhere else.
+>
+> My other query with this was how on earth anyone is meant to interpret
+> the metric. ie. if my metric is 50, what does that mean? If it's 90
+> should I worry?
 
-> > But my understanding is most LPARs don't get migrated back and forth,
-> > they'll start life on a P8 and only get migrated to a P9 once when the
-> > customer gets a P9. They might then run for a long time (months to
-> > years) on the P9 in P8 compat mode, not because they ever want to
-> > migrate back to a real P8, but because the software in the LPAR is still
-> > expecting to be on a P8.
-> > 
-> > I'm not a real expert on all the Enterprisey stuff though, so someone
-> > else might be able to give us a better picture.
-> > 
-> > But the point of mentioning the migration stuff was mainly just to
-> > explain why we feel we need to present SMT8 to userspace even on P9.
-> 
-> OK, fair enough. The patch wasn't particularly onerous, I was just
-> wondering why etc..
-> 
-> The case of starting on a P8 and being migrated to a P9 makes sense to
-> me; in that case you'd like to rebuild your sched domains, but can't go
-> about changing user visible topolofy information.
-> 
-> I suppose:
-> 
-> Acked-by; Peter Zijlstra (Intel) <peterz@infradead.org>
-> 
-> An updated Changelog that recaps some of this discussion might also be
-> nice.
+Here's some more background.
 
-Okay, will surely do the needful.
+This interface is just passing up what the platform provides, and it's
+identical to the partition affinity score described in the documentation
+for the management console's lsmemopt command:
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+https://www.ibm.com/support/knowledgecenter/POWER9/p9edm/lsmemopt.html
+
+The score is 0-100, higher values are better. To illustrate: I believe a
+partition's score will be 100 (or very close to it) if all of its CPUs
+and memory reside within one node. It will be lower than that when a
+partition has some memory without local CPUs, and lower still when there
+is no CPU-memory affinity within the partition. Beyond that I don't have
+more specific information and the algorithm and scale are set by the
+platform.
+
+The intent is for this to be a metric to gather during problem
+determination e.g. via sosreport or similar, but as far as Linux is
+concerned this should be treated as an opaque value.
