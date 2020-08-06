@@ -1,56 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8829A23D894
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 11:27:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B47AB23D8FC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 11:57:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMjnk5vXMzDqKZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 19:27:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMkRy6xDPzDqf9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 19:57:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+51efaf08c314c7af39ff+6192+infradead.org+hch@casper.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=vMRW28d8; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMjlm2zPwzDqKH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 19:25:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=uwezxHeiyaP46V7+gw/LOWQd5VBMStsMPyZz8mwar24=; b=vMRW28d8XB+LZ5/F3umjcu/6s1
- JHiPpaXc8g6GMXfgxJmovJDNR85MQigTyuMIc87kgKR8w1ybRJ6EJGS/8wokC7SWRiJG4l2cqIa8O
- ph1ZgeflH0bhuhMQB/nWqBkZicGkUITCREPG3bLaL3HtanQuN+eq6dvpoJi8bwKRGZiXrGG99uaDc
- tTeOtTmBq8DOdfXQggCi3dhHv3WXjKJVPlI1fxXBb7wxOzFJQmaSFQ+EqW40m6kkVQy2/qYB2GMXj
- VBS7Uxr+iQfqyG6ynPUuysB6SQQZIUdrfKObvvVhV3U8QPTTt51QrHx2/e4DMH2VO6zrNTYm2/4hg
- Mpc9ptlg==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1k3c9j-0000nU-Ou; Thu, 06 Aug 2020 09:25:47 +0000
-Date: Thu, 6 Aug 2020 10:25:47 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/signal: Move and simplify get_clean_sp()
-Message-ID: <20200806092547.GA2544@infradead.org>
-References: <04169f40c09682ce5747518268ca84285bc17fbc.1596703345.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMkPK3CD0zDq9R
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 19:54:58 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BMkP82qsWz9v0SZ;
+ Thu,  6 Aug 2020 11:54:52 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id EGAhQQuTYzTh; Thu,  6 Aug 2020 11:54:52 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BMkP82110z9v0SX;
+ Thu,  6 Aug 2020 11:54:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9CEDD8B7FE;
+ Thu,  6 Aug 2020 11:54:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id dGZqyIVZZVmv; Thu,  6 Aug 2020 11:54:53 +0200 (CEST)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 85FAB8B7F9;
+ Thu,  6 Aug 2020 11:54:51 +0200 (CEST)
+Subject: Re: [PATCH v3 3/3] powerpc/uaccess: simplify the get_fs() set_fs()
+ logic
+To: Christoph Hellwig <hch@infradead.org>
+References: <a6e62627d25fb7ae9b91d8bf553e707689e37498.1596702117.git.christophe.leroy@csgroup.eu>
+ <cf39cb8e42cffe323393b8cecdc59a7230298eab.1596702117.git.christophe.leroy@csgroup.eu>
+ <20200806091758.GA653@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d9111162-220a-c1a8-4251-5815030cb32e@csgroup.eu>
+Date: Thu, 6 Aug 2020 11:54:44 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <04169f40c09682ce5747518268ca84285bc17fbc.1596703345.git.christophe.leroy@csgroup.eu>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20200806091758.GA653@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,17 +66,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 06, 2020 at 08:50:20AM +0000, Christophe Leroy wrote:
-> get_clean_sp() is only used in kernel/signal.c . Move it there.
-> 
-> And GCC is smart enough to reduce the function when on PPC32, no
-> need of a special PPC32 simple version.
 
-What about just open coding it in the only caller, which would seem even
-cleaner?
+
+Le 06/08/2020 à 11:17, Christoph Hellwig a écrit :
+> Do you urgently need this?  My plan for 5.10 is to rebased and submit
+> the remaining bits of this branch:
+> 
+>      http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/set_fs-removal
+> 
+> which will kill off set_fs/get_fs entirely.
+> 
+
+No this isn't needed urgently at all I think.
+
+It was sleeping in Patchwork since January, and I received comments from 
+Michael a few days ago asking me to re-submit, see 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/dd2876b808ea38eb7b7f760ecd6ce06096c61fb5.1580295551.git.christophe.leroy@c-s.fr/
+
+But if you are killing set_fs/get_fs entirely, that's even better I 
+guess. Thanks for the hands up.
+
+Christophe
