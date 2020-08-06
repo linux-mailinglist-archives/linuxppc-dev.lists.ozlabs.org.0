@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896B523DA52
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 14:30:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB4623DA58
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 14:33:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMnrx48X6zDq9R
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 22:30:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMnwN280lzDqg9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 22:33:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=G8KATEOt; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMndP3yJhzDqDD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 22:20:40 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BMndG3llCzB09ZR;
- Thu,  6 Aug 2020 14:20:34 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id TuxF9pezDG3S; Thu,  6 Aug 2020 14:20:34 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BMndG2lCLzB09ZL;
- Thu,  6 Aug 2020 14:20:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 135DA8B80D;
- Thu,  6 Aug 2020 14:20:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id avjRKZaeuOha; Thu,  6 Aug 2020 14:20:36 +0200 (CEST)
-Received: from po16052vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DB7398B7FC;
- Thu,  6 Aug 2020 14:20:35 +0200 (CEST)
-Received: by po16052vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C67A765BEB; Thu,  6 Aug 2020 12:20:35 +0000 (UTC)
-Message-Id: <edcdd72a36495d25213c0256c8022367458e0d19.1596716418.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <d5641ada199b8dd2af16ad00a66084cf974f2704.1596716418.git.christophe.leroy@csgroup.eu>
-References: <d5641ada199b8dd2af16ad00a66084cf974f2704.1596716418.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 2/2] powerpc: drop hard_reset_now() and poweroff_now()
- declaration
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  6 Aug 2020 12:20:35 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMndl20BRzDqlB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 22:20:59 +1000 (AEST)
+Received: from quaco.ghostprotocols.net (unknown [179.162.129.152])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 60F6122D03;
+ Thu,  6 Aug 2020 12:20:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1596716455;
+ bh=BNTPnjp8uCLBloIL6H7X+Nr6ROKedHB8cPRuja71qEs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=G8KATEOtPaitqZWGuUsl2fHoO8xBt3tgvMmFiZgtVh5NzuE7ZrqefXIN9OPVRt/DL
+ QJFQkHXggwdIvlal4KR/kXOaKujQK1iyb7qTQFZi9LjBApdNYA/doU0HYqQZ3N7r9b
+ X4QqGAzCEs05K0v3PxSDYwzFkW34bzPMQ3DcjiUQ=
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+ id 1467B40524; Thu,  6 Aug 2020 09:20:53 -0300 (-03)
+Date: Thu, 6 Aug 2020 09:20:52 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH V5 0/4] powerpc/perf: Add support for perf extended regs
+ in powerpc
+Message-ID: <20200806122052.GC71359@kernel.org>
+References: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ <27D1CE26-A506-4CFF-B1C2-E0545F26E637@linux.vnet.ibm.com>
+ <20200730195048.GA1484375@krava>
+ <CA3D75F3-5F63-425B-A3C1-00C181E41108@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA3D75F3-5F63-425B-A3C1-00C181E41108@linux.vnet.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,31 +62,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
+ kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Jiri Olsa <jolsa@kernel.org>, Jiri Olsa <jolsa@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Those function have never existed. Drop their declaration.
+Em Fri, Jul 31, 2020 at 11:04:14PM +0530, Athira Rajeev escreveu:
+> 
+> 
+> > On 31-Jul-2020, at 1:20 AM, Jiri Olsa <jolsa@redhat.com> wrote:
+> > 
+> > On Thu, Jul 30, 2020 at 01:24:40PM +0530, Athira Rajeev wrote:
+> >> 
+> >> 
+> >>> On 27-Jul-2020, at 10:46 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.com> wrote:
+> >>> 
+> >>> Patch set to add support for perf extended register capability in
+> >>> powerpc. The capability flag PERF_PMU_CAP_EXTENDED_REGS, is used to
+> >>> indicate the PMU which support extended registers. The generic code
+> >>> define the mask of extended registers as 0 for non supported architectures.
+> >>> 
+> >>> Patches 1 and 2 are the kernel side changes needed to include
+> >>> base support for extended regs in powerpc and in power10.
+> >>> Patches 3 and 4 are the perf tools side changes needed to support the
+> >>> extended registers.
+> >>> 
+> >> 
+> >> Hi Arnaldo, Jiri
+> >> 
+> >> please let me know if you have any comments/suggestions on this patch series to add support for perf extended regs.
+> > 
+> > hi,
+> > can't really tell for powerpc, but in general
+> > perf tool changes look ok
+> > 
+> 
+> Hi Jiri,
+> Thanks for checking the patchset.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/processor.h | 2 --
- 1 file changed, 2 deletions(-)
+So I'dd say you submit a v6, split into the kernel part, that probably
+should go via the PPC arch tree, and I can pick the tooling part, ok?
 
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index 9ebcb2f095db..2b4dc10230da 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -422,8 +422,6 @@ extern void power9_idle_type(unsigned long stop_psscr_val,
- 			      unsigned long stop_psscr_mask);
- 
- extern void flush_instruction_cache(void);
--extern void hard_reset_now(void);
--extern void poweroff_now(void);
- extern int fix_alignment(struct pt_regs *);
- extern void _nmask_and_or_msr(unsigned long nmask, unsigned long or_val);
- 
--- 
-2.25.0
-
+- Arnaldo
