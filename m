@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF6E23DA6F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 14:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE71023DA72
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 14:51:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMpFs59VnzDqpf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 22:48:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMpJf599JzDqDX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 22:51:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,45 +19,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMnzf18sWzDqC5
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 22:36:29 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMnzg1yjbzDqD7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 22:36:31 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 076CXq1p044650; Thu, 6 Aug 2020 08:36:24 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32ra0rmnw3-1
+ 076CZ9ec194013; Thu, 6 Aug 2020 08:36:26 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32qu0w5p77-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 08:36:23 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 076CZ16A018039;
- Thu, 6 Aug 2020 12:36:23 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 32n019uph4-1
+ Thu, 06 Aug 2020 08:36:26 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 076CZgXn023159;
+ Thu, 6 Aug 2020 12:36:25 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma03wdc.us.ibm.com with ESMTP id 32n019hckp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 12:36:23 +0000
+ Thu, 06 Aug 2020 12:36:25 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 076CaLht60096956
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 076CaOww46072230
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Aug 2020 12:36:21 GMT
+ Thu, 6 Aug 2020 12:36:24 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50AB8C6057;
+ by IMSVA (Postfix) with ESMTP id E7DB8C605B;
+ Thu,  6 Aug 2020 12:36:23 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9ADFC6055;
  Thu,  6 Aug 2020 12:36:21 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 46864C6055;
- Thu,  6 Aug 2020 12:36:19 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.85.71.228])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  6 Aug 2020 12:36:18 +0000 (GMT)
+ Thu,  6 Aug 2020 12:36:21 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [RFC PATCH 2/3] powerpc/numa: Use global variable instead of fetching
- again
-Date: Thu,  6 Aug 2020 18:06:03 +0530
-Message-Id: <20200806123604.248361-2-aneesh.kumar@linux.ibm.com>
+Subject: [RFC PATCH 3/3] powerpc/lmb-size: Use addr #size-cells value when
+ fetching lmb-size
+Date: Thu,  6 Aug 2020 18:06:04 +0530
+Message-Id: <20200806123604.248361-3-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200806123604.248361-1-aneesh.kumar@linux.ibm.com>
 References: <20200806123604.248361-1-aneesh.kumar@linux.ibm.com>
@@ -68,10 +68,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-06_06:2020-08-06,
  2020-08-06 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- mlxlogscore=999 lowpriorityscore=0 suspectscore=0 bulkscore=0
- clxscore=1015 spamscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ adultscore=0 malwarescore=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ phishscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2008060091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,111 +91,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-use mem_addr_cells/mem_size_cells instead of fetching the values
-again from device tree.
+Make it consistent with other usages.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/mm/numa.c | 36 ++++++++++--------------------------
- 1 file changed, 10 insertions(+), 26 deletions(-)
+ arch/powerpc/mm/book3s64/radix_pgtable.c        |  7 ++++---
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 10 ++++++----
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 77d41d9775d2..c420872acd61 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -52,7 +52,6 @@ EXPORT_SYMBOL(node_to_cpumask_map);
- EXPORT_SYMBOL(node_data);
- 
- static int min_common_depth;
--static int n_mem_addr_cells, n_mem_size_cells;
- static int form1_affinity;
- 
- #define MAX_DISTANCE_REF_POINTS 4
-@@ -355,19 +354,6 @@ static int __init find_min_common_depth(void)
- 	return -1;
- }
- 
--static void __init get_n_mem_cells(int *n_addr_cells, int *n_size_cells)
--{
--	struct device_node *memory = NULL;
--
--	memory = of_find_node_by_type(memory, "memory");
--	if (!memory)
--		panic("numa.c: No memory nodes found!");
--
--	*n_addr_cells = of_n_addr_cells(memory);
--	*n_size_cells = of_n_size_cells(memory);
--	of_node_put(memory);
--}
--
- /*  dt_mem_next_cell is __init  */
- static unsigned long read_n_cells(int n, const __be32 **buf)
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index ca76d9d6372a..a48e6618a27b 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -497,7 +497,7 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
+ 					  depth, void *data)
  {
-@@ -639,12 +625,12 @@ static inline int __init read_usm_ranges(const __be32 **usm)
- 	 * a counter followed by that many (base, size) duple.
- 	 * read the counter from linux,drconf-usable-memory
- 	 */
--	return read_n_cells(n_mem_size_cells, usm);
-+	return read_n_cells(mem_size_cells, usm);
+ 	unsigned long *mem_block_size = (unsigned long *)data;
+-	const __be64 *prop;
++	const __be32 *prop;
+ 	int len;
+ 
+ 	if (depth != 1)
+@@ -507,13 +507,14 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
+ 		return 0;
+ 
+ 	prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
+-	if (!prop || len < sizeof(__be64))
++
++	if (!prop || len < dt_root_size_cells * sizeof(__be32))
+ 		/*
+ 		 * Nothing in the device tree
+ 		 */
+ 		*mem_block_size = MIN_MEMORY_BLOCK_SIZE;
+ 	else
+-		*mem_block_size = be64_to_cpup(prop);
++		*mem_block_size = of_read_number(prop, dt_root_size_cells);
+ 	return 1;
  }
  
- /*
-  * Extract NUMA information from the ibm,dynamic-reconfiguration-memory
-- * node.  This assumes n_mem_{addr,size}_cells have been set.
-+ * node.  This assumes mem_{addr,size}_cells have been set.
-  */
- static int __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
- 					const __be32 **usm,
-@@ -677,8 +663,8 @@ static int __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 5d545b78111f..aba23ef8dfdd 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -30,12 +30,14 @@ unsigned long pseries_memory_block_size(void)
  
- 	do {
- 		if (is_kexec_kdump) {
--			base = read_n_cells(n_mem_addr_cells, usm);
--			size = read_n_cells(n_mem_size_cells, usm);
-+			base = read_n_cells(mem_addr_cells, usm);
-+			size = read_n_cells(mem_size_cells, usm);
- 		}
+ 	np = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
+ 	if (np) {
+-		const __be64 *size;
++		int len;
++		const __be32 *prop;
  
- 		nid = of_drconf_to_nid_single(lmb);
-@@ -741,8 +727,6 @@ static int __init parse_numa_properties(void)
- 		node_set_online(nid);
- 	}
- 
--	get_n_mem_cells(&n_mem_addr_cells, &n_mem_size_cells);
--
- 	for_each_node_by_type(memory, "memory") {
- 		unsigned long start;
- 		unsigned long size;
-@@ -759,11 +743,11 @@ static int __init parse_numa_properties(void)
- 			continue;
- 
- 		/* ranges in cell */
--		ranges = (len >> 2) / (n_mem_addr_cells + n_mem_size_cells);
-+		ranges = (len >> 2) / (mem_addr_cells + mem_size_cells);
- new_range:
- 		/* these are order-sensitive, and modify the buffer pointer */
--		start = read_n_cells(n_mem_addr_cells, &memcell_buf);
--		size = read_n_cells(n_mem_size_cells, &memcell_buf);
-+		start = read_n_cells(mem_addr_cells, &memcell_buf);
-+		size = read_n_cells(mem_size_cells, &memcell_buf);
- 
- 		/*
- 		 * Assumption: either all memory nodes or none will
-@@ -1042,11 +1026,11 @@ static int hot_add_node_scn_to_nid(unsigned long scn_addr)
- 			continue;
- 
- 		/* ranges in cell */
--		ranges = (len >> 2) / (n_mem_addr_cells + n_mem_size_cells);
-+		ranges = (len >> 2) / (mem_addr_cells + mem_size_cells);
- 
- 		while (ranges--) {
--			start = read_n_cells(n_mem_addr_cells, &memcell_buf);
--			size = read_n_cells(n_mem_size_cells, &memcell_buf);
-+			start = read_n_cells(mem_addr_cells, &memcell_buf);
-+			size = read_n_cells(mem_size_cells, &memcell_buf);
- 
- 			if ((scn_addr < start) || (scn_addr >= (start + size)))
- 				continue;
+-		size = of_get_property(np, "ibm,lmb-size", NULL);
+-		if (size)
+-			memblock_size = be64_to_cpup(size);
++		prop = of_get_property(np, "ibm,lmb-size", &len);
++		if (prop && len >= mem_size_cells * sizeof(__be32))
++			memblock_size = of_read_number(prop, mem_size_cells);
+ 		of_node_put(np);
++
+ 	} else  if (machine_is(pseries)) {
+ 		/* This fallback really only applies to pseries */
+ 		unsigned int memzero_size = 0;
 -- 
 2.26.2
 
