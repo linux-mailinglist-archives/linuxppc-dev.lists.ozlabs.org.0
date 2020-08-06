@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213B923D7FC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 10:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC71423D7FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 10:28:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMhRk32RfzDqkg
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 18:26:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMhTd5LWrzDqBx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 18:28:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,39 +17,39 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMhMV6JNQzDqJT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 18:23:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMhMV6GwCzDqDY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 18:23:14 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BMhMK0YTvz9v0TJ;
- Thu,  6 Aug 2020 10:23:09 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BMhML21kJz9v0TM;
+ Thu,  6 Aug 2020 10:23:10 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iolbVkCwSF3s; Thu,  6 Aug 2020 10:23:09 +0200 (CEST)
+ with ESMTP id JAc1_NBpuyfq; Thu,  6 Aug 2020 10:23:10 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BMhMJ6cxGz9v0St;
- Thu,  6 Aug 2020 10:23:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E68C8B7F9;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BMhML1CRlz9v0St;
  Thu,  6 Aug 2020 10:23:10 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E9FF8B7FF;
+ Thu,  6 Aug 2020 10:23:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7m341MTYpse6; Thu,  6 Aug 2020 10:23:09 +0200 (CEST)
+ with ESMTP id MF6ErjQ8BmQa; Thu,  6 Aug 2020 10:23:11 +0200 (CEST)
 Received: from po16052vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CD86A8B75E;
- Thu,  6 Aug 2020 10:23:09 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D28148B75E;
+ Thu,  6 Aug 2020 10:23:10 +0200 (CEST)
 Received: by po16052vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C10FA65BC9; Thu,  6 Aug 2020 08:23:09 +0000 (UTC)
-Message-Id: <89a58684568a06e3a4e7abbe6d2284076f6288d1.1596702117.git.christophe.leroy@csgroup.eu>
+ id C7D0065BC9; Thu,  6 Aug 2020 08:23:10 +0000 (UTC)
+Message-Id: <cf39cb8e42cffe323393b8cecdc59a7230298eab.1596702117.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <a6e62627d25fb7ae9b91d8bf553e707689e37498.1596702117.git.christophe.leroy@csgroup.eu>
 References: <a6e62627d25fb7ae9b91d8bf553e707689e37498.1596702117.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 2/3] uaccess: remove segment_eq
+Subject: [PATCH v3 3/3] powerpc/uaccess: simplify the get_fs() set_fs() logic
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  6 Aug 2020 08:23:09 +0000 (UTC)
+Date: Thu,  6 Aug 2020 08:23:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,379 +66,210 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christoph Hellwig <hch@lst.de>
+On powerpc, we only have USER_DS and KERNEL_DS
 
-segment_eq is only used to implement uaccess_kernel.  Just open code
-uaccess_kernel in the arch uaccess headers and remove one layer of
-indirection.
+Today, this is managed as an 'unsigned long' data space limit
+which is used to compare the passed address with, plus a bit
+in the thread_info flags that is set whenever modifying the limit
+to enable the verification in addr_limit_user_check()
 
-Link: http://lkml.kernel.org/r/20200710135706.537715-5-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
-Acked-by: Greentime Hu <green.hu@gmail.com>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Nick Hu <nickhu@andestech.com>
-Cc: Vincent Chen <deanbo422@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+The limit is either the last address of user space when USER_DS is
+set, and the last address of address space when KERNEL_DS is set.
+In both cases, the limit is a compiletime constant.
+
+get_fs() returns the limit, which is part of thread_info struct
+set_fs() updates the limit then set the TI_FSCHECK flag.
+addr_limit_user_check() check the flag, and if it is set it checks
+the limit is the user limit, then unsets the TI_FSCHECK flag.
+
+In addition, when the flag is set the syscall exit work is involved.
+This exit work is heavy compared to normal syscall exit as it goes
+through normal exception exit instead of the fast syscall exit.
+
+Rename this TI_FSCHECK flag to TIF_UACCESS_KERNEL flag which tells
+whether KERNEL_DS or USER_DS is set. Get mm_segment_t be redifined as
+a bool struct that is either false (for USER_DS) or true (for
+KERNEL_DS). When TIF_UACCESS_KERNEL is set, the limit is ~0UL.
+Otherwise it is TASK_SIZE_USER (resp TASK_SIZE_USER64 on PPC64). When
+KERNEL_DS is set, there is no range to check. Define TI_FSCHECK as an
+alias to TIF_UACCESS_KERNEL.
+
+On exit, involve exit work when the bit is set, i.e. when KERNEL_DS
+is set. addr_limit_user_check() will clear the bit and kill the
+user process.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/alpha/include/asm/uaccess.h      | 2 +-
- arch/arc/include/asm/segment.h        | 3 +--
- arch/arm/include/asm/uaccess.h        | 4 ++--
- arch/arm64/include/asm/uaccess.h      | 2 +-
- arch/csky/include/asm/segment.h       | 2 +-
- arch/h8300/include/asm/segment.h      | 2 +-
- arch/ia64/include/asm/uaccess.h       | 2 +-
- arch/m68k/include/asm/segment.h       | 2 +-
- arch/microblaze/include/asm/uaccess.h | 2 +-
- arch/mips/include/asm/uaccess.h       | 2 +-
- arch/nds32/include/asm/uaccess.h      | 2 +-
- arch/nios2/include/asm/uaccess.h      | 2 +-
- arch/openrisc/include/asm/uaccess.h   | 2 +-
- arch/parisc/include/asm/uaccess.h     | 2 +-
- arch/powerpc/include/asm/uaccess.h    | 3 +--
- arch/riscv/include/asm/uaccess.h      | 4 +---
- arch/s390/include/asm/uaccess.h       | 2 +-
- arch/sh/include/asm/segment.h         | 3 +--
- arch/sparc/include/asm/uaccess_32.h   | 2 +-
- arch/sparc/include/asm/uaccess_64.h   | 2 +-
- arch/x86/include/asm/uaccess.h        | 2 +-
- arch/xtensa/include/asm/uaccess.h     | 2 +-
- include/asm-generic/uaccess.h         | 4 ++--
- include/linux/uaccess.h               | 2 --
- 24 files changed, 25 insertions(+), 32 deletions(-)
+v3: Rebased and taken into account removal of segment_eq() and comments from mpe
+---
+ arch/powerpc/include/asm/processor.h   |  5 +---
+ arch/powerpc/include/asm/thread_info.h |  9 ++++---
+ arch/powerpc/include/asm/uaccess.h     | 35 +++++++++++++-------------
+ arch/powerpc/lib/sstep.c               |  2 +-
+ 4 files changed, 25 insertions(+), 26 deletions(-)
 
-diff --git a/arch/alpha/include/asm/uaccess.h b/arch/alpha/include/asm/uaccess.h
-index 1fe2b56cb861..1b6f25efa247 100644
---- a/arch/alpha/include/asm/uaccess.h
-+++ b/arch/alpha/include/asm/uaccess.h
-@@ -20,7 +20,7 @@
- #define get_fs()  (current_thread_info()->addr_limit)
- #define set_fs(x) (current_thread_info()->addr_limit = (x))
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index ed0d633ab5aa..86a9c4395b99 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -84,7 +84,7 @@ void start_thread(struct pt_regs *regs, unsigned long fdptr, unsigned long sp);
+ void release_thread(struct task_struct *);
  
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel()	(get_fs().seg == KERNEL_DS.seg)
+ typedef struct {
+-	unsigned long seg;
++	bool uaccess_kernel;
+ } mm_segment_t;
  
- /*
-  * Is a address valid? This does a straightforward calculation rather
-diff --git a/arch/arc/include/asm/segment.h b/arch/arc/include/asm/segment.h
-index 6a2a5be5026d..871f8ab11bfd 100644
---- a/arch/arc/include/asm/segment.h
-+++ b/arch/arc/include/asm/segment.h
-@@ -14,8 +14,7 @@ typedef unsigned long mm_segment_t;
- 
- #define KERNEL_DS		MAKE_MM_SEG(0)
- #define USER_DS			MAKE_MM_SEG(TASK_SIZE)
--
--#define segment_eq(a, b)	((a) == (b))
-+#define uaccess_kernel()	(get_fs() == KERNEL_DS)
- 
- #endif /* __ASSEMBLY__ */
- #endif /* __ASMARC_SEGMENT_H */
-diff --git a/arch/arm/include/asm/uaccess.h b/arch/arm/include/asm/uaccess.h
-index 98c6b91be4a8..b19c9bec1f7a 100644
---- a/arch/arm/include/asm/uaccess.h
-+++ b/arch/arm/include/asm/uaccess.h
-@@ -76,7 +76,7 @@ static inline void set_fs(mm_segment_t fs)
- 	modify_domain(DOMAIN_KERNEL, fs ? DOMAIN_CLIENT : DOMAIN_MANAGER);
- }
- 
--#define segment_eq(a, b)	((a) == (b))
-+#define uaccess_kernel()	(get_fs() == KERNEL_DS)
- 
- /* We use 33-bit arithmetic here... */
- #define __range_ok(addr, size) ({ \
-@@ -263,7 +263,7 @@ extern int __put_user_8(void *, unsigned long long);
-  */
- #define USER_DS			KERNEL_DS
- 
--#define segment_eq(a, b)		(1)
-+#define uaccess_kernel()	(true)
- #define __addr_ok(addr)		((void)(addr), 1)
- #define __range_ok(addr, size)	((void)(addr), 0)
- #define get_fs()		(KERNEL_DS)
-diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
-index bc5c7b091152..fcb8174de505 100644
---- a/arch/arm64/include/asm/uaccess.h
-+++ b/arch/arm64/include/asm/uaccess.h
-@@ -49,7 +49,7 @@ static inline void set_fs(mm_segment_t fs)
- 				CONFIG_ARM64_UAO));
- }
- 
--#define segment_eq(a, b)	((a) == (b))
-+#define uaccess_kernel()	(get_fs() == KERNEL_DS)
- 
- /*
-  * Test whether a block of memory is a valid user space address.
-diff --git a/arch/csky/include/asm/segment.h b/arch/csky/include/asm/segment.h
-index db2640d5f575..79ede9b1a646 100644
---- a/arch/csky/include/asm/segment.h
-+++ b/arch/csky/include/asm/segment.h
-@@ -13,6 +13,6 @@ typedef struct {
- #define USER_DS			((mm_segment_t) { 0x80000000UL })
- #define get_fs()		(current_thread_info()->addr_limit)
- #define set_fs(x)		(current_thread_info()->addr_limit = (x))
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel()	(get_fs().seg == KERNEL_DS.seg)
- 
- #endif /* __ASM_CSKY_SEGMENT_H */
-diff --git a/arch/h8300/include/asm/segment.h b/arch/h8300/include/asm/segment.h
-index a407978f9f9f..37950725d9b9 100644
---- a/arch/h8300/include/asm/segment.h
-+++ b/arch/h8300/include/asm/segment.h
-@@ -33,7 +33,7 @@ static inline mm_segment_t get_fs(void)
- 	return USER_DS;
- }
- 
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel()	(get_fs().seg == KERNEL_DS.seg)
- 
- #endif /* __ASSEMBLY__ */
- 
-diff --git a/arch/ia64/include/asm/uaccess.h b/arch/ia64/include/asm/uaccess.h
-index 8aa473a4b0f4..179243c3dfc7 100644
---- a/arch/ia64/include/asm/uaccess.h
-+++ b/arch/ia64/include/asm/uaccess.h
-@@ -50,7 +50,7 @@
- #define get_fs()  (current_thread_info()->addr_limit)
- #define set_fs(x) (current_thread_info()->addr_limit = (x))
- 
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel()	(get_fs().seg == KERNEL_DS.seg)
- 
- /*
-  * When accessing user memory, we need to make sure the entire area really is in
-diff --git a/arch/m68k/include/asm/segment.h b/arch/m68k/include/asm/segment.h
-index c6686559e9b7..2b5e68a71ef7 100644
---- a/arch/m68k/include/asm/segment.h
-+++ b/arch/m68k/include/asm/segment.h
-@@ -52,7 +52,7 @@ static inline void set_fs(mm_segment_t val)
- #define set_fs(x)	(current_thread_info()->addr_limit = (x))
+ #define TS_FPR(i) fp_state.fpr[i][TS_FPROFFSET]
+@@ -148,7 +148,6 @@ struct thread_struct {
+ 	unsigned long	ksp_vsid;
  #endif
- 
--#define segment_eq(a, b) ((a).seg == (b).seg)
-+#define uaccess_kernel()	(get_fs().seg == KERNEL_DS.seg)
- 
- #endif /* __ASSEMBLY__ */
- 
-diff --git a/arch/microblaze/include/asm/uaccess.h b/arch/microblaze/include/asm/uaccess.h
-index 6723c56ec378..304b04ffea2f 100644
---- a/arch/microblaze/include/asm/uaccess.h
-+++ b/arch/microblaze/include/asm/uaccess.h
-@@ -41,7 +41,7 @@
- # define get_fs()	(current_thread_info()->addr_limit)
- # define set_fs(val)	(current_thread_info()->addr_limit = (val))
- 
--# define segment_eq(a, b)	((a).seg == (b).seg)
-+# define uaccess_kernel()	(get_fs().seg == KERNEL_DS.seg)
- 
- #ifndef CONFIG_MMU
- 
-diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index 62b298c50905..61fc01f177a6 100644
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -72,7 +72,7 @@ extern u64 __ua_limit;
- #define get_fs()	(current_thread_info()->addr_limit)
- #define set_fs(x)	(current_thread_info()->addr_limit = (x))
- 
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel()	(get_fs().seg == KERNEL_DS.seg)
- 
- /*
-  * eva_kernel_access() - determine whether kernel memory access on an EVA system
-diff --git a/arch/nds32/include/asm/uaccess.h b/arch/nds32/include/asm/uaccess.h
-index 3a9219f53ee0..010ba5f1d7dd 100644
---- a/arch/nds32/include/asm/uaccess.h
-+++ b/arch/nds32/include/asm/uaccess.h
-@@ -44,7 +44,7 @@ static inline void set_fs(mm_segment_t fs)
- 	current_thread_info()->addr_limit = fs;
+ 	struct pt_regs	*regs;		/* Pointer to saved register state */
+-	mm_segment_t	addr_limit;	/* for get_fs() validation */
+ #ifdef CONFIG_BOOKE
+ 	/* BookE base exception scratch space; align on cacheline */
+ 	unsigned long	normsave[8] ____cacheline_aligned;
+@@ -295,7 +294,6 @@ struct thread_struct {
+ #define INIT_THREAD { \
+ 	.ksp = INIT_SP, \
+ 	.ksp_limit = INIT_SP_LIMIT, \
+-	.addr_limit = KERNEL_DS, \
+ 	.pgdir = swapper_pg_dir, \
+ 	.fpexc_mode = MSR_FE0 | MSR_FE1, \
+ 	SPEFSCR_INIT \
+@@ -303,7 +301,6 @@ struct thread_struct {
+ #else
+ #define INIT_THREAD  { \
+ 	.ksp = INIT_SP, \
+-	.addr_limit = KERNEL_DS, \
+ 	.fpexc_mode = 0, \
+ }
+ #endif
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index ca6c97025704..123232a63ee7 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -69,7 +69,7 @@ struct thread_info {
+ #define INIT_THREAD_INFO(tsk)			\
+ {						\
+ 	.preempt_count = INIT_PREEMPT_COUNT,	\
+-	.flags =	0,			\
++	.flags =	_TIF_UACCESS_KERNEL,		\
  }
  
--#define segment_eq(a, b)	((a) == (b))
-+#define uaccess_kernel()	(get_fs() == KERNEL_DS)
+ #define THREAD_SIZE_ORDER	(THREAD_SHIFT - PAGE_SHIFT)
+@@ -90,7 +90,8 @@ void arch_setup_new_exec(void);
+ #define TIF_SYSCALL_TRACE	0	/* syscall trace active */
+ #define TIF_SIGPENDING		1	/* signal pending */
+ #define TIF_NEED_RESCHED	2	/* rescheduling necessary */
+-#define TIF_FSCHECK		3	/* Check FS is USER_DS on return */
++#define TIF_UACCESS_KERNEL	3	/* KERNEL_DS is set */
++#define TIF_FSCHECK	TIF_UACCESS_KERNEL
+ #define TIF_SYSCALL_EMU		4	/* syscall emulation active */
+ #define TIF_RESTORE_TM		5	/* need to restore TM FP/VEC/VSX */
+ #define TIF_PATCH_PENDING	6	/* pending live patching update */
+@@ -130,7 +131,7 @@ void arch_setup_new_exec(void);
+ #define _TIF_SYSCALL_TRACEPOINT	(1<<TIF_SYSCALL_TRACEPOINT)
+ #define _TIF_EMULATE_STACK_STORE	(1<<TIF_EMULATE_STACK_STORE)
+ #define _TIF_NOHZ		(1<<TIF_NOHZ)
+-#define _TIF_FSCHECK		(1<<TIF_FSCHECK)
++#define _TIF_UACCESS_KERNEL	(1 << TIF_UACCESS_KERNEL)
+ #define _TIF_SYSCALL_EMU	(1<<TIF_SYSCALL_EMU)
+ #define _TIF_SYSCALL_DOTRACE	(_TIF_SYSCALL_TRACE | _TIF_SYSCALL_AUDIT | \
+ 				 _TIF_SECCOMP | _TIF_SYSCALL_TRACEPOINT | \
+@@ -139,7 +140,7 @@ void arch_setup_new_exec(void);
+ #define _TIF_USER_WORK_MASK	(_TIF_SIGPENDING | _TIF_NEED_RESCHED | \
+ 				 _TIF_NOTIFY_RESUME | _TIF_UPROBE | \
+ 				 _TIF_RESTORE_TM | _TIF_PATCH_PENDING | \
+-				 _TIF_FSCHECK)
++				 _TIF_UACCESS_KERNEL)
+ #define _TIF_PERSYSCALL_MASK	(_TIF_RESTOREALL|_TIF_NOERROR)
  
- #define __range_ok(addr, size) (size <= get_fs() && addr <= (get_fs() -size))
- 
-diff --git a/arch/nios2/include/asm/uaccess.h b/arch/nios2/include/asm/uaccess.h
-index e83f831a76f9..a741abbed6fb 100644
---- a/arch/nios2/include/asm/uaccess.h
-+++ b/arch/nios2/include/asm/uaccess.h
-@@ -30,7 +30,7 @@
- #define get_fs()		(current_thread_info()->addr_limit)
- #define set_fs(seg)		(current_thread_info()->addr_limit = (seg))
- 
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- 
- #define __access_ok(addr, len)			\
- 	(((signed long)(((long)get_fs().seg) &	\
-diff --git a/arch/openrisc/include/asm/uaccess.h b/arch/openrisc/include/asm/uaccess.h
-index 17c24f14615f..48b691530d3e 100644
---- a/arch/openrisc/include/asm/uaccess.h
-+++ b/arch/openrisc/include/asm/uaccess.h
-@@ -43,7 +43,7 @@
- #define get_fs()	(current_thread_info()->addr_limit)
- #define set_fs(x)	(current_thread_info()->addr_limit = (x))
- 
--#define segment_eq(a, b)	((a) == (b))
-+#define uaccess_kernel()	(get_fs() == KERNEL_DS)
- 
- /* Ensure that the range from addr to addr+size is all within the process'
-  * address space
-diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/uaccess.h
-index ebbb9ffe038c..ed2cd4fb479b 100644
---- a/arch/parisc/include/asm/uaccess.h
-+++ b/arch/parisc/include/asm/uaccess.h
-@@ -14,7 +14,7 @@
- #define KERNEL_DS	((mm_segment_t){0})
- #define USER_DS 	((mm_segment_t){1})
- 
--#define segment_eq(a, b) ((a).seg == (b).seg)
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- 
- #define get_fs()	(current_thread_info()->addr_limit)
- #define set_fs(x)	(current_thread_info()->addr_limit = (x))
+ /* Bits in local_flags */
 diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 64c04ab09112..00699903f1ef 100644
+index 00699903f1ef..8567bec6f939 100644
 --- a/arch/powerpc/include/asm/uaccess.h
 +++ b/arch/powerpc/include/asm/uaccess.h
-@@ -38,8 +38,7 @@ static inline void set_fs(mm_segment_t fs)
- 	set_thread_flag(TIF_FSCHECK);
+@@ -15,48 +15,49 @@
+  *
+  * For historical reasons, these macros are grossly misnamed.
+  *
+- * The fs/ds values are now the highest legal address in the "segment".
++ * The fs/ds values are now a bool which tells the "segment" is user or kernel.
+  * This simplifies the checking in the routines below.
+  */
+ 
+ #define MAKE_MM_SEG(s)  ((mm_segment_t) { (s) })
+ 
+-#define KERNEL_DS	MAKE_MM_SEG(~0UL)
+-#ifdef __powerpc64__
+-/* We use TASK_SIZE_USER64 as TASK_SIZE is not constant */
+-#define USER_DS		MAKE_MM_SEG(TASK_SIZE_USER64 - 1)
+-#else
+-#define USER_DS		MAKE_MM_SEG(TASK_SIZE - 1)
+-#endif
++#define KERNEL_DS	MAKE_MM_SEG(true)
++#define USER_DS		MAKE_MM_SEG(false)
+ 
+-#define get_fs()	(current->thread.addr_limit)
++#define get_fs()	(MAKE_MM_SEG(test_thread_flag(TIF_UACCESS_KERNEL)))
+ 
+ static inline void set_fs(mm_segment_t fs)
+ {
+-	current->thread.addr_limit = fs;
+-	/* On user-mode return check addr_limit (fs) is correct */
+-	set_thread_flag(TIF_FSCHECK);
++	update_thread_flag(TIF_UACCESS_KERNEL, fs.uaccess_kernel);
  }
  
--#define segment_eq(a, b)	((a).seg == (b).seg)
--
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- #define user_addr_max()	(get_fs().seg)
+-#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
+-#define user_addr_max()	(get_fs().seg)
++#define uaccess_kernel() (get_fs().uaccess_kernel)
++#define user_addr_max()	(get_fs().uaccess_kernel ? ~0UL : USER_ADDR_MAX - 1)
  
  #ifdef __powerpc64__
-diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
-index 8ce9d607b53d..1bdf663e5932 100644
---- a/arch/riscv/include/asm/uaccess.h
-+++ b/arch/riscv/include/asm/uaccess.h
-@@ -62,11 +62,9 @@ static inline void set_fs(mm_segment_t fs)
- 	current_thread_info()->addr_limit = fs;
- }
- 
--#define segment_eq(a, b) ((a).seg == (b).seg)
--
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- #define user_addr_max()	(get_fs().seg)
- 
--
- /**
-  * access_ok: - Checks if a user space pointer is valid
-  * @addr: User space pointer to start of block to check
-diff --git a/arch/s390/include/asm/uaccess.h b/arch/s390/include/asm/uaccess.h
-index 324438889fe1..f09444d6aeab 100644
---- a/arch/s390/include/asm/uaccess.h
-+++ b/arch/s390/include/asm/uaccess.h
-@@ -32,7 +32,7 @@
- #define USER_DS_SACF	(3)
- 
- #define get_fs()        (current->thread.mm_segment)
--#define segment_eq(a,b) (((a) & 2) == ((b) & 2))
-+#define uaccess_kernel() ((get_fs() & 2) == KERNEL_DS)
- 
- void set_fs(mm_segment_t fs);
- 
-diff --git a/arch/sh/include/asm/segment.h b/arch/sh/include/asm/segment.h
-index 33d1d28057cb..02e54a3335d6 100644
---- a/arch/sh/include/asm/segment.h
-+++ b/arch/sh/include/asm/segment.h
-@@ -24,8 +24,7 @@ typedef struct {
- #define USER_DS		KERNEL_DS
- #endif
- 
--#define segment_eq(a, b) ((a).seg == (b).seg)
--
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- 
- #define get_fs()	(current_thread_info()->addr_limit)
- #define set_fs(x)	(current_thread_info()->addr_limit = (x))
-diff --git a/arch/sparc/include/asm/uaccess_32.h b/arch/sparc/include/asm/uaccess_32.h
-index d6d8413eca83..0a2d3ebc4bb8 100644
---- a/arch/sparc/include/asm/uaccess_32.h
-+++ b/arch/sparc/include/asm/uaccess_32.h
-@@ -28,7 +28,7 @@
- #define get_fs()	(current->thread.current_ds)
- #define set_fs(val)	((current->thread.current_ds) = (val))
- 
--#define segment_eq(a, b) ((a).seg == (b).seg)
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- 
- /* We have there a nice not-mapped page at PAGE_OFFSET - PAGE_SIZE, so that this test
-  * can be fairly lightweight.
-diff --git a/arch/sparc/include/asm/uaccess_64.h b/arch/sparc/include/asm/uaccess_64.h
-index bf9d330073b2..698cf69f74e9 100644
---- a/arch/sparc/include/asm/uaccess_64.h
-+++ b/arch/sparc/include/asm/uaccess_64.h
-@@ -32,7 +32,7 @@
- 
- #define get_fs() ((mm_segment_t){(current_thread_info()->current_ds)})
- 
--#define segment_eq(a, b)  ((a).seg == (b).seg)
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- 
- #define set_fs(val)								\
- do {										\
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 18dfa07d3ef0..dd3261f9f4ea 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -33,7 +33,7 @@ static inline void set_fs(mm_segment_t fs)
- 	set_thread_flag(TIF_FSCHECK);
- }
- 
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- #define user_addr_max() (current->thread.addr_limit.seg)
- 
++
++#define USER_ADDR_MAX		TASK_SIZE_USER64
++
  /*
-diff --git a/arch/xtensa/include/asm/uaccess.h b/arch/xtensa/include/asm/uaccess.h
-index e57f0d0a88d8..b9758119feca 100644
---- a/arch/xtensa/include/asm/uaccess.h
-+++ b/arch/xtensa/include/asm/uaccess.h
-@@ -35,7 +35,7 @@
- #define get_fs()	(current->thread.current_ds)
- #define set_fs(val)	(current->thread.current_ds = (val))
+  * This check is sufficient because there is a large enough
+  * gap between user addresses and the kernel addresses
+  */
+ #define __access_ok(addr, size, segment)	\
+-	(((addr) <= (segment).seg) && ((size) <= (segment).seg))
++	segment.uaccess_kernel ?	\
++	1 : (addr) < USER_ADDR_MAX && ((size) < USER_ADDR_MAX)
  
--#define segment_eq(a, b)	((a).seg == (b).seg)
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
+ #else
  
- #define __kernel_ok (uaccess_kernel())
- #define __user_ok(addr, size) \
-diff --git a/include/asm-generic/uaccess.h b/include/asm-generic/uaccess.h
-index e935318804f8..ba68ee4dabfa 100644
---- a/include/asm-generic/uaccess.h
-+++ b/include/asm-generic/uaccess.h
-@@ -86,8 +86,8 @@ static inline void set_fs(mm_segment_t fs)
++#define USER_ADDR_MAX		TASK_SIZE
++
+ static inline int __access_ok(unsigned long addr, unsigned long size,
+ 			mm_segment_t seg)
+ {
+-	if (addr > seg.seg)
++	if (seg.uaccess_kernel)
++		return 1;
++	if (addr >= USER_ADDR_MAX)
+ 		return 0;
+-	return (size == 0 || size - 1 <= seg.seg - addr);
++	return addr + size <= USER_ADDR_MAX;
  }
+ 
  #endif
- 
--#ifndef segment_eq
--#define segment_eq(a, b) ((a).seg == (b).seg)
-+#ifndef uaccess_kernel
-+#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
- #endif
- 
- #define access_ok(addr, size) __access_ok((unsigned long)(addr),(size))
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 0a76ddc07d59..5c62d0c6f15b 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -6,8 +6,6 @@
- #include <linux/sched.h>
- #include <linux/thread_info.h>
- 
--#define uaccess_kernel() segment_eq(get_fs(), KERNEL_DS)
--
- #include <asm/uaccess.h>
- 
- /*
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index caee8cc77e19..e10b642566ba 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -112,7 +112,7 @@ static nokprobe_inline long address_ok(struct pt_regs *regs,
+ 		return 1;
+ 	if (__access_ok(ea, 1, USER_DS))
+ 		/* Access overlaps the end of the user region */
+-		regs->dar = USER_DS.seg;
++		regs->dar = USER_ADDR_MAX;
+ 	else
+ 		regs->dar = ea;
+ 	return 0;
 -- 
 2.25.0
 
