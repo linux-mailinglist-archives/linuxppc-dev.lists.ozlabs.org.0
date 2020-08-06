@@ -2,89 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F42A23DBD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 18:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 024F623DE01
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 19:21:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMvGB3K4hzDqnl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 02:34:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMwJ45jHDzDqsh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 03:21:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Gspojy/+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMv2C0pQBzDqbs
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 02:24:02 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 076G3kCp124782; Thu, 6 Aug 2020 12:23:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=GqjEvh7/KoyH1h9mjBoS95Us9AlKDaL3XARILuS5WxU=;
- b=Gspojy/+oNIH3moZWT909eVJ+XipDdFpCvkZuf9MQOxuU/DKJEYn4XMYtftFJN4irIpc
- GCcCp6VMUH2bZ05xMcGEMJjWl6zTA9ZvgQjwcsNGfSmLl5FRQP2MMdUK2nO150BOnlG2
- sHhjrpIAbnu9/kgmtd9WZKmUxf6m7foa01YNcm8T44IWqx+DuyjpaWFPCD5oq9U+FRYB
- 6y47vsncpP1tUJfbF7pmbR45w+5KMW6QNPZSmDJgkvOpjNmOhxHwt5crVCkMZSuRrave
- mS7HS2zzwhAJLUBChH+45fYe0FSWDUaWZZLof/bB9S4vW9q2c8K3dwqPy5eBhFZsyxnu 1w== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32rfm9b4tf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 12:23:58 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 076GKqZw009526;
- Thu, 6 Aug 2020 16:23:56 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma03dal.us.ibm.com with ESMTP id 32n019ngub-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 16:23:56 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 076GNsbx59375940
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Aug 2020 16:23:54 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 764A07805C;
- Thu,  6 Aug 2020 16:23:54 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C5A17805F;
- Thu,  6 Aug 2020 16:23:52 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.37.237])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  6 Aug 2020 16:23:52 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2 4/4] powerpc/book3s64/radix: Make radix_mem_block_size 64bit
-Date: Thu,  6 Aug 2020 21:53:29 +0530
-Message-Id: <20200806162329.276534-4-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
-References: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-06_12:2020-08-06,
- 2020-08-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- adultscore=0 priorityscore=1501 spamscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 phishscore=0 mlxlogscore=999 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008060111
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMw9j69tSzDqNT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 03:15:33 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BMw9V59Zgz9vCqq;
+ Thu,  6 Aug 2020 19:15:26 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id vamTd93RcqFz; Thu,  6 Aug 2020 19:15:26 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BMw9V3Gcjz9vCql;
+ Thu,  6 Aug 2020 19:15:26 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C0BCB8B816;
+ Thu,  6 Aug 2020 19:15:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id MlhVkdSLcO5I; Thu,  6 Aug 2020 19:15:28 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 865D98B7FC;
+ Thu,  6 Aug 2020 19:15:28 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 5124665A68; Thu,  6 Aug 2020 17:15:28 +0000 (UTC)
+Message-Id: <7baae4086cbb9ffb08c933b065ff7d29dbc03dd6.1596734104.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 1/5] powerpc/mm: sanity_check_fault() should work for all, 
+ not only BOOK3S
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com
+Date: Thu,  6 Aug 2020 17:15:28 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,48 +60,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Similar to commit 89c140bbaeee ("pseries: Fix 64 bit logical memory block panic")
-make sure different variables tracking lmb_size are updated to be 64 bit.
+The verification and message introduced by commit 374f3f5979f9
+("powerpc/mm/hash: Handle user access of kernel address gracefully")
+applies to all platforms, it should not be limited to BOOK3S.
 
-Fixes: af9d00e93a4f ("powerpc/mm/radix: Create separate mappings for hot-plugged memory")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Make the BOOK3S version of sanity_check_fault() the one for all,
+and bail out earlier if not BOOK3S.
+
+Fixes: 374f3f5979f9 ("powerpc/mm/hash: Handle user access of kernel address gracefully")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/64/mmu.h | 2 +-
- arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/fault.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index 55442d45c597..1a0c9d09950f 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -85,7 +85,7 @@ extern unsigned int mmu_base_pid;
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 925a7231abb3..2efa34d7e644 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -303,7 +303,6 @@ static inline void cmo_account_page_fault(void)
+ static inline void cmo_account_page_fault(void) { }
+ #endif /* CONFIG_PPC_SMLPAR */
+ 
+-#ifdef CONFIG_PPC_BOOK3S
+ static void sanity_check_fault(bool is_write, bool is_user,
+ 			       unsigned long error_code, unsigned long address)
+ {
+@@ -320,6 +319,9 @@ static void sanity_check_fault(bool is_write, bool is_user,
+ 		return;
+ 	}
+ 
++	if (!IS_ENABLED(CONFIG_PPC_BOOK3S))
++		return;
++
+ 	/*
+ 	 * For hash translation mode, we should never get a
+ 	 * PROTFAULT. Any update to pte to reduce access will result in us
+@@ -354,10 +356,6 @@ static void sanity_check_fault(bool is_write, bool is_user,
+ 
+ 	WARN_ON_ONCE(error_code & DSISR_PROTFAULT);
+ }
+-#else
+-static void sanity_check_fault(bool is_write, bool is_user,
+-			       unsigned long error_code, unsigned long address) { }
+-#endif /* CONFIG_PPC_BOOK3S */
+ 
  /*
-  * memory block size used with radix translation.
-  */
--extern unsigned int __ro_after_init radix_mem_block_size;
-+extern unsigned long __ro_after_init radix_mem_block_size;
- 
- #define PRTB_SIZE_SHIFT	(mmu_pid_bits + 4)
- #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 28c784976bed..ca76d9d6372a 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -34,7 +34,7 @@
- 
- unsigned int mmu_pid_bits;
- unsigned int mmu_base_pid;
--unsigned int radix_mem_block_size __ro_after_init;
-+unsigned long radix_mem_block_size __ro_after_init;
- 
- static __ref void *early_alloc_pgtable(unsigned long size, int nid,
- 			unsigned long region_start, unsigned long region_end)
+  * Define the correct "is_write" bit in error_code based
 -- 
-2.26.2
+2.25.0
 
