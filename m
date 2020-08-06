@@ -2,70 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E0423D5C4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 05:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A516323D5FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 06:19:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMYn35RxPzDqGT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 13:26:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMZxz2Hf6zDqkL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 14:19:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=L4XB6nyS; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMYkv3ht1zDqX1
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 13:24:38 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id z188so16321445pfc.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Aug 2020 20:24:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=49z1+LbfP1EHSHgEOp6zvM41RF4pfO5OwrTaUPLGq48=;
- b=L4XB6nySvLkVi+tDRz+aVFN9lE8H84VaWRQI9BAqRXXdak9thdwmJjjjTgNzlDvW4J
- gMpjXWFmtTYc3PQ4pGwSnkXYbIxaLIfk1P5EvL88W+s2VQfm5bPTlD6QGSkV2KBpHbFV
- ixZWucTBUr7LvmVibQM4DI6H+LTBXuSNATnCs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=49z1+LbfP1EHSHgEOp6zvM41RF4pfO5OwrTaUPLGq48=;
- b=KCK8YbbYKdDXTh/a2rKVsmYziaML+XP308UV4ngZPKYsVWpeZyHHUWlcJWwlPBer3D
- HBpSkI91jcSzSGgHHrgbpnQYPdLUJh9SLZP0sBfIFKBr0ObEU9S2hMvBnUBdHuZ4plXx
- jvxabAibfT5AuwnwAbw+iQi/nsjm8Ubxw2ChbyirroYInLAhnsDiR3nUa/S5Z9POAhMA
- B/SOd0iag5p11tLCgmJAOmrKZOvIRljMNoYnfzxnFLhqBzUdVqR1iVEnC4Od4901rHba
- cSTYehZIz0Qv+AfCw6xsbEzy8FEHpJnTY2IorvRHukgu8TVPsE4+TTdern7zQqb9TSgP
- 0v3Q==
-X-Gm-Message-State: AOAM532QvKkj2pYiYKIL5c75PbZzgPE2rd5eOmIMuubfoOb6Shw/AVHb
- mjVzvijjFkT+wEdREkKX4QGQZA==
-X-Google-Smtp-Source: ABdhPJxSs9CpbLd302YKlzGAw+TbSuhCbGjVK9m95qyXcoDgClcDijTfJJJP6G/XTsFMO3IjQGldVg==
-X-Received: by 2002:a63:b90a:: with SMTP id z10mr5385445pge.277.1596684275018; 
- Wed, 05 Aug 2020 20:24:35 -0700 (PDT)
-Received: from localhost
- (2001-44b8-111e-5c00-b446-662a-483a-dcf2.static.ipv6.internode.on.net.
- [2001:44b8:111e:5c00:b446:662a:483a:dcf2])
- by smtp.gmail.com with ESMTPSA id e65sm5382429pfe.91.2020.08.05.20.24.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Aug 2020 20:24:34 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 2/5] powerpc/lib: Initialize a temporary mm for code
- patching
-In-Reply-To: <20200709040316.12789-3-cmr@informatik.wtf>
-References: <20200709040316.12789-1-cmr@informatik.wtf>
- <20200709040316.12789-3-cmr@informatik.wtf>
-Date: Thu, 06 Aug 2020 13:24:31 +1000
-Message-ID: <87lfiso3rk.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMZt775HhzDqGl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 14:15:53 +1000 (AEST)
+IronPort-SDR: V8Ii5eYamlLM+yRgZRu8WjNu7LGb/nIQ9Pep7qEi703SwYnr8ZqKIbF15TaIR2o2X+aBtUURHt
+ 4keVb0w6ksNw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9704"; a="153854343"
+X-IronPort-AV: E=Sophos;i="5.75,440,1589266800"; d="scan'208";a="153854343"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2020 21:15:50 -0700
+IronPort-SDR: qo7UoLZOt3Q6fMO1FwiFxTW3V/KNNmAyFtbWmpZBHPiLQGd7uIdC0vpAhnaRy0iHe/EhAqNRsE
+ 2DagC5C7UwJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,440,1589266800"; d="scan'208";a="293178899"
+Received: from lkp-server02.sh.intel.com (HELO 37a337f97289) ([10.239.97.151])
+ by orsmga006.jf.intel.com with ESMTP; 05 Aug 2020 21:15:48 -0700
+Received: from kbuild by 37a337f97289 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1k3XJk-00015h-6g; Thu, 06 Aug 2020 04:15:48 +0000
+Date: Thu, 06 Aug 2020 12:14:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 3cd2184115b85cc8242fec3d42529cd112962984
+Message-ID: <5f2b83bd.Ojq0U83pZup1RRcg%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,129 +57,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-hardening@lists.openwall.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Christopher M. Riedl" <cmr@informatik.wtf> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 3cd2184115b85cc8242fec3d42529cd112962984  Automatic merge of 'master', 'next' and 'fixes' (2020-08-05 22:24)
 
-> When code patching a STRICT_KERNEL_RWX kernel the page containing the
-> address to be patched is temporarily mapped with permissive memory
-> protections. Currently, a per-cpu vmalloc patch area is used for this
-> purpose. While the patch area is per-cpu, the temporary page mapping is
-> inserted into the kernel page tables for the duration of the patching.
-> The mapping is exposed to CPUs other than the patching CPU - this is
-> undesirable from a hardening perspective.
->
-> Use the `poking_init` init hook to prepare a temporary mm and patching
-> address. Initialize the temporary mm by copying the init mm. Choose a
-> randomized patching address inside the temporary mm userspace address
-> portion. The next patch uses the temporary mm and patching address for
-> code patching.
->
-> Based on x86 implementation:
->
-> commit 4fc19708b165
-> ("x86/alternatives: Initialize temporary mm for patching")
->
-> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-> ---
->  arch/powerpc/lib/code-patching.c | 33 ++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->
-> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-> index 0a051dfeb177..8ae1a9e5fe6e 100644
-> --- a/arch/powerpc/lib/code-patching.c
-> +++ b/arch/powerpc/lib/code-patching.c
-> @@ -11,6 +11,8 @@
->  #include <linux/cpuhotplug.h>
->  #include <linux/slab.h>
->  #include <linux/uaccess.h>
-> +#include <linux/sched/task.h>
-> +#include <linux/random.h>
->  
->  #include <asm/tlbflush.h>
->  #include <asm/page.h>
-> @@ -44,6 +46,37 @@ int raw_patch_instruction(struct ppc_inst *addr, struct ppc_inst instr)
->  }
->  
->  #ifdef CONFIG_STRICT_KERNEL_RWX
-> +
-> +static struct mm_struct *patching_mm __ro_after_init;
-> +static unsigned long patching_addr __ro_after_init;
-> +
-> +void __init poking_init(void)
-> +{
-> +	spinlock_t *ptl; /* for protecting pte table */
-> +	pte_t *ptep;
-> +
-> +	/*
-> +	 * Some parts of the kernel (static keys for example) depend on
-> +	 * successful code patching. Code patching under STRICT_KERNEL_RWX
-> +	 * requires this setup - otherwise we cannot patch at all. We use
-> +	 * BUG_ON() here and later since an early failure is preferred to
-> +	 * buggy behavior and/or strange crashes later.
-> +	 */
-> +	patching_mm = copy_init_mm();
-> +	BUG_ON(!patching_mm);
-> +
-> +	/*
-> +	 * In hash we cannot go above DEFAULT_MAP_WINDOW easily.
-> +	 * XXX: Do we want additional bits of entropy for radix?
-> +	 */
-> +	patching_addr = (get_random_long() & PAGE_MASK) %
-> +		(DEFAULT_MAP_WINDOW - PAGE_SIZE);
+elapsed time: 844m
 
-It took me a while to understand this calculation. I see that it's
-calculating a base address for a page in which to do patching. It does
-the following:
+configs tested: 91
+configs skipped: 6
 
- - get a random long
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
- - mask with PAGE_MASK so as to get a page aligned value
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+sh                          polaris_defconfig
+mips                  mips_paravirt_defconfig
+microblaze                      mmu_defconfig
+mips                 pnx8335_stb225_defconfig
+arm                       aspeed_g5_defconfig
+mips                      bmips_stb_defconfig
+sh                   sh7770_generic_defconfig
+m68k                       m5249evb_defconfig
+alpha                               defconfig
+sh                        dreamcast_defconfig
+m68k                             alldefconfig
+arm                     am200epdkit_defconfig
+arm                         nhk8815_defconfig
+powerpc                     mpc5200_defconfig
+mips                         tb0219_defconfig
+powerpc                      ppc6xx_defconfig
+arm                       imx_v4_v5_defconfig
+arm                     eseries_pxa_defconfig
+arm                            pleb_defconfig
+arm                        keystone_defconfig
+arm                          collie_defconfig
+arc                        vdk_hs38_defconfig
+arm                      tct_hammer_defconfig
+mips                     loongson1b_defconfig
+powerpc                       ppc64_defconfig
+arm                             ezx_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+i386                 randconfig-a005-20200805
+i386                 randconfig-a004-20200805
+i386                 randconfig-a001-20200805
+i386                 randconfig-a003-20200805
+i386                 randconfig-a002-20200805
+i386                 randconfig-a006-20200805
+x86_64               randconfig-a013-20200805
+x86_64               randconfig-a011-20200805
+x86_64               randconfig-a012-20200805
+x86_64               randconfig-a016-20200805
+x86_64               randconfig-a015-20200805
+x86_64               randconfig-a014-20200805
+i386                 randconfig-a011-20200805
+i386                 randconfig-a012-20200805
+i386                 randconfig-a013-20200805
+i386                 randconfig-a014-20200805
+i386                 randconfig-a015-20200805
+i386                 randconfig-a016-20200805
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
- - make sure that the base address is at least one PAGE_SIZE below
-   DEFAULT_MAP_WINDOW so we have a clear page between the base and
-   DEFAULT_MAP_WINDOW.
-
-On 64-bit Book3S with 64K pages, that works out to be
-
-PAGE_SIZE = 0x0000 0000 0001 0000
-PAGE_MASK = 0xFFFF FFFF FFFF 0000
-
-DEFAULT_MAP_WINDOW = DEFAULT_MAP_WINDOW_USER64 = TASK_SIZE_128TB
-                   = 0x0000_8000_0000_0000
-
-DEFAULT_MAP_WINDOW - PAGE_SIZE = 0x0000 7FFF FFFF 0000
-
-It took a while (and a conversation with my wife who studied pure
-maths!) but I am convinced that the modulo preserves the page-alignement
-of the patching address.
-
-One thing I did realise is that patching_addr can be zero at the end of
-this process. That seems dubious and slightly error-prone to me - is
-the patching process robust to that or should we exclude it?
-
-Anyway, if I have the maths right, that there are 0x7fffffff or ~2
-billion possible locations for the patching page, which is just shy of
-31 bits of entropy.
-
-I think this compares pretty favourably to most (K)ASLR implementations?
-
-What's the range if built with 4k pages?
-
-Kind regards,
-Daniel
-
-> +
-> +	ptep = get_locked_pte(patching_mm, patching_addr, &ptl);
-> +	BUG_ON(!ptep);
-> +	pte_unmap_unlock(ptep, ptl);
-> +}
-> +
->  static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
->  
->  static int text_area_cpu_up(unsigned int cpu)
-> -- 
-> 2.27.0
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
