@@ -1,56 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14C623DA8D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 15:06:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C333923DA91
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 15:09:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BMpfK34SWzDqCg
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 23:06:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BMpj768R6zDqGN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Aug 2020 23:08:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BMpJc1ZQhzDqp7
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 22:51:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RH6CPWj9; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BMpJb44wLz9sPB;
- Thu,  6 Aug 2020 22:51:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1596718271;
- bh=jbljMSFvZxVXF/fBiXyFdWBSQc1VFJOBuucOYPnT1g4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RH6CPWj90kGWdeahVtj2Ja8tHj+/O81xDKEMRWn+LOYc/8p5j5Z8u0jvBoQKgrhhd
- PxjddFyOM+jHDKvQWG+wE/uhM9Iy4KM/b90sy+k234etOHK1IMsAy879Q2VjF0BMn3
- 2lYzN5qhNUmz72qjRf2pNkvLmDK08NopeKyTIOu+Uw0pNTjS/RTpzYk1hLQgi5iB5t
- vq6PsL1HBV4/JSpMM1a+ecjtt8Leu1+EFi3cH0HmNeGobbMpLjQSkT63wrjrWcUW7W
- 0DCXEAUy/PnX+yabuu2QPSYmCUGpoZBw587dgempZloIZin2U2zUIdz6p9g2YKUvsV
- fUNdM8ldkpKyA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Roth <mdroth@linux.vnet.ibm.com>, Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH] powerpc/pseries/hotplug-cpu: increase wait time for vCPU
- death
-In-Reply-To: <159666656828.15440.9097316124875217814@sif>
-References: <20200804032937.7235-1-mdroth@linux.vnet.ibm.com>
- <873652zg8h.fsf@mpe.ellerman.id.au> <20200804161609.6cb2cb71@bahia.lan>
- <87zh79yen7.fsf@mpe.ellerman.id.au>
- <159660225263.15440.2633856149684894440@sif>
- <159666656828.15440.9097316124875217814@sif>
-Date: Thu, 06 Aug 2020 22:51:10 +1000
-Message-ID: <87wo2cx7i9.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=YQY0l0AF; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BMpKn4R4qzDqq3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Aug 2020 22:52:13 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 076Cm71Y145164; Thu, 6 Aug 2020 08:52:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=4aXvgqpbvfLzjvtOthbjxkw1MiUTtlbEc32tsxJE2AU=;
+ b=YQY0l0AFiS4Bwz+9qwAg+FunwB6LH74+c28hBrUNZYYSicAkTj5ixYhmFFzXGVXd440G
+ 5/ORu6C/IyNg3yQcGe2x8eRmgw0GwpCrCoakCCI6SOchJrxME9/KoyKoLdIwHgptrdSt
+ 3Dp6Ga69yKdnAPYDKXOJAfXLDZ84Tk4TxxJqJsoMwseix06TuBptWUXXn0pBzjz+yaNd
+ txcPNGzh4xNydhuqhrAbeVnVna6RCxEokq7WzPX3eox1DzXaRBjgack48eXyBZQWhP6/
+ eiqqC22H1q0ytpDd+GV/OTVTQHrs5djRYl2gKrKD3JCYHiX6ibDnlN9IcUISl4Zyeqt6 gw== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32repgpcgj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Aug 2020 08:52:06 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 076Ck467031709;
+ Thu, 6 Aug 2020 12:52:06 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04wdc.us.ibm.com with ESMTP id 32n019hejy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Aug 2020 12:52:06 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 076Cq57c47055282
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Aug 2020 12:52:05 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7E5D328058;
+ Thu,  6 Aug 2020 12:52:05 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 785BA2805A;
+ Thu,  6 Aug 2020 12:52:03 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.71.228])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Aug 2020 12:52:03 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [RFC PATCH] powerpc/drmem: use global variable instead of fetching
+ again
+Date: Thu,  6 Aug 2020 18:22:00 +0530
+Message-Id: <20200806125200.252403-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200806123604.248361-1-aneesh.kumar@linux.ibm.com>
+References: <20200806123604.248361-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-06_06:2020-08-06,
+ 2020-08-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=999 clxscore=1015 phishscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008060088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,66 +96,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Cedric Le Goater <clg@kaod.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Roth <mdroth@linux.vnet.ibm.com> writes:
-> Quoting Michael Roth (2020-08-04 23:37:32)
->> Quoting Michael Ellerman (2020-08-04 22:07:08)
->> > Greg Kurz <groug@kaod.org> writes:
->> > > On Tue, 04 Aug 2020 23:35:10 +1000
->> > > Michael Ellerman <mpe@ellerman.id.au> wrote:
->> > >> Spinning forever seems like a bad idea, but as has been demonstrated at
->> > >> least twice now, continuing when we don't know the state of the other
->> > >> CPU can lead to straight up crashes.
->> > >> 
->> > >> So I think I'm persuaded that it's preferable to have the kernel stuck
->> > >> spinning rather than oopsing.
->> > >> 
->> > >
->> > > +1
->> > >
->> > >> I'm 50/50 on whether we should have a cond_resched() in the loop. My
->> > >> first instinct is no, if we're stuck here for 20s a stack trace would be
->> > >> good. But then we will probably hit that on some big and/or heavily
->> > >> loaded machine.
->> > >> 
->> > >> So possibly we should call cond_resched() but have some custom logic in
->> > >> the loop to print a warning if we are stuck for more than some
->> > >> sufficiently long amount of time.
->> > >
->> > > How long should that be ?
->> > 
->> > Yeah good question.
->> > 
->> > I guess step one would be seeing how long it can take on the 384 vcpu
->> > machine. And we can probably test on some other big machines.
->> > 
->> > Hopefully Nathan can give us some idea of how long he's seen it take on
->> > large systems? I know he was concerned about the 20s timeout of the
->> > softlockup detector.
->> > 
->> > Maybe a minute or two?
->> 
->> Hmm, so I took a stab at this where I called cond_resched() after
->> every 5 seconds of polling and printed a warning at the same time (FWIW
->> that doesn't seem to trigger any warnings on a loaded 96-core mihawk
->> system using KVM running the 384vcpu unplug loop)
->> 
->> But it sounds like that's not quite what you had in mind. How frequently
->> do you think we should call cond_resched()? Maybe after 25 iterations
->> of polling smp_query_cpu_stopped() to keep original behavior somewhat
->> similar?
+use mem_addr_cells/mem_size_cells instead of fetching the values
+again from device tree.
 
-I think we can just call it on every iteration, it should be cheap
-compared to an RTAS call.
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/mm/drmem.c | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
-The concern was just by doing that you effectively prevent the
-softlockup detector from reporting you as stuck in that path. Hence the
-desire to manually print a warning after ~60s or something.
+diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+index b2eeea39684c..f533a7b04ab9 100644
+--- a/arch/powerpc/mm/drmem.c
++++ b/arch/powerpc/mm/drmem.c
+@@ -14,8 +14,6 @@
+ #include <asm/prom.h>
+ #include <asm/drmem.h>
+ 
+-static int n_root_addr_cells, n_root_size_cells;
+-
+ static struct drmem_lmb_info __drmem_info;
+ struct drmem_lmb_info *drmem_info = &__drmem_info;
+ 
+@@ -196,8 +194,8 @@ static void read_drconf_v1_cell(struct drmem_lmb *lmb,
+ {
+ 	const __be32 *p = *prop;
+ 
+-	lmb->base_addr = of_read_number(p, n_root_addr_cells);
+-	p += n_root_addr_cells;
++	lmb->base_addr = of_read_number(p, mem_addr_cells);
++	p += mem_addr_cells;
+ 	lmb->drc_index = of_read_number(p++, 1);
+ 
+ 	p++; /* skip reserved field */
+@@ -233,8 +231,8 @@ static void read_drconf_v2_cell(struct of_drconf_cell_v2 *dr_cell,
+ 	const __be32 *p = *prop;
+ 
+ 	dr_cell->seq_lmbs = of_read_number(p++, 1);
+-	dr_cell->base_addr = of_read_number(p, n_root_addr_cells);
+-	p += n_root_addr_cells;
++	dr_cell->base_addr = of_read_number(p, mem_addr_cells);
++	p += mem_addr_cells;
+ 	dr_cell->drc_index = of_read_number(p++, 1);
+ 	dr_cell->aa_index = of_read_number(p++, 1);
+ 	dr_cell->flags = of_read_number(p++, 1);
+@@ -285,10 +283,6 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
+ 	if (!prop || len < dt_root_size_cells * sizeof(__be32))
+ 		return ret;
+ 
+-	/* Get the address & size cells */
+-	n_root_addr_cells = dt_root_addr_cells;
+-	n_root_size_cells = dt_root_size_cells;
+-
+ 	drmem_info->lmb_size = dt_mem_next_cell(dt_root_size_cells, &prop);
+ 
+ 	usm = of_get_flat_dt_prop(node, "linux,drconf-usable-memory", &len);
+@@ -318,12 +312,12 @@ static int init_drmem_lmb_size(struct device_node *dn)
+ 		return 0;
+ 
+ 	prop = of_get_property(dn, "ibm,lmb-size", &len);
+-	if (!prop || len < n_root_size_cells * sizeof(__be32)) {
++	if (!prop || len < mem_size_cells * sizeof(__be32)) {
+ 		pr_info("Could not determine LMB size\n");
+ 		return -1;
+ 	}
+ 
+-	drmem_info->lmb_size = of_read_number(prop, n_root_size_cells);
++	drmem_info->lmb_size = of_read_number(prop, mem_size_cells);
+ 	return 0;
+ }
+ 
+@@ -353,12 +347,6 @@ int walk_drmem_lmbs(struct device_node *dn, void *data,
+ 	if (!of_root)
+ 		return ret;
+ 
+-	/* Get the address & size cells */
+-	of_node_get(of_root);
+-	n_root_addr_cells = of_n_addr_cells(of_root);
+-	n_root_size_cells = of_n_size_cells(of_root);
+-	of_node_put(of_root);
+-
+ 	if (init_drmem_lmb_size(dn))
+ 		return ret;
+ 
+-- 
+2.26.2
 
-cheers
