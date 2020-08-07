@@ -1,60 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4CD23EB28
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:04:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3F223EB37
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:07:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BNLYj1x4WzDqwY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 20:04:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BNLd10jXjzDqHR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 20:07:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BNLWn5vP4zDqvn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 20:02:43 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.16.189])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id BFC874E006D3;
- Fri,  7 Aug 2020 12:02:37 +0200 (CEST)
-Received: from kaod.org (37.59.142.98) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3; Fri, 7 Aug 2020
- 12:02:37 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-98R0022d3d0bfb-de3a-4c3b-84c4-7ce737f420c9,
- 9C6B65F6CFD3D723D723CC07BEDAC6F805E88D1E) smtp.auth=clg@kaod.org
-Subject: Re: [PATCH v2 2/2] powerpc/pci: unmap all interrupts when a PHB is
- removed
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20200617162938.743439-1-clg@kaod.org>
- <20200617162938.743439-3-clg@kaod.org>
- <5d5e128d-ac5f-1003-0b3f-3017c612e1ea@ozlabs.ru>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <9ccdd46e-4afb-3e86-07ef-e9506ecf0388@kaod.org>
-Date: Fri, 7 Aug 2020 12:02:36 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BNLZT32JczDqwY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 20:05:05 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 625ADAC19;
+ Fri,  7 Aug 2020 10:05:17 +0000 (UTC)
+Date: Fri, 7 Aug 2020 12:04:58 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200807100458.GI32107@kitsune.suse.cz>
+References: <20200701110145.GC17918@linux.vnet.ibm.com>
+ <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
+ <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
+ <20200701122110.GT2369@dhcp22.suse.cz>
+ <20200703091001.GJ21462@kitsune.suse.cz>
+ <20200703092414.GR18446@dhcp22.suse.cz>
+ <20200703105944.GS18446@dhcp22.suse.cz>
+ <20200703125823.GA26243@linux.vnet.ibm.com>
+ <20200806213211.6a6a56037fe771836e5abbe9@linux-foundation.org>
+ <5688b358-36bc-ccf0-d24b-a65375a9f3c3@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <5d5e128d-ac5f-1003-0b3f-3017c612e1ea@ozlabs.ru>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.98]
-X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 00f11dd9-bebd-4dc3-a985-fb0ccb8d39a5
-X-Ovh-Tracer-Id: 2791387344582904800
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrkedvgddviecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeejkeduueduveelgeduueegkeelffevledujeetffeivdelvdfgkeeufeduheehfeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegrihhksehoiihlrggsshdrrhhu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5688b358-36bc-ccf0-d24b-a65375a9f3c3@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,119 +56,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/7/20 8:01 AM, Alexey Kardashevskiy wrote:
+On Fri, Aug 07, 2020 at 08:58:09AM +0200, David Hildenbrand wrote:
+> On 07.08.20 06:32, Andrew Morton wrote:
+> > On Fri, 3 Jul 2020 18:28:23 +0530 Srikar Dronamraju <srikar@linux.vnet.ibm.com> wrote:
+> > 
+> >>> The memory hotplug changes that somehow because you can hotremove numa
+> >>> nodes and therefore make the nodemask sparse but that is not a common
+> >>> case. I am not sure what would happen if a completely new node was added
+> >>> and its corresponding node was already used by the renumbered one
+> >>> though. It would likely conflate the two I am afraid. But I am not sure
+> >>> this is really possible with x86 and a lack of a bug report would
+> >>> suggest that nobody is doing that at least.
+> >>>
+> >>
+> >> JFYI,
+> >> Satheesh copied in this mailchain had opened a bug a year on crash with vcpu
+> >> hotplug on memoryless node. 
+> >>
+> >> https://bugzilla.kernel.org/show_bug.cgi?id=202187
+> > 
+> > So...  do we merge this patch or not?  Seems that the overall view is
+> > "risky but nobody is likely to do anything better any time soon"?
 > 
-> 
-> On 18/06/2020 02:29, Cédric Le Goater wrote:
->> Some PCI adapters, like GPUs, use the "interrupt-map" property to
->> describe interrupt mappings other than the legacy INTx interrupts.
->> There can be more than 4 mappings.
->>
->> To clear all interrupts when a PHB is removed, we need to increase the
->> 'irq_map' array in which mappings are recorded. Compute the number of
->> interrupt mappings from the "interrupt-map" property and allocate a
->> bigger 'irq_map' array.
->>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>  arch/powerpc/kernel/pci-common.c | 49 +++++++++++++++++++++++++++++++-
->>  1 file changed, 48 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
->> index 515480a4bac6..deb831f0ae13 100644
->> --- a/arch/powerpc/kernel/pci-common.c
->> +++ b/arch/powerpc/kernel/pci-common.c
->> @@ -353,9 +353,56 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
->>  	return NULL;
->>  }
->>  
->> +/*
->> + * Assumption is made on the interrupt parent. All interrupt-map
->> + * entries are considered to have the same parent.
->> + */
->> +static int pcibios_irq_map_count(struct pci_controller *phb)
-> 
-> I wonder if
-> int of_irq_count(struct device_node *dev)
-> could work here too. If it does not, then never mind.
+> I recall the issue Michal saw was "fix powerpc" vs. "break other
+> architectures". @Michal how should we proceed? At least x86-64 won't be
+> affected IIUC.
+There is a patch to introduce the node remapping on ppc as well which
+should eliminate the empty node 0.
 
-I wished it would, but no.
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200731111916.243569-1-aneesh.kumar@linux.ibm.com/
 
-> Other than that, the only other comment is - merge this one into 1/2 as
-> 1/2 alone won't properly fix the problem but it may look like that it does:
-> 
-> for phyp, the test machine just happens to have 4 entries in the map but
-> this is the phyp implementation detail;
+Thanks
 
-yes
- 
-> for qemu, there are more but we only unregister 4 but kvm does not care
-> in general so it is ok which is also implementation detail;
->
-> and 2/2 just makes these details not matter. Thanks,
-
-OK. It will ease backport. Sending a v2.
-
-Thanks for the review Alexey !
-
-C.
- 
-> 
-> 
->> +{
->> +	const __be32 *imap;
->> +	int imaplen;
->> +	struct device_node *parent;
->> +	u32 intsize, addrsize, parintsize, paraddrsize;
->> +
->> +	if (of_property_read_u32(phb->dn, "#interrupt-cells", &intsize))
->> +		return 0;
->> +	if (of_property_read_u32(phb->dn, "#address-cells", &addrsize))
->> +		return 0;
->> +
->> +	imap = of_get_property(phb->dn, "interrupt-map", &imaplen);
->> +	if (!imap) {
->> +		pr_debug("%pOF : no interrupt-map\n", phb->dn);
->> +		return 0;
->> +	}
->> +	imaplen /= sizeof(u32);
->> +	pr_debug("%pOF : imaplen=%d\n", phb->dn, imaplen);
->> +
->> +	if (imaplen < (addrsize + intsize + 1))
->> +		return 0;
->> +
->> +	imap += intsize + addrsize;
->> +	parent = of_find_node_by_phandle(be32_to_cpup(imap));
->> +	if (!parent) {
->> +		pr_debug("%pOF : no imap parent found !\n", phb->dn);
->> +		return 0;
->> +	}
->> +
->> +	if (of_property_read_u32(parent, "#interrupt-cells", &parintsize)) {
->> +		pr_debug("%pOF : parent lacks #interrupt-cells!\n", phb->dn);
->> +		return 0;
->> +	}
->> +
->> +	if (of_property_read_u32(parent, "#address-cells", &paraddrsize))
->> +		paraddrsize = 0;
->> +
->> +	return imaplen / (addrsize + intsize + 1 + paraddrsize + parintsize);
->> +}
->> +
->>  static void pcibios_irq_map_init(struct pci_controller *phb)
->>  {
->> -	phb->irq_count = PCI_NUM_INTX;
->> +	phb->irq_count = pcibios_irq_map_count(phb);
->> +	if (phb->irq_count < PCI_NUM_INTX)
->> +		phb->irq_count = PCI_NUM_INTX;
->>  
->>  	pr_debug("%pOF : interrupt map #%d\n", phb->dn, phb->irq_count);
->>  
->>
-> 
-
+Michal
