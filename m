@@ -1,137 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A34A23E77F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 09:01:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54FC23E78A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 09:07:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BNGVl3NlnzDqvW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 17:01:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BNGd52GL3zDqvP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 17:07:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=evl4SIms; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=evl4SIms; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jEBvrmHk; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BNGT11tBYzDqsl
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 17:00:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1596783601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=m/hTQ57NSOU1AR5VfkeKkbB3aIGjwLPKETw5i6btfv8=;
- b=evl4SImshvckBO2yjZQNXg7jhLi40rxKC+6fu5tn9ZmUdRi4p7AvWz8Pm8iEObHCs3mC9o
- NUh3k+pi0mAC+bsemFdTVFlgDhFnTWpA7SohHUPyK/K2x+1q1ZGTXfmWBqi2vS/skwLZ4A
- Js7RuN76NoqEXnWlE+hYNlxxn6FiowA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1596783601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=m/hTQ57NSOU1AR5VfkeKkbB3aIGjwLPKETw5i6btfv8=;
- b=evl4SImshvckBO2yjZQNXg7jhLi40rxKC+6fu5tn9ZmUdRi4p7AvWz8Pm8iEObHCs3mC9o
- NUh3k+pi0mAC+bsemFdTVFlgDhFnTWpA7SohHUPyK/K2x+1q1ZGTXfmWBqi2vS/skwLZ4A
- Js7RuN76NoqEXnWlE+hYNlxxn6FiowA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-507-W7lOtSdpOcK86Y6NLXFXQg-1; Fri, 07 Aug 2020 02:58:16 -0400
-X-MC-Unique: W7lOtSdpOcK86Y6NLXFXQg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C6E08800685;
- Fri,  7 Aug 2020 06:58:13 +0000 (UTC)
-Received: from [10.36.112.251] (ovpn-112-251.ams2.redhat.com [10.36.112.251])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9617A1036D15;
- Fri,  7 Aug 2020 06:58:10 +0000 (UTC)
-Subject: Re: [PATCH v5 3/3] mm/page_alloc: Keep memoryless cpuless node 0
- offline
-To: Andrew Morton <akpm@linux-foundation.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-References: <20200701084200.GN2369@dhcp22.suse.cz>
- <20200701100442.GB17918@linux.vnet.ibm.com>
- <184102af-ecf2-c834-db46-173ab2e66f51@redhat.com>
- <20200701110145.GC17918@linux.vnet.ibm.com>
- <0468f965-8762-76a3-93de-3987cf859927@redhat.com>
- <12945273-d788-710d-e8d7-974966529c7d@redhat.com>
- <20200701122110.GT2369@dhcp22.suse.cz>
- <20200703091001.GJ21462@kitsune.suse.cz>
- <20200703092414.GR18446@dhcp22.suse.cz>
- <20200703105944.GS18446@dhcp22.suse.cz>
- <20200703125823.GA26243@linux.vnet.ibm.com>
- <20200806213211.6a6a56037fe771836e5abbe9@linux-foundation.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <5688b358-36bc-ccf0-d24b-a65375a9f3c3@redhat.com>
-Date: Fri, 7 Aug 2020 08:58:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BNGbD68BhzDq9j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 17:05:28 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07773A3p073797; Fri, 7 Aug 2020 03:05:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=ILYpS8OUNEVYcrf5G2iIfHUMUQpveWXgvjknEXLgCak=;
+ b=jEBvrmHkyH7yNK7DnFJrT/tAEv+MQWNcKlVyZCAnC6fEP5zPi0AMEWQLmml/eM9GhYV7
+ MQRqn+8prIip7g3+bXjN1lyyhC5OKqXuONp7iyAV/JFs10w69WllP/G0iYxsAuEYg8Ez
+ x/UrE61vg0gBM9+NZb4ZmAEsP0q83nxWraSwDIpFQOuMGDWCFyrt+C0nZ4WJn4Z6XmAv
+ ++8gsg3/huqEWyd1co4XybFmXgrNelS3I4XodGLhjUyzLpQHpAorpXXwwH1sLkp/2i1M
+ FzLudOIfe5IGL7Vnjfuquf1pUA4u5hqyC1e0d1UoUdKO8veDgmyUEGjxCZYEu+CDHMMG oA== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32rgnfww01-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 07 Aug 2020 03:05:13 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 077701TC016519;
+ Fri, 7 Aug 2020 07:05:12 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma01dal.us.ibm.com with ESMTP id 32n01a425e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 07 Aug 2020 07:05:12 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 077758Ig51773790
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 7 Aug 2020 07:05:08 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AB5CC6E059;
+ Fri,  7 Aug 2020 07:05:10 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4FD316E058;
+ Fri,  7 Aug 2020 07:05:10 +0000 (GMT)
+Received: from localhost (unknown [9.65.243.213])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri,  7 Aug 2020 07:05:09 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/pseries/hotplug-cpu: increase wait time for vCPU
+ death
+In-Reply-To: <87zh79yen7.fsf@mpe.ellerman.id.au>
+References: <20200804032937.7235-1-mdroth@linux.vnet.ibm.com>
+ <873652zg8h.fsf@mpe.ellerman.id.au> <20200804161609.6cb2cb71@bahia.lan>
+ <87zh79yen7.fsf@mpe.ellerman.id.au>
+Date: Fri, 07 Aug 2020 02:05:09 -0500
+Message-ID: <87mu37ylzu.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200806213211.6a6a56037fe771836e5abbe9@linux-foundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-07_02:2020-08-06,
+ 2020-08-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0
+ phishscore=0 suspectscore=1 clxscore=1011 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008070051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -143,45 +97,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>, Mel Gorman <mgorman@suse.de>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Christopher Lameter <cl@linux.com>, Michal Such?nek <msuchanek@suse.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Vlastimil Babka <vbabka@suse.cz>
+Cc: Greg Kurz <groug@kaod.org>, linuxppc-dev@lists.ozlabs.org,
+ Michael Roth <mdroth@linux.vnet.ibm.com>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Cedric Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 07.08.20 06:32, Andrew Morton wrote:
-> On Fri, 3 Jul 2020 18:28:23 +0530 Srikar Dronamraju <srikar@linux.vnet.ibm.com> wrote:
-> 
->>> The memory hotplug changes that somehow because you can hotremove numa
->>> nodes and therefore make the nodemask sparse but that is not a common
->>> case. I am not sure what would happen if a completely new node was added
->>> and its corresponding node was already used by the renumbered one
->>> though. It would likely conflate the two I am afraid. But I am not sure
->>> this is really possible with x86 and a lack of a bug report would
->>> suggest that nobody is doing that at least.
->>>
+Hi everyone,
+
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Greg Kurz <groug@kaod.org> writes:
+>> On Tue, 04 Aug 2020 23:35:10 +1000
+>> Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>> Spinning forever seems like a bad idea, but as has been demonstrated at
+>>> least twice now, continuing when we don't know the state of the other
+>>> CPU can lead to straight up crashes.
+>>> 
+>>> So I think I'm persuaded that it's preferable to have the kernel stuck
+>>> spinning rather than oopsing.
+>>> 
 >>
->> JFYI,
->> Satheesh copied in this mailchain had opened a bug a year on crash with vcpu
->> hotplug on memoryless node. 
+>> +1
 >>
->> https://bugzilla.kernel.org/show_bug.cgi?id=202187
-> 
-> So...  do we merge this patch or not?  Seems that the overall view is
-> "risky but nobody is likely to do anything better any time soon"?
+>>> I'm 50/50 on whether we should have a cond_resched() in the loop. My
+>>> first instinct is no, if we're stuck here for 20s a stack trace would be
+>>> good. But then we will probably hit that on some big and/or heavily
+>>> loaded machine.
+>>> 
+>>> So possibly we should call cond_resched() but have some custom logic in
+>>> the loop to print a warning if we are stuck for more than some
+>>> sufficiently long amount of time.
+>>
+>> How long should that be ?
+>
+> Yeah good question.
+>
+> I guess step one would be seeing how long it can take on the 384 vcpu
+> machine. And we can probably test on some other big machines.
+>
+> Hopefully Nathan can give us some idea of how long he's seen it take on
+> large systems? I know he was concerned about the 20s timeout of the
+> softlockup detector.
 
-I recall the issue Michal saw was "fix powerpc" vs. "break other
-architectures". @Michal how should we proceed? At least x86-64 won't be
-affected IIUC.
+Maybe I'm not quite clear what this is referring to, but I don't think
+stop-self/query-stopped-state latency increases with processor count, at
+least not on PowerVM. And IIRC I was concerned with the earlier patch's
+potential for causing the softlockup watchdog to rightly complain by
+polling the stopped state without ever scheduling away.
 
--- 
-Thanks,
+The fact that smp_query_cpu_stopped() kind of collapses the two distinct
+results from the query-cpu-stopped-state RTAS call into one return value
+may make it harder than necessary to reason about the questions around
+cond_resched() and whether to warn.
 
-David / dhildenb
+Sorry to pull this stunt but I have had some code sitting in a neglected
+branch that I think gets the logic around this right.
+
+What we should have is a simple C wrapper for the RTAS call that reflects the
+architected inputs and outputs:
+
+================================================================
+(-- rtas.c --)
+
+/**
+ * rtas_query_cpu_stopped_state() - Call RTAS query-cpu-stopped-state.
+ * @hwcpu: Identifies the processor thread to be queried.
+ * @status: Pointer to status, valid only on success.
+ *
+ * Determine whether the given processor thread is in the stopped
+ * state.  If successful and @status is non-NULL, the thread's status
+ * is stored to @status.
+ *
+ * Return:
+ * * 0   - Success
+ * * -1  - Hardware error
+ * * -2  - Busy, try again later
+ */
+int rtas_query_cpu_stopped_state(unsigned int hwcpu, unsigned int *status)
+{
+       unsigned int cpu_status;
+       int token;
+       int fwrc;
+
+       token = rtas_token("query-cpu-stopped-state");
+
+       fwrc = rtas_call(token, 1, 2, &cpu_status, hwcpu);
+       if (fwrc != 0)
+               goto out;
+
+       if (status != NULL)
+               *status = cpu_status;
+out:
+       return fwrc;
+}
+================================================================
+
+
+And then a utility function that waits for the remote thread to enter
+stopped state, with higher-level logic for rescheduling and warning. The
+fact that smp_query_cpu_stopped() currently does not handle a -2/busy
+status is a bug, fixed below by using rtas_busy_delay(). Note the
+justification for the explicit cond_resched() in the outer loop:
+
+================================================================
+(-- rtas.h --)
+
+/* query-cpu-stopped-state CPU_status */
+#define RTAS_QCSS_STATUS_STOPPED     0
+#define RTAS_QCSS_STATUS_IN_PROGRESS 1
+#define RTAS_QCSS_STATUS_NOT_STOPPED 2
+
+(-- pseries/hotplug-cpu.c --)
+
+/**
+ * wait_for_cpu_stopped() - Wait for a cpu to enter RTAS stopped state.
+ */
+static void wait_for_cpu_stopped(unsigned int cpu)
+{
+       unsigned int status;
+       unsigned int hwcpu;
+
+       hwcpu = get_hard_smp_processor_id(cpu);
+
+       do {
+               int fwrc;
+
+               /*
+                * rtas_busy_delay() will yield only if RTAS returns a
+                * busy status. Since query-cpu-stopped-state can
+                * yield RTAS_QCSS_STATUS_IN_PROGRESS or
+                * RTAS_QCSS_STATUS_NOT_STOPPED for an unbounded
+                * period before the target thread stops, we must take
+                * care to explicitly reschedule while polling.
+                */
+               cond_resched();
+
+               do {
+                       fwrc = rtas_query_cpu_stopped_state(hwcpu, &status);
+               } while (rtas_busy_delay(fwrc));
+
+               if (fwrc == 0)
+                       continue;
+
+               pr_err_ratelimited("query-cpu-stopped-state for "
+                                  "thread 0x%x returned %d\n",
+                                  hwcpu, fwrc);
+               goto out;
+
+       } while (status == RTAS_QCSS_STATUS_NOT_STOPPED ||
+                status == RTAS_QCSS_STATUS_IN_PROGRESS);
+
+       if (status != RTAS_QCSS_STATUS_STOPPED) {
+               pr_err_ratelimited("query-cpu-stopped-state yielded unknown "
+                                  "status %d for thread 0x%x\n",
+                                  status, hwcpu);
+       }
+out:
+       return;
+}
+
+[...]
+
+static void pseries_cpu_die(unsigned int cpu)
+{
+       wait_for_cpu_stopped(cpu);
+       paca_ptrs[cpu]->cpu_start = 0;
+}
+================================================================
+
+wait_for_cpu_stopped() should be able to accommodate a time-based
+warning if necessary, but speaking as a likely recipient of any bug
+reports that would arise here, I'm not convinced of the need and I
+don't know what a good value would be. It's relatively easy to sample
+the stack of a task that's apparently failing to make progress, plus I
+probably would use 'perf probe' or similar to report the inputs and
+outputs for the RTAS call.
+
+I'm happy to make this a proper submission after I can clean it up and
+retest it, or Michael R. is welcome to appropriate it, assuming it's
+acceptable.
 
