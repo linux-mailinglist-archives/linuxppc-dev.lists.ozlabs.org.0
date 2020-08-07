@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A44523EB3E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB5423EB5B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:17:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BNLkQ6XllzDqx4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 20:11:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BNLs86PPLzDqxL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 20:17:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,71 +17,67 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=W4KCIkbS; dkim-atps=neutral
+ header.s=pp1 header.b=HhlntNg1; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BNLZp6DNMzDqDf
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 20:05:22 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BNLjx1wN9zDqqJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 20:11:32 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 077A3O1Z019735; Fri, 7 Aug 2020 06:05:16 -0400
+ 077A3JTR104828; Fri, 7 Aug 2020 06:11:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pp1;
- bh=kOQGqc+5PiKIJsuaqCtl6Wcl+Dp1aRwESIipBTfCndM=;
- b=W4KCIkbSPhCPPcq7GThO21q+YRBXbkPqsBd4AcZ+6mcMtUXPRzURt1Duc+7LLr51m7YU
- OK7O6rU8S3IpMveWHziTj/cpJWMcgnZ2fm5h6W9jqR/GzeXgp1mNuLYb31DbLlZRBvtp
- /H5ah79w6bhE5i2F7pHjDPwxHos2yC+d9hV8kapL3rWA46vfOl1Qqou/mCaQ0StbVyil
- FkvJQAab5hFX2v3hyGOjEJZwbkUwMkWu2z3jh3JoodvU0UMz7pM2zm2bZ+8uQI7G5nKY
- qSbwwxGuvBqcD4taSftcIbJbNJqhrHN5Dbu6caWelvQVLlhwGzBF8VRP1WblVRyHU4op xQ== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32rgng2mrn-1
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=11PPJtKVF6GjWpY9oYYgP7Y1PQ/3wFUa4iOJQbwqaEw=;
+ b=HhlntNg1d4nUI1mo1G2dIdEeb4Umrd+MR+FmYxFtPNSkA7jr8QWJ0RgogVKwoN4mXvfR
+ 72sBY2BTjbo1spcYmRQ5S4Tb6Aeq/bChUUmkel2FPr6vISIcxw79zFRUaTuk2Xif/gbk
+ RFEhh36WhKNhOlpPT+mcFKlmXcb9QsG72hB4tUzLXL6W8H8cI8paTIMeEbXBhlyOdNJf
+ kANiHrGZa3Rhtn5xbKt9Pj1piHXtnQTdsAaue+2TEA9e95KsyxGHVCDUz9yZ7hFRBlhW
+ mnL1YQtdam/ZIOPwc7TFF8ehwpf8pUWym6eczf+ohC4aXrejwAhsQtCVtT9DpmYApruI VA== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32rhhm1dgc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Aug 2020 06:05:16 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 077A3IEb031861;
- Fri, 7 Aug 2020 10:05:14 GMT
+ Fri, 07 Aug 2020 06:11:28 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 077A5p3o026246;
+ Fri, 7 Aug 2020 10:11:25 GMT
 Received: from b06avi18878370.portsmouth.uk.ibm.com
  (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06fra.de.ibm.com with ESMTP id 32mynhc087-1
+ by ppma04ams.nl.ibm.com with ESMTP id 32n0186hpr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Aug 2020 10:05:14 +0000
+ Fri, 07 Aug 2020 10:11:25 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
  by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 077A5BKq64356726
+ id 077ABMRs61473042
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Aug 2020 10:05:11 GMT
+ Fri, 7 Aug 2020 10:11:22 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F19F14C04A;
- Fri,  7 Aug 2020 10:05:10 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id BFD914C040;
+ Fri,  7 Aug 2020 10:11:22 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63FA34C04E;
- Fri,  7 Aug 2020 10:05:08 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AEE734C052;
+ Fri,  7 Aug 2020 10:11:20 +0000 (GMT)
 Received: from localhost.localdomain.localdomain (unknown [9.199.53.190])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  7 Aug 2020 10:05:08 +0000 (GMT)
+ Fri,  7 Aug 2020 10:11:20 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH V6 2/2] powerpc/perf: Add extended regs support for power10
- platform
-Date: Fri,  7 Aug 2020 06:05:01 -0400
-Message-Id: <1596794701-23530-3-git-send-email-atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au, acme@kernel.org, jolsa@kernel.org
+Subject: [PATCH V6 0/2] tools/perf: Add extended regs support for powerpc
+Date: Fri,  7 Aug 2020 06:11:17 -0400
+Message-Id: <1596795079-23601-1-git-send-email-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1596794701-23530-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1596794701-23530-1-git-send-email-atrajeev@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-07_06:2020-08-06,
  2020-08-07 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 mlxlogscore=999 malwarescore=0 adultscore=0 mlxscore=0
- phishscore=0 suspectscore=1 clxscore=1015 impostorscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ adultscore=0 bulkscore=0 impostorscore=0 malwarescore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2008070075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -95,115 +91,67 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
- kjain@linux.ibm.com, acme@kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+ linuxppc-dev@lists.ozlabs.org, kjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Include capability flag `PERF_PMU_CAP_EXTENDED_REGS` for power10
-and expose MMCR3, SIER2, SIER3 registers as part of extended regs.
-Also introduce `PERF_REG_PMU_MASK_31` to define extended mask
-value at runtime for power10
+Patch set to add perf tools support for perf extended register capability
+in powerpc. 
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-[Fix build failure on PPC32 platform]
-Suggested-by: Ryan Grimm <grimm@linux.ibm.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
-Tested-by: Nageswara R Sastry <nasastry@in.ibm.com>
-Reviewed-and-tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
----
- arch/powerpc/include/uapi/asm/perf_regs.h |  6 ++++++
- arch/powerpc/perf/perf_regs.c             | 12 +++++++++++-
- arch/powerpc/perf/power10-pmu.c           |  6 ++++++
- 3 files changed, 23 insertions(+), 1 deletion(-)
+Patch 1/2 adds extended regs for power9 ( mmcr0, mmcr1 and mmcr2 )
+to sample_reg_mask in the tool side to use with `-I?`.
+Patch 2/2 adds extended regs for power10 ( mmcr3, sier2, sier3)
+to sample_reg_mask in the tool side.
 
-diff --git a/arch/powerpc/include/uapi/asm/perf_regs.h b/arch/powerpc/include/uapi/asm/perf_regs.h
-index 225c64c..bdf5f10 100644
---- a/arch/powerpc/include/uapi/asm/perf_regs.h
-+++ b/arch/powerpc/include/uapi/asm/perf_regs.h
-@@ -52,6 +52,9 @@ enum perf_event_powerpc_regs {
- 	PERF_REG_POWERPC_MMCR0,
- 	PERF_REG_POWERPC_MMCR1,
- 	PERF_REG_POWERPC_MMCR2,
-+	PERF_REG_POWERPC_MMCR3,
-+	PERF_REG_POWERPC_SIER2,
-+	PERF_REG_POWERPC_SIER3,
- 	/* Max regs without the extended regs */
- 	PERF_REG_POWERPC_MAX = PERF_REG_POWERPC_MMCRA + 1,
- };
-@@ -60,6 +63,9 @@ enum perf_event_powerpc_regs {
- 
- /* PERF_REG_EXTENDED_MASK value for CPU_FTR_ARCH_300 */
- #define PERF_REG_PMU_MASK_300   (((1ULL << (PERF_REG_POWERPC_MMCR2 + 1)) - 1) - PERF_REG_PMU_MASK)
-+/* PERF_REG_EXTENDED_MASK value for CPU_FTR_ARCH_31 */
-+#define PERF_REG_PMU_MASK_31   (((1ULL << (PERF_REG_POWERPC_SIER3 + 1)) - 1) - PERF_REG_PMU_MASK)
- 
- #define PERF_REG_MAX_ISA_300   (PERF_REG_POWERPC_MMCR2 + 1)
-+#define PERF_REG_MAX_ISA_31    (PERF_REG_POWERPC_SIER3 + 1)
- #endif /* _UAPI_ASM_POWERPC_PERF_REGS_H */
-diff --git a/arch/powerpc/perf/perf_regs.c b/arch/powerpc/perf/perf_regs.c
-index 9301e68..8e53f2f 100644
---- a/arch/powerpc/perf/perf_regs.c
-+++ b/arch/powerpc/perf/perf_regs.c
-@@ -81,6 +81,14 @@ static u64 get_ext_regs_value(int idx)
- 		return mfspr(SPRN_MMCR1);
- 	case PERF_REG_POWERPC_MMCR2:
- 		return mfspr(SPRN_MMCR2);
-+#ifdef CONFIG_PPC64
-+	case PERF_REG_POWERPC_MMCR3:
-+		return mfspr(SPRN_MMCR3);
-+	case PERF_REG_POWERPC_SIER2:
-+		return mfspr(SPRN_SIER2);
-+	case PERF_REG_POWERPC_SIER3:
-+		return mfspr(SPRN_SIER3);
-+#endif
- 	default: return 0;
- 	}
- }
-@@ -89,7 +97,9 @@ u64 perf_reg_value(struct pt_regs *regs, int idx)
- {
- 	u64 perf_reg_extended_max = PERF_REG_POWERPC_MAX;
- 
--	if (cpu_has_feature(CPU_FTR_ARCH_300))
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		perf_reg_extended_max = PERF_REG_MAX_ISA_31;
-+	else if (cpu_has_feature(CPU_FTR_ARCH_300))
- 		perf_reg_extended_max = PERF_REG_MAX_ISA_300;
- 
- 	if (idx == PERF_REG_POWERPC_SIER &&
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index f7cff7f..8314865 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -87,6 +87,8 @@
- #define POWER10_MMCRA_IFM3		0x00000000C0000000UL
- #define POWER10_MMCRA_BHRB_MASK		0x00000000C0000000UL
- 
-+extern u64 PERF_REG_EXTENDED_MASK;
-+
- /* Table of alternatives, sorted by column 0 */
- static const unsigned int power10_event_alternatives[][MAX_ALT] = {
- 	{ PM_RUN_CYC_ALT,		PM_RUN_CYC },
-@@ -397,6 +399,7 @@ static void power10_config_bhrb(u64 pmu_bhrb_filter)
- 	.cache_events		= &power10_cache_events,
- 	.attr_groups		= power10_pmu_attr_groups,
- 	.bhrb_nr		= 32,
-+	.capabilities           = PERF_PMU_CAP_EXTENDED_REGS,
- };
- 
- int init_power10_pmu(void)
-@@ -408,6 +411,9 @@ int init_power10_pmu(void)
- 	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power10"))
- 		return -ENODEV;
- 
-+	/* Set the PERF_REG_EXTENDED_MASK here */
-+	PERF_REG_EXTENDED_MASK = PERF_REG_PMU_MASK_31;
-+
- 	rc = register_power_pmu(&power10_pmu);
- 	if (rc)
- 		return rc;
+Ravi bangoria found an issue with `perf record -I` while testing the
+changes. The same issue is currently being worked on here:
+https://lkml.org/lkml/2020/7/19/413 and will be resolved once fix
+from Jin Yao is merged.
+
+This includes the perf tools side changes to support extended regs.
+kernel side changes are sent as separate patchset.
+
+Changelog:
+Changes from v5 -> v6
+- Split perf tools side changes to one patchset as suggested by
+  Arnaldo
+  Link to previous series:
+  https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=192624
+
+Changes from v4 -> v5
+- initialize `perf_reg_extended_max` to work on
+  all platforms as suggested by Ravi Bangoria
+- Added Reviewed-and-Tested-by from Ravi Bangoria
+
+Changes from v3 -> v4
+- Split the series and send extended regs as separate patch set here.
+  Link to previous series :
+  https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=190462&state=*
+  Other PMU patches are already merged in powerpc/next.
+
+- Fixed kernel build issue when using config having
+  CONFIG_PERF_EVENTS set and without CONFIG_PPC_PERF_CTRS
+  reported by kernel build bot.
+- Included Reviewed-by from Kajol Jain.
+- Addressed review comments from Ravi Bangoria to initialize `perf_reg_extended_max`
+  and define it in lowercase since it is local variable.
+
+Anju T Sudhakar (1):
+  tools/perf: Add perf tools support for extended register capability in
+    powerpc
+
+Athira Rajeev (1):
+  tools/perf: Add perf tools support for extended regs in power10
+
+ tools/arch/powerpc/include/uapi/asm/perf_regs.h | 20 ++++++++-
+ tools/perf/arch/powerpc/include/perf_regs.h     |  8 +++-
+ tools/perf/arch/powerpc/util/header.c           |  9 +---
+ tools/perf/arch/powerpc/util/perf_regs.c        | 55 +++++++++++++++++++++++++
+ tools/perf/arch/powerpc/util/utils_header.h     | 15 +++++++
+ 5 files changed, 97 insertions(+), 10 deletions(-)
+ create mode 100644 tools/perf/arch/powerpc/util/utils_header.h
+
 -- 
 1.8.3.1
 
