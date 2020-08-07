@@ -2,103 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC60B23E5BD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 04:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F61B23E60A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 04:47:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BN86b0HYgzDqv5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:13:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BN8sf56VRzDqsQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:47:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jIn5HYif; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BN84l0XWLzDqsZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 12:12:05 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0772149k009865; Thu, 6 Aug 2020 22:12:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=VXljsUSqKdMZUfG4LefmGHTN/HjAin0NYssO1OfIiJw=;
- b=jIn5HYifyI193iK/ItfkqBP5XCfapDNeQTggs1eBMDMnIavnhAH/vO/l5CMNGrx0DoZO
- VGSKaG13nU1jd7okEUtedHxUfClrNuod6VJabvl1IpSfgIjC/ZED0c7QVEoRcvqYt2wa
- uCGaJUCCtdB0zlgkOxLK9bd4HnDJwwhy5g+9Kn5mJtO/+ddzCB3BQHCrYJFAt1PNclnN
- wsrgkmWdK5Hmi5Jbf0/q3/+HzKrpnYmqnJwcLxCJEXW46p6nZPHrfYNTI/eLF48CUKtu
- ADdsbq09Bf1LKNYXFPB6/nSGHENmorPUKb8Ir8BcQKr+wuw6O7YAiwk648vCA4MzPY0p CA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32r9wuea5f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 22:12:01 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07722NQs013793;
- Thu, 6 Aug 2020 22:12:01 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32r9wuea4u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Aug 2020 22:12:00 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07726LB8032201;
- Fri, 7 Aug 2020 02:11:59 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 32n01863j4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Aug 2020 02:11:59 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0772ATfi43909516
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Aug 2020 02:10:29 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3C83FA4062;
- Fri,  7 Aug 2020 02:11:56 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ABBAAA4060;
- Fri,  7 Aug 2020 02:11:53 +0000 (GMT)
-Received: from [9.77.207.131] (unknown [9.77.207.131])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri,  7 Aug 2020 02:11:53 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
-Subject: Re: [PATCH V5 0/4] powerpc/perf: Add support for perf extended regs
- in powerpc
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20200806122052.GC71359@kernel.org>
-Date: Fri, 7 Aug 2020 07:41:51 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DD5B45AA-37D5-4517-84A5-DE8D82BC1196@linux.vnet.ibm.com>
-References: <1595870184-1460-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <27D1CE26-A506-4CFF-B1C2-E0545F26E637@linux.vnet.ibm.com>
- <20200730195048.GA1484375@krava>
- <CA3D75F3-5F63-425B-A3C1-00C181E41108@linux.vnet.ibm.com>
- <20200806122052.GC71359@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3608.120.23.2.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-06_17:2020-08-06,
- 2020-08-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=914
- lowpriorityscore=0 spamscore=0 impostorscore=0 mlxscore=0 phishscore=0
- clxscore=1015 malwarescore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008070010
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BN8pN3DvkzDqNR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 12:44:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=MPMsNyeT; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BN8pM1JlRz9sSG;
+ Fri,  7 Aug 2020 12:44:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1596768284;
+ bh=FZuIxnPjJkYxCWMXw2mxcRhOKtZPN4eNLc1MN/Gupm4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=MPMsNyeTn9a8d9v3fgyBEE07kO0XqO2/i5FfHbv9CyGV1GB8vH5IhwduGCenlTyPB
+ ZYSTBZwtvBB0vFIwr9kUfvEI14D2YJ+gHaFR6FA0sPDvCvxxFpFSONBUyKuBg6bQrl
+ U9VW0RJcVFHSTynki4Fz+vwmS8SG1pYoKBL8wXe5ZlwAHzfgPoLNq0GieUdNAoZ+BB
+ aCj1+BSpCjXIY8vLjuh8Fnr9vMoJ/8a5RLgie/8bnzElqwrwFdXKgkTjYYEeC4F4J3
+ Mq7Rofv/RlSpKFLB5N2LIsV4DPkQotvYf740maIf3gyM1ZynE1dEGGcRvdpomw+GSx
+ P0t+HR6XtxnGA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH v8 5/8] powerpc/vdso: Prepare for switching VDSO to
+ generic C implementation.
+In-Reply-To: <20200806183316.GV6753@gate.crashing.org>
+References: <cover.1588079622.git.christophe.leroy@c-s.fr>
+ <2a67c333893454868bbfda773ba4b01c20272a5d.1588079622.git.christophe.leroy@c-s.fr>
+ <878sflvbad.fsf@mpe.ellerman.id.au>
+ <65fd7823-cc9d-c05a-0816-c34882b5d55a@csgroup.eu>
+ <87wo2dy5in.fsf@mpe.ellerman.id.au> <20200805133505.GN6753@gate.crashing.org>
+ <87r1sky1hm.fsf@mpe.ellerman.id.au> <20200806183316.GV6753@gate.crashing.org>
+Date: Fri, 07 Aug 2020 12:44:42 +1000
+Message-ID: <87mu37xjhh.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,64 +63,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- Michael Neuling <mikey@neuling.org>, maddy@linux.vnet.ibm.com,
- kajoljain <kjain@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Jiri Olsa <jolsa@kernel.org>, Jiri Olsa <jolsa@redhat.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, nathanl@linux.ibm.com,
+ arnd@arndb.de, linux-kernel@vger.kernel.org,
+ Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, luto@kernel.org, linux-arch@vger.kernel.org,
+ tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Segher Boessenkool <segher@kernel.crashing.org> writes:
+> On Thu, Aug 06, 2020 at 12:03:33PM +1000, Michael Ellerman wrote:
+>> Segher Boessenkool <segher@kernel.crashing.org> writes:
+>> > On Wed, Aug 05, 2020 at 04:24:16PM +1000, Michael Ellerman wrote:
+>> >> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> >> > Indeed, 32-bit doesn't have a redzone, so I believe it needs a stack 
+>> >> > frame whenever it has anything to same.
+>
+> ^^^
+>
+>> >> >     fbb60:	94 21 ff e0 	stwu    r1,-32(r1)
+>> >
+>> > This is the *only* place where you can use a negative offset from r1:
+>> > in the stwu to extend the stack (set up a new stack frame, or make the
+>> > current one bigger).
+>> 
+>> (You're talking about 32-bit code here right?)
+>
+> The "SYSV" ELF binding, yeah, which is used for 32-bit on Linux (give or
+> take, ho hum).
+>
+> The ABIs that have a red zone are much nicer here (but less simple) :-)
 
+Yep, just checking I wasn't misunderstanding your comment about negative
+offsets.
 
-> On 06-Aug-2020, at 5:50 PM, Arnaldo Carvalho de Melo <acme@kernel.org> =
-wrote:
->=20
-> Em Fri, Jul 31, 2020 at 11:04:14PM +0530, Athira Rajeev escreveu:
->>=20
->>=20
->>> On 31-Jul-2020, at 1:20 AM, Jiri Olsa <jolsa@redhat.com> wrote:
->>>=20
->>> On Thu, Jul 30, 2020 at 01:24:40PM +0530, Athira Rajeev wrote:
->>>>=20
->>>>=20
->>>>> On 27-Jul-2020, at 10:46 PM, Athira Rajeev =
-<atrajeev@linux.vnet.ibm.com> wrote:
->>>>>=20
->>>>> Patch set to add support for perf extended register capability in
->>>>> powerpc. The capability flag PERF_PMU_CAP_EXTENDED_REGS, is used =
-to
->>>>> indicate the PMU which support extended registers. The generic =
-code
->>>>> define the mask of extended registers as 0 for non supported =
-architectures.
->>>>>=20
->>>>> Patches 1 and 2 are the kernel side changes needed to include
->>>>> base support for extended regs in powerpc and in power10.
->>>>> Patches 3 and 4 are the perf tools side changes needed to support =
-the
->>>>> extended registers.
->>>>>=20
->>>>=20
->>>> Hi Arnaldo, Jiri
->>>>=20
->>>> please let me know if you have any comments/suggestions on this =
-patch series to add support for perf extended regs.
->>>=20
->>> hi,
->>> can't really tell for powerpc, but in general
->>> perf tool changes look ok
->>>=20
->>=20
->> Hi Jiri,
->> Thanks for checking the patchset.
->=20
-> So I'dd say you submit a v6, split into the kernel part, that probably
-> should go via the PPC arch tree, and I can pick the tooling part, ok?
->=20
-> - Arnaldo
+>> >> At the same time it's much safer for us to just save/restore r2, and
+>> >> probably in the noise performance wise.
+>> >
+>> > If you want a function to be able to work with ABI-compliant code safely
+>> > (in all cases), you'll have to make it itself ABI-compliant as well,
+>> > yes :-)
+>> 
+>> True. Except this is the VDSO which has previously been a bit wild west
+>> as far as ABI goes :)
+>
+> It could get away with many things because it was guaranteed to be a
+> leaf function.  Some of those things even violate the ABIs, but you can
+> get away with it easily, much reduced scope.  Now if this is generated
+> code, violating the rules will catch up with you sooner rather than
+> later ;-)
 
-Sure Arnaldo, I will send a v6.
+Agreed.
 
-Thanks,
-Athira=
+cheers
