@@ -1,55 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F61B23E60A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 04:47:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC3C23E610
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 04:50:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BN8sf56VRzDqsQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:47:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BN8wv3xP5zDqw2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 12:50:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BN8pN3DvkzDqNR
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 12:44:44 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BN8tD3wQYzDqbX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Aug 2020 12:48:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=MPMsNyeT; 
+ header.a=rsa-sha256 header.s=201909 header.b=dhSh9I1r; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BN8pM1JlRz9sSG;
- Fri,  7 Aug 2020 12:44:43 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BN8tB6BBWz9sSG;
+ Fri,  7 Aug 2020 12:48:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1596768284;
- bh=FZuIxnPjJkYxCWMXw2mxcRhOKtZPN4eNLc1MN/Gupm4=;
+ s=201909; t=1596768484;
+ bh=QRFFwrvNL4FQDFGUBy0JNMwo3nFLA/HqutlnKQMVW/o=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MPMsNyeTn9a8d9v3fgyBEE07kO0XqO2/i5FfHbv9CyGV1GB8vH5IhwduGCenlTyPB
- ZYSTBZwtvBB0vFIwr9kUfvEI14D2YJ+gHaFR6FA0sPDvCvxxFpFSONBUyKuBg6bQrl
- U9VW0RJcVFHSTynki4Fz+vwmS8SG1pYoKBL8wXe5ZlwAHzfgPoLNq0GieUdNAoZ+BB
- aCj1+BSpCjXIY8vLjuh8Fnr9vMoJ/8a5RLgie/8bnzElqwrwFdXKgkTjYYEeC4F4J3
- Mq7Rofv/RlSpKFLB5N2LIsV4DPkQotvYf740maIf3gyM1ZynE1dEGGcRvdpomw+GSx
- P0t+HR6XtxnGA==
+ b=dhSh9I1ri2FonyuPHS/F8UsbU8YslpXWUgV+59aSU8izqPVZFcVvvnqQn2xdP2TOY
+ /RNDUiRCh7JFN5Ycv2Vx9h9uIEFeiNelm5CPpExh8U3MorVo6DwOAHE5df+cpiAa0M
+ D6QK6DJxooFTd+QQiyNGHp35grROU/viuDczCAGWbt4VaLN50ua6psx3Fb835VATuX
+ jRnDln6aEFGMumoNnnPqIOjZI8HnuVBT0Hnp+ia1iWj8j5jXQvTnecpxJmQAmbMmJ8
+ UAoVjxITQZEF6QXJvoXvado7Os8gzW5Lfk0cnHoOubk/C835T30YoX5ikWeBGiMYNF
+ LjFr4F0o7llPQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v8 5/8] powerpc/vdso: Prepare for switching VDSO to
- generic C implementation.
-In-Reply-To: <20200806183316.GV6753@gate.crashing.org>
-References: <cover.1588079622.git.christophe.leroy@c-s.fr>
- <2a67c333893454868bbfda773ba4b01c20272a5d.1588079622.git.christophe.leroy@c-s.fr>
- <878sflvbad.fsf@mpe.ellerman.id.au>
- <65fd7823-cc9d-c05a-0816-c34882b5d55a@csgroup.eu>
- <87wo2dy5in.fsf@mpe.ellerman.id.au> <20200805133505.GN6753@gate.crashing.org>
- <87r1sky1hm.fsf@mpe.ellerman.id.au> <20200806183316.GV6753@gate.crashing.org>
-Date: Fri, 07 Aug 2020 12:44:42 +1000
-Message-ID: <87mu37xjhh.fsf@mpe.ellerman.id.au>
+To: Christoph Hellwig <hch@infradead.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/signal: Move and simplify get_clean_sp()
+In-Reply-To: <20200806092547.GA2544@infradead.org>
+References: <04169f40c09682ce5747518268ca84285bc17fbc.1596703345.git.christophe.leroy@csgroup.eu>
+ <20200806092547.GA2544@infradead.org>
+Date: Fri, 07 Aug 2020 12:48:01 +1000
+Message-ID: <87k0ybxjby.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,57 +59,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, nathanl@linux.ibm.com,
- arnd@arndb.de, linux-kernel@vger.kernel.org,
- Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>, luto@kernel.org, linux-arch@vger.kernel.org,
- tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> On Thu, Aug 06, 2020 at 12:03:33PM +1000, Michael Ellerman wrote:
->> Segher Boessenkool <segher@kernel.crashing.org> writes:
->> > On Wed, Aug 05, 2020 at 04:24:16PM +1000, Michael Ellerman wrote:
->> >> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> >> > Indeed, 32-bit doesn't have a redzone, so I believe it needs a stack 
->> >> > frame whenever it has anything to same.
->
-> ^^^
->
->> >> >     fbb60:	94 21 ff e0 	stwu    r1,-32(r1)
->> >
->> > This is the *only* place where you can use a negative offset from r1:
->> > in the stwu to extend the stack (set up a new stack frame, or make the
->> > current one bigger).
+Christoph Hellwig <hch@infradead.org> writes:
+> On Thu, Aug 06, 2020 at 08:50:20AM +0000, Christophe Leroy wrote:
+>> get_clean_sp() is only used in kernel/signal.c . Move it there.
 >> 
->> (You're talking about 32-bit code here right?)
+>> And GCC is smart enough to reduce the function when on PPC32, no
+>> need of a special PPC32 simple version.
 >
-> The "SYSV" ELF binding, yeah, which is used for 32-bit on Linux (give or
-> take, ho hum).
->
-> The ABIs that have a red zone are much nicer here (but less simple) :-)
+> What about just open coding it in the only caller, which would seem even
+> cleaner?
 
-Yep, just checking I wasn't misunderstanding your comment about negative
-offsets.
-
->> >> At the same time it's much safer for us to just save/restore r2, and
->> >> probably in the noise performance wise.
->> >
->> > If you want a function to be able to work with ABI-compliant code safely
->> > (in all cases), you'll have to make it itself ABI-compliant as well,
->> > yes :-)
->> 
->> True. Except this is the VDSO which has previously been a bit wild west
->> as far as ABI goes :)
->
-> It could get away with many things because it was guaranteed to be a
-> leaf function.  Some of those things even violate the ABIs, but you can
-> get away with it easily, much reduced scope.  Now if this is generated
-> code, violating the rules will catch up with you sooner rather than
-> later ;-)
-
-Agreed.
++1
 
 cheers
