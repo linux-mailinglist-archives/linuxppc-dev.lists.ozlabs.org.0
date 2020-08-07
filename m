@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9CE23F594
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Aug 2020 02:41:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E8723F597
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Aug 2020 02:43:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BNk1S2fj0zDqch
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Aug 2020 10:41:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BNk4B3GZ2zDqst
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Aug 2020 10:43:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,29 +17,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=NMIiw8Qs;
+ header.a=rsa-sha256 header.s=selector2-NXP1-onmicrosoft-com header.b=mrWLRnUX;
  dkim-atps=neutral
 Received: from EUR01-VE1-obe.outbound.protection.outlook.com
  (mail-eopbgr140042.outbound.protection.outlook.com [40.107.14.42])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BNVxh4JRlzDqPw
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Aug 2020 02:22:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BNVxj6qKQzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Aug 2020 02:22:17 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h6VV9adG7OG5XmenVcK2+QMCOxpwrqceRBjhbo/bwfBp18ImDp87KljFnU30VnGcyNC4qo4S6kJ4cgdVDrq/vh0fxD6uD2AUp1slzFKfmgpJ51xvzncAblidyHKOoZdTGmG09qUseVB5DgvtSDG+05Z8yEe/jUn20QfqV7uxmceDLirJU0j7oKBDyXLH8TXPZSAJgiXp89xusmxZ0oIG+T2ZFbWusC4KkSNJ1Qj3Fzjsede/iooRNScRJlm2GOmhhVcapdnzxSdHse2aAAUBwQ99riWZID9Hs4hNta0u0i5Je8O8IEsAAeahM1Hjd1u+lCxGMqtZM8ZAkzMg/PQ3GQ==
+ b=lg95exFM9j4y9d3P/BoHQwM6CIYRDikzRHVsgiEgTuAu7xe3gKQ+bQG1Ihwa3KFvywaCXMIOyim6tVMvMdBEL0b6VcRTxhDJ+UmQQATN11CzDv+Sg1E3P53YXG0f4cV/HOrBqbjmVvkciOpx6aSSgC+cyujDG3w7wrDDE5E+fuoHFaj6IDhL0ZQOjmeDaYg9XLiTx3yBjJpla7PQyvxUfhEvzd006G24Oo3/YRxh+LB0hJn4mMeG2WqESGmolofazT4DJZnqmQC9ym0M/OA60wDOVxvby/xZLnIpmCoJoW4SU+ILII1gZi0R4+/04zqd+FcHO5M3dYNODi6CzvHT2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YZ3ZDCBgSVsJI0JDqY88ayzFFjlNBfrKFO6cSXTsXF4=;
- b=QV95tgfp37O2Rxn4ujyxliCy5jUDXJtuQLeh3nsLzvqmexBbQpVZsC7QN9pvCHKlnmceKJ5txGVvviKtpp3oDrL4nNkdoMCK+o4uOLGspV9YDB5tUqgchSLKUC4EJFEQUmJzp1geBve+3UT2PmoBquRmnHZMN+Ay5SV2obUEm09XoviuybGNhr+TrJPWlJCnWWSWOAbTrTE6hF2TazTpHbp25U62vjjzJ9RELSyXyATI+oqmLC83RnIwFJ3sI47ZzUD7sRzLOTS7cFLYIaREt240Cn0oFutNVr5755fdWDR6/YNSQ7+TeB9SNMmj/qYHvSmlnxNulnImVS62reMKJA==
+ bh=hpg8Nx28v9Y3qiGKaO61tWq46U1TYFDx1EYMYEMkVd8=;
+ b=Vd3Xh75SlOvyWdziEpCeMOlFQawXq4JYxPRNzDTAQcI5zlmR0Y2HzU0rxW1ZA9EZvlRiOL2cnIduxDW+ZSh1Vrudan+NAWImrZZTZ5RQltG/qd2HXN7RF7qZvLPxVVV+Zui2ATS5zup5wCk2M1fYPGo+9jKKXU5lkF5+6PndJfbprHFcu/rqOI9Oz96eme7MpaPRvQ05md4S42F+SHQDw6Lasw+vO7XTBnkG2xMhlV9H23ViKCkWyTIcnvDJLH6V5xVX6f8CcxawcmYfbrdSCHxpEZhEA/6ZsowwbnCcFzPTNIyeoWUW1VYjK5HYZb7U8Qt7OGsYhuFOkQsg60u42w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com; 
  s=selector2-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YZ3ZDCBgSVsJI0JDqY88ayzFFjlNBfrKFO6cSXTsXF4=;
- b=NMIiw8QslRG2OmklIbK1+3v1X5J6DtavEUZjE1D1f+gkjbj4sS35YiFWyuLTgux3jdzMrWnQgsBE0zgeAXtJvHsekotgGWYQ/fVBuunlMN9kIEPr+FE9YgvfsNWmfGw3lDDjRLpwfXOwgGjvTQKD3s5X8XEn0KHza8XbBsuRrF0=
+ bh=hpg8Nx28v9Y3qiGKaO61tWq46U1TYFDx1EYMYEMkVd8=;
+ b=mrWLRnUXAfXV/a8vp9wMOjTvlwpS3PalS0YXoBCI0XmueoZu6pmyrKXiYKK4ka0B4wxaq+x2dCgBX1aQjm5JH2rx5DBQ3YozAjQ32kPa4mgNt12lUMnY+G8sb0Wo4zsnjcuEXjhY/r5q9Y1WKgB+/0bsbHsK8EExG9w+TIB6Vco=
 Authentication-Results: gondor.apana.org.au; dkim=none (message not signed)
  header.d=none;gondor.apana.org.au; dmarc=none action=none
  header.from=oss.nxp.com;
@@ -47,18 +47,18 @@ Received: from VE1PR04MB6608.eurprd04.prod.outlook.com (2603:10a6:803:125::12)
  by VE1PR04MB7359.eurprd04.prod.outlook.com (2603:10a6:800:1a0::15)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.18; Fri, 7 Aug
- 2020 16:22:13 +0000
+ 2020 16:22:15 +0000
 Received: from VE1PR04MB6608.eurprd04.prod.outlook.com
  ([fe80::a856:c104:11c7:258d]) by VE1PR04MB6608.eurprd04.prod.outlook.com
  ([fe80::a856:c104:11c7:258d%6]) with mapi id 15.20.3261.019; Fri, 7 Aug 2020
- 16:22:13 +0000
+ 16:22:15 +0000
 From: Andrei Botila <andrei.botila@oss.nxp.com>
 To: Herbert Xu <herbert@gondor.apana.org.au>,
  "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 16/22] crypto: ccree - add check for xts input length equal to
- zero
-Date: Fri,  7 Aug 2020 19:20:04 +0300
-Message-Id: <20200807162010.18979-17-andrei.botila@oss.nxp.com>
+Subject: [PATCH 17/22] crypto: chelsio - add check for xts input length equal
+ to zero
+Date: Fri,  7 Aug 2020 19:20:05 +0300
+Message-Id: <20200807162010.18979-18-andrei.botila@oss.nxp.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200807162010.18979-1-andrei.botila@oss.nxp.com>
 References: <20200807162010.18979-1-andrei.botila@oss.nxp.com>
@@ -71,35 +71,35 @@ X-MS-Exchange-MessageSentRepresentingType: 1
 Received: from lsv15007.swis.ro-buh01.nxp.com (83.217.231.2) by
  AM0PR04CA0075.eurprd04.prod.outlook.com (2603:10a6:208:be::16) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3261.15 via Frontend Transport; Fri, 7 Aug 2020 16:22:12 +0000
+ 15.20.3261.15 via Frontend Transport; Fri, 7 Aug 2020 16:22:14 +0000
 X-Mailer: git-send-email 2.17.1
 X-Originating-IP: [83.217.231.2]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 99b176c6-0428-4cd1-a9eb-08d83aee0ad1
+X-MS-Office365-Filtering-Correlation-Id: dc83552f-7752-45e9-9073-08d83aee0c30
 X-MS-TrafficTypeDiagnostic: VE1PR04MB7359:
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VE1PR04MB73597E6C1F17B52B42D7C341B4490@VE1PR04MB7359.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-Microsoft-Antispam-PRVS: <VE1PR04MB73595514471C39861A1D65BFB4490@VE1PR04MB7359.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2733;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ixNqRZSK4QN+sfYUbv6XiexCApbcaIdXcqQAobZy9cXHXuL2syRwt0aJ+DsenlWQJJL+e+lOH/oVs0gcL3r5XstwkiC16km6fH/9tQXYO/U5vs63/GYOAf1UqqJOyq43PfNbFOq/TAB6eCOvQ3YLW2x4u0a8DXR85URzT8J+5xdbGbwxNwu5kkRMLeCyE+CDRhiu7QTwLHw59ZLrzhPwVzjJrkZprdGmywtTZvqQUd8+1L55cEYA8mASSWsglHKKuMBW/Eb2uj5xOalvHZa7tcR6j13T/2vqtO1bhda3hhJV8ttCq0w40yyY0ew1FCYXyamzT+/fuWkRVGZsl+YnsA==
+X-Microsoft-Antispam-Message-Info: lT4qwYOPsRK0wiJNrfhOFFc3vQG0oLtlI/cQC1UI6Nq4ogXm8T7sCUwuNk/f79obl3TpzR0cKvYmDOuOBuEaDWHkYEHbw6Tss6LXcbfjUJA+KCbSpBQDT9s1HfL8wPTbf2zQLvhz/ewmZo2jiF6pH2OsFrU2wYBHu2pQBg0CEF+U5Qwp6jG47I3cZGl65s2EXikREsCmkvlA36f0ZHPNmQyLVofplrjt9jpZGnrLf0150sUsPXh5kKxdj+G82hVHBLAFsLOquBxvQeK7hUQP/vMytXfL197Yag2NSVysSbrSbuRUEN6kW4FoQ24sq/Fv
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:VE1PR04MB6608.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
  SFTY:;
  SFS:(4636009)(39860400002)(366004)(136003)(346002)(396003)(376002)(44832011)(66556008)(66476007)(110136005)(7416002)(54906003)(1076003)(6506007)(4326008)(66946007)(83380400001)(8936002)(316002)(26005)(956004)(186003)(16526019)(478600001)(86362001)(5660300002)(6666004)(6512007)(2906002)(8676002)(2616005)(52116002)(6486002);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: 8DnA2Z9Se0k0eZNaFIAUoxRr+kC20wDvBK7yi5Jb5VSE/CxcBm/A/HANo4z/mw4lFLfWWla8IbB7JH9oH5C1EDgRp23RBoA6hvIMlGtpRhCt1sL4vPwodAq9zjXvmRmk2nmWu1sekjyBc+XKe4moPCbOqpVVB+Ty8B1YoLv8wHMVLnykpy08V1ztT/Iu5a1uavM/S/5C7BwVortV66NieTK7oHr9PC45QSu/sMbfo/Rcoh8/LhdDxcZm+7F0Wa1As+hzxf9sI1jnbJm0llXUG3rAkQ5uJMZcW1RUZv15VlSlZA19PLp0zYkmJEq5jm8IratFAi0WaQdYwh/AJNm705+DejXbim9SfWMLgKNaQ9wnSK9nph1xCYBeH4HxoaqO7Ffy0QUE5QCGUJdIbdAEC5X19WRmEJNBZT1NoWZuw/e+zUCkJWP6ro0lPLe9AQPljn4ZD6OZd/d0syggt4FiiMe87LRa7xOopXyZIyubFPlP3l2O4RkOXRX9uZ8auxcBUrBJlb+wQ13vOhfqIj3UpZitZEekzxAp7aRAmtYJ5oLR9dkZDwtTbRy4Dd4I5i9Khdgca6sWMRaz+kuedipLD4fMli6GegGU8/WawfG8WouD1El9LM1QaHnzqCxCSuSPWcNBri5BVHxh9S/MQReGWg==
+X-MS-Exchange-AntiSpam-MessageData: AyX5k+2lft2zwCHIxKPeJhcKk7RPzkFE+7ZwHxxePGS2A9Z13+kDBYb07GqNO3iYgT4g0POcVUsN0ggGaspgWmuLFTEQ5185R/b8Q53QZAjQcmEA/JvF4CoJtvXtRPsB+57XtdJ/Aoxhxtx2uZsVaPeSXYzEnDw0q1uzpWuc9j7DpREqrH1OkuPhv3BsicsrqFUDoQE0aZIWaQ1tGGnJE/ve0hBnPMu3NFXyvluNdMPGs21qn3bP6JXVh07XM0pjHHcup+arl7epLM5U0hMpR3e+l9+/c1zI8UkRsobcH1UbsfzDS5W7s8wABVOquLBZkHP59cyzjWaGkxsFgQIKyWEMubaQaX6sOamX5Mhr3T75kksaiDYyGRPsOW8EnAOQVksvCovdVqqUzABXzVZiYE5L+GFgRhhVOI/4D2xVof1mgU+Cvx9QHwVivvWoV7qITpBZ5KT37E1mlnwCM/jcFq7pO8q9FYeag8CcdXjH+dk9hrD5mDi1mxGL54WOk0HV3jifFbcj+G+8Mvr+HsjA49+x7ERjuAhRpT+ng/9eHrHYLvMRJtZcdNwxl8iRXdLsq8RKeXPa3PbM2iLIxGeP2h3PdJmW2t4OhGH/5kyLvl0JPP6w43z4/RuzMR83k0EQy9GJjrPMvTgY8xKc9TIm9g==
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99b176c6-0428-4cd1-a9eb-08d83aee0ad1
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc83552f-7752-45e9-9073-08d83aee0c30
 X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6608.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2020 16:22:13.3124 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2020 16:22:15.6070 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SvCACcrqPgUXZJJAaN447+0qSCBO1ch5ByD/fkXrSO+yjsXOXzV1bytAMRBZUigrkKgnhEJsEAQEJ0soFPS6VQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: TYXUab5J43/7qrkSpUyFpfurjXneyMgiAc1R7jP5nitm+PBtnRZIVMo9PNX0w9W5Gu5myUt3wTP5IsaUu2Ejmw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7359
 X-Mailman-Approved-At: Sat, 08 Aug 2020 10:06:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -114,8 +114,10 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-s390@vger.kernel.org, Andrei Botila <andrei.botila@nxp.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@axis.com,
- Gilad Ben-Yossef <gilad@benyossef.com>, linux-crypto@vger.kernel.org,
+ Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+ Rohit Maheshwari <rohitm@chelsio.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@axis.com,
+ linux-crypto@vger.kernel.org, Ayush Sawal <ayush.sawal@chelsio.com>,
  linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -125,43 +127,32 @@ From: Andrei Botila <andrei.botila@nxp.com>
 
 Standardize the way input lengths equal to 0 are handled in all skcipher
 algorithms. All the algorithms return 0 for input lengths equal to zero.
-This change has implications not only for xts(aes) but also for cts(cbc(aes))
-and cts(cbc(paes)).
 
-Cc: Gilad Ben-Yossef <gilad@benyossef.com>
+Cc: Ayush Sawal <ayush.sawal@chelsio.com>
+Cc: Vinay Kumar Yadav <vinay.yadav@chelsio.com>
+Cc: Rohit Maheshwari <rohitm@chelsio.com>
 Signed-off-by: Andrei Botila <andrei.botila@nxp.com>
 ---
- drivers/crypto/ccree/cc_cipher.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/crypto/chelsio/chcr_algo.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/ccree/cc_cipher.c b/drivers/crypto/ccree/cc_cipher.c
-index 076669dc1035..112bb8b4dce6 100644
---- a/drivers/crypto/ccree/cc_cipher.c
-+++ b/drivers/crypto/ccree/cc_cipher.c
-@@ -912,17 +912,18 @@ static int cc_cipher_process(struct skcipher_request *req,
+diff --git a/drivers/crypto/chelsio/chcr_algo.c b/drivers/crypto/chelsio/chcr_algo.c
+index 13b908ea4873..e9746580870a 100644
+--- a/drivers/crypto/chelsio/chcr_algo.c
++++ b/drivers/crypto/chelsio/chcr_algo.c
+@@ -1372,8 +1372,12 @@ static int chcr_aes_encrypt(struct skcipher_request *req)
+ 	int err;
+ 	struct uld_ctx *u_ctx = ULD_CTX(c_ctx(tfm));
+ 	struct chcr_context *ctx = c_ctx(tfm);
++	int subtype = get_cryptoalg_subtype(tfm);
+ 	unsigned int cpu;
  
- 	/* STAT_PHASE_0: Init and sanity checks */
- 
--	if (validate_data_size(ctx_p, nbytes)) {
--		dev_dbg(dev, "Unsupported data size %d.\n", nbytes);
--		rc = -EINVAL;
--		goto exit_process;
--	}
- 	if (nbytes == 0) {
- 		/* No data to process is valid */
- 		rc = 0;
- 		goto exit_process;
- 	}
- 
-+	if (validate_data_size(ctx_p, nbytes)) {
-+		dev_dbg(dev, "Unsupported data size %d.\n", nbytes);
-+		rc = -EINVAL;
-+		goto exit_process;
-+	}
++	if (!req->cryptlen && subtype == CRYPTO_ALG_SUB_TYPE_XTS)
++		return 0;
 +
- 	if (ctx_p->fallback_on) {
- 		struct skcipher_request *subreq = skcipher_request_ctx(req);
- 
+ 	cpu = get_cpu();
+ 	reqctx->txqidx = cpu % ctx->ntxq;
+ 	reqctx->rxqidx = cpu % ctx->nrxq;
 -- 
 2.17.1
 
