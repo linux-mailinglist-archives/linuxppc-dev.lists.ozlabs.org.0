@@ -2,61 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB4523EFB3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 16:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 049AA23EF9E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Aug 2020 16:53:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BNT5G12llzDqtj
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Aug 2020 00:58:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BNSyc2fD5zDqsl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Aug 2020 00:52:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.2; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.163;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-X-Greylist: delayed 1328 seconds by postgrey-1.36 at bilbo;
- Sat, 08 Aug 2020 00:53:40 AEST
-Received: from pegase2.c-s.fr (vpn2.c-s.fr [93.17.235.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=WcOsVmOV; 
+ dkim-atps=neutral
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [81.169.146.163])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BNSzS5vTszDqHR
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Aug 2020 00:53:39 +1000 (AEST)
-Received: from localhost (mailhub2-ext [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4BNSTj0v49z9ttfp;
- Fri,  7 Aug 2020 16:31:21 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [172.26.127.65]) (amavisd-new, port 10024)
- with ESMTP id cj3w-Q5bmpO7; Fri,  7 Aug 2020 16:31:21 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4BNSTj05PQz9ttfn;
- Fri,  7 Aug 2020 16:31:21 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E2FC8BBAD;
- Fri,  7 Aug 2020 16:31:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TRVENUZcnl2M; Fri,  7 Aug 2020 16:31:23 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8AD738BBA8;
- Fri,  7 Aug 2020 16:31:22 +0200 (CEST)
-Subject: Re: [PATCH] powerpc:entry_32: correct the path and function name in
- the comment
-To: chenzefeng <chenzefeng2@huawei.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, christophe.leroy@c-s.fr,
- tglx@linutronix.de, bigeasy@linutronix.de, npiggin@gmail.com
-References: <20200807101956.67454-1-chenzefeng2@huawei.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <b8d70e7a-7dc8-ef46-9e84-7f03d68a151b@csgroup.eu>
-Date: Fri, 7 Aug 2020 16:31:21 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BNSsN18yTzDqHV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Aug 2020 00:48:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1596811697;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=Date:Message-ID:Subject:From:To:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+ Subject:Sender;
+ bh=etPxG83tkMXiJ/hnA1T72V+lMvSf2k090VPDeSw1U3I=;
+ b=WcOsVmOVSkRsdAvy/k0CN0SUFrJ5er5BvOFvs2dn40pzHj8cVINRdAld6e9adZXrTl
+ /IvE0na37KeXveo1on6Cj8v49n3kn1j1D4kjjN+RHNCNz6CRGlDQlqVwOeOq0WEBwl2y
+ jNwmUPHOlwsOBZbz8fBlDLnWYIJENWXkzjRo7+kMt0U2XMl7G6Mpgp0TbEhAK7SJT4e9
+ akBlJ4vj8iiM2xsbx2ei6YyjxAjhjSolmVO/lNn0SbAPEhQT78CdSRM1LCu6OAi/35F+
+ K22uWUXKhVne93yfAUl86tQ4YJcwHXwtzDutJa9Y5bfRm1ezH6/qBdP1u8lt5iCEiYxe
+ K8JA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
+ by smtp.strato.de (RZmta 46.10.5 AUTH)
+ with ESMTPSA id 60686ew77EjEQ1K
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Fri, 7 Aug 2020 16:45:14 +0200 (CEST)
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, keescook@chromium.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Darren Stevens <darren@stevens-zone.net>,
+ mad skateman <madskateman@gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: [Latest Git kernel/Linux-next kernel] Xorg doesn't start after the
+ seccomp updates v5.9-rc1
+Message-ID: <67cd9693-10bc-5aa5-0898-ff2ac1f9c725@xenosoft.de>
+Date: Fri, 7 Aug 2020 16:45:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200807101956.67454-1-chenzefeng2@huawei.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,44 +71,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- zengweilin@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello,
+
+Xorg doesn't start with the latest Git kernel anymore on some Linux 
+distributions after the seccomp updates v5.9-rc1 [1]. For example on 
+Fienix (Debian Sid PowerPC 32-bit) and on ubuntu MATE 16.04.6 (PowerPC 
+32-bit). I tested these distributions on the A-EON AmigaOne X1000 [2], 
+A-EON AmigaOne X5000 [3], and in a virtual e5500 QEMU machine with a 
+virtio_gpu.
+
+Error messages:
+
+systemd-journald[2238]: Failed to send WATCHDOG-1 notification message: 
+Connection refused
+systemd-journald[2238]: Failed to send WATCHDOG-1 notification message: 
+Transport endpoint is not connected
+systemd-journald[2238]: Failed to send WATCHDOG-1 notification message: 
+Transport endpoint is not connected
+systemd-journald[2238]: Failed to send WATCHDOG-1 notification message: 
+Transport endpoint is not connected
+systemd-journald[2238]: Failed to send WATCHDOG-1 notification message: 
+Transport endpoint is not connected
+systemd-journald[2238]: Failed to send WATCHDOG-1 notification message: 
+Transport endpoint is not connected
+
+---
+
+But Xorg works on Ubuntu 10.04.4 (PowerPC 32-bit), openSUSE Tumbleweed 
+20190722 PPC64 and on Fedora 27 PPC64 with the latest Git kernel.
+
+I bisected today [4].
+
+Result: net/scm: Regularize compat handling of scm_detach_fds() 
+(c0029de50982c1fb215330a5f9d433cec0cfd8cc) [5] is the first bad commit.
+
+This commit has been merged with the seccomp updates v5.9-rc1 on 
+2020-08-04 14:11:08 -0700 [1]. Since these updates, Xorg doesn't start 
+anymore on some Linux distributions.
+
+Unfortunately I wasn't able to revert the first bad commit. The first 
+bad commit depends on many other commits, which unfortunately I don't 
+know. I tried to remove the modifications of the files from the first 
+bad commit but without any success. There are just too many dependencies.
+
+Additionally I compiled a linux-next kernel because of the issue with 
+the lastest Git kernel. Unfortunately this kernel doesn't boot. It can't 
+initialize the graphics card.
+
+Could you please test Xorg with the latest Git kernel on some Linux 
+distributions?
+
+Thanks,
+Christian
 
 
-Le 07/08/2020 à 12:19, chenzefeng a écrit :
-> Update the comment for file's directory and function name changed.
-> 
-> Fixes: facd04a904ff ("powerpc: convert to copy_thread_tls")
-> Fixes: 14cf11af6cf6 ("powerpc: Merge enough to start building in arch/powerpc.")
-> 
-> Signed-off-by: chenzefeng <chenzefeng2@huawei.com>
-> ---
->   arch/powerpc/kernel/entry_32.S | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-> index 8420abd4ea1c..9937593d3a33 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -696,8 +696,8 @@ handle_dabr_fault:
->    * to the "_switch" path.  If you change this , you'll have to
->    * change the fork code also.
->    *
-> - * The code which creates the new task context is in 'copy_thread'
-> - * in arch/ppc/kernel/process.c
-> + * The code which creates the new task context is in 'copy_thread_tls'
-> + * in arch/powerpc/kernel/process.c
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9ecc6ea491f0c0531ad81ef9466284df260b2227
+[2] https://en.wikipedia.org/wiki/AmigaOne_X1000
+[3] http://wiki.amiga.org/index.php?title=X5000
+[4] https://forum.hyperion-entertainment.com/viewtopic.php?p=51317#p51317
+[5] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c0029de50982c1fb215330a5f9d433cec0cfd8cc
 
-Does it matters at all where the function is ? I'm sure people can find 
-it themselves.
 
-Christophe
-
->    */
->   _GLOBAL(_switch)
->   	stwu	r1,-INT_FRAME_SIZE(r1)
-> 
