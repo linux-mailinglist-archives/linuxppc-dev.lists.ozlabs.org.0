@@ -1,93 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668DD23FFB8
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Aug 2020 20:42:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C37623FFC0
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Aug 2020 20:57:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BPnyj3FT8zDqTK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 04:42:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BPpHX18FMzDqTC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 04:57:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JBRQlRFq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=FkWr+kqG; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BPnwz3dKLzDqKK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 04:41:05 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 079IWwox037190
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 9 Aug 2020 14:41:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=lV7ku2TnMW60/KUlE2Nc99fakyoaSZa0i2fPeLYQ+Iw=;
- b=JBRQlRFqsPsUgE+TjeVmMkSB6WIN+tUqfmgD7h+w5mSap4EbtMJHEeFzfsHVhtaNvoZh
- 8Vz5A3RoSWc66FCmL797dPkGhtJvtDsuCHS7hkiXlJ71Zr/TLMIejXfbUjLh1BhDanBn
- mQsawq5sf5ryMKMa8f11ruh8CxXxFu874BDrwKYxRNnbS2/Bh/cBMnWhjwO+fWybLdi7
- Y2oxzx8ZpfLRpXub6HySB4IrihTaUPTBTG1HBZ4wudn7r6HCyBNDCGUazbQOV0fCdv/n
- BAlxlcfClzIeEaaPmkrErL1OeNaxMBJqTaC7PILNtH9CbizYcpEZqNScvTT4gofSw8tI xg== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32sraq6gva-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Aug 2020 14:41:02 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 079IZspP025102
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 9 Aug 2020 18:41:01 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02wdc.us.ibm.com with ESMTP id 32skp8kqsd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Aug 2020 18:41:01 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 079If0Cp46137804
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 9 Aug 2020 18:41:00 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3986124053;
- Sun,  9 Aug 2020 18:41:00 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5EE4E124052;
- Sun,  9 Aug 2020 18:40:59 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.49.44])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Sun,  9 Aug 2020 18:40:58 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [RFC PATCH 1/2] powerpc/numa: Introduce logical numa id
-In-Reply-To: <6d880a50-09c4-d591-c88c-09fd77512ad3@linux.ibm.com>
-References: <20200731111916.243569-1-aneesh.kumar@linux.ibm.com>
- <87pn83ytet.fsf@linux.ibm.com>
- <324611f7-fdaf-f83c-7159-977488aa7ce7@linux.ibm.com>
- <87k0yayykz.fsf@linux.ibm.com>
- <6d880a50-09c4-d591-c88c-09fd77512ad3@linux.ibm.com>
-Date: Mon, 10 Aug 2020 00:10:56 +0530
-Message-ID: <87eeof4q87.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BPpFw5l9YzDqRg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 04:55:47 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id m34so3673405pgl.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Aug 2020 11:55:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=PAZaN/L7VPPLwbaC7UrCX4+FJ1ItiEX2Jrle8fqhZ0o=;
+ b=FkWr+kqGCgeaKDLnZG6Jb9jbU0UEDeIJtXezXQYcwCJrFPvPkeMT6NFaE4BqOMgwg7
+ 7IltwePRC1bT8x6/NY6kbdYOlgYMDONJDziZv266NcVAp+h7IRyKV3f81KqhOJpCZSDx
+ v+n7zkQnpyd4glU8pLOxAQOzYKkjDPZlF6OjErb1yprLmzjcRhDp3TGpVxmuFk0BOrHP
+ TFqf5mOniK8ky7b6/OxykfdXWNfhEd/lQ3GtAl3fDEKNer241lNtdi3Y39dCS414HbGA
+ RUUvyWVtyniOlaShzpWYNtF5xPDZFdRep9OFep+EOjbx5pkqrPpRcC++OfkKaD+GBaET
+ 5znA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=PAZaN/L7VPPLwbaC7UrCX4+FJ1ItiEX2Jrle8fqhZ0o=;
+ b=CMwA7QAEb8eq3hdciZwlK+brq7vMvpJyAsUgErkURAHqEYZdx4fL3sQxePb/Tw2b+0
+ 203UngDfv7t5Bmvv3SRNq3wpyXp4bFka/4qrV8sRpICm7slO16LDsygAHyfRxZZASAXh
+ wRv7WyRFRh+SbVvAGfiH+MExobg6sokSSfqWPvONIwtKRfJyBvpHnEMIjGNIQeuEoI1k
+ nghNbKYuzu3D+KG6554caJwhmoHZMb+alU0/rd7DCiFpxpd4tQiYnPT8xNbTkgV1VHPx
+ dMloojFy8YAentuNvZc8qpcM4Ne/LHVTfDxvBi4K5cRREGZnmftPRHglEvYg/P0ONaQw
+ xEiQ==
+X-Gm-Message-State: AOAM530n/M/TcOXsxjVa5YFaAQhih2L8zkY7u18HVE/cAlTI85X1JPVt
+ yIOeVmuD3aD7erja4J2Bt8c=
+X-Google-Smtp-Source: ABdhPJzhi9hHF2qPnMoFx4QOZ2zhNt/Zq4cc6Dq3yX7qgdrpgVmXLJz/nI4iI+9rrn/94a8OOWGU5w==
+X-Received: by 2002:a62:5284:: with SMTP id
+ g126mr21785655pfb.139.1596999343723; 
+ Sun, 09 Aug 2020 11:55:43 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id c15sm19191410pfo.115.2020.08.09.11.55.42
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Sun, 09 Aug 2020 11:55:42 -0700 (PDT)
+Date: Sun, 9 Aug 2020 11:55:41 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Finn Thain <fthain@telegraphics.com.au>
+Subject: Re: [PATCH 2/9] macintosh/via-macii: Poll the device most likely to
+ respond
+Message-ID: <20200809185541.GA133779@roeck-us.net>
+References: <cover.1593318192.git.fthain@telegraphics.com.au>
+ <5836f80886ebcfbe5be5fb7e0dc49feed6469712.1593318192.git.fthain@telegraphics.com.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-09_09:2020-08-06,
- 2020-08-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0
- suspectscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 adultscore=0
- malwarescore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008090141
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5836f80886ebcfbe5be5fb7e0dc49feed6469712.1593318192.git.fthain@telegraphics.com.au>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,120 +82,216 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Laurent Vivier <lvivier@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linuxppc-dev@lists.ozlabs.org, Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+Hi,
 
-> On 8/8/20 2:15 AM, Nathan Lynch wrote:
->> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->>> On 8/7/20 9:54 AM, Nathan Lynch wrote:
->>>> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->>>>> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
->>>>> index e437a9ac4956..6c659aada55b 100644
->>>>> --- a/arch/powerpc/mm/numa.c
->>>>> +++ b/arch/powerpc/mm/numa.c
->>>>> @@ -221,25 +221,51 @@ static void initialize_distance_lookup_table(int nid,
->>>>>    	}
->>>>>    }
->>>>>    
->>>>> +static u32 nid_map[MAX_NUMNODES] = {[0 ... MAX_NUMNODES - 1] =  NUMA_NO_NODE};
->>>>
->>>> It's odd to me to use MAX_NUMNODES for this array when it's going to be
->>>> indexed not by Linux's logical node IDs but by the platform-provided
->>>> domain number, which has no relation to MAX_NUMNODES.
->>>
->>>
->>> I didn't want to dynamically allocate this. We could fetch
->>> "ibm,max-associativity-domains" to find the size for that. The current
->>> code do assume  firmware group id to not exceed MAX_NUMNODES. Hence kept
->>> the array size to be MAX_NUMNODEs. I do agree that it is confusing. May
->>> be we can do #define MAX_AFFINITY_DOMAIN MAX_NUMNODES?
->> 
->> Well, consider:
->> 
->> - ibm,max-associativity-domains can change at runtime with LPM. This
->>    doesn't happen in practice yet, but we should probably start thinking
->>    about how to support that.
->> - The domain numbering isn't clearly specified to have any particular
->>    properties such as beginning at zero or a contiguous range.
->> 
->> While the current code likely contains assumptions contrary to these
->> points, a change such as this is an opportunity to think about whether
->> those assumptions can be reduced or removed. In particular I think it
->> would be good to gracefully degrade when the number of NUMA affinity
->> domains can exceed MAX_NUMNODES. Using the platform-supplied domain
->> numbers to directly index Linux data structures will make that
->> impossible.
->> 
->> So, maybe genradix or even xarray wouldn't actually be overengineering
->> here.
->> 
->
-> One of the challenges with such a data structure is that we initialize 
-> the nid_map before the slab is available. This means a memblock based 
-> allocation and we would end up implementing such a sparse data structure 
-> ourselves here.
->
-> As you mentioned above, since we know that hypervisor as of now limits 
-> the max affinity domain id below ibm,max-associativity-domains we are 
-> good with an array-like nid_map we have here. This keeps the code simpler.
->
-> This will also allow us to switch to a more sparse data structure as you 
-> requested here in the future because the main change that is pushed in 
-> this series is the usage of firmare_group_id_to_nid(). The details of 
-> the data structure we use to keep track of that mapping are pretty much 
-> internal to that function.
+On Sun, Jun 28, 2020 at 02:23:12PM +1000, Finn Thain wrote:
+> Poll the most recently polled device by default, rather than the lowest
+> device address that happens to be enabled in autopoll_devs. This improves
+> input latency. Re-use macii_queue_poll() rather than duplicate that logic.
+> This eliminates a static struct and function.
+> 
+> Fixes: d95fd5fce88f0 ("m68k: Mac II ADB fixes") # v5.0+
+> Tested-by: Stan Johnson <userm57@yahoo.com>
+> Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 
-How about this? This makes it not a direct index. But it do limit the
-search to max numa node on the system. 
+With this patch applied, the qemu "q800" emulation no longer works and is stuck
+in early boot. Any idea why that might be the case, and/or how to debug it ?
 
-static int domain_id_map[MAX_NUMNODES] = {[0 ... MAX_NUMNODES - 1] =  -1 };
+Thanks,
+Guenter
 
-static int __affinity_domain_to_nid(int domain_id, int max_nid)
-{
-	int i;
-
-	for (i = 0; i < max_nid; i++) {
-		if (domain_id_map[i] == domain_id)
-			return i;
-	}
-	return NUMA_NO_NODE;
-}
-
-int affinity_domain_to_nid(struct affinity_domain *domain)
-{
-	int nid, domain_id;
-	static int last_nid = 0;
-	static DEFINE_SPINLOCK(node_id_lock);
-
-	domain_id = domain->id;
-	/*
-	 * For PowerNV we don't change the node id. This helps to avoid
-	 * confusion w.r.t the expected node ids. On pseries, node numbers
-	 * are virtualized. Hence do logical node id for pseries.
-	 */
-	if (!firmware_has_feature(FW_FEATURE_LPAR))
-		return domain_id;
-
-	if (domain_id ==  -1 || last_nid == MAX_NUMNODES)
-		return NUMA_NO_NODE;
-
-	nid = __affinity_domain_to_nid(domain_id, last_nid);
-
-	if (nid == NUMA_NO_NODE) {
-		spin_lock(&node_id_lock);
-		/*  recheck with lock held */
-		nid = __affinity_domain_to_nid(domain_id, last_nid);
-		if (nid == NUMA_NO_NODE) {
-			nid = last_nid++;
-			domain_id_map[nid] = domain_id;
-		}
-		spin_unlock(&node_id_lock);
-	}
-
-	return nid;
-}
+> ---
+>  drivers/macintosh/via-macii.c | 99 +++++++++++++++++++----------------
+>  1 file changed, 53 insertions(+), 46 deletions(-)
+> 
+> diff --git a/drivers/macintosh/via-macii.c b/drivers/macintosh/via-macii.c
+> index 6aa903529570d..d4f1a65c5f1fd 100644
+> --- a/drivers/macintosh/via-macii.c
+> +++ b/drivers/macintosh/via-macii.c
+> @@ -77,6 +77,10 @@ static volatile unsigned char *via;
+>  #define ST_ODD		0x20		/* ADB state: odd data byte */
+>  #define ST_IDLE		0x30		/* ADB state: idle, nothing to send */
+>  
+> +/* ADB command byte structure */
+> +#define ADDR_MASK	0xF0
+> +#define CMD_MASK	0x0F
+> +
+>  static int macii_init_via(void);
+>  static void macii_start(void);
+>  static irqreturn_t macii_interrupt(int irq, void *arg);
+> @@ -117,7 +121,8 @@ static int reply_len; /* number of bytes received in reply_buf or req->reply */
+>  static int status;          /* VIA's ADB status bits captured upon interrupt */
+>  static int last_status;              /* status bits as at previous interrupt */
+>  static int srq_asserted;     /* have to poll for the device that asserted it */
+> -static int command_byte;         /* the most recent command byte transmitted */
+> +static u8 last_cmd;              /* the most recent command byte transmitted */
+> +static u8 last_poll_cmd; /* the most recent Talk R0 command byte transmitted */
+>  static int autopoll_devs;      /* bits set are device addresses to be polled */
+>  
+>  /* Check for MacII style ADB */
+> @@ -179,35 +184,49 @@ static int macii_init_via(void)
+>  /* Send an ADB poll (Talk Register 0 command prepended to the request queue) */
+>  static void macii_queue_poll(void)
+>  {
+> -	/* No point polling the active device as it will never assert SRQ, so
+> -	 * poll the next device in the autopoll list. This could leave us
+> -	 * stuck in a polling loop if an unprobed device is asserting SRQ.
+> -	 * In theory, that could only happen if a device was plugged in after
+> -	 * probing started. Unplugging it again will break the cycle.
+> -	 * (Simply polling the next higher device often ends up polling almost
+> -	 * every device (after wrapping around), which takes too long.)
+> -	 */
+> -	int device_mask;
+> -	int next_device;
+>  	static struct adb_request req;
+> +	unsigned char poll_command;
+> +	unsigned int poll_addr;
+>  
+> +	/* This only polls devices in the autopoll list, which assumes that
+> +	 * unprobed devices never assert SRQ. That could happen if a device was
+> +	 * plugged in after the adb bus scan. Unplugging it again will resolve
+> +	 * the problem. This behaviour is similar to MacOS.
+> +	 */
+>  	if (!autopoll_devs)
+>  		return;
+>  
+> -	device_mask = (1 << (((command_byte & 0xF0) >> 4) + 1)) - 1;
+> -	if (autopoll_devs & ~device_mask)
+> -		next_device = ffs(autopoll_devs & ~device_mask) - 1;
+> -	else
+> -		next_device = ffs(autopoll_devs) - 1;
+> +	/* The device most recently polled may not be the best device to poll
+> +	 * right now. Some other device(s) may have signalled SRQ (the active
+> +	 * device won't do that). Or the autopoll list may have been changed.
+> +	 * Try polling the next higher address.
+> +	 */
+> +	poll_addr = (last_poll_cmd & ADDR_MASK) >> 4;
+> +	if ((srq_asserted && last_cmd == last_poll_cmd) ||
+> +	    !(autopoll_devs & (1 << poll_addr))) {
+> +		unsigned int higher_devs;
+> +
+> +		higher_devs = autopoll_devs & -(1 << (poll_addr + 1));
+> +		poll_addr = ffs(higher_devs ? higher_devs : autopoll_devs) - 1;
+> +	}
+>  
+> -	adb_request(&req, NULL, ADBREQ_NOSEND, 1, ADB_READREG(next_device, 0));
+> +	/* Send a Talk Register 0 command */
+> +	poll_command = ADB_READREG(poll_addr, 0);
+> +
+> +	/* No need to repeat this Talk command. The transceiver will do that
+> +	 * as long as it is idle.
+> +	 */
+> +	if (poll_command == last_cmd)
+> +		return;
+> +
+> +	adb_request(&req, NULL, ADBREQ_NOSEND, 1, poll_command);
+>  
+>  	req.sent = 0;
+>  	req.complete = 0;
+>  	req.reply_len = 0;
+>  	req.next = current_req;
+>  
+> -	if (current_req != NULL) {
+> +	if (WARN_ON(current_req)) {
+>  		current_req = &req;
+>  	} else {
+>  		current_req = &req;
+> @@ -266,37 +285,22 @@ static int macii_write(struct adb_request *req)
+>  /* Start auto-polling */
+>  static int macii_autopoll(int devs)
+>  {
+> -	static struct adb_request req;
+>  	unsigned long flags;
+> -	int err = 0;
+>  
+>  	local_irq_save(flags);
+>  
+>  	/* bit 1 == device 1, and so on. */
+>  	autopoll_devs = devs & 0xFFFE;
+>  
+> -	if (autopoll_devs && !current_req) {
+> -		/* Send a Talk Reg 0. The controller will repeatedly transmit
+> -		 * this as long as it is idle.
+> -		 */
+> -		adb_request(&req, NULL, ADBREQ_NOSEND, 1,
+> -		            ADB_READREG(ffs(autopoll_devs) - 1, 0));
+> -		err = macii_write(&req);
+> +	if (!current_req) {
+> +		macii_queue_poll();
+> +		if (current_req && macii_state == idle)
+> +			macii_start();
+>  	}
+>  
+>  	local_irq_restore(flags);
+> -	return err;
+> -}
+>  
+> -static inline int need_autopoll(void)
+> -{
+> -	/* Was the last command Talk Reg 0
+> -	 * and is the target on the autopoll list?
+> -	 */
+> -	if ((command_byte & 0x0F) == 0x0C &&
+> -	    ((1 << ((command_byte & 0xF0) >> 4)) & autopoll_devs))
+> -		return 0;
+> -	return 1;
+> +	return 0;
+>  }
+>  
+>  /* Prod the chip without interrupts */
+> @@ -333,7 +337,12 @@ static void macii_start(void)
+>  	 */
+>  
+>  	/* store command byte */
+> -	command_byte = req->data[1];
+> +	last_cmd = req->data[1];
+> +
+> +	/* If this is a Talk Register 0 command, store the command byte */
+> +	if ((last_cmd & CMD_MASK) == ADB_READREG(0, 0))
+> +		last_poll_cmd = last_cmd;
+> +
+>  	/* Output mode */
+>  	via[ACR] |= SR_OUT;
+>  	/* Load data */
+> @@ -424,10 +433,11 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
+>  				if (req->done)
+>  					(*req->done)(req);
+>  
+> -				if (current_req)
+> +				if (!current_req)
+> +					macii_queue_poll();
+> +
+> +				if (current_req && macii_state == idle)
+>  					macii_start();
+> -				else if (need_autopoll())
+> -					macii_autopoll(autopoll_devs);
+>  			}
+>  
+>  			if (macii_state == idle) {
+> @@ -507,14 +517,11 @@ static irqreturn_t macii_interrupt(int irq, void *arg)
+>  
+>  		macii_state = idle;
+>  
+> -		/* SRQ seen before, initiate poll now */
+> -		if (srq_asserted)
+> +		if (!current_req)
+>  			macii_queue_poll();
+>  
+>  		if (current_req)
+>  			macii_start();
+> -		else if (need_autopoll())
+> -			macii_autopoll(autopoll_devs);
+>  
+>  		if (macii_state == idle)
+>  			via[B] = (via[B] & ~ST_MASK) | ST_IDLE;
+> -- 
+> 2.26.2
+> 
