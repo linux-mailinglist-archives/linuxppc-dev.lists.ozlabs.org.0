@@ -2,82 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A948D2402E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 09:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BD0240288
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 09:31:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQ7Dv1MR2zDqM6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 17:41:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQ71T5YqfzDqSl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 17:31:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
  header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Krf1qfJ9; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=M8rU9dVt; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQ78J6Tz8zDqSF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 17:37:04 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07A7aspq096541; Mon, 10 Aug 2020 03:36:55 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQ6lr534KzDqNC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 17:19:20 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07A75L2o041877; Mon, 10 Aug 2020 03:19:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=qMHGl+1t4gMfa2qMarGYbBHG6334xaEDPdjFO253suY=;
- b=Krf1qfJ9I2CaPj+doPp4MVODycGA52WR10Ymh6f9HHZtf3YCO+k9a/nmRBBhA45fRkf9
- VjaOpYGSv6l7IpFymfppth92RsZx8KO4URFqPtjn/cDeTQ95Z2EPcgynlHl26EteNMTu
- Pai+CjOgIkoLKgwIEqZFGCV8wzpTw7v0+a+tNnL6bcVBfVpLvf2w/JNT9ThL4UI2oSU4
- EGLqVzXdMBxh+uC6NPs1mlefwLv8bxA3PxCTwDkY2Ne+vdglleoFw58UmKFeejrDSGVA
- 44t9dofTYau2Svy20RFvXdJq4Qgv+3Mb5Hzbp2v7Jw3jzoxxPZghLL7auVj4SV3Pboo6 /w== 
+ bh=EABG8Gu6w1DW2OlVB0Kw6GlIxF3JELepaysVn8EfUZ4=;
+ b=M8rU9dVt6q7KMOLvAZwci69wYPYjnA7uE5GPtmNeBKt8MNhOll23dOZlRmNCub+uezU9
+ Fkavw4XUPafHCqf4nkW0X7BzgxFe8zOXmggoHxtNcc0izo2wmwDu+/GS8xrkIqOPC7lW
+ /gs7X1RF0qsks9UDu6xx2A99F/z8vy5dFxzENrdiUHLYYlsrlYonGZykVN0wFJFpZrVU
+ ctVOakvxopAmYBEYJG8OuKGGs+smDWfx7DBk8MZMSH/cQzk27iK75B2BxkGF/MYuTnMN
+ 8C55hv28MskJE6zLuG9C98NAWlQyKE0mRd2euD6ja+DjdqSxJJcWesLQZ8bHw1qRicvg kQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32sr7h9sr9-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32sr7mtgtx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Aug 2020 03:36:54 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07A7RlMp058579;
- Mon, 10 Aug 2020 03:27:47 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32sr7h9qun-1
+ Mon, 10 Aug 2020 03:19:09 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07A78L26052167;
+ Mon, 10 Aug 2020 03:19:09 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32sr7mtgt6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Aug 2020 03:25:17 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07A7H9F0017736;
- Mon, 10 Aug 2020 07:18:52 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06fra.de.ibm.com with ESMTP id 32skah17wa-1
+ Mon, 10 Aug 2020 03:19:08 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07A7GC67028365;
+ Mon, 10 Aug 2020 07:19:07 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma05fra.de.ibm.com with ESMTP id 32skp817h2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Aug 2020 07:18:51 +0000
+ Mon, 10 Aug 2020 07:19:06 +0000
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
  [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07A7Im4t27460080
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 07A7J4kc65405356
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Aug 2020 07:18:49 GMT
+ Mon, 10 Aug 2020 07:19:04 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CFA1511C05B;
- Mon, 10 Aug 2020 07:18:48 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 08F8C11C04C;
+ Mon, 10 Aug 2020 07:19:04 +0000 (GMT)
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25B8311C052;
- Mon, 10 Aug 2020 07:18:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 55E0011C04A;
+ Mon, 10 Aug 2020 07:19:01 +0000 (GMT)
 Received: from srikart450.in.ibm.com (unknown [9.102.18.208])
  by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 10 Aug 2020 07:18:45 +0000 (GMT)
+ Mon, 10 Aug 2020 07:19:01 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v5 02/10] powerpc/smp: Merge Power9 topology with Power
- topology
-Date: Mon, 10 Aug 2020 12:48:26 +0530
-Message-Id: <20200810071834.92514-3-srikar@linux.vnet.ibm.com>
+Subject: [PATCH v5 07/10] powerpc/numa: Detect support for coregroup
+Date: Mon, 10 Aug 2020 12:48:31 +0530
+Message-Id: <20200810071834.92514-8-srikar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200810071834.92514-1-srikar@linux.vnet.ibm.com>
 References: <20200810071834.92514-1-srikar@linux.vnet.ibm.com>
@@ -88,11 +87,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-10_02:2020-08-06,
  2020-08-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0
- adultscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 phishscore=0 mlxlogscore=999
+ adultscore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008100048
+ engine=8.12.0-2006250000 definitions=main-2008100046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,10 +115,20 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A new sched_domain_topology_level was added just for Power9. However the
-same can be achieved by merging powerpc_topology with power9_topology
-and makes the code more simpler especially when adding a new sched
-domain.
+Add support for grouping cores based on the device-tree classification.
+- The last domain in the associativity domains always refers to the
+core.
+- If primary reference domain happens to be the penultimate domain in
+the associativity domains device-tree property, then there are no
+coregroups. However if its not a penultimate domain, then there are
+coregroups. There can be more than one coregroup. For now we would be
+interested in the last or the smallest coregroups, i.e one sub-group
+per DIE.
+
+Currently there are no firmwares that are exposing this grouping. Hence
+allow the basis for grouping to be abstract.  Once the firmware starts
+using this grouping, code would be added to detect the type of grouping
+and adjust the sd domain flags accordingly.
 
 Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Cc: LKML <linux-kernel@vger.kernel.org>
@@ -138,73 +147,101 @@ Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
 Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 ---
+Changelog v4->v5:
+	Updated commit msg with current abstract nature of the coregroups
+						(Michael Ellerman)
+
 Changelog v1 -> v2:
-	Replaced a reference to cpu_smt_mask with per_cpu(cpu_sibling_map, cpu)
-	since cpu_smt_mask is only defined under CONFIG_SCHED_SMT
+	Explained Coregroup in commit msg (Michael Ellerman)
 
- arch/powerpc/kernel/smp.c | 25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ arch/powerpc/include/asm/smp.h |  1 +
+ arch/powerpc/kernel/smp.c      |  1 +
+ arch/powerpc/mm/numa.c         | 34 +++++++++++++++++++++-------------
+ 3 files changed, 23 insertions(+), 13 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
+index 49a25e2400f2..5bdc17a7049f 100644
+--- a/arch/powerpc/include/asm/smp.h
++++ b/arch/powerpc/include/asm/smp.h
+@@ -28,6 +28,7 @@
+ extern int boot_cpuid;
+ extern int spinning_secondaries;
+ extern u32 *cpu_to_phys_id;
++extern bool coregroup_enabled;
+ 
+ extern void cpu_die(void);
+ extern int cpu_to_chip_id(int cpu);
 diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index edf94ca64eea..08da765b91f1 100644
+index 91cf5d05e7ec..7403fdcf3821 100644
 --- a/arch/powerpc/kernel/smp.c
 +++ b/arch/powerpc/kernel/smp.c
-@@ -1313,7 +1313,7 @@ int setup_profiling_timer(unsigned int multiplier)
- }
+@@ -74,6 +74,7 @@ static DEFINE_PER_CPU(int, cpu_state) = { 0 };
  
- #ifdef CONFIG_SCHED_SMT
--/* cpumask of CPUs with asymetric SMT dependancy */
-+/* cpumask of CPUs with asymmetric SMT dependency */
- static int powerpc_smt_flags(void)
+ struct task_struct *secondary_current;
+ bool has_big_cores;
++bool coregroup_enabled;
+ 
+ DEFINE_PER_CPU(cpumask_var_t, cpu_sibling_map);
+ DEFINE_PER_CPU(cpumask_var_t, cpu_smallcore_map);
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 2298899a0f0a..51cb672f113b 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -886,7 +886,9 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+ static void __init find_possible_nodes(void)
  {
- 	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
-@@ -1326,14 +1326,6 @@ static int powerpc_smt_flags(void)
- }
- #endif
+ 	struct device_node *rtas;
+-	u32 numnodes, i;
++	const __be32 *domains;
++	int prop_length, max_nodes;
++	u32 i;
  
--static struct sched_domain_topology_level powerpc_topology[] = {
--#ifdef CONFIG_SCHED_SMT
--	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
--#endif
--	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
--	{ NULL, },
--};
--
- /*
-  * P9 has a slightly odd architecture where pairs of cores share an L2 cache.
-  * This topology makes it *much* cheaper to migrate tasks between adjacent cores
-@@ -1361,7 +1353,7 @@ static const struct cpumask *smallcore_smt_mask(int cpu)
- }
- #endif
+ 	if (!numa_enabled)
+ 		return;
+@@ -895,25 +897,31 @@ static void __init find_possible_nodes(void)
+ 	if (!rtas)
+ 		return;
  
--static struct sched_domain_topology_level power9_topology[] = {
-+static struct sched_domain_topology_level powerpc_topology[] = {
- #ifdef CONFIG_SCHED_SMT
- 	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
- #endif
-@@ -1386,21 +1378,10 @@ void __init smp_cpus_done(unsigned int max_cpus)
- #ifdef CONFIG_SCHED_SMT
- 	if (has_big_cores) {
- 		pr_info("Big cores detected but using small core scheduling\n");
--		power9_topology[0].mask = smallcore_smt_mask;
- 		powerpc_topology[0].mask = smallcore_smt_mask;
+-	if (of_property_read_u32_index(rtas, "ibm,current-associativity-domains",
+-				min_common_depth, &numnodes)) {
+-		/*
+-		 * ibm,current-associativity-domains is a fairly recent
+-		 * property. If it doesn't exist, then fallback on
+-		 * ibm,max-associativity-domains. Current denotes what the
+-		 * platform can support compared to max which denotes what the
+-		 * Hypervisor can support.
+-		 */
+-		if (of_property_read_u32_index(rtas, "ibm,max-associativity-domains",
+-				min_common_depth, &numnodes))
++	/*
++	 * ibm,current-associativity-domains is a fairly recent property. If
++	 * it doesn't exist, then fallback on ibm,max-associativity-domains.
++	 * Current denotes what the platform can support compared to max
++	 * which denotes what the Hypervisor can support.
++	 */
++	domains = of_get_property(rtas, "ibm,current-associativity-domains",
++					&prop_length);
++	if (!domains) {
++		domains = of_get_property(rtas, "ibm,max-associativity-domains",
++					&prop_length);
++		if (!domains)
+ 			goto out;
  	}
- #endif
--	/*
--	 * If any CPU detects that it's sharing a cache with another CPU then
--	 * use the deeper topology that is aware of this sharing.
--	 */
--	if (shared_caches) {
--		pr_info("Using shared cache scheduler topology\n");
--		set_sched_topology(power9_topology);
--	} else {
--		pr_info("Using standard scheduler topology\n");
--		set_sched_topology(powerpc_topology);
--	}
-+	set_sched_topology(powerpc_topology);
- }
  
- #ifdef CONFIG_HOTPLUG_CPU
+-	for (i = 0; i < numnodes; i++) {
++	max_nodes = of_read_number(&domains[min_common_depth], 1);
++	for (i = 0; i < max_nodes; i++) {
+ 		if (!node_possible(i))
+ 			node_set(i, node_possible_map);
+ 	}
+ 
++	prop_length /= sizeof(int);
++	if (prop_length > min_common_depth + 2)
++		coregroup_enabled = 1;
++
+ out:
+ 	of_node_put(rtas);
+ }
 -- 
 2.18.2
 
