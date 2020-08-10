@@ -1,51 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FC424020C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 08:42:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C94C24025C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 09:21:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQ5wq6nDdzDqRk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 16:42:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQ6pK5LgYzDqND
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 17:21:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQ5vF3C6YzDqRg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 16:40:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=hyX5VUeF; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQ5vF0Y4Sz9sTF;
- Mon, 10 Aug 2020 16:40:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1597041641;
- bh=LMuH3ri2Eh/vI8VNrQEM061ubTEZflO37+kDO+JVQs0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=hyX5VUeFbmg26nSgT3dHYer35C65ZrabBRZbRC/S4tD2iSHeoXWuXNpLDzgRmpjge
- d3Bo2w9Mp3x9yYA65F4JvWyuOdOSFdPlXMrxUfsLEEfiy0z4T0R2NPuUrvNorbokST
- S+xtNVHuHssIHKXNFMx6ct51JExASy2NekG3UQG37cXx3dNkRKRjPDaKt7nu3rWbtv
- TPyDBXLZuWkuBICaA8VuVvDILRzwZOP4A+cU1r6ifkdV3hke6DSKWVf9mqYhLuflIm
- 4dT67sZL61pN7YvQFMP9H7/g/wqDj480aWjuXzR2N8+TbfRbTLSGw9lWgP9L+KX71n
- grTIaEdHv+Bjw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/rtas: Restrict RTAS requests from userspace
-In-Reply-To: <20200702161932.18176-1-ajd@linux.ibm.com>
-References: <20200702161932.18176-1-ajd@linux.ibm.com>
-Date: Mon, 10 Aug 2020 16:40:37 +1000
-Message-ID: <87bljjxau2.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IR81Pkqq; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQ6lW014FzDqN1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 17:19:02 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07A74Bdh091019; Mon, 10 Aug 2020 03:18:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=sc2aFeTlwNNRQaV6EqjqY2AOugkKoWxg/2qhZ+kbzF8=;
+ b=IR81Pkqq1Lnn/8ET+KeZfaElI9tYlRbiVE8mizWqDBJvVHqNwTD+tED5BZ2+AEgW9/N7
+ ksElgP4ikCSE8m19CP3f2bjsDwBlKsfF4zT1QQLBPA0U77Tx4wPqp4ASSnzezCw065nf
+ VZQ+c4nzTfelr95RVBC22a28Nl4AdX7jB6tST/k2qeEN3lTMHO7skg9+RybSnNwZwf11
+ zK6FeEsCsgo++kN6mEVoPnitPhZUVynq/rgl6zhQcC/BzV7BiPiZAtU3QP3HTKiGCvmK
+ 5X1QSNI6oiirhiTMRiaUG+BXINb6H59G/mYYUbjrzcIR13dXwSFcLIRHW7h8QNgIGRn5 Eg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32sr6rbrgp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Aug 2020 03:18:50 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07A75Ags094463;
+ Mon, 10 Aug 2020 03:18:50 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32sr6rbrg0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Aug 2020 03:18:50 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07A7Exwm012651;
+ Mon, 10 Aug 2020 07:18:47 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 32skp89ygb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Aug 2020 07:18:47 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07A7IgrC23003628
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 10 Aug 2020 07:18:43 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF1B211C052;
+ Mon, 10 Aug 2020 07:18:42 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C187D11C050;
+ Mon, 10 Aug 2020 07:18:39 +0000 (GMT)
+Received: from srikart450.in.ibm.com (unknown [9.102.18.208])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 10 Aug 2020 07:18:39 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v5 00/10] Coregroup support on Powerpc
+Date: Mon, 10 Aug 2020 12:48:24 +0530
+Message-Id: <20200810071834.92514-1-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-10_02:2020-08-06,
+ 2020-08-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 impostorscore=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008100046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,357 +100,410 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, leobras.c@gmail.com, Daniel Axtens <dja@axtens.net>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Oliver OHalloran <oliveroh@au1.ibm.com>, Michael Neuling <mikey@linux.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Michael Ellerman <michaele@au1.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jordan Niethe <jniethe5@gmail.com>, Anton Blanchard <anton@au1.ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Nick Piggin <npiggin@au1.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi ajd,
+Changelog v4->v5:
+v4: http://lore.kernel.org/lkml/20200727053230.19753-1-srikar@linux.vnet.ibm.com/t/#u
 
-Thanks for taking care of this.
+Changelog v4 ->v5:
+powerpc/smp: Optimize start_secondary
+	Retain cache domain, no need for generalization
+		 (Michael Ellerman, Peter Zijlstra,
+		 Valentin Schneider, Gautham R. Shenoy)
 
-I was going to merge this as-is, but given it's fixing a long standing
-issue there's not really a big rush. So a few comments below.
+powerpc/numa: Detect support for coregroup
+	Updated commit msg with current abstract nature of the coregroups
+						(Michael Ellerman)
+powerpc/smp: Allocate cpumask only after searching thread group
+	Updated commit msg on why cpumask need not be freed.
+						(Michael Ellerman)
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-> A number of userspace utilities depend on making calls to RTAS to retrieve
-> information and update various things.
->
-> The existing API through which we expose RTAS to userspace exposes more
-> RTAS functionality than we actually need, through the sys_rtas syscall,
-> which allows root (or anyone with CAP_SYS_ADMIN) to make any RTAS call they
-> want with arbitrary arguments.
->
-> Many RTAS calls take the address of a buffer as an argument, and it's up to
-> the caller to specify the physical address of the buffer as an argument. We
-> allocate a buffer (the "RMO buffer") in the Real Memory Area that RTAS can
-> access, and then expose the physical address and size of this buffer in
-> /proc/powerpc/rtas/rmo_buffer. Userspace is expected to read this address,
-> poke at the buffer using /dev/mem, and pass an address in the RMO buffer to
-> the RTAS call.
->
-> However, there's nothing stopping the caller from specifying whatever
-> address they want in the RTAS call, and it's easy to construct a series of
-> RTAS calls that can overwrite arbitrary bytes (even without /dev/mem
-> access).
->
-> Additionally, there are some RTAS calls that do potentially dangerous
-> things and for which there are no legitimate userspace use cases.
->
-> In the past, this would not have been a particularly big deal as it was
-> assumed that root could modify all system state freely, but with Secure
-> Boot and lockdown we need to care about this.
->
-> We can't fundamentally change the ABI at this point, however we can address
-> this by implementing a filter that checks RTAS calls against a list
-> of permitted calls and forces the caller to use addresses within the RMO
-> buffer.
->
-> The list is based off the list of calls that are used by the librtas
-> userspace library, and has been tested with a number of existing userspace
-> RTAS utilities. For compatibility with any applications we are not aware of
-> that require other calls, the filter can be turned off at build time.
->
-> Reported-by: Daniel Axtens <dja@axtens.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> ---
->  arch/powerpc/Kconfig       |  13 +++
->  arch/powerpc/kernel/rtas.c | 198 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 211 insertions(+)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 9fa23eb320ff..0e2dfe497357 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -973,6 +973,19 @@ config PPC_SECVAR_SYSFS
->  	  read/write operations on these variables. Say Y if you have
->  	  secure boot enabled and want to expose variables to userspace.
->  
-> +config PPC_RTAS_FILTER
-> +	bool "Enable filtering of RTAS syscalls"
-> +	default y
-> +	depends on PPC_RTAS
-> +	help
-> +	  The RTAS syscall API has security issues that could be used to
-> +	  compromise system integrity. This option enforces restrictions on the
-> +	  RTAS calls and arguments passed by userspace programs to mitigate
-> +	  these issues.
-> +
-> +	  Say Y unless you know what you are doing and the filter is causing
-> +	  problems for you.
-> +
->  endmenu
->  
->  config ISA_DMA_API
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index a09eba03f180..ec1cae52d8bd 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -324,6 +324,23 @@ int rtas_token(const char *service)
->  }
->  EXPORT_SYMBOL(rtas_token);
->  
-> +#ifdef CONFIG_PPC_RTAS_FILTER
-> +
+powerpc/smp: Create coregroup domain
+	Updated commit msg to specify actual implementation of
+	cpu_to_coregroup_id is in a subsequent patch (Michael Ellerman)
 
-I think this could be combined with the #ifdef block below?
+Changelog v3 ->v4:
+v3: https://lore.kernel.org/lkml/20200723085116.4731-1-srikar@linux.vnet.ibm.com/t/#u
 
-> +static char *rtas_token_name(int token)
-> +{
-> +	struct property *prop;
-> +
-> +	for_each_property_of_node(rtas.dev, prop) {
-> +		const __be32 *tokp = prop->value;
-> +
-> +		if (tokp && be32_to_cpu(*tokp) == token)
-> +			return prop->name;
-> +	}
-> +	return NULL;
-> +}
-> +
-> +#endif /* CONFIG_PPC_RTAS_FILTER */
-> +
->  int rtas_service_present(const char *service)
->  {
->  	return rtas_token(service) != RTAS_UNKNOWN_SERVICE;
-> @@ -1110,6 +1127,184 @@ struct pseries_errorlog *get_pseries_errorlog(struct rtas_error_log *log,
->  	return NULL;
->  }
->  
-> +#ifdef CONFIG_PPC_RTAS_FILTER
-> +
-> +/*
-> + * The sys_rtas syscall, as originally designed, allows root to pass
-> + * arbitrary physical addresses to RTAS calls. A number of RTAS calls
-> + * can be abused to write to arbitrary memory and do other things that
-> + * are potentially harmful to system integrity, and thus should only
-> + * be used inside the kernel and not exposed to userspace.
-> + *
-> + * All known legitimate users of the sys_rtas syscall will only ever
-> + * pass addresses that fall within the RMO buffer, and use a known
-> + * subset of RTAS calls.
-> + *
-> + * Accordingly, we filter RTAS requests to check that the call is
-> + * permitted, and that provided pointers fall within the RMO buffer.
-> + * The rtas_filters list contains an entry for each permitted call,
-> + * with the indexes of the parameters which are expected to contain
-> + * addresses and sizes of buffers allocated inside the RMO buffer.
-> + */
-> +struct rtas_filter {
-> +	const char name[32];
+powerpc/smp: Create coregroup domain
+	if coregroup_support doesn't exist, update MC mask to the next
+	smaller domain mask.
 
-Using a const char * for the name would be more typical, meaning the
-strings would end up in .rodata, and could be merged with other uses of
-the same strings.
+Changelog v2 -> v3:
+v2: https://lore.kernel.org/linuxppc-dev/20200721113814.32284-1-srikar@linux.vnet.ibm.com/t/#u
 
-> +
-> +	/* Indexes into the args buffer, -1 if not used */
-> +	int rmo_buf_idx1;
-> +	int rmo_size_idx1;
-> +	int rmo_buf_idx2;
-> +	int rmo_size_idx2;
+powerpc/smp: Cache node for reuse
+	Removed node caching part. Rewrote the Commit msg (Michael Ellerman)
+	Renamed to powerpc/smp: Fix a warning under !NEED_MULTIPLE_NODES
 
-The "rmo" prefix is probably unnecessary?
+powerpc/smp: Enable small core scheduling sooner
+	Rewrote changelog (Gautham)
+	Renamed to powerpc/smp: Move topology fixups into  a new function
 
-> +};
-> +
-> +struct rtas_filter rtas_filters[] = {
+powerpc/smp: Create coregroup domain
+	Add optimization for mask updation under coregroup_support
 
-Should be static, and __ro_after_init ?
+Changelog v1 -> v2:
+v1: https://lore.kernel.org/linuxppc-dev/20200714043624.5648-1-srikar@linux.vnet.ibm.com/t/#u
 
-> +	{ "ibm,activate-firmware", -1, -1, -1, -1 },
+powerpc/smp: Merge Power9 topology with Power topology
+	Replaced a reference to cpu_smt_mask with per_cpu(cpu_sibling_map, cpu)
+	since cpu_smt_mask is only defined under CONFIG_SCHED_SMT
 
-Would it be worth making the indices 1-based, allowing 0 to be the
-unused value, meaning you only have to initialise the used fields?
+powerpc/smp: Enable small core scheduling sooner
+	Restored the previous info msg (Jordan)
+	Moved big core topology fixup to fixup_topology (Gautham)
 
-It would require adjusting them before use, but there's only 4 places
-they're used, and you could probably use a macro to do the - 1.
+powerpc/smp: Dont assume l2-cache to be superset of sibling
+	Set cpumask after verifying l2-cache. (Gautham)
 
-> +	{ "ibm,configure-connector", 0, -1, 1, -1 },	/* Special cased, size 4096 */
+powerpc/smp: Generalize 2nd sched domain
+	Moved shared_cache topology fixup to fixup_topology (Gautham)
 
-Does it make sense to put the hard coded sizes in the structure as well?
+Powerpc/numa: Detect support for coregroup
+	Explained Coregroup in commit msg (Michael Ellerman)
 
-eg. fixed_size1 = 4096,
+Powerpc/smp: Create coregroup domain
+	Moved coregroup topology fixup to fixup_topology (Gautham)
 
-I think that would avoid the need for any strcmps in the code.
+powerpc/smp: Implement cpu_to_coregroup_id
+	Move coregroup_enabled before getting associativity (Gautham)
 
-> +	{ "display-character", -1, -1, -1, -1 },
-> +	{ "ibm,display-message", 0, -1, -1, -1 },
-> +	{ "ibm,errinjct", 2, -1, -1, -1 },		/* Fixed size of 1024 */
-> +	{ "ibm,close-errinjct", -1, -1, -1, -1 },
-> +	{ "ibm,open-errinct", -1, -1, -1, -1 },
-> +	{ "ibm,get-config-addr-info2", -1, -1, -1, -1 },
-> +	{ "ibm,get-dynamic-sensor-state", 1, -1, -1, -1 },
-> +	{ "ibm,get-indices", 2, 3, -1, -1 },
-> +	{ "get-power-level", -1, -1, -1, -1 },
-> +	{ "get-sensor-state", -1, -1, -1, -1 },
-> +	{ "ibm,get-system-parameter", 1, 2, -1, -1 },
-> +	{ "get-time-of-day", -1, -1, -1, -1 },
-> +	{ "ibm,get-vpd", 0, -1, 1, 2 },
-> +	{ "ibm,lpar-perftools", 2, 3, -1, -1 },
-> +	{ "ibm,platform-dump", 4, 5, -1, -1 },
-> +	{ "ibm,read-slot-reset-state", -1, -1, -1, -1 },
-> +	{ "ibm,scan-log-dump", 0, 1, -1, -1 },
-> +	{ "ibm,set-dynamic-indicator", 2, -1, -1, -1 },
-> +	{ "ibm,set-eeh-option", -1, -1, -1, -1 },
-> +	{ "set-indicator", -1, -1, -1, -1 },
-> +	{ "set-power-level", -1, -1, -1, -1 },
-> +	{ "set-time-for-power-on", -1, -1, -1, -1 },
-> +	{ "ibm,set-system-parameter", 1, -1, -1, -1 },
-> +	{ "set-time-of-day", -1, -1, -1, -1 },
-> +	{ "ibm,suspend-me", -1, -1, -1, -1 },
-> +	{ "ibm,update-nodes", 0, -1, -1, -1 },		/* Fixed size of 4096 */
-> +	{ "ibm,update-properties", 0, -1, -1, -1 },	/* Fixed size of 4096 */
-> +	{ "ibm,physical-attestation", 0, 1, -1, -1 },
-> +};
-> +
-> +static void dump_rtas_params(int token, int nargs, int nret,
-> +			     struct rtas_args *args)
-> +{
-> +	int i;
-> +	char *token_name = rtas_token_name(token);
-> +
-> +	pr_err_ratelimited("sys_rtas: token=0x%x (%s), nargs=%d, nret=%d (called by %s)\n",
-> +			   token, token_name ? token_name : "unknown", nargs,
-> +			   nret, current->comm);
-> +	pr_err_ratelimited("sys_rtas: args: ");
-> +
-> +	for (i = 0; i < nargs; i++) {
-> +		u32 arg = be32_to_cpu(args->args[i]);
-> +
-> +		pr_cont("%08x ", arg);
-> +		if (arg >= rtas_rmo_buf &&
-> +		    arg < (rtas_rmo_buf + RTAS_RMOBUF_MAX))
-> +			pr_cont("(buf+0x%lx) ", arg - rtas_rmo_buf);
-> +	}
+powerpc/smp: Provide an ability to disable coregroup
+	Patch dropped (Michael Ellerman)
 
-This can leak the location of the RMO buf into dmesg. I know it's
-visible via /proc, but the /proc file is 0400.
+Cleanup of existing powerpc topologies and add coregroup support on
+Powerpc. Coregroup is a group of (subset of) cores of a DIE that share
+a resource.
 
-So I think it's probably safer if we just don't dump the args, or their
-relation to the RMO buf.
+Patch 7 of this patch series: "Powerpc/numa: Detect support for coregroup"
+depends on
+https://lore.kernel.org/linuxppc-dev/20200707140644.7241-1-srikar@linux.vnet.ibm.com/t/#u
+However it should be easy to rebase the patch without the above patch.
 
-> +
-> +	pr_cont("\n");
-> +}
-> +
-> +static bool in_rmo_buf(u32 base, u32 end)
-> +{
-> +	return base >= rtas_rmo_buf &&
-> +		base < (rtas_rmo_buf + RTAS_RMOBUF_MAX) &&
-> +		base <= end &&
-> +		end >= rtas_rmo_buf &&
-> +		end < (rtas_rmo_buf + RTAS_RMOBUF_MAX);
-> +}
-> +
-> +static bool block_rtas_call(int token, int nargs,
-> +			    struct rtas_args *args)
-> +{
-> +	int i;
-> +	const char *reason;
-> +	char *token_name = rtas_token_name(token);
+This patch series is based on top of current powerpc/next tree + the
+above patch.
 
-This code isn't particularly performance critical, but I think it would
-be cleaner to do the token lookup once at init time, and store the token
-in the filter array?
+Summary of some of the testing done with coregroup patchset.
+It includes ebizzy, schbench, perf bench sched pipe and topology verification.
+One the left side are results from powerpc/next tree and on the right are the
+results with the patchset applied.  Topological verification clearly shows that
+there is no change in topology with and without the patches on all the 3 class
+of systems that were tested.
 
-Then this code would only be doing token comparisons.
+On PowerPc/Next                                                            On Powerpc/next + Coregroup Support v5 patchset
 
-> +
-> +	if (!token_name)
-> +		goto err_notpermitted;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(rtas_filters); i++) {
-> +		struct rtas_filter *f = &rtas_filters[i];
-> +		u32 base, size, end;
-> +
-> +		if (strcmp(token_name, f->name))
-> +			continue;
-> +
-> +		if (f->rmo_buf_idx1 != -1) {
-> +			base = be32_to_cpu(args->args[f->rmo_buf_idx1]);
-> +			if (f->rmo_size_idx1 != -1)
-> +				size = be32_to_cpu(args->args[f->rmo_size_idx1]);
-> +			else if (!strcmp(token_name, "ibm,errinjct"))
-> +				size = 1024;
-> +			else if (!strcmp(token_name, "ibm,update-nodes") ||
-> +				 !strcmp(token_name, "ibm,update-properties") ||
-> +				 !strcmp(token_name, "ibm,configure-connector"))
-> +				size = 4096;
-> +			else
-> +				size = 1;
-> +
-> +			end = base + size - 1;
-> +			if (!in_rmo_buf(base, end)) {
-> +				reason = "address pair 1 out of range";
+Power 9 PowerNV (2 Node/ 160 Cpu System)
+---------------------------------
+ebizzy (Throughput of 100 iterations of 30 seconds higher throughput is better)
+  N      Min       Max    Median       Avg        Stddev                  N      Min       Max    Median       Avg      Stddev
+100   993884   1276090   1173476   1165914     54867.201                100   910470   1279820   1171095   1162091    67363.28
 
-I don't think we need to give the user this much detail about what they
-did wrong, all cases can just print "call not permitted" IMO.
+schbench (latency hence lower is better)
+Latency percentiles (usec)                                              Latency percentiles (usec)
+        50.0th: 455                                                             50.0th: 454
+        75.0th: 533                                                             75.0th: 543
+        90.0th: 683                                                             90.0th: 701
+        95.0th: 743                                                             95.0th: 737
+        *99.0th: 815                                                            *99.0th: 805
+        99.5th: 839                                                             99.5th: 835
+        99.9th: 913                                                             99.9th: 893
+        min=0, max=1011                                                         min=0, max=2833
 
-> +				goto err;
-> +			}
-> +		}
-> +
-> +		if (f->rmo_buf_idx2 != -1) {
-> +			base = be32_to_cpu(args->args[f->rmo_buf_idx2]);
-> +			if (f->rmo_size_idx2 != -1)
-> +				size = be32_to_cpu(args->args[f->rmo_size_idx2]);
-> +			else if (!strcmp(token_name, "ibm,configure-connector"))
-> +				size = 4096;
-> +			else
-> +				size = 1;
-> +			end = base + size - 1;
-> +
-> +			/*
-> +			 * Special case for ibm,configure-connector where the
-> +			 * address can be 0
-> +			 */
-> +			if (!strcmp(token_name, "ibm,configure-connector") &&
-> +			    base == 0)
-> +				return false;
-> +
-> +			if (!in_rmo_buf(base, end)) {
-> +				reason = "address pair 2 out of range";
-> +				goto err;
-> +			}
-> +		}
-> +
-> +		return false;
-> +	}
-> +
-> +err_notpermitted:
-> +	reason = "call not permitted";
-> +
-> +err:
-> +	pr_err_ratelimited("sys_rtas: RTAS call blocked - exploit attempt? (%s)\n",
-> +			   reason);
-> +	dump_rtas_params(token, nargs, 0, args);
-> +	return true;
-> +}
-> +
-> +#else
-> +
-> +static bool block_rtas_call(int token, int nargs,
-> +			    struct rtas_args *args)
-> +{
-> +	return false;
-> +}
-> +
-> +#endif /* CONFIG_PPC_RTAS_FILTER */
-> +
->  /* We assume to be passed big endian arguments */
->  SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
->  {
-> @@ -1147,6 +1342,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
->  	args.rets = &args.args[nargs];
->  	memset(args.rets, 0, nret * sizeof(rtas_arg_t));
->  
-> +	if (block_rtas_call(token, nargs, &args))
-> +		return -EINVAL;
-> +
->  	/* Need to handle ibm,suspend_me call specially */
->  	if (token == ibm_suspend_me_token) {
->  
+perf bench sched pipe (lesser time and higher ops/sec is better)
+# Running 'sched/pipe' benchmark:                                       # Running 'sched/pipe' benchmark:
+# Executed 1000000 pipe operations between two processes                # Executed 1000000 pipe operations between two processes
 
-cheers
+     Total time: 6.083 [sec]                                                 Total time: 6.303 [sec]
+
+       6.083576 usecs/op                                                       6.303318 usecs/op
+         164377 ops/sec                                                          158646 ops/sec
+
+
+Power 9 LPAR (2 Node/ 128 Cpu System)
+---------------------------------
+ebizzy (Throughput of 100 iterations of 30 seconds higher throughput is better)
+  N       Min       Max    Median         Avg      Stddev                 N       Min       Max    Median         Avg      Stddev
+100   1058029   1295393   1200414   1188306.7   56786.538               100    943264   1287619   1180522   1168473.2   64469.955
+
+schbench (latency hence lower is better)
+Latency percentiles (usec)                                                Latency percentiles (usec)
+        50.0000th: 34                                                             50.0000th: 39
+        75.0000th: 46                                                             75.0000th: 52
+        90.0000th: 53                                                             90.0000th: 68
+        95.0000th: 56                                                             95.0000th: 77
+        *99.0000th: 61                                                            *99.0000th: 89
+        99.5000th: 63                                                             99.5000th: 94
+        99.9000th: 81                                                             99.9000th: 169
+        min=0, max=8405                                                           min=0, max=23674
+
+perf bench sched pipe (lesser time and higher ops/sec is better)
+# Running 'sched/pipe' benchmark:                                        # Running 'sched/pipe' benchmark:
+# Executed 1000000 pipe operations between two processes                 # Executed 1000000 pipe operations between two processes
+
+     Total time: 8.768 [sec]                                                      Total time: 5.217 [sec]
+
+       8.768400 usecs/op                                                            5.217625 usecs/op
+         114045 ops/sec                                                               191658 ops/sec
+
+Power 8 LPAR (8 Node/ 256 Cpu System)
+---------------------------------
+ebizzy (Throughput of 100 iterations of 30 seconds higher throughput is better)
+  N       Min       Max    Median         Avg      Stddev               N      Min      Max   Median        Avg     Stddev
+100   1267615   1965234   1707423   1689137.6   144363.29             100  1175357  1924262  1691104  1664792.1   145876.4
+
+schbench (latency hence lower is better)
+Latency percentiles (usec)                                             Latency percentiles (usec)
+        50.0th: 37                                                             50.0th: 36
+        75.0th: 51                                                             75.0th: 48
+        90.0th: 59                                                             90.0th: 55
+        95.0th: 63                                                             95.0th: 59
+        *99.0th: 71                                                            *99.0th: 67
+        99.5th: 75                                                             99.5th: 72
+        99.9th: 105                                                            99.9th: 170
+        min=0, max=18560                                                       min=0, max=27031
+
+perf bench sched pipe (lesser time and higher ops/sec is better)
+# Running 'sched/pipe' benchmark:                                       # Running 'sched/pipe' benchmark:
+# Executed 1000000 pipe operations between two processes               # Executed 1000000 pipe operations between two processes
+
+     Total time: 6.013 [sec]                                                 Total time: 5.930 [sec]
+
+       6.013963 usecs/op                                                        5.930724 usecs/op
+         166279 ops/sec                                                           168613 ops/sec
+
+Topology verification on Power9
+Power9/ PowerNV / SMT4
+
+tail -f /proc/cpuinfo
+---------------------
+cpu                : POWER9, altivec supported
+clock                : 3600.000000MHz
+revision        : 2.2 (pvr 004e 1202)
+
+timebase        : 512000000
+platform        : PowerNV
+model                : 9006-22P
+machine                : PowerNV 9006-22P
+firmware        : OPAL
+MMU                : Radix
+
+On PowerPc/Next                                                            On Powerpc/next + Coregroup Support v5 patchset
+lscpu                                                                      lscpu
+------                                                                     ------
+Architecture:        ppc64le                                               Architecture:        ppc64le
+Byte Order:          Little Endian                                         Byte Order:          Little Endian
+CPU(s):              160                                                   CPU(s):              160
+On-line CPU(s) list: 0-159                                                 On-line CPU(s) list: 0-159
+Thread(s) per core:  4                                                     Thread(s) per core:  4
+Core(s) per socket:  20                                                    Core(s) per socket:  20
+Socket(s):           2                                                     Socket(s):           2
+NUMA node(s):        2                                                     NUMA node(s):        2
+Model:               2.2 (pvr 004e 1202)                                   Model:               2.2 (pvr 004e 1202)
+Model name:          POWER9, altivec supported                             Model name:          POWER9, altivec supported
+CPU max MHz:         3800.0000                                             CPU max MHz:         3800.0000
+CPU min MHz:         2166.0000                                             CPU min MHz:         2166.0000
+L1d cache:           32K                                                   L1d cache:           32K
+L1i cache:           32K                                                   L1i cache:           32K
+L2 cache:            512K                                                  L2 cache:            512K
+L3 cache:            10240K                                                L3 cache:            10240K
+NUMA node0 CPU(s):   0-79                                                  NUMA node0 CPU(s):   0-79
+NUMA node8 CPU(s):   80-159                                                NUMA node8 CPU(s):   80-159
+
+grep . /proc/sys/kernel/sched_domain/cpu0/domain*/name                     grep . /proc/sys/kernel/sched_domain/cpu0/domain*/name
+-----------------------------------------------------                      -----------------------------------------------------
+/proc/sys/kernel/sched_domain/cpu0/domain0/name:SMT                        /proc/sys/kernel/sched_domain/cpu0/domain0/name:SMT
+/proc/sys/kernel/sched_domain/cpu0/domain1/name:CACHE                      /proc/sys/kernel/sched_domain/cpu0/domain1/name:CACHE
+/proc/sys/kernel/sched_domain/cpu0/domain2/name:DIE                        /proc/sys/kernel/sched_domain/cpu0/domain2/name:DIE
+/proc/sys/kernel/sched_domain/cpu0/domain3/name:NUMA                       /proc/sys/kernel/sched_domain/cpu0/domain3/name:NUMA
+
+grep . /proc/sys/kernel/sched_domain/cpu0/domain*/flags                    grep . /proc/sys/kernel/sched_domain/cpu0/domain*/flags
+------------------------------------------------------                     ------------------------------------------------------
+/proc/sys/kernel/sched_domain/cpu0/domain0/flags:2391                      /proc/sys/kernel/sched_domain/cpu0/domain0/flags:2391
+/proc/sys/kernel/sched_domain/cpu0/domain1/flags:2327                      /proc/sys/kernel/sched_domain/cpu0/domain1/flags:2327
+/proc/sys/kernel/sched_domain/cpu0/domain2/flags:2071                      /proc/sys/kernel/sched_domain/cpu0/domain2/flags:2071
+/proc/sys/kernel/sched_domain/cpu0/domain3/flags:12801                     /proc/sys/kernel/sched_domain/cpu0/domain3/flags:12801
+
+
+On PowerPc/Next
+head /proc/schedstat
+--------------------
+version 15
+timestamp 4295043536
+cpu0 0 0 0 0 0 0 9597119314 2408913694 11897
+domain0 00000000,00000000,00000000,00000000,0000000f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00000000,00000000,000000ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 00000000,00000000,0000ffff,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain3 ffffffff,ffffffff,ffffffff,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cpu1 0 0 0 0 0 0 4941435230 11106132 1583
+domain0 00000000,00000000,00000000,00000000,0000000f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00000000,00000000,000000ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+On Powerpc/next + Coregroup Support v5 patchset
+head /proc/schedstat
+--------------------
+version 15
+timestamp 4296311826
+cpu0 0 0 0 0 0 0 3353674045024 3781680865826 297483
+domain0 00000000,00000000,00000000,00000000,0000000f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00000000,00000000,000000ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 00000000,00000000,0000ffff,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain3 ffffffff,ffffffff,ffffffff,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cpu1 0 0 0 0 0 0 3337873293332 4231590033856 229090
+domain0 00000000,00000000,00000000,00000000,0000000f 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00000000,00000000,000000ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+Post sudo ppc64_cpu --smt=1                                                     Post sudo ppc64_cpu --smt=1
+---------------------                                                           ---------------------
+grep . /proc/sys/kernel/sched_domain/cpu0/domain*/name                          grep . /proc/sys/kernel/sched_domain/cpu0/domain*/name
+-----------------------------------------------------                           -----------------------------------------------------
+/proc/sys/kernel/sched_domain/cpu0/domain0/name:CACHE                           /proc/sys/kernel/sched_domain/cpu0/domain0/name:CACHE
+/proc/sys/kernel/sched_domain/cpu0/domain1/name:DIE                             /proc/sys/kernel/sched_domain/cpu0/domain1/name:DIE
+/proc/sys/kernel/sched_domain/cpu0/domain2/name:NUMA                            /proc/sys/kernel/sched_domain/cpu0/domain2/name:NUMA
+
+grep . /proc/sys/kernel/sched_domain/cpu0/domain*/flags                         grep . /proc/sys/kernel/sched_domain/cpu0/domain*/flags
+------------------------------------------------------                          ------------------------------------------------------
+/proc/sys/kernel/sched_domain/cpu0/domain0/flags:2327                           /proc/sys/kernel/sched_domain/cpu0/domain0/flags:2327
+/proc/sys/kernel/sched_domain/cpu0/domain1/flags:2071                           /proc/sys/kernel/sched_domain/cpu0/domain1/flags:2071
+/proc/sys/kernel/sched_domain/cpu0/domain2/flags:12801                          /proc/sys/kernel/sched_domain/cpu0/domain2/flags:12801
+
+
+On Powerpc/next
+head /proc/schedstat
+--------------------
+version 15
+timestamp 4295046242
+cpu0 0 0 0 0 0 0 10978610020 2658997390 13068
+domain0 00000000,00000000,00000000,00000000,00000011 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00001111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 91111111,11111111,11111111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cpu4 0 0 0 0 0 0 5408663896 95701034 7697
+domain0 00000000,00000000,00000000,00000000,00000011 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00001111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 91111111,11111111,11111111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+On Powerpc/next + Coregroup Support v5 patchset
+head /proc/schedstat
+--------------------
+version 15
+timestamp 4296314905
+cpu0 0 0 0 0 0 0 3355392013536 3781975150576 298723
+domain0 00000000,00000000,00000000,00000000,00000011 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00001111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 91111111,11111111,11111111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cpu4 0 0 0 0 0 0 3351637920996 4427329763050 256776
+domain0 00000000,00000000,00000000,00000000,00000011 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00001111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 91111111,11111111,11111111,11111111,11111111 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+Similar verification was done on Power 8 (8 Node 256 CPU LPAR) and Power 9 (2
+node 128 Cpu LPAR) and they showed the topology before and after the patch to be
+identical. If Interested, I could provide the same.
+
+On Power 9 (with device-tree enablement to show coregroups).
+(hunks for mimicing a coregroup was posted at
+https://lore.kernel.org/linuxppc-dev/20200714043624.5648-1-srikar@linux.vnet.ibm.com/t/#m2cb09bb11c7a93257d6123d1d27edb8212f8af21)
+-----------------------------------------------------------
+$ tail /proc/cpuinfo
+processor	: 127
+cpu		: POWER9 (architected), altivec supported
+clock		: 3000.000000MHz
+revision	: 2.2 (pvr 004e 0202)
+
+timebase	: 512000000
+platform	: pSeries
+model		: IBM,9008-22L
+machine		: CHRP IBM,9008-22L
+MMU		: Hash
+
+Before patchset
+--------------
+$ cat /proc/sys/kernel/sched_domain/cpu0/domain*/name
+SMT
+CACHE
+DIE
+NUMA
+
+$ head /proc/schedstat
+version 15
+timestamp 4318242208
+cpu0 0 0 0 0 0 0 28077107004 4773387362 78205
+domain0 00000000,00000000,00000000,00000055 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00000000,000000ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 00000000,00000000,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain3 ffffffff,ffffffff,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cpu1 0 0 0 0 0 0 24177439200 413887604 75393
+domain0 00000000,00000000,00000000,000000aa 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00000000,000000ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+After patchset
+--------------
+$ cat /proc/sys/kernel/sched_domain/cpu0/domain*/name
+SMT
+CACHE
+MC
+DIE
+NUMA
+
+$ head /proc/schedstat
+version 15
+timestamp 4318242208
+cpu0 0 0 0 0 0 0 28077107004 4773387362 78205
+domain0 00000000,00000000,00000000,00000055 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain1 00000000,00000000,00000000,000000ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain2 00000000,00000000,00000000,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain3 00000000,00000000,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+domain4 ffffffff,ffffffff,ffffffff,ffffffff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+cpu1 0 0 0 0 0 0 24177439200 413887604 75393
+domain0 00000000,00000000,00000000,000000aa 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: LKML <linux-kernel@vger.kernel.org>
+Cc: Michael Ellerman <michaele@au1.ibm.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Nick Piggin <npiggin@au1.ibm.com>
+Cc: Oliver OHalloran <oliveroh@au1.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: Michael Neuling <mikey@linux.ibm.com>
+Cc: Anton Blanchard <anton@au1.ibm.com>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+Cc: Jordan Niethe <jniethe5@gmail.com>
+
+Srikar Dronamraju (10):
+  powerpc/smp: Fix a warning under !NEED_MULTIPLE_NODES
+  powerpc/smp: Merge Power9 topology with Power topology
+  powerpc/smp: Move powerpc_topology above
+  powerpc/smp: Move topology fixups into  a new function
+  powerpc/smp: Dont assume l2-cache to be superset of sibling
+  powerpc/smp: Optimize start_secondary
+  powerpc/numa: Detect support for coregroup
+  powerpc/smp: Allocate cpumask only after searching thread group
+  powerpc/smp: Create coregroup domain
+  powerpc/smp: Implement cpu_to_coregroup_id
+
+ arch/powerpc/include/asm/smp.h      |   1 +
+ arch/powerpc/include/asm/topology.h |  10 ++
+ arch/powerpc/kernel/smp.c           | 235 +++++++++++++++++-----------
+ arch/powerpc/mm/numa.c              |  59 +++++--
+ 4 files changed, 198 insertions(+), 107 deletions(-)
+
+-- 
+2.18.2
+
