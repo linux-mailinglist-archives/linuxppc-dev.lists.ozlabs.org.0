@@ -1,68 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07272404A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 12:24:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BF52404AB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 12:28:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQBsw0ClhzDqTw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 20:24:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQBy73WHszDqGP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 20:28:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.218;
- helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=O6PuOW5n; 
- dkim-atps=neutral
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
- [81.169.146.218])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TOV/yz7l; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQBqz4x0lzDqKM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 20:23:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1597054983;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=XJie8QPwzzKp5ht4+C0eHQBwTXCtYCcoSWtF0pbXkWk=;
- b=O6PuOW5nmxZir7+/6Zu2o1xUVzbuWSeQjY/n0vQcDVPpNBOJap7oJc7/4/FBftTw+1
- r8faEW/g7+4wetO9Hn/swyvnlCf9Gyqx0QyFrI9CiOM96wr7ScgaeCXtFK/rdlWNRT5d
- BtnEVWZtEm9zUCbMaSOSQG8+lhV/LNuIFK4zKFkEFuuZRhRBh6CXn9GLcxKqkcL4lFnr
- s+goSQLYMkCiasjMSmEgemo/yAwySTK/D1HfMLV9fY0N8m7vRqIh6sceXmtJw2a+SggH
- pguNMSno0c9OOAMBtbnz1ftUgfxKEZp5nNCVI/FcoKO5KPID7AvKSRK8D9Eua751ZaAR
- XUow==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhScjcMpGbpwMjg24lToKxMjG8j"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:1d6a:acb3:bd15:555]
- by smtp.strato.de (RZmta 46.10.5 AUTH)
- with ESMTPSA id 60686ew7AAMqUG0
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Mon, 10 Aug 2020 12:22:52 +0200 (CEST)
-Subject: Re: [PASEMI] Nemo board doesn't boot anymore after the commit
- "powerpc/book3s64/pkeys: Simplify pkey disable branch"
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-References: <87h7tb4zwp.fsf@linux.ibm.com>
- <E1C071A5-19D1-4493-B04A-4507A70D7848@xenosoft.de>
- <bc1975fb-23df-09c2-540a-c13b39ad56c5@xenosoft.de>
- <51482c70-1007-1202-9ed1-2d174c1e923f@xenosoft.de>
- <9688335c-d7d0-9eaa-22c6-511e708e0d2a@linux.ibm.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <44a5b0f4-0ec8-8608-4342-f93c1c581e02@xenosoft.de>
-Date: Mon, 10 Aug 2020 12:22:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQBwJ2mPSzDqGP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 20:26:56 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07AA2PgO015671; Mon, 10 Aug 2020 06:26:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=/TjjlZ2uJEGsIOBPH6P1/CQ8+hnWeZNplxilUNfzIxI=;
+ b=TOV/yz7lS6Zq62WZ0U9DQEmIpSD1IxbpJy2a0MWuHTuIM/l4Rpyj3n46PXOAamKaXriA
+ C2BluPRq1crDqg6xoMjk9STdv3L5xUBuX3ohXczlv2il9iePnzYnDe9iJR6UylNqZUjV
+ hD7/OhxJ8OKOyedESOFhwc6tOa9XONobTgi4DGREK2xEfp9L9pUKuJiobc8cKxAjURnF
+ bIINRjG7IciLimyZCI+uAkiE089xbsZAw1RKvyoXeWJ7g8iaCNMby9OfZt7tGBv2GOML
+ nAPZUg76w3gI+TOmhVCeST2dLALcbN41mZIBW7akPPPrvh4Pikibyq0XfiFOp1wk0ixO 4w== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32sr6rg7g1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Aug 2020 06:26:49 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07AAQAYc002450;
+ Mon, 10 Aug 2020 10:26:48 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma05wdc.us.ibm.com with ESMTP id 32skp8rfh8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Aug 2020 10:26:48 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07AAQmxW55443826
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 10 Aug 2020 10:26:48 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E95AC124058;
+ Mon, 10 Aug 2020 10:26:47 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 51674124052;
+ Mon, 10 Aug 2020 10:26:46 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.68.158])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 10 Aug 2020 10:26:45 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc/pkeys: Fix boot failures with Nemo board (A-EON
+ AmigaOne X1000)
+Date: Mon, 10 Aug 2020 15:56:23 +0530
+Message-Id: <20200810102623.685083-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <9688335c-d7d0-9eaa-22c6-511e708e0d2a@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-10_03:2020-08-06,
+ 2020-08-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 impostorscore=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008100069
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,50 +93,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Olof Johansson <olof@lixom.net>, Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 10.08.20 um 10:58 schrieb Aneesh Kumar K.V:
-> On 8/10/20 2:15 PM, Christian Zigotzky wrote:
->> Hello Aneesh,
->>
->> I tested the new kernel today and unfortunately it doesn't run very 
->> well.
->>
->> I have only one core (1 physical processor; 1 core; 2 threads) 
->> instead of two cores (1 physical processor; 2 cores; 2 threads) so 
->> the system is slower.
->>
->> Boot log: http://www.xenosoft.de/dmesg_nemo_board_kernel_5.9.txt
->>
->> Could you please check the updates?
->
->
-> modified   arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -1116,7 +1116,8 @@ void hash__early_init_mmu_secondary(void)
->          tlbiel_all();
->
->  #ifdef CONFIG_PPC_MEM_KEYS
-> -    mtspr(SPRN_UAMOR, default_uamor);
-> +    if (mmu_has_feature(MMU_FTR_PKEY))
-> +        mtspr(SPRN_UAMOR, default_uamor);
->  #endif
->  }
->  #endif /* CONFIG_SMP */
->
->
->
-> -aneesh
-Hello Aneesh,
+On p6 and before we should avoid updating UAMOR SPRN. This resulted
+in boot failure on Nemo board.
 
-Your modifications work! I have 2 cores again and I can see the boot 
-messages.
+Fixes: 269e829f48a0 ("powerpc/book3s64/pkey: Disable pkey on POWER6 and before")
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/mm/book3s64/hash_utils.c |  5 ++---
+ arch/powerpc/mm/book3s64/pkeys.c      | 12 ++++++------
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
-Thanks a lot!
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 1478fceeb683..1da9dbba9217 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1115,9 +1115,8 @@ void hash__early_init_mmu_secondary(void)
+ 			&& cpu_has_feature(CPU_FTR_HVMODE))
+ 		tlbiel_all();
+ 
+-#ifdef CONFIG_PPC_MEM_KEYS
+-	mtspr(SPRN_UAMOR, default_uamor);
+-#endif
++	if (IS_ENABLED(CONFIG_PPC_MEM_KEYS) && mmu_has_feature(MMU_FTR_PKEY))
++		mtspr(SPRN_UAMOR, default_uamor);
+ }
+ #endif /* CONFIG_SMP */
+ 
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index 69a6b87f2bb4..b1d091a97611 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -73,12 +73,6 @@ static int scan_pkey_feature(void)
+ 	if (early_radix_enabled())
+ 		return 0;
+ 
+-	/*
+-	 * Only P7 and above supports SPRN_AMR update with MSR[PR] = 1
+-	 */
+-	if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
+-		return 0;
+-
+ 	ret = of_scan_flat_dt(dt_scan_storage_keys, &pkeys_total);
+ 	if (ret == 0) {
+ 		/*
+@@ -124,6 +118,12 @@ void __init pkey_early_init_devtree(void)
+ 		     __builtin_popcountl(ARCH_VM_PKEY_FLAGS >> VM_PKEY_SHIFT)
+ 				!= (sizeof(u64) * BITS_PER_BYTE));
+ 
++	/*
++	 * Only P7 and above supports SPRN_AMR update with MSR[PR] = 1
++	 */
++	if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
++		return;
++
+ 	/* scan the device tree for pkey feature */
+ 	pkeys_total = scan_pkey_feature();
+ 	if (!pkeys_total)
+-- 
+2.26.2
 
-Cheers,
-Christian
