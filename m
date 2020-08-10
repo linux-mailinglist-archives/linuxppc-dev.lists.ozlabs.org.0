@@ -1,41 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C794E240796
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 16:29:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20FA240811
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 17:01:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQJHw0R5PzDqLt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 00:29:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQK1S4L9LzDqK1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 01:01:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmainas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=none (no SPF record) smtp.mailfrom=sym2.noone.org
+ (client-ip=178.63.92.236; helo=sym2.noone.org;
+ envelope-from=tklauser@sym2.noone.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=distanz.ch
+Received: from sym2.noone.org (sym2.noone.org [178.63.92.236])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQJDz21PkzDqNf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 00:26:43 +1000 (AEST)
-Received: from localhost.localdomain (unknown [95.146.230.158])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 506F22070B;
- Mon, 10 Aug 2020 14:26:39 +0000 (UTC)
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Gregory Herrero <gregory.herrero@oracle.com>,
- "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] recordmcount: Fix build failure on non arm64
-Date: Mon, 10 Aug 2020 15:26:37 +0100
-Message-Id: <159706958035.25067.17604192727592443780.b4-ty@arm.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <5ca1be21fa6ebf73203b45fd9aadd2bafb5e6b15.1597049145.git.christophe.leroy@csgroup.eu>
-References: <5ca1be21fa6ebf73203b45fd9aadd2bafb5e6b15.1597049145.git.christophe.leroy@csgroup.eu>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQJwz5PJ5zDqSM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 00:57:54 +1000 (AEST)
+Received: by sym2.noone.org (Postfix, from userid 1002)
+ id 4BQBWk1r1VzvjcZ; Mon, 10 Aug 2020 12:09:06 +0200 (CEST)
+From: Tobias Klauser <tklauser@distanz.ch>
+To: Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH] Documentation/features: refresh powerpc arch support files
+Date: Mon, 10 Aug 2020 12:09:06 +0200
+Message-Id: <20200810100906.3805-1-tklauser@distanz.ch>
+X-Mailer: git-send-email 2.11.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,29 +39,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Will Deacon <will@kernel.org>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 10 Aug 2020 08:48:22 +0000 (UTC), Christophe Leroy wrote:
-> Commit ea0eada45632 leads to the following build failure on powerpc:
-> 
->   HOSTCC  scripts/recordmcount
-> scripts/recordmcount.c: In function 'arm64_is_fake_mcount':
-> scripts/recordmcount.c:440: error: 'R_AARCH64_CALL26' undeclared (first use in this function)
-> scripts/recordmcount.c:440: error: (Each undeclared identifier is reported only once
-> scripts/recordmcount.c:440: error: for each function it appears in.)
-> make[2]: *** [scripts/recordmcount] Error 1
-> 
-> [...]
+Support for these was added by commit aa65ff6b18e0 ("powerpc/64s:
+Implement queued spinlocks and rwlocks").
 
-Applied to arm64 (for-next/core), thanks!
+Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
+---
+ Documentation/features/locking/queued-rwlocks/arch-support.txt  | 2 +-
+ .../features/locking/queued-spinlocks/arch-support.txt          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-[1/1] recordmcount: Fix build failure on non arm64
-      https://git.kernel.org/arm64/c/3df14264ad99
-
+diff --git a/Documentation/features/locking/queued-rwlocks/arch-support.txt b/Documentation/features/locking/queued-rwlocks/arch-support.txt
+index 5c6bcfcf8e1f..4dd5e554873f 100644
+--- a/Documentation/features/locking/queued-rwlocks/arch-support.txt
++++ b/Documentation/features/locking/queued-rwlocks/arch-support.txt
+@@ -22,7 +22,7 @@
+     |       nios2: | TODO |
+     |    openrisc: |  ok  |
+     |      parisc: | TODO |
+-    |     powerpc: | TODO |
++    |     powerpc: |  ok  |
+     |       riscv: | TODO |
+     |        s390: | TODO |
+     |          sh: | TODO |
+diff --git a/Documentation/features/locking/queued-spinlocks/arch-support.txt b/Documentation/features/locking/queued-spinlocks/arch-support.txt
+index b55e420a34ea..b16d4f71e5ce 100644
+--- a/Documentation/features/locking/queued-spinlocks/arch-support.txt
++++ b/Documentation/features/locking/queued-spinlocks/arch-support.txt
+@@ -22,7 +22,7 @@
+     |       nios2: | TODO |
+     |    openrisc: |  ok  |
+     |      parisc: | TODO |
+-    |     powerpc: | TODO |
++    |     powerpc: |  ok  |
+     |       riscv: | TODO |
+     |        s390: | TODO |
+     |          sh: | TODO |
 -- 
-Catalin
+2.27.0
 
