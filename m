@@ -2,74 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B767240380
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 10:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9176A24038B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 10:47:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQ8Wt3hl9zDqQS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 18:39:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQ8jh5wJDzDqST
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Aug 2020 18:47:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pLBGxBmA; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=qHFTFP0d; 
+ dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [85.215.255.51])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQ8VD2V4mzDqNm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 18:37:37 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id kr4so4424319pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 01:37:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=Scg7QrQFHhZ2Uk5vL9dJtfSBTf93pMWkHX0hTYM3Wac=;
- b=pLBGxBmA28+kasChedisfkm5yQ00pLLat8cogyaXTpLiExGsBIVYBEBCu2hz/OBRjq
- JEnJ8UbRvkBLpVgWe9F5OiPBNu9NN1vD5FcFk390ldPJaV9NbI3L8f1/o6dj2SD8uDG8
- X8HCnYYdZ3mdBTreaxYiqxn/AEPh962sa6zkhkddCa28cl6ei0EUjktXDaKZ9mZmleMu
- nqxvzdp70e+sqykKT3MdZqiju2Xs3elZPFUcEiKx0QWPDUgZjzniVgfUlThWTWdT/teq
- vMOIcg2BEPu5qgUkPzOaHU7y3Q68EobH75g7jKMfAkHKVMdl3PONxv3/GLP39z2Lr56w
- 5CQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=Scg7QrQFHhZ2Uk5vL9dJtfSBTf93pMWkHX0hTYM3Wac=;
- b=QgywLa67xRprIpZe8RvtsX7J3ZSmOP9BxY/6fqlSxI5vk4MteTMezbSvoiukqznz09
- ZKKCsRMilw5n6+lY1OhIxMDdWdg7AiFEj/oY0MiPhbpA3kcRzrGUtgwZiU4xrcNctR6v
- Gw50kwFr9Au9oOA4pgACLHbdsp/JlTjxazpElFGRYPtloXM8Uz1Hr/wHlfdfslH0M4Ee
- UpSBm8DSRlFRb69f52kHi8n6p5EAtep4gBuSh7cOFgQLARCq1nP0NsRKqtklVoHZYHlH
- pUYwCSt9zupKUAn4M6pEaz5Fsbr7edXyz7DbJd8dLijNv1+1BcYfHAgzSQUaYCny7lnT
- MZ6w==
-X-Gm-Message-State: AOAM533yywg8ntOaux9ta9SQB+1LLguuqunu09edMjVnjtEjTjtSBE4D
- 3ZvQXrkztys0lDo7mBxFxI4=
-X-Google-Smtp-Source: ABdhPJzjuMOIL1DAbcFHuOnCIOgipzZg0qAzo4rznqU2sir2vCh9nY2ksofTJnj2XfUNc1XE1vk4bw==
-X-Received: by 2002:a17:90a:b386:: with SMTP id
- e6mr26337780pjr.57.1597048654505; 
- Mon, 10 Aug 2020 01:37:34 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id 13sm22135713pfp.3.2020.08.10.01.37.33
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 10 Aug 2020 01:37:34 -0700 (PDT)
-Date: Mon, 10 Aug 2020 01:37:29 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2] ASoC: fsl-asoc-card: Get "extal" clock rate by
- clk_get_rate
-Message-ID: <20200810083728.GA7560@Asurada-Nvidia>
-References: <1597047103-6863-1-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQ8gn32yYzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Aug 2020 18:45:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1597049149;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=Cr+W6j6lnqH75IQeNDbUp2+pmQQAte5y9vhNdM02LI8=;
+ b=qHFTFP0dGQc2z5DGNkK+VHH+j3BDTCyPMAretBhx0sUXgPvc6MToeqZeF7erMW6I6K
+ rJ8AB2aIzWM4BAd+xf1GlsPo7Z5PME49Jy9U+lEcRpK2sj/4VQYrHfSVi45W/+luNEnn
+ A1yYXYPhGCI/69rR6Y3Sj6xG7QEy4dmRfVo5+6IMyLrIVRZdkz6Nn1jexuesFVuQX0Kr
+ ezRfyesSW9PEwoM6m8Aa4DrMi9rHa92XIIAJy7MiT/zMFhCVNtsVsjd/k0Vc9R60y9z5
+ i2qyWyiAcr3ycif2Ke5AjtTBAQ+dPTiTlXuhDgFYKyyxGO4/Eoj+soGcQ5BUhsTc1BUe
+ BHOw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhScjcMpGbpwMjg24lToKxMjG8j"
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:1d6a:acb3:bd15:555]
+ by smtp.strato.de (RZmta 46.10.5 AUTH)
+ with ESMTPSA id 60686ew7A8jdTlj
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Mon, 10 Aug 2020 10:45:39 +0200 (CEST)
+Subject: Re: [PASEMI] Nemo board doesn't boot anymore after the commit
+ "powerpc/book3s64/pkeys: Simplify pkey disable branch"
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <87h7tb4zwp.fsf@linux.ibm.com>
+ <E1C071A5-19D1-4493-B04A-4507A70D7848@xenosoft.de>
+ <bc1975fb-23df-09c2-540a-c13b39ad56c5@xenosoft.de>
+Message-ID: <51482c70-1007-1202-9ed1-2d174c1e923f@xenosoft.de>
+Date: Mon, 10 Aug 2020 10:45:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1597047103-6863-1-git-send-email-shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <bc1975fb-23df-09c2-540a-c13b39ad56c5@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,42 +72,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: Olof Johansson <olof@lixom.net>, Darren Stevens <darren@stevens-zone.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 10, 2020 at 04:11:43PM +0800, Shengjiu Wang wrote:
-> On some platform(.e.g. i.MX8QM MEK), the "extal" clock is different
-> with the mclk of codec, then the clock rate is also different.
-> So it is better to get clock rate of "extal" rate by clk_get_rate,
-> don't reuse the clock rate of mclk.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
-> changes in v2
-> - add defer probe handler
-> 
->  sound/soc/fsl/fsl-asoc-card.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-> index 52adedc03245..32f8f756e6bb 100644
-> --- a/sound/soc/fsl/fsl-asoc-card.c
-> +++ b/sound/soc/fsl/fsl-asoc-card.c
-> @@ -696,6 +696,17 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
->  			goto asrc_fail;
->  		}
->  	} else if (of_node_name_eq(cpu_np, "esai")) {
-> +		struct clk *esai_clk = clk_get(&cpu_pdev->dev, "extal");
-> +
-> +		if (!IS_ERR(esai_clk)) {
-> +			priv->cpu_priv.sysclk_freq[TX] = clk_get_rate(esai_clk);
-> +			priv->cpu_priv.sysclk_freq[RX] = clk_get_rate(esai_clk);
+Hello Aneesh,
 
-Will it break existing imx-audio-cs42888 on older i.MX platforms?
-'cause it overwrites cpu_priv.sysclk_freq[] that are set in "card
-configurations" section.
+I tested the new kernel today and unfortunately it doesn't run very well.
+
+I have only one core (1 physical processor; 1 core; 2 threads) instead 
+of two cores (1 physical processor; 2 cores; 2 threads) so the system is 
+slower.
+
+Boot log: http://www.xenosoft.de/dmesg_nemo_board_kernel_5.9.txt
+
+Could you please check the updates?
+
+Thanks,
+Christian
+
+
+On 10 August 2020 at 09:56 am, Christian Zigotzky wrote:
+> Hello Aneesh,
+>
+> The Nemo board boots with your patch but unfortunately I don't see any 
+> boot messages anymore.
+>
+> Please find attached the kernel config.
+>
+> Thanks,
+> Christian
+>
+>
+> On 09 August 2020 at 5:49 pm, Christian Zigotzky wrote:
+>> Hello Aneesh,
+>>
+>> Many thanks for your fast response and thanks a lot for your patch!
+>> I will patch and compile a new git kernel tomorrow. I am looking 
+>> forward to the result.
+>>
+>> Have a nice day!
+>>
+>> Cheers,
+>> Christian
+>>
+>>> On 9. Aug 2020, at 17:11, Aneesh Kumar K.V 
+>>> <aneesh.kumar@linux.ibm.com> wrote:
+>>>
+>>> ﻿"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+>>>
+>>>>> On 8/9/20 8:04 PM, Aneesh Kumar K.V wrote:
+>>>>> On 8/9/20 7:42 PM, Christian Zigotzky wrote:
+>>>>>> Hello,
+>>>>>>
+>>>>>> The Nemo board (A-EON AmigaOne X1000) [1] doesn't start with the
+>>>>>> latest Git kernel anymore after the commit "powerpc/book3s64/pkeys:
+>>>>>> Simplify pkey disable branch" [2].
+>>>>>>
+>>>>>> I bisected today [3].
+>>>>>>
+>>>>>> Result: powerpc/book3s64/pkeys: Simplify pkey disable branch
+>>>>>> (a4678d4b477c3d2901f101986ca01406f3b7eaea) [2] is the first bad 
+>>>>>> commit.
+>>>>>>
+>>>>>> Unfortunately I wasn't able to revert the first bad commit. The 
+>>>>>> first
+>>>>>> bad commit depends on many other commits, which unfortunately I 
+>>>>>> don't
+>>>>>> know. I tried to remove the modifications of the files from the 
+>>>>>> first
+>>>>>> bad commit but without any success. There are just too many 
+>>>>>> dependencies.
+>>>>>>
+>>>>>> Additionally I reverted the commit "selftests/powerpc: Fix pkey
+>>>>>> syscall redefinitions" [4] and compiled a new kernel but without any
+>>>>>> success.
+>>>>>>
+>>>>>> Could you please check the first bad commit?
+>>>>>>
+>>>>>> Thanks,
+>>>>>> Christian
+>>>>>>
+>>>>>
+>>>>> Can you share a successful boot log of the system so that i can 
+>>>>> double
+>>>>> check the cpu_feature and mmu_feature reported ? I am looking for
+>>>>> details similar to below.
+>>>>>
+>>>>> [    0.000000] cpu_features      = 0x0001c07f8f5f91a7
+>>>>> [    0.000000]   possible        = 0x0001fbffcf5fb1a7
+>>>>> [    0.000000]   always          = 0x00000003800081a1
+>>>>> [    0.000000] cpu_user_features = 0xdc0065c2 0xefe00000
+>>>>> [    0.000000] mmu_features      = 0x7c006001
+>>>>> [    0.000000] firmware_features = 0x0000001fc45bfc57
+>>>>> [    0.000000] vmalloc start     = 0xc008000000000000
+>>>>> [    0.000000] IO start          = 0xc00a000000000000
+>>>>> [    0.000000] vmemmap start     = 0xc00c000000000000
+>>>>>
+>>>>>
+>>>>> IIUC this is P5+? (ISA 2.04). On that pkey should be marked 
+>>>>> disabled via
+>>>>>
+>>>>> static int scan_pkey_feature(void)
+>>>>> {
+>>>>>      int ret;
+>>>>>      int pkeys_total = 0;
+>>>>>
+>>>>>      ....
+>>>>>
+>>>>>      /*
+>>>>>       * Only P7 and above supports SPRN_AMR update with MSR[PR] = 1
+>>>>>       */
+>>>>>      if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
+>>>>>          return 0;
+>>>>>
+>>>>>
+>>>>> }
+>>>>>
+>>>>> Can you boot with CONFIG_PPC_MEM_KEYS=n ?
+>>>>
+>>>> Can you try this change on top of master?
+>>>>
+>>>>
+>>>> modified   arch/powerpc/mm/book3s64/pkeys.c
+>>>> @@ -215,10 +215,6 @@ void __init pkey_early_init_devtree(void)
+>>>>
+>>>>       pr_info("Enabling pkeys with max key count %d\n", num_pkey);
+>>>>   out:
+>>>> -    /*
+>>>> -     * Setup uamor on boot cpu
+>>>> -     */
+>>>> -    mtspr(SPRN_UAMOR, default_uamor);
+>>>>
+>>>>       return;
+>>>>   }
+>>>>
+>>> Full patch with better description.
+>>>
+>>> commit 919a177bcdaf1eaeaeecc0d0f50a688629d7b5df
+>>> Author: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>> Date:   Sun Aug 9 20:37:38 2020 +0530
+>>>
+>>>     powerpc/pkeys: Fix boot failures with Nemo board (A-EON AmigaOne 
+>>> X1000)
+>>>
+>>>     On p6 and before we should avoid updating UAMOR SPRN. This resulted
+>>>     in boot failure on Nemo board.
+>>>
+>>>     Fixes: 269e829f48a0 ("powerpc/book3s64/pkey: Disable pkey on 
+>>> POWER6 and before")
+>>>     Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+>>>     Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>>
+>>> diff --git a/arch/powerpc/mm/book3s64/pkeys.c 
+>>> b/arch/powerpc/mm/book3s64/pkeys.c
+>>> index 69a6b87f2bb4..b1d091a97611 100644
+>>> --- a/arch/powerpc/mm/book3s64/pkeys.c
+>>> +++ b/arch/powerpc/mm/book3s64/pkeys.c
+>>> @@ -73,12 +73,6 @@ static int scan_pkey_feature(void)
+>>>     if (early_radix_enabled())
+>>>         return 0;
+>>>
+>>> -    /*
+>>> -     * Only P7 and above supports SPRN_AMR update with MSR[PR] = 1
+>>> -     */
+>>> -    if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
+>>> -        return 0;
+>>> -
+>>>     ret = of_scan_flat_dt(dt_scan_storage_keys, &pkeys_total);
+>>>     if (ret == 0) {
+>>>         /*
+>>> @@ -124,6 +118,12 @@ void __init pkey_early_init_devtree(void)
+>>>              __builtin_popcountl(ARCH_VM_PKEY_FLAGS >> VM_PKEY_SHIFT)
+>>>                 != (sizeof(u64) * BITS_PER_BYTE));
+>>>
+>>> +    /*
+>>> +     * Only P7 and above supports SPRN_AMR update with MSR[PR] = 1
+>>> +     */
+>>> +    if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
+>>> +        return;
+>>> +
+>>>     /* scan the device tree for pkey feature */
+>>>     pkeys_total = scan_pkey_feature();
+>>>     if (!pkeys_total)
+>
+
