@@ -1,49 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BC9241C1C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 16:10:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C513241C29
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 16:15:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQvqn6XBCzDqPv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 00:10:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQvx34ddkzDq5k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 00:15:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQvjH5sWlzDqKL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 00:04:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQvjP5RZXzDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 00:04:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=RS7wIc6e; 
+ header.a=rsa-sha256 header.s=201702 header.b=kpGr4zXq; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQvjF21WQz9sTr;
- Wed, 12 Aug 2020 00:04:49 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQvjL1w4qz9sTW;
+ Wed, 12 Aug 2020 00:04:54 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1597154689;
- bh=hhQGWNZC4SROishmbkcAwtkGkjYy/VFeAK9d6mFBlwY=;
- h=From:To:Cc:Subject:Date:From;
- b=RS7wIc6eShMc/Wmt8z+8pE6hySzPKgv7xUwK2W5yTS6Ac1LvOIJ8NV0nUYxB+Yjq9
- mSXmuEdOS5meYwt5lwV1QBF+l7GJDA3J5L+BD05bvfMT/3FuTJRtjrWh0P2wosGpJT
- mqEtQhLsNviCkUstlC7qcfOLdC9oRP4Kf+sQ8d8OY9khYeLqB/H9QOM3lGxAPkxkie
- H2l08qExHn+yyJaR5pe5nzkaa3h6urqUdqvQjBcilwMMtwKS1DTUIXf4oI5Zt6U0bS
- xP0D0ev/R5WQS1iXEAXRsnnPSm0iQ1hlBvdlF4mjxPOugX3tVhrCFvQqV/R4gV5D9J
- LPRfDUec6OgrQ==
+ s=201702; t=1597154694;
+ bh=F39woJCZMBkygpxOek1ThAwjDi+p7mNCpABduvHY+/Q=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=kpGr4zXqojSoiUiNx8PRmmspoGM8JN6V/rQ5W+dSOKvef/9bYarucQtUvFzWo+02p
+ gwQwaAAE3e1woxO4S1Nf4aGEnoJjskI497gY83GVLqDyockyt9WF4rJLAijNWQTp0P
+ RjaYex6ofLro1YT0Cbej1ispcL+6m5gAss0kDr6sN1WRJFzqkW5FhXf7UscHB815MR
+ nu6ci6sGTfeF8Av6v94R+GAGIaSgN802Wtk7le0kn+LiEm+cvbPwJHa2gVxfOQMA7a
+ xxwST52S5e0dgOOtRILAthwhyCzYJ16vf0H1h5fhvLUyVtofEzhJlJww/CHzdFV+Z7
+ qobO1XMEo/Qpg==
 From: Stephen Rothwell <sfr@canb.auug.org.au>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 0/7] powerpc: unrel_branch_check.sh: make it suck less
-Date: Wed, 12 Aug 2020 00:04:27 +1000
-Message-Id: <20200811140435.20957-1-sfr@canb.auug.org.au>
+Subject: [PATCH 1/7] powerpc: unrel_branch_check.sh: fix shellcheck complaints
+Date: Wed, 12 Aug 2020 00:04:28 +1000
+Message-Id: <20200811140435.20957-2-sfr@canb.auug.org.au>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200811140435.20957-1-sfr@canb.auug.org.au>
+References: <20200811140435.20957-1-sfr@canb.auug.org.au>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,25 +65,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman: "who wants to make
-arch/powerpc/tools/unrel_branch_check.sh suck less"
-
-This series is based off the current powerpc/next branch and keeps the
-same functionaity as the original except that it suppresses some error
-messages for early failures that still cause this script to succeed
-(as it always did).
-
-I did this as a series so that people can see the (mostly obvious)
-transofrmations at each step.   As a single patch, it basically replaces
-the whole file.
-
-Hopefully this fulfills your definition of "sucks less" :-)
-
- arch/powerpc/tools/unrel_branch_check.sh | 88 ++++++++++++++++----------------
- 1 file changed, 43 insertions(+), 45 deletions(-)
+No functional change
 
 Cc: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/tools/unrel_branch_check.sh | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/tools/unrel_branch_check.sh b/arch/powerpc/tools/unrel_branch_check.sh
+index 6e6a30aea3ed..4c1e04ba5081 100755
+--- a/arch/powerpc/tools/unrel_branch_check.sh
++++ b/arch/powerpc/tools/unrel_branch_check.sh
+@@ -1,3 +1,4 @@
++#!/bin/bash
+ # Copyright © 2016 IBM Corporation
+ #
+ # This program is free software; you can redistribute it and/or
+@@ -26,7 +27,7 @@ awk '{print $1}'
+ 
+ BRANCHES=$(
+ $objdump -R "$vmlinux" -D --start-address=0xc000000000000000           \
+-		--stop-address=${end_intr} |
++		--stop-address="$end_intr" |
+ grep -e "^c[0-9a-f]*:[[:space:]]*\([0-9a-f][0-9a-f][[:space:]]\)\{4\}[[:space:]]*b" |
+ grep -v '\<__start_initialization_multiplatform>' |
+ grep -v -e 'b.\?.\?ctr' |
+@@ -40,12 +41,12 @@ awk '{ print $1 ":" $6 ":0x" $7 ":" $8 " "}'
+ 
+ for tuple in $BRANCHES
+ do
+-	from=`echo $tuple | cut -d':' -f1`
+-	branch=`echo $tuple | cut -d':' -f2`
+-	to=`echo $tuple | cut -d':' -f3 | sed 's/cr[0-7],//'`
+-	sym=`echo $tuple | cut -d':' -f4`
++	from=$(echo "$tuple" | cut -d':' -f1)
++	branch=$(echo "$tuple" | cut -d':' -f2)
++	to=$(echo "$tuple" | cut -d':' -f3 | sed 's/cr[0-7],//')
++	sym=$(echo "$tuple" | cut -d':' -f4)
+ 
+-	if (( $to > $end_intr ))
++	if (( to > end_intr ))
+ 	then
+ 		if [ -z "$bad_branches" ]; then
+ 			echo "WARNING: Unrelocated relative branches"
 -- 
-Cheers,
-Stephen Rothwell
+2.28.0
 
