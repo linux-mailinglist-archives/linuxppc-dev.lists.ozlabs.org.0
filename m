@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6A5241C72
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 16:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53380241C7C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 16:35:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQwKC2vYBzDqRt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 00:32:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQwNk2rsMzDqKH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 00:35:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQvjj5D7bzDqPW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 00:05:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQvjk4wmczDqMm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 00:05:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=FRFFB5+H; 
+ header.a=rsa-sha256 header.s=201702 header.b=EOzWAm42; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQvjf6Ncmz9sTq;
- Wed, 12 Aug 2020 00:05:10 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQvjj5BQ7z9sVP;
+ Wed, 12 Aug 2020 00:05:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1597154711;
- bh=IWg9J4dzmIU629G1TFBY3rxGgkOp982GZz/P7rTZ6/4=;
+ s=201702; t=1597154713;
+ bh=iSEKg+87jjDteWhaJ+qL8pbW2TiMt/xPx1qjGqylh1A=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=FRFFB5+HkSbwW+C4hJBgR8dQnrx0LAa9pXRkAFx+T+m8clXSojPEV727BYjf+3AKz
- zo2OedWLIO45SPtrRp+KJwTOyOt0XYAOa0nnKiS0/wutooQBbSjlrvDeWGUmhrm8Rp
- pvRoxmL8bZju2wEVhHN4MpJzuGJikgjeFw150hxHEZ+vQX8XjoHw7bMk4lb/rspJTi
- /BfJIMByfuZEuqvd30HLc+ClCCETHJz23/HgAxgcggoLu67TzOI+iFXImmzJvT51uz
- 4eNXdVvsnyfSDHluRdQij1kOQX8p/Z5RQbaSQOSHrBQyAHFpVfJ7o/5HiIaoub4Ejj
- q6A3ENvRMxNdg==
+ b=EOzWAm42H4Zb8ogM3UfxNkjVXIkvl1oQaTcOt0kA2tYH60ufaO7yoPfy73rGokQCI
+ yUPVDMITE0N49VGchPR8mti9LmO/wV9r7yYFTypboFc0vvMtzwT061cwnJHTUe5ikC
+ p7XddWjjYY8ihkbdL7wOHwwn/1Nh7G+Rv1mU/diYA4qyFR2/B9XFbo6ZUsrLS8dwGq
+ 9e/X++K1IxiZA5oSRf4wZApsMUAkB/UaX2GdKzaO7R39uYovkehWulVhrisqgPKlwh
+ TmyJH7hpSAH1skBYhqkzIUfsbQC9zlaI6ew7EFQR+I9LRGVnm1DihBS/q7pvGx1rcm
+ hbRADrgh55wJw==
 From: Stephen Rothwell <sfr@canb.auug.org.au>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6/7] powerpc: unrel_branch_check.sh: fix up the file header
-Date: Wed, 12 Aug 2020 00:04:33 +1000
-Message-Id: <20200811140435.20957-7-sfr@canb.auug.org.au>
+Subject: [PATCH 7/7] powerpc: unrel_branch_check.sh: exit silently for early
+ errors
+Date: Wed, 12 Aug 2020 00:04:34 +1000
+Message-Id: <20200811140435.20957-8-sfr@canb.auug.org.au>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200811140435.20957-1-sfr@canb.auug.org.au>
 References: <20200811140435.20957-1-sfr@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,37 +65,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+If we can't find the address of __end_interrupts, then we still exit
+successfully as that is the current behaviour.
+
 Cc: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
 ---
- arch/powerpc/tools/unrel_branch_check.sh | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ arch/powerpc/tools/unrel_branch_check.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/tools/unrel_branch_check.sh b/arch/powerpc/tools/unrel_branch_check.sh
-index 54ebd05615d4..4489f16a443c 100755
+index 4489f16a443c..70da90270c78 100755
 --- a/arch/powerpc/tools/unrel_branch_check.sh
 +++ b/arch/powerpc/tools/unrel_branch_check.sh
-@@ -1,16 +1,9 @@
- #!/bin/bash
--# Copyright © 2016 IBM Corporation
-+# SPDX-License-Identifier: GPL-2.0+
-+# Copyright © 2016,2020 IBM Corporation
- #
--# This program is free software; you can redistribute it and/or
--# modify it under the terms of the GNU General Public License
--# as published by the Free Software Foundation; either version
--# 2 of the License, or (at your option) any later version.
--#
--# This script checks the relocations of a vmlinux for "suspicious"
--# branches from unrelocated code (head_64.S code).
--
--# Turn this on if you want more debug output:
--# set -x
-+# This script checks the unrelocated code of a vmlinux for "suspicious"
-+# branches to relocated code (head_64.S code).
+@@ -14,9 +14,12 @@ kstart=0xc000000000000000
+ printf -v kend '0x%x' $(( kstart + 0x10000 ))
  
- # Have Kbuild supply the path to objdump so we handle cross compilation.
- objdump="$1"
+ end_intr=0x$(
+-$objdump -R -d --start-address="$kstart" --stop-address="$kend" "$vmlinux" |
++$objdump -R -d --start-address="$kstart" --stop-address="$kend" "$vmlinux" 2>/dev/null |
+ awk '$2 == "<__end_interrupts>:" { print $1 }'
+ )
++if [ "$end_intr" = "0x" ]; then
++	exit 0
++fi
+ 
+ $objdump -R -D --no-show-raw-insn --start-address="$kstart" --stop-address="$end_intr" "$vmlinux" |
+ sed -E -n '
 -- 
 2.28.0
 
