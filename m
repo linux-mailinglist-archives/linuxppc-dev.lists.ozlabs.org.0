@@ -1,54 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80068241AB5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 13:58:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3A6241ACC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 14:09:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQrvX1gNPzDqNk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 21:58:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQs7c1FpyzDqSH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 22:09:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQrsb1F1tzDqMb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 21:56:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQs5N2vcRzDqPC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 22:07:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=TY6TpWVq; 
+ header.a=rsa-sha256 header.s=201909 header.b=epOUAdKw; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQrsZ6JJYz9sRN;
- Tue, 11 Aug 2020 21:56:50 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQs5M4H6qz9sTR;
+ Tue, 11 Aug 2020 22:07:03 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1597147010;
- bh=dhLB5WjSUDtOcwhNZ+SteCjkOiFkvQhVrrHYd19toYw=;
+ s=201909; t=1597147624;
+ bh=pb6dXzfa2UA0hCpfDnFm4lqr+4kZIHCcfkntrubsbmM=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=TY6TpWVqdayK1xr/IHaJBx+q8cCdwDi/ymGC0k4Im4MVRPdy5ta9kCk6RFvy9HoWQ
- kYeHA1Au06X4yvTrcV2jmCxv23G8jhFE2c1gUpoRibJvP24EOM5dRaKRh9o88DgiO5
- kFq6mScAzIzNDEWIrk5cR78BZQROAy/E2C3n/83M/s9B+Wdpkmd5gW2clRrlyWIpi/
- bOgcsdjS6BGByksnJJcQ8IM2DdwVuW0eIJSbR+YVY3XaNL1xI7ezFVA8I4o5+gqAXO
- MbMDxskWmX8JfMFIvDE31uznHtaKJCVWwiVRpT5miLM++8Hhm7x20Y/AOWdM07KQDz
- Bvi0/P9C1vklQ==
+ b=epOUAdKw8rGRYYkzHGeceNWOqXrXBOAZUHmg8Du5RAI7CnY0Pce78OEqmsBg00vdF
+ hRjoQ3DzthPHf4nGFGSVmAEw2lbBg0cnNiz8CGE1pDhF5PeW9PA6N0aASDF9FEHb+E
+ N/wbs+D5YAj66UU0r/b0PXwNVL0jcO7xx2qcPSAdMJErNhr7s9An4+NGcKyuDk0ZJK
+ mMkmWrG65+myCZqoqF+CV8K41oEmOFR3OBQZBJm6oY3hQdpQJAl2xrw78TZnFhvYUo
+ GTqQYyJhzNRJZD0HchERImxhS7RjF+U6v/dVSEPenRa+qtE5Tr9EvMbZ/XipzTRNUn
+ EVxz/T1itG/OQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Roth <mdroth@linux.vnet.ibm.com>,
- Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries/hotplug-cpu: increase wait time for vCPU
- death
-In-Reply-To: <159712434106.7191.15165087672426328577@sif>
-References: <20200804032937.7235-1-mdroth@linux.vnet.ibm.com>
- <873652zg8h.fsf@mpe.ellerman.id.au> <20200804161609.6cb2cb71@bahia.lan>
- <87zh79yen7.fsf@mpe.ellerman.id.au> <87mu37ylzu.fsf@linux.ibm.com>
- <159712434106.7191.15165087672426328577@sif>
-Date: Tue, 11 Aug 2020 21:56:50 +1000
-Message-ID: <87r1sd9z0d.fsf@mpe.ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [RFC PATCH v1] power: don't manage floating point regs when no FPU
+In-Reply-To: <95c00a811897f6d9176d30bf2ac92dab8c9c8e95.1596816789.git.christophe.leroy@csgroup.eu>
+References: <95c00a811897f6d9176d30bf2ac92dab8c9c8e95.1596816789.git.christophe.leroy@csgroup.eu>
+Date: Tue, 11 Aug 2020 22:07:02 +1000
+Message-ID: <87o8nh9yjd.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,55 +59,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Greg Kurz <groug@kaod.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Cedric Le Goater <clg@kaod.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Roth <mdroth@linux.vnet.ibm.com> writes:
-> Quoting Nathan Lynch (2020-08-07 02:05:09)
-...
->> wait_for_cpu_stopped() should be able to accommodate a time-based
->> warning if necessary, but speaking as a likely recipient of any bug
->> reports that would arise here, I'm not convinced of the need and I
->> don't know what a good value would be. It's relatively easy to sample
->> the stack of a task that's apparently failing to make progress, plus I
->> probably would use 'perf probe' or similar to report the inputs and
->> outputs for the RTAS call.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> There is no point in copying floating point regs when there
+> is no FPU and MATH_EMULATION is not selected.
+
+Yeah I guess you're right. I've never touched a system with neither, but
+if such a thing exists then it does seem silly to copy regs around that
+can't be used.
+
+> Create a new CONFIG_PPC_FPU_REGS bool that is selected by
+> CONFIG_MATH_EMULATION and CONFIG_PPC_FPU, and use it to
+> opt out everything related to fp_state in thread_struct.
 >
-> I think if we make the timeout sufficiently high like 2 minutes or so
-> it wouldn't hurt and if we did seem them it would probably point to an
-> actual bug. But I don't have a strong feeling either way.
-
-I think we should print a warning after 2 minutes.
-
-It's true that there are fairly easy mechanisms to work out where the
-thread is stuck, but customers are unlikely to use them. They're just
-going to report that it's stuck with no further info, and probably
-reboot the machine before we get a chance to get any further info.
-
-Whereas if the kernel prints a warning with a stack trace we at least
-have that to go on in an initial bug report.
-
->> I'm happy to make this a proper submission after I can clean it up and
->> retest it, or Michael R. is welcome to appropriate it, assuming it's
->> acceptable.
->> 
+> The following app runs in approx 10.50 seconds on an 8xx without
+> the patch, and in 9.45 seconds with the patch.
 >
-> I've given it a shot with this patch and it seems to be holding up in
-> testing. If we don't think the ~2 minutes warning message is needed I
-> can clean it up to post:
+> 	void sigusr1(int sig) { }
 >
-> https://github.com/mdroth/linux/commit/354b8c97bf0dc1146e36aa72273f5b33fe90d09e
+> 	int main(int argc, char **argv)
+> 	{
+> 		int i = 100000;
 >
-> I'd likely break the refactoring patches out to a separate patch under
-> Nathan's name since it fixes a separate bug potentially.
+> 		signal(SIGUSR1, sigusr1);
+> 		for (;i--;)
+> 			raise(SIGUSR1);
+> 		exit(0);
+> 	}
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/Kconfig                      |  1 +
+>  arch/powerpc/include/asm/processor.h      |  2 ++
+>  arch/powerpc/kernel/asm-offsets.c         |  2 ++
+>  arch/powerpc/kernel/process.c             |  4 ++++
+>  arch/powerpc/kernel/ptrace/ptrace-novsx.c |  8 ++++++++
+>  arch/powerpc/kernel/ptrace/ptrace.c       |  4 ++++
+>  arch/powerpc/kernel/signal.c              | 12 +++++++++++-
+>  arch/powerpc/kernel/signal_32.c           |  4 ++++
+>  arch/powerpc/kernel/traps.c               |  4 ++++
+>  arch/powerpc/platforms/Kconfig.cputype    |  4 ++++
+>  10 files changed, 44 insertions(+), 1 deletion(-)
 
-While I like Nathan's refactoring, we probably want to do the minimal
-fix first to ease backporting.
+In general this looks fine.
 
-Then do the refactoring on top of that.
+It's a bit #ifdef heavy. Maybe some of those can be cleaned up a bit
+with some wrapper inlines?
+
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-novsx.c b/arch/powerpc/kernel/ptrace/ptrace-novsx.c
+> index b2dc4e92d11a..8f87a11f3f8c 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-novsx.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-novsx.c
+> @@ -28,6 +29,9 @@ int fpr_get(struct task_struct *target, const struct user_regset *regset,
+>  
+>  	return user_regset_copyout(&pos, &count, &kbuf, &ubuf,
+>  				   &target->thread.fp_state, 0, -1);
+> +#else
+> +	return 0;
+> +#endif
+
+Should we return -ENODEV/EIO here? Wonder if another arch can give us a clue.
 
 cheers
