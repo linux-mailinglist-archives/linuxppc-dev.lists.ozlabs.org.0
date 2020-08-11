@@ -1,50 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DD02419AB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 12:27:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82648241AA2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 13:51:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQpt843hRzDqWs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 20:27:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQrks37mDzDqNS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 21:51:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=zhiqiang.hou@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQpKW2shlzDqRm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 20:02:23 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 64A00201F46;
- Tue, 11 Aug 2020 12:02:20 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 83AA4201EEF;
- Tue, 11 Aug 2020 12:02:13 +0200 (CEST)
-Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id B45DD40243;
- Tue, 11 Aug 2020 12:02:04 +0200 (CEST)
-From: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
-To: linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, robh+dt@kernel.org, bhelgaas@google.com,
- lorenzo.pieralisi@arm.com, shawnguo@kernel.org, leoyang.li@nxp.com,
- kishon@ti.com, gustavo.pimentel@synopsys.com, roy.zang@nxp.com,
- jingoohan1@gmail.com, andrew.murray@arm.com
-Subject: [PATCHv7 12/12] misc: pci_endpoint_test: Add driver data for
- Layerscape PCIe controllers
-Date: Tue, 11 Aug 2020 17:54:41 +0800
-Message-Id: <20200811095441.7636-13-Zhiqiang.Hou@nxp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
-References: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQrhX00cGzDqHL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 21:48:59 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=TXaMuft5; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BQrhW2xwfz9sRN;
+ Tue, 11 Aug 2020 21:48:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1597146539;
+ bh=FGZslSUS+tuxP95Yq2auQ+tkuegpm6BzCdbaBayKzY4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=TXaMuft5PmRtKNikAQdY6CR+PcIOaxmonyCfug9jYwbo2hKCjmeS+Jcdv98WisZdh
+ JRIFDI0r8rtiYrXi/NL8mx/yO8eFABUTpzUTU/6Cxy6eXmWboz8xDA9HUbOBLh058e
+ Gmzlgvmexe76cJ8//san/KsXPoEbhjdn+a65mcCy/9G+EToDev/3A1I1ano9KbkwsV
+ NGfqeR5Md1anMTtqxzE1bhkuCfDG3iiuFrsVZOVNq3/aG+B4gGbR96DkfFyUO7LVyz
+ 8uy18Bs2cI9cZ9yBDxACsoBxj131fOcwGze65S6YM4vHPwY1/4haxf30s1XoUXdVAd
+ QsuzBcwjdCCpw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/rtas: Restrict RTAS requests from userspace
+In-Reply-To: <1ff85ddd-1b75-f49d-0ae2-edf9e5a199e2@linux.ibm.com>
+References: <20200702161932.18176-1-ajd@linux.ibm.com>
+ <87bljjxau2.fsf@mpe.ellerman.id.au>
+ <1ff85ddd-1b75-f49d-0ae2-edf9e5a199e2@linux.ibm.com>
+Date: Tue, 11 Aug 2020 21:48:57 +1000
+Message-ID: <87tux99zdi.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,47 +59,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: minghuan.Lian@nxp.com, Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
- mingkai.hu@nxp.com
+Cc: nathanl@linux.ibm.com, leobras.c@gmail.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Andrew Donnellan <ajd@linux.ibm.com> writes:
+> On 10/8/20 4:40 pm, Michael Ellerman wrote:
+>> Hi ajd,
+>> 
+>> Thanks for taking care of this.
+>> 
+>> I was going to merge this as-is, but given it's fixing a long standing
+>> issue there's not really a big rush. So a few comments below.
+>
+> Thanks for the review.
+>
+>>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>>> index a09eba03f180..ec1cae52d8bd 100644
+>>> --- a/arch/powerpc/kernel/rtas.c
+>>> +++ b/arch/powerpc/kernel/rtas.c
+...
+>> 
+>>> +	{ "ibm,activate-firmware", -1, -1, -1, -1 },
+>> 
+>> Would it be worth making the indices 1-based, allowing 0 to be the
+>> unused value, meaning you only have to initialise the used fields?
+>
+> 1-based array indices are morally reprehensible. It would make it 
+> cleaner but I kind of prefer an obvious and clear constant for unused, idk
 
-The commit 0a121f9bc3f5 ("misc: pci_endpoint_test: Use streaming DMA
-APIs for buffer allocation") changed to use streaming DMA APIs, however,
-dma_map_single() might not return a 4KB aligned address, so add the
-default_data as driver data for Layerscape PCIe controllers to make it
-4KB aligned.
+In my defence they wouldn't be 1-based, they'd be 0-based but off-by-one :P
 
-Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
----
-V7:
- - New patch.
+I'm happy either way, your choice.
 
- drivers/misc/pci_endpoint_test.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 4a17f08de60f..70a790cd14c5 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -946,8 +946,12 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_DRA72x),
- 	  .driver_data = (kernel_ulong_t)&default_data,
- 	},
--	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x81c0) },
--	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, PCI_DEVICE_ID_LS1088A) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, 0x81c0),
-+	  .driver_data = (kernel_ulong_t)&default_data,
-+	},
-+	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, PCI_DEVICE_ID_LS1088A),
-+	  .driver_data = (kernel_ulong_t)&default_data,
-+	},
- 	{ PCI_DEVICE_DATA(SYNOPSYS, EDDA, NULL) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654),
- 	  .driver_data = (kernel_ulong_t)&am654_data
--- 
-2.17.1
-
+cheers
