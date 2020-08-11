@@ -2,34 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30B5241969
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 12:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B4A24196D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 12:09:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQpS41QX8zDqWP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 20:08:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQpTr4HZ5zDqYC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 20:09:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
  envelope-from=zhiqiang.hou@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQpKF5D31zDqR1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 20:02:06 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id DDA061A1982;
- Tue, 11 Aug 2020 12:02:03 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQpKH2M1BzDqPM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 20:02:11 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 7B269201F1B;
+ Tue, 11 Aug 2020 12:02:08 +0200 (CEST)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
  [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A037E1A196D;
- Tue, 11 Aug 2020 12:01:56 +0200 (CEST)
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3E93C201EF8;
+ Tue, 11 Aug 2020 12:02:01 +0200 (CEST)
 Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 662DE40243;
- Tue, 11 Aug 2020 12:01:47 +0200 (CEST)
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 20FD3402DF;
+ Tue, 11 Aug 2020 12:01:49 +0200 (CEST)
 From: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
 To: linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -37,10 +37,10 @@ To: linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
  lorenzo.pieralisi@arm.com, shawnguo@kernel.org, leoyang.li@nxp.com,
  kishon@ti.com, gustavo.pimentel@synopsys.com, roy.zang@nxp.com,
  jingoohan1@gmail.com, andrew.murray@arm.com
-Subject: [PATCHv7 02/12] PCI: designware-ep: Add the doorbell mode of MSI-X in
- EP mode
-Date: Tue, 11 Aug 2020 17:54:31 +0800
-Message-Id: <20200811095441.7636-3-Zhiqiang.Hou@nxp.com>
+Subject: [PATCHv7 03/12] PCI: designware-ep: Move the function of getting MSI
+ capability forward
+Date: Tue, 11 Aug 2020 17:54:32 +0800
+Message-Id: <20200811095441.7636-4-Zhiqiang.Hou@nxp.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
 References: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
@@ -64,7 +64,9 @@ Sender: "Linuxppc-dev"
 
 From: Xiaowei Bao <xiaowei.bao@nxp.com>
 
-Add the doorbell mode of MSI-X in DWC EP driver.
+Move the function of getting MSI capability to the front of init
+function, because the init function of the EP platform driver will use
+the return value by the function of getting MSI capability.
 
 Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 Reviewed-by: Andrew Murray <andrew.murray@arm.com>
@@ -73,72 +75,35 @@ Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
 V7:
  - Rebase the patch without functionality change.
 
- drivers/pci/controller/dwc/pcie-designware-ep.c | 14 ++++++++++++++
- drivers/pci/controller/dwc/pcie-designware.h    | 12 ++++++++++++
- 2 files changed, 26 insertions(+)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index e5bd3a5ef380..e76b504ed465 100644
+index e76b504ed465..56bd1cd71f16 100644
 --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
 +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -471,6 +471,20 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
- 	return 0;
- }
+@@ -574,10 +574,6 @@ int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep)
+ 		return -EIO;
+ 	}
  
-+int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
-+				       u16 interrupt_num)
-+{
-+	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-+	u32 msg_data;
-+
-+	msg_data = (func_no << PCIE_MSIX_DOORBELL_PF_SHIFT) |
-+		   (interrupt_num - 1);
-+
-+	dw_pcie_writel_dbi(pci, PCIE_MSIX_DOORBELL, msg_data);
-+
-+	return 0;
-+}
-+
- int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
- 			      u16 interrupt_num)
- {
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 89f8271ec5ee..745b4938225a 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -97,6 +97,9 @@
- #define PCIE_MISC_CONTROL_1_OFF		0x8BC
- #define PCIE_DBI_RO_WR_EN		BIT(0)
+-	ep->msi_cap = dw_pcie_find_capability(pci, PCI_CAP_ID_MSI);
+-
+-	ep->msix_cap = dw_pcie_find_capability(pci, PCI_CAP_ID_MSIX);
+-
+ 	offset = dw_pcie_ep_find_ext_capability(pci, PCI_EXT_CAP_ID_REBAR);
+ 	if (offset) {
+ 		reg = dw_pcie_readl_dbi(pci, offset + PCI_REBAR_CTRL);
+@@ -664,6 +660,10 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+ 	if (ret < 0)
+ 		epc->max_functions = 1;
  
-+#define PCIE_MSIX_DOORBELL		0x948
-+#define PCIE_MSIX_DOORBELL_PF_SHIFT	24
++	ep->msi_cap = dw_pcie_find_capability(pci, PCI_CAP_ID_MSI);
 +
- #define PCIE_PL_CHK_REG_CONTROL_STATUS			0xB20
- #define PCIE_PL_CHK_REG_CHK_REG_START			BIT(0)
- #define PCIE_PL_CHK_REG_CHK_REG_CONTINUOUS		BIT(1)
-@@ -434,6 +437,8 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
- 			     u8 interrupt_num);
- int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
- 			     u16 interrupt_num);
-+int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
-+				       u16 interrupt_num);
- void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar);
- #else
- static inline void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
-@@ -475,6 +480,13 @@ static inline int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
- 	return 0;
- }
++	ep->msix_cap = dw_pcie_find_capability(pci, PCI_CAP_ID_MSIX);
++
+ 	if (ep->ops->ep_init)
+ 		ep->ops->ep_init(ep);
  
-+static inline int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep,
-+						     u8 func_no,
-+						     u16 interrupt_num)
-+{
-+	return 0;
-+}
-+
- static inline void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
- {
- }
 -- 
 2.17.1
 
