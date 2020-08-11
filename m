@@ -2,121 +2,109 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6518E2413FC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 01:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B7A2414B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 03:53:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BQXxf1qPjzDqSZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 09:59:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BQbT11FVRzDqTW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Aug 2020 11:53:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rambus.com (client-ip=216.205.24.148;
- helo=us-smtp-delivery-148.mimecast.com; envelope-from=pvanleeuwen@rambus.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BQbQy1wmMzDqJl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 11:51:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=rambus.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=rambus.com header.i=@rambus.com header.a=rsa-sha256
- header.s=mimecast20161209 header.b=N6eKpLdY; 
- dkim=pass (1024-bit key) header.d=rambus.com header.i=@rambus.com
- header.a=rsa-sha256 header.s=mimecast20161209 header.b=Gh9mpMZG; 
- dkim-atps=neutral
-X-Greylist: delayed 67 seconds by postgrey-1.36 at bilbo;
- Tue, 11 Aug 2020 07:39:14 AEST
-Received: from us-smtp-delivery-148.mimecast.com
- (us-smtp-delivery-148.mimecast.com [216.205.24.148])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NvVO/YfK; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BQbQy0gLfz8tXn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 11:51:22 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BQbQy0Jdqz9sTR; Tue, 11 Aug 2020 11:51:22 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=cheloha@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NvVO/YfK; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BQTr20tVczDqGF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 07:39:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rambus.com;
- s=mimecast20161209; t=1597095550;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gVHUBHeCKkJaUDRIPfd4sS6m//pNDe/Jm9pq2CRDcd8=;
- b=N6eKpLdYjY80PjMA/3E6uncb3QALBdXrY7Zu/ijR3w5rKRHRvvms6+A2dxtfrd6gGp1NB4
- LOc6zQ4C8zPwg9lMwc72DscMgZee+WBLMYapreMhVespk8Rh6IHwHFPwQC0RcE+GNrvAD+
- jNrR5Hf6kvYo4b8EppYwk0mMR/s6T0E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rambus.com;
- s=mimecast20161209; t=1597095551;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gVHUBHeCKkJaUDRIPfd4sS6m//pNDe/Jm9pq2CRDcd8=;
- b=Gh9mpMZG6KHw+l/hWaXECfxFrciEYTnqNPkBauadZLH9UP94VIEzhfEg4+I0TekGnT8CQp
- XUV/C7mqS0JuP6uc0okpWbHiGR5gmxjL4zIaE+lV683bYOFM+u1u3/wgqbecOoBJo6Jkrm
- gLsrOApO9DY89n5z5kFNysyQmxRXTlA=
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com
- (mail-bn1nam07lp2044.outbound.protection.outlook.com [104.47.51.44]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- us-mta-215-qxPfULz_NWySIIJJWanSQQ-1; Mon, 10 Aug 2020 17:37:56 -0400
-X-MC-Unique: qxPfULz_NWySIIJJWanSQQ-1
-Received: from CY4PR0401MB3652.namprd04.prod.outlook.com
- (2603:10b6:910:8a::27) by CY4PR04MB3720.namprd04.prod.outlook.com
- (2603:10b6:903:e5::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.20; Mon, 10 Aug
- 2020 21:37:50 +0000
-Received: from CY4PR0401MB3652.namprd04.prod.outlook.com
- ([fe80::a0ee:e26e:64fc:61b2]) by CY4PR0401MB3652.namprd04.prod.outlook.com
- ([fe80::a0ee:e26e:64fc:61b2%3]) with mapi id 15.20.3261.023; Mon, 10 Aug 2020
- 21:37:50 +0000
-From: "Van Leeuwen, Pascal" <pvanleeuwen@rambus.com>
-To: =?utf-8?B?SG9yaWEgR2VhbnTEgw==?= <horia.geanta@nxp.com>, Herbert Xu
- <herbert@gondor.apana.org.au>
-Subject: RE: [PATCH 19/22] crypto: inside-secure - add check for xts input
- length equal to zero
-Thread-Topic: [PATCH 19/22] crypto: inside-secure - add check for xts input
- length equal to zero
-Thread-Index: AQHWbNc/iDlrjFSjSECEGLk+jBQoDKkxJAfggAA7LACAAA2YgIAAcKtA
-Date: Mon, 10 Aug 2020 21:37:50 +0000
-Message-ID: <CY4PR0401MB36527830624AD214E801BE53C3440@CY4PR0401MB3652.namprd04.prod.outlook.com>
-References: <20200807162010.18979-1-andrei.botila@oss.nxp.com>
- <20200807162010.18979-20-andrei.botila@oss.nxp.com>
- <CY4PR0401MB36528610C3ABF802F8CBF35FC3440@CY4PR0401MB3652.namprd04.prod.outlook.com>
- <20200810134500.GA22914@gondor.apana.org.au>
- <fd3e5862-3357-7dfc-6c75-30086ab19f82@nxp.com>
-In-Reply-To: <fd3e5862-3357-7dfc-6c75-30086ab19f82@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [89.220.222.106]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 67080066-10ee-45b2-29e6-08d83d75a184
-x-ms-traffictypediagnostic: CY4PR04MB3720:
-x-microsoft-antispam-prvs: <CY4PR04MB3720DD2069116A5AD4932C39C3440@CY4PR04MB3720.namprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: AyCKpE7ZRcxayWpI3m6U0tGaZFY8jZad36j2/9C7cwTQZxi7hUVUdcbVxQaOMrBHnonEywCqJf6U83Nf37fvadDnU2A7jLfeKZhPJ2YGcuR8BmaP8Ui7I5klUxoFOvVRT5OYXC1KoNSE6AotRbtD5OrGb9eaR7Qf9GM3k9ExuaFXJjxKdslmrGh1jkTbYqJvXQOd2kLJDxLyLlZpjIlOxLjQRcU2+YPfDz5kANq3yyZNxfHn2hnXvcP9bH39n0j4eZNqGrmy2kpIQc51MpCllBWm2dYzMcZtQf0nLvH2J6Fg2VJE1CtwteQf44bV9OBFchZHuiDcpeNUVg/lpzP9ZA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY4PR0401MB3652.namprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFTY:;
- SFS:(396003)(39840400004)(136003)(376002)(346002)(366004)(186003)(2906002)(71200400001)(53546011)(6506007)(33656002)(7416002)(26005)(316002)(4326008)(7696005)(83380400001)(8936002)(86362001)(64756008)(66556008)(66476007)(52536014)(8676002)(66446008)(66946007)(76116006)(55016002)(110136005)(54906003)(9686003)(5660300002)(478600001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: R4O0anq/O7I+BfEbT8iz5IIfTyLON0AKQZ2EBDpYIIJ4ye56MPEapQcPfRoFJ1YMB17XuCVwsGXKmjP5WSudCEa2etCR9oxc2BwvnIpUBkqoeomo6L6mDr5uwxKT3bSBYDn9z46QgWEMFMlOnt6EiF6ZaF0p66Np9bsAr4rSowV5Clnec/LHmA3DNIeaZFzyiUW/rP7REGzumCZs34c52fHfsGp5iy5B3yLTufTAd7n7ff64lkA82GamBKyUq+BmovFzpX094bJwt/jVnP/Vu3mtvhUtvPILQ46mgammvOZZhuCS58ct1Yzkm7nnD8POanLfnq4or07b/Mffe420/fl5cX9mDSoPXPCasTfU6NMcss/GYT5fv2QKi84MGBPVCOV/lZeiegYof8HY5AIQ03uwUrTJ7TdLiV/8S/JzhZia98B/LQFEprmfFbaZQBowj6zrCcWvAoOdIktO5DlRH63T3+TzyqBZOVW5NVdfDHTFZieVfOpz4OuAnebd6UZoV+DDxOGhLMxo02p8c2EkYA6lv8DyvdYqKEVu8ETYmiSbt/lehByzlfzS9py0ICeZuy5mSDQwAtnuaPWLL+gsf/b5vBt7vvXQ3Xev7Sc2YQmsZatvbWlYXDly156TXuSQhBT3JZTO1HLaq9lqLT1byQ==
-x-ms-exchange-transport-forked: True
+ by ozlabs.org (Postfix) with ESMTPS id 4BQbQx3c02z9sTN;
+ Tue, 11 Aug 2020 11:51:20 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07B1VsjR051436; Mon, 10 Aug 2020 21:51:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=o9X6cXtOeV5nAldI/qEUMT1kem4qWT6hFxxUnVfNXz4=;
+ b=NvVO/YfKacpntFLdeYkYOKncUlAANe99irpZpzxo9sOsJMCImayoqbxbygLuTNapTTZm
+ 0jcKAUEz6ylDMnwHOJOp22rgtkQU0kiptB3qwCp36pLWhJCI3m88ngJpdYpqjnVUT399
+ sSxTiERew6+mTpq2ikO7JCkHtAcC+jC8ZfoQ6/UgohCaCqGk3X3QX+9zE4wOK69zI2pn
+ iZlMMUhKtI/+/pEOx6Wrej89f4qz8bCFqAEcZLsRIbKToW1oOaHGxWdVpdWJDZJqnR3a
+ tLCv4k3ShDFD/oThkycX2i6itj4qw2vst259fvJ/Kt4WNNiLcLSB7kdBVEM0VtJD8EM1 Ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32sr6edeqw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Aug 2020 21:51:17 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07B1WcTo053857;
+ Mon, 10 Aug 2020 21:51:17 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32sr6edeqq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Aug 2020 21:51:17 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07B1nrxF022933;
+ Tue, 11 Aug 2020 01:51:16 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02wdc.us.ibm.com with ESMTP id 32skp8wygy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Aug 2020 01:51:16 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07B1pGx153608916
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Aug 2020 01:51:16 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5CB44124058;
+ Tue, 11 Aug 2020 01:51:16 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D7F53124052;
+ Tue, 11 Aug 2020 01:51:15 +0000 (GMT)
+Received: from rascal.austin.ibm.com (unknown [9.41.179.32])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 11 Aug 2020 01:51:15 +0000 (GMT)
+From: Scott Cheloha <cheloha@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v3] pseries/drmem: don't cache node id in drmem_lmb struct
+Date: Mon, 10 Aug 2020 20:51:15 -0500
+Message-Id: <20200811015115.63677-1-cheloha@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-X-OriginatorOrg: rambus.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR0401MB3652.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67080066-10ee-45b2-29e6-08d83d75a184
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2020 21:37:50.1987 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bd0ba799-c2b9-413c-9c56-5d1731c4827c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HIIjV8lsOpVf79jH31+x4RrCvKAk5xZX4QyAASDzzEo59zMAZBd3NGlIg9/3fmNzMtev5jTlF9Ljd0PlzEu6Cw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR04MB3720
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA48A24 smtp.mailfrom=pvanleeuwen@rambus.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: rambus.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Mailman-Approved-At: Tue, 11 Aug 2020 09:50:46 +1000
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-10_22:2020-08-06,
+ 2020-08-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0
+ impostorscore=0 mlxlogscore=929 malwarescore=0 suspectscore=1 spamscore=0
+ priorityscore=1501 clxscore=1015 mlxscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008110005
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,73 +116,219 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Andrei Botila \(OSS\)" <andrei.botila@oss.nxp.com>,
- Andrei Botila <andrei.botila@nxp.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Antoine Tenart <antoine.tenart@bootlin.com>, "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@axis.com" <linux-arm-kernel@axis.com>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>, Michal Suchanek <msuchanek@suse.de>,
+ Rick Lindsley <ricklind@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBIb3JpYSBHZWFudMSDIDxob3Jp
-YS5nZWFudGFAbnhwLmNvbT4NCj4gU2VudDogTW9uZGF5LCBBdWd1c3QgMTAsIDIwMjAgNDozNCBQ
-TQ0KPiBUbzogSGVyYmVydCBYdSA8aGVyYmVydEBnb25kb3IuYXBhbmEub3JnLmF1PjsgVmFuIExl
-ZXV3ZW4sIFBhc2NhbCA8cHZhbmxlZXV3ZW5AcmFtYnVzLmNvbT4NCj4gQ2M6IEFuZHJlaSBCb3Rp
-bGEgKE9TUykgPGFuZHJlaS5ib3RpbGFAb3NzLm54cC5jb20+OyBEYXZpZCBTLiBNaWxsZXIgPGRh
-dmVtQGRhdmVtbG9mdC5uZXQ+OyBsaW51eC1jcnlwdG9Admdlci5rZXJuZWwub3JnOyBsaW51eC0N
-Cj4gYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJu
-ZWwub3JnOyBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZzsgbGludXgtczM5MEB2Z2VyLmtl
-cm5lbC5vcmc7DQo+IHg4NkBrZXJuZWwub3JnOyBsaW51eC1hcm0ta2VybmVsQGF4aXMuY29tOyBB
-bmRyZWkgQm90aWxhIDxhbmRyZWkuYm90aWxhQG54cC5jb20+OyBBbnRvaW5lIFRlbmFydCA8YW50
-b2luZS50ZW5hcnRAYm9vdGxpbi5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMTkvMjJdIGNy
-eXB0bzogaW5zaWRlLXNlY3VyZSAtIGFkZCBjaGVjayBmb3IgeHRzIGlucHV0IGxlbmd0aCBlcXVh
-bCB0byB6ZXJvDQo+DQo+IDw8PCBFeHRlcm5hbCBFbWFpbCA+Pj4NCj4gT24gOC8xMC8yMDIwIDQ6
-NDUgUE0sIEhlcmJlcnQgWHUgd3JvdGU6DQo+ID4gT24gTW9uLCBBdWcgMTAsIDIwMjAgYXQgMTA6
-MjA6MjBBTSArMDAwMCwgVmFuIExlZXV3ZW4sIFBhc2NhbCB3cm90ZToNCj4gPj4NCj4gPj4gV2l0
-aCBhbGwgZHVlIHJlc3BlY3QsIGJ1dCB0aGlzIG1ha2VzIG5vIHNlbnNlLg0KPiA+DQo+ID4gSSBh
-Z3JlZS4gIFRoaXMgaXMgYSBsb3Qgb2YgY2h1cm4gZm9yIG5vIGdhaW4uDQo+ID4NCj4gSSB3b3Vs
-ZCBzYXkgdGhlIGdhaW4gaXMgdGhhdCBhbGwgc2tjaXBoZXIgYWxnb3JpdGhtcyB3b3VsZCBiZWhh
-dmUgdGhlIHNhbWUNCj4gd2hlbiBpbnB1dCBsZW5ndGggZXF1YWxzIHplcm8gLSBpLmUuIHRyZWF0
-IHRoZSByZXF1ZXN0IGFzIGEgbm8tb3AuDQo+DQpYVFMgYWxyZWFkeSBiZWhhdmVzIGRpZmZlcmVu
-dGx5IGJlY2F1c2UgaXQgY2FuIGFjY2VwdCBhbnkgYnl0ZSBhbW91bnQgYXMgbG9uZw0KYXMgaXQg
-aXMgbm90IGluIHRoZSByYW5nZSAwIC0xNi4gU28gZmFyLCB5b3UgZ290IGFuIEVJTlZBTCBlcnJv
-ciBmb3IgbGVuZ3RocyA8IDE2Lg0KVGhlIHNwZWNpYWwgZXhjZXB0aW9uIG9uIHRvcCBvZiB0aGF0
-IGZvciBsZW5ndGggMCBkb2VzIG5vdCBpbXByb3ZlIGFueXRoaW5nLg0KDQpUcmVhdGluZyBhIHJl
-cXVlc3Qgb2YgbGVuZ3RoIDAgYXMgYSBuby1vcCBpcyBub3QgYSB1c2VmdWwgZmVhdHVyZSBoZXJl
-LCBhcyB0aGVyZQ0KaXMgbm8gdXNlIGNhc2Ugd2hlcmUgdGhhdCB3b3VsZCBtYWtlIHNlbnNlLiBY
-VFMgZW5jcnlwdHMgYmxvY2tzICh1c3VhbGx5IGRpc2sNCnNlY3RvcnMpLCBhbmQgY2Fubm90IGJl
-IGNoYWluZWQuIFNvIGFuIGF0dGVtcHQgdG8gZW5jcnlwdCBhIHplcm8gbGVuZ3RoIGJsb2NrDQpp
-cyBtb3N0IGNlcnRhaW5seSBzb21lIGtpbmQgb2YgZXJyb3IgKGUuZy4gdHJ5aW5nIHRvIHVzZSBY
-VFMgZm9yIHNvbWV0aGluZyBpdA0Kd2FzIG5vdCBkZXNpZ25lZCB0byBkbyAtIGJpZyBzZWN1cml0
-eSBtaXN0YWtlISkuDQoNCj4gV2UgY2FuJ3Qgc2F5ICJubyBpbnB1dCIgaGFzIGFueSBtZWFuaW5n
-IHRvIHRoZSBvdGhlciBza2NpcGhlciBhbGdvcml0aG1zLA0KPiBidXQgdGhlIGNvbnZlbnRpb24g
-aXMgdG8gYWNjZXB0IHRoaXMgY2FzZSBhbmQganVzdCByZXR1cm4gMC4NCj4gSSBkb24ndCBzZWUg
-d2h5IFhUUyBoYXMgdG8gYmUgaGFuZGxlZCBkaWZmZXJlbnRseS4NCj4NCkkgZG9uJ3Qgc2VlIHdo
-eSB5b3Ugd291bGQgYmxpbmRseSBmb2xsb3cgc29tZSBoaXN0b3JpY2FsIGNvbnZlbnRpb24gLi4u
-DQp1bmxlc3MgbWF5YmUgdGhlcmUgd2FzIHNvbWUgZXhpc3RpbmcgcmVhbCB1c2UgY2FzZSB0aGF0
-IHdvdWxkIGJlbmVmaXQ/DQoNCkJUVzogZm9yIGdlbmVyaWMgY2lwaGVycyBJIGNvdWxkIHRoaW5r
-IG9mIHNvbWUgdXNlIGNhc2VzIHdoZXJlIHRoZSB6ZXJvDQpsZW5ndGggcmVxdWVzdCBiZWluZyBh
-IG5vLW9wIG1ha2VzIHNlbnNlIGlmIHRoZSBhcHBsaWNhdGlvbiBkb2VzIG5vdA0KYm90aGVyIHRv
-IGNoZWNrIGhvdyBtdWNoIGRhdGEgaXQgaGFzIGdhdGhlcmVkIHRvIHByb2Nlc3MgKHdoaWNoIG1h
-eSBiZQ0Kbm90aGluZyksIGJ1dCBJIGNhbid0IHNlZSBob3cgdGhpcyBjb3VsZCBhcHBseSB0byBY
-VFMsIGJlaW5nIGJsb2NrLWJhc2VkLg0KDQo+IFRoYW5rcywNCj4gSG9yaWENCg0KUmVnYXJkcywN
-ClBhc2NhbCB2YW4gTGVldXdlbg0KU2lsaWNvbiBJUCBBcmNoaXRlY3QgTXVsdGktUHJvdG9jb2wg
-RW5naW5lcywgUmFtYnVzIFNlY3VyaXR5DQpSYW1idXMgUk9UVyBIb2xkaW5nIEJWDQorMzEtNzMg
-NjU4MTk1Mw0KDQpOb3RlOiBUaGUgSW5zaWRlIFNlY3VyZS9WZXJpbWF0cml4IFNpbGljb24gSVAg
-dGVhbSB3YXMgcmVjZW50bHkgYWNxdWlyZWQgYnkgUmFtYnVzLg0KUGxlYXNlIGJlIHNvIGtpbmQg
-dG8gdXBkYXRlIHlvdXIgZS1tYWlsIGFkZHJlc3MgYm9vayB3aXRoIG15IG5ldyBlLW1haWwgYWRk
-cmVzcy4NCg0KDQoqKiBUaGlzIG1lc3NhZ2UgYW5kIGFueSBhdHRhY2htZW50cyBhcmUgZm9yIHRo
-ZSBzb2xlIHVzZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpLiBJdCBtYXkgY29udGFpbiBp
-bmZvcm1hdGlvbiB0aGF0IGlzIGNvbmZpZGVudGlhbCBhbmQgcHJpdmlsZWdlZC4gSWYgeW91IGFy
-ZSBub3QgdGhlIGludGVuZGVkIHJlY2lwaWVudCBvZiB0aGlzIG1lc3NhZ2UsIHlvdSBhcmUgcHJv
-aGliaXRlZCBmcm9tIHByaW50aW5nLCBjb3B5aW5nLCBmb3J3YXJkaW5nIG9yIHNhdmluZyBpdC4g
-UGxlYXNlIGRlbGV0ZSB0aGUgbWVzc2FnZSBhbmQgYXR0YWNobWVudHMgYW5kIG5vdGlmeSB0aGUg
-c2VuZGVyIGltbWVkaWF0ZWx5LiAqKg0KDQpSYW1idXMgSW5jLjxodHRwOi8vd3d3LnJhbWJ1cy5j
-b20+DQo=
+At memory hot-remove time we can retrieve an LMB's nid from its
+corresponding memory_block.  There is no need to store the nid
+in multiple locations.
+
+Note that lmb_to_memblock() uses find_memory_block() to get the
+corresponding memory_block.  As find_memory_block() runs in sub-linear
+time this approach is negligibly slower than what we do at present.
+
+In exchange for this lookup at hot-remove time we no longer need to
+call memory_add_physaddr_to_nid() during drmem_init() for each LMB.
+On powerpc, memory_add_physaddr_to_nid() is a linear search, so this
+spares us an O(n^2) initialization during boot.
+
+On systems with many LMBs that initialization overhead is palpable and
+disruptive.  For example, on a box with 249854 LMBs we're seeing
+drmem_init() take upwards of 30 seconds to complete:
+
+[   53.721639] drmem: initializing drmem v2
+[   80.604346] watchdog: BUG: soft lockup - CPU#65 stuck for 23s! [swapper/0:1]
+[   80.604377] Modules linked in:
+[   80.604389] CPU: 65 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc2+ #4
+[   80.604397] NIP:  c0000000000a4980 LR: c0000000000a4940 CTR: 0000000000000000
+[   80.604407] REGS: c0002dbff8493830 TRAP: 0901   Not tainted  (5.6.0-rc2+)
+[   80.604412] MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 44000248  XER: 0000000d
+[   80.604431] CFAR: c0000000000a4a38 IRQMASK: 0
+[   80.604431] GPR00: c0000000000a4940 c0002dbff8493ac0 c000000001904400 c0003cfffffede30
+[   80.604431] GPR04: 0000000000000000 c000000000f4095a 000000000000002f 0000000010000000
+[   80.604431] GPR08: c0000bf7ecdb7fb8 c0000bf7ecc2d3c8 0000000000000008 c00c0002fdfb2001
+[   80.604431] GPR12: 0000000000000000 c00000001e8ec200
+[   80.604477] NIP [c0000000000a4980] hot_add_scn_to_nid+0xa0/0x3e0
+[   80.604486] LR [c0000000000a4940] hot_add_scn_to_nid+0x60/0x3e0
+[   80.604492] Call Trace:
+[   80.604498] [c0002dbff8493ac0] [c0000000000a4940] hot_add_scn_to_nid+0x60/0x3e0 (unreliable)
+[   80.604509] [c0002dbff8493b20] [c000000000087c10] memory_add_physaddr_to_nid+0x20/0x60
+[   80.604521] [c0002dbff8493b40] [c0000000010d4880] drmem_init+0x25c/0x2f0
+[   80.604530] [c0002dbff8493c10] [c000000000010154] do_one_initcall+0x64/0x2c0
+[   80.604540] [c0002dbff8493ce0] [c0000000010c4aa0] kernel_init_freeable+0x2d8/0x3a0
+[   80.604550] [c0002dbff8493db0] [c000000000010824] kernel_init+0x2c/0x148
+[   80.604560] [c0002dbff8493e20] [c00000000000b648] ret_from_kernel_thread+0x5c/0x74
+[   80.604567] Instruction dump:
+[   80.604574] 392918e8 e9490000 e90a000a e92a0000 80ea000c 1d080018 3908ffe8 7d094214
+[   80.604586] 7fa94040 419d00dc e9490010 714a0088 <2faa0008> 409e00ac e9490000 7fbe5040
+[   89.047390] drmem: 249854 LMB(s)
+
+With a patched kernel on the same machine we're no longer seeing the
+soft lockup.  drmem_init() now completes in negligible time, even when
+the LMB count is large.
+
+Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+---
+v1:
+ - RFC
+
+v2:
+ - Adjusted commit message.
+ - Miscellaneous cleanup.
+
+v3:
+ - Correct issue found by Laurent Dufour <ldufour@linux.vnet.ibm.com>:
+   - Add missing put_device() call in dlpar_remove_lmb() for the
+     lmb's associated mem_block.
+
+ arch/powerpc/include/asm/drmem.h              | 21 ----------------
+ arch/powerpc/mm/drmem.c                       |  6 +----
+ .../platforms/pseries/hotplug-memory.c        | 24 ++++++++++++-------
+ 3 files changed, 17 insertions(+), 34 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+index 414d209f45bb..34e4e9b257f5 100644
+--- a/arch/powerpc/include/asm/drmem.h
++++ b/arch/powerpc/include/asm/drmem.h
+@@ -13,9 +13,6 @@ struct drmem_lmb {
+ 	u32     drc_index;
+ 	u32     aa_index;
+ 	u32     flags;
+-#ifdef CONFIG_MEMORY_HOTPLUG
+-	int	nid;
+-#endif
+ };
+ 
+ struct drmem_lmb_info {
+@@ -104,22 +101,4 @@ static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
+ 	lmb->aa_index = 0xffffffff;
+ }
+ 
+-#ifdef CONFIG_MEMORY_HOTPLUG
+-static inline void lmb_set_nid(struct drmem_lmb *lmb)
+-{
+-	lmb->nid = memory_add_physaddr_to_nid(lmb->base_addr);
+-}
+-static inline void lmb_clear_nid(struct drmem_lmb *lmb)
+-{
+-	lmb->nid = -1;
+-}
+-#else
+-static inline void lmb_set_nid(struct drmem_lmb *lmb)
+-{
+-}
+-static inline void lmb_clear_nid(struct drmem_lmb *lmb)
+-{
+-}
+-#endif
+-
+ #endif /* _ASM_POWERPC_LMB_H */
+diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+index 59327cefbc6a..873fcfc7b875 100644
+--- a/arch/powerpc/mm/drmem.c
++++ b/arch/powerpc/mm/drmem.c
+@@ -362,10 +362,8 @@ static void __init init_drmem_v1_lmbs(const __be32 *prop)
+ 	if (!drmem_info->lmbs)
+ 		return;
+ 
+-	for_each_drmem_lmb(lmb) {
++	for_each_drmem_lmb(lmb)
+ 		read_drconf_v1_cell(lmb, &prop);
+-		lmb_set_nid(lmb);
+-	}
+ }
+ 
+ static void __init init_drmem_v2_lmbs(const __be32 *prop)
+@@ -410,8 +408,6 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
+ 
+ 			lmb->aa_index = dr_cell.aa_index;
+ 			lmb->flags = dr_cell.flags;
+-
+-			lmb_set_nid(lmb);
+ 		}
+ 	}
+ }
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 5ace2f9a277e..e34326d22400 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -356,25 +356,32 @@ static int dlpar_add_lmb(struct drmem_lmb *);
+ 
+ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+ {
++	struct memory_block *mem_block;
+ 	unsigned long block_sz;
+ 	int rc;
+ 
+ 	if (!lmb_is_removable(lmb))
+ 		return -EINVAL;
+ 
++	mem_block = lmb_to_memblock(lmb);
++	if (mem_block == NULL)
++		return -EINVAL;
++
+ 	rc = dlpar_offline_lmb(lmb);
+-	if (rc)
++	if (rc) {
++		put_device(&mem_block->dev);
+ 		return rc;
++	}
+ 
+ 	block_sz = pseries_memory_block_size();
+ 
+-	__remove_memory(lmb->nid, lmb->base_addr, block_sz);
++	__remove_memory(mem_block->nid, lmb->base_addr, block_sz);
++	put_device(&mem_block->dev);
+ 
+ 	/* Update memory regions for memory remove */
+ 	memblock_remove(lmb->base_addr, block_sz);
+ 
+ 	invalidate_lmb_associativity_index(lmb);
+-	lmb_clear_nid(lmb);
+ 	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
+ 
+ 	return 0;
+@@ -631,7 +638,7 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ {
+ 	unsigned long block_sz;
+-	int rc;
++	int nid, rc;
+ 
+ 	if (lmb->flags & DRCONF_MEM_ASSIGNED)
+ 		return -EINVAL;
+@@ -642,11 +649,13 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ 		return rc;
+ 	}
+ 
+-	lmb_set_nid(lmb);
+ 	block_sz = memory_block_size_bytes();
+ 
++	/* Find the node id for this address. */
++	nid = memory_add_physaddr_to_nid(lmb->base_addr);
++
+ 	/* Add the memory */
+-	rc = __add_memory(lmb->nid, lmb->base_addr, block_sz);
++	rc = __add_memory(nid, lmb->base_addr, block_sz);
+ 	if (rc) {
+ 		invalidate_lmb_associativity_index(lmb);
+ 		return rc;
+@@ -654,9 +663,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ 
+ 	rc = dlpar_online_lmb(lmb);
+ 	if (rc) {
+-		__remove_memory(lmb->nid, lmb->base_addr, block_sz);
++		__remove_memory(nid, lmb->base_addr, block_sz);
+ 		invalidate_lmb_associativity_index(lmb);
+-		lmb_clear_nid(lmb);
+ 	} else {
+ 		lmb->flags |= DRCONF_MEM_ASSIGNED;
+ 	}
+-- 
+2.24.1
 
