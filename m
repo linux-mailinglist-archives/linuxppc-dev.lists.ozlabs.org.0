@@ -1,49 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0785D242D35
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 18:30:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CADC6242D68
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 18:34:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRZtL0CCtzDqc5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 02:30:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRZz558X8zDqSh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 02:34:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=185.176.76.210; helo=huawei.com;
- envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=Huawei.com
-Received: from huawei.com (lhrrgout.huawei.com [185.176.76.210])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=f2JTFDVH; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRZfy601ZzDqbg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 02:20:07 +1000 (AEST)
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
- by Forcepoint Email with ESMTP id 8DC4E9962F777C180EF8;
- Wed, 12 Aug 2020 17:20:02 +0100 (IST)
-Received: from localhost (10.52.122.74) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Wed, 12 Aug
- 2020 17:20:01 +0100
-Date: Wed, 12 Aug 2020 17:18:33 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 8/8] mm/vmalloc: Hugepage vmalloc mappings
-Message-ID: <20200812171833.00001570@Huawei.com>
-In-Reply-To: <20200812132524.000067a6@Huawei.com>
-References: <20200810022732.1150009-1-npiggin@gmail.com>
- <20200810022732.1150009-9-npiggin@gmail.com>
- <20200812132524.000067a6@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRZqP2F1LzDqcY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 02:25:59 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07CG3DLB045631; Wed, 12 Aug 2020 12:22:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ulADsdqR1UKGVkndeaV+pyZ09sbODd2lhZRvdUd0ShQ=;
+ b=f2JTFDVH9J67okS2UOSDqbrm1fd+g4JB09iT09K8xRiBV4LnxsdXU3BbSKwFJ6p1YFTB
+ ZsLVK/BztPpXuz3j+L8CimNq0/9MqzfiGXzmc+JsnYIP1hwxLdKRaYO2R0Gi4KngxUIz
+ IvfGWcpT97Q1z+newUSVcGRryvaWc73/98ZMnVlerDS5kZ1HHdO2zePfZgoowjG6bxIU
+ pzbXjQHxhQ90fpOsXaRDonAjqjxza4JaYqsv7MONY0ezFg4GBiMl7WI53cd2KreLcO53
+ lmIvtcDszqpkIrdAJo8iUrtjKOZAXwZ1CqiptmsgRTUClddCRtZZJLMBTmpvn5Db4JNo Tw== 
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32srasyy4y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Aug 2020 12:22:32 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07CGKxKk024551;
+ Wed, 12 Aug 2020 16:22:30 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma04dal.us.ibm.com with ESMTP id 32skp9bm2t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Aug 2020 16:22:30 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07CGMTSh1508020
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Aug 2020 16:22:29 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 26A09C605B;
+ Wed, 12 Aug 2020 16:22:29 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2870CC6055;
+ Wed, 12 Aug 2020 16:22:28 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.67.173])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 12 Aug 2020 16:22:27 +0000 (GMT)
+Subject: Re: [PATCH v2] powerpc/pseries: explicitly reschedule during
+ drmem_lmb list traversal
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200812012005.1919255-1-nathanl@linux.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <5e8213a6-802b-f7ca-b43b-a3de8a03d1da@linux.ibm.com>
+Date: Wed, 12 Aug 2020 09:22:27 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+In-Reply-To: <20200812012005.1919255-1-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.122.74]
-X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-12_09:2020-08-11,
+ 2020-08-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008120109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,141 +100,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linuxarm@huawei.com, linux-mm@kvack.org,
- Zefan Li <lizefan@huawei.com>, Borislav Petkov <bp@alien8.de>, "H. Peter
- Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
- Will Deacon <will@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org
+Cc: cheloha@linux.ibm.com, ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 12 Aug 2020 13:25:24 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On 8/11/20 6:20 PM, Nathan Lynch wrote:
+> The drmem lmb list can have hundreds of thousands of entries, and
+> unfortunately lookups take the form of linear searches. As long as
+> this is the case, traversals have the potential to monopolize the CPU
+> and provoke lockup reports, workqueue stalls, and the like unless
+> they explicitly yield.
+> 
+> Rather than placing cond_resched() calls within various
+> for_each_drmem_lmb() loop blocks in the code, put it in the iteration
+> expression of the loop macro itself so users can't omit it.
+> 
+> Call cond_resched() on every 20th element. Each iteration of the loop
+> in DLPAR code paths can involve around ten RTAS calls which can each
+> take up to 250us, so this ensures the check is performed at worst
+> every few milliseconds.
+> 
+> Fixes: 6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/drmem.h | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> Changes since v1:
+> * Add bounds assertions in drmem_lmb_next().
+> * Call cond_resched() in the iterator on only every 20th element
+>   instead of on every iteration, to reduce overhead in tight loops.
+> 
+> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+> index 17ccc6474ab6..583277e30dd2 100644
+> --- a/arch/powerpc/include/asm/drmem.h
+> +++ b/arch/powerpc/include/asm/drmem.h
+> @@ -8,6 +8,9 @@
+>  #ifndef _ASM_POWERPC_LMB_H
+>  #define _ASM_POWERPC_LMB_H
+>  
+> +#include <linux/bug.h>
+> +#include <linux/sched.h>
+> +
+>  struct drmem_lmb {
+>  	u64     base_addr;
+>  	u32     drc_index;
+> @@ -26,8 +29,21 @@ struct drmem_lmb_info {
+>  
+>  extern struct drmem_lmb_info *drmem_info;
+>  
+> +static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb)
+> +{
+> +	const unsigned int resched_interval = 20;
+> +
+> +	BUG_ON(lmb < drmem_info->lmbs);
+> +	BUG_ON(lmb >= drmem_info->lmbs + drmem_info->n_lmbs);
 
-> On Mon, 10 Aug 2020 12:27:32 +1000
-> Nicholas Piggin <npiggin@gmail.com> wrote:
-> 
-> > On platforms that define HAVE_ARCH_HUGE_VMAP and support PMD vmaps,
-> > vmalloc will attempt to allocate PMD-sized pages first, before falling
-> > back to small pages.
-> > 
-> > Allocations which use something other than PAGE_KERNEL protections are
-> > not permitted to use huge pages yet, not all callers expect this (e.g.,
-> > module allocations vs strict module rwx).
-> > 
-> > This reduces TLB misses by nearly 30x on a `git diff` workload on a
-> > 2-node POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
-> > 
-> > This can result in more internal fragmentation and memory overhead for a
-> > given allocation, an option nohugevmap is added to disable at boot.
-> > 
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>  
-> Hi Nicholas,
-> 
-> Busy afternoon, but a possible point of interest in line in the meantime.
-> 
+I think BUG_ON is a pretty big no-no these days unless there is no other option.
 
-I did manage to get back to this.
+-Tyrel
 
-The issue I think is that ARM64 defines THREAD_ALIGN with CONFIG_VMAP_STACK
-to be 2* THREAD SIZE.  There is comment in arch/arm64/include/asm/memory.h
-that this is to allow cheap checking of overflow.
-
-A quick grep suggests ARM64 is the only architecture to do this...
-
-Jonathan
-
-
-
+> +
+> +	if ((lmb - drmem_info->lmbs) % resched_interval == 0)
+> +		cond_resched();
+> +
+> +	return ++lmb;
+> +}
+> +
+>  #define for_each_drmem_lmb_in_range(lmb, start, end)		\
+> -	for ((lmb) = (start); (lmb) < (end); (lmb)++)
+> +	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb))
+>  
+>  #define for_each_drmem_lmb(lmb)					\
+>  	for_each_drmem_lmb_in_range((lmb),			\
 > 
-> ...
-> 
-> > @@ -2701,22 +2760,45 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
-> >  			pgprot_t prot, unsigned long vm_flags, int node,
-> >  			const void *caller)
-> >  {
-> > -	struct vm_struct *area;
-> > +	struct vm_struct *area = NULL;
-> >  	void *addr;
-> >  	unsigned long real_size = size;
-> > +	unsigned long real_align = align;
-> > +	unsigned int shift = PAGE_SHIFT;
-> >  
-> >  	size = PAGE_ALIGN(size);
-> >  	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
-> >  		goto fail;
-> >  
-> > -	area = __get_vm_area_node(real_size, align, VM_ALLOC | VM_UNINITIALIZED |
-> > +	if (vmap_allow_huge && (pgprot_val(prot) == pgprot_val(PAGE_KERNEL))) {
-> > +		unsigned long size_per_node;
-> > +
-> > +		/*
-> > +		 * Try huge pages. Only try for PAGE_KERNEL allocations,
-> > +		 * others like modules don't yet expect huge pages in
-> > +		 * their allocations due to apply_to_page_range not
-> > +		 * supporting them.
-> > +		 */
-> > +
-> > +		size_per_node = size;
-> > +		if (node == NUMA_NO_NODE)
-> > +			size_per_node /= num_online_nodes();
-> > +		if (size_per_node >= PMD_SIZE)
-> > +			shift = PMD_SHIFT;
-> > +	}
-> > +
-> > +again:
-> > +	align = max(real_align, 1UL << shift);
-> > +	size = ALIGN(real_size, align);  
-> 
-> So my suspicion is that the issue on arm64 is related to this.
-> In the relevant call path, align is 32K whilst the size is 16K
-> 
-> Previously I don't think we force size to be a multiple of align.
-> 
-> I think this results in nr_pages being double what it was before.
-> 
-> 
-> > +
-> > +	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
-> >  				vm_flags, start, end, node, gfp_mask, caller);
-> >  	if (!area)
-> >  		goto fail;
-> >  
-> > -	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
-> > +	addr = __vmalloc_area_node(area, gfp_mask, prot, shift, node);
-> >  	if (!addr)
-> > -		return NULL;
-> > +		goto fail;
-> >  
-> >  	/*
-> >  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
-> > @@ -2730,8 +2812,16 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
-> >  	return addr;
-> >  
-> >  fail:
-> > -	warn_alloc(gfp_mask, NULL,
-> > +	if (shift > PAGE_SHIFT) {
-> > +		shift = PAGE_SHIFT;
-> > +		goto again;
-> > +	}
-> > +
-> > +	if (!area) {
-> > +		/* Warn for area allocation, page allocations already warn */
-> > +		warn_alloc(gfp_mask, NULL,
-> >  			  "vmalloc: allocation failure: %lu bytes", real_size);
-> > +	}
-> >  	return NULL;
-> >  }
-> >    
-> 
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
 
