@@ -2,57 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CE82424F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 07:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 798AA242505
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 07:39:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRJ2g45VczDqVm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 15:21:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRJSD0RywzDqQY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 15:39:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NUQHENon; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRJ0p6BP4zDqBt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 15:19:33 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BRJ0b6N9Jz9txnS;
- Wed, 12 Aug 2020 07:19:27 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id JP0leeGbRS3m; Wed, 12 Aug 2020 07:19:27 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BRJ0b57pNz9txnR;
- Wed, 12 Aug 2020 07:19:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 870388B778;
- Wed, 12 Aug 2020 07:19:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 0N3gvScVXHlB; Wed, 12 Aug 2020 07:19:28 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D0398B75B;
- Wed, 12 Aug 2020 07:19:28 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc/pseries: explicitly reschedule during
- drmem_lmb list traversal
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200812012005.1919255-1-nathanl@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <c39976ce-a95c-a9cb-d119-d272b8de2f28@csgroup.eu>
-Date: Wed, 12 Aug 2020 07:19:26 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRJQQ6JVTzDqQY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 15:38:22 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07C5WMY8040673; Wed, 12 Aug 2020 01:38:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=UomPFfu1HTDoKDetkMceKR1argz9g58WcBrOknfWkxM=;
+ b=NUQHENonin/WL8Ds8lhiirp/x0x0wVdigy0kH1pHIKxAilveJMMbhz7eIOI46j5qzwjx
+ j9t/kk1Jbi+2Jiba9fUuTi/FUkI/z+LiDwXOG1BYBXHb3SKNQM4wBTPW4v9JW0Btnq4K
+ 0gRzTRHfAF/O2X2nHPUO0ggKCD6DlgVZjU77IhgMCjnSu6Bv6UQZKkSYg23SA8RGtAw4
+ FnQIMUx9hDBk1OndslHHGYUS0q1HuZ7pdm7w6u+AggskJhi8w6sJi8tPaDldxJBkFaJq
+ ZzhRRM2n/dOlABH1JwZOBkaYKFmXglzOsa3wU9c5kRow0/YsPjey4xsQjuklKH3rdPbw wA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32v83bjpr4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Aug 2020 01:38:06 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07C5WPMA041050;
+ Wed, 12 Aug 2020 01:38:05 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32v83bjpqx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Aug 2020 01:38:05 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07C5ZEjP024626;
+ Wed, 12 Aug 2020 05:38:04 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma03dal.us.ibm.com with ESMTP id 32skp96udm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Aug 2020 05:38:04 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07C5c0bJ31654338
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Aug 2020 05:38:00 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 577D9C6055;
+ Wed, 12 Aug 2020 05:38:03 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 82ECDC6059;
+ Wed, 12 Aug 2020 05:38:02 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.85.80.243])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 12 Aug 2020 05:38:02 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 7BBA32E2F09; Wed, 12 Aug 2020 11:07:49 +0530 (IST)
+Date: Wed, 12 Aug 2020 11:07:49 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v5 06/10] powerpc/smp: Optimize start_secondary
+Message-ID: <20200812053749.GA17292@in.ibm.com>
+References: <20200810071834.92514-1-srikar@linux.vnet.ibm.com>
+ <20200810071834.92514-7-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200812012005.1919255-1-nathanl@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200810071834.92514-7-srikar@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-11_19:2020-08-11,
+ 2020-08-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 phishscore=0
+ malwarescore=0 clxscore=1015 suspectscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008120035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,105 +106,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, cheloha@linux.ibm.com, ldufour@linux.ibm.com
+Reply-To: ego@linux.vnet.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Jordan Niethe <jniethe5@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Srikar,
 
+On Mon, Aug 10, 2020 at 12:48:30PM +0530, Srikar Dronamraju wrote:
+> In start_secondary, even if shared_cache was already set, system does a
+> redundant match for cpumask. This redundant check can be removed by
+> checking if shared_cache is already set.
+> 
+> While here, localize the sibling_mask variable to within the if
+> condition.
+> 
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: LKML <linux-kernel@vger.kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Anton Blanchard <anton@ozlabs.org>
+> Cc: Oliver O'Halloran <oohall@gmail.com>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Michael Neuling <mikey@neuling.org>
+> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Valentin Schneider <valentin.schneider@arm.com>
+> Cc: Jordan Niethe <jniethe5@gmail.com>
+> Cc: Vaidyanathan Srinivasan <svaidy@linux.ibm.com>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-Le 12/08/2020 à 03:20, Nathan Lynch a écrit :
-> The drmem lmb list can have hundreds of thousands of entries, and
-> unfortunately lookups take the form of linear searches. As long as
-> this is the case, traversals have the potential to monopolize the CPU
-> and provoke lockup reports, workqueue stalls, and the like unless
-> they explicitly yield.
-> 
-> Rather than placing cond_resched() calls within various
-> for_each_drmem_lmb() loop blocks in the code, put it in the iteration
-> expression of the loop macro itself so users can't omit it.
-> 
-> Call cond_resched() on every 20th element. Each iteration of the loop
-> in DLPAR code paths can involve around ten RTAS calls which can each
-> take up to 250us, so this ensures the check is performed at worst
-> every few milliseconds.
-> 
-> Fixes: 6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+The change looks good to me.
+
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+
 > ---
->   arch/powerpc/include/asm/drmem.h | 18 +++++++++++++++++-
->   1 file changed, 17 insertions(+), 1 deletion(-)
+> Changelog v4 ->v5:
+> 	Retain cache domain, no need for generalization
+> 		 (Michael Ellerman, Peter Zijlstra,
+> 		 Valentin Schneider, Gautham R. Shenoy)
 > 
-> Changes since v1:
-> * Add bounds assertions in drmem_lmb_next().
-> * Call cond_resched() in the iterator on only every 20th element
->    instead of on every iteration, to reduce overhead in tight loops.
+> Changelog v1 -> v2:
+> 	Moved shared_cache topology fixup to fixup_topology (Gautham)
 > 
-> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-> index 17ccc6474ab6..583277e30dd2 100644
-> --- a/arch/powerpc/include/asm/drmem.h
-> +++ b/arch/powerpc/include/asm/drmem.h
-> @@ -8,6 +8,9 @@
->   #ifndef _ASM_POWERPC_LMB_H
->   #define _ASM_POWERPC_LMB_H
->   
-> +#include <linux/bug.h>
-> +#include <linux/sched.h>
-> +
->   struct drmem_lmb {
->   	u64     base_addr;
->   	u32     drc_index;
-> @@ -26,8 +29,21 @@ struct drmem_lmb_info {
->   
->   extern struct drmem_lmb_info *drmem_info;
->   
-> +static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb)
-> +{
-> +	const unsigned int resched_interval = 20;
-> +
-> +	BUG_ON(lmb < drmem_info->lmbs);
-> +	BUG_ON(lmb >= drmem_info->lmbs + drmem_info->n_lmbs);
-
-BUG_ON() shall be avoided unless absolutely necessary.
-Wouldn't WARN_ON() together with an early return be enough ?
-
-> +
-> +	if ((lmb - drmem_info->lmbs) % resched_interval == 0)
-> +		cond_resched();
-
-Do you need something that precise ? Can't you use 16 or 32 and use a 
-logical AND instead of a MODULO ?
-
-And what garanties that lmb is always an element of a table based at 
-drmem_info->lmbs ?
-
-What about:
-
-static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb, 
-struct drmem_lmb *start)
-{
-	const unsigned int resched_interval = 16;
-
-	if ((++lmb - start) & resched_interval == 0)
-		cond_resched();
-
-	return lmb;
-}
-
-#define for_each_drmem_lmb_in_range(lmb, start, end)		\
-	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb, start))
-
-
-> +
-> +	return ++lmb;
-> +}
-> +
->   #define for_each_drmem_lmb_in_range(lmb, start, end)		\
-> -	for ((lmb) = (start); (lmb) < (end); (lmb)++)
-> +	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb))
->   
->   #define for_each_drmem_lmb(lmb)					\
->   	for_each_drmem_lmb_in_range((lmb),			\
+>  arch/powerpc/kernel/smp.c | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
 > 
-
-Christophe
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 0c960ce3be42..91cf5d05e7ec 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -851,7 +851,7 @@ static int powerpc_shared_cache_flags(void)
+>   */
+>  static const struct cpumask *shared_cache_mask(int cpu)
+>  {
+> -	return cpu_l2_cache_mask(cpu);
+> +	return per_cpu(cpu_l2_cache_map, cpu);
+>  }
+> 
+>  #ifdef CONFIG_SCHED_SMT
+> @@ -1305,7 +1305,6 @@ static void add_cpu_to_masks(int cpu)
+>  void start_secondary(void *unused)
+>  {
+>  	unsigned int cpu = smp_processor_id();
+> -	struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
+> 
+>  	mmgrab(&init_mm);
+>  	current->active_mm = &init_mm;
+> @@ -1331,14 +1330,20 @@ void start_secondary(void *unused)
+>  	/* Update topology CPU masks */
+>  	add_cpu_to_masks(cpu);
+> 
+> -	if (has_big_cores)
+> -		sibling_mask = cpu_smallcore_mask;
+>  	/*
+>  	 * Check for any shared caches. Note that this must be done on a
+>  	 * per-core basis because one core in the pair might be disabled.
+>  	 */
+> -	if (!cpumask_equal(cpu_l2_cache_mask(cpu), sibling_mask(cpu)))
+> -		shared_caches = true;
+> +	if (!shared_caches) {
+> +		struct cpumask *(*sibling_mask)(int) = cpu_sibling_mask;
+> +		struct cpumask *mask = cpu_l2_cache_mask(cpu);
+> +
+> +		if (has_big_cores)
+> +			sibling_mask = cpu_smallcore_mask;
+> +
+> +		if (cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu)))
+> +			shared_caches = true;
+> +	}
+> 
+>  	set_numa_node(numa_cpu_lookup_table[cpu]);
+>  	set_numa_mem(local_memory_node(numa_cpu_lookup_table[cpu]));
+> -- 
+> 2.18.2
+> 
