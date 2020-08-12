@@ -2,80 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A772424E2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 06:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25CE82424F7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 07:21:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRHDr2ytVzDqVV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 14:45:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRJ2g45VczDqVm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 15:21:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::741;
- helo=mail-qk1-x741.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=T1etfOK9; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRHBg4QcWzDqQr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 14:43:07 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id p4so1040046qkf.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Aug 2020 21:43:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=rJgrLSyPdqItlX390TtkEupGeCAynoZXuPZIpOgMg8g=;
- b=T1etfOK9vyL/pFR86O/Ro61bfgZaKs+C7SK9AkCphZWD+TjZ+RHwr7j9p3NUcuQLTA
- 5tVBtqPXo0fyWftA02iaGtxgCNhUG+gD+qMvXFhUStINogiecxczPOixqU8YNknuVWkG
- zt7pDP0WLRdv+FwtEpAnNgpT4RF9H74UDPK3p/cpRjnEU9VIlILzIN6rIG2fmyNrpOma
- hznAnHC5WPTkfqHbpsIS7ipxzI3jiNPNeakv8jCDCvYwVXmBfaEu7N742z8+vYJANAUV
- HxTECk+SNW/gbtkigfAQSu+OG16OO0TgYO3H8xOCVdl+yTDG/LNEIX3wQXx/uOI1OQdi
- Jinw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=rJgrLSyPdqItlX390TtkEupGeCAynoZXuPZIpOgMg8g=;
- b=jfMg5Jn2Sd+NlIcxPDPhdYPKCuS+Wj0tNsYgcqQlE2VRWWV+LHV4cqRLcvv1boTBiH
- 5+rCi0sSaQdmjiTvxsUSr++Jhny/au6n47fr/i97lutRM6zQ9/TkdgsylnqagRAhHM1v
- iZeelYCKnznJnv5x2Kdz4pYUHiK5kgGxYTPE6vJ/X2m8d7MmQlg9fta0VplXDpKr0Ock
- VpFnw3IaVQi9Hm5x6PW1bMYTjArBN96xwbtFYDNq3GTMXhukfRSKWNYmiYEwQzDbaa8o
- PGtv0abZeRy6fd2/dDeGrjQ6x+SSH0MozXXt52bxeLG6BjL3e8V4JBPu4U31kPYoqljK
- YG+w==
-X-Gm-Message-State: AOAM531lDjInjPuHx8j9xvOORmRzHXFpbPcxAKSQEcFqcOSZigOfC2Qa
- 56rYrRsZm2Axs/blv/++31w=
-X-Google-Smtp-Source: ABdhPJwLxgEw+Q6iFnIConOqLBIVUHovAuGXnEwEQsCuzQ1XQ/D/krtxWAM5HMBnePva1T2B72QQhA==
-X-Received: by 2002:ae9:e505:: with SMTP id w5mr4276341qkf.282.1597207383233; 
- Tue, 11 Aug 2020 21:43:03 -0700 (PDT)
-Received: from LeoBras ([177.35.193.93])
- by smtp.gmail.com with ESMTPSA id o72sm963097qka.113.2020.08.11.21.42.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Aug 2020 21:43:02 -0700 (PDT)
-Message-ID: <4edd762ee53060db6ae3d58aa45ea25887c04a47.camel@gmail.com>
-Subject: Re: [PATCH v5 0/4] Allow bigger 64bit window by removing default
- DMA window
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Alexey
- Kardashevskiy <aik@ozlabs.ru>, Thiago Jung Bauermann
- <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>, Brian King
- <brking@linux.vnet.ibm.com>, Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-Date: Wed, 12 Aug 2020 01:42:56 -0300
-In-Reply-To: <20200805030455.123024-1-leobras.c@gmail.com>
-References: <20200805030455.123024-1-leobras.c@gmail.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRJ0p6BP4zDqBt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 15:19:33 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BRJ0b6N9Jz9txnS;
+ Wed, 12 Aug 2020 07:19:27 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id JP0leeGbRS3m; Wed, 12 Aug 2020 07:19:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BRJ0b57pNz9txnR;
+ Wed, 12 Aug 2020 07:19:27 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 870388B778;
+ Wed, 12 Aug 2020 07:19:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 0N3gvScVXHlB; Wed, 12 Aug 2020 07:19:28 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D0398B75B;
+ Wed, 12 Aug 2020 07:19:28 +0200 (CEST)
+Subject: Re: [PATCH v2] powerpc/pseries: explicitly reschedule during
+ drmem_lmb list traversal
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200812012005.1919255-1-nathanl@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <c39976ce-a95c-a9cb-d119-d272b8de2f28@csgroup.eu>
+Date: Wed, 12 Aug 2020 07:19:26 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200812012005.1919255-1-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,107 +64,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: tyreld@linux.ibm.com, cheloha@linux.ibm.com, ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Michael,
 
-Do you suggest any change for this patchset?
-Any chance it can get in this merge window?
 
-Best regards,
-Leonardo Bras
-
-On Wed, 2020-08-05 at 00:04 -0300, Leonardo Bras wrote:
-> There are some devices in which a hypervisor may only allow 1 DMA window
-> to exist at a time, and in those cases, a DDW is never created to them,
-> since the default DMA window keeps using this resource.
+Le 12/08/2020 à 03:20, Nathan Lynch a écrit :
+> The drmem lmb list can have hundreds of thousands of entries, and
+> unfortunately lookups take the form of linear searches. As long as
+> this is the case, traversals have the potential to monopolize the CPU
+> and provoke lockup reports, workqueue stalls, and the like unless
+> they explicitly yield.
 > 
-> LoPAR recommends this procedure:
-> 1. Remove the default DMA window,
-> 2. Query for which configs the DDW can be created,
-> 3. Create a DDW.
+> Rather than placing cond_resched() calls within various
+> for_each_drmem_lmb() loop blocks in the code, put it in the iteration
+> expression of the loop macro itself so users can't omit it.
 > 
-> Patch #1:
-> Create defines for outputs of ibm,ddw-applicable, so it's easier to
-> identify them.
+> Call cond_resched() on every 20th element. Each iteration of the loop
+> in DLPAR code paths can involve around ten RTAS calls which can each
+> take up to 250us, so this ensures the check is performed at worst
+> every few milliseconds.
 > 
-> Patch #2:
-> - After LoPAR level 2.8, there is an extension that can make
->   ibm,query-pe-dma-windows to have 6 outputs instead of 5. This changes the
->   order of the outputs, and that can cause some trouble. 
-> - query_ddw() was updated to check how many outputs the 
->   ibm,query-pe-dma-windows is supposed to have, update the rtas_call() and
->   deal correctly with the outputs in both cases.
-> - This patch looks somehow unrelated to the series, but it can avoid future
->   problems on DDW creation.
-> 
-> Patch #3 moves the window-removing code from remove_ddw() to
-> remove_dma_window(), creating a way to delete any DMA window, so it can be
-> used to delete the default DMA window.
-> 
-> Patch #4 makes use of the remove_dma_window() from patch #3 to remove the
-> default DMA window before query_ddw(). It also implements a new rtas call
-> to recover the default DMA window, in case anything fails after it was
-> removed, and a DDW couldn't be created.
-> 
+> Fixes: 6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 > ---
-> Changes since v4:
-> - Removed patches 5+ in order to deal with a feature at a time
-> - Remove unnecessary parentesis in patch #4
-> - Changed patch #4 title from 
->   "Remove default DMA window before creating DDW"
-> - Included David Dai tested-by
-> - v4 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=190051&state=%2A&archive=both
-> 
-> Changes since v3:
-> - Introduces new patch #5, to prepare for an important change in #6
-> - struct iommu_table was not being updated, so include a way to do this
->   in patch #6.
-> - Improved patch #4 based in a suggestion from Alexey, to make code
->   more easily understandable
-> - v3 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=187348&state=%2A&archive=both
-> 
-> Changes since v2:
-> - Change the way ibm,ddw-extensions is accessed, using a proper function
->   instead of doing this inline everytime it's used.
-> - Remove previous patch #6, as it doesn't look like it would be useful.
-> - Add new patch, for changing names from direct* to dma*, as indirect 
->   mapping can be used from now on.
-> - Fix some typos, corrects some define usage.
-> - v2 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=185433&state=%2A&archive=both
+>   arch/powerpc/include/asm/drmem.h | 18 +++++++++++++++++-
+>   1 file changed, 17 insertions(+), 1 deletion(-)
 > 
 > Changes since v1:
-> - Add defines for ibm,ddw-applicable and ibm,ddw-extensions outputs
-> - Merge aux function query_ddw_out_sz() into query_ddw()
-> - Merge reset_dma_window() patch (prev. #2) into remove default DMA
->   window patch (#4).
-> - Keep device_node *np name instead of using pdn in remove_*()
-> - Rename 'device_node *pdn' into 'parent' in new functions
-> - Rename dfl_win to default_win
-> - Only remove the default DMA window if there is no window available
->   in first query.
-> - Check if default DMA window can be restored before removing it.
-> - Fix 'unitialized use' (found by travis mpe:ci-test)
-> - New patches #5 and #6
-> - v1 link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=184420&state=%2A&archive=both
+> * Add bounds assertions in drmem_lmb_next().
+> * Call cond_resched() in the iterator on only every 20th element
+>    instead of on every iteration, to reduce overhead in tight loops.
 > 
-> Special thanks for Alexey Kardashevskiy, Brian King and
-> Oliver O'Halloran for the feedback provided!
-> 
-> 
-> Leonardo Bras (4):
->   powerpc/pseries/iommu: Create defines for operations in
->     ibm,ddw-applicable
->   powerpc/pseries/iommu: Update call to ibm,query-pe-dma-windows
->   powerpc/pseries/iommu: Move window-removing part of remove_ddw into
->     remove_dma_window
->   powerpc/pseries/iommu: Allow bigger 64bit window by removing default
->     DMA window
-> 
->  arch/powerpc/platforms/pseries/iommu.c | 242 ++++++++++++++++++++-----
->  1 file changed, 195 insertions(+), 47 deletions(-)
+> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+> index 17ccc6474ab6..583277e30dd2 100644
+> --- a/arch/powerpc/include/asm/drmem.h
+> +++ b/arch/powerpc/include/asm/drmem.h
+> @@ -8,6 +8,9 @@
+>   #ifndef _ASM_POWERPC_LMB_H
+>   #define _ASM_POWERPC_LMB_H
+>   
+> +#include <linux/bug.h>
+> +#include <linux/sched.h>
+> +
+>   struct drmem_lmb {
+>   	u64     base_addr;
+>   	u32     drc_index;
+> @@ -26,8 +29,21 @@ struct drmem_lmb_info {
+>   
+>   extern struct drmem_lmb_info *drmem_info;
+>   
+> +static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb)
+> +{
+> +	const unsigned int resched_interval = 20;
+> +
+> +	BUG_ON(lmb < drmem_info->lmbs);
+> +	BUG_ON(lmb >= drmem_info->lmbs + drmem_info->n_lmbs);
+
+BUG_ON() shall be avoided unless absolutely necessary.
+Wouldn't WARN_ON() together with an early return be enough ?
+
+> +
+> +	if ((lmb - drmem_info->lmbs) % resched_interval == 0)
+> +		cond_resched();
+
+Do you need something that precise ? Can't you use 16 or 32 and use a 
+logical AND instead of a MODULO ?
+
+And what garanties that lmb is always an element of a table based at 
+drmem_info->lmbs ?
+
+What about:
+
+static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb, 
+struct drmem_lmb *start)
+{
+	const unsigned int resched_interval = 16;
+
+	if ((++lmb - start) & resched_interval == 0)
+		cond_resched();
+
+	return lmb;
+}
+
+#define for_each_drmem_lmb_in_range(lmb, start, end)		\
+	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb, start))
+
+
+> +
+> +	return ++lmb;
+> +}
+> +
+>   #define for_each_drmem_lmb_in_range(lmb, start, end)		\
+> -	for ((lmb) = (start); (lmb) < (end); (lmb)++)
+> +	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb))
+>   
+>   #define for_each_drmem_lmb(lmb)					\
+>   	for_each_drmem_lmb_in_range((lmb),			\
 > 
 
+Christophe
