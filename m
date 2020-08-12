@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2023C242924
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 14:12:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630D1242947
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 14:26:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRT8g2c2pzDqbp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 22:12:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRTTr3hGWzDqd9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 22:26:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,40 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRT1g5HlNzDqZS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 22:05:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRT1q0c6JzDqZX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 22:06:04 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BRT1Z5LjtzB09ZW;
- Wed, 12 Aug 2020 14:05:54 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BRT1c6Qb1zB09ZY;
+ Wed, 12 Aug 2020 14:05:56 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id cPcwPcRbBfl1; Wed, 12 Aug 2020 14:05:54 +0200 (CEST)
+ with ESMTP id heUzEzYIYrOR; Wed, 12 Aug 2020 14:05:56 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BRT1Z4R4LzB09ZQ;
- Wed, 12 Aug 2020 14:05:54 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B3998B828;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BRT1c5dT5zB09ZQ;
  Wed, 12 Aug 2020 14:05:56 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 373D58B826;
+ Wed, 12 Aug 2020 14:05:58 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id rf84xCHalPt4; Wed, 12 Aug 2020 14:05:55 +0200 (CEST)
+ with ESMTP id 8SwpSyskm4Ce; Wed, 12 Aug 2020 14:05:58 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B6E1F8B7FC;
- Wed, 12 Aug 2020 14:05:55 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CADF88B7FC;
+ Wed, 12 Aug 2020 14:05:57 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 9853F65C34; Wed, 12 Aug 2020 12:05:55 +0000 (UTC)
-Message-Id: <a76ace7f5867a0c6e5c940b53d02024d4e9f79aa.1597233555.git.christophe.leroy@csgroup.eu>
+ id A51FB65C34; Wed, 12 Aug 2020 12:05:57 +0000 (UTC)
+Message-Id: <09ebaef69b332f205fc7a71fead88aed7eac1f92.1597233555.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1597233555.git.christophe.leroy@csgroup.eu>
 References: <cover.1597233555.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [RFC PATCH v1 04/19] powerpc/ptrace: Create ptrace_get_fpr() and
- ptrace_put_fpr()
+Subject: [RFC PATCH v1 06/19] powerpc/32s: Allow deselecting CONFIG_PPC_FPU on
+ mpc832x
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  ldv@altlinux.org, viro@zeniv.linux.org.uk
-Date: Wed, 12 Aug 2020 12:05:55 +0000 (UTC)
+Date: Wed, 12 Aug 2020 12:05:57 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,158 +67,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On the same model as ptrace_get_reg() and ptrace_put_reg(),
-create ptrace_get_fpr() and ptrace_put_fpr() to get/set
-the floating points registers.
+The e300c2 core which is embedded in mpc832x CPU doesn't have
+an FPU.
 
-We move the boundary checkings in them.
+Make it possible to not select CONFIG_PPC_FPU when building a
+kernel dedicated to that target.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/ptrace/Makefile      |  1 +
- arch/powerpc/kernel/ptrace/ptrace-decl.h |  4 +++
- arch/powerpc/kernel/ptrace/ptrace-fpu.c  | 40 ++++++++++++++++++++++++
- arch/powerpc/kernel/ptrace/ptrace.c      | 38 +++++++---------------
- 4 files changed, 56 insertions(+), 27 deletions(-)
- create mode 100644 arch/powerpc/kernel/ptrace/ptrace-fpu.c
+ arch/powerpc/platforms/Kconfig.cputype | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ptrace/Makefile b/arch/powerpc/kernel/ptrace/Makefile
-index c2f2402ebc8c..77abd1a5a508 100644
---- a/arch/powerpc/kernel/ptrace/Makefile
-+++ b/arch/powerpc/kernel/ptrace/Makefile
-@@ -6,6 +6,7 @@
- CFLAGS_ptrace-view.o		+= -DUTS_MACHINE='"$(UTS_MACHINE)"'
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 40ffcdba42b8..d4fd109f177e 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -32,7 +32,7 @@ choice
+ config PPC_BOOK3S_6xx
+ 	bool "512x/52xx/6xx/7xx/74xx/82xx/83xx/86xx except 601"
+ 	select PPC_BOOK3S_32
+-	select PPC_FPU
++	imply PPC_FPU
+ 	select PPC_HAVE_PMU_SUPPORT
+ 	select PPC_HAVE_KUEP
+ 	select PPC_HAVE_KUAP
+@@ -229,9 +229,16 @@ config PPC_FPU_REGS
+ 	bool
  
- obj-y				+= ptrace.o ptrace-view.o
-+obj-y				+= ptrace-fpu.o
- obj-$(CONFIG_COMPAT)		+= ptrace32.o
- obj-$(CONFIG_VSX)		+= ptrace-vsx.o
- ifneq ($(CONFIG_VSX),y)
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-decl.h b/arch/powerpc/kernel/ptrace/ptrace-decl.h
-index 2ddc68412fa8..eafe5f0f6289 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-decl.h
-+++ b/arch/powerpc/kernel/ptrace/ptrace-decl.h
-@@ -164,6 +164,10 @@ int ptrace_put_reg(struct task_struct *task, int regno, unsigned long data);
+ config PPC_FPU
+-	bool
++	bool "Support for Floating Point Unit (FPU)" if PPC_MPC832x
+ 	default y if PPC64
+ 	select PPC_FPU_REGS
++	help
++	  This must be enabled to support the Floating Point Unit
++	  Most 6xx have an FPU but e300c2 core (mpc832x) don't have
++	  an FPU, so when building an embedded kernel for that target
++	  you can disable FPU support.
++
++	  If unsure say Y.
  
- extern const struct user_regset_view user_ppc_native_view;
- 
-+/* ptrace-fpu */
-+int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data);
-+int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data);
-+
- /* ptrace-(no)adv */
- void ppc_gethwdinfo(struct ppc_debug_info *dbginfo);
- int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-new file mode 100644
-index 000000000000..8301cb52dd99
---- /dev/null
-+++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-@@ -0,0 +1,40 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <linux/regset.h>
-+
-+#include <asm/switch_to.h>
-+
-+#include "ptrace-decl.h"
-+
-+int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
-+{
-+	unsigned int fpidx = index - PT_FPR0;
-+
-+	if (index > PT_FPSCR)
-+		return -EIO;
-+
-+	flush_fp_to_thread(child);
-+	if (fpidx < (PT_FPSCR - PT_FPR0))
-+		memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
-+	else
-+		*data = child->thread.fp_state.fpscr;
-+
-+	return 0;
-+}
-+
-+int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
-+{
-+	unsigned int fpidx = index - PT_FPR0;
-+
-+	if (index > PT_FPSCR)
-+		return -EIO;
-+
-+	flush_fp_to_thread(child);
-+	if (fpidx < (PT_FPSCR - PT_FPR0))
-+		memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
-+	else
-+		child->thread.fp_state.fpscr = data;
-+
-+	return 0;
-+}
-+
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 0b4645a7a1b4..3d44b73adb83 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -56,24 +56,17 @@ long arch_ptrace(struct task_struct *child, long request,
- 		ret = -EIO;
- 		/* convert to index and check */
- 		index = addr / sizeof(long);
--		if ((addr & (sizeof(long) - 1)) || (index > PT_FPSCR) || !child->thread.regs)
-+		if ((addr & (sizeof(long) - 1)) || !child->thread.regs)
- 			break;
- 
- 		CHECK_FULL_REGS(child->thread.regs);
--		if (index < PT_FPR0) {
-+		if (index < PT_FPR0)
- 			ret = ptrace_get_reg(child, (int) index, &tmp);
--			if (ret)
--				break;
--		} else {
--			unsigned int fpidx = index - PT_FPR0;
--
--			flush_fp_to_thread(child);
--			if (fpidx < (PT_FPSCR - PT_FPR0))
--				memcpy(&tmp, &child->thread.TS_FPR(fpidx),
--				       sizeof(long));
--			else
--				tmp = child->thread.fp_state.fpscr;
--		}
-+		else
-+			ret = ptrace_get_fpr(child, index, &tmp);
-+
-+		if (ret)
-+			break;
- 		ret = put_user(tmp, datalp);
- 		break;
- 	}
-@@ -85,23 +78,14 @@ long arch_ptrace(struct task_struct *child, long request,
- 		ret = -EIO;
- 		/* convert to index and check */
- 		index = addr / sizeof(long);
--		if ((addr & (sizeof(long) - 1)) || (index > PT_FPSCR) || !child->thread.regs)
-+		if ((addr & (sizeof(long) - 1)) || !child->thread.regs)
- 			break;
- 
- 		CHECK_FULL_REGS(child->thread.regs);
--		if (index < PT_FPR0) {
-+		if (index < PT_FPR0)
- 			ret = ptrace_put_reg(child, index, data);
--		} else {
--			unsigned int fpidx = index - PT_FPR0;
--
--			flush_fp_to_thread(child);
--			if (fpidx < (PT_FPSCR - PT_FPR0))
--				memcpy(&child->thread.TS_FPR(fpidx), &data,
--				       sizeof(long));
--			else
--				child->thread.fp_state.fpscr = data;
--			ret = 0;
--		}
-+		else
-+			ret = ptrace_put_fpr(child, index, data);
- 		break;
- 	}
- 
+ config FSL_EMB_PERFMON
+ 	bool "Freescale Embedded Perfmon"
 -- 
 2.25.0
 
