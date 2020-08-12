@@ -1,48 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2F4242A21
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 15:15:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A76242A24
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 15:17:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRVYN5MtvzDqXq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 23:15:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRVcD2wgFzDqjj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 23:17:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=185.176.76.210; helo=huawei.com;
- envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=Huawei.com
-Received: from huawei.com (lhrrgout.huawei.com [185.176.76.210])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRTTv27YTzDqdP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 22:26:58 +1000 (AEST)
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
- by Forcepoint Email with ESMTP id DB8FA142F805B19C9470;
- Wed, 12 Aug 2020 13:26:53 +0100 (IST)
-Received: from localhost (10.52.122.74) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Wed, 12 Aug
- 2020 13:26:53 +0100
-Date: Wed, 12 Aug 2020 13:25:24 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 8/8] mm/vmalloc: Hugepage vmalloc mappings
-Message-ID: <20200812132524.000067a6@Huawei.com>
-In-Reply-To: <20200810022732.1150009-9-npiggin@gmail.com>
-References: <20200810022732.1150009-1-npiggin@gmail.com>
- <20200810022732.1150009-9-npiggin@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRTcp6ZLmzDqXV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 22:32:58 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BRTcj3S5zzB09Zb;
+ Wed, 12 Aug 2020 14:32:53 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 8AEWZDAGwOg3; Wed, 12 Aug 2020 14:32:53 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BRTcj1ltFzB09ZY;
+ Wed, 12 Aug 2020 14:32:53 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A1D988B826;
+ Wed, 12 Aug 2020 14:32:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HKp4ME3skZ5n; Wed, 12 Aug 2020 14:32:54 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 343FE8B7FC;
+ Wed, 12 Aug 2020 14:32:54 +0200 (CEST)
+Subject: Re: [PATCH v2] powerpc/uaccess: Use flexible addressing with
+ __put_user()/__get_user()
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, npiggin@gmail.com,
+ segher@kernel.crashing.org
+References: <c2addbd9d76212242d3d8554a2f7ff849fb08b85.1587040754.git.christophe.leroy@c-s.fr>
+ <7b916759-1683-b4df-0d4b-b04b3fcd9a02@csgroup.eu>
+ <878sg6862r.fsf@mpe.ellerman.id.au> <875zb98i5a.fsf@mpe.ellerman.id.au>
+ <8b751738-a9d1-8f55-8f9b-9264c8ac7ed8@csgroup.eu>
+ <faa6759a-8188-104b-a9f9-a5ff3b060cfa@csgroup.eu>
+ <c827fd9b-984d-ca86-67e9-512ca10d118f@csgroup.eu>
+Message-ID: <0b63e2b8-a134-9a50-2106-8ff110cf9a31@csgroup.eu>
+Date: Wed, 12 Aug 2020 14:32:51 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.122.74]
-X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+In-Reply-To: <c827fd9b-984d-ca86-67e9-512ca10d118f@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,117 +72,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Zefan Li <lizefan@huawei.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Catalin
- Marinas <catalin.marinas@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 10 Aug 2020 12:27:32 +1000
-Nicholas Piggin <npiggin@gmail.com> wrote:
 
-> On platforms that define HAVE_ARCH_HUGE_VMAP and support PMD vmaps,
-> vmalloc will attempt to allocate PMD-sized pages first, before falling
-> back to small pages.
+
+Le 08/07/2020 à 06:49, Christophe Leroy a écrit :
 > 
-> Allocations which use something other than PAGE_KERNEL protections are
-> not permitted to use huge pages yet, not all callers expect this (e.g.,
-> module allocations vs strict module rwx).
 > 
-> This reduces TLB misses by nearly 30x on a `git diff` workload on a
-> 2-node POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
+> Le 07/07/2020 à 21:02, Christophe Leroy a écrit :
+>>
+>>
+>> Le 07/07/2020 à 14:44, Christophe Leroy a écrit :
+>>>
+>>>
+>>> Le 30/06/2020 à 03:19, Michael Ellerman a écrit :
+>>>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>>>>> Hi Michael,
+>>>>>>
+>>>>>> I see this patch is marked as "defered" in patchwork, but I can't see
+>>>>>> any related discussion. Is it normal ?
+>>>>>
+>>>>> Because it uses the "m<>" constraint which didn't work on GCC 4.6.
+>>>>>
+>>>>> https://github.com/linuxppc/issues/issues/297
+>>>>>
+>>>>> So we should be able to pick it up for v5.9 hopefully.
+>>>>
+>>>> It seems to break the build with the kernel.org 4.9.4 compiler and
+>>>> corenet64_smp_defconfig:
+>>>
+>>> Most likely a GCC bug ?
+>>>
+>>> It seems the problem vanishes with patch 
+>>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/173de3b659fa3a5f126a0eb170522cccd909950f.1594125164.git.christophe.leroy@csgroup.eu/ 
+>>>
+>>
+>> Same kind of issue in signal_64.c now.
+>>
+>> The following patch fixes it: 
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/810bd8840ef990a200f58c9dea9abe767ca02a3a.1594146723.git.christophe.leroy@csgroup.eu/ 
+>>
+>>
 > 
-> This can result in more internal fragmentation and memory overhead for a
-> given allocation, an option nohugevmap is added to disable at boot.
+> This time I confirm, with the two above mentioned patches, it builds OK 
+> with 4.9, see 
+> http://kisskb.ellerman.id.au/kisskb/head/810bd8840ef990a200f58c9dea9abe767ca02a3a/ 
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Hi Nicholas,
+> 
 
-Busy afternoon, but a possible point of interest in line in the meantime.
+I see you've merged those patches that make the issue disappear, yet not 
+this patch yet. I guess you are still a bit chilly about it, so I split 
+it in two parts for you to safely take patch 1 as soon as possible while 
+handling the "m<>" constraint subject more carefully via 
+https://github.com/linuxppc/issues/issues/297 in a later stage.
 
+Anyway, it seems that GCC doesn't make much use of the "m<>" and the 
+pre-update form. Most of the benefit of flexible addressing seems to be 
+achieved with patch 1 ie without the "m<>" constraint and update form.
 
-...
-
-> @@ -2701,22 +2760,45 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
->  			pgprot_t prot, unsigned long vm_flags, int node,
->  			const void *caller)
->  {
-> -	struct vm_struct *area;
-> +	struct vm_struct *area = NULL;
->  	void *addr;
->  	unsigned long real_size = size;
-> +	unsigned long real_align = align;
-> +	unsigned int shift = PAGE_SHIFT;
->  
->  	size = PAGE_ALIGN(size);
->  	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
->  		goto fail;
->  
-> -	area = __get_vm_area_node(real_size, align, VM_ALLOC | VM_UNINITIALIZED |
-> +	if (vmap_allow_huge && (pgprot_val(prot) == pgprot_val(PAGE_KERNEL))) {
-> +		unsigned long size_per_node;
-> +
-> +		/*
-> +		 * Try huge pages. Only try for PAGE_KERNEL allocations,
-> +		 * others like modules don't yet expect huge pages in
-> +		 * their allocations due to apply_to_page_range not
-> +		 * supporting them.
-> +		 */
-> +
-> +		size_per_node = size;
-> +		if (node == NUMA_NO_NODE)
-> +			size_per_node /= num_online_nodes();
-> +		if (size_per_node >= PMD_SIZE)
-> +			shift = PMD_SHIFT;
-> +	}
-> +
-> +again:
-> +	align = max(real_align, 1UL << shift);
-> +	size = ALIGN(real_size, align);
-
-So my suspicion is that the issue on arm64 is related to this.
-In the relevant call path, align is 32K whilst the size is 16K
-
-Previously I don't think we force size to be a multiple of align.
-
-I think this results in nr_pages being double what it was before.
-
-
-> +
-> +	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
->  				vm_flags, start, end, node, gfp_mask, caller);
->  	if (!area)
->  		goto fail;
->  
-> -	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
-> +	addr = __vmalloc_area_node(area, gfp_mask, prot, shift, node);
->  	if (!addr)
-> -		return NULL;
-> +		goto fail;
->  
->  	/*
->  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
-> @@ -2730,8 +2812,16 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
->  	return addr;
->  
->  fail:
-> -	warn_alloc(gfp_mask, NULL,
-> +	if (shift > PAGE_SHIFT) {
-> +		shift = PAGE_SHIFT;
-> +		goto again;
-> +	}
-> +
-> +	if (!area) {
-> +		/* Warn for area allocation, page allocations already warn */
-> +		warn_alloc(gfp_mask, NULL,
->  			  "vmalloc: allocation failure: %lu bytes", real_size);
-> +	}
->  	return NULL;
->  }
->  
-
-
+Christophe
