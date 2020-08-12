@@ -2,54 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED34242A10
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 15:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2F4242A21
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 15:15:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRVQD6nrLzDqKL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 23:08:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRVYN5MtvzDqXq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Aug 2020 23:15:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=185.176.76.210; helo=huawei.com;
+ envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=Huawei.com
+Received: from huawei.com (lhrrgout.huawei.com [185.176.76.210])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRTS2072nzDqcm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 22:25:21 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BRTRx1gnyzB09Zb;
- Wed, 12 Aug 2020 14:25:17 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id UlvtX8EgB1-Z; Wed, 12 Aug 2020 14:25:17 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BRTRx0nZWzB09ZY;
- Wed, 12 Aug 2020 14:25:17 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6445D8B826;
- Wed, 12 Aug 2020 14:25:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id hFml_FvOlAVn; Wed, 12 Aug 2020 14:25:18 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 19DD78B7FC;
- Wed, 12 Aug 2020 14:25:18 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id BD14565C3B; Wed, 12 Aug 2020 12:25:17 +0000 (UTC)
-Message-Id: <13041c7df39e89ddf574ea0cdc6dedfdd9734140.1597235091.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <c27bc4e598daf3bbb225de7a1f5c52121cf1e279.1597235091.git.christophe.leroy@csgroup.eu>
-References: <c27bc4e598daf3bbb225de7a1f5c52121cf1e279.1597235091.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 2/2] powerpc/uaccess: Add pre-update addressing to
- __get_user_asm() and __put_user_asm()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 12 Aug 2020 12:25:17 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRTTv27YTzDqdP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Aug 2020 22:26:58 +1000 (AEST)
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.108])
+ by Forcepoint Email with ESMTP id DB8FA142F805B19C9470;
+ Wed, 12 Aug 2020 13:26:53 +0100 (IST)
+Received: from localhost (10.52.122.74) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Wed, 12 Aug
+ 2020 13:26:53 +0100
+Date: Wed, 12 Aug 2020 13:25:24 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 8/8] mm/vmalloc: Hugepage vmalloc mappings
+Message-ID: <20200812132524.000067a6@Huawei.com>
+In-Reply-To: <20200810022732.1150009-9-npiggin@gmail.com>
+References: <20200810022732.1150009-1-npiggin@gmail.com>
+ <20200810022732.1150009-9-npiggin@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.122.74]
+X-ClientProxiedBy: lhreml728-chm.china.huawei.com (10.201.108.79) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,60 +54,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, Zefan Li <lizefan@huawei.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Catalin
+ Marinas <catalin.marinas@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Enable pre-update addressing mode in __get_user_asm() and __put_user_asm()
+On Mon, 10 Aug 2020 12:27:32 +1000
+Nicholas Piggin <npiggin@gmail.com> wrote:
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v3: new, splited out from patch 1.
----
- arch/powerpc/include/asm/uaccess.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> On platforms that define HAVE_ARCH_HUGE_VMAP and support PMD vmaps,
+> vmalloc will attempt to allocate PMD-sized pages first, before falling
+> back to small pages.
+> 
+> Allocations which use something other than PAGE_KERNEL protections are
+> not permitted to use huge pages yet, not all callers expect this (e.g.,
+> module allocations vs strict module rwx).
+> 
+> This reduces TLB misses by nearly 30x on a `git diff` workload on a
+> 2-node POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
+> 
+> This can result in more internal fragmentation and memory overhead for a
+> given allocation, an option nohugevmap is added to disable at boot.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Hi Nicholas,
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index c546fb36043d..eadb25f4cc9f 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -159,7 +159,7 @@ extern long __put_user_bad(void);
-  */
- #define __put_user_asm(x, addr, err, op)			\
- 	__asm__ __volatile__(					\
--		"1:	" op "%X2 %1,%2	# put_user\n"		\
-+		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
- 		"2:\n"						\
- 		".section .fixup,\"ax\"\n"			\
- 		"3:	li %0,%3\n"				\
-@@ -167,7 +167,7 @@ extern long __put_user_bad(void);
- 		".previous\n"					\
- 		EX_TABLE(1b, 3b)				\
- 		: "=r" (err)					\
--		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
-+		: "r" (x), "m<>" (*addr), "i" (-EFAULT), "0" (err))
- 
- #ifdef __powerpc64__
- #define __put_user_asm2(x, ptr, retval)				\
-@@ -317,7 +317,7 @@ extern long __get_user_bad(void);
- 
- #define __get_user_asm(x, addr, err, op)		\
- 	__asm__ __volatile__(				\
--		"1:	"op"%X2 %1, %2	# get_user\n"	\
-+		"1:	"op"%U2%X2 %1, %2	# get_user\n"	\
- 		"2:\n"					\
- 		".section .fixup,\"ax\"\n"		\
- 		"3:	li %0,%3\n"			\
-@@ -326,7 +326,7 @@ extern long __get_user_bad(void);
- 		".previous\n"				\
- 		EX_TABLE(1b, 3b)			\
- 		: "=r" (err), "=r" (x)			\
--		: "m" (*addr), "i" (-EFAULT), "0" (err))
-+		: "m<>" (*addr), "i" (-EFAULT), "0" (err))
- 
- #ifdef __powerpc64__
- #define __get_user_asm2(x, addr, err)			\
--- 
-2.25.0
+Busy afternoon, but a possible point of interest in line in the meantime.
+
+
+...
+
+> @@ -2701,22 +2760,45 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
+>  			pgprot_t prot, unsigned long vm_flags, int node,
+>  			const void *caller)
+>  {
+> -	struct vm_struct *area;
+> +	struct vm_struct *area = NULL;
+>  	void *addr;
+>  	unsigned long real_size = size;
+> +	unsigned long real_align = align;
+> +	unsigned int shift = PAGE_SHIFT;
+>  
+>  	size = PAGE_ALIGN(size);
+>  	if (!size || (size >> PAGE_SHIFT) > totalram_pages())
+>  		goto fail;
+>  
+> -	area = __get_vm_area_node(real_size, align, VM_ALLOC | VM_UNINITIALIZED |
+> +	if (vmap_allow_huge && (pgprot_val(prot) == pgprot_val(PAGE_KERNEL))) {
+> +		unsigned long size_per_node;
+> +
+> +		/*
+> +		 * Try huge pages. Only try for PAGE_KERNEL allocations,
+> +		 * others like modules don't yet expect huge pages in
+> +		 * their allocations due to apply_to_page_range not
+> +		 * supporting them.
+> +		 */
+> +
+> +		size_per_node = size;
+> +		if (node == NUMA_NO_NODE)
+> +			size_per_node /= num_online_nodes();
+> +		if (size_per_node >= PMD_SIZE)
+> +			shift = PMD_SHIFT;
+> +	}
+> +
+> +again:
+> +	align = max(real_align, 1UL << shift);
+> +	size = ALIGN(real_size, align);
+
+So my suspicion is that the issue on arm64 is related to this.
+In the relevant call path, align is 32K whilst the size is 16K
+
+Previously I don't think we force size to be a multiple of align.
+
+I think this results in nr_pages being double what it was before.
+
+
+> +
+> +	area = __get_vm_area_node(size, align, VM_ALLOC | VM_UNINITIALIZED |
+>  				vm_flags, start, end, node, gfp_mask, caller);
+>  	if (!area)
+>  		goto fail;
+>  
+> -	addr = __vmalloc_area_node(area, gfp_mask, prot, node);
+> +	addr = __vmalloc_area_node(area, gfp_mask, prot, shift, node);
+>  	if (!addr)
+> -		return NULL;
+> +		goto fail;
+>  
+>  	/*
+>  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
+> @@ -2730,8 +2812,16 @@ void *__vmalloc_node_range(unsigned long size, unsigned long align,
+>  	return addr;
+>  
+>  fail:
+> -	warn_alloc(gfp_mask, NULL,
+> +	if (shift > PAGE_SHIFT) {
+> +		shift = PAGE_SHIFT;
+> +		goto again;
+> +	}
+> +
+> +	if (!area) {
+> +		/* Warn for area allocation, page allocations already warn */
+> +		warn_alloc(gfp_mask, NULL,
+>  			  "vmalloc: allocation failure: %lu bytes", real_size);
+> +	}
+>  	return NULL;
+>  }
+>  
+
 
