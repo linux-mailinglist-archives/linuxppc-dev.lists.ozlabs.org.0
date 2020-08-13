@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286D6243DA7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 18:44:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939DF243D8A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 18:39:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BSC8Z19GCzDqXZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 02:44:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BSC2D6TD8zDqSF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 02:39:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BSBzY0VxJzDqdn
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BSBzX6YRmzDqdX
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 02:36:38 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BSBzN432nz9vCyF;
- Thu, 13 Aug 2020 18:36:32 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BSBzP3W2pz9vCy6;
+ Thu, 13 Aug 2020 18:36:33 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iMel7HhtXNCD; Thu, 13 Aug 2020 18:36:32 +0200 (CEST)
+ with ESMTP id Yz5B6KTKTx1G; Thu, 13 Aug 2020 18:36:33 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BSBzN3Cddz9vCy4;
- Thu, 13 Aug 2020 18:36:32 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BSBzP2bTFz9vCy4;
+ Thu, 13 Aug 2020 18:36:33 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 13F248B7A7;
- Thu, 13 Aug 2020 18:36:34 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 10C3E8B7A6;
+ Thu, 13 Aug 2020 18:36:35 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id vZvoj64d3-_E; Thu, 13 Aug 2020 18:36:34 +0200 (CEST)
+ with ESMTP id 7koiQi2nqm7Y; Thu, 13 Aug 2020 18:36:35 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C012F8B7A1;
- Thu, 13 Aug 2020 18:36:33 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CB9DC8B7A1;
+ Thu, 13 Aug 2020 18:36:34 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 9EA7565C8D; Thu, 13 Aug 2020 16:36:33 +0000 (UTC)
-Message-Id: <cf59a61d9e6da20e45c872a02460b783092127aa.1597336548.git.christophe.leroy@csgroup.eu>
+ id A4F9865C8D; Thu, 13 Aug 2020 16:36:34 +0000 (UTC)
+Message-Id: <4dde2b977228a86b40df1f6bc5cdcfe9a6631f84.1597336548.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <11a330af231af22874c006302a945388846f8112.1597336548.git.christophe.leroy@csgroup.eu>
 References: <11a330af231af22874c006302a945388846f8112.1597336548.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 2/9] powerpc: Remove SYNC on non 6xx
+Subject: [PATCH 3/9] powerpc: Remove CONFIG_PPC601_SYNC_FIX
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 13 Aug 2020 16:36:33 +0000 (UTC)
+Date: Thu, 13 Aug 2020 16:36:34 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,54 +65,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SYNC is usefull for Powerpc 601 only. On everything else,
-SYNC is empty.
+This config option isn't in any defconfig.
 
-Remove it from code that is not made to run on 6xx.
+The very first versions of Powerpc 601 have a bug which
+requires additional sync before and/or after some instructions.
+
+This was more than 25 years ago and time has come to retire
+those buggy versions of the 601 from the kernel.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_40x.S   | 1 -
- arch/powerpc/kernel/head_booke.h | 1 -
- arch/powerpc/kernel/misc_64.S    | 1 -
- 3 files changed, 3 deletions(-)
+ arch/powerpc/include/asm/ppc_asm.h |  6 ------
+ arch/powerpc/platforms/Kconfig     | 15 ---------------
+ 2 files changed, 21 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
-index 5b282d9965a5..44c9018aed1b 100644
---- a/arch/powerpc/kernel/head_40x.S
-+++ b/arch/powerpc/kernel/head_40x.S
-@@ -72,7 +72,6 @@ turn_on_mmu:
- 	lis	r0,start_here@h
- 	ori	r0,r0,start_here@l
- 	mtspr	SPRN_SRR0,r0
--	SYNC
- 	rfi				/* enables MMU */
- 	b	.			/* prevent prefetch past rfi */
- 
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index 18f87bf9e32b..71c359d438b5 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -176,7 +176,6 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index b4cc6608131c..0b9dc814b81c 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -382,15 +382,9 @@ GLUE(.,name):
  #endif
- 	mtspr	SPRN_SRR1,r10
- 	mtspr	SPRN_SRR0,r11
--	SYNC
- 	RFI				/* jump to handler, enable MMU */
- 99:	b	ret_from_kernel_syscall
- .endm
-diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
-index 7bb46ad98207..070465825c21 100644
---- a/arch/powerpc/kernel/misc_64.S
-+++ b/arch/powerpc/kernel/misc_64.S
-@@ -365,7 +365,6 @@ _GLOBAL(kexec_smp_wait)
  
- 	li	r4,KEXEC_STATE_REAL_MODE
- 	stb	r4,PACAKEXECSTATE(r13)
--	SYNC
+ /* various errata or part fixups */
+-#ifdef CONFIG_PPC601_SYNC_FIX
+-#define SYNC		sync; isync
+-#define SYNC_601	sync
+-#define ISYNC_601	isync
+-#else
+ #define	SYNC
+ #define SYNC_601
+ #define ISYNC_601
+-#endif
  
- 	b	kexec_wait
+ #if defined(CONFIG_PPC_CELL) || defined(CONFIG_PPC_FSL_BOOK3E)
+ #define MFTB(dest)			\
+diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
+index fb7515b4fa9c..f377a56ecc85 100644
+--- a/arch/powerpc/platforms/Kconfig
++++ b/arch/powerpc/platforms/Kconfig
+@@ -199,21 +199,6 @@ source "drivers/cpuidle/Kconfig"
  
+ endmenu
+ 
+-config PPC601_SYNC_FIX
+-	bool "Workarounds for PPC601 bugs"
+-	depends on PPC_BOOK3S_601 && PPC_PMAC
+-	default y
+-	help
+-	  Some versions of the PPC601 (the first PowerPC chip) have bugs which
+-	  mean that extra synchronization instructions are required near
+-	  certain instructions, typically those that make major changes to the
+-	  CPU state.  These extra instructions reduce performance slightly.
+-	  If you say N here, these extra instructions will not be included,
+-	  resulting in a kernel which will run faster but may not run at all
+-	  on some systems with the PPC601 chip.
+-
+-	  If in doubt, say Y here.
+-
+ config TAU
+ 	bool "On-chip CPU temperature sensor support"
+ 	depends on PPC_BOOK3S_32
 -- 
 2.25.0
 
