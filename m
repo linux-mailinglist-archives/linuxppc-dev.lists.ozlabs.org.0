@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C175B24384A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 12:15:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995E524385A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 12:17:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BS2X13hblzDqcw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 20:15:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BS2ZF6ZpnzDqbf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 20:17:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,39 +17,39 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BS2Rm6mvFzDqb0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 20:12:04 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BS2Rn69JKzDqb0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 20:12:05 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BS2Rh1xm4z9vD3p;
- Thu, 13 Aug 2020 12:12:00 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BS2Rj48LWz9vD3l;
+ Thu, 13 Aug 2020 12:12:01 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id gfMvwydx9Ufd; Thu, 13 Aug 2020 12:12:00 +0200 (CEST)
+ with ESMTP id HNU5IkxHiCdk; Thu, 13 Aug 2020 12:12:01 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BS2Rh0zcSz9vD3l;
- Thu, 13 Aug 2020 12:12:00 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 751CB8B78A;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BS2Rj2YKPz9vD3q;
  Thu, 13 Aug 2020 12:12:01 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A3F918B783;
+ Thu, 13 Aug 2020 12:12:02 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 5B7LzUwD8WNI; Thu, 13 Aug 2020 12:12:01 +0200 (CEST)
+ with ESMTP id 3iEaWgAURuFh; Thu, 13 Aug 2020 12:12:02 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 590D18B783;
- Thu, 13 Aug 2020 12:12:01 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F5658B788;
+ Thu, 13 Aug 2020 12:12:02 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 2BA6465C54; Thu, 13 Aug 2020 10:12:01 +0000 (UTC)
-Message-Id: <60a152dcbea2a2c48b771aca6698efdc14116c0f.1597313510.git.christophe.leroy@csgroup.eu>
+ id 32A9865C54; Thu, 13 Aug 2020 10:12:02 +0000 (UTC)
+Message-Id: <13dffd546b11b71ca227c1fe74b2ccdf08c7cfff.1597313510.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <11a330af231af22874c006302a945388846f8112.1597313510.git.christophe.leroy@csgroup.eu>
 References: <11a330af231af22874c006302a945388846f8112.1597313510.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 2/5] powerpc: Untangle flush_instruction_cache()
+Subject: [PATCH 3/5] powerpc: Remove flush_instruction_cache() on 8xx
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 13 Aug 2020 10:12:01 +0000 (UTC)
+Date: Thu, 13 Aug 2020 10:12:02 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,61 +66,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-flush_instruction_cache() is a mixup of each PPC32 sub-arch.
-
-Untangle it by making one complete function for each sub-arch.
-
-This makes it a lot more readable and maintainable.
+flush_instruction_cache() is never used on 8xx, remove it.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/misc_32.S | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ arch/powerpc/mm/nohash/8xx.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
-index bd870743c06f..a8f6ef513115 100644
---- a/arch/powerpc/kernel/misc_32.S
-+++ b/arch/powerpc/kernel/misc_32.S
-@@ -272,28 +272,31 @@ _ASM_NOKPROBE_SYMBOL(real_writeb)
- /*
-  * Flush instruction cache.
-  */
--#if !defined(CONFIG_PPC_8xx) && !defined(CONFIG_PPC_BOOK3S_32)
-+#ifdef CONFIG_4xx
- _GLOBAL(flush_instruction_cache)
--#if defined(CONFIG_4xx)
- 	lis	r3, KERNELBASE@h
- 	iccci	0,r3
--#elif defined(CONFIG_FSL_BOOKE)
-+	isync
-+	blr
-+EXPORT_SYMBOL(flush_instruction_cache)
-+#endif
-+
-+#ifdef CONFIG_FSL_BOOKE
-+_GLOBAL(flush_instruction_cache)
- #ifdef CONFIG_E200
- 	mfspr   r3,SPRN_L1CSR0
- 	ori     r3,r3,L1CSR0_CFI|L1CSR0_CLFC
- 	/* msync; isync recommended here */
- 	mtspr   SPRN_L1CSR0,r3
--	isync
--	blr
--#endif
-+#else
- 	mfspr	r3,SPRN_L1CSR1
- 	ori	r3,r3,L1CSR1_ICFI|L1CSR1_ICLFR
- 	mtspr	SPRN_L1CSR1,r3
--#endif /* CONFIG_4xx */
-+#endif
- 	isync
- 	blr
- EXPORT_SYMBOL(flush_instruction_cache)
--#endif /* CONFIG_PPC_8xx || CONFIG_PPC_BOOK3S_32 */
-+#endif
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index d2b37146ae6c..231ca95f9ffb 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -244,13 +244,6 @@ void set_context(unsigned long id, pgd_t *pgd)
+ 	mb();
+ }
  
- /*
-  * Copy a whole page.  We use the dcbz instruction on the destination
+-void flush_instruction_cache(void)
+-{
+-	isync();
+-	mtspr(SPRN_IC_CST, IDC_INVALL);
+-	isync();
+-}
+-
+ #ifdef CONFIG_PPC_KUEP
+ void __init setup_kuep(bool disabled)
+ {
 -- 
 2.25.0
 
