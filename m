@@ -2,53 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623B6243BC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 16:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C751F243C4D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 17:14:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BS8Tq0y4GzDqfB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 00:44:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BS98N6sVMzDqQF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 01:14:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IrE48lrH; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BS8NB1Gj8zDqV8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 00:39:17 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BS8Mx079nzB09ZC;
- Thu, 13 Aug 2020 16:39:09 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id wl3HWTVpgapq; Thu, 13 Aug 2020 16:39:08 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BS8Mw5d2Rz9vD3t;
- Thu, 13 Aug 2020 16:39:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7148A8B7A4;
- Thu, 13 Aug 2020 16:39:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id hlroaEI3dq4H; Thu, 13 Aug 2020 16:39:10 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E8EB8B7A1;
- Thu, 13 Aug 2020 16:39:10 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 36A1C65C8D; Thu, 13 Aug 2020 14:39:10 +0000 (UTC)
-Message-Id: <44e26ec6a1bc01b5b138c29b623c83d5846718b2.1597329390.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] sfc_ef100: Fix build failure on powerpc
-To: Solarflare linux maintainers <linux-net-drivers@solarflare.com>,
- Edward Cree <ecree@solarflare.com>, Martin Habets <mhabets@solarflare.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Date: Thu, 13 Aug 2020 14:39:10 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BS95f6yk4zDqYb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 01:11:50 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07DF2QZ2009564; Thu, 13 Aug 2020 11:11:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=AhVtdjQ9stInqvkkFn9iyrumkBxqqMm+JPkhLhO8ZyQ=;
+ b=IrE48lrHknOtz/IzfHV2R+jCdVKTO1+ukmKLt/0d2nPu3FmfiKEkZ/PLB0ZRQZ6inj79
+ nrGMpjpN3p0+9s+KM20odrP7+uA/T8mrWqYw2orcMuwrtPtPcEa1eUUzRpnqsbpmKgs9
+ USa7ip17+LcYgZuEV5XicVQv8LHoSIeQ7QfqIk4GlIEggOdYUi4VLvretMbqUF7wOWro
+ rseXb5/c5AX18tvQ6rj+KeQe8BRAiTTBqeNhBuxokEcw5KimzHaM71OhflwpegoiKmFN
+ z0xBJVhyicgkND5CbiDRgCs+4M5qh2ptLOlnwc8Rd82FPoRq7IsPFfrfmeK4/+g4h5r9 2Q== 
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32w30q9qpb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Aug 2020 11:11:35 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07DFB1SV028345;
+ Thu, 13 Aug 2020 15:11:34 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma04dal.us.ibm.com with ESMTP id 32skp9njw8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Aug 2020 15:11:34 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07DFBWKj52756836
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Aug 2020 15:11:32 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD3556E04E;
+ Thu, 13 Aug 2020 15:11:32 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8785C6E04C;
+ Thu, 13 Aug 2020 15:11:32 +0000 (GMT)
+Received: from localhost (unknown [9.65.223.18])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Aug 2020 15:11:32 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] powerpc/pseries: explicitly reschedule during drmem_lmb
+ list traversal
+Date: Thu, 13 Aug 2020 10:11:31 -0500
+Message-Id: <20200813151131.2070161-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.25.4
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-13_13:2020-08-13,
+ 2020-08-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 suspectscore=1
+ impostorscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008130110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,44 +94,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: cheloha@linux.ibm.com, ldufour@linux.ibm.com, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ppc6xx_defconfig fails building sfc.ko module, complaining
-about the lack of _umoddi3 symbol.
+The drmem lmb list can have hundreds of thousands of entries, and
+unfortunately lookups take the form of linear searches. As long as
+this is the case, traversals have the potential to monopolize the CPU
+and provoke lockup reports, workqueue stalls, and the like unless
+they explicitly yield.
 
-This is due to the following test
+Rather than placing cond_resched() calls within various
+for_each_drmem_lmb() loop blocks in the code, put it in the iteration
+expression of the loop macro itself so users can't omit it.
 
- 		if (EFX_MIN_DMAQ_SIZE % reader->value) {
+Introduce a drmem_lmb_next() iteration helper function which calls
+cond_resched() at a regular interval during array traversal. Each
+iteration of the loop in DLPAR code paths can involve around ten RTAS
+calls which can each take up to 250us, so this ensures the check is
+performed at worst every few milliseconds.
 
-Because reader->value is u64.
-
-As EFX_MIN_DMAQ_SIZE value is 512, reader->value is obviously small
-enough for an u32 calculation, so cast it as (u32) for the test, to
-avoid the need for _umoddi3.
-
-Fixes: adcfc3482fff ("sfc_ef100: read Design Parameters at probe time")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- drivers/net/ethernet/sfc/ef100_nic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/sfc/ef100_nic.c b/drivers/net/ethernet/sfc/ef100_nic.c
-index 36598d0542ed..234400b69b07 100644
---- a/drivers/net/ethernet/sfc/ef100_nic.c
-+++ b/drivers/net/ethernet/sfc/ef100_nic.c
-@@ -979,7 +979,7 @@ static int ef100_process_design_param(struct efx_nic *efx,
- 		 * EFX_MIN_DMAQ_SIZE is divisible by GRANULARITY.
- 		 * This is very unlikely to fail.
- 		 */
--		if (EFX_MIN_DMAQ_SIZE % reader->value) {
-+		if (EFX_MIN_DMAQ_SIZE % (u32)reader->value) {
- 			netif_err(efx, probe, efx->net_dev,
- 				  "%s size granularity is %llu, can't guarantee safety\n",
- 				  reader->type == ESE_EF100_DP_GZ_RXQ_SIZE_GRANULARITY ? "RXQ" : "TXQ",
+Notes:
+    Changes since v2:
+    * Make drmem_lmb_next() more general.
+    * Adjust reschedule interval for better code generation.
+    * Add commentary to drmem_lmb_next() to explain the cond_resched()
+      call.
+    * Remove bounds assertions.
+    
+    Changes since v1:
+    * Add bounds assertions in drmem_lmb_next().
+    * Call cond_resched() in the iterator on only every 20th element
+      instead of on every iteration, to reduce overhead in tight loops.
+
+ arch/powerpc/include/asm/drmem.h | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+index 17ccc6474ab6..6fb928605ed1 100644
+--- a/arch/powerpc/include/asm/drmem.h
++++ b/arch/powerpc/include/asm/drmem.h
+@@ -8,6 +8,8 @@
+ #ifndef _ASM_POWERPC_LMB_H
+ #define _ASM_POWERPC_LMB_H
+ 
++#include <linux/sched.h>
++
+ struct drmem_lmb {
+ 	u64     base_addr;
+ 	u32     drc_index;
+@@ -26,8 +28,22 @@ struct drmem_lmb_info {
+ 
+ extern struct drmem_lmb_info *drmem_info;
+ 
++static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb,
++					       const struct drmem_lmb *start)
++{
++	/*
++	 * DLPAR code paths can take several milliseconds per element
++	 * when interacting with firmware. Ensure that we don't
++	 * unfairly monopolize the CPU.
++	 */
++	if (((++lmb - start) % 16) == 0)
++		cond_resched();
++
++	return lmb;
++}
++
+ #define for_each_drmem_lmb_in_range(lmb, start, end)		\
+-	for ((lmb) = (start); (lmb) < (end); (lmb)++)
++	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb, start))
+ 
+ #define for_each_drmem_lmb(lmb)					\
+ 	for_each_drmem_lmb_in_range((lmb),			\
 -- 
-2.25.0
+2.25.4
 
