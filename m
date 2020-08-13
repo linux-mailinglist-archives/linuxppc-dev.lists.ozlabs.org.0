@@ -2,87 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C751F243C4D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 17:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1E9243C6F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 17:25:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BS98N6sVMzDqQF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 01:14:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BS9PL4xk1zDqWm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 01:25:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ smtp.mailfrom=cmpxchg.org (client-ip=2607:f8b0:4864:20::f42;
+ helo=mail-qv1-xf42.google.com; envelope-from=hannes@cmpxchg.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=cmpxchg.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=IrE48lrH; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=cmpxchg-org.20150623.gappssmtp.com
+ header.i=@cmpxchg-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=PrhS4mcu; dkim-atps=neutral
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com
+ [IPv6:2607:f8b0:4864:20::f42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BS95f6yk4zDqYb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 01:11:50 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07DF2QZ2009564; Thu, 13 Aug 2020 11:11:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=AhVtdjQ9stInqvkkFn9iyrumkBxqqMm+JPkhLhO8ZyQ=;
- b=IrE48lrHknOtz/IzfHV2R+jCdVKTO1+ukmKLt/0d2nPu3FmfiKEkZ/PLB0ZRQZ6inj79
- nrGMpjpN3p0+9s+KM20odrP7+uA/T8mrWqYw2orcMuwrtPtPcEa1eUUzRpnqsbpmKgs9
- USa7ip17+LcYgZuEV5XicVQv8LHoSIeQ7QfqIk4GlIEggOdYUi4VLvretMbqUF7wOWro
- rseXb5/c5AX18tvQ6rj+KeQe8BRAiTTBqeNhBuxokEcw5KimzHaM71OhflwpegoiKmFN
- z0xBJVhyicgkND5CbiDRgCs+4M5qh2ptLOlnwc8Rd82FPoRq7IsPFfrfmeK4/+g4h5r9 2Q== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32w30q9qpb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Aug 2020 11:11:35 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07DFB1SV028345;
- Thu, 13 Aug 2020 15:11:34 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04dal.us.ibm.com with ESMTP id 32skp9njw8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Aug 2020 15:11:34 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07DFBWKj52756836
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Aug 2020 15:11:32 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD3556E04E;
- Thu, 13 Aug 2020 15:11:32 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8785C6E04C;
- Thu, 13 Aug 2020 15:11:32 +0000 (GMT)
-Received: from localhost (unknown [9.65.223.18])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 13 Aug 2020 15:11:32 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/pseries: explicitly reschedule during drmem_lmb
- list traversal
-Date: Thu, 13 Aug 2020 10:11:31 -0500
-Message-Id: <20200813151131.2070161-1-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.25.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BS9K90H2szDqPT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 01:21:43 +1000 (AEST)
+Received: by mail-qv1-xf42.google.com with SMTP id b2so2781185qvp.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 08:21:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cmpxchg-org.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=n/syx/SxqBMIN8ss9hWSXJCFp7S96a9yWlWgF3+Kl+k=;
+ b=PrhS4mcu2hfVQsLaHZyu7reWP52+80bEpr3vIdaYtjzU2OjSOSD6QAQ7i3hJ3BPu4z
+ cgOxlbXhAceN/NmLdD8AYiVjuLNCj1nqxHVQNh8Sz2dvUFfbuJPzBrGfRMlhPP0d5ghs
+ pqd9OuaVSlDW8LHsvb17Da7dJ0l0jJNLwEx3wdMLPQwofhEgJbv/yFnFasqnhDaco0l7
+ cFKBUdfylUQ9RYdzl6ol+edQL6e98nhj30oaBObAvGWBfsyTGtZnWcbf0tcvmtUSA/KG
+ C5bNdu1R7pNNaaUVInN2NA4FASGvjDO8qqR1LdlyNgtmear5iJYDlxYpPxG2mSVnQO/m
+ ZNRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=n/syx/SxqBMIN8ss9hWSXJCFp7S96a9yWlWgF3+Kl+k=;
+ b=o1qZw5Pr8mYtxUk+FQknFHNqX387aognWJbF7th1vn4SZe1ztUwE8zAOhJVs47ETNT
+ SIkQCSG+UYT9hZWy7EGq6iNpp7FAO5lJTcWihKoB2W2A0u3Qx2ecBJCO9fm82MCd9jYd
+ 3cwNsruR/gb4XxOrN7fYb8Y+TdiebNOkQqu/Z/7kn3tKk/LIqeZS52Uibl3I6Fpj3RqL
+ Sx5tv6N1VnR5mGJLtkuHLhP2tA7euUmA83mhEYCHJZcAbIO7qqstZ3fzQoLfYf8pPzRJ
+ uFKMDrYV51YpwyfM+mQw18hzUGEAIjoCGeBg622KM17nMSmZmalwtrQ7NHtK30jcCqqn
+ oUsg==
+X-Gm-Message-State: AOAM531ScRqEAzGa3wSe7J8JzCOvLXW3BWSRnQgLGEif/XqBKfXqpX0T
+ 8n+Ykaaha7eBiYS/DRvEf+nf0g==
+X-Google-Smtp-Source: ABdhPJxCU9Ovi/VEY5bhb4Sb/ACyGJnhVNPlFcm7mFJy+eh7NPXN/xx0ecvRLhxirwsDvaK0iacGUg==
+X-Received: by 2002:ad4:4cc3:: with SMTP id i3mr5126808qvz.17.1597332099064;
+ Thu, 13 Aug 2020 08:21:39 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:480::1:7cdc])
+ by smtp.gmail.com with ESMTPSA id j16sm5459722qke.87.2020.08.13.08.21.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Aug 2020 08:21:38 -0700 (PDT)
+Date: Thu, 13 Aug 2020 11:20:33 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: linux-next: runtime warning in Linus' tree
+Message-ID: <20200813152033.GA701678@cmpxchg.org>
+References: <20200813164654.061dbbd3@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-13_13:2020-08-13,
- 2020-08-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 suspectscore=1
- impostorscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008130110
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200813164654.061dbbd3@canb.auug.org.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,84 +80,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cheloha@linux.ibm.com, ldufour@linux.ibm.com, tyreld@linux.ibm.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>,
+ Roman Gushchin <guro@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The drmem lmb list can have hundreds of thousands of entries, and
-unfortunately lookups take the form of linear searches. As long as
-this is the case, traversals have the potential to monopolize the CPU
-and provoke lockup reports, workqueue stalls, and the like unless
-they explicitly yield.
+On Thu, Aug 13, 2020 at 04:46:54PM +1000, Stephen Rothwell wrote:
+> [    0.055220][    T0] WARNING: CPU: 0 PID: 0 at mm/memcontrol.c:5220 mem_cgroup_css_alloc+0x350/0x904
 
-Rather than placing cond_resched() calls within various
-for_each_drmem_lmb() loop blocks in the code, put it in the iteration
-expression of the loop macro itself so users can't omit it.
+> [The line numbers in the final linux next are 5226 and 5141 due to
+> later patches.]
+> 
+> Introduced (or exposed) by commit
+> 
+>   3e38e0aaca9e ("mm: memcg: charge memcg percpu memory to the parent cgroup")
+> 
+> This commit actually adds the WARN_ON, so it either adds the bug that
+> sets it off, or the bug already existed.
+> 
+> Unfotunately, the version of this patch in linux-next up tuntil today
+> is different.  :-(
 
-Introduce a drmem_lmb_next() iteration helper function which calls
-cond_resched() at a regular interval during array traversal. Each
-iteration of the loop in DLPAR code paths can involve around ten RTAS
-calls which can each take up to 250us, so this ensures the check is
-performed at worst every few milliseconds.
+Sorry, I made a last-minute request to include these checks in that
+patch to make the code a bit more robust, but they trigger a false
+positive here. Let's remove them.
 
-Fixes: 6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
 
-Notes:
-    Changes since v2:
-    * Make drmem_lmb_next() more general.
-    * Adjust reschedule interval for better code generation.
-    * Add commentary to drmem_lmb_next() to explain the cond_resched()
-      call.
-    * Remove bounds assertions.
-    
-    Changes since v1:
-    * Add bounds assertions in drmem_lmb_next().
-    * Call cond_resched() in the iterator on only every 20th element
-      instead of on every iteration, to reduce overhead in tight loops.
+From de8ea7c96c056c3cbe7b93995029986a158fb9cd Mon Sep 17 00:00:00 2001
+From: Johannes Weiner <hannes@cmpxchg.org>
+Date: Thu, 13 Aug 2020 10:40:54 -0400
+Subject: [PATCH] mm: memcontrol: fix warning when allocating the root cgroup
 
- arch/powerpc/include/asm/drmem.h | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+Commit 3e38e0aaca9e ("mm: memcg: charge memcg percpu memory to the
+parent cgroup") adds memory tracking to the memcg kernel structures
+themselves to make cgroups liable for the memory they are consuming
+through the allocation of child groups (which can be significant).
 
-diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-index 17ccc6474ab6..6fb928605ed1 100644
---- a/arch/powerpc/include/asm/drmem.h
-+++ b/arch/powerpc/include/asm/drmem.h
-@@ -8,6 +8,8 @@
- #ifndef _ASM_POWERPC_LMB_H
- #define _ASM_POWERPC_LMB_H
+This code is a bit awkward as it's spread out through several
+functions: The outermost function does memalloc_use_memcg(parent) to
+set up current->active_memcg, which designates which cgroup to charge,
+and the inner functions pass GFP_ACCOUNT to request charging for
+specific allocations. To make sure this dependency is satisfied at all
+times - to make sure we don't randomly charge whoever is calling the
+functions - the inner functions warn on !current->active_memcg.
+
+However, this triggers a false warning when the root memcg itself is
+allocated. No parent exists in this case, and so current->active_memcg
+is rightfully NULL. It's a false positive, not indicative of a bug.
+
+Delete the warnings for now, we can revisit this later.
+
+Fixes: 3e38e0aaca9e ("mm: memcg: charge memcg percpu memory to the parent cgroup")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/memcontrol.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d59fd9af6e63..9d87082e64aa 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5137,9 +5137,6 @@ static int alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
+ 	if (!pn)
+ 		return 1;
  
-+#include <linux/sched.h>
-+
- struct drmem_lmb {
- 	u64     base_addr;
- 	u32     drc_index;
-@@ -26,8 +28,22 @@ struct drmem_lmb_info {
+-	/* We charge the parent cgroup, never the current task */
+-	WARN_ON_ONCE(!current->active_memcg);
+-
+ 	pn->lruvec_stat_local = alloc_percpu_gfp(struct lruvec_stat,
+ 						 GFP_KERNEL_ACCOUNT);
+ 	if (!pn->lruvec_stat_local) {
+@@ -5222,9 +5219,6 @@ static struct mem_cgroup *mem_cgroup_alloc(void)
+ 		goto fail;
+ 	}
  
- extern struct drmem_lmb_info *drmem_info;
- 
-+static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb,
-+					       const struct drmem_lmb *start)
-+{
-+	/*
-+	 * DLPAR code paths can take several milliseconds per element
-+	 * when interacting with firmware. Ensure that we don't
-+	 * unfairly monopolize the CPU.
-+	 */
-+	if (((++lmb - start) % 16) == 0)
-+		cond_resched();
-+
-+	return lmb;
-+}
-+
- #define for_each_drmem_lmb_in_range(lmb, start, end)		\
--	for ((lmb) = (start); (lmb) < (end); (lmb)++)
-+	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb, start))
- 
- #define for_each_drmem_lmb(lmb)					\
- 	for_each_drmem_lmb_in_range((lmb),			\
+-	/* We charge the parent cgroup, never the current task */
+-	WARN_ON_ONCE(!current->active_memcg);
+-
+ 	memcg->vmstats_local = alloc_percpu_gfp(struct memcg_vmstats_percpu,
+ 						GFP_KERNEL_ACCOUNT);
+ 	if (!memcg->vmstats_local)
 -- 
-2.25.4
+2.28.0
 
