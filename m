@@ -1,97 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5628E243416
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 08:42:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF15243425
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 08:48:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRxnn1j6bzDqZC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 16:42:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRxwn01pbzDqcT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 16:48:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=dmn99BVF; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRxk30tbDzDqcG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 16:39:06 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07D6W00J109384; Thu, 13 Aug 2020 02:38:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=6ma4IiAmGEShavvSv5b1LplCadu9J6Z+4heNkQXf2c4=;
- b=dmn99BVFGlO7gUySQbdeCAZ1rjZY6NVnj7c2RKpd3JzPmylFarlaeZFhHEqjnYyYWNbY
- uGrRyzFm8G2Z2fIb2R3vlLE7mtgEK3gKRkCHrGS0bv7yKfCxAceXFKLajhz5tRMUCPLO
- LU1xBTrOFFVRA/JDC+Bkk6rjS9i20UsYWRHTPRLPmtrRuJoHQ0z8WwKL8jSmUFCvTATL
- 2c91tplkUv0BYAbDWyF1c2sL86u4i3G7GbqTnVBUItSPYll3ipddS863Q2Crdn/+GAdg
- ve8wWMqM8BzsNwbzlrePJnBwqiZqfKYy5pD/9OAcAWb5/502WnkuXkvIWkdL60kRRWbf mg== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32vbd0cveu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Aug 2020 02:38:57 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07D6Yv6K021916;
- Thu, 13 Aug 2020 06:38:55 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 32skp8d7j0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Aug 2020 06:38:55 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07D6cr8c26870016
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Aug 2020 06:38:53 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 51D5D4203F;
- Thu, 13 Aug 2020 06:38:53 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 18FC542042;
- Thu, 13 Aug 2020 06:38:52 +0000 (GMT)
-Received: from [9.79.219.81] (unknown [9.79.219.81])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 13 Aug 2020 06:38:51 +0000 (GMT)
-Subject: Re: [PATCH 10/16] debug_vm_pgtable/thp: Use page table
- depost/withdraw with THP
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20200812063358.369514-1-aneesh.kumar@linux.ibm.com>
- <20200812063358.369514-10-aneesh.kumar@linux.ibm.com>
- <40f2acb5-1da3-4c0a-5590-3fd12d128421@arm.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <bb3821c4-0d23-e6a6-33ad-6c0e3ad67644@linux.ibm.com>
-Date: Thu, 13 Aug 2020 12:08:51 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRxv54KxNzDqDL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 16:46:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=O5fll75C; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BRxv43MBsz9sTH;
+ Thu, 13 Aug 2020 16:46:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1597301217;
+ bh=HtgJ1t1rqLeW9In5EvrkzFZ0cdaEeChP6vEYzct7nw8=;
+ h=Date:From:To:Cc:Subject:From;
+ b=O5fll75Ct0fL71RbDgY5wy2RLZvT0fAnVuaPnuEjEUtppDi4QUI5ejJ0AshEvjdgA
+ MCalQuOuV3KbtdcRsPHGhVCgvYYXpIVWOP3QSDA4ucD86R97ikArdpa0lzSlLfRzvX
+ 8HPeC0BH8/bjYUBEETc7WwEg9XCAO/VbHLXr05re2+QCuPxTLNorPeMC09uawQ7rAU
+ UdK+ZN2KBOo8pbTthFt01UxfQ1QNrg7vqPOtYKKOeF2Kb5LScCFPI9N8TFAIXPUzyL
+ GagtQrEbfVZmX88sECtQdTYDNoAivTQQGFC9K36Q4wy+NMiK6WsFS5sgQiNZzGZcsY
+ XVnjwr51OiFmg==
+Date: Thu, 13 Aug 2020 16:46:54 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Roman Gushchin <guro@fb.com>, Andrew Morton <akpm@linux-foundation.org>
+Subject: linux-next: runtime warning in Linus' tree
+Message-ID: <20200813164654.061dbbd3@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <40f2acb5-1da3-4c0a-5590-3fd12d128421@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-13_04:2020-08-11,
- 2020-08-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- adultscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0
- mlxlogscore=999 clxscore=1015 mlxscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008130047
+Content-Type: multipart/signed; boundary="Sig_/eDCBOtPvZTwfaOIIDj=Yg_u";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,71 +56,164 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linux PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/13/20 10:55 AM, Anshuman Khandual wrote:
-> On 08/12/2020 12:03 PM, Aneesh Kumar K.V wrote:
->> Architectures like ppc64 use deposited page table while updating the huge pte
->> entries.
->>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>   mm/debug_vm_pgtable.c | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->> index 644d28861ce9..48475d288df1 100644
->> --- a/mm/debug_vm_pgtable.c
->> +++ b/mm/debug_vm_pgtable.c
->> @@ -147,7 +147,7 @@ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
->>   static void __init pmd_advanced_tests(struct mm_struct *mm,
->>   				      struct vm_area_struct *vma, pmd_t *pmdp,
->>   				      unsigned long pfn, unsigned long vaddr,
->> -				      pgprot_t prot)
->> +				      pgprot_t prot, pgtable_t pgtable)
->>   {
->>   	pmd_t pmd;
->>   
->> @@ -158,6 +158,8 @@ static void __init pmd_advanced_tests(struct mm_struct *mm,
->>   	/* Align the address wrt HPAGE_PMD_SIZE */
->>   	vaddr = (vaddr & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE;
->>   
->> +	pgtable_trans_huge_deposit(mm, pmdp, pgtable);
->> +
->>   	pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
->>   	set_pmd_at(mm, vaddr, pmdp, pmd);
->>   	pmdp_set_wrprotect(mm, vaddr, pmdp);
->> @@ -188,6 +190,8 @@ static void __init pmd_advanced_tests(struct mm_struct *mm,
->>   	pmdp_test_and_clear_young(vma, vaddr, pmdp);
->>   	pmd = READ_ONCE(*pmdp);
->>   	WARN_ON(pmd_young(pmd));
->> +
->> +	pgtable = pgtable_trans_huge_withdraw(mm, pmdp);
->>   }
->>   
->>   static void __init pmd_leaf_tests(unsigned long pfn, pgprot_t prot)
->> @@ -1002,7 +1006,7 @@ static int __init debug_vm_pgtable(void)
->>   	pgd_clear_tests(mm, pgdp);
->>   
->>   	pte_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
->> -	pmd_advanced_tests(mm, vma, pmdp, pmd_aligned, vaddr, prot);
->> +	pmd_advanced_tests(mm, vma, pmdp, pmd_aligned, vaddr, prot, saved_ptep);
->>   	pud_advanced_tests(mm, vma, pudp, pud_aligned, vaddr, prot);
->>   	hugetlb_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
->>   
->>
-> 
-> Makes sense, if it is required for THP to work correctly but needs to be tested
-> across enabled platforms. Why should not the same apply for pud_advanced_tests()
-> on platforms that supports PUD based THP.
-> 
+--Sig_/eDCBOtPvZTwfaOIIDj=Yg_u
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
 
-pud doesn't have page table deposit/withdraw semantics. We use that to 
-support hugepage split. With pud mapping we don't split, we just drop 
-the hugepage and expect it to be faulted back in as regular page.
+Testing Linus' tree today, my qemu runs (PowerPC
+powerpc_pseries_le_defconfig) produce the following WARNING:
 
--aneesh
+[    0.021401][    T0] Mount-cache hash table entries: 8192 (order: 0, 6553=
+6 bytes, linear)
+[    0.021529][    T0] Mountpoint-cache hash table entries: 8192 (order: 0,=
+ 65536 bytes, linear)
+[    0.053969][    T0] ------------[ cut here ]------------
+[    0.055220][    T0] WARNING: CPU: 0 PID: 0 at mm/memcontrol.c:5220 mem_c=
+group_css_alloc+0x350/0x904
+[    0.055355][    T0] Modules linked in:
+[    0.055812][    T0] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.8.0 #5
+[    0.055976][    T0] NIP:  c000000000410010 LR: c00000000040fd68 CTR: 000=
+0000000000000
+[    0.056097][    T0] REGS: c0000000011e7ab0 TRAP: 0700   Not tainted  (5.=
+8.0)
+[    0.056162][    T0] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  C=
+R: 24000888  XER: 00000000
+[    0.056449][    T0] CFAR: c00000000040fd80 IRQMASK: 0=20
+[    0.056449][    T0] GPR00: c00000000040fd68 c0000000011e7d40 c0000000011=
+e8300 0000000000000001=20
+[    0.056449][    T0] GPR04: 0000000000000228 0000000000000000 00000000000=
+00001 ffffffffffffffff=20
+[    0.056449][    T0] GPR08: c00000007d003208 0000000000000000 00000000000=
+00000 c00000007d002fe8=20
+[    0.056449][    T0] GPR12: 0000000000000001 c0000000013d0000 00000000000=
+00000 00000000011dd528=20
+[    0.056449][    T0] GPR16: 00000000011dd840 00000000011dd690 00000000000=
+00018 0000000000000003=20
+[    0.056449][    T0] GPR20: 0000000000000001 c0000000010cbcf8 00000000000=
+00003 c0000000010cd540=20
+[    0.056449][    T0] GPR24: c0000000010e8778 c0000000010e9080 c0000000010=
+cbcd8 0000000000000000=20
+[    0.056449][    T0] GPR28: 0000000000000000 c00000007e2a1000 c0000000010=
+cbcc8 c00000000118ea00=20
+[    0.057109][    T0] NIP [c000000000410010] mem_cgroup_css_alloc+0x350/0x=
+904
+[    0.057177][    T0] LR [c00000000040fd68] mem_cgroup_css_alloc+0xa8/0x904
+[    0.057394][    T0] Call Trace:
+[    0.057534][    T0] [c0000000011e7d40] [c00000000040fd68] mem_cgroup_css=
+_alloc+0xa8/0x904 (unreliable)
+[    0.057814][    T0] [c0000000011e7dc0] [c000000000f5b13c] cgroup_init_su=
+bsys+0xbc/0x210
+[    0.057903][    T0] [c0000000011e7e10] [c000000000f5b690] cgroup_init+0x=
+220/0x598
+[    0.057973][    T0] [c0000000011e7ee0] [c000000000f34354] start_kernel+0=
+x67c/0x6ec
+[    0.058047][    T0] [c0000000011e7f90] [c00000000000cb88] start_here_com=
+mon+0x1c/0x614
+[    0.058241][    T0] Instruction dump:
+[    0.058420][    T0] eac10030 eae10038 eb410050 eb610058 4bffff60 6000000=
+0 60000000 60000000=20
+[    0.058550][    T0] 3be00100 4bfffdfc 60000000 60000000 <0fe00000> 4bfff=
+d70 60000000 60000000=20
+[    0.059381][    T0] ---[ end trace cb2d79b4994ef1fe ]---
+[    0.059810][    T0] ------------[ cut here ]------------
+[    0.059872][    T0] WARNING: CPU: 0 PID: 0 at mm/memcontrol.c:5135 mem_c=
+group_css_alloc+0x750/0x904
+[    0.059930][    T0] Modules linked in:
+[    0.060053][    T0] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W   =
+      5.8.0 #5
+[    0.060113][    T0] NIP:  c000000000410410 LR: c00000000040ff2c CTR: 000=
+0000000000000
+[    0.060171][    T0] REGS: c0000000011e7ab0 TRAP: 0700   Tainted: G      =
+  W          (5.8.0)
+[    0.060229][    T0] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  C=
+R: 24000880  XER: 00000000
+[    0.060332][    T0] CFAR: c00000000040fe48 IRQMASK: 0=20
+[    0.060332][    T0] GPR00: c00000000040ff2c c0000000011e7d40 c0000000011=
+e8300 c00000007e234c00=20
+[    0.060332][    T0] GPR04: 0000000000000000 0000000000000000 c00000007e2=
+35000 0000000000000013=20
+[    0.060332][    T0] GPR08: 000000007ec00000 0000000000000000 00000000000=
+00000 0000000000000001=20
+[    0.060332][    T0] GPR12: 0000000000000000 c0000000013d0000 00000000000=
+00000 00000000011dd528=20
+[    0.060332][    T0] GPR16: 00000000011dd840 00000000011dd690 00000000000=
+00018 0000000000000003=20
+[    0.060332][    T0] GPR20: c000000001223300 c000000000e95900 c0000000011=
+8ea00 c0000000012232c0=20
+[    0.060332][    T0] GPR24: c0000000010e8778 c0000000010e9080 00000000004=
+00cc0 0000000000000000=20
+[    0.060332][    T0] GPR28: 0000000000000000 c00000007e2a1000 c00000007e2=
+34c00 0000000000000000=20
+[    0.060855][    T0] NIP [c000000000410410] mem_cgroup_css_alloc+0x750/0x=
+904
+[    0.060911][    T0] LR [c00000000040ff2c] mem_cgroup_css_alloc+0x26c/0x9=
+04
+[    0.060958][    T0] Call Trace:
+[    0.061003][    T0] [c0000000011e7d40] [c00000000040ff2c] mem_cgroup_css=
+_alloc+0x26c/0x904 (unreliable)
+[    0.061081][    T0] [c0000000011e7dc0] [c000000000f5b13c] cgroup_init_su=
+bsys+0xbc/0x210
+[    0.061165][    T0] [c0000000011e7e10] [c000000000f5b690] cgroup_init+0x=
+220/0x598
+[    0.061233][    T0] [c0000000011e7ee0] [c000000000f34354] start_kernel+0=
+x67c/0x6ec
+[    0.061303][    T0] [c0000000011e7f90] [c00000000000cb88] start_here_com=
+mon+0x1c/0x614
+[    0.061364][    T0] Instruction dump:
+[    0.061408][    T0] ebe1fff8 7c0803a6 4e800020 60000000 60000000 3d22000=
+4 e929d230 7c3c4800=20
+[    0.061508][    T0] 41820190 e93c03d2 4bfffc80 60000000 <0fe00000> 4bfff=
+a38 60000000 60000000=20
+[    0.061630][    T0] ---[ end trace cb2d79b4994ef1ff ]---
+[    0.096387][    T1] EEH: pSeries platform initialized
+[    0.097232][    T1] POWER8 performance monitor hardware support register=
+ed
+
+[The line numbers in the final linux next are 5226 and 5141 due to
+later patches.]
+
+Introduced (or exposed) by commit
+
+  3e38e0aaca9e ("mm: memcg: charge memcg percpu memory to the parent cgroup=
+")
+
+This commit actually adds the WARN_ON, so it either adds the bug that
+sets it off, or the bug already existed.
+
+Unfotunately, the version of this patch in linux-next up tuntil today
+is different.  :-(
+
+I have left this as I have no idea how to fix it :-)
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/eDCBOtPvZTwfaOIIDj=Yg_u
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl804d4ACgkQAVBC80lX
+0GxBwwgAjYJd1+rhj+ieQ5IOxjMycF9KJIZwMYz91Qgtejm6V+CAmCSJXiwStSIM
+1sR/fr8oJB5/cY+XsInVF6fRfGzsc+fMc9z571Q7nf9JwZAevf7+kdK6rckR5Qcm
+bDe+juyu06kCdhpHm8cswmYlBoD//gtzfpaeVdo4wpJGkdDXvR8kLasrZd7IDX2n
+s/pjBrL8nX3GauKtd0c0JmlXSSVYhvbbie0zBdn6TB+q5R7QL7M6p6i2ANmqfzTU
+e/yGTp+Zk3H/t2v2/YPmL9Y4wZfC/egSyoh5bw28tq/Ma9TZBI0DsU2cIeEnoYfT
+aZRpNYH5kl6J5JqbGVxegz5NLf0r7g==
+=aHEW
+-----END PGP SIGNATURE-----
+
+--Sig_/eDCBOtPvZTwfaOIIDj=Yg_u--
