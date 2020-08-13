@@ -1,91 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8268C2431F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 03:09:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E904B243223
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 03:36:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BRpPV6541zDqHv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 11:09:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BRq1201j4zDqYJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Aug 2020 11:36:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=duJCk6tq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BRpMX5fXJzDq9j
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 11:07:36 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07D13JCG107345; Wed, 12 Aug 2020 21:07:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=nqdweNomGRVVapp5Uhx8ZWKEZnwBkIVU0isIjCtR2JE=;
- b=duJCk6tq4VgyyHp75B56aDrnUrTl4er3Rxvb9Z743Iixj09uvdYW6bplmQt+QQX6JKKM
- 4M76GW8a0NAG3hfFXS0UoY/nrmnbCyvR+P0GgkO5aaiaoRmBZXfeNDYJ7vH4s+CuPANQ
- 1HQO4a7FxbD4jVYmidwItQwnCeHy5DH55U4F36qlLp94ITKk3n99PwnZa3J4zZWPWMsJ
- VAdTkrgVbYZ33vIXrkhkkd6RoMLESH+VozmsUFNtZjWCRCBtc+QepwMSCb6thwyOOiZG
- gfY1YbG6qaZp4J8yzE4EoDGoncFHqB9wm+lgILZyGlTE8kJTx4c2PXFXs3eZr195OPl/ YA== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32sratbyvc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Aug 2020 21:07:27 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07D16TBX010523;
- Thu, 13 Aug 2020 01:07:26 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma01wdc.us.ibm.com with ESMTP id 32skp9e0wp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Aug 2020 01:07:26 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07D17Q7R11993798
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Aug 2020 01:07:26 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2DA6C28064;
- Thu, 13 Aug 2020 01:07:26 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0DACE2805C;
- Thu, 13 Aug 2020 01:07:26 +0000 (GMT)
-Received: from localhost (unknown [9.65.223.18])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 13 Aug 2020 01:07:25 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Tyrel Datwyler <tyreld@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/pseries: explicitly reschedule during
- drmem_lmb list traversal
-In-Reply-To: <87lfij9yp6.fsf@mpe.ellerman.id.au>
-References: <20200812012005.1919255-1-nathanl@linux.ibm.com>
- <5e8213a6-802b-f7ca-b43b-a3de8a03d1da@linux.ibm.com>
- <87lfij9yp6.fsf@mpe.ellerman.id.au>
-Date: Wed, 12 Aug 2020 20:07:25 -0500
-Message-ID: <874kp7z73m.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BRpyx1W3kzDqWh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 11:34:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=f5+fQjCW; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4BRpyx0BbLz9sRK; Thu, 13 Aug 2020 11:34:49 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4BRpyw6Nq4z9sTR; Thu, 13 Aug 2020 11:34:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1597282488;
+ bh=ZG+28bdNv8z93LSW57ERHHk++TVzWmMh0NldrqdXinU=;
+ h=From:To:Subject:Date:From;
+ b=f5+fQjCWh+0YRIcNWxUsKhuHM5p0emmXdwzsEQqjEh8phIiyAuwM5HknXBpuPNl0R
+ ztiTKtanLRInIRknGxT+YPu+p7DniHdBPH/dLpLYivpuhBwhUObEuh/JvDfG+/Zrhu
+ R9FjaE0dTsojAcFUsw731xKkhU5dfU1EHAE99wFZ7pShUvTiFs72vnYOfvMe9iNvwn
+ KG1/6njd5CYlBrgbf2MZE6KtwU+EWD563wgkbjHwdw5yv/d7yIzj1dWS+MiqqOdGLh
+ EjqiEH8v7spkXN+8tGS+A2QqD3fxPT67/V9d4rPmpK9cfjzIiDeJ/bsm5oc9yXIkfW
+ KN4jl1tY7h0qQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH 1/3] selftests/powerpc: Fix TM tests when CPU 0 is offline
+Date: Thu, 13 Aug 2020 11:34:43 +1000
+Message-Id: <20200813013445.686464-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-12_19:2020-08-11,
- 2020-08-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0
- suspectscore=1 priorityscore=1501 impostorscore=0 bulkscore=0 adultscore=0
- malwarescore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=902
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008130006
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,41 +55,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cheloha@linux.ibm.com, ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
->> On 8/11/20 6:20 PM, Nathan Lynch wrote:
->>>  
->>> +static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb)
->>> +{
->>> +	const unsigned int resched_interval = 20;
->>> +
->>> +	BUG_ON(lmb < drmem_info->lmbs);
->>> +	BUG_ON(lmb >= drmem_info->lmbs + drmem_info->n_lmbs);
->>
->> I think BUG_ON is a pretty big no-no these days unless there is no other option.
->
-> It's complicated, but yes we would like to avoid adding them if we can.
->
-> In a case like this there is no other option, *if* the check has to be
-> in drmem_lmb_next().
->
-> But I don't think we really need to check that there.
->
-> If for some reason this was called with an *lmb pointing outside of the
-> lmbs array it would confuse the cond_resched() logic, but it's not worth
-> crashing the box for that IMHO.
+Several of the TM tests fail spuriously if CPU 0 is offline, because
+they blindly try to affinitise to CPU 0.
 
-The BUG_ONs are pretty much orthogonal to the cond_resched().
+Fix them by picking any online CPU and using that instead.
 
-It's not apparent from the context of the change, but some users of the
-for_each_drmem_lmb* macros modify elements of the drmem_info->lmbs
-array. If the lmb passed to drmem_lmb_next() violates the bounds check
-(say, if the callsite inappropriately modifies it within the loop), such
-users are guaranteed to corrupt other objects in memory. This was my
-thinking in adding the BUG_ONs, and I don't see another place to do
-it.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ tools/testing/selftests/powerpc/tm/tm-poison.c      | 11 +++++++----
+ tools/testing/selftests/powerpc/tm/tm-trap.c        | 10 ++++++----
+ tools/testing/selftests/powerpc/tm/tm-unavailable.c |  9 ++++++---
+ 3 files changed, 19 insertions(+), 11 deletions(-)
+
+diff --git a/tools/testing/selftests/powerpc/tm/tm-poison.c b/tools/testing/selftests/powerpc/tm/tm-poison.c
+index 977558497c16..29e5f26af7b9 100644
+--- a/tools/testing/selftests/powerpc/tm/tm-poison.c
++++ b/tools/testing/selftests/powerpc/tm/tm-poison.c
+@@ -26,7 +26,7 @@
+ 
+ int tm_poison_test(void)
+ {
+-	int pid;
++	int cpu, pid;
+ 	cpu_set_t cpuset;
+ 	uint64_t poison = 0xdeadbeefc0dec0fe;
+ 	uint64_t unknown = 0;
+@@ -35,10 +35,13 @@ int tm_poison_test(void)
+ 
+ 	SKIP_IF(!have_htm());
+ 
+-	/* Attach both Child and Parent to CPU 0 */
++	cpu = pick_online_cpu();
++	FAIL_IF(cpu < 0);
++
++	// Attach both Child and Parent to the same CPU
+ 	CPU_ZERO(&cpuset);
+-	CPU_SET(0, &cpuset);
+-	sched_setaffinity(0, sizeof(cpuset), &cpuset);
++	CPU_SET(cpu, &cpuset);
++	FAIL_IF(sched_setaffinity(0, sizeof(cpuset), &cpuset) != 0);
+ 
+ 	pid = fork();
+ 	if (!pid) {
+diff --git a/tools/testing/selftests/powerpc/tm/tm-trap.c b/tools/testing/selftests/powerpc/tm/tm-trap.c
+index 601f0c1d450d..c75960af8018 100644
+--- a/tools/testing/selftests/powerpc/tm/tm-trap.c
++++ b/tools/testing/selftests/powerpc/tm/tm-trap.c
+@@ -247,8 +247,7 @@ void *pong(void *not_used)
+ int tm_trap_test(void)
+ {
+ 	uint16_t k = 1;
+-
+-	int rc;
++	int cpu, rc;
+ 
+ 	pthread_attr_t attr;
+ 	cpu_set_t cpuset;
+@@ -267,9 +266,12 @@ int tm_trap_test(void)
+ 	usr1_sa.sa_sigaction = usr1_signal_handler;
+ 	sigaction(SIGUSR1, &usr1_sa, NULL);
+ 
+-	/* Set only CPU 0 in the mask. Both threads will be bound to cpu 0. */
++	cpu = pick_online_cpu();
++	FAIL_IF(cpu < 0);
++
++	// Set only one CPU in the mask. Both threads will be bound to that CPU.
+ 	CPU_ZERO(&cpuset);
+-	CPU_SET(0, &cpuset);
++	CPU_SET(cpu, &cpuset);
+ 
+ 	/* Init pthread attribute */
+ 	rc = pthread_attr_init(&attr);
+diff --git a/tools/testing/selftests/powerpc/tm/tm-unavailable.c b/tools/testing/selftests/powerpc/tm/tm-unavailable.c
+index 2ca2fccb0a3e..a1348a5f721a 100644
+--- a/tools/testing/selftests/powerpc/tm/tm-unavailable.c
++++ b/tools/testing/selftests/powerpc/tm/tm-unavailable.c
+@@ -338,16 +338,19 @@ void test_fp_vec(int fp, int vec, pthread_attr_t *attr)
+ 
+ int tm_unavailable_test(void)
+ {
+-	int rc, exception; /* FP = 0, VEC = 1, VSX = 2 */
++	int cpu, rc, exception; /* FP = 0, VEC = 1, VSX = 2 */
+ 	pthread_t t1;
+ 	pthread_attr_t attr;
+ 	cpu_set_t cpuset;
+ 
+ 	SKIP_IF(!have_htm());
+ 
+-	/* Set only CPU 0 in the mask. Both threads will be bound to CPU 0. */
++	cpu = pick_online_cpu();
++	FAIL_IF(cpu < 0);
++
++	// Set only one CPU in the mask. Both threads will be bound to that CPU.
+ 	CPU_ZERO(&cpuset);
+-	CPU_SET(0, &cpuset);
++	CPU_SET(cpu, &cpuset);
+ 
+ 	/* Init pthread attribute. */
+ 	rc = pthread_attr_init(&attr);
+-- 
+2.25.1
+
