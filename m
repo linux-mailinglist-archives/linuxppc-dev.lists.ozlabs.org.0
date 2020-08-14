@@ -1,54 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE3E2446D6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 11:17:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2AC24471C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 11:36:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BSd9m1ppxzDqmd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 19:17:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BSdc54QRtzDqmq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 19:36:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BSdZ56103zDqlD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 19:34:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BSdZ55V5kz8tGy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 19:34:37 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BSdZ54zRMz9sTX; Fri, 14 Aug 2020 19:34:37 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
+Authentication-Results: ozlabs.org;
  dmarc=none (p=none dis=none) header.from=csgroup.eu
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BSd7c5fkvzDqdM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 19:15:05 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 4BSdZ46sjCz9sTQ
+ for <linuxppc-dev@ozlabs.org>; Fri, 14 Aug 2020 19:34:32 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BSd7R6kb9zB09b5;
- Fri, 14 Aug 2020 11:14:59 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BSdYw349dz9v0hd;
+ Fri, 14 Aug 2020 11:34:28 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Xjq95Fm1vYdV; Fri, 14 Aug 2020 11:14:59 +0200 (CEST)
+ with ESMTP id pvo89V3D-Lpj; Fri, 14 Aug 2020 11:34:28 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BSd7R4nKBzB09Zk;
- Fri, 14 Aug 2020 11:14:59 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BSdYw28jkz9v0Z7;
+ Fri, 14 Aug 2020 11:34:28 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B7B888B796;
- Fri, 14 Aug 2020 11:15:00 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 86A1C8B796;
+ Fri, 14 Aug 2020 11:34:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id KE7IhrMTrHS3; Fri, 14 Aug 2020 11:15:00 +0200 (CEST)
+ with ESMTP id 2LEfufVut9PS; Fri, 14 Aug 2020 11:34:29 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 13D218B767;
- Fri, 14 Aug 2020 11:15:00 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc: Add POWER10 raw mode cputable entry
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
-References: <20200814074520.3667973-1-maddy@linux.ibm.com>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A5DAD8B767;
+ Fri, 14 Aug 2020 11:34:28 +0200 (CEST)
+Subject: Re: [PATCH 2/4] powerpc: Introduce asm-prototypes.h
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@ozlabs.org
+References: <1463534212-4879-1-git-send-email-dja@axtens.net>
+ <1463534212-4879-2-git-send-email-dja@axtens.net>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <9cfb8ac6-7b2f-658b-4d0a-23067a76014f@csgroup.eu>
-Date: Fri, 14 Aug 2020 11:14:55 +0200
+Message-ID: <b50b9bdd-b731-44ed-435b-e3e4b179a89a@csgroup.eu>
+Date: Fri, 14 Aug 2020 11:34:23 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200814074520.3667973-1-maddy@linux.ibm.com>
+In-Reply-To: <1463534212-4879-2-git-send-email-dja@axtens.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -63,88 +78,203 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 14/08/2020 à 09:45, Madhavan Srinivasan a écrit :
-> Add a raw mode cputable entry for POWER10. Copies most of the fields
-> from commit a3ea40d5c736 ("powerpc: Add POWER10 architected mode")
-> except for oprofile_cpu_type, machine_check_early, pvr_mask and pvr_mask
-> fields. On bare metal systems we use DT CPU features, which doesn't need a
-> cputable entry. But in VMs we still rely on the raw cputable entry to
-> set the correct values for the PMU related fields.
+Le 18/05/2016 à 03:16, Daniel Axtens a écrit :
+> Sparse picked up a number of functions that are implemented in C and
+> then only referred to in asm code.
 > 
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> ---
-> Changelog v1:
-> - Fixed function undeclared compiler error.
-> 
->   arch/powerpc/kernel/cputable.c | 20 ++++++++++++++++++++
->   1 file changed, 20 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
-> index b4066354f0730..bb0c7f43a8283 100644
-> --- a/arch/powerpc/kernel/cputable.c
-> +++ b/arch/powerpc/kernel/cputable.c
-> @@ -75,6 +75,7 @@ extern void __restore_cpu_power10(void);
->   extern long __machine_check_early_realmode_p7(struct pt_regs *regs);
->   extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
->   extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
-> +extern long __machine_check_early_realmode_p10(struct pt_regs *regs);
+> This introduces asm-prototypes.h, which provides a place for
+> prototypes of these functions.
 
-'extern' keyword is useless and deprecated for function declaration. 
-Please don't add new prototypes with that keyword.
+It looks like this is a mis-use of asm-prototypes.h
 
-Also, when you check arch/powerpc/kernel/mce_power.o with sparse, you 
-get the following issues:
+On other architectures, asm-prototypes.h is there to allow MODVERSION to 
+sent versions for exported assembly functions (I checked history of that 
+file in x86 and arm64).
 
-   CHECK   arch/powerpc/kernel/mce_power.c
-arch/powerpc/kernel/mce_power.c:709:6: warning: symbol 
-'__machine_check_early_realmode_p7' was not declared. Should it be static?
-arch/powerpc/kernel/mce_power.c:717:6: warning: symbol 
-'__machine_check_early_realmode_p8' was not declared. Should it be static?
-arch/powerpc/kernel/mce_power.c:722:6: warning: symbol 
-'__machine_check_early_realmode_p9' was not declared. Should it be static?
-arch/powerpc/kernel/mce_power.c:740:6: warning: symbol 
-'__machine_check_early_realmode_p10' was not declared. Should it be static?
+It looks like you have used it on the other way round, you have declared 
+in it C functions used by ASM functions, whereas it is supposed to be 
+dedicated to declaring exported ASM functions used by C functions.
 
-This needs to be fixed by declaring the functions in a .h file that you 
-include in both arch/powerpc/kernel/mce_power.c and 
-arch/powerpc/kernel/cputable.c
+Any plan to fix that ?
 
 Christophe
 
->   #endif /* CONFIG_PPC64 */
->   #if defined(CONFIG_E500)
->   extern void __setup_cpu_e5500(unsigned long offset, struct cpu_spec* spec);
-> @@ -541,6 +542,25 @@ static struct cpu_spec __initdata cpu_specs[] = {
->   		.machine_check_early	= __machine_check_early_realmode_p9,
->   		.platform		= "power9",
->   	},
-> +	{	/* Power10 */
-> +		.pvr_mask		= 0xffff0000,
-> +		.pvr_value		= 0x00800000,
-> +		.cpu_name		= "POWER10 (raw)",
-> +		.cpu_features		= CPU_FTRS_POWER10,
-> +		.cpu_user_features	= COMMON_USER_POWER10,
-> +		.cpu_user_features2	= COMMON_USER2_POWER10,
-> +		.mmu_features		= MMU_FTRS_POWER10,
-> +		.icache_bsize		= 128,
-> +		.dcache_bsize		= 128,
-> +		.num_pmcs		= 6,
-> +		.pmc_type		= PPC_PMC_IBM,
-> +		.oprofile_cpu_type	= "ppc64/power10",
-> +		.oprofile_type		= PPC_OPROFILE_INVALID,
-> +		.cpu_setup		= __setup_cpu_power10,
-> +		.cpu_restore		= __restore_cpu_power10,
-> +		.machine_check_early	= __machine_check_early_realmode_p10,
-> +		.platform		= "power10",
-> +	},
->   	{	/* Cell Broadband Engine */
->   		.pvr_mask		= 0xffff0000,
->   		.pvr_value		= 0x00700000,
+> 
+> This silences some sparse warnings.
+> 
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> ---
+>   arch/powerpc/include/asm/asm-prototypes.h         | 79 +++++++++++++++++++++++
+>   arch/powerpc/kernel/machine_kexec_64.c            |  1 +
+>   arch/powerpc/kernel/smp.c                         |  1 +
+>   arch/powerpc/kernel/traps.c                       |  1 +
+>   arch/powerpc/lib/vmx-helper.c                     |  1 +
+>   arch/powerpc/platforms/powernv/opal-tracepoints.c |  1 +
+>   arch/powerpc/platforms/pseries/lpar.c             |  1 +
+>   7 files changed, 85 insertions(+)
+>   create mode 100644 arch/powerpc/include/asm/asm-prototypes.h
+> 
+> diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+> new file mode 100644
+> index 000000000000..6ee0a9d80bbc
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/asm-prototypes.h
+> @@ -0,0 +1,79 @@
+> +/*
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License, version 2, as
+> + * published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * Copyright IBM Corp. 2016
+> + *
+> + * Authors: Daniel Axtens <dja@axtens.net>
+> + */
+> +
+> +/*
+> + * This file is for prototypes of C functions that are only called
+> + * from asm, and any associated variables.
+> + */
+> +
+> +#include <linux/threads.h>
+> +#include <linux/kprobes.h>
+> +
+> +/* SMP */
+> +extern struct thread_info *current_set[NR_CPUS];
+> +extern struct thread_info *secondary_ti;
+> +void start_secondary(void *unused);
+> +
+> +/* kexec */
+> +struct paca_struct;
+> +struct kimage;
+> +extern struct paca_struct kexec_paca;
+> +void kexec_copy_flush(struct kimage *image);
+> +
+> +/* pSeries hcall tracing */
+> +extern struct static_key hcall_tracepoint_key;
+> +void __trace_hcall_entry(unsigned long opcode, unsigned long *args);
+> +void __trace_hcall_exit(long opcode, unsigned long retval,
+> +			unsigned long *retbuf);
+> +/* OPAL tracing */
+> +#ifdef HAVE_JUMP_LABEL
+> +extern struct static_key opal_tracepoint_key;
+> +#endif
+> +
+> +void __trace_opal_entry(unsigned long opcode, unsigned long *args);
+> +void __trace_opal_exit(long opcode, unsigned long retval);
+> +
+> +/* VMX copying */
+> +int enter_vmx_usercopy(void);
+> +int exit_vmx_usercopy(void);
+> +int enter_vmx_copy(void);
+> +void * exit_vmx_copy(void *dest);
+> +
+> +/* Traps */
+> +long machine_check_early(struct pt_regs *regs);
+> +long hmi_exception_realmode(struct pt_regs *regs);
+> +void SMIException(struct pt_regs *regs);
+> +void handle_hmi_exception(struct pt_regs *regs);
+> +void instruction_breakpoint_exception(struct pt_regs *regs);
+> +void RunModeException(struct pt_regs *regs);
+> +void __kprobes single_step_exception(struct pt_regs *regs);
+> +void __kprobes program_check_exception(struct pt_regs *regs);
+> +void alignment_exception(struct pt_regs *regs);
+> +void StackOverflow(struct pt_regs *regs);
+> +void nonrecoverable_exception(struct pt_regs *regs);
+> +void kernel_fp_unavailable_exception(struct pt_regs *regs);
+> +void altivec_unavailable_exception(struct pt_regs *regs);
+> +void vsx_unavailable_exception(struct pt_regs *regs);
+> +void fp_unavailable_tm(struct pt_regs *regs);
+> +void altivec_unavailable_tm(struct pt_regs *regs);
+> +void vsx_unavailable_tm(struct pt_regs *regs);
+> +void facility_unavailable_exception(struct pt_regs *regs);
+> +void TAUException(struct pt_regs *regs);
+> +void altivec_assist_exception(struct pt_regs *regs);
+> +void unrecoverable_exception(struct pt_regs *regs);
+> +void kernel_bad_stack(struct pt_regs *regs);
+> +void system_reset_exception(struct pt_regs *regs);
+> +void machine_check_exception(struct pt_regs *regs);
+> +void __kprobes emulation_assist_interrupt(struct pt_regs *regs);
+> diff --git a/arch/powerpc/kernel/machine_kexec_64.c b/arch/powerpc/kernel/machine_kexec_64.c
+> index b8c202d63ecb..50bf55135ef8 100644
+> --- a/arch/powerpc/kernel/machine_kexec_64.c
+> +++ b/arch/powerpc/kernel/machine_kexec_64.c
+> @@ -29,6 +29,7 @@
+>   #include <asm/prom.h>
+>   #include <asm/smp.h>
+>   #include <asm/hw_breakpoint.h>
+> +#include <asm/asm-prototypes.h>
+>   
+>   #ifdef CONFIG_PPC_BOOK3E
+>   int default_machine_kexec_prepare(struct kimage *image)
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 55c924b65f71..f1adc3c4f4ca 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -53,6 +53,7 @@
+>   #include <asm/vdso.h>
+>   #include <asm/debug.h>
+>   #include <asm/kexec.h>
+> +#include <asm/asm-prototypes.h>
+>   
+>   #ifdef DEBUG
+>   #include <asm/udbg.h>
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index 9229ba63c370..11d15e7270e0 100644
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -60,6 +60,7 @@
+>   #include <asm/switch_to.h>
+>   #include <asm/tm.h>
+>   #include <asm/debug.h>
+> +#include <asm/asm-prototypes.h>
+>   #include <sysdev/fsl_pci.h>
+>   
+>   #if defined(CONFIG_DEBUGGER) || defined(CONFIG_KEXEC)
+> diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
+> index b27e030fc9f8..bf925cdcaca9 100644
+> --- a/arch/powerpc/lib/vmx-helper.c
+> +++ b/arch/powerpc/lib/vmx-helper.c
+> @@ -21,6 +21,7 @@
+>   #include <linux/uaccess.h>
+>   #include <linux/hardirq.h>
+>   #include <asm/switch_to.h>
+> +#include <asm/asm-prototypes.h>
+>   
+>   int enter_vmx_usercopy(void)
+>   {
+> diff --git a/arch/powerpc/platforms/powernv/opal-tracepoints.c b/arch/powerpc/platforms/powernv/opal-tracepoints.c
+> index e11273b2386d..1e496b780efd 100644
+> --- a/arch/powerpc/platforms/powernv/opal-tracepoints.c
+> +++ b/arch/powerpc/platforms/powernv/opal-tracepoints.c
+> @@ -1,6 +1,7 @@
+>   #include <linux/percpu.h>
+>   #include <linux/jump_label.h>
+>   #include <asm/trace.h>
+> +#include <asm/asm-prototypes.h>
+>   
+>   #ifdef HAVE_JUMP_LABEL
+>   struct static_key opal_tracepoint_key = STATIC_KEY_INIT;
+> diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+> index 7f6100d91b4b..03ff9867a610 100644
+> --- a/arch/powerpc/platforms/pseries/lpar.c
+> +++ b/arch/powerpc/platforms/pseries/lpar.c
+> @@ -45,6 +45,7 @@
+>   #include <asm/plpar_wrappers.h>
+>   #include <asm/kexec.h>
+>   #include <asm/fadump.h>
+> +#include <asm/asm-prototypes.h>
+>   
+>   #include "pseries.h"
+>   
 > 
