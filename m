@@ -2,55 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A322444CB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 08:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEF32444F5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 08:21:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BSXw117wKzDqgr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 16:04:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BSYHN72XWzDqk5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 16:21:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::533;
+ helo=mail-ed1-x533.google.com; envelope-from=hkallweit1@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=oJREn4cU; dkim-atps=neutral
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com
+ [IPv6:2a00:1450:4864:20::533])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BSXkR6jxwzDqgj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 15:56:31 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BSXkM4750z9vD37;
- Fri, 14 Aug 2020 07:56:27 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id lBzcTAIqbjXx; Fri, 14 Aug 2020 07:56:27 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BSXkM338qz9vD2y;
- Fri, 14 Aug 2020 07:56:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E3638B775;
- Fri, 14 Aug 2020 07:56:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LuR78-u6rgOW; Fri, 14 Aug 2020 07:56:28 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B6288B767;
- Fri, 14 Aug 2020 07:56:28 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C155965C93; Fri, 14 Aug 2020 05:56:27 +0000 (UTC)
-Message-Id: <f989eff8296800c427622c0985384148404e4f0b.1597384512.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <50098f49877cea0f46730a9df82dcabf84160e4b.1597384512.git.christophe.leroy@csgroup.eu>
-References: <50098f49877cea0f46730a9df82dcabf84160e4b.1597384512.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 4/4] powerpc: Rewrite FSL_BOOKE flush_cache_instruction()
- in C
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- hch@infradead.org
-Date: Fri, 14 Aug 2020 05:56:27 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BSYFF52jjzDqfN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 16:19:42 +1000 (AEST)
+Received: by mail-ed1-x533.google.com with SMTP id ba10so6002938edb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 23:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=UXT1flf+cw02X+05sr2H1r1+otkr90aq0IsOI5+Wa0I=;
+ b=oJREn4cU3O1rw40AArW6Z81miwvHWgeTAeOuCZwcGRdzjwbMGlJiJzVMO6kHSg92KQ
+ +X3lAjCIy6el5qQZmr/wcM3uyTXrttad09f+difG5wi9uxZl5UZUkeQoS260D+M2ymVJ
+ lAwxngVc3XRwsSfDD/5nIAJqN0lkxSRqlO63r0+/7qeshTgU3p3RRj4FzFWhdLJxnqjx
+ nKKJfIzbXEqoq3OPg6tfkSG3P0YW0prIvDSDfRW37ayGp+zoEZkCfwK90yCh/lRaZ+og
+ ADUpw1j3AwXS147XD7x61UHTIwJDq7A/c9aO2aWzY34veRUFr/Jb4ulLjIfYQStydsYM
+ dlaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=UXT1flf+cw02X+05sr2H1r1+otkr90aq0IsOI5+Wa0I=;
+ b=JgU/jJM2pDR+aUOVKng/MVQrayxv11av/7LLnfURWu9loAmzYl3E5sv5NBgIhVMhIk
+ YygghYljNiWIz6wxxpk/rWqKH2aQIqRV2Pujq4ERPxRVSS7TAKaDINe7AvNiLDXR8J5e
+ z2xydRqmeeeMlyTkpX+Igow6a2GNDmeg0IV9/U+sOyJnGTU8jpUO4l6T0NTrl2SUS2DY
+ lK372D+7DkVF0nMrv6A5/DRZnLui5SoTPGlhfKYLERN9aY2YUAcWftWhIgF5KMQKZ+H4
+ dfOc58TTTwgC1saPzCimhhc4HY5cX1hfn6qaaaqCCJHcti0+2uyocC2O/SE37XWTYnlX
+ cnFg==
+X-Gm-Message-State: AOAM533UinPsYeB3h8EECHpNM0REV9PNHnmadCORCYm1ul5Q83nb4rtR
+ Vv/iaJ4yJAdFluB3O4jgSq4=
+X-Google-Smtp-Source: ABdhPJz5pfQrOZ4FllnHVJ9ZLobKzbFsyza5qcMiYnCr5rzk+hPcTwUMgR05Pc/ScRwSaincGS2+yQ==
+X-Received: by 2002:a05:6402:16:: with SMTP id
+ d22mr860616edu.175.1597385978107; 
+ Thu, 13 Aug 2020 23:19:38 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8f23:5700:10c4:47b:9d52:cd78?
+ (p200300ea8f23570010c4047b9d52cd78.dip0.t-ipconnect.de.
+ [2003:ea:8f23:5700:10c4:47b:9d52:cd78])
+ by smtp.googlemail.com with ESMTPSA id d9sm4979917edt.20.2020.08.13.23.19.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Aug 2020 23:19:37 -0700 (PDT)
+Subject: Re: fsl_espi errors on v5.7.15
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ "paulus@samba.org" <paulus@samba.org>,
+ "tiago.brusamarello@datacom.ind.br" <tiago.brusamarello@datacom.ind.br>
+References: <3f48e5fb-33c9-8046-0f80-236eed163c16@alliedtelesis.co.nz>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <c43a23bd-33ec-4ef2-2ca5-730342248db3@gmail.com>
+Date: Fri, 14 Aug 2020 08:19:29 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
+MIME-Version: 1.0
+In-Reply-To: <3f48e5fb-33c9-8046-0f80-236eed163c16@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,84 +90,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nothing prevents flush_cache_instruction() from being writen in C.
+On 14.08.2020 04:48, Chris Packham wrote:
+> Hi,
+> 
+> I'm seeing a problem with accessing spi-nor after upgrading a T2081 
+> based system to linux v5.7.15
+> 
+> For this board u-boot and the u-boot environment live on spi-nor.
+> 
+> When I use fw_setenv from userspace I get the following kernel logs
+> 
+> # fw_setenv foo=1
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+> ...
+> 
 
-Do it to improve readability and maintainability.
+This error reporting doesn't exist yet in 4.4. So you may have an issue
+under 4.4 too, it's just not reported.
+Did you verify that under 4.4 fw_setenv actually has an effect?
 
-This function is only use by low level callers, it is not
-intended to be used by module. Don't export it.
+> If I run fw_printenv (before getting it into a bad state) it is able to 
+> display the content of the boards u-boot environment.
+> 
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/misc_32.S      | 22 ----------------------
- arch/powerpc/mm/nohash/fsl_booke.c | 16 ++++++++++++++++
- 2 files changed, 16 insertions(+), 22 deletions(-)
+This might indicate an issue with spi being locked. I've seen related
+questions, just use the search engine of your choice and check for
+fw_setenv and locked.
 
-diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
-index 1bda207459a8..87717966f5cd 100644
---- a/arch/powerpc/kernel/misc_32.S
-+++ b/arch/powerpc/kernel/misc_32.S
-@@ -268,28 +268,6 @@ _ASM_NOKPROBE_SYMBOL(real_writeb)
- 
- #endif /* CONFIG_40x */
- 
--
--/*
-- * Flush instruction cache.
-- */
--#ifdef CONFIG_FSL_BOOKE
--_GLOBAL(flush_instruction_cache)
--#ifdef CONFIG_E200
--	mfspr   r3,SPRN_L1CSR0
--	ori     r3,r3,L1CSR0_CFI|L1CSR0_CLFC
--	/* msync; isync recommended here */
--	mtspr   SPRN_L1CSR0,r3
--	isync
--	blr
--#endif
--	mfspr	r3,SPRN_L1CSR1
--	ori	r3,r3,L1CSR1_ICFI|L1CSR1_ICLFR
--	mtspr	SPRN_L1CSR1,r3
--	isync
--	blr
--EXPORT_SYMBOL(flush_instruction_cache)
--#endif
--
- /*
-  * Copy a whole page.  We use the dcbz instruction on the destination
-  * to reduce memory traffic (it eliminates the unnecessary reads of
-diff --git a/arch/powerpc/mm/nohash/fsl_booke.c b/arch/powerpc/mm/nohash/fsl_booke.c
-index 0c294827d6e5..36bda962d3b3 100644
---- a/arch/powerpc/mm/nohash/fsl_booke.c
-+++ b/arch/powerpc/mm/nohash/fsl_booke.c
-@@ -219,6 +219,22 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
- 	return tlbcam_addrs[tlbcam_index - 1].limit - PAGE_OFFSET + 1;
- }
- 
-+void flush_instruction_cache(void)
-+{
-+	unsigned long tmp;
-+
-+	if (IS_ENABLED(CONFIG_E200)) {
-+		tmp = mfspr(SPRN_L1CSR0);
-+		tmp |= L1CSR0_CFI | L1CSR0_CLFC;
-+		mtspr(SPRN_L1CSR0, tmp);
-+	} else {
-+		tmp = mfspr(SPRN_L1CSR1);
-+		tmp |= L1CSR1_ICFI | L1CSR1_ICLFR;
-+		mtspr(SPRN_L1CSR1, tmp);
-+	}
-+	isync();
-+}
-+
- /*
-  * MMU_init_hw does the chip-specific initialization of the MMU hardware.
-  */
--- 
-2.25.0
+> If been unsuccessful in producing a setup for bisecting the issue. I do 
+> know the issue doesn't occur on the old 4.4.x based kernel but that's 
+> probably not much help.
+> 
+> Any pointers on what the issue (and/or solution) might be.
+> 
+> Thanks,
+> Chris
+> 
 
+Heiner
