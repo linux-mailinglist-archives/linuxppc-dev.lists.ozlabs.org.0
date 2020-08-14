@@ -2,63 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4472443A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 04:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC1B24440D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 06:01:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BSSnN4xNPzDqX7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 12:58:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BSV9b2kJHzDqjJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 14:01:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com
- (client-ip=209.85.166.199; helo=mail-il1-f199.google.com;
- envelope-from=3kfw1xwkbagisyzkallerappid.googleusercontent.com@m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none)
- header.from=syzkaller.appspotmail.com
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=oevmrpEO; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BSSfx2PkczDqg4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 12:53:08 +1000 (AEST)
-Received: by mail-il1-f199.google.com with SMTP id b18so5689705ilh.16
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Aug 2020 19:53:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
- :from:to;
- bh=HxfLWIdBAiPbucnwPKF3cZxaVC8QuNU2YTSLpVJCUKw=;
- b=K/gBO50FWjzFa+LDJH6f9o23wqC+mGGXTv2PKQuRZffK1miiwcSVy5npCQIqFwbhMo
- UcVk2sObbPxWQ2w/V3hiXPBl0fvrH4KElVyAHz+ubgafxAKhEjsxX88AtPdp6OSP8Pze
- SBfBTXr2CpFfr2SlytHIJ3n9BoK2He4v88LXGNJjPFid3slzwoqaUGYLAn5Z5Rgs1r0g
- QVwvWlVzNjDCAR66i02jlPzNYk1JOve2xHKFeJXd/QfSSFT+G5/UQ4gjTv6NdJADejz7
- OvJudiTyKAaJt48wKoF/EPAiV7EoQz9gxzE7lE2Z32La9G4/wz9wH0Wx0/JH68Ly7PHz
- ZLUg==
-X-Gm-Message-State: AOAM533b7WQxiRHP4xLfuuyKp8gAi1IxH9yrZwc+AQAxxNa0agimNjAc
- 4Jm7BeKuPvcDMvF30bB9WY3dghr3immLV2gtkejw43M82/Bh
-X-Google-Smtp-Source: ABdhPJzryMeKOZ496e+GJ+LGFENqZB41wF2qyZpZxNTovBIXHQqXhdpw9rzntoAMQSMpzfINa/YRJDaIms05Hc/ZO6OshxSkwVFv
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BSV7M0r4RzDqXC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 13:59:26 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07E3Vm1F064330; Thu, 13 Aug 2020 23:59:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=yDHexnyrwpx9799KU2I1nPPJXnGG63RtxlZ3mEFP+Yg=;
+ b=oevmrpEO5+6WxAATv/ruDTdvRp8NpmLHPZjqwzQuiOo4xkmEgJSk61l/y2YBlF9VX1BB
+ rVUDwDHxf0HRQ1AX+1rk7zyPiZWlv7Tu9trBIsDE3O2xswK/6itBI34FeO3/ls1W6DfX
+ 995V3vEEjNbZbLcVLfGHhOb3HUkNnp4k4HVqK9gEtjffcomZbumGmGNcSPr76MGVOOAY
+ m3WTXZg54FY89S8DPA7IbeaMG5+hpPxYLh+9KgEtOUUcF+EJ70Z5zJPtiSwIBPMTYkZv
+ L+sNmjD9qRKDvGPxfl0i1LYBvFbbkBIv13eZZRodgb6KaKvYAfm61SlA+kaboaiFg2Co sQ== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32w706kprb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Aug 2020 23:59:17 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07E3sd5s007348;
+ Fri, 14 Aug 2020 03:59:15 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 32skp7utv0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Aug 2020 03:59:15 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07E3xCkZ28770784
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Aug 2020 03:59:12 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 939145204F;
+ Fri, 14 Aug 2020 03:59:12 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.85.91.57])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 78B7F5204E;
+ Fri, 14 Aug 2020 03:59:11 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc: Add POWER10 raw mode cputable entry
+Date: Fri, 14 Aug 2020 09:29:03 +0530
+Message-Id: <20200814035903.3179314-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Received: by 2002:a92:dd04:: with SMTP id n4mr789973ilm.70.1597373585198;
- Thu, 13 Aug 2020 19:53:05 -0700 (PDT)
-Date: Thu, 13 Aug 2020 19:53:05 -0700
-In-Reply-To: <000000000000735f5205a5b02279@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000001e967a05accd8573@google.com>
-Subject: Re: BUG: unable to handle kernel paging request in fl_dump_key
-From: syzbot <syzbot+9c1be56e9317b795e874@syzkaller.appspotmail.com>
-To: benh@kernel.crashing.org, dalias@libc.org, davem@davemloft.net, 
- jhogan@kernel.org, jhs@mojatatu.com, jiri@mellanox.com, jiri@resnulli.us, 
- kuba@kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org, 
- linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, 
- netdev@vger.kernel.org, paul.burton@mips.com, paulus@samba.org, 
- ralf@linux-mips.org, shuah@kernel.org, syzkaller-bugs@googlegroups.com, 
- xiyou.wangcong@gmail.com, ysato@users.sourceforge.jp
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Fri, 14 Aug 2020 12:57:13 +1000
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-14_01:2020-08-13,
+ 2020-08-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015
+ mlxscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ lowpriorityscore=0 suspectscore=1 adultscore=0 malwarescore=0
+ mlxlogscore=939 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008140023
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,28 +90,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-syzbot has bisected this issue to:
+Add a raw mode cputable entry for POWER10. Copies most of the fields
+from commit a3ea40d5c736 ("powerpc: Add POWER10 architected mode")
+except for oprofile_cpu_type, machine_check_early, pvr_mask and pvr_mask
+filed. On bare metal systems we use DT CPU features, which doesn't need a
+cputable entry. But in VMs we still rely on the raw cputable entry to
+set the correct values for the PMU related fields.
 
-commit a51486266c3ba8e035a47fa96df67f274fe0c7d0
-Author: Jiri Pirko <jiri@mellanox.com>
-Date:   Sat Jun 15 09:03:49 2019 +0000
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ arch/powerpc/kernel/cputable.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-    net: sched: remove NET_CLS_IND config option
+diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
+index b4066354f0730..1e052f53e5dca 100644
+--- a/arch/powerpc/kernel/cputable.c
++++ b/arch/powerpc/kernel/cputable.c
+@@ -541,6 +541,25 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.machine_check_early	= __machine_check_early_realmode_p9,
+ 		.platform		= "power9",
+ 	},
++	{	/* Power10 */
++		.pvr_mask		= 0xffff0000,
++		.pvr_value		= 0x00800000,
++		.cpu_name		= "POWER10 (raw)",
++		.cpu_features		= CPU_FTRS_POWER10,
++		.cpu_user_features	= COMMON_USER_POWER10,
++		.cpu_user_features2	= COMMON_USER2_POWER10,
++		.mmu_features		= MMU_FTRS_POWER10,
++		.icache_bsize		= 128,
++		.dcache_bsize		= 128,
++		.num_pmcs		= 6,
++		.pmc_type		= PPC_PMC_IBM,
++		.oprofile_cpu_type	= "ppc64/power10",
++		.oprofile_type		= PPC_OPROFILE_INVALID,
++		.cpu_setup		= __setup_cpu_power10,
++		.cpu_restore		= __restore_cpu_power10,
++		.machine_check_early	= __machine_check_early_realmode_p10,
++		.platform		= "power10",
++	},
+ 	{	/* Cell Broadband Engine */
+ 		.pvr_mask		= 0xffff0000,
+ 		.pvr_value		= 0x00700000,
+-- 
+2.26.2
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17463509900000
-start commit:   1ca0fafd tcp: md5: allow changing MD5 keys in all socket s..
-git tree:       net
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=14c63509900000
-console output: https://syzkaller.appspot.com/x/log.txt?x=10c63509900000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=bf3aec367b9ab569
-dashboard link: https://syzkaller.appspot.com/bug?extid=9c1be56e9317b795e874
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1062a40b100000
-
-Reported-by: syzbot+9c1be56e9317b795e874@syzkaller.appspotmail.com
-Fixes: a51486266c3b ("net: sched: remove NET_CLS_IND config option")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
