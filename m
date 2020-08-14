@@ -2,89 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C748B24445A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 06:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A048124446D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 07:03:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BSW4Y4g9wzDqjc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 14:42:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BSWY74ljTzDqjg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Aug 2020 15:03:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=IxJPaqUw; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BSW2Y090gzDqLM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 14:40:20 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07E4X0DX091937; Fri, 14 Aug 2020 00:40:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=PK+K/zrJwJJiiva50zj5pMJeHrNKrjTAzX2kE46/Fok=;
- b=IxJPaqUwjz9jAMZiSo77I6WE5ukfn20oBRPVRs7HJQP3g8xV0O5lAQfdc7PY+p3hOua4
- 2DycNsHmd2Pj0594BwUAMAbSVSCphpwHqQQM97pEK+WocxAUqV2VD9TC5ruiNksXz7Fw
- EfqhKRjaGFWgzBSqMtxpQNaMAbaOwVlohCBkx2lyYSDxjp2u/VEQEZxRIn3PlsEBQvm1
- 6ekSft8vHXBqbaMjG5JZciOe0RhQzpUHKoXsTTOKTPXiRH/yaijhGaB0zBE/049h8+0j
- b4FEQJD4FNOlH9wotAW4u5MqHHEaP97V3inRvvpbKpLF5hS8/kegYhr/EfXpCG4VB8oU Ww== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32vqcqf3pr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Aug 2020 00:40:15 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07E4Z4Us029896;
- Fri, 14 Aug 2020 04:40:13 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 32skp8e7ct-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Aug 2020 04:40:12 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 07E4eAms63570192
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Aug 2020 04:40:10 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ED3A54C04E;
- Fri, 14 Aug 2020 04:40:09 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 651544C05C;
- Fri, 14 Aug 2020 04:40:08 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.77.194.231])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 14 Aug 2020 04:40:08 +0000 (GMT)
-From: Balamuruhan S <bala24@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] kernel/watchdog: fix warning -Wunused-variable for
- watchdog_allowed_mask in ppc64
-Date: Fri, 14 Aug 2020 10:09:51 +0530
-Message-Id: <20200814043951.199192-1-bala24@linux.ibm.com>
-X-Mailer: git-send-email 2.24.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BSWVV5lmszDqfZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Aug 2020 15:01:02 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BSWVJ0Wd9z9v0CX;
+ Fri, 14 Aug 2020 07:00:56 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id I5p15_tFkzZn; Fri, 14 Aug 2020 07:00:56 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BSWVH6Q7Tz9v0CW;
+ Fri, 14 Aug 2020 07:00:55 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B9B58B775;
+ Fri, 14 Aug 2020 07:00:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id UlsOiHE9fsDA; Fri, 14 Aug 2020 07:00:54 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D5E1D8B767;
+ Fri, 14 Aug 2020 07:00:52 +0200 (CEST)
+Subject: Re: [PATCH v3] powerpc/pseries: explicitly reschedule during
+ drmem_lmb list traversal
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200813151131.2070161-1-nathanl@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <ec5f6e34-a17e-1989-de46-039f6da88d59@csgroup.eu>
+Date: Fri, 14 Aug 2020 07:00:51 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20200813151131.2070161-1-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-14_01:2020-08-13,
- 2020-08-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- spamscore=0 impostorscore=0 mlxscore=0 phishscore=0 suspectscore=1
- lowpriorityscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008140036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,49 +64,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, sandipan@linux.ibm.com,
- Balamuruhan S <bala24@linux.ibm.com>
+Cc: cheloha@linux.ibm.com, ldufour@linux.ibm.com, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In ppc64 config if `CONFIG_SOFTLOCKUP_DETECTOR` is not set then it
-warns for unused declaration of `watchdog_allowed_mask` while building,
-move the declaration inside ifdef later in the code.
 
-```
-kernel/watchdog.c:47:23: warning: ‘watchdog_allowed_mask’ defined but not used [-Wunused-variable]
- static struct cpumask watchdog_allowed_mask __read_mostly;
-```
 
-Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
----
- kernel/watchdog.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Le 13/08/2020 à 17:11, Nathan Lynch a écrit :
+> The drmem lmb list can have hundreds of thousands of entries, and
+> unfortunately lookups take the form of linear searches. As long as
+> this is the case, traversals have the potential to monopolize the CPU
+> and provoke lockup reports, workqueue stalls, and the like unless
+> they explicitly yield.
+> 
+> Rather than placing cond_resched() calls within various
+> for_each_drmem_lmb() loop blocks in the code, put it in the iteration
+> expression of the loop macro itself so users can't omit it.
+> 
+> Introduce a drmem_lmb_next() iteration helper function which calls
+> cond_resched() at a regular interval during array traversal. Each
+> iteration of the loop in DLPAR code paths can involve around ten RTAS
+> calls which can each take up to 250us, so this ensures the check is
+> performed at worst every few milliseconds.
+> 
+> Fixes: 6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 5abb5b22ad13..33c9b8a3d51b 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -44,7 +44,6 @@ int __read_mostly soft_watchdog_user_enabled = 1;
- int __read_mostly watchdog_thresh = 10;
- static int __read_mostly nmi_watchdog_available;
- 
--static struct cpumask watchdog_allowed_mask __read_mostly;
- 
- struct cpumask watchdog_cpumask __read_mostly;
- unsigned long *watchdog_cpumask_bits = cpumask_bits(&watchdog_cpumask);
-@@ -166,6 +165,7 @@ int __read_mostly sysctl_softlockup_all_cpu_backtrace;
- unsigned int __read_mostly softlockup_panic =
- 			CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC_VALUE;
- 
-+static struct cpumask watchdog_allowed_mask __read_mostly;
- static bool softlockup_initialized __read_mostly;
- static u64 __read_mostly sample_period;
- 
+Looks a lot better to me than v2.
 
-base-commit: a3a28c4451dff698d0c7ef5a3e80423aa5774e2b
--- 
-2.24.1
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
+> ---
+> 
+> Notes:
+>      Changes since v2:
+>      * Make drmem_lmb_next() more general.
+>      * Adjust reschedule interval for better code generation.
+>      * Add commentary to drmem_lmb_next() to explain the cond_resched()
+>        call.
+>      * Remove bounds assertions.
+>      
+>      Changes since v1:
+>      * Add bounds assertions in drmem_lmb_next().
+>      * Call cond_resched() in the iterator on only every 20th element
+>        instead of on every iteration, to reduce overhead in tight loops.
+> 
+>   arch/powerpc/include/asm/drmem.h | 18 +++++++++++++++++-
+>   1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
+> index 17ccc6474ab6..6fb928605ed1 100644
+> --- a/arch/powerpc/include/asm/drmem.h
+> +++ b/arch/powerpc/include/asm/drmem.h
+> @@ -8,6 +8,8 @@
+>   #ifndef _ASM_POWERPC_LMB_H
+>   #define _ASM_POWERPC_LMB_H
+>   
+> +#include <linux/sched.h>
+> +
+>   struct drmem_lmb {
+>   	u64     base_addr;
+>   	u32     drc_index;
+> @@ -26,8 +28,22 @@ struct drmem_lmb_info {
+>   
+>   extern struct drmem_lmb_info *drmem_info;
+>   
+> +static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb,
+> +					       const struct drmem_lmb *start)
+> +{
+> +	/*
+> +	 * DLPAR code paths can take several milliseconds per element
+> +	 * when interacting with firmware. Ensure that we don't
+> +	 * unfairly monopolize the CPU.
+> +	 */
+> +	if (((++lmb - start) % 16) == 0)
+> +		cond_resched();
+> +
+> +	return lmb;
+> +}
+> +
+>   #define for_each_drmem_lmb_in_range(lmb, start, end)		\
+> -	for ((lmb) = (start); (lmb) < (end); (lmb)++)
+> +	for ((lmb) = (start); (lmb) < (end); lmb = drmem_lmb_next(lmb, start))
+>   
+>   #define for_each_drmem_lmb(lmb)					\
+>   	for_each_drmem_lmb_in_range((lmb),			\
+> 
