@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E6F24649B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 12:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 409E52464A5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 12:38:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVVp70LpwzDqV3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 20:36:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVVrB10jTzDqSM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 20:38:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,67 +17,67 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=oB5JsfIN; dkim-atps=neutral
+ header.s=pp1 header.b=pd+Epy3P; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVVX13XdSzDqSH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 20:24:17 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVVX34hDNzDqRr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 20:24:19 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07HA1wjZ186848; Mon, 17 Aug 2020 06:24:11 -0400
+ 07HA24pc103924; Mon, 17 Aug 2020 06:24:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=eTv4eDDzdAcCNwcF32va34swuL93aDFIkhfN2V8mRag=;
- b=oB5JsfINYqHM+flRuNtFpKu15BatCpFg0WzwEwAQcCdDQJ4ggZJGoZVmI1T8X5YC2oRl
- v08o6fxiM5D6f4NfX34Mg3pRmj1iPNGvD8f+ecDrAHvOXbV58ezOAOkQSl9yD6HWtAOY
- AN/T5AsCLqx9HZUJqulAIpkvx6iqJ5RdxPE9mBWccDNNQ0MPuzoNRnXDDfWPkasG/xw5
- g2e5rVW8bECtZUnzySZPXFnhhA8lTFFOX5ok8S9J+rGDLpCs6SCKFSmHG2dKZBVXNlJC
- Kl37g/RsbU4v2S4SuHvOjlqb44SkBPhM/oJDUe5ZKHCYOOWxxjPwkY/1T6brhBg+kYJN yg== 
+ bh=ATBEDC78VuhWX8NGBzXjna2sujifxGk7wXJnhSarDBg=;
+ b=pd+Epy3Pq/qY87bW0SBrVHHhNBkL+XweSlDes1vCLe0clmjEUYtYohBufSDmOhzqsXS+
+ 4t+56NaunI2UhvvkNcX3V4TBofz5IBOALYLExMDemyFbnz+5OpFjCmje3nVQb8WcRqKv
+ QeB8llelKeuj62iBs3/3VEzURZVfM0kS8w6rdQo2KsZjofAzOLxJsCGkrFGowrp2VR+e
+ IqpLh9ec8UsdIgEX3pZy4sSPGi6nuF1mUz5XE2IiLhgwgOLjD4ulcckCJ2KSak7Mm1P1
+ CPizTYhIgQI0CRkXLovyBZfTtVOg9Uj1cZEc+reMzoR3xUa9YyC3oXH7DoTfFoxbm43l 0Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32y85ycj37-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32y24j2pd6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 06:24:11 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07HA2oVw191622;
- Mon, 17 Aug 2020 06:24:11 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32y85ycj27-1
+ Mon, 17 Aug 2020 06:24:13 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07HA25t6104025;
+ Mon, 17 Aug 2020 06:24:13 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32y24j2pc3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 06:24:10 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07HAM1Qq030597;
- Mon, 17 Aug 2020 10:24:08 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06ams.nl.ibm.com with ESMTP id 32x6ygt4am-1
+ Mon, 17 Aug 2020 06:24:12 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07HAJpjS013944;
+ Mon, 17 Aug 2020 10:24:10 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma02fra.de.ibm.com with ESMTP id 32x7b819pr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 10:24:08 +0000
+ Mon, 17 Aug 2020 10:24:10 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07HAO35731064428
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 07HAMbXP62456148
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Aug 2020 10:24:04 GMT
+ Mon, 17 Aug 2020 10:22:38 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF7C74C040;
- Mon, 17 Aug 2020 10:24:03 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 8BCE54C046;
+ Mon, 17 Aug 2020 10:24:06 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E9114C046;
- Mon, 17 Aug 2020 10:24:01 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 306B34C04A;
+ Mon, 17 Aug 2020 10:24:04 +0000 (GMT)
 Received: from bangoria.ibmuc.com (unknown [9.199.37.13])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 Aug 2020 10:24:01 +0000 (GMT)
+ Mon, 17 Aug 2020 10:24:04 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: mpe@ellerman.id.au, christophe.leroy@c-s.fr
-Subject: [PATCH v4 5/6] powerpc/watchpoint/ptrace: Introduce
- PPC_DEBUG_FEATURE_DATA_BP_ARCH_31
-Date: Mon, 17 Aug 2020 15:53:29 +0530
-Message-Id: <20200817102330.777537-6-ravi.bangoria@linux.ibm.com>
+Subject: [PATCH v4 6/6] powerpc/watchpoint/selftests: Tests for kernel
+ accessing user memory
+Date: Mon, 17 Aug 2020 15:53:30 +0530
+Message-Id: <20200817102330.777537-7-ravi.bangoria@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200817102330.777537-1-ravi.bangoria@linux.ibm.com>
 References: <20200817102330.777537-1-ravi.bangoria@linux.ibm.com>
@@ -88,10 +88,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-17_02:2020-08-17,
  2020-08-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxscore=0
- suspectscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ lowpriorityscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 impostorscore=0
+ clxscore=1015 suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2008170071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -112,58 +112,129 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PPC_DEBUG_FEATURE_DATA_BP_ARCH_31 can be used to determine whether
-we are running on an ISA 3.1 compliant machine. Which is needed to
-determine DAR behaviour, 512 byte boundary limit etc. This was
-requested by Pedro Miraglia Franco de Carvalho for extending
-watchpoint features in gdb. Note that availability of 2nd DAWR is
-independent of this flag and should be checked using
-ppc_debug_info->num_data_bps.
+Introduce tests to cover simple scenarios where user is watching
+memory which can be accessed by kernel as well. We also support
+_MODE_EXACT with _SETHWDEBUG interface. Move those testcases out-
+side of _BP_RANGE condition. This will help to test _MODE_EXACT
+scenarios when CONFIG_HAVE_HW_BREAKPOINT is not set, eg:
 
+  $ ./ptrace-hwbreak
+  ...
+  PTRACE_SET_DEBUGREG, Kernel Access Userspace, len: 8: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
+  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, Kernel Access Userspace, len: 1: Ok
+  success: ptrace-hwbreak
+
+Suggested-by: Pedro Miraglia Franco de Carvalho <pedromfc@br.ibm.com>
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- Documentation/powerpc/ptrace.rst          | 1 +
- arch/powerpc/include/uapi/asm/ptrace.h    | 1 +
- arch/powerpc/kernel/ptrace/ptrace-noadv.c | 2 ++
- 3 files changed, 4 insertions(+)
+ .../selftests/powerpc/ptrace/ptrace-hwbreak.c | 48 ++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/powerpc/ptrace.rst b/Documentation/powerpc/ptrace.rst
-index 864d4b6dddd1..77725d69eb4a 100644
---- a/Documentation/powerpc/ptrace.rst
-+++ b/Documentation/powerpc/ptrace.rst
-@@ -46,6 +46,7 @@ features will have bits indicating whether there is support for::
-   #define PPC_DEBUG_FEATURE_DATA_BP_RANGE		0x4
-   #define PPC_DEBUG_FEATURE_DATA_BP_MASK		0x8
-   #define PPC_DEBUG_FEATURE_DATA_BP_DAWR		0x10
-+  #define PPC_DEBUG_FEATURE_DATA_BP_ARCH_31		0x20
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
+index fc477dfe86a2..2e0d86e0687e 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
+@@ -20,6 +20,8 @@
+ #include <signal.h>
+ #include <sys/types.h>
+ #include <sys/wait.h>
++#include <sys/syscall.h>
++#include <linux/limits.h>
+ #include "ptrace.h"
  
- 2. PTRACE_SETHWDEBUG
+ #define SPRN_PVR	0x11F
+@@ -44,6 +46,7 @@ struct gstruct {
+ };
+ static volatile struct gstruct gstruct __attribute__((aligned(512)));
  
-diff --git a/arch/powerpc/include/uapi/asm/ptrace.h b/arch/powerpc/include/uapi/asm/ptrace.h
-index f5f1ccc740fc..7004cfea3f5f 100644
---- a/arch/powerpc/include/uapi/asm/ptrace.h
-+++ b/arch/powerpc/include/uapi/asm/ptrace.h
-@@ -222,6 +222,7 @@ struct ppc_debug_info {
- #define PPC_DEBUG_FEATURE_DATA_BP_RANGE		0x0000000000000004
- #define PPC_DEBUG_FEATURE_DATA_BP_MASK		0x0000000000000008
- #define PPC_DEBUG_FEATURE_DATA_BP_DAWR		0x0000000000000010
-+#define PPC_DEBUG_FEATURE_DATA_BP_ARCH_31	0x0000000000000020
++static volatile char cwd[PATH_MAX] __attribute__((aligned(8)));
  
- #ifndef __ASSEMBLY__
- 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-noadv.c b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-index 081c39842d84..1d0235db3c1b 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-@@ -57,6 +57,8 @@ void ppc_gethwdinfo(struct ppc_debug_info *dbginfo)
- 	} else {
- 		dbginfo->features = 0;
+ static void get_dbginfo(pid_t child_pid, struct ppc_debug_info *dbginfo)
+ {
+@@ -138,6 +141,9 @@ static void test_workload(void)
+ 			write_var(len);
  	}
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		dbginfo->features |= PPC_DEBUG_FEATURE_DATA_BP_ARCH_31;
+ 
++	/* PTRACE_SET_DEBUGREG, Kernel Access Userspace test */
++	syscall(__NR_getcwd, &cwd, PATH_MAX);
++
+ 	/* PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO test */
+ 	write_var(1);
+ 
+@@ -150,6 +156,9 @@ static void test_workload(void)
+ 	else
+ 		read_var(1);
+ 
++	/* PPC_PTRACE_SETHWDEBUG, MODE_EXACT, Kernel Access Userspace test */
++	syscall(__NR_getcwd, &cwd, PATH_MAX);
++
+ 	/* PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO test */
+ 	gstruct.a[rand() % A_LEN] = 'a';
+ 
+@@ -293,6 +302,24 @@ static int test_set_debugreg(pid_t child_pid)
+ 	return 0;
  }
  
- int ptrace_get_debugreg(struct task_struct *child, unsigned long addr,
++static int test_set_debugreg_kernel_userspace(pid_t child_pid)
++{
++	unsigned long wp_addr = (unsigned long)cwd;
++	char *name = "PTRACE_SET_DEBUGREG";
++
++	/* PTRACE_SET_DEBUGREG, Kernel Access Userspace test */
++	wp_addr &= ~0x7UL;
++	wp_addr |= (1Ul << DABR_READ_SHIFT);
++	wp_addr |= (1UL << DABR_WRITE_SHIFT);
++	wp_addr |= (1UL << DABR_TRANSLATION_SHIFT);
++	ptrace_set_debugreg(child_pid, wp_addr);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "Kernel Access Userspace", wp_addr, 8);
++
++	ptrace_set_debugreg(child_pid, 0);
++	return 0;
++}
++
+ static void get_ppc_hw_breakpoint(struct ppc_hw_breakpoint *info, int type,
+ 				  unsigned long addr, int len)
+ {
+@@ -338,6 +365,22 @@ static void test_sethwdebug_exact(pid_t child_pid)
+ 	ptrace_delhwdebug(child_pid, wh);
+ }
+ 
++static void test_sethwdebug_exact_kernel_userspace(pid_t child_pid)
++{
++	struct ppc_hw_breakpoint info;
++	unsigned long wp_addr = (unsigned long)&cwd;
++	char *name = "PPC_PTRACE_SETHWDEBUG, MODE_EXACT";
++	int len = 1; /* hardcoded in kernel */
++	int wh;
++
++	/* PPC_PTRACE_SETHWDEBUG, MODE_EXACT, Kernel Access Userspace test */
++	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_WRITE, wp_addr, 0);
++	wh = ptrace_sethwdebug(child_pid, &info);
++	ptrace(PTRACE_CONT, child_pid, NULL, 0);
++	check_success(child_pid, name, "Kernel Access Userspace", wp_addr, len);
++	ptrace_delhwdebug(child_pid, wh);
++}
++
+ static void test_sethwdebug_range_aligned(pid_t child_pid)
+ {
+ 	struct ppc_hw_breakpoint info;
+@@ -452,9 +495,10 @@ static void
+ run_tests(pid_t child_pid, struct ppc_debug_info *dbginfo, bool dawr)
+ {
+ 	test_set_debugreg(child_pid);
++	test_set_debugreg_kernel_userspace(child_pid);
++	test_sethwdebug_exact(child_pid);
++	test_sethwdebug_exact_kernel_userspace(child_pid);
+ 	if (dbginfo->features & PPC_DEBUG_FEATURE_DATA_BP_RANGE) {
+-		test_sethwdebug_exact(child_pid);
+-
+ 		test_sethwdebug_range_aligned(child_pid);
+ 		if (dawr || is_8xx) {
+ 			test_sethwdebug_range_unaligned(child_pid);
 -- 
 2.26.2
 
