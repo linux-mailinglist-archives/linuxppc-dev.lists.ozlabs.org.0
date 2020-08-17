@@ -1,78 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A340247A73
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 00:29:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A96E247A60
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 00:25:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVpcV2bCHzDqQR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 08:29:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVpX24bqvzDqYh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 08:25:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=netronome.com
- (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com;
- envelope-from=simon.horman@netronome.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=netronome.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=netronome-com.20150623.gappssmtp.com
- header.i=@netronome-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=El20VIDg; dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Nhzf/OK0; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVbg66tRHzDqP0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 00:15:39 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id bs17so12406537edb.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 07:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=netronome-com.20150623.gappssmtp.com; s=20150623;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=5GU+hvhFq5FTqZEE9oONoXIkAiVxgc+Oe9aNa54OoQw=;
- b=El20VIDg2NdzHYr8IDobZ35xvin+mYvK5IfVN6E9Mz2vqJozybe5i/2Wlxsfn/Sw/y
- f0k6vhoiwuZpjkzNSH7o+/kxhGMI3IyIdKA4L1csfLFdCS6VvpM1KpyCMatdms38ockb
- vn6Q6r/gun8WRAuHZEgnHoD53UF7AoIaf1iQ4RKKUOFzHezYOMIPu4FjKKdkid1QrTsN
- XYkEGMgZuM9FY7pC3oZAX3Vg3vp1JBtMrz/WWZifbhpZStXw/b3vMHLDcnShb+UIMLC4
- o9oDwufDPJMlMN5ma80n0X1ZjkPVvlDsh9iTTR2Y6qpP13GK5L2sWymrfnPwd48VcEor
- G8Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=5GU+hvhFq5FTqZEE9oONoXIkAiVxgc+Oe9aNa54OoQw=;
- b=iunpIxFlD9evEmIlH8JNTH6P0wyqURSdpZMA/1b49RzdaY3OZp565ZBWbf0RkzhKWS
- FjLO2E7pa/wULTixKiInOTYNVKWe4nYGWiFQqaYReIhUwZWNLKLkGTJt+JvC1bmV+L0X
- wWiFXSCxSsaYRc1XVxV+X7KHzBs2iuWPQ3SZsXM1opUe16rAPq3LyeHEpVVZ3R4etlCz
- z/Oux3XuE5Mee7P0RcW70j0lGMADiPq7z1A4ueMjf66Hwt7v5yje59+CrJ7HWVaSLIoW
- 1b+VV6DRWJIg9vAr71aWlA0gzdI4D3BIhIQvMIXnZgivg9Ja1w4Lk+fSQcivejCQfwzo
- b4sA==
-X-Gm-Message-State: AOAM5324ndBl+hvHteklLY9VbvG+ju+nitve+h247UcdnyEY4lNe+RD8
- INt68qo9mczZziXuFgJ3/jV1Ow==
-X-Google-Smtp-Source: ABdhPJzjr9ZxRXnAgQ3pOgNu0n1L4UO5JB4hdIav5PocnLg1VrC/U2k8Jix0avX3cyR6efPTsghljQ==
-X-Received: by 2002:a05:6402:3121:: with SMTP id
- dd1mr15268241edb.72.1597673735048; 
- Mon, 17 Aug 2020 07:15:35 -0700 (PDT)
-Received: from netronome.com ([2001:982:7ed1:403:9eeb:e8ff:fe0d:5b6a])
- by smtp.gmail.com with ESMTPSA id g19sm14563399ejz.5.2020.08.17.07.15.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Aug 2020 07:15:34 -0700 (PDT)
-Date: Mon, 17 Aug 2020 16:15:33 +0200
-From: Simon Horman <simon.horman@netronome.com>
-To: Allen Pais <allen.lkml@gmail.com>
-Subject: Re: [oss-drivers] [PATCH 16/20] ethernet: netronome: convert
- tasklets to use new tasklet_setup() API
-Message-ID: <20200817141532.GA4130@netronome.com>
-References: <20200817082434.21176-1-allen.lkml@gmail.com>
- <20200817082434.21176-18-allen.lkml@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200817082434.21176-18-allen.lkml@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVcFd0DjJzDqVJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 00:42:09 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07HEVXkY130903; Mon, 17 Aug 2020 10:42:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=CP6vcSYBECD3e0xjbwnlOIXeRbFh5BiaUL23BY56z1c=;
+ b=Nhzf/OK0HRa6jhfq+1WQh2FYIffI+MN0yP4+ma0LxSCvE3RziTnuPH6aDEjYn/wfuFCk
+ t4QGGdJh/QO0BngPpkrXJv2H79601e5DZAYJnl2GHDEzJpFz7im6JcqvdKJa0p9A3gvy
+ ETKoqi1qYRkvTeEpdj1haD39nFCu7FisnHv95+vl5gXkioT2sI6fUUcVixSoVQbneADw
+ OoLTXzytblxZysMYm0fjJ5+BD9xAIWn9f2GlWP1BhSV+9GZ0q9Ea/X3FCZyA5QB1LUuN
+ 4Pc9x0r9qjdzqZCQj5cBAwOAMSdPE6nFvrj1xP9Zc1KtA4F7eAMrhnJP4gM68/ZBj0Na oQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32y7tps5wa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Aug 2020 10:42:04 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07HEWMvk134326;
+ Mon, 17 Aug 2020 10:42:03 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 32y7tps5vf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Aug 2020 10:42:03 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07HEaB6i026893;
+ Mon, 17 Aug 2020 14:42:02 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03wdc.us.ibm.com with ESMTP id 32yaeqp643-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Aug 2020 14:42:02 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07HEg19x44761428
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Aug 2020 14:42:01 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BD4E67805C;
+ Mon, 17 Aug 2020 14:42:01 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 854C97805E;
+ Mon, 17 Aug 2020 14:41:59 +0000 (GMT)
+Received: from [153.66.254.174] (unknown [9.80.233.55])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Aug 2020 14:41:59 +0000 (GMT)
+Message-ID: <1597675318.4475.11.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/8] scsi: convert tasklets to use new tasklet_setup()
+From: James Bottomley <jejb@linux.ibm.com>
+To: Allen Pais <allen.cryptic@gmail.com>, martin.petersen@oracle.com,
+ kashyap.desai@broadcom.com, sumit.saxena@broadcom.com,
+ shivasharan.srikanteshwara@broadcom.com
+Date: Mon, 17 Aug 2020 07:41:58 -0700
+In-Reply-To: <20200817085409.25268-1-allen.cryptic@gmail.com>
+References: <20200817085409.25268-1-allen.cryptic@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-17_10:2020-08-17,
+ 2020-08-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1011
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008170108
 X-Mailman-Approved-At: Tue, 18 Aug 2020 08:22:15 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,69 +107,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jes@trained-monkey.org, borisp@mellanox.com, keescook@chromium.org,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org, kda@linux-powerpc.org,
- cooldavid@cooldavid.org, dougmill@linux.ibm.com, linux-kernel@vger.kernel.org,
- linux-acenic@sunsite.dk, oss-drivers@netronome.com, kuba@kernel.org,
- Romain Perier <romain.perier@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net, linux-arm-kernel@lists.infradead.org,
- mlindner@marvell.com
+Reply-To: jejb@linux.ibm.com
+Cc: keescook@chromium.org, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Allen Pais <allen.lkml@gmail.com>,
+ target-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ megaraidlinux.pdl@broadcom.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 17, 2020 at 01:54:30PM +0530, Allen Pais wrote:
-> In preparation for unconditionally passing the
-> struct tasklet_struct pointer to all tasklet
-> callbacks, switch to using the new tasklet_setup()
-> and from_tasklet() to pass the tasklet pointer explicitly.
+On Mon, 2020-08-17 at 14:24 +0530, Allen Pais wrote:
+> From: Allen Pais <allen.lkml@gmail.com>
 > 
-> Signed-off-by: Romain Perier <romain.perier@gmail.com>
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+> Commit 12cc923f1ccc ("tasklet: Introduce new initialization API")'
+> introduced a new tasklet initialization API. This series converts 
+> all the scsi drivers to use the new tasklet_setup() API
 
-Reviewed-by: Simon Horman <simon.horman@netronome.com>
+I've got to say I agree with Jens, this was a silly obfuscation:
 
-But:
++#define from_tasklet(var, callback_tasklet, tasklet_fieldname) \
++       container_of(callback_tasklet, typeof(*var), tasklet_fieldname)
 
-This series should be targeted at net-next, and thus have net-next in its
-subject
+Just use container_of directly since we all understand what it does.
 
-	[PATCH net-next x/y] ...
+James
 
-And it should be posted when net-next is open: it is currently closed.
-
-	http://vger.kernel.org/~davem/net-next.html
-
-> ---
->  drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-> index 39ee23e8c0bf..1dcd24d899f5 100644
-> --- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-> +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-> @@ -2287,9 +2287,9 @@ static bool nfp_ctrl_rx(struct nfp_net_r_vector *r_vec)
->  	return budget;
->  }
->  
-> -static void nfp_ctrl_poll(unsigned long arg)
-> +static void nfp_ctrl_poll(struct tasklet_struct *t)
->  {
-> -	struct nfp_net_r_vector *r_vec = (void *)arg;
-> +	struct nfp_net_r_vector *r_vec = from_tasklet(r_vec, t, tasklet);
->  
->  	spin_lock(&r_vec->lock);
->  	nfp_net_tx_complete(r_vec->tx_ring, 0);
-> @@ -2337,8 +2337,7 @@ static void nfp_net_vecs_init(struct nfp_net *nn)
->  
->  			__skb_queue_head_init(&r_vec->queue);
->  			spin_lock_init(&r_vec->lock);
-> -			tasklet_init(&r_vec->tasklet, nfp_ctrl_poll,
-> -				     (unsigned long)r_vec);
-> +			tasklet_setup(&r_vec->tasklet, nfp_ctrl_poll);
->  			tasklet_disable(&r_vec->tasklet);
->  		}
->  
-> -- 
-> 2.17.1
-> 
