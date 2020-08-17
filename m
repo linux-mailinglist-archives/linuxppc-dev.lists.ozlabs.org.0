@@ -2,78 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C763D24599E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Aug 2020 23:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36AD2245A5F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 03:00:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BV8x16zm2zDqQ8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 07:11:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVG1B4DqvzDqPb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 11:00:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=uU1tMVL6; 
- dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [IPv6:2001:df5:b000:5::4])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Wldr7sxA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BV8tw6HRVzDqF5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 07:09:28 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 33B35806B6;
- Mon, 17 Aug 2020 09:09:23 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1597612163;
- bh=mFh2MNlRiVsvA4vpdlLMxIHHKZs332vJXnDrU4WRgPc=;
- h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=uU1tMVL6vPeJYj6afY9bVlD3f2R4n+4Yqx3qDuItye/YUjJQGETnIFcl1K15VPDtC
- pKPfYysQ8aRp5uXUBn1uFMynpiNHbIqJX32DTy9iCyqzxnXCcopqHsW9xAhqTrequ+
- iCK9G/IAvK08NZHGw7VfxXntDSAzCQyW+E7pgNetdW3n72+vYTkY6nEnj/8Tfxj0sk
- tYlX3ucjHInpTEYszujFbGqqUOng7TxgKzK2lK6nIJPNRVqW0O5rh7UiXOzILiP+71
- T5TlrX9SZtD2VBr/b0hQ6KGuAKVLjEvRFshfrMICWYBh967vqdDEm3teRajJoYb7Pf
- Ae6A28TwX4Xew==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5f39a0810000>; Mon, 17 Aug 2020 09:09:21 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 17 Aug 2020 09:09:22 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Mon, 17 Aug 2020 09:09:22 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Heiner Kallweit <hkallweit1@gmail.com>, "broonie@kernel.org"
- <broonie@kernel.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "benh@kernel.crashing.org" <benh@kernel.crashing.org>, "paulus@samba.org"
- <paulus@samba.org>, "tiago.brusamarello@datacom.ind.br"
- <tiago.brusamarello@datacom.ind.br>
-Subject: Re: fsl_espi errors on v5.7.15
-Thread-Topic: fsl_espi errors on v5.7.15
-Thread-Index: AQHWceVnik7XsBYbp0S+yHVGh1hdQak2WMaAgAQdSwA=
-Date: Sun, 16 Aug 2020 21:09:22 +0000
-Message-ID: <3c72eec1-41ba-7389-eceb-3de80065555a@alliedtelesis.co.nz>
-References: <3f48e5fb-33c9-8046-0f80-236eed163c16@alliedtelesis.co.nz>
- <c43a23bd-33ec-4ef2-2ca5-730342248db3@gmail.com>
-In-Reply-To: <c43a23bd-33ec-4ef2-2ca5-730342248db3@gmail.com>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C94EA88EC8E86544A72DF85805F89839@atlnz.lc>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVFx01yPNzDqP3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 10:56:36 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07H0XTWK048877; Sun, 16 Aug 2020 20:56:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=QNTE70ImkAcuOTj81J/CO55MAbHdnXmC0GxgSn+KnwM=;
+ b=Wldr7sxA+1d31iLcW7qg9PB2tXWvepFiVJirJfXE++LHI4Zb1S/c0X0A1cgL+5xhtBJS
+ +EguGAGr+GhGUNizKe/2MavtM3k1KMSif2crDvd1lDKHGLred1o7jQF776u+T7laAxo0
+ aIE1ZhCkiAVrsfvpb8o3+EO6YZYcLdWF8D/Pxr9/dMBYWTIoBHaxHLAtRmuMqey4y1/G
+ csbnXDOqXUPbHwm0Y551lwu55FTM+Ter3ubYdRKRzDvL2eRuzn5q0ws5ZATEeZTFLc8A
+ X3DGub91/bCkYzb3t+gVGfdwlcb6S5mGeRv/LWyY4cQlCQhB7f7KQ4PiinmrUKKCVgcy eA== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32y80gyx2k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 16 Aug 2020 20:56:29 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07H0oj8V008321;
+ Mon, 17 Aug 2020 00:56:27 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04fra.de.ibm.com with ESMTP id 32x7b7h0n2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Aug 2020 00:56:26 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 07H0uOX961407738
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Aug 2020 00:56:24 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 26B9E52052;
+ Mon, 17 Aug 2020 00:56:24 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.85.91.31])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 174D95204E;
+ Mon, 17 Aug 2020 00:56:22 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH 1/2] powerpc/kernel/cputable: cleanup the function declarations
+Date: Mon, 17 Aug 2020 06:26:17 +0530
+Message-Id: <20200817005618.3305028-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-16_12:2020-08-14,
+ 2020-08-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=809 phishscore=0
+ adultscore=0 clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=1 mlxscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008170003
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,58 +90,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQpPbiAxNC8wOC8yMCA2OjE5IHBtLCBIZWluZXIgS2FsbHdlaXQgd3JvdGU6DQo+IE9uIDE0LjA4
-LjIwMjAgMDQ6NDgsIENocmlzIFBhY2toYW0gd3JvdGU6DQo+PiBIaSwNCj4+DQo+PiBJJ20gc2Vl
-aW5nIGEgcHJvYmxlbSB3aXRoIGFjY2Vzc2luZyBzcGktbm9yIGFmdGVyIHVwZ3JhZGluZyBhIFQy
-MDgxDQo+PiBiYXNlZCBzeXN0ZW0gdG8gbGludXggdjUuNy4xNQ0KPj4NCj4+IEZvciB0aGlzIGJv
-YXJkIHUtYm9vdCBhbmQgdGhlIHUtYm9vdCBlbnZpcm9ubWVudCBsaXZlIG9uIHNwaS1ub3IuDQo+
-Pg0KPj4gV2hlbiBJIHVzZSBmd19zZXRlbnYgZnJvbSB1c2Vyc3BhY2UgSSBnZXQgdGhlIGZvbGxv
-d2luZyBrZXJuZWwgbG9ncw0KPj4NCj4+ICMgZndfc2V0ZW52IGZvbz0xDQo+PiBmc2xfZXNwaSBm
-ZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBm
-c2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBz
-ZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RP
-TiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1
-dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2Zl
-ciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3Bp
-OiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUx
-MTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xf
-ZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQh
-DQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBp
-c24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBT
-UElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBk
-b25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBU
-cmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAw
-MDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNw
-aSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+
-PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCByeC90eCBmaWZvJ3Mg
-YXJlbid0IGVtcHR5IQ0KPj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogU1BJRV9SWENOVCA9IDEs
-IFNQSUVfVFhDTlQgPSAzMg0KPj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9u
-ZSBidXQgcngvdHggZmlmbydzIGFyZW4ndCBlbXB0eSENCj4+IGZzbF9lc3BpIGZmZTExMDAwMC5z
-cGk6IFNQSUVfUlhDTlQgPSAxLCBTUElFX1RYQ05UID0gMzINCj4+IGZzbF9lc3BpIGZmZTExMDAw
-MC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0IHJ4L3R4IGZpZm8ncyBhcmVuJ3QgZW1wdHkhDQo+PiBm
-c2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBTUElFX1JYQ05UID0gMSwgU1BJRV9UWENOVCA9IDMyDQo+
-PiAuLi4NCj4+DQo+IFRoaXMgZXJyb3IgcmVwb3J0aW5nIGRvZXNuJ3QgZXhpc3QgeWV0IGluIDQu
-NC4gU28geW91IG1heSBoYXZlIGFuIGlzc3VlDQo+IHVuZGVyIDQuNCB0b28sIGl0J3MganVzdCBu
-b3QgcmVwb3J0ZWQuDQo+IERpZCB5b3UgdmVyaWZ5IHRoYXQgdW5kZXIgNC40IGZ3X3NldGVudiBh
-Y3R1YWxseSBoYXMgYW4gZWZmZWN0Pw0KSnVzdCBkb3VibGUgY2hlY2tlZCBhbmQgeWVzIHVuZGVy
-IDQuNCB0aGUgc2V0dGluZyBkb2VzIGdldCBzYXZlZC4NCj4+IElmIEkgcnVuIGZ3X3ByaW50ZW52
-IChiZWZvcmUgZ2V0dGluZyBpdCBpbnRvIGEgYmFkIHN0YXRlKSBpdCBpcyBhYmxlIHRvDQo+PiBk
-aXNwbGF5IHRoZSBjb250ZW50IG9mIHRoZSBib2FyZHMgdS1ib290IGVudmlyb25tZW50Lg0KPj4N
-Cj4gVGhpcyBtaWdodCBpbmRpY2F0ZSBhbiBpc3N1ZSB3aXRoIHNwaSBiZWluZyBsb2NrZWQuIEkn
-dmUgc2VlbiByZWxhdGVkDQo+IHF1ZXN0aW9ucywganVzdCB1c2UgdGhlIHNlYXJjaCBlbmdpbmUg
-b2YgeW91ciBjaG9pY2UgYW5kIGNoZWNrIGZvcg0KPiBmd19zZXRlbnYgYW5kIGxvY2tlZC4NCkkn
-bSBydW5uaW5nIGEgdmVyc2lvbiBvZiBmd19zZXRlbnYgd2hpY2ggaW5jbHVkZXMgDQpodHRwczov
-L2dpdGxhYi5kZW54LmRlL3UtYm9vdC91LWJvb3QvLS9jb21taXQvZGI4MjAxNTkgc28gaXQgc2hv
-dWxkbid0IA0KYmUgbG9ja2luZyB0aGluZ3MgdW5uZWNlc3NhcmlseS4NCj4+IElmIGJlZW4gdW5z
-dWNjZXNzZnVsIGluIHByb2R1Y2luZyBhIHNldHVwIGZvciBiaXNlY3RpbmcgdGhlIGlzc3VlLiBJ
-IGRvDQo+PiBrbm93IHRoZSBpc3N1ZSBkb2Vzbid0IG9jY3VyIG9uIHRoZSBvbGQgNC40LnggYmFz
-ZWQga2VybmVsIGJ1dCB0aGF0J3MNCj4+IHByb2JhYmx5IG5vdCBtdWNoIGhlbHAuDQo+Pg0KPj4g
-QW55IHBvaW50ZXJzIG9uIHdoYXQgdGhlIGlzc3VlIChhbmQvb3Igc29sdXRpb24pIG1pZ2h0IGJl
-Lg0KPj4NCj4+IFRoYW5rcywNCj4+IENocmlzDQo+Pg0KPiBIZWluZXI=
+__machine_check_early_realmode_p*() are currently declared
+as extern in cputable.c and because of this when compiled
+with "C=1" (which enables semantic checker) produces these
+warnings.
+
+  CHECK   arch/powerpc/kernel/mce_power.c
+arch/powerpc/kernel/mce_power.c:709:6: warning: symbol '__machine_check_early_realmode_p7' was not declared. Should it be static?
+arch/powerpc/kernel/mce_power.c:717:6: warning: symbol '__machine_check_early_realmode_p8' was not declared. Should it be static?
+arch/powerpc/kernel/mce_power.c:722:6: warning: symbol '__machine_check_early_realmode_p9' was not declared. Should it be static?
+arch/powerpc/kernel/mce_power.c:740:6: warning: symbol '__machine_check_early_realmode_p10' was not declared. Should it be static?
+
+Patch here moves the declaration to asm/mce.h
+and includes the same in cputable.c
+
+Fixes: ae744f3432d3 ("powerpc/book3s: Flush SLB/TLBs if we get SLB/TLB machine check errors on power8")
+Fixes: 7b9f71f974a1 ("powerpc/64s: POWER9 machine check handler")
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ arch/powerpc/include/asm/cputable.h | 5 +++++
+ arch/powerpc/include/asm/mce.h      | 7 +++++++
+ arch/powerpc/kernel/cputable.c      | 3 ---
+ arch/powerpc/kernel/dt_cpu_ftrs.c   | 4 ----
+ 4 files changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+index fdddb822d564b..e005b45810232 100644
+--- a/arch/powerpc/include/asm/cputable.h
++++ b/arch/powerpc/include/asm/cputable.h
+@@ -9,6 +9,11 @@
+ 
+ #ifndef __ASSEMBLY__
+ 
++/*
++ * Added to include __machine_check_early_realmode_* functions
++ */
++#include <asm/mce.h>
++
+ /* This structure can grow, it's real size is used by head.S code
+  * via the mkdefs mechanism.
+  */
+diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+index adf2cda67f9a4..89aa8248a57dd 100644
+--- a/arch/powerpc/include/asm/mce.h
++++ b/arch/powerpc/include/asm/mce.h
+@@ -210,6 +210,9 @@ struct mce_error_info {
+ #define MCE_EVENT_RELEASE	true
+ #define MCE_EVENT_DONTRELEASE	false
+ 
++struct pt_regs;
++struct notifier_block;
++
+ extern void save_mce_event(struct pt_regs *regs, long handled,
+ 			   struct mce_error_info *mce_err, uint64_t nip,
+ 			   uint64_t addr, uint64_t phys_addr);
+@@ -225,5 +228,9 @@ int mce_register_notifier(struct notifier_block *nb);
+ int mce_unregister_notifier(struct notifier_block *nb);
+ #ifdef CONFIG_PPC_BOOK3S_64
+ void flush_and_reload_slb(void);
++long __machine_check_early_realmode_p7(struct pt_regs *regs);
++long __machine_check_early_realmode_p8(struct pt_regs *regs);
++long __machine_check_early_realmode_p9(struct pt_regs *regs);
++long __machine_check_early_realmode_p10(struct pt_regs *regs);
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ #endif /* __ASM_PPC64_MCE_H__ */
+diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
+index 3d406a9626e86..4ca9cf556be92 100644
+--- a/arch/powerpc/kernel/cputable.c
++++ b/arch/powerpc/kernel/cputable.c
+@@ -72,9 +72,6 @@ extern void __setup_cpu_power9(unsigned long offset, struct cpu_spec* spec);
+ extern void __restore_cpu_power9(void);
+ extern void __setup_cpu_power10(unsigned long offset, struct cpu_spec* spec);
+ extern void __restore_cpu_power10(void);
+-extern long __machine_check_early_realmode_p7(struct pt_regs *regs);
+-extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
+-extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
+ #endif /* CONFIG_PPC64 */
+ #if defined(CONFIG_E500)
+ extern void __setup_cpu_e5500(unsigned long offset, struct cpu_spec* spec);
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 6f8c0c6b937a1..8dc46f38680b2 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -64,10 +64,6 @@ struct dt_cpu_feature {
+  * Set up the base CPU
+  */
+ 
+-extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
+-extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
+-extern long __machine_check_early_realmode_p10(struct pt_regs *regs);
+-
+ static int hv_mode;
+ 
+ static struct {
+-- 
+2.26.2
+
