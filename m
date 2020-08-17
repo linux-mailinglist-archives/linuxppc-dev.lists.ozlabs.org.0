@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A49246065
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 10:38:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F35824606D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 10:40:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVS9V6NYTzDqSB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 18:38:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVSDP2DqyzDqJf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 18:40:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=allen.lkml@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=allen.lkml@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=k6TcpdBk; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=GD0jFjVi; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVRtg3scczDqQt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 18:25:15 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id g7so6002024plq.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 01:25:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVRtn3xyGzDqQt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 18:25:21 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id f10so7130012plj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 01:25:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=//0cU4D4ygspSBbtP32AytW3V0GobkPQnAIy8h5tGFQ=;
- b=k6TcpdBke/4ra4r69REycQPL5SXj2DVcOiJbAczGGHueHEcC8s5DLSbYPyZ3sBEAgM
- y6n6KwEZ10tmEj0hJyZj+ZUYnx2AAO4FbQErR1urJcgd6CwQtt6SUK4oX2t4DMNH7AsB
- CbLz39wd3i6EDj07z5/nx5rmHJuQwPjPQk57LqcXNWR3qPmQS0mrSt7tkH4nUSiaCar6
- uQ3FOaahy6No3eSkYQb2q3/4/YKj5hjwFbI9jF8Y5y2lw0Yt0rBl2yXZu9X7QBz0+5P/
- EQ8vunq+SiqEyr6McmwaZ4SuG+5AViw8t5/1ME+LzUe74E8+sPcNl06lzsn77sRGjBd5
- t40A==
+ bh=T6lw+n9mQmkGn1p4WLHa0fO/vue0T8wJx0TGHG4/TuE=;
+ b=GD0jFjVi/z5Qdah7xQgj1sPqFYzpZzvzuXxRK6j9Ts6HatcSx8QcxeClItWCnE9yPM
+ TneoDWoc1aDFZUV/C7XdZN01xNS5gKlqaWa8qFqGwTRcLQpFjGLZtoeDgvTAsU3Tu2H4
+ HxKcwnAidW6Xj3zSP9sA6h3W0oJ406IcX6vPGuUID3oa18sIQ0t8Pv3JufwgJS5rDnu7
+ +C3GyY+cjMGWxpQTHTFRgp/prP8LhGiZErDB+Q4h5ZMFbxgxxFxgU7oA9DwWSdQ+YGQP
+ TGppYZKTVNwYSmSX7L7A6KlSmqdibrdDbNAeuEJp+t5SyfsggLkehmwHjgLPyedU7cDz
+ Bx9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=//0cU4D4ygspSBbtP32AytW3V0GobkPQnAIy8h5tGFQ=;
- b=TzpQ+UZIBQR6mIE/wi3Isbh0T97RuWxnAPUCmocEP6vY4KTGbGvQeVPXFw7GG6q/K1
- vhbA6MHpmgcxABjTBSKecV6U+tycDQTLStNZGdO6IWevDIMMG2E3GFxOFT/o5UXGCFLp
- ieglT3rqQEXFxs08dzDDyVpkq2lQWmslOtQDugxPGnju9rVb9b/ku0aiQh8AtGe77gsG
- 4i2IANyw3/q/82rPAlnCWMr79ctZUB9GmmkdllVHw1yk2IXvtRl1rInugtKh5EBqw3aD
- aBq0GCebnXQ8YVagps+3IKpF6TqURa6D/e1sR5dpom1jUb9eyWOapNcMkGRgFyPTNqsu
- u3cQ==
-X-Gm-Message-State: AOAM530xxbyE2sNNPMELZhcqUsuK9oe1UxrYkrz3wRYrGmTApJVabrJg
- QCox2+J84t/qf1lfTjK3cSM=
-X-Google-Smtp-Source: ABdhPJy/kN3PQGQOz7LcO/GIU86/ehe4vLYAl+7eOVcgh49ZDG6UFRQWvhti77fCOLiIhfqDvSIvsw==
-X-Received: by 2002:a17:902:5997:: with SMTP id
- p23mr10460861pli.277.1597652712379; 
- Mon, 17 Aug 2020 01:25:12 -0700 (PDT)
+ bh=T6lw+n9mQmkGn1p4WLHa0fO/vue0T8wJx0TGHG4/TuE=;
+ b=O9u0OCUSLlbDSOi8Lyk/quGaXo1t9iBR+R+YVzDOfps25N6r/VUBNU2QKy+EaKFHyw
+ hshoSgqLDKuJJ9Q7XvqIX8MVUvlGK0nFfRxEk/vveMT+t1isZUZMtLoy2V6AlGlswTmI
+ Kh8iHqhD1xEPnI0jzaJ1sDXW5JKvmxetWqdV1cyau/euSv14vX657/VphXxborAw0bDd
+ dyTlqT2X9mAU8xeC2cux7KAYJ+OSEBi9qwGD3fCDzsymb9Bbj7Lj8kqoxE4ZCyP1sLHV
+ ncvwhIPMV9CylOCwm46cay1BzA681uoYU5Ml7GUtiPndTiL42msWCxeuIIJGLsfgIF2N
+ QQtQ==
+X-Gm-Message-State: AOAM5317oV0F6/sHbYCqISIXa21sQRyCX6QwbxKZdBE5aNQhyDIbSAXL
+ ndv7sBHpE0X9odbwC7nQDk8=
+X-Google-Smtp-Source: ABdhPJwDu5TYQAHATbCMVLUlf01g8fgt2E844DH0xvZjDgKdXuiUZDlH44A95OBtxXadmTX7B9NAlg==
+X-Received: by 2002:a17:902:343:: with SMTP id
+ 61mr7899243pld.274.1597652718233; 
+ Mon, 17 Aug 2020 01:25:18 -0700 (PDT)
 Received: from localhost.localdomain ([49.207.202.98])
- by smtp.gmail.com with ESMTPSA id r186sm19928482pfr.162.2020.08.17.01.25.06
+ by smtp.gmail.com with ESMTPSA id r186sm19928482pfr.162.2020.08.17.01.25.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Aug 2020 01:25:11 -0700 (PDT)
+ Mon, 17 Aug 2020 01:25:17 -0700 (PDT)
 From: Allen Pais <allen.lkml@gmail.com>
 To: jes@trained-monkey.org, davem@davemloft.net, kuba@kernel.org,
  kda@linux-powerpc.org, dougmill@linux.ibm.com, cooldavid@cooldavid.org,
  mlindner@marvell.com, borisp@mellanox.com
-Subject: [PATCH 03/20] broadcom: cnic: convert tasklets to use new
+Subject: [PATCH 04/20] ethernet: cadence: convert tasklets to use new
  tasklet_setup() API
-Date: Mon, 17 Aug 2020 13:54:17 +0530
-Message-Id: <20200817082434.21176-5-allen.lkml@gmail.com>
+Date: Mon, 17 Aug 2020 13:54:18 +0530
+Message-Id: <20200817082434.21176-6-allen.lkml@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200817082434.21176-1-allen.lkml@gmail.com>
 References: <20200817082434.21176-1-allen.lkml@gmail.com>
@@ -96,61 +96,35 @@ and from_tasklet() to pass the tasklet pointer explicitly.
 Signed-off-by: Romain Perier <romain.perier@gmail.com>
 Signed-off-by: Allen Pais <allen.lkml@gmail.com>
 ---
- drivers/net/ethernet/broadcom/cnic.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/cnic.c b/drivers/net/ethernet/broadcom/cnic.c
-index c5cca63b8571..e1e8c012d501 100644
---- a/drivers/net/ethernet/broadcom/cnic.c
-+++ b/drivers/net/ethernet/broadcom/cnic.c
-@@ -3009,10 +3009,10 @@ static int cnic_service_bnx2(void *data, void *status_blk)
- 	return cnic_service_bnx2_queues(dev);
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 6761f404b8aa..830c537bc08c 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1466,9 +1466,9 @@ static int macb_poll(struct napi_struct *napi, int budget)
+ 	return work_done;
  }
  
--static void cnic_service_bnx2_msix(unsigned long data)
-+static void cnic_service_bnx2_msix(struct tasklet_struct *t)
+-static void macb_hresp_error_task(unsigned long data)
++static void macb_hresp_error_task(struct tasklet_struct *t)
  {
--	struct cnic_dev *dev = (struct cnic_dev *) data;
--	struct cnic_local *cp = dev->cnic_priv;
-+	struct cnic_local *cp = from_tasklet(cp, t, cnic_irq_task);
-+	struct cnic_dev *dev = cp->dev;
+-	struct macb *bp = (struct macb *)data;
++	struct macb *bp = from_tasklet(bp, t, hresp_err_tasklet);
+ 	struct net_device *dev = bp->dev;
+ 	struct macb_queue *queue;
+ 	unsigned int q;
+@@ -4560,8 +4560,7 @@ static int macb_probe(struct platform_device *pdev)
+ 		goto err_out_unregister_mdio;
+ 	}
  
- 	cp->last_status_idx = cnic_service_bnx2_queues(dev);
+-	tasklet_init(&bp->hresp_err_tasklet, macb_hresp_error_task,
+-		     (unsigned long)bp);
++	tasklet_setup(&bp->hresp_err_tasklet, macb_hresp_error_task);
  
-@@ -3134,10 +3134,10 @@ static u32 cnic_service_bnx2x_kcq(struct cnic_dev *dev, struct kcq_info *info)
- 	return last_status;
- }
- 
--static void cnic_service_bnx2x_bh(unsigned long data)
-+static void cnic_service_bnx2x_bh(struct tasklet_struct *t)
- {
--	struct cnic_dev *dev = (struct cnic_dev *) data;
--	struct cnic_local *cp = dev->cnic_priv;
-+	struct cnic_local *cp = from_tasklet(cp, t, cnic_irq_task);
-+	struct cnic_dev *dev = cp->dev;
- 	struct bnx2x *bp = netdev_priv(dev->netdev);
- 	u32 status_idx, new_status_idx;
- 
-@@ -4458,8 +4458,7 @@ static int cnic_init_bnx2_irq(struct cnic_dev *dev)
- 		CNIC_WR(dev, base + BNX2_HC_CMD_TICKS_OFF, (64 << 16) | 220);
- 
- 		cp->last_status_idx = cp->status_blk.bnx2->status_idx;
--		tasklet_init(&cp->cnic_irq_task, cnic_service_bnx2_msix,
--			     (unsigned long) dev);
-+		tasklet_setup(&cp->cnic_irq_task, cnic_service_bnx2_msix);
- 		err = cnic_request_irq(dev);
- 		if (err)
- 			return err;
-@@ -4868,8 +4867,7 @@ static int cnic_init_bnx2x_irq(struct cnic_dev *dev)
- 	struct cnic_eth_dev *ethdev = cp->ethdev;
- 	int err = 0;
- 
--	tasklet_init(&cp->cnic_irq_task, cnic_service_bnx2x_bh,
--		     (unsigned long) dev);
-+	tasklet_setup(&cp->cnic_irq_task, cnic_service_bnx2x_bh);
- 	if (ethdev->drv_state & CNIC_DRV_STATE_USING_MSIX)
- 		err = cnic_request_irq(dev);
- 
+ 	netdev_info(dev, "Cadence %s rev 0x%08x at 0x%08lx irq %d (%pM)\n",
+ 		    macb_is_gem(bp) ? "GEM" : "MACB", macb_readl(bp, MID),
 -- 
 2.17.1
 
