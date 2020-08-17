@@ -2,54 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF6C245B28
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 05:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8CB245C00
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 07:41:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVKk75rn8zDqQQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 13:47:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVNFN4Fv5zDqN5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 15:41:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVKhQ1SpnzDqN3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 13:45:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=informatik.wtf (client-ip=131.153.2.45;
+ helo=h4.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nXW//UZa; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BVKhP3mCKz9sRK;
- Mon, 17 Aug 2020 13:45:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1597635957;
- bh=NqoN0tZjJc+g4LNikiO42+qvS3/dVJspsqGoOu1MRA0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nXW//UZaTXNdMut3BsqeS+6aHktxZx7ywaGaU0yNJwHDEG/Dyx4hTCV3PPNV7bGNx
- XLv5QTZkrjA+Y3IOsOlxj8NfY7f4kgSnE7sQjIx2Jji3cjiGWjFCr73ttjURpiorB9
- lHC1dgrAxPXw0Nh+N2Fa+mn/Xj56CDt4wZoeYt8GPL93RDAb8NsdkPRULK/ngbStv/
- ZaNoCOGCn/u5w4bsKZfTKtTLnDUTtj9ngGojEFYeK5qrTxcew9B+awMwfgK940YBy1
- WgZ2vJGxsFBvdCFhH0pZk9hmK2F8vgvaCUmZmNA1j/muJQ77c7ihG8ezotB/dyuO/X
- C9VQUbAqpjXbg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/pseries: explicitly reschedule during
- drmem_lmb list traversal
-In-Reply-To: <874kp7z73m.fsf@linux.ibm.com>
-References: <20200812012005.1919255-1-nathanl@linux.ibm.com>
- <5e8213a6-802b-f7ca-b43b-a3de8a03d1da@linux.ibm.com>
- <87lfij9yp6.fsf@mpe.ellerman.id.au> <874kp7z73m.fsf@linux.ibm.com>
-Date: Mon, 17 Aug 2020 13:45:52 +1000
-Message-ID: <87zh6u7x5b.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ header.from=informatik.wtf
+Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
+ [131.153.2.45])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVNCY2VxGzDq5t
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 15:39:36 +1000 (AEST)
+Received: from MTA-06-3.privateemail.com (mta-06.privateemail.com
+ [68.65.122.16])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id B2B5D80C8B
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 01:39:33 -0400 (EDT)
+Received: from MTA-06.privateemail.com (localhost [127.0.0.1])
+ by MTA-06.privateemail.com (Postfix) with ESMTP id CABC46003F;
+ Mon, 17 Aug 2020 01:38:59 -0400 (EDT)
+Received: from localhost (unknown [10.20.151.229])
+ by MTA-06.privateemail.com (Postfix) with ESMTPA id 824A06004D;
+ Mon, 17 Aug 2020 05:38:59 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v2 1/5] powerpc/mm: Introduce temporary mm
+From: "Christopher M. Riedl" <cmr@informatik.wtf>
+To: "Daniel Axtens" <dja@axtens.net>, <linuxppc-dev@lists.ozlabs.org>
+Date: Mon, 17 Aug 2020 00:16:32 -0500
+Message-Id: <C4Z0LVCFINQP.21DBP0ZHGZQJ6@geist>
+In-Reply-To: <87o8noo96l.fsf@dja-thinkpad.axtens.net>
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,60 +53,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cheloha@linux.ibm.com, ldufour@linux.ibm.com
+Cc: kernel-hardening@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
->> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
->>> On 8/11/20 6:20 PM, Nathan Lynch wrote:
->>>>  
->>>> +static inline struct drmem_lmb *drmem_lmb_next(struct drmem_lmb *lmb)
->>>> +{
->>>> +	const unsigned int resched_interval = 20;
->>>> +
->>>> +	BUG_ON(lmb < drmem_info->lmbs);
->>>> +	BUG_ON(lmb >= drmem_info->lmbs + drmem_info->n_lmbs);
->>>
->>> I think BUG_ON is a pretty big no-no these days unless there is no other option.
->>
->> It's complicated, but yes we would like to avoid adding them if we can.
->>
->> In a case like this there is no other option, *if* the check has to be
->> in drmem_lmb_next().
->>
->> But I don't think we really need to check that there.
->>
->> If for some reason this was called with an *lmb pointing outside of the
->> lmbs array it would confuse the cond_resched() logic, but it's not worth
->> crashing the box for that IMHO.
+On Thu Aug 6, 2020 at 6:27 AM CDT, Daniel Axtens wrote:
+> Hi Chris,
+>  =20
+> >  void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk);
+> > +void __get_breakpoint(int nr, struct arch_hw_breakpoint *brk);
+> >  bool ppc_breakpoint_available(void);
+> >  #ifdef CONFIG_PPC_ADV_DEBUG_REGS
+> >  extern void do_send_trap(struct pt_regs *regs, unsigned long address,
+> > diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/incl=
+ude/asm/mmu_context.h
+> > index 1a474f6b1992..9269c7c7b04e 100644
+> > --- a/arch/powerpc/include/asm/mmu_context.h
+> > +++ b/arch/powerpc/include/asm/mmu_context.h
+> > @@ -10,6 +10,7 @@
+> >  #include <asm/mmu.h>=09
+> >  #include <asm/cputable.h>
+> >  #include <asm/cputhreads.h>
+> > +#include <asm/debug.h>
+> > =20
+> >  /*
+> >   * Most if the context management is out of line
+> > @@ -300,5 +301,68 @@ static inline int arch_dup_mmap(struct mm_struct *=
+oldmm,
+> >  	return 0;
+> >  }
+> > =20
+> > +struct temp_mm {
+> > +	struct mm_struct *temp;
+> > +	struct mm_struct *prev;
+> > +	bool is_kernel_thread;
+> > +	struct arch_hw_breakpoint brk[HBP_NUM_MAX];
+> > +};
 >
-> The BUG_ONs are pretty much orthogonal to the cond_resched().
+> This is on the nitpicky end, but I wonder if this should be named
+> temp_mm, or should be labelled something else to capture its broader
+> purpose as a context for code patching? I'm thinking that a store of
+> breakpoints is perhaps unusual in a memory-managment structure?
+>
+> I don't have a better suggestion off the top of my head and I'm happy
+> for you to leave it, I just wanted to flag it as a possible way we could
+> be clearer.
 
-Yes that was kind of my point. We don't need them to implement the
-cond_resched() logic.
+First of all thank you for the review!
 
-> It's not apparent from the context of the change, but some users of the
-> for_each_drmem_lmb* macros modify elements of the drmem_info->lmbs
-> array. If the lmb passed to drmem_lmb_next() violates the bounds check
-> (say, if the callsite inappropriately modifies it within the loop), such
-> users are guaranteed to corrupt other objects in memory. This was my
-> thinking in adding the BUG_ONs, and I don't see another place to do
-> it.
+I had actually planned to move all this code into lib/code-patching.c
+directly (and it turns out that's what x86 ended up doing as well).
 
-If it's really something we're worried about, I think we'd be better off
-putting checks for that in the code that's doing those modifications.
+>
+> > +
+> > +static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_str=
+uct *mm)
+> > +{
+> > +	temp_mm->temp =3D mm;
+> > +	temp_mm->prev =3D NULL;
+> > +	temp_mm->is_kernel_thread =3D false;
+> > +	memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
+> > +}
+> > +
+> > +static inline void use_temporary_mm(struct temp_mm *temp_mm)
+> > +{
+> > +	lockdep_assert_irqs_disabled();
+> > +
+> > +	temp_mm->is_kernel_thread =3D current->mm =3D=3D NULL;
+> > +	if (temp_mm->is_kernel_thread)
+> > +		temp_mm->prev =3D current->active_mm;
+>
+> You don't seem to restore active_mm below. I don't know what active_mm
+> does, so I don't know if this is a problem.
 
-That way you have enough context to do something more nuanced than a
-BUG(), ie. you can print a useful message and fail whatever operation is
-in progress.
+For kernel threads 'current->mm' is NULL since a kthread does not need
+a userspace mm; however they still need a mm so they "borrow" one which
+is indicated by 'current->active_mm'.
 
-If we did that then we could also add those BUG_ONs() as a safety net.
+'current->mm' needs to be restored because Hash requires a non-NULL
+value when handling a page fault and so 'current->mm' gets set to the
+temp_mm. This is a special case for kernel threads and Hash translation.
 
-What you really want is a way for the for_each_xxx() construct to
-express that there was an error traversing the list, but there isn't
-really a nice way to do that in C.
+>
+> > +	else
+> > +		temp_mm->prev =3D current->mm;
+> > +
+> > +	/*
+> > +	 * Hash requires a non-NULL current->mm to allocate a userspace addre=
+ss
+> > +	 * when handling a page fault. Does not appear to hurt in Radix eithe=
+r.
+> > +	 */
+> > +	current->mm =3D temp_mm->temp;
+> > +	switch_mm_irqs_off(NULL, temp_mm->temp, current);
+> > +
+> > +	if (ppc_breakpoint_available()) {
+>
+> I wondered if this could be changed during a text-patching operation.
+> AIUI, it potentially can on a P9 via "dawr_enable_dangerous" in debugfs.
+>
+> I don't know if that's a problem. My concern is that you could turn off
+> breakpoints, call 'use_temporary_mm', then turn them back on again
+> before 'unuse_temporary_mm' and get a breakpoint while that can access
+> the temporary mm. Is there something else that makes that safe?
+> disabling IRQs maybe?
 
-cheers
+Hmm, I will have to investigate this more. I'm not sure if there is a
+better way to just completely disable breakpoints while the temporary mm
+is in use.
+
+>
+> > +		struct arch_hw_breakpoint null_brk =3D {0};
+> > +		int i =3D 0;
+> > +
+> > +		for (; i < nr_wp_slots(); ++i) {
+>
+> super nitpicky, and I'm not sure if this is actually documented, but I'd
+> usually see this written as:
+>
+> for (i =3D 0; i < nr_wp_slots(); i++) {
+>
+> Not sure if there's any reason that it _shouldn't_ be written the way
+> you've written it (and I do like initialising the variable when it's
+> defined!), I'm just not used to it. (Likewise with the unuse function.)
+>
+
+I've found other places (even in arch/powerpc!) where this is done so I
+think it's fine. I prefer using this style when the variable
+declaration and initialization are "close" to the loop statement.
+
+> > +			__get_breakpoint(i, &temp_mm->brk[i]);
+> > +			if (temp_mm->brk[i].type !=3D 0)
+> > +				__set_breakpoint(i, &null_brk);
+> > +		}
+> > +	}
+> > +}
+> > +
+>
+> Kind regards,
+> Daniel
+>
+> > +static inline void unuse_temporary_mm(struct temp_mm *temp_mm)
+> > +{
+> > +	lockdep_assert_irqs_disabled();
+> > +
+> > +	if (temp_mm->is_kernel_thread)
+> > +		current->mm =3D NULL;
+> > +	else
+> > +		current->mm =3D temp_mm->prev;
+> > +	switch_mm_irqs_off(NULL, temp_mm->prev, current);
+> > +
+> > +	if (ppc_breakpoint_available()) {
+> > +		int i =3D 0;
+> > +
+> > +		for (; i < nr_wp_slots(); ++i)
+> > +			if (temp_mm->brk[i].type !=3D 0)
+> > +				__set_breakpoint(i, &temp_mm->brk[i]);
+> > +	}
+> > +}
+> > +
+> >  #endif /* __KERNEL__ */
+> >  #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
+> > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
+s.c
+> > index 4650b9bb217f..b6c123bf5edd 100644
+> > --- a/arch/powerpc/kernel/process.c
+> > +++ b/arch/powerpc/kernel/process.c
+> > @@ -824,6 +824,11 @@ static inline int set_breakpoint_8xx(struct arch_h=
+w_breakpoint *brk)
+> >  	return 0;
+> >  }
+> > =20
+> > +void __get_breakpoint(int nr, struct arch_hw_breakpoint *brk)
+> > +{
+> > +	memcpy(brk, this_cpu_ptr(&current_brk[nr]), sizeof(*brk));
+> > +}
+> > +
+> >  void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk)
+> >  {
+> >  	memcpy(this_cpu_ptr(&current_brk[nr]), brk, sizeof(*brk));
+> > --=20
+> > 2.27.0
+
