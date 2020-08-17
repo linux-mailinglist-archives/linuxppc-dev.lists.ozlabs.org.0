@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0195245C22
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 07:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F91245C2B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 07:57:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVNSQ0kT8zDqQQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 15:50:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVNcc46NxzDqL2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 15:57:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVNMr2HwDzDqN5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 15:46:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVNMv4gPjzDqLC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 15:46:51 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BVNMg4Yg9z9tytp;
- Mon, 17 Aug 2020 07:46:39 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BVNMh4r8Xz9tytq;
+ Mon, 17 Aug 2020 07:46:40 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id vtjVRr15GY8P; Mon, 17 Aug 2020 07:46:39 +0200 (CEST)
+ with ESMTP id q-szUbL8Q2Ir; Mon, 17 Aug 2020 07:46:40 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BVNMg3d2Zz9tytn;
- Mon, 17 Aug 2020 07:46:39 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BVNMh3vBwz9tytn;
+ Mon, 17 Aug 2020 07:46:40 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 477298B772;
- Mon, 17 Aug 2020 07:46:44 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6282A8B772;
+ Mon, 17 Aug 2020 07:46:45 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id pLXIvOJRt5b4; Mon, 17 Aug 2020 07:46:44 +0200 (CEST)
+ with ESMTP id 8mJDGUloHsjn; Mon, 17 Aug 2020 07:46:45 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 298EB8B75B;
- Mon, 17 Aug 2020 07:46:44 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 39CC28B75B;
+ Mon, 17 Aug 2020 07:46:45 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 26C8565CDD; Mon, 17 Aug 2020 05:46:44 +0000 (UTC)
-Message-Id: <2d89732a9062b2cf2651728804e4b8f6c9b9358e.1597643164.git.christophe.leroy@csgroup.eu>
+ id 37CC065CDD; Mon, 17 Aug 2020 05:46:45 +0000 (UTC)
+Message-Id: <3612a8f8aaca16de3fc414a7e66293319d6e213c.1597643147.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v1] powerpc/process: Replace #ifdef CONFIG_KALLSYMS by
- IS_ENABLED()
+Subject: [PATCH v1] powerpc/process: Tag an #endif to help locate the matching
+ #ifdef.
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 17 Aug 2020 05:46:44 +0000 (UTC)
+Date: Mon, 17 Aug 2020 05:46:45 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,39 +65,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The #ifdef CONFIG_KALLSYMS encloses some printk which can
-compile in all cases.
+That #endif is more than 100 lines after the matching #ifdef,
+and there are several #ifdef/#else/#endif inbetween.
 
-Replace by IS_ENABLED().
+Tag it as /* CONFIG_PPC_BOOK3S_64 */ to help locate the
+matching #ifdef.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/process.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 087711aa0126..987bc8e73d5e 100644
+index 016bd831908e..ffbe79960c73 100644
 --- a/arch/powerpc/kernel/process.c
 +++ b/arch/powerpc/kernel/process.c
-@@ -1469,14 +1469,14 @@ void show_regs(struct pt_regs * regs)
- 			break;
+@@ -575,7 +575,7 @@ void notrace restore_math(struct pt_regs *regs)
+ 		regs->msr |= new_msr;
  	}
- 	pr_cont("\n");
--#ifdef CONFIG_KALLSYMS
- 	/*
- 	 * Lookup NIP late so we have the best change of getting the
- 	 * above info out without failing
- 	 */
--	printk("NIP ["REG"] %pS\n", regs->nip, (void *)regs->nip);
--	printk("LR ["REG"] %pS\n", regs->link, (void *)regs->link);
+ }
 -#endif
-+	if (IS_ENABLED(CONFIG_KALLSYMS)) {
-+		printk("NIP ["REG"] %pS\n", regs->nip, (void *)regs->nip);
-+		printk("LR ["REG"] %pS\n", regs->link, (void *)regs->link);
-+	}
- 	show_stack(current, (unsigned long *) regs->gpr[1], KERN_DEFAULT);
- 	if (!user_mode(regs))
- 		show_instructions(regs);
++#endif /* CONFIG_PPC_BOOK3S_64 */
+ 
+ static void save_all(struct task_struct *tsk)
+ {
 -- 
 2.25.0
 
