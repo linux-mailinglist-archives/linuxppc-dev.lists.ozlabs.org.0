@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74ABB246AD8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 17:43:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22FC3246B29
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 17:49:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVdcY2kg7zDqKM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 01:43:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVdlR029PzDqD8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 01:49:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=PqJ4AUhN; dkim-atps=neutral
+ header.s=default header.b=cuCOTw7v; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVdMb1c6kzDqVv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 01:32:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVdNx510lzDqVW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 01:33:36 +1000 (AEST)
 Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown
  [163.114.132.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AC03B207FF;
- Mon, 17 Aug 2020 15:32:18 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 273CA22CAE;
+ Mon, 17 Aug 2020 15:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1597678339;
- bh=2c4Yh95xvolsVljCfBjOgUgBnpWZevsxHtYN4hwUUuQ=;
+ s=default; t=1597678413;
+ bh=oRpPTF8CLVl2GdwVLqbcgNxfGrfqo2YvIIghubdcD3U=;
  h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=PqJ4AUhNCRXS/VC9OkD2uAmeo4aNAyZFhtAwYnKIWQMQg4HzuxJiPNeQAvPUunzxL
- vszsyooQh67yVwKcN2epBRLBbjuWuZCRBZX1do/00btQNQEi18MWMihYss83LaZXfH
- JZrLi1BvTDV+8rUaibFK/+EgCNKN/gzQ0u1Bd7vo=
-Date: Mon, 17 Aug 2020 08:32:16 -0700
+ b=cuCOTw7vdPagZu/YDOJ36n2k21iuhjC6Q+xcZCv5VwkvMnHehBKNuY7qWH1YfhLfQ
+ uxs01fevGl2GXxKi+lBy8SDRp/QtPGUzthJFloMf+LShCgY+WQoz9xkezYTUR31ppl
+ J47G6NfE97P+DK4Vs9w04H/cBfS//QF3y2IB04fA=
+Date: Mon, 17 Aug 2020 08:33:30 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Allen Pais <allen.lkml@gmail.com>
-Subject: Re: [PATCH 06/20] ethernet: chelsio: convert tasklets to use new
+Subject: Re: [PATCH 08/20] ethernet: hinic: convert tasklets to use new
  tasklet_setup() API
-Message-ID: <20200817083216.5367f56a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20200817082434.21176-8-allen.lkml@gmail.com>
+Message-ID: <20200817083330.78e365eb@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20200817082434.21176-10-allen.lkml@gmail.com>
 References: <20200817082434.21176-1-allen.lkml@gmail.com>
- <20200817082434.21176-8-allen.lkml@gmail.com>
+ <20200817082434.21176-10-allen.lkml@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -69,7 +69,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 17 Aug 2020 13:54:20 +0530 Allen Pais wrote:
+On Mon, 17 Aug 2020 13:54:22 +0530 Allen Pais wrote:
 > In preparation for unconditionally passing the
 > struct tasklet_struct pointer to all tasklet
 > callbacks, switch to using the new tasklet_setup()
@@ -78,9 +78,5 @@ On Mon, 17 Aug 2020 13:54:20 +0530 Allen Pais wrote:
 > Signed-off-by: Romain Perier <romain.perier@gmail.com>
 > Signed-off-by: Allen Pais <allen.lkml@gmail.com>
 
-You need to adjust kdoc when you change functions:
-
-drivers/net/ethernet/chelsio/cxgb4/sge.c:2664: warning: Function parameter or member 't' not described in 'restart_ctrlq'
-drivers/net/ethernet/chelsio/cxgb4/sge.c:2664: warning: Excess function parameter 'data' description in 'restart_ctrlq'
-drivers/net/ethernet/chelsio/cxgb4/sge.c:2965: warning: Function parameter or member 't' not described in 'restart_ofldq'
-drivers/net/ethernet/chelsio/cxgb4/sge.c:2965: warning: Excess function parameter 'data' description in 'restart_ofldq'
+drivers/net/ethernet/huawei/hinic/hinic_hw_eqs.c:374: warning: Function parameter or member 't' not described in 'ceq_tasklet'
+drivers/net/ethernet/huawei/hinic/hinic_hw_eqs.c:374: warning: Excess function parameter 'ceq_data' description in 'ceq_tasklet'
