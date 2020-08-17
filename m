@@ -2,82 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E52246485
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 12:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C263A24647E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 12:28:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVVg02jwBzDqRb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 20:30:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVVcq0nkwzDqTm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 20:28:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=MGXyzUPD; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=eZDCYWlQ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVVWr4m5RzDqMB
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVVWr4XZRzDqM3
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 20:24:08 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07HA2LmW139125; Mon, 17 Aug 2020 06:23:59 -0400
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07H9XZkB049075; Mon, 17 Aug 2020 06:24:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=vNydnWOcSnRSXAQLL4kTzdkSWIyoD5XpxmC9ZXaVWls=;
- b=MGXyzUPDQW1JZ1AAPFErRCKfxm7Zg+vDGuBkDU0cBaRMuzEKNjwJ1aTEnXrUN1bGeeHn
- A/QfEuXrT38bg929gQsuvHUHe8nWSVj/6XtIWLQxOwztAtTQwm/JzsENnIrDiU8fQGAx
- 9KsWtuSZKOrxBmy9rjd7J7QelwpiqSerR3qSliqpimEXTgmqjvCUDgpE6lxt53XHQFWp
- oiegOuw5LBe/zRTrQfuzDRYAf1ctaCWPaKtM9nGunJMv+fLMo9+jCkhI/OFL7X86kWvb
- o4bUm/CgDuZ0KmAwV+WLgNn/uvGJf1rVkgjvGQFNap4ugfK5LneWBw3rmM5HaIIoV/y4 TA== 
+ bh=gSp+KtTuH5sSGAp6agwcymRyDxgKnbmuo+nLUwjc4Xc=;
+ b=eZDCYWlQXiLJCoQXFTuHgdGezs4zwenwPfYUQ7oNKVkigOYYMYQjjJ03qYGWynpQ9PyI
+ tmzOfiZzr4cRAUZVAPwzeMahW72k9QFjWH1Vb48TB6joDtvXKGzPGFotD3MeC4vee7hx
+ FsMirhdkFDegHj6G2Jd2aeVG6e0FmjKplsUzxPSetmyaXMFsusfN3FkBeG2yIoqbQtkJ
+ MrzJZW4GWY0Yk3NXZfuwSslVQPIYao4hUkm2lULkZe4P1nH1eaWCGpvNkkKTBj9LjWl9
+ vpcTJNsKeQImvMgFc3sycBmDabb2XR5hcWC9OwZXDrmh8U4Qg0SIiiMDd4GR1lfRnEz6 mg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32y4f3rmm0-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32y80hcp5x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 06:23:59 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07HAFWt6181908;
- Mon, 17 Aug 2020 06:23:58 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 32y4f3rmk8-1
+ Mon, 17 Aug 2020 06:24:02 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07H9XaRC049152;
+ Mon, 17 Aug 2020 06:24:01 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32y80hcp57-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 06:23:58 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07HAL5ga015127;
- Mon, 17 Aug 2020 10:23:57 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04ams.nl.ibm.com with ESMTP id 32x7b824n5-1
+ Mon, 17 Aug 2020 06:24:01 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07HAM1vN030607;
+ Mon, 17 Aug 2020 10:23:59 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 32x6ygt4ae-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 10:23:56 +0000
+ Mon, 17 Aug 2020 10:23:59 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 07HAMNK564618770
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07HANtXs25166114
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Aug 2020 10:22:23 GMT
+ Mon, 17 Aug 2020 10:23:55 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 113F54C044;
+ by IMSVA (Postfix) with ESMTP id 09E9D4C04E;
+ Mon, 17 Aug 2020 10:23:55 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 770564C052;
  Mon, 17 Aug 2020 10:23:52 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 318514C040;
- Mon, 17 Aug 2020 10:23:49 +0000 (GMT)
 Received: from bangoria.ibmuc.com (unknown [9.199.37.13])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 Aug 2020 10:23:48 +0000 (GMT)
+ Mon, 17 Aug 2020 10:23:52 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: mpe@ellerman.id.au, christophe.leroy@c-s.fr
-Subject: [PATCH v4 1/6] powerpc/watchpoint/ptrace: Fix SETHWDEBUG when
- CONFIG_HAVE_HW_BREAKPOINT=N
-Date: Mon, 17 Aug 2020 15:53:25 +0530
-Message-Id: <20200817102330.777537-2-ravi.bangoria@linux.ibm.com>
+Subject: [PATCH v4 2/6] powerpc/watchpoint: Move DAWR detection logic outside
+ of hw_breakpoint.c
+Date: Mon, 17 Aug 2020 15:53:26 +0530
+Message-Id: <20200817102330.777537-3-ravi.bangoria@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200817102330.777537-1-ravi.bangoria@linux.ibm.com>
 References: <20200817102330.777537-1-ravi.bangoria@linux.ibm.com>
@@ -88,9 +88,9 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-17_02:2020-08-17,
  2020-08-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- clxscore=1015 priorityscore=1501 phishscore=0 adultscore=0 mlxscore=0
- mlxlogscore=999 bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=999 phishscore=0
+ adultscore=0 clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2008170071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -112,35 +112,393 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When kernel is compiled with CONFIG_HAVE_HW_BREAKPOINT=N, user can
-still create watchpoint using PPC_PTRACE_SETHWDEBUG, with limited
-functionalities. But, such watchpoints are never firing because of
-the missing privilege settings. Fix that.
+Power10 hw has multiple DAWRs but hw doesn't tell which DAWR caused
+the exception. So we have a sw logic to detect that in hw_breakpoint.c.
+But hw_breakpoint.c gets compiled only with CONFIG_HAVE_HW_BREAKPOINT=Y.
+Move DAWR detection logic outside of hw_breakpoint.c so that it can be
+reused when CONFIG_HAVE_HW_BREAKPOINT is not set.
 
-It's safe to set HW_BRK_TYPE_PRIV_ALL because we don't really leak
-any kernel address in signal info. Setting HW_BRK_TYPE_PRIV_ALL will
-also help to find scenarios when kernel corrupts user memory.
-
-Reported-by: Pedro Miraglia Franco de Carvalho <pedromfc@br.ibm.com>
-Suggested-by: Pedro Miraglia Franco de Carvalho <pedromfc@br.ibm.com>
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 ---
- arch/powerpc/kernel/ptrace/ptrace-noadv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/hw_breakpoint.h      |   8 +
+ arch/powerpc/kernel/Makefile                  |   3 +-
+ arch/powerpc/kernel/hw_breakpoint.c           | 149 +----------------
+ .../kernel/hw_breakpoint_constraints.c        | 152 ++++++++++++++++++
+ 4 files changed, 164 insertions(+), 148 deletions(-)
+ create mode 100644 arch/powerpc/kernel/hw_breakpoint_constraints.c
 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-noadv.c b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-index 697c7e4b5877..57a0ab822334 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
-@@ -217,7 +217,7 @@ long ppc_set_hwdebug(struct task_struct *child, struct ppc_hw_breakpoint *bp_inf
- 		return -EIO;
+diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
+index db206a7f38e2..f71f08a7e2e0 100644
+--- a/arch/powerpc/include/asm/hw_breakpoint.h
++++ b/arch/powerpc/include/asm/hw_breakpoint.h
+@@ -10,6 +10,7 @@
+ #define _PPC_BOOK3S_64_HW_BREAKPOINT_H
  
- 	brk.address = ALIGN_DOWN(bp_info->addr, HW_BREAKPOINT_SIZE);
--	brk.type = HW_BRK_TYPE_TRANSLATE;
-+	brk.type = HW_BRK_TYPE_TRANSLATE | HW_BRK_TYPE_PRIV_ALL;
- 	brk.len = DABR_MAX_LEN;
- 	if (bp_info->trigger_type & PPC_BREAKPOINT_TRIGGER_READ)
- 		brk.type |= HW_BRK_TYPE_READ;
+ #include <asm/cpu_has_feature.h>
++#include <asm/inst.h>
+ 
+ #ifdef	__KERNEL__
+ struct arch_hw_breakpoint {
+@@ -51,6 +52,13 @@ static inline int nr_wp_slots(void)
+ 	return cpu_has_feature(CPU_FTR_DAWR1) ? 2 : 1;
+ }
+ 
++bool wp_check_constraints(struct pt_regs *regs, struct ppc_inst instr,
++			  unsigned long ea, int type, int size,
++			  struct arch_hw_breakpoint *info);
++
++void wp_get_instr_detail(struct pt_regs *regs, struct ppc_inst *instr,
++			 int *type, int *size, unsigned long *ea);
++
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ #include <linux/kdebug.h>
+ #include <asm/reg.h>
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index d4d5946224f8..286f85a103de 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -45,7 +45,8 @@ obj-y				:= cputable.o syscalls.o \
+ 				   signal.o sysfs.o cacheinfo.o time.o \
+ 				   prom.o traps.o setup-common.o \
+ 				   udbg.o misc.o io.o misc_$(BITS).o \
+-				   of_platform.o prom_parse.o firmware.o
++				   of_platform.o prom_parse.o firmware.o \
++				   hw_breakpoint_constraints.o
+ obj-y				+= ptrace/
+ obj-$(CONFIG_PPC64)		+= setup_64.o \
+ 				   paca.o nvram_64.o note.o syscall_64.o
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 1f4a1efa0074..f4e8f21046f5 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -494,151 +494,6 @@ void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
+ 	}
+ }
+ 
+-static bool dar_in_user_range(unsigned long dar, struct arch_hw_breakpoint *info)
+-{
+-	return ((info->address <= dar) && (dar - info->address < info->len));
+-}
+-
+-static bool ea_user_range_overlaps(unsigned long ea, int size,
+-				   struct arch_hw_breakpoint *info)
+-{
+-	return ((ea < info->address + info->len) &&
+-		(ea + size > info->address));
+-}
+-
+-static bool dar_in_hw_range(unsigned long dar, struct arch_hw_breakpoint *info)
+-{
+-	unsigned long hw_start_addr, hw_end_addr;
+-
+-	hw_start_addr = ALIGN_DOWN(info->address, HW_BREAKPOINT_SIZE);
+-	hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE);
+-
+-	return ((hw_start_addr <= dar) && (hw_end_addr > dar));
+-}
+-
+-static bool ea_hw_range_overlaps(unsigned long ea, int size,
+-				 struct arch_hw_breakpoint *info)
+-{
+-	unsigned long hw_start_addr, hw_end_addr;
+-
+-	hw_start_addr = ALIGN_DOWN(info->address, HW_BREAKPOINT_SIZE);
+-	hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE);
+-
+-	return ((ea < hw_end_addr) && (ea + size > hw_start_addr));
+-}
+-
+-/*
+- * If hw has multiple DAWR registers, we also need to check all
+- * dawrx constraint bits to confirm this is _really_ a valid event.
+- * If type is UNKNOWN, but privilege level matches, consider it as
+- * a positive match.
+- */
+-static bool check_dawrx_constraints(struct pt_regs *regs, int type,
+-				    struct arch_hw_breakpoint *info)
+-{
+-	if (OP_IS_LOAD(type) && !(info->type & HW_BRK_TYPE_READ))
+-		return false;
+-
+-	/*
+-	 * The Cache Management instructions other than dcbz never
+-	 * cause a match. i.e. if type is CACHEOP, the instruction
+-	 * is dcbz, and dcbz is treated as Store.
+-	 */
+-	if ((OP_IS_STORE(type) || type == CACHEOP) && !(info->type & HW_BRK_TYPE_WRITE))
+-		return false;
+-
+-	if (is_kernel_addr(regs->nip) && !(info->type & HW_BRK_TYPE_KERNEL))
+-		return false;
+-
+-	if (user_mode(regs) && !(info->type & HW_BRK_TYPE_USER))
+-		return false;
+-
+-	return true;
+-}
+-
+-/*
+- * Return true if the event is valid wrt dawr configuration,
+- * including extraneous exception. Otherwise return false.
+- */
+-static bool check_constraints(struct pt_regs *regs, struct ppc_inst instr,
+-			      unsigned long ea, int type, int size,
+-			      struct arch_hw_breakpoint *info)
+-{
+-	bool in_user_range = dar_in_user_range(regs->dar, info);
+-	bool dawrx_constraints;
+-
+-	/*
+-	 * 8xx supports only one breakpoint and thus we can
+-	 * unconditionally return true.
+-	 */
+-	if (IS_ENABLED(CONFIG_PPC_8xx)) {
+-		if (!in_user_range)
+-			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
+-		return true;
+-	}
+-
+-	if (unlikely(ppc_inst_equal(instr, ppc_inst(0)))) {
+-		if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+-		    !dar_in_hw_range(regs->dar, info))
+-			return false;
+-
+-		return true;
+-	}
+-
+-	dawrx_constraints = check_dawrx_constraints(regs, type, info);
+-
+-	if (type == UNKNOWN) {
+-		if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+-		    !dar_in_hw_range(regs->dar, info))
+-			return false;
+-
+-		return dawrx_constraints;
+-	}
+-
+-	if (ea_user_range_overlaps(ea, size, info))
+-		return dawrx_constraints;
+-
+-	if (ea_hw_range_overlaps(ea, size, info)) {
+-		if (dawrx_constraints) {
+-			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
+-			return true;
+-		}
+-	}
+-	return false;
+-}
+-
+-static int cache_op_size(void)
+-{
+-#ifdef __powerpc64__
+-	return ppc64_caches.l1d.block_size;
+-#else
+-	return L1_CACHE_BYTES;
+-#endif
+-}
+-
+-static void get_instr_detail(struct pt_regs *regs, struct ppc_inst *instr,
+-			     int *type, int *size, unsigned long *ea)
+-{
+-	struct instruction_op op;
+-
+-	if (__get_user_instr_inatomic(*instr, (void __user *)regs->nip))
+-		return;
+-
+-	analyse_instr(&op, regs, *instr);
+-	*type = GETTYPE(op.type);
+-	*ea = op.ea;
+-#ifdef __powerpc64__
+-	if (!(regs->msr & MSR_64BIT))
+-		*ea &= 0xffffffffUL;
+-#endif
+-
+-	*size = GETSIZE(op.type);
+-	if (*type == CACHEOP) {
+-		*size = cache_op_size();
+-		*ea &= ~(*size - 1);
+-	}
+-}
+-
+ static bool is_larx_stcx_instr(int type)
+ {
+ 	return type == LARX || type == STCX;
+@@ -722,7 +577,7 @@ int hw_breakpoint_handler(struct die_args *args)
+ 	rcu_read_lock();
+ 
+ 	if (!IS_ENABLED(CONFIG_PPC_8xx))
+-		get_instr_detail(regs, &instr, &type, &size, &ea);
++		wp_get_instr_detail(regs, &instr, &type, &size, &ea);
+ 
+ 	for (i = 0; i < nr_wp_slots(); i++) {
+ 		bp[i] = __this_cpu_read(bp_per_reg[i]);
+@@ -732,7 +587,7 @@ int hw_breakpoint_handler(struct die_args *args)
+ 		info[i] = counter_arch_bp(bp[i]);
+ 		info[i]->type &= ~HW_BRK_TYPE_EXTRANEOUS_IRQ;
+ 
+-		if (check_constraints(regs, instr, ea, type, size, info[i])) {
++		if (wp_check_constraints(regs, instr, ea, type, size, info[i])) {
+ 			if (!IS_ENABLED(CONFIG_PPC_8xx) &&
+ 			    ppc_inst_equal(instr, ppc_inst(0))) {
+ 				handler_error(bp[i], info[i]);
+diff --git a/arch/powerpc/kernel/hw_breakpoint_constraints.c b/arch/powerpc/kernel/hw_breakpoint_constraints.c
+new file mode 100644
+index 000000000000..a4f13026d2e0
+--- /dev/null
++++ b/arch/powerpc/kernel/hw_breakpoint_constraints.c
+@@ -0,0 +1,152 @@
++// SPDX-License-Identifier: GPL-2.0+
++#include <linux/kernel.h>
++#include <linux/uaccess.h>
++#include <linux/sched.h>
++#include <asm/hw_breakpoint.h>
++#include <asm/sstep.h>
++#include <asm/cache.h>
++
++static bool dar_in_user_range(unsigned long dar, struct arch_hw_breakpoint *info)
++{
++	return ((info->address <= dar) && (dar - info->address < info->len));
++}
++
++static bool ea_user_range_overlaps(unsigned long ea, int size,
++				   struct arch_hw_breakpoint *info)
++{
++	return ((ea < info->address + info->len) &&
++		(ea + size > info->address));
++}
++
++static bool dar_in_hw_range(unsigned long dar, struct arch_hw_breakpoint *info)
++{
++	unsigned long hw_start_addr, hw_end_addr;
++
++	hw_start_addr = ALIGN_DOWN(info->address, HW_BREAKPOINT_SIZE);
++	hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE);
++
++	return ((hw_start_addr <= dar) && (hw_end_addr > dar));
++}
++
++static bool ea_hw_range_overlaps(unsigned long ea, int size,
++				 struct arch_hw_breakpoint *info)
++{
++	unsigned long hw_start_addr, hw_end_addr;
++
++	hw_start_addr = ALIGN_DOWN(info->address, HW_BREAKPOINT_SIZE);
++	hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE);
++
++	return ((ea < hw_end_addr) && (ea + size > hw_start_addr));
++}
++
++/*
++ * If hw has multiple DAWR registers, we also need to check all
++ * dawrx constraint bits to confirm this is _really_ a valid event.
++ * If type is UNKNOWN, but privilege level matches, consider it as
++ * a positive match.
++ */
++static bool check_dawrx_constraints(struct pt_regs *regs, int type,
++				    struct arch_hw_breakpoint *info)
++{
++	if (OP_IS_LOAD(type) && !(info->type & HW_BRK_TYPE_READ))
++		return false;
++
++	/*
++	 * The Cache Management instructions other than dcbz never
++	 * cause a match. i.e. if type is CACHEOP, the instruction
++	 * is dcbz, and dcbz is treated as Store.
++	 */
++	if ((OP_IS_STORE(type) || type == CACHEOP) && !(info->type & HW_BRK_TYPE_WRITE))
++		return false;
++
++	if (is_kernel_addr(regs->nip) && !(info->type & HW_BRK_TYPE_KERNEL))
++		return false;
++
++	if (user_mode(regs) && !(info->type & HW_BRK_TYPE_USER))
++		return false;
++
++	return true;
++}
++
++/*
++ * Return true if the event is valid wrt dawr configuration,
++ * including extraneous exception. Otherwise return false.
++ */
++bool wp_check_constraints(struct pt_regs *regs, struct ppc_inst instr,
++			  unsigned long ea, int type, int size,
++			  struct arch_hw_breakpoint *info)
++{
++	bool in_user_range = dar_in_user_range(regs->dar, info);
++	bool dawrx_constraints;
++
++	/*
++	 * 8xx supports only one breakpoint and thus we can
++	 * unconditionally return true.
++	 */
++	if (IS_ENABLED(CONFIG_PPC_8xx)) {
++		if (!in_user_range)
++			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
++		return true;
++	}
++
++	if (unlikely(ppc_inst_equal(instr, ppc_inst(0)))) {
++		if (cpu_has_feature(CPU_FTR_ARCH_31) &&
++		    !dar_in_hw_range(regs->dar, info))
++			return false;
++
++		return true;
++	}
++
++	dawrx_constraints = check_dawrx_constraints(regs, type, info);
++
++	if (type == UNKNOWN) {
++		if (cpu_has_feature(CPU_FTR_ARCH_31) &&
++		    !dar_in_hw_range(regs->dar, info))
++			return false;
++
++		return dawrx_constraints;
++	}
++
++	if (ea_user_range_overlaps(ea, size, info))
++		return dawrx_constraints;
++
++	if (ea_hw_range_overlaps(ea, size, info)) {
++		if (dawrx_constraints) {
++			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
++			return true;
++		}
++	}
++	return false;
++}
++
++static int cache_op_size(void)
++{
++#ifdef __powerpc64__
++	return ppc64_caches.l1d.block_size;
++#else
++	return L1_CACHE_BYTES;
++#endif
++}
++
++void wp_get_instr_detail(struct pt_regs *regs, struct ppc_inst *instr,
++			 int *type, int *size, unsigned long *ea)
++{
++	struct instruction_op op;
++
++	if (__get_user_instr_inatomic(*instr, (void __user *)regs->nip))
++		return;
++
++	analyse_instr(&op, regs, *instr);
++	*type = GETTYPE(op.type);
++	*ea = op.ea;
++#ifdef __powerpc64__
++	if (!(regs->msr & MSR_64BIT))
++		*ea &= 0xffffffffUL;
++#endif
++
++	*size = GETSIZE(op.type);
++	if (*type == CACHEOP) {
++		*size = cache_op_size();
++		*ea &= ~(*size - 1);
++	}
++}
 -- 
 2.26.2
 
