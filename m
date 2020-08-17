@@ -1,94 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3A3245EDC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 10:08:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A272F245FBD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 10:25:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVRWH5LyZzDqRb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 18:08:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVRtw4pC7zDqQj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 18:25:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=lOAIwZ6C; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVRT4557TzDq63
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 18:06:28 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07H81U6S088239; Mon, 17 Aug 2020 04:06:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=X07FvFb0QfIASln5B97rfeHj9PpOEHmY/M1fLCCLXdI=;
- b=lOAIwZ6C5ugZiiO3+2bAGdPZ6gPHdgi/WYlBdSRf756AdpK0Qag9rE/qT/i1uQIFQPB9
- T589z/740xkaqxnKhl1aBjkTFbqF5whV2ZW66vFVsofpQW9mPdpuECQhN4EuZOrrD5Pp
- i7aBaHzgvd2KLIN3pO1UxD7QMzUSXnkjVrF8xYJ7GK+bHcpsQeaASc7BTA6UuhIOpowY
- U43AWTU051ED4WSTgNMlqzuumABr84U1Y5aNTqndTTb4VoazWdkVzVGcDrTRZMLke/2k
- sP5px7yJdb9Mxk8OeHgGku2uJdquP091k5+/13PP+UcXE4pmRQpvZW5lRzHJftfRLJFb AA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 32y5s7acmt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 04:06:11 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07H85gdc004000;
- Mon, 17 Aug 2020 08:05:45 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 32x7b8208b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Aug 2020 08:05:45 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07H85hf922413736
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Aug 2020 08:05:43 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E051F4203F;
- Mon, 17 Aug 2020 08:05:42 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 884E442045;
- Mon, 17 Aug 2020 08:05:42 +0000 (GMT)
-Received: from localhost (unknown [9.102.3.68])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 Aug 2020 08:05:42 +0000 (GMT)
-Date: Mon, 17 Aug 2020 13:35:42 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH v1] powerpc/process: Remove unnecessary #ifdef
- CONFIG_FUNCTION_GRAPH_TRACER
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>
-References: <9d11143d4e27ba8274369a926968756917584868.1597643153.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <9d11143d4e27ba8274369a926968756917584868.1597643153.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVRrT4vgHzDqPf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 18:23:19 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-180-lNRQs7-OMBKEt5epJ5rllg-1; Mon, 17 Aug 2020 09:23:12 +0100
+X-MC-Unique: lNRQs7-OMBKEt5epJ5rllg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Mon, 17 Aug 2020 09:23:11 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Mon, 17 Aug 2020 09:23:11 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christoph Hellwig' <hch@lst.de>, Al Viro <viro@zeniv.linux.org.uk>,
+ Michael Ellerman <mpe@ellerman.id.au>, "x86@kernel.org" <x86@kernel.org>
+Subject: RE: [PATCH 09/11] x86: remove address space overrides using set_fs()
+Thread-Topic: [PATCH 09/11] x86: remove address space overrides using set_fs()
+Thread-Index: AQHWdGicIkTuqnSld0yWphpVxhe9Oqk79IHw
+Date: Mon, 17 Aug 2020 08:23:11 +0000
+Message-ID: <935d551809894d14965e430e05d21057@AcuMS.aculab.com>
+References: <20200817073212.830069-1-hch@lst.de>
+ <20200817073212.830069-10-hch@lst.de>
+In-Reply-To: <20200817073212.830069-10-hch@lst.de>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Message-Id: <1597651522.loa8bqu8s9.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0.001
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-17_02:2020-08-17,
- 2020-08-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- clxscore=1011 bulkscore=0 priorityscore=1501 mlxlogscore=879
- suspectscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2008170059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,24 +66,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Kees Cook <keescook@chromium.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> ftrace_graph_ret_addr() is always defined and returns 'ip' when
-> CONFIG_FUNCTION GRAPH_TRACER is not set.
->=20
-> So the #ifdef is not needed, remove it.
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/kernel/process.c | 4 ----
->  1 file changed, 4 deletions(-)
+From: Christoph Hellwig
+> Sent: 17 August 2020 08:32
+>
+> Stop providing the possibility to override the address space using
+> set_fs() now that there is no need for that any more.  To properly
+> handle the TASK_SIZE_MAX checking for 4 vs 5-level page tables on
+> x86 a new alternative is introduced, which just like the one in
+> entry_64.S has to use the hardcoded virtual address bits to escape
+> the fact that TASK_SIZE_MAX isn't actually a constant when 5-level
+> page tables are enabled.
+....
+> @@ -93,7 +69,7 @@ static inline bool pagefault_disabled(void);
+>  #define access_ok(addr, size)=09=09=09=09=09\
+>  ({=09=09=09=09=09=09=09=09=09\
+>  =09WARN_ON_IN_IRQ();=09=09=09=09=09=09\
+> -=09likely(!__range_not_ok(addr, size, user_addr_max()));=09=09\
+> +=09likely(!__range_not_ok(addr, size, TASK_SIZE_MAX));=09=09\
+>  })
 
-LGTM.
-Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Can't that always compare against a constant even when 5-levl
+page tables are enabled on x86-64?
 
-- Naveen
+On x86-64 it can (probably) reduce to (addr | (addr + size)) < 0.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
