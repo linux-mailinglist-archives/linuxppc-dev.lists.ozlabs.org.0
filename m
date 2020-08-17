@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBCD24660F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 14:11:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF07F24661A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 14:14:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVXvS6RSpzDqV7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 22:11:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVXyd5dZmzDqWj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 22:14:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=allen.cryptic@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=allen.cryptic@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jyoKi+zL; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=mJ5F5yld; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVSjf1p1yzDqQD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 19:02:30 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id a79so7901124pfa.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 02:02:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVSjp11C1zDqTG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 19:02:37 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id 74so7890283pfx.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 02:02:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=2vTu6UftF7cQJbJWPsIkFjwuCpKR0DhP9J5zcRGrqoI=;
- b=jyoKi+zL9LSuhOPQ80fRIjLL7JLJHMk+jLLKWZWpDdCply4xhhtYwfiLo+v9Gmd2HB
- MoafH47E2/qeJ3o2/fhNpyesUHbHtqfSjtNFfI680LssZHCLaakpecGrN8t2GiXyVYKC
- U3YqdYATtpfP0z4bvmCdcmaXgeHyeh3N+B2Ry1cg1RYmTwAWLlEQUKP2f5ItyZ8Y0QKK
- MJ5ISgtHIBDE9WMLkRMfUB9u/usIIFGRwKHPqdpsRqbCg70JlN7uj5wcW1vruY98BiKD
- POnKmfAz4wNjunOokWZ/ePwWAZgvXkfvv40q2M2wXRYwrnj+kDNIzuB7thZaxu1p0Kz8
- LSqg==
+ bh=gm2DPvF4/I64ZAeUJOgSkbWKhyOzAElLnGagSu5aOZE=;
+ b=mJ5F5yld6XickAHkvpBb6JckeIwY+bA+85siQwV3lN0jaztwnK365EyFRr/uQvz1yk
+ XO0zlZv6rWVSyY8Dhd0gGIenv3YPdwJN3G69408jkglbW+u68hu8IBKc40WjDTLyTggH
+ 3RhPklarqCEx0e+sEHZ5XJET0lGsJEgbuSlU6OFZbJsF6sORYH51Iqccd1QD4gdYl3wo
+ XcmGgxA0zhWX3i7FAwXWRRt7OAzBVmSsDo4xFkuLn1PyFan6fPqLb14InRHksPqD1Rm1
+ I0ggraWJpV8DM9XeC34rrApCjEQGSgmlQ4ww4ZDkE19y+PJLZdca3xC1Waq5EHb4j4ZC
+ ekaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=2vTu6UftF7cQJbJWPsIkFjwuCpKR0DhP9J5zcRGrqoI=;
- b=r/pe+gQO6n8oeDS28cSUbKLDlrA3ymgIZYLNj7IuMMSaKEEs25gmKwTtNZZ8FgonHR
- 3PUToS0EzvN5Z9VYQ8eAUlB9/SzDuZtO2Iw3AQFdZi3H7T6H1AhvI1LagwDIJgNUMiC6
- SbfOLd/KvL2eI6/P7mq1nI2KtGU9sNYkJIQVdpdZ1Tb7s7Z/Jq9JWub7ImZQ+/GZAQ7p
- weKrT7ujxqwcfmc3Sqm/6nvUBffOabDfzroFHmxibpiLRl7YXz8rf5YlzH4PQ3kgXLL8
- eK1Pd0UVRxMMxVSvgFaP5KD98Lu6HRU//gVDwIQ+XvFn+ySMWmcSgmygEXxIDhHaiKwW
- 91yg==
-X-Gm-Message-State: AOAM533ZTy/HaSOsAzeALmHQgYVg8O27bXv3u+utMKP0MafVdZBLpbJZ
- QTYEDDmMvkOlY4nh4ciDLBMsqOlUCeMQVQ==
-X-Google-Smtp-Source: ABdhPJw+NUVlFHmHuq0xLyJ9Qs3O4JjM2hTVZcFUlYoIH6k59c4k+FO8V6iZ+byK1cCoIzwPNcFOEg==
-X-Received: by 2002:a62:8141:: with SMTP id t62mr10236273pfd.282.1597654946593; 
- Mon, 17 Aug 2020 02:02:26 -0700 (PDT)
+ bh=gm2DPvF4/I64ZAeUJOgSkbWKhyOzAElLnGagSu5aOZE=;
+ b=fCYxqKgCRNbCzunKaKsfAtwADsPNFau5qcZYUBauZzTt5a5DuKGUF4rioUdi7/7MOL
+ vedrpDc7BXNnmnqpYAr8PVetduWTISNVyfw+0ERzvCEV3R3TCqSeUFRzIri6TGofZGmB
+ MABU2HPrHiuvj68inRF2nDLWKbFVP5N8mgS7xtWD072d8GVWtwkUtLDPYZep0WJ/QXZM
+ Nr9mimvALxJXzPSh4vK2NvUkVPMKrJOwl590hNao/4TcZRfPljTXgKDoJweyFHIZAm7S
+ nLj+7nVB4nZYt4bvZ9DiNMhBfGf+lX0G8EyngUvoEbIkI7Vm8UHBULTeiSWPzgGOAjTj
+ U9hQ==
+X-Gm-Message-State: AOAM530c9J1Xbmcgs/z0r462RSmGS3djLiTrfc7MP67pJCjphHVxLNZB
+ EDeE7BNubgk7lRkkbHmPH68=
+X-Google-Smtp-Source: ABdhPJzaHBXW6zQTImjBsJ8W8K4gYkr4wCtwsNf4qlxo3NDdA8id6na2HB0/9zVB74dwUb98LkWYLg==
+X-Received: by 2002:a65:408c:: with SMTP id t12mr9819753pgp.204.1597654954303; 
+ Mon, 17 Aug 2020 02:02:34 -0700 (PDT)
 Received: from localhost.localdomain ([49.207.202.98])
- by smtp.gmail.com with ESMTPSA id f3sm19488238pfj.206.2020.08.17.02.02.22
+ by smtp.gmail.com with ESMTPSA id f3sm19488238pfj.206.2020.08.17.02.02.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Aug 2020 02:02:26 -0700 (PDT)
+ Mon, 17 Aug 2020 02:02:33 -0700 (PDT)
 From: Allen Pais <allen.cryptic@gmail.com>
 To: duncan.sands@free.fr, gregkh@linuxfoundation.org, jacmet@sunsite.dk,
  balbi@kernel.org, leoyang.li@nxp.com, johan@kernel.org
-Subject: [PATCH 1/7] usb: atm: convert tasklets to use new tasklet_setup() API
-Date: Mon, 17 Aug 2020 14:32:03 +0530
-Message-Id: <20200817090209.26351-2-allen.cryptic@gmail.com>
+Subject: [PATCH 2/7] usb: c67x00: convert tasklets to use new tasklet_setup()
+ API
+Date: Mon, 17 Aug 2020 14:32:04 +0530
+Message-Id: <20200817090209.26351-3-allen.cryptic@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200817090209.26351-1-allen.cryptic@gmail.com>
 References: <20200817090209.26351-1-allen.cryptic@gmail.com>
@@ -94,50 +95,35 @@ and from_tasklet() to pass the tasklet pointer explicitly.
 Signed-off-by: Romain Perier <romain.perier@gmail.com>
 Signed-off-by: Allen Pais <allen.lkml@gmail.com>
 ---
- drivers/usb/atm/usbatm.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/usb/c67x00/c67x00-sched.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/atm/usbatm.c b/drivers/usb/atm/usbatm.c
-index 4e12a32ca392..56fe30d247da 100644
---- a/drivers/usb/atm/usbatm.c
-+++ b/drivers/usb/atm/usbatm.c
-@@ -511,9 +511,10 @@ static unsigned int usbatm_write_cells(struct usbatm_data *instance,
- **  receive  **
- **************/
+diff --git a/drivers/usb/c67x00/c67x00-sched.c b/drivers/usb/c67x00/c67x00-sched.c
+index f7f6229082ca..6275cb77a15b 100644
+--- a/drivers/usb/c67x00/c67x00-sched.c
++++ b/drivers/usb/c67x00/c67x00-sched.c
+@@ -1122,9 +1122,9 @@ static void c67x00_do_work(struct c67x00_hcd *c67x00)
  
--static void usbatm_rx_process(unsigned long data)
-+static void usbatm_rx_process(struct tasklet_struct *t)
+ /* -------------------------------------------------------------------------- */
+ 
+-static void c67x00_sched_tasklet(unsigned long __c67x00)
++static void c67x00_sched_tasklet(struct tasklet_struct *t)
  {
--	struct usbatm_data *instance = (struct usbatm_data *)data;
-+	struct usbatm_data *instance = from_tasklet(instance, t,
-+						    rx_channel.tasklet);
- 	struct urb *urb;
+-	struct c67x00_hcd *c67x00 = (struct c67x00_hcd *)__c67x00;
++	struct c67x00_hcd *c67x00 = from_tasklet(c67x00, t, tasklet);
+ 	c67x00_do_work(c67x00);
+ }
  
- 	while ((urb = usbatm_pop_urb(&instance->rx_channel))) {
-@@ -564,9 +565,10 @@ static void usbatm_rx_process(unsigned long data)
- **  send  **
- ***********/
+@@ -1135,8 +1135,7 @@ void c67x00_sched_kick(struct c67x00_hcd *c67x00)
  
--static void usbatm_tx_process(unsigned long data)
-+static void usbatm_tx_process(struct tasklet_struct *t)
+ int c67x00_sched_start_scheduler(struct c67x00_hcd *c67x00)
  {
--	struct usbatm_data *instance = (struct usbatm_data *)data;
-+	struct usbatm_data *instance = from_tasklet(instance, t,
-+						    tx_channel.tasklet);
- 	struct sk_buff *skb = instance->current_skb;
- 	struct urb *urb = NULL;
- 	const unsigned int buf_size = instance->tx_channel.buf_size;
-@@ -1069,8 +1071,8 @@ int usbatm_usb_probe(struct usb_interface *intf, const struct usb_device_id *id,
+-	tasklet_init(&c67x00->tasklet, c67x00_sched_tasklet,
+-		     (unsigned long)c67x00);
++	tasklet_setup(&c67x00->tasklet, c67x00_sched_tasklet);
+ 	return 0;
+ }
  
- 	usbatm_init_channel(&instance->rx_channel);
- 	usbatm_init_channel(&instance->tx_channel);
--	tasklet_init(&instance->rx_channel.tasklet, usbatm_rx_process, (unsigned long)instance);
--	tasklet_init(&instance->tx_channel.tasklet, usbatm_tx_process, (unsigned long)instance);
-+	tasklet_setup(&instance->rx_channel.tasklet, usbatm_rx_process);
-+	tasklet_setup(&instance->tx_channel.tasklet, usbatm_tx_process);
- 	instance->rx_channel.stride = ATM_CELL_SIZE + driver->rx_padding;
- 	instance->tx_channel.stride = ATM_CELL_SIZE + driver->tx_padding;
- 	instance->rx_channel.usbatm = instance->tx_channel.usbatm = instance;
 -- 
 2.17.1
 
