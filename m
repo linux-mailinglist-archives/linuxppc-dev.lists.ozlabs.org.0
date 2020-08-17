@@ -2,41 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB28245EC0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 10:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3A3245EDC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 10:08:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVRQq1H3CzDqML
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 18:04:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVRWH5LyZzDqRb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Aug 2020 18:08:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lOAIwZ6C; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVR9G5g6JzDqRH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 17:52:50 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 0E90E68AFE; Mon, 17 Aug 2020 09:52:46 +0200 (CEST)
-Date: Mon, 17 Aug 2020 09:52:45 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 05/11] test_bitmap: skip user bitmap tests for
- !CONFIG_SET_FS
-Message-ID: <20200817075245.GA15391@lst.de>
-References: <20200817073212.830069-1-hch@lst.de>
- <20200817073212.830069-6-hch@lst.de>
- <9e632937-9e9a-faed-bc0e-fcb7a6b4f54c@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVRT4557TzDq63
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Aug 2020 18:06:28 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07H81U6S088239; Mon, 17 Aug 2020 04:06:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=X07FvFb0QfIASln5B97rfeHj9PpOEHmY/M1fLCCLXdI=;
+ b=lOAIwZ6C5ugZiiO3+2bAGdPZ6gPHdgi/WYlBdSRf756AdpK0Qag9rE/qT/i1uQIFQPB9
+ T589z/740xkaqxnKhl1aBjkTFbqF5whV2ZW66vFVsofpQW9mPdpuECQhN4EuZOrrD5Pp
+ i7aBaHzgvd2KLIN3pO1UxD7QMzUSXnkjVrF8xYJ7GK+bHcpsQeaASc7BTA6UuhIOpowY
+ U43AWTU051ED4WSTgNMlqzuumABr84U1Y5aNTqndTTb4VoazWdkVzVGcDrTRZMLke/2k
+ sP5px7yJdb9Mxk8OeHgGku2uJdquP091k5+/13PP+UcXE4pmRQpvZW5lRzHJftfRLJFb AA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 32y5s7acmt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Aug 2020 04:06:11 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07H85gdc004000;
+ Mon, 17 Aug 2020 08:05:45 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 32x7b8208b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Aug 2020 08:05:45 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07H85hf922413736
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 17 Aug 2020 08:05:43 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E051F4203F;
+ Mon, 17 Aug 2020 08:05:42 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 884E442045;
+ Mon, 17 Aug 2020 08:05:42 +0000 (GMT)
+Received: from localhost (unknown [9.102.3.68])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Aug 2020 08:05:42 +0000 (GMT)
+Date: Mon, 17 Aug 2020 13:35:42 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH v1] powerpc/process: Remove unnecessary #ifdef
+ CONFIG_FUNCTION_GRAPH_TRACER
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <9d11143d4e27ba8274369a926968756917584868.1597643153.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <9d11143d4e27ba8274369a926968756917584868.1597643153.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9e632937-9e9a-faed-bc0e-fcb7a6b4f54c@csgroup.eu>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Message-Id: <1597651522.loa8bqu8s9.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-17_02:2020-08-17,
+ 2020-08-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0
+ clxscore=1011 bulkscore=0 priorityscore=1501 mlxlogscore=879
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0
+ impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2008170059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,41 +100,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Kees Cook <keescook@chromium.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org,
- Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 17, 2020 at 09:50:05AM +0200, Christophe Leroy wrote:
->
->
-> Le 17/08/2020 à 09:32, Christoph Hellwig a écrit :
->> We can't run the tests for userspace bitmap parsing if set_fs() doesn't
->> exist.
->>
->> Signed-off-by: Christoph Hellwig <hch@lst.de>
->> ---
->>   lib/test_bitmap.c | 10 ++++++++--
->>   1 file changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
->> index df903c53952bb9..49b1d25fbaf546 100644
->> --- a/lib/test_bitmap.c
->> +++ b/lib/test_bitmap.c
->> @@ -365,6 +365,7 @@ static void __init __test_bitmap_parselist(int is_user)
->>   	for (i = 0; i < ARRAY_SIZE(parselist_tests); i++) {
->>   #define ptest parselist_tests[i]
->>   +#ifdef CONFIG_SET_FS
->
-> get_fs() and set_fs() have stubs for when an arch doesn't define them, so I 
-> this it would be cleaner if you were using 'if (IS_ENABLED(CONFIG_SET_FS) 
-> && is_user)`instead of an ifdefery in the middle of the if/else.
+Christophe Leroy wrote:
+> ftrace_graph_ret_addr() is always defined and returns 'ip' when
+> CONFIG_FUNCTION GRAPH_TRACER is not set.
+>=20
+> So the #ifdef is not needed, remove it.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/kernel/process.c | 4 ----
+>  1 file changed, 4 deletions(-)
 
-No, I don't provide stubs in the prep patch, and that has been intentional
-as I don't want this to spread much.  test_bitmap would be the only place
-where they are somewht useful, and I just hope this test is eventually
-getting rewritten to run in a normal user space context where the
-uaccess tests can be resurrected.
+LGTM.
+Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+
+- Naveen
+
