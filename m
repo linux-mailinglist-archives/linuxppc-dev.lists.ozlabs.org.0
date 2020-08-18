@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64715248B38
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 18:12:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F717248B46
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 18:15:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWGCm4jlPzDqP5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 02:12:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWGHG2jq4zDqRD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 02:15:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=sECSrz89; dkim-atps=neutral
+ header.s=default header.b=W7/1L7PM; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWF1s1mL1zDqKW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 01:19:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWF24696xzDqKW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 01:19:24 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B5F202080C;
- Tue, 18 Aug 2020 15:19:00 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id BA0A22076E;
+ Tue, 18 Aug 2020 15:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1597763951;
- bh=xdLje+Wq+Qqc9RqjhZLPYalhD3lsz2kBtQOX3rvPlas=;
+ s=default; t=1597763962;
+ bh=yru9/NdH9RLPoFs58u4GN0nY+Sogzjweg/tWDL+BinU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sECSrz89dq6Asy9v/j+zcAAnyasqeJ2/ZC5nuINkm3twrHsAG81JUnPqiu8OKZxqF
- C/B27cV4JLldeBaMM3hOhZqwU5M2rMEw7W4NlqWhNnSs+dTca6wI56Kb6BFIQMMk9j
- ZW1Zp3BkrlgAEgNsK4vPqNBOErn9MxV1511OomEk=
+ b=W7/1L7PMB6ny+R6Ja3ZTgt7DiZrj2MhEUn1Baeko2Ljpt+IgAAd0BIY0K5+ddrHdy
+ 0Cgsg9BHQIzldcepANhUopKY4V4j0vt9l3455AzJkS/6oRvNjT5K9fhzbiyGqh3U1M
+ mGXqQ6IOdYEbV7nbtMhzb+zOAQWJlqo2RxTvK8bI=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 13/17] x86/setup: simplify initrd relocation and reservation
-Date: Tue, 18 Aug 2020 18:16:30 +0300
-Message-Id: <20200818151634.14343-14-rppt@kernel.org>
+Subject: [PATCH v3 14/17] x86/setup: simplify reserve_crashkernel()
+Date: Tue, 18 Aug 2020 18:16:31 +0300
+Message-Id: <20200818151634.14343-15-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200818151634.14343-1-rppt@kernel.org>
 References: <20200818151634.14343-1-rppt@kernel.org>
@@ -84,78 +84,110 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-Currently, initrd image is reserved very early during setup and then it
-might be relocated and re-reserved after the initial physical memory
-mapping is created. The "late" reservation of memblock verifies that mapped
-memory size exceeds the size of initrd, then checks whether the relocation
-required and, if yes, relocates inirtd to a new memory allocated from
-memblock and frees the old location.
-
-The check for memory size is excessive as memblock allocation will anyway
-fail if there is not enough memory. Besides, there is no point to allocate
-memory from memblock using memblock_find_in_range() + memblock_reserve()
-when there exists memblock_phys_alloc_range() with required functionality.
-
-Remove the redundant check and simplify memblock allocation.
+* Replace magic numbers with defines
+* Replace memblock_find_in_range() + memblock_reserve() with
+  memblock_phys_alloc_range()
+* Stop checking for low memory size in reserve_crashkernel_low(). The
+  allocation from limited range will anyway fail if there is no enough
+  memory, so there is no need for extra traversal of memblock.memory
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 Acked-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Baoquan He <bhe@redhat.com>
 ---
- arch/x86/kernel/setup.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ arch/x86/kernel/setup.c | 40 ++++++++++++++--------------------------
+ 1 file changed, 14 insertions(+), 26 deletions(-)
 
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 3511736fbc74..2cac39ade2e3 100644
+index 2cac39ade2e3..52e83ba607b3 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
-@@ -263,16 +263,12 @@ static void __init relocate_initrd(void)
- 	u64 area_size     = PAGE_ALIGN(ramdisk_size);
- 
- 	/* We need to move the initrd down into directly mapped mem */
--	relocated_ramdisk = memblock_find_in_range(0, PFN_PHYS(max_pfn_mapped),
--						   area_size, PAGE_SIZE);
--
-+	relocated_ramdisk = memblock_phys_alloc_range(area_size, PAGE_SIZE, 0,
-+						      PFN_PHYS(max_pfn_mapped));
- 	if (!relocated_ramdisk)
- 		panic("Cannot find place for new RAMDISK of size %lld\n",
- 		      ramdisk_size);
- 
--	/* Note: this includes all the mem currently occupied by
--	   the initrd, we rely on that fact to keep the data intact. */
--	memblock_reserve(relocated_ramdisk, area_size);
- 	initrd_start = relocated_ramdisk + PAGE_OFFSET;
- 	initrd_end   = initrd_start + ramdisk_size;
- 	printk(KERN_INFO "Allocated new RAMDISK: [mem %#010llx-%#010llx]\n",
-@@ -299,13 +295,13 @@ static void __init early_reserve_initrd(void)
- 
- 	memblock_reserve(ramdisk_image, ramdisk_end - ramdisk_image);
- }
-+
- static void __init reserve_initrd(void)
+@@ -420,13 +420,13 @@ static int __init reserve_crashkernel_low(void)
  {
- 	/* Assume only end is not page aligned */
- 	u64 ramdisk_image = get_ramdisk_image();
- 	u64 ramdisk_size  = get_ramdisk_size();
- 	u64 ramdisk_end   = PAGE_ALIGN(ramdisk_image + ramdisk_size);
--	u64 mapped_size;
+ #ifdef CONFIG_X86_64
+ 	unsigned long long base, low_base = 0, low_size = 0;
+-	unsigned long total_low_mem;
++	unsigned long low_mem_limit;
+ 	int ret;
  
- 	if (!boot_params.hdr.type_of_loader ||
- 	    !ramdisk_image || !ramdisk_size)
-@@ -313,12 +309,6 @@ static void __init reserve_initrd(void)
+-	total_low_mem = memblock_mem_size(1UL << (32 - PAGE_SHIFT));
++	low_mem_limit = min(memblock_phys_mem_size(), CRASH_ADDR_LOW_MAX);
  
- 	initrd_start = 0;
+ 	/* crashkernel=Y,low */
+-	ret = parse_crashkernel_low(boot_command_line, total_low_mem, &low_size, &base);
++	ret = parse_crashkernel_low(boot_command_line, low_mem_limit, &low_size, &base);
+ 	if (ret) {
+ 		/*
+ 		 * two parts from kernel/dma/swiotlb.c:
+@@ -444,23 +444,17 @@ static int __init reserve_crashkernel_low(void)
+ 			return 0;
+ 	}
  
--	mapped_size = memblock_mem_size(max_pfn_mapped);
--	if (ramdisk_size >= (mapped_size>>1))
--		panic("initrd too large to handle, "
--		       "disabling initrd (%lld needed, %lld available)\n",
--		       ramdisk_size, mapped_size>>1);
+-	low_base = memblock_find_in_range(0, 1ULL << 32, low_size, CRASH_ALIGN);
++	low_base = memblock_phys_alloc_range(low_size, CRASH_ALIGN, 0, CRASH_ADDR_LOW_MAX);
+ 	if (!low_base) {
+ 		pr_err("Cannot reserve %ldMB crashkernel low memory, please try smaller size.\n",
+ 		       (unsigned long)(low_size >> 20));
+ 		return -ENOMEM;
+ 	}
+ 
+-	ret = memblock_reserve(low_base, low_size);
+-	if (ret) {
+-		pr_err("%s: Error reserving crashkernel low memblock.\n", __func__);
+-		return ret;
+-	}
 -
- 	printk(KERN_INFO "RAMDISK: [mem %#010llx-%#010llx]\n", ramdisk_image,
- 			ramdisk_end - 1);
+-	pr_info("Reserving %ldMB of low memory at %ldMB for crashkernel (System low RAM: %ldMB)\n",
++	pr_info("Reserving %ldMB of low memory at %ldMB for crashkernel (low RAM limit: %ldMB)\n",
+ 		(unsigned long)(low_size >> 20),
+ 		(unsigned long)(low_base >> 20),
+-		(unsigned long)(total_low_mem >> 20));
++		(unsigned long)(low_mem_limit >> 20));
  
+ 	crashk_low_res.start = low_base;
+ 	crashk_low_res.end   = low_base + low_size - 1;
+@@ -504,13 +498,13 @@ static void __init reserve_crashkernel(void)
+ 		 * unless "crashkernel=size[KMG],high" is specified.
+ 		 */
+ 		if (!high)
+-			crash_base = memblock_find_in_range(CRASH_ALIGN,
+-						CRASH_ADDR_LOW_MAX,
+-						crash_size, CRASH_ALIGN);
++			crash_base = memblock_phys_alloc_range(crash_size,
++						CRASH_ALIGN, CRASH_ALIGN,
++						CRASH_ADDR_LOW_MAX);
+ 		if (!crash_base)
+-			crash_base = memblock_find_in_range(CRASH_ALIGN,
+-						CRASH_ADDR_HIGH_MAX,
+-						crash_size, CRASH_ALIGN);
++			crash_base = memblock_phys_alloc_range(crash_size,
++						CRASH_ALIGN, CRASH_ALIGN,
++						CRASH_ADDR_HIGH_MAX);
+ 		if (!crash_base) {
+ 			pr_info("crashkernel reservation failed - No suitable area found.\n");
+ 			return;
+@@ -518,19 +512,13 @@ static void __init reserve_crashkernel(void)
+ 	} else {
+ 		unsigned long long start;
+ 
+-		start = memblock_find_in_range(crash_base,
+-					       crash_base + crash_size,
+-					       crash_size, 1 << 20);
++		start = memblock_phys_alloc_range(crash_size, SZ_1M, crash_base,
++						  crash_base + crash_size);
+ 		if (start != crash_base) {
+ 			pr_info("crashkernel reservation failed - memory is in use.\n");
+ 			return;
+ 		}
+ 	}
+-	ret = memblock_reserve(crash_base, crash_size);
+-	if (ret) {
+-		pr_err("%s: Error reserving crashkernel memblock.\n", __func__);
+-		return;
+-	}
+ 
+ 	if (crash_base >= (1ULL << 32) && reserve_crashkernel_low()) {
+ 		memblock_free(crash_base, crash_size);
 -- 
 2.26.2
 
