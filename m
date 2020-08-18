@@ -1,71 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D8A24883C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 16:51:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75552488D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 17:12:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWDPv5s5fzDqcT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 00:51:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWDt96Y2jzDqcm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 01:12:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=PCglmSpi; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=rAKScTQo; 
  dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.165])
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWDC6201RzDqZj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 00:42:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1597761720;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=yY8lZpT6KH3C16Gfks0UQ6yD6WQSNt9zdE+YDfsTYO4=;
- b=PCglmSpi3+F7LdxqAyodT9ohTLEbbBZZIzAWVolmCzjigSnRul+eqxc9GGYmTIaHqR
- JtAnlaYidP711InRL5yAMWhCXvX8hyWVnTtT4mrIlxGDJN6Gqw8w5XCFtfIyewS3+l4L
- V1FrfJbUC/qobJSJEI09OVdTjAzt8tVerntQLYU40742EOm9Lw7no1sCSS/vuHE5cEcV
- SJTSvQaJufXtz8ELrSwqhDz7teZU2NhzLzwvTRDc1BAGnwY8EJZQ3sfdaSIU95iK/Rzr
- RQVeYXGbl7U7ShKWJBb6DTyij5XNID3TjahPaoSntod7U6g1i9yX31Ei4vzkqUo58th/
- KitQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedV4hp0hM3BukOMWh76B1HxtPtLuZ1yU+QFTgVvLrsuJ"
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:b10d:7054:d092:5f3e:8032:9dca]
- by smtp.strato.de (RZmta 46.10.5 AUTH)
- with ESMTPSA id 60686ew7IEfcrlW
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 18 Aug 2020 16:41:38 +0200 (CEST)
-Subject: Re: [Virtual ppce500] virtio_gpu virtio0: swiotlb buffer is full
-To: Gerd Hoffmann <kraxel@redhat.com>
-References: <87h7tb4zwp.fsf@linux.ibm.com>
- <E1C071A5-19D1-4493-B04A-4507A70D7848@xenosoft.de>
- <bc1975fb-23df-09c2-540a-c13b39ad56c5@xenosoft.de>
- <51482c70-1007-1202-9ed1-2d174c1e923f@xenosoft.de>
- <9688335c-d7d0-9eaa-22c6-511e708e0d2a@linux.ibm.com>
- <9805f81d-651d-d1a3-fd05-fb224a8c2031@xenosoft.de>
- <3162da18-462c-72b4-f8f0-eef896c6b162@xenosoft.de>
- <3eee8130-6913-49d2-2160-abf0bf17c44e@xenosoft.de>
- <20200818081830.d2a2cva4hd2jzwba@sirius.home.kraxel.org>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <0f2434a5-edcf-e7d1-f6ae-7c912dc8d859@xenosoft.de>
-Date: Tue, 18 Aug 2020 16:41:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWDpK1QCgzDqVP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 01:09:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
+ Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=TYCkUvvfwzERhSHuzl+o/xwRoFEE9UiQMu2LCKTxT2c=; b=rAKScTQoURfEN9R47mu2vwzvW1
+ Qr92K5z88B2fMLXzcVaHIjsutHu31n+1t6NktU6dXrpb6qBvKGewRdDEu9YWxyaqPT3MGP2+amFeq
+ 030HybeiDQAp9K8oNMiWpdSSP2KjuUDNq6z3GwFS1zWlgIdpB/YsfFYankS6FDpHeKTdEQUybqx+Y
+ WGyBZ4JzG9qSrcJJ5B1ZsacnV/Rsd2fIh9tQQ/re1f3qLvOpy3/D0PzzsiObpvCEz2QxnrYV91fdU
+ rklPsQUsoTct720dBy8ejRuBWjm4jiJMHilAS7Xntlh81xlBZYvhwK858mixM81kNlULt4cBAKwWb
+ WxUXdk+w==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1k83D6-00020t-48; Tue, 18 Aug 2020 15:07:36 +0000
+Date: Tue, 18 Aug 2020 16:07:36 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: linux-arch@vger.kernel.org
+Subject: Flushing transparent hugepages
+Message-ID: <20200818150736.GQ17456@casper.infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <20200818081830.d2a2cva4hd2jzwba@sirius.home.kraxel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,46 +57,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- daniel.vetter@ffwll.ch, =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>,
- "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
- gurchetansingh@chromium.org,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- mad skateman <madskateman@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Vineet Gupta <vgupta@synopsys.com>, linuxppc-dev@lists.ozlabs.org,
+ Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, sparclinux@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, Will Deacon <will@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18 August 2020 at 10:18 am, Gerd Hoffmann wrote:
-> On Mon, Aug 17, 2020 at 11:19:58AM +0200, Christian Zigotzky wrote:
->> Hello
->>
->> I compiled the RC1 of kernel 5.9 today. Unfortunately the issue with the
->> VirtIO-GPU (see below) still exists. Therefore we still need the patch (see
->> below) for using the VirtIO-GPU in a virtual e5500 PPC64 QEMU machine.
-> It is fixed in drm-misc-next (commit 51c3b0cc32d2e17581fce5b487ee95bbe9e8270a).
->
-> Will cherry-pick into drm-misc-fixes once the branch is 5.9-based, which
-> in turn should bring it to 5.9-rc2 or -rc3.
->
-> take care,
->    Gerd
->
-Hello Gerd,
+If your arch does not support HAVE_ARCH_TRANSPARENT_HUGEPAGE, you can
+stop reading now.  Although maybe you're curious about adding support.
 
-I compiled a new kernel with the latest DRM misc updates today. The 
-patch is included in these updates.
+$ git grep -w HAVE_ARCH_TRANSPARENT_HUGEPAGE arch
+arch/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/arc/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/arm/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/arm64/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/mips/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES
+arch/powerpc/platforms/Kconfig.cputype: select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/s390/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/sparc/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+arch/x86/Kconfig:       select HAVE_ARCH_TRANSPARENT_HUGEPAGE
 
-This kernel works with the VirtIO-GPU in a virtual e5500 QEMU/KVM HV 
-machine on my X5000.
+If your arch does not implement flush_dcache_page(), you can also
+stop reading.
 
-Unfortunately I can only use the VirtIO-GPU (Monitor: Red Hat, Inc. 8") 
-with a resolution of 640x480. If I set a higher resolution then the 
-guest disables the monitor.
-I can use higher resolutions with the stable kernel 5.8 and the VirtIO-GPU.
+$ for i in arc arm arm64 mips powerpc s390 sparc x86; do git grep -l flush_dcache_page arch/$i/include; done
+arch/arc/include/asm/cacheflush.h
+arch/arm/include/asm/cacheflush.h
+arch/arm64/include/asm/cacheflush.h
+arch/mips/include/asm/cacheflush.h
+arch/powerpc/include/asm/cacheflush.h
+arch/sparc/include/asm/cacheflush_32.h
+arch/sparc/include/asm/cacheflush_64.h
+arch/sparc/include/asm/pgtable_64.h
 
-Please check the latest DRM updates.
+OK, so we're down to arc, arm, arm64, mips, powerpc & sparc.  Hi!  ;-)
 
-Thanks,
-Christian
+I'm working on adding THP support for filesystems with storage backing
+and part of that is expanding the definition of THP to be any order
+(ie any power of two of PAGE_SIZE).  Now, shmem already has some calls
+to flush_dcache_page() for THPs, for example:
+
+        if (sgp != SGP_WRITE && !PageUptodate(page)) {
+                struct page *head = compound_head(page);
+                int i;
+
+                for (i = 0; i < compound_nr(head); i++) {
+                        clear_highpage(head + i);
+                        flush_dcache_page(head + i);
+                }
+                SetPageUptodate(head);
+        }
+
+where you'll be called once for each subpage.  But ... these are error
+paths, and I'm sure you all diligently test cache coherency scenarios
+of error paths in shmem ... right?
+
+For example, arm64 seems confused in this scenario:
+
+void flush_dcache_page(struct page *page)
+{
+        if (test_bit(PG_dcache_clean, &page->flags))
+                clear_bit(PG_dcache_clean, &page->flags);
+}
+
+...
+
+void __sync_icache_dcache(pte_t pte)
+{
+        struct page *page = pte_page(pte);
+
+        if (!test_and_set_bit(PG_dcache_clean, &page->flags))
+                sync_icache_aliases(page_address(page), page_size(page));
+}
+
+So arm64 keeps track on a per-page basis which ones have been flushed.
+page_size() will return PAGE_SIZE if called on a tail page or regular
+page, but will return PAGE_SIZE << compound_order if called on a head
+page.  So this will either over-flush, or it's missing the opportunity
+to clear the bits on all the subpages which have now been flushed.
+
+PowerPC has special handling of hugetlbfs pages.  Well, that's what
+the config option says, but actually it handles THP as well.  If
+the config option is enabled.
+
+#ifdef CONFIG_HUGETLB_PAGE
+        if (PageCompound(page)) {
+                flush_dcache_icache_hugepage(page);
+                return;
+        }
+#endif
+
+By the way, THPs can be mapped askew -- that is, at an offset which
+means you can't use a PMD to map a PMD sized page.
+
+Anyway, we don't really have consensus between the various architectures
+on how to handle either THPs or hugetlb pages.  It's not contemplated
+in Documentation/core-api/cachetlb.rst so there's no real surprise
+we've diverged.
+
+What would you _like_ to see?  Would you rather flush_dcache_page()
+were called once for each subpage, or would you rather maintain
+the page-needs-flushing state once per compound page?  We could also
+introduce flush_dcache_thp() if some architectures would prefer it one
+way and one the other, although that brings into question what to do
+for hugetlbfs pages.
+
+It might not be a bad idea to centralise the handling of all this stuff
+somewhere.  Sounds like the kind of thing Arnd would like to do ;-) I'll
+settle for getting enough clear feedback about what the various arch
+maintainers want that I can write a documentation update for cachetlb.rst.
