@@ -2,48 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC02248C85
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 19:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5284C248CE5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 19:23:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWHQp5dj3zDqdr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 03:07:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWHmx3vXrzDqbt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 03:23:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=uR9TA7jf; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWH9P1CmCzDqdD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 02:55:53 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 7C32C207D3;
- Tue, 18 Aug 2020 16:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1597769751;
- bh=kWZIADp0fbyfmlx1mMs190XGGSwSELp1BU6+YcV3YmI=;
- h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
- b=uR9TA7jfh5MpSxsGF3Mqvhc3Fsc5jKlT8kz8nhAYvI6PhpdUCgS/WaisC3yk2A5tT
- ROtFHmSaDLjq5evfNlKoE4nSZ/exNXuKAxwZTp/GF+e+2d88toPBiXijAfHlQddONU
- Pj1/FYuHr5KtL9DjoOhvs/2C1+75NXErvmwFnvm0=
-Date: Tue, 18 Aug 2020 17:55:20 +0100
-From: Mark Brown <broonie@kernel.org>
-To: festevam@gmail.com, Xiubo.Lee@gmail.com, tiwai@suse.com,
- Shengjiu Wang <shengjiu.wang@nxp.com>, timur@kernel.org, lgirdwood@gmail.com,
- linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com,
- linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org, perex@perex.cz
-In-Reply-To: <20200805063413.4610-1-shengjiu.wang@nxp.com>
-References: <20200805063413.4610-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v3 0/3] refine and clean code for synchronous mode
-Message-Id: <159776961930.56094.11883381459081946963.b4-ty@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWHhS4n89zDqXq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 03:19:17 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BWHhG6lDGz9vCxl;
+ Tue, 18 Aug 2020 19:19:10 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id KmAtwbC2ajWH; Tue, 18 Aug 2020 19:19:10 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BWHhG5hQJz9vCxg;
+ Tue, 18 Aug 2020 19:19:10 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 904248B7EC;
+ Tue, 18 Aug 2020 19:19:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id foYwuDOQMRXv; Tue, 18 Aug 2020 19:19:12 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C5D08B7D7;
+ Tue, 18 Aug 2020 19:19:12 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 0F0C965CF4; Tue, 18 Aug 2020 17:19:11 +0000 (UTC)
+Message-Id: <cover.1597770847.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 00/25] powerpc: Switch signal 32 to using unsafe_put_user()
+ and friends
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 18 Aug 2020 17:19:11 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,48 +59,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 5 Aug 2020 14:34:10 +0800, Shengjiu Wang wrote:
-> refine and clean code for synchronous mode
-> 
-> Shengjiu Wang (3):
->   ASoC: fsl_sai: Refine enable/disable TE/RE sequence in trigger()
->   ASoC: fsl_sai: Drop TMR/RMR settings for synchronous mode
->   ASoC: fsl_sai: Replace synchronous check with fsl_sai_dir_is_synced
-> 
-> [...]
+This series leads to a reduction from 2.55s to 1.73s of
+the system CPU time with the following microbench app
+on an mpc832x with KUAP (approx 32%)
 
-Applied to
+This series replaces copies to users by unsafe_put_user() and friends
+with user_write_access_begin() dance in signal32.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+The advantages are:
+- No KUAP unlock/lock at every copy
+- More readable code.
+- Better generated code.
 
-Thanks!
+Without KUAP, the difference is in the noise.
 
-[1/3] ASoC: fsl_sai: Refine enable/disable TE/RE sequence in trigger()
-      commit: 94741eba63c23b0f1527b0ae0125e6b553bde10e
-[2/3] ASoC: fsl_sai: Drop TMR/RMR settings for synchronous mode
-      commit: 7b3bee091ec375777ade2a37e4b0c9319f92de27
-[3/3] ASoC: fsl_sai: Replace synchronous check with fsl_sai_dir_is_synced
-      commit: 9355a7b1896f6fadcbd63d199d1f343bf2e4fed8
+	void sigusr1(int sig) { }
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+	int main(int argc, char **argv)
+	{
+		int i = 100000;
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+		signal(SIGUSR1, sigusr1);
+		for (;i--;)
+		    raise(SIGUSR1);
+		exit(0);
+	}
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+An additional 0.10s reduction is achieved by removing
+CONFIG_PPC_FPU, as the mpc832x has no FPU.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+A bit less spectacular on an 8xx as KUAP is less heavy, prior to
+the series (with KUAP) it ran in 8.10 ms. Once applies the removal
+of FPU regs handling, we get 7.05s. With the full series, we get 6.9s.
+If artificially re-activating FPU regs handling with the full series,
+we get 7.6s.
 
-Thanks,
-Mark
+So for the 8xx, the removal of the FPU regs copy is what makes the
+difference, but the rework of handle_signal also have a benefit.
+
+Same as above, without KUAP the difference is in the noise.
+
+Difference since v1(RFC):
+- Almost copies to user are now replaced by unsafe_ alternative.
+- Reworked a bit the FPU registers handling following feedback from Michael.
+- Fixed a few build failures reported by Mr Robot on the RFC.
+
+Christophe Leroy (25):
+  powerpc/signal: Move inline functions in signal.h
+  powerpc/ptrace: Move declaration of ptrace_get_reg() and
+    ptrace_set_reg()
+  powerpc/ptrace: Consolidate reg index calculation
+  powerpc/ptrace: Create ptrace_get_fpr() and ptrace_put_fpr()
+  powerpc/signal: Don't manage floating point regs when no FPU
+  powerpc/32s: Allow deselecting CONFIG_PPC_FPU on mpc832x
+  powerpc/signal: Remove BUG_ON() in handler_signal functions
+  powerpc/signal: Move access_ok() out of get_sigframe()
+  powerpc/signal: Remove get_clean_sp()
+  powerpc/signal: Call get_tm_stackpointer() from get_sigframe()
+  powerpc/signal: Refactor bad frame logging
+  powerpc/signal32: Simplify logging in handle_rt_signal32()
+  powerpc/signal32: Move handle_signal32() close to handle_rt_signal32()
+  powerpc/signal32: Rename local pointers in handle_rt_signal32()
+  powerpc/signal32: Misc changes to make handle_[rt_]_signal32() more
+    similar
+  powerpc/signal32: Move signal trampoline setup to handle_[rt_]signal32
+  powerpc/signal32: Switch handle_signal32() to user_access_begin()
+    logic
+  powerpc/signal32: Switch handle_rt_signal32() to user_access_begin()
+    logic
+  powerpc/signal32: Remove ifdefery in middle of if/else
+  signal: Add unsafe_put_compat_sigset()
+  powerpc/signal32: Add and use unsafe_put_sigset_t()
+  powerpc/signal32: Switch swap_context() to user_access_begin() logic
+  powerpc/signal: Create 'unsafe' versions of
+    copy_[ck][fpr/vsx]_to_user()
+  powerpc/signal32: Isolate non-copy actions in save_user_regs() and
+    save_tm_user_regs()
+  powerpc/signal32: Transform save_user_regs() and save_tm_user_regs()
+    in 'unsafe' version
+
+ arch/powerpc/Kconfig                     |   1 +
+ arch/powerpc/include/asm/processor.h     |  16 +-
+ arch/powerpc/include/asm/ptrace.h        |   6 -
+ arch/powerpc/kernel/asm-offsets.c        |   2 +
+ arch/powerpc/kernel/head_32.S            |   4 +
+ arch/powerpc/kernel/process.c            |   4 +
+ arch/powerpc/kernel/ptrace/Makefile      |   3 +-
+ arch/powerpc/kernel/ptrace/ptrace-decl.h |  21 +
+ arch/powerpc/kernel/ptrace/ptrace-fpu.c  |  40 ++
+ arch/powerpc/kernel/ptrace/ptrace-view.c |   2 +
+ arch/powerpc/kernel/ptrace/ptrace.c      |  54 +-
+ arch/powerpc/kernel/ptrace/ptrace32.c    |   2 +
+ arch/powerpc/kernel/signal.c             |  59 +--
+ arch/powerpc/kernel/signal.h             | 115 ++++-
+ arch/powerpc/kernel/signal_32.c          | 598 +++++++++++------------
+ arch/powerpc/kernel/signal_64.c          |  21 +-
+ arch/powerpc/kernel/traps.c              |   2 +
+ arch/powerpc/platforms/Kconfig.cputype   |  15 +-
+ include/linux/compat.h                   |  32 ++
+ 19 files changed, 566 insertions(+), 431 deletions(-)
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-fpu.c
+
+-- 
+2.25.0
+
