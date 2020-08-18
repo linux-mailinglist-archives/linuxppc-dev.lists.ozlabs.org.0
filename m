@@ -1,53 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EE024834C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 12:46:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330F824836A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 12:56:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BW6zP0DGXzDqbs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 20:46:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BW7C42nh0zDqc6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 20:56:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Fh5UJUtv; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hegdevasant@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=FHiyEpVJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BW6xY5g2dzDqZq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 20:45:05 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A4408204EA;
- Tue, 18 Aug 2020 10:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1597747503;
- bh=V2xRo09r41goWcHkv/TbZqQoAC4ijfdpV8AhWqNHVa8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Fh5UJUtv8etbELwMr2WpcfExLHbDpbyxc8JOao7kijScx1xcMrMp2cxAMpUru677p
- m9jcw94Zv7743Oy88oRexPOJWKKsp3xONJUS3/SWF4Dv6qL0cjeTppw8xJuMheqfxZ
- LTzaqXDgyTnnreT1mV1S2GX3/m2Q6XYGFyIC8AGc=
-Date: Tue, 18 Aug 2020 11:44:32 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Takashi Iwai <tiwai@suse.de>
-Subject: Re: [PATCH 00/10] sound: convert tasklets to use new tasklet_setup()
-Message-ID: <20200818104432.GB5337@sirena.org.uk>
-References: <20200817085703.25732-1-allen.cryptic@gmail.com>
- <s5hsgckl084.wl-tiwai@suse.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BW78t5kwKzDqb9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 20:54:54 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07IAX2b1166433; Tue, 18 Aug 2020 06:54:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=BQl/JGyV+PSzIzrQReFot0bt5FBZzRabmBo6TzKnm3E=;
+ b=FHiyEpVJ3PxhyUHlZfDL29qR+ThRrlPmtZx/L4hb4Zz0l3s+N8OknONOuLZCuigcagls
+ wyU76D/2yuu0gwXe+IT4fjljonEJF0cnbBkEg0YTFlgq5UFjSPl3/iI6XbJ2POeqQ4lp
+ 2rzapnQ5zCzs03CYogSkZ8DgpT8qyys7kXkiHcU7exkMER+UQ8kjRVgHldXhfLAxxNU4
+ +Owg9ZXdaHK4TEmx1jP3wl2PwgW8ttqM0gZWPZNm8jLsz1SXMl68ftIxqQbOceeKh3El
+ QwL0dkO1Qt6BMYKUnt0Av2izq/WWOziWbgV0ERppvffASVbqHExap2CSI4K/sSybF1Hm IA== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3304r5nw39-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Aug 2020 06:54:48 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07IAnqgZ007301;
+ Tue, 18 Aug 2020 10:54:46 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma02fra.de.ibm.com with ESMTP id 3304bbrav4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Aug 2020 10:54:46 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07IAsien9372132
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Aug 2020 10:54:44 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E5227A404D;
+ Tue, 18 Aug 2020 10:54:43 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F2D57A4059;
+ Tue, 18 Aug 2020 10:54:42 +0000 (GMT)
+Received: from hegdevasant.in.ibm.com (unknown [9.199.53.210])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Aug 2020 10:54:42 +0000 (GMT)
+From: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: Do not initiate shutdown when system is
+ running on UPS
+Date: Tue, 18 Aug 2020 16:24:24 +0530
+Message-Id: <20200818105424.234108-1-hegdevasant@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="RASg3xLB4tUQ4RcS"
-Content-Disposition: inline
-In-Reply-To: <s5hsgckl084.wl-tiwai@suse.de>
-X-Cookie: You're at Witt's End.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-18_06:2020-08-18,
+ 2020-08-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=999
+ malwarescore=0 suspectscore=1 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1011 phishscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008180071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,55 +94,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, keescook@chromium.org, timur@kernel.org,
- Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, clemens@ladisch.de,
- tiwai@suse.com, o-takashi@sakamocchi.jp, nicoleotsuka@gmail.com,
- Allen Pais <allen.cryptic@gmail.com>, Allen Pais <allen.lkml@gmail.com>,
- perex@perex.cz, linuxppc-dev@lists.ozlabs.org
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+As per PAPR specification whenever system is running on UPS we have to
+wait for predefined time (default 10mins) before initiating shutdown.
 
---RASg3xLB4tUQ4RcS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+We have user space tool (rtas_errd) to monitor for EPOW events and
+initiate shutdown after predefined time. Hence do not initiate shutdown
+whenever we get EPOW_SHUTDOWN_ON_UPS event.
 
-On Tue, Aug 18, 2020 at 12:25:31PM +0200, Takashi Iwai wrote:
+Fixes: 79872e35 (powerpc/pseries: All events of EPOW_SYSTEM_SHUTDOWN must initiate shutdown)
+Cc: stable@vger.kernel.org # v4.0+
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+---
+ arch/powerpc/platforms/pseries/ras.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-> Mark, may I apply those ASoC patches through my tree together with
-> others?  Those seem targeting to 5.9, and I have a patch set to
-> convert to tasklet for 5.10, which would be better manageable when
-> based on top of those changes.
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index f3736fcd98fc..13c86a292c6d 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -184,7 +184,6 @@ static void handle_system_shutdown(char event_modifier)
+ 	case EPOW_SHUTDOWN_ON_UPS:
+ 		pr_emerg("Loss of system power detected. System is running on"
+ 			 " UPS/battery. Check RTAS error log for details\n");
+-		orderly_poweroff(true);
+ 		break;
+ 
+ 	case EPOW_SHUTDOWN_LOSS_OF_CRITICAL_FUNCTIONS:
+-- 
+2.26.2
 
-These patches which I wasn't CCed on and which need their subject lines
-fixing :( .  With the subject lines fixed I guess so so
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
-but judging from some of the other threads about similar patches that I
-was randomly CCed on I'm not sure people like from_tasklet() so perhaps
-there might be issues.
-
-Allen, as documented in submitting-patches.rst please send patches to
-the maintainers for the code you would like to change.  The normal
-kernel workflow is that people apply patches from their inboxes, if they
-aren't copied they are likely to not see the patch at all and it is much
-more difficult to apply patches.
-
---RASg3xLB4tUQ4RcS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl87sQ8ACgkQJNaLcl1U
-h9AXXgf9Grt6q+diq7m3+Va9EPuojISFzp0rHACAAAE39g0r2Kzx/g53wYjT8uoA
-Yr6dm9ajOxkGjqsZp4Zsp6iSabfuXuEAi9qBBBkCJlatDiEWwObS4X77VNUE82lo
-U7d2ljdnsbtM/zTfYjc63OaAstv4bXWHm+NtjgJhiO155DifPsUOW8js8IPoSlN+
-XDEPT0VVKs1syY90ef4oz7i/aTnOKLlGEejv1YHLRkvwmQyWbjZOo83UHSuB7IPB
-GeTWC/+jE9ujCAKoCFmW8la4LWjfn8yV15s0LI7OFBFZZQoulBBhC7Dp316u5wsw
-B2jWhNhnIJc8tG4nAuopeUqjHqIKYA==
-=oDDH
------END PGP SIGNATURE-----
-
---RASg3xLB4tUQ4RcS--
