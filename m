@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3ABB2481C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 11:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7ABE2481F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 11:34:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BW50c0fc7zDqYk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 19:17:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BW5MY5bznzDqVF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 19:34:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=allen.lkml@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::344;
+ helo=mail-ot1-x344.google.com; envelope-from=allen.lkml@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=eGoDITci; dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
+ header.s=20161025 header.b=oiYao3LS; dkim-atps=neutral
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BW4xk3dZ2zDqWs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 19:15:06 +1000 (AEST)
-Received: by mail-ot1-x341.google.com with SMTP id v21so15699892otj.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 02:15:06 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BW5KR6RCtzDqb9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 19:32:11 +1000 (AEST)
+Received: by mail-ot1-x344.google.com with SMTP id t7so15779929otp.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 02:32:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=W2hKsTS1LvaI0SOO9W3/5fRfJY5aEh/BZWVO9XitBWs=;
- b=eGoDITciADrWQe3gs29cyT8xT1NKm5rz9rVcVLDn/bbuYp8fgY1hSDfcgcO2Y8A/FE
- zDJ9bm6G+z2N4IP6u1ELlhwB/iZ+1A+IwLuPDXV50yqTfWBpi2yoklrT0psD6GdMzRGm
- mKZXpjNtcSxOPcLuAlO8t6rlea5KpMBIJZl+zd87Fs8FGCP4YglR+Cy8uqT+GzI0stq3
- viuaxAQxm/6lWfM0J1ue15DTH6MQ6CtMtlUoD1oYGIxuyF9v8tv3Vn0TjcM5dSCK8JbS
- fjcwz39yKbHCwapnbDs3GWnek7Qbumu+oEcYnimX4XO6Q66JRWEkGZLHrLAcc8kim4hs
- +0yA==
+ :cc; bh=CukyYxKQagzxSnoAUerbnhafgFTcDCc+vCHDuzHrDm0=;
+ b=oiYao3LSY05RtHiCa7E8GRzIrl9VRRJYDZjBtQ/ubmceLYQblalUYWs7OwMluhpnUV
+ 1OD/4u8SmwCBI4jQy+CFzB9DiOBMSi80AOG36VcptLnhf6mlFt3cEPpf08XASzer3N1U
+ 8ju50bDwgsm8cIKentn09KT7dEn43UVXAcfqk+qtmEK0ijNDJx9xsmN1YdHBtsSuJmgX
+ XysM+f14J1mp0IjxEpAjmlNUmnhz1n1EVGQKFm+eyUG+fLys9+zxOsW+/DEZwSjDm1AD
+ eZY+FJmAR1IxLWdli8IGiG0WHu1UOvpZRaDlGQ0XHmg+jBupgMHOuue6LE6XSsPUVN5S
+ P/Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=W2hKsTS1LvaI0SOO9W3/5fRfJY5aEh/BZWVO9XitBWs=;
- b=oEZtxO9egdgsO0ma0oI555UL0pQpWEE78t+Np2+3i3RFyT9eQwL1m5MCKt4ea09kVe
- vBoK5ukJreCfFhGqGx/MjnKFgQKD7PdgiNUu1GooaihaXGJoBVa3vx4sxJVqCw7VjAk2
- nivpLZTzq86KQMM4LmWhilaOTvmcp4ec5q9ifNPDFr7pRT9PYGb8kq7uNrCx/qjDvjv3
- 7JEVfPkIutR6erf5VV9gsOIZtM0sr39QjRFHmaC5nlR4A3leX6qZ6ow7oHg7j7Osmt/f
- by6g7SJZupd3lCk2pbg7GpvObjgKRonrU/OmYey0R+F83WGm57iPW0mlBoAI5NUGkDV4
- wS3w==
-X-Gm-Message-State: AOAM530w8WTvOc6YjTKDhu2TcFv/sgbx3ka3sbIsst8ppgVuOBK8lNGd
- 44YRJOZ2wtrqJEWO4gcbfP5JdZjMfJUl4iAddrk=
-X-Google-Smtp-Source: ABdhPJzzm5zuxz1BYxytortJNZi40aPY4mo/p0dwJ/cgscBmXy1XrUh5q88EuMzxIjKgJBVv2+jBuBgNQfstKNEw2u4=
-X-Received: by 2002:a9d:774d:: with SMTP id t13mr13781704otl.108.1597742104000; 
- Tue, 18 Aug 2020 02:15:04 -0700 (PDT)
+ bh=CukyYxKQagzxSnoAUerbnhafgFTcDCc+vCHDuzHrDm0=;
+ b=GhlM70vnQH0JAP7PRCVDXcp+X8gmsPIO1LBdZlMPrnH/1Ma9LDostnoIx80VBCfKIn
+ LNpWEOk9S0tQ6V83+4oSnCOAn7cMp+IfWrLYL04kE0SRqKjCZK9bFpc4NxAl6I6smQ6Z
+ GGh8u6iZoanZnomA/ufgHP4RU0BceY/wAIBc6pTt5JuQhmwcZ2rqkZk8Ko2RGfRRPa+q
+ gNuCla9SG3H9ELRyJ9YT3if3Ih4rkBxVFCkiJMfC7tGQedqi8uBYM9iurdG64wO570fm
+ A5UO6qEpDF76+bPbJj7yaEc9vM4++oSNj9KjM5/q9lE/R7nwSxLFP9GogKavyfT463TI
+ GQqw==
+X-Gm-Message-State: AOAM5334ZeeXSmkikczZMzJT67Npt4hR1I6TyH+HRPdyv7+2ZPqTL151
+ oc4iLIlurt5VSxcg3rPgW0QhamO/XUd3S90jkG4=
+X-Google-Smtp-Source: ABdhPJxWr9qkdSOHISPy+oYHPAYjGVOTOnZt44b3JJOq1hBBUFKJuivSXPClh61XAr/SYq05DdwSLWmaagZHOPuDyto=
+X-Received: by 2002:a9d:128c:: with SMTP id g12mr13892805otg.242.1597743128285; 
+ Tue, 18 Aug 2020 02:32:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200817082434.21176-1-allen.lkml@gmail.com>
- <20200817082434.21176-8-allen.lkml@gmail.com>
- <20200817083216.5367f56a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20200817083216.5367f56a@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+References: <20200817085703.25732-1-allen.cryptic@gmail.com>
+ <s5hpn7pprl1.wl-tiwai@suse.de>
+ <CAEogwTAGHOfBe4ztkx9To0gQGwHwFWzCBxn8nzWJP=wRJUJ56A@mail.gmail.com>
+ <s5hk0xxppz6.wl-tiwai@suse.de>
+In-Reply-To: <s5hk0xxppz6.wl-tiwai@suse.de>
 From: Allen <allen.lkml@gmail.com>
-Date: Tue, 18 Aug 2020 14:44:52 +0530
-Message-ID: <CAOMdWSL0e8iakwc2FUnF8epMme5eofrUMzrG0MjcBvEz4cimKA@mail.gmail.com>
-Subject: Re: [PATCH 06/20] ethernet: chelsio: convert tasklets to use new
- tasklet_setup() API
-To: Jakub Kicinski <kuba@kernel.org>
+Date: Tue, 18 Aug 2020 15:01:56 +0530
+Message-ID: <CAOMdWSLJmiAxH5bvwh9b8O_MLdttU3Fsb4B_Y2tA08_P1b0BXQ@mail.gmail.com>
+Subject: Re: [PATCH 00/10] sound: convert tasklets to use new tasklet_setup()
+To: Takashi Iwai <tiwai@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,27 +75,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jes@trained-monkey.org, borisp@mellanox.com,
- Kees Cook <keescook@chromium.org>, linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org, kda@linux-powerpc.org, cooldavid@cooldavid.org,
- dougmill@linux.ibm.com, linux-kernel@vger.kernel.org, linux-acenic@sunsite.dk,
- oss-drivers@netronome.com, Romain Perier <romain.perier@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, David Miller <davem@davemloft.net>,
- linux-arm-kernel@lists.infradead.org, mlindner@marvell.com
+Cc: alsa-devel@alsa-project.org, Kees Cook <keescook@chromium.org>,
+ timur@kernel.org, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org,
+ clemens@ladisch.de, tiwai@suse.com, o-takashi@sakamocchi.jp,
+ nicoleotsuka@gmail.com, Allen Pais <allen.cryptic@gmail.com>, perex@perex.cz,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 >
-> You need to adjust kdoc when you change functions:
+> Well, then at the next time, please mention it explicitly in the cover
+> letter.  Usually this kind of API conversion isn't done during rc.  Or
+> it's done systematically via script or such.  So unless mentioned,
+> it's not expected to be carried to 5.9.
+
+ Sorry for having missed the detail. Will take care of it in the future.
+
 >
-> drivers/net/ethernet/chelsio/cxgb4/sge.c:2664: warning: Function parameter or member 't' not described in 'restart_ctrlq'
-> drivers/net/ethernet/chelsio/cxgb4/sge.c:2664: warning: Excess function parameter 'data' description in 'restart_ctrlq'
-> drivers/net/ethernet/chelsio/cxgb4/sge.c:2965: warning: Function parameter or member 't' not described in 'restart_ofldq'
-> drivers/net/ethernet/chelsio/cxgb4/sge.c:2965: warning: Excess function parameter 'data' description in 'restart_ofldq'
+> In anyway, if the final purpose is to drop the old tasklet API and
+> that's the plan for 5.9, all tree-wide changes have to be done in
+> 5.9 beforehand.  Was that the decision?
 
+ The idea was to land the tree-wide changes as part of 5.9
 
-Thanks, will fix it and spin V2.
+>
+> > > I have a patch set to drop the whole tasklet usage in sound/*
+> > > (destined for 5.10, to be submitted soon), so if that's for 5.10,
+> > > it'll be likely superfluous.
+> >
+> >  I have picked patches from your tree to adapt to this new API.
+> > Those can be picked in 5.10 I suppose.
+>
+> Adapting the changes are trivial, don't worry.  It was just a question
+> of how to organize changes.
 
--- 
-       - Allen
+Sure, Thank you.
+
+- Allen
