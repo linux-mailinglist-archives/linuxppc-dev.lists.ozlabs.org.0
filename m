@@ -2,50 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75552488D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 17:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E4424899D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 17:23:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWDt96Y2jzDqcm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 01:12:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWF6B6YjdzDqcj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 01:22:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=rAKScTQo; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=mZ4Dw/78; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWDpK1QCgzDqVP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 01:09:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
- Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:In-Reply-To:References;
- bh=TYCkUvvfwzERhSHuzl+o/xwRoFEE9UiQMu2LCKTxT2c=; b=rAKScTQoURfEN9R47mu2vwzvW1
- Qr92K5z88B2fMLXzcVaHIjsutHu31n+1t6NktU6dXrpb6qBvKGewRdDEu9YWxyaqPT3MGP2+amFeq
- 030HybeiDQAp9K8oNMiWpdSSP2KjuUDNq6z3GwFS1zWlgIdpB/YsfFYankS6FDpHeKTdEQUybqx+Y
- WGyBZ4JzG9qSrcJJ5B1ZsacnV/Rsd2fIh9tQQ/re1f3qLvOpy3/D0PzzsiObpvCEz2QxnrYV91fdU
- rklPsQUsoTct720dBy8ejRuBWjm4jiJMHilAS7Xntlh81xlBZYvhwK858mixM81kNlULt4cBAKwWb
- WxUXdk+w==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1k83D6-00020t-48; Tue, 18 Aug 2020 15:07:36 +0000
-Date: Tue, 18 Aug 2020 16:07:36 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: linux-arch@vger.kernel.org
-Subject: Flushing transparent hugepages
-Message-ID: <20200818150736.GQ17456@casper.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWDz747BTzDqbk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 01:16:51 +1000 (AEST)
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 140422054F;
+ Tue, 18 Aug 2020 15:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1597763808;
+ bh=pWqW8YgLG90UU3p8BWQ4xo9QKFARTHRes7KpRDQutEY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=mZ4Dw/78TkBwbT4zckybu8GS6IeYljCyckNW7F7V9LPqkH0uP6lZLns364B8ofjDq
+ g40MFxNJ9gEv01k6pNkEpjYOvmf4wvbJAjpvy8rkOX3Ub/pu7s4r9Q//DEwKnW4wz3
+ DIa8FLdmh9cooXoz1dI6BSyEhKPCYBl/+8BDlFOg=
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v3 00/17] memblock: seasonal cleaning^w cleanup
+Date: Tue, 18 Aug 2020 18:16:17 +0300
+Message-Id: <20200818151634.14343-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,117 +53,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Vineet Gupta <vgupta@synopsys.com>, linuxppc-dev@lists.ozlabs.org,
- Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Catalin Marinas <catalin.marinas@arm.com>, sparclinux@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, Will Deacon <will@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ Emil Renner Berthing <kernel@esmil.dk>, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Baoquan He <bhe@redhat.com>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
+ clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Stafford Horne <shorne@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ Daniel Axtens <dja@axtens.net>, Michal Simek <monstr@monstr.eu>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If your arch does not support HAVE_ARCH_TRANSPARENT_HUGEPAGE, you can
-stop reading now.  Although maybe you're curious about adding support.
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-$ git grep -w HAVE_ARCH_TRANSPARENT_HUGEPAGE arch
-arch/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/arc/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/arm/Kconfig:config HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/arm64/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/mips/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE if CPU_SUPPORTS_HUGEPAGES
-arch/powerpc/platforms/Kconfig.cputype: select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/s390/Kconfig:      select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/sparc/Kconfig:     select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-arch/x86/Kconfig:       select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+Hi,
 
-If your arch does not implement flush_dcache_page(), you can also
-stop reading.
+These patches simplify several uses of memblock iterators and hide some of
+the memblock implementation details from the rest of the system.
 
-$ for i in arc arm arm64 mips powerpc s390 sparc x86; do git grep -l flush_dcache_page arch/$i/include; done
-arch/arc/include/asm/cacheflush.h
-arch/arm/include/asm/cacheflush.h
-arch/arm64/include/asm/cacheflush.h
-arch/mips/include/asm/cacheflush.h
-arch/powerpc/include/asm/cacheflush.h
-arch/sparc/include/asm/cacheflush_32.h
-arch/sparc/include/asm/cacheflush_64.h
-arch/sparc/include/asm/pgtable_64.h
+The patches are on top of v5.9-rc1
 
-OK, so we're down to arc, arm, arm64, mips, powerpc & sparc.  Hi!  ;-)
+v3 changes:
+* rebase on v5.9-rc1, as the result this required some non-trivial changes
+  in patches 10 and 16. I didn't add Baoquan's Reviewed-by to theses
+  patches, but I keept Thomas and Miguel
+* Add Acked-by from Thomas and Miguel as there were changes in MIPS and
+  only trivial changes in .clang-format
+* Added Reviewed-by from Baoquan except for the patches 10 and 16
+* Fixed misc build errors and warnings reported by kbuild bot
+* Updated PowerPC KVM reservation size (patch 2), as per Daniel's comment
 
-I'm working on adding THP support for filesystems with storage backing
-and part of that is expanding the definition of THP to be any order
-(ie any power of two of PAGE_SIZE).  Now, shmem already has some calls
-to flush_dcache_page() for THPs, for example:
+v2 changes:
+* replace for_each_memblock() with two versions, one for memblock.memory
+  and another one for memblock.reserved
+* fix overzealous cleanup of powerpc fadamp: keep the traversal over the
+  memblocks, but use better suited iterators
+* don't remove traversal over memblock.reserved in x86 numa cleanup but
+  replace for_each_memblock() with new for_each_reserved_mem_region()
+* simplify ramdisk and crash kernel allocations on x86
+* drop more redundant and unused code: __next_reserved_mem_region() and
+  memblock_mem_size()
+* add description of numa initialization fix on arm64 (thanks Jonathan)
+* add Acked and Reviewed tags
 
-        if (sgp != SGP_WRITE && !PageUptodate(page)) {
-                struct page *head = compound_head(page);
-                int i;
+Mike Rapoport (17):
+  KVM: PPC: Book3S HV: simplify kvm_cma_reserve()
+  dma-contiguous: simplify cma_early_percent_memory()
+  arm, xtensa: simplify initialization of high memory pages
+  arm64: numa: simplify dummy_numa_init()
+  h8300, nds32, openrisc: simplify detection of memory extents
+  riscv: drop unneeded node initialization
+  mircoblaze: drop unneeded NUMA and sparsemem initializations
+  memblock: make for_each_memblock_type() iterator private
+  memblock: make memblock_debug and related functionality private
+  memblock: reduce number of parameters in for_each_mem_range()
+  arch, mm: replace for_each_memblock() with for_each_mem_pfn_range()
+  arch, drivers: replace for_each_membock() with for_each_mem_range()
+  x86/setup: simplify initrd relocation and reservation
+  x86/setup: simplify reserve_crashkernel()
+  memblock: remove unused memblock_mem_size()
+  memblock: implement for_each_reserved_mem_region() using
+    __next_mem_region()
+  memblock: use separate iterators for memory and reserved regions
 
-                for (i = 0; i < compound_nr(head); i++) {
-                        clear_highpage(head + i);
-                        flush_dcache_page(head + i);
-                }
-                SetPageUptodate(head);
-        }
+ .clang-format                            |  5 +-
+ arch/arm/kernel/setup.c                  | 18 +++--
+ arch/arm/mm/init.c                       | 59 +++------------
+ arch/arm/mm/mmu.c                        | 39 ++++------
+ arch/arm/mm/pmsa-v7.c                    | 23 +++---
+ arch/arm/mm/pmsa-v8.c                    | 17 ++---
+ arch/arm/xen/mm.c                        |  7 +-
+ arch/arm64/kernel/machine_kexec_file.c   |  6 +-
+ arch/arm64/kernel/setup.c                |  4 +-
+ arch/arm64/mm/init.c                     | 11 +--
+ arch/arm64/mm/kasan_init.c               | 10 +--
+ arch/arm64/mm/mmu.c                      | 11 +--
+ arch/arm64/mm/numa.c                     | 15 ++--
+ arch/c6x/kernel/setup.c                  |  9 ++-
+ arch/h8300/kernel/setup.c                |  8 +-
+ arch/microblaze/mm/init.c                | 21 ++----
+ arch/mips/cavium-octeon/dma-octeon.c     | 12 +--
+ arch/mips/kernel/setup.c                 | 31 ++++----
+ arch/mips/netlogic/xlp/setup.c           |  2 +-
+ arch/nds32/kernel/setup.c                |  8 +-
+ arch/openrisc/kernel/setup.c             |  9 +--
+ arch/openrisc/mm/init.c                  |  8 +-
+ arch/powerpc/kernel/fadump.c             | 57 +++++++-------
+ arch/powerpc/kexec/file_load_64.c        | 16 ++--
+ arch/powerpc/kvm/book3s_hv_builtin.c     | 12 +--
+ arch/powerpc/mm/book3s64/hash_utils.c    | 16 ++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 10 +--
+ arch/powerpc/mm/kasan/kasan_init_32.c    |  8 +-
+ arch/powerpc/mm/mem.c                    | 33 ++++----
+ arch/powerpc/mm/numa.c                   |  7 +-
+ arch/powerpc/mm/pgtable_32.c             |  8 +-
+ arch/riscv/mm/init.c                     | 36 +++------
+ arch/riscv/mm/kasan_init.c               | 10 +--
+ arch/s390/kernel/setup.c                 | 27 ++++---
+ arch/s390/mm/page-states.c               |  6 +-
+ arch/s390/mm/vmem.c                      |  7 +-
+ arch/sh/mm/init.c                        |  9 +--
+ arch/sparc/mm/init_64.c                  | 12 +--
+ arch/x86/kernel/setup.c                  | 56 +++++---------
+ arch/x86/mm/numa.c                       |  2 +-
+ arch/xtensa/mm/init.c                    | 55 +++-----------
+ drivers/bus/mvebu-mbus.c                 | 12 +--
+ drivers/irqchip/irq-gic-v3-its.c         |  2 +-
+ include/linux/memblock.h                 | 88 +++++++++++++---------
+ kernel/dma/contiguous.c                  | 11 +--
+ mm/memblock.c                            | 95 ++++++++++--------------
+ mm/page_alloc.c                          | 11 ++-
+ mm/sparse.c                              | 10 +--
+ 48 files changed, 387 insertions(+), 562 deletions(-)
 
-where you'll be called once for each subpage.  But ... these are error
-paths, and I'm sure you all diligently test cache coherency scenarios
-of error paths in shmem ... right?
+-- 
+2.26.2
 
-For example, arm64 seems confused in this scenario:
-
-void flush_dcache_page(struct page *page)
-{
-        if (test_bit(PG_dcache_clean, &page->flags))
-                clear_bit(PG_dcache_clean, &page->flags);
-}
-
-...
-
-void __sync_icache_dcache(pte_t pte)
-{
-        struct page *page = pte_page(pte);
-
-        if (!test_and_set_bit(PG_dcache_clean, &page->flags))
-                sync_icache_aliases(page_address(page), page_size(page));
-}
-
-So arm64 keeps track on a per-page basis which ones have been flushed.
-page_size() will return PAGE_SIZE if called on a tail page or regular
-page, but will return PAGE_SIZE << compound_order if called on a head
-page.  So this will either over-flush, or it's missing the opportunity
-to clear the bits on all the subpages which have now been flushed.
-
-PowerPC has special handling of hugetlbfs pages.  Well, that's what
-the config option says, but actually it handles THP as well.  If
-the config option is enabled.
-
-#ifdef CONFIG_HUGETLB_PAGE
-        if (PageCompound(page)) {
-                flush_dcache_icache_hugepage(page);
-                return;
-        }
-#endif
-
-By the way, THPs can be mapped askew -- that is, at an offset which
-means you can't use a PMD to map a PMD sized page.
-
-Anyway, we don't really have consensus between the various architectures
-on how to handle either THPs or hugetlb pages.  It's not contemplated
-in Documentation/core-api/cachetlb.rst so there's no real surprise
-we've diverged.
-
-What would you _like_ to see?  Would you rather flush_dcache_page()
-were called once for each subpage, or would you rather maintain
-the page-needs-flushing state once per compound page?  We could also
-introduce flush_dcache_thp() if some architectures would prefer it one
-way and one the other, although that brings into question what to do
-for hugetlbfs pages.
-
-It might not be a bad idea to centralise the handling of all this stuff
-somewhere.  Sounds like the kind of thing Arnd would like to do ;-) I'll
-settle for getting enough clear feedback about what the various arch
-maintainers want that I can write a documentation update for cachetlb.rst.
