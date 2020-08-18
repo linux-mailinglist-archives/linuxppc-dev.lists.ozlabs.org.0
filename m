@@ -2,71 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3158C248ECF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 21:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 067FA248ED4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 21:40:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWLmy5BPbzDqmY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 05:38:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWLq72249zDqKM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 05:40:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=l2ujWwd6; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=I8XGIaUg; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWLhK30KpzDqYd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 05:34:25 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id e4so10717pjd.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 12:34:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=Tc2Y/7wRUGR7GO4HI5D5o1JOg/02jGLqqiMyiLuhQfs=;
- b=l2ujWwd6BMG71uJ+lE/u8hWi1z2UCA7KAWMpdnE1WzCwTe07wkyg50hoJQMVi/k5vS
- 10b1jlIwnAAB1jWtkPfeKBvqJMoyZBbScKD9sht7QrmX7W7SSdxi+jcaauUGkGBX0fzB
- CHA2p5bBmBuY5K3LiVDClVPuHglS30NtSusnM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Tc2Y/7wRUGR7GO4HI5D5o1JOg/02jGLqqiMyiLuhQfs=;
- b=hsDaXPl1+UYjUPSHZuwbBNDftrlrzS/+B3mRyYkoMF3LmCh5VwrfJIcfS8SlycJq6h
- gPFNDSUiISwxhgkp/yvgpWtNi6fZkuqTvwEU7lrswWCPKqooVuWkD/qcZeMlAnY3RatL
- AIf0gyuVkDk6C8lo6JmUVK/BdcBQLFVvWu1w7tUAya+O7BTe7fRP9avvTrBVOC531NaH
- cx73P+1PgSEOPZ51d2nuZzviU5Gu0AGEg5LlElCuwMD8LSTPkMaLEsw85oK2E+OKYO51
- at00CO/IipA6aDWaU4yAgtHQ2ZnWvnCuBUMxh02TsJz9JY+GxwBVwL3dyfzXErpp++Oo
- gLbg==
-X-Gm-Message-State: AOAM530SG/y0mfDsOXoUl3vUnYzupisSVPf168sBLeaaAiY98u5h8BLI
- 7OOnSPzMKxYyz9KVtLTTV1U6NQ==
-X-Google-Smtp-Source: ABdhPJyRtGUPEH8hQB3PYbEreefecpWhQ0b3Q4RWm7821VkslhtwepOtRIsUHn68CV2l8iU1xIwP+A==
-X-Received: by 2002:a17:902:9f8a:: with SMTP id
- g10mr16598513plq.158.1597779263268; 
- Tue, 18 Aug 2020 12:34:23 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id k21sm22549273pgl.0.2020.08.18.12.34.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Aug 2020 12:34:22 -0700 (PDT)
-Date: Tue, 18 Aug 2020 12:34:21 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 02/11] fs: don't allow kernel reads and writes without
- iter ops
-Message-ID: <202008181234.B1D9572C@keescook>
-References: <20200817073212.830069-1-hch@lst.de>
- <20200817073212.830069-3-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWLjp5PdDzDqVH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 05:35:42 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07IJX6gH153708; Tue, 18 Aug 2020 15:35:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=BmZYRBo3PHKnq3q3M77l5z9qUuO7WfnTs/9pmsKCUuo=;
+ b=I8XGIaUgl6tf8J+sfdxUd1CMUVAz0RclejOHbklwwL5KONvEgwWFUfiRsACQtI9Q4eUj
+ Mlbm5Qx0CQSVHqg1sdsyAvNsUb/5Unvx67XUs5UEUcEI+J5/ylR3KD7I0W0jFsDhAS1Q
+ gmnZJ7Ruz0QYnXP0adeDnW4xkQnlOlknvFxjpPDp1Spfphn6uJvLVGChxRjsfwo2jM7G
+ /VjUY4Z067MmO8alziwUuCYaWg7LI51CfxT9W2WdwhFPgPfJAeJjTgvLwkzz1pQTZsV/
+ 9XqMog7IJf9+zUG2pV4Ul6zy8mJgUUZ50aEqM8C6GCkimnABzmNAX3wa8NbtPY1Led0w tw== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 330ccaftnu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Aug 2020 15:35:39 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07IJTaDm015778;
+ Tue, 18 Aug 2020 19:35:38 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma02dal.us.ibm.com with ESMTP id 3304ccg29a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Aug 2020 19:35:38 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07IJZbaI63701502
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Aug 2020 19:35:37 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 614B1C605B;
+ Tue, 18 Aug 2020 19:35:37 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5669EC6055;
+ Tue, 18 Aug 2020 19:35:36 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.67.173])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Aug 2020 19:35:36 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries: Do not initiate shutdown when system is
+ running on UPS
+To: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20200818105424.234108-1-hegdevasant@linux.vnet.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <1e80a259-fc81-e7f9-8cd9-165e4bb9069a@linux.ibm.com>
+Date: Tue, 18 Aug 2020 12:35:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200817073212.830069-3-hch@lst.de>
+In-Reply-To: <20200818105424.234108-1-hegdevasant@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-18_14:2020-08-18,
+ 2020-08-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=999
+ suspectscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
+ malwarescore=0 clxscore=1011 phishscore=0 priorityscore=1501 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008180135
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,25 +101,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 17, 2020 at 09:32:03AM +0200, Christoph Hellwig wrote:
-> Don't allow calling ->read or ->write with set_fs as a preparation for
-> killing off set_fs.  All the instances that we use kernel_read/write on
-> are using the iter ops already.
-> 
-> If a file has both the regular ->read/->write methods and the iter
-> variants those could have different semantics for messed up enough
-> drivers.  Also fails the kernel access to them in that case.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On 8/18/20 3:54 AM, Vasant Hegde wrote:
+> As per PAPR specification whenever system is running on UPS we have to
+> wait for predefined time (default 10mins) before initiating shutdown.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+The wording in PAPR seems a little unclear. It states for an
+EPOW_SYSTEM_SHUTDOWN action code that an EPOW error should be logged followed by
+scheduling a shutdown to begin after an OS defined delay interval (with 10
+minutes the suggested default).
 
--- 
-Kees Cook
+However, the modifier code descriptions seems to imply that a normal shutdown is
+the only one that should happen with no additional delay.
+
+For EPOW sensor value = 3 (EPOW_SYSTEM_SHUTDOWN)
+0x01 = Normal system shutdown with no additional delay
+0x02 = Loss of utility power, system is running on UPS/Battery
+0x03 = Loss of system critical functions, system should be shutdown
+0x04 = Ambient temperature too high
+
+For 0x03-0x04 we also do an orderly_poweroff().
+
+Not sure if it really matters, but I was curious and this is just what I gleaned
+from glancing at PAPR.
+
+-Tyrel
+
+> 
+> We have user space tool (rtas_errd) to monitor for EPOW events and
+> initiate shutdown after predefined time. Hence do not initiate shutdown
+> whenever we get EPOW_SHUTDOWN_ON_UPS event.
+> 
+> Fixes: 79872e35 (powerpc/pseries: All events of EPOW_SYSTEM_SHUTDOWN must initiate shutdown)
+> Cc: stable@vger.kernel.org # v4.0+
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/ras.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+> index f3736fcd98fc..13c86a292c6d 100644
+> --- a/arch/powerpc/platforms/pseries/ras.c
+> +++ b/arch/powerpc/platforms/pseries/ras.c
+> @@ -184,7 +184,6 @@ static void handle_system_shutdown(char event_modifier)
+>  	case EPOW_SHUTDOWN_ON_UPS:
+>  		pr_emerg("Loss of system power detected. System is running on"
+>  			 " UPS/battery. Check RTAS error log for details\n");
+> -		orderly_poweroff(true);
+>  		break;
+> 
+>  	case EPOW_SHUTDOWN_LOSS_OF_CRITICAL_FUNCTIONS:
+> 
+
