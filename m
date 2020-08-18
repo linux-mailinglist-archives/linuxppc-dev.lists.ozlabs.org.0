@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBF2247CA5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 05:22:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C46247CBD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 05:26:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BVx7C33ZvzDqZ1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 13:22:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BVxCT1KNNzDqZL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 13:26:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BVx5Q0tKwzDqXM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 13:21:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BVx5R0JzXzDqXM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 13:21:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BVx5P5gv8z9sTR; Tue, 18 Aug 2020 13:21:13 +1000 (AEST)
+ id 4BVx5Q6v9hz9sTX; Tue, 18 Aug 2020 13:21:14 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1596794701-23530-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1596794701-23530-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V6 0/2] powerpc/perf: Add support for perf extended regs
- in powerpc
-Message-Id: <159772076195.1537671.8929069233918277642.b4-ty@ellerman.id.au>
-Date: Tue, 18 Aug 2020 13:21:13 +1000 (AEST)
+To: mpe@ellerman.id.au, Michael Neuling <mikey@neuling.org>
+In-Reply-To: <20200803035600.1820371-1-mikey@neuling.org>
+References: <20200803035600.1820371-1-mikey@neuling.org>
+Subject: Re: [PATCH] powerpc: Fix P10 PVR revision in /proc/cpuinfo for SMT4
+ cores
+Message-Id: <159772076140.1537671.7948201442853663666.b4-ty@ellerman.id.au>
+Date: Tue, 18 Aug 2020 13:21:14 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,31 +38,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
- kjain@linux.ibm.com, acme@kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: grimm@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 7 Aug 2020 06:04:59 -0400, Athira Rajeev wrote:
-> Patch set to add support for perf extended register capability in
-> powerpc. The capability flag PERF_PMU_CAP_EXTENDED_REGS, is used to
-> indicate the PMU which support extended registers. The generic code
-> define the mask of extended registers as 0 for non supported architectures.
+On Mon, 3 Aug 2020 13:56:00 +1000, Michael Neuling wrote:
+> On POWER10 bit 12 in the PVR indicates if the core is SMT4 or
+> SMT8. Bit 12 is set for SMT4.
 > 
-> patch 1/2 defines the PERF_PMU_CAP_EXTENDED_REGS mask to output the
-> values of mmcr0,mmcr1,mmcr2 for POWER9. Defines `PERF_REG_EXTENDED_MASK`
-> at runtime which contains mask value of the supported registers under
-> extended regs.
-> 
-> [...]
+> Without this patch, /proc/cpuinfo on a SMT4 DD1 POWER10 looks like
+> this:
+>     cpu             : POWER10, altivec supported
+>     revision        : 17.0 (pvr 0080 1100)
 
 Applied to powerpc/fixes.
 
-[1/2] powerpc/perf: Add support for outputting extended regs in perf intr_regs
-      https://git.kernel.org/powerpc/c/781fa4811d95314c1965c0c3337c9ac36ef26093
-[2/2] powerpc/perf: Add extended regs support for power10 platform
-      https://git.kernel.org/powerpc/c/d735599a069f6936c1392e07075c34a19bda949a
+[1/1] powerpc: Fix P10 PVR revision in /proc/cpuinfo for SMT4 cores
+      https://git.kernel.org/powerpc/c/030a2c689fb46e1690f7ded8b194bab7678efb28
 
 cheers
