@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39BC248D52
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 19:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A11FE248CFC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 19:33:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWJ6K6zYkzDqXZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 03:38:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWJ0Y6CGrzDqgF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 03:33:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,39 +17,39 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWHhX4LXYzDqVj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 03:19:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWHhY0NdMzDqbG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 03:19:25 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BWHhN6tVJz9vCxv;
- Tue, 18 Aug 2020 19:19:16 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BWHhP6zbBz9vCxx;
+ Tue, 18 Aug 2020 19:19:17 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id I2Vn_tjqvJPA; Tue, 18 Aug 2020 19:19:16 +0200 (CEST)
+ with ESMTP id 1jnu3FO3pKDj; Tue, 18 Aug 2020 19:19:17 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BWHhN66T6z9vCxg;
- Tue, 18 Aug 2020 19:19:16 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BWHhP6Dnhz9vCxg;
+ Tue, 18 Aug 2020 19:19:17 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A4C5C8B7EE;
- Tue, 18 Aug 2020 19:19:18 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B49A88B7EE;
+ Tue, 18 Aug 2020 19:19:19 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QgcoIcraXlLy; Tue, 18 Aug 2020 19:19:18 +0200 (CEST)
+ with ESMTP id xE4_nO5j3Pco; Tue, 18 Aug 2020 19:19:19 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 62BC08B7D7;
- Tue, 18 Aug 2020 19:19:18 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6FC738B7EC;
+ Tue, 18 Aug 2020 19:19:19 +0200 (CEST)
 Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 4492D65CF4; Tue, 18 Aug 2020 17:19:18 +0000 (UTC)
-Message-Id: <fcdc60d85baf80eaa0a7f3261d9d889282068216.1597770847.git.christophe.leroy@csgroup.eu>
+ id 51A9E65CF4; Tue, 18 Aug 2020 17:19:19 +0000 (UTC)
+Message-Id: <3582e10a341d523c9c3f1ac925c3aaefc9d9293d.1597770847.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1597770847.git.christophe.leroy@csgroup.eu>
 References: <cover.1597770847.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 06/25] powerpc/32s: Allow deselecting CONFIG_PPC_FPU on
- mpc832x
+Subject: [PATCH v2 07/25] powerpc/signal: Remove BUG_ON() in handler_signal
+ functions
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 18 Aug 2020 17:19:18 +0000 (UTC)
+Date: Tue, 18 Aug 2020 17:19:19 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,71 +66,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The e300c2 core which is embedded in mpc832x CPU doesn't have
-an FPU.
+There is already the same BUG_ON() check in do_signal() which
+is the only caller of handle_rt_signal64() handle_rt_signal32() and
+handle_signal32().
 
-Make it possible to not select CONFIG_PPC_FPU when building a
-kernel dedicated to that target.
+Remove those three redundant BUG_ON().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_32.S          |  4 ++++
- arch/powerpc/platforms/Kconfig.cputype | 11 +++++++++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/signal_32.c | 4 ----
+ arch/powerpc/kernel/signal_64.c | 2 --
+ 2 files changed, 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
-index f3ab94d73936..588fe8644df6 100644
---- a/arch/powerpc/kernel/head_32.S
-+++ b/arch/powerpc/kernel/head_32.S
-@@ -413,6 +413,7 @@ Alignment:
- 	. = 0x800
- 	DO_KVM  0x800
- FPUnavailable:
-+#ifdef CONFIG_PPC_FPU
- BEGIN_FTR_SECTION
- /*
-  * Certain Freescale cores don't have a FPU and treat fp instructions
-@@ -426,6 +427,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_FPU_UNAVAILABLE)
- 	b	fast_exception_return
- 1:	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	EXC_XFER_LITE(0x800, kernel_fp_unavailable_exception)
-+#else
-+	b 	ProgramCheck
-+#endif
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index 7b291707eb31..8cbc9ac1343d 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -764,8 +764,6 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	unsigned long msr = regs->msr;
+ #endif
  
- /* Decrementer */
- 	EXCEPTION(0x900, Decrementer, timer_interrupt, EXC_XFER_LITE)
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 40ffcdba42b8..d4fd109f177e 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -32,7 +32,7 @@ choice
- config PPC_BOOK3S_6xx
- 	bool "512x/52xx/6xx/7xx/74xx/82xx/83xx/86xx except 601"
- 	select PPC_BOOK3S_32
--	select PPC_FPU
-+	imply PPC_FPU
- 	select PPC_HAVE_PMU_SUPPORT
- 	select PPC_HAVE_KUEP
- 	select PPC_HAVE_KUAP
-@@ -229,9 +229,16 @@ config PPC_FPU_REGS
- 	bool
+-	BUG_ON(tsk != current);
+-
+ 	/* Set up Signal Frame */
+ 	/* Put a Real Time Context onto stack */
+ 	rt_sf = get_sigframe(ksig, get_tm_stackpointer(tsk), sizeof(*rt_sf), 1);
+@@ -1227,8 +1225,6 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	unsigned long msr = regs->msr;
+ #endif
  
- config PPC_FPU
--	bool
-+	bool "Support for Floating Point Unit (FPU)" if PPC_MPC832x
- 	default y if PPC64
- 	select PPC_FPU_REGS
-+	help
-+	  This must be enabled to support the Floating Point Unit
-+	  Most 6xx have an FPU but e300c2 core (mpc832x) don't have
-+	  an FPU, so when building an embedded kernel for that target
-+	  you can disable FPU support.
-+
-+	  If unsure say Y.
+-	BUG_ON(tsk != current);
+-
+ 	/* Set up Signal Frame */
+ 	frame = get_sigframe(ksig, get_tm_stackpointer(tsk), sizeof(*frame), 1);
+ 	if (unlikely(frame == NULL))
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index bfc939360bad..cae612bdde5f 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -822,8 +822,6 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 	unsigned long msr = regs->msr;
+ #endif
  
- config FSL_EMB_PERFMON
- 	bool "Freescale Embedded Perfmon"
+-	BUG_ON(tsk != current);
+-
+ 	frame = get_sigframe(ksig, get_tm_stackpointer(tsk), sizeof(*frame), 0);
+ 	if (unlikely(frame == NULL))
+ 		goto badframe;
 -- 
 2.25.0
 
