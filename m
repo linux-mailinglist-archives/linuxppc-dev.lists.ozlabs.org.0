@@ -2,70 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4FF248F10
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 21:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18336248F15
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Aug 2020 21:53:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWM305Q7bzDqN8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 05:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWM6j1RSkzDqdd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 05:53:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=TRDwzjpv; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ID1kX5r7; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWLyb0sqbzDqcl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 05:46:46 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id f10so9693721plj.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 12:46:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=ylBQHIGj+jC+wMGAW+WiPoCXXWUQK9WgH6fcVkJtSBg=;
- b=TRDwzjpv9nxBnOSNPospJ+g2+lM26x7LrfAWZDm2gvCsnlrIhyGQMvVZ+nN+hu7WkX
- O/oo+OEjbZ2O9PmpH/HltGohEtaT4mQAuhz2mTIFpqD9eXrS0bAzADnlvGV+CZhjlU6D
- 56u72kcTdOBo0I+2qXN79Jwyll3yLdhk3jnEc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=ylBQHIGj+jC+wMGAW+WiPoCXXWUQK9WgH6fcVkJtSBg=;
- b=JWNdVbNhLiC7Hreq4/RCVcqSLGZwJayiBug06ZwbSjfcXoVpn8pCY1d50guufAC5Qs
- p4vJIDhIfFOC91I+YUvOxvjf7pf3uXC1bVhbwc75Q9Vc8lfFUOHrNLH0jV5eSUmtWNeY
- oyVcZAibaOLblG7Qaie8IzYqY7i7DUBcX+A55am9Wn6Z0sKL64BwReLBbBAlIyQIyxBT
- Tu7wkFHPxq7AZz1aBcWluQ1D2P4ePrMiX3VKbxEyZ5ba4rVQcJzZ3ezswPivzcAKHwPh
- hwt1MgHnRVRAuz1U5XW7lRYf8TVSepOBnUNu9FXMpxsOFRn5nhtQ1GvF+VucJY7sroLy
- EjOw==
-X-Gm-Message-State: AOAM532fLJdY8Q0UZtUh1wHrwaK2BoerRIoF9VlCM9utUTiS4bd4Rbh/
- 8yxMJ1oJJn7zSwl9QVvwjL4mhA==
-X-Google-Smtp-Source: ABdhPJxQpoCNUK9oxMIJWJCcBhsLXV3qhwZ1vk6NlnSPUfnJzoewH/BG+Ra1OO11qvGzKQ2Um0GcDw==
-X-Received: by 2002:a17:90b:148b:: with SMTP id
- js11mr1261981pjb.234.1597780003259; 
- Tue, 18 Aug 2020 12:46:43 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id j5sm25754806pfg.80.2020.08.18.12.46.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Aug 2020 12:46:42 -0700 (PDT)
-Date: Tue, 18 Aug 2020 12:46:41 -0700
-From: Kees Cook <keescook@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWM4m4NJ7zDqCF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 05:52:08 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07IJWkru076478; Tue, 18 Aug 2020 15:51:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=references : from : to :
+ cc : subject : in-reply-to : date : message-id : mime-version :
+ content-type; s=pp1; bh=k8HiwGiI6W+IU4siScj8bisxpCGNJQYvS818WjWSBx8=;
+ b=ID1kX5r7z9b2F+dQ0eaYWDhW4tnH+1f3xG5cpXtToPGwUU2xh6O+8aX3U8qQyByfu+e8
+ fznS1whhb2jApj/6+BBYc9SBG4fJdBsS8koVm7lsin4oJo/MvzKuCAVdAyFNpqyDbgKg
+ Baa0NTpt+05nkp3+vQ17mO+il09gmdprxFYXRCL3tEcCwpnbyaW4Oa/Qlshzg9HpE0uX
+ 3Iw+9b/JFO4RPHGywpu944OzycrL/6aSGgb5oN2J264pxZG0sPHtiSHnMnJ+Kt7LcVus
+ ovN+zeXcCwe+3mhxvrj0Sd3wJHOHgJbYYpsd5XVRiu45BhXWcDuCdFrbXSfRlZ0ceSG+ RQ== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3304swngd4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Aug 2020 15:51:59 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07IJilcg019873;
+ Tue, 18 Aug 2020 19:51:58 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 3304tked05-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Aug 2020 19:51:58 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07IJpw4127001310
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Aug 2020 19:51:58 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D1BB112062;
+ Tue, 18 Aug 2020 19:51:58 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 46F8F112065;
+ Tue, 18 Aug 2020 19:51:55 +0000 (GMT)
+Received: from morokweng.localdomain (unknown [9.163.41.251])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Tue, 18 Aug 2020 19:51:54 +0000 (GMT)
+References: <20200817214658.103093-1-bauerman@linux.ibm.com>
+ <20200818065911.GA2324@lst.de>
+User-agent: mu4e 1.2.0; emacs 26.3
+From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 09/11] x86: remove address space overrides using set_fs()
-Message-ID: <202008181246.A03BB9CEA@keescook>
-References: <20200817073212.830069-1-hch@lst.de>
- <20200817073212.830069-10-hch@lst.de>
+Subject: Re: [PATCH v2] powerpc/pseries/svm: Allocate SWIOTLB buffer anywhere
+ in memory
+In-reply-to: <20200818065911.GA2324@lst.de>
+Date: Tue, 18 Aug 2020 16:51:52 -0300
+Message-ID: <877dtvn353.fsf@morokweng.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200817073212.830069-10-hch@lst.de>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-18_13:2020-08-18,
+ 2020-08-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 adultscore=0
+ mlxscore=0 malwarescore=0 spamscore=0 mlxlogscore=778 lowpriorityscore=0
+ bulkscore=0 phishscore=0 impostorscore=0 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008180131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,27 +96,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ linuxppc-dev@lists.ozlabs.org, Ram Pai <linuxram@us.ibm.com>,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 17, 2020 at 09:32:10AM +0200, Christoph Hellwig wrote:
-> Stop providing the possibility to override the address space using
-> set_fs() now that there is no need for that any more.  To properly
-> handle the TASK_SIZE_MAX checking for 4 vs 5-level page tables on
-> x86 a new alternative is introduced, which just like the one in
-> entry_64.S has to use the hardcoded virtual address bits to escape
-> the fact that TASK_SIZE_MAX isn't actually a constant when 5-level
-> page tables are enabled.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Awesome. :)
+Christoph Hellwig <hch@lst.de> writes:
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+> On Mon, Aug 17, 2020 at 06:46:58PM -0300, Thiago Jung Bauermann wrote:
+>> POWER secure guests (i.e., guests which use the Protection Execution
+>> Facility) need to use SWIOTLB to be able to do I/O with the hypervisor, but
+>> they don't need the SWIOTLB memory to be in low addresses since the
+>> hypervisor doesn't have any addressing limitation.
+>> 
+>> This solves a SWIOTLB initialization problem we are seeing in secure guests
+>> with 128 GB of RAM: they are configured with 4 GB of crashkernel reserved
+>> memory, which leaves no space for SWIOTLB in low addresses.
+>> 
+>> To do this, we use mostly the same code as swiotlb_init(), but allocate the
+>> buffer using memblock_alloc() instead of memblock_alloc_low().
+>> 
+>> We also need to add swiotlb_set_no_iotlb_memory() in order to set the
+>> no_iotlb_memory flag if initialization fails.
+>
+> Do you really need the helper?  As far as I can tell the secure guests
+> very much rely on swiotlb for all I/O, so you might as well panic if
+> you fail to allocate it.
+
+That is true. Ok, I will do that.
 
 -- 
-Kees Cook
+Thiago Jung Bauermann
+IBM Linux Technology Center
