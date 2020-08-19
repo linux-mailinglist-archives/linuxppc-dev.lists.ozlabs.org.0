@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF9A24A042
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 15:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1988124A036
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 15:38:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWpry5Gb3zDqwY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 23:43:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWplg6q6PzDqfM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 23:38:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=F7z3gWr4; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=XgFUTu1J; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWp2X1CpNzDqts
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 23:06:43 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWp0J050tzDqvZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 23:04:47 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07JD6IOI148908; Wed, 19 Aug 2020 09:06:32 -0400
+ 07JD443t115069; Wed, 19 Aug 2020 09:04:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=O/8ieVRIb2iiDoJ8m1Jo1/01zh2ZjlAYVlpwk0k4cAE=;
- b=F7z3gWr4cH4EAszUBv0/JMMo9F7KBMNWqtAquI0zXKUFI7vl8YYYUPUFPhxZaAmcDJwh
- bZqPw5NCXJuF2mQ3aeyFf4XLCj6k7sE9Tp9r/Zcw/ueorl2gUbHn+7GUIjVj+U0DvyEj
- /8i+yaywhRh0pd5cfDK8t1R0QWSYn3Z2HIqS5xLLTTzj5eHfBbRgoecd4E1D+qrSAGce
- 7KHFd3WSeeDJvx6TEjzRQ/RdIQdIqLM/5szCHhMyxNuYajIGYRR6oRsJzchoIM684BmY
- 9PcLxNQJnCNw4LQWkebZKfKvEBEnuxqZSf3amOMK9bY+xfBaRA23jvy/M8BPdMazVnDD eg== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3304sxcpt4-1
+ bh=sxOdLzp5MZWZ6egfMK178l+k+Rsst7sfujQe5cIcPEE=;
+ b=XgFUTu1JCAHI0QFcYnkUcJ5Qoc3phob0r2Ooi+UW0J6BMrF/m6d0hxZnQJP+KdJzcR3g
+ Dcw7CeiBsj1Mh2JRZUfKmc57w13wuhpw+Ek95TMPYGX+o0pz7dx1UR7hjYu1t2hI4ZP2
+ jSEZHR9BPNcfat5K74tmsAHT++n0wLiR/9us5h4Ghrbv74RTd4FCNi1yFg/EGV0VWyuu
+ WFzQL7iJORfS7b5bx3b+lgG1nMTHGuTIIM6U7Zk8htroe6B4P5p0fvPyZuKzcieAuL8I
+ tdcEZaoWZyjgdbsz6sPjySFGxqn6+ASBPNs7PqMKAYb0N2XB1rRFIzrhjPP6VEcjHHVj RA== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3313antr94-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 09:06:29 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07JCxQPA009193;
- Wed, 19 Aug 2020 13:01:35 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 3304ccq3ej-1
+ Wed, 19 Aug 2020 09:04:22 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07JCuDP4006281;
+ Wed, 19 Aug 2020 13:01:37 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma02wdc.us.ibm.com with ESMTP id 3304scv00w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 13:01:35 +0000
+ Wed, 19 Aug 2020 13:01:37 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07JD1YS741746880
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07JD1bAN32375208
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Aug 2020 13:01:34 GMT
+ Wed, 19 Aug 2020 13:01:37 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6FFFB2066;
- Wed, 19 Aug 2020 13:01:34 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3552AB205F;
+ Wed, 19 Aug 2020 13:01:37 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7B8CEB205F;
- Wed, 19 Aug 2020 13:01:32 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3FB59B2066;
+ Wed, 19 Aug 2020 13:01:35 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.102.3.58])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 19 Aug 2020 13:01:32 +0000 (GMT)
+ Wed, 19 Aug 2020 13:01:34 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v2 04/13] mm/debug_vm_pgtables/hugevmap: Use the arch helper
- to identify huge vmap support.
-Date: Wed, 19 Aug 2020 18:30:58 +0530
-Message-Id: <20200819130107.478414-5-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v2 05/13] mm/debug_vm_pgtable/savedwrite: Enable savedwrite
+ test with CONFIG_NUMA_BALANCING
+Date: Wed, 19 Aug 2020 18:30:59 +0530
+Message-Id: <20200819130107.478414-6-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
 References: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
@@ -80,11 +80,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-19_04:2020-08-19,
  2020-08-19 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- mlxscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 lowpriorityscore=0
- bulkscore=0 phishscore=0 impostorscore=0 suspectscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008190115
+ suspectscore=0
+ mlxlogscore=920 lowpriorityscore=0 clxscore=1015 malwarescore=0
+ adultscore=0 impostorscore=0 bulkscore=0 mlxscore=0 phishscore=0
+ priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2008190110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,60 +103,57 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ppc64 supports huge vmap only with radix translation. Hence use arch helper
-to determine the huge vmap support.
+Saved write support was added to track the write bit of a pte after marking the
+pte protnone. This was done so that AUTONUMA can convert a write pte to protnone
+and still track the old write bit. When converting it back we set the pte write
+bit correctly thereby avoiding a write fault again. Hence enable the test only
+when CONFIG_NUMA_BALANCING is enabled and use protnone protflags.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- include/linux/io.h    | 12 ++++++++++++
- mm/debug_vm_pgtable.c |  4 ++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ mm/debug_vm_pgtable.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/io.h b/include/linux/io.h
-index 8394c56babc2..0b1ecda0cc86 100644
---- a/include/linux/io.h
-+++ b/include/linux/io.h
-@@ -38,6 +38,18 @@ int arch_ioremap_pud_supported(void);
- int arch_ioremap_pmd_supported(void);
- #else
- static inline void ioremap_huge_init(void) { }
-+static inline int arch_ioremap_p4d_supported(void)
-+{
-+	return false;
-+}
-+static inline int arch_ioremap_pud_supported(void)
-+{
-+	return false;
-+}
-+static inline int arch_ioremap_pmd_supported(void)
-+{
-+	return false;
-+}
- #endif
- 
- /*
 diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 57259e2dbd17..cf3c4792b4a2 100644
+index cf3c4792b4a2..ffa10ede6842 100644
 --- a/mm/debug_vm_pgtable.c
 +++ b/mm/debug_vm_pgtable.c
-@@ -206,7 +206,7 @@ static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+@@ -114,10 +114,14 @@ static void __init pte_savedwrite_tests(unsigned long pfn, pgprot_t prot)
  {
- 	pmd_t pmd;
+ 	pte_t pte = pfn_pte(pfn, prot);
  
--	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+	if (!arch_ioremap_pmd_supported())
- 		return;
- 
- 	pr_debug("Validating PMD huge\n");
-@@ -320,7 +320,7 @@ static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
++	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
++		return;
++
+ 	pr_debug("Validating PTE saved write\n");
+ 	WARN_ON(!pte_savedwrite(pte_mk_savedwrite(pte_clear_savedwrite(pte))));
+ 	WARN_ON(pte_savedwrite(pte_clear_savedwrite(pte_mk_savedwrite(pte))));
+ }
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
  {
- 	pud_t pud;
+@@ -225,6 +229,9 @@ static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+ {
+ 	pmd_t pmd = pfn_pmd(pfn, prot);
  
--	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+	if (!arch_ioremap_pud_supported())
- 		return;
++	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
++		return;
++
+ 	pr_debug("Validating PMD saved write\n");
+ 	WARN_ON(!pmd_savedwrite(pmd_mk_savedwrite(pmd_clear_savedwrite(pmd))));
+ 	WARN_ON(pmd_savedwrite(pmd_clear_savedwrite(pmd_mk_savedwrite(pmd))));
+@@ -1005,8 +1012,8 @@ static int __init debug_vm_pgtable(void)
+ 	pmd_huge_tests(pmdp, pmd_aligned, prot);
+ 	pud_huge_tests(pudp, pud_aligned, prot);
  
- 	pr_debug("Validating PUD huge\n");
+-	pte_savedwrite_tests(pte_aligned, prot);
+-	pmd_savedwrite_tests(pmd_aligned, prot);
++	pte_savedwrite_tests(pte_aligned, protnone);
++	pmd_savedwrite_tests(pmd_aligned, protnone);
+ 
+ 	pte_unmap_unlock(ptep, ptl);
+ 
 -- 
 2.26.2
 
