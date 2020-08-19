@@ -2,45 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716092492CD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 04:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F8A2492CF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 04:17:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWWbc3XL2zDqg8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 12:15:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWWdr6xNxzDq9n
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 12:17:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWWBT5rbwzDqsH
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWWBT6f2VzDqsJ
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 11:57:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Qsugssrh; 
+ header.a=rsa-sha256 header.s=201909 header.b=cWzwY3HW; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 4BWWBT4P90z9sTh; Wed, 19 Aug 2020 11:57:37 +1000 (AEST)
+ id 4BWWBT5nFvz9sPC; Wed, 19 Aug 2020 11:57:37 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BWWBT0zNlz9sPf; Wed, 19 Aug 2020 11:57:35 +1000 (AEST)
+ id 4BWWBT4NxRz9sTg; Wed, 19 Aug 2020 11:57:37 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
  s=201909; t=1597802257;
- bh=wQVf180SAG/haX0ejh2PElSNXUqrQP+wmdT4eoX+kjo=;
+ bh=rNa4O4vXEy6JD2X3ZVrqL1CEBgHUoFIHyMwiNZo7m/o=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=Qsugssrh2oXeOeMuUSwKYM2fi9wxGM6AucjJwLpsc5Q19qW2nZZqxlZ02KBJToVo7
- vKHNUUFWaWx6u161/qBl/Vlut4kcdqVd8kTH51mmIx7Uh/pk1iWWn8UJ8clHST8Oki
- lZwR+xvJu9mMFmHPVg7ufZ2TCU5lYuToJbkHxeJ2cwODxGPkjvxMk8L+5ku8oTzDgt
- Y0azj1uPtgV5XeC7S8hsn27xH9O3b99Ai+CYsV7pdQ/ujdQIi8JXEjvYLJRXBCg25G
- DetcuZ4u4qNKTU5ftMFiZQV91ywuzdVgsqqQ1bSX5DxPLOft9/ADWA6qSLJtD1wJD+
- rxLIm4qaoFDAQ==
+ b=cWzwY3HWyZqydlMIefGXQpbVFNNWKw0UdTR36zVX5vfNw5ARTT4aeG7xnt0CQvM49
+ 24PJ2IaTGefopgpC1JOwt+xCPmw1AYvCnEbJB45YYwi+qbZ8E/XyfC7DlDVL1gmFja
+ vwHxwvTk2RZRU4pLO7VUjsLw2jb5lf8KowhY2oHzRcQycbkAi11x+qntPowgVkLFfn
+ A68JtZOUNVC5nRtsoNnfEB0edlDWKuUgA0CKjS1gkAe0adJ7nTF8cZ4u+z+yjamVTe
+ lYoE/hJn8x1+Ohrf6gsNiuxFM82FfGGnRVTxL/akWUdbLWRQ4Hi12OAPA5jKgmOrHy
+ eeqxw0FVa250w==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 6/9] selftests/powerpc: Skip security tests on older CPUs
-Date: Wed, 19 Aug 2020 11:57:24 +1000
-Message-Id: <20200819015727.1977134-6-mpe@ellerman.id.au>
+Subject: [PATCH 7/9] selftests/powerpc: Skip L3 bank test on older CPUs
+Date: Wed, 19 Aug 2020 11:57:25 +1000
+Message-Id: <20200819015727.1977134-7-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200819015727.1977134-1-mpe@ellerman.id.au>
 References: <20200819015727.1977134-1-mpe@ellerman.id.au>
@@ -61,43 +61,28 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Both these tests use PMU events that only work on newer CPUs, so skip
-them on older CPUs.
+This is a test of specific piece of logic in isa207-common.c, which is
+only used on Power8 or later. So skip it on older CPUs.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- tools/testing/selftests/powerpc/security/rfi_flush.c  | 3 +++
- tools/testing/selftests/powerpc/security/spectre_v2.c | 3 +++
- 2 files changed, 6 insertions(+)
+ tools/testing/selftests/powerpc/pmu/l3_bank_test.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/powerpc/security/rfi_flush.c b/tools/testing/selftests/powerpc/security/rfi_flush.c
-index fd37ff9b1c45..93a65bd1f231 100644
---- a/tools/testing/selftests/powerpc/security/rfi_flush.c
-+++ b/tools/testing/selftests/powerpc/security/rfi_flush.c
-@@ -89,6 +89,9 @@ int rfi_flush_test(void)
+diff --git a/tools/testing/selftests/powerpc/pmu/l3_bank_test.c b/tools/testing/selftests/powerpc/pmu/l3_bank_test.c
+index a96d512a18c4..a5dfa9bf3b9f 100644
+--- a/tools/testing/selftests/powerpc/pmu/l3_bank_test.c
++++ b/tools/testing/selftests/powerpc/pmu/l3_bank_test.c
+@@ -20,6 +20,9 @@ static int l3_bank_test(void)
+ 	char *p;
+ 	int i;
  
- 	SKIP_IF(geteuid() != 0);
- 
-+	// The PMU event we use only works on Power7 or later
-+	SKIP_IF(!have_hwcap(PPC_FEATURE_ARCH_2_06));
-+
- 	if (read_debugfs_file("powerpc/rfi_flush", &rfi_flush_org)) {
- 		perror("Unable to read powerpc/rfi_flush debugfs file");
- 		SKIP_IF(1);
-diff --git a/tools/testing/selftests/powerpc/security/spectre_v2.c b/tools/testing/selftests/powerpc/security/spectre_v2.c
-index c8d82b784102..adc2b7294e5f 100644
---- a/tools/testing/selftests/powerpc/security/spectre_v2.c
-+++ b/tools/testing/selftests/powerpc/security/spectre_v2.c
-@@ -134,6 +134,9 @@ int spectre_v2_test(void)
- 	s64 miss_percent;
- 	bool is_p9;
- 
-+	// The PMU events we use only work on Power8 or later
++	// The L3 bank logic is only used on Power8 or later
 +	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_2_07));
 +
- 	state = get_sysfs_state();
- 	if (state == UNKNOWN) {
- 		printf("Error: couldn't determine spectre_v2 mitigation state?\n");
+ 	p = malloc(MALLOC_SIZE);
+ 	FAIL_IF(!p);
+ 
 -- 
 2.25.1
 
