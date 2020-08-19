@@ -2,90 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A08024A9C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 01:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A16924AA5E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 01:59:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BX3Dq3pXmzDr6T
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 09:01:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BX4WX5mlDzDqwt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 09:59:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ljp@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=a7CNXbNV; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=qmBS/vEk; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BX32W5HrvzDqxb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 08:52:35 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07JMVbh3021502; Wed, 19 Aug 2020 18:52:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=V4bMGEreBg9QHjneLFbRvZyuVfNQ9jr2oojb9XEeUKo=;
- b=a7CNXbNVNL+5rrNGiu3V6DRgf8T1VydVjuHS7itln8Sq6JQz3lW8ybEfdrSp+i4Vlw3z
- jyrOMDXPb9r9Aq/P/+zY5JPrlPzvaijYMq0YA2Yv4Nc7pW8BLcvxXP5DXfnF6/rK4ena
- z/XVCXoAjRNhIx7pDkyMtdJZvH/WiCz1qIAukcsIt+Eigmx/wvpHAAKHYX1NoV9NsxlK
- nAmLxeOOII/GYv0kXAxbZHOFD5EGBuokAVbcsUpQwdhk9NjGXdT+bv5qulM0Lu7U05M6
- oVbHeV78pSgkYG5XmX9lrrtcZdmlYuUrZ5mnxgqgJ/f0uiEkK1071/4HA5ua3vMOExOC fQ== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3314ed71sw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 18:52:32 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07JMobaO019800;
- Wed, 19 Aug 2020 22:52:32 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma05wdc.us.ibm.com with ESMTP id 3304tgyd7m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 22:52:32 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07JMqQpX33751424
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Aug 2020 22:52:26 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B84C8BE056;
- Wed, 19 Aug 2020 22:52:30 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 395DBBE04F;
- Wed, 19 Aug 2020 22:52:30 +0000 (GMT)
-Received: from pompom.ibm.com (unknown [9.160.63.43])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 19 Aug 2020 22:52:30 +0000 (GMT)
-From: Lijun Pan <ljp@linux.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH net-next v2 4/4] ibmvnic: merge ibmvnic_reset_init and
- ibmvnic_init
-Date: Wed, 19 Aug 2020 17:52:26 -0500
-Message-Id: <20200819225226.10152-5-ljp@linux.ibm.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20200819225226.10152-1-ljp@linux.ibm.com>
-References: <20200819225226.10152-1-ljp@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-19_13:2020-08-19,
- 2020-08-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 mlxscore=0
- clxscore=1015 bulkscore=0 malwarescore=0 phishscore=0 spamscore=0
- adultscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008190178
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BX4SR58x9zDqwg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 09:56:38 +1000 (AEST)
+Received: from localhost (unknown [70.37.104.77])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 90C3F20B1F;
+ Wed, 19 Aug 2020 23:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1597881396;
+ bh=95eHrYkAN34bwk2zQZmOyD2HRv92Shs9u6NAKUbcWZM=;
+ h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+ b=qmBS/vEkZzGDUWb5FWIYZ4saIU35mm9apjQav/s4yWlEhW+qbtJfG/ffZNHGYfifW
+ KHDXDP4os9ZI26X5GLjZQtUzcanrdXpq7zGx5vRw5Z1tWYk9RbmfiBKa68QZSCM1Mk
+ QrymejrS4bBWOqhIKLtRtMkYVWkA1sz5CJtsLP/8=
+Date: Wed, 19 Aug 2020 23:56:36 +0000
+From: Sasha Levin <sashal@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: Re: [PATCH v2 3/4] powerpc/memhotplug: Make lmb size 64bit
+In-Reply-To: <20200806162329.276534-3-aneesh.kumar@linux.ibm.com>
+References: <20200806162329.276534-3-aneesh.kumar@linux.ibm.com>
+Message-Id: <20200819235636.90C3F20B1F@mail.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,154 +54,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lijun Pan <ljp@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These two functions share the majority of the code, hence merge
-them together. In the meanwhile, add a reset pass-in parameter
-to differentiate them. Thus, the code is easier to read and to tell
-the difference between reset_init and regular init.
+Hi
 
-Signed-off-by: Lijun Pan <ljp@linux.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 65 ++++++------------------------
- 1 file changed, 13 insertions(+), 52 deletions(-)
+[This is an automated email]
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 4ca4647db72a..47fbe0553570 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -104,8 +104,7 @@ static int send_login(struct ibmvnic_adapter *adapter);
- static void send_cap_queries(struct ibmvnic_adapter *adapter);
- static int init_sub_crqs(struct ibmvnic_adapter *);
- static int init_sub_crq_irqs(struct ibmvnic_adapter *adapter);
--static int ibmvnic_init(struct ibmvnic_adapter *);
--static int ibmvnic_reset_init(struct ibmvnic_adapter *);
-+static int ibmvnic_reset_init(struct ibmvnic_adapter *, bool reset);
- static void release_crq_queue(struct ibmvnic_adapter *);
- static int __ibmvnic_set_mac(struct net_device *, u8 *);
- static int init_crq_queue(struct ibmvnic_adapter *adapter);
-@@ -1868,7 +1867,7 @@ static int do_change_param_reset(struct ibmvnic_adapter *adapter,
- 		return rc;
- 	}
- 
--	rc = ibmvnic_reset_init(adapter);
-+	rc = ibmvnic_reset_init(adapter, true);
- 	if (rc)
- 		return IBMVNIC_INIT_FAILED;
- 
-@@ -1986,7 +1985,7 @@ static int do_reset(struct ibmvnic_adapter *adapter,
- 			goto out;
- 		}
- 
--		rc = ibmvnic_reset_init(adapter);
-+		rc = ibmvnic_reset_init(adapter, true);
- 		if (rc) {
- 			rc = IBMVNIC_INIT_FAILED;
- 			goto out;
-@@ -2093,7 +2092,7 @@ static int do_hard_reset(struct ibmvnic_adapter *adapter,
- 		return rc;
- 	}
- 
--	rc = ibmvnic_init(adapter);
-+	rc = ibmvnic_reset_init(adapter, false);
- 	if (rc)
- 		return rc;
- 
-@@ -4970,7 +4969,7 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
- 	return retrc;
- }
- 
--static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
-+static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter, bool reset)
- {
- 	struct device *dev = &adapter->vdev->dev;
- 	unsigned long timeout = msecs_to_jiffies(30000);
-@@ -4979,10 +4978,12 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
- 
- 	adapter->from_passive_init = false;
- 
--	old_num_rx_queues = adapter->req_rx_queues;
--	old_num_tx_queues = adapter->req_tx_queues;
-+	if (reset) {
-+		old_num_rx_queues = adapter->req_rx_queues;
-+		old_num_tx_queues = adapter->req_tx_queues;
-+		reinit_completion(&adapter->init_done);
-+	}
- 
--	reinit_completion(&adapter->init_done);
- 	adapter->init_done_rc = 0;
- 	rc = ibmvnic_send_crq_init(adapter);
- 	if (rc) {
-@@ -5000,7 +5001,8 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
- 		return adapter->init_done_rc;
- 	}
- 
--	if (test_bit(0, &adapter->resetting) && !adapter->wait_for_reset &&
-+	if (reset &&
-+	    test_bit(0, &adapter->resetting) && !adapter->wait_for_reset &&
- 	    adapter->reset_reason != VNIC_RESET_MOBILITY) {
- 		if (adapter->req_rx_queues != old_num_rx_queues ||
- 		    adapter->req_tx_queues != old_num_tx_queues) {
-@@ -5028,47 +5030,6 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
- 	return rc;
- }
- 
--static int ibmvnic_init(struct ibmvnic_adapter *adapter)
--{
--	struct device *dev = &adapter->vdev->dev;
--	unsigned long timeout = msecs_to_jiffies(30000);
--	int rc;
--
--	adapter->from_passive_init = false;
--
--	adapter->init_done_rc = 0;
--	rc = ibmvnic_send_crq_init(adapter);
--	if (rc) {
--		dev_err(dev, "Send crq init failed with error %d\n", rc);
--		return rc;
--	}
--
--	if (!wait_for_completion_timeout(&adapter->init_done, timeout)) {
--		dev_err(dev, "Initialization sequence timed out\n");
--		return -1;
--	}
--
--	if (adapter->init_done_rc) {
--		release_crq_queue(adapter);
--		return adapter->init_done_rc;
--	}
--
--	rc = init_sub_crqs(adapter);
--	if (rc) {
--		dev_err(dev, "Initialization of sub crqs failed\n");
--		release_crq_queue(adapter);
--		return rc;
--	}
--
--	rc = init_sub_crq_irqs(adapter);
--	if (rc) {
--		dev_err(dev, "Failed to initialize sub crq irqs\n");
--		release_crq_queue(adapter);
--	}
--
--	return rc;
--}
--
- static struct device_attribute dev_attr_failover;
- 
- static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
-@@ -5131,7 +5092,7 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 			goto ibmvnic_init_fail;
- 		}
- 
--		rc = ibmvnic_init(adapter);
-+		rc = ibmvnic_reset_init(adapter, false);
- 		if (rc && rc != EAGAIN)
- 			goto ibmvnic_init_fail;
- 	} while (rc == EAGAIN);
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: all
+
+The bot has tested the following trees: v5.8.1, v5.7.15, v5.4.58, v4.19.139, v4.14.193, v4.9.232, v4.4.232.
+
+v5.8.1: Build OK!
+v5.7.15: Build OK!
+v5.4.58: Build OK!
+v4.19.139: Failed to apply! Possible dependencies:
+    Unable to calculate
+
+v4.14.193: Failed to apply! Possible dependencies:
+    Unable to calculate
+
+v4.9.232: Failed to apply! Possible dependencies:
+    1a367063ca0c ("powerpc/pseries: Check memory device state before onlining/offlining")
+    25b587fba9a4 ("powerpc/pseries: Correct possible read beyond dlpar sysfs buffer")
+    333f7b76865b ("powerpc/pseries: Implement indexed-count hotplug memory add")
+    753843471cbb ("powerpc/pseries: Implement indexed-count hotplug memory remove")
+    943db62c316c ("powerpc/pseries: Revert 'Auto-online hotplugged memory'")
+    c21f515c7436 ("powerpc/pseries: Make the acquire/release of the drc for memory a seperate step")
+    e70d59700fc3 ("powerpc/pseries: Introduce memory hotplug READD operation")
+    f84775c2d5d9 ("powerpc/pseries: Fix build break when MEMORY_HOTREMOVE=n")
+
+v4.4.232: Failed to apply! Possible dependencies:
+    183deeea5871 ("powerpc/pseries: Consolidate CPU hotplug code to hotplug-cpu.c")
+    1a367063ca0c ("powerpc/pseries: Check memory device state before onlining/offlining")
+    1dc759566636 ("powerpc/pseries: Use kernel hotplug queue for PowerVM hotplug events")
+    1f859adb9253 ("powerpc/pseries: Verify CPU doesn't exist before adding")
+    25b587fba9a4 ("powerpc/pseries: Correct possible read beyond dlpar sysfs buffer")
+    333f7b76865b ("powerpc/pseries: Implement indexed-count hotplug memory add")
+    4a4bdfea7cb7 ("powerpc/pseries: Refactor dlpar_add_lmb() code")
+    753843471cbb ("powerpc/pseries: Implement indexed-count hotplug memory remove")
+    9054619ef54a ("powerpc/pseries: Add pseries hotplug workqueue")
+    943db62c316c ("powerpc/pseries: Revert 'Auto-online hotplugged memory'")
+    9dc512819e4b ("powerpc: Fix unused function warning 'lmb_to_memblock'")
+    bdf5fc633804 ("powerpc/pseries: Update LMB associativity index during DLPAR add/remove")
+    c21f515c7436 ("powerpc/pseries: Make the acquire/release of the drc for memory a seperate step")
+    e70d59700fc3 ("powerpc/pseries: Introduce memory hotplug READD operation")
+    e9d764f80396 ("powerpc/pseries: Enable kernel CPU dlpar from sysfs")
+    ec999072442a ("powerpc/pseries: Auto-online hotplugged memory")
+    f84775c2d5d9 ("powerpc/pseries: Fix build break when MEMORY_HOTREMOVE=n")
+    fdb4f6e99ffa ("powerpc/pseries: Remove call to memblock_add()")
+
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
 -- 
-2.23.0
-
+Thanks
+Sasha
