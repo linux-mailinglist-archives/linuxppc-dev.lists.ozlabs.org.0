@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86FB249F5F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 15:17:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EE8249F92
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 15:23:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWpH45D29zDqwM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 23:17:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWpPb0pVBzDqjJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 23:23:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=UwtZYc1l; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=FmHEtvvY; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWnxb1q6SzDqts
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 23:02:26 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07JD1o4v060349; Wed, 19 Aug 2020 09:02:03 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWnxx0FKGzDqvH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 23:02:44 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07JD28Xg185746; Wed, 19 Aug 2020 09:02:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=sBD/drs5dO/E6PFIS8TLGmuHo3QrgKGSpE0KjhYcQ9c=;
- b=UwtZYc1le0iqQmJM/SvKpT7QFR+1FI9xasGhMl/L0l1OMxAlLtz6565yJfC+325neauF
- c+e3T8F8533LlxnVkbwIUdNY5sBRZcdbWobOHJOuGSlavdXO0/2hv4rCNzj0vof2zsCo
- 9CyUqxsyRmP1891blDNpghGfGlKf0ve5dZ5f6Efh70mu8BSiWoDXbSCLlvafxNSWIf+Y
- LWHxMJzHdLw/IjMc6gzoRFeLaCDywEHiaSKins0OBk/8QwUkEPQink87KfUtpe52/VJi
- JhnbbTcLoeutgqJVkJ4Jv7/Zg6GmMMuaL0wbg9P5lYyERWj1nqORCt01nNM5/zJuVQ7r 2w== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3304ru9ack-1
+ bh=ueLZBCl46XwmGhfzKkgdbcfo+IIM63XgD/hY+HvwHME=;
+ b=FmHEtvvYmahUqUu6S2BXzLt2/TcLSr2/fIgCSgUrTg8a32OxTbQDHouMMWfPDXejRXTv
+ 97SF/+k1MPehG3XRwcIhlYhBjxM4G1VVykpRcLYt3tIo9cgtmKjujaonwTQgrfx30IpR
+ kg4wHhKr97FF2e4aGybKlcH0ADgJ4mCDHMeA0WXdhhj/xFKHd55XVheIvC3LDRDLSd8F
+ 1wUxXOpSbYkwv/Co2u5W2DW7VEfph2+BgdXXcL3+Rw8WgtVtJflJ/3NpDoYJKypClfZO
+ yZPB5LHQuDFv9v29U3fQrELg8NS18d9A0pvbDaZFnCqTbnlnSsfUNUDhFxDwMixxa/2t ZQ== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3313qqswam-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 09:02:03 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07JCuHcd006310;
- Wed, 19 Aug 2020 13:01:50 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02wdc.us.ibm.com with ESMTP id 3304scv01y-1
+ Wed, 19 Aug 2020 09:02:17 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07JD0J2N023797;
+ Wed, 19 Aug 2020 13:01:52 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03wdc.us.ibm.com with ESMTP id 3304ce42ya-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 13:01:50 +0000
+ Wed, 19 Aug 2020 13:01:52 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07JD1nUH51052872
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07JD1qjd44499260
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Aug 2020 13:01:49 GMT
+ Wed, 19 Aug 2020 13:01:52 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 94141B206B;
- Wed, 19 Aug 2020 13:01:49 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5842FB205F;
+ Wed, 19 Aug 2020 13:01:52 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B7B94B205F;
- Wed, 19 Aug 2020 13:01:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0699CB2067;
+ Wed, 19 Aug 2020 13:01:50 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.102.3.58])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 19 Aug 2020 13:01:47 +0000 (GMT)
+ Wed, 19 Aug 2020 13:01:49 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v2 10/13] mm/debug_vm_pgtable/locks: Take correct page table
- lock
-Date: Wed, 19 Aug 2020 18:31:04 +0530
-Message-Id: <20200819130107.478414-11-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v2 11/13] mm/debug_vm_pgtable/pmd_clear: Don't use
+ pmd/pud_clear on pte entries
+Date: Wed, 19 Aug 2020 18:31:05 +0530
+Message-Id: <20200819130107.478414-12-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
 References: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
@@ -81,9 +81,9 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  2020-08-19 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  lowpriorityscore=0
- mlxlogscore=999 priorityscore=1501 suspectscore=2 phishscore=0 spamscore=0
- impostorscore=0 adultscore=0 mlxscore=0 clxscore=1015 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 malwarescore=0 mlxlogscore=982 mlxscore=0 suspectscore=0
+ adultscore=0 clxscore=1015 priorityscore=1501 bulkscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2008190110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,71 +103,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make sure we call pte accessors with correct lock held.
+pmd_clear() should not be used to clear pmd level pte entries.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- mm/debug_vm_pgtable.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ mm/debug_vm_pgtable.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 69fe3cd8126c..8f7a8ccb5a54 100644
+index 8f7a8ccb5a54..63576fe767a2 100644
 --- a/mm/debug_vm_pgtable.c
 +++ b/mm/debug_vm_pgtable.c
-@@ -1024,33 +1024,39 @@ static int __init debug_vm_pgtable(void)
- 	pmd_thp_tests(pmd_aligned, prot);
- 	pud_thp_tests(pud_aligned, prot);
+@@ -191,6 +191,8 @@ static void __init pmd_advanced_tests(struct mm_struct *mm,
+ 	pmd = READ_ONCE(*pmdp);
+ 	WARN_ON(pmd_young(pmd));
  
-+	hugetlb_basic_tests(pte_aligned, prot);
++	/*  Clear the pte entries  */
++	pmdp_huge_get_and_clear(mm, vaddr, pmdp);
+ 	pgtable = pgtable_trans_huge_withdraw(mm, pmdp);
+ }
+ 
+@@ -311,6 +313,8 @@ static void __init pud_advanced_tests(struct mm_struct *mm,
+ 	pudp_test_and_clear_young(vma, vaddr, pudp);
+ 	pud = READ_ONCE(*pudp);
+ 	WARN_ON(pud_young(pud));
 +
- 	/*
- 	 * Page table modifying tests
++	pudp_huge_get_and_clear(mm, vaddr, pudp);
+ }
+ 
+ static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot)
+@@ -429,8 +433,6 @@ static void __init pud_populate_tests(struct mm_struct *mm, pud_t *pudp,
+ 	 * This entry points to next level page table page.
+ 	 * Hence this must not qualify as pud_bad().
  	 */
--	pte_clear_tests(mm, ptep, vaddr);
--	pmd_clear_tests(mm, pmdp);
--	pud_clear_tests(mm, pudp);
--	p4d_clear_tests(mm, p4dp);
--	pgd_clear_tests(mm, pgdp);
- 
- 	ptep = pte_alloc_map_lock(mm, pmdp, vaddr, &ptl);
-+	pte_clear_tests(mm, ptep, vaddr);
- 	pte_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
--	pmd_advanced_tests(mm, vma, pmdp, pmd_aligned, vaddr, prot, saved_ptep);
--	pud_advanced_tests(mm, vma, pudp, pud_aligned, vaddr, prot);
--	hugetlb_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
--
-+	pte_unmap_unlock(ptep, ptl);
- 
-+	ptl = pmd_lock(mm, pmdp);
-+	pmd_clear_tests(mm, pmdp);
-+	pmd_advanced_tests(mm, vma, pmdp, pmd_aligned, vaddr, prot, saved_ptep);
- 	pmd_huge_tests(pmdp, pmd_aligned, prot);
-+	pmd_populate_tests(mm, pmdp, saved_ptep);
-+	spin_unlock(ptl);
-+
-+	ptl = pud_lock(mm, pudp);
-+	pud_clear_tests(mm, pudp);
-+	pud_advanced_tests(mm, vma, pudp, pud_aligned, vaddr, prot);
- 	pud_huge_tests(pudp, pud_aligned, prot);
-+	pud_populate_tests(mm, pudp, saved_pmdp);
-+	spin_unlock(ptl);
- 
--	pte_unmap_unlock(ptep, ptl);
-+	//hugetlb_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
- 
--	pmd_populate_tests(mm, pmdp, saved_ptep);
--	pud_populate_tests(mm, pudp, saved_pmdp);
-+	spin_lock(&mm->page_table_lock);
-+	p4d_clear_tests(mm, p4dp);
-+	pgd_clear_tests(mm, pgdp);
- 	p4d_populate_tests(mm, p4dp, saved_pudp);
- 	pgd_populate_tests(mm, pgdp, saved_p4dp);
--
--	hugetlb_basic_tests(pte_aligned, prot);
-+	spin_unlock(&mm->page_table_lock);
- 
- 	p4d_free(mm, saved_p4dp);
- 	pud_free(mm, saved_pudp);
+-	pmd_clear(pmdp);
+-	pud_clear(pudp);
+ 	pud_populate(mm, pudp, pmdp);
+ 	pud = READ_ONCE(*pudp);
+ 	WARN_ON(pud_bad(pud));
+@@ -562,7 +564,6 @@ static void __init pmd_populate_tests(struct mm_struct *mm, pmd_t *pmdp,
+ 	 * This entry points to next level page table page.
+ 	 * Hence this must not qualify as pmd_bad().
+ 	 */
+-	pmd_clear(pmdp);
+ 	pmd_populate(mm, pmdp, pgtable);
+ 	pmd = READ_ONCE(*pmdp);
+ 	WARN_ON(pmd_bad(pmd));
 -- 
 2.26.2
 
