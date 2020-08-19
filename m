@@ -1,67 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8223249B40
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 12:54:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B88249B87
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 13:18:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWl5N6jLxzDqpJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 20:54:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWldV5bzBzDqjR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 21:18:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c44;
- helo=mail-oo1-xc44.google.com; envelope-from=allen.lkml@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Gso9pMxr; dkim-atps=neutral
-Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com
- [IPv6:2607:f8b0:4864:20::c44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=KYFycYPr; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWl3M0QLNzDqfK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 20:52:13 +1000 (AEST)
-Received: by mail-oo1-xc44.google.com with SMTP id p137so4789596oop.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 03:52:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=NVVSOWbVhc+1jDHdFns3ZSzRukenY167RTrEndwbU+M=;
- b=Gso9pMxrOQWdMFS4oUDFDQopnA2DpTpiZCJFqq/B2ZEoa859lMA5DG1q5AfyFRQC2K
- 0BbOOMsaxojyLaYamQN/hpqRKPyyNI6tYgVnrQEOZwypkcXjeXNYOcmggJBzwWOAPH2t
- uDby8ZfkUfgPuCVQ1hjydyCXloT/GD+ySll0NBJQxEcqa5ZYkvWZC8QcBYu6LNGB6qmy
- BNwFxRP4pWhEXUL9/E4VkRndasu5/0pLNTSDu1EbLLgbuQ4nsZFmlQPPbC5atEOXRxVR
- X7KawI1aJh0oYRDXgKsXSAYl9gDpUeMspxL/faww8IWo5Ubp2AZ/wAk+H184A02WZfBJ
- /6Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=NVVSOWbVhc+1jDHdFns3ZSzRukenY167RTrEndwbU+M=;
- b=ujoAY9UAnTzIXPylCGItbEvGuifV1FPE+tbP69YHxeB9oaliUJZpYFIUJ3U74tfpQU
- o3mLTA+ZOIiyJkzbYr92hC2cilfFuGUi0HboRoV+p4oW7YTVThL9FKEtsMq522U7Oxbw
- oq6F4T8REDMXhwOZcNRSepQe7O+Tk9uzXo78uravetr/4AKtiPtXjT326G5ka3IfQvy/
- aNLYo2PW3kMy74qVgsVzuoZz7pVuQfTL5id5+ECci00QEDOKT7e74Rn7pjFSY20lw+OE
- EvyLz18QFzcmAFyAwTtAgzHUvlwd2NwCB6dc5RP/b/lwX8FOGMiMN3PKiKwJ+ofCKn88
- shCw==
-X-Gm-Message-State: AOAM533sBJXpknKOMI93vPRue+/hy3ZB1MuDM6WVsyFe0abeLj9CIUwx
- gAgO229KL0aBWzQkQeWOksRkvDiEY6gVrX1hd+Y=
-X-Google-Smtp-Source: ABdhPJza8N+paiL7BVopPlHy+EmjenRyRlSSITcfsn9ivsKXVK0GX/mlG+WzET1CjkKeuuz0KvlkntNnGGj9jJ4neCo=
-X-Received: by 2002:a4a:d62c:: with SMTP id n12mr18112364oon.38.1597834329556; 
- Wed, 19 Aug 2020 03:52:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200817085703.25732-1-allen.cryptic@gmail.com>
- <s5hsgckl084.wl-tiwai@suse.de> <20200818104432.GB5337@sirena.org.uk>
-In-Reply-To: <20200818104432.GB5337@sirena.org.uk>
-From: Allen <allen.lkml@gmail.com>
-Date: Wed, 19 Aug 2020 16:21:58 +0530
-Message-ID: <CAOMdWSK79WWsmsxJH9zUMZMfkBNRWXbmEHg-haxNZopHjC1cGw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWlbW69StzDqj1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 21:16:39 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5684C206DA;
+ Wed, 19 Aug 2020 11:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1597835796;
+ bh=7W9fpcvvq7j01lnjxB+ot2Sjfmr0kSAadp/9/zh9zI8=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=KYFycYPrBmWJam7NZKlptYCrkATXPMfUZP8OeD/6IsUDDnwM3EZ+M8LtZo3dxa5MM
+ o/70hVNLqh/t6/PFzXCYwmcyA3H0CDzXRx746GYHbFq1+Abwss1s56TFmWKJCwjlzU
+ AkugyyZ82ocFQMeBShPmU03BW3dtBoaed886yk5U=
+Date: Wed, 19 Aug 2020 12:16:05 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Allen <allen.lkml@gmail.com>
 Subject: Re: [PATCH 00/10] sound: convert tasklets to use new tasklet_setup()
-To: Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20200819111605.GC5441@sirena.org.uk>
+References: <20200817085703.25732-1-allen.cryptic@gmail.com>
+ <s5hsgckl084.wl-tiwai@suse.de>
+ <20200818104432.GB5337@sirena.org.uk>
+ <CAOMdWSK79WWsmsxJH9zUMZMfkBNRWXbmEHg-haxNZopHjC1cGw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="XWOWbaMNXpFDWE00"
+Content-Disposition: inline
+In-Reply-To: <CAOMdWSK79WWsmsxJH9zUMZMfkBNRWXbmEHg-haxNZopHjC1cGw@mail.gmail.com>
+X-Cookie: I wish you were a Scotch on the rocks.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,35 +71,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->
-> > Mark, may I apply those ASoC patches through my tree together with
-> > others?  Those seem targeting to 5.9, and I have a patch set to
-> > convert to tasklet for 5.10, which would be better manageable when
-> > based on top of those changes.
->
-> These patches which I wasn't CCed on and which need their subject lines
-> fixing :( .  With the subject lines fixed I guess so so
 
-Extremely sorry. I thought I had it covered. How would you like it
-worded?
+--XWOWbaMNXpFDWE00
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Acked-by: Mark Brown <broonie@kernel.org>
->
-> but judging from some of the other threads about similar patches that I
-> was randomly CCed on I'm not sure people like from_tasklet() so perhaps
-> there might be issues.
+On Wed, Aug 19, 2020 at 04:21:58PM +0530, Allen wrote:
 
-Yes, there is a new macro by name cast_out() is suggested in place of
-from_tasklet(). Hopefully it will go in soon. Will spin out V2 with the change
-and also re-word subject line.
+> > These patches which I wasn't CCed on and which need their subject lines
+> > fixing :( .  With the subject lines fixed I guess so so
 
-> Allen, as documented in submitting-patches.rst please send patches to
-> the maintainers for the code you would like to change.  The normal
-> kernel workflow is that people apply patches from their inboxes, if they
-> aren't copied they are likely to not see the patch at all and it is much
-> more difficult to apply patches.
+> Extremely sorry. I thought I had it covered. How would you like it
+> worded?
 
-I understand, I'll take care of it in the future. Thank you.
+ASoC:
 
--- 
-       - Allen
+In general you should try to follow the style for the code you're
+modifying, this applies to things like commit logs as well as the code
+itself.
+
+--XWOWbaMNXpFDWE00
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl89CfQACgkQJNaLcl1U
+h9Cifwf+ImKkN4bcgAsq1FQIuFfGzOK1C2rJvwO1FF9QMBqoSLWbU+XXMm8B+dmp
+BUuRn3yv2s26q5SMpU1EvotzyTnEdeAhS8rvA+hpUMw7E+lz9v2qz/2m553Hap6U
+R1REKNzVtqstijAyYycjHID0ZsOPK+T5wBISb2fY38cJlgGRMQXh0ZgvHq54sfVK
+aLts4u4J72HMFLuxPbgTfiO8CX46MjLoH0eoRzPu7R44dvzqUfzdu5B/7Fp5amcC
+Sd6731MDQYarYhge1gBJ84arpbSB6Qsr1LQNh8hh2q0cXEpwNcXjnDMsYKjcoxPl
+D2VS/Gxp0eqmBwQXcSE5+AGsdYKdOQ==
+=XARi
+-----END PGP SIGNATURE-----
+
+--XWOWbaMNXpFDWE00--
