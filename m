@@ -2,56 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6963F24923E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 03:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED5624929B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 04:00:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWVP20RZ0zDqsJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 11:21:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWWFT56wgzDqrs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 12:00:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.121; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0121.hostedemail.com
- [216.40.44.121])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWVM64NcBzDqVb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 11:20:00 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay07.hostedemail.com (Postfix) with ESMTP id A882B181D330D;
- Wed, 19 Aug 2020 01:19:56 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
- RULES_HIT:41:355:379:599:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:2902:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:4321:5007:6119:7903:10004:10400:10848:11026:11232:11658:11914:12043:12048:12296:12297:12438:12740:12760:12895:13069:13311:13357:13439:14659:14721:21063:21080:21627:21939:21990:30051:30054:30056:30091,
- 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
- DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
- LFtime:2, LUA_SUMMARY:none
-X-HE-Tag: wash41_4712ceb27023
-X-Filterd-Recvd-Size: 2169
-Received: from XPS-9350.home (unknown [47.151.133.149])
- (Authenticated sender: joe@perches.com)
- by omf13.hostedemail.com (Postfix) with ESMTPA;
- Wed, 19 Aug 2020 01:19:55 +0000 (UTC)
-Message-ID: <3ca05f10dec479a70f6c33274ded8d4fab9c01ec.camel@perches.com>
-Subject: Re: [PATCH v2 11/25] powerpc/signal: Refactor bad frame logging
-From: Joe Perches <joe@perches.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
- Ellerman <mpe@ellerman.id.au>
-Date: Tue, 18 Aug 2020 18:19:54 -0700
-In-Reply-To: <fa094445c119fc00315e1c13783b493346306c6a.1597770847.git.christophe.leroy@csgroup.eu>
-References: <cover.1597770847.git.christophe.leroy@csgroup.eu>
- <fa094445c119fc00315e1c13783b493346306c6a.1597770847.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWW9L6pWqzDqnK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 11:56:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ge3eqSkk; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4BWW9L6B8Sz9sTY; Wed, 19 Aug 2020 11:56:38 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4BWW9L5CqSz9sTb; Wed, 19 Aug 2020 11:56:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1597802198;
+ bh=l6AFhSuZ28HjKGhc4vYbzbK6GGmi/2uRw/gPbOMqX4s=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=ge3eqSkkLTpyM4gm91A1RDKKwamIpJTWcxA1pRjv/y68E01kwUT7PzOfMHFuSy7IX
+ NEYgGUMD3EcIWwm4Q8HkvfduI0ms4TxPkDzGfFmBT2A2r3zxH8yEH1f0rS6pX5Vd/t
+ QTw4L616VtmYc9cdbK9WB3Ovh8t/sugmKSUofb5JpRHPjxME1mkXDiSiMaHWouvV6Z
+ TUGrdNAGiswR0YVF7AAQ74QWRL0B5W3ozuSIZscuwz40zsL0EXTCF1+e/MiLldy27q
+ QAR4p8bIQHthm4ihQsHa5rOPUmSiz5I7MIeVgRUiO31o9P66LLgzidUqavH9wpQ0ir
+ chGexVmMhmEGg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH 2/3] powerpc/smp: Fold cpu_die() into its only caller
+Date: Wed, 19 Aug 2020 11:56:33 +1000
+Message-Id: <20200819015634.1974478-2-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200819015634.1974478-1-mpe@ellerman.id.au>
+References: <20200819015634.1974478-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,37 +57,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-08-18 at 17:19 +0000, Christophe Leroy wrote:
-> The logging of bad frame appears half a dozen of times
-> and is pretty similar.
-[]
-> diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-[]
-> @@ -355,3 +355,14 @@ static unsigned long get_tm_stackpointer(struct task_struct *tsk)
->  #endif
->  	return ret;
->  }
-> +
-> +static const char fm32[] = KERN_INFO "%s[%d]: bad frame in %s: %p nip %08lx lr %08lx\n";
-> +static const char fm64[] = KERN_INFO "%s[%d]: bad frame in %s: %p nip %016lx lr %016lx\n";
+Avoid the eternal confusion between cpu_die() and __cpu_die() by
+removing the former, folding it into its only caller.
 
-Why not remove this and use it in place with
-%08lx/%016x used as %px with a case to (void *)?
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/smp.h | 1 -
+ arch/powerpc/kernel/smp.c      | 4 ----
+ 2 files changed, 5 deletions(-)
 
-> +void signal_fault(struct task_struct *tsk, struct pt_regs *regs,
-> +		  const char *where, void __user *ptr)
-> +{
-> +	if (show_unhandled_signals)
-> +		printk_ratelimited(regs->msr & MSR_64BIT ? fm64 : fm32, tsk->comm,
-> +				   task_pid_nr(tsk), where, ptr, regs->nip, regs->link);
-
-	pr_info_ratelimited("%s[%d]: bad frame in %s: %p nip %016lx lr %016lx\n",
-			    tsk->comm, task_pid_nr(tsk), where, ptr,
-			    (void *)regs->nip, (void *)regs->link);
-
+diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
+index 49a25e2400f2..a314d2d2d2be 100644
+--- a/arch/powerpc/include/asm/smp.h
++++ b/arch/powerpc/include/asm/smp.h
+@@ -29,7 +29,6 @@ extern int boot_cpuid;
+ extern int spinning_secondaries;
+ extern u32 *cpu_to_phys_id;
+ 
+-extern void cpu_die(void);
+ extern int cpu_to_chip_id(int cpu);
+ 
+ #ifdef CONFIG_SMP
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index b05d2db13d08..c616d975bf95 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1432,11 +1432,7 @@ void __cpu_die(unsigned int cpu)
+ void arch_cpu_idle_dead(void)
+ {
+ 	sched_preempt_enable_no_resched();
+-	cpu_die();
+-}
+ 
+-void cpu_die(void)
+-{
+ 	/*
+ 	 * Disable on the down path. This will be re-enabled by
+ 	 * start_secondary() via start_secondary_resume() below
+-- 
+2.25.1
 
