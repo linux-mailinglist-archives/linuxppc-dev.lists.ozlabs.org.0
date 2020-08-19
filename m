@@ -2,97 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853F3249678
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 09:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1D32496F9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 09:19:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWf3J1NxQzDqxB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 17:06:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWfKg3WqzzDqtK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 17:19:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=cS4YVKf+; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWdnz2pWgzDqvT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 16:55:19 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07J6XXUj110884; Wed, 19 Aug 2020 02:55:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=C7XeqbggeBaD2Gri2aoVWoHh472g5HoW3i7+WuntM3k=;
- b=cS4YVKf+AsuoT3VC8iNvjTGygGK/6lvwTeHDO2rvqAbjEOFDvtYe4YYioJO7aUE5geVs
- IAsSQQ7zQU5AHBLdU2c5tOaB9DC/JxcPlgVHL6ZxVidRM8BgS1PA/YIPS703flHLF0Io
- 1XXpaZuRjFjvuLDj25kHPgdy376m/wxrK+eZyzEn/HLUkdpTFaPtk3AgvVhA41ka7e/A
- xlEsF8KOInbHi3Opk4TrdlHuPEnbzG6Yat+eOpyi8Q/o48Scuq+WMERVIq3WTTeFVjBz
- 6LNOOQdb/aZt2WzmSr6Cu00RzxucrmszY+j/Zcmgvk6dKE5kUgbaPx2jBTQMphCr3npd Aw== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3304r47p4a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 02:55:08 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07J6idUp004588;
- Wed, 19 Aug 2020 06:55:04 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 3304cccgw4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 06:55:04 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07J6t3rs37159278
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Aug 2020 06:55:04 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D39EEAC05B;
- Wed, 19 Aug 2020 06:55:03 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14E22AC05F;
- Wed, 19 Aug 2020 06:55:01 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.102.26.142])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 19 Aug 2020 06:55:01 +0000 (GMT)
-X-Mailer: emacs 27.1 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-Subject: Re: [PATCH 14/16] debug_vm_pgtable/hugetlb: Disable hugetlb test on
- ppc64
-In-Reply-To: <08c63a65-cd3f-73f3-1698-5e60f398fbad@arm.com>
-References: <20200812063358.369514-1-aneesh.kumar@linux.ibm.com>
- <20200812063358.369514-14-aneesh.kumar@linux.ibm.com>
- <d067c278-6391-72f1-75c2-ccbd52909233@arm.com>
- <efc8f8c8-c16d-0826-9401-a45005ecaf62@linux.ibm.com>
- <83766a01-6ffb-798c-c5b9-46b2d672f618@arm.com>
- <535169b9-f4f0-57ce-0c2b-30afc237d4bd@linux.ibm.com>
- <08c63a65-cd3f-73f3-1698-5e60f398fbad@arm.com>
-Date: Wed, 19 Aug 2020 12:24:59 +0530
-Message-ID: <87r1s315x8.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWfHd4pzWzDqSx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 17:17:30 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BWfHT3GNGz9tx31;
+ Wed, 19 Aug 2020 09:17:25 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 00Qb-dSzLs7G; Wed, 19 Aug 2020 09:17:25 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BWfHT2MxBz9tx30;
+ Wed, 19 Aug 2020 09:17:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2C25B8B7F5;
+ Wed, 19 Aug 2020 09:17:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id XHszll2otBUV; Wed, 19 Aug 2020 09:17:26 +0200 (CEST)
+Received: from [172.25.230.104] (po15451.idsi0.si.c-s.fr [172.25.230.104])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E3D3B8B767;
+ Wed, 19 Aug 2020 09:17:25 +0200 (CEST)
+Subject: Re: remove the last set_fs() in common code, and remove it for x86
+ and powerpc
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Christoph Hellwig <hch@lst.de>
+References: <20200817073212.830069-1-hch@lst.de>
+ <319d15b1-cb4a-a7b4-3082-12bb30eb5143@csgroup.eu>
+ <20200818180555.GA29185@lst.de>
+ <e3781661-2e13-4f46-d892-181907a2e768@csgroup.eu>
+Message-ID: <f2e31c89-dd9e-f0f8-ef5c-e930d01a3b65@csgroup.eu>
+Date: Wed, 19 Aug 2020 09:16:59 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-19_04:2020-08-18,
- 2020-08-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 bulkscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=999 mlxscore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008190056
+In-Reply-To: <e3781661-2e13-4f46-d892-181907a2e768@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,74 +67,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org,
+ Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anshuman Khandual <anshuman.khandual@arm.com> writes:
 
-> On 08/12/2020 07:22 PM, Aneesh Kumar K.V wrote:
->> On 8/12/20 7:04 PM, Anshuman Khandual wrote:
->>>
->>>
->>> On 08/12/2020 06:46 PM, Aneesh Kumar K.V wrote:
->>>> On 8/12/20 6:33 PM, Anshuman Khandual wrote:
->>>>>
->>>>>
->>>>> On 08/12/2020 12:03 PM, Aneesh Kumar K.V wrote:
->>>>>> The seems to be missing quite a lot of details w.r.t allocating
->>>>>> the correct pgtable_t page (huge_pte_alloc()), holding the right
->>>>>> lock (huge_pte_lock()) etc. The vma used is also not a hugetlb VMA.
->>>>>>
->>>>>> ppc64 do have runtime checks within CONFIG_DEBUG_VM for most of thes=
-e.
->>>>>> Hence disable the test on ppc64.
->>>>>
->>>>> This test is free from any platform specific #ifdefs which should
->>>>> never be broken. If hugetlb_advanced_tests() does not work or is
->>>>> not detailed enough for ppc64, then it would be great if you could
->>>>> suggest some improvements so that it works for all enabled platforms.
->>>>>
->>>>>
->>>>
->>>> As mentioned the test is broken. For hugetlb, the pgtable_t pages shou=
-ld be allocated by huge_pte_alloc(). We need to hold huget_pte_lock() befor=
-e=C2=A0 updating huge tlb pte. That takes hugepage size, which is mostly de=
-rived out of vma. Hence vma need to be a hugetlb vma. Some of the functions=
- also depend on hstate. Also we should use set_huge_pte_at() when setting u=
-p hugetlb pte entries. I was tempted to remove that test completely marking=
- it broken. But avoided that by marking it broken on only PPC64.
->>>
->>> The test is not broken, hugetlb helpers on multiple platforms dont comp=
-lain about
->>> this at all. The tests here emulate 'enough' MM objects required for th=
-e helpers
->>> on enabled platforms, to perform the primary task i.e page table transf=
-ormation it
->>> is expected to do. The test does not claim to emulate a perfect MM envi=
-ronment for
->>> a given subsystem's (like HugeTLB) arch helpers. Now in this case, the =
-MM objects
->>> being emulated for the HugeTLB advanced tests does not seem to be suffi=
-cient for
->>> ppc64 but it can be improved. But that does not mean it is broken in it=
-'s current
->>> form for other platforms.
->>>
->>=20
->> There is nothing ppc64 specific here. It is just that we have CONFIG_DEB=
-UG_VM based checks for different possibly wrong usages of these functions. =
-This was done because we have different page sizes, two different translati=
-ons to support and we want to avoid any wrong usage. IMHO expecting hugetlb=
- page table helpers to work with a non hugetlb VMA and=C2=A0 without holdin=
-g hugeTLB pte lock is a clear violation of hugetlb interface.
->
-> Do you have a modified version of the test with HugeTLB marked VMA and wi=
-th pte lock
-> held, which works on ppc664 ?
 
-Nope. That is one of the reason I commented that out. We can sort that
-out slowly.
+Le 18/08/2020 à 20:23, Christophe Leroy a écrit :
+> 
+> 
+> Le 18/08/2020 à 20:05, Christoph Hellwig a écrit :
+>> On Tue, Aug 18, 2020 at 07:46:22PM +0200, Christophe Leroy wrote:
+>>> I gave it a go on my powerpc mpc832x. I tested it on top of my newest
+>>> series that reworks the 32 bits signal handlers (see
+>>> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=196278) with 
+>>>
+>>> the microbenchmark test used is that series.
+>>>
+>>> With KUAP activated, on top of signal32 rework, performance is 
+>>> boosted as
+>>> system time for the microbenchmark goes from 1.73s down to 1.56s, 
+>>> that is
+>>> 10% quicker
+>>>
+>>> Surprisingly, with the kernel as is today without my signal's series, 
+>>> your
+>>> series degrades performance slightly (from 2.55s to 2.64s ie 3.5% 
+>>> slower).
+>>>
+>>>
+>>> I also observe, in both cases, a degradation on
+>>>
+>>>     dd if=/dev/zero of=/dev/null count=1M
+>>>
+>>> Without your series, it runs in 5.29 seconds.
+>>> With your series, it runs in 5.82 seconds, that is 10% more time.
+>>
+>> That's pretty strage, I wonder if some kernel text cache line
+>> effects come into play here?
+>>
+>> The kernel access side is only used in slow path code, so it should
+>> not make a difference, and the uaccess code is simplified and should be
+>> (marginally) faster.
+>>
+>> Btw, was this with the __{get,put}_user_allowed cockup that you noticed
+>> fixed?
+>>
+> 
+> Yes it is with the __get_user_size() replaced by __get_user_size_allowed().
 
--aneesh
+I made a test with only the first patch of your series: That's 
+definitely the culprit. With only that patch applies, the duration is 
+6.64 seconds, that's a 25% degradation.
+
+A perf record provides the following without the patch:
+     41.91%  dd       [kernel.kallsyms]  [k] __arch_clear_user
+      7.02%  dd       [kernel.kallsyms]  [k] vfs_read
+      6.86%  dd       [kernel.kallsyms]  [k] new_sync_read
+      6.68%  dd       [kernel.kallsyms]  [k] iov_iter_zero
+      6.03%  dd       [kernel.kallsyms]  [k] transfer_to_syscall
+      3.39%  dd       [kernel.kallsyms]  [k] memset
+      3.07%  dd       [kernel.kallsyms]  [k] __fsnotify_parent
+      2.68%  dd       [kernel.kallsyms]  [k] ksys_read
+      2.09%  dd       [kernel.kallsyms]  [k] read_iter_zero
+      2.01%  dd       [kernel.kallsyms]  [k] __fget_light
+      1.84%  dd       [kernel.kallsyms]  [k] __fdget_pos
+      1.35%  dd       [kernel.kallsyms]  [k] rw_verify_area
+      1.32%  dd       libc-2.23.so       [.] __GI___libc_write
+      1.21%  dd       [kernel.kallsyms]  [k] vfs_write
+...
+      0.03%  dd       [kernel.kallsyms]  [k] write_null
+
+And the following with the patch:
+
+     15.54%  dd       [kernel.kallsyms]  [k] __arch_clear_user
+      9.17%  dd       [kernel.kallsyms]  [k] vfs_read
+      6.54%  dd       [kernel.kallsyms]  [k] new_sync_write
+      6.31%  dd       [kernel.kallsyms]  [k] transfer_to_syscall
+      6.29%  dd       [kernel.kallsyms]  [k] __fsnotify_parent
+      6.20%  dd       [kernel.kallsyms]  [k] new_sync_read
+      5.47%  dd       [kernel.kallsyms]  [k] memset
+      5.13%  dd       [kernel.kallsyms]  [k] vfs_write
+      4.44%  dd       [kernel.kallsyms]  [k] iov_iter_zero
+      2.95%  dd       [kernel.kallsyms]  [k] write_iter_null
+      2.82%  dd       [kernel.kallsyms]  [k] ksys_read
+      2.46%  dd       [kernel.kallsyms]  [k] __fget_light
+      2.34%  dd       libc-2.23.so       [.] __GI___libc_read
+      1.89%  dd       [kernel.kallsyms]  [k] iov_iter_advance
+      1.76%  dd       [kernel.kallsyms]  [k] __fdget_pos
+      1.65%  dd       [kernel.kallsyms]  [k] rw_verify_area
+      1.63%  dd       [kernel.kallsyms]  [k] read_iter_zero
+      1.60%  dd       [kernel.kallsyms]  [k] iov_iter_init
+      1.22%  dd       [kernel.kallsyms]  [k] ksys_write
+      1.14%  dd       libc-2.23.so       [.] __GI___libc_write
+
+Christophe
+
+> 
+> Christophe
