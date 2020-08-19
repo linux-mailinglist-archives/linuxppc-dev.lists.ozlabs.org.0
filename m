@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A16924AA5E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 01:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E1624AA70
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 02:01:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BX4WX5mlDzDqwt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 09:59:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BX4Z35QJJzDqym
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 10:01:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,33 +16,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=qmBS/vEk; dkim-atps=neutral
+ header.s=default header.b=pTkTPUlH; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BX4SR58x9zDqwg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 09:56:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BX4St1G8JzDqxQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 09:57:02 +1000 (AEST)
 Received: from localhost (unknown [70.37.104.77])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 90C3F20B1F;
- Wed, 19 Aug 2020 23:56:36 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 04F1622B3F;
+ Wed, 19 Aug 2020 23:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1597881396;
- bh=95eHrYkAN34bwk2zQZmOyD2HRv92Shs9u6NAKUbcWZM=;
+ s=default; t=1597881420;
+ bh=3rNTS+jITAp8x5zgNjqmcl9hyEcePSToIcjVSn6749Y=;
  h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
- b=qmBS/vEkZzGDUWb5FWIYZ4saIU35mm9apjQav/s4yWlEhW+qbtJfG/ffZNHGYfifW
- KHDXDP4os9ZI26X5GLjZQtUzcanrdXpq7zGx5vRw5Z1tWYk9RbmfiBKa68QZSCM1Mk
- QrymejrS4bBWOqhIKLtRtMkYVWkA1sz5CJtsLP/8=
-Date: Wed, 19 Aug 2020 23:56:36 +0000
+ b=pTkTPUlHOzSABsAZMCcEKNOgUXkX1IRzsHFQDjVLcPxRTlU8RZqRr5MDCTlzAMRB9
+ iXzcz4bfFnCXm5T3O7R/SRMBzU0AWbhGQ1EWWVOT4cqjXgX93ZBSJSroV53Y7Bnmj3
+ jqhQeT5LtXE0JXq4ZA0uWYU8ue74J0Po83UOpSaU=
+Date: Wed, 19 Aug 2020 23:56:59 +0000
 From: Sasha Levin <sashal@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: Re: [PATCH v2 3/4] powerpc/memhotplug: Make lmb size 64bit
-In-Reply-To: <20200806162329.276534-3-aneesh.kumar@linux.ibm.com>
-References: <20200806162329.276534-3-aneesh.kumar@linux.ibm.com>
-Message-Id: <20200819235636.90C3F20B1F@mail.kernel.org>
+Subject: Re: [PATCH v2 1/4] powerpc/drmem: Make lmb_size 64 bit
+In-Reply-To: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
+References: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
+Message-Id: <20200819235700.04F1622B3F@mail.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,41 +71,45 @@ The bot has tested the following trees: v5.8.1, v5.7.15, v5.4.58, v4.19.139, v4.
 v5.8.1: Build OK!
 v5.7.15: Build OK!
 v5.4.58: Build OK!
-v4.19.139: Failed to apply! Possible dependencies:
-    Unable to calculate
-
+v4.19.139: Build OK!
 v4.14.193: Failed to apply! Possible dependencies:
-    Unable to calculate
+    22508f3dc985 ("powerpc/numa: Look up device node in of_get_usable_memory()")
+    2c77721552e5 ("powerpc: Move of_drconf_cell struct to asm/drmem.h")
+    35f80debaef0 ("powerpc/numa: Look up device node in of_get_assoc_arrays()")
+    514a9cb3316a ("powerpc/numa: Update numa code use walk_drmem_lmbs")
+    6195a5001f1d ("powerpc/pseries: Update memory hotplug code to use drmem LMB array")
+    6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+    b6eca183e23e ("powerpc/kernel: Enables memory hot-remove after reboot on pseries guests")
+    b88fc309d6ad ("powerpc/numa: Look up associativity array in of_drconf_to_nid_single")
 
 v4.9.232: Failed to apply! Possible dependencies:
-    1a367063ca0c ("powerpc/pseries: Check memory device state before onlining/offlining")
-    25b587fba9a4 ("powerpc/pseries: Correct possible read beyond dlpar sysfs buffer")
-    333f7b76865b ("powerpc/pseries: Implement indexed-count hotplug memory add")
-    753843471cbb ("powerpc/pseries: Implement indexed-count hotplug memory remove")
-    943db62c316c ("powerpc/pseries: Revert 'Auto-online hotplugged memory'")
-    c21f515c7436 ("powerpc/pseries: Make the acquire/release of the drc for memory a seperate step")
-    e70d59700fc3 ("powerpc/pseries: Introduce memory hotplug READD operation")
-    f84775c2d5d9 ("powerpc/pseries: Fix build break when MEMORY_HOTREMOVE=n")
+    3a2df3798d4d ("powerpc/mm: Make switch_mm_irqs_off() out of line")
+    43ed84a891b7 ("powerpc/mm: Move pgdir setting into a helper")
+    5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
+    5d451a87e5eb ("powerpc/64: Retrieve number of L1 cache sets from device-tree")
+    6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+    70cd4c10b290 ("KVM: PPC: Book3S HV: Fix software walk of guest process page tables")
+    9b081e10805c ("powerpc: port 64 bits pgtable_cache to 32 bits")
+    a25bd72badfa ("powerpc/mm/radix: Workaround prefetch issue with KVM")
+    bd067f83b084 ("powerpc/64: Fix naming of cache block vs. cache line")
+    dbcbfee0c81c ("powerpc/64: More definitions for POWER9")
+    e2827fe5c156 ("powerpc/64: Clean up ppc64_caches using a struct per cache")
+    f4329f2ecb14 ("powerpc/64s: Reduce exception alignment")
 
 v4.4.232: Failed to apply! Possible dependencies:
-    183deeea5871 ("powerpc/pseries: Consolidate CPU hotplug code to hotplug-cpu.c")
-    1a367063ca0c ("powerpc/pseries: Check memory device state before onlining/offlining")
-    1dc759566636 ("powerpc/pseries: Use kernel hotplug queue for PowerVM hotplug events")
-    1f859adb9253 ("powerpc/pseries: Verify CPU doesn't exist before adding")
-    25b587fba9a4 ("powerpc/pseries: Correct possible read beyond dlpar sysfs buffer")
-    333f7b76865b ("powerpc/pseries: Implement indexed-count hotplug memory add")
-    4a4bdfea7cb7 ("powerpc/pseries: Refactor dlpar_add_lmb() code")
-    753843471cbb ("powerpc/pseries: Implement indexed-count hotplug memory remove")
-    9054619ef54a ("powerpc/pseries: Add pseries hotplug workqueue")
-    943db62c316c ("powerpc/pseries: Revert 'Auto-online hotplugged memory'")
-    9dc512819e4b ("powerpc: Fix unused function warning 'lmb_to_memblock'")
-    bdf5fc633804 ("powerpc/pseries: Update LMB associativity index during DLPAR add/remove")
-    c21f515c7436 ("powerpc/pseries: Make the acquire/release of the drc for memory a seperate step")
-    e70d59700fc3 ("powerpc/pseries: Introduce memory hotplug READD operation")
-    e9d764f80396 ("powerpc/pseries: Enable kernel CPU dlpar from sysfs")
-    ec999072442a ("powerpc/pseries: Auto-online hotplugged memory")
-    f84775c2d5d9 ("powerpc/pseries: Fix build break when MEMORY_HOTREMOVE=n")
-    fdb4f6e99ffa ("powerpc/pseries: Remove call to memblock_add()")
+    11a6f6abd74a ("powerpc/mm: Move radix/hash common data structures to book3s64 headers")
+    26b6a3d9bb48 ("powerpc/mm: move pte headers to book3s directory")
+    3808a88985b4 ("powerpc: Move FW feature probing out of pseries probe()")
+    3dfcb315d81e ("powerpc/mm: make a separate copy for book3s")
+    5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
+    5d31a96e6c01 ("powerpc/livepatch: Add livepatch stack to struct thread_info")
+    6574ba950bbe ("powerpc/kernel: Convert cpu_has_feature() to returning bool")
+    6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
+    a141cca3892b ("powerpc/mm: Add early_[cpu|mmu]_has_feature()")
+    a8ed87c92adf ("powerpc/mm/radix: Add MMU_FTR_RADIX")
+    b92a226e5284 ("powerpc: Move cpu_has_feature() to a separate file")
+    da6a97bf12d5 ("powerpc: Move epapr_paravirt_early_init() to early_init_devtree()")
+    f63e6d898760 ("powerpc/livepatch: Add livepatch header")
 
 
 NOTE: The patch will not be queued to stable trees until it is upstream.
