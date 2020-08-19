@@ -1,43 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D70249693
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 09:08:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBBA249643
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 09:04:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWf5M6skFzDqQ3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 17:08:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWf0g2RNFzDqCl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 17:04:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=ran.wang_1@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWdvJ6TLwzDqQ3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 16:59:55 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6D0091A02FF;
- Wed, 19 Aug 2020 08:59:48 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 3F2EB1A0311;
- Wed, 19 Aug 2020 08:59:44 +0200 (CEST)
-Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5199F4024E;
- Wed, 19 Aug 2020 08:59:34 +0200 (CEST)
-From: Ran Wang <ran.wang_1@nxp.com>
-To: Li Yang <leoyang.li@nxp.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v4] soc: fsl: enable acpi support in RCPM driver
-Date: Wed, 19 Aug 2020 14:52:07 +0800
-Message-Id: <20200819065207.43930-1-ran.wang_1@nxp.com>
-X-Mailer: git-send-email 2.17.1
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWdlk3Jr3zDqq5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 16:53:21 +1000 (AEST)
+IronPort-SDR: 601zw/ku8VfdFhVedGhXRWC/Kt0Tk6sY7n8znvm6KruRz1POUUb9MX4NEmcxV4JzwaIOqefkpG
+ p1KWH3Y5PjKQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9717"; a="135127471"
+X-IronPort-AV: E=Sophos;i="5.76,330,1592895600"; d="scan'208";a="135127471"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Aug 2020 23:53:18 -0700
+IronPort-SDR: P2VgrGXe9viLtbpyaAvVkLmT125GPnSmaF8747xdSbm1cUbMUYe+19QcIfVj/XFEufsIDaWdid
+ qTGr5kkNXiZA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,330,1592895600"; d="scan'208";a="310680505"
+Received: from lkp-server01.sh.intel.com (HELO 4cedd236b688) ([10.239.97.150])
+ by orsmga002.jf.intel.com with ESMTP; 18 Aug 2020 23:53:17 -0700
+Received: from kbuild by 4cedd236b688 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1k8HyG-0000BX-IT; Wed, 19 Aug 2020 06:53:16 +0000
+Date: Wed, 19 Aug 2020 14:52:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 801980f6497946048709b9b09771a1729551d705
+Message-ID: <5f3ccc48.vgVMvVhMT43lu3WX%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,75 +58,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peng Ma <peng.ma@nxp.com>, Ran Wang <ran.wang_1@nxp.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Peng Ma <peng.ma@nxp.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
+branch HEAD: 801980f6497946048709b9b09771a1729551d705  powerpc/pseries/hotplug-cpu: wait indefinitely for vCPU death
 
-This patch enables ACPI support in RCPM driver.
+elapsed time: 1042m
 
-Signed-off-by: Peng Ma <peng.ma@nxp.com>
-Signed-off-by: Ran Wang <ran.wang_1@nxp.com>
+configs tested: 72
+configs skipped: 68
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+c6x                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+i386                 randconfig-a005-20200818
+i386                 randconfig-a002-20200818
+i386                 randconfig-a001-20200818
+i386                 randconfig-a006-20200818
+i386                 randconfig-a003-20200818
+i386                 randconfig-a004-20200818
+x86_64               randconfig-a013-20200818
+x86_64               randconfig-a016-20200818
+x86_64               randconfig-a012-20200818
+x86_64               randconfig-a011-20200818
+x86_64               randconfig-a014-20200818
+x86_64               randconfig-a015-20200818
+i386                 randconfig-a016-20200818
+i386                 randconfig-a011-20200818
+i386                 randconfig-a015-20200818
+i386                 randconfig-a013-20200818
+i386                 randconfig-a012-20200818
+i386                 randconfig-a014-20200818
+x86_64               randconfig-a006-20200819
+x86_64               randconfig-a001-20200819
+x86_64               randconfig-a003-20200819
+x86_64               randconfig-a005-20200819
+x86_64               randconfig-a004-20200819
+x86_64               randconfig-a002-20200819
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                                   rhel
+x86_64                           allyesconfig
+x86_64                    rhel-7.6-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
 ---
-Change in v4:
- - Make commit subject more accurate
- - Remove unrelated new blank line
-
-Change in v3:
- - Add #ifdef CONFIG_ACPI for acpi_device_id
- - Rename rcpm_acpi_imx_ids to rcpm_acpi_ids
-
-Change in v2:
- - Update acpi_device_id to fix conflict with other driver
-
- drivers/soc/fsl/rcpm.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
-index a093dbe..b5aa6db 100644
---- a/drivers/soc/fsl/rcpm.c
-+++ b/drivers/soc/fsl/rcpm.c
-@@ -2,7 +2,7 @@
- //
- // rcpm.c - Freescale QorIQ RCPM driver
- //
--// Copyright 2019 NXP
-+// Copyright 2019-2020 NXP
- //
- // Author: Ran Wang <ran.wang_1@nxp.com>
- 
-@@ -13,6 +13,7 @@
- #include <linux/slab.h>
- #include <linux/suspend.h>
- #include <linux/kernel.h>
-+#include <linux/acpi.h>
- 
- #define RCPM_WAKEUP_CELL_MAX_SIZE	7
- 
-@@ -139,10 +140,19 @@ static const struct of_device_id rcpm_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, rcpm_of_match);
- 
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id rcpm_acpi_ids[] = {
-+	{"NXP0015",},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, rcpm_acpi_ids);
-+#endif
-+
- static struct platform_driver rcpm_driver = {
- 	.driver = {
- 		.name = "rcpm",
- 		.of_match_table = rcpm_of_match,
-+		.acpi_match_table = ACPI_PTR(rcpm_acpi_ids),
- 		.pm	= &rcpm_pm_ops,
- 	},
- 	.probe = rcpm_probe,
--- 
-2.7.4
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
