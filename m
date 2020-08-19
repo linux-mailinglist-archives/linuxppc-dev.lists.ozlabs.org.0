@@ -1,90 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB32249492
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 07:46:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1506C2494E8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 08:17:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BWcGK3d7WzDqts
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 15:46:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BWcxq2H6dzDqwm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Aug 2020 16:17:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ljp@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::344;
+ helo=mail-wm1-x344.google.com; envelope-from=hkallweit1@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hRFSBWeG; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=c7yU/9er; dkim-atps=neutral
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BWc1f6vKczDqqK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 15:35:18 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07J5VkEw066077; Wed, 19 Aug 2020 01:35:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=NsfJGMR2MfwEEB1xinhwp5fiwTAL2W92XoiCt1dXzEs=;
- b=hRFSBWeG08namM6ikW9fDdlgqErfeTko26ocM6U9skIi6r2F3Pb2KeS+Z1k7XrDe1ca+
- WxEVw0D/uQJsYyBxZHN++kCuETiT1AO752S1/Ym1vMc9vTpsFjEmS1HB1AscMrPuZ4nn
- AUradMnKmf0iNgAmddZkrD6Z14q68gbtA8Lo46gCb+Xskhjgt4D0jDjA/ddPBwOBhIQr
- QMExgSB0gB2vjj9feKzqPia52cR6byVv9Z8lERndNPlw0TmxAujiELGwr7EEalzdV1vU
- weoxt3r25Chqa5erGOAC5pOUHB5n98N6q4NyB2Glj9gHGR4QUy0km1kPUp9vz9rQpatc VQ== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3304r3yshp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 01:35:17 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07J5Ycuc010653;
- Wed, 19 Aug 2020 05:35:15 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma04wdc.us.ibm.com with ESMTP id 3304uehf5t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Aug 2020 05:35:15 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07J5ZFP649676624
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Aug 2020 05:35:15 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6E07AAC05B;
- Wed, 19 Aug 2020 05:35:15 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 16B09AC059;
- Wed, 19 Aug 2020 05:35:15 +0000 (GMT)
-Received: from pompom.ibm.com (unknown [9.160.104.33])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 19 Aug 2020 05:35:14 +0000 (GMT)
-From: Lijun Pan <ljp@linux.ibm.com>
-To: netdev@vger.kernel.org
-Subject: [PATCH net-next 5/5] ibmvnic: merge ibmvnic_reset_init and
- ibmvnic_init
-Date: Wed, 19 Aug 2020 00:35:12 -0500
-Message-Id: <20200819053512.3619-6-ljp@linux.ibm.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20200819053512.3619-1-ljp@linux.ibm.com>
-References: <20200819053512.3619-1-ljp@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BWcvp61zWzDqjb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Aug 2020 16:15:16 +1000 (AEST)
+Received: by mail-wm1-x344.google.com with SMTP id d190so935223wmd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Aug 2020 23:15:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=XqRsyRcI4JizYSBgfDQ1/ZtsmI6N1f3+iRKY5gBn554=;
+ b=c7yU/9erjCdq+iHxp9rCjXLehhXneoO0lsw/AO5h7M65mqESgPnanyqBBJl5mBa//T
+ ZgVjBkByuDCr0I7hAtydSR2Xdv0G08UUrqG5lUpjeJqXwwTJn0ZZyAPHKvE9mIxE23O7
+ JcwiePYhJXP2eOyWHo/IPZb/SAOwXykGmHyCicU1A/WqvjXxJQTShGPgD2/eSBg50e6w
+ 1qcGjAXT5/FosXXB3nZO9PAMTztGiEBYycky4GPXhmh2DZeC2W8k24FF7/X2nIJ5StlL
+ zIwO+6l5zlavXXTjKFxPVm5b8MIHthImCyOnwchhhQJGne2L8jz1AL2suSLmJsKJ7jcy
+ WNFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=XqRsyRcI4JizYSBgfDQ1/ZtsmI6N1f3+iRKY5gBn554=;
+ b=bWLZ9iFpq4gJt22A8rkB7v3Bt3A2An1E6VNracR+159o9xNy8mI2mbzbZkErUIGHsa
+ DBOHRHTVe9rwz+LAfBAdu9lh6Tldwy6ro7aFqR89UBpDdS75TE6R+d+z+/Ypo2wA+3v8
+ v/EMghdmXqN5PVaapgmHmWoZtAZdSMfAQqXosmfwf5+xj5gwRlGEoWpSg9BVQsOsfENS
+ IW8g0NZy6OwpvHNfKEgskMPGR7BKoXzvfmbRYMzV63JsVfD+fDSoTzNHTkwDWW2Fm5eZ
+ 4IFeWMa4au3SREv4KOGhGA/LKIlQzMSpY8epbx+egBVUU2bRqsKT5iWm+bJN31stYX5W
+ F1bA==
+X-Gm-Message-State: AOAM530VEQq3jATi4Tpzgx5BsfcPtTLNaDn/aa9QIDJgXueAGZrgAM1s
+ G+bhOos8BRkfbNxJ+6Vfq/k=
+X-Google-Smtp-Source: ABdhPJyfWLFMBgE3nkRKJ4ipvtWCILiGRvHPLtREGRgPlFJ3JohUrFII0y8H54azDF5bepO2S12GwA==
+X-Received: by 2002:a7b:c306:: with SMTP id k6mr3375410wmj.86.1597817713640;
+ Tue, 18 Aug 2020 23:15:13 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8f23:5700:855a:ccf2:be1a:9037?
+ (p200300ea8f235700855accf2be1a9037.dip0.t-ipconnect.de.
+ [2003:ea:8f23:5700:855a:ccf2:be1a:9037])
+ by smtp.googlemail.com with ESMTPSA id b8sm38346115wrv.4.2020.08.18.23.15.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 18 Aug 2020 23:15:13 -0700 (PDT)
+Subject: Re: fsl_espi errors on v5.7.15
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ "paulus@samba.org" <paulus@samba.org>,
+ "tiago.brusamarello@datacom.ind.br" <tiago.brusamarello@datacom.ind.br>
+References: <3f48e5fb-33c9-8046-0f80-236eed163c16@alliedtelesis.co.nz>
+ <c43a23bd-33ec-4ef2-2ca5-730342248db3@gmail.com>
+ <3c72eec1-41ba-7389-eceb-3de80065555a@alliedtelesis.co.nz>
+ <1bbb3726-b0a4-6eb9-9076-706b06dfb90f@alliedtelesis.co.nz>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <61bb9800-9f90-9cd4-3b17-c14a7f83d792@gmail.com>
+Date: Wed, 19 Aug 2020 08:15:06 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
+In-Reply-To: <1bbb3726-b0a4-6eb9-9076-706b06dfb90f@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-19_02:2020-08-18,
- 2020-08-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=1 priorityscore=1501
- malwarescore=0 impostorscore=0 adultscore=0 clxscore=1015 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008190042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,154 +92,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lijun Pan <ljp@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These two functions share the majority of the code, hence merge
-them together. In the meanwhile, add a reset pass-in parameter
-to differentiate them. Thus, the code is easier to read and to tell
-the difference between reset_init and regular init.
-
-Signed-off-by: Lijun Pan <ljp@linux.ibm.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 65 ++++++------------------------
- 1 file changed, 13 insertions(+), 52 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 280358dce8ba..c92615b74833 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -104,8 +104,7 @@ static int send_login(struct ibmvnic_adapter *adapter);
- static void send_cap_queries(struct ibmvnic_adapter *adapter);
- static int init_sub_crqs(struct ibmvnic_adapter *);
- static int init_sub_crq_irqs(struct ibmvnic_adapter *adapter);
--static int ibmvnic_init(struct ibmvnic_adapter *);
--static int ibmvnic_reset_init(struct ibmvnic_adapter *);
-+static int ibmvnic_reset_init(struct ibmvnic_adapter *, bool reset);
- static void release_crq_queue(struct ibmvnic_adapter *);
- static int __ibmvnic_set_mac(struct net_device *, u8 *);
- static int init_crq_queue(struct ibmvnic_adapter *adapter);
-@@ -1868,7 +1867,7 @@ static int do_change_param_reset(struct ibmvnic_adapter *adapter,
- 		return rc;
- 	}
- 
--	rc = ibmvnic_reset_init(adapter);
-+	rc = ibmvnic_reset_init(adapter, true);
- 	if (rc)
- 		return IBMVNIC_INIT_FAILED;
- 
-@@ -1986,7 +1985,7 @@ static int do_reset(struct ibmvnic_adapter *adapter,
- 			goto out;
- 		}
- 
--		rc = ibmvnic_reset_init(adapter);
-+		rc = ibmvnic_reset_init(adapter, true);
- 		if (rc) {
- 			rc = IBMVNIC_INIT_FAILED;
- 			goto out;
-@@ -2093,7 +2092,7 @@ static int do_hard_reset(struct ibmvnic_adapter *adapter,
- 		return rc;
- 	}
- 
--	rc = ibmvnic_init(adapter);
-+	rc = ibmvnic_reset_init(adapter, false);
- 	if (rc)
- 		return rc;
- 
-@@ -4970,7 +4969,7 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
- 	return retrc;
- }
- 
--static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
-+static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter, bool reset)
- {
- 	struct device *dev = &adapter->vdev->dev;
- 	unsigned long timeout = msecs_to_jiffies(30000);
-@@ -4979,10 +4978,12 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
- 
- 	adapter->from_passive_init = false;
- 
--	old_num_rx_queues = adapter->req_rx_queues;
--	old_num_tx_queues = adapter->req_tx_queues;
-+	if (reset) {
-+		old_num_rx_queues = adapter->req_rx_queues;
-+		old_num_tx_queues = adapter->req_tx_queues;
-+		reinit_completion(&adapter->init_done);
-+	}
- 
--	reinit_completion(&adapter->init_done);
- 	adapter->init_done_rc = 0;
- 	rc = ibmvnic_send_crq_init(adapter);
- 	if (rc) {
-@@ -5000,7 +5001,8 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
- 		return adapter->init_done_rc;
- 	}
- 
--	if (test_bit(0, &adapter->resetting) && !adapter->wait_for_reset &&
-+	if (reset &&
-+	    test_bit(0, &adapter->resetting) && !adapter->wait_for_reset &&
- 	    adapter->reset_reason != VNIC_RESET_MOBILITY) {
- 		if (adapter->req_rx_queues != old_num_rx_queues ||
- 		    adapter->req_tx_queues != old_num_tx_queues) {
-@@ -5028,47 +5030,6 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter)
- 	return rc;
- }
- 
--static int ibmvnic_init(struct ibmvnic_adapter *adapter)
--{
--	struct device *dev = &adapter->vdev->dev;
--	unsigned long timeout = msecs_to_jiffies(30000);
--	int rc;
--
--	adapter->from_passive_init = false;
--
--	adapter->init_done_rc = 0;
--	rc = ibmvnic_send_crq_init(adapter);
--	if (rc) {
--		dev_err(dev, "%s: Send crq init failed with error %d\n", __func__, rc);
--		return rc;
--	}
--
--	if (!wait_for_completion_timeout(&adapter->init_done, timeout)) {
--		dev_err(dev, "Initialization sequence timed out\n");
--		return -1;
--	}
--
--	if (adapter->init_done_rc) {
--		release_crq_queue(adapter);
--		return adapter->init_done_rc;
--	}
--
--	rc = init_sub_crqs(adapter);
--	if (rc) {
--		dev_err(dev, "Initialization of sub crqs failed\n");
--		release_crq_queue(adapter);
--		return rc;
--	}
--
--	rc = init_sub_crq_irqs(adapter);
--	if (rc) {
--		dev_err(dev, "Failed to initialize sub crq irqs\n");
--		release_crq_queue(adapter);
--	}
--
--	return rc;
--}
--
- static struct device_attribute dev_attr_failover;
- 
- static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
-@@ -5131,7 +5092,7 @@ static int ibmvnic_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 			goto ibmvnic_init_fail;
- 		}
- 
--		rc = ibmvnic_init(adapter);
-+		rc = ibmvnic_reset_init(adapter, false);
- 		if (rc && rc != EAGAIN)
- 			goto ibmvnic_init_fail;
- 	} while (rc == EAGAIN);
--- 
-2.23.0
-
+On 19.08.2020 00:44, Chris Packham wrote:
+> Hi Again,
+> 
+> On 17/08/20 9:09 am, Chris Packham wrote:
+> 
+>>
+>> On 14/08/20 6:19 pm, Heiner Kallweit wrote:
+>>> On 14.08.2020 04:48, Chris Packham wrote:
+>>>> Hi,
+>>>>
+>>>> I'm seeing a problem with accessing spi-nor after upgrading a T2081
+>>>> based system to linux v5.7.15
+>>>>
+>>>> For this board u-boot and the u-boot environment live on spi-nor.
+>>>>
+>>>> When I use fw_setenv from userspace I get the following kernel logs
+>>>>
+>>>> # fw_setenv foo=1
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>> ...
+>>>>
+>>> This error reporting doesn't exist yet in 4.4. So you may have an issue
+>>> under 4.4 too, it's just not reported.
+>>> Did you verify that under 4.4 fw_setenv actually has an effect?
+>> Just double checked and yes under 4.4 the setting does get saved.
+>>>> If I run fw_printenv (before getting it into a bad state) it is able to
+>>>> display the content of the boards u-boot environment.
+>>>>
+>>> This might indicate an issue with spi being locked. I've seen related
+>>> questions, just use the search engine of your choice and check for
+>>> fw_setenv and locked.
+>> I'm running a version of fw_setenv which includes 
+>> https://gitlab.denx.de/u-boot/u-boot/-/commit/db820159 so it shouldn't 
+>> be locking things unnecessarily.
+>>>> If been unsuccessful in producing a setup for bisecting the issue. I do
+>>>> know the issue doesn't occur on the old 4.4.x based kernel but that's
+>>>> probably not much help.
+>>>>
+>>>> Any pointers on what the issue (and/or solution) might be.
+> 
+> I finally managed to get our board running with a vanilla kernel. With 
+> corenet64_smp_defconfig I occasionally see
+> 
+>    fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+> 
+> other than the message things seem to be working.
+> 
+> With a custom defconfig I see
+> 
+>    fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>    fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>    fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>    ...
+> 
+> and access to the spi-nor does not work until the board is reset.
+> 
+> I'll try and pick apart the differences between the two defconfigs.
+> 
+Also relevant may be:
+- Which dts are you using?
+- What's the spi-nor type, and at which frequency are you operating it?
+- Does the issue still happen if you lower the frequency?
