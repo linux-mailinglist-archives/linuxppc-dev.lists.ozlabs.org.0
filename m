@@ -1,89 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFF024C6B8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 22:22:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABBC124C790
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 00:09:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXbfd6rznzDr2P
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 06:22:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXf2f2crvzDqss
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 08:09:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Tgeamce4; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=nefkom.net (client-ip=212.18.0.10; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+X-Greylist: delayed 346 seconds by postgrey-1.36 at bilbo;
+ Fri, 21 Aug 2020 08:08:08 AEST
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXbct73L0zDqZ3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 06:20:46 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07KK31Ce059462; Thu, 20 Aug 2020 16:20:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=9GxF56lo1Xm+Z6UToXb4OXonqaIBpdvHxDaeXu/tsgo=;
- b=Tgeamce4neTCpdNHmqtcCmTCNkAuJ/cdFAcndDnhyTT7eTDdc/Xj4e8q9MBEdxNXVg+V
- O1MTQpzuBbsUxqOzwY38YtvqS56FJOAyVShlWp15p8s4L8XdtwWF+ZaFjEoJlha8ogfl
- 61MikKohZ2RKD6gzpaau/fBlXSpf2JCo9oltENglBbS8eXRe9Ui+dEbEa3cGNe9fYar2
- 5t7J4uzBpjq9gn3QGuDldkZqnQvQzar2NEjKQYOdSL2zpmhi4bVfjmDCSXqozhOt0NPt
- gyY2vq5ITZ1iYpSdA604i+HyFBhhh2/d41PXrdAsHJPENdc54huNKSqeo7pqe6Jh9+uW bw== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 331prhrf7f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Aug 2020 16:20:41 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07KKKban015310;
- Thu, 20 Aug 2020 20:20:40 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma05wdc.us.ibm.com with ESMTP id 3304th6ue4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Aug 2020 20:20:40 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07KKKbAp63242562
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 Aug 2020 20:20:37 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE175BE051;
- Thu, 20 Aug 2020 20:20:39 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9388CBE04F;
- Thu, 20 Aug 2020 20:20:39 +0000 (GMT)
-Received: from localhost (unknown [9.65.248.251])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 20 Aug 2020 20:20:39 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v2 3/4] powerpc/memhotplug: Make lmb size 64bit
-In-Reply-To: <20200806162329.276534-3-aneesh.kumar@linux.ibm.com>
-References: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
- <20200806162329.276534-3-aneesh.kumar@linux.ibm.com>
-Date: Thu, 20 Aug 2020 15:20:39 -0500
-Message-ID: <87pn7lxe5k.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXf0m31mWzDr1G
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 08:08:07 +1000 (AEST)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 4BXdrD3wFDz1rt4M;
+ Fri, 21 Aug 2020 00:00:44 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 4BXdrD1vjSz1qw6h;
+ Fri, 21 Aug 2020 00:00:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id Ym_BFar1tcee; Fri, 21 Aug 2020 00:00:43 +0200 (CEST)
+X-Auth-Info: AaAWNRy8nwRPJM7jJzxHA0w20Zi5hogQa4/6xekBaI6YU6fk6AqWnGyPEgtqCrsv
+Received: from igel.home (ppp-46-244-162-139.dynamic.mnet-online.de
+ [46.244.162.139])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Fri, 21 Aug 2020 00:00:43 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+ id BDB002C28BC; Fri, 21 Aug 2020 00:00:42 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 3/6] powerpc/32s: Only leave NX unset on segments
+ used for modules
+References: <cover.1593428200.git.christophe.leroy@csgroup.eu>
+ <7172c0f5253419315e434a1816ee3d6ed6505bc0.1593428200.git.christophe.leroy@csgroup.eu>
+X-Yow: ..Wait 'til those  ITALIAN TEENAGERS get back to their HONDAS &
+ discover them to be FILLED to the BRIM with MAZOLA!!
+Date: Fri, 21 Aug 2020 00:00:42 +0200
+In-Reply-To: <7172c0f5253419315e434a1816ee3d6ed6505bc0.1593428200.git.christophe.leroy@csgroup.eu>
+ (Christophe Leroy's message of "Mon, 29 Jun 2020 11:15:22 +0000
+ (UTC)")
+Message-ID: <87eeo1kmet.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-20_06:2020-08-19,
- 2020-08-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=1
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
- phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=728 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008200160
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,29 +68,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> @@ -322,12 +322,16 @@ static int pseries_remove_mem_node(struct device_node *np)
->  	/*
->  	 * Find the base address and size of the memblock
->  	 */
-> -	regs = of_get_property(np, "reg", NULL);
-> -	if (!regs)
-> +	prop = of_get_property(np, "reg", NULL);
-> +	if (!prop)
->  		return ret;
->  
-> -	base = be64_to_cpu(*(unsigned long *)regs);
-> -	lmb_size = be32_to_cpu(regs[3]);
-> +	/*
-> +	 * "reg" property represents (addr,size) tuple.
-> +	 */
-> +	base = of_read_number(prop, mem_addr_cells);
-> +	prop += mem_addr_cells;
-> +	lmb_size = of_read_number(prop, mem_size_cells);
+On Jun 29 2020, Christophe Leroy wrote:
 
-Would of_n_size_cells() and of_n_addr_cells() work here?
+> Instead of leaving NX unset on all segments above the start
+> of vmalloc space, only leave NX unset on segments used for
+> modules.
+
+I'm getting this crash:
+
+kernel tried to execute exec-protected page (f294b000) - exploit attempt (uid: 0)
+BUG: Unable to handle kernel instruction fetch
+Faulting instruction address: 0xf294b000
+Oops: Kernel access of bad area, sig: 11 [#1]
+BE PAGE_SIZE=4K MMU=Hash PowerMac
+Modules linked in: pata_macio(+)
+CPU: 0 PID: 87 Comm: udevd Not tainted 5.8.0-rc2-test #49
+NIP:  f294b000 LR: 0005c60 CTR: f294b000
+REGS: f18d9cc0 TRAP: 0400  Not tainted  (5.8.0-rc2-test)
+MSR:  10009032 <E,ME,IR,DR,RI>  CR: 84222422  XER: 20000000
+GPR00: c0005c14 f18d9d78 ef30ca20 00000000 ef0000e0 c00993d0 ef6da038 0000005e
+GPR08: c09050b8 c08b0000 00000000 f18d9d78 44222422 10072070 00000000 0fefaca4
+GPR16: 1006a00c f294d50b 00000120 00000124 c0096ea8 0000000e ef2776c0 ef2776e4
+GPR24: f18fd6e8 00000001 c086fe64 c086fe04 00000000 c08b0000 f294b000 ffffffff
+NIP [f294b000] pata_macio_init+0x0/0xc0 [pata_macio]
+LR [c0005c60] do_one_initcall+0x6c/0x160
+Call Trace:
+[f18d9d78] [c0005c14] do_one_initcall+0x20/0x160 (unreliable)
+[f18d9dd8] [c009a22c] do_init_module+0x60/0x1c0
+[f18d9df8] [c00993d8] load_module+0x16a8/0x1c14
+[f18d9ea8] [c0099aa4] sys_finit_module+0x8c/0x94
+[f18d9f38] [c0012174] ret_from_syscall+0x0/0x34
+--- interrupt: c01 at 0xfdb4318
+   LR = 0xfeee9c0
+Instruction dump:
+XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX <3d20c08b> 3d40c086 9421ffe0 8129106c
+---[ end trace 85a98cc836109871 ]---
+
+Andreas.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
