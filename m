@@ -2,91 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F4624AE77
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 07:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E7024AF2C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 08:20:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXCwn27jdzDr31
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 15:33:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXDzn2THLzDr3P
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Aug 2020 16:20:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hegdevasant@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YO1RTJtd; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=QbcpYlCD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXCtw4BxyzDr0p
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 15:31:36 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXDxd1GqhzDqdL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 16:19:00 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07K53Nbc057041; Thu, 20 Aug 2020 01:31:22 -0400
+ 07K63jEr003252; Thu, 20 Aug 2020 02:18:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=LOYHGYMb6qvWX92c0Ht8OlRJ0y4zsEww5uRoKc6vS8w=;
- b=YO1RTJtdeIp8fWtHe1ifB2EIdKnTD/aL6qNPkW+1uDFfsq82Hh1JM8s/BPTHAaqQekcn
- U1OMpaePrjdXVeGJg0f9VmkJBk3BfQDe1nsU8bM5ZWKXi41P1AVaWlatZcdMjW3LSLJH
- huHefSl3CwQI0gc4SfrTcNk5bNmjaHmVs+uY/Q/gfKdWc9rTr6OnvFsH9htlGbQDuY42
- M4PbR6eKM4GsxRDWL3kNBjZMbj7Mg3BycEGiNE8yZ6rv89gD9V8FjxerJjQR1QNtCQsp
- TOrtfzH+iHfuEqb0gH4BRG5AJqgMmedx+wK7DNcM2t0n+m6A4jxKGm75F2785bpVVzzE iA== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3304r566ey-1
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=z8n2g633NtPLlzNWQt1PQg9jiBAurfwqzlV8RDXRyt0=;
+ b=QbcpYlCDnlEhcGJtK6cuLk3hPv6gpEt1iWJ4kO3+jUMEgg3YihbVY5i+OkfNAnj5vdEe
+ ANyu0aipOosoUPQiL/GMC9accQAsu9V6CqvnvCuKpS/DarKzodYmPLMIfpB+T/jtXRKd
+ HbSy+miXKfaIk/JQnTbWEzCpB/Ox/3bULbFsvpUWGB6OB4dufj1iXc5Vuec1brlz5TS7
+ LTR2VD2rGucckjO7cGzVT7/T/AZnIvU0pNN/WsOyBPT6OwSp7pnE9THrzdHiNfysgI6z
+ uH3sLwGsGg67PJzrX7bKVQYWUU1E53QndZF0wdXoendX0d7yPR+9C6eqe5PyGwXBgnhK lw== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3310f01rsr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Aug 2020 01:31:21 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07K5FS72004983;
- Thu, 20 Aug 2020 05:31:20 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma03dal.us.ibm.com with ESMTP id 3304ccx5d4-1
+ Thu, 20 Aug 2020 02:18:52 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07K6CiMT010651;
+ Thu, 20 Aug 2020 06:18:50 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 330tbvsftp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 20 Aug 2020 05:31:20 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07K5VGec51511730
+ Thu, 20 Aug 2020 06:18:50 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07K6ImNU31785248
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 Aug 2020 05:31:17 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9809E6E04E;
- Thu, 20 Aug 2020 05:31:19 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA5EC6E04C;
- Thu, 20 Aug 2020 05:31:16 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.103.86])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 20 Aug 2020 05:31:16 +0000 (GMT)
-X-Mailer: emacs 27.1 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: kernel test robot <lkp@intel.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-Subject: Re: [PATCH v2 04/13] mm/debug_vm_pgtables/hugevmap: Use the arch
- helper to identify huge vmap support.
-In-Reply-To: <202008200034.CGkDyB26%lkp@intel.com>
-References: <20200819130107.478414-5-aneesh.kumar@linux.ibm.com>
- <202008200034.CGkDyB26%lkp@intel.com>
-Date: Thu, 20 Aug 2020 11:01:13 +0530
-Message-ID: <871rk1opcu.fsf@linux.ibm.com>
+ Thu, 20 Aug 2020 06:18:48 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2E392A404D;
+ Thu, 20 Aug 2020 06:18:48 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B7608A4040;
+ Thu, 20 Aug 2020 06:18:46 +0000 (GMT)
+Received: from hegdevasant.in.ibm.com (unknown [9.85.93.150])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 20 Aug 2020 06:18:46 +0000 (GMT)
+From: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/pseries: Do not initiate shutdown when system is
+ running on UPS
+Date: Thu, 20 Aug 2020 11:48:44 +0530
+Message-Id: <20200820061844.306460-1-hegdevasant@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-08-19_13:2020-08-19,
  2020-08-19 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- lowpriorityscore=0 clxscore=1011 impostorscore=0 bulkscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=999 mlxscore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008200044
+ clxscore=1015 phishscore=0
+ impostorscore=0 malwarescore=0 adultscore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 mlxlogscore=999 mlxscore=0 suspectscore=1
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008200052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,102 +94,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, linuxppc-dev@lists.ozlabs.org,
- Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kernel test robot <lkp@intel.com> writes:
+As per PAPR we have to look for both EPOW sensor value and event modifier to
+identify type of event and take appropriate action.
 
-> Hi "Aneesh,
->
-> I love your patch! Yet something to improve:
->
-> [auto build test ERROR on hnaz-linux-mm/master]
-> [also build test ERROR on powerpc/next linus/master v5.9-rc1 next-20200819]
-> [cannot apply to mmotm/master]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
->
-> url:    https://github.com/0day-ci/linux/commits/Aneesh-Kumar-K-V/mm-debug_vm_pgtable-fixes/20200819-213446
-> base:   https://github.com/hnaz/linux-mm master
-> config: i386-randconfig-s002-20200818 (attached as .config)
-> compiler: gcc-9 (Debian 9.3.0-15) 9.3.0
-> reproduce:
->         # apt-get install sparse
->         # sparse version: v0.6.2-183-gaa6ede3b-dirty
->         # save the attached .config to linux build tree
->         make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=i386 
->
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
->
-> All errors (new ones prefixed by >>):
->
->>> arch/x86/mm/ioremap.c:484:12: error: redefinition of 'arch_ioremap_p4d_supported'
->      484 | int __init arch_ioremap_p4d_supported(void)
->          |            ^~~~~~~~~~~~~~~~~~~~~~~~~~
->    In file included from arch/x86/mm/ioremap.c:12:
->    include/linux/io.h:41:19: note: previous definition of 'arch_ioremap_p4d_supported' was here
->       41 | static inline int arch_ioremap_p4d_supported(void)
->          |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+Sensor value = 3 (EPOW_SYSTEM_SHUTDOWN) schedule system to be shutdown after
+                  OS defined delay (default 10 mins).
 
-I guess trying to work this out without using #ifdef is complex. I ended
-up with the below
+EPOW Event Modifier for sensor value = 3:
+   We have to initiate immediate shutdown for most of the event modifier except
+   value = 2 (system running on UPS).
 
-1 file changed, 12 insertions(+), 2 deletions(-)
-mm/debug_vm_pgtable.c | 14 ++++++++++++--
+Checking with firmware document its clear that we have to wait for predefined
+time before initiating shutdown. If power is restored within time we should
+cancel the shutdown process. I think commit 79872e35 accidently enabled
+immediate poweroff for EPOW_SHUTDOWN_ON_UPS event.
 
-modified   mm/debug_vm_pgtable.c
-@@ -202,11 +202,12 @@ static void __init pmd_leaf_tests(unsigned long pfn, pgprot_t prot)
- 	WARN_ON(!pmd_leaf(pmd));
- }
+We have user space tool (rtas_errd) on LPAR to monitor for EPOW_SHUTDOWN_ON_UPS.
+Once it gets event it initiates shutdown after predefined time. Also starts
+monitoring for any new EPOW events. If it receives "Power restored" event
+before predefined time it will cancel the shutdown. Otherwise after
+predefined time it will shutdown the system.
+
+Fixes: 79872e35 (powerpc/pseries: All events of EPOW_SYSTEM_SHUTDOWN must initiate shutdown)
+Cc: stable@vger.kernel.org # v4.0+
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+---
+Changes in v2:
+  - Updated patch description based on mpe, Tyrel comment.
+
+-Vasant
+ arch/powerpc/platforms/pseries/ras.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index f3736fcd98fc..13c86a292c6d 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -184,7 +184,6 @@ static void handle_system_shutdown(char event_modifier)
+ 	case EPOW_SHUTDOWN_ON_UPS:
+ 		pr_emerg("Loss of system power detected. System is running on"
+ 			 " UPS/battery. Check RTAS error log for details\n");
+-		orderly_poweroff(true);
+ 		break;
  
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
- static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
- {
- 	pmd_t pmd;
- 
--	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+	if (!arch_ioremap_pmd_supported())
- 		return;
- 
- 	pr_debug("Validating PMD huge\n");
-@@ -220,6 +221,10 @@ static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
- 	pmd = READ_ONCE(*pmdp);
- 	WARN_ON(!pmd_none(pmd));
- }
-+#else /* !CONFIG_HAVE_ARCH_HUGE_VMAP */
-+static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot) { }
-+#endif /* !CONFIG_HAVE_ARCH_HUGE_VMAP */
-+
- 
- static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
- {
-@@ -316,11 +321,12 @@ static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot)
- 	WARN_ON(!pud_leaf(pud));
- }
- 
-+#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
- static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
- {
- 	pud_t pud;
- 
--	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+	if (!arch_ioremap_pud_supported())
- 		return;
- 
- 	pr_debug("Validating PUD huge\n");
-@@ -334,6 +340,10 @@ static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
- 	pud = READ_ONCE(*pudp);
- 	WARN_ON(!pud_none(pud));
- }
-+#else /* !CONFIG_HAVE_ARCH_HUGE_VMAP */
-+static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot) { }
-+#endif /* !CONFIG_HAVE_ARCH_HUGE_VMAP */
-+
- #else  /* !CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
- static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
- static void __init pud_advanced_tests(struct mm_struct *mm,
+ 	case EPOW_SHUTDOWN_LOSS_OF_CRITICAL_FUNCTIONS:
+-- 
+2.26.2
+
