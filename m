@@ -2,74 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D7C24D962
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 18:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80EF824D9E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 18:17:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BY5yB6lc3zDrFF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 02:07:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BY69Q6c9czDqhH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 02:17:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=TQeLM2ab; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=X0QRBfCe; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BY5w95FmtzDqmh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 02:05:44 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id x25so1285567pff.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 09:05:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=wapcx/5Vbh5G639AQDnOiyGrJZXaNQ8MTw86eBzSth4=;
- b=TQeLM2abya+0luxj7HKY8kjrGpvsQOQb7hLsKu7wcSQ53pUVeHHBqDWbwhLpWqyCQo
- 2Hcyhj+QSe126y2yZWjYu2bxy+OXc6TG6xZd4dPFlk2d06V05bkGqBXUjQz1zcyJk/DP
- 651R54ipy9IstrkDRDpsqxm6PXlTD+1LxtS4CCEqaBQ4XR3ePQUtfIaDtR9UIJr8Do3A
- exbBJDmjDT4lfc5HjXehWx2SApo9psgKlC78TsTh7KBv81soMzOKrKf3ikGKmc6msDAl
- h+gYub/StWGMQSLC4a0Gdg+P6AW3PZrBA9uOaFSLhFSL/QEEZvclEg4V3SZiTawYiy2B
- AC2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=wapcx/5Vbh5G639AQDnOiyGrJZXaNQ8MTw86eBzSth4=;
- b=hajOimYhOpG9LdR8gl/I4HZtzLVz+k2FJ9XQQ0mQVtwoyUBQgNEBGImgSYlCFKB+ee
- H7VMfzh6UpInsYGnLj8fsjaryUw5IBOfjeRXYzlhpD3dj5yDjfejj+ERaCuzg5CGKxyT
- 2BNhc0sBrPAxuYJ60NOd5wY1JSuzmfU52u3g5O5zkkuPtKkGfdBeaxT8ihd9/t7hA1eP
- B/xqTNYWtZEXi5/jeLb/ceAdzsX+samtnM+njwYpai47cEIbaToddQsBRIXXZxdRjWUz
- omjRk75p5vFQuOMxZ3CdzMsqPWzIzX3NMFFDHFT3HXGG7S0XfYxUUvoEsDIp/mano1hk
- hfXg==
-X-Gm-Message-State: AOAM530SP9xJKN+Bu3H0AqOcW3baoCpIaqvV+uBnZ0B/WTCIleptlQ29
- 5H1WT7N2fX/r6j1Yd+JzJoDWkIEFvxI=
-X-Google-Smtp-Source: ABdhPJx/NdttpYzCAL4MKwJ9Rj5q/al1KK3HvjwJptRJw92UrEyk3IkxiX8LfzHQNcRQgmFKRKonmw==
-X-Received: by 2002:a63:5c8:: with SMTP id 191mr2708428pgf.244.1598025942564; 
- Fri, 21 Aug 2020 09:05:42 -0700 (PDT)
-Received: from localhost (61-68-212-105.tpgi.com.au. [61.68.212.105])
- by smtp.gmail.com with ESMTPSA id e26sm2920498pfj.197.2020.08.21.09.05.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Aug 2020 09:05:42 -0700 (PDT)
-Date: Sat, 22 Aug 2020 02:05:35 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 11/12] mm/vmalloc: Hugepage vmalloc mappings
-To: Andrew Morton <akpm@linux-foundation.org>, Eric Dumazet
- <eric.dumazet@gmail.com>, linux-mm@kvack.org
-References: <20200821151216.1005117-1-npiggin@gmail.com>
- <20200821151216.1005117-12-npiggin@gmail.com>
- <1e001c2c-6c47-21a9-e920-caf78933b713@gmail.com>
-In-Reply-To: <1e001c2c-6c47-21a9-e920-caf78933b713@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BY66T6lhbzDr6L
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 02:14:41 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7D43222B47;
+ Fri, 21 Aug 2020 16:14:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1598026479;
+ bh=+kj9s/5ZqlyNsnM52p3naaPPs/OU12x7yQGwDwRDM5w=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=X0QRBfCex3UjWr4vHs6U6MYytIvohPYar/AgCcHqIKeiDiUfdTRiUMFJMFrdUxUjs
+ mFiAP0O4yE16HmGPyf6hR+TTzaAvEKOIfWjbtGTFGlTASUGIBDJ+YLxarFpZnT74y5
+ TZCAwj0ADu96aA/8HQqJcNNx3wPs3x5zIahORu8w=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 12/62] powerpc/xive: Ignore kmemleak false
+ positives
+Date: Fri, 21 Aug 2020 12:13:33 -0400
+Message-Id: <20200821161423.347071-12-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200821161423.347071-1-sashal@kernel.org>
+References: <20200821161423.347071-1-sashal@kernel.org>
 MIME-Version: 1.0
-Message-Id: <1598025275.jd6s9py77x.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,65 +60,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Zefan Li <lizefan@huawei.com>,
- Jonathan Cameron <Jonathan.Cameron@Huawei.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Eric Dumazet's message of August 22, 2020 1:38 am:
->=20
-> On 8/21/20 8:12 AM, Nicholas Piggin wrote:
->> Support huge page vmalloc mappings. Config option HAVE_ARCH_HUGE_VMALLOC
->> enables support on architectures that define HAVE_ARCH_HUGE_VMAP and
->> supports PMD sized vmap mappings.
->>=20
->> vmalloc will attempt to allocate PMD-sized pages if allocating PMD size =
-or
->> larger, and fall back to small pages if that was unsuccessful.
->>=20
->> Allocations that do not use PAGE_KERNEL prot are not permitted to use hu=
-ge
->> pages, because not all callers expect this (e.g., module allocations vs
->> strict module rwx).
->>=20
->> This reduces TLB misses by nearly 30x on a `git diff` workload on a 2-no=
-de
->> POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
->>=20
->> This can result in more internal fragmentation and memory overhead for a
->> given allocation, an option nohugevmalloc is added to disable at boot.
->>=20
->>
->=20
-> Thanks for working on this stuff, I tried something similar in the past,
-> but could not really do more than a hack.
-> ( https://lkml.org/lkml/2016/12/21/285 )
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-Oh nice. It might be possible to do some ideas from your patch
-still. Higher order pages smaller than PMD size, or the memory
-policy stuff, perhaps.
+[ Upstream commit f0993c839e95dd6c7f054a1015e693c87e33e4fb ]
 
-> Note that __init alloc_large_system_hash() is used at boot time,
-> when NUMA policy is spreading allocations over all NUMA nodes.
->=20
-> This means that on a dual node system, a hash table should be 50/50 sprea=
-d.
->=20
-> With your patch, if a hashtable is exactly the size of one huge page,
-> the location of this hashtable will be not balanced, this might have some
-> unwanted impact.
+xive_native_provision_pages() allocates memory and passes the pointer to
+OPAL so kmemleak cannot find the pointer usage in the kernel memory and
+produces a false positive report (below) (even if the kernel did scan
+OPAL memory, it is unable to deal with __pa() addresses anyway).
 
-In that case it shouldn't because it divides by the number of nodes,
-but it will in general have a bit larger granularity in balancing than
-smaller pages of course.
+This silences the warning.
 
-There's probably a better way to size these important hashes on NUMA. I
-suspect most of the time you have a NUMA machine you actually would
-prefer to use large pages now, even if it means taking up to 2MB more
-memory per node per hash. It's not a great amount and the allocation=20
-size is rather arbitrary anyway.
+unreferenced object 0xc000200350c40000 (size 65536):
+  comm "qemu-system-ppc", pid 2725, jiffies 4294946414 (age 70776.530s)
+  hex dump (first 32 bytes):
+    02 00 00 00 50 00 00 00 00 00 00 00 00 00 00 00  ....P...........
+    01 00 08 07 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<0000000081ff046c>] xive_native_alloc_vp_block+0x120/0x250
+    [<00000000d555d524>] kvmppc_xive_compute_vp_id+0x248/0x350 [kvm]
+    [<00000000d69b9c9f>] kvmppc_xive_connect_vcpu+0xc0/0x520 [kvm]
+    [<000000006acbc81c>] kvm_arch_vcpu_ioctl+0x308/0x580 [kvm]
+    [<0000000089c69580>] kvm_vcpu_ioctl+0x19c/0xae0 [kvm]
+    [<00000000902ae91e>] ksys_ioctl+0x184/0x1b0
+    [<00000000f3e68bd7>] sys_ioctl+0x48/0xb0
+    [<0000000001b2c127>] system_call_exception+0x124/0x1f0
+    [<00000000d2b2ee40>] system_call_common+0xe8/0x214
 
-Thanks,
-Nick
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200612043303.84894-1-aik@ozlabs.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/sysdev/xive/native.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
+index 71b881e554fcb..cb58ec7ce77ac 100644
+--- a/arch/powerpc/sysdev/xive/native.c
++++ b/arch/powerpc/sysdev/xive/native.c
+@@ -18,6 +18,7 @@
+ #include <linux/delay.h>
+ #include <linux/cpumask.h>
+ #include <linux/mm.h>
++#include <linux/kmemleak.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/prom.h>
+@@ -647,6 +648,7 @@ static bool xive_native_provision_pages(void)
+ 			pr_err("Failed to allocate provisioning page\n");
+ 			return false;
+ 		}
++		kmemleak_ignore(p);
+ 		opal_xive_donate_page(chip, __pa(p));
+ 	}
+ 	return true;
+-- 
+2.25.1
+
