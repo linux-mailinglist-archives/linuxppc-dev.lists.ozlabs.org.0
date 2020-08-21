@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59E924CD5D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B9724CD61
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:48:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXrBN0dM9zDqyX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:47:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXrDC5bYMzDr2l
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:48:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,38 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=i4twJXEI; 
+ header.s=casper.20170209 header.b=HXYIu1bn; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXr8S2RwNzDqwF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 15:45:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXr8S4rVwzDqwJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 15:45:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=WaEdaKZ9Jv/QnxXxEOWWfi60iYosVWWRHu3++tbASqo=; b=i4twJXEIVwSlfld6iIvFef/uqg
- y9UKKflerwqRH5AmnCIyXg1N5elyS3i9zqg92AqxKo7cQJ4rSCU5dRoPrjlIWCwBmq6f84ynWcMbk
- UzwC6VuCzjDB+Q3tRfcTy4PzDPuLJ+ncoi8YrLKkHX611e76E9Pv4Tm8nqYtiJYy/3UBhp3Yol2p/
- 1FPvgIBlCfb0Whxsa7T31/HHg5WCBgPIOROEw8U5+0WAiDtMY6SC00sAPaxNJInpDmy4leg8QYuX/
- 5O+ifcPc4kaSC4dnZo+YJT7hIDRh6wUC8dnrDYNW/gmnTlFUoDYAaf8Ycj9ebe/prEpWrTLD8zycE
- 7CFDF7hg==;
+ bh=mrGKbmJ1c7ngURPGL3BPovml0cJwz1Kq/Us/whxD7Sc=; b=HXYIu1bnNW/qWXAehQRzq4ZK6I
+ V9RA92llGQm+y5SLxiKLrH7jpItu9BFP0M8CUS+vmD/8vQZkR5ZCMkpI+/PFmr3GKApoigmRzl+Jw
+ R+q4a1c7tXY/q5zqu/9M8FAIp/AWhUfj7G825d7RMQ4XZdILn+y5JrhQ9hevQTAR7Wwzl9HDhDlei
+ GzFX6TlE/eeYqrx7+uDlbdF/YPbcCWIKIHWzS53CvpmH2CQ+9Ivl1NlXJwDvV/HFgX/vSLZr7ME8k
+ oAXdDCBZSzovPItK/QL3IzGObSAN723G0X6pt9VTLgUo8Dxyqr6CFCaeprsKkOYgXfGHtJwj4uIBr
+ jorGF3Kw==;
 Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1k8zrQ-0007Um-WD; Fri, 21 Aug 2020 05:45:09 +0000
-Date: Fri, 21 Aug 2020 06:45:08 +0100
+ Linux)) id 1k8zrd-0007WC-Mn; Fri, 21 Aug 2020 05:45:21 +0000
+Date: Fri, 21 Aug 2020 06:45:21 +0100
 From: Christoph Hellwig <hch@infradead.org>
 To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 3/8] mm/vmalloc: rename vmap_*_range vmap_pages_*_range
-Message-ID: <20200821054508.GA28291@infradead.org>
+Subject: Re: [PATCH v5 4/8] lib/ioremap: rename ioremap_*_range to vmap_*_range
+Message-ID: <20200821054521.GB28291@infradead.org>
 References: <20200821044427.736424-1-npiggin@gmail.com>
- <20200821044427.736424-4-npiggin@gmail.com>
+ <20200821044427.736424-5-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200821044427.736424-4-npiggin@gmail.com>
+In-Reply-To: <20200821044427.736424-5-npiggin@gmail.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,28 +71,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 21, 2020 at 02:44:22PM +1000, Nicholas Piggin wrote:
-> The vmalloc mapper operates on a struct page * array rather than a
-> linear physical address, re-name it to make this distinction clear.
+On Fri, Aug 21, 2020 at 02:44:23PM +1000, Nicholas Piggin wrote:
+> This will be moved to mm/ and used as a generic kernel virtual mapping
+> function, so re-name it in preparation.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  mm/vmalloc.c | 28 ++++++++++++----------------
->  1 file changed, 12 insertions(+), 16 deletions(-)
+>  mm/ioremap.c | 55 ++++++++++++++++++++++------------------------------
+>  1 file changed, 23 insertions(+), 32 deletions(-)
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 49f225b0f855..3a1e45fd1626 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -190,9 +190,8 @@ void unmap_kernel_range_noflush(unsigned long start, unsigned long size)
->  		arch_sync_kernel_mappings(start, end);
->  }
+> diff --git a/mm/ioremap.c b/mm/ioremap.c
+> index 5fa1ab41d152..6016ae3227ad 100644
+> --- a/mm/ioremap.c
+> +++ b/mm/ioremap.c
+> @@ -61,9 +61,8 @@ static inline int ioremap_pud_enabled(void) { return 0; }
+>  static inline int ioremap_pmd_enabled(void) { return 0; }
+>  #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
 >  
-> -static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
-> -		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -static int ioremap_pte_range(pmd_t *pmd, unsigned long addr,
+> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
 > -		pgtbl_mod_mask *mask)
-> +static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
-> +		pgprot_t prot, struct page **pages, int *nr, pgtbl_mod_mask *mask)
+> +static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+> +			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
 
-Please don't add > 80 lines without any good reason.
-
+Same here.
