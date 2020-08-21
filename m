@@ -1,69 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBDC24D846
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 17:16:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB06824D86E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 17:20:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BY4qq2TC7zDr8t
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 01:16:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BY4w71Mh2zDqDL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 01:20:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kZUnJ6jz; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=qvO/x3Lt; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BY4km4HMpzDqBt
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 01:12:31 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id m71so1217834pfd.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 08:12:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BY4kr4n24zDqKf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 01:12:36 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id o13so1148819pgf.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 08:12:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=lRxrDToJB/xPOxG5kGdgUWQPtXDsSaGWKdRXIKBnLww=;
- b=kZUnJ6jz2FEkjkC4B07sDG1MjmzhjlUML84kGzNbhSDyDdfVyIkBqQ1JVaKnlcpnsW
- O4/rnCdzXc5wLDuh66q0rTTJxxarsRrbbSJ3CBzYgOl2Kiph/wZYJr1Qvco+GQ7avZZF
- Dbs74MOkriYYn3Uv1eGMGWPeNA1bNr83Aa+YHScAmKLmebvgMrUyej9FYoVnkrCPjtE3
- /d9DU7qLsc96xQiWL8n/lPwiBLfzsLbk3ZLdsUeHAbC9H8xLy9KN7b5omTiIo5lCszfb
- 4BIvgj0FwaU6x9/I2bYSDZEgvwAguArcSIW9qjKYuZ90qn8CQH/xh3SQ44OCN04qHdb/
- qz8A==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=6FG53WANq96sGtoLSKrRzKN8EzzN/tCT8YeKUFryJxY=;
+ b=qvO/x3LtuaWlzcRhfPRLNEAe+GmybLzPFd7TEDFfOiyJmw+WP/6BCuv7hyJuIxepte
+ O8KDlYVX3ZQPdFw9zdlj57D8yw9Z6HeZXTn+Jm4YJA/kS7GU+MqF9x79PhCSvZcsEMVb
+ XgfFKtwdZXMQ8ZoHAgH1Cl71OsLEN8hbyJrGrMDMb395P2issbN1XnfwEJo2JTlI/SXx
+ DNXc1HnnxQz1u0FAKVB/p99YAbpu3gxrWalr7KOCWmuhD4u+uU4rpsLt+9ZiDXMoumHs
+ L0Gm3rnnXdrnqMcXUEpiEzcVuknJM0Wov1F9YY7hzA01QFOErb5x3ckuVNqV9DoQ/+wn
+ iqhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=lRxrDToJB/xPOxG5kGdgUWQPtXDsSaGWKdRXIKBnLww=;
- b=bGflXC/d/+uv2pWzWpXcTNVjVWK85sZZZLAJI42qzzQd2kY+R0Y2ZN/nnX546reIFH
- r9XdA4j10WEoZFV0lYBubXPtLGSLBfZOzPUhbQfnvM1LkOJAQudOhOpdI+ur8TdFmM6K
- 5nFyu9nMsySjdV/dXzSx6jdcnI5zIiI8bTRGlLTi4V/DNFot8FU+MitH2G6QR10xmKkE
- Laeek+30q+9pWvCQ21sO26LcLtJpjPb4N/Uj80CUYC5edbMrkop5kUlkimKGMyvhA0in
- L5foEKcJDfpOJjx1UorsZlloBhQanEmD/JvQro81HO2Q5WbtLFRU26jrtfXmPTImMo+q
- kx/A==
-X-Gm-Message-State: AOAM533Jt80PV6n4Fi5MPYoIyAtWutCO+oSZb6tbbo5mgPMkfKn7HHEC
- nDMGLDxOvVZF8X1lbhRJ1II=
-X-Google-Smtp-Source: ABdhPJxt6gfGs7RCQ4HiMUqjAvNGZuzKIyZP+qM+HUnYFTtKpiyJhyFCAA1UxFk4xgMqZ7BnAojcJw==
-X-Received: by 2002:aa7:8757:: with SMTP id g23mr2825194pfo.283.1598022748057; 
- Fri, 21 Aug 2020 08:12:28 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=6FG53WANq96sGtoLSKrRzKN8EzzN/tCT8YeKUFryJxY=;
+ b=USYPfZ6+5zBLS3okK03rUHxsGAzk+pPyIsSxnx3qsy9GzzC8wgC89Ju/9ycyzy2+OO
+ tZpaXLPqH9J2mD6pI6Zf+KtXSYCemhSUULBDsZcpINuyEFHcYSZVTVE3LI6jQmGn8W/d
+ 30d+zLl5V/jmozCTHfA0xS8j/VzTBoo48Fk5gG9ILo0IDcU+YukGmcNpysilPXXb9aq0
+ h8ulNz93ShaKcoZywTeO3Hui6iUuSdDx4CdyyE/ocKY12Vc00vLqWlbxC7e0Gr/n6VvT
+ uiwVJ4f5CabLh8/ZS+7NLM8hmZdU8Ey1vN+5TKsSKqwf+mKxYF08zZtwG8koibUzRNpg
+ CHsA==
+X-Gm-Message-State: AOAM531kA/BHccOGy+yIi6M89wuSGiA5s4/rEsAwu9H3wJWXhyMIoKzx
+ 7SBu7J3Nylq7uzFcg6Kityg=
+X-Google-Smtp-Source: ABdhPJy2Q9rer+Gnc26wp0mgrvwzTqrrWkAV8Nt9IOzjPIJnUZWKJPJYiQTyxAK2BfQo5m1wdj6VAg==
+X-Received: by 2002:a63:2324:: with SMTP id j36mr2705340pgj.221.1598022753623; 
+ Fri, 21 Aug 2020 08:12:33 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
- by smtp.gmail.com with ESMTPSA id s8sm3126985pfc.122.2020.08.21.08.12.22
+ by smtp.gmail.com with ESMTPSA id s8sm3126985pfc.122.2020.08.21.08.12.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Aug 2020 08:12:27 -0700 (PDT)
+ Fri, 21 Aug 2020 08:12:32 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v6 00/12] huge vmalloc mappings
-Date: Sat, 22 Aug 2020 01:12:04 +1000
-Message-Id: <20200821151216.1005117-1-npiggin@gmail.com>
+Subject: [PATCH v6 01/12] mm/vmalloc: fix vmalloc_to_page for huge vmap
+ mappings
+Date: Sat, 22 Aug 2020 01:12:05 +1000
+Message-Id: <20200821151216.1005117-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20200821151216.1005117-1-npiggin@gmail.com>
+References: <20200821151216.1005117-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,69 +88,102 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks Christophe and Christoph for reviews.
+vmalloc_to_page returns NULL for addresses mapped by larger pages[*].
+Whether or not a vmap is huge depends on the architecture details,
+alignments, boot options, etc., which the caller can not be expected
+to know. Therefore HUGE_VMAP is a regression for vmalloc_to_page.
 
-Thanks,
-Nick
+This change teaches vmalloc_to_page about larger pages, and returns
+the struct page that corresponds to the offset within the large page.
+This makes the API agnostic to mapping implementation details.
 
-Since v5:
-- Split arch changes out better and make the constant folding work
-- Avoid most of the 80 column wrap, fix a reference to lib/ioremap.c
-- Fix compile error on some archs
+[*] As explained by commit 029c54b095995 ("mm/vmalloc.c: huge-vmap:
+    fail gracefully on unexpected huge vmap mappings")
 
-Since v4:
-- Fixed an off-by-page-order bug in v4
-- Several minor cleanups.
-- Added page order to /proc/vmallocinfo
-- Added hugepage to alloc_large_system_hage output.
-- Made an architecture config option, powerpc only for now.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ mm/vmalloc.c | 41 ++++++++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
 
-Since v3:
-- Fixed an off-by-one bug in a loop
-- Fix !CONFIG_HAVE_ARCH_HUGE_VMAP build fail
-- Hopefully this time fix the arm64 vmap stack bug, thanks Jonathan
-  Cameron for debugging the cause of this (hopefully).
-
-Since v2:
-- Rebased on vmalloc cleanups, split series into simpler pieces.
-- Fixed several compile errors and warnings
-- Keep the page array and accounting in small page units because
-  struct vm_struct is an interface (this should fix x86 vmap stack debug
-  assert). [Thanks Zefan]
-
-Nicholas Piggin (12):
-  mm/vmalloc: fix vmalloc_to_page for huge vmap mappings
-  mm: apply_to_pte_range warn and fail if a large pte is encountered
-  mm/vmalloc: rename vmap_*_range vmap_pages_*_range
-  lib/ioremap: rename ioremap_*_range to vmap_*_range
-  mm: HUGE_VMAP arch support cleanup
-  powerpc: inline huge vmap supported functions
-  arm64: inline huge vmap supported functions
-  x86: inline huge vmap supported functions
-  mm: Move vmap_range from mm/ioremap.c to mm/vmalloc.c
-  mm/vmalloc: add vmap_range_noflush variant
-  mm/vmalloc: Hugepage vmalloc mappings
-  powerpc/64s/radix: Enable huge vmalloc mappings
-
- .../admin-guide/kernel-parameters.txt         |   2 +
- arch/Kconfig                                  |   4 +
- arch/arm64/include/asm/vmalloc.h              |  25 +
- arch/arm64/mm/mmu.c                           |  26 -
- arch/powerpc/Kconfig                          |   1 +
- arch/powerpc/include/asm/vmalloc.h            |  21 +
- arch/powerpc/mm/book3s64/radix_pgtable.c      |  21 -
- arch/x86/include/asm/vmalloc.h                |  23 +
- arch/x86/mm/ioremap.c                         |  19 -
- arch/x86/mm/pgtable.c                         |  13 -
- include/linux/io.h                            |   9 -
- include/linux/vmalloc.h                       |  10 +
- init/main.c                                   |   1 -
- mm/ioremap.c                                  | 225 +--------
- mm/memory.c                                   |  60 ++-
- mm/page_alloc.c                               |   5 +-
- mm/vmalloc.c                                  | 443 +++++++++++++++---
- 17 files changed, 515 insertions(+), 393 deletions(-)
-
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index b482d240f9a2..4e9b21adc73d 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -36,7 +36,7 @@
+ #include <linux/bitops.h>
+ #include <linux/rbtree_augmented.h>
+ #include <linux/overflow.h>
+-
++#include <linux/pgtable.h>
+ #include <linux/uaccess.h>
+ #include <asm/tlbflush.h>
+ #include <asm/shmparam.h>
+@@ -343,7 +343,9 @@ int is_vmalloc_or_module_addr(const void *x)
+ }
+ 
+ /*
+- * Walk a vmap address to the struct page it maps.
++ * Walk a vmap address to the struct page it maps. Huge vmap mappings will
++ * return the tail page that corresponds to the base page address, which
++ * matches small vmap mappings.
+  */
+ struct page *vmalloc_to_page(const void *vmalloc_addr)
+ {
+@@ -363,25 +365,33 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+ 
+ 	if (pgd_none(*pgd))
+ 		return NULL;
++	if (WARN_ON_ONCE(pgd_leaf(*pgd)))
++		return NULL; /* XXX: no allowance for huge pgd */
++	if (WARN_ON_ONCE(pgd_bad(*pgd)))
++		return NULL;
++
+ 	p4d = p4d_offset(pgd, addr);
+ 	if (p4d_none(*p4d))
+ 		return NULL;
+-	pud = pud_offset(p4d, addr);
++	if (p4d_leaf(*p4d))
++		return p4d_page(*p4d) + ((addr & ~P4D_MASK) >> PAGE_SHIFT);
++	if (WARN_ON_ONCE(p4d_bad(*p4d)))
++		return NULL;
+ 
+-	/*
+-	 * Don't dereference bad PUD or PMD (below) entries. This will also
+-	 * identify huge mappings, which we may encounter on architectures
+-	 * that define CONFIG_HAVE_ARCH_HUGE_VMAP=y. Such regions will be
+-	 * identified as vmalloc addresses by is_vmalloc_addr(), but are
+-	 * not [unambiguously] associated with a struct page, so there is
+-	 * no correct value to return for them.
+-	 */
+-	WARN_ON_ONCE(pud_bad(*pud));
+-	if (pud_none(*pud) || pud_bad(*pud))
++	pud = pud_offset(p4d, addr);
++	if (pud_none(*pud))
++		return NULL;
++	if (pud_leaf(*pud))
++		return pud_page(*pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
++	if (WARN_ON_ONCE(pud_bad(*pud)))
+ 		return NULL;
++
+ 	pmd = pmd_offset(pud, addr);
+-	WARN_ON_ONCE(pmd_bad(*pmd));
+-	if (pmd_none(*pmd) || pmd_bad(*pmd))
++	if (pmd_none(*pmd))
++		return NULL;
++	if (pmd_leaf(*pmd))
++		return pmd_page(*pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
++	if (WARN_ON_ONCE(pmd_bad(*pmd)))
+ 		return NULL;
+ 
+ 	ptep = pte_offset_map(pmd, addr);
+@@ -389,6 +399,7 @@ struct page *vmalloc_to_page(const void *vmalloc_addr)
+ 	if (pte_present(pte))
+ 		page = pte_page(pte);
+ 	pte_unmap(ptep);
++
+ 	return page;
+ }
+ EXPORT_SYMBOL(vmalloc_to_page);
 -- 
 2.23.0
 
