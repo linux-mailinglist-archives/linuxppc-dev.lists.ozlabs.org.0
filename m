@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B9724CD61
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D893524CD6B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:50:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXrDC5bYMzDr2l
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:48:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXrGB1hJHzDqxM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:50:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,38 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=HXYIu1bn; 
+ header.s=casper.20170209 header.b=TfwEFqBs; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXr8S4rVwzDqwJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 15:45:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXr9C4xKnzDqx6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 15:46:07 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=mrGKbmJ1c7ngURPGL3BPovml0cJwz1Kq/Us/whxD7Sc=; b=HXYIu1bnNW/qWXAehQRzq4ZK6I
- V9RA92llGQm+y5SLxiKLrH7jpItu9BFP0M8CUS+vmD/8vQZkR5ZCMkpI+/PFmr3GKApoigmRzl+Jw
- R+q4a1c7tXY/q5zqu/9M8FAIp/AWhUfj7G825d7RMQ4XZdILn+y5JrhQ9hevQTAR7Wwzl9HDhDlei
- GzFX6TlE/eeYqrx7+uDlbdF/YPbcCWIKIHWzS53CvpmH2CQ+9Ivl1NlXJwDvV/HFgX/vSLZr7ME8k
- oAXdDCBZSzovPItK/QL3IzGObSAN723G0X6pt9VTLgUo8Dxyqr6CFCaeprsKkOYgXfGHtJwj4uIBr
- jorGF3Kw==;
+ bh=ajUzawCVIQRA44N5aFKVmBYYI1IH9hA0rQus2v7jm1M=; b=TfwEFqBs960BsRA5hvI0O4oCNZ
+ dAoIyHAY/Igg+63+8szSobAbssRbiHC5YFIKCWsegv9dVWY0K7Ydgdl96G7DyhjmIOpdziAZXt24P
+ SnP4MEK+sNxXbJYhwZ2hTH6ke8Gl+rN5IPxwEmQrm+Yp0GumVOGwNCs+mXaf3k5y2w34NH2v1TEzj
+ 7j9P578Yh55WK6ukWn0T81tLv8mXcQ8NzPmDTnkhZDHqPKrtzOjoLztcIUWOhS84Vd3NTta36LHsI
+ SbgVtdCEdAbFD5jtjm73/9nHsffP1rZLt7uTaHKbupFRxrzmNmsvjCPbAIGn5hdxXBRH9307b0p4N
+ 1oJ58huA==;
 Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1k8zrd-0007WC-Mn; Fri, 21 Aug 2020 05:45:21 +0000
-Date: Fri, 21 Aug 2020 06:45:21 +0100
+ Linux)) id 1k8zsI-0007XR-9F; Fri, 21 Aug 2020 05:46:02 +0000
+Date: Fri, 21 Aug 2020 06:46:02 +0100
 From: Christoph Hellwig <hch@infradead.org>
 To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 4/8] lib/ioremap: rename ioremap_*_range to vmap_*_range
-Message-ID: <20200821054521.GB28291@infradead.org>
+Subject: Re: [PATCH v5 5/8] mm: HUGE_VMAP arch support cleanup
+Message-ID: <20200821054602.GC28291@infradead.org>
 References: <20200821044427.736424-1-npiggin@gmail.com>
- <20200821044427.736424-5-npiggin@gmail.com>
+ <20200821044427.736424-6-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200821044427.736424-5-npiggin@gmail.com>
+In-Reply-To: <20200821044427.736424-6-npiggin@gmail.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,27 +71,9 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 21, 2020 at 02:44:23PM +1000, Nicholas Piggin wrote:
-> This will be moved to mm/ and used as a generic kernel virtual mapping
-> function, so re-name it in preparation.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  mm/ioremap.c | 55 ++++++++++++++++++++++------------------------------
->  1 file changed, 23 insertions(+), 32 deletions(-)
-> 
-> diff --git a/mm/ioremap.c b/mm/ioremap.c
-> index 5fa1ab41d152..6016ae3227ad 100644
-> --- a/mm/ioremap.c
-> +++ b/mm/ioremap.c
-> @@ -61,9 +61,8 @@ static inline int ioremap_pud_enabled(void) { return 0; }
->  static inline int ioremap_pmd_enabled(void) { return 0; }
->  #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
->  
-> -static int ioremap_pte_range(pmd_t *pmd, unsigned long addr,
-> -		unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
-> -		pgtbl_mod_mask *mask)
-> +static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
-> +			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
+>  static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot, unsigned int max_page_shift)
+>  {
 
-Same here.
+... and here.
