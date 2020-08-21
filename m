@@ -2,57 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6954424D153
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 11:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0030324D29E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 12:36:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXwxR325lzDr7P
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 19:21:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXycJ0BWZzDr86
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 20:36:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net;
- envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXyYb3NKbzDr6Q
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 20:34:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXwvT0Bk5zDr6Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 19:19:30 +1000 (AEST)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 4BXwvK4SfGz1qs0H;
- Fri, 21 Aug 2020 11:19:25 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 4BXwvK3qgKz1qy63;
- Fri, 21 Aug 2020 11:19:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
- port 10024)
- with ESMTP id F0_dCBk9PgC1; Fri, 21 Aug 2020 11:19:24 +0200 (CEST)
-X-Auth-Info: xzm2TsjnGK9QJrldEjTYj5rRu9jtvPfdYQZy6A0x9whwb0PqbRObjNI3MuMTzqpI
-Received: from igel.home (ppp-46-244-185-194.dynamic.mnet-online.de
- [46.244.185.194])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Fri, 21 Aug 2020 11:19:24 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
- id EAD032C0765; Fri, 21 Aug 2020 11:19:23 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32s: Fix module loading failure when
- VMALLOC_END is over 0xf0000000
-References: <09fc73fe9c7423c6b4cf93f93df9bb0ed8eefab5.1597994047.git.christophe.leroy@csgroup.eu>
-X-Yow: HERE!!  Put THIS on!!  I'm in CHARGE!!
-Date: Fri, 21 Aug 2020 11:19:23 +0200
-In-Reply-To: <09fc73fe9c7423c6b4cf93f93df9bb0ed8eefab5.1597994047.git.christophe.leroy@csgroup.eu>
- (Christophe Leroy's message of "Fri, 21 Aug 2020 07:15:25 +0000
- (UTC)")
-Message-ID: <874kowwe3o.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ZmjgC9SC; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4BXyYZ4kXlz9sPB; Fri, 21 Aug 2020 20:34:10 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4BXyYZ3g1Jz9sTF; Fri, 21 Aug 2020 20:34:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1598006050;
+ bh=6IeqeXu1SmWY4L/7HoCdAVC4LYQ5JZ6uDzQLdVBwQJE=;
+ h=From:To:Subject:Date:From;
+ b=ZmjgC9SCu3LdZY6ddacoKS51YDBExb5EPp5UA3aivmAa+wz1k/BKRM03d5Mbukrce
+ E2bKkDezY+AnfAzKgKHlaUfQgsNrxnnswz4PHEUHNT89/NpkiTpFYYgU5eS2seNprI
+ FehHhK2fTQi2I/skNfsKtqtxadjMu+wph5gqi0e2EEbjnvhQoiljoAdVreW4iOPvT5
+ 1PvfnD7xwAhI0+kXk4TDUmYelNs9eDHuth8UWCfhaDB78atRqWOaYMni/GvRh6QX13
+ B9HwiX3bk0U0mpoq+GpKPi6yEBJFuJbwzc+TzVHr7vByvhsvmuEctey7Xubwc94lQu
+ 7Q//HEcinwGbg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/prom_init: Check display props exist before enabling
+ btext
+Date: Fri, 21 Aug 2020 20:34:07 +1000
+Message-Id: <20200821103407.3362149-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,34 +56,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Aug 21 2020, Christophe Leroy wrote:
+It's possible to enable CONFIG_PPC_EARLY_DEBUG_BOOTX for a pseries
+kernel (maybe it shouldn't be), which is then booted with qemu/slof.
 
-> In is_module_segment(), when VMALLOC_END is over 0xf0000000,
-> ALIGN(VMALLOC_END, SZ_256M) has value 0.
->
-> In that case, addr >= ALIGN(VMALLOC_END, SZ_256M) is always
-> true then is_module_segment() always returns false.
->
-> Use (ALIGN(VMALLOC_END, SZ_256M) - 1) which will have
-> value 0xffffffff and will be suitable for the comparison.
->
-> Reported-by: Andreas Schwab <schwab@linux-m68k.org>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Fixes: c49643319715 ("powerpc/32s: Only leave NX unset on segments used for modules")
+But if you do that the kernel crashes in draw_byte(), with a DAR
+pointing somewhere near INT_MAX.
 
-Thanks, that fixes the crash.
+Adding some debug to prom_init we see that we're not able to read the
+"address" property from OF, so we're just using whatever junk value
+was on the stack.
 
-Tested-by: Andreas Schwab <schwab@linux-m68k.org>
+So check the properties can be read properly from OF, if not we bail
+out before initialising btext, which avoids the crash.
 
-Andreas.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/prom_init.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index ae7ec9903191..5090a5ab54e5 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2422,10 +2422,19 @@ static void __init prom_check_displays(void)
+ 			u32 width, height, pitch, addr;
+ 
+ 			prom_printf("Setting btext !\n");
+-			prom_getprop(node, "width", &width, 4);
+-			prom_getprop(node, "height", &height, 4);
+-			prom_getprop(node, "linebytes", &pitch, 4);
+-			prom_getprop(node, "address", &addr, 4);
++
++			if (prom_getprop(node, "width", &width, 4) == PROM_ERROR)
++				return;
++
++			if (prom_getprop(node, "height", &height, 4) == PROM_ERROR)
++				return;
++
++			if (prom_getprop(node, "linebytes", &pitch, 4) == PROM_ERROR)
++				return;
++
++			if (prom_getprop(node, "address", &addr, 4) == PROM_ERROR)
++				return;
++
+ 			prom_printf("W=%d H=%d LB=%d addr=0x%x\n",
+ 				    width, height, pitch, addr);
+ 			btext_setup_display(width, height, 8, pitch, addr);
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.25.1
+
