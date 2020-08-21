@@ -2,71 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5209F24D6F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 16:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBDC24D846
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 17:16:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BY3Ht0bPNzDqq0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 00:07:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BY4qq2TC7zDr8t
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 01:16:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=kZUnJ6jz; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BY3CP36BmzDqcJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 00:03:37 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BY3C802d7zB09b5;
- Fri, 21 Aug 2020 16:03:32 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id q1miw7nZP466; Fri, 21 Aug 2020 16:03:31 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BY3C76G0tzB09b1;
- Fri, 21 Aug 2020 16:03:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 73AED8B8C5;
- Fri, 21 Aug 2020 16:03:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Tsqp3LT8sDeS; Fri, 21 Aug 2020 16:03:33 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 38AA68B8EC;
- Fri, 21 Aug 2020 16:03:33 +0200 (CEST)
-Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
-To: Giuseppe Sacco <giuseppe@sguazz.it>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
- <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
- <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
- <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
- <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
- <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
- <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
- <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
- <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
- <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
- <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
- <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
- <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
- <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
- <a62714c0-1b17-305d-577d-529e1781ec56@csgroup.eu>
- <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
-Date: Fri, 21 Aug 2020 16:03:23 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BY4km4HMpzDqBt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 01:12:31 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id m71so1217834pfd.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 08:12:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=lRxrDToJB/xPOxG5kGdgUWQPtXDsSaGWKdRXIKBnLww=;
+ b=kZUnJ6jz2FEkjkC4B07sDG1MjmzhjlUML84kGzNbhSDyDdfVyIkBqQ1JVaKnlcpnsW
+ O4/rnCdzXc5wLDuh66q0rTTJxxarsRrbbSJ3CBzYgOl2Kiph/wZYJr1Qvco+GQ7avZZF
+ Dbs74MOkriYYn3Uv1eGMGWPeNA1bNr83Aa+YHScAmKLmebvgMrUyej9FYoVnkrCPjtE3
+ /d9DU7qLsc96xQiWL8n/lPwiBLfzsLbk3ZLdsUeHAbC9H8xLy9KN7b5omTiIo5lCszfb
+ 4BIvgj0FwaU6x9/I2bYSDZEgvwAguArcSIW9qjKYuZ90qn8CQH/xh3SQ44OCN04qHdb/
+ qz8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=lRxrDToJB/xPOxG5kGdgUWQPtXDsSaGWKdRXIKBnLww=;
+ b=bGflXC/d/+uv2pWzWpXcTNVjVWK85sZZZLAJI42qzzQd2kY+R0Y2ZN/nnX546reIFH
+ r9XdA4j10WEoZFV0lYBubXPtLGSLBfZOzPUhbQfnvM1LkOJAQudOhOpdI+ur8TdFmM6K
+ 5nFyu9nMsySjdV/dXzSx6jdcnI5zIiI8bTRGlLTi4V/DNFot8FU+MitH2G6QR10xmKkE
+ Laeek+30q+9pWvCQ21sO26LcLtJpjPb4N/Uj80CUYC5edbMrkop5kUlkimKGMyvhA0in
+ L5foEKcJDfpOJjx1UorsZlloBhQanEmD/JvQro81HO2Q5WbtLFRU26jrtfXmPTImMo+q
+ kx/A==
+X-Gm-Message-State: AOAM533Jt80PV6n4Fi5MPYoIyAtWutCO+oSZb6tbbo5mgPMkfKn7HHEC
+ nDMGLDxOvVZF8X1lbhRJ1II=
+X-Google-Smtp-Source: ABdhPJxt6gfGs7RCQ4HiMUqjAvNGZuzKIyZP+qM+HUnYFTtKpiyJhyFCAA1UxFk4xgMqZ7BnAojcJw==
+X-Received: by 2002:aa7:8757:: with SMTP id g23mr2825194pfo.283.1598022748057; 
+ Fri, 21 Aug 2020 08:12:28 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
+ by smtp.gmail.com with ESMTPSA id s8sm3126985pfc.122.2020.08.21.08.12.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Aug 2020 08:12:27 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v6 00/12] huge vmalloc mappings
+Date: Sat, 22 Aug 2020 01:12:04 +1000
+Message-Id: <20200821151216.1005117-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,39 +77,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Thanks Christophe and Christoph for reviews.
 
+Thanks,
+Nick
 
-Le 21/08/2020 à 15:50, Giuseppe Sacco a écrit :
-> Il giorno ven, 21/08/2020 alle 15.29 +0200, Christophe Leroy ha
-> scritto:
-> [...]
->> Maybe the easiest would be first to locate this issue. Can you send me
->> the vmlinux and the .config matching the Oops in the video ?
->>
->> And also the output of git bisect log ?
-> 
-> Here it is. Not really the one on the video, but the last "skipped" for
-> the same problem.
-> https://eppesuigoccas.homedns.org/~giuseppe/christophe.tar.bz2
-> 
+Since v5:
+- Split arch changes out better and make the constant folding work
+- Avoid most of the 80 column wrap, fix a reference to lib/ioremap.c
+- Fix compile error on some archs
 
-Thanks.
+Since v4:
+- Fixed an off-by-page-order bug in v4
+- Several minor cleanups.
+- Added page order to /proc/vmallocinfo
+- Added hugepage to alloc_large_system_hage output.
+- Made an architecture config option, powerpc only for now.
 
-The Oops in the video shows that the issue is at 0x1bcac and msr value 
-shows that Instruction MMU is disabled. So this corresponds to address 
-0xc001bcac. In the vmlinux you sent me this address is in 
-power_save_ppc32_restore()
+Since v3:
+- Fixed an off-by-one bug in a loop
+- Fix !CONFIG_HAVE_ARCH_HUGE_VMAP build fail
+- Hopefully this time fix the arm64 vmap stack bug, thanks Jonathan
+  Cameron for debugging the cause of this (hopefully).
 
-This issue is fixed by 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/7bce32ccbab3ba3e3e0f27da6961bf6313df97ed.1581663140.git.christophe.leroy@c-s.fr/
+Since v2:
+- Rebased on vmalloc cleanups, split series into simpler pieces.
+- Fixed several compile errors and warnings
+- Keep the page array and accounting in small page units because
+  struct vm_struct is an interface (this should fix x86 vmap stack debug
+  assert). [Thanks Zefan]
 
-You also said in a previous mail that your original issue also happens 
-when CONFIG_VMAP_STACK is not selected. The above bug being linked to 
-CONFIG_VMAP_STACK, maybe it would be easier to bisect with 
-CONFIG_VMAP_STACK unselected.
+Nicholas Piggin (12):
+  mm/vmalloc: fix vmalloc_to_page for huge vmap mappings
+  mm: apply_to_pte_range warn and fail if a large pte is encountered
+  mm/vmalloc: rename vmap_*_range vmap_pages_*_range
+  lib/ioremap: rename ioremap_*_range to vmap_*_range
+  mm: HUGE_VMAP arch support cleanup
+  powerpc: inline huge vmap supported functions
+  arm64: inline huge vmap supported functions
+  x86: inline huge vmap supported functions
+  mm: Move vmap_range from mm/ioremap.c to mm/vmalloc.c
+  mm/vmalloc: add vmap_range_noflush variant
+  mm/vmalloc: Hugepage vmalloc mappings
+  powerpc/64s/radix: Enable huge vmalloc mappings
 
-Christophe
+ .../admin-guide/kernel-parameters.txt         |   2 +
+ arch/Kconfig                                  |   4 +
+ arch/arm64/include/asm/vmalloc.h              |  25 +
+ arch/arm64/mm/mmu.c                           |  26 -
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/vmalloc.h            |  21 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  21 -
+ arch/x86/include/asm/vmalloc.h                |  23 +
+ arch/x86/mm/ioremap.c                         |  19 -
+ arch/x86/mm/pgtable.c                         |  13 -
+ include/linux/io.h                            |   9 -
+ include/linux/vmalloc.h                       |  10 +
+ init/main.c                                   |   1 -
+ mm/ioremap.c                                  | 225 +--------
+ mm/memory.c                                   |  60 ++-
+ mm/page_alloc.c                               |   5 +-
+ mm/vmalloc.c                                  | 443 +++++++++++++++---
+ 17 files changed, 515 insertions(+), 393 deletions(-)
+
+-- 
+2.23.0
+
