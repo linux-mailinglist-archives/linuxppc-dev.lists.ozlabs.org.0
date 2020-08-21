@@ -2,47 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D5124CD17
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B924924CD14
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:03:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXqFG5gvQzDr6P
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:04:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXqCW6SDVzDqXT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:03:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXq9j3XD6zDqCM
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXq9j2h9SzDq7d
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 15:01:26 +1000 (AEST)
-IronPort-SDR: Q9j1u/2E/9VKPgHKy7iHaiJy1RT2RcTvZFx43EUGlEARfTt6ica5bmsK0/5FANXqrx55Zl8wfn
- SSqU2Z3uBsuw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9719"; a="216998791"
-X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; d="scan'208";a="216998791"
+IronPort-SDR: oJ9pqi2nmcz1DJNY/17xk9NSXnKeAU/3dFZrLaQgkj01GkXY5xMa56frqFlnxAbKxvS4BUwqIZ
+ Kg12ig2sKuew==
+X-IronPort-AV: E=McAfee;i="6000,8403,9719"; a="143256461"
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; d="scan'208";a="143256461"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Aug 2020 22:01:22 -0700
-IronPort-SDR: t8pg4B+pav4gkCHkvZZWYfy0keuk/OV4UAEtFLGWBMy7OHNJcQYdqWqF3clH4QAC2Zo9GFdQVo
- N9+rD3JRtuAg==
+IronPort-SDR: Jarm9ajiZFL2yugsogND5FDhZTwTlEuoQbB0Gi2Ms8evYcp8Tw028pWXzgmNfNENQDxPdZZR1D
+ QpUj413mCXsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; d="scan'208";a="327660371"
+X-IronPort-AV: E=Sophos;i="5.76,335,1592895600"; d="scan'208";a="498406517"
 Received: from lkp-server01.sh.intel.com (HELO 91ed66e1ca04) ([10.239.97.150])
- by orsmga008.jf.intel.com with ESMTP; 20 Aug 2020 22:01:21 -0700
+ by fmsmga005.fm.intel.com with ESMTP; 20 Aug 2020 22:01:20 -0700
 Received: from kbuild by 91ed66e1ca04 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1k8zB2-0000bN-Hh; Fri, 21 Aug 2020 05:01:20 +0000
-Date: Fri, 21 Aug 2020 13:00:22 +0800
+ id 1k8zB2-0000bQ-Mc; Fri, 21 Aug 2020 05:01:20 +0000
+Date: Fri, 21 Aug 2020 13:00:28 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 90a9b102eddf6a3f987d15f4454e26a2532c1c98
-Message-ID: <5f3f54e6.o4I+xoZ/9oVnDn8G%lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS 7c25bda14d66718f9fa428808dae289dd84f1da3
+Message-ID: <5f3f54ec.0TGce4acczEASyH4%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -63,13 +62,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: 90a9b102eddf6a3f987d15f4454e26a2532c1c98  powerpc/pseries: Do not initiate shutdown when system is running on UPS
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 7c25bda14d66718f9fa428808dae289dd84f1da3  Automatic merge of 'master', 'next' and 'fixes' (2020-08-20 23:20)
 
-elapsed time: 927m
+elapsed time: 926m
 
-configs tested: 75
-configs skipped: 75
+configs tested: 69
+configs skipped: 2
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -133,12 +132,6 @@ i386                 randconfig-a011-20200820
 i386                 randconfig-a016-20200820
 i386                 randconfig-a014-20200820
 i386                 randconfig-a015-20200820
-i386                 randconfig-a013-20200821
-i386                 randconfig-a012-20200821
-i386                 randconfig-a011-20200821
-i386                 randconfig-a016-20200821
-i386                 randconfig-a014-20200821
-i386                 randconfig-a015-20200821
 riscv                            allyesconfig
 riscv                             allnoconfig
 riscv                               defconfig
