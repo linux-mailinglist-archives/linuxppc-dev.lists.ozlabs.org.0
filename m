@@ -1,50 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0030324D29E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 12:36:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3708F24D2D9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 12:39:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXycJ0BWZzDr86
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 20:36:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXygk35PYzDr6S
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 20:39:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=C5iE0U8l; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXyYb3NKbzDr6Q
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 20:34:11 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ZmjgC9SC; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BXyYZ4kXlz9sPB; Fri, 21 Aug 2020 20:34:10 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BXyYZ3g1Jz9sTF; Fri, 21 Aug 2020 20:34:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1598006050;
- bh=6IeqeXu1SmWY4L/7HoCdAVC4LYQ5JZ6uDzQLdVBwQJE=;
- h=From:To:Subject:Date:From;
- b=ZmjgC9SCu3LdZY6ddacoKS51YDBExb5EPp5UA3aivmAa+wz1k/BKRM03d5Mbukrce
- E2bKkDezY+AnfAzKgKHlaUfQgsNrxnnswz4PHEUHNT89/NpkiTpFYYgU5eS2seNprI
- FehHhK2fTQi2I/skNfsKtqtxadjMu+wph5gqi0e2EEbjnvhQoiljoAdVreW4iOPvT5
- 1PvfnD7xwAhI0+kXk4TDUmYelNs9eDHuth8UWCfhaDB78atRqWOaYMni/GvRh6QX13
- B9HwiX3bk0U0mpoq+GpKPi6yEBJFuJbwzc+TzVHr7vByvhsvmuEctey7Xubwc94lQu
- 7Q//HEcinwGbg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/prom_init: Check display props exist before enabling
- btext
-Date: Fri, 21 Aug 2020 20:34:07 +1000
-Message-Id: <20200821103407.3362149-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXydJ3qGmzDr6S
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 20:37:24 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id ep8so645206pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 03:37:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=wrfIR1riy38cnam3DJIOduSkqnt3mE1DONngHIwcH88=;
+ b=C5iE0U8llcF3JJ3sIpKpCCcopSQ8ZqrL2/0mn5e1nyG1LUu5ipQagkrjH79XC50tHU
+ MYCGwK+U8ct9mZA6q+GvGMQkgGtpYKxv34hT4v+ZW/w9lU9khwWw+toZwhFTWmjYcRY8
+ EKsjOvBHoUvMjxfGvOn61gY9TSq6o4EnzAuI5nmH7QdeZHlKJEJbvo7fEfgxQ6OxQL0v
+ nMs1ju2TdV6q49XwW3jjuHxNSbSKJV766kfnNTm8BX0YM11toy6FKDJtCPyzm7ip1GOC
+ 33DAU7C+nJK5xxx0Ii1CaVgtZfcQeFmhTT4OKe2uEKxMMpgbTF1W8KzvIBP2Op5jM/pP
+ aiPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=wrfIR1riy38cnam3DJIOduSkqnt3mE1DONngHIwcH88=;
+ b=o1t1jwHGZ6Hw0eJ24zJFTWfgWY6pAgBqA0ORRCxE2zAUKxzXxHDGf4Fn+9SQkebxHv
+ AwgPJHSIHivxdprNYKxLhx1f6OErvpeQDNUsSPUFC4C7IDVxp0BMjV+dnE5qDsRph56o
+ bgKtH3is/Pn34yX4FBLiQjAclR6aB0NviNrSNldaZMQqWgosl8PK3k5T7UOxnuyGceZ2
+ evscHTxrurFzoFfLBJd+hMNuxNlNaqIgpz1aUvWWbgrzucVzt6BX4xKEOMSpn9eQxsDu
+ u6PMHWrUB2hF7ptYd2zXLuWzGYDxrxkdz+EL6joaJu98VieeWYNJbgNd76/EY7KPaPY4
+ +kAw==
+X-Gm-Message-State: AOAM533hJvbs66T7U6lAOMmZYUV7v/pBBAomzaPmTkOGf/Fr57KGARbo
+ dxsd95xY5WUu9LaZMt7rPqT15aYjJhE=
+X-Google-Smtp-Source: ABdhPJyuPZEDIiuIbLPBxbngXQe/7Qr7KFnxCBXSvXO75VgvSUKj2huErV01md7AjDyHd+6gouwlsQ==
+X-Received: by 2002:a17:902:ed4a:: with SMTP id
+ y10mr1965561plb.106.1598006240670; 
+ Fri, 21 Aug 2020 03:37:20 -0700 (PDT)
+Received: from localhost (61-68-212-105.tpgi.com.au. [61.68.212.105])
+ by smtp.gmail.com with ESMTPSA id na14sm1409187pjb.6.2020.08.21.03.37.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Aug 2020 03:37:20 -0700 (PDT)
+Date: Fri, 21 Aug 2020 20:37:14 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/64s: Disallow PROT_SAO in LPARs by default
+To: linuxppc-dev@lists.ozlabs.org, Shawn Anastasio <shawn@anastas.io>
+References: <20200821010837.4079-1-shawn@anastas.io>
+ <20200821010837.4079-3-shawn@anastas.io>
+In-Reply-To: <20200821010837.4079-3-shawn@anastas.io>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1598006106.5gm5wgd52s.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,52 +84,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's possible to enable CONFIG_PPC_EARLY_DEBUG_BOOTX for a pseries
-kernel (maybe it shouldn't be), which is then booted with qemu/slof.
+Excerpts from Shawn Anastasio's message of August 21, 2020 11:08 am:
+> Since migration of guests using SAO to ISA 3.1 hosts may cause issues,
+> disable PROT_SAO in LPARs by default and introduce a new Kconfig option
+> PPC_PROT_SAO_LPAR to allow users to enable it if desired.
 
-But if you do that the kernel crashes in draw_byte(), with a DAR
-pointing somewhere near INT_MAX.
+I think this should be okay. Could you also update the selftest to skip
+if we have PPC_FEATURE2_ARCH_3_1 set?
 
-Adding some debug to prom_init we see that we're not able to read the
-"address" property from OF, so we're just using whatever junk value
-was on the stack.
+Thanks,
+Nick
 
-So check the properties can be read properly from OF, if not we bail
-out before initialising btext, which avoids the crash.
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/prom_init.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index ae7ec9903191..5090a5ab54e5 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2422,10 +2422,19 @@ static void __init prom_check_displays(void)
- 			u32 width, height, pitch, addr;
- 
- 			prom_printf("Setting btext !\n");
--			prom_getprop(node, "width", &width, 4);
--			prom_getprop(node, "height", &height, 4);
--			prom_getprop(node, "linebytes", &pitch, 4);
--			prom_getprop(node, "address", &addr, 4);
-+
-+			if (prom_getprop(node, "width", &width, 4) == PROM_ERROR)
-+				return;
-+
-+			if (prom_getprop(node, "height", &height, 4) == PROM_ERROR)
-+				return;
-+
-+			if (prom_getprop(node, "linebytes", &pitch, 4) == PROM_ERROR)
-+				return;
-+
-+			if (prom_getprop(node, "address", &addr, 4) == PROM_ERROR)
-+				return;
-+
- 			prom_printf("W=%d H=%d LB=%d addr=0x%x\n",
- 				    width, height, pitch, addr);
- 			btext_setup_display(width, height, 8, pitch, addr);
--- 
-2.25.1
-
+>=20
+> Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+> ---
+>  arch/powerpc/Kconfig            | 12 ++++++++++++
+>  arch/powerpc/include/asm/mman.h |  9 +++++++--
+>  2 files changed, 19 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 1f48bbfb3ce9..65bed1fdeaad 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -860,6 +860,18 @@ config PPC_SUBPAGE_PROT
+> =20
+>  	  If unsure, say N here.
+> =20
+> +config PPC_PROT_SAO_LPAR
+> +	bool "Support PROT_SAO mappings in LPARs"
+> +	depends on PPC_BOOK3S_64
+> +	help
+> +	  This option adds support for PROT_SAO mappings from userspace
+> +	  inside LPARs on supported CPUs.
+> +
+> +	  This may cause issues when performing guest migration from
+> +	  a CPU that supports SAO to one that does not.
+> +
+> +	  If unsure, say N here.
+> +
+>  config PPC_COPRO_BASE
+>  	bool
+> =20
+> diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/m=
+man.h
+> index 4ba303ea27f5..7cb6d18f5cd6 100644
+> --- a/arch/powerpc/include/asm/mman.h
+> +++ b/arch/powerpc/include/asm/mman.h
+> @@ -40,8 +40,13 @@ static inline bool arch_validate_prot(unsigned long pr=
+ot, unsigned long addr)
+>  {
+>  	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_SAO))
+>  		return false;
+> -	if ((prot & PROT_SAO) && !cpu_has_feature(CPU_FTR_SAO))
+> -		return false;
+> +	if (prot & PROT_SAO) {
+> +		if (!cpu_has_feature(CPU_FTR_SAO))
+> +			return false;
+> +		if (firmware_has_feature(FW_FEATURE_LPAR) &&
+> +		    !IS_ENABLED(CONFIG_PPC_PROT_SAO_LPAR))
+> +			return false;
+> +	}
+>  	return true;
+>  }
+>  #define arch_validate_prot arch_validate_prot
+> --=20
+> 2.28.0
+>=20
+>=20
