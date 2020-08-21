@@ -2,79 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D6124D91D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 17:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDDF24D929
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 17:56:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BY5fy62CwzDrFH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 01:54:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BY5jH6Jn9zDr7G
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 01:56:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=eric.dumazet@gmail.com;
+ smtp.mailfrom=centrum.lixper.it (client-ip=46.4.16.148; helo=centrum.lixper.it;
+ envelope-from=srs0=9qiu=b7=sguazz.it=giuseppe@centrum.lixper.it;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Mqf3QLSj; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=sguazz.it
+Received: from centrum.lixper.it (centrum.lixper.it [46.4.16.148])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BY5Jy6QCnzDqKh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 01:38:35 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id z23so1033824plo.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 08:38:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=kco/6vI1blM/NwfzBHIDs3oyI1qAQDpBfmbjozxRSNk=;
- b=Mqf3QLSjkioKMk0zBDuIglw6zdeZUKHZ1HQUwduW7GDONUqZycokbVPPLpKEOpQl4b
- PDAb2rY3stSYZvKhK1ciDdXI9QFuSd5868ZADYj2vkdJQuduZNKyrfw/bl/VOhAJoTHE
- 5SQ3KeiX1D57s96SJHQo5n9Kx3TDPfJxYN6T73LU2hqZcH37Y2pQK8ncVnOIHTCw+dH9
- JH5LBDlhrptca3/0S5Ff7Fwp+Av93sdvs2f7yyKFqjraHST6wJ+2aZBaDb4HvmRbJ8cZ
- Ev10EsauM4bU6+fZB47gY9myTYHuYjfP5cXd8jqrKQ0astUglqR98D7equtA387ONVto
- 1OLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=kco/6vI1blM/NwfzBHIDs3oyI1qAQDpBfmbjozxRSNk=;
- b=jaiB2HM1LASFDaBOfnk7D6+bzBtp+RWSLuGjFKeBv37jtErT7v+bvqrd7hEbOi+W3v
- 0lRdKZQ4C/Yw641l9ITKBGp7ETsJG4uG6VPaxEffCzB606+JrOOl+tA3ewVfj1fn1nZg
- 5Yhi3739NF9IgvdEh1cgFflMQtonFdv9nLXuABfWhTVEtD/X94KfXBtYNILfpEM4ju5i
- IV/5hMiIDrmhUUlD1d+eISv799x3UtnLYMbFNp41QoGLnpKuP5NPuK2kKVMJhVuK2MIv
- Yz2mCzALaw1xzAgPHrMwbsSsdL0m3nfgnque0U274RYQaTN0+QUzJnscDzhWQQ/7GzsT
- 8ETw==
-X-Gm-Message-State: AOAM531Ni/oUOO5Yf5rvsOIfJxr2e+vN/MuFRvKqn774jctbFlGPzkIU
- A499+orlhimkU4O5ZCJ7rTighJjxEOA=
-X-Google-Smtp-Source: ABdhPJwru3LiGVN0/RGun5gHVd79iZu23NuOL+aXtjWUQONE0O/idm7t/GaI88fUhyFkLtAmK/d3Rw==
-X-Received: by 2002:a17:90a:ba05:: with SMTP id
- s5mr1612246pjr.114.1598024313966; 
- Fri, 21 Aug 2020 08:38:33 -0700 (PDT)
-Received: from [10.1.10.11] (c-73-241-150-58.hsd1.ca.comcast.net.
- [73.241.150.58])
- by smtp.gmail.com with ESMTPSA id q207sm2581667pgq.71.2020.08.21.08.38.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Aug 2020 08:38:33 -0700 (PDT)
-Subject: Re: [PATCH v6 11/12] mm/vmalloc: Hugepage vmalloc mappings
-To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20200821151216.1005117-1-npiggin@gmail.com>
- <20200821151216.1005117-12-npiggin@gmail.com>
-From: Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <1e001c2c-6c47-21a9-e920-caf78933b713@gmail.com>
-Date: Fri, 21 Aug 2020 08:38:31 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BY5Rg0ZhvzDrCm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 01:44:30 +1000 (AEST)
+Received: from net-2-44-194-190.cust.vodafonedsl.it ([2.44.194.190] helo=uefi)
+ by centrum.lixper.it with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <giuseppe@sguazz.it>)
+ id 1k99DM-0001D8-0U; Fri, 21 Aug 2020 17:44:25 +0200
+Message-ID: <ae2c93c55a785b5f450fe796619d2688f393fa30.camel@sguazz.it>
+Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
+From: Giuseppe Sacco <giuseppe@sguazz.it>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Date: Fri, 21 Aug 2020 17:44:18 +0200
+In-Reply-To: <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
+References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
+ <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
+ <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
+ <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
+ <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
+ <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
+ <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
+ <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
+ <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
+ <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
+ <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
+ <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
+ <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
+ <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
+ <a62714c0-1b17-305d-577d-529e1781ec56@csgroup.eu>
+ <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
+ <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-2 
 MIME-Version: 1.0
-In-Reply-To: <20200821151216.1005117-12-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-GeoIP: IT
+X-SRS: Sender address rewritten from <giuseppe@sguazz.it> to
+ <SRS0=9qIu=B7=sguazz.it=giuseppe@centrum.lixper.it> by centrum.lixper.it.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,46 +67,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Zefan Li <lizefan@huawei.com>,
- Jonathan Cameron <Jonathan.Cameron@Huawei.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello,
 
-On 8/21/20 8:12 AM, Nicholas Piggin wrote:
-> Support huge page vmalloc mappings. Config option HAVE_ARCH_HUGE_VMALLOC
-> enables support on architectures that define HAVE_ARCH_HUGE_VMAP and
-> supports PMD sized vmap mappings.
+Il giorno ven, 21/08/2020 alle 16.03 +0200, Christophe Leroy ha
+scritto:
+[...]
+> Thanks.
 > 
-> vmalloc will attempt to allocate PMD-sized pages if allocating PMD size or
-> larger, and fall back to small pages if that was unsuccessful.
+> The Oops in the video shows that the issue is at 0x1bcac and msr
+> value 
+> shows that Instruction MMU is disabled. So this corresponds to
+> address 
+> 0xc001bcac. In the vmlinux you sent me this address is in 
+> power_save_ppc32_restore()
 > 
-> Allocations that do not use PAGE_KERNEL prot are not permitted to use huge
-> pages, because not all callers expect this (e.g., module allocations vs
-> strict module rwx).
+> This issue is fixed by 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/7bce32ccbab3ba3e3e0f27da6961bf6313df97ed.1581663140.git.christophe.leroy@c-s.fr/
 > 
-> This reduces TLB misses by nearly 30x on a `git diff` workload on a 2-node
-> POWER9 (59,800 -> 2,100) and reduces CPU cycles by 0.54%.
 > 
-> This can result in more internal fragmentation and memory overhead for a
-> given allocation, an option nohugevmalloc is added to disable at boot.
-> 
->
+> You also said in a previous mail that your original issue also
+> happens 
+> when CONFIG_VMAP_STACK is not selected. The above bug being linked
+> to 
+> CONFIG_VMAP_STACK, maybe it would be easier to bisect with 
+> CONFIG_VMAP_STACK unselected.
 
-Thanks for working on this stuff, I tried something similar in the past,
-but could not really do more than a hack.
-( https://lkml.org/lkml/2016/12/21/285 )
+I rebuilt the same kernel that I would otherwise have skipped because
+of the other bug, and it worked, indeed.
+I will continue my "bisect quest" unselecting VMAP_STACK in order to
+speed up the bisecting.
 
-Note that __init alloc_large_system_hash() is used at boot time,
-when NUMA policy is spreading allocations over all NUMA nodes.
-
-This means that on a dual node system, a hash table should be 50/50 spread.
-
-With your patch, if a hashtable is exactly the size of one huge page,
-the location of this hashtable will be not balanced, this might have some
-unwanted impact.
-
-Thanks !
+Thank you very much,
+Giuseppe
 
