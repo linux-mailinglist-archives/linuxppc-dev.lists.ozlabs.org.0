@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1680024CD04
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 06:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFEB24CD07
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 06:53:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXpyd0X2jzDrHp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 14:51:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXq0h58qdzDr5Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 14:53:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cfi4mDOu; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=20161025 header.b=kmFDAZrz; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXppX4mTgzDr2F
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 14:44:52 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id q93so412671pjq.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 21:44:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXppb4QwyzDr2d
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 14:44:55 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id v15so424403pgh.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Aug 2020 21:44:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=xoa50mjKdO+6rEo7JFgsM1iktECeAufQruBypQNx5uU=;
- b=cfi4mDOu03twyolblqmsiXSKLkWdrtP6DA32thuCHNC6mXen19Y+kwOWy25uSRuyAd
- Qa0bgRVU3+eP/5sefkTIIsZIeICp6AU1QK0DB6FIFGeK5xh2hEnGZU+nYr/VrW2rOUfc
- tV5MSHrfgtsv9vIlRDYAj4TdoEsWMfrh9gSbUHA0xIpWXvKqPDXaYOHOJj2GR400bxdp
- yTbeKz7R+/C0ewTgjav45Loptie3gcboNCy1eomfzJUs8waTkOxkU17vfX8XSv0uSzcC
- rNi2y4c5u7tA/ioI4pvh9ypWxzu1bFTMZ/o1CyfCiOAs420mJoSXUtb6Zc3TecHWn8CH
- sSgA==
+ bh=zgciMtrhUFyjwGUVG4/y+NlOfAX4ULiG8JBMTv5iRYk=;
+ b=kmFDAZrzlugaf2iOwFJzFKy0qRhytpzHPWy1SyzEHCf7x9/jJjxRvUYRt3BCCk2gIP
+ G4nsleWjGt4aNX9fvVP1KwjLhxMcXIvVfmtN3e3JqaN3cKpbVL2k7MzRrLEd6j92X8V0
+ oIcDcwGG+tmZt9h0+p+96X55aiBn1lvUzVOzHmRiQq304Nwxl4zMONajDK1Vtrn4GVYh
+ KSQ60Hj72mDozDv7yDH5QAPSFG+Bg3LgmMbAwkLnl2OL+rDtWrod3/UZItrijQavzDgb
+ LLfAOYLTzIZa7dbKDU1ia4cBiQ9+m3Z1xDkKS6YKyaGG8mxCOox9KskxiZKX77/xORO9
+ 71YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=xoa50mjKdO+6rEo7JFgsM1iktECeAufQruBypQNx5uU=;
- b=TinYqyaWS0GF6TLF99itxams/rcwd7aiLc/U4dTv00h/TI0qC21c4NFib07Qr3ns9+
- 8U3veB1rJOw4WPuIzROGIwPInVq+UjIMuvJuiCbvPzBlPkcyvrznw3EXFJE6COhidDg9
- 5wU6R+DoXYi7WHTp2QEsHmEjNE6Uvw5go0TDEilZUTRTtF+qkFqzBNDSw0oFK9qXpFXZ
- 7h66CJEBARVMnLcNgB3rFh22afZ5H90bqpXmGCfGQToEsjSaDwFLtctzxQIOryUQ8wKB
- 3cDUBCjldUNuHPAPatTLNayk8pa6jBcaiic+lKRphvLOxvHJ839M3c/m3ovaOaCX+hzE
- DEgA==
-X-Gm-Message-State: AOAM531BqphTVUvyTPQaeVt73yOZ++/34FlUuO3SRQajekzkm06jIYDD
- KPgsmBHZQRBQak+srcCyYYk=
-X-Google-Smtp-Source: ABdhPJxPggI04ETKTB3DdnitxxNiKgH+fgh1eKljj6tsD8xS6vufzUeeuZNnWtOgyMzr1fIMfPln9g==
-X-Received: by 2002:a17:902:8491:: with SMTP id
- c17mr942848plo.93.1597985089799; 
- Thu, 20 Aug 2020 21:44:49 -0700 (PDT)
+ bh=zgciMtrhUFyjwGUVG4/y+NlOfAX4ULiG8JBMTv5iRYk=;
+ b=ikRgJl50HIwpOWY6i79VSV36GXymLlXP5aNSx6oovhUFXkUT+dJXpANIl9ZY1feuN+
+ ThS/4TzwDcDFvLr8hQuWbmGqNlXEoYf6FmF0tey8Q3dHL7v0OJYHSzXxPKb301xqVLTZ
+ f6eLKmpRma0ZPJdsR1MLQxBhG4hd5sjY5erC1CDgN952eUEQ4+cXMIUYC+cb64S4qdQH
+ q3rFzPMw2fYhdA4oljToOUBzfXIJ8xptf9Bffk16kHaGcfj7/grn+1qJ+u2Bru7hugyN
+ m4Rf9+DT5+bumwvVQQcuusjfmSiLVZraQgm7Ixxzb3isfvScZQk3kNhZ7M6teOAuoIUh
+ yBEw==
+X-Gm-Message-State: AOAM530W5vhQ7tckRPwOGZ327l6RxQ8oYgigJD4hackHz9wSlvMAQDf2
+ JikiBEwrVujoo4Zma7dmAqof/midxxA=
+X-Google-Smtp-Source: ABdhPJw3Yjk+AuHsrY+Z3Qa1QvCviblO1Uhp70gloFt8uX+sF1897Ta2d+ML5N6Yc+IbHzqAbpKmvw==
+X-Received: by 2002:a05:6a00:22c9:: with SMTP id
+ f9mr1023487pfj.212.1597985093609; 
+ Thu, 20 Aug 2020 21:44:53 -0700 (PDT)
 Received: from bobo.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
- by smtp.gmail.com with ESMTPSA id l9sm683374pgg.29.2020.08.20.21.44.46
+ by smtp.gmail.com with ESMTPSA id l9sm683374pgg.29.2020.08.20.21.44.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Aug 2020 21:44:49 -0700 (PDT)
+ Thu, 20 Aug 2020 21:44:53 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linux-mm@kvack.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v5 3/8] mm/vmalloc: rename vmap_*_range vmap_pages_*_range
-Date: Fri, 21 Aug 2020 14:44:22 +1000
-Message-Id: <20200821044427.736424-4-npiggin@gmail.com>
+Subject: [PATCH v5 4/8] lib/ioremap: rename ioremap_*_range to vmap_*_range
+Date: Fri, 21 Aug 2020 14:44:23 +1000
+Message-Id: <20200821044427.736424-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200821044427.736424-1-npiggin@gmail.com>
 References: <20200821044427.736424-1-npiggin@gmail.com>
@@ -87,98 +87,170 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The vmalloc mapper operates on a struct page * array rather than a
-linear physical address, re-name it to make this distinction clear.
+This will be moved to mm/ and used as a generic kernel virtual mapping
+function, so re-name it in preparation.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- mm/vmalloc.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ mm/ioremap.c | 55 ++++++++++++++++++++++------------------------------
+ 1 file changed, 23 insertions(+), 32 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 49f225b0f855..3a1e45fd1626 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -190,9 +190,8 @@ void unmap_kernel_range_noflush(unsigned long start, unsigned long size)
- 		arch_sync_kernel_mappings(start, end);
- }
+diff --git a/mm/ioremap.c b/mm/ioremap.c
+index 5fa1ab41d152..6016ae3227ad 100644
+--- a/mm/ioremap.c
++++ b/mm/ioremap.c
+@@ -61,9 +61,8 @@ static inline int ioremap_pud_enabled(void) { return 0; }
+ static inline int ioremap_pmd_enabled(void) { return 0; }
+ #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
  
--static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
--		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+-static int ioremap_pte_range(pmd_t *pmd, unsigned long addr,
+-		unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
 -		pgtbl_mod_mask *mask)
-+static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
-+		pgprot_t prot, struct page **pages, int *nr, pgtbl_mod_mask *mask)
++static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
  {
  	pte_t *pte;
- 
-@@ -218,9 +217,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr,
+ 	u64 pfn;
+@@ -81,9 +80,8 @@ static int ioremap_pte_range(pmd_t *pmd, unsigned long addr,
  	return 0;
  }
  
--static int vmap_pmd_range(pud_t *pud, unsigned long addr,
--		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+-static int ioremap_try_huge_pmd(pmd_t *pmd, unsigned long addr,
+-				unsigned long end, phys_addr_t phys_addr,
+-				pgprot_t prot)
++static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot)
+ {
+ 	if (!ioremap_pmd_enabled())
+ 		return 0;
+@@ -103,9 +101,8 @@ static int ioremap_try_huge_pmd(pmd_t *pmd, unsigned long addr,
+ 	return pmd_set_huge(pmd, phys_addr, prot);
+ }
+ 
+-static inline int ioremap_pmd_range(pud_t *pud, unsigned long addr,
+-		unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
 -		pgtbl_mod_mask *mask)
-+static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
-+		pgprot_t prot, struct page **pages, int *nr, pgtbl_mod_mask *mask)
++static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
  {
  	pmd_t *pmd;
  	unsigned long next;
-@@ -230,15 +228,14 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr,
- 		return -ENOMEM;
+@@ -116,20 +113,19 @@ static inline int ioremap_pmd_range(pud_t *pud, unsigned long addr,
  	do {
  		next = pmd_addr_end(addr, end);
--		if (vmap_pte_range(pmd, addr, next, prot, pages, nr, mask))
-+		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
+ 
+-		if (ioremap_try_huge_pmd(pmd, addr, next, phys_addr, prot)) {
++		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot)) {
+ 			*mask |= PGTBL_PMD_MODIFIED;
+ 			continue;
+ 		}
+ 
+-		if (ioremap_pte_range(pmd, addr, next, phys_addr, prot, mask))
++		if (vmap_pte_range(pmd, addr, next, phys_addr, prot, mask))
  			return -ENOMEM;
- 	} while (pmd++, addr = next, addr != end);
+ 	} while (pmd++, phys_addr += (next - addr), addr = next, addr != end);
  	return 0;
  }
  
--static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
--		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+-static int ioremap_try_huge_pud(pud_t *pud, unsigned long addr,
+-				unsigned long end, phys_addr_t phys_addr,
+-				pgprot_t prot)
++static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot)
+ {
+ 	if (!ioremap_pud_enabled())
+ 		return 0;
+@@ -149,9 +145,8 @@ static int ioremap_try_huge_pud(pud_t *pud, unsigned long addr,
+ 	return pud_set_huge(pud, phys_addr, prot);
+ }
+ 
+-static inline int ioremap_pud_range(p4d_t *p4d, unsigned long addr,
+-		unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
 -		pgtbl_mod_mask *mask)
-+static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
-+		pgprot_t prot, struct page **pages, int *nr, pgtbl_mod_mask *mask)
++static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
  {
  	pud_t *pud;
  	unsigned long next;
-@@ -248,15 +245,14 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long addr,
- 		return -ENOMEM;
+@@ -162,20 +157,19 @@ static inline int ioremap_pud_range(p4d_t *p4d, unsigned long addr,
  	do {
  		next = pud_addr_end(addr, end);
--		if (vmap_pmd_range(pud, addr, next, prot, pages, nr, mask))
-+		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
+ 
+-		if (ioremap_try_huge_pud(pud, addr, next, phys_addr, prot)) {
++		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot)) {
+ 			*mask |= PGTBL_PUD_MODIFIED;
+ 			continue;
+ 		}
+ 
+-		if (ioremap_pmd_range(pud, addr, next, phys_addr, prot, mask))
++		if (vmap_pmd_range(pud, addr, next, phys_addr, prot, mask))
  			return -ENOMEM;
- 	} while (pud++, addr = next, addr != end);
+ 	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
  	return 0;
  }
  
--static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
--		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+-static int ioremap_try_huge_p4d(p4d_t *p4d, unsigned long addr,
+-				unsigned long end, phys_addr_t phys_addr,
+-				pgprot_t prot)
++static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot)
+ {
+ 	if (!ioremap_p4d_enabled())
+ 		return 0;
+@@ -195,9 +189,8 @@ static int ioremap_try_huge_p4d(p4d_t *p4d, unsigned long addr,
+ 	return p4d_set_huge(p4d, phys_addr, prot);
+ }
+ 
+-static inline int ioremap_p4d_range(pgd_t *pgd, unsigned long addr,
+-		unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
 -		pgtbl_mod_mask *mask)
-+static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
-+		pgprot_t prot, struct page **pages, int *nr, pgtbl_mod_mask *mask)
++static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
++			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
  {
  	p4d_t *p4d;
  	unsigned long next;
-@@ -266,7 +262,7 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr,
- 		return -ENOMEM;
+@@ -208,19 +201,18 @@ static inline int ioremap_p4d_range(pgd_t *pgd, unsigned long addr,
  	do {
  		next = p4d_addr_end(addr, end);
--		if (vmap_pud_range(p4d, addr, next, prot, pages, nr, mask))
-+		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
+ 
+-		if (ioremap_try_huge_p4d(p4d, addr, next, phys_addr, prot)) {
++		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot)) {
+ 			*mask |= PGTBL_P4D_MODIFIED;
+ 			continue;
+ 		}
+ 
+-		if (ioremap_pud_range(p4d, addr, next, phys_addr, prot, mask))
++		if (vmap_pud_range(p4d, addr, next, phys_addr, prot, mask))
  			return -ENOMEM;
- 	} while (p4d++, addr = next, addr != end);
+ 	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
  	return 0;
-@@ -307,7 +303,7 @@ int map_kernel_range_noflush(unsigned long addr, unsigned long size,
+ }
+ 
+-int ioremap_page_range(unsigned long addr,
+-		       unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
++int ioremap_page_range(unsigned long addr, unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+ {
+ 	pgd_t *pgd;
+ 	unsigned long start;
+@@ -235,8 +227,7 @@ int ioremap_page_range(unsigned long addr,
+ 	pgd = pgd_offset_k(addr);
+ 	do {
  		next = pgd_addr_end(addr, end);
- 		if (pgd_bad(*pgd))
- 			mask |= PGTBL_PGD_MODIFIED;
--		err = vmap_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
-+		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+-		err = ioremap_p4d_range(pgd, addr, next, phys_addr, prot,
+-					&mask);
++		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot, &mask);
  		if (err)
- 			return err;
- 	} while (pgd++, addr = next, addr != end);
+ 			break;
+ 	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+@@ -272,7 +263,7 @@ void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long prot)
+ 		return NULL;
+ 	vaddr = (unsigned long)area->addr;
+ 
+-	if (ioremap_page_range(vaddr, vaddr + size, addr, __pgprot(prot))) {
++	if (vmap_page_range(vaddr, vaddr + size, addr, __pgprot(prot))) {
+ 		free_vm_area(area);
+ 		return NULL;
+ 	}
 -- 
 2.23.0
 
