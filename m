@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DE924CD23
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:13:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BBE24CD54
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 07:41:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXqRl4mgYzDqV3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:13:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXr4J2h81zDqxZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 15:41:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,41 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXqPj0g28zDqJY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 15:11:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXr2R2y31zDqvr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 15:40:12 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BXqPX0Cgfz9vCxp;
- Fri, 21 Aug 2020 07:11:44 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BXr2H3pQFz9vCyR;
+ Fri, 21 Aug 2020 07:40:07 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id zLQZtjGtEvxd; Fri, 21 Aug 2020 07:11:43 +0200 (CEST)
+ with ESMTP id NBBJ9OMeuyRL; Fri, 21 Aug 2020 07:40:07 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BXqPW6Lh9z9vCxn;
- Fri, 21 Aug 2020 07:11:43 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BXr2H2m2nz9vCyQ;
+ Fri, 21 Aug 2020 07:40:07 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 048398B86E;
- Fri, 21 Aug 2020 07:11:43 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 448BE8B87B;
+ Fri, 21 Aug 2020 07:40:08 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eSJQic3OinEk; Fri, 21 Aug 2020 07:11:43 +0200 (CEST)
+ with ESMTP id P7XZ6g2G32t3; Fri, 21 Aug 2020 07:40:08 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DF61E8B75F;
- Fri, 21 Aug 2020 07:11:40 +0200 (CEST)
-Subject: Re: [PATCH v2 3/6] powerpc/32s: Only leave NX unset on segments used
- for modules
-To: Andreas Schwab <schwab@linux-m68k.org>
-References: <cover.1593428200.git.christophe.leroy@csgroup.eu>
- <7172c0f5253419315e434a1816ee3d6ed6505bc0.1593428200.git.christophe.leroy@csgroup.eu>
- <87eeo1kmet.fsf@igel.home>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D9A78B75F;
+ Fri, 21 Aug 2020 07:40:07 +0200 (CEST)
+Subject: Re: [PATCH v5 5/8] mm: HUGE_VMAP arch support cleanup
+To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20200821044427.736424-1-npiggin@gmail.com>
+ <20200821044427.736424-6-npiggin@gmail.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <6c480b23-297a-4f3d-daff-962a01b0b54c@csgroup.eu>
-Date: Fri, 21 Aug 2020 07:11:37 +0200
+Message-ID: <9b67b892-9482-15dc-0c1e-c5d5a93a3c91@csgroup.eu>
+Date: Fri, 21 Aug 2020 07:40:06 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <87eeo1kmet.fsf@igel.home>
+In-Reply-To: <20200821044427.736424-6-npiggin@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -66,74 +65,417 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, Zefan Li <lizefan@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 21/08/2020 à 00:00, Andreas Schwab a écrit :
-> On Jun 29 2020, Christophe Leroy wrote:
+Le 21/08/2020 à 06:44, Nicholas Piggin a écrit :
+> This changes the awkward approach where architectures provide init
+> functions to determine which levels they can provide large mappings for,
+> to one where the arch is queried for each call.
 > 
->> Instead of leaving NX unset on all segments above the start
->> of vmalloc space, only leave NX unset on segments used for
->> modules.
-> 
-> I'm getting this crash:
-> 
-> kernel tried to execute exec-protected page (f294b000) - exploit attempt (uid: 0)
-> BUG: Unable to handle kernel instruction fetch
-> Faulting instruction address: 0xf294b000
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> BE PAGE_SIZE=4K MMU=Hash PowerMac
-> Modules linked in: pata_macio(+)
-> CPU: 0 PID: 87 Comm: udevd Not tainted 5.8.0-rc2-test #49
-> NIP:  f294b000 LR: 0005c60 CTR: f294b000
-> REGS: f18d9cc0 TRAP: 0400  Not tainted  (5.8.0-rc2-test)
-> MSR:  10009032 <E,ME,IR,DR,RI>  CR: 84222422  XER: 20000000
-> GPR00: c0005c14 f18d9d78 ef30ca20 00000000 ef0000e0 c00993d0 ef6da038 0000005e
-> GPR08: c09050b8 c08b0000 00000000 f18d9d78 44222422 10072070 00000000 0fefaca4
-> GPR16: 1006a00c f294d50b 00000120 00000124 c0096ea8 0000000e ef2776c0 ef2776e4
-> GPR24: f18fd6e8 00000001 c086fe64 c086fe04 00000000 c08b0000 f294b000 ffffffff
-> NIP [f294b000] pata_macio_init+0x0/0xc0 [pata_macio]
-> LR [c0005c60] do_one_initcall+0x6c/0x160
-> Call Trace:
-> [f18d9d78] [c0005c14] do_one_initcall+0x20/0x160 (unreliable)
-> [f18d9dd8] [c009a22c] do_init_module+0x60/0x1c0
-> [f18d9df8] [c00993d8] load_module+0x16a8/0x1c14
-> [f18d9ea8] [c0099aa4] sys_finit_module+0x8c/0x94
-> [f18d9f38] [c0012174] ret_from_syscall+0x0/0x34
-> --- interrupt: c01 at 0xfdb4318
->     LR = 0xfeee9c0
-> Instruction dump:
-> XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-> XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX <3d20c08b> 3d40c086 9421ffe0 8129106c
-> ---[ end trace 85a98cc836109871 ]---
-> 
+> This removes code and indirection, and allows constant-folding of dead
+> code for unsupported levels.
 
-Please try the patch at 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/07884ed033c31e074747b7eb8eaa329d15db07ec.1596641219.git.christophe.leroy@csgroup.eu/
+I think that in order to allow constant-folding of dead code for 
+unsupported levels, you must define arch_vmap_xxx_supported() as static 
+inline in a .h
 
-And if you are using KAsan, also take 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/6eddca2d5611fd57312a88eae31278c87a8fc99d.1596641224.git.christophe.leroy@csgroup.eu/
+If you have them in .c files, you'll get calls to tiny functions that 
+will always return false, but will still be called and dead code won't 
+be eliminated. And performance wise, that's probably not optimal either.
 
-Allthough I have some doubt that it will fix it, because the faulting 
-instruction address is at 0xf294b000 which is within the vmalloc area. 
-In the likely case the patch doesn't fix the issue, can you provide your 
-.config and a dump of /sys/kernel/debug/powerpc/segment_registers (You 
-have to have CONFIG_PPC_PTDUMP enabled for that) and also the below part 
-from boot log.
-
-[    0.000000] Memory: 509556K/524288K available (7088K kernel code, 
-592K rwdata, 1304K rodata, 356K init, 803K bss, 14732K reserved, 0K 
-cma-reserved)
-[    0.000000] Kernel virtual memory layout:
-[    0.000000]   * 0xff7ff000..0xfffff000  : fixmap
-[    0.000000]   * 0xff7fd000..0xff7ff000  : early ioremap
-[    0.000000]   * 0xe1000000..0xff7fd000  : vmalloc & ioremap
-
-
-Thanks
 Christophe
+
+
+> 
+> This also adds a prot argument to the arch query. This is unused
+> currently but could help with some architectures (e.g., some powerpc
+> processors can't map uncacheable memory with large pages).
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/arm64/mm/mmu.c                      | 12 +--
+>   arch/powerpc/mm/book3s64/radix_pgtable.c | 10 ++-
+>   arch/x86/mm/ioremap.c                    | 12 +--
+>   include/linux/io.h                       |  9 ---
+>   include/linux/vmalloc.h                  | 10 +++
+>   init/main.c                              |  1 -
+>   mm/ioremap.c                             | 96 +++++++++++-------------
+>   7 files changed, 73 insertions(+), 77 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 75df62fea1b6..bbb3ccf6a7ce 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1304,12 +1304,13 @@ void *__init fixmap_remap_fdt(phys_addr_t dt_phys, int *size, pgprot_t prot)
+>   	return dt_virt;
+>   }
+>   
+> -int __init arch_ioremap_p4d_supported(void)
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +bool arch_vmap_p4d_supported(pgprot_t prot)
+>   {
+> -	return 0;
+> +	return false;
+>   }
+>   
+> -int __init arch_ioremap_pud_supported(void)
+> +bool arch_vmap_pud_supported(pgprot_t prot)
+>   {
+>   	/*
+>   	 * Only 4k granule supports level 1 block mappings.
+> @@ -1319,11 +1320,12 @@ int __init arch_ioremap_pud_supported(void)
+>   	       !IS_ENABLED(CONFIG_PTDUMP_DEBUGFS);
+>   }
+>   
+> -int __init arch_ioremap_pmd_supported(void)
+> +bool arch_vmap_pmd_supported(pgprot_t prot)
+>   {
+> -	/* See arch_ioremap_pud_supported() */
+> +	/* See arch_vmap_pud_supported() */
+>   	return !IS_ENABLED(CONFIG_PTDUMP_DEBUGFS);
+>   }
+> +#endif
+>   
+>   int pud_set_huge(pud_t *pudp, phys_addr_t phys, pgprot_t prot)
+>   {
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index ae823bba29f2..7d3a620c5adf 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -1182,13 +1182,14 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
+>   	set_pte_at(mm, addr, ptep, pte);
+>   }
+>   
+> -int __init arch_ioremap_pud_supported(void)
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +bool arch_vmap_pud_supported(pgprot_t prot)
+>   {
+>   	/* HPT does not cope with large pages in the vmalloc area */
+>   	return radix_enabled();
+>   }
+>   
+> -int __init arch_ioremap_pmd_supported(void)
+> +bool arch_vmap_pmd_supported(pgprot_t prot)
+>   {
+>   	return radix_enabled();
+>   }
+> @@ -1197,6 +1198,7 @@ int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
+>   {
+>   	return 0;
+>   }
+> +#endif
+>   
+>   int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
+>   {
+> @@ -1282,7 +1284,7 @@ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
+>   	return 1;
+>   }
+>   
+> -int __init arch_ioremap_p4d_supported(void)
+> +bool arch_vmap_p4d_supported(pgprot_t prot)
+>   {
+> -	return 0;
+> +	return false;
+>   }
+> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+> index 84d85dbd1dad..5b8b495ab4ed 100644
+> --- a/arch/x86/mm/ioremap.c
+> +++ b/arch/x86/mm/ioremap.c
+> @@ -481,24 +481,26 @@ void iounmap(volatile void __iomem *addr)
+>   }
+>   EXPORT_SYMBOL(iounmap);
+>   
+> -int __init arch_ioremap_p4d_supported(void)
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +bool arch_vmap_p4d_supported(pgprot_t prot)
+>   {
+> -	return 0;
+> +	return false;
+>   }
+>   
+> -int __init arch_ioremap_pud_supported(void)
+> +bool arch_vmap_pud_supported(pgprot_t prot)
+>   {
+>   #ifdef CONFIG_X86_64
+>   	return boot_cpu_has(X86_FEATURE_GBPAGES);
+>   #else
+> -	return 0;
+> +	return false;
+>   #endif
+>   }
+>   
+> -int __init arch_ioremap_pmd_supported(void)
+> +bool arch_vmap_pmd_supported(pgprot_t prot)
+>   {
+>   	return boot_cpu_has(X86_FEATURE_PSE);
+>   }
+> +#endif
+>   
+>   /*
+>    * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+> diff --git a/include/linux/io.h b/include/linux/io.h
+> index 8394c56babc2..f1effd4d7a3c 100644
+> --- a/include/linux/io.h
+> +++ b/include/linux/io.h
+> @@ -31,15 +31,6 @@ static inline int ioremap_page_range(unsigned long addr, unsigned long end,
+>   }
+>   #endif
+>   
+> -#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> -void __init ioremap_huge_init(void);
+> -int arch_ioremap_p4d_supported(void);
+> -int arch_ioremap_pud_supported(void);
+> -int arch_ioremap_pmd_supported(void);
+> -#else
+> -static inline void ioremap_huge_init(void) { }
+> -#endif
+> -
+>   /*
+>    * Managed iomap interface
+>    */
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index 0221f852a7e1..787d77ad7536 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -84,6 +84,16 @@ struct vmap_area {
+>   	};
+>   };
+>   
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> +bool arch_vmap_p4d_supported(pgprot_t prot);
+> +bool arch_vmap_pud_supported(pgprot_t prot);
+> +bool arch_vmap_pmd_supported(pgprot_t prot);
+> +#else
+> +static inline bool arch_vmap_p4d_supported(pgprot_t prot) { return false; }
+> +static inline bool arch_vmap_pud_supported(pgprot_t prot) { return false; }
+> +static inline bool arch_vmap_pmd_supported(pgprot_t prot) { return false; }
+> +#endif
+> +
+>   /*
+>    *	Highlevel APIs for driver use
+>    */
+> diff --git a/init/main.c b/init/main.c
+> index ae78fb68d231..1c89aa127b8f 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -820,7 +820,6 @@ static void __init mm_init(void)
+>   	pgtable_init();
+>   	debug_objects_mem_init();
+>   	vmalloc_init();
+> -	ioremap_huge_init();
+>   	/* Should be run before the first non-init thread is created */
+>   	init_espfix_bsp();
+>   	/* Should be run after espfix64 is set up. */
+> diff --git a/mm/ioremap.c b/mm/ioremap.c
+> index 6016ae3227ad..b0032dbadaf7 100644
+> --- a/mm/ioremap.c
+> +++ b/mm/ioremap.c
+> @@ -16,49 +16,16 @@
+>   #include "pgalloc-track.h"
+>   
+>   #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+> -static int __read_mostly ioremap_p4d_capable;
+> -static int __read_mostly ioremap_pud_capable;
+> -static int __read_mostly ioremap_pmd_capable;
+> -static int __read_mostly ioremap_huge_disabled;
+> +static bool __ro_after_init iomap_allow_huge = true;
+>   
+>   static int __init set_nohugeiomap(char *str)
+>   {
+> -	ioremap_huge_disabled = 1;
+> +	iomap_allow_huge = false;
+>   	return 0;
+>   }
+>   early_param("nohugeiomap", set_nohugeiomap);
+> -
+> -void __init ioremap_huge_init(void)
+> -{
+> -	if (!ioremap_huge_disabled) {
+> -		if (arch_ioremap_p4d_supported())
+> -			ioremap_p4d_capable = 1;
+> -		if (arch_ioremap_pud_supported())
+> -			ioremap_pud_capable = 1;
+> -		if (arch_ioremap_pmd_supported())
+> -			ioremap_pmd_capable = 1;
+> -	}
+> -}
+> -
+> -static inline int ioremap_p4d_enabled(void)
+> -{
+> -	return ioremap_p4d_capable;
+> -}
+> -
+> -static inline int ioremap_pud_enabled(void)
+> -{
+> -	return ioremap_pud_capable;
+> -}
+> -
+> -static inline int ioremap_pmd_enabled(void)
+> -{
+> -	return ioremap_pmd_capable;
+> -}
+> -
+> -#else	/* !CONFIG_HAVE_ARCH_HUGE_VMAP */
+> -static inline int ioremap_p4d_enabled(void) { return 0; }
+> -static inline int ioremap_pud_enabled(void) { return 0; }
+> -static inline int ioremap_pmd_enabled(void) { return 0; }
+> +#else /* CONFIG_HAVE_ARCH_HUGE_VMAP */
+> +static const bool iomap_allow_huge = false;
+>   #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
+>   
+>   static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+> @@ -81,9 +48,12 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+>   }
+>   
+>   static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot, unsigned int max_page_shift)
+>   {
+> -	if (!ioremap_pmd_enabled())
+> +	if (max_page_shift < PMD_SHIFT)
+> +		return 0;
+> +
+> +	if (!arch_vmap_pmd_supported(prot))
+>   		return 0;
+>   
+>   	if ((end - addr) != PMD_SIZE)
+> @@ -102,7 +72,8 @@ static int vmap_try_huge_pmd(pmd_t *pmd, unsigned long addr, unsigned long end,
+>   }
+>   
+>   static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
+> +			phys_addr_t phys_addr, pgprot_t prot, unsigned int max_page_shift,
+> +			pgtbl_mod_mask *mask)
+>   {
+>   	pmd_t *pmd;
+>   	unsigned long next;
+> @@ -113,7 +84,7 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>   	do {
+>   		next = pmd_addr_end(addr, end);
+>   
+> -		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot)) {
+> +		if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot, max_page_shift)) {
+>   			*mask |= PGTBL_PMD_MODIFIED;
+>   			continue;
+>   		}
+> @@ -125,9 +96,12 @@ static int vmap_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+>   }
+>   
+>   static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot, unsigned int max_page_shift)
+>   {
+> -	if (!ioremap_pud_enabled())
+> +	if (max_page_shift < PUD_SHIFT)
+> +		return 0;
+> +
+> +	if (!arch_vmap_pud_supported(prot))
+>   		return 0;
+>   
+>   	if ((end - addr) != PUD_SIZE)
+> @@ -146,7 +120,8 @@ static int vmap_try_huge_pud(pud_t *pud, unsigned long addr, unsigned long end,
+>   }
+>   
+>   static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
+> +			phys_addr_t phys_addr, pgprot_t prot, unsigned int max_page_shift,
+> +			pgtbl_mod_mask *mask)
+>   {
+>   	pud_t *pud;
+>   	unsigned long next;
+> @@ -157,21 +132,24 @@ static int vmap_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+>   	do {
+>   		next = pud_addr_end(addr, end);
+>   
+> -		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot)) {
+> +		if (vmap_try_huge_pud(pud, addr, next, phys_addr, prot, max_page_shift)) {
+>   			*mask |= PGTBL_PUD_MODIFIED;
+>   			continue;
+>   		}
+>   
+> -		if (vmap_pmd_range(pud, addr, next, phys_addr, prot, mask))
+> +		if (vmap_pmd_range(pud, addr, next, phys_addr, prot, max_page_shift, mask))
+>   			return -ENOMEM;
+>   	} while (pud++, phys_addr += (next - addr), addr = next, addr != end);
+>   	return 0;
+>   }
+>   
+>   static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot)
+> +			phys_addr_t phys_addr, pgprot_t prot, unsigned int max_page_shift)
+>   {
+> -	if (!ioremap_p4d_enabled())
+> +	if (max_page_shift < P4D_SHIFT)
+> +		return 0;
+> +
+> +	if (!arch_vmap_p4d_supported(prot))
+>   		return 0;
+>   
+>   	if ((end - addr) != P4D_SIZE)
+> @@ -190,7 +168,8 @@ static int vmap_try_huge_p4d(p4d_t *p4d, unsigned long addr, unsigned long end,
+>   }
+>   
+>   static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+> -			phys_addr_t phys_addr, pgprot_t prot, pgtbl_mod_mask *mask)
+> +			phys_addr_t phys_addr, pgprot_t prot, unsigned int max_page_shift,
+> +			pgtbl_mod_mask *mask)
+>   {
+>   	p4d_t *p4d;
+>   	unsigned long next;
+> @@ -201,18 +180,19 @@ static int vmap_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+>   	do {
+>   		next = p4d_addr_end(addr, end);
+>   
+> -		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot)) {
+> +		if (vmap_try_huge_p4d(p4d, addr, next, phys_addr, prot, max_page_shift)) {
+>   			*mask |= PGTBL_P4D_MODIFIED;
+>   			continue;
+>   		}
+>   
+> -		if (vmap_pud_range(p4d, addr, next, phys_addr, prot, mask))
+> +		if (vmap_pud_range(p4d, addr, next, phys_addr, prot, max_page_shift, mask))
+>   			return -ENOMEM;
+>   	} while (p4d++, phys_addr += (next - addr), addr = next, addr != end);
+>   	return 0;
+>   }
+>   
+> -int ioremap_page_range(unsigned long addr, unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+> +static int vmap_range(unsigned long addr, unsigned long end, phys_addr_t phys_addr, pgprot_t prot,
+> +			unsigned int max_page_shift)
+>   {
+>   	pgd_t *pgd;
+>   	unsigned long start;
+> @@ -227,7 +207,7 @@ int ioremap_page_range(unsigned long addr, unsigned long end, phys_addr_t phys_a
+>   	pgd = pgd_offset_k(addr);
+>   	do {
+>   		next = pgd_addr_end(addr, end);
+> -		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot, &mask);
+> +		err = vmap_p4d_range(pgd, addr, next, phys_addr, prot, max_page_shift, &mask);
+>   		if (err)
+>   			break;
+>   	} while (pgd++, phys_addr += (next - addr), addr = next, addr != end);
+> @@ -240,6 +220,16 @@ int ioremap_page_range(unsigned long addr, unsigned long end, phys_addr_t phys_a
+>   	return err;
+>   }
+>   
+> +int ioremap_page_range(unsigned long addr, unsigned long end, phys_addr_t phys_addr, pgprot_t prot)
+> +{
+> +	unsigned int max_page_shift = PAGE_SHIFT;
+> +
+> +	if (iomap_allow_huge)
+> +		max_page_shift = P4D_SHIFT;
+> +
+> +	return vmap_range(addr, end, phys_addr, prot, max_page_shift);
+> +}
+> +
+>   #ifdef CONFIG_GENERIC_IOREMAP
+>   void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long prot)
+>   {
+> 
