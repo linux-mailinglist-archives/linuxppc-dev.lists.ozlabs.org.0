@@ -2,52 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5FA24E207
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 22:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A926C24E24D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 22:53:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYCW901MGzDrK0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 06:17:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYDHw5xkczDqCq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 06:53:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=oskdNenP; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=anastas.io (client-ip=104.248.188.109; helo=alpha.anastas.io;
+ envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=anastas.io
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=anastas.io header.i=@anastas.io header.a=rsa-sha256
+ header.s=mail header.b=M26UuQrQ; dkim-atps=neutral
+Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYCSF5cC9zDrJB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 06:15:25 +1000 (AEST)
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
- [73.231.172.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYDFm0F88zDrDT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 06:51:23 +1000 (AEST)
+Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3E7D820738;
- Fri, 21 Aug 2020 20:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1598040923;
- bh=/T7D++jQJVYAEaRhehB6OXQudUAED1x+6RQtwjpgepM=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=oskdNenPwocChae4HFuF7bNEbcd6pqb+OlqWuz9XE4T4ExAobZJPQ+Vv46iy4oJdJ
- oXZ5UgEOsQ9iMg+gIaCRVB3NH/LeXX5fSGqlllwM6nWkPLGW1EIkJD68mjCC8Opx/j
- cXUc7Nleu7OIBwWugqQCCej8//v19BgSMb5VLM1Q=
-Date: Fri, 21 Aug 2020 13:15:22 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 06/12] powerpc: inline huge vmap supported functions
-Message-Id: <20200821131522.c819f9c5c1fc24d90244c6dd@linux-foundation.org>
-In-Reply-To: <20200821151216.1005117-7-npiggin@gmail.com>
-References: <20200821151216.1005117-1-npiggin@gmail.com>
- <20200821151216.1005117-7-npiggin@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by alpha.anastas.io (Postfix) with ESMTPSA id 616C07ECD8;
+ Fri, 21 Aug 2020 15:51:20 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
+ t=1598043080; bh=3aXxNw1T7kdHi4tVgB2VciVb6/V2lhrq6znhBANHZfc=;
+ h=From:To:Cc:Subject:Date:From;
+ b=M26UuQrQm8jPQgBKQNmE7/gc3QUIpQLE3JP7bkeox+74vKkCH06Ofnn06ZNyzLtmf
+ 3S9Z+OdGy2PvCKk+c0dQPQoyFkmvt8acccvKt76J0MO5ONwaUCP+o22a33Vd/m+5g2
+ KfIuw9cEq/iyOr25uJE0BLGLsWQSNE8keBvzh+Cw2cWXEHDRC6oYt8KgjWVQ9pFMab
+ Tke5ZQW/VWJGqs+voAbjrFQnZyM2sIusApZsZvhG/pTlroWH0v1Y2QhpY5dX3qv/Ay
+ ZzF0PgVdpZZhfBbgZNhxBEoJk81cb4B3k3DsW8q+y8j2lZ+6XqN3jV6WdN9A/8G19Y
+ Vga/+fpo7uINg==
+From: Shawn Anastasio <shawn@anastas.io>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: Add pcibios_default_alignment implementation
+Date: Fri, 21 Aug 2020 15:51:15 -0500
+Message-Id: <20200821205115.50333-1-shawn@anastas.io>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,35 +55,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
- Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: aik@ozlabs.ru, oohall@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 22 Aug 2020 01:12:10 +1000 Nicholas Piggin <npiggin@gmail.com> wrote:
+Implement pcibios_default_alignment for pseries so that
+resources are page-aligned. The main benefit of this is being
+able to map any resource from userspace via mechanisms like VFIO.
 
->  #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-> -bool arch_vmap_p4d_supported(pgprot_t prot);
-> -bool arch_vmap_pud_supported(pgprot_t prot);
-> -bool arch_vmap_pmd_supported(pgprot_t prot);
-> +static inline bool arch_vmap_p4d_supported(pgprot_t prot)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool arch_vmap_pud_supported(pgprot_t prot)
-> +{
-> +	/* HPT does not cope with large pages in the vmalloc area */
-> +	return radix_enabled();
-> +}
-> +
-> +static inline bool arch_vmap_pmd_supported(pgprot_t prot)
-> +{
-> +	return radix_enabled();
-> +}
->  #endif
+This is identical to powernv's implementation.
 
-Oh.  OK, whatever ;)
+Signed-off-by: Shawn Anastasio <shawn@anastas.io>
+---
+ arch/powerpc/platforms/pseries/pci.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/powerpc/platforms/pseries/pci.c b/arch/powerpc/platforms/pseries/pci.c
+index 911534b89c85..6d922c096354 100644
+--- a/arch/powerpc/platforms/pseries/pci.c
++++ b/arch/powerpc/platforms/pseries/pci.c
+@@ -210,6 +210,11 @@ int pseries_pcibios_sriov_disable(struct pci_dev *pdev)
+ }
+ #endif
+ 
++static resource_size_t pseries_pcibios_default_alignment(void)
++{
++	return PAGE_SIZE;
++}
++
+ static void __init pSeries_request_regions(void)
+ {
+ 	if (!isa_io_base)
+@@ -231,6 +236,8 @@ void __init pSeries_final_fixup(void)
+ 
+ 	eeh_show_enabled();
+ 
++	ppc_md.pcibios_default_alignment = pseries_pcibios_default_alignment;
++
+ #ifdef CONFIG_PCI_IOV
+ 	ppc_md.pcibios_sriov_enable = pseries_pcibios_sriov_enable;
+ 	ppc_md.pcibios_sriov_disable = pseries_pcibios_sriov_disable;
+-- 
+2.28.0
+
