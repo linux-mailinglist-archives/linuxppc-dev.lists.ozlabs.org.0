@@ -2,42 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FC824D0E6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 10:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8ED24D17A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 11:29:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXwML43jjzDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 18:55:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXx6t53wkzDrBh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 19:29:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=centrum.lixper.it (client-ip=46.4.16.148; helo=centrum.lixper.it;
+ envelope-from=srs0=9qiu=b7=sguazz.it=giuseppe@centrum.lixper.it;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BXwHn5G6qzDqBr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 18:52:05 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDEF030E;
- Fri, 21 Aug 2020 01:52:03 -0700 (PDT)
-Received: from [10.163.67.49] (unknown [10.163.67.49])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BFDDB3F66B;
- Fri, 21 Aug 2020 01:51:58 -0700 (PDT)
-Subject: Re: [PATCH v2 00/13] mm/debug_vm_pgtable fixes
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <52e9743e-fa2f-3fd2-f50e-2c6c38464b96@arm.com>
-Date: Fri, 21 Aug 2020 14:21:27 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=none (p=none dis=none) header.from=sguazz.it
+X-Greylist: delayed 2091 seconds by postgrey-1.36 at bilbo;
+ Fri, 21 Aug 2020 18:58:03 AEST
+Received: from centrum.lixper.it (centrum.lixper.it [46.4.16.148])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BXwQg6lsLzDqcw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 18:58:02 +1000 (AEST)
+Received: from net-2-44-194-190.cust.vodafonedsl.it ([2.44.194.190] helo=uefi)
+ by centrum.lixper.it with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <giuseppe@sguazz.it>)
+ id 1k92KF-00023D-Vn; Fri, 21 Aug 2020 10:23:06 +0200
+Message-ID: <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
+Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
+From: Giuseppe Sacco <giuseppe@sguazz.it>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ linuxppc-dev@lists.ozlabs.org
+Date: Fri, 21 Aug 2020 10:22:58 +0200
+In-Reply-To: <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
+References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
+ <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
+ <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
+ <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
+ <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
+ <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
+ <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
+ <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
+ <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
+ <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
+ <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
+ <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
+ <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-2 
 MIME-Version: 1.0
-In-Reply-To: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-GeoIP: IT
+X-SRS: Sender address rewritten from <giuseppe@sguazz.it> to
+ <SRS0=9qIu=B7=sguazz.it=giuseppe@centrum.lixper.it> by centrum.lixper.it.
+X-Mailman-Approved-At: Fri, 21 Aug 2020 19:27:36 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,76 +66,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Christophe Leroy <christophe.leroy@c-s.fr>, "x86@kernel.org" <x86@kernel.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Qian Cai <cai@lca.pw>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- linuxppc-dev@lists.ozlabs.org,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello Cristophe,
 
-On 08/19/2020 06:30 PM, Aneesh Kumar K.V wrote:
-> This patch series includes fixes for debug_vm_pgtable test code so that
-> they follow page table updates rules correctly. The first two patches introduce
-> changes w.r.t ppc64. The patches are included in this series for completeness. We can
-> merge them via ppc64 tree if required.
+Il giorno ven, 21/08/2020 alle 08.55 +0200, Christophe Leroy ha
+scritto:
+> Hi Giuseppe,
 > 
-> Hugetlb test is disabled on ppc64 because that needs larger change to satisfy
-> page table update rules.
+> Le 08/07/2020 à 20:44, Christophe Leroy a écrit :
+> > 
+> > Le 08/07/2020 à 19:36, Giuseppe Sacco a écrit :
+> > > Hi Cristophe,
+> > > 
+> > > Il giorno mer, 08/07/2020 alle 19.09 +0200, Christophe Leroy ha
+> > > scritto:
+[...]
+> > > > What's the result with:
+> > > > 
+> > > > LANG=C make ARCH=powerpc CROSS_COMPILE=powerpc-linux- vmlinux
+> > > 
+> > > $ LANG=C make ARCH=powerpc CROSS_COMPILE=powerpc-linux- vmlinux
+> > >    CALL    scripts/checksyscalls.sh
+> > >    CALL    scripts/atomic/check-atomics.sh
+> > >    CHK     include/generated/compile.h
+> > >    CC      kernel/module.o
+> > > kernel/module.c: In function 'do_init_module':
+> > > kernel/module.c:3593:2: error: implicit declaration of function
+> > > 'module_enable_ro'; did you mean 'module_enable_x'? [-Werror=implicit-
+> > > function-declaration]
+> > >   3593 |  module_enable_ro(mod, true);
+> > >        |  ^~~~~~~~~~~~~~~~
+> > >        |  module_enable_x
+> > > cc1: some warnings being treated as errors
+> > > make[1]: *** [scripts/Makefile.build:267: kernel/module.o] Error 1
+> > > make: *** [Makefile:1735: kernel] Error 2
+> > > 
+> > > So, should I 'git bisect skip'?
+> > 
+> > Ah yes, I had the exact same problem last time I bisected.
+> > 
+> > So yes do 'git bisect skip'. You'll probably hit this problem half a 
+> > dozen of times, but at the end you should get a usefull bisect anyway.
+> > 
 > 
-> Changes from V1:
-> * Address review feedback
-> * drop test specific pfn_pte and pfn_pmd.
-> * Update ppc64 page table helper to add _PAGE_PTE 
-> 
-> Aneesh Kumar K.V (13):
->   powerpc/mm: Add DEBUG_VM WARN for pmd_clear
->   powerpc/mm: Move setting pte specific flags to pfn_pte
->   mm/debug_vm_pgtable/ppc64: Avoid setting top bits in radom value
->   mm/debug_vm_pgtables/hugevmap: Use the arch helper to identify huge
->     vmap support.
->   mm/debug_vm_pgtable/savedwrite: Enable savedwrite test with
->     CONFIG_NUMA_BALANCING
->   mm/debug_vm_pgtable/THP: Mark the pte entry huge before using
->     set_pmd/pud_at
->   mm/debug_vm_pgtable/set_pte/pmd/pud: Don't use set_*_at to update an
->     existing pte entry
->   mm/debug_vm_pgtable/thp: Use page table depost/withdraw with THP
->   mm/debug_vm_pgtable/locks: Move non page table modifying test together
->   mm/debug_vm_pgtable/locks: Take correct page table lock
->   mm/debug_vm_pgtable/pmd_clear: Don't use pmd/pud_clear on pte entries
->   mm/debug_vm_pgtable/hugetlb: Disable hugetlb test on ppc64
->   mm/debug_vm_pgtable: populate a pte entry before fetching it
-> 
->  arch/powerpc/include/asm/book3s/64/pgtable.h |  29 +++-
->  arch/powerpc/include/asm/nohash/pgtable.h    |   5 -
->  arch/powerpc/mm/book3s64/pgtable.c           |   2 +-
->  arch/powerpc/mm/pgtable.c                    |   5 -
->  include/linux/io.h                           |  12 ++
->  mm/debug_vm_pgtable.c                        | 151 +++++++++++--------
->  6 files changed, 127 insertions(+), 77 deletions(-)
-> 
+> Were you able to progress ?
 
-Changes proposed here will impact other enabled platforms as well.
-Adding the following folks and mailing lists, and hoping to get a
-broader review and test coverage. Please do include them in the
-next iteration as well.
+Very slowly. I am still working on it, currently at recompile #276.
+git-bisect states that I have still about 700 commits to check, but the
+real problem is that more than 60% of built kernels crash even before
+displaying the cpu_freq message (probably another long lasting bug
+hides the one I am looking for). All these skipped kernels make
+bisecting very very slow.
 
-+ linux-arm-kernel@lists.infradead.org
-+ linux-s390@vger.kernel.org
-+ linux-snps-arc@lists.infradead.org
-+ x86@kernel.org
-+ linux-arch@vger.kernel.org
+A short video about the problem I face when I skip the build is here:
+https://eppesuigoccas.homedns.org/~giuseppe/bug%20avvio%20powerbook%20g4.mp4
 
-+ Gerald Schaefer <gerald.schaefer@de.ibm.com>
-+ Christophe Leroy <christophe.leroy@c-s.fr>
-+ Christophe Leroy <christophe.leroy@csgroup.eu>
-+ Vineet Gupta <vgupta@synopsys.com>
-+ Mike Rapoport <rppt@linux.ibm.com>
-+ Qian Cai <cai@lca.pw>
+Bye,
+Giuseppe
+
