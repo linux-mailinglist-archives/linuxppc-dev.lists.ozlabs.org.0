@@ -1,50 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257C624C97B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 03:14:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3354324CB76
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 05:35:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BXk7y0QPTzDqm6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 11:14:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BXnGc49cszDr5L
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Aug 2020 13:35:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=anastas.io (client-ip=104.248.188.109; helo=alpha.anastas.io;
- envelope-from=shawn@anastas.io; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
- header.from=anastas.io
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=anastas.io header.i=@anastas.io header.a=rsa-sha256
- header.s=mail header.b=BBzskPd9; dkim-atps=neutral
-Received: from alpha.anastas.io (alpha.anastas.io [104.248.188.109])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BXk1q1pSCzDr2w
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 11:09:18 +1000 (AEST)
-Received: from authenticated-user (alpha.anastas.io [104.248.188.109])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
- (No client certificate requested)
- by alpha.anastas.io (Postfix) with ESMTPSA id 06D007ECD5;
- Thu, 20 Aug 2020 20:08:45 -0500 (CDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=anastas.io; s=mail;
- t=1597972126; bh=j+w6XtGkxtFNQ0GLezhFKHopmQXUH7iSQXejY1lxhqo=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BBzskPd9V++glJSpFF2eIMs/ArJL8yXVYvsYzDumrZjeKnAFeOLnLoT7/42aXH3Te
- PKSilvxQ1p7rSeCdqeryL4jlvkTQDp+w3nZkdthWSOnmYegmUKMMel6ta9n2ZsZkN0
- PUKHAaD1eppDYIOwax8xxghL2p2NaJrJiOzeZHqLJFc+SRn7vT4dBvYyZpKEfEnqIK
- n3YO9fiNeTp+T2ZgC8GaJx1TXZANziWKrMuA+ndZ3WPmdu8neixCO+g7RBTy6ma3Uv
- w5ZmDuiQl49+CAs96pkXTC7Fz92w6MHc8gqJ/parB/sfKP67Ut/KpehIJn1HTVuyC3
- DURc6QuT79LPw==
-From: Shawn Anastasio <shawn@anastas.io>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/64s: Disallow PROT_SAO in LPARs by default
-Date: Thu, 20 Aug 2020 20:08:37 -0500
-Message-Id: <20200821010837.4079-3-shawn@anastas.io>
-In-Reply-To: <20200821010837.4079-1-shawn@anastas.io>
-References: <20200821010837.4079-1-shawn@anastas.io>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BXnDn48bCzDqQ3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Aug 2020 13:33:59 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98A5630E;
+ Thu, 20 Aug 2020 20:33:56 -0700 (PDT)
+Received: from [10.163.67.49] (unknown [10.163.67.49])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0A7533F6CF;
+ Thu, 20 Aug 2020 20:33:54 -0700 (PDT)
+Subject: Re: [PATCH v2 00/13] mm/debug_vm_pgtable fixes
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
+ <87tuwyvjei.fsf@linux.ibm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <856eb6d7-9c09-728e-b374-d787145ac052@arm.com>
+Date: Fri, 21 Aug 2020 09:03:24 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
+In-Reply-To: <87tuwyvjei.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,64 +50,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since migration of guests using SAO to ISA 3.1 hosts may cause issues,
-disable PROT_SAO in LPARs by default and introduce a new Kconfig option
-PPC_PROT_SAO_LPAR to allow users to enable it if desired.
 
-Signed-off-by: Shawn Anastasio <shawn@anastas.io>
----
- arch/powerpc/Kconfig            | 12 ++++++++++++
- arch/powerpc/include/asm/mman.h |  9 +++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1f48bbfb3ce9..65bed1fdeaad 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -860,6 +860,18 @@ config PPC_SUBPAGE_PROT
- 
- 	  If unsure, say N here.
- 
-+config PPC_PROT_SAO_LPAR
-+	bool "Support PROT_SAO mappings in LPARs"
-+	depends on PPC_BOOK3S_64
-+	help
-+	  This option adds support for PROT_SAO mappings from userspace
-+	  inside LPARs on supported CPUs.
-+
-+	  This may cause issues when performing guest migration from
-+	  a CPU that supports SAO to one that does not.
-+
-+	  If unsure, say N here.
-+
- config PPC_COPRO_BASE
- 	bool
- 
-diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
-index 4ba303ea27f5..7cb6d18f5cd6 100644
---- a/arch/powerpc/include/asm/mman.h
-+++ b/arch/powerpc/include/asm/mman.h
-@@ -40,8 +40,13 @@ static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
- {
- 	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_SAO))
- 		return false;
--	if ((prot & PROT_SAO) && !cpu_has_feature(CPU_FTR_SAO))
--		return false;
-+	if (prot & PROT_SAO) {
-+		if (!cpu_has_feature(CPU_FTR_SAO))
-+			return false;
-+		if (firmware_has_feature(FW_FEATURE_LPAR) &&
-+		    !IS_ENABLED(CONFIG_PPC_PROT_SAO_LPAR))
-+			return false;
-+	}
- 	return true;
- }
- #define arch_validate_prot arch_validate_prot
--- 
-2.28.0
+On 08/19/2020 07:15 PM, Aneesh Kumar K.V wrote:
+> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+> 
+>> This patch series includes fixes for debug_vm_pgtable test code so that
+>> they follow page table updates rules correctly. The first two patches introduce
+>> changes w.r.t ppc64. The patches are included in this series for completeness. We can
+>> merge them via ppc64 tree if required.
+>>
+>> Hugetlb test is disabled on ppc64 because that needs larger change to satisfy
+>> page table update rules.
+>>
+>> Changes from V1:
+>> * Address review feedback
+>> * drop test specific pfn_pte and pfn_pmd.
+>> * Update ppc64 page table helper to add _PAGE_PTE 
+>>
+>> Aneesh Kumar K.V (13):
+>>   powerpc/mm: Add DEBUG_VM WARN for pmd_clear
+>>   powerpc/mm: Move setting pte specific flags to pfn_pte
+>>   mm/debug_vm_pgtable/ppc64: Avoid setting top bits in radom value
+>>   mm/debug_vm_pgtables/hugevmap: Use the arch helper to identify huge
+>>     vmap support.
+>>   mm/debug_vm_pgtable/savedwrite: Enable savedwrite test with
+>>     CONFIG_NUMA_BALANCING
+>>   mm/debug_vm_pgtable/THP: Mark the pte entry huge before using
+>>     set_pmd/pud_at
+>>   mm/debug_vm_pgtable/set_pte/pmd/pud: Don't use set_*_at to update an
+>>     existing pte entry
+>>   mm/debug_vm_pgtable/thp: Use page table depost/withdraw with THP
+>>   mm/debug_vm_pgtable/locks: Move non page table modifying test together
+>>   mm/debug_vm_pgtable/locks: Take correct page table lock
+>>   mm/debug_vm_pgtable/pmd_clear: Don't use pmd/pud_clear on pte entries
+>>   mm/debug_vm_pgtable/hugetlb: Disable hugetlb test on ppc64
+>>   mm/debug_vm_pgtable: populate a pte entry before fetching it
+>>
+>>  arch/powerpc/include/asm/book3s/64/pgtable.h |  29 +++-
+>>  arch/powerpc/include/asm/nohash/pgtable.h    |   5 -
+>>  arch/powerpc/mm/book3s64/pgtable.c           |   2 +-
+>>  arch/powerpc/mm/pgtable.c                    |   5 -
+>>  include/linux/io.h                           |  12 ++
+>>  mm/debug_vm_pgtable.c                        | 151 +++++++++++--------
+>>  6 files changed, 127 insertions(+), 77 deletions(-)
+>>
+> 
+> BTW I picked a wrong branch when sending this. Attaching the diff
+> against what I want to send.  pfn_pmd() no more updates _PAGE_PTE
+> because that is handled by pmd_mkhuge().
+> 
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> index 3b4da7c63e28..e18ae50a275c 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -141,7 +141,7 @@ pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot)
+>  	unsigned long pmdv;
+>  
+>  	pmdv = (pfn << PAGE_SHIFT) & PTE_RPN_MASK;
+> -	return __pmd(pmdv | pgprot_val(pgprot) | _PAGE_PTE);
+> +	return pmd_set_protbits(__pmd(pmdv), pgprot);
+>  }
+>  
+>  pmd_t mk_pmd(struct page *page, pgprot_t pgprot)
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 7d9f8e1d790f..cad61d22f33a 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -229,7 +229,7 @@ static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+>  
+>  static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+>  {
+> -	pmd_t pmd = pfn_pmd(pfn, prot);
+> +	pmd_t pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
+>  
+>  	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
+>  		return;
+> 
 
+Cover letter does not mention which branch or tag this series applies on.
+Just assumed it to be 5.9-rc1. Should the above changes be captured as a
+pre-requisite patch ?
+
+Anyways, the series fails to be build on arm64.
+
+A) Without CONFIG_TRANSPARENT_HUGEPAGE
+
+mm/debug_vm_pgtable.c: In function ‘debug_vm_pgtable’:
+mm/debug_vm_pgtable.c:1045:2: error: too many arguments to function ‘pmd_advanced_tests’
+  pmd_advanced_tests(mm, vma, pmdp, pmd_aligned, vaddr, prot, saved_ptep);
+  ^~~~~~~~~~~~~~~~~~
+mm/debug_vm_pgtable.c:366:20: note: declared here
+ static void __init pmd_advanced_tests(struct mm_struct *mm,
+                    ^~~~~~~~~~~~~~~~~~
+
+B) As mentioned previously, this should be solved by including <linux/io.h>
+
+mm/debug_vm_pgtable.c: In function ‘pmd_huge_tests’:
+mm/debug_vm_pgtable.c:215:7: error: implicit declaration of function ‘arch_ioremap_pmd_supported’; did you mean ‘arch_disable_smp_support’? [-Werror=implicit-function-declaration]
+  if (!arch_ioremap_pmd_supported())
+       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please make sure that the series builds on all enabled platforms i.e x86,
+arm64, ppc32, ppc64, arc, s390 along with selectively enabling/disabling
+all the features that make various #ifdefs in the test.
+
+- Anshuman
