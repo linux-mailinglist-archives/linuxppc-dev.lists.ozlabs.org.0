@@ -1,52 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9625224E60C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 09:23:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE10524E677
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 10:59:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYVHY0D6szDqP4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 17:23:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYXQD6kbzzDql6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 18:59:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=centrum.lixper.it (client-ip=46.4.16.148; helo=centrum.lixper.it;
+ envelope-from=srs0=fwjo=ca=sguazz.it=giuseppe@centrum.lixper.it;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ dmarc=none (p=none dis=none) header.from=sguazz.it
+X-Greylist: delayed 1729 seconds by postgrey-1.36 at bilbo;
+ Sat, 22 Aug 2020 18:58:02 AEST
+Received: from centrum.lixper.it (centrum.lixper.it [46.4.16.148])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYVCd1xBzzDrCl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 17:20:28 +1000 (AEST)
-IronPort-SDR: 1zoCsOfBVgy1sq7YfZ7nU/XfU5nXnnG2+tZZjUOd/h4KgqEqUvXxxUAvc7wjnLtjJO2veYeNX0
- R9VS82MpA/bA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9720"; a="135754988"
-X-IronPort-AV: E=Sophos;i="5.76,339,1592895600"; d="scan'208";a="135754988"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2020 00:20:27 -0700
-IronPort-SDR: yGBfJdX4A7m/Chyt32Sa31LJjYIDpFfmQldwjhW13edshxhOf3Z8eAXFRE8OuuCv+RkvzxmZp/
- 67qkEHx0Z9oQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,339,1592895600"; d="scan'208";a="498757501"
-Received: from lkp-server01.sh.intel.com (HELO 91ed66e1ca04) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 22 Aug 2020 00:20:26 -0700
-Received: from kbuild by 91ed66e1ca04 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1k9NpB-0001aP-HD; Sat, 22 Aug 2020 07:20:25 +0000
-Date: Sat, 22 Aug 2020 15:19:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 02ee70dacfacaceb80719eee2c9b929170b6440a
-Message-ID: <5f40c71a.OCHP6UpCHLs1tnIp%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYXNB6xLlzDqSC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 18:58:02 +1000 (AEST)
+Received: from net-2-44-194-190.cust.vodafonedsl.it ([2.44.194.190] helo=uefi)
+ by centrum.lixper.it with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <giuseppe@sguazz.it>)
+ id 1k9Otb-0007c9-Mu; Sat, 22 Aug 2020 10:29:08 +0200
+Message-ID: <c707f59d379a51b83ba52e796d137887219c32fc.camel@sguazz.it>
+Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
+From: Giuseppe Sacco <giuseppe@sguazz.it>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Date: Sat, 22 Aug 2020 10:28:58 +0200
+In-Reply-To: <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
+References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
+ <04544f16-fb20-54b9-e56e-47d45af03b6c@csgroup.eu>
+ <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
+ <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
+ <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
+ <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
+ <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
+ <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
+ <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
+ <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
+ <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
+ <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
+ <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
+ <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
+ <a62714c0-1b17-305d-577d-529e1781ec56@csgroup.eu>
+ <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
+ <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-GeoIP: IT
+X-SRS: Sender address rewritten from <giuseppe@sguazz.it> to
+ <SRS0=FWJo=CA=sguazz.it=giuseppe@centrum.lixper.it> by centrum.lixper.it.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,107 +69,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 02ee70dacfacaceb80719eee2c9b929170b6440a  video: fbdev: controlfb: Fix build for COMPILE_TEST=y && PPC_PMAC=n
+Hello Christophe,
 
-elapsed time: 1041m
+Il giorno ven, 21/08/2020 alle 16.03 +0200, Christophe Leroy ha
+scritto:
+[...]
+> Thanks.
+> 
+> The Oops in the video shows that the issue is at 0x1bcac and msr
+> value 
+> shows that Instruction MMU is disabled. So this corresponds to
+> address 
+> 0xc001bcac. In the vmlinux you sent me this address is in 
+> power_save_ppc32_restore()
+> 
+> This issue is fixed by 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/7bce32ccbab3ba3e3e0f27da6961bf6313df97ed.1581663140.git.christophe.leroy@c-s.fr/
+> 
+> 
+> You also said in a previous mail that your original issue also
+> happens 
+> when CONFIG_VMAP_STACK is not selected. The above bug being linked
+> to 
+> CONFIG_VMAP_STACK, maybe it would be easier to bisect with 
+> CONFIG_VMAP_STACK unselected.
 
-configs tested: 84
-configs skipped: 1
+I was wrong. Disabling CONFIG_VMAP_STACK led me to all "good" compile
+and bisect ended without finding the culprit commit.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+So, I started from scratch: I rebuilt HEAD and found that it does show
+the original problem I am facing, then I rebuilt it without
+CONFIG_VMAP_STACK and found that it does pass (fix?) the problem, since
+kernel continue booting, but then it stops with three Oops related to
+command systemd-udevd.
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-mips                        bcm47xx_defconfig
-powerpc                        cell_defconfig
-arm                           corgi_defconfig
-riscv                            alldefconfig
-arm                   milbeaut_m10v_defconfig
-sh                         ecovec24_defconfig
-arm                          collie_defconfig
-arm                       aspeed_g4_defconfig
-arm                        clps711x_defconfig
-arm                           spitz_defconfig
-sh                        apsh4ad0a_defconfig
-arm                         orion5x_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-i386                 randconfig-a002-20200820
-i386                 randconfig-a004-20200820
-i386                 randconfig-a005-20200820
-i386                 randconfig-a003-20200820
-i386                 randconfig-a006-20200820
-i386                 randconfig-a001-20200820
-x86_64               randconfig-a015-20200820
-x86_64               randconfig-a012-20200820
-x86_64               randconfig-a016-20200820
-x86_64               randconfig-a014-20200820
-x86_64               randconfig-a011-20200820
-x86_64               randconfig-a013-20200820
-i386                 randconfig-a013-20200820
-i386                 randconfig-a012-20200820
-i386                 randconfig-a011-20200820
-i386                 randconfig-a016-20200820
-i386                 randconfig-a014-20200820
-i386                 randconfig-a015-20200820
-i386                 randconfig-a013-20200821
-i386                 randconfig-a012-20200821
-i386                 randconfig-a011-20200821
-i386                 randconfig-a016-20200821
-i386                 randconfig-a014-20200821
-i386                 randconfig-a015-20200821
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+You may find a video that displays the complete boot, vmlinux, config,
+and system.map files here:
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+https://eppesuigoccas.homedns.org/~giuseppe/powerpc32/config-5.9.0-rc1+
+https://eppesuigoccas.homedns.org/~giuseppe/powerpc32/System.map
+https://eppesuigoccas.homedns.org/~giuseppe/powerpc32/VID_20200822_095621.mp4
+https://eppesuigoccas.homedns.org/~giuseppe/powerpc32/vmlinux.strip.gz
+
+Bye,
+Giuseppe
+
