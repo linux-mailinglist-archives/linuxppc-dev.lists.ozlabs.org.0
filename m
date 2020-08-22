@@ -1,48 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5311E24E60B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 09:22:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6289524E60F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 09:25:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYVFJ109LzDrGv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 17:21:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYVKS5tZ9zDqLJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 17:25:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYVCc6HKgzDrCj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 17:20:24 +1000 (AEST)
-IronPort-SDR: 8D5vGxixGenxrX2LBdDtNGDzfglqBvbJ8Eu9CkMOLLz4TLsK+g9h7SX4LGbo+hWPxyznvKB6xH
- UOC/5BHO1qJw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9720"; a="135754983"
-X-IronPort-AV: E=Sophos;i="5.76,339,1592895600"; d="scan'208";a="135754983"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYVCm1GcczDrFd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 17:20:35 +1000 (AEST)
+IronPort-SDR: 8+9ikinChYwpwxk6aj0VCTsKYgnXA/t0z4Kjb3zXVY+38RqpqnHvB985GTkQjRgIy+hrDSMib6
+ 7F7cRmU16OKA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9720"; a="155666687"
+X-IronPort-AV: E=Sophos;i="5.76,339,1592895600"; d="scan'208";a="155666687"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2020 00:20:20 -0700
-IronPort-SDR: T6GqI3OobxE8v9GMEWYu9kE3rwIMfNbWo4H5Bz3g+DcgACVzW5oNHuWqcbH8YxO1wLVXmSbriJ
- 4NJHfe6D3ccQ==
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Aug 2020 00:20:32 -0700
+IronPort-SDR: Q30bnYg8G3MLAYCGGkaeGduuSN4MjEQESYJMJWDMnLp3+hH2nvURlwKcplNCJvYlyI0TRFqWx6
+ WoU9abINCRng==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,339,1592895600"; d="scan'208";a="330254296"
+X-IronPort-AV: E=Sophos;i="5.76,339,1592895600"; d="scan'208";a="442586448"
 Received: from lkp-server01.sh.intel.com (HELO 91ed66e1ca04) ([10.239.97.150])
- by fmsmga002.fm.intel.com with ESMTP; 22 Aug 2020 00:20:19 -0700
+ by orsmga004.jf.intel.com with ESMTP; 22 Aug 2020 00:20:31 -0700
 Received: from kbuild by 91ed66e1ca04 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1k9Np4-0001aE-He; Sat, 22 Aug 2020 07:20:18 +0000
-Date: Sat, 22 Aug 2020 15:19:46 +0800
+ id 1k9NpG-0001aT-KE; Sat, 22 Aug 2020 07:20:30 +0000
+Date: Sat, 22 Aug 2020 15:19:50 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 64ef8f2c4791940d7f3945507b6a45c20d959260
-Message-ID: <5f40c712.vYcQ145H6wrbzDRz%lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS d19274eb71328b768fcebe940a61eac39f8daecc
+Message-ID: <5f40c716.N0nH9f2sIjOI69hP%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -63,13 +62,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: 64ef8f2c4791940d7f3945507b6a45c20d959260  powerpc/perf/hv-24x7: Move cpumask file to top folder of hv-24x7 driver
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: d19274eb71328b768fcebe940a61eac39f8daecc  Automatic merge of 'master', 'next' and 'fixes' (2020-08-21 23:47)
 
 elapsed time: 1042m
 
-configs tested: 82
-configs skipped: 2
+configs tested: 79
+configs skipped: 1
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -79,11 +78,6 @@ arm64                            allyesconfig
 arm64                               defconfig
 arm                              allyesconfig
 arm                              allmodconfig
-mips                           ip28_defconfig
-x86_64                           allyesconfig
-arm                            mmp2_defconfig
-h8300                    h8300h-sim_defconfig
-riscv                               defconfig
 mips                        bcm47xx_defconfig
 powerpc                        cell_defconfig
 arm                           corgi_defconfig
@@ -150,8 +144,10 @@ i386                 randconfig-a014-20200821
 i386                 randconfig-a015-20200821
 riscv                            allyesconfig
 riscv                             allnoconfig
+riscv                               defconfig
 riscv                            allmodconfig
 x86_64                                   rhel
+x86_64                           allyesconfig
 x86_64                    rhel-7.6-kselftests
 x86_64                              defconfig
 x86_64                               rhel-8.3
