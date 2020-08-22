@@ -2,37 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57DE24E87F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 18:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7595024E8C5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 18:31:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYjwp6cPvzDqnZ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 02:08:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYkRF4h8QzDqpr
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 02:31:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
  envelope-from=zhongguohua1@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYjv74gVGzDqhS
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 02:06:54 +1000 (AEST)
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 8C5A28320EC3711E4B94;
- Sun, 23 Aug 2020 00:06:43 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYkPG2myBzDqWh
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 02:29:35 +1000 (AEST)
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 48E7FDE5EF43CB7E1CBE;
+ Sun, 23 Aug 2020 00:29:27 +0800 (CST)
 Received: from DESKTOP-8N3QUD5.china.huawei.com (10.67.102.173) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.487.0; Sun, 23 Aug 2020 00:06:35 +0800
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.487.0; Sun, 23 Aug 2020 00:29:21 +0800
 From: Guohua Zhong <zhongguohua1@huawei.com>
-To: <zhongguohua1@huawei.com>
+To: <christophe.leroy@csgroup.eu>
 Subject: Re: [PATCH] powerpc: Fix a bug in __div64_32 if divisor is zero
-Date: Sun, 23 Aug 2020 00:06:34 +0800
-Message-ID: <20200822160634.24492-1-zhongguohua1@huawei.com>
+Date: Sun, 23 Aug 2020 00:29:20 +0800
+Message-ID: <20200822162920.42040-1-zhongguohua1@huawei.com>
 X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20200820131049.42940-1-zhongguohua1@huawei.com>
-References: <20200820131049.42940-1-zhongguohua1@huawei.com>
+In-Reply-To: <50d351e0-bbad-f25f-6b4c-265b7a73c878@csgroup.eu>
+References: <50d351e0-bbad-f25f-6b4c-265b7a73c878@csgroup.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -49,9 +49,9 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nixiaoming@huawei.com, wangle6@huawei.com, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: nixiaoming@huawei.com, zhongguohua1@huawei.com, wangle6@huawei.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
