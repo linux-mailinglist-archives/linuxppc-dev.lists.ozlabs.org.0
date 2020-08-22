@@ -2,72 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD15E24E919
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 19:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4372124E96A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 21:37:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYlwY6KP9zDqq5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 03:38:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYpYy0MzPzDqpK
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 05:37:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643;
+ helo=mail-ej1-x643.google.com; envelope-from=chunkeey@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=iram.es
- (client-ip=130.206.19.139; helo=mx01.puc.rediris.es;
- envelope-from=paubert@iram.es; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=iram.es
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256
- header.s=DKIM header.b=YM7Tx+o3; dkim-atps=neutral
-X-Greylist: delayed 646 seconds by postgrey-1.36 at bilbo;
- Sun, 23 Aug 2020 03:36:58 AEST
-Received: from mx01.puc.rediris.es (outbound2mad.lav.puc.rediris.es
- [130.206.19.139])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=SILZm/yT; dkim-atps=neutral
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
+ [IPv6:2a00:1450:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYlty4RR8zDql0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 03:36:57 +1000 (AEST)
-Received: from mta-out01.sim.rediris.es (mta-out01.sim.rediris.es
- [130.206.24.43])
- by mx01.puc.rediris.es  with ESMTP id 07MHPaoF008452-07MHPaoH008452
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Sat, 22 Aug 2020 19:25:36 +0200
-Received: from mta-out01.sim.rediris.es (localhost.localdomain [127.0.0.1])
- by mta-out01.sim.rediris.es (Postfix) with ESMTPS id 31DE3303A2C0;
- Sat, 22 Aug 2020 19:25:36 +0200 (CEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by mta-out01.sim.rediris.es (Postfix) with ESMTP id 1EBFE303A2C1;
- Sat, 22 Aug 2020 19:25:36 +0200 (CEST)
-X-Amavis-Modified: Mail body modified (using disclaimer) -
- mta-out01.sim.rediris.es
-Received: from mta-out01.sim.rediris.es ([127.0.0.1])
- by localhost (mta-out01.sim.rediris.es [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id Ti7X22fnqMYW; Sat, 22 Aug 2020 19:25:35 +0200 (CEST)
-Received: from lt-gp.iram.es (32.236.223.87.dynamic.jazztel.es [87.223.236.32])
- by mta-out01.sim.rediris.es (Postfix) with ESMTPA id DFFD9303A2C0;
- Sat, 22 Aug 2020 19:25:34 +0200 (CEST)
-Date: Sat, 22 Aug 2020 19:25:24 +0200
-From: Gabriel Paubert <paubert@iram.es>
-To: Guohua Zhong <zhongguohua1@huawei.com>
-Subject: Re: =?utf-8?B?UmXvvJpSZQ==?= =?utf-8?Q?=3A?= [PATCH] powerpc: Fix a
- bug in __div64_32 if divisor is zero
-Message-ID: <20200822172524.GA5451@lt-gp.iram.es>
-References: <8dedfcce-04e0-ec7d-6af5-ec1d6d8602b0@csgroup.eu>
- <20200822165433.58228-1-zhongguohua1@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYpWt3W4kzDql0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 05:35:36 +1000 (AEST)
+Received: by mail-ej1-x643.google.com with SMTP id si26so6809423ejb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 12:35:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=dWMxgBvmfFyawmFvMmHtQbFSjxdsaTc05buinE1Bj3k=;
+ b=SILZm/yTNxrh78QIeeI8/0ZwVzwwOG5rVjnml/IdrXRNeTNBuvJha0FWKTzujPwGKK
+ LyVlhYxe0my7eKLYXKW0WYq+XJmL0lZSe1auBZcOnRh+fNUmtJU1+B2VE07DbZrsvLLb
+ kMTXIZT45EXQUANdZkpz3PmoPHvT7RYS929aaCk9DvUs1RdJd/9Y8rgaSjBnkbRKnogv
+ W6y1GvNrVQllDiDtdgACatlGLPcJ5LnGOK2phbqRFmsvbIvW1PiAT1UtUKTKnAAyHM5T
+ tofd708J11s7yy4V8FgjX+C+BlRzpiyjmkUPFxLF5Hr3XW4kNZioo30bjAX1LoNY3VKL
+ nNMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=dWMxgBvmfFyawmFvMmHtQbFSjxdsaTc05buinE1Bj3k=;
+ b=AfBk4Y0f9H3Pa8IUU2pOJH17MHXwmx/LjPlz6EYkzOSpPOgmq20r9r6u3ZOYUUqfZO
+ WkqY3ndi6ffQDbznIMkabzR6O33J9j122lPvukFhw0BAfAWZ/Z848y51SZSNsfFugOHu
+ kjNfhWYmb7UOU9wQ2J8FfmmfG8gBvHYXf5HnC/th9URWfT9o71Yhn2qKtp0y34zQmIIf
+ 8xDWxCFQTKje2f84aXXDrrolatzic7cQnFdFIY1FSjUHfduCx8JVSfj7ORbQMtNY01Rp
+ yJyfX/8w2G+cJFVqhh2ZE/SYxjM9VAzwJ0wQKNivjp9O35D5JCRmsUMlK6/ZAk9rbS6+
+ NOBw==
+X-Gm-Message-State: AOAM532K9FG+elMXrQrgdQ2OVKZVfqbXahi426KUPHYFWDMGE4/sawFY
+ xKn/FBAZdttSHU3jexPcRZ73INDkgQhJGA==
+X-Google-Smtp-Source: ABdhPJziHAmG8Bj99dgFaFHC+kcJQ5u8k3ckuArREtMVoTUqO0Prg16KpC6nG6eBFZdDYzJCZAB+oA==
+X-Received: by 2002:a17:906:d9db:: with SMTP id
+ qk27mr8122791ejb.230.1598124932571; 
+ Sat, 22 Aug 2020 12:35:32 -0700 (PDT)
+Received: from debian64.daheim (p4fd09171.dip0.t-ipconnect.de.
+ [79.208.145.113])
+ by smtp.gmail.com with ESMTPSA id eb11sm3612855edb.76.2020.08.22.12.35.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 22 Aug 2020 12:35:31 -0700 (PDT)
+Received: from chuck by debian64.daheim with local (Exim 4.94)
+ (envelope-from <chunkeey@gmail.com>)
+ id 1k9ZIP-000Enb-LD; Sat, 22 Aug 2020 21:35:21 +0200
+From: Christian Lamparter <chunkeey@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v2 0/4] powerpc: apm82181: adding customer devices
+Date: Sat, 22 Aug 2020 21:35:17 +0200
+Message-Id: <cover.1598124791.git.chunkeey@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200822165433.58228-1-zhongguohua1@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=iram.es; s=DKIM;
- c=relaxed/relaxed; 
- h=date:from:to:cc:subject:message-id:references:mime-version:content-type;
- bh=x/y1wL+17mpmDeW+i59qqK9LJ4zkB0EVEHsZvWq7Xuc=;
- b=YM7Tx+o3yeRzZ24WpGQ68/Dn0Vooij0NNhm/+FJzbgwQy6T9vdYp+Yh+oz4fGx0EK4c1Kus4JhBr
- rAYk/lgyba3RtpryBaOxbfc7ErnTw3mwwFtfPdQ8JJcwdeydZOAC9Xf3FjQlbvOsStvKiQQNw79T
- B7xaevQgDJ74uTknT8d/ysRwB5bgMxhaKHJDMqEHfKWKVw86u7BjuerZAfHQC7GhqNnRmuHtfgv0
- 8HWNNJpEOOqYpA0mx42xBUrfCIaoOvIX9M2RIHDG/YH69PVW0l1S5oBH/zFl4k81OWEsijloIl8o
- 6hn1+2iB2HP/mWD64Irwzofrj084a7Xj+utXdQ==
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,102 +82,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangle6@huawei.com, gregkh@linuxfoundation.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, paulus@samba.org, nixiaoming@huawei.com
+Cc: Paul Mackerras <paulus@samba.org>, Rob Herring <robh+dt@kernel.org>,
+ Chris Blake <chrisrblake93@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 23, 2020 at 12:54:33AM +0800, Guohua Zhong wrote:
-> >In generic version in lib/math/div64.c, there is no checking of 'base' 
-> >either.
-> >Do we really want to add this check in the powerpc version only ?
-> 
-> >The only user of __div64_32() is do_div() in 
-> >include/asm-generic/div64.h. Wouldn't it be better to do the check there ?
-> 
-> >Christophe
-> 
-> Yet, I have noticed that there is no checking of 'base' in these functions.
-> But I am not sure how to check is better.As we know that the result is 
-> undefined when divisor is zero. It maybe good to print error and dump stack.
->  Let the process to know that the divisor is zero by sending SIGFPE. 
-> 
-> diff --git a/include/asm-generic/div64.h b/include/asm-generic/div64.h
-> index a3b98c86f077..161c656ee3ee 100644
-> --- a/include/asm-generic/div64.h
-> +++ b/include/asm-generic/div64.h
-> @@ -43,6 +43,11 @@
->  # define do_div(n,base) ({                                     \
->         uint32_t __base = (base);                               \
->         uint32_t __rem;                                         \
-> + if (unlikely(base == 0)) {                          \
-> +         pr_err("do_div base=%d\n",base);            \
-> +         dump_stack();                               \
-> +         force_sig(SIGFPE);                          \
-> + }      
-> 
+Hello,
 
-I suspect this will generate a strong reaction. SIGFPE is for user space
-instruction attempting a division by zero. A division by zero in the
-kernel is a kernel bug, period, and you don't want to kill a user
-process for this reason.
+I've been holding on to these devices dts' for a while now.
+But ever since the recent purge of the PPC405, I'm feeling
+the urge to move forward.
 
-If it happens in an interrupt, the context of the kernel may not even be
-related to the current process.
+The devices in question have been running with OpenWrt since
+around 2016/2017. Back then it was linux v4.4 and required
+many out-of-tree patches (for WIFI, SATA, CRYPTO...), that
+since have been integrated. So, there's nothing else in the
+way I think.
 
-Many other architectures (x86 for example) already trigger an exception
-on a division by zero but the handler will find that the exception
-happened in kernel context and generate an Oops, not raise a signal in a
-(possibly innocent) userland process.
+A patch that adds the Meraki vendor-prefix has been sent
+separately, as there's also the Meraki MR32 that I'm working
+on as well. Here's the link to the patch:
+<https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-August/216949.html>
 
-	Gabriel
+Now, I've looked around in the arch/powerpc for recent .dts
+and device submissions to get an understanding of what is
+required.
+From the looks of it, it seems like every device gets a
+skeleton defconfig and a CONFIG_$DEVICE symbol (Like:
+CONFIG_MERAKI_MR24, CONFIG_WD_MYBOOKLIVE).
 
-> Then it also needto add this checking in functions of
-> div64_s64(), div64_u64(), div64_u64_rem(), div_s64_rem and div_u64_rem () 
-> in include/linux/math64.h
-> 
-> + if (unlikely(divisor == 0)) {
-> +         pr_err("%s divisor=0\n",__func__);
-> +         dump_stack();
-> +         force_sig(SIGFPE);
-> + }
-> 
-> Guohua
-> 
-> >>  	lwz	r5,0(r3)	# get the dividend into r5/r6
-> >>  	lwz	r6,4(r3)
-> >>  	cmplw	r5,r4
-> >>@@ -52,6 +55,7 @@ __div64_32:
-> >>  4:	stw	r7,0(r3)	# return the quotient in *r3
-> >>  	stw	r8,4(r3)
-> >>  	mr	r3,r6		# return the remainder in r3
-> >>+5:					# return if divisor r4 is zero
-> >>  	blr
-> >>  
-> >>  /*
-> >>diff --git a/arch/powerpc/lib/div64.S b/arch/powerpc/lib/div64.S
-> >>index 3d5426e7dcc4..1cc9bcabf678 100644
-> >>--- a/arch/powerpc/lib/div64.S
-> >>+++ b/arch/powerpc/lib/div64.S
-> >>@@ -13,6 +13,9 @@
-> >>  #include <asm/processor.h>
-> >>  
-> >>  _GLOBAL(__div64_32)
-> >>+	li	r9,0
-> >>+	cmplw	r4,r9	# check if divisor r4 is zero
-> >>+	beq	5f			# jump to label 5 if r4(divisor) is zero
-> >>  	lwz	r5,0(r3)	# get the dividend into r5/r6
-> >>  	lwz	r6,4(r3)
-> >>  	cmplw	r5,r4
-> >>@@ -52,4 +55,5 @@ _GLOBAL(__div64_32)
-> >>  4:	stw	r7,0(r3)	# return the quotient in *r3
-> >>  	stw	r8,4(r3)
-> >>  	mr	r3,r6		# return the remainder in r3
-> >>+5:					# return if divisor r4 is zero
-> >>  	blr
-> >>
-> 
- 
+Will this be the case? Or would it make sense to further
+unite the Bluestone, MR24 and MBL under a common CONFIG_APM82181
+and integrate the BLUESTONE device's defconfig into it as well?
+(I've stumbled across the special machine compatible
+handling of ppc in the Documentation/devicetree/usage-model.rst
+already.)
+
+Cheers,
+Christian
+
+Note:
+If someone has a WD MyBook Live (DUO) and is interested in
+giving it a spin with 5.8. I've made a:
+"build your own Debian System" sort of script that can be
+found on github: <https://github.com/chunkeey/mbl-debian>
+(the only remaining patch hack is for debian's make-kpkg crossbuild)
+
+Furthermore, the OpenWrt project currently has images for the
+following apm82181 devices:
+ Cisco Meraki MX60(W) - Needs DSA for the AR8327
+ Netgear WNDAP620/WNDAP660 - (Could be next)
+ Netgear WNDR4700 - Needs DSA for the AR8327
+
+Note2: I do have a stash of extensive APM82181 related documentation.
+
+Christian Lamparter (4):
+  powerpc: apm82181: create shared dtsi for APM bluestone
+  powerpc: apm82181: add WD MyBook Live NAS
+  powerpc: apm82181: add Meraki MR24 AP
+  powerpc: apm82181: integrate bluestone.dts
+
+ arch/powerpc/boot/dts/apm82181.dtsi        | 485 +++++++++++++++++++++
+ arch/powerpc/boot/dts/bluestone.dts        | 456 +++++--------------
+ arch/powerpc/boot/dts/meraki-mr24.dts      | 237 ++++++++++
+ arch/powerpc/boot/dts/wd-mybooklive.dts    | 199 +++++++++
+ arch/powerpc/platforms/44x/ppc44x_simple.c |   4 +-
+ 5 files changed, 1033 insertions(+), 348 deletions(-)
+ create mode 100644 arch/powerpc/boot/dts/apm82181.dtsi
+ create mode 100644 arch/powerpc/boot/dts/meraki-mr24.dts
+ create mode 100644 arch/powerpc/boot/dts/wd-mybooklive.dts
+
+-- 
+2.28.0
 
