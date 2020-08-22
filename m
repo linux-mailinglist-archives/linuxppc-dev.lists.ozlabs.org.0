@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CE824E6B5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 11:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4474B24E6D1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 12:09:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYYD41NdNzDqhC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 19:36:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYYy26vQkzDqsD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 20:08:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=LitK0/mT; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=20150623 header.b=Rl8f/F6Y; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYY9f5GB5zDqBH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 19:33:57 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id q1so1852255pjd.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 02:33:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYYw02RQwzDqsD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 20:07:10 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id h2so2000118plr.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 03:07:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=f/ITU1cZGgUDvEjiudQdz6h3EUGtSvKyI4oKFXx+y1Q=;
- b=LitK0/mT5IuCpiIWAiDicNbpvAZo3HRVAMjCw/Zg81L9CBwo5wKM6WuLnCROWjY3r+
- bq8RW5OH1I9VYCuee4rDUhopeZ6eCtb2p0bgUGzwetjT6BDLGTUrOstr50DSi0lwQBjx
- XN5lzkwDg3HUkBUoqXDiPsh8Zz1Nx5turQngthE/hYAEwtS1D97D4PR9tS1bDTVwRBxJ
- jR034lQ+xWHplkbLSiogS/n6BbuN1AU9vwfvPckFy/SKMipeAJKtJjqAseFqX9SmN9Hf
- XnzoXwS5GmzPzzFJ/NDK8AVj8M+twT3MxGx4fZKTA9MTh2d5h5TZX18oxjXku81RQinP
- OSgQ==
+ bh=Aa48DBY0aJOFWuBCNzDmeJzk3GQ3hREgEgyb7wV2YEE=;
+ b=Rl8f/F6YxLChPCJJFyhRLD1RkN1p1VKrB6Uh/4l5aIpwklUnuwMcuH6I5bL58bOUNG
+ 0L369yH2w9xxQ0XTj3vcMBTXA/QFREdLt052qy5yOF49BNVp4vvm8kOmQ9zjhVrrN36C
+ I6Vym+v8L1QS7I+0BKT+fcqckMednLZ9mr1tkum8LYzw7GnzGu88Hdk72LZ7IsqTfX4Q
+ QEyrm35gzzEoqMtlVCdtWwWf2xQkYpmzpffp5BROQBWK/WGEoWa83SiUSntvNuz1CMvC
+ as9NIWrwpIx3w61wTbnOBa7jY6N1yaL2lfrwfEn8mDqB+s4kBA14FtWQI+QK2zKlVjz5
+ q52Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=f/ITU1cZGgUDvEjiudQdz6h3EUGtSvKyI4oKFXx+y1Q=;
- b=YWxkE5XuBTM3q5ibTKjf49yoChJBRm5p77MPq9R5U2xLeutBFZ9YRTnNEsA9Pj1sKE
- VfhPbhy1+TsZb8qBdk3kO08AxDf+gq9ixStw3zbB2J6w0oDu48CQYriq5VbOVlAZvHQA
- /p9ltKHNYNbDNDc+VuyWuh67oGpHw99unfKC5jECQdiV+5Mg/qFSo1lZiD6bQ7j8/cGw
- AZiS67a9wwKtlw96UeqsW9YbLUo7udphPXcIPX0eUtVdGO8Fh/261PajB8Q9RFStJzHq
- 9QOu8JnHe8Acz7+VUkl7M6yB+7jH/iAJ3Jgzrz3HM91UhJGps9jkDNoGLAPDygZMcEpr
- Eceg==
-X-Gm-Message-State: AOAM533yUSqHvRaZS1iT/azAg+Qk6XBPZ4u1CqKTf/2JpGA0I8LmsdKi
- byhIvSQatTuiU49wm6Conr/Q2Q==
-X-Google-Smtp-Source: ABdhPJxMKRhwhlb9BlNIpkSxQwo1cFEZ/Iv7GPsgOj46UaZ/jqy1JCz3gqzLtr4OHcexo9n/k3KMIQ==
-X-Received: by 2002:a17:902:b193:: with SMTP id
- s19mr5579838plr.72.1598088834875; 
- Sat, 22 Aug 2020 02:33:54 -0700 (PDT)
+ bh=Aa48DBY0aJOFWuBCNzDmeJzk3GQ3hREgEgyb7wV2YEE=;
+ b=o2NM7fiU2SgVwYWSdXZUrv7YNyAvgywZ5jJZR2hq+Swz7r943tBCXkw0gBv8yR3Xx1
+ kSKN/u0Tf1WxOPWnGAbofw8rIFJvHvkTl12vQwF5SaE0vupGnuuJx2KxJYbp0nZImcg3
+ VWernU4or3Jb597IJojD1+Ma5sS4UPihKVwncpFojZBs+pRL1hZc3STjIFqWBA/2Tgy7
+ i1i0vPC7hxRV1UPYh9iuSnmzhrmKtFK29FURJckzb6debYYdWYmngZ2m1Xke9Zh6iKxg
+ 1Q+YxRy2a2/kmzMZnQ/HOFY5HdwF+g83wHVuSAgo9yMY/gHs6V2A0tVTc6mdrl7JI1ej
+ yCPQ==
+X-Gm-Message-State: AOAM533LYr8nn5FPq8tpMSUQxqiWJ5S+sTq/HTEgskR12GoSRjSMbL98
+ SZN81n9t04ZVjlV3ypCcUFtsFA==
+X-Google-Smtp-Source: ABdhPJxEvnP6sH7WSORoERGGH2SJ+rcHTyo/b/DegD0raVO5wfJYZEvRFc3knr6IGtNMDj+XluXXKQ==
+X-Received: by 2002:a17:90a:9a84:: with SMTP id
+ e4mr5355582pjp.205.1598090828497; 
+ Sat, 22 Aug 2020 03:07:08 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id h5sm5501966pfk.0.2020.08.22.02.33.49
+ by smtp.gmail.com with ESMTPSA id h7sm3992388pjc.15.2020.08.22.03.07.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 22 Aug 2020 02:33:53 -0700 (PDT)
-Subject: Re: [PATCH v1 01/10] powerpc/pseries/iommu: Replace hard-coded page
- shift
+ Sat, 22 Aug 2020 03:07:07 -0700 (PDT)
+Subject: Re: [PATCH v1 02/10] powerpc/kernel/iommu: Align size for
+ IOMMU_PAGE_SIZE on iommu_*_coherent()
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Christophe Leroy
@@ -73,7 +73,7 @@ To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
 References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-2-leobras.c@gmail.com>
+ <20200817234033.442511-3-leobras.c@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -148,12 +148,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <6232948f-033d-8322-e656-544f12c5f784@ozlabs.ru>
-Date: Sat, 22 Aug 2020 19:33:47 +1000
+Message-ID: <7b9640e0-568f-1470-40f4-a3ccec8abcf2@ozlabs.ru>
+Date: Sat, 22 Aug 2020 20:07:00 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200817234033.442511-2-leobras.c@gmail.com>
+In-Reply-To: <20200817234033.442511-3-leobras.c@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -176,203 +176,91 @@ Sender: "Linuxppc-dev"
 
 
 On 18/08/2020 09:40, Leonardo Bras wrote:
-> Some functions assume IOMMU page size can only be 4K (pageshift == 12).
-> Update them to accept any page size passed, so we can use 64K pages.
+> Both iommu_alloc_coherent() and iommu_free_coherent() assume that once
+> size is aligned to PAGE_SIZE it will be aligned to IOMMU_PAGE_SIZE.
+
+The only case when it is not aligned is when IOMMU_PAGE_SIZE > PAGE_SIZE
+which is unlikely but not impossible, we could configure the kernel for
+4K system pages and 64K IOMMU pages I suppose. Do we really want to do
+this here, or simply put WARN_ON(tbl->it_page_shift > PAGE_SHIFT)?
+Because if we want the former (==support), then we'll have to align the
+size up to the bigger page size when allocating/zeroing system pages,
+etc. Bigger pages are not the case here as I understand it.
+
+
 > 
-> In the process, some defines like TCE_SHIFT were made obsolete, and then
-> removed. TCE_RPN_MASK was updated to generate a mask according to
-> the pageshift used.
+> Update those functions to guarantee alignment with requested size
+> using IOMMU_PAGE_ALIGN() before doing iommu_alloc() / iommu_free().
 > 
-> Most places had a tbl struct, so using tbl->it_page_shift was simple.
-> tce_free_pSeriesLP() was a special case, since callers not always have a
-> tbl struct, so adding a tceshift parameter seems the right thing to do.
+> Also, on iommu_range_alloc(), replace ALIGN(n, 1 << tbl->it_page_shift)
+> with IOMMU_PAGE_ALIGN(n, tbl), which seems easier to read.
 > 
 > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 > ---
->  arch/powerpc/include/asm/tce.h         | 10 ++----
->  arch/powerpc/platforms/pseries/iommu.c | 42 ++++++++++++++++----------
->  2 files changed, 28 insertions(+), 24 deletions(-)
+>  arch/powerpc/kernel/iommu.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/tce.h b/arch/powerpc/include/asm/tce.h
-> index db5fc2f2262d..971cba2d87cc 100644
-> --- a/arch/powerpc/include/asm/tce.h
-> +++ b/arch/powerpc/include/asm/tce.h
-> @@ -19,15 +19,9 @@
->  #define TCE_VB			0
->  #define TCE_PCI			1
->  
-> -/* TCE page size is 4096 bytes (1 << 12) */
-> -
-> -#define TCE_SHIFT	12
-> -#define TCE_PAGE_SIZE	(1 << TCE_SHIFT)
-> -
->  #define TCE_ENTRY_SIZE		8		/* each TCE is 64 bits */
-> -
-> -#define TCE_RPN_MASK		0xfffffffffful  /* 40-bit RPN (4K pages) */
-> -#define TCE_RPN_SHIFT		12
-> +#define TCE_RPN_BITS		52		/* Bits 0-51 represent RPN on TCE */
-
-
-Ditch this one and use MAX_PHYSMEM_BITS instead? I am pretty sure this
-is the actual limit.
-
-
-> +#define TCE_RPN_MASK(ps)	((1ul << (TCE_RPN_BITS - (ps))) - 1)
->  #define TCE_VALID		0x800		/* TCE valid */
->  #define TCE_ALLIO		0x400		/* TCE valid for all lpars */
->  #define TCE_PCI_WRITE		0x2		/* write from PCI allowed */
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index e4198700ed1a..8fe23b7dff3a 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -107,6 +107,9 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
->  	u64 proto_tce;
->  	__be64 *tcep;
->  	u64 rpn;
-> +	const unsigned long tceshift = tbl->it_page_shift;
-> +	const unsigned long pagesize = IOMMU_PAGE_SIZE(tbl);
-> +	const u64 rpn_mask = TCE_RPN_MASK(tceshift);
-
-Using IOMMU_PAGE_SIZE macro for the page size and not using
-IOMMU_PAGE_MASK for the mask - this incosistency makes my small brain
-explode :) I understand the history but maaaaan... Oh well, ok.
-
-Good, otherwise. Thanks,
-
->  
->  	proto_tce = TCE_PCI_READ; // Read allowed
->  
-> @@ -117,10 +120,10 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
->  
->  	while (npages--) {
->  		/* can't move this out since we might cross MEMBLOCK boundary */
-> -		rpn = __pa(uaddr) >> TCE_SHIFT;
-> -		*tcep = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-> +		rpn = __pa(uaddr) >> tceshift;
-> +		*tcep = cpu_to_be64(proto_tce | (rpn & rpn_mask) << tceshift);
->  
-> -		uaddr += TCE_PAGE_SIZE;
-> +		uaddr += pagesize;
->  		tcep++;
->  	}
->  	return 0;
-> @@ -146,7 +149,7 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
->  	return be64_to_cpu(*tcep);
->  }
->  
-> -static void tce_free_pSeriesLP(unsigned long liobn, long, long);
-> +static void tce_free_pSeriesLP(unsigned long liobn, long, long, long);
->  static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
->  
->  static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-> @@ -159,6 +162,7 @@ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
->  	u64 rpn;
->  	int ret = 0;
->  	long tcenum_start = tcenum, npages_start = npages;
-> +	const u64 rpn_mask = TCE_RPN_MASK(tceshift);
->  
->  	rpn = __pa(uaddr) >> tceshift;
->  	proto_tce = TCE_PCI_READ;
-> @@ -166,12 +170,12 @@ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
->  		proto_tce |= TCE_PCI_WRITE;
->  
->  	while (npages--) {
-> -		tce = proto_tce | (rpn & TCE_RPN_MASK) << tceshift;
-> +		tce = proto_tce | (rpn & rpn_mask) << tceshift;
->  		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, tce);
->  
->  		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
->  			ret = (int)rc;
-> -			tce_free_pSeriesLP(liobn, tcenum_start,
-> +			tce_free_pSeriesLP(liobn, tcenum_start, tceshift,
->  			                   (npages_start - (npages + 1)));
->  			break;
->  		}
-> @@ -205,10 +209,12 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  	long tcenum_start = tcenum, npages_start = npages;
->  	int ret = 0;
->  	unsigned long flags;
-> +	const unsigned long tceshift = tbl->it_page_shift;
-> +	const u64 rpn_mask = TCE_RPN_MASK(tceshift);
->  
->  	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_PUT_TCE_IND)) {
->  		return tce_build_pSeriesLP(tbl->it_index, tcenum,
-> -					   tbl->it_page_shift, npages, uaddr,
-> +					   tceshift, npages, uaddr,
->  		                           direction, attrs);
+> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+> index 9704f3f76e63..d7086087830f 100644
+> --- a/arch/powerpc/kernel/iommu.c
+> +++ b/arch/powerpc/kernel/iommu.c
+> @@ -237,10 +237,9 @@ static unsigned long iommu_range_alloc(struct device *dev,
 >  	}
 >  
-> @@ -225,13 +231,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  		if (!tcep) {
->  			local_irq_restore(flags);
->  			return tce_build_pSeriesLP(tbl->it_index, tcenum,
-> -					tbl->it_page_shift,
-> +					tceshift,
->  					npages, uaddr, direction, attrs);
->  		}
->  		__this_cpu_write(tce_page, tcep);
->  	}
+>  	if (dev)
+> -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
+> -				      1 << tbl->it_page_shift);
+> +		boundary_size = IOMMU_PAGE_ALIGN(dma_get_seg_boundary(dev) + 1, tbl);
+
+
+Run checkpatch.pl, should complain about a long line.
+
+
+>  	else
+> -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
+> +		boundary_size = IOMMU_PAGE_ALIGN(1UL << 32, tbl);
+>  	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
 >  
-> -	rpn = __pa(uaddr) >> TCE_SHIFT;
-> +	rpn = __pa(uaddr) >> tceshift;
->  	proto_tce = TCE_PCI_READ;
->  	if (direction != DMA_TO_DEVICE)
->  		proto_tce |= TCE_PCI_WRITE;
-> @@ -245,12 +251,12 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  		limit = min_t(long, npages, 4096/TCE_ENTRY_SIZE);
+>  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
+> @@ -858,6 +857,7 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
+>  	unsigned int order;
+>  	unsigned int nio_pages, io_order;
+>  	struct page *page;
+> +	size_t size_io = size;
 >  
->  		for (l = 0; l < limit; l++) {
-> -			tcep[l] = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-> +			tcep[l] = cpu_to_be64(proto_tce | (rpn & rpn_mask) << tceshift);
->  			rpn++;
->  		}
+>  	size = PAGE_ALIGN(size);
+>  	order = get_order(size);
+> @@ -884,8 +884,9 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
+>  	memset(ret, 0, size);
 >  
->  		rc = plpar_tce_put_indirect((u64)tbl->it_index,
-> -					    (u64)tcenum << 12,
-> +					    (u64)tcenum << tceshift,
->  					    (u64)__pa(tcep),
->  					    limit);
->  
-> @@ -277,12 +283,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
->  	return ret;
->  }
->  
-> -static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long npages)
-> +static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-> +			       long npages)
+>  	/* Set up tces to cover the allocated range */
+> -	nio_pages = size >> tbl->it_page_shift;
+> -	io_order = get_iommu_order(size, tbl);
+> +	size_io = IOMMU_PAGE_ALIGN(size_io, tbl);
+> +	nio_pages = size_io >> tbl->it_page_shift;
+> +	io_order = get_iommu_order(size_io, tbl);
+>  	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
+>  			      mask >> tbl->it_page_shift, io_order, 0);
+>  	if (mapping == DMA_MAPPING_ERROR) {
+> @@ -900,11 +901,11 @@ void iommu_free_coherent(struct iommu_table *tbl, size_t size,
+>  			 void *vaddr, dma_addr_t dma_handle)
 >  {
->  	u64 rc;
+>  	if (tbl) {
+> -		unsigned int nio_pages;
+> +		size_t size_io = IOMMU_PAGE_ALIGN(size, tbl);
+> +		unsigned int nio_pages = size_io >> tbl->it_page_shift;
 >  
->  	while (npages--) {
-> -		rc = plpar_tce_put((u64)liobn, (u64)tcenum << 12, 0);
-> +		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, 0);
->  
->  		if (rc && printk_ratelimit()) {
->  			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
-> @@ -301,9 +308,11 @@ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long n
->  	u64 rc;
->  
->  	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
-> -		return tce_free_pSeriesLP(tbl->it_index, tcenum, npages);
-> +		return tce_free_pSeriesLP(tbl->it_index, tcenum,
-> +					  tbl->it_page_shift, npages);
->  
-> -	rc = plpar_tce_stuff((u64)tbl->it_index, (u64)tcenum << 12, 0, npages);
-> +	rc = plpar_tce_stuff((u64)tbl->it_index,
-> +			     (u64)tcenum << tbl->it_page_shift, 0, npages);
->  
->  	if (rc && printk_ratelimit()) {
->  		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
-> @@ -319,7 +328,8 @@ static unsigned long tce_get_pSeriesLP(struct iommu_table *tbl, long tcenum)
->  	u64 rc;
->  	unsigned long tce_ret;
->  
-> -	rc = plpar_tce_get((u64)tbl->it_index, (u64)tcenum << 12, &tce_ret);
-> +	rc = plpar_tce_get((u64)tbl->it_index,
-> +			   (u64)tcenum << tbl->it_page_shift, &tce_ret);
->  
->  	if (rc && printk_ratelimit()) {
->  		printk("tce_get_pSeriesLP: plpar_tce_get failed. rc=%lld\n", rc);
+> -		size = PAGE_ALIGN(size);
+> -		nio_pages = size >> tbl->it_page_shift;
+>  		iommu_free(tbl, dma_handle, nio_pages);
+> +
+
+Unrelated new line.
+
+
+>  		size = PAGE_ALIGN(size);
+>  		free_pages((unsigned long)vaddr, get_order(size));
+>  	}
 > 
 
 -- 
