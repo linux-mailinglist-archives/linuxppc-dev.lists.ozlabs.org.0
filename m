@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C47B24E970
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 21:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3853B24E974
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 21:42:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYpdh15CczDqlB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 05:40:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYphC55rJzDqjT
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 05:42:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643;
- helo=mail-ej1-x643.google.com; envelope-from=chunkeey@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631;
+ helo=mail-ej1-x631.google.com; envelope-from=chunkeey@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=NUGHQZdp; dkim-atps=neutral
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
- [IPv6:2a00:1450:4864:20::643])
+ header.s=20161025 header.b=PtnASTQv; dkim-atps=neutral
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
+ [IPv6:2a00:1450:4864:20::631])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYpX21vSFzDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 05:35:46 +1000 (AEST)
-Received: by mail-ej1-x643.google.com with SMTP id bo3so6806488ejb.11
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 12:35:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYpXB67F0zDqlW
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 05:35:54 +1000 (AEST)
+Received: by mail-ej1-x631.google.com with SMTP id a26so6854612ejc.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 12:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=Uga9qhT3YEKNvicVyc96PYJPBIfmQuppFAJDAlswMQs=;
- b=NUGHQZdph2DjV0y3zyvFV85PynHpKsmhiPgW+gvygvmOsEXStn/T32uZE1fpPo4eIe
- pdWyM8L48z93YYOlGPaW9U7N1tSFTJTNtrnJsjUrYHMiMomrLMqICb7OsMP6WXLIcVy2
- Uk/y0nmu88mzCPo4z8Fx3ybb7Nhw0PBet1VBFpwO/8d3akmye39Rev2/DDz8wT6Wb99Z
- V6S699iJyzTBTYO3o7G7JIS7hEKIiVG6ZXcEIBkzNg5k730UwtI4N6+GL4KJ1fB0lsbR
- s5iuPLG2EVHGUtxgmrGm77uq3hYW/c6g3zAE7ZjAabWRJILMF6oRuorpXI64h+NZahRo
- KPQw==
+ bh=cBMQj+q8Km/OC7OjFFESd1OXXtGqhV+hAYiEZyRerxA=;
+ b=PtnASTQvbiIoo/WrWVKzeEwmUv80t6eH1s8MOYsN+iEeQVkM4k5nV9HR3hX7Q8wgCD
+ d+EdX/ynDqU72x11ybO3frkUTIK3PO7TKkPoX89kGzTb6824SBuXMbKBpnR16USsxlk4
+ +NibXnZBP8nvtVjxYACElAkJF9AmHYI22woIFi/rof8QVe5HDLVQWDLYxFJ7loY7/2dE
+ c59I55IlARkHzduiJAOPr7jYfM42SvzIrnC2ZjzBEE1zGMyMcrxgJwiydv/2eQShCgv2
+ hvs+Wz9aGcZDVtjnEotilpL9hCCDUnZJLbIxh73/e1UIUeMhyKjbcghvJnv8DgYRQbXd
+ FNnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Uga9qhT3YEKNvicVyc96PYJPBIfmQuppFAJDAlswMQs=;
- b=hNgdx7zbQBcWlyg5NgSf8RDvMZiNBG3DGLvZfUlTgY8pc8OVfBBmY8KtuZxtafKzeQ
- 6PHObLAMZoP8oB4ETu4tjzy+8kaI4K/BU11hhRvXwuFeK322lXOvm2fmvrX1FKH/WfsU
- qeJcDK8i4DglIibDmn6TUqxNHdCxuagbPbv0zJ/uFvKe2UtUwM/eUsWe3xZ79/qk5bFO
- 9RNZb1Ghu7SgHjJiNRxYeY6t7GtFLAYXj1dH8bt4fKNEtly5/FwzvAUliY/D5TX4lU9G
- Frx5hAfpIsrYynfrIUfXF/bGWV3aqPetEefEWzS1VOh1OJokaKE6+oUu6orZ0719Zk8v
- q0Hg==
-X-Gm-Message-State: AOAM5324p3NBkClbnS3OwFDHR/TtQ24u1XCL68Yo93SDliuMEeRHlpfX
- KU9KWoEym5m9RH1v2StfbQ0PFu4SyoYZXQ==
-X-Google-Smtp-Source: ABdhPJz9VArpV1iVcL2tO1+d4lIcveXLmU5a6uAlyFNftiL0aCN9N6tKDcPAVmNqcJN6Vvow/vYtJg==
-X-Received: by 2002:a17:906:4882:: with SMTP id
- v2mr8319939ejq.302.1598124943160; 
- Sat, 22 Aug 2020 12:35:43 -0700 (PDT)
+ bh=cBMQj+q8Km/OC7OjFFESd1OXXtGqhV+hAYiEZyRerxA=;
+ b=HfGkkGUAwvZj1poUTCAZx0buLgIhzAladB6vcfD9lvHaZnyu9itduNbhLMGqYpCYaz
+ bPHlnAOJQX/25lSKaXpwRRc78iJzG+uYcNCJM5tkYdjxhKN4sh/fmDSolEDCiCc22k/P
+ 1H2feBXtsvEB9mLlArvDLwC/ED/3tTYwfsCmWrR6JLineaeXBY2gn1EbZNhZ3BATiriQ
+ 9jALXtOhmkMO6AMTw4jE5Ax9wBqxXi8ri4cHUxnnd4DZOGNyLOLBQrex69naKnqtlaij
+ qGtNZ/Lq4zSpRLwu1Mc+upjuq8nLSCMSNws8Kg49bv6c0rKETiM1mfVFDdJ3GqsiLkny
+ J3Kw==
+X-Gm-Message-State: AOAM530f6VODqIgqK6yLxWANs6OStKD6v9YW9wy4mBUd+HpVPMaohnVH
+ t3M51+GLbTbg2lOp16+D0C1QGd2jy4VMrQ==
+X-Google-Smtp-Source: ABdhPJxgBnC3NcbqUPTdjX23fw2SZ5vBusmC9Ezmrqf8tQKqZfdF5pQ8XYiw3Xh5ETdnSTrTDAgx6A==
+X-Received: by 2002:a17:906:924d:: with SMTP id
+ c13mr8248611ejx.518.1598124951162; 
+ Sat, 22 Aug 2020 12:35:51 -0700 (PDT)
 Received: from debian64.daheim (p4fd09171.dip0.t-ipconnect.de.
  [79.208.145.113])
- by smtp.gmail.com with ESMTPSA id q14sm3450445edv.54.2020.08.22.12.35.42
+ by smtp.gmail.com with ESMTPSA id z10sm3823115eje.122.2020.08.22.12.35.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Aug 2020 12:35:42 -0700 (PDT)
+ Sat, 22 Aug 2020 12:35:50 -0700 (PDT)
 Received: from chuck by debian64.daheim with local (Exim 4.94)
  (envelope-from <chunkeey@gmail.com>)
- id 1k9ZIW-000Enf-Pi; Sat, 22 Aug 2020 21:35:31 +0200
+ id 1k9ZIh-000Enp-05; Sat, 22 Aug 2020 21:35:39 +0200
 From: Christian Lamparter <chunkeey@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v2 2/4] powerpc: apm82181: add WD MyBook Live NAS
-Date: Sat, 22 Aug 2020 21:35:19 +0200
-Message-Id: <0e948eb6851f74584df26b69441809a04cfd3c5f.1598124791.git.chunkeey@gmail.com>
+Subject: [PATCH v2 3/4] powerpc: apm82181: add Meraki MR24 AP
+Date: Sat, 22 Aug 2020 21:35:20 +0200
+Message-Id: <20cc32c8ee98be82934c85fcbba290703f8e4492.1598124791.git.chunkeey@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <cover.1598124791.git.chunkeey@gmail.com>
 References: <cover.1598124791.git.chunkeey@gmail.com>
@@ -90,53 +90,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch adds the device-tree definitions for
-Western Digital MyBook Live NAS devices.
+This patch adds the device-tree definitions for Meraki MR24
+Accesspoint devices.
 
-CPU: AMCC PowerPC  APM82181 (PVR=12c41c83) at 800 MHz
-     (PLB=200, OPB=100, EBC=100 MHz)
-     32 kB I-Cache 32 kB D-Cache, 256 kB L2-Cache, 32 kB OnChip Memory
-DRAM:  256 MB (2x NT5TU64M16GG-AC)
-FLASH: 512 kB
-Ethernet: 1xRGMII - 1 Gbit - Broadcom PHY BCM54610
-SATA: 2*SATA (DUO Variant) / 1*SATA (Single Variant)
-USB: 1xUSB2.0 (Only DUO)
+Board: MR24 - Meraki MR24 Cloud Managed Access Point
+CPU: APM82181 SoC 800 MHz (PLB=200 OPB=100 EBC=100)
+Flash size: 32MiB
+RAM Size: 128MiB
+Wireless: Atheros AR9380 5.0GHz + Atheros AR9380 2.4GHz
+EPHY: 1x Gigabit Atheros AR8035
 
-Technically, this devicetree file is shared by two, very
-similar devices.
+Ready to go images and install instruction can be found @OpenWrt.
 
-There's the My Book Live and the My Book Live Duo. WD's uboot
-on the device will enable/disable the nodes for the device.
-This device boots from a u-boot on a 512 KiB NOR Flash onto a
-Linux image stored on one of the harddrives.
-
-Ready to go images and install instruction can be found @OpenWrt.org
-
+Signed-off-by: Chris Blake <chrisrblake93@gmail.com>
 Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 
 ---
 - rfc v1 -> v2:
-	- use new LED naming scheme
-	- dish out read-only; for essential NOR partitions
-	- remove openwrt led-aliases
-	- comment on the location of linux kernel (on the HDD)
+	- use new led naming scheme
+	- space-vs-tab snafu cleanup
+	- remove led-aliases (openwrt specific)
 	- overhauled commit message
 ---
- arch/powerpc/boot/dts/wd-mybooklive.dts    | 200 +++++++++++++++++++++
- arch/powerpc/platforms/44x/ppc44x_simple.c |   3 +-
- 2 files changed, 202 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/boot/dts/wd-mybooklive.dts
+ arch/powerpc/boot/dts/meraki-mr24.dts      | 235 +++++++++++++++++++++
+ arch/powerpc/platforms/44x/ppc44x_simple.c |   1 +
+ 2 files changed, 236 insertions(+)
+ create mode 100644 arch/powerpc/boot/dts/meraki-mr24.dts
 
-diff --git a/arch/powerpc/boot/dts/wd-mybooklive.dts b/arch/powerpc/boot/dts/wd-mybooklive.dts
+diff --git a/arch/powerpc/boot/dts/meraki-mr24.dts b/arch/powerpc/boot/dts/meraki-mr24.dts
 new file mode 100644
-index 000000000000..792401673053
+index 000000000000..58050c2c92a2
 --- /dev/null
-+++ b/arch/powerpc/boot/dts/wd-mybooklive.dts
-@@ -0,0 +1,200 @@
++++ b/arch/powerpc/boot/dts/meraki-mr24.dts
+@@ -0,0 +1,235 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Copyright 2008 DENX Software Engineering, Stefan Roese <sr@denx.de>
-+ * (c) Copyright 2010 Western Digital Technologies, Inc. All Rights Reserved.
++ * Device Tree Source for Meraki MR24 (Ikarem)
++ *
++ * Copyright (C) 2016 Chris Blake <chrisrblake93@gmail.com>
++ *
++ * Based on Cisco Meraki GPL Release r23-20150601 MR24 DTS
 + */
 +
 +/dts-v1/;
@@ -145,156 +138,15 @@ index 000000000000..792401673053
 +#include "apm82181.dtsi"
 +
 +/ {
-+	compatible = "wd,mybooklive";
-+	model = "MyBook Live";
++	model = "Meraki MR24 Access Point";
++	compatible = "meraki,mr24";
 +
 +	aliases {
-+		serial0 = &UART0;
-+	};
-+};
-+
-+&POB0 {
-+	GPIO1: gpio@e0000000 {
-+		compatible = "wd,mbl-gpio";
-+		reg-names = "dat";
-+		reg = <0xe0000000 0x1>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+
-+		enable-button {
-+			/* Defined in u-boot as: NOT_NOR
-+			 * "enables features other than NOR
-+			 * specifically, the buffer at CS2"
-+			 * (button).
-+			 *
-+			 * Note: This option is disabled as
-+			 * it prevents the system from being
-+			 * rebooted successfully.
-+			 */
-+
-+			gpio-hog;
-+			line-name = "Enable Reset Button, disable NOR";
-+			gpios = <1 GPIO_ACTIVE_HIGH>;
-+			output-low;
-+		};
++		serial0 = &UART1;
 +	};
 +
-+	GPIO2: gpio@e0100000 {
-+		compatible = "wd,mbl-gpio";
-+		reg-names = "dat";
-+		reg = <0xe0100000 0x1>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+		no-output;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		/* There's just one tri-color LED. */
-+		failsafe: power-red {
-+			function = LED_FUNCTION_FAULT;
-+			color = <LED_COLOR_ID_RED>;
-+			gpios = <&GPIO1 4 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "panic";
-+		};
-+
-+		power-green {
-+			function = LED_FUNCTION_POWER;
-+			color = <LED_COLOR_ID_GREEN>;
-+			gpios = <&GPIO1 5 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		power-blue {
-+			function = LED_FUNCTION_DISK;
-+			color = <LED_COLOR_ID_BLUE>;
-+			gpios = <&GPIO1 6 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "disk-activity";
-+		};
-+	};
-+
-+	keys {
-+		compatible = "gpio-keys-polled";
-+		poll-interval = <60>;	/* 3 * 20 = 60ms */
-+		autorepeat;
-+
-+		reset-button {
-+			label = "Reset button";
-+			linux,code = <KEY_RESTART>;
-+			gpios = <&GPIO2 2 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+
-+	usbpwr: usb-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "Power USB Core";
-+		gpios = <&GPIO1 2 GPIO_ACTIVE_LOW>;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+	};
-+
-+	sata1pwr: sata1-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "Power Drive Port 1";
-+		gpios = <&GPIO1 3 GPIO_ACTIVE_LOW>;
-+		regulator-min-microvolt = <12000000>;
-+		regulator-max-microvolt = <12000000>;
-+		regulator-always-on; /* needed to read OS from HDD */
-+	};
-+
-+	sata0pwr: sata0-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "Power Drive Port 0";
-+		gpios = <&GPIO1 7 GPIO_ACTIVE_LOW>;
-+		regulator-min-microvolt = <12000000>;
-+		regulator-max-microvolt = <12000000>;
-+		regulator-always-on; /* needed to read OS from HDD */
-+	};
-+};
-+
-+&NOR {
-+	status = "okay";
-+	compatible = "amd,s29gl512n", "jedec-probe", "cfi-flash", "mtd-rom";
-+	bank-width = <1>;
-+	reg = <0x00000000 0x00000000 0x00080000>;
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		/* Part of bootrom - Don't use it without a jump */
-+		label = "free";
-+		reg = <0x00000000 0x0001e000>;
-+		read-only;
-+	};
-+
-+	partition@1e000 {
-+		label = "env";
-+		reg = <0x0001e000 0x00002000>;
-+	};
-+
-+	partition@20000 {
-+		label = "uboot";
-+		reg = <0x00020000 0x00050000>;
-+		read-only;
-+	};
-+};
-+
-+&EMAC0 {
-+	status = "okay";
-+
-+	phy-map = <0x2>;
-+	phy-address = <0x1>;
-+	phy-handle = <&phy>;
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		reset-gpios = <&GPIO1 0 GPIO_ACTIVE_LOW>;
-+
-+		phy: phy@1 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <1>;
-+		};
++	chosen {
++		stdout-path = "/plb/opb/serial@ef600400";
 +	};
 +};
 +
@@ -306,47 +158,218 @@ index 000000000000..792401673053
 +	status = "okay";
 +};
 +
-+&SATA0 {
++&NAND {
 +	status = "okay";
 +
-+	drive0: sata-port@0 {
-+		reg = <0>;
-+		#thermal-sensor-cells = <0>;
++	/* 32 MiB NAND Flash */
++	nand {
++		partition@0 {
++			label = "u-boot";
++			reg = <0x00000000 0x00150000>;
++			read-only;
++		};
++
++		partition@150000 {
++			/*
++			 * The u-boot environment size is one NAND
++			 * block (16KiB). u-boot allocates four NAND
++			 * blocks (64KiB) in order to have spares
++			 * around for bad block management
++			 */
++			label = "u-boot-env";
++			reg = <0x00150000 0x00010000>;
++			read-only;
++		};
++
++		partition@160000 {
++			/*
++			 * redundant u-boot environment.
++			 * has to be kept it in sync with the
++			 * data in "u-boot-env".
++			 */
++			label = "u-boot-env-redundant";
++			reg = <0x00160000 0x00010000>;
++			read-only;
++		};
++
++		partition@170000 {
++			label = "oops";
++			reg = <0x00170000 0x00010000>;
++		};
++
++		partition@180000 {
++			label = "ubi";
++			reg = <0x00180000 0x01e80000>;
++		};
 +	};
 +};
 +
-+&SATA1 {
++&UART1 {
++	status = "okay";
++};
++
++&GPIO0 {
++	status = "okay";
++};
++
++&IIC0 {
++	status = "okay";
++	/* Boot ROM is at 0x52-0x53, do not touch */
++	/* Unknown chip at 0x6e, not sure what it is */
++};
++
++&EMAC0 {
 +	status = "okay";
 +
-+	drive1: sata-port@0 {
-+		reg = <0>;
-+		#thermal-sensor-cells = <0>;
++	phy-mode = "rgmii-id";
++	phy-map = <0x2>;
++	phy-address = <0x1>;
++	phy-handle = <&phy>;
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		phy: phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++		};
 +	};
 +};
 +
-+&UART0 {
-+	status = "okay";
++&POB0 {
++	leds {
++		compatible = "gpio-leds";
++
++		status: power-green {
++			function = LED_FUNCTION_POWER;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&GPIO0 18 GPIO_ACTIVE_LOW>;
++		};
++
++		failsafe: power-amber {
++			function = LED_FUNCTION_FAULT;
++			color = <LED_COLOR_ID_AMBER>;
++			gpios = <&GPIO0 19 GPIO_ACTIVE_LOW>;
++		};
++
++		lan {
++			function = LED_FUNCTION_WAN;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&GPIO0 17 GPIO_ACTIVE_LOW>;
++		};
++
++		/* signal strength indicator */
++		ssi-0 {
++			function = LED_FUNCTION_INDICATOR;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&GPIO0 23 GPIO_ACTIVE_LOW>;
++		};
++
++		ssi-1 {
++			function = LED_FUNCTION_INDICATOR;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&GPIO0 22 GPIO_ACTIVE_LOW>;
++		};
++
++		ssi-2 {
++			function = LED_FUNCTION_INDICATOR;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&GPIO0 21 GPIO_ACTIVE_LOW>;
++		};
++
++		ssi-3 {
++			function = LED_FUNCTION_INDICATOR;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&GPIO0 20 GPIO_ACTIVE_LOW>;
++		};
++	};
++
++	keys {
++		compatible = "gpio-keys";
++
++		reset {
++			/* Label as per Meraki's "MR24 Installation Guide" */
++			label = "Factory Reset Button";
++			linux,code = <KEY_RESTART>;
++			interrupt-parent = <&UIC1>;
++			interrupts = <0x15 IRQ_TYPE_EDGE_FALLING>;
++			gpios = <&GPIO0 16 GPIO_ACTIVE_LOW>;
++			debounce-interval = <60>;
++		};
++	};
 +};
 +
-+&USBOTG0 {
++&PCIE0 {
 +	status = "okay";
-+	dr_mode = "host";
-+	vbus-supply = <&usbpwr>;
++	/*
++	 * relevant lspci topology:
++	 *
++	 *	-+-[0000:40]---00.0-[41-7f]----00.0-[42-45]--+-02.0-[43]----00.0
++	 *	                                             +-03.0-[44]----00.0
++	 *
++	 */
++
++	bridge@64,0 {
++		reg = <0x00400000 0 0 0 0>;
++		#address-cells = <3>;
++		#size-cells = <2>;
++		ranges;
++
++		bridge@65,0 {
++			/* IDT PES3T3 PCI Express Switch */
++			compatible = "pci111d,8039";
++			reg = <0x00410000 0 0 0 0>;
++			#address-cells = <3>;
++			#size-cells = <2>;
++			ranges;
++
++			bridge@66,2 {
++				compatible = "pci111d,8039";
++				reg = <0x00421000 0 0 0 0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				ranges;
++
++				wifi0: wifi@67,0 {
++					/* Atheros AR9380 2.4GHz */
++					compatible = "pci168c,0030";
++					reg = <0x00430000 0 0 0 0>;
++				};
++			};
++
++			bridge@66,3 {
++				compatible = "pci111d,8039";
++				reg = <0x00421800 0 0 0 0>;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				ranges;
++
++				wifi1: wifi@68,0 {
++					/* Atheros AR9380 5GHz */
++					compatible = "pci168c,0030";
++					reg = <0x00440000 0 0 0 0>;
++				};
++			};
++		};
++	};
++};
++
++&MSI {
++	status = "okay";
 +};
 diff --git a/arch/powerpc/platforms/44x/ppc44x_simple.c b/arch/powerpc/platforms/44x/ppc44x_simple.c
-index 3dbd8ddd734a..1122702c804a 100644
+index 1122702c804a..7d479928fd48 100644
 --- a/arch/powerpc/platforms/44x/ppc44x_simple.c
 +++ b/arch/powerpc/platforms/44x/ppc44x_simple.c
-@@ -59,7 +59,8 @@ static char *board[] __initdata = {
- 	"amcc,sequoia",
+@@ -60,6 +60,7 @@ static char *board[] __initdata = {
  	"amcc,taishan",
  	"amcc,yosemite",
--	"mosaixtech,icon"
-+	"mosaixtech,icon",
-+	"wd,mybooklive",
+ 	"mosaixtech,icon",
++	"meraki,mr24",
+ 	"wd,mybooklive",
  };
  
- static int __init ppc44x_probe(void)
 -- 
 2.28.0
 
