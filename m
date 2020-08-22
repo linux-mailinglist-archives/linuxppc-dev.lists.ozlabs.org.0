@@ -1,73 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE9F24E96E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 21:39:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C47B24E970
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Aug 2020 21:40:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BYpbt5G8WzDqlr
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 05:39:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BYpdh15CczDqlB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Aug 2020 05:40:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::544;
- helo=mail-ed1-x544.google.com; envelope-from=chunkeey@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643;
+ helo=mail-ej1-x643.google.com; envelope-from=chunkeey@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZxsW9Qxl; dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
+ header.s=20161025 header.b=NUGHQZdp; dkim-atps=neutral
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
+ [IPv6:2a00:1450:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BYpWt3QPqzDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 05:35:36 +1000 (AEST)
-Received: by mail-ed1-x544.google.com with SMTP id c8so1183377edn.8
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 12:35:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BYpX21vSFzDqkm
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 05:35:46 +1000 (AEST)
+Received: by mail-ej1-x643.google.com with SMTP id bo3so6806488ejb.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Aug 2020 12:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=R13SEkWoBsz3CUMXM9vFqMFuf5wzJi9ORaCBKyxP/oU=;
- b=ZxsW9QxlG1rwFg6hlZo+j9jygeEOI2GIGuKyy4gBL/P6VyNSQp9KXJaz0D2/4RIeEH
- qvZZlcVw20tDfUzRgX6b3/uMGo4BeOVwjdeyBZugNhMqAN5jRTX8zpOhsC+Wooc77QlB
- YO3/JDGtFv/nXAJE6eayCHh/4Rq+xrnia3N5s8//v0D7Wvi+aLdn9FsuVaJhH+aTBODH
- WhIqvKjLcV+hCCX7gSCTcCx+wqvun7MmxjeCfNM3AHKuTs8jxV2OxrMWpNQWJ7x/OA1o
- 1NLh1BAmNVkZ3pqhHhJmTLB8VlCye8i6bqm5YvWQy+OtpSwzfVI2QdyPFOIrn3Q8bQR9
- yzGQ==
+ bh=Uga9qhT3YEKNvicVyc96PYJPBIfmQuppFAJDAlswMQs=;
+ b=NUGHQZdph2DjV0y3zyvFV85PynHpKsmhiPgW+gvygvmOsEXStn/T32uZE1fpPo4eIe
+ pdWyM8L48z93YYOlGPaW9U7N1tSFTJTNtrnJsjUrYHMiMomrLMqICb7OsMP6WXLIcVy2
+ Uk/y0nmu88mzCPo4z8Fx3ybb7Nhw0PBet1VBFpwO/8d3akmye39Rev2/DDz8wT6Wb99Z
+ V6S699iJyzTBTYO3o7G7JIS7hEKIiVG6ZXcEIBkzNg5k730UwtI4N6+GL4KJ1fB0lsbR
+ s5iuPLG2EVHGUtxgmrGm77uq3hYW/c6g3zAE7ZjAabWRJILMF6oRuorpXI64h+NZahRo
+ KPQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=R13SEkWoBsz3CUMXM9vFqMFuf5wzJi9ORaCBKyxP/oU=;
- b=IHEMgXC1YHF8qdZkPbUwwllkNDBeSCLf3l7vGbzUBz4ttQAgEjpI50Hy3XoSAJQAqX
- q1ngGDdKZ3S32ZdoIOokzkd17nOKrgs6fCiH+qlBpec+0+7X8WSSgmTq8z5Gj0/vJTj1
- KC1Lh5EfATZYoh3sKP/ZiHM0TuZKBa7KroR869QRvOG8GX4lLlfbnNXBl1mSEOur5ZYG
- NIsIwmKeIDlffwCAFR+aXmY2ISqJLa3yycEEPN+SM9HS/R2LcV/kX30BJOr7En7sAZiF
- kWBu5yTIQsMe+/C0P3i6YkxagdaPIqUpVtalqU4Op3kPzmY44a687mEJYV9WtHNwoByg
- +Uzg==
-X-Gm-Message-State: AOAM531EpBxw2XTt+PXeKeR4RCuYV72FUSC4tb9HCzbyHMz7Nji7o2Kw
- uKOvlDIeT3pxjIFgvL+K/715RkKJri8U4Q==
-X-Google-Smtp-Source: ABdhPJxZXiQTHJr5d4M43HaRjIBPdmXatkpgUnpGeQUBwdvjAChT6YKSbryE1xbQNOjVXZ/ERKC2ww==
-X-Received: by 2002:a05:6402:8c3:: with SMTP id
- d3mr8618645edz.187.1598124932840; 
- Sat, 22 Aug 2020 12:35:32 -0700 (PDT)
+ bh=Uga9qhT3YEKNvicVyc96PYJPBIfmQuppFAJDAlswMQs=;
+ b=hNgdx7zbQBcWlyg5NgSf8RDvMZiNBG3DGLvZfUlTgY8pc8OVfBBmY8KtuZxtafKzeQ
+ 6PHObLAMZoP8oB4ETu4tjzy+8kaI4K/BU11hhRvXwuFeK322lXOvm2fmvrX1FKH/WfsU
+ qeJcDK8i4DglIibDmn6TUqxNHdCxuagbPbv0zJ/uFvKe2UtUwM/eUsWe3xZ79/qk5bFO
+ 9RNZb1Ghu7SgHjJiNRxYeY6t7GtFLAYXj1dH8bt4fKNEtly5/FwzvAUliY/D5TX4lU9G
+ Frx5hAfpIsrYynfrIUfXF/bGWV3aqPetEefEWzS1VOh1OJokaKE6+oUu6orZ0719Zk8v
+ q0Hg==
+X-Gm-Message-State: AOAM5324p3NBkClbnS3OwFDHR/TtQ24u1XCL68Yo93SDliuMEeRHlpfX
+ KU9KWoEym5m9RH1v2StfbQ0PFu4SyoYZXQ==
+X-Google-Smtp-Source: ABdhPJz9VArpV1iVcL2tO1+d4lIcveXLmU5a6uAlyFNftiL0aCN9N6tKDcPAVmNqcJN6Vvow/vYtJg==
+X-Received: by 2002:a17:906:4882:: with SMTP id
+ v2mr8319939ejq.302.1598124943160; 
+ Sat, 22 Aug 2020 12:35:43 -0700 (PDT)
 Received: from debian64.daheim (p4fd09171.dip0.t-ipconnect.de.
  [79.208.145.113])
- by smtp.gmail.com with ESMTPSA id op15sm3846096ejb.42.2020.08.22.12.35.31
+ by smtp.gmail.com with ESMTPSA id q14sm3450445edv.54.2020.08.22.12.35.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Aug 2020 12:35:31 -0700 (PDT)
+ Sat, 22 Aug 2020 12:35:42 -0700 (PDT)
 Received: from chuck by debian64.daheim with local (Exim 4.94)
  (envelope-from <chunkeey@gmail.com>)
- id 1k9ZIT-000End-Mn; Sat, 22 Aug 2020 21:35:25 +0200
+ id 1k9ZIW-000Enf-Pi; Sat, 22 Aug 2020 21:35:31 +0200
 From: Christian Lamparter <chunkeey@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v2 1/4] powerpc: apm82181: create shared dtsi for APM bluestone
-Date: Sat, 22 Aug 2020 21:35:18 +0200
-Message-Id: <d6a3018b2931419cbf7bb020b63ab83e354981a8.1598124791.git.chunkeey@gmail.com>
+Subject: [PATCH v2 2/4] powerpc: apm82181: add WD MyBook Live NAS
+Date: Sat, 22 Aug 2020 21:35:19 +0200
+Message-Id: <0e948eb6851f74584df26b69441809a04cfd3c5f.1598124791.git.chunkeey@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <cover.1598124791.git.chunkeey@gmail.com>
 References: <cover.1598124791.git.chunkeey@gmail.com>
@@ -90,503 +90,263 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch adds an DTSI-File that can be used by various device-tree
-files for APM82181-based devices.
+This patch adds the device-tree definitions for
+Western Digital MyBook Live NAS devices.
 
-Some of the nodes (like UART, PCIE, SATA) are used by the uboot and
-need to stick with the naming-conventions of the old times'.
-I've added comments whenever this was the case. But unfortunately,
-keeping uboot happy causes warning messages when compiling the dtb:
+CPU: AMCC PowerPC  APM82181 (PVR=12c41c83) at 800 MHz
+     (PLB=200, OPB=100, EBC=100 MHz)
+     32 kB I-Cache 32 kB D-Cache, 256 kB L2-Cache, 32 kB OnChip Memory
+DRAM:  256 MB (2x NT5TU64M16GG-AC)
+FLASH: 512 kB
+Ethernet: 1xRGMII - 1 Gbit - Broadcom PHY BCM54610
+SATA: 2*SATA (DUO Variant) / 1*SATA (Single Variant)
+USB: 1xUSB2.0 (Only DUO)
 
-> apm82181.dtsi:440.26-483.5: Warning (pci_bridge): /plb/pciex@d00000000: node name is not "pci" or "pcie"
-> wd-mybooklive.dtb: Warning (pci_device_bus_num): Failed prerequisite 'pci_bridge'
+Technically, this devicetree file is shared by two, very
+similar devices.
 
-Signed-off-by: Chris Blake <chrisrblake93@gmail.com>
+There's the My Book Live and the My Book Live Duo. WD's uboot
+on the device will enable/disable the nodes for the device.
+This device boots from a u-boot on a 512 KiB NOR Flash onto a
+Linux image stored on one of the harddrives.
+
+Ready to go images and install instruction can be found @OpenWrt.org
+
 Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+
 ---
 - rfc v1 -> v2:
-	- removed PKA (this CryptoPU will need driver)
-	- stick with compatibles, nodes, ... from either
-	  Bluestone (APM82181) or Canyonlands (PPC460EX).
-	- add labels for NAND and NOR to help with access.
+	- use new LED naming scheme
+	- dish out read-only; for essential NOR partitions
+	- remove openwrt led-aliases
+	- comment on the location of linux kernel (on the HDD)
+	- overhauled commit message
 ---
- arch/powerpc/boot/dts/apm82181.dtsi | 467 ++++++++++++++++++++++++++++
- 1 file changed, 467 insertions(+)
- create mode 100644 arch/powerpc/boot/dts/apm82181.dtsi
+ arch/powerpc/boot/dts/wd-mybooklive.dts    | 200 +++++++++++++++++++++
+ arch/powerpc/platforms/44x/ppc44x_simple.c |   3 +-
+ 2 files changed, 202 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/boot/dts/wd-mybooklive.dts
 
-diff --git a/arch/powerpc/boot/dts/apm82181.dtsi b/arch/powerpc/boot/dts/apm82181.dtsi
+diff --git a/arch/powerpc/boot/dts/wd-mybooklive.dts b/arch/powerpc/boot/dts/wd-mybooklive.dts
 new file mode 100644
-index 000000000000..362a6262c553
+index 000000000000..792401673053
 --- /dev/null
-+++ b/arch/powerpc/boot/dts/apm82181.dtsi
-@@ -0,0 +1,467 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
++++ b/arch/powerpc/boot/dts/wd-mybooklive.dts
+@@ -0,0 +1,200 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Device Tree template include for various APM82181 boards.
-+ *
-+ * The SoC is an evolution of the PPC460EX predecessor.
-+ * This is why dt-nodes from the canyonlands EBC, OPB, USB,
-+ * DMA, SATA, EMAC, ... ended up in here.
-+ *
-+ * Copyright (c) 2010, Applied Micro Circuits Corporation
-+ * Author: Tirumala R Marri <tmarri@apm.com>,
-+ *	   Christian Lamparter <chunkeey@gmail.com>,
-+ *	   Chris Blake <chrisrblake93@gmail.com>
++ * Copyright 2008 DENX Software Engineering, Stefan Roese <sr@denx.de>
++ * (c) Copyright 2010 Western Digital Technologies, Inc. All Rights Reserved.
 + */
 +
-+#include <dt-bindings/dma/dw-dmac.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/gpio/gpio.h>
++/dts-v1/;
++
++#include <dt-bindings/leds/common.h>
++#include "apm82181.dtsi"
 +
 +/ {
-+	#address-cells = <2>;
-+	#size-cells = <1>;
-+	dcr-parent = <&{/cpus/cpu@0}>;
-+	compatible = "apm,apm82181";
++	compatible = "wd,mybooklive";
++	model = "MyBook Live";
 +
 +	aliases {
-+		ethernet0 = &EMAC0; /* needed for BSP u-boot */
++		serial0 = &UART0;
++	};
++};
++
++&POB0 {
++	GPIO1: gpio@e0000000 {
++		compatible = "wd,mbl-gpio";
++		reg-names = "dat";
++		reg = <0xe0000000 0x1>;
++		#gpio-cells = <2>;
++		gpio-controller;
++
++		enable-button {
++			/* Defined in u-boot as: NOT_NOR
++			 * "enables features other than NOR
++			 * specifically, the buffer at CS2"
++			 * (button).
++			 *
++			 * Note: This option is disabled as
++			 * it prevents the system from being
++			 * rebooted successfully.
++			 */
++
++			gpio-hog;
++			line-name = "Enable Reset Button, disable NOR";
++			gpios = <1 GPIO_ACTIVE_HIGH>;
++			output-low;
++		};
 +	};
 +
-+	cpus {
++	GPIO2: gpio@e0100000 {
++		compatible = "wd,mbl-gpio";
++		reg-names = "dat";
++		reg = <0xe0100000 0x1>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		no-output;
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		/* There's just one tri-color LED. */
++		failsafe: power-red {
++			function = LED_FUNCTION_FAULT;
++			color = <LED_COLOR_ID_RED>;
++			gpios = <&GPIO1 4 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "panic";
++		};
++
++		power-green {
++			function = LED_FUNCTION_POWER;
++			color = <LED_COLOR_ID_GREEN>;
++			gpios = <&GPIO1 5 GPIO_ACTIVE_HIGH>;
++		};
++
++		power-blue {
++			function = LED_FUNCTION_DISK;
++			color = <LED_COLOR_ID_BLUE>;
++			gpios = <&GPIO1 6 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "disk-activity";
++		};
++	};
++
++	keys {
++		compatible = "gpio-keys-polled";
++		poll-interval = <60>;	/* 3 * 20 = 60ms */
++		autorepeat;
++
++		reset-button {
++			label = "Reset button";
++			linux,code = <KEY_RESTART>;
++			gpios = <&GPIO2 2 GPIO_ACTIVE_LOW>;
++		};
++	};
++
++	usbpwr: usb-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "Power USB Core";
++		gpios = <&GPIO1 2 GPIO_ACTIVE_LOW>;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++	};
++
++	sata1pwr: sata1-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "Power Drive Port 1";
++		gpios = <&GPIO1 3 GPIO_ACTIVE_LOW>;
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++		regulator-always-on; /* needed to read OS from HDD */
++	};
++
++	sata0pwr: sata0-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "Power Drive Port 0";
++		gpios = <&GPIO1 7 GPIO_ACTIVE_LOW>;
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++		regulator-always-on; /* needed to read OS from HDD */
++	};
++};
++
++&NOR {
++	status = "okay";
++	compatible = "amd,s29gl512n", "jedec-probe", "cfi-flash", "mtd-rom";
++	bank-width = <1>;
++	reg = <0x00000000 0x00000000 0x00080000>;
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		/* Part of bootrom - Don't use it without a jump */
++		label = "free";
++		reg = <0x00000000 0x0001e000>;
++		read-only;
++	};
++
++	partition@1e000 {
++		label = "env";
++		reg = <0x0001e000 0x00002000>;
++	};
++
++	partition@20000 {
++		label = "uboot";
++		reg = <0x00020000 0x00050000>;
++		read-only;
++	};
++};
++
++&EMAC0 {
++	status = "okay";
++
++	phy-map = <0x2>;
++	phy-address = <0x1>;
++	phy-handle = <&phy>;
++
++	mdio {
 +		#address-cells = <1>;
 +		#size-cells = <0>;
++		reset-gpios = <&GPIO1 0 GPIO_ACTIVE_LOW>;
 +
-+		CPU0: cpu@0 {
-+			device_type = "cpu";
-+			model = "PowerPC,apm82181";
-+			reg = <0x00000000>;
-+			clock-frequency = <0>; /* Filled in by U-Boot */
-+			timebase-frequency = <0>; /* Filled in by U-Boot */
-+			i-cache-line-size = <32>;
-+			d-cache-line-size = <32>;
-+			i-cache-size = <32768>;
-+			d-cache-size = <32768>;
-+			dcr-controller;
-+			dcr-access-method = "native";
-+			next-level-cache = <&L2C0>;
-+		};
-+	};
-+
-+	memory {
-+		device_type = "memory";
-+		reg = <0x00000000 0x00000000 0x00000000>; /* Filled in by U-Boot */
-+	};
-+
-+	UIC0: interrupt-controller0 {
-+		compatible = "apm,uic-apm82181", "ibm,uic";
-+		interrupt-controller;
-+		cell-index = <0>;
-+		dcr-reg = <0x0c0 0x009>;
-+		#address-cells = <0>;
-+		#size-cells = <0>;
-+		#interrupt-cells = <2>;
-+	};
-+
-+	UIC1: interrupt-controller1 {
-+		compatible = "apm,uic-apm82181", "ibm,uic";
-+		interrupt-controller;
-+		cell-index = <1>;
-+		dcr-reg = <0x0d0 0x009>;
-+		#address-cells = <0>;
-+		#size-cells = <0>;
-+		#interrupt-cells = <2>;
-+		interrupts = <0x1e IRQ_TYPE_LEVEL_HIGH>,
-+			     <0x1f IRQ_TYPE_LEVEL_HIGH>; /* cascade */
-+		interrupt-parent = <&UIC0>;
-+	};
-+
-+	UIC2: interrupt-controller2 {
-+		compatible = "apm,uic-apm82181", "ibm,uic";
-+		interrupt-controller;
-+		cell-index = <2>;
-+		dcr-reg = <0x0e0 0x009>;
-+		#address-cells = <0>;
-+		#size-cells = <0>;
-+		#interrupt-cells = <2>;
-+		interrupts = <0x0a IRQ_TYPE_LEVEL_HIGH>,
-+			     <0x0b IRQ_TYPE_LEVEL_HIGH>; /* cascade */
-+		interrupt-parent = <&UIC0>;
-+	};
-+
-+	UIC3: interrupt-controller3 {
-+		compatible = "apm,uic-apm82181","ibm,uic";
-+		interrupt-controller;
-+		cell-index = <3>;
-+		dcr-reg = <0x0f0 0x009>;
-+		#address-cells = <0>;
-+		#size-cells = <0>;
-+		#interrupt-cells = <2>;
-+		interrupts = <0x10 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0x11 IRQ_TYPE_LEVEL_HIGH>; /* cascade */
-+		interrupt-parent = <&UIC0>;
-+	};
-+
-+	OCM: ocm@400040000 {
-+		compatible = "ibm,ocm";
-+		status = "okay";
-+		cell-index = <1>;
-+		/* configured in U-Boot */
-+		reg = <4 0x00040000 0x8000>; /* 32K */
-+	};
-+
-+	SDR0: sdr {
-+		compatible = "apm,sdr-apm821xx";
-+		dcr-reg = <0x00e 0x002>;
-+	};
-+
-+	CPR0: cpr {
-+		compatible = "apm,cpr-apm821xx";
-+		dcr-reg = <0x00c 0x002>;
-+	};
-+
-+	L2C0: l2c {
-+		compatible = "ibm,l2-cache-apm82181", "ibm,l2-cache";
-+		dcr-reg = <0x020 0x008
-+			   0x030 0x008>;
-+		cache-line-size = <32>;
-+		cache-size = <262144>;
-+		interrupt-parent = <&UIC1>;
-+		interrupts = <0xb IRQ_TYPE_EDGE_RISING>;
-+	};
-+
-+	CPM0: cpm {
-+		compatible = "ibm,cpm";
-+		dcr-access-method = "native";
-+		dcr-reg = <0x160 0x003>;
-+		unused-units = <0x00000100>;
-+		idle-doze = <0x02000000>;
-+		standby = <0xfeff791d>;
-+	};
-+
-+	plb {
-+		compatible = "ibm,plb4";
-+		#address-cells = <2>;
-+		#size-cells = <1>;
-+		ranges; /* Filled in by U-Boot */
-+		clock-frequency = <0>; /* Filled in by U-Boot */
-+
-+		SDRAM0: sdram {
-+			compatible = "apm,sdram-apm82181", "ibm,sdram-460ex", "ibm,sdram-405gp";
-+			dcr-reg = <0x010 0x002>;
-+		};
-+
-+		HWRNG: trng@110000 {
-+			compatible = "amcc,ppc460ex-rng", "ppc4xx-rng";
-+			reg = <4 0x00110000 0x100>;
-+			interrupt-parent = <&UIC1>;
-+			interrupts = <0x03 IRQ_TYPE_LEVEL_HIGH>;
-+			status = "disabled"; /* hardware option */
-+		};
-+
-+		CRYPTO: crypto@180000 {
-+			compatible = "amcc,ppc460ex-crypto", "amcc,ppc4xx-crypto";
-+			reg = <4 0x00180000 0x80400>;
-+			interrupt-parent = <&UIC0>;
-+			interrupts = <0x1d IRQ_TYPE_LEVEL_HIGH>;
-+			status = "disabled"; /* hardware option */
-+		};
-+
-+		MAL0: mcmal {
-+			compatible = "ibm,mcmal-460ex", "ibm,mcmal2";
-+			descriptor-memory = "ocm";
-+			dcr-reg = <0x180 0x062>;
-+			num-tx-chans = <1>;
-+			num-rx-chans = <1>;
-+			#address-cells = <0>;
-+			#size-cells = <0>;
-+			interrupt-parent = <&UIC2>;
-+			interrupts = <0x06 IRQ_TYPE_LEVEL_HIGH>,
-+				     <0x07 IRQ_TYPE_LEVEL_HIGH>,
-+				     <0x03 IRQ_TYPE_LEVEL_HIGH>,
-+				     <0x04 IRQ_TYPE_LEVEL_HIGH>,
-+				     <0x05 IRQ_TYPE_LEVEL_HIGH>,
-+				     <0x08 IRQ_TYPE_EDGE_FALLING>,
-+				     <0x09 IRQ_TYPE_EDGE_FALLING>,
-+				     <0x0c IRQ_TYPE_EDGE_FALLING>,
-+				     <0x0d IRQ_TYPE_EDGE_FALLING>;
-+			interrupt-names = "txeob", "rxeob", "serr",
-+					  "txde", "rxde",
-+					  "tx0coal", "tx1coal",
-+					  "rx0coal", "rx1coal";
-+		};
-+
-+		POB0: opb {
-+			compatible = "ibm,opb";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0xb0000000 0x00000004 0xb0000000 0x50000000>;
-+			clock-frequency = <0>; /* Filled in by U-Boot */
-+
-+			EBC0: ebc {
-+				compatible = "ibm,ebc-460ex", "ibm,ebc";
-+				dcr-reg = <0x012 0x002>;
-+				#address-cells = <2>;
-+				#size-cells = <1>;
-+				clock-frequency = <0>; /* Filled in by U-Boot */
-+				/* ranges property is supplied by U-Boot */
-+				ranges = <0x00000003 0x00000000 0xe0000000 0x8000000>;
-+				interrupts = <0x06 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-parent = <&UIC1>;
-+
-+				NOR: nor_flash@0,0 {
-+					compatible = "cfi-flash";
-+					bank-width = <1>;
-+					reg = <0x00000000 0x00000000 0x00100000>;
-+					#address-cells = <1>;
-+					#size-cells = <1>;
-+					status = "disabled";
-+				};
-+
-+				NAND: ndfc@1,0 {
-+					compatible = "ibm,ndfc";
-+					reg = <00000003 00000000 00002000>;
-+					ccr = <0x00001000>;
-+					bank-settings = <0x80002222>;
-+					status = "disabled";
-+
-+					nand {
-+						#address-cells = <1>;
-+						#size-cells = <1>;
-+					};
-+				};
-+			};
-+
-+			UART0: serial@ef600300 {
-+				/*
-+				 * AMCC's BSP u-boot scans for the "ns16550"
-+				 * compatible, without it, u-boot wouldn't
-+				 * set the required "clock-frequency".
-+				 *
-+				 * The hardware documentation states:
-+				 * "Register compatibility with 16750 register set"
-+				 */
-+				compatible = "ns16750", "ns16550";
-+				reg = <0xef600300 0x00000008>;
-+				virtual-reg = <0xef600300>;
-+				clock-frequency = <0>; /* Filled in by U-Boot */
-+				interrupt-parent = <&UIC1>;
-+				interrupts = <0x01 IRQ_TYPE_LEVEL_HIGH>;
-+				status = "disabled";
-+			};
-+
-+			UART1: serial@ef600400 {
-+				/* same "ns16750" as with UART0 */
-+				compatible = "ns16750", "ns16550";
-+				reg = <0xef600400 0x00000008>;
-+				virtual-reg = <0xef600400>;
-+				clock-frequency = <0>; /* Filled in by U-Boot */
-+				interrupt-parent = <&UIC0>;
-+				interrupts = <0x01 IRQ_TYPE_LEVEL_HIGH>;
-+				status = "disabled";
-+			};
-+
-+			IIC0: i2c@ef600700 {
-+				compatible = "ibm,iic";
-+				reg = <0xef600700 0x00000014>;
-+				interrupt-parent = <&UIC0>;
-+				interrupts = <0x02 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			IIC1: i2c@ef600800 {
-+				compatible = "ibm,iic";
-+				reg = <0xef600800 0x00000014>;
-+				interrupt-parent = <&UIC0>;
-+				interrupts = <0x03 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			GPIO0: gpio@ef600b00 {
-+				compatible = "ibm,ppc4xx-gpio";
-+				reg = <0xef600b00 0x00000048>;
-+				#gpio-cells = <2>;
-+				gpio-controller;
-+				status = "disabled";
-+			};
-+
-+			EMAC0: ethernet@ef600c00 {
-+				device_type = "network";
-+				compatible = "ibm,emac-apm821xx", "ibm,emac4sync";
-+				interrupt-parent = <&EMAC0>;
-+				interrupts = <0x0 0x1>;
-+				#interrupt-cells = <1>;
-+				#address-cells = <0>;
-+				#size-cells = <0>;
-+				interrupt-map = <0 &UIC2 0x10 IRQ_TYPE_LEVEL_HIGH>,
-+						<1 &UIC2 0x14 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-names = "status", "wake";
-+
-+				reg = <0xef600c00 0x000000c4>;
-+				local-mac-address = [000000000000]; /* Filled in by U-Boot */
-+				mal-device = <&MAL0>;
-+				mal-tx-channel = <0>;
-+				mal-rx-channel = <0>;
-+				cell-index = <0>;
-+				max-frame-size = <9000>;
-+				rx-fifo-size = <16384>;
-+				tx-fifo-size = <2048>;
-+				phy-mode = "rgmii";
-+				phy-map = <0x00000000>;
-+				rgmii-device = <&RGMII0>;
-+				rgmii-channel = <0>;
-+				tah-device = <&TAH0>;
-+				tah-channel = <0>;
-+				has-inverted-stacr-oc;
-+				has-new-stacr-staopc;
-+				status = "disabled";
-+			};
-+
-+			TAH0: emac-tah@ef601350 {
-+				compatible = "ibm,tah";
-+				reg = <0xef601350 0x00000030>;
-+			};
-+
-+			RGMII0: emac-rgmii@ef601500 {
-+				compatible = "ibm,rgmii";
-+				reg = <0xef601500 0x00000008>;
-+				has-mdio;
-+			};
-+		};
-+
-+		USBOTG0: usbotg@bff80000 {
-+			compatible = "amcc,dwc-otg";
-+			reg = <4 0xbff80000 0x10000>;
-+			interrupt-parent = <&USBOTG0>;
-+			interrupts = <0 1 2>;
-+			#interrupt-cells = <1>;
-+			#address-cells = <0>;
-+			#size-cells = <0>;
-+			interrupt-map = <0 &UIC2 0x1c IRQ_TYPE_LEVEL_HIGH>,
-+					<1 &UIC1 0x1a IRQ_TYPE_LEVEL_LOW>,
-+					<2 &UIC0 0x0c IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "usb-otg", "high-power", "dma";
-+			dr_mode = "host";
-+			status = "disabled";
-+		};
-+
-+		AHBDMA0: dma@bffd0800 {
-+			compatible = "snps,dma-spear1340";
-+			reg = <4 0xbffd0800 0x400>;
-+			interrupt-parent = <&UIC0>;
-+			interrupts = <0x19 IRQ_TYPE_LEVEL_HIGH>;
-+			#dma-cells = <3>;
-+
-+			dma-channels = <2>;
-+			dma-masters = <3>;
-+			block_size = <4095>;
-+			data-width = <4>, <4>, <4>;
-+			multi-block = <1>, <1>;
-+
-+			chan_allocation_order = <1>;
-+			chan_priority = <1>;
-+
-+			snps,dma-protection-control =
-+				<(DW_DMAC_HPROT1_PRIVILEGED_MODE |
-+				  DW_DMAC_HPROT2_BUFFERABLE)>;
-+			is_memcpy;
-+		};
-+
-+		SATA0: sata@bffd1000 {
-+			compatible = "amcc,sata-460ex";
-+			reg = <4 0xbffd1000 0x800>;
-+			interrupt-parent = <&UIC0>;
-+			interrupts = <0x1a IRQ_TYPE_LEVEL_HIGH>;
-+			dmas = <&AHBDMA0 0 0 1>;
-+			dma-names = "sata-dma";
-+			status = "disabled";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+
-+		SATA1: sata@bffd1800 {
-+			compatible = "amcc,sata-460ex";
-+			reg = <4 0xbffd1800 0x800>;
-+			interrupt-parent = <&UIC0>;
-+			interrupts = <0x1b IRQ_TYPE_LEVEL_HIGH>;
-+			dmas = <&AHBDMA0 1 0 2>;
-+			dma-names = "sata-dma";
-+			status = "disabled";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+		};
-+
-+		MSI: ppc4xx-msi@c10000000 {
-+			compatible = "amcc,ppc4xx-msi", "ppc4xx-msi";
-+			reg = <0xc 0x10000000 0x100
-+			       0xc 0x10000000 0x100>;
-+			sdr-base = <0x36C>;
-+			msi-data = <0x00004440>;
-+			msi-mask = <0x0000ffe0>;
-+			interrupts =<0 1 2 3 4 5 6 7>;
-+			interrupt-parent = <&MSI>;
-+			#interrupt-cells = <1>;
-+			#address-cells = <0>;
-+			#size-cells = <0>;
-+			msi-available-ranges = <0x0 0x100>;
-+			interrupt-map =
-+				<0 &UIC3 0x18 IRQ_TYPE_EDGE_RISING>,
-+				<1 &UIC3 0x19 IRQ_TYPE_EDGE_RISING>,
-+				<2 &UIC3 0x1a IRQ_TYPE_EDGE_RISING>,
-+				<3 &UIC3 0x1b IRQ_TYPE_EDGE_RISING>,
-+				<4 &UIC3 0x1c IRQ_TYPE_EDGE_RISING>,
-+				<5 &UIC3 0x1d IRQ_TYPE_EDGE_RISING>,
-+				<6 &UIC3 0x1e IRQ_TYPE_EDGE_RISING>,
-+				<7 &UIC3 0x1f IRQ_TYPE_EDGE_RISING>;
-+			status = "disabled";
-+		};
-+
-+		PCIE0: pciex@d00000000 {
-+			device_type = "pci"; /* see ppc4xx_pci_find_bridge */
-+			#interrupt-cells = <1>;
-+			#size-cells = <2>;
-+			#address-cells = <3>;
-+			compatible = "ibm,plb-pciex-apm821xx", "ibm,plb-pciex";
-+			primary;
-+			port = <0x0>; /* port number */
-+			reg = <0x0000000d 0x00000000 0x20000000>, /* Config space access */
-+			      <0x0000000c 0x08010000 0x00001000>; /* Registers */
-+			dcr-reg = <0x100 0x020>;
-+			sdr-base = <0x300>;
-+
-+			/*
-+			 * Outbound ranges, one memory and one IO,
-+			 * later cannot be changed
-+			 */
-+			ranges = <0x02000000 0x00000000 0x80000000 0x0000000e 0x00000000 0x00000000 0x80000000>,
-+				 <0x02000000 0x00000000 0x00000000 0x0000000f 0x00000000 0x00000000 0x00100000>,
-+				 <0x01000000 0x00000000 0x00000000 0x0000000f 0x80000000 0x00000000 0x00010000>;
-+
-+			/* Inbound 2GB range starting at 0 */
-+			dma-ranges = <0x42000000 0x0 0x0 0x0 0x0 0x0 0x80000000>;
-+
-+			/* This drives busses 0x40 to 0x7f */
-+			bus-range = <0x40 0x7f>;
-+
-+			/*
-+			 * Legacy interrupts (note the weird polarity, the bridge seems
-+			 * to invert PCIe legacy interrupts).
-+			 * We are de-swizzling here because the numbers are actually for
-+			 * port of the root complex virtual P2P bridge. But I want
-+			 * to avoid putting a node for it in the tree, so the numbers
-+			 * below are basically de-swizzled numbers.
-+			 * The real slot is on idsel 0, so the swizzling is 1:1
-+			 */
-+			interrupt-map-mask = <0x0 0x0 0x0 0x7>;
-+			interrupt-map =
-+				<0x0 0x0 0x0 0x1 &UIC3 0x0c IRQ_TYPE_LEVEL_HIGH>, /* swizzled int A */
-+				<0x0 0x0 0x0 0x2 &UIC3 0x0d IRQ_TYPE_LEVEL_HIGH>, /* swizzled int B */
-+				<0x0 0x0 0x0 0x3 &UIC3 0x0e IRQ_TYPE_LEVEL_HIGH>, /* swizzled int C */
-+				<0x0 0x0 0x0 0x4 &UIC3 0x0f IRQ_TYPE_LEVEL_HIGH>; /* swizzled int D */
-+			status = "disabled";
++		phy: phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
 +		};
 +	};
 +};
++
++&CRYPTO {
++	status = "okay";
++};
++
++&HWRNG {
++	status = "okay";
++};
++
++&SATA0 {
++	status = "okay";
++
++	drive0: sata-port@0 {
++		reg = <0>;
++		#thermal-sensor-cells = <0>;
++	};
++};
++
++&SATA1 {
++	status = "okay";
++
++	drive1: sata-port@0 {
++		reg = <0>;
++		#thermal-sensor-cells = <0>;
++	};
++};
++
++&UART0 {
++	status = "okay";
++};
++
++&USBOTG0 {
++	status = "okay";
++	dr_mode = "host";
++	vbus-supply = <&usbpwr>;
++};
+diff --git a/arch/powerpc/platforms/44x/ppc44x_simple.c b/arch/powerpc/platforms/44x/ppc44x_simple.c
+index 3dbd8ddd734a..1122702c804a 100644
+--- a/arch/powerpc/platforms/44x/ppc44x_simple.c
++++ b/arch/powerpc/platforms/44x/ppc44x_simple.c
+@@ -59,7 +59,8 @@ static char *board[] __initdata = {
+ 	"amcc,sequoia",
+ 	"amcc,taishan",
+ 	"amcc,yosemite",
+-	"mosaixtech,icon"
++	"mosaixtech,icon",
++	"wd,mybooklive",
+ };
+ 
+ static int __init ppc44x_probe(void)
 -- 
 2.28.0
 
