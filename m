@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D62424F1AF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 05:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D6824F211
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 07:09:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZdQ611tSzDqSH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 13:48:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZgC00V3GzDqRr
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 15:09:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=zPIe8c56; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20150623 header.b=H6grAXf0; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZdNQ51YLzDqHY
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 13:47:02 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id i10so3919101pgk.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 20:47:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZg930fZ4zDqNR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 15:07:14 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id t9so32043pfq.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Aug 2020 22:07:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=s4KE1DUaLsKR6pb4d4I07z6htZG+9g3iihL+N9DQx4I=;
- b=zPIe8c565BaJjzswYFntlgaX8CXo0dY0xJduBABHS2+urlGEo80QF6QbZeM/WgRcDY
- 9ZJdkiV6tZSsxxpZUVHIBZuqJWa7tvFNVurQgwKQWkun1nTcGElokB5tPWpoQPaSWt7K
- nRZJHhS2VU8+/WhP/GonoXVAZvT2EmGdvH7BEfK0bfrJWKnttda4gjgY3JN5wKXd0PPS
- 19qDEJ4ZYodzvpvsZ1oe3JsPWpeMXqK1NBuuLNG5VSS/FRU0z2uBAxCw60YMJOZBkCmX
- R9MOjlpqxNxoJVuPUH5WGjqelRmEEnkwXnkxVszf86ngoc9b7zMfHC/M707wFTKhS9m8
- lHkw==
+ bh=XwERB5YNJ0blG+64I7kQS0ItiG8wCGOWdoI2vOGuH50=;
+ b=H6grAXf0TI3spsatzli7tlfSiAXI65x804dVCVWxw9i/0/2sqcbLv8DCk23VOsipxF
+ CvsxRKzbUd4H9aP+PHktVMoVZ5PVKHF7q3+7W0JlLr29k5JXq7aa3A03Q2wlIzHS6Uh1
+ dW9KFcbRTDcsqGFdClqHQpbyG9c0XHdcn2z6ZLw9OuinYbQmeEsGu6ccsvqMjfiBo+Cp
+ yKN/Bg8ciy3sEBIaCkaRQ44YBCygan0QwS72doL7wf3xUjVCRGF/Ex7OdCMujfpFnUA8
+ AbXuKIDXlIn1+AkZBQj4T8GmXWp7kC14vRtlxQZ8dDjOi0tMyG5pKjLRMl1v8MttZQXw
+ WVAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=s4KE1DUaLsKR6pb4d4I07z6htZG+9g3iihL+N9DQx4I=;
- b=NYIFrjAJW/XQO6YEMH36iuErZxyOkkgU2BKrjJmpXih8dckNoaj5MA2jMkgXLCSTCe
- q8juBd4CQw7D5ndvTWVJnOUZeFRBHUT3JTkVsHN7Py/Oyjvq6gykaSWSPB2PegIK8S5A
- Fk4bjnkZaf+qZi2vu0r5MSVPdrnRfO7qaOsnL7WYW0gp/eOGzx0UbuGmfyHRW+MKamV5
- cTn1H4Fa5RZtR/1bjkTsoaWDtsRY6nNwqNk14VK2hrk9f3q3aRjpnoRLtfGlHR9xlbW2
- r/vi6Rv4bfhz5e4Hbw+wrCBTF1dyvXfWIuWGMHEN43xtoGqqWddswAmRbfIY7/6Mo0Ro
- wJJg==
-X-Gm-Message-State: AOAM531hSAhpFSvaPEMPZ01wuF5PtAkpaqMBFjOLRgjkEyUlVraGDrOP
- MRvph9JVNgCi2K8holuRxCi0HQ==
-X-Google-Smtp-Source: ABdhPJyjXPJwUTuZ+05iHZjw4nBxeHUbutrYZJqkuJcWDyzq39a/wxmy/LYIFN1WoNBQHsi4qyFxMw==
-X-Received: by 2002:a65:480a:: with SMTP id h10mr2236864pgs.304.1598240819389; 
- Sun, 23 Aug 2020 20:46:59 -0700 (PDT)
+ bh=XwERB5YNJ0blG+64I7kQS0ItiG8wCGOWdoI2vOGuH50=;
+ b=KK1UgoO+dJbQWqMOlGY0o+HypnuSur+rez1lZibYTZHYUuhjOyt8m7UABlG5uhQAeB
+ moCccIbdN/HLsFTsYPOgjX1liyr80SRK8yKk3e6CL/2j9WGDN0hIV5vl4oBhWemPi/8i
+ Fv3S4THu+dvUoso+r+pmAzeeXS8KC0frEbZugM5iTpeGyiKPnefW4dTjLkZBf31Vj3A6
+ 63D4M7Zm/JoYA/aqgRU/HzJptspS45xs7OFPIoMR1zcQA/Sk7BaNVOICASEwDmCd2WXC
+ gmVd5Qp6s33d48BgfLJ+TI84zyvZgWDfjT+I5hx9QEjpO5jH362tFTxwl5sAg4d2XdwB
+ c2jw==
+X-Gm-Message-State: AOAM532NB2dUi5sLpJTw4tCLYRIWqYeQDZyVwg0SrNWlGrV9WIbLkREM
+ f/nFZOy7YxTcIdNUybLHVE1+4w==
+X-Google-Smtp-Source: ABdhPJxhDH5SnZq9t5rCopdOJoHlvOjSuVd6xpv9JfXRB93jfiEJPr+S1xNScQgYzfkt4KXaG1YZ1Q==
+X-Received: by 2002:a63:f30a:: with SMTP id l10mr2410904pgh.345.1598245632002; 
+ Sun, 23 Aug 2020 22:07:12 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id g5sm8220286pjx.53.2020.08.23.20.46.54
+ by smtp.gmail.com with ESMTPSA id o2sm3509930pjh.4.2020.08.23.22.07.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Aug 2020 20:46:58 -0700 (PDT)
-Subject: Re: [PATCH v1 06/10] powerpc/pseries/iommu: Add ddw_list_add() helper
+ Sun, 23 Aug 2020 22:07:10 -0700 (PDT)
+Subject: Re: [PATCH v1 08/10] powerpc/pseries/iommu: Add ddw_property_create()
+ and refactor enable_ddw()
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Christophe Leroy
@@ -71,7 +72,7 @@ To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
 References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-7-leobras.c@gmail.com>
+ <20200817234033.442511-9-leobras.c@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -146,12 +147,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <af4246bb-9357-098e-f167-8f30c6b893f2@ozlabs.ru>
-Date: Mon, 24 Aug 2020 13:46:52 +1000
+Message-ID: <952fb640-01dd-003f-7fcb-bd48446d526c@ozlabs.ru>
+Date: Mon, 24 Aug 2020 15:07:04 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20200817234033.442511-7-leobras.c@gmail.com>
+In-Reply-To: <20200817234033.442511-9-leobras.c@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -174,120 +175,202 @@ Sender: "Linuxppc-dev"
 
 
 On 18/08/2020 09:40, Leonardo Bras wrote:
-> There are two functions adding DDW to the direct_window_list in a
-> similar way, so create a ddw_list_add() to avoid duplicity and
-> simplify those functions.
+> Code used to create a ddw property that was previously scattered in
+> enable_ddw() is now gathered in ddw_property_create(), which deals with
+> allocation and filling the property, letting it ready for
+> of_property_add(), which now occurs in sequence.
 > 
-> Also, on enable_ddw(), add list_del() on out_free_window to allow
-> removing the window from list if any error occurs.
+> This created an opportunity to reorganize the second part of enable_ddw():
+> 
+> Without this patch enable_ddw() does, in order:
+> kzalloc() property & members, create_ddw(), fill ddwprop inside property,
+> ddw_list_add(), do tce_setrange_multi_pSeriesLP_walk in all memory,
+> of_add_property().
+> 
+> With this patch enable_ddw() does, in order:
+> create_ddw(), ddw_property_create(), of_add_property(), ddw_list_add(),
+> do tce_setrange_multi_pSeriesLP_walk in all memory.
+> 
+> This change requires of_remove_property() in case anything fails after
+> of_add_property(), but we get to do tce_setrange_multi_pSeriesLP_walk
+> in all memory, which looks the most expensive operation, only if
+> everything else succeeds.
 > 
 > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 > ---
->  arch/powerpc/platforms/pseries/iommu.c | 42 ++++++++++++++++----------
->  1 file changed, 26 insertions(+), 16 deletions(-)
+>  arch/powerpc/platforms/pseries/iommu.c | 97 +++++++++++++++-----------
+>  1 file changed, 57 insertions(+), 40 deletions(-)
 > 
 > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index 39617ce0ec83..fcdefcc0f365 100644
+> index 4031127c9537..3a1ef02ad9d5 100644
 > --- a/arch/powerpc/platforms/pseries/iommu.c
 > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -872,6 +872,24 @@ static u64 find_existing_ddw(struct device_node *pdn)
->  	return dma_addr;
+> @@ -1123,6 +1123,31 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+>  			 ret);
 >  }
 >  
-> +static struct direct_window *ddw_list_add(struct device_node *pdn,
-> +					  const struct dynamic_dma_window_prop *dma64)
+> +static int ddw_property_create(struct property **ddw_win, const char *propname,
+
+@propname is always the same, do you really want to pass it every time?
+
+> +			       u32 liobn, u64 dma_addr, u32 page_shift, u32 window_shift)
 > +{
-> +	struct direct_window *window;
+> +	struct dynamic_dma_window_prop *ddwprop;
+> +	struct property *win64;
 > +
-> +	window = kzalloc(sizeof(*window), GFP_KERNEL);
-> +	if (!window)
-> +		return NULL;
+> +	*ddw_win = win64 = kzalloc(sizeof(*win64), GFP_KERNEL);
+> +	if (!win64)
+> +		return -ENOMEM;
 > +
-> +	window->device = pdn;
-> +	window->prop = dma64;
-> +	spin_lock(&direct_window_list_lock);
-> +	list_add(&window->list, &direct_window_list);
-> +	spin_unlock(&direct_window_list_lock);
+> +	win64->name = kstrdup(propname, GFP_KERNEL);
+
+Not clear why "win64->name = DIRECT64_PROPNAME" would not work here, the
+generic OF code does not try kfree() it but it is probably out of scope
+here.
+
+
+> +	ddwprop = kzalloc(sizeof(*ddwprop), GFP_KERNEL);
+> +	win64->value = ddwprop;
+> +	win64->length = sizeof(*ddwprop);
+> +	if (!win64->name || !win64->value)
+> +		return -ENOMEM;
+
+
+Up to 2 memory leaks here. I see the cleanup at "out_free_prop:" but
+still looks fragile. Instead you could simply return win64 as the only
+error possible here is -ENOMEM and returning NULL is equally good.
+
+
 > +
-> +	return window;
+> +	ddwprop->liobn = cpu_to_be32(liobn);
+> +	ddwprop->dma_base = cpu_to_be64(dma_addr);
+> +	ddwprop->tce_shift = cpu_to_be32(page_shift);
+> +	ddwprop->window_shift = cpu_to_be32(window_shift);
+> +
+> +	return 0;
 > +}
 > +
->  static int find_existing_ddw_windows(void)
->  {
->  	int len;
-> @@ -887,18 +905,11 @@ static int find_existing_ddw_windows(void)
->  		if (!direct64)
->  			continue;
+>  /*
+>   * If the PE supports dynamic dma windows, and there is space for a table
+>   * that can map all pages in a linear offset, then setup such a table,
+> @@ -1140,12 +1165,11 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>  	struct ddw_query_response query;
+>  	struct ddw_create_response create;
+>  	int page_shift;
+> -	u64 max_addr;
+> +	u64 max_addr, win_addr;
+>  	struct device_node *dn;
+>  	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+>  	struct direct_window *window;
+> -	struct property *win64;
+> -	struct dynamic_dma_window_prop *ddwprop;
+> +	struct property *win64 = NULL;
+>  	struct failed_ddw_pdn *fpdn;
+>  	bool default_win_removed = false;
 >  
-> -		window = kzalloc(sizeof(*window), GFP_KERNEL);
-> -		if (!window || len < sizeof(struct dynamic_dma_window_prop)) {
-> +		window = ddw_list_add(pdn, direct64);
-> +		if (!window || len < sizeof(*direct64)) {
+> @@ -1244,38 +1268,34 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>  		goto out_failed;
+>  	}
+>  	len = order_base_2(max_addr);
+> -	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
+> -	if (!win64) {
+> -		dev_info(&dev->dev,
+> -			"couldn't allocate property for 64bit dma window\n");
+> +
+> +	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
+> +	if (ret != 0)
+
+It is usually just "if (ret)"
 
 
-Since you are touching this code, it looks like the "len <
-sizeof(*direct64)" part should go above to "if (!direct64)".
-
-
-
->  			kfree(window);
->  			remove_ddw(pdn, true);
-> -			continue;
->  		}
-> -
-> -		window->device = pdn;
-> -		window->prop = direct64;
-> -		spin_lock(&direct_window_list_lock);
-> -		list_add(&window->list, &direct_window_list);
-> -		spin_unlock(&direct_window_list_lock);
+>  		goto out_failed;
+> -	}
+> -	win64->name = kstrdup(DIRECT64_PROPNAME, GFP_KERNEL);
+> -	win64->value = ddwprop = kmalloc(sizeof(*ddwprop), GFP_KERNEL);
+> -	win64->length = sizeof(*ddwprop);
+> -	if (!win64->name || !win64->value) {
+> +
+> +	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
+> +		create.liobn, dn);
+> +
+> +	win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
+> +	ret = ddw_property_create(&win64, DIRECT64_PROPNAME, create.liobn, win_addr,
+> +				  page_shift, len);
+> +	if (ret) {
+>  		dev_info(&dev->dev,
+> -			"couldn't allocate property name and value\n");
+> +			 "couldn't allocate property, property name, or value\n");
+>  		goto out_free_prop;
 >  	}
 >  
->  	return 0;
-> @@ -1261,7 +1272,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->  	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
->  		  create.liobn, dn);
+> -	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
+> -	if (ret != 0)
+> +	ret = of_add_property(pdn, win64);
+> +	if (ret) {
+> +		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
+> +			pdn, ret);
+>  		goto out_free_prop;
+> -
+> -	ddwprop->liobn = cpu_to_be32(create.liobn);
+> -	ddwprop->dma_base = cpu_to_be64(((u64)create.addr_hi << 32) |
+> -			create.addr_lo);
+> -	ddwprop->tce_shift = cpu_to_be32(page_shift);
+> -	ddwprop->window_shift = cpu_to_be32(len);
+> -
+> -	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
+> -		  create.liobn, dn);
+> +	}
 >  
-> -	window = kzalloc(sizeof(*window), GFP_KERNEL);
-> +	/* Add new window to existing DDW list */
-
-The comment seems to duplicate what the ddw_list_add name already suggests.
-
-
-> +	window = ddw_list_add(pdn, ddwprop);
+>  	/* Add new window to existing DDW list */
+> -	window = ddw_list_add(pdn, ddwprop);
+> +	window = ddw_list_add(pdn, win64->value);
 >  	if (!window)
->  		goto out_clear_window;
+> -		goto out_clear_window;
+> +		goto out_prop_del;
 >  
-> @@ -1280,16 +1292,14 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>  	ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+>  			win64->value, tce_setrange_multi_pSeriesLP_walk);
+> @@ -1285,14 +1305,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
 >  		goto out_free_window;
 >  	}
 >  
-> -	window->device = pdn;
-> -	window->prop = ddwprop;
-> -	spin_lock(&direct_window_list_lock);
-> -	list_add(&window->list, &direct_window_list);
-> -	spin_unlock(&direct_window_list_lock);
-
-I'd leave these 3 lines here and in find_existing_ddw_windows() (which
-would make  ddw_list_add -> ddw_prop_alloc). In general you want to have
-less stuff to do on the failure path. kmalloc may fail and needs kfree
-but you can safely delay list_add (which cannot fail) and avoid having
-the lock help twice in the same function (one of them is hidden inside
-ddw_list_add).
-
-Not sure if this change is really needed after all. Thanks,
-
+> -	ret = of_add_property(pdn, win64);
+> -	if (ret) {
+> -		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
+> -			 pdn, ret);
+> -		goto out_free_window;
+> -	}
 > -
->  	dma_addr = be64_to_cpu(ddwprop->dma_base);
+> -	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
+> +	dev->dev.archdata.dma_offset = win_addr;
 >  	goto out_unlock;
 >  
 >  out_free_window:
-> +	spin_lock(&direct_window_list_lock);
-> +	list_del(&window->list);
-> +	spin_unlock(&direct_window_list_lock);
-> +
+> @@ -1302,14 +1315,18 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>  
 >  	kfree(window);
 >  
->  out_clear_window:
+> -out_clear_window:
+> -	remove_ddw(pdn, true);
+> +out_prop_del:
+> +	of_remove_property(pdn, win64);
+>  
+>  out_free_prop:
+> -	kfree(win64->name);
+> -	kfree(win64->value);
+> -	kfree(win64);
+> -	win64 = NULL;
+> +	if (win64) {
+> +		kfree(win64->name);
+> +		kfree(win64->value);
+> +		kfree(win64);
+> +		win64 = NULL;
+> +	}
+> +
+> +	remove_ddw(pdn, true);
+>  
+>  out_failed:
+>  	if (default_win_removed)
 > 
 
 -- 
