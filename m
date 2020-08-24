@@ -2,53 +2,104 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825CE24FF7C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 16:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8938C24FFAC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 16:16:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZv533lCfzDq5b
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 00:04:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZvLb1d3GzDqNx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 00:16:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=balbi@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=infinera.com (client-ip=40.107.77.51;
+ helo=nam02-sn1-obe.outbound.protection.outlook.com;
+ envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=pass (p=none dis=none) header.from=infinera.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=IRlJ+6fE; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
+ header.s=selector2 header.b=NRoYwGlm; 
+ dkim-atps=neutral
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-eopbgr770051.outbound.protection.outlook.com [40.107.77.51])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZtyP4l5XzDq7d
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 23:58:53 +1000 (AEST)
-Received: from saruman (unknown [194.34.132.57])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CAA27207CD;
- Mon, 24 Aug 2020 13:58:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1598277531;
- bh=o9BlmvcB5Gr+9lF+n5O9P3SYHUi+Nkxe6s9/2q78T9o=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=IRlJ+6fEFRNWh7fO5RWDUEsjPBW/gE2Zqf6TkWcxeELMFccPEsNlM1rdpKna3i407
- UB7P/OwwzrYz4OiB0ZGDJ1LBR4HxlTCFWy+WHVwXBy7gF4jbwvwn+636w2J6deEe42
- n1qmjG4SdQcnvo+3fqHsXtKhn72zR6YKevnbjcJc=
-From: Felipe Balbi <balbi@kernel.org>
-To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>, "yebin10@huawei.com"
- <yebin10@huawei.com>, "gregkh@linuxfoundation.org"
- <gregkh@linuxfoundation.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZvG34xm3zDq99
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 00:12:25 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Tr/rFhnm/V3O7+E2+GIQQfKjWrWIFRYfGZJLp8FblX9rXRIca/yikXNiCjLUXJLwEGir6FqbPSLKUboJfSQUj0DCqBAISPz5snnR2ItprEtG7ZgwcUkGaAHfyq0AhIkAOVruoW+N9+vrp73S/UqBpsZqllMB8QApqmGGzQNFMUAhF0oNxFi/1Mbs8gW4MP3W0HEGr4YqEhHNzOGE3NRa6OrVJS9oYVc1mBs/X13tLOr+W9qHcSyHaQRwFMLC+CJ/lBtNETGo2qpUqHNuxyvMKC4kOe6tjpvfmpALxL4N6LzE7utBBSHbBOMNaFztXGdTtOQxGH+LGqLovhBfTbgGUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ve7Zexl5oIH2fMqK8V7bcneL3Ny5GwD+ragrv5d1M4U=;
+ b=njJlp4Vo7+UICh0y9la4mF1fJVYEm7gci/VK+rinL/ye8vC+/sr9Lspv7LLX1k/zothOD3Ax2/ynzQpUB3/8fswstGTuSjS2Cb0kSpFr9GcIK1rn9GGutIVOID5uV2w7VRnaAXXvellqkCJFP+r2i7K9EBrsI/eGg+T/qxMj36IXuQhincKYZVy4prtX/rjd+IWS8bGQMCZl99oAt36jAYFHQshN0GMQmgqwz3mENyxnGFSjkEKgE9RmRSrHuqUtDMAlhRY0YLt9ahn4pRJ3c+oZJsUNVHmlibbDJsCMQuGryrj7y9kz9OvR8ipzazYjEKJ4+ULDk49YVi8IggZUaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
+ dkim=pass header.d=infinera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ve7Zexl5oIH2fMqK8V7bcneL3Ny5GwD+ragrv5d1M4U=;
+ b=NRoYwGlmR5J7XA5pacz3ApuqPWCUzYyQRysUD9Sb4cvg4fZ29F5+TV3LHPoEWRA+XNcDdm21evd+zLBls/US++wyhgoxEwMqrLrIsR9fDDx8qH+C+q33Z3nK6u5a+obd5RtM3HU4uHqCApD963kco1/yfyc6JW0tQwS7JUgjN4Y=
+Received: from CY4PR1001MB2389.namprd10.prod.outlook.com
+ (2603:10b6:910:45::21) by CY4PR1001MB2310.namprd10.prod.outlook.com
+ (2603:10b6:910:4a::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.26; Mon, 24 Aug
+ 2020 14:12:19 +0000
+Received: from CY4PR1001MB2389.namprd10.prod.outlook.com
+ ([fe80::7c3b:e8e3:3d1b:284d]) by CY4PR1001MB2389.namprd10.prod.outlook.com
+ ([fe80::7c3b:e8e3:3d1b:284d%7]) with mapi id 15.20.3283.024; Mon, 24 Aug 2020
+ 14:12:19 +0000
+From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+To: "yebin10@huawei.com" <yebin10@huawei.com>, "gregkh@linuxfoundation.org"
+ <gregkh@linuxfoundation.org>, "balbi@kernel.org" <balbi@kernel.org>
 Subject: Re: [PATCH] usb: gadget: fsl: Fix unsigned expression compared with
  zero in fsl_udc_probe
-In-Reply-To: <f61f4bc3916f852799edb6af9740afb2118ec84f.camel@infinera.com>
+Thread-Topic: [PATCH] usb: gadget: fsl: Fix unsigned expression compared with
+ zero in fsl_udc_probe
+Thread-Index: AQHWee+zZeLUHMNpPkKw58UdehD37KlG8waAgABWdYCAAAPLAA==
+Date: Mon, 24 Aug 2020 14:12:19 +0000
+Message-ID: <2c2317ff8385f75466cbfa1f0109a1f2c3acbc48.camel@infinera.com>
 References: <20200824080437.229826-1-yebin10@huawei.com>
  <20200824082122.GA336539@kroah.com>
  <f61f4bc3916f852799edb6af9740afb2118ec84f.camel@infinera.com>
-Date: Mon, 24 Aug 2020 16:58:43 +0300
-Message-ID: <87d03gjgbw.fsf@kernel.org>
+ <87d03gjgbw.fsf@kernel.org>
+In-Reply-To: <87d03gjgbw.fsf@kernel.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.37.90 
+authentication-results: huawei.com; dkim=none (message not signed)
+ header.d=none;huawei.com; dmarc=none action=none header.from=infinera.com;
+x-originating-ip: [88.131.87.201]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 593d0e38-d6f5-41e7-5fd0-08d84837b68b
+x-ms-traffictypediagnostic: CY4PR1001MB2310:
+x-microsoft-antispam-prvs: <CY4PR1001MB2310401DA5E012FA2ECD342CF4560@CY4PR1001MB2310.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 6cbQN6ntAJaZthepAH450Kz04mz0w8jyCSxEwa1CY4bsp6e9475w5KphmD8GGLfO5ubw11u/m3LQPiSD1UcxhiJCLtSBjbpstN47wMDG3acQHLrG/nSiDOfFtd/gJJ3EyN9K/rsqpOvdrRkI0u8AW4YLJRL4e33D5Q+ivxFeSQHLBqpkgApXAKqUCeFKB4tFszpJQVG0gGJjdgxt4OrcWSXRVOY8PDoyaLcF+Vui5WiM+q+X+n+EGeaSUdysWmp2ijsvY41REHhvc7bLHDBfQDrAkVQJ5EssojcYw/OsVpxvfWpOpx5m03PA4GQ0mlBG
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY4PR1001MB2389.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(39860400002)(346002)(396003)(366004)(376002)(136003)(5660300002)(2906002)(6486002)(478600001)(71200400001)(4326008)(66476007)(8936002)(76116006)(66946007)(91956017)(66446008)(64756008)(66556008)(2616005)(4744005)(83380400001)(6506007)(36756003)(110136005)(8676002)(316002)(26005)(186003)(86362001)(6512007)(54906003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata: EYP9TRwnph8L8M/CjQeKqL2xH0HQDzHEcXrj/AHqpyvZL/qoMdW4YeP4Erx+6A/+VhZ/ntbwUPokga4A7AInVRmiKX38kG+v903xUxI27k0MgdJleHeBtf9HxE6LYgrvS37KM8sAmZ8W/ldWvepD3EukJ6ISgGqMwHe3qyHfeakKYP4keOO2j0n6KL+JtXcgFsUHP8TFR+s/NEwyCqQL8p4hwkJ232y4ohzMnhQezK5ZwVgQNR2nnixSg1LsPrWwBrsvDmoGV/Oh4QstpldIftEL9fIRI9KnZ/mSn1/2ONxOBglrmEqVf2YL1hOuHWKJwnfOKSu9ZtuudIHdz+H9Y4uY/BsVwLs0U0gn1ZpzxlezXcEFRtOaAtCgYSsNq3rrw4hZUVb298Caxhxa4tl45x5KuXlo33J2Y84u1wuR0Ds4QNyTVIq8ajF/yXEAXS5Y+DbpSfLQHsbP2cO5AfitI+sZFUpq5UX1eKvI++p8ZZ8h5X7W4xHgDggLB2/JyMfc1BIN54jRV0f2CVpuogX34HOdTOwgQr7SRVlUAuCB4kxuJYby5UZmYSvMOdmVIMWSWe2AM2RYrdaUYw/ufGgtYKPvECN03GrOiOinjak0cqbdQG8wyjfkgZmrixXLZD8JtoyNVJzBaWEExghXD+Ut5w==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0EF1F40D8FB9264A955F0CD3B04A6FA7@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
+X-OriginatorOrg: infinera.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR1001MB2389.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 593d0e38-d6f5-41e7-5fd0-08d84837b68b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2020 14:12:19.4264 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 82To4yE+WL9oNiDp3wA60hBNMHrP9fUriYtgCJ1O2YIi1sG8ez0wqQjC+tDKZGIAyjzV8SbS+nQ8zQHwzGJTEQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1001MB2310
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,47 +118,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-Joakim Tjernlund <Joakim.Tjernlund@infinera.com> writes:
-
-> On Mon, 2020-08-24 at 10:21 +0200, Greg KH wrote:
->>=20
->> On Mon, Aug 24, 2020 at 04:04:37PM +0800, Ye Bin wrote:
->> > Signed-off-by: Ye Bin <yebin10@huawei.com>
->>=20
->> I can't take patches without any changelog text, sorry.
->
-> Still taking patches for fsl_udc_core.c ?
-> I figured this driver was obsolete and should be moved to one of the Chip=
-idea drivers.
-
-Nobody sent any patches to switch over the users of this driver to
-chipidea. I would love to delete this driver :-)
-
-=2D-=20
-balbi
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQJFBAEBCAAvFiEElLzh7wn96CXwjh2IzL64meEamQYFAl9Dx5QRHGJhbGJpQGtl
-cm5lbC5vcmcACgkQzL64meEamQawPA/8CqHT6zk1S2J+/qkvq8DEZIXlhm8dbpcE
-CqIW15+nNeGyk6JCrLhtG/q2ySPZgkZzfArbcEznTLWBXHf+XUHZiWKsL4FRj0It
-mUX4ScgBErd66faiF448UBfTFiVCUUMGJVaU5L896C/haxmlIebZSlPID7MBOyYI
-ouJLXSrwIbU+QDhQfFUhSLwqwKK/ayHD02nsRBaWG12WDImuXZ5w3FlKzKzCYDII
-Rsic7GjlUj6hBmHrbyt2beOG9k8Z2EDMI96SddAz+wFzQu9nIlqZPNbNK2qFrI0S
-N99f58xP1K+cC+tqn0YI3fEFz2HLb6S31PbcWd2slokfgB5DkJt05J2mRMGF04UF
-dDs+5Ab/RRGO+ZZFnIDQcI9hdNSdXggZAhH7XVB/LnBgfJwRyiudAt8zaj0/RJO1
-KTMJ7O2xjqalazXVAzqiOGPbPqNi6c4Oougsu1Pwoe5PzXOtr+p5i7Jx7yoPwMzg
-yamHoVfdtIy2lwD8wcC3Qdx/hzYf0y4sqMgb4cop5YyMFRBFhwlMbEB2zj6rtzz/
-NDa4ToWs+azhCchZz4Ow3FjPs/4Ssyy5oyJg7LT2ZzgxaOKU8XRDrHFR0NKnt12a
-vcvUkS+MV6snaygCncLFujM1co6zQ5KlD6Olm4q3IlguQidDM7raX2/YO/3It/oN
-9HR27WCDbjE=
-=BdBv
------END PGP SIGNATURE-----
---=-=-=--
+T24gTW9uLCAyMDIwLTA4LTI0IGF0IDE2OjU4ICswMzAwLCBGZWxpcGUgQmFsYmkgd3JvdGU6DQo+
+IEpvYWtpbSBUamVybmx1bmQgPEpvYWtpbS5UamVybmx1bmRAaW5maW5lcmEuY29tPiB3cml0ZXM6
+DQo+IA0KPiA+IE9uIE1vbiwgMjAyMC0wOC0yNCBhdCAxMDoyMSArMDIwMCwgR3JlZyBLSCB3cm90
+ZToNCj4gPiA+IA0KPiA+ID4gT24gTW9uLCBBdWcgMjQsIDIwMjAgYXQgMDQ6MDQ6MzdQTSArMDgw
+MCwgWWUgQmluIHdyb3RlOg0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBZZSBCaW4gPHllYmluMTBA
+aHVhd2VpLmNvbT4NCj4gPiA+IA0KPiA+ID4gSSBjYW4ndCB0YWtlIHBhdGNoZXMgd2l0aG91dCBh
+bnkgY2hhbmdlbG9nIHRleHQsIHNvcnJ5Lg0KPiA+IA0KPiA+IFN0aWxsIHRha2luZyBwYXRjaGVz
+IGZvciBmc2xfdWRjX2NvcmUuYyA/DQo+ID4gSSBmaWd1cmVkIHRoaXMgZHJpdmVyIHdhcyBvYnNv
+bGV0ZSBhbmQgc2hvdWxkIGJlIG1vdmVkIHRvIG9uZSBvZiB0aGUgQ2hpcGlkZWEgZHJpdmVycy4N
+Cj4gDQo+IE5vYm9keSBzZW50IGFueSBwYXRjaGVzIHRvIHN3aXRjaCBvdmVyIHRoZSB1c2VycyBv
+ZiB0aGlzIGRyaXZlciB0bw0KPiBjaGlwaWRlYS4gSSB3b3VsZCBsb3ZlIHRvIGRlbGV0ZSB0aGlz
+IGRyaXZlciA6LSkNCg0KTWUgdG9vLCBJIGdvdCBhIGZldyBsb2NhbCBwYXRjaGVzIGhlcmUgYXMg
+dGhlIGRyaXZlciBpcyBxdWl0ZSBidWdneS4NCkdvdCB0byBsaXR0bGUgVVNCIGtub3dsZWRnZSB0
+byBzd2l0Y2ggaXQgb3ZlciB0aG91Z2ggOigNCg0KIEpvY2tlDQo=
