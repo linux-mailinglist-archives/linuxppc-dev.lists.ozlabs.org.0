@@ -1,43 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B9624FECC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 15:28:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B129724FEFF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 15:34:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZtH35tbPzDq72
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 23:28:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZtQ91d8qzDqRm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 23:34:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=zhongguohua1@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=Z25Zek48; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZtDR4QNgzDqJc
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 23:25:56 +1000 (AEST)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id CFBB8E14E810167125F2;
- Mon, 24 Aug 2020 21:25:46 +0800 (CST)
-Received: from DESKTOP-8N3QUD5.china.huawei.com (10.67.102.173) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 24 Aug 2020 21:25:40 +0800
-From: Guohua Zhong <zhongguohua1@huawei.com>
-To: <paubert@iram.es>
-Subject: =?UTF-8?q?Re=3A=20Re=EF=BC=9ARe=3A=20=5BPATCH=5D=20powerpc=3A=20Fix=20a=20bug=20in=20=5F=5Fdiv64=5F32=20if=20divisor=20is=20zero?=
-Date: Mon, 24 Aug 2020 21:25:39 +0800
-Message-ID: <20200824132539.35972-1-zhongguohua1@huawei.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20200822172524.GA5451@lt-gp.iram.es>
-References: <20200822172524.GA5451@lt-gp.iram.es>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.102.173]
-X-CFilter-Loop: Reflected
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZtMl1J1SzDqJm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 23:32:18 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8482D21741;
+ Mon, 24 Aug 2020 13:32:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1598275936;
+ bh=227dtBv6s+osOfbFZGxhSmc7Pp+0HyhRJcvJKsfk/9g=;
+ h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+ b=Z25Zek48M4ObQQW2U6XdS3pJxww3Z1DSNLI8UqjLpwPj7TjLcv9jq/hDBS7TZxXBz
+ PwAYzNfPyBe7m3m7hAflDuszz4SPdFZt8uk3/1PvneCwtIgK1oHyPtIOcu5ZXXkRIh
+ +gvrqVF80qrTRsXNt3NvpKlh9BukPWX9YazDowiE=
+Date: Mon, 24 Aug 2020 14:31:41 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Xiubo.Lee@gmail.com, tiwai@suse.com, timur@kernel.org,
+ alsa-devel@alsa-project.org, festevam@gmail.com,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, perex@perex.cz,
+ nicoleotsuka@gmail.com
+In-Reply-To: <1598255887-1391-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1598255887-1391-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH RESEND] ASoC: fsl_sai: Add -EPROBE_DEFER check for regmap
+ init
+Message-Id: <159827589162.47809.7720594849042451325.b4-ty@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,110 +56,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: zhongguohua1@huawei.com, wangle6@huawei.com, gregkh@linuxfoundation.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, paulus@samba.org,
- stable@vger.kernel.org, nixiaoming@huawei.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> >In generic version in lib/math/div64.c, there is no checking of 'base' 
->> >either.
->> >Do we really want to add this check in the powerpc version only ?
->> 
->> >The only user of __div64_32() is do_div() in 
->> >include/asm-generic/div64.h. Wouldn't it be better to do the check there ?
->> 
->> >Christophe
->> 
->> Yet, I have noticed that there is no checking of 'base' in these functions.
->> But I am not sure how to check is better.As we know that the result is 
->> undefined when divisor is zero. It maybe good to print error and dump stack.
->>  Let the process to know that the divisor is zero by sending SIGFPE. 
->> 
->> diff --git a/include/asm-generic/div64.h b/include/asm-generic/div64.h
->> index a3b98c86f077..161c656ee3ee 100644
->> --- a/include/asm-generic/div64.h
->> +++ b/include/asm-generic/div64.h
->> @@ -43,6 +43,11 @@
->>  # define do_div(n,base) ({                                     \
->>         uint32_t __base = (base);                               \
->>         uint32_t __rem;                                         \
->> + if (unlikely(base == 0)) {                          \
->> +         pr_err("do_div base=%d\n",base);            \
->> +         dump_stack();                               \
->> +         force_sig(SIGFPE);                          \
->> + }      
->> 
+On Mon, 24 Aug 2020 15:58:07 +0800, Shengjiu Wang wrote:
+> Regmap initialization may return -EPROBE_DEFER for clock
+> may not be ready, so check -EPROBE_DEFER error type before
+> start another Regmap initialization.
 
-> I suspect this will generate a strong reaction. SIGFPE is for user space
-> instruction attempting a division by zero. A division by zero in the
-> kernel is a kernel bug, period, and you don't want to kill a user
-> process for this reason.
+Applied to
 
-> If it happens in an interrupt, the context of the kernel may not even be
-> related to the current process.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> Many other architectures (x86 for example) already trigger an exception
-> on a division by zero but the handler will find that the exception
-> happened in kernel context and generate an Oops, not raise a signal in a
-> (possibly innocent) userland process.
+Thanks!
 
-OK. So just don't touch do_div functions in include/asm-generic/div64.h
-But for powerpc it can not trigger an exception when divisor is 0 in __div64_32.
+[1/1] ASoC: fsl_sai: Add -EPROBE_DEFER check for regmap init
+      commit: c1e47e8919da525c803d1557a30e44441db1e5ee
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-So the patch as below is still useful for powerpc. If this patch looks good for 
-you, please help to review. I will send the new patch later.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Thanks for your reply.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-diff --git a/arch/powerpc/boot/div64.S b/arch/powerpc/boot/div64.S
-index 4354928ed62e..1d3561cf16fa 100644
---- a/arch/powerpc/boot/div64.S
-+++ b/arch/powerpc/boot/div64.S
-@@ -13,8 +13,10 @@
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-        .globl __div64_32
-        .globl __div64_32
- __div64_32:
-+ cmplwi      r4,0    # check if divisor r4 is zero
-        lwz     r5,0(r3)        # get the dividend into r5/r6
-        lwz     r6,4(r3)
-+ beq 5f                      # jump to label 5 if r4(divisor) is zero
-        cmplw   r5,r4
-        li      r7,0
-        li      r8,0
-@@ -52,7 +54,7 @@ __div64_32:
- 4:     stw     r7,0(r3)        # return the quotient in *r3
-        stw     r8,4(r3)
-        mr      r3,r6           # return the remainder in r3
--   blr
-+5:   blr                             # return if divisor r4 is zero
-
- /*
-  * Extended precision shifts.
-diff --git a/arch/powerpc/lib/div64.S b/arch/powerpc/lib/div64.S
-index 3d5426e7dcc4..570774d9782d 100644
---- a/arch/powerpc/lib/div64.S
-+++ b/arch/powerpc/lib/div64.S
-@@ -13,8 +13,10 @@
- #include <asm/processor.h>
-
- _GLOBAL(__div64_32)
-+ cmplwi      r4,0    # check if divisor r4 is zero
-        lwz     r5,0(r3)        # get the dividend into r5/r6
-        lwz     r6,4(r3)
-+ beq 5f                      # jump to label 5 if r4(divisor) is zero
-        cmplw   r5,r4
-        li      r7,0
-        li      r8,0
-@@ -52,4 +54,4 @@ _GLOBAL(__div64_32)
- 4:     stw     r7,0(r3)        # return the quotient in *r3
-        stw     r8,4(r3)
-        mr      r3,r6           # return the remainder in r3
--   blr
-+5:   blr                             # return if divisor r4 is zero
-
-Guohua
-
+Thanks,
+Mark
