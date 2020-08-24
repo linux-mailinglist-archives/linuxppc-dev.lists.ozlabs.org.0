@@ -2,49 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B129724FEFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 15:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 825CE24FF7C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 16:04:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZtQ91d8qzDqRm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 23:34:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZv533lCfzDq5b
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 00:04:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=balbi@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Z25Zek48; dkim-atps=neutral
+ header.s=default header.b=IRlJ+6fE; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZtMl1J1SzDqJm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 23:32:18 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZtyP4l5XzDq7d
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 23:58:53 +1000 (AEST)
+Received: from saruman (unknown [194.34.132.57])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8482D21741;
- Mon, 24 Aug 2020 13:32:15 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id CAA27207CD;
+ Mon, 24 Aug 2020 13:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1598275936;
- bh=227dtBv6s+osOfbFZGxhSmc7Pp+0HyhRJcvJKsfk/9g=;
- h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
- b=Z25Zek48M4ObQQW2U6XdS3pJxww3Z1DSNLI8UqjLpwPj7TjLcv9jq/hDBS7TZxXBz
- PwAYzNfPyBe7m3m7hAflDuszz4SPdFZt8uk3/1PvneCwtIgK1oHyPtIOcu5ZXXkRIh
- +gvrqVF80qrTRsXNt3NvpKlh9BukPWX9YazDowiE=
-Date: Mon, 24 Aug 2020 14:31:41 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Xiubo.Lee@gmail.com, tiwai@suse.com, timur@kernel.org,
- alsa-devel@alsa-project.org, festevam@gmail.com,
- Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, perex@perex.cz,
- nicoleotsuka@gmail.com
-In-Reply-To: <1598255887-1391-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1598255887-1391-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH RESEND] ASoC: fsl_sai: Add -EPROBE_DEFER check for regmap
- init
-Message-Id: <159827589162.47809.7720594849042451325.b4-ty@kernel.org>
+ s=default; t=1598277531;
+ bh=o9BlmvcB5Gr+9lF+n5O9P3SYHUi+Nkxe6s9/2q78T9o=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=IRlJ+6fEFRNWh7fO5RWDUEsjPBW/gE2Zqf6TkWcxeELMFccPEsNlM1rdpKna3i407
+ UB7P/OwwzrYz4OiB0ZGDJ1LBR4HxlTCFWy+WHVwXBy7gF4jbwvwn+636w2J6deEe42
+ n1qmjG4SdQcnvo+3fqHsXtKhn72zR6YKevnbjcJc=
+From: Felipe Balbi <balbi@kernel.org>
+To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>, "yebin10@huawei.com"
+ <yebin10@huawei.com>, "gregkh@linuxfoundation.org"
+ <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] usb: gadget: fsl: Fix unsigned expression compared with
+ zero in fsl_udc_probe
+In-Reply-To: <f61f4bc3916f852799edb6af9740afb2118ec84f.camel@infinera.com>
+References: <20200824080437.229826-1-yebin10@huawei.com>
+ <20200824082122.GA336539@kroah.com>
+ <f61f4bc3916f852799edb6af9740afb2118ec84f.camel@infinera.com>
+Date: Mon, 24 Aug 2020 16:58:43 +0300
+Message-ID: <87d03gjgbw.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,40 +60,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "leoyang.li@nxp.com" <leoyang.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 24 Aug 2020 15:58:07 +0800, Shengjiu Wang wrote:
-> Regmap initialization may return -EPROBE_DEFER for clock
-> may not be ready, so check -EPROBE_DEFER error type before
-> start another Regmap initialization.
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Applied to
+Joakim Tjernlund <Joakim.Tjernlund@infinera.com> writes:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> On Mon, 2020-08-24 at 10:21 +0200, Greg KH wrote:
+>>=20
+>> On Mon, Aug 24, 2020 at 04:04:37PM +0800, Ye Bin wrote:
+>> > Signed-off-by: Ye Bin <yebin10@huawei.com>
+>>=20
+>> I can't take patches without any changelog text, sorry.
+>
+> Still taking patches for fsl_udc_core.c ?
+> I figured this driver was obsolete and should be moved to one of the Chip=
+idea drivers.
 
-Thanks!
+Nobody sent any patches to switch over the users of this driver to
+chipidea. I would love to delete this driver :-)
 
-[1/1] ASoC: fsl_sai: Add -EPROBE_DEFER check for regmap init
-      commit: c1e47e8919da525c803d1557a30e44441db1e5ee
+=2D-=20
+balbi
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+iQJFBAEBCAAvFiEElLzh7wn96CXwjh2IzL64meEamQYFAl9Dx5QRHGJhbGJpQGtl
+cm5lbC5vcmcACgkQzL64meEamQawPA/8CqHT6zk1S2J+/qkvq8DEZIXlhm8dbpcE
+CqIW15+nNeGyk6JCrLhtG/q2ySPZgkZzfArbcEznTLWBXHf+XUHZiWKsL4FRj0It
+mUX4ScgBErd66faiF448UBfTFiVCUUMGJVaU5L896C/haxmlIebZSlPID7MBOyYI
+ouJLXSrwIbU+QDhQfFUhSLwqwKK/ayHD02nsRBaWG12WDImuXZ5w3FlKzKzCYDII
+Rsic7GjlUj6hBmHrbyt2beOG9k8Z2EDMI96SddAz+wFzQu9nIlqZPNbNK2qFrI0S
+N99f58xP1K+cC+tqn0YI3fEFz2HLb6S31PbcWd2slokfgB5DkJt05J2mRMGF04UF
+dDs+5Ab/RRGO+ZZFnIDQcI9hdNSdXggZAhH7XVB/LnBgfJwRyiudAt8zaj0/RJO1
+KTMJ7O2xjqalazXVAzqiOGPbPqNi6c4Oougsu1Pwoe5PzXOtr+p5i7Jx7yoPwMzg
+yamHoVfdtIy2lwD8wcC3Qdx/hzYf0y4sqMgb4cop5YyMFRBFhwlMbEB2zj6rtzz/
+NDa4ToWs+azhCchZz4Ow3FjPs/4Ssyy5oyJg7LT2ZzgxaOKU8XRDrHFR0NKnt12a
+vcvUkS+MV6snaygCncLFujM1co6zQ5KlD6Olm4q3IlguQidDM7raX2/YO/3It/oN
+9HR27WCDbjE=
+=BdBv
+-----END PGP SIGNATURE-----
+--=-=-=--
