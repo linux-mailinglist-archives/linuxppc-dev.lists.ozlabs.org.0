@@ -1,59 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDDD251120
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 06:59:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3004425117F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 07:29:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbGxF4jSSzDqNd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 14:59:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbHc73LG8zDqGk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 15:29:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=centrum.lixper.it (client-ip=46.4.16.148; helo=centrum.lixper.it;
+ envelope-from=srs0=ucx2=cd=sguazz.it=giuseppe@centrum.lixper.it;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.41; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0041.hostedemail.com
- [216.40.44.41])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=sguazz.it
+X-Greylist: delayed 1796 seconds by postgrey-1.36 at bilbo;
+ Tue, 25 Aug 2020 15:28:03 AEST
+Received: from centrum.lixper.it (centrum.lixper.it [46.4.16.148])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbGtS6McFzDq7k
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 14:56:47 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay04.hostedemail.com (Postfix) with ESMTP id B846B180A9F54;
- Tue, 25 Aug 2020 04:56:42 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
- RULES_HIT:41:355:379:541:857:966:967:973:988:989:1260:1311:1314:1345:1437:1515:1535:1544:1711:1730:1747:1777:1792:1801:2196:2199:2393:2525:2560:2563:2682:2685:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3865:3867:3868:3870:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4384:4385:4395:4605:5007:6119:6261:6737:6742:7875:9025:10004:10848:11026:11473:11658:11914:12043:12048:12050:12297:12438:12555:12679:12895:12986:13161:13229:13894:14096:14181:14394:14721:21080:21433:21451:21627:21740:21773:30054:30056,
- 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
- DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
- LFtime:2, LUA_SUMMARY:none
-X-HE-Tag: chalk60_631385f27059
-X-Filterd-Recvd-Size: 5825
-Received: from joe-laptop.perches.com (unknown [47.151.133.149])
- (Authenticated sender: joe@perches.com)
- by omf08.hostedemail.com (Postfix) with ESMTPA;
- Tue, 25 Aug 2020 04:56:38 +0000 (UTC)
-From: Joe Perches <joe@perches.com>
-To: Jiri Kosina <trivial@kernel.org>, oprofile-list@lists.sf.net,
- linux-ide@vger.kernel.org, drbd-dev@lists.linbit.com,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
- linux-bcache@vger.kernel.org, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-fsdevel@vger.kernel.org, reiserfs-devel@vger.kernel.org,
- linux-nfs@vger.kernel.org
-Subject: [PATCH 00/29] treewide: Convert comma separated statements
-Date: Mon, 24 Aug 2020 21:55:57 -0700
-Message-Id: <cover.1598331148.git.joe@perches.com>
-X-Mailer: git-send-email 2.26.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbHZW0SslzDqGC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 15:28:02 +1000 (AEST)
+Received: from net-2-44-194-190.cust.vodafonedsl.it ([2.44.194.190] helo=uefi)
+ by centrum.lixper.it with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
+ (envelope-from <giuseppe@sguazz.it>)
+ id 1kAJOq-0005X5-73; Mon, 24 Aug 2020 22:49:05 +0200
+Message-ID: <e7a620fa7521e84e2010660b87f20dd24a3b0cd4.camel@sguazz.it>
+Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
+From: Giuseppe Sacco <giuseppe@sguazz.it>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Date: Mon, 24 Aug 2020 22:48:58 +0200
+In-Reply-To: <f96d336d-fb81-fe9d-9890-db57c6560e85@csgroup.eu>
+References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
+ <c98f8586c16c86bb9b4485138bbabce9f15c282b.camel@sguazz.it>
+ <64815669-5282-f74f-efc6-6c4c376fb602@csgroup.eu>
+ <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
+ <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
+ <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
+ <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
+ <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
+ <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
+ <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
+ <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
+ <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
+ <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
+ <a62714c0-1b17-305d-577d-529e1781ec56@csgroup.eu>
+ <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
+ <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
+ <c707f59d379a51b83ba52e796d137887219c32fc.camel@sguazz.it>
+ <f96d336d-fb81-fe9d-9890-db57c6560e85@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.4-2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-GeoIP: IT
+X-SRS: Sender address rewritten from <giuseppe@sguazz.it> to
+ <SRS0=uCx2=CD=sguazz.it=giuseppe@centrum.lixper.it> by centrum.lixper.it.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,105 +70,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-kselftest@vger.kernel.org, linux-alpha@vger.kernel.org,
- sparclinux@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are many comma separated statements in the kernel.
-See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
+Hello Christophe,
 
-Convert the comma separated statements that are in if/do/while blocks
-to use braces and semicolons.
+Il giorno lun, 24/08/2020 alle 07.17 +0200, Christophe Leroy ha
+scritto:
+> Hello Giuseppe,
+[...]
+> The Oopses in the video are fixed in 5.9-rc2, see my response to your 
+> other mail.
 
-Many comma separated statements still exist but those are changes for
-another day.
+Right, I just updated from git and rebuilt the kernel whith
+CONFIG_VMAP_STACK not set and the machine boots correctly.
 
-Joe Perches (29):
-  coding-style.rst: Avoid comma statements
-  alpha: Avoid comma separated statements
-  ia64: Avoid comma separated statements
-  sparc: Avoid comma separated statements
-  ata: Avoid comma separated statements
-  drbd: Avoid comma separated statements
-  lp: Avoid comma separated statements
-  dma-buf: Avoid comma separated statements
-  drm/gma500: Avoid comma separated statements
-  drm/i915: Avoid comma separated statements
-  hwmon: (scmi-hwmon): Avoid comma separated statements
-  Input: MT - Avoid comma separated statements
-  bcache: Avoid comma separated statements
-  media: Avoid comma separated statements
-  mtd: Avoid comma separated statements
-  8390: Avoid comma separated statements
-  fs_enet: Avoid comma separated statements
-  wan: sbni: Avoid comma separated statements
-  s390/tty3270: Avoid comma separated statements
-  scai/arm: Avoid comma separated statements
-  media: atomisp: Avoid comma separated statements
-  video: fbdev: Avoid comma separated statements
-  fuse: Avoid comma separated statements
-  reiserfs: Avoid comma separated statements
-  lib/zlib: Avoid comma separated statements
-  lib: zstd: Avoid comma separated statements
-  ipv6: fib6: Avoid comma separated statements
-  sunrpc: Avoid comma separated statements
-  tools: Avoid comma separated statements
+> So now we know that your kernel doesn't boot when CONFIG_VMAP_STACK is set.
+> Can you remind the exact problem ?
 
- Documentation/process/coding-style.rst        |  17 +
- arch/alpha/kernel/pci_iommu.c                 |   8 +-
- arch/alpha/oprofile/op_model_ev4.c            |  22 +-
- arch/alpha/oprofile/op_model_ev5.c            |   8 +-
- arch/ia64/kernel/smpboot.c                    |   7 +-
- arch/sparc/kernel/smp_64.c                    |   7 +-
- drivers/ata/pata_icside.c                     |  21 +-
- drivers/block/drbd/drbd_receiver.c            |   6 +-
- drivers/char/lp.c                             |   6 +-
- drivers/dma-buf/st-dma-fence.c                |   7 +-
- drivers/gpu/drm/gma500/mdfld_intel_display.c  |  44 ++-
- drivers/gpu/drm/i915/gt/gen8_ppgtt.c          |   8 +-
- drivers/gpu/drm/i915/gt/intel_gt_requests.c   |   6 +-
- .../gpu/drm/i915/gt/selftest_workarounds.c    |   6 +-
- drivers/gpu/drm/i915/intel_runtime_pm.c       |   6 +-
- drivers/hwmon/scmi-hwmon.c                    |   6 +-
- drivers/input/input-mt.c                      |  11 +-
- drivers/md/bcache/bset.c                      |  12 +-
- drivers/md/bcache/sysfs.c                     |   6 +-
- drivers/media/i2c/msp3400-kthreads.c          |  12 +-
- drivers/media/pci/bt8xx/bttv-cards.c          |   6 +-
- drivers/media/pci/saa7134/saa7134-video.c     |   7 +-
- drivers/mtd/devices/lart.c                    |  10 +-
- drivers/net/ethernet/8390/axnet_cs.c          |  19 +-
- drivers/net/ethernet/8390/lib8390.c           |  14 +-
- drivers/net/ethernet/8390/pcnet_cs.c          |   6 +-
- .../ethernet/freescale/fs_enet/fs_enet-main.c |  11 +-
- drivers/net/wan/sbni.c                        | 101 +++---
- drivers/s390/char/tty3270.c                   |   6 +-
- drivers/scsi/arm/cumana_2.c                   |  19 +-
- drivers/scsi/arm/eesox.c                      |   9 +-
- drivers/scsi/arm/powertec.c                   |   9 +-
- .../media/atomisp/pci/atomisp_subdev.c        |   6 +-
- drivers/video/fbdev/tgafb.c                   |  12 +-
- fs/fuse/dir.c                                 |  24 +-
- fs/reiserfs/fix_node.c                        |  36 ++-
- lib/zlib_deflate/deftree.c                    |  49 ++-
- lib/zstd/compress.c                           | 120 ++++---
- lib/zstd/fse_compress.c                       |  24 +-
- lib/zstd/huf_compress.c                       |   6 +-
- net/ipv6/ip6_fib.c                            |  12 +-
- net/sunrpc/sysctl.c                           |   6 +-
- tools/lib/subcmd/help.c                       |  10 +-
- tools/power/cpupower/utils/cpufreq-set.c      |  14 +-
- tools/testing/selftests/vm/gup_benchmark.c    |  18 +-
- tools/testing/selftests/vm/userfaultfd.c      | 296 +++++++++++-------
- 46 files changed, 694 insertions(+), 382 deletions(-)
+latest kernel with CONFIG_VMAP_STACK set stops after writing:
+pmac32_cpufreq: registering PowerMac CPU frequency driver
+pmac32_cpufreq: Low: 667 MHz, High: 867 Mhz, Boot: 667 MHz
 
--- 
-2.26.0
+> One common problem with CONFIG_VMAP_STACK is when some drivers are 
+> invalidly using buffers in stack for DMA.
+> 
+> Couldn't try with CONFIG_DEBUG_VIRTUAL (without CONFIG_VMAP_STACK) and 
+> see if it triggers some warnings ?
+
+I've just tried: it boots without any special warning. What should I
+look for? This is an excerpt of dmesg output about the line it would
+otherwise stop:
+
+[...]
+[    6.566984] PowerMac i2c bus pmu 2 registered
+[    6.574879] PowerMac i2c bus pmu 1 registered
+[    6.582634] PowerMac i2c bus mac-io 0 registered
+[    6.590323] i2c i2c-2: No i2c address for /pci@f2000000/mac-io@17/i2c@18000/i2c-modem
+[    6.598290] PowerMac i2c bus uni-n 1 registered
+[    6.606196] i2c i2c-3: i2c-powermac: modalias failure on /uni-n@f8000000/i2c@f8001000/cereal@1c0
+[    6.614320] PowerMac i2c bus uni-n 0 registered
+[    6.622501] pmac32_cpufreq: Registering PowerMac CPU frequency driver
+[    6.630580] pmac32_cpufreq: Low: 667 Mhz, High: 867 Mhz, Boot: 667 Mhz
+[    6.639518] ledtrig-cpu: registered to indicate activity on CPUs
+[    6.647894] NET: Registered protocol family 10
+[    6.656492] Segment Routing with IPv6
+[    6.664490] mip6: Mobile IPv6
+[    6.672337] NET: Registered protocol family 17
+[    6.680213] mpls_gso: MPLS GSO support
+[...]
+
+Bye,
+Giuseppe
 
