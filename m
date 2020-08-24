@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E493250457
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 19:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2F325047E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 19:03:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZz0h5VVrzDqLf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 03:01:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZz3s4c1JzDqQx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 03:03:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=qHa1y1Nb; dkim-atps=neutral
+ header.s=default header.b=0Zfv3sFS; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZyX03YtQzDqPN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 02:39:44 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZyX96N6rzDqPG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 02:39:53 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A5EBC22C9F;
- Mon, 24 Aug 2020 16:39:41 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id E5AB422CB1;
+ Mon, 24 Aug 2020 16:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1598287182;
- bh=UHGPWOeMMPesFHOhN85ifiETrCaVltIOD1OiXejC61g=;
+ s=default; t=1598287191;
+ bh=KlWH/GVv4Oic7hSyZEI1sR8GB+jaHJHJCd6PjbbY9RE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qHa1y1NbZd3c/pBuiBwKoGpFW2R6bicXWDVdGA0fk8tFCHLMAlb6Jadb+46pyAiK/
- tBJwTn4aAB6q9m3vLIKrSuqPrPKO8QDEWeJBNFk8nYcgJUhaCjBYAc6M19YoeqAn4o
- Rfg0Uf9f6vzNl88aiGbMsZhGyuMyLq1UHB9G0/9A=
+ b=0Zfv3sFSCEWZ42Vl64tpBPTHUrSjsqSAzmmTxECS7MIo0We8ikIaPyB908CfWKAqG
+ 0SGIHSMoRbnh6YC1z6R/ZBpDn1ER2brd0oeuW4bTyi0zUx2i8B5Qr51NHXTMOpmOup
+ bCr1Wf83SbxmizC2JE4/Gvcyw7F0M/sKpUOSDkvQ=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 8/8] powerpc/perf: Fix soft lockups due to missed
+Subject: [PATCH AUTOSEL 4.4 6/6] powerpc/perf: Fix soft lockups due to missed
  interrupt accounting
-Date: Mon, 24 Aug 2020 12:39:31 -0400
-Message-Id: <20200824163931.607291-8-sashal@kernel.org>
+Date: Mon, 24 Aug 2020 12:39:43 -0400
+Message-Id: <20200824163943.607406-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200824163931.607291-1-sashal@kernel.org>
-References: <20200824163931.607291-1-sashal@kernel.org>
+In-Reply-To: <20200824163943.607406-1-sashal@kernel.org>
+References: <20200824163943.607406-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index ba49ae6625f1b..a10b67df83bae 100644
+index 30e2e8efbe6b7..aab13558e9700 100644
 --- a/arch/powerpc/perf/core-book3s.c
 +++ b/arch/powerpc/perf/core-book3s.c
-@@ -2042,6 +2042,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+@@ -2040,6 +2040,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
  
  		if (perf_event_overflow(event, &data, regs))
  			power_pmu_stop(event, 0);
