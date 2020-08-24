@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA82825042A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 18:58:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E493250457
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 19:01:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZyxS5M0pzDqMr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 02:58:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZz0h5VVrzDqLf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 03:01:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=kGMbmlON; dkim-atps=neutral
+ header.s=default header.b=qHa1y1Nb; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZyWm3d1szDq8g
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 02:39:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZyX03YtQzDqPN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 02:39:44 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8639922D07;
- Mon, 24 Aug 2020 16:39:29 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A5EBC22C9F;
+ Mon, 24 Aug 2020 16:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1598287170;
- bh=y1xrZB73UBLkKpH9sshs4QQ2EYIUcbA/kyqtn27aCng=;
+ s=default; t=1598287182;
+ bh=UHGPWOeMMPesFHOhN85ifiETrCaVltIOD1OiXejC61g=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kGMbmlONW7yRvcLW1FMbB8Nl+AqXLmgyDPSX9j06xaUQEfjZhTb//FIj3KGcqARdT
- 3Vu+JByCfvO2fEGUt3E/njKBWSajaNRC4jg6Y2wm5jKZenZZRqGJ+7jBL/M+xEZ6qL
- sTdJ6R2hYnJy0xwfypzpof6HFBAXsansQt7jl1ns=
+ b=qHa1y1NbZd3c/pBuiBwKoGpFW2R6bicXWDVdGA0fk8tFCHLMAlb6Jadb+46pyAiK/
+ tBJwTn4aAB6q9m3vLIKrSuqPrPKO8QDEWeJBNFk8nYcgJUhaCjBYAc6M19YoeqAn4o
+ Rfg0Uf9f6vzNl88aiGbMsZhGyuMyLq1UHB9G0/9A=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 11/11] powerpc/perf: Fix soft lockups due to
- missed interrupt accounting
-Date: Mon, 24 Aug 2020 12:39:14 -0400
-Message-Id: <20200824163914.607152-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 8/8] powerpc/perf: Fix soft lockups due to missed
+ interrupt accounting
+Date: Mon, 24 Aug 2020 12:39:31 -0400
+Message-Id: <20200824163931.607291-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200824163914.607152-1-sashal@kernel.org>
-References: <20200824163914.607152-1-sashal@kernel.org>
+In-Reply-To: <20200824163931.607291-1-sashal@kernel.org>
+References: <20200824163931.607291-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 3188040022c4f..78f75e48dfe7f 100644
+index ba49ae6625f1b..a10b67df83bae 100644
 --- a/arch/powerpc/perf/core-book3s.c
 +++ b/arch/powerpc/perf/core-book3s.c
-@@ -2096,6 +2096,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+@@ -2042,6 +2042,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
  
  		if (perf_event_overflow(event, &data, regs))
  			power_pmu_stop(event, 0);
