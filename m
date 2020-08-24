@@ -2,68 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8AF024FE9D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 15:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B9624FECC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 15:28:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZt033GqCzDqQm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 23:15:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZtH35tbPzDq72
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 23:28:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=zhongguohua1@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lTEjArrQ; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZsxS0dw8zDqQ8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 23:12:57 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id ds1so4298249pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 06:12:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=rD1gqbdwu1eUR6GHi7PLObEOgmQFgVaRhw+UcIBkYAk=;
- b=lTEjArrQgo2xL+pT8mXEvCHx66b0PlK/htIi576WaKfNpDkZjmod1POKi/knbQjWp0
- RFA3nIZ3N8nFKtey5TR3QwiWAPxNspEGQTzF5o8NvDqNGERDnOKOom1m3vnLIH+kF9FR
- X+QKOZfm7D7qVRVMORlTRiqmWx0vJNtGIJINSkuDTp2KVn8y7XKi/SXKFg/LVUWOQRw/
- 8yoAoeTXxe3pDRrWkMTQsNPtuXgM15u2KUWHGI1dxT8tO+dNy3enOEadFwdZ3qF+PsiM
- myIxgr7OuiYd51lcFuE2BOE84kgDCzd9omaf8tXstToT0qxp0LjM3f/tiDIBl4W7/az6
- zDGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=rD1gqbdwu1eUR6GHi7PLObEOgmQFgVaRhw+UcIBkYAk=;
- b=YrWauAg3v1ni8NBOq+HC18QYyXWMZiO4ElbGfAeRxiFw3NY+SsLDremr+zzVQrURJ2
- 4u9UNKBh8TIOTYGUasLycZAWJT2SE+6B7/fyLDP8TY7BgXSIdLkWMJtY0AlvxAfA3ULj
- RUhfvsZYHPZT56bC7RwT4mTZQ85d8HTyod/vsVcQu0WCPZcraOo2DIFKDavOuu45QXNz
- sxCFs4I4e1jqqP3c9Oji3JugIW9wQdASzfXdq7OrfHUh/tZkTkJP5UX4zyI2ciVEHq97
- CusDkG3ErrFCnUhNCDeKN9NzgP05bLMuJ/l5EfEJ0o7fkuCAMHgD5073rGVlZMUNZXxy
- u/AQ==
-X-Gm-Message-State: AOAM533rB37TqHeTGFQ9hQ9gnyvIfXwlQaU1WMCuw404ZHnvCV1hSzkF
- jb3I5qmYBtZA4YrwbeYQrxVDpfuabnA=
-X-Google-Smtp-Source: ABdhPJwJLHVi39U2Jf5PoE9GVGidQVdzAwdvovo9iU6gCAI7iUb4dgaXam8rH+wJ/L7VhScCwaVVfQ==
-X-Received: by 2002:a17:902:b18b:: with SMTP id
- s11mr3843937plr.211.1598274774860; 
- Mon, 24 Aug 2020 06:12:54 -0700 (PDT)
-Received: from tee480.ibm.com (180-150-65-4.b49641.syd.nbn.aussiebb.net.
- [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id z25sm11938309pfg.150.2020.08.24.06.12.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Aug 2020 06:12:54 -0700 (PDT)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc: Fix prefixes in alignment_handler signal
- handler
-Date: Mon, 24 Aug 2020 23:12:31 +1000
-Message-Id: <20200824131231.14008-1-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZtDR4QNgzDqJc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 23:25:56 +1000 (AEST)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id CFBB8E14E810167125F2;
+ Mon, 24 Aug 2020 21:25:46 +0800 (CST)
+Received: from DESKTOP-8N3QUD5.china.huawei.com (10.67.102.173) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 24 Aug 2020 21:25:40 +0800
+From: Guohua Zhong <zhongguohua1@huawei.com>
+To: <paubert@iram.es>
+Subject: =?UTF-8?q?Re=3A=20Re=EF=BC=9ARe=3A=20=5BPATCH=5D=20powerpc=3A=20Fix=20a=20bug=20in=20=5F=5Fdiv64=5F32=20if=20divisor=20is=20zero?=
+Date: Mon, 24 Aug 2020 21:25:39 +0800
+Message-ID: <20200824132539.35972-1-zhongguohua1@huawei.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20200822172524.GA5451@lt-gp.iram.es>
+References: <20200822172524.GA5451@lt-gp.iram.es>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.102.173]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,70 +49,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>
+Cc: zhongguohua1@huawei.com, wangle6@huawei.com, gregkh@linuxfoundation.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, paulus@samba.org,
+ stable@vger.kernel.org, nixiaoming@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The signal handler in the alignment handler self test has the ability to
-jump over the instruction that triggered the signal. It does this by
-incrementing the PT_NIP in the user context by 4. If it were a prefixed
-instruction this will mean that the suffix is then executed which is
-incorrect. Instead check if the major opcode indicates a prefixed
-instruction (e.g. it is 1) and if so increment PT_NIP by 8.
+>> >In generic version in lib/math/div64.c, there is no checking of 'base' 
+>> >either.
+>> >Do we really want to add this check in the powerpc version only ?
+>> 
+>> >The only user of __div64_32() is do_div() in 
+>> >include/asm-generic/div64.h. Wouldn't it be better to do the check there ?
+>> 
+>> >Christophe
+>> 
+>> Yet, I have noticed that there is no checking of 'base' in these functions.
+>> But I am not sure how to check is better.As we know that the result is 
+>> undefined when divisor is zero. It maybe good to print error and dump stack.
+>>  Let the process to know that the divisor is zero by sending SIGFPE. 
+>> 
+>> diff --git a/include/asm-generic/div64.h b/include/asm-generic/div64.h
+>> index a3b98c86f077..161c656ee3ee 100644
+>> --- a/include/asm-generic/div64.h
+>> +++ b/include/asm-generic/div64.h
+>> @@ -43,6 +43,11 @@
+>>  # define do_div(n,base) ({                                     \
+>>         uint32_t __base = (base);                               \
+>>         uint32_t __rem;                                         \
+>> + if (unlikely(base == 0)) {                          \
+>> +         pr_err("do_div base=%d\n",base);            \
+>> +         dump_stack();                               \
+>> +         force_sig(SIGFPE);                          \
+>> + }      
+>> 
 
-If ISA v3.1 is not available treat it as a word instruction even if the
-major opcode is 1.
+> I suspect this will generate a strong reaction. SIGFPE is for user space
+> instruction attempting a division by zero. A division by zero in the
+> kernel is a kernel bug, period, and you don't want to kill a user
+> process for this reason.
 
-Fixes: 620a6473df36 ("selftests/powerpc: Add prefixed loads/stores to
-alignment_handler test")
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
- .../selftests/powerpc/alignment/alignment_handler.c   | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+> If it happens in an interrupt, the context of the kernel may not even be
+> related to the current process.
 
-diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-index 55ef15184057..c197ff828120 100644
---- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-+++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
-@@ -64,12 +64,14 @@ int bufsize;
- int debug;
- int testing;
- volatile int gotsig;
-+bool haveprefixes;
- char *cipath = "/dev/fb0";
- long cioffset;
- 
- void sighandler(int sig, siginfo_t *info, void *ctx)
- {
- 	ucontext_t *ucp = ctx;
-+	u32 inst;
- 
- 	if (!testing) {
- 		signal(sig, SIG_DFL);
-@@ -77,7 +79,12 @@ void sighandler(int sig, siginfo_t *info, void *ctx)
- 	}
- 	gotsig = sig;
- #ifdef __powerpc64__
--	ucp->uc_mcontext.gp_regs[PT_NIP] += 4;
-+	if (haveprefixes) {
-+		inst = *(u32 *)ucp->uc_mcontext.gp_regs[PT_NIP];
-+		ucp->uc_mcontext.gp_regs[PT_NIP] += ((inst >> 26 == 1) ? 8 : 4);
-+	} else {
-+		ucp->uc_mcontext.gp_regs[PT_NIP] += 4;
-+	}
- #else
- 	ucp->uc_mcontext.uc_regs->gregs[PT_NIP] += 4;
- #endif
-@@ -648,6 +655,8 @@ int main(int argc, char *argv[])
- 		exit(1);
- 	}
- 
-+	haveprefixes = have_hwcap2(PPC_FEATURE2_ARCH_3_1);
-+
- 	rc |= test_harness(test_alignment_handler_vsx_206,
- 			   "test_alignment_handler_vsx_206");
- 	rc |= test_harness(test_alignment_handler_vsx_207,
--- 
-2.17.1
+> Many other architectures (x86 for example) already trigger an exception
+> on a division by zero but the handler will find that the exception
+> happened in kernel context and generate an Oops, not raise a signal in a
+> (possibly innocent) userland process.
+
+OK. So just don't touch do_div functions in include/asm-generic/div64.h
+But for powerpc it can not trigger an exception when divisor is 0 in __div64_32.
+
+
+So the patch as below is still useful for powerpc. If this patch looks good for 
+you, please help to review. I will send the new patch later.
+
+Thanks for your reply.
+
+diff --git a/arch/powerpc/boot/div64.S b/arch/powerpc/boot/div64.S
+index 4354928ed62e..1d3561cf16fa 100644
+--- a/arch/powerpc/boot/div64.S
++++ b/arch/powerpc/boot/div64.S
+@@ -13,8 +13,10 @@
+
+        .globl __div64_32
+        .globl __div64_32
+ __div64_32:
++ cmplwi      r4,0    # check if divisor r4 is zero
+        lwz     r5,0(r3)        # get the dividend into r5/r6
+        lwz     r6,4(r3)
++ beq 5f                      # jump to label 5 if r4(divisor) is zero
+        cmplw   r5,r4
+        li      r7,0
+        li      r8,0
+@@ -52,7 +54,7 @@ __div64_32:
+ 4:     stw     r7,0(r3)        # return the quotient in *r3
+        stw     r8,4(r3)
+        mr      r3,r6           # return the remainder in r3
+-   blr
++5:   blr                             # return if divisor r4 is zero
+
+ /*
+  * Extended precision shifts.
+diff --git a/arch/powerpc/lib/div64.S b/arch/powerpc/lib/div64.S
+index 3d5426e7dcc4..570774d9782d 100644
+--- a/arch/powerpc/lib/div64.S
++++ b/arch/powerpc/lib/div64.S
+@@ -13,8 +13,10 @@
+ #include <asm/processor.h>
+
+ _GLOBAL(__div64_32)
++ cmplwi      r4,0    # check if divisor r4 is zero
+        lwz     r5,0(r3)        # get the dividend into r5/r6
+        lwz     r6,4(r3)
++ beq 5f                      # jump to label 5 if r4(divisor) is zero
+        cmplw   r5,r4
+        li      r7,0
+        li      r8,0
+@@ -52,4 +54,4 @@ _GLOBAL(__div64_32)
+ 4:     stw     r7,0(r3)        # return the quotient in *r3
+        stw     r8,4(r3)
+        mr      r3,r6           # return the remainder in r3
+-   blr
++5:   blr                             # return if divisor r4 is zero
+
+Guohua
 
