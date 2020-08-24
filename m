@@ -2,53 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2F325047E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 19:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F6525074B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 20:19:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZz3s4c1JzDqQx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 03:03:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bb0kv38QNzDqS4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 04:19:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=0Zfv3sFS; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZyX96N6rzDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 02:39:53 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E5AB422CB1;
- Mon, 24 Aug 2020 16:39:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1598287191;
- bh=KlWH/GVv4Oic7hSyZEI1sR8GB+jaHJHJCd6PjbbY9RE=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=0Zfv3sFSCEWZ42Vl64tpBPTHUrSjsqSAzmmTxECS7MIo0We8ikIaPyB908CfWKAqG
- 0SGIHSMoRbnh6YC1z6R/ZBpDn1ER2brd0oeuW4bTyi0zUx2i8B5Qr51NHXTMOpmOup
- bCr1Wf83SbxmizC2JE4/Gvcyw7F0M/sKpUOSDkvQ=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 6/6] powerpc/perf: Fix soft lockups due to missed
- interrupt accounting
-Date: Mon, 24 Aug 2020 12:39:43 -0400
-Message-Id: <20200824163943.607406-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200824163943.607406-1-sashal@kernel.org>
-References: <20200824163943.607406-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Bb0jG52whzDqHm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 04:17:52 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 07OIHSLx029771;
+ Mon, 24 Aug 2020 13:17:28 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 07OIHQLo029770;
+ Mon, 24 Aug 2020 13:17:26 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 24 Aug 2020 13:17:26 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Guohua Zhong <zhongguohua1@huawei.com>
+Subject: Re: =?utf-8?B?UmXvvJpSZQ==?=
+ =?utf-8?Q?=3A?= [PATCH] powerpc: Fix a bug in __div64_32 if divisor is zero
+Message-ID: <20200824181726.GR28786@gate.crashing.org>
+References: <20200823001101.GO28786@gate.crashing.org>
+ <20200824115407.55896-1-zhongguohua1@huawei.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200824115407.55896-1-zhongguohua1@huawei.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,61 +51,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Athira Rajeev <atrajeev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: wangle6@huawei.com, gregkh@linuxfoundation.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, paulus@samba.org,
+ stable@vger.kernel.org, nixiaoming@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+On Mon, Aug 24, 2020 at 07:54:07PM +0800, Guohua Zhong wrote:
+> >> Yet, I have noticed that there is no checking of 'base' in these functions.
+> >> But I am not sure how to check is better.As we know that the result is 
+> >> undefined when divisor is zero. It maybe good to print error and dump stack.
+> >>  Let the process to know that the divisor is zero by sending SIGFPE. 
+> 
+> > That is now what the PowerPC integer divide insns do: they just leave
+> > the result undefined (and they can set the overflow flag then, but no
+> > one uses that).
+> 
+> OK ,So just keep the patch as below. If this patch looks good for you, please
+> help to review. I will send the new patch later.
+> 
+> Thanks for your reply.
+> 
+> diff --git a/arch/powerpc/boot/div64.S b/arch/powerpc/boot/div64.S
+> index 4354928ed62e..1d3561cf16fa 100644
+> --- a/arch/powerpc/boot/div64.S
+> +++ b/arch/powerpc/boot/div64.S
+> @@ -13,8 +13,10 @@
+> 
+>         .globl __div64_32
+>         .globl __div64_32
+>  __div64_32:
+> + cmplwi      r4,0    # check if divisor r4 is zero
+>         lwz     r5,0(r3)        # get the dividend into r5/r6
+>         lwz     r6,4(r3)
+> + beq 5f                      # jump to label 5 if r4(divisor) is zero
 
-[ Upstream commit 17899eaf88d689529b866371344c8f269ba79b5f ]
+Just "beqlr".
 
-Performance monitor interrupt handler checks if any counter has
-overflown and calls record_and_restart() in core-book3s which invokes
-perf_event_overflow() to record the sample information. Apart from
-creating sample, perf_event_overflow() also does the interrupt and
-period checks via perf_event_account_interrupt().
+This instruction scheduling hurts all CPUs that aren't 8xx, fwiw (but
+likely only in the case where r4 *is* zero, so who cares :-) )
 
-Currently we record information only if the SIAR (Sampled Instruction
-Address Register) valid bit is set (using siar_valid() check) and
-hence the interrupt check.
+So...  What is the *goal* of this patch?  It looks like the routine
+would not get into a loop if r4 is 0, just return the wrong result?
+But, it *always* will, there *is* no right result?
 
-But it is possible that we do sampling for some events that are not
-generating valid SIAR, and hence there is no chance to disable the
-event if interrupts are more than max_samples_per_tick. This leads to
-soft lockup.
+No caller should call it with zero as divisor ever, so in that sense,
+checking for it in the division routine is just pure wasted work.
 
-Fix this by adding perf_event_account_interrupt() in the invalid SIAR
-code path for a sampling event. ie if SIAR is invalid, just do
-interrupt check and don't record the sample information.
 
-Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Tested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/1596717992-7321-1-git-send-email-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/perf/core-book3s.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 30e2e8efbe6b7..aab13558e9700 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2040,6 +2040,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 
- 		if (perf_event_overflow(event, &data, regs))
- 			power_pmu_stop(event, 0);
-+	} else if (period) {
-+		/* Account for interrupt in case of invalid SIAR */
-+		if (perf_event_account_interrupt(event))
-+			power_pmu_stop(event, 0);
- 	}
- }
- 
--- 
-2.25.1
-
+Segher
