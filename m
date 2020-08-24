@@ -2,72 +2,134 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57E4250994
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 21:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEFC2509EE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 22:26:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bb2dr1Tz9zDqSJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 05:45:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bb3Yb42VzzDqNb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 06:26:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::842;
- helo=mail-qt1-x842.google.com; envelope-from=natechancellor@gmail.com;
+ smtp.mailfrom=embeddedor.com (client-ip=192.185.45.147;
+ helo=gateway21.websitewelcome.com; envelope-from=gustavo@embeddedor.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=embeddedor.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Ns3ofsQU; dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=embeddedor.com header.i=@embeddedor.com
+ header.a=rsa-sha256 header.s=default header.b=LPFNXUNp; 
+ dkim-atps=neutral
+X-Greylist: delayed 1416 seconds by postgrey-1.36 at bilbo;
+ Tue, 25 Aug 2020 06:24:55 AEST
+Received: from gateway21.websitewelcome.com (gateway21.websitewelcome.com
+ [192.185.45.147])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bb2cG4g6QzDq9B
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 05:43:41 +1000 (AEST)
-Received: by mail-qt1-x842.google.com with SMTP id k18so7157977qtm.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 12:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=nxMDOV863B6ENn1KD7dBoUHY4CKPemM7ILl1lSFWSeA=;
- b=Ns3ofsQUsIfBhS2NjmhWjUbJYe4w09LOSkAOOsZFR/gTHwXA3UlezJsPHIi3DHY01X
- qDGMrkmlJ98B56GcYgKV5dM2egD/ilJ/DQlD0Nb7QtreWLnrmsf/oRQWryuQbePCF5CM
- 7FGUM7175v0YE1YnyDLlfWkrYa6tWlQwZpMvaLsZf+O48EwClYyUUTq/Z+sLMCL9uHm5
- 7i+p+Y6v6XmFR7ezpHVP5Pbi51R/cgpE8mgGsD6EbjwYNBGSR6rLOuKBJ6TO/LgqEyVC
- 8ixgEbtvGq29oR9Uz20U0VTKYupQ9J9LfYdzRBhlwxpyeZQgpifD5xFZ8i0q78E4jFMj
- 2V6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=nxMDOV863B6ENn1KD7dBoUHY4CKPemM7ILl1lSFWSeA=;
- b=UmjNHOloP+dsSyu5pcSbfBXSPWduSYRMTTXctbGe80r5DFcTdUk3RncojLal44qi0I
- l8KiG8VZNiSw0gzJWK6bwYaRbN34tuyWBUMyMn/khFk2Fu4Mi0xwXcB+ZmlBllZoNygy
- i+Ng/nBCp2KEGe/pNZQvYZnMOa0BQnqvzxEjZ3FUdiUK1dFdD68Rhy9d9279bkLslqm3
- MdiAJrhkLllzjt2pqO19w0Mz+yWgHUryQXwPvNwskliOCbSalk6EvmJHClwBBvjmTANP
- +7abIY3U1ApMmoIJNIxvOAWx3XvpoeaabydMhuSh9Qcjkq4SMEQ4nOfsyFHD9n2PgvV8
- NuXA==
-X-Gm-Message-State: AOAM533vh/yj4JpR2VLafSs0rhByslDlbS8jiadcMLbW6u6w6qbtBzj6
- JCo2rnW/SXo4ostiV5EGe+0=
-X-Google-Smtp-Source: ABdhPJxIIYFFzWCqhZVqD8ortSRZ+/qSn80WqCZGgy/cfTA61slUxkBK8pavePqMqaGlY80GbgxAJw==
-X-Received: by 2002:ac8:710b:: with SMTP id z11mr6341745qto.64.1598298217743; 
- Mon, 24 Aug 2020 12:43:37 -0700 (PDT)
-Received: from ubuntu-n2-xlarge-x86 ([2604:1380:45d1:2600::1])
- by smtp.gmail.com with ESMTPSA id a203sm10378314qkg.30.2020.08.24.12.43.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Aug 2020 12:43:37 -0700 (PDT)
-Date: Mon, 24 Aug 2020 12:43:35 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bb3Wq3bNGzDqMp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 06:24:55 +1000 (AEST)
+Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
+ by gateway21.websitewelcome.com (Postfix) with ESMTP id 5E9EC401E66BF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Aug 2020 14:58:48 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
+ id AIcCkhs7eXp2AAIcCkyIR2; Mon, 24 Aug 2020 14:58:48 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=qY6Sfg1kz68T/rZ73AVuz7ThUgycADm5KdaAnfoGZa8=; b=LPFNXUNpzpoVYJr6HhNgJzzdnY
+ wpn/h+62sCkeN6FCjJl40Eg77XA8Xi7dl5JaGY/ls6KFX5dPh7Qayg70R2BByrw/vLsnIEj7QBZcT
+ MzAlRs/13WVXwiVpV2w7tKyTHtere/r1U7rdX9l2oDWEP3bomsDa5m3wpctlYUKG3t05aQdnZ/g29
+ k0DsXlt2Q5J29z/6u7+cwSFA+3agv9sUEHSzjxijAtYRpF+kOaojUZeE0je5xGklXBcGF7PMLCLP4
+ /1okj0bJCwJOebvD7K2LJTrnx4nvqs8zigFjF0bp5DP0Z+07zWchWIy6WlYW+CPqe43t1wHINOXbj
+ 6wTA/ECw==;
+Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:41402
+ helo=[192.168.15.8])
+ by gator4166.hostgator.com with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.93)
+ (envelope-from <gustavo@embeddedor.com>)
+ id 1kAIcB-001owc-NE; Mon, 24 Aug 2020 14:58:47 -0500
 Subject: Re: [GIT PULL] fallthrough pseudo-keyword macro conversions for
  5.9-rc3
-Message-ID: <20200824194335.GA4082027@ubuntu-n2-xlarge-x86>
+To: Nathan Chancellor <natechancellor@gmail.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>
 References: <20200824034841.GA29995@embeddedor>
+ <20200824194335.GA4082027@ubuntu-n2-xlarge-x86>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Autocrypt: addr=gustavo@embeddedor.com; keydata=
+ xsFNBFssHAwBEADIy3ZoPq3z5UpsUknd2v+IQud4TMJnJLTeXgTf4biSDSrXn73JQgsISBwG
+ 2Pm4wnOyEgYUyJd5tRWcIbsURAgei918mck3tugT7AQiTUN3/5aAzqe/4ApDUC+uWNkpNnSV
+ tjOx1hBpla0ifywy4bvFobwSh5/I3qohxDx+c1obd8Bp/B/iaOtnq0inli/8rlvKO9hp6Z4e
+ DXL3PlD0QsLSc27AkwzLEc/D3ZaqBq7ItvT9Pyg0z3Q+2dtLF00f9+663HVC2EUgP25J3xDd
+ 496SIeYDTkEgbJ7WYR0HYm9uirSET3lDqOVh1xPqoy+U9zTtuA9NQHVGk+hPcoazSqEtLGBk
+ YE2mm2wzX5q2uoyptseSNceJ+HE9L+z1KlWW63HhddgtRGhbP8pj42bKaUSrrfDUsicfeJf6
+ m1iJRu0SXYVlMruGUB1PvZQ3O7TsVfAGCv85pFipdgk8KQnlRFkYhUjLft0u7CL1rDGZWDDr
+ NaNj54q2CX9zuSxBn9XDXvGKyzKEZ4NY1Jfw+TAMPCp4buawuOsjONi2X0DfivFY+ZsjAIcx
+ qQMglPtKk/wBs7q2lvJ+pHpgvLhLZyGqzAvKM1sVtRJ5j+ARKA0w4pYs5a5ufqcfT7dN6TBk
+ LXZeD9xlVic93Ju08JSUx2ozlcfxq+BVNyA+dtv7elXUZ2DrYwARAQABzStHdXN0YXZvIEEu
+ IFIuIFNpbHZhIDxndXN0YXZvYXJzQGtlcm5lbC5vcmc+wsGrBBMBCAA+FiEEkmRahXBSurMI
+ g1YvRwW0y0cG2zEFAl6zFvQCGyMFCQlmAYAFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AAIQkQ
+ RwW0y0cG2zEWIQSSZFqFcFK6swiDVi9HBbTLRwbbMZsEEACWjJyXLjtTAF21Vuf1VDoGzitP
+ oE69rq9UhXIGR+e0KACyIFoB9ibG/1j/ESMa0RPSwLpJDLgfvi/I18H/9cKtdo2uz0XNbDT8
+ i3llIu0b43nzGIDzRudINBXC8Coeob+hrp/MMZueyzt0CUoAnY4XqpHQbQsTfTrpFeHT02Qz
+ ITw6kTSmK7dNbJj2naH2vSrU11qGdU7aFzI7jnVvGgv4NVQLPxm/t4jTG1o+P1Xk4N6vKafP
+ zqzkxj99JrUAPt+LyPS2VpNvmbSNq85PkQ9gpeTHpkio/D9SKsMW62njITPgy6M8TFAmx8JF
+ ZAI6k8l1eU29F274WnlQ6ZokkJoNctwHa+88euWKHWUDolCmQpegJJ8932www83GLn1mdUZn
+ NsymjFSdMWE+y8apWaV9QsDOKWf7pY2uBuE6GMPRhX7e7h5oQwa1lYeO2L9LTDeXkEOJe+hE
+ qQdEEvkC/nok0eoRlBlZh433DQlv4+IvSsfN/uWld2TuQFyjDCLIm1CPRfe7z0TwiCM27F+O
+ lHnUspCFSgpnrxqNH6CM4aj1EF4fEX+ZyknTSrKL9BGZ/qRz7Xe9ikU2/7M1ov6rOXCI4NR9
+ THsNax6etxCBMzZs2bdMHMcajP5XdRsOIARuN08ytRjDolR2r8SkTN2YMwxodxNWWDC3V8X2
+ RHZ4UwQw487BTQRbLBwMARAAsHCE31Ffrm6uig1BQplxMV8WnRBiZqbbsVJBH1AAh8tq2ULl
+ 7udfQo1bsPLGGQboJSVN9rckQQNahvHAIK8ZGfU4Qj8+CER+fYPp/MDZj+t0DbnWSOrG7z9H
+ IZo6PR9z4JZza3Hn/35jFggaqBtuydHwwBANZ7A6DVY+W0COEU4of7CAahQo5NwYiwS0lGis
+ LTqks5R0Vh+QpvDVfuaF6I8LUgQR/cSgLkR//V1uCEQYzhsoiJ3zc1HSRyOPotJTApqGBq80
+ X0aCVj1LOiOF4rrdvQnj6iIlXQssdb+WhSYHeuJj1wD0ZlC7ds5zovXh+FfFl5qH5RFY/qVn
+ 3mNIVxeO987WSF0jh+T5ZlvUNdhedGndRmwFTxq2Li6GNMaolgnpO/CPcFpDjKxY/HBUSmaE
+ 9rNdAa1fCd4RsKLlhXda+IWpJZMHlmIKY8dlUybP+2qDzP2lY7kdFgPZRU+ezS/pzC/YTzAv
+ CWM3tDgwoSl17vnZCr8wn2/1rKkcLvTDgiJLPCevqpTb6KFtZosQ02EGMuHQI6Zk91jbx96n
+ rdsSdBLGH3hbvLvjZm3C+fNlVb9uvWbdznObqcJxSH3SGOZ7kCHuVmXUcqozol6ioMHMb+In
+ rHPP16aVDTBTPEGwgxXI38f7SUEn+NpbizWdLNz2hc907DvoPm6HEGCanpcAEQEAAcLBZQQY
+ AQgADwUCWywcDAIbDAUJCWYBgAAKCRBHBbTLRwbbMdsZEACUjmsJx2CAY+QSUMebQRFjKavw
+ XB/xE7fTt2ahuhHT8qQ/lWuRQedg4baInw9nhoPE+VenOzhGeGlsJ0Ys52sdXvUjUocKgUQq
+ 6ekOHbcw919nO5L9J2ejMf/VC/quN3r3xijgRtmuuwZjmmi8ct24TpGeoBK4WrZGh/1hAYw4
+ ieARvKvgjXRstcEqM5thUNkOOIheud/VpY+48QcccPKbngy//zNJWKbRbeVnimua0OpqRXhC
+ rEVm/xomeOvl1WK1BVO7z8DjSdEBGzbV76sPDJb/fw+y+VWrkEiddD/9CSfgfBNOb1p1jVnT
+ 2mFgGneIWbU0zdDGhleI9UoQTr0e0b/7TU+Jo6TqwosP9nbk5hXw6uR5k5PF8ieyHVq3qatJ
+ 9K1jPkBr8YWtI5uNwJJjTKIA1jHlj8McROroxMdI6qZ/wZ1ImuylpJuJwCDCORYf5kW61fcr
+ HEDlIvGc371OOvw6ejF8ksX5+L2zwh43l/pKkSVGFpxtMV6d6J3eqwTafL86YJWH93PN+ZUh
+ 6i6Rd2U/i8jH5WvzR57UeWxE4P8bQc0hNGrUsHQH6bpHV2lbuhDdqo+cM9ehGZEO3+gCDFmK
+ rjspZjkJbB5Gadzvts5fcWGOXEvuT8uQSvl+vEL0g6vczsyPBtqoBLa9SNrSVtSixD1uOgyt
+ AP7RWS474w==
+Message-ID: <a2f6c262-d097-01f2-2e09-074f3ae6d4f0@embeddedor.com>
+Date: Mon, 24 Aug 2020 15:04:44 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200824034841.GA29995@embeddedor>
+In-Reply-To: <20200824194335.GA4082027@ubuntu-n2-xlarge-x86>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.ozlabs.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 187.162.31.110
+X-Source-L: No
+X-Exim-ID: 1kAIcB-001owc-NE
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.8])
+ [187.162.31.110]:41402
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 8
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,123 +149,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 23, 2020 at 10:48:41PM -0500, Gustavo A. R. Silva wrote:
-> Hi Linus,
-> 
-> Not sure what the problem was with my pull-request for -rc2. So, I'm giving
-> this a second try because I think it is worth it.
-> 
-> I have build-tested this patch on 10 different architectures: x86_64, i386,
-> arm64, powerpc, s390, sparc64, sh, m68k, powerpc64 and alpha (allyesconfig/
-> allmodconfig for all of them). This is in linux-next already and kernel
-> test robot has also helped me to successfully build-test early versions
-> of this patch[2][3][4][5]. This patch does not introduce any new warnings.
-> 
-> Thank you
-> --
-> Gustavo
-> 
-> [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
-> [2] https://lore.kernel.org/lkml/5f3cc99a.HgvOW3rH0mD0RmkM%25lkp@intel.com/
-> [3] https://lore.kernel.org/lkml/5f3dd1d2.l1axczH+t4hMBZ63%25lkp@intel.com/
-> [4] https://lore.kernel.org/lkml/5f3e977a.mwYHUIObbR4SHr0B%25lkp@intel.com/
-> [5] https://lore.kernel.org/lkml/5f3f9e1c.qsyb%2FaySkiXNpkO4%25lkp@intel.com/
-> 
-> 
-> The following changes since commit d012a7190fc1fd72ed48911e77ca97ba4521bccd:
-> 
->   Linux 5.9-rc2 (2020-08-23 14:08:43 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux.git tags/fallthrough-pseudo-keyword-5.9-rc3
-> 
-> for you to fetch changes up to df561f6688fef775baa341a0f5d960becd248b11:
-> 
->   treewide: Use fallthrough pseudo-keyword (2020-08-23 17:36:59 -0500)
-> 
-> ----------------------------------------------------------------
-> fallthrough pseudo-keyword macro conversions for 5.9-rc3
-> 
-> Hi Linus,
-> 
-> Please, pull the following tree-wide patch that replaces tons (2484) of
-> /* fall through */ comments, and its variants, with the new pseudo-keyword
-> macro fallthrough[1]. Also, remove unnecessary fall-through markings when
-> it is the case.
-> 
-> There are currently 1167 intances of this fallthrough pseudo-keyword
-> macro in mainline (5.9-rc2), that have been introduced over the last
-> couple of development cycles:
-> 
-> $ git grep -nw 'fallthrough;' | wc -l
-> 1167
-> 
-> The global adoption of the fallthrough pseudo-keyword is something certain
-> to happen; so, better sooner than later. :) This will also save everybody's
-> time and thousands of lines of unnecessarily repetitive changelog text.
-> 
-> After applying this patch on top of 5.9-rc2, we'll have a total of 3651
-> instances of this macro:
-> 
-> $ git grep -nw 'fallthrough;' | wc -l
-> 3651
-> 
-> This treewide patch doesn't address ALL fall-through markings in all
-> subsystems at once because I have previously sent out patches for some of
-> such subsystems separately, and I will follow up on them; however, this
-> definitely contributes most of the work needed to replace all the
-> fall-through markings with the fallthrough pseudo-keyword macro in the
-> whole codebase.
-> 
-> I have build-tested this patch on 10 different architectures: x86_64, i386,
-> arm64, powerpc, s390, sparc64, sh, m68k, powerpc64 and alpha (allyesconfig
-> for all of them). This is in linux-next already and kernel test robot has
-> also helped me to successfully build-test early versions of this
-> patch[2][3][4][5].
-> 
-> Thanks
-> --
-> [1] https://www.kernel.org/doc/html/v5.7/process/deprecated.html?highlight=fallthrough#implicit-switch-case-fall-through
-> [2] https://lore.kernel.org/lkml/5f3cc99a.HgvOW3rH0mD0RmkM%25lkp@intel.com/
-> [3] https://lore.kernel.org/lkml/5f3dd1d2.l1axczH+t4hMBZ63%25lkp@intel.com/
-> [4] https://lore.kernel.org/lkml/5f3e977a.mwYHUIObbR4SHr0B%25lkp@intel.com/
-> [5] https://lore.kernel.org/lkml/5f3f9e1c.qsyb%2FaySkiXNpkO4%25lkp@intel.com/
-> 
-> ----------------------------------------------------------------
-> Gustavo A. R. Silva (1):
->       treewide: Use fallthrough pseudo-keyword
+Hi Nathan,
 
-$ scripts/config --file arch/powerpc/configs/powernv_defconfig -e KERNEL_XZ
+On 8/24/20 14:43, Nathan Chancellor wrote:
 
-$ make -skj"$(nproc)" ARCH=powerpc CROSS_COMPILE=powerpc64le-linux- distclean powernv_defconfig zImage
-...
-In file included from arch/powerpc/boot/../../../lib/decompress_unxz.c:234,
-                 from arch/powerpc/boot/decompress.c:38:
-arch/powerpc/boot/../../../lib/xz/xz_dec_stream.c: In function 'dec_main':
-arch/powerpc/boot/../../../lib/xz/xz_dec_stream.c:586:4: error: 'fallthrough' undeclared (first use in this function)
-  586 |    fallthrough;
-      |    ^~~~~~~~~~~
-arch/powerpc/boot/../../../lib/xz/xz_dec_stream.c:586:4: note: each undeclared identifier is reported only once for each function it appears in
-In file included from arch/powerpc/boot/../../../lib/decompress_unxz.c:235,
-                 from arch/powerpc/boot/decompress.c:38:
-arch/powerpc/boot/../../../lib/xz/xz_dec_lzma2.c: In function 'xz_dec_lzma2_run':
-arch/powerpc/boot/../../../lib/xz/xz_dec_lzma2.c:1046:4: error: 'fallthrough' undeclared (first use in this function)
- 1046 |    fallthrough;
-      |    ^~~~~~~~~~~
-make[2]: *** [arch/powerpc/boot/Makefile:215: arch/powerpc/boot/decompress.o] Error 1
-make[2]: Target 'arch/powerpc/boot/zImage' not remade because of errors.
-make[1]: *** [arch/powerpc/Makefile:295: zImage] Error 2
-make: *** [Makefile:335: __build_one_by_one] Error 2
-make: Target 'distclean' not remade because of errors.
-make: Target 'powernv_defconfig' not remade because of errors.
-make: Target 'zImage' not remade because of errors.
+>> Gustavo A. R. Silva (1):
+>>       treewide: Use fallthrough pseudo-keyword
+> 
+> $ scripts/config --file arch/powerpc/configs/powernv_defconfig -e KERNEL_XZ
+> 
+> $ make -skj"$(nproc)" ARCH=powerpc CROSS_COMPILE=powerpc64le-linux- distclean powernv_defconfig zImage
+> ...
+> In file included from arch/powerpc/boot/../../../lib/decompress_unxz.c:234,
+>                  from arch/powerpc/boot/decompress.c:38:
+> arch/powerpc/boot/../../../lib/xz/xz_dec_stream.c: In function 'dec_main':
+> arch/powerpc/boot/../../../lib/xz/xz_dec_stream.c:586:4: error: 'fallthrough' undeclared (first use in this function)
+>   586 |    fallthrough;
+>       |    ^~~~~~~~~~~
+> arch/powerpc/boot/../../../lib/xz/xz_dec_stream.c:586:4: note: each undeclared identifier is reported only once for each function it appears in
+> In file included from arch/powerpc/boot/../../../lib/decompress_unxz.c:235,
+>                  from arch/powerpc/boot/decompress.c:38:
+> arch/powerpc/boot/../../../lib/xz/xz_dec_lzma2.c: In function 'xz_dec_lzma2_run':
+> arch/powerpc/boot/../../../lib/xz/xz_dec_lzma2.c:1046:4: error: 'fallthrough' undeclared (first use in this function)
+>  1046 |    fallthrough;
+>       |    ^~~~~~~~~~~
+> make[2]: *** [arch/powerpc/boot/Makefile:215: arch/powerpc/boot/decompress.o] Error 1
+> make[2]: Target 'arch/powerpc/boot/zImage' not remade because of errors.
+> make[1]: *** [arch/powerpc/Makefile:295: zImage] Error 2
+> make: *** [Makefile:335: __build_one_by_one] Error 2
+> make: Target 'distclean' not remade because of errors.
+> make: Target 'powernv_defconfig' not remade because of errors.
+> make: Target 'zImage' not remade because of errors.
+> 
+> This will end up affecting distribution configurations such as Debian
+> and OpenSUSE according to my testing. I am not sure what the solution
+> is, the PowerPC wrapper does not set -D__KERNEL__ so I am not sure that
+> compiler_attributes.h can be safely included. Adding Michael and
+> linuxppc-dev to CC.
+> 
 
-This will end up affecting distribution configurations such as Debian
-and OpenSUSE according to my testing. I am not sure what the solution
-is, the PowerPC wrapper does not set -D__KERNEL__ so I am not sure that
-compiler_attributes.h can be safely included. Adding Michael and
-linuxppc-dev to CC.
+Thanks for the report. I think, for now, the best solution is to
+use /* fall through */ comments instead of the pseudo-keyword in
+lib/
 
-Cheers,
-Nathan
+I'll send a fix for that right away.
+
+Thanks
+--
+Gustavo
