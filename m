@@ -2,61 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683992500A9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 17:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253C8250391
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Aug 2020 18:46:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BZwfW34lTzDqPW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 01:15:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BZyh32f3szDqPN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 02:46:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=J+lzP+/v; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BZwRC5bBtzDqPF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 01:05:22 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-126-7nFhgKAtOJWwj5eufa76-g-1; Mon, 24 Aug 2020 16:05:14 +0100
-X-MC-Unique: 7nFhgKAtOJWwj5eufa76-g-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Mon, 24 Aug 2020 16:05:13 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Mon, 24 Aug 2020 16:05:13 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Guohua Zhong' <zhongguohua1@huawei.com>, "paubert@iram.es"
- <paubert@iram.es>
-Subject: =?utf-8?B?UkU6IFJl77yaUmU6IFtQQVRDSF0gcG93ZXJwYzogRml4IGEgYnVnIGluIF9f?=
- =?utf-8?Q?div64=5F32_if_divisor_is_zero?=
-Thread-Topic: =?utf-8?B?UmXvvJpSZTogW1BBVENIXSBwb3dlcnBjOiBGaXggYSBidWcgaW4gX19kaXY2?=
- =?utf-8?Q?4=5F32_if_divisor_is_zero?=
-Thread-Index: AQHWehocKoZB4BlfFESHO90JupmxU6lHWu5w
-Date: Mon, 24 Aug 2020 15:05:13 +0000
-Message-ID: <c200b38836674bbbb928bf76cbb978f1@AcuMS.aculab.com>
-References: <20200822172524.GA5451@lt-gp.iram.es>
- <20200824132539.35972-1-zhongguohua1@huawei.com>
-In-Reply-To: <20200824132539.35972-1-zhongguohua1@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BZySC6vpNzDqNs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 02:36:27 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id CA3FB22CB1;
+ Mon, 24 Aug 2020 16:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1598286985;
+ bh=lvzQ/hEjHwDs3sJOe3by2TZKTk4WdMBQkeuthCXtYW0=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=J+lzP+/vOpD3A7L4N0Okxsi5rboeouNP3Xlbb+HcBfNOLDbA3ZkKP91w0cPUbzpJK
+ 5Bd2bOvPfY+9cen1Hwd9FU67IpsyluM506Q0U5mpuKxvgzVnIIasthro5z2IqTUFLa
+ fIsuEWfxO2/KJGFk3ygakMsy1zz8a/kb2Wf38wk4=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 59/63] powerpc/perf: Fix soft lockups due to
+ missed interrupt accounting
+Date: Mon, 24 Aug 2020 12:34:59 -0400
+Message-Id: <20200824163504.605538-59-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200824163504.605538-1-sashal@kernel.org>
+References: <20200824163504.605538-1-sashal@kernel.org>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0.001
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,32 +60,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "wangle6@huawei.com" <wangle6@huawei.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "paulus@samba.org" <paulus@samba.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "nixiaoming@huawei.com" <nixiaoming@huawei.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Athira Rajeev <atrajeev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogR3VvaHVhIFpob25nDQo+IFNlbnQ6IDI0IEF1Z3VzdCAyMDIwIDE0OjI2DQo+IA0KPiA+
-PiA+SW4gZ2VuZXJpYyB2ZXJzaW9uIGluIGxpYi9tYXRoL2RpdjY0LmMsIHRoZXJlIGlzIG5vIGNo
-ZWNraW5nIG9mICdiYXNlJw0KPiA+PiA+ZWl0aGVyLg0KPiA+PiA+RG8gd2UgcmVhbGx5IHdhbnQg
-dG8gYWRkIHRoaXMgY2hlY2sgaW4gdGhlIHBvd2VycGMgdmVyc2lvbiBvbmx5ID8NCj4gPj4NCj4g
-Pj4gPlRoZSBvbmx5IHVzZXIgb2YgX19kaXY2NF8zMigpIGlzIGRvX2RpdigpIGluDQo+ID4+ID5p
-bmNsdWRlL2FzbS1nZW5lcmljL2RpdjY0LmguIFdvdWxkbid0IGl0IGJlIGJldHRlciB0byBkbyB0
-aGUgY2hlY2sgdGhlcmUgPw0KPiA+Pg0KPiA+PiA+Q2hyaXN0b3BoZQ0KPiA+Pg0KPiA+PiBZZXQs
-IEkgaGF2ZSBub3RpY2VkIHRoYXQgdGhlcmUgaXMgbm8gY2hlY2tpbmcgb2YgJ2Jhc2UnIGluIHRo
-ZXNlIGZ1bmN0aW9ucy4NCj4gPj4gQnV0IEkgYW0gbm90IHN1cmUgaG93IHRvIGNoZWNrIGlzIGJl
-dHRlci5BcyB3ZSBrbm93IHRoYXQgdGhlIHJlc3VsdCBpcw0KPiA+PiB1bmRlZmluZWQgd2hlbiBk
-aXZpc29yIGlzIHplcm8uIEl0IG1heWJlIGdvb2QgdG8gcHJpbnQgZXJyb3IgYW5kIGR1bXAgc3Rh
-Y2suDQoNCkkgdGhvdWdodCB0aGF0IHRoZSBvbnVzIHdhcyBwdXQgb24gdGhlIGNhbGxlciB0byBh
-dm9pZCBkaXZpZGUgYnkgemVyby4NCg0KT24geDg2IGRpdmlkZSBieSB6ZXJvIGNhdXNlcyBhbiBl
-eGNlcHRpb24gd2hpY2ggKEknbSBwcmV0dHkgc3VyZSkNCmxlYWRzIHRvIGEgb29wcy9wYW5pYy4N
-Cg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2Fk
-LCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5v
-OiAxMzk3Mzg2IChXYWxlcykNCg==
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+
+[ Upstream commit 17899eaf88d689529b866371344c8f269ba79b5f ]
+
+Performance monitor interrupt handler checks if any counter has
+overflown and calls record_and_restart() in core-book3s which invokes
+perf_event_overflow() to record the sample information. Apart from
+creating sample, perf_event_overflow() also does the interrupt and
+period checks via perf_event_account_interrupt().
+
+Currently we record information only if the SIAR (Sampled Instruction
+Address Register) valid bit is set (using siar_valid() check) and
+hence the interrupt check.
+
+But it is possible that we do sampling for some events that are not
+generating valid SIAR, and hence there is no chance to disable the
+event if interrupts are more than max_samples_per_tick. This leads to
+soft lockup.
+
+Fix this by adding perf_event_account_interrupt() in the invalid SIAR
+code path for a sampling event. ie if SIAR is invalid, just do
+interrupt check and don't record the sample information.
+
+Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Tested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/1596717992-7321-1-git-send-email-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/perf/core-book3s.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 01d70280d2872..190bc4f255b42 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2101,6 +2101,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 
+ 		if (perf_event_overflow(event, &data, regs))
+ 			power_pmu_stop(event, 0);
++	} else if (period) {
++		/* Account for interrupt in case of invalid SIAR */
++		if (perf_event_account_interrupt(event))
++			power_pmu_stop(event, 0);
+ 	}
+ }
+ 
+-- 
+2.25.1
 
