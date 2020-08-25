@@ -1,48 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE20525157A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 11:36:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39523251582
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 11:38:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbP4w1CJmzDqTg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 19:36:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbP7p5GBhzDqVT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 19:38:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbP2w6wXdzDqT2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 19:34:32 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=LTOa9BJ9; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BbP2w2TFpz9sSP; Tue, 25 Aug 2020 19:34:32 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BbP2w1KZSz9sTd; Tue, 25 Aug 2020 19:34:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1598348072;
- bh=GKk6/xj1RQwa99bGbVhYtp6VWY69Y7v+jxwX6B2E49s=;
- h=From:To:Cc:Subject:Date:From;
- b=LTOa9BJ90Li51nqRu4Js7O0jImdwbdfhpvjPZYUoKHRKIIr82HPo/psr+jgy7ftRo
- xUj2pBqEOvhh55HZW3m5UkwxrEgA5NiYjK54hht7dc1TrLzMTWDEfw0o7Vf1gnnXih
- 26RqTctZnk8+Ggl9IzvH1coCqpN9QYfxhf2ECTVTjGjx4DIYOOUKBJyee3jfKYWMNT
- BfpLKjFtyMP53AWLcM2qeBYlYPhrQdLeer9MMjItUeU7xTuU5d7+g6od7UOMlDpn4B
- 0ujXi5nE+TXtQhLWvn50RiwBhuzjim0zfcJeovqSDRLfziKFsraqM6Lvfwu2uv23VD
- tpYbBN2H9LcEw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/64s: Fix crash in load_fp_state() due to fpexc_mode
-Date: Tue, 25 Aug 2020 19:34:24 +1000
-Message-Id: <20200825093424.3967813-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbP6854TrzDq63
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 19:37:20 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BbP632BtZzB09Zk;
+ Tue, 25 Aug 2020 11:37:15 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id VH4tJWpNzU26; Tue, 25 Aug 2020 11:37:15 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BbP631J8mzB09ZP;
+ Tue, 25 Aug 2020 11:37:15 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 52B5D8B806;
+ Tue, 25 Aug 2020 11:37:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id uXubsWHjtDix; Tue, 25 Aug 2020 11:37:16 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F27A8B803;
+ Tue, 25 Aug 2020 11:37:15 +0200 (CEST)
+Subject: Re: [PATCH v5 5/8] powerpc/watchpoint: Fix exception handling for
+ CONFIG_HAVE_HW_BREAKPOINT=N
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au,
+ christophe.leroy@c-s.fr
+References: <20200825043617.1073634-1-ravi.bangoria@linux.ibm.com>
+ <20200825043617.1073634-6-ravi.bangoria@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <91d34b89-603a-fddc-ea0f-53a79b287eed@csgroup.eu>
+Date: Tue, 25 Aug 2020 11:37:11 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
+In-Reply-To: <20200825043617.1073634-6-ravi.bangoria@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -55,112 +66,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: miltonm@us.ibm.com, npiggin@gmail.com
+Cc: mikey@neuling.org, jniethe5@gmail.com, pedromfc@linux.ibm.com,
+ linux-kernel@vger.kernel.org, rogealve@linux.ibm.com, paulus@samba.org,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The recent commit 01eb01877f33 ("powerpc/64s: Fix restore_math
-unnecessarily changing MSR") changed some of the handling of floating
-point/vector restore.
 
-In particular it caused current->thread.fpexc_mode to be copied into
-the current MSR (via msr_check_and_set()), rather than just into
-regs->msr (which is moved into MSR on return to userspace).
 
-This can lead to a crash in the kernel if we take a floating point
-exception when restoring FPSCR:
+Le 25/08/2020 à 06:36, Ravi Bangoria a écrit :
+> On powerpc, ptrace watchpoint works in one-shot mode. i.e. kernel
+> disables event every time it fires and user has to re-enable it.
+> Also, in case of ptrace watchpoint, kernel notifies ptrace user
+> before executing instruction.
+> 
+> With CONFIG_HAVE_HW_BREAKPOINT=N, kernel is missing to disable
+> ptrace event and thus it's causing infinite loop of exceptions.
+> This is especially harmful when user watches on a data which is
+> also read/written by kernel, eg syscall parameters. In such case,
+> infinite exceptions happens in kernel mode which causes soft-lockup.
+> 
+> Fixes: 9422de3e953d ("powerpc: Hardware breakpoints rewrite to handle non DABR breakpoint registers")
+> Reported-by: Pedro Miraglia Franco de Carvalho <pedromfc@linux.ibm.com>
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/hw_breakpoint.h  |  3 ++
+>   arch/powerpc/kernel/process.c             | 48 +++++++++++++++++++++++
+>   arch/powerpc/kernel/ptrace/ptrace-noadv.c |  5 +++
+>   3 files changed, 56 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
+> index 2eca3dd54b55..c72263214d3f 100644
+> --- a/arch/powerpc/include/asm/hw_breakpoint.h
+> +++ b/arch/powerpc/include/asm/hw_breakpoint.h
+> @@ -18,6 +18,7 @@ struct arch_hw_breakpoint {
+>   	u16		type;
+>   	u16		len; /* length of the target data symbol */
+>   	u16		hw_len; /* length programmed in hw */
+> +	u8		flags;
+>   };
+>   
+>   /* Note: Don't change the first 6 bits below as they are in the same order
+> @@ -37,6 +38,8 @@ struct arch_hw_breakpoint {
+>   #define HW_BRK_TYPE_PRIV_ALL	(HW_BRK_TYPE_USER | HW_BRK_TYPE_KERNEL | \
+>   				 HW_BRK_TYPE_HYP)
+>   
+> +#define HW_BRK_FLAG_DISABLED	0x1
+> +
+>   /* Minimum granularity */
+>   #ifdef CONFIG_PPC_8xx
+>   #define HW_BREAKPOINT_SIZE  0x4
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index 016bd831908e..160fbbf41d40 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -636,6 +636,44 @@ void do_send_trap(struct pt_regs *regs, unsigned long address,
+>   				    (void __user *)address);
+>   }
+>   #else	/* !CONFIG_PPC_ADV_DEBUG_REGS */
+> +
+> +static void do_break_handler(struct pt_regs *regs)
+> +{
+> +	struct arch_hw_breakpoint null_brk = {0};
+> +	struct arch_hw_breakpoint *info;
+> +	struct ppc_inst instr = ppc_inst(0);
+> +	int type = 0;
+> +	int size = 0;
+> +	unsigned long ea;
+> +	int i;
+> +
+> +	/*
+> +	 * If underneath hw supports only one watchpoint, we know it
+> +	 * caused exception. 8xx also falls into this category.
+> +	 */
+> +	if (nr_wp_slots() == 1) {
+> +		__set_breakpoint(0, &null_brk);
+> +		current->thread.hw_brk[0] = null_brk;
+> +		current->thread.hw_brk[0].flags |= HW_BRK_FLAG_DISABLED;
+> +		return;
+> +	}
+> +
+> +	/* Otherwise findout which DAWR caused exception and disable it. */
+> +	wp_get_instr_detail(regs, &instr, &type, &size, &ea);
+> +
+> +	for (i = 0; i < nr_wp_slots(); i++) {
+> +		info = &current->thread.hw_brk[i];
+> +		if (!info->address)
+> +			continue;
+> +
+> +		if (wp_check_constraints(regs, instr, ea, type, size, info)) {
+> +			__set_breakpoint(i, &null_brk);
+> +			current->thread.hw_brk[i] = null_brk;
+> +			current->thread.hw_brk[i].flags |= HW_BRK_FLAG_DISABLED;
+> +		}
+> +	}
+> +}
+> +
+>   void do_break (struct pt_regs *regs, unsigned long address,
+>   		    unsigned long error_code)
+>   {
+> @@ -647,6 +685,16 @@ void do_break (struct pt_regs *regs, unsigned long address,
+>   	if (debugger_break_match(regs))
+>   		return;
+>   
+> +	/*
+> +	 * We reach here only when watchpoint exception is generated by ptrace
+> +	 * event (or hw is buggy!). Now if CONFIG_HAVE_HW_BREAKPOINT is set,
+> +	 * watchpoint is already handled by hw_breakpoint_handler() so we don't
+> +	 * have to do anything. But when CONFIG_HAVE_HW_BREAKPOINT is not set,
+> +	 * we need to manually handle the watchpoint here.
+> +	 */
+> +	if (!IS_ENABLED(CONFIG_HAVE_HW_BREAKPOINT))
+> +		do_break_handler(regs);
+> +
+>   	/* Deliver the signal to userspace */
+>   	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)address);
+>   }
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace-noadv.c b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+> index 57a0ab822334..866597b407bc 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace-noadv.c
+> @@ -286,11 +286,16 @@ long ppc_del_hwdebug(struct task_struct *child, long data)
+>   	}
+>   	return ret;
+>   #else /* CONFIG_HAVE_HW_BREAKPOINT */
+> +	if (child->thread.hw_brk[data - 1].flags & HW_BRK_FLAG_DISABLED)
 
-  Oops: Exception in kernel mode, sig: 8 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-  Modules linked in:
-  CPU: 3 PID: 101213 Comm: ld64.so.2 Not tainted 5.9.0-rc1-00098-g18445bf405cb-dirty #9
-  NIP:  c00000000000fbb4 LR: c00000000001a7ac CTR: c000000000183570
-  REGS: c0000016b7cfb3b0 TRAP: 0700   Not tainted  (5.9.0-rc1-00098-g18445bf405cb-dirty)
-  MSR:  900000000290b933 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 44002444  XER: 00000000
-  CFAR: c00000000001a7a8 IRQMASK: 1
-  GPR00: c00000000001ae40 c0000016b7cfb640 c0000000011b7f00 c000001542a0f740
-  GPR04: c000001542a0f720 c000001542a0eb00 0000000000000900 c000001542a0eb00
-  GPR08: 000000000000000a 0000000000002000 9000000000009033 0000000000000000
-  GPR12: 0000000000004000 c0000017ffffd900 0000000000000001 c000000000df5a58
-  GPR16: c000000000e19c18 c0000000010e1123 0000000000000001 c000000000e1a638
-  GPR20: 0000000000000000 c0000000044b1d00 0000000000000000 c000001542a0f2a0
-  GPR24: 00000016c7fe0000 c000001542a0f720 c000000001c93da0 c000000000fe5f28
-  GPR28: c000001542a0f720 0000000000800000 c0000016b7cfbe90 0000000002802900
-  NIP load_fp_state+0x4/0x214
-  LR  restore_math+0x17c/0x1f0
-  Call Trace:
-    0xc0000016b7cfb680 (unreliable)
-    __switch_to+0x330/0x460
-    __schedule+0x318/0x920
-    schedule+0x74/0x140
-    schedule_timeout+0x318/0x3f0
-    wait_for_completion+0xc8/0x210
-    call_usermodehelper_exec+0x234/0x280
-    do_coredump+0xedc/0x13c0
-    get_signal+0x1d4/0xbe0
-    do_notify_resume+0x1a0/0x490
-    interrupt_exit_user_prepare+0x1c4/0x230
-    interrupt_return+0x14/0x1c0
-  Instruction dump:
-  ebe10168 e88101a0 7c8ff120 382101e0 e8010010 7c0803a6 4e800020 790605c4
-  782905c4 7c0008a8 7c0008a8 c8030200 <fffe058e> 48000088 c8030000 c8230010
+I think child->thread.hw_brk[data - 1].flags & HW_BRK_FLAG_DISABLED 
+should go around additionnal ()
 
-Fix it by only loading the fpexc_mode value into regs->msr.
+> +		goto del;
+> +
+>   	if (child->thread.hw_brk[data - 1].address == 0)
+>   		return -ENOENT;
 
-Also add a comment to explain that although VSX is subject to the
-value of fpexc_mode, we don't have to handle that separately because
-we only allow VSX to be enabled if FP is also enabled.
+What about replacing the above if by:
+	if (!(child->thread.hw_brk[data - 1].flags) & HW_BRK_FLAG_DISABLED) &&
+	    child->thread.hw_brk[data - 1].address == 0)
+		return -ENOENT;
 
-Fixes: 01eb01877f33 ("powerpc/64s: Fix restore_math unnecessarily changing MSR")
-Reported-by: Milton Miller <miltonm@us.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/process.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+That would avoid the goto and the label.
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 016bd831908e..73a57043ee66 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -548,7 +548,7 @@ void notrace restore_math(struct pt_regs *regs)
- 	 * are live for the user thread).
- 	 */
- 	if ((!(msr & MSR_FP)) && should_restore_fp())
--		new_msr |= MSR_FP | current->thread.fpexc_mode;
-+		new_msr |= MSR_FP;
- 
- 	if ((!(msr & MSR_VEC)) && should_restore_altivec())
- 		new_msr |= MSR_VEC;
-@@ -559,11 +559,17 @@ void notrace restore_math(struct pt_regs *regs)
- 	}
- 
- 	if (new_msr) {
-+		unsigned long fpexc_mode = 0;
-+
- 		msr_check_and_set(new_msr);
- 
--		if (new_msr & MSR_FP)
-+		if (new_msr & MSR_FP) {
- 			do_restore_fp();
- 
-+			// This also covers VSX, because VSX implies FP
-+			fpexc_mode = current->thread.fpexc_mode;
-+		}
-+
- 		if (new_msr & MSR_VEC)
- 			do_restore_altivec();
- 
-@@ -572,7 +578,7 @@ void notrace restore_math(struct pt_regs *regs)
- 
- 		msr_check_and_clear(new_msr);
- 
--		regs->msr |= new_msr;
-+		regs->msr |= new_msr | fpexc_mode;
- 	}
- }
- #endif
--- 
-2.25.1
+>   
+> +del:
+>   	child->thread.hw_brk[data - 1].address = 0;
+>   	child->thread.hw_brk[data - 1].type = 0;
+> +	child->thread.hw_brk[data - 1].flags = 0;
+>   #endif /* CONFIG_HAVE_HW_BREAKPOINT */
+>   
+>   	return 0;
+> 
 
+Christophe
