@@ -2,52 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF646251134
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 07:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BEC251319
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 09:24:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbH020yKxzDqNw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 15:01:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbL970XcTzDqTh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 17:24:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::644;
+ helo=mail-ej1-x644.google.com; envelope-from=hkallweit1@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.72; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0072.hostedemail.com
- [216.40.44.72])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LKg4zB/v; dkim-atps=neutral
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
+ [IPv6:2a00:1450:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbGv34QGCzDqBv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 14:57:19 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay03.hostedemail.com (Postfix) with ESMTP id 57804837F24D;
- Tue, 25 Aug 2020 04:57:14 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
- RULES_HIT:41:355:379:541:800:960:966:973:988:989:1260:1311:1314:1345:1359:1515:1534:1541:1711:1714:1730:1747:1777:1792:2196:2199:2393:2559:2562:3138:3139:3140:3141:3142:3351:3868:4321:4385:5007:6119:6261:10004:10848:11026:11473:11657:11658:11914:12043:12296:12297:12555:12895:12986:13069:13311:13357:13894:14096:14181:14384:14394:14721:21080:21627:30054,
- 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
- DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
- LFtime:1, LUA_SUMMARY:none
-X-HE-Tag: rings03_320fcc527059
-X-Filterd-Recvd-Size: 1890
-Received: from joe-laptop.perches.com (unknown [47.151.133.149])
- (Authenticated sender: joe@perches.com)
- by omf08.hostedemail.com (Postfix) with ESMTPA;
- Tue, 25 Aug 2020 04:57:13 +0000 (UTC)
-From: Joe Perches <joe@perches.com>
-To: Jiri Kosina <trivial@kernel.org>,
- Pantelis Antoniou <pantelis.antoniou@gmail.com>
-Subject: [PATCH 17/29] fs_enet: Avoid comma separated statements
-Date: Mon, 24 Aug 2020 21:56:14 -0700
-Message-Id: <418850ae2026b293ea6ba3b8b19b8a7f8dfcaf3d.1598331149.git.joe@perches.com>
-X-Mailer: git-send-email 2.26.0
-In-Reply-To: <cover.1598331148.git.joe@perches.com>
-References: <cover.1598331148.git.joe@perches.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbL772X0xzDqM7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 17:22:58 +1000 (AEST)
+Received: by mail-ej1-x644.google.com with SMTP id si26so15178980ejb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 00:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=OADTftaUqa0gqWbzg8dntRETIGBaFisPIux6F2d7Xks=;
+ b=LKg4zB/vDLYJda6TA91mSYdm6ubYWSNZ7yMZt6jDGsgx7tw7Kxs08Zzwiz3u5PgP0n
+ qGgdt6Aa1TeorwyggBIJXKSRz4nQc1zK15UGtG3ClWCYR8v7J+T/YwVTTRODf1Y2mkSe
+ jdG11BjPs0zKRtty0kQ7pUyHP5IrRxgWrf7UKWOHEf52VpMjvUKOiRcU4+jllCZzDwsj
+ uUmNPMZJR15ya/E6jMoIe0Iwfhr5Iv5rymdxFCmOnlM6N7LNDLq4OJygpJS1IzAhJ4t9
+ ooA/QSoN9vpa20V+0slmwh4mO0IqwcTSJ/2rNbHXk1bBcRJlEjEeDy2bECt6AOD1JUy5
+ Yl2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=OADTftaUqa0gqWbzg8dntRETIGBaFisPIux6F2d7Xks=;
+ b=tGzaw9nF5kJYoh4i1rtbxeQhivM/jJM2PyQCWWFiPSnkyYZuV34rpgztMKWSSWec52
+ iU25PQ3fkSqKKejQtfCzO2vYq2eOvHmUWHgXl3LfL8KoQTjxeiKtBHUCMp+ZxFjXLdMp
+ +3wUmVfIv7ihIa+aVavIWOoNWY3hkKKAr/Oj5J7clEbX+75aS2WLdbocnTHpdf3vk7AH
+ COoxYQfjOg+QoKl55q9dojFAygDO8kVgpQd3811rd2UDDAf7TPReHDRVocS821ad1ven
+ X9OfFjCYsvHRL+k5ts8wnzBw/M9yQJJbLyTjx3VtTurd9CcuzHiihok+H1xzpDUHBE1V
+ Cf9A==
+X-Gm-Message-State: AOAM533pEBS/tfasMdpDvjI1TmnRlMozlcoqT/0fm1tPgVVfGxUqeU2u
+ R60TvejDfiU5q6wP4uZcQkI=
+X-Google-Smtp-Source: ABdhPJwOkduFavTmq4VITqGicuVuRG4Vo1SQn5RrMfXrJPegMiqGfQLcpcchXDEu6lH0M99KUNcXtA==
+X-Received: by 2002:a17:906:2289:: with SMTP id
+ p9mr8900398eja.437.1598340174058; 
+ Tue, 25 Aug 2020 00:22:54 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8f23:5700:40ac:16ed:6e22:2a54?
+ (p200300ea8f23570040ac16ed6e222a54.dip0.t-ipconnect.de.
+ [2003:ea:8f23:5700:40ac:16ed:6e22:2a54])
+ by smtp.googlemail.com with ESMTPSA id dj16sm6834217edb.5.2020.08.25.00.22.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Aug 2020 00:22:53 -0700 (PDT)
+Subject: Re: fsl_espi errors on v5.7.15
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ "paulus@samba.org" <paulus@samba.org>
+References: <3f48e5fb-33c9-8046-0f80-236eed163c16@alliedtelesis.co.nz>
+ <c43a23bd-33ec-4ef2-2ca5-730342248db3@gmail.com>
+ <3c72eec1-41ba-7389-eceb-3de80065555a@alliedtelesis.co.nz>
+ <1bbb3726-b0a4-6eb9-9076-706b06dfb90f@alliedtelesis.co.nz>
+ <61bb9800-9f90-9cd4-3b17-c14a7f83d792@gmail.com>
+ <0ff80ebb-e6ae-d8e1-9f0d-8759b2556141@alliedtelesis.co.nz>
+ <c2dadf51-666f-72f6-7687-731f281ed7d6@alliedtelesis.co.nz>
+ <4ed8a84b-0763-820e-df3e-1861d718f77d@alliedtelesis.co.nz>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <f97dc3af-d1f0-6974-ec2d-ace8d7e73993@gmail.com>
+Date: Tue, 25 Aug 2020 09:22:48 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
+In-Reply-To: <4ed8a84b-0763-820e-df3e-1861d718f77d@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,42 +96,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jakub Kicinski <kuba@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use semicolons and braces.
+On 25.08.2020 05:54, Chris Packham wrote:
+> 
+> On 25/08/20 10:04 am, Chris Packham wrote:
+>>
+>> On 20/08/20 9:08 am, Chris Packham wrote:
+>>>
+>>> On 19/08/20 6:15 pm, Heiner Kallweit wrote:
+>>>> On 19.08.2020 00:44, Chris Packham wrote:
+>>>>> Hi Again,
+>>>>>
+>>>>> On 17/08/20 9:09 am, Chris Packham wrote:
+>>>>>
+>>>>>> On 14/08/20 6:19 pm, Heiner Kallweit wrote:
+>>>>>>> On 14.08.2020 04:48, Chris Packham wrote:
+>>>>>>>> Hi,
+>>>>>>>>
+>>>>>>>> I'm seeing a problem with accessing spi-nor after upgrading a T2081
+>>>>>>>> based system to linux v5.7.15
+>>>>>>>>
+>>>>>>>> For this board u-boot and the u-boot environment live on spi-nor.
+>>>>>>>>
+>>>>>>>> When I use fw_setenv from userspace I get the following kernel logs
+>>>>>>>>
+>>>>>>>> # fw_setenv foo=1
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't 
+>>>>>>>> empty!
+>>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't 
+>>>>>>>> empty!
+>>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't 
+>>>>>>>> empty!
+>>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>>>>>> ...
+>>>>>>>>
+>>>>>>> This error reporting doesn't exist yet in 4.4. So you may have an 
+>>>>>>> issue
+>>>>>>> under 4.4 too, it's just not reported.
+>>>>>>> Did you verify that under 4.4 fw_setenv actually has an effect?
+>>>>>> Just double checked and yes under 4.4 the setting does get saved.
+>>>>>>>> If I run fw_printenv (before getting it into a bad state) it is 
+>>>>>>>> able to
+>>>>>>>> display the content of the boards u-boot environment.
+>>>>>>>>
+>>>>>>> This might indicate an issue with spi being locked. I've seen 
+>>>>>>> related
+>>>>>>> questions, just use the search engine of your choice and check for
+>>>>>>> fw_setenv and locked.
+>>>>>> I'm running a version of fw_setenv which includes
+>>>>>> https://gitlab.denx.de/u-boot/u-boot/-/commit/db820159 so it 
+>>>>>> shouldn't
+>>>>>> be locking things unnecessarily.
+>>>>>>>> If been unsuccessful in producing a setup for bisecting the 
+>>>>>>>> issue. I do
+>>>>>>>> know the issue doesn't occur on the old 4.4.x based kernel but 
+>>>>>>>> that's
+>>>>>>>> probably not much help.
+>>>>>>>>
+>>>>>>>> Any pointers on what the issue (and/or solution) might be.
+>>>>> I finally managed to get our board running with a vanilla kernel. With
+>>>>> corenet64_smp_defconfig I occasionally see
+>>>>>
+>>>>>     fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>
+>>>>> other than the message things seem to be working.
+>>>>>
+>>>>> With a custom defconfig I see
+>>>>>
+>>>>>     fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>     fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't 
+>>>>> empty!
+>>>>>     fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>>>     ...
+>>>>>
+>>>>> and access to the spi-nor does not work until the board is reset.
+>>>>>
+>>>>> I'll try and pick apart the differences between the two defconfigs.
+>>>
+>>> I now think my earlier testing is invalid. I have seen the problem 
+>>> with either defconfig if I try hard enough. I had convinced myself 
+>>> that the problem was CONFIG_PREEMPT but that was before I found 
+>>> boot-to-boot differences with the same kernel.
+>>>
+>>> It's possible that I'm chasing multiple issues with the same symptom.
+>>>
+>>> The error I'm most concerned with is in the sequence
+>>> 1. boot with old image
+>>> 2. write environment
+>>> 3. boot with new image
+>>> 4. write environment
+>>> 5. write fails and environment is corrupted
+>>>
+>>> After I recover the system things sometimes seem fine. Until I repeat 
+>>> the sequence above.
+>>>
+>>>> Also relevant may be:
+>>>> - Which dts are you using?
+>>> Custom but based heavily on the t2080rdb.
+>>>> - What's the spi-nor type, and at which frequency are you operating it?
+>>> The board has several alternate parts for the spi-nor so the dts just 
+>>> specifies compatible = "jedec,spi-nor" the actual chip detected on 
+>>> the board I have is "n25q032a (4096 Kbytes)". The dts sets 
+>>> spi-max-frequency = <10000000> I haven't measured the actual 
+>>> frequency on the bus.
+>>>> - Does the issue still happen if you lower the frequency?
+>>> I did play around with the frequency initially but I should probably 
+>>> give that another go now that I have a better reproduction method.
+>>
+>> Playing around with the frequency didn't help.
+>>
+>> One thing that I've found is that the problem appears to be that I end 
+>> up with extra bytes in the RX FIFO. If I add code to drain the RX FIFO 
+>> then the system is able to keep accessing the spi-nor (albeit with 
+>> some noisy logs).
+> 
+> I've been staring at spi-fsl-espi.c for while now and I think I've 
+> identified a couple of deficiencies that may or may not be related to my 
+> issue.
+> 
+> First I think the 'Transfer done but SPIE_DON isn't set' message can be 
+> generated spuriously. In fsl_espi_irq() we read the ESPI_SPIE register. 
+> We also write back to it to clear the current events. We re-read it in 
+> fsl_espi_cpu_irq() and complain when SPIE_DON is not set. But we can 
+> naturally end up in that situation if we're doing a large read. Consider 
+> the messages for reading a block of data from a spi-nor chip
+> 
+>   tx = READ_OP + ADDR
+>   rx = data
+> 
+> We setup the transfer and pump out the tx_buf. The first interrupt goes 
+> off and ESPI_SPIE has SPIM_DON and SPIM_RXT set. We empty the rx fifo, 
+> clear ESPI_SPIE and wait for the next interrupt. The next interrupt 
+> fires and this time we have ESPI_SPIE with just SPIM_RXT set. This 
+> continues until we've received all the data and we finish with ESPI_SPIE 
+> having only SPIM_RXT set. When we re-read it we complain that SPIE_DON 
+> isn't set.
+> 
+> The other deficiency is that we only get an interrupt when the amount of 
+> data in the rx fifo is above FSL_ESPI_RXTHR. If there are fewer than 
+> FSL_ESPI_RXTHR left to be received we will never pull them out of the fifo.
+> 
+SPIM_DON will trigger an interrupt once the last characters have been
+transferred, and read the remaining characters from the FIFO.
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+> I think the reason I'm seeing some variability is because of how fast 
+> (or slow) the interrupts get processed and how fast the spi-nor chip can 
+> fill the CPUs rx fifo.
+> 
+To rule out timing issues at high bus frequencies I initially asked
+for re-testing at lower frequencies. If you e.g. limit the bus to 1 MHz
+or even less, then timing shouldn't be an issue.
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-index bf846b42bc74..78e008b81374 100644
---- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-@@ -562,10 +562,13 @@ fs_enet_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 			BD_ENET_TX_TC);
- 		CBDS_SC(bdp, BD_ENET_TX_READY);
- 
--		if ((CBDR_SC(bdp) & BD_ENET_TX_WRAP) == 0)
--			bdp++, curidx++;
--		else
--			bdp = fep->tx_bd_base, curidx = 0;
-+		if ((CBDR_SC(bdp) & BD_ENET_TX_WRAP) == 0) {
-+			bdp++;
-+			curidx++;
-+		} else {
-+			bdp = fep->tx_bd_base;
-+			curidx = 0;
-+		}
- 
- 		len = skb_frag_size(frag);
- 		CBDW_BUFADDR(bdp, skb_frag_dma_map(fep->dev, frag, 0, len,
--- 
-2.26.0
+Last relevant functional changes have been done almost 4 years ago.
+And yours is the first such report I see. So question is what could be so
+special with your setup that it seems you're the only one being affected.
+The scenarios you describe are standard, therefore much more people
+should be affected in case of a driver bug.
 
+You said that kernel config impacts how frequently the issue happens.
+Therefore question is what's the diff in kernel config, and how could
+the differences be related to SPI.
