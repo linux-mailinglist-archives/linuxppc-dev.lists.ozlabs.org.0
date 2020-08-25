@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D3E2513B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 09:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F472513BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 10:00:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbLw05ScCzDqHG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 17:58:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbLy11sRkzDqTZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 18:00:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=WzLcj8Uv; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=20161025 header.b=qSJlE00Y; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbLrz3WcvzDqTY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 17:55:47 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id m34so6246039pgl.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 00:55:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbLsh1DRtzDqTk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 17:56:24 +1000 (AEST)
+Received: by mail-pg1-x52f.google.com with SMTP id o5so6257085pgb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 00:56:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=xWZCcKXp7dQkLY1ua1N7VSvKv+b8YJkHyth4+PNi84E=;
- b=WzLcj8UvBir/fg2DWzThgI9VWnwFAbE0SDTvc/ZiOVRoPJX+Q67bzfhP/0T7lC5gAm
- z/97UrVQ/iJ/1pTiPD72shcvMX4G2r867cPp5Ezib3VX074fiQxFPZShBQSO78gGk0oC
- uOHa0PdRQ/5m3aMxkZSsNHwSQHL1pwh0/x1QBAfvslMHkMfDKTXUhEHEyptmC6Q0gNWR
- mcVQiXl4lqaSVo/ltgbeGPrFVNUk2KFciSAozFNnAX0sczVHFWd2GJEcNYTB8mRIZqiq
- YPIuPqDIGR2lnF5TrtQ04qgpRrbIb1Lz4QSpGsBNGlvd4douwRt/Sk9AEjtr2WLurFVW
- SfFg==
+ bh=Z6UHluqivOmYKBUNbF2BxyWoXHbfZ9SBg+IHbcaz0JI=;
+ b=qSJlE00YIvrv1O3Dj8dOPwa2YBxffYAsxZD93Y3h1WhdNUEi0e5A4iOF+BgSUCvf3P
+ FjwI4WYsBBas9R6Ptp0guO8U1PEm89rXoFC9l0q6NkKqqGxR52cgDAqenPyEyToKb1cS
+ J7DVJmcsty7is/ppNx4T8wR1SajgoTwNF2BI6Kh+vv4awVyuuyvn28jnxPCVcXox6/PF
+ jGmmZ2zPVkxQ8nsKG8LjyN7p+lasa92klTUiJqbUPsMcMH1js6QgnuFxqyI1ratR7DQN
+ vKGYFdvsmigUjjUh9EhJMdhUx87ts42uso15q10anfmvCvq4OPJoIIPcamyT8xlHpGf/
+ u8wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=xWZCcKXp7dQkLY1ua1N7VSvKv+b8YJkHyth4+PNi84E=;
- b=o+gUhxH9vzhdRVhNX7n4rdjqpSec9ipXoiBI4lU9c+rI5H8P598bem+r8iupYEVPx8
- 2eGcSyzmW1gl4f6lqVFrJsI+xyy9yo53AbCc8LWns2FMWGztNNxuBAP++IyCrbHXW5Zp
- Df/7fG8jLgjNzphTtiClqEQBItcA3p1emPlbJ8zIdxivz85pcHqOBBK93nYtlnfgyv9J
- 0qNLNgVqZvjO9T1zlZtajG2wzncXqjbfoeftA0AUrvEHsxbL+RcAAc93PK2zUKPpTnM6
- pGrWa4an3QuCfvT33va29LJQ+EYYkdo84dLfm+d2cBnRm5jGRmxPwRvgmsldTBCi0s9C
- 4mrA==
-X-Gm-Message-State: AOAM5315DuXRic3UMQQ7/sgm9Ks93BTf/fo1WQ3NkjA2IzJ9jEYW9utK
- gd7K8S9DHxjIlKEDk2e2pU0hQbxzuAY=
-X-Google-Smtp-Source: ABdhPJzf+BaXZmZz+oBdRtibxl2pb0ox4A4t3T7MMCXGbbK+TiqjEgQT0VCLsFW65M/6iBDdvL8CGw==
-X-Received: by 2002:a63:ef47:: with SMTP id c7mr5778379pgk.249.1598342144450; 
- Tue, 25 Aug 2020 00:55:44 -0700 (PDT)
+ bh=Z6UHluqivOmYKBUNbF2BxyWoXHbfZ9SBg+IHbcaz0JI=;
+ b=Cz01aCLP0abBv+zkqeiP7Vt3GYJ/bQxQkjpeSZ/VXpQZII3Vo4fsluUrsHaV2uGZ1b
+ KvnnivMr3hhAxmxHw3yJ+Chmd+xZnLmxoJ6GnH3tIYxznB7zeCgdYOoMjkNh0pYhQHju
+ nLVeRQwvChxKinLxh7Km6YKJ5rTp60QZmJ4Eajb52Qbf9aJU5ZA5sG9PdifAxYfs07XX
+ 2e+Wzi51LT7PW6o7XhnmVOGQ7So/Ntx8swrVBSdA3VsZGUtlbX9KAZ4Hkj+IQoSPsZ0J
+ uRpe7t9DsETSzPkq0MRg6VylwvcsSLsTtUTaQNZQDBdAL/DhYvGdlXeLXeu+0+6aygZi
+ oGYQ==
+X-Gm-Message-State: AOAM532PXHZCBKkZrXjrzqSCAirXDi2V4NsZsdcYeKEY03UYoWyAHpAF
+ ECjg9SaoO6E5UysTPaGLuET2NOatlVM=
+X-Google-Smtp-Source: ABdhPJynnB00q210YJmKPFGcZ3XvZFRPD3RbT+7or3ihM9rgyaSYWqAhCWacDU9/h5qwLAx6LLWLyg==
+X-Received: by 2002:a63:e04c:: with SMTP id n12mr5697617pgj.388.1598342180377; 
+ Tue, 25 Aug 2020 00:56:20 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
- by smtp.gmail.com with ESMTPSA id z1sm1802577pjn.34.2020.08.25.00.55.42
+ by smtp.gmail.com with ESMTPSA id 8sm1901464pjx.14.2020.08.25.00.56.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Aug 2020 00:55:44 -0700 (PDT)
+ Tue, 25 Aug 2020 00:56:20 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	kvm-ppc@vger.kernel.org
-Subject: [PATCH] powerpc/64s: handle ISA v3.1 local copy-paste context switches
-Date: Tue, 25 Aug 2020 17:55:35 +1000
-Message-Id: <20200825075535.224536-1-npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: add new branch prediction security bits for
+ link stack
+Date: Tue, 25 Aug 2020 17:56:12 +1000
+Message-Id: <20200825075612.224656-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -82,90 +82,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ISA v3.1 the copy-paste facility has a new memory move functionality
-which allows the copy buffer to be pasted to domestic memory (RAM) as
-opposed to foreign memory (accelerator).
-
-This means the POWER9 trick of avoiding the cp_abort on context switch if
-the process had not mapped foreign memory does not work on POWER10. Do the
-cp_abort unconditionally there.
-
-KVM must also cp_abort on guest exit to prevent copy buffer state leaking
-between contexts.
+The hypervisor interface has defined branch prediction security bits for
+handling the link stack. Wire them up.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/process.c           | 16 +++++++++-------
- arch/powerpc/kvm/book3s_hv.c            |  7 +++++++
- arch/powerpc/kvm/book3s_hv_rmhandlers.S |  8 ++++++++
- 3 files changed, 24 insertions(+), 7 deletions(-)
+ arch/powerpc/include/asm/hvcall.h      | 2 ++
+ arch/powerpc/platforms/pseries/setup.c | 6 ++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 016bd831908e..1a572c811ca5 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1250,15 +1250,17 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 		restore_math(current->thread.regs);
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index fbb377055471..e66627fc1972 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -375,11 +375,13 @@
+ #define H_CPU_CHAR_THREAD_RECONFIG_CTRL	(1ull << 57) // IBM bit 6
+ #define H_CPU_CHAR_COUNT_CACHE_DISABLED	(1ull << 56) // IBM bit 7
+ #define H_CPU_CHAR_BCCTR_FLUSH_ASSIST	(1ull << 54) // IBM bit 9
++#define H_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST (1ull << 52) // IBM bit 11
  
- 		/*
--		 * The copy-paste buffer can only store into foreign real
--		 * addresses, so unprivileged processes can not see the
--		 * data or use it in any way unless they have foreign real
--		 * mappings. If the new process has the foreign real address
--		 * mappings, we must issue a cp_abort to clear any state and
--		 * prevent snooping, corruption or a covert channel.
-+		 * On POWER9 the copy-paste buffer can only paste into
-+		 * foreign real addresses, so unprivileged processes can not
-+		 * see the data or use it in any way unless they have
-+		 * foreign real mappings. If the new process has the foreign
-+		 * real address mappings, we must issue a cp_abort to clear
-+		 * any state and prevent snooping, corruption or a covert
-+		 * channel. ISA v3.1 supports paste into local memory.
- 		 */
- 		if (current->mm &&
--			atomic_read(&current->mm->context.vas_windows))
-+			(cpu_has_feature(CPU_FTR_ARCH_31) ||
-+			atomic_read(&current->mm->context.vas_windows)))
- 			asm volatile(PPC_CP_ABORT);
- 	}
- #endif /* CONFIG_PPC_BOOK3S_64 */
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 4ba06a2a306c..3bd3118c7633 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3530,6 +3530,13 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
- 	 */
- 	asm volatile("eieio; tlbsync; ptesync");
+ #define H_CPU_BEHAV_FAVOUR_SECURITY	(1ull << 63) // IBM bit 0
+ #define H_CPU_BEHAV_L1D_FLUSH_PR	(1ull << 62) // IBM bit 1
+ #define H_CPU_BEHAV_BNDS_CHK_SPEC_BAR	(1ull << 61) // IBM bit 2
+ #define H_CPU_BEHAV_FLUSH_COUNT_CACHE	(1ull << 58) // IBM bit 5
++#define H_CPU_BEHAV_FLUSH_LINK_STACK	(1ull << 57) // IBM bit 6
  
-+	/*
-+	 * cp_abort is required if the processor supports local copy-paste
-+	 * to clear the copy buffer that was under control of the guest.
-+	 */
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		asm volatile(PPC_CP_ABORT);
+ /* Flag values used in H_REGISTER_PROC_TBL hcall */
+ #define PROC_TABLE_OP_MASK	0x18
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 2f4ee0a90284..633c45ec406d 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -519,9 +519,15 @@ static void init_cpu_char_feature_flags(struct h_cpu_char_result *result)
+ 	if (result->character & H_CPU_CHAR_BCCTR_FLUSH_ASSIST)
+ 		security_ftr_set(SEC_FTR_BCCTR_FLUSH_ASSIST);
+ 
++	if (result->character & H_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST)
++		security_ftr_set(SEC_FTR_BCCTR_LINK_FLUSH_ASSIST);
 +
- 	mtspr(SPRN_LPID, vcpu->kvm->arch.host_lpid);	/* restore host LPID */
- 	isync();
+ 	if (result->behaviour & H_CPU_BEHAV_FLUSH_COUNT_CACHE)
+ 		security_ftr_set(SEC_FTR_FLUSH_COUNT_CACHE);
  
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 799d6d0f4ead..cd9995ee8441 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -1830,6 +1830,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_P9_RADIX_PREFETCH_BUG)
- 2:
- #endif /* CONFIG_PPC_RADIX_MMU */
- 
-+	/*
-+	 * cp_abort is required if the processor supports local copy-paste
-+	 * to clear the copy buffer that was under control of the guest.
-+	 */
-+BEGIN_FTR_SECTION
-+	PPC_CP_ABORT
-+END_FTR_SECTION_IFSET(CPU_FTR_ARCH_31)
++	if (result->behaviour & H_CPU_BEHAV_FLUSH_LINK_STACK)
++		security_ftr_set(SEC_FTR_FLUSH_LINK_STACK);
 +
  	/*
- 	 * POWER7/POWER8 guest -> host partition switch code.
- 	 * We don't have to lock against tlbies but we do
+ 	 * The features below are enabled by default, so we instead look to see
+ 	 * if firmware has *disabled* them, and clear them if so.
 -- 
 2.23.0
 
