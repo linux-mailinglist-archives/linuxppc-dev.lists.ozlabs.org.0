@@ -2,45 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6339225192A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 15:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F2A251953
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 15:15:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbTk56QRGzDqKs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 23:05:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbTxT2NprzDqRK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 23:15:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=yukuai3@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbTgS6rljzDqKs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 23:03:00 +1000 (AEST)
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id AEB24C7A2EAAA29B03A7;
- Tue, 25 Aug 2020 21:02:52 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Tue, 25 Aug 2020
- 21:02:44 +0800
-From: Yu Kuai <yukuai3@huawei.com>
-To: <timur@kernel.org>, <nicoleotsuka@gmail.com>, <Xiubo.Lee@gmail.com>,
- <festevam@gmail.com>, <shengjiu.wang@gmail.com>, <lgirdwood@gmail.com>,
- <broonie@kernel.org>, <perex@perex.cz>, <tiwai@suse.com>,
- <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
- <linux-imx@nxp.com>, <xobs@kosagi.com>
-Subject: [PATCH V2] ASoC: fsl: imx-es8328: add missing put_device() call in
- imx_es8328_probe()
-Date: Tue, 25 Aug 2020 21:02:24 +0800
-Message-ID: <20200825130224.1488694-1-yukuai3@huawei.com>
-X-Mailer: git-send-email 2.25.4
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.127.227]
-X-CFilter-Loop: Reflected
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbTqX5syHzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 23:09:59 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BbTqP3hfsz9tyVZ;
+ Tue, 25 Aug 2020 15:09:53 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 4N7Gp3heRtYd; Tue, 25 Aug 2020 15:09:53 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BbTqP2YKzz9tyVY;
+ Tue, 25 Aug 2020 15:09:53 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BCA508B81B;
+ Tue, 25 Aug 2020 15:09:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 1OHwb6Dc6nev; Tue, 25 Aug 2020 15:09:54 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 696118B81C;
+ Tue, 25 Aug 2020 15:09:54 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id ED59365D37; Tue, 25 Aug 2020 13:09:53 +0000 (UTC)
+Message-Id: <cover.1598360789.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v11 0/5] powerpc: switch VDSO to C implementation
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ nathanl@linux.ibm.com, anton@ozlabs.org
+Date: Tue, 25 Aug 2020 13:09:53 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,75 +59,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, yi.zhang@huawei.com,
- linux-kernel@vger.kernel.org, yukuai3@huawei.com,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, arnd@arndb.de, linux-kernel@vger.kernel.org,
+ luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-if of_find_device_by_node() succeed, imx_es8328_probe() doesn't have
-a corresponding put_device(). Thus add a jump target to fix the exception
-handling for this function implementation.
+This is the tenth version of a series to switch powerpc VDSO to
+generic C implementation.
 
-Fixes: 7e7292dba215 ("ASoC: fsl: add imx-es8328 machine driver")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
----
-Changes from V1:
- - remove the first patch in patch series
+Changes in v11:
+- Rebased to today's powerpc/merge branch
+- Prototype of __arch_get_hw_counter() was modified in mainline (patch 2)
 
- sound/soc/fsl/imx-es8328.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+Changes in v10 are:
+- Added a comment explaining the reason for the double stack frame
+- Moved back .cfi_register lr next to mflr
 
-diff --git a/sound/soc/fsl/imx-es8328.c b/sound/soc/fsl/imx-es8328.c
-index 15a27a2cd0ca..fad1eb6253d5 100644
---- a/sound/soc/fsl/imx-es8328.c
-+++ b/sound/soc/fsl/imx-es8328.c
-@@ -145,13 +145,13 @@ static int imx_es8328_probe(struct platform_device *pdev)
- 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
- 	if (!data) {
- 		ret = -ENOMEM;
--		goto fail;
-+		goto put_device;
- 	}
- 
- 	comp = devm_kzalloc(dev, 3 * sizeof(*comp), GFP_KERNEL);
- 	if (!comp) {
- 		ret = -ENOMEM;
--		goto fail;
-+		goto put_device;
- 	}
- 
- 	data->dev = dev;
-@@ -182,12 +182,12 @@ static int imx_es8328_probe(struct platform_device *pdev)
- 	ret = snd_soc_of_parse_card_name(&data->card, "model");
- 	if (ret) {
- 		dev_err(dev, "Unable to parse card name\n");
--		goto fail;
-+		goto put_device;
- 	}
- 	ret = snd_soc_of_parse_audio_routing(&data->card, "audio-routing");
- 	if (ret) {
- 		dev_err(dev, "Unable to parse routing: %d\n", ret);
--		goto fail;
-+		goto put_device;
- 	}
- 	data->card.num_links = 1;
- 	data->card.owner = THIS_MODULE;
-@@ -196,10 +196,12 @@ static int imx_es8328_probe(struct platform_device *pdev)
- 	ret = snd_soc_register_card(&data->card);
- 	if (ret) {
- 		dev_err(dev, "Unable to register: %d\n", ret);
--		goto fail;
-+		goto put_device;
- 	}
- 
- 	platform_set_drvdata(pdev, data);
-+put_device:
-+	put_device(&ssi_pdev->dev);
- fail:
- 	of_node_put(ssi_np);
- 	of_node_put(codec_np);
+Main changes in v9 are:
+- Dropped the patches which put the VDSO datapage in front of VDSO text in the mapping
+- Adds a second stack frame because the caller doesn't set one, at least on PPC64
+- Saving the TOC pointer on PPC64 (is that really needed ?)
+
+This series applies on today's powerpc/merge branch.
+
+See the last patches for details on changes and performance.
+
+Christophe Leroy (5):
+  powerpc/processor: Move cpu_relax() into asm/vdso/processor.h
+  powerpc/vdso: Prepare for switching VDSO to generic C implementation.
+  powerpc/vdso: Save and restore TOC pointer on PPC64
+  powerpc/vdso: Switch VDSO to generic C implementation.
+  powerpc/vdso: Provide __kernel_clock_gettime64() on vdso32
+
+ arch/powerpc/Kconfig                         |   2 +
+ arch/powerpc/include/asm/clocksource.h       |   7 +
+ arch/powerpc/include/asm/processor.h         |  13 +-
+ arch/powerpc/include/asm/vdso/clocksource.h  |   7 +
+ arch/powerpc/include/asm/vdso/gettimeofday.h | 198 ++++++++++++
+ arch/powerpc/include/asm/vdso/processor.h    |  23 ++
+ arch/powerpc/include/asm/vdso/vsyscall.h     |  25 ++
+ arch/powerpc/include/asm/vdso_datapage.h     |  40 +--
+ arch/powerpc/kernel/asm-offsets.c            |  49 +--
+ arch/powerpc/kernel/time.c                   |  91 +-----
+ arch/powerpc/kernel/vdso.c                   |   5 +-
+ arch/powerpc/kernel/vdso32/Makefile          |  32 +-
+ arch/powerpc/kernel/vdso32/config-fake32.h   |  34 +++
+ arch/powerpc/kernel/vdso32/gettimeofday.S    | 300 +------------------
+ arch/powerpc/kernel/vdso32/vdso32.lds.S      |   1 +
+ arch/powerpc/kernel/vdso32/vgettimeofday.c   |  35 +++
+ arch/powerpc/kernel/vdso64/Makefile          |  23 +-
+ arch/powerpc/kernel/vdso64/gettimeofday.S    | 242 +--------------
+ arch/powerpc/kernel/vdso64/vgettimeofday.c   |  29 ++
+ 19 files changed, 454 insertions(+), 702 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/clocksource.h
+ create mode 100644 arch/powerpc/include/asm/vdso/clocksource.h
+ create mode 100644 arch/powerpc/include/asm/vdso/gettimeofday.h
+ create mode 100644 arch/powerpc/include/asm/vdso/processor.h
+ create mode 100644 arch/powerpc/include/asm/vdso/vsyscall.h
+ create mode 100644 arch/powerpc/kernel/vdso32/config-fake32.h
+ create mode 100644 arch/powerpc/kernel/vdso32/vgettimeofday.c
+ create mode 100644 arch/powerpc/kernel/vdso64/vgettimeofday.c
+
 -- 
-2.25.4
+2.25.0
 
