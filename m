@@ -1,103 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD40B25174F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 13:19:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133EA251802
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 13:47:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbRNG5X1XzDqPQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 21:19:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbRzt139LzDqMN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 21:47:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=l5h7dRmR; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fb/tommi; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbR865Z9KzDqPM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 21:09:10 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07PB23HA154035; Tue, 25 Aug 2020 07:08:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=JZsuufV+bZwYyntjqQ1i/UCJBUmP0dE/6fBRbVb9uIA=;
- b=l5h7dRmREhyU0OgDqQZz9dt6CO6u1c3mPzlcB0+0k8YUv7tS/wsvQVynfYMjcYtTcNhV
- ByzGQ9v5HcbEntI6l2KCWuKMVdy0hiV9kyo91xUHtOG9jk66FXvyfGXrlxhehMW1rdHt
- NPdiAXHM7TS1pyyqux2EnkNLmdM2bfSWj4fR5cCyuXJ1Isf/+qCLgCn8aGAss02zbnkC
- K3JlLhSFqvh1NDbarZSvA3P+4jZUpcH7xZd3YTRPi451QFSyTm0MH0w7BFvmdmowbnWn
- SeWPhM/dymxaZdhN7izqQXsUuhHnQ43/pn6W0nHpaISN0UEpUpVjE1pUO87P0I7TRgXI mQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 334yt62p35-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 07:08:58 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07PB2IgG154798;
- Tue, 25 Aug 2020 07:08:57 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 334yt62nq0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 07:08:57 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07PB7S86005053;
- Tue, 25 Aug 2020 11:08:24 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04fra.de.ibm.com with ESMTP id 332ujjt2c2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 11:08:24 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 07PB6oul55247178
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Aug 2020 11:06:50 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D774042041;
- Tue, 25 Aug 2020 11:08:20 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87B1842045;
- Tue, 25 Aug 2020 11:08:18 +0000 (GMT)
-Received: from [9.199.33.167] (unknown [9.199.33.167])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 25 Aug 2020 11:08:18 +0000 (GMT)
-Subject: Re: [PATCH v5 4/8] powerpc/watchpoint: Move DAWR detection logic
- outside of hw_breakpoint.c
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, christophe.leroy@c-s.fr
-References: <20200825043617.1073634-1-ravi.bangoria@linux.ibm.com>
- <20200825043617.1073634-5-ravi.bangoria@linux.ibm.com>
- <0a73280b-c231-a7bb-18d9-abf2a37ba24b@csgroup.eu>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <59ac33ed-4ed3-2c92-7b0b-1d14abf7186b@linux.ibm.com>
-Date: Tue, 25 Aug 2020 16:38:17 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <0a73280b-c231-a7bb-18d9-abf2a37ba24b@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-25_02:2020-08-25,
- 2020-08-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0
- adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250079
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbRy91nCPzDqV1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 21:45:34 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id g33so6654709pgb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 04:45:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=sdc3PosHFBwTYpEgono2hXMYMTHCEM+aagGqhGLifz0=;
+ b=fb/tommiNV84wRN+Sjg2NPVNv6ZkpXBKJovyWRtp6EgUfuRZ9aX+dFZV0Q/wV3GVwz
+ nclMYgFkwintJ5ssMpwnpH2+imlwarvupnp3ul+l3xSpEtzAAaI60Q2sNpwS4T18POZX
+ VtGCn4MkVTSKqG6iBX13/DX90RxyK1aI66ctxyJpMmo6X1mdPF4B6qE1mtnuCL9gDlRG
+ JpMNp278GtL+O6EgCMs8clj4YoMJ+sbSOz8Iuo6EzJnZYKIjkS3JWSD65bk+i7g6WW7c
+ 3Dg8g1wUxnwz1hbFh18FAXUu7VHtPxjvj02DriQ0e1r3zJfx2aLPknBjiKKWw+svIsjx
+ 87hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=sdc3PosHFBwTYpEgono2hXMYMTHCEM+aagGqhGLifz0=;
+ b=O0UOGrdF5lxPOw3xBFIqjCdVz5u0I+p+w2EGLsiMgrmpLp7vwlJHk1r8ekHHJEbQom
+ utTybe2byn/yIhwnGw1nvUAy/YuIIVlfxPyA06jSI1b/MFyShbZF643icb/t5cesOnyE
+ lpTGq9bsTtC8zfnlnu2TjjmwqQrtnb5TUbWfT0Jefwq07IyXBx8WYHEXBo0FiXESwJYz
+ KNd5a+gev7xtO8SZv+kzEd01F4HNzhZA+2lOqMsy4xNlIclOvDN4dAosZpZgz8WQYaIO
+ FUOBJtCxAtemyENdtQ1OLqif0xlLKtbjAixZqb9dhfGZFI/Fs68ammbFp6J6rq+6T50B
+ kKNQ==
+X-Gm-Message-State: AOAM530/w4TP4tOi8m6O5nDV7pc4jOdCFwVGv0pmOiRu0cApc7NHa2jb
+ Fe+4WE3cF+tOXG8q8h3pqwoXmXKDzq0=
+X-Google-Smtp-Source: ABdhPJxrDgPRn7RGgK4KJJahtqL+Pt2gMEKN1rgrA7Es3kSifHXT7iLcl5P+DmN3yupYVaCPQMGBRQ==
+X-Received: by 2002:a63:f00a:: with SMTP id k10mr6561668pgh.76.1598355932498; 
+ Tue, 25 Aug 2020 04:45:32 -0700 (PDT)
+Received: from localhost.localdomain
+ (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
+ by smtp.gmail.com with ESMTPSA id x4sm14694811pff.112.2020.08.25.04.45.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Aug 2020 04:45:32 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: Update documentation of ISA versions for Power10
+Date: Tue, 25 Aug 2020 21:45:07 +1000
+Message-Id: <20200825114507.13297-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,49 +73,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mikey@neuling.org,
- pedromfc@linux.ibm.com, linux-kernel@vger.kernel.org, paulus@samba.org,
- jniethe5@gmail.com, rogealve@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+Update the CPU to ISA Version Mapping document to include Power10 and
+ISA v3.1.
 
->> +static int cache_op_size(void)
->> +{
->> +#ifdef __powerpc64__
->> +    return ppc64_caches.l1d.block_size;
->> +#else
->> +    return L1_CACHE_BYTES;
->> +#endif
->> +}
-> 
-> You've got l1_dcache_bytes() in arch/powerpc/include/asm/cache.h to do that.
-> 
->> +
->> +void wp_get_instr_detail(struct pt_regs *regs, struct ppc_inst *instr,
->> +             int *type, int *size, unsigned long *ea)
->> +{
->> +    struct instruction_op op;
->> +
->> +    if (__get_user_instr_inatomic(*instr, (void __user *)regs->nip))
->> +        return;
->> +
->> +    analyse_instr(&op, regs, *instr);
->> +    *type = GETTYPE(op.type);
->> +    *ea = op.ea;
->> +#ifdef __powerpc64__
->> +    if (!(regs->msr & MSR_64BIT))
->> +        *ea &= 0xffffffffUL;
->> +#endif
-> 
-> This #ifdef is unneeded, it should build fine on a 32 bits too.
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+ Documentation/powerpc/isa-versions.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-This patch is just a code movement from one file to another.
-I don't really change the logic. Would you mind if I do a
-separate patch for these changes (not a part of this series)?
+diff --git a/Documentation/powerpc/isa-versions.rst b/Documentation/powerpc/isa-versions.rst
+index a363d8c1603c..72aff1eaaea1 100644
+--- a/Documentation/powerpc/isa-versions.rst
++++ b/Documentation/powerpc/isa-versions.rst
+@@ -7,6 +7,7 @@ Mapping of some CPU versions to relevant ISA versions.
+ ========= ====================================================================
+ CPU       Architecture version
+ ========= ====================================================================
++Power10   Power ISA v3.1
+ Power9    Power ISA v3.0B
+ Power8    Power ISA v2.07
+ Power7    Power ISA v2.06
+@@ -32,6 +33,7 @@ Key Features
+ ========== ==================
+ CPU        VMX (aka. Altivec)
+ ========== ==================
++Power10    Yes
+ Power9     Yes
+ Power8     Yes
+ Power7     Yes
+@@ -47,6 +49,7 @@ PPC970     Yes
+ ========== ====
+ CPU        VSX
+ ========== ====
++Power10    Yes
+ Power9     Yes
+ Power8     Yes
+ Power7     Yes
+@@ -62,6 +65,7 @@ PPC970     No
+ ========== ====================================
+ CPU        Transactional Memory
+ ========== ====================================
++Power10    Yes
+ Power9     Yes (* see transactional_memory.txt)
+ Power8     Yes
+ Power7     No
+-- 
+2.17.1
 
-Thanks for review,
-Ravi
