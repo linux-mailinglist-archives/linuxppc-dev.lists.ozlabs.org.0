@@ -2,92 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54506251A21
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 15:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10949251A49
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 15:56:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbVhC5Xg3zDqJL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 23:48:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbVsc4rQHzDqVv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 23:56:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hartb@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=i8z9Dab3; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbVdW6tTmzDqCw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 23:46:17 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07PDXi1p153000; Tue, 25 Aug 2020 09:46:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=1Rp0P65mclnfxjQiUt++LdLKDCUo12LE/UVwbCf+g00=;
- b=i8z9Dab3k703PwN4I5VmM+rzVRNT0lmkvhfbTZMupko4CDnNNjLiw9OwSBKennmxWmDj
- doJEKBwzpaqSqwkonp7p7WIX+crruQTzDodg/9Bm6LfWDq6YIrIXqzLuepwsgY44pkDC
- v22BiBi7iBjPMsTdhyGF73nRnWBD/5ULrXgkXxTgf/L8skJ+vsooArNn5oa4wYh7uhLd
- TLamEA3fIfBaL/ojuyqSYn0EiZ3OsfeE7fo5bZrP6cuiw0XLEuJt5NbiGlMtIWONJSfT
- SK0WFHFmd+yrYaFn9hzUSovWe6rfkLGd0jQTimJZZIQPKOOs9Nc8lfl8db8KIDH1UxxD tA== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3353kw8eae-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 09:46:13 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07PDh4OJ004459;
- Tue, 25 Aug 2020 13:46:12 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 332uwa9snw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 13:46:12 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07PDkC1X55050558
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Aug 2020 13:46:12 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EFD6AAE062;
- Tue, 25 Aug 2020 13:46:11 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E877AE05C;
- Tue, 25 Aug 2020 13:46:11 +0000 (GMT)
-Received: from Brians-MBP (unknown [9.211.49.159])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
- Tue, 25 Aug 2020 13:46:11 +0000 (GMT)
-Date: Tue, 25 Aug 2020 08:45:55 -0500
-From: Brian W Hart <hartb@linux.vnet.ibm.com>
-To: Dany Madden <drt@linux.ibm.com>
-Subject: Re: [PATCH net] ibmvnic fix NULL tx_pools and rx_tools issue at
- do_reset
-Message-ID: <20200825134554.GA33239@Brians-MBP>
-Mail-Followup-To: Dany Madden <drt@linux.ibm.com>, davem@davemloft.net,
- netdev@vger.kernel.org, Mingming Cao <mmc@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20200824234922.805858-1-drt@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200824234922.805858-1-drt@linux.ibm.com>
-User-Agent: Mutt/1.9.1 (2017-09-22)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-25_04:2020-08-25,
- 2020-08-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 adultscore=0
- mlxscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0 malwarescore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008250102
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbVpW6JVGzDqLH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 23:54:09 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BbVpN0mStz9txlZ;
+ Tue, 25 Aug 2020 15:54:04 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 7XPdRsKX9l1c; Tue, 25 Aug 2020 15:54:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BbVpM73nzz9txlY;
+ Tue, 25 Aug 2020 15:54:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 714D48B822;
+ Tue, 25 Aug 2020 15:54:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HxYGHEkwjCuH; Tue, 25 Aug 2020 15:54:02 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 92E388B812;
+ Tue, 25 Aug 2020 15:53:59 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 2D50F65D3C; Tue, 25 Aug 2020 13:53:59 +0000 (UTC)
+Message-Id: <df48ed76cf8a756a7f97ed42a1a39d0a404014bc.1598363608.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 1/9] powerpc/vdso: Remove BUG_ON() in vdso_init()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 25 Aug 2020 13:53:59 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,89 +58,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Mingming Cao <mmc@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 24, 2020 at 07:49:23PM -0400, Dany Madden wrote:
-> From: Mingming Cao <mmc@linux.vnet.ibm.com>
-> 
-> At the time of do_reset, ibmvnic tries to re-initalize the tx_pools
-> and rx_pools to avoid re-allocating the long term buffer. However
-> there is a window inside do_reset that the tx_pools and
-> rx_pools were freed before re-initialized making it possible to deference
-> null pointers.
-> 
-> This patch fixes this issue by checking that the tx_pool
-> and rx_pool are not NULL after ibmvnic_login. If so, re-allocating
-> the pools. This will avoid getting into calling reset_tx/rx_pools with
-> NULL adapter tx_pools/rx_pools pointer. Also add null pointer check in
-> reset_tx_pools and reset_rx_pools to safe handle NULL pointer case.
-> 
-> Signed-off-by: Mingming Cao <mmc@linux.vnet.ibm.com>
-> Signed-off-by: Dany Madden <drt@linux.ibm.com>
-> ---
->  drivers/net/ethernet/ibm/ibmvnic.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-> index 5afb3c9c52d2..5ff48e55308b 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -479,6 +479,9 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
->  	int i, j, rc;
->  	u64 *size_array;
-> 
-> +	if (!adapter->tx_pool)
-> +		return -1;
-> +
+If we are not able to allocate memory for the pagelists, bail out.
 
-Should this one be testing rx_pool?
+There is no reason to crash the machine, just have vdso init fail.
 
-brian
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+This series is based on top of the series switching to C VDSO implementation,
+but in fact only the last patch depends on that series and is not vital as
+it is just afterwork cleanup.
 
->  	size_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
->  		be32_to_cpu(adapter->login_rsp_buf->off_rxadd_buff_size));
-> 
-> @@ -649,6 +652,9 @@ static int reset_tx_pools(struct ibmvnic_adapter *adapter)
->  	int tx_scrqs;
->  	int i, rc;
-> 
-> +	if (!adapter->tx_pool)
-> +		return -1;
-> +
->  	tx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_txsubm_subcrqs);
->  	for (i = 0; i < tx_scrqs; i++) {
->  		rc = reset_one_tx_pool(adapter, &adapter->tso_pool[i]);
-> @@ -2011,7 +2017,10 @@ static int do_reset(struct ibmvnic_adapter *adapter,
->  		    adapter->req_rx_add_entries_per_subcrq !=
->  		    old_num_rx_slots ||
->  		    adapter->req_tx_entries_per_subcrq !=
-> -		    old_num_tx_slots) {
-> +		    old_num_tx_slots ||
-> +			!adapter->rx_pool ||
-> +			!adapter->tso_pool ||
-> +			!adapter->tx_pool) {
->  			release_rx_pools(adapter);
->  			release_tx_pools(adapter);
->  			release_napi(adapter);
-> @@ -2024,10 +2033,14 @@ static int do_reset(struct ibmvnic_adapter *adapter,
->  		} else {
->  			rc = reset_tx_pools(adapter);
->  			if (rc)
-> +				netdev_dbg(adapter->netdev, "reset tx pools failed (%d)\n",
-> +						rc);
->  				goto out;
-> 
->  			rc = reset_rx_pools(adapter);
->  			if (rc)
-> +				netdev_dbg(adapter->netdev, "reset rx pools failed (%d)\n",
-> +						rc);
->  				goto out;
->  		}
->  		ibmvnic_disable_irqs(adapter);
-> -- 
-> 2.18.2
-> 
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/vdso.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
+
+diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+index 23208a051af5..88a4a02ed4c4 100644
+--- a/arch/powerpc/kernel/vdso.c
++++ b/arch/powerpc/kernel/vdso.c
+@@ -747,20 +747,16 @@ static int __init vdso_init(void)
+ 	 * Initialize the vDSO images in memory, that is do necessary
+ 	 * fixups of vDSO symbols, locate trampolines, etc...
+ 	 */
+-	if (vdso_setup()) {
+-		printk(KERN_ERR "vDSO setup failure, not enabled !\n");
+-		vdso32_pages = 0;
+-#ifdef CONFIG_PPC64
+-		vdso64_pages = 0;
+-#endif
+-		return 0;
+-	}
++	if (vdso_setup())
++		goto setup_failed;
+ 
+ #ifdef CONFIG_VDSO32
+ 	/* Make sure pages are in the correct state */
+ 	vdso32_pagelist = kcalloc(vdso32_pages + 2, sizeof(struct page *),
+ 				  GFP_KERNEL);
+-	BUG_ON(vdso32_pagelist == NULL);
++	if (!vdso32_pagelist)
++		goto alloc_failed;
++
+ 	for (i = 0; i < vdso32_pages; i++) {
+ 		struct page *pg = virt_to_page(vdso32_kbase + i*PAGE_SIZE);
+ 		get_page(pg);
+@@ -773,7 +769,9 @@ static int __init vdso_init(void)
+ #ifdef CONFIG_PPC64
+ 	vdso64_pagelist = kcalloc(vdso64_pages + 2, sizeof(struct page *),
+ 				  GFP_KERNEL);
+-	BUG_ON(vdso64_pagelist == NULL);
++	if (!vdso64_pagelist)
++		goto alloc_failed;
++
+ 	for (i = 0; i < vdso64_pages; i++) {
+ 		struct page *pg = virt_to_page(vdso64_kbase + i*PAGE_SIZE);
+ 		get_page(pg);
+@@ -789,5 +787,14 @@ static int __init vdso_init(void)
+ 	vdso_ready = 1;
+ 
+ 	return 0;
++
++setup_failed:
++	pr_err("vDSO setup failure, not enabled !\n");
++alloc_failed:
++	vdso32_pages = 0;
++#ifdef CONFIG_PPC64
++	vdso64_pages = 0;
++#endif
++	return 0;
+ }
+ arch_initcall(vdso_init);
+-- 
+2.25.0
+
