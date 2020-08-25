@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B612513AE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 09:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D3E2513B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 09:58:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbLt720ddzDqT4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 17:56:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbLw05ScCzDqHG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 17:58:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tSt5+fHM; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ header.s=20161025 header.b=WzLcj8Uv; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbLq44d4mzDqTG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 17:54:08 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id g1so2457425pgm.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 00:54:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbLrz3WcvzDqTY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 17:55:47 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id m34so6246039pgl.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 00:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=JSpk0AX7L5ai2NXYTi6ldPMfoV9tLt+6bkW/5ds6qYc=;
- b=tSt5+fHM3nVJbwJjTOby9rbsXcqAHOpXbHJFL9mUJ6qZGnPbhDoszqTIlMRC0g+q8o
- Lg2F2OoKBxXrdzFS1xPJCWhI+8MQbd9QxADtv+Ffq4iSs8j/vLBYqmvZtzSLqMtILNP1
- HY0Ziey1d9skcWolIN1UVtqJ+R5Ah55rqkIDHhEVUohc4nOfpdtVWXUlmy91HLLvYLrb
- lbUAtGtJlpVZXg9X/E+80f7VIduHeASxYVMm8gt/NskoQsUJQ5kAqrO4928CeXSoQy77
- 8J1/VF/G2IlwQ4dUrBl+U7QfZluZdBcLXZC1+7oj8gFj+Eh0O83tuvdYjO2yaJnFdZeL
- bFEg==
+ bh=xWZCcKXp7dQkLY1ua1N7VSvKv+b8YJkHyth4+PNi84E=;
+ b=WzLcj8UvBir/fg2DWzThgI9VWnwFAbE0SDTvc/ZiOVRoPJX+Q67bzfhP/0T7lC5gAm
+ z/97UrVQ/iJ/1pTiPD72shcvMX4G2r867cPp5Ezib3VX074fiQxFPZShBQSO78gGk0oC
+ uOHa0PdRQ/5m3aMxkZSsNHwSQHL1pwh0/x1QBAfvslMHkMfDKTXUhEHEyptmC6Q0gNWR
+ mcVQiXl4lqaSVo/ltgbeGPrFVNUk2KFciSAozFNnAX0sczVHFWd2GJEcNYTB8mRIZqiq
+ YPIuPqDIGR2lnF5TrtQ04qgpRrbIb1Lz4QSpGsBNGlvd4douwRt/Sk9AEjtr2WLurFVW
+ SfFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=JSpk0AX7L5ai2NXYTi6ldPMfoV9tLt+6bkW/5ds6qYc=;
- b=R2Pgl01VbUEUNMnJt47bPSpMYYfwkMEkIj+OcJp7m7EMZo9atWDCStRCfHzpSP30fK
- fk4zirvxbRxiGkX7oDkJs4EJYAjlpz5TOJJZWNPFB5Vy/4ybptLl7Wh+fQOBRprpuq82
- n3ZbpsSQhhDb/89WyLxYqgJ9FjDsHwEXBBz6wawOB5O0+RQFddXMUtQjjwhgfQ5Wz09G
- pfhAphJe40CZxTvp6Y5Vw8nxitzzptLOqtdCe4qHY9LK6WhF0b5VYAD58IHVf1tuTGps
- XxJ2ZEOUq8mE7z84hrSc5mGVT1W4aip8EuQeXsK1hqKAPU9ZuYVpFP1TcVk++9Zlg4Z8
- 4J0Q==
-X-Gm-Message-State: AOAM532IXKMhBKKiuMsZWbud5JPqC2clP5LUS269wdG6ALvXCcJHTtvo
- EwAZfMNDM55Vc/GdgF8X3eSZCZWcJDw=
-X-Google-Smtp-Source: ABdhPJxp5jpXsr73Sk+O7vvalEP+AEWIqJQVn17FccNjIwo43ryX46ftj0q1lZ1AaTSZJQHHsvBhPg==
-X-Received: by 2002:a62:808e:: with SMTP id j136mr6595925pfd.99.1598342045329; 
- Tue, 25 Aug 2020 00:54:05 -0700 (PDT)
+ bh=xWZCcKXp7dQkLY1ua1N7VSvKv+b8YJkHyth4+PNi84E=;
+ b=o+gUhxH9vzhdRVhNX7n4rdjqpSec9ipXoiBI4lU9c+rI5H8P598bem+r8iupYEVPx8
+ 2eGcSyzmW1gl4f6lqVFrJsI+xyy9yo53AbCc8LWns2FMWGztNNxuBAP++IyCrbHXW5Zp
+ Df/7fG8jLgjNzphTtiClqEQBItcA3p1emPlbJ8zIdxivz85pcHqOBBK93nYtlnfgyv9J
+ 0qNLNgVqZvjO9T1zlZtajG2wzncXqjbfoeftA0AUrvEHsxbL+RcAAc93PK2zUKPpTnM6
+ pGrWa4an3QuCfvT33va29LJQ+EYYkdo84dLfm+d2cBnRm5jGRmxPwRvgmsldTBCi0s9C
+ 4mrA==
+X-Gm-Message-State: AOAM5315DuXRic3UMQQ7/sgm9Ks93BTf/fo1WQ3NkjA2IzJ9jEYW9utK
+ gd7K8S9DHxjIlKEDk2e2pU0hQbxzuAY=
+X-Google-Smtp-Source: ABdhPJzf+BaXZmZz+oBdRtibxl2pb0ox4A4t3T7MMCXGbbK+TiqjEgQT0VCLsFW65M/6iBDdvL8CGw==
+X-Received: by 2002:a63:ef47:: with SMTP id c7mr5778379pgk.249.1598342144450; 
+ Tue, 25 Aug 2020 00:55:44 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
- by smtp.gmail.com with ESMTPSA id w16sm14163357pfq.13.2020.08.25.00.54.03
+ by smtp.gmail.com with ESMTPSA id z1sm1802577pjn.34.2020.08.25.00.55.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Aug 2020 00:54:04 -0700 (PDT)
+ Tue, 25 Aug 2020 00:55:44 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s: Add cp_abort after tlbiel to invalidate
- copy-buffer address
-Date: Tue, 25 Aug 2020 17:53:56 +1000
-Message-Id: <20200825075356.224346-1-npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	kvm-ppc@vger.kernel.org
+Subject: [PATCH] powerpc/64s: handle ISA v3.1 local copy-paste context switches
+Date: Tue, 25 Aug 2020 17:55:35 +1000
+Message-Id: <20200825075535.224536-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -82,150 +82,90 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The copy buffer is implemented as a real address in the nest which is
-translated from EA by copy, and used for memory access by paste. This
-requires that it be invalidated by TLB invalidation.
+The ISA v3.1 the copy-paste facility has a new memory move functionality
+which allows the copy buffer to be pasted to domestic memory (RAM) as
+opposed to foreign memory (accelerator).
 
-TLBIE does invalidate the copy buffer, but TLBIEL does not. Add cp_abort
-to the tlbiel sequence.
+This means the POWER9 trick of avoiding the cp_abort on context switch if
+the process had not mapped foreign memory does not work on POWER10. Do the
+cp_abort unconditionally there.
+
+KVM must also cp_abort on guest exit to prevent copy buffer state leaking
+between contexts.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/synch.h       | 13 +++++++++++++
- arch/powerpc/mm/book3s64/hash_native.c |  8 ++++----
- arch/powerpc/mm/book3s64/radix_tlb.c   | 12 ++++++------
- 3 files changed, 23 insertions(+), 10 deletions(-)
+ arch/powerpc/kernel/process.c           | 16 +++++++++-------
+ arch/powerpc/kvm/book3s_hv.c            |  7 +++++++
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S |  8 ++++++++
+ 3 files changed, 24 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/synch.h b/arch/powerpc/include/asm/synch.h
-index aca70fb43147..47d036d32828 100644
---- a/arch/powerpc/include/asm/synch.h
-+++ b/arch/powerpc/include/asm/synch.h
-@@ -3,7 +3,9 @@
- #define _ASM_POWERPC_SYNCH_H 
- #ifdef __KERNEL__
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 016bd831908e..1a572c811ca5 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1250,15 +1250,17 @@ struct task_struct *__switch_to(struct task_struct *prev,
+ 		restore_math(current->thread.regs);
  
-+#include <asm/cputable.h>
- #include <asm/feature-fixups.h>
-+#include <asm/ppc-opcode.h>
- #include <asm/asm-const.h>
- 
- #ifndef __ASSEMBLY__
-@@ -20,6 +22,17 @@ static inline void isync(void)
- {
- 	__asm__ __volatile__ ("isync" : : : "memory");
- }
-+
-+static inline void ppc_after_tlbiel_barrier(void)
-+{
-+        asm volatile("ptesync": : :"memory");
-+	/*
-+	 * POWER9, POWER10 need a cp_abort after tlbiel. For POWER9 this could
-+	 * possibly be limited to tasks which have mapped foreign address, similar
-+	 * to cp_abort in context switch.
-+	 */
-+        asm volatile(ASM_FTR_IFSET(PPC_CP_ABORT, "", %0) : : "i" (CPU_FTR_ARCH_300) : "memory");
-+}
- #endif /* __ASSEMBLY__ */
- 
- #if defined(__powerpc64__)
-diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
-index cf20e5229ce1..0203cdf48c54 100644
---- a/arch/powerpc/mm/book3s64/hash_native.c
-+++ b/arch/powerpc/mm/book3s64/hash_native.c
-@@ -82,7 +82,7 @@ static void tlbiel_all_isa206(unsigned int num_sets, unsigned int is)
- 	for (set = 0; set < num_sets; set++)
- 		tlbiel_hash_set_isa206(set, is);
- 
--	asm volatile("ptesync": : :"memory");
-+	ppc_after_tlbiel_barrier();
- }
- 
- static void tlbiel_all_isa300(unsigned int num_sets, unsigned int is)
-@@ -110,7 +110,7 @@ static void tlbiel_all_isa300(unsigned int num_sets, unsigned int is)
- 	 */
- 	tlbiel_hash_set_isa300(0, is, 0, 2, 1);
- 
--	asm volatile("ptesync": : :"memory");
-+	ppc_after_tlbiel_barrier();
- 
- 	asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT "; isync" : : :"memory");
- }
-@@ -303,7 +303,7 @@ static inline void tlbie(unsigned long vpn, int psize, int apsize,
- 	asm volatile("ptesync": : :"memory");
- 	if (use_local) {
- 		__tlbiel(vpn, psize, apsize, ssize);
--		asm volatile("ptesync": : :"memory");
-+		ppc_after_tlbiel_barrier();
- 	} else {
- 		__tlbie(vpn, psize, apsize, ssize);
- 		fixup_tlbie_vpn(vpn, psize, apsize, ssize);
-@@ -879,7 +879,7 @@ static void native_flush_hash_range(unsigned long number, int local)
- 				__tlbiel(vpn, psize, psize, ssize);
- 			} pte_iterate_hashed_end();
- 		}
--		asm volatile("ptesync":::"memory");
-+		ppc_after_tlbiel_barrier();
- 	} else {
- 		int lock_tlbie = !mmu_has_feature(MMU_FTR_LOCKLESS_TLBIE);
- 
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 0d233763441f..5c9d2fccacc7 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -65,7 +65,7 @@ static void tlbiel_all_isa300(unsigned int num_sets, unsigned int is)
- 	for (set = 1; set < num_sets; set++)
- 		tlbiel_radix_set_isa300(set, is, 0, RIC_FLUSH_TLB, 1);
- 
--	asm volatile("ptesync": : :"memory");
-+	ppc_after_tlbiel_barrier();
- }
- 
- void radix__tlbiel_all(unsigned int action)
-@@ -296,7 +296,7 @@ static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
- 
- 	/* For PWC, only one flush is needed */
- 	if (ric == RIC_FLUSH_PWC) {
--		asm volatile("ptesync": : :"memory");
-+		ppc_after_tlbiel_barrier();
- 		return;
+ 		/*
+-		 * The copy-paste buffer can only store into foreign real
+-		 * addresses, so unprivileged processes can not see the
+-		 * data or use it in any way unless they have foreign real
+-		 * mappings. If the new process has the foreign real address
+-		 * mappings, we must issue a cp_abort to clear any state and
+-		 * prevent snooping, corruption or a covert channel.
++		 * On POWER9 the copy-paste buffer can only paste into
++		 * foreign real addresses, so unprivileged processes can not
++		 * see the data or use it in any way unless they have
++		 * foreign real mappings. If the new process has the foreign
++		 * real address mappings, we must issue a cp_abort to clear
++		 * any state and prevent snooping, corruption or a covert
++		 * channel. ISA v3.1 supports paste into local memory.
+ 		 */
+ 		if (current->mm &&
+-			atomic_read(&current->mm->context.vas_windows))
++			(cpu_has_feature(CPU_FTR_ARCH_31) ||
++			atomic_read(&current->mm->context.vas_windows)))
+ 			asm volatile(PPC_CP_ABORT);
  	}
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 4ba06a2a306c..3bd3118c7633 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3530,6 +3530,13 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	 */
+ 	asm volatile("eieio; tlbsync; ptesync");
  
-@@ -304,7 +304,7 @@ static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
- 	for (set = 1; set < POWER9_TLB_SETS_RADIX ; set++)
- 		__tlbiel_pid(pid, set, RIC_FLUSH_TLB);
++	/*
++	 * cp_abort is required if the processor supports local copy-paste
++	 * to clear the copy buffer that was under control of the guest.
++	 */
++	if (cpu_has_feature(CPU_FTR_ARCH_31))
++		asm volatile(PPC_CP_ABORT);
++
+ 	mtspr(SPRN_LPID, vcpu->kvm->arch.host_lpid);	/* restore host LPID */
+ 	isync();
  
--	asm volatile("ptesync": : :"memory");
-+	ppc_after_tlbiel_barrier();
- 	asm volatile(PPC_RADIX_INVALIDATE_ERAT_USER "; isync" : : :"memory");
- }
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index 799d6d0f4ead..cd9995ee8441 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -1830,6 +1830,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_P9_RADIX_PREFETCH_BUG)
+ 2:
+ #endif /* CONFIG_PPC_RADIX_MMU */
  
-@@ -431,7 +431,7 @@ static __always_inline void _tlbiel_va(unsigned long va, unsigned long pid,
- 
- 	asm volatile("ptesync": : :"memory");
- 	__tlbiel_va(va, pid, ap, ric);
--	asm volatile("ptesync": : :"memory");
-+	ppc_after_tlbiel_barrier();
- }
- 
- static inline void _tlbiel_va_range(unsigned long start, unsigned long end,
-@@ -442,7 +442,7 @@ static inline void _tlbiel_va_range(unsigned long start, unsigned long end,
- 	if (also_pwc)
- 		__tlbiel_pid(pid, 0, RIC_FLUSH_PWC);
- 	__tlbiel_va_range(start, end, pid, page_size, psize);
--	asm volatile("ptesync": : :"memory");
-+	ppc_after_tlbiel_barrier();
- }
- 
- static inline void __tlbie_va_range(unsigned long start, unsigned long end,
-@@ -940,7 +940,7 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 			if (hflush)
- 				__tlbiel_va_range(hstart, hend, pid,
- 						PMD_SIZE, MMU_PAGE_2M);
--			asm volatile("ptesync": : :"memory");
-+			ppc_after_tlbiel_barrier();
- 		} else if (cputlb_use_tlbie()) {
- 			asm volatile("ptesync": : :"memory");
- 			__tlbie_va_range(start, end, pid, page_size, mmu_virtual_psize);
++	/*
++	 * cp_abort is required if the processor supports local copy-paste
++	 * to clear the copy buffer that was under control of the guest.
++	 */
++BEGIN_FTR_SECTION
++	PPC_CP_ABORT
++END_FTR_SECTION_IFSET(CPU_FTR_ARCH_31)
++
+ 	/*
+ 	 * POWER7/POWER8 guest -> host partition switch code.
+ 	 * We don't have to lock against tlbies but we do
 -- 
 2.23.0
 
