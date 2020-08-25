@@ -1,98 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E0B2510E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 06:50:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDDD251120
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 06:59:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbGlT65P2zDqNH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 14:50:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbGxF4jSSzDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 14:59:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GLHWScQg; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=perches.com
+ (client-ip=216.40.44.41; helo=smtprelay.hostedemail.com;
+ envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=perches.com
+Received: from smtprelay.hostedemail.com (smtprelay0041.hostedemail.com
+ [216.40.44.41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbGRb72Q3zDqC0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 14:36:59 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07P4WL8D001865; Tue, 25 Aug 2020 00:36:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=cXJ1hb+rxB2SKxqD4eqkp6G4YrcNWaRqf6p7TUeDxs0=;
- b=GLHWScQgfEaJS7Yu3wqWBXpepdpBiY03F9d7XKSgQwq9TW2DjOl0TiVwo3+gSGXPM/Qp
- v7Z0h0CVNNEFrmWXTxuY3ikiS5Od6HOqK2cFTrBi+j5jc/cChtP6fg9RvfADcu4Kgy12
- 3eAwmJ7i2Dp1hMg08hUIwzwk1cT7sIIA2Nug6UHueIi56Nf8VtsB0o95tLuxK7I+TxRf
- NC5rcFg1NkD/uhVorIDxEjDY/jMTJXin3CpzLTyvh1E8NpivyhF1gh4g1u+4VUTXQRRT
- iAaLWzRv/uUlwtuplnLKVH/+HGcotkt/x5ZLRlmA7SwH1bTQufaJdW2kw9t+xtFo784F bw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 334sekjxqr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 00:36:53 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07P4aqfn013525;
- Tue, 25 Aug 2020 00:36:52 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 334sekjxpt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 00:36:52 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07P4X5Vj027929;
- Tue, 25 Aug 2020 04:36:50 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 33498u8xqh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 04:36:50 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07P4alRq26673550
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Aug 2020 04:36:47 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AA3BEAE05A;
- Tue, 25 Aug 2020 04:36:47 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 50FE0AE045;
- Tue, 25 Aug 2020 04:36:45 +0000 (GMT)
-Received: from bangoria.ibmuc.com (unknown [9.199.33.167])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 25 Aug 2020 04:36:45 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-To: mpe@ellerman.id.au, christophe.leroy@c-s.fr
-Subject: [PATCH v5 8/8] powerpc/watchpoint/selftests: Tests for kernel
- accessing user memory
-Date: Tue, 25 Aug 2020 10:06:17 +0530
-Message-Id: <20200825043617.1073634-9-ravi.bangoria@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200825043617.1073634-1-ravi.bangoria@linux.ibm.com>
-References: <20200825043617.1073634-1-ravi.bangoria@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbGtS6McFzDq7k
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 14:56:47 +1000 (AEST)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
+ [216.40.38.60])
+ by smtprelay04.hostedemail.com (Postfix) with ESMTP id B846B180A9F54;
+ Tue, 25 Aug 2020 04:56:42 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 50, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
+ RULES_HIT:41:355:379:541:857:966:967:973:988:989:1260:1311:1314:1345:1437:1515:1535:1544:1711:1730:1747:1777:1792:1801:2196:2199:2393:2525:2560:2563:2682:2685:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3865:3867:3868:3870:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4384:4385:4395:4605:5007:6119:6261:6737:6742:7875:9025:10004:10848:11026:11473:11658:11914:12043:12048:12050:12297:12438:12555:12679:12895:12986:13161:13229:13894:14096:14181:14394:14721:21080:21433:21451:21627:21740:21773:30054:30056,
+ 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
+ DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
+ LFtime:2, LUA_SUMMARY:none
+X-HE-Tag: chalk60_631385f27059
+X-Filterd-Recvd-Size: 5825
+Received: from joe-laptop.perches.com (unknown [47.151.133.149])
+ (Authenticated sender: joe@perches.com)
+ by omf08.hostedemail.com (Postfix) with ESMTPA;
+ Tue, 25 Aug 2020 04:56:38 +0000 (UTC)
+From: Joe Perches <joe@perches.com>
+To: Jiri Kosina <trivial@kernel.org>, oprofile-list@lists.sf.net,
+ linux-ide@vger.kernel.org, drbd-dev@lists.linbit.com,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, intel-gfx@lists.freedesktop.org,
+ linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-bcache@vger.kernel.org, netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+ linux-nfs@vger.kernel.org
+Subject: [PATCH 00/29] treewide: Convert comma separated statements
+Date: Mon, 24 Aug 2020 21:55:57 -0700
+Message-Id: <cover.1598331148.git.joe@perches.com>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-24_12:2020-08-24,
- 2020-08-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 phishscore=0
- priorityscore=1501 spamscore=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 mlxscore=0 bulkscore=0 malwarescore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,137 +65,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, mikey@neuling.org, jniethe5@gmail.com,
- pedromfc@linux.ibm.com, linux-kernel@vger.kernel.org, paulus@samba.org,
- rogealve@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-kselftest@vger.kernel.org, linux-alpha@vger.kernel.org,
+ sparclinux@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce tests to cover simple scenarios where user is watching
-memory which can be accessed by kernel as well. We also support
-_MODE_EXACT with _SETHWDEBUG interface. Move those testcases out-
-side of _BP_RANGE condition. This will help to test _MODE_EXACT
-scenarios when CONFIG_HAVE_HW_BREAKPOINT is not set, eg:
+There are many comma separated statements in the kernel.
+See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
 
-  $ ./ptrace-hwbreak
-  ...
-  PTRACE_SET_DEBUGREG, Kernel Access Userspace, len: 8: Ok
-  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO, len: 1: Ok
-  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RO, len: 1: Ok
-  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, RW, len: 1: Ok
-  PPC_PTRACE_SETHWDEBUG, MODE_EXACT, Kernel Access Userspace, len: 1: Ok
-  success: ptrace-hwbreak
+Convert the comma separated statements that are in if/do/while blocks
+to use braces and semicolons.
 
-Suggested-by: Pedro Miraglia Franco de Carvalho <pedromfc@linux.ibm.com>
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
----
- .../selftests/powerpc/ptrace/ptrace-hwbreak.c | 48 ++++++++++++++++++-
- 1 file changed, 46 insertions(+), 2 deletions(-)
+Many comma separated statements still exist but those are changes for
+another day.
 
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
-index fc477dfe86a2..2e0d86e0687e 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-hwbreak.c
-@@ -20,6 +20,8 @@
- #include <signal.h>
- #include <sys/types.h>
- #include <sys/wait.h>
-+#include <sys/syscall.h>
-+#include <linux/limits.h>
- #include "ptrace.h"
- 
- #define SPRN_PVR	0x11F
-@@ -44,6 +46,7 @@ struct gstruct {
- };
- static volatile struct gstruct gstruct __attribute__((aligned(512)));
- 
-+static volatile char cwd[PATH_MAX] __attribute__((aligned(8)));
- 
- static void get_dbginfo(pid_t child_pid, struct ppc_debug_info *dbginfo)
- {
-@@ -138,6 +141,9 @@ static void test_workload(void)
- 			write_var(len);
- 	}
- 
-+	/* PTRACE_SET_DEBUGREG, Kernel Access Userspace test */
-+	syscall(__NR_getcwd, &cwd, PATH_MAX);
-+
- 	/* PPC_PTRACE_SETHWDEBUG, MODE_EXACT, WO test */
- 	write_var(1);
- 
-@@ -150,6 +156,9 @@ static void test_workload(void)
- 	else
- 		read_var(1);
- 
-+	/* PPC_PTRACE_SETHWDEBUG, MODE_EXACT, Kernel Access Userspace test */
-+	syscall(__NR_getcwd, &cwd, PATH_MAX);
-+
- 	/* PPC_PTRACE_SETHWDEBUG, MODE_RANGE, DW ALIGNED, WO test */
- 	gstruct.a[rand() % A_LEN] = 'a';
- 
-@@ -293,6 +302,24 @@ static int test_set_debugreg(pid_t child_pid)
- 	return 0;
- }
- 
-+static int test_set_debugreg_kernel_userspace(pid_t child_pid)
-+{
-+	unsigned long wp_addr = (unsigned long)cwd;
-+	char *name = "PTRACE_SET_DEBUGREG";
-+
-+	/* PTRACE_SET_DEBUGREG, Kernel Access Userspace test */
-+	wp_addr &= ~0x7UL;
-+	wp_addr |= (1Ul << DABR_READ_SHIFT);
-+	wp_addr |= (1UL << DABR_WRITE_SHIFT);
-+	wp_addr |= (1UL << DABR_TRANSLATION_SHIFT);
-+	ptrace_set_debugreg(child_pid, wp_addr);
-+	ptrace(PTRACE_CONT, child_pid, NULL, 0);
-+	check_success(child_pid, name, "Kernel Access Userspace", wp_addr, 8);
-+
-+	ptrace_set_debugreg(child_pid, 0);
-+	return 0;
-+}
-+
- static void get_ppc_hw_breakpoint(struct ppc_hw_breakpoint *info, int type,
- 				  unsigned long addr, int len)
- {
-@@ -338,6 +365,22 @@ static void test_sethwdebug_exact(pid_t child_pid)
- 	ptrace_delhwdebug(child_pid, wh);
- }
- 
-+static void test_sethwdebug_exact_kernel_userspace(pid_t child_pid)
-+{
-+	struct ppc_hw_breakpoint info;
-+	unsigned long wp_addr = (unsigned long)&cwd;
-+	char *name = "PPC_PTRACE_SETHWDEBUG, MODE_EXACT";
-+	int len = 1; /* hardcoded in kernel */
-+	int wh;
-+
-+	/* PPC_PTRACE_SETHWDEBUG, MODE_EXACT, Kernel Access Userspace test */
-+	get_ppc_hw_breakpoint(&info, PPC_BREAKPOINT_TRIGGER_WRITE, wp_addr, 0);
-+	wh = ptrace_sethwdebug(child_pid, &info);
-+	ptrace(PTRACE_CONT, child_pid, NULL, 0);
-+	check_success(child_pid, name, "Kernel Access Userspace", wp_addr, len);
-+	ptrace_delhwdebug(child_pid, wh);
-+}
-+
- static void test_sethwdebug_range_aligned(pid_t child_pid)
- {
- 	struct ppc_hw_breakpoint info;
-@@ -452,9 +495,10 @@ static void
- run_tests(pid_t child_pid, struct ppc_debug_info *dbginfo, bool dawr)
- {
- 	test_set_debugreg(child_pid);
-+	test_set_debugreg_kernel_userspace(child_pid);
-+	test_sethwdebug_exact(child_pid);
-+	test_sethwdebug_exact_kernel_userspace(child_pid);
- 	if (dbginfo->features & PPC_DEBUG_FEATURE_DATA_BP_RANGE) {
--		test_sethwdebug_exact(child_pid);
--
- 		test_sethwdebug_range_aligned(child_pid);
- 		if (dawr || is_8xx) {
- 			test_sethwdebug_range_unaligned(child_pid);
+Joe Perches (29):
+  coding-style.rst: Avoid comma statements
+  alpha: Avoid comma separated statements
+  ia64: Avoid comma separated statements
+  sparc: Avoid comma separated statements
+  ata: Avoid comma separated statements
+  drbd: Avoid comma separated statements
+  lp: Avoid comma separated statements
+  dma-buf: Avoid comma separated statements
+  drm/gma500: Avoid comma separated statements
+  drm/i915: Avoid comma separated statements
+  hwmon: (scmi-hwmon): Avoid comma separated statements
+  Input: MT - Avoid comma separated statements
+  bcache: Avoid comma separated statements
+  media: Avoid comma separated statements
+  mtd: Avoid comma separated statements
+  8390: Avoid comma separated statements
+  fs_enet: Avoid comma separated statements
+  wan: sbni: Avoid comma separated statements
+  s390/tty3270: Avoid comma separated statements
+  scai/arm: Avoid comma separated statements
+  media: atomisp: Avoid comma separated statements
+  video: fbdev: Avoid comma separated statements
+  fuse: Avoid comma separated statements
+  reiserfs: Avoid comma separated statements
+  lib/zlib: Avoid comma separated statements
+  lib: zstd: Avoid comma separated statements
+  ipv6: fib6: Avoid comma separated statements
+  sunrpc: Avoid comma separated statements
+  tools: Avoid comma separated statements
+
+ Documentation/process/coding-style.rst        |  17 +
+ arch/alpha/kernel/pci_iommu.c                 |   8 +-
+ arch/alpha/oprofile/op_model_ev4.c            |  22 +-
+ arch/alpha/oprofile/op_model_ev5.c            |   8 +-
+ arch/ia64/kernel/smpboot.c                    |   7 +-
+ arch/sparc/kernel/smp_64.c                    |   7 +-
+ drivers/ata/pata_icside.c                     |  21 +-
+ drivers/block/drbd/drbd_receiver.c            |   6 +-
+ drivers/char/lp.c                             |   6 +-
+ drivers/dma-buf/st-dma-fence.c                |   7 +-
+ drivers/gpu/drm/gma500/mdfld_intel_display.c  |  44 ++-
+ drivers/gpu/drm/i915/gt/gen8_ppgtt.c          |   8 +-
+ drivers/gpu/drm/i915/gt/intel_gt_requests.c   |   6 +-
+ .../gpu/drm/i915/gt/selftest_workarounds.c    |   6 +-
+ drivers/gpu/drm/i915/intel_runtime_pm.c       |   6 +-
+ drivers/hwmon/scmi-hwmon.c                    |   6 +-
+ drivers/input/input-mt.c                      |  11 +-
+ drivers/md/bcache/bset.c                      |  12 +-
+ drivers/md/bcache/sysfs.c                     |   6 +-
+ drivers/media/i2c/msp3400-kthreads.c          |  12 +-
+ drivers/media/pci/bt8xx/bttv-cards.c          |   6 +-
+ drivers/media/pci/saa7134/saa7134-video.c     |   7 +-
+ drivers/mtd/devices/lart.c                    |  10 +-
+ drivers/net/ethernet/8390/axnet_cs.c          |  19 +-
+ drivers/net/ethernet/8390/lib8390.c           |  14 +-
+ drivers/net/ethernet/8390/pcnet_cs.c          |   6 +-
+ .../ethernet/freescale/fs_enet/fs_enet-main.c |  11 +-
+ drivers/net/wan/sbni.c                        | 101 +++---
+ drivers/s390/char/tty3270.c                   |   6 +-
+ drivers/scsi/arm/cumana_2.c                   |  19 +-
+ drivers/scsi/arm/eesox.c                      |   9 +-
+ drivers/scsi/arm/powertec.c                   |   9 +-
+ .../media/atomisp/pci/atomisp_subdev.c        |   6 +-
+ drivers/video/fbdev/tgafb.c                   |  12 +-
+ fs/fuse/dir.c                                 |  24 +-
+ fs/reiserfs/fix_node.c                        |  36 ++-
+ lib/zlib_deflate/deftree.c                    |  49 ++-
+ lib/zstd/compress.c                           | 120 ++++---
+ lib/zstd/fse_compress.c                       |  24 +-
+ lib/zstd/huf_compress.c                       |   6 +-
+ net/ipv6/ip6_fib.c                            |  12 +-
+ net/sunrpc/sysctl.c                           |   6 +-
+ tools/lib/subcmd/help.c                       |  10 +-
+ tools/power/cpupower/utils/cpufreq-set.c      |  14 +-
+ tools/testing/selftests/vm/gup_benchmark.c    |  18 +-
+ tools/testing/selftests/vm/userfaultfd.c      | 296 +++++++++++-------
+ 46 files changed, 694 insertions(+), 382 deletions(-)
+
 -- 
-2.26.2
+2.26.0
 
