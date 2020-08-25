@@ -1,76 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E528252391
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 00:24:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407722523C3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 00:45:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bbk6w1Rt8zDqYt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 08:24:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bbkc12K98zDqZB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 08:45:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=XD+Xf2uf; 
- dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=canonical.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=cascardo@canonical.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=canonical.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bbk4y329PzDqXq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 08:22:26 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 22E8E8011F;
- Wed, 26 Aug 2020 10:22:23 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1598394143;
- bh=txgr+HWFTXiMGfvnsvIrOEATORmNGcS3KEA7Im9+DJg=;
- h=From:To:CC:Subject:Date:In-Reply-To;
- b=XD+Xf2uf56iDBSz163/qHibLMx/CmVB3YrWGZ8O3uJqow92w3cYJyXmKpG8dtu+tN
- A8QA335zJ5f5r7o7FcQ007WCrsad0M45ehKXq4csBu3XS4+go1XzXYyf3QPphk/edy
- pd6UsedaX77AFh542ouNs2ffQ0fbP0Tvqmc0VtqHzRRt6BICJ6qKuwhIk4O3PV0o10
- 45X8j8aPud4jRuiV7Gqo2EXcELYFuPoz4C8DqclXKO9TrJ8VLicxyUmWaJtdebijfm
- Mm34AYBMmM5tNIMzW2TqBlLz35x8RyfB4o6maBzY7JD9Fmb4P54zGMU8xaTvGtdTwc
- PVyQiK25ydKwA==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5f458f1f0000>; Wed, 26 Aug 2020 10:22:23 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 26 Aug 2020 10:22:22 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Wed, 26 Aug 2020 10:22:22 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Heiner Kallweit <hkallweit1@gmail.com>, "broonie@kernel.org"
- <broonie@kernel.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "benh@kernel.crashing.org" <benh@kernel.crashing.org>, "paulus@samba.org"
- <paulus@samba.org>
-Subject: Re: fsl_espi errors on v5.7.15
-Thread-Topic: fsl_espi errors on v5.7.15
-Thread-Index: AQHWceVnik7XsBYbp0S+yHVGh1hdQak2WMaAgAQdSwCAAz9MAIAAfdcAgAD5u4CAB+sMAIAAYfwAgAA6JQCAAPtUgA==
-Date: Tue, 25 Aug 2020 22:22:21 +0000
-Message-ID: <31e91237-4f87-66da-dac3-2304779e5749@alliedtelesis.co.nz>
-In-Reply-To: <f97dc3af-d1f0-6974-ec2d-ace8d7e73993@gmail.com>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DD6E89351CA59E48A9BFF5130A4A7D27@atlnz.lc>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbkZB6kyCzDqXl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 08:44:18 +1000 (AEST)
+Received: from 1.general.cascardo.us.vpn ([10.172.70.58] helo=mussarela)
+ by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <cascardo@canonical.com>)
+ id 1kAhfp-0006AU-Ay; Tue, 25 Aug 2020 22:44:13 +0000
+Date: Tue, 25 Aug 2020 19:44:08 -0300
+From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+To: stable@vger.kernel.org
+Subject: Please apply commit 0828137e8f16 ("powerpc/64s: Don't init FSCR_DSCR
+ in __init_FSCR()") to v4.14.y, v4.19.y, v5.4.y, v5.7.y
+Message-ID: <20200825224408.GB6060@mussarela>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,114 +46,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Cc: sashal@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ gregkh@linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gMjUvMDgvMjAgNzoyMiBwbSwgSGVpbmVyIEthbGx3ZWl0IHdyb3RlOg0KDQo8c25pcD4NCj4g
-SSd2ZSBiZWVuIHN0YXJpbmcgYXQgc3BpLWZzbC1lc3BpLmMgZm9yIHdoaWxlIG5vdyBhbmQgSSB0
-aGluayBJJ3ZlDQo+PiBpZGVudGlmaWVkIGEgY291cGxlIG9mIGRlZmljaWVuY2llcyB0aGF0IG1h
-eSBvciBtYXkgbm90IGJlIHJlbGF0ZWQgdG8gbXkNCj4+IGlzc3VlLg0KPj4NCj4+IEZpcnN0IEkg
-dGhpbmsgdGhlICdUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQnIG1lc3NhZ2Ug
-Y2FuIGJlDQo+PiBnZW5lcmF0ZWQgc3B1cmlvdXNseS4gSW4gZnNsX2VzcGlfaXJxKCkgd2UgcmVh
-ZCB0aGUgRVNQSV9TUElFIHJlZ2lzdGVyLg0KPj4gV2UgYWxzbyB3cml0ZSBiYWNrIHRvIGl0IHRv
-IGNsZWFyIHRoZSBjdXJyZW50IGV2ZW50cy4gV2UgcmUtcmVhZCBpdCBpbg0KPj4gZnNsX2VzcGlf
-Y3B1X2lycSgpIGFuZCBjb21wbGFpbiB3aGVuIFNQSUVfRE9OIGlzIG5vdCBzZXQuIEJ1dCB3ZSBj
-YW4NCj4+IG5hdHVyYWxseSBlbmQgdXAgaW4gdGhhdCBzaXR1YXRpb24gaWYgd2UncmUgZG9pbmcg
-YSBsYXJnZSByZWFkLiBDb25zaWRlcg0KPj4gdGhlIG1lc3NhZ2VzIGZvciByZWFkaW5nIGEgYmxv
-Y2sgb2YgZGF0YSBmcm9tIGEgc3BpLW5vciBjaGlwDQo+Pg0KPj4gICDCoHR4ID0gUkVBRF9PUCAr
-IEFERFINCj4+ICAgwqByeCA9IGRhdGENCj4+DQo+PiBXZSBzZXR1cCB0aGUgdHJhbnNmZXIgYW5k
-IHB1bXAgb3V0IHRoZSB0eF9idWYuIFRoZSBmaXJzdCBpbnRlcnJ1cHQgZ29lcw0KPj4gb2ZmIGFu
-ZCBFU1BJX1NQSUUgaGFzIFNQSU1fRE9OIGFuZCBTUElNX1JYVCBzZXQuIFdlIGVtcHR5IHRoZSBy
-eCBmaWZvLA0KPj4gY2xlYXIgRVNQSV9TUElFIGFuZCB3YWl0IGZvciB0aGUgbmV4dCBpbnRlcnJ1
-cHQuIFRoZSBuZXh0IGludGVycnVwdA0KPj4gZmlyZXMgYW5kIHRoaXMgdGltZSB3ZSBoYXZlIEVT
-UElfU1BJRSB3aXRoIGp1c3QgU1BJTV9SWFQgc2V0LiBUaGlzDQo+PiBjb250aW51ZXMgdW50aWwg
-d2UndmUgcmVjZWl2ZWQgYWxsIHRoZSBkYXRhIGFuZCB3ZSBmaW5pc2ggd2l0aCBFU1BJX1NQSUUN
-Cj4+IGhhdmluZyBvbmx5IFNQSU1fUlhUIHNldC4gV2hlbiB3ZSByZS1yZWFkIGl0IHdlIGNvbXBs
-YWluIHRoYXQgU1BJRV9ET04NCj4+IGlzbid0IHNldC4NCj4+DQo+PiBUaGUgb3RoZXIgZGVmaWNp
-ZW5jeSBpcyB0aGF0IHdlIG9ubHkgZ2V0IGFuIGludGVycnVwdCB3aGVuIHRoZSBhbW91bnQgb2YN
-Cj4+IGRhdGEgaW4gdGhlIHJ4IGZpZm8gaXMgYWJvdmUgRlNMX0VTUElfUlhUSFIuIElmIHRoZXJl
-IGFyZSBmZXdlciB0aGFuDQo+PiBGU0xfRVNQSV9SWFRIUiBsZWZ0IHRvIGJlIHJlY2VpdmVkIHdl
-IHdpbGwgbmV2ZXIgcHVsbCB0aGVtIG91dCBvZiB0aGUgZmlmby4NCj4+DQo+IFNQSU1fRE9OIHdp
-bGwgdHJpZ2dlciBhbiBpbnRlcnJ1cHQgb25jZSB0aGUgbGFzdCBjaGFyYWN0ZXJzIGhhdmUgYmVl
-bg0KPiB0cmFuc2ZlcnJlZCwgYW5kIHJlYWQgdGhlIHJlbWFpbmluZyBjaGFyYWN0ZXJzIGZyb20g
-dGhlIEZJRk8uDQoNClRoZSBUMjA4MFJNIHRoYXQgSSBoYXZlIHNheXMgdGhlIGZvbGxvd2luZyBh
-Ym91dCB0aGUgRE9OIGJpdA0KDQoiTGFzdCBjaGFyYWN0ZXIgd2FzIHRyYW5zbWl0dGVkLiBUaGUg
-bGFzdCBjaGFyYWN0ZXIgd2FzIHRyYW5zbWl0dGVkIGFuZCANCmEgbmV3IGNvbW1hbmQgY2FuIGJl
-IHdyaXR0ZW4gZm9yIHRoZSBuZXh0IGZyYW1lLiINCg0KVGhhdCBkb2VzIGF0IGxlYXN0IHNlZW0g
-dG8gZml0IHdpdGggbXkgYXNzZXJ0aW9uIHRoYXQgaXQncyBhbGwgYWJvdXQgdGhlIA0KVFggZGly
-ZWN0aW9uLiBCdXQgdGhlIGZhY3QgdGhhdCBpdCBkb2Vzbid0IGhhcHBlbiBhbGwgdGhlIHRpbWUg
-dGhyb3dzIA0Kc29tZSBkb3VidCBvbiBpdC4NCg0KPiBJIHRoaW5rIHRoZSByZWFzb24gSSdtIHNl
-ZWluZyBzb21lIHZhcmlhYmlsaXR5IGlzIGJlY2F1c2Ugb2YgaG93IGZhc3QNCj4+IChvciBzbG93
-KSB0aGUgaW50ZXJydXB0cyBnZXQgcHJvY2Vzc2VkIGFuZCBob3cgZmFzdCB0aGUgc3BpLW5vciBj
-aGlwIGNhbg0KPj4gZmlsbCB0aGUgQ1BVcyByeCBmaWZvLg0KPj4NCj4gVG8gcnVsZSBvdXQgdGlt
-aW5nIGlzc3VlcyBhdCBoaWdoIGJ1cyBmcmVxdWVuY2llcyBJIGluaXRpYWxseSBhc2tlZA0KPiBm
-b3IgcmUtdGVzdGluZyBhdCBsb3dlciBmcmVxdWVuY2llcy4gSWYgeW91IGUuZy4gbGltaXQgdGhl
-IGJ1cyB0byAxIE1Ieg0KPiBvciBldmVuIGxlc3MsIHRoZW4gdGltaW5nIHNob3VsZG4ndCBiZSBh
-biBpc3N1ZS4NClllcyBJJ3ZlIGN1cnJlbnRseSBnb3Qgc3BpLW1heC1mcmVxdWVuY3kgPSA8MTAw
-MDAwMD47IGluIG15IGR0cy4gSSB3b3VsZCANCmFsc28gZXhwZWN0IGEgc2xvd2VyIGZyZXF1ZW5j
-eSB3b3VsZCBmaXQgbXkgIkRPTiBpcyBmb3IgVFgiIG5hcnJhdGl2ZS4NCj4gTGFzdCByZWxldmFu
-dCBmdW5jdGlvbmFsIGNoYW5nZXMgaGF2ZSBiZWVuIGRvbmUgYWxtb3N0IDQgeWVhcnMgYWdvLg0K
-PiBBbmQgeW91cnMgaXMgdGhlIGZpcnN0IHN1Y2ggcmVwb3J0IEkgc2VlLiBTbyBxdWVzdGlvbiBp
-cyB3aGF0IGNvdWxkIGJlIHNvDQo+IHNwZWNpYWwgd2l0aCB5b3VyIHNldHVwIHRoYXQgaXQgc2Vl
-bXMgeW91J3JlIHRoZSBvbmx5IG9uZSBiZWluZyBhZmZlY3RlZC4NCj4gVGhlIHNjZW5hcmlvcyB5
-b3UgZGVzY3JpYmUgYXJlIHN0YW5kYXJkLCB0aGVyZWZvcmUgbXVjaCBtb3JlIHBlb3BsZQ0KPiBz
-aG91bGQgYmUgYWZmZWN0ZWQgaW4gY2FzZSBvZiBhIGRyaXZlciBidWcuDQpBZ3JlZWQuIEJ1dCBl
-dmVuIG9uIG15IGhhcmR3YXJlICh3aGljaCBtYXkgaGF2ZSBhIGxhdGVudCBpc3N1ZSBkZXNwaXRl
-IA0KYmVpbmcgaW4gdGhlIGZpZWxkIGZvciBnb2luZyBvbiA1IHllYXJzKSB0aGUgaXNzdWUgb25s
-eSB0cmlnZ2VycyB1bmRlciANCnNvbWUgZmFpcmx5IHNwZWNpZmljIGNpcmN1bXN0YW5jZXMuDQo+
-IFlvdSBzYWlkIHRoYXQga2VybmVsIGNvbmZpZyBpbXBhY3RzIGhvdyBmcmVxdWVudGx5IHRoZSBp
-c3N1ZSBoYXBwZW5zLg0KPiBUaGVyZWZvcmUgcXVlc3Rpb24gaXMgd2hhdCdzIHRoZSBkaWZmIGlu
-IGtlcm5lbCBjb25maWcsIGFuZCBob3cgY291bGQNCj4gdGhlIGRpZmZlcmVuY2VzIGJlIHJlbGF0
-ZWQgdG8gU1BJLg0KDQpJdCBkaWQgc2VlbSB0byBiZSBzb21ld2hhdCByYW5kb20uIFRoaW5ncyBs
-aWtlIENPTkZJR19QUkVFTVBUIGhhdmUgYW4gDQppbXBhY3QgYnV0IGV2ZXJ5IHRpbWUgSSBmb3Vu
-ZCBzb21ldGhpbmcgdGhhdCBzZWVtZWQgdG8gYmUgaGF2aW5nIGFuIA0KaW1wYWN0IEkndmUgYmVl
-biBhYmxlIHRvIGRpc3Byb3ZlIGl0LiBJIGFjdHVhbGx5IHRoaW5rIGl0cyBhYm91dCBob3cgDQpi
-dXN5IHRoZSBzeXN0ZW0gaXMgd2hpY2ggbWF5IG9yIG1heSBub3QgYWZmZWN0IHdoZW4gd2UgZ2V0
-IHJvdW5kIHRvIA0KcHJvY2Vzc2luZyB0aGUgaW50ZXJydXB0cy4NCg0KSSBoYXZlIG1hbmFnZWQg
-dG8gZ2V0IHRoZSAnVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qgc2V0IScgdG8gDQpv
-Y2N1ciBvbiB0aGUgVDIwODBSREIuDQoNCkkndmUgaGFkIHRvIGFkZCB0aGUgZm9sbG93aW5nIHRv
-IGV4cG9zZSB0aGUgZW52aXJvbm1lbnQgYXMgYSBtdGQgcGFydGl0aW9uDQoNCmRpZmYgLS1naXQg
-YS9hcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNsL3QyMDh4cmRiLmR0c2kgDQpiL2FyY2gvcG93ZXJw
-Yy9ib290L2R0cy9mc2wvdDIwOHhyZGIuZHRzaQ0KaW5kZXggZmY4N2U2N2M3MGRhLi5mYmY5NWZj
-MWZkNjggMTAwNjQ0DQotLS0gYS9hcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNsL3QyMDh4cmRiLmR0
-c2kNCisrKyBiL2FyY2gvcG93ZXJwYy9ib290L2R0cy9mc2wvdDIwOHhyZGIuZHRzaQ0KQEAgLTEx
-Niw2ICsxMTYsMTUgQEAgZmxhc2hAMCB7DQogwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJtaWNyb24sbjI1
-cTUxMmF4MyIsIA0KImplZGVjLHNwaS1ub3IiOw0KIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlZyA9IDwwPjsNCiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBz
-cGktbWF4LWZyZXF1ZW5jeSA9IDwxMDAwMDAwMD47IC8qIA0KaW5wdXQgY2xvY2sgKi8NCisNCivC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgcGFydGl0aW9uQHUtYm9vdCB7DQorwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlZyA9IDwweDAw
-MDAwMDAwIDB4MDAxMDAwMDA+Ow0KK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBsYWJlbCA9ICJ1LWJv
-b3QiOw0KK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIH07DQorwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcGFydGl0aW9uQHUtYm9vdC1lbnYgew0KK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCByZWcgPSA8MHgwMDEwMDAwMCAweDAwMDEwMDAwPjsNCivCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgbGFiZWwgPSAidS1ib290LWVudiI7DQorwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfTsNCiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH07DQogwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIH07DQoNCkFuZCBJJ20gdXNpbmcgdGhlIGZvbGxvd2luZyBzY3JpcHQg
-dG8gcG9rZSBhdCB0aGUgZW52aXJvbm1lbnQgKHdhcm5pbmcgDQppZiBhbnlvbmUgZG9lcyB0cnkg
-dGhpcyBhbmQgdGhlIGJ1ZyBoaXRzIGl0IGNhbiByZW5kZXIgeW91ciB1LWJvb3QgDQplbnZpcm9u
-bWVudCBpbnZhbGlkKS4NCg0KY2F0IGZsYXNoL2Z3X2Vudl90ZXN0LnNoDQojIS9iaW4vc2gNCg0K
-Z2VuZXJhdGVfZndfZW52X2NvbmZpZygpDQp7DQogwqAgY2F0IC9wcm9jL210ZCB8IHNlZCAncy9b
-OiJdLy9nJyB8IHdoaWxlIHJlYWQgZGV2IHNpemUgZXJhc2VzaXplIG5hbWUgOyBkbw0KIMKgwqDC
-oMKgIGVjaG8gIiRkZXYgJHNpemUgJGVyYXNlc2l6ZSAkbmFtZSINCiDCoMKgwqDCoCBbICIkbmFt
-ZSIgPSAidS1ib290LWVudiIgXSAmJiBlY2hvICIvZGV2LyRkZXYgMHgwMDAwIDB4MjAwMCANCiRl
-cmFzZXNpemUiID4vZmxhc2gvZndfZW52LmNvbmZpZw0KIMKgIGRvbmUNCn0NCg0KY3ljbGVzPTEw
-DQpbICQjIC1nZSAxIF0gJiYgY3ljbGVzPSQxDQoNCmdlbmVyYXRlX2Z3X2Vudl9jb25maWcNCg0K
-ZndfcHJpbnRlbnYgLWMgL2ZsYXNoL2Z3X2Vudi5jb25maWcNCg0KZG1lc2cgLWMgPi9kZXYvbnVs
-bA0KeD0wDQp3aGlsZSBbICR4IC1sdCAkY3ljbGVzIF07IGRvDQogwqDCoMKgIGZ3X3ByaW50ZW52
-IC1jIC9mbGFzaC9md19lbnYuY29uZmlnID4vZGV2L251bGwgfHwgYnJlYWsNCiDCoMKgwqAgZndf
-c2V0ZW52IC1jIC9mbGFzaC9md19lbnYuY29uZmlnIGZvbyAkUkFORE9NIHx8IGJyZWFrOw0KIMKg
-wqDCoCBkbWVzZyAtYyB8IGdyZXAgLXEgZnNsX2VzcGkgJiYgYnJlYWs7DQogwqDCoMKgIGxldCB4
-PXgrMQ0KZG9uZQ0KDQplY2hvICJSYW4gJHggY3ljbGVzIg0K
+After commit 912c0a7f2b5daa3cbb2bc10f303981e493de73bd ("powerpc/64s: Save FSCR
+to init_task.thread.fscr after feature init"), which has been applied to the
+referred branches, when userspace sets the user DSCR MSR, it won't be inherited
+or restored during context switch, because the facility unavailable interrupt
+won't trigger.
+
+Applying 0828137e8f16721842468e33df0460044a0c588b ("powerpc/64s: Don't init
+FSCR_DSCR in __init_FSCR()") will fix it.
+
+Cascardo.
