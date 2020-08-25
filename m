@@ -2,105 +2,105 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517F0251698
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 12:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F332516A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 12:26:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbQ9K448WzDqWT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 20:25:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbQCN6pcCzDqTk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Aug 2020 20:26:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=infinera.com (client-ip=40.107.223.87;
- helo=nam11-dm6-obe.outbound.protection.outlook.com;
- envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=LJgyMFlY; 
- dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2087.outbound.protection.outlook.com [40.107.223.87])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=FLMfaI34; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbNKf4j3mzDqRM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 19:02:11 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZTLk4YEkWL6KxBPnejzr9TpWb6a2OIvO0WDf17IexnyHpM/ic9D1EjX0AFlzKFaEUeAMNh0dV9zal0IqoIzddbNUGPKPGOyPXsoOJDXCDNm1rgI+glmnGF3x82w7FDOsb8DJgtJm25nc6S75h5vsYjakhmlGR7PK60NtL3zkseFtZq01p+sEZTJdG9wWzCzjRx4lnAbY2hj6eiXgp1CI76u4FtPWps/YzoMxUU+66RJzkXdVGI6+LCLKuy4m3NP6JD+ZuxhEQLIo97g8/L1ptEdshffxea6rwuFcP4o9g+L5+LPWP7fHs2WXqFrOFQvUNxjsntYx4C/Ap+XSlFH+5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7t5Zw+DQR9ElsO2fMCj5PjHpzvIb4Vn/QWV4JIwpSUQ=;
- b=mkPmBtn5au0E8dTQZOrxn4kYQlE4RGR5UoMYEHAhy+DqP+6sTcCuo5BbOatZUZjU8IpRCrXH7N5PpV7vlZUG9cni0xBK1rotMhBsOc1zPLogcHORydTOZcJCBDh1FLmXTOC8KJ/9hwbxesszt7e1yrSv82elBZtR6tTaNpbUFgMaE/4v2t35Ku8UtweAE/PEOx/ee/dKqJhazMCw9jKSq6rgydcwjjsiKjYP8EmeE/p7OAOB9O9dQJp47pm5ph4F93oxhUw0obbCBT1rkwAsYbcS3ttEs//oI7cEpKyHUbovGt2zsP2Ho/Nws4mYodCjkjRNdiOJxxgVYdk0YKaBHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
- dkim=pass header.d=infinera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7t5Zw+DQR9ElsO2fMCj5PjHpzvIb4Vn/QWV4JIwpSUQ=;
- b=LJgyMFlYaVti+os4QkSYhUhVCWzTsjxzbV7RIViHGhwzFhx8pyAOOGO5i5qShrlSIE5/TVaYexo4+AeW38E/yvAottBStsskFGe8ahgQevK3UsXngo8rGlShpKKnAosHK+7EuqaX42kK9aYWaoE5W5k6KH/sUh4VDuDCY3vtJd8=
-Received: from DM5PR1001MB2393.namprd10.prod.outlook.com (2603:10b6:4:2f::24)
- by DM6PR10MB2923.namprd10.prod.outlook.com (2603:10b6:5:70::28) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3305.26; Tue, 25 Aug
- 2020 09:02:03 +0000
-Received: from DM5PR1001MB2393.namprd10.prod.outlook.com
- ([fe80::f479:8789:7e25:e3de]) by DM5PR1001MB2393.namprd10.prod.outlook.com
- ([fe80::f479:8789:7e25:e3de%6]) with mapi id 15.20.3305.025; Tue, 25 Aug 2020
- 09:02:03 +0000
-From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-To: "yebin10@huawei.com" <yebin10@huawei.com>, "gregkh@linuxfoundation.org"
- <gregkh@linuxfoundation.org>, "balbi@kernel.org" <balbi@kernel.org>
-Subject: Re: [PATCH] usb: gadget: fsl: Fix unsigned expression compared with
- zero in fsl_udc_probe
-Thread-Topic: [PATCH] usb: gadget: fsl: Fix unsigned expression compared with
- zero in fsl_udc_probe
-Thread-Index: AQHWee+zZeLUHMNpPkKw58UdehD37KlG8waAgABWdYCAAAPLAIABOTqAgAACbIA=
-Date: Tue, 25 Aug 2020 09:02:03 +0000
-Message-ID: <fbe07ffea894ee60ba2f87266697be966a8437eb.camel@infinera.com>
-References: <20200824080437.229826-1-yebin10@huawei.com>
- <20200824082122.GA336539@kroah.com>
- <f61f4bc3916f852799edb6af9740afb2118ec84f.camel@infinera.com>
- <87d03gjgbw.fsf@kernel.org>
- <2c2317ff8385f75466cbfa1f0109a1f2c3acbc48.camel@infinera.com>
- <877dtnjed8.fsf@kernel.org>
-In-Reply-To: <877dtnjed8.fsf@kernel.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.37.90 
-authentication-results: huawei.com; dkim=none (message not signed)
- header.d=none;huawei.com; dmarc=none action=none header.from=infinera.com;
-x-originating-ip: [88.131.87.201]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e6e39d50-1efd-4b20-8eb5-08d848d58916
-x-ms-traffictypediagnostic: DM6PR10MB2923:
-x-microsoft-antispam-prvs: <DM6PR10MB2923298F44767FEA741E42A5F4570@DM6PR10MB2923.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: EKDwqNdSOSLS+Z2ezFdupLvjzxfhNJg5XqS2MKiNtxOrvBTFYx43tUFrPACWBqpI6ndDfYCR0p1e8fpkRXZkK1UJaZBTlz6vCFyIWmD6v37gIhsAb8w6/madZ6jaDzuizofjmg01ip5U/hkRqe9+wj91A6/avrR2+HNtS0bBqg7En2EaAqzcWwQJqkCx76Xgl6yJFdzhxg555Z68KsAcjDUOKky9MVsDGL4s88opT97NrACtxg72BeKSumg+5ktyWuRsKBrPaKaD4Qr2Gjtij69Tm3oqtqe1aEO88tzxhInH2MJV1Em6d9GGBwODruYf
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM5PR1001MB2393.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(346002)(366004)(396003)(376002)(136003)(39860400002)(6512007)(478600001)(36756003)(8676002)(2616005)(86362001)(186003)(8936002)(2906002)(76116006)(66946007)(91956017)(26005)(4326008)(5660300002)(66476007)(316002)(110136005)(71200400001)(6506007)(64756008)(66556008)(66446008)(83380400001)(6486002)(54906003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: /2vSnodC708JklP82bTqAD13dAFrBpl12CYSpdFqlRROChnzR3Hg4jOka9dy5yI3SWB81RC29pojmmh8foo1QfI2/1/G+SGxzh7VxMgVLlHkMnvSFSh28SUPxeTfhUgLUm/6jDCryxeiZau49Xi/uICgbIUgFgi1ijgj87FALtxi6WEBVFOmFgL1XbHq7Y2LdhNyiMPRyVCDddawgsn7S3syEChtDyiJz/h+6oB7tU21POMrP1LkxeAwO6RvovMtVF7BR3QzLREUq+sCWNsD7npOypvD1klNSQsuAFBz0a5T622+VnNl/pK68Dhup7WsZVpFs+ZPDrAqtG09GDiur67SY16G5nM5EfGgVH9mzSqw7ra+akA54BCWt+uKfkrmaGJToKIWpEYzWbacsQN9oTgMoCNCLtNI9uye8BDb2Sh3Yb9bwMj95gsoXREoejiiEJ1gqQHdFb+HF1fcGE8y3+PLpT70d9RWtF3KDfPzGRQoIHPRPMvR7Y2jrnVh+So8s1Na2IVtQwtFpsDaft7IqvaiMlrpqI2fULsyCNdzd99P4yJDFRmdb/aHA5mOEpt7F+enzojytKOFVHSgxppzetc9FvE9t/xSiZLAbAfPhQAvczkKK5oJL8Jq6ubxoS+WU3vgwdBBfxkFvvSh9Y0+Eg==
-x-ms-exchange-transport-forked: True
-Content-Type: multipart/alternative;
- boundary="_000_fbe07ffea894ee60ba2f87266697be966a8437ebcamelinfineraco_"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbQ0H1CVlzDqBx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 20:17:12 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 07PA4pWp154169; Tue, 25 Aug 2020 06:16:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=EOBUoNumc+lfxeSxOyM8nxTJchcZ8SasJG/UKpKCePc=;
+ b=FLMfaI34xTiJCIrm5uFNqbuk0uT2DGykGFonCKV9ValbKJI3Gb8aJ1pjUCvH1rBMViHH
+ a+46qMxkOoSEKYil9BF1E0fCNjqHrqN02uE3u63nGbSY/ajxgIwKwmxxu46FESXlA2nM
+ CSrGWVcVfhlmX34vqVger2iojhSeXB+dFv+4FsmjCV6iJGBcX6jS2sIknOsTSUArI8jv
+ pWnbWazaY41s/AVuWDg2oC/WN57VTsUafbWj+P2oGiWZap4gTf8wGpUUY7J7pjuNx8tf
+ G6kTrWxeMCgWUXkLDaUJi/CEnjLBtbu0oz+Lo59EIPqzoCxSQsIPS9X7KAhGXPUvR8Iv 7g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e4u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Aug 2020 06:16:35 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07PA7kP9161517;
+ Tue, 25 Aug 2020 06:16:34 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 334yc52e43-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Aug 2020 06:16:34 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07PAFFq5019135;
+ Tue, 25 Aug 2020 10:16:32 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 33498u97t7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Aug 2020 10:16:32 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 07PAGT9N24445372
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 25 Aug 2020 10:16:29 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B3F1A4054;
+ Tue, 25 Aug 2020 10:16:29 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6052A4062;
+ Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
+Received: from oc5500677777.ibm.com (unknown [9.145.83.242])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 25 Aug 2020 10:16:27 +0000 (GMT)
+Subject: Re: [RFT][PATCH 0/7] Avoid overflow at boundary_size
+To: Nicolin Chen <nicoleotsuka@gmail.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, rth@twiddle.net,
+ ink@jurassic.park.msu.ru, mattst88@gmail.com, tony.luck@intel.com,
+ fenghua.yu@intel.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, James.Bottomley@HansenPartnership.com, deller@gmx.de
+References: <20200820231923.23678-1-nicoleotsuka@gmail.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+Message-ID: <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
+Date: Tue, 25 Aug 2020 12:16:27 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-OriginatorOrg: infinera.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR1001MB2393.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6e39d50-1efd-4b20-8eb5-08d848d58916
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Aug 2020 09:02:03.6426 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ybSBhcZZ3if43WDGQAKGNzXFcj1Hmg1i52iu8RwIhXfrBNA0t8AUflNx9G1mFucGnITu/h0OiNmFNrkkw+X3+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB2923
+In-Reply-To: <20200820231923.23678-1-nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-08-25_02:2020-08-24,
+ 2020-08-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 clxscore=1011
+ mlxlogscore=999 malwarescore=0 suspectscore=2 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008250073
 X-Mailman-Approved-At: Tue, 25 Aug 2020 20:23:43 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -113,97 +113,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "leoyang.li@nxp.com" <leoyang.li@nxp.com>
+Cc: sfr@canb.auug.org.au, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---_000_fbe07ffea894ee60ba2f87266697be966a8437ebcamelinfineraco_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 
-T24gVHVlLCAyMDIwLTA4LTI1IGF0IDExOjUzICswMzAwLCBGZWxpcGUgQmFsYmkgd3JvdGU6DQpK
-b2FraW0gVGplcm5sdW5kIDxKb2FraW0uVGplcm5sdW5kQGluZmluZXJhLmNvbTxtYWlsdG86Sm9h
-a2ltLlRqZXJubHVuZEBpbmZpbmVyYS5jb20+PiB3cml0ZXM6DQoNCj4gT24gTW9uLCAyMDIwLTA4
-LTI0IGF0IDE2OjU4ICswMzAwLCBGZWxpcGUgQmFsYmkgd3JvdGU6DQo+PiBKb2FraW0gVGplcm5s
-dW5kIDxKb2FraW0uVGplcm5sdW5kQGluZmluZXJhLmNvbTxtYWlsdG86Sm9ha2ltLlRqZXJubHVu
-ZEBpbmZpbmVyYS5jb20+PiB3cml0ZXM6DQo+Pg0KPj4gPiBPbiBNb24sIDIwMjAtMDgtMjQgYXQg
-MTA6MjEgKzAyMDAsIEdyZWcgS0ggd3JvdGU6DQo+PiA+ID4NCj4+ID4gPiBPbiBNb24sIEF1ZyAy
-NCwgMjAyMCBhdCAwNDowNDozN1BNICswODAwLCBZZSBCaW4gd3JvdGU6DQo+PiA+ID4gPiBTaWdu
-ZWQtb2ZmLWJ5OiBZZSBCaW4gPHllYmluMTBAaHVhd2VpLmNvbTxtYWlsdG86eWViaW4xMEBodWF3
-ZWkuY29tPj4NCj4+ID4gPg0KPj4gPiA+IEkgY2FuJ3QgdGFrZSBwYXRjaGVzIHdpdGhvdXQgYW55
-IGNoYW5nZWxvZyB0ZXh0LCBzb3JyeS4NCj4+ID4NCj4+ID4gU3RpbGwgdGFraW5nIHBhdGNoZXMg
-Zm9yIGZzbF91ZGNfY29yZS5jID8NCj4+ID4gSSBmaWd1cmVkIHRoaXMgZHJpdmVyIHdhcyBvYnNv
-bGV0ZSBhbmQgc2hvdWxkIGJlIG1vdmVkIHRvIG9uZSBvZiB0aGUgQ2hpcGlkZWEgZHJpdmVycy4N
-Cj4+DQo+PiBOb2JvZHkgc2VudCBhbnkgcGF0Y2hlcyB0byBzd2l0Y2ggb3ZlciB0aGUgdXNlcnMg
-b2YgdGhpcyBkcml2ZXIgdG8NCj4+IGNoaXBpZGVhLiBJIHdvdWxkIGxvdmUgdG8gZGVsZXRlIHRo
-aXMgZHJpdmVyIDotKQ0KPg0KPiBNZSB0b28sIEkgZ290IGEgZmV3IGxvY2FsIHBhdGNoZXMgaGVy
-ZSBhcyB0aGUgZHJpdmVyIGlzIHF1aXRlIGJ1Z2d5Lg0KPiBHb3QgdG8gbGl0dGxlIFVTQiBrbm93
-bGVkZ2UgdG8gc3dpdGNoIGl0IG92ZXIgdGhvdWdoIDooDQoNCnRoaXMgd291bGRuJ3QgcmVxdWly
-ZSBVU0Iga25vd2xlZGdlLiBJdCBvbmx5IHJlcXVpcmVzIHNvbWUgbWlub3IgRFRTDQprbm93bGVk
-Z2UgYW5kIEhXIGZvciB0ZXN0aW5nLg0KDQpobW0sIE9LLiBJZiBpdCBpcyB0aGF0IHNpbXBsZSBJ
-IG1heSB0YWtlIGEgY3JhY2sgYXQgaXQoYnV0IHRoZW4gd2h5IGhhc24ndCBOWFAgYWxyZWFkeSBk
-b25lIHRoYXQgPykNCkkgd291bGQgbmVlZCBzb21lIGd1aWRhbmNlIGFzIHRvIHdoYXQgdGhlIGlu
-dm9sdmVkIGZpbGVzIGFyZT8NCg0KICAgIEpvY2tlDQoNCg==
 
---_000_fbe07ffea894ee60ba2f87266697be966a8437ebcamelinfineraco_
-Content-Type: text/html; charset="utf-8"
-Content-ID: <0A415295A541194FAB0313EBB02F51D2@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+On 8/21/20 1:19 AM, Nicolin Chen wrote:
+> We are expending the default DMA segmentation boundary to its
+> possible maximum value (ULONG_MAX) to indicate that a device
+> doesn't specify a boundary limit. So all dma_get_seg_boundary
+> callers should take a precaution with the return values since
+> it would easily get overflowed.
+> 
+> I scanned the entire kernel tree for all the existing callers
+> and found that most of callers may get overflowed in two ways:
+> either "+ 1" or passing it to ALIGN() that does "+ mask".
+> 
+> According to kernel defines:
+>     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
+>     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
+> 
+> We can simplify the logic here:
+>   ALIGN(boundary + 1, 1 << shift) >> shift
+> = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
+> = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
+> = [b + 1 + (1 << s) - 1] >> s
+> = [b + (1 << s)] >> s
+> = (b >> s) + 1
+> 
+> So this series of patches fix the potential overflow with this
+> overflow-free shortcut.
 
-PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
-dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjwvaGVhZD4NCjxib2R5Pg0KPGRpdj5PbiBUdWUs
-IDIwMjAtMDgtMjUgYXQgMTE6NTMgKzAzMDAsIEZlbGlwZSBCYWxiaSB3cm90ZTo8L2Rpdj4NCjxi
-bG9ja3F1b3RlIHR5cGU9ImNpdGUiIHN0eWxlPSJtYXJnaW46MCAwIDAgLjhleDsgYm9yZGVyLWxl
-ZnQ6MnB4ICM3MjlmY2Ygc29saWQ7cGFkZGluZy1sZWZ0OjFleCI+DQo8ZGl2PkpvYWtpbSBUamVy
-bmx1bmQgJmx0OzxhIGhyZWY9Im1haWx0bzpKb2FraW0uVGplcm5sdW5kQGluZmluZXJhLmNvbSI+
-Sm9ha2ltLlRqZXJubHVuZEBpbmZpbmVyYS5jb208L2E+Jmd0OyB3cml0ZXM6PGJyPg0KPC9kaXY+
-DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj48Zm9udCBjb2xvcj0iIzczNzM3MyI+Jmd0OyBPbiBN
-b24sIDIwMjAtMDgtMjQgYXQgMTY6NTggKzAzMDAsIEZlbGlwZSBCYWxiaSB3cm90ZTo8L2ZvbnQ+
-PGJyPg0KPC9kaXY+DQo8ZGl2Pjxmb250IGNvbG9yPSIjNzM3MzczIj4mZ3Q7Jmd0OyBKb2FraW0g
-VGplcm5sdW5kICZsdDs8YSBocmVmPSJtYWlsdG86Sm9ha2ltLlRqZXJubHVuZEBpbmZpbmVyYS5j
-b20iPkpvYWtpbS5UamVybmx1bmRAaW5maW5lcmEuY29tPC9hPiZndDsgd3JpdGVzOjwvZm9udD48
-YnI+DQo8L2Rpdj4NCjxkaXY+PGZvbnQgY29sb3I9IiM3MzczNzMiPiZndDsmZ3Q7IDwvZm9udD48
-YnI+DQo8L2Rpdj4NCjxkaXY+PGZvbnQgY29sb3I9IiM3MzczNzMiPiZndDsmZ3Q7ICZndDsgT24g
-TW9uLCAyMDIwLTA4LTI0IGF0IDEwOjIxICswMjAwLCBHcmVnIEtIIHdyb3RlOjwvZm9udD48YnI+
-DQo8L2Rpdj4NCjxkaXY+PGZvbnQgY29sb3I9IiM3MzczNzMiPiZndDsmZ3Q7ICZndDsgJmd0OyA8
-L2ZvbnQ+PGJyPg0KPC9kaXY+DQo8ZGl2Pjxmb250IGNvbG9yPSIjNzM3MzczIj4mZ3Q7Jmd0OyAm
-Z3Q7ICZndDsgT24gTW9uLCBBdWcgMjQsIDIwMjAgYXQgMDQ6MDQ6MzdQTSArMDgwMCwgWWUgQmlu
-IHdyb3RlOjwvZm9udD48YnI+DQo8L2Rpdj4NCjxkaXY+PGZvbnQgY29sb3I9IiM3MzczNzMiPiZn
-dDsmZ3Q7ICZndDsgJmd0OyAmZ3Q7IFNpZ25lZC1vZmYtYnk6IFllIEJpbiAmbHQ7PGEgaHJlZj0i
-bWFpbHRvOnllYmluMTBAaHVhd2VpLmNvbSI+eWViaW4xMEBodWF3ZWkuY29tPC9hPiZndDs8L2Zv
-bnQ+PGJyPg0KPC9kaXY+DQo8ZGl2Pjxmb250IGNvbG9yPSIjNzM3MzczIj4mZ3Q7Jmd0OyAmZ3Q7
-ICZndDsgPC9mb250Pjxicj4NCjwvZGl2Pg0KPGRpdj48Zm9udCBjb2xvcj0iIzczNzM3MyI+Jmd0
-OyZndDsgJmd0OyAmZ3Q7IEkgY2FuJ3QgdGFrZSBwYXRjaGVzIHdpdGhvdXQgYW55IGNoYW5nZWxv
-ZyB0ZXh0LCBzb3JyeS48L2ZvbnQ+PGJyPg0KPC9kaXY+DQo8ZGl2Pjxmb250IGNvbG9yPSIjNzM3
-MzczIj4mZ3Q7Jmd0OyAmZ3Q7IDwvZm9udD48YnI+DQo8L2Rpdj4NCjxkaXY+PGZvbnQgY29sb3I9
-IiM3MzczNzMiPiZndDsmZ3Q7ICZndDsgU3RpbGwgdGFraW5nIHBhdGNoZXMgZm9yIGZzbF91ZGNf
-Y29yZS5jID88L2ZvbnQ+PGJyPg0KPC9kaXY+DQo8ZGl2Pjxmb250IGNvbG9yPSIjNzM3MzczIj4m
-Z3Q7Jmd0OyAmZ3Q7IEkgZmlndXJlZCB0aGlzIGRyaXZlciB3YXMgb2Jzb2xldGUgYW5kIHNob3Vs
-ZCBiZSBtb3ZlZCB0byBvbmUgb2YgdGhlIENoaXBpZGVhIGRyaXZlcnMuPC9mb250Pjxicj4NCjwv
-ZGl2Pg0KPGRpdj48Zm9udCBjb2xvcj0iIzczNzM3MyI+Jmd0OyZndDsgPC9mb250Pjxicj4NCjwv
-ZGl2Pg0KPGRpdj48Zm9udCBjb2xvcj0iIzczNzM3MyI+Jmd0OyZndDsgTm9ib2R5IHNlbnQgYW55
-IHBhdGNoZXMgdG8gc3dpdGNoIG92ZXIgdGhlIHVzZXJzIG9mIHRoaXMgZHJpdmVyIHRvPC9mb250
-Pjxicj4NCjwvZGl2Pg0KPGRpdj48Zm9udCBjb2xvcj0iIzczNzM3MyI+Jmd0OyZndDsgY2hpcGlk
-ZWEuIEkgd291bGQgbG92ZSB0byBkZWxldGUgdGhpcyBkcml2ZXIgOi0pPC9mb250Pjxicj4NCjwv
-ZGl2Pg0KPGRpdj48Zm9udCBjb2xvcj0iIzczNzM3MyI+Jmd0OzwvZm9udD48YnI+DQo8L2Rpdj4N
-CjxkaXY+PGZvbnQgY29sb3I9IiM3MzczNzMiPiZndDsgTWUgdG9vLCBJIGdvdCBhIGZldyBsb2Nh
-bCBwYXRjaGVzIGhlcmUgYXMgdGhlIGRyaXZlciBpcyBxdWl0ZSBidWdneS48L2ZvbnQ+PGJyPg0K
-PC9kaXY+DQo8ZGl2Pjxmb250IGNvbG9yPSIjNzM3MzczIj4mZ3Q7IEdvdCB0byBsaXR0bGUgVVNC
-IGtub3dsZWRnZSB0byBzd2l0Y2ggaXQgb3ZlciB0aG91Z2ggOig8L2ZvbnQ+PGJyPg0KPC9kaXY+
-DQo8ZGl2Pjxicj4NCnRoaXMgd291bGRuJ3QgcmVxdWlyZSBVU0Iga25vd2xlZGdlLiBJdCBvbmx5
-IHJlcXVpcmVzIHNvbWUgbWlub3IgRFRTPGJyPg0Ka25vd2xlZGdlIGFuZCBIVyBmb3IgdGVzdGlu
-Zy48L2Rpdj4NCjwvYmxvY2txdW90ZT4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8ZGl2PmhtbSwgT0su
-IElmIGl0IGlzIHRoYXQgc2ltcGxlIEkgbWF5IHRha2UgYSBjcmFjayBhdCBpdChidXQgdGhlbiB3
-aHkgaGFzbid0IE5YUCBhbHJlYWR5IGRvbmUgdGhhdCA/KTwvZGl2Pg0KPGRpdj5JIHdvdWxkIG5l
-ZWQgc29tZSBndWlkYW5jZSBhcyB0byB3aGF0IHRoZSBpbnZvbHZlZCBmaWxlcyBhcmU/PC9kaXY+
-DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj4mbmJzcDsgJm5ic3A7IEpvY2tlJm5ic3A7PC9kaXY+
-DQo8YmxvY2txdW90ZSB0eXBlPSJjaXRlIiBzdHlsZT0ibWFyZ2luOjAgMCAwIC44ZXg7IGJvcmRl
-ci1sZWZ0OjJweCAjNzI5ZmNmIHNvbGlkO3BhZGRpbmctbGVmdDoxZXgiPg0KPC9ibG9ja3F1b3Rl
-Pg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXYgY2xhc3M9Ii14LWV2by1zaWduYXR1cmUtd3JhcHBl
-ciI+PHNwYW4gY2xhc3M9Ii14LWV2by1zaWduYXR1cmUiIGlkPSJub25lIj48L3NwYW4+PC9kaXY+
-DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+Hi Nicolin,
 
---_000_fbe07ffea894ee60ba2f87266697be966a8437ebcamelinfineraco_--
+haven't seen any other feedback from other maintainers,
+so I guess you will resend this?
+On first glance it seems to make sense.
+I'm a little confused why it is only a "potential overflow"
+while this part
+
+"We are expending the default DMA segmentation boundary to its
+ possible maximum value (ULONG_MAX) to indicate that a device
+ doesn't specify a boundary limit"
+
+sounds to me like ULONG_MAX is actually used, does that
+mean there are currently no devices which do not specify a
+boundary limit?
+
+
+> 
+> As I don't think that I have these platforms, marking RFT.
+> 
+> Thanks
+> Nic
+> 
+> Nicolin Chen (7):
+>   powerpc/iommu: Avoid overflow at boundary_size
+>   alpha: Avoid overflow at boundary_size
+>   ia64/sba_iommu: Avoid overflow at boundary_size
+>   s390/pci_dma: Avoid overflow at boundary_size
+>   sparc: Avoid overflow at boundary_size
+>   x86/amd_gart: Avoid overflow at boundary_size
+>   parisc: Avoid overflow at boundary_size
+> 
+>  arch/alpha/kernel/pci_iommu.c    | 10 ++++------
+>  arch/ia64/hp/common/sba_iommu.c  |  4 ++--
+>  arch/powerpc/kernel/iommu.c      | 11 +++++------
+>  arch/s390/pci/pci_dma.c          |  4 ++--
+>  arch/sparc/kernel/iommu-common.c |  9 +++------
+>  arch/sparc/kernel/iommu.c        |  4 ++--
+>  arch/sparc/kernel/pci_sun4v.c    |  4 ++--
+>  arch/x86/kernel/amd_gart_64.c    |  4 ++--
+>  drivers/parisc/ccio-dma.c        |  4 ++--
+>  drivers/parisc/sba_iommu.c       |  4 ++--
+>  10 files changed, 26 insertions(+), 32 deletions(-)
+> 
