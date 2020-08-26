@@ -2,83 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5267252799
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 08:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15640252872
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 09:29:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbxD21LdkzDqX2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:44:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbyCv3Hz1zDqX2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 17:29:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
+ helo=mail-ot1-x343.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JokruuZa; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=k8OlEqZL; dkim-atps=neutral
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bbx7x0vT5zDqWf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 16:40:44 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07Q6ZJWv100114; Wed, 26 Aug 2020 02:40:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject : date : message-id; s=pp1;
- bh=bH4YZiMI8XKV3eq888TjkD+jN4u7JvGQ2UQfTqCR1JA=;
- b=JokruuZamI98dX9I7AqV/1P9V78RBp005///fKFUHGCQkNQnJ6XukMJ+60bzv+mCoHlQ
- QLUyDviiir9xVpPRBKYMROGzReCH5TGMnC7aHm+/Urck0vmqtj+kPu4JwXeeqFXLW6eu
- vYjeDDy4JAGipP0LqMh0OAd9y+8MJhRp/VSq49M2v6y/+XJM7k+rU4XSCRtB5GZ/xpIL
- YlSy6lPmhlR3xnOVMaSByLlkfrpKSjNWKtbWvvL7Xm0k+MnJ4DPrI0zHw7bMwlNP20sa
- mPBSH1EbfDEjyJqCUThd9IfYlLPjBTTmn2PvzTIiKd3OtRIJ2Etjt2xGUHAwZn6nLmPX CA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 335hwghd75-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Aug 2020 02:40:36 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07Q6Vp1L025433;
- Wed, 26 Aug 2020 06:40:34 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 332ujkv6u3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Aug 2020 06:40:34 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07Q6eWR033030648
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Aug 2020 06:40:32 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1E8494C059;
- Wed, 26 Aug 2020 06:40:32 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ACE3C4C04E;
- Wed, 26 Aug 2020 06:40:30 +0000 (GMT)
-Received: from localhost.localdomain.localdomain (unknown [9.102.19.237])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 26 Aug 2020 06:40:30 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/perf: Fix reading of MSR[HV PR] bits in trace-imc
-Date: Wed, 26 Aug 2020 02:40:29 -0400
-Message-Id: <1598424029-1662-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-26_03:2020-08-25,
- 2020-08-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 adultscore=0 suspectscore=1 priorityscore=1501
- mlxscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008260050
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbyB61hHCzDqMN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 17:27:41 +1000 (AEST)
+Received: by mail-ot1-x343.google.com with SMTP id t7so758179otp.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 00:27:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+ bh=Gjvr5EC2okLFDmptfjgkq9u5+OJVDGoBUx+FYS3Ai90=;
+ b=k8OlEqZLdhMqcinOPfwq/uWMGzA1S3Ox5LgqTVlP0sVDMaAOhP62wyZCtJ7zXrAIOC
+ uZhv4On0gJQRzQr9nlWXIO4mAECOj+jgpsvyI8jE9B1UHIFsRU5X47HPjAZbD8ZkP250
+ UNbqmjfeFpeZ0sDmWVHbK8MbpByGfmivYJH4e2W+DkOunNjxrnlpdeyMMeOloPXs614X
+ j9QoZSOz96VTUQKIpRL8ssJxkLDD5zCVCTRw0YRJa3u2A2EACROI2ha+MfyO5Hr5idlA
+ kvJVEbqwxoOW9gXKPEko5mJHkrQicP5JQq69k2Q5nOxvVYfCgjzatsXkLVsVeBUhq0/j
+ 1uVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to;
+ bh=Gjvr5EC2okLFDmptfjgkq9u5+OJVDGoBUx+FYS3Ai90=;
+ b=awF63YKxTmdnF7Mh0VQ8/629yZe31f+HZu6rFIxrF5HAvhWFZz4pshRq1boJdI8EsM
+ wtZPZTMCtGKiMQJgTxL6yEv5MEF4w6mZ6fWh/iBvSeQJ7hytdnQ8ERRvVFG3HIBjMBjP
+ zQ0dpF3hHwRBeZqsyqLajENlaCVMTAn1DKyo34Pt2BJ04qI2E6OLNCt0rEnkunin/oSc
+ Xp/dMK773qqtImJ5Ja+NCyQO2ygzjfXv9eLSk5zKu7JmkpikDH7EB5kP9lSlTPiHdu4g
+ CE5NS/BwmCK6ihYl1OrM6mgSGiBbKvkSlf2KEnIFgYa9wTXLRyewG4DV3okFARNtR4uS
+ z/7w==
+X-Gm-Message-State: AOAM531ftG6Bf8Nf5snzoqF1I4soya7dNVLTrmYG58vHWgO8EC6P2wGP
+ V+DIAg976tBDguW/ZWW48rdU4YqmuRdYiP9c8I9sM/O8SzY=
+X-Google-Smtp-Source: ABdhPJwoBQQmFTHwb5OzaLVw9bR+ALCxKhX2KxA4Z5W9wsCDVdUhtunn8J3nSJ21rS2TGuorL02Je6ITUiqJBsxiZYQ=
+X-Received: by 2002:a05:6830:1283:: with SMTP id
+ z3mr8919573otp.51.1598426858511; 
+ Wed, 26 Aug 2020 00:27:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200824131231.14008-1-jniethe5@gmail.com>
+In-Reply-To: <20200824131231.14008-1-jniethe5@gmail.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Wed, 26 Aug 2020 17:27:27 +1000
+Message-ID: <CACzsE9pCYVUBBMS27G3qz5h4D=RmHhKUKnL6Q3TMbBVzYs4Rsw@mail.gmail.com>
+Subject: Re: [PATCH] selftests/powerpc: Fix prefixes in alignment_handler
+ signal handler
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,56 +74,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-IMC trace-mode uses MSR[HV PR] bits to set the cpumode
-for the instruction pointer captured in each sample.
-The bits are fetched from third DW of the trace record.
-Reading third DW from IMC trace record should use be64_to_cpu
-along with READ_ONCE inorder to fetch correct MSR[HV PR] bits.
-Patch addresses this change.
-
-Currently we are using `PERF_RECORD_MISC_HYPERVISOR` as
-cpumode if MSR HV is 1 and PR is 0 which means the address is from
-host counter. But using `PERF_RECORD_MISC_HYPERVISOR` for host
-counter data will fail to resolve the `address -> symbol` during
-`perf report` because perf tools side uses `PERF_RECORD_MISC_KERNEL`
-to represent the host counter data. Therefore, fix the trace imc
-sample data to use `PERF_RECORD_MISC_KERNEL` as cpumode for
-host kernel information.
-
-Fixes: 77ca3951cc37 ("powerpc/perf: Add kernel support for new
-MSR[HV PR] bits in trace-imc")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- arch/powerpc/perf/imc-pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index a45d694..62d0b54 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -1289,7 +1289,7 @@ static int trace_imc_prepare_sample(struct trace_imc_data *mem,
- 	header->misc = 0;
- 
- 	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
--		switch (IMC_TRACE_RECORD_VAL_HVPR(mem->val)) {
-+		switch (IMC_TRACE_RECORD_VAL_HVPR(be64_to_cpu(READ_ONCE(mem->val)))) {
- 		case 0:/* when MSR HV and PR not set in the trace-record */
- 			header->misc |= PERF_RECORD_MISC_GUEST_KERNEL;
- 			break;
-@@ -1297,7 +1297,7 @@ static int trace_imc_prepare_sample(struct trace_imc_data *mem,
- 			header->misc |= PERF_RECORD_MISC_GUEST_USER;
- 			break;
- 		case 2: /* MSR HV is 1 and PR is 0 */
--			header->misc |= PERF_RECORD_MISC_HYPERVISOR;
-+			header->misc |= PERF_RECORD_MISC_KERNEL;
- 			break;
- 		case 3: /* MSR HV is 1 and PR is 1 */
- 			header->misc |= PERF_RECORD_MISC_USER;
--- 
-1.8.3.1
-
+On Mon, Aug 24, 2020 at 11:12 PM Jordan Niethe <jniethe5@gmail.com> wrote:
+>
+> The signal handler in the alignment handler self test has the ability to
+> jump over the instruction that triggered the signal. It does this by
+> incrementing the PT_NIP in the user context by 4. If it were a prefixed
+> instruction this will mean that the suffix is then executed which is
+> incorrect. Instead check if the major opcode indicates a prefixed
+> instruction (e.g. it is 1) and if so increment PT_NIP by 8.
+>
+> If ISA v3.1 is not available treat it as a word instruction even if the
+> major opcode is 1.
+>
+> Fixes: 620a6473df36 ("selftests/powerpc: Add prefixed loads/stores to
+> alignment_handler test")
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+>  .../selftests/powerpc/alignment/alignment_handler.c   | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/powerpc/alignment/alignment_handler.c b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+> index 55ef15184057..c197ff828120 100644
+> --- a/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+> +++ b/tools/testing/selftests/powerpc/alignment/alignment_handler.c
+> @@ -64,12 +64,14 @@ int bufsize;
+>  int debug;
+>  int testing;
+>  volatile int gotsig;
+> +bool haveprefixes;
+>  char *cipath = "/dev/fb0";
+>  long cioffset;
+>
+>  void sighandler(int sig, siginfo_t *info, void *ctx)
+>  {
+>         ucontext_t *ucp = ctx;
+> +       u32 inst;
+Oh this should be befine __powerpc64__/CONFIG_PPC64 (thank you patchwork).
+>
+>         if (!testing) {
+>                 signal(sig, SIG_DFL);
+> @@ -77,7 +79,12 @@ void sighandler(int sig, siginfo_t *info, void *ctx)
+>         }
+>         gotsig = sig;
+>  #ifdef __powerpc64__
+> -       ucp->uc_mcontext.gp_regs[PT_NIP] += 4;
+> +       if (haveprefixes) {
+> +               inst = *(u32 *)ucp->uc_mcontext.gp_regs[PT_NIP];
+> +               ucp->uc_mcontext.gp_regs[PT_NIP] += ((inst >> 26 == 1) ? 8 : 4);
+> +       } else {
+> +               ucp->uc_mcontext.gp_regs[PT_NIP] += 4;
+> +       }
+>  #else
+>         ucp->uc_mcontext.uc_regs->gregs[PT_NIP] += 4;
+>  #endif
+> @@ -648,6 +655,8 @@ int main(int argc, char *argv[])
+>                 exit(1);
+>         }
+>
+> +       haveprefixes = have_hwcap2(PPC_FEATURE2_ARCH_3_1);
+> +
+>         rc |= test_harness(test_alignment_handler_vsx_206,
+>                            "test_alignment_handler_vsx_206");
+>         rc |= test_harness(test_alignment_handler_vsx_207,
+> --
+> 2.17.1
+>
