@@ -2,73 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAFE2532AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 17:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5F92532F2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 17:08:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc8F91L40zDqSy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 01:01:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc8Q06pWgzDq9J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 01:08:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tV4+5Nx+; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc85821nYzDqRD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 00:54:01 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id nv17so1000448pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 07:54:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=lZpeavpM6FR0EH3kfJJE/Au2m2iIw9NIl2DBgHhhejM=;
- b=tV4+5Nx+mWlMy1oPzbYssmbGFGn5MHDir+9Ml+ngC5YXRaOzyAwOFaifKm1R8UaWLX
- WQkXZvfbvY3oB5ULl79mFnabYoRV5BVHIVLrPO7hSistjiLvksufno1oOheZpuNe7odh
- cPO43oxRGgxo+TNxe1CNAUffQQJbpZlOvD1bN7nsgaLANe3l/5uKXIeq538FdXpyrHPR
- OgSaag90wBeVfRqyZUYj6CDGbu1+vItm3CEXZ02Jo8biOWyVnUPQhdZ1V6goCeTzxSSL
- TdSWKrdJAB4gR9cj8GvLOhpfeXcZelfyOXPY1BKqy3ngWA/gWgmLXh5kB6C1C5rA8jzc
- qavQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=lZpeavpM6FR0EH3kfJJE/Au2m2iIw9NIl2DBgHhhejM=;
- b=A3Td8BWTmK5XrcjHzf9dY7UabHfBIwOIOoLNfyyOz637OiuEO/fEdDwQ8XmAnXTVTl
- GoYFbcph4jNzZumOrfwgEzJZxEg0rHAiyDzO1W0Iyvayk9ONwuHEFGAbCoEFL18Q1OU/
- 5rKSEhsCv3qx/gmSkqkkGiOvCIT+AxKQzEyJ9zOPq8Q4Ibvu5lf7QsJA0R6H6nZsw1oU
- 3Z3CZIdzqxf6y4Tnw71LP+MsiN6aMpCVcFGAItWr0V4IEtapa+28OYmzpXxjudPKnZHM
- WAGagXCRaW92lxYdTI7uWinlAcDhf+EG34AuEsJ0itfzLq7GgL0QXn9e5Q/PsTo23TS7
- RBFQ==
-X-Gm-Message-State: AOAM5327njvqrJ7q69zYPSp00utp9/QMoIbLZGwRPAHNQl3Qc1I6gJ++
- PkmvjBvWcN8u6aUWMriWbgU=
-X-Google-Smtp-Source: ABdhPJx2B9QoNopM3vjtHv2uBEnKqWYo0WOtGbIQ2+KMIlZyPXpfHeAM0oiNKIprYdNp4bvVxSnUYw==
-X-Received: by 2002:a17:902:704b:: with SMTP id
- h11mr12417938plt.307.1598453637947; 
- Wed, 26 Aug 2020 07:53:57 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
- by smtp.gmail.com with ESMTPSA id r7sm3327140pfl.186.2020.08.26.07.53.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Aug 2020 07:53:57 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-arch@vger.kernel.org
-Subject: [PATCH v2 16/23] powerpc: use asm-generic/mmu_context.h for no-op
- implementations
-Date: Thu, 27 Aug 2020 00:52:42 +1000
-Message-Id: <20200826145249.745432-17-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200826145249.745432-1-npiggin@gmail.com>
-References: <20200826145249.745432-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc8BG6xyDzDqJm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 00:58:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=k0UgxfLH; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bc8BD4W0sz9sTj;
+ Thu, 27 Aug 2020 00:58:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1598453909;
+ bh=892/U6xU/zXzNeaF88c010Kk8eMNVMf1LHOMRICOCNo=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=k0UgxfLHuY+25qrK+FhYOHDSjva/DV0RO9s8C6oopeFcoxsBe6MAuCxvJy4IIRv3D
+ yLE1b+tMZRFspqxJVmLe7lFGPoL0u9oHNnva80oC5Zn4exvh+mRcwtNZW3aWfnXhK7
+ lIECUS1fa/iFQijprpyacT0HJ+Op0ez3UAQA9mcR4ybDdSGOZ3izGLvlGl1YesFVbj
+ CLedfwFUXk2re6j53FdonZApyp9qX4EU07rgEYHZx5yyew08SZJyaJccElwfRNR4CX
+ eWCVkGo9PLjzcI0EFEo0YsASKmq5jG3TEydWoeKDuRGrv8aq6fDhy7IQ3y2UxAbhwb
+ V3a4UTj78rdjw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v1 4/9] powerpc/vdso: Remove unnecessary ifdefs in
+ vdso_pagelist initialization
+In-Reply-To: <834f362626e18bc36226f46ed4113c461a3ad032.1598363608.git.christophe.leroy@csgroup.eu>
+References: <df48ed76cf8a756a7f97ed42a1a39d0a404014bc.1598363608.git.christophe.leroy@csgroup.eu>
+ <834f362626e18bc36226f46ed4113c461a3ad032.1598363608.git.christophe.leroy@csgroup.eu>
+Date: Thu, 27 Aug 2020 00:58:26 +1000
+Message-ID: <87ft89h2st.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,75 +61,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/mmu_context.h | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+> index daef14a284a3..bbb69832fd46 100644
+> --- a/arch/powerpc/kernel/vdso.c
+> +++ b/arch/powerpc/kernel/vdso.c
+> @@ -718,16 +710,14 @@ static int __init vdso_init(void)
+...
+>  
+> -
+> -#ifdef CONFIG_VDSO32
+>  	vdso32_kbase = &vdso32_start;
+>  
+>  	/*
+> @@ -735,8 +725,6 @@ static int __init vdso_init(void)
+>  	 */
+>  	vdso32_pages = (&vdso32_end - &vdso32_start) >> PAGE_SHIFT;
+>  	DBG("vdso32_kbase: %p, 0x%x pages\n", vdso32_kbase, vdso32_pages);
+> -#endif
 
-diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-index 7f3658a97384..bc22e247ab55 100644
---- a/arch/powerpc/include/asm/mmu_context.h
-+++ b/arch/powerpc/include/asm/mmu_context.h
-@@ -14,7 +14,9 @@
- /*
-  * Most if the context management is out of line
-  */
-+#define init_new_context init_new_context
- extern int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
-+#define destroy_context destroy_context
- extern void destroy_context(struct mm_struct *mm);
- #ifdef CONFIG_SPAPR_TCE_IOMMU
- struct mm_iommu_table_group_mem_t;
-@@ -235,27 +237,15 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
- }
- #define switch_mm_irqs_off switch_mm_irqs_off
- 
--
--#define deactivate_mm(tsk,mm)	do { } while (0)
--
--/*
-- * After we have set current->mm to a new value, this activates
-- * the context for the new mm so we see the new mappings.
-- */
--static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
--{
--	switch_mm(prev, next, current);
--}
--
--/* We don't currently use enter_lazy_tlb() for anything */
-+#ifdef CONFIG_PPC_BOOK3E_64
-+#define enter_lazy_tlb enter_lazy_tlb
- static inline void enter_lazy_tlb(struct mm_struct *mm,
- 				  struct task_struct *tsk)
- {
- 	/* 64-bit Book3E keeps track of current PGD in the PACA */
--#ifdef CONFIG_PPC_BOOK3E_64
- 	get_paca()->pgd = NULL;
--#endif
- }
-+#endif
- 
- extern void arch_exit_mmap(struct mm_struct *mm);
- 
-@@ -298,5 +288,7 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
- 	return 0;
- }
- 
-+#include <asm-generic/mmu_context.h>
-+
- #endif /* __KERNEL__ */
- #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
--- 
-2.23.0
+This didn't build for ppc64le:
 
+  /opt/cross/gcc-8.20_binutils-2.32/powerpc64-unknown-linux-gnu/bin/powerpc64-unknown-linux-gnu-ld: arch/powerpc/kernel/vdso.o:(.toc+0x0): undefined reference to `vdso32_end'
+  /opt/cross/gcc-8.20_binutils-2.32/powerpc64-unknown-linux-gnu/bin/powerpc64-unknown-linux-gnu-ld: arch/powerpc/kernel/vdso.o:(.toc+0x8): undefined reference to `vdso32_start'
+  make[1]: *** [/scratch/michael/build/maint/Makefile:1166: vmlinux] Error 1
+  make: *** [Makefile:185: __sub-make] Error 2
+
+So I just put that ifdef back.
+
+cheers
