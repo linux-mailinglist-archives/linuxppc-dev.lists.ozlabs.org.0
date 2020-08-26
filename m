@@ -1,53 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC64C252D87
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 14:02:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F0C2530C6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 15:58:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc4H25kwfzDqTs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 22:02:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc6sV6986zDqDh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 23:58:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc4D657vMzDqWj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 21:59:50 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=V70btNfX; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bc4D61TSvz9sPB;
- Wed, 26 Aug 2020 21:59:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1598443190;
- bh=GOzj1DPicMFxSUlas1Q1vx8Ws0Up4IWmSCJigxWCf3c=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=V70btNfX/PLjOnzqQvGO3b4JBQQrVQ+MYJhODoTs3ta63dpYfxgkjnEdefQDD9gKk
- XlRlc5uqLNiplsIQuUTrp0oGH4oIWJNP9GVUJQPoT4FU5Q5a+O7aC9o98aVRCDwk0A
- ODcN9kfK4IQHIeiyOdC0fDr1rCL0GJhchyRW7v77qgZvxXx+41peQWogcU11DF+5vn
- XlnUoGwLtvdnpo014boZOVav604iYLNp0ZEYApFGfH3vXOhe44m+s8UBlKyGvwsK/2
- EvwCBsggA12u7rX2osXIO5K7z6RTSUGtSqY3Lhvgfxd/QMaW+wIFPUC6W4Tf+LKzNm
- w1ahRc3PBceew==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v7 06/12] powerpc: inline huge vmap supported functions
-In-Reply-To: <20200825145753.529284-7-npiggin@gmail.com>
-References: <20200825145753.529284-1-npiggin@gmail.com>
- <20200825145753.529284-7-npiggin@gmail.com>
-Date: Wed, 26 Aug 2020 21:59:49 +1000
-Message-ID: <87lfi1hb2i.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc6l76c2qzDqT3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 23:53:18 +1000 (AEST)
+Received: from localhost (mailhub2-ext [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Bc6ks4fMjz9ttg7;
+ Wed, 26 Aug 2020 15:53:09 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [172.26.127.65]) (amavisd-new, port 10024)
+ with ESMTP id bcDWH-i1YxpU; Wed, 26 Aug 2020 15:53:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Bc6ks3LTQz9ttfq;
+ Wed, 26 Aug 2020 15:53:09 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 83CAF8B838;
+ Wed, 26 Aug 2020 15:53:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6BwFxVAniTfy; Wed, 26 Aug 2020 15:53:12 +0200 (CEST)
+Received: from [172.25.230.109] (po15451.idsi0.si.c-s.fr [172.25.230.109])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 63DE38B84A;
+ Wed, 26 Aug 2020 15:53:12 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
+To: Giuseppe Sacco <giuseppe@sguazz.it>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
+ <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
+ <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
+ <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
+ <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
+ <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
+ <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
+ <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
+ <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
+ <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
+ <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
+ <a62714c0-1b17-305d-577d-529e1781ec56@csgroup.eu>
+ <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
+ <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
+ <c707f59d379a51b83ba52e796d137887219c32fc.camel@sguazz.it>
+ <f96d336d-fb81-fe9d-9890-db57c6560e85@csgroup.eu>
+ <e7a620fa7521e84e2010660b87f20dd24a3b0cd4.camel@sguazz.it>
+Message-ID: <65baad98-79a0-5ee4-521e-5327029de459@csgroup.eu>
+Date: Wed, 26 Aug 2020 15:53:09 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <e7a620fa7521e84e2010660b87f20dd24a3b0cd4.camel@sguazz.it>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: fr
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,98 +80,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- Zefan Li <lizefan@huawei.com>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> This allows unsupported levels to be constant folded away, and so
-> p4d_free_pud_page can be removed because it's no longer linked to.
+Hello Giuseppe,
+
+Le 24/08/2020 à 22:48, Giuseppe Sacco a écrit :
+> Hello Christophe,
 >
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
+> Il giorno lun, 24/08/2020 alle 07.17 +0200, Christophe Leroy ha
+> scritto:
+>> Hello Giuseppe,
+> [...]
+>> The Oopses in the video are fixed in 5.9-rc2, see my response to your
+>> other mail.
 >
-> Ack or objection if this goes via the -mm tree? 
+> Right, I just updated from git and rebuilt the kernel whith
+> CONFIG_VMAP_STACK not set and the machine boots correctly.
+>
+>> So now we know that your kernel doesn't boot when CONFIG_VMAP_STACK 
+>> is set.
+>> Can you remind the exact problem ?
+>
+> latest kernel with CONFIG_VMAP_STACK set stops after writing:
+> pmac32_cpufreq: registering PowerMac CPU frequency driver
+> pmac32_cpufreq: Low: 667 MHz, High: 867 Mhz, Boot: 667 MHz
+>
+>> One common problem with CONFIG_VMAP_STACK is when some drivers are
+>> invalidly using buffers in stack for DMA.
+>>
+>> Couldn't try with CONFIG_DEBUG_VIRTUAL (without CONFIG_VMAP_STACK) and
+>> see if it triggers some warnings ?
+>
+> I've just tried: it boots without any special warning. What should I
+> look for? This is an excerpt of dmesg output about the line it would
+> otherwise stop:
 
-Fine by me if it builds.
+If there is no warning, then the issue is something else, bad luck.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Could you increase the loglevel and try again both with and without 
+VMAP_STACK ? Maybe we'll get more information on where it stops.
 
-cheers
+Christophe
 
-> diff --git a/arch/powerpc/include/asm/vmalloc.h b/arch/powerpc/include/asm/vmalloc.h
-> index 105abb73f075..3f0c153befb0 100644
-> --- a/arch/powerpc/include/asm/vmalloc.h
-> +++ b/arch/powerpc/include/asm/vmalloc.h
-> @@ -1,12 +1,25 @@
->  #ifndef _ASM_POWERPC_VMALLOC_H
->  #define _ASM_POWERPC_VMALLOC_H
->  
-> +#include <asm/mmu.h>
->  #include <asm/page.h>
->  
->  #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
-> -bool arch_vmap_p4d_supported(pgprot_t prot);
-> -bool arch_vmap_pud_supported(pgprot_t prot);
-> -bool arch_vmap_pmd_supported(pgprot_t prot);
-> +static inline bool arch_vmap_p4d_supported(pgprot_t prot)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool arch_vmap_pud_supported(pgprot_t prot)
-> +{
-> +	/* HPT does not cope with large pages in the vmalloc area */
-> +	return radix_enabled();
-> +}
-> +
-> +static inline bool arch_vmap_pmd_supported(pgprot_t prot)
-> +{
-> +	return radix_enabled();
-> +}
->  #endif
->  
->  #endif /* _ASM_POWERPC_VMALLOC_H */
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index eca83a50bf2e..27f5837cf145 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -1134,22 +1134,6 @@ void radix__ptep_modify_prot_commit(struct vm_area_struct *vma,
->  	set_pte_at(mm, addr, ptep, pte);
->  }
->  
-> -bool arch_vmap_pud_supported(pgprot_t prot)
-> -{
-> -	/* HPT does not cope with large pages in the vmalloc area */
-> -	return radix_enabled();
-> -}
-> -
-> -bool arch_vmap_pmd_supported(pgprot_t prot)
-> -{
-> -	return radix_enabled();
-> -}
-> -
-> -int p4d_free_pud_page(p4d_t *p4d, unsigned long addr)
-> -{
-> -	return 0;
-> -}
-> -
->  int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
->  {
->  	pte_t *ptep = (pte_t *)pud;
-> @@ -1233,8 +1217,3 @@ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
->  
->  	return 1;
->  }
-> -
-> -bool arch_vmap_p4d_supported(pgprot_t prot)
-> -{
-> -	return false;
-> -}
-> -- 
-> 2.23.0
+>
+> [...]
+> [ 6.566984] PowerMac i2c bus pmu 2 registered
+> [ 6.574879] PowerMac i2c bus pmu 1 registered
+> [ 6.582634] PowerMac i2c bus mac-io 0 registered
+> [ 6.590323] i2c i2c-2: No i2c address for 
+> /pci@f2000000/mac-io@17/i2c@18000/i2c-modem
+> [ 6.598290] PowerMac i2c bus uni-n 1 registered
+> [ 6.606196] i2c i2c-3: i2c-powermac: modalias failure on 
+> /uni-n@f8000000/i2c@f8001000/cereal@1c0
+> [ 6.614320] PowerMac i2c bus uni-n 0 registered
+> [ 6.622501] pmac32_cpufreq: Registering PowerMac CPU frequency driver
+> [ 6.630580] pmac32_cpufreq: Low: 667 Mhz, High: 867 Mhz, Boot: 667 Mhz
+> [ 6.639518] ledtrig-cpu: registered to indicate activity on CPUs
+> [ 6.647894] NET: Registered protocol family 10
+> [ 6.656492] Segment Routing with IPv6
+> [ 6.664490] mip6: Mobile IPv6
+> [ 6.672337] NET: Registered protocol family 17
+> [ 6.680213] mpls_gso: MPLS GSO support
+> [...]
+>
+> Bye,
+> Giuseppe
+>
