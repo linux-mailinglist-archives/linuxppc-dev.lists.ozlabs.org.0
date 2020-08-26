@@ -1,76 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A842526B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 08:09:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9523925278A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 08:41:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbwRL2tKLzDqMk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:09:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bbx9628DwzDqWK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:41:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643;
+ helo=mail-ej1-x643.google.com; envelope-from=hkallweit1@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=Rhrq4s4a; 
- dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=eyBoBIyD; dkim-atps=neutral
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
+ [IPv6:2a00:1450:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BbwPQ35GGzDq9k
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 16:07:22 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id AD66E84487;
- Wed, 26 Aug 2020 18:07:19 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1598422039;
- bh=An72J5d3lRampZhqj2XCfcHJc8P4Zb8uC1obKkliMMQ=;
- h=From:To:CC:Subject:Date:In-Reply-To;
- b=Rhrq4s4a/gDVGoKYtg/VvUB5+NnDZ5ECFO6tZJ4QdgkJ4LYUArnPBw8RAtMwMjbsV
- JDbTLduwNz68j6WHo1+pKRtnAUsUd/A8Un3Y57g7by6+1kqcTBtZg5o1CSmcKF3E9d
- 5Isv9obivYB/+YLUu5aLEc8MPfOppSCcSPwZmhGaWjtdPi4cjrfi1pk90yTH5FpLFR
- OVDNW9S288II70HZ7o/bBIcczuh42phcDb2d3dG0r+iZ0/g2rteYbw/AGWTLyvEf2d
- Ll0dBp/tWagHnMkzXiT0RE+DoDk59ukEB/7bPi0b9s8BktoUmOk5ewneAdRKWP12Bi
- vIdKgskYG0qEA==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5f45fc160000>; Wed, 26 Aug 2020 18:07:18 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 26 Aug 2020 18:07:19 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Wed, 26 Aug 2020 18:07:19 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Heiner Kallweit <hkallweit1@gmail.com>, "broonie@kernel.org"
- <broonie@kernel.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "benh@kernel.crashing.org" <benh@kernel.crashing.org>, "paulus@samba.org"
- <paulus@samba.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bbx642GhtzDqNy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 16:39:06 +1000 (AEST)
+Received: by mail-ej1-x643.google.com with SMTP id e23so533014ejb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Aug 2020 23:39:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=IE/AAgK2p00IDwlXwcCa+q5LrPFFg/3cF0TQP/Q5Iuk=;
+ b=eyBoBIyDYMpLNujHnBTEBv/WV3w3ncqJ15ps+uITEQQPzIdrR8SyNRWoXvuutGo37s
+ xzumD2MZRGQpQKSYgnmCrheTDVN1CHGeFiYkho1FtiqGkCZ5GWFQ5sYCLjRklAImhtiM
+ 7Z/5Whz1VWSYXVrc3vT1ia8zFg0e0NMR6K6YpXTEfeEVo2+V0OLpuuiNhWEOxJLBxTCU
+ ksCpyFxlNj7UtqPEa8UlGBb/MXiwlOCctHAaK6a3wdAX8ovl/nZ9e85Rx7Ih4Ykju7m8
+ RnVzDszL6UmxGwSWNewvnOPRHKb4Iuh0luHowzR0dLIlDDcYCHTF8Hr8XtNM0fuTMFIU
+ ELSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=IE/AAgK2p00IDwlXwcCa+q5LrPFFg/3cF0TQP/Q5Iuk=;
+ b=grgoBldVjvRlYL7iBkF5sKpn0wA5hpco6cax/KvmG1VdJaAKipXOmJPX6yGRBLOorD
+ 0IxJTvIclB/zd+0xOiOoV7qp5PKpVtsDnjRIwYV4gAyKQV+Pebug+wSxiD6dgv/lYEnO
+ YSafA4HOQLvySg904X3cT8vozaCZSAstvbe+8KywzIlNKVQRE6ImmszR4YuYX5vtIBJH
+ 5TjGub6OlaRaamhZQoROsIjG1w0crPSzP09y1GazCEwZ9kf1/ssDPqfGplL3NR2wQxCS
+ sugwEaNcuFxriVjEKxJ3YC9BLIyJNgmdG/TJhbrUl+rADQBNlZcTkjusbQiHRSg25Gcb
+ Kqow==
+X-Gm-Message-State: AOAM532NVsKy8Q4esnFXPR6yOLcy+ApjQTflGw2wPtsCUER2MP34TMdq
+ XgWUz4WGSqz8H6/2lzpQnK8=
+X-Google-Smtp-Source: ABdhPJyt9I/A4Vwfb8ZB1s33PbZZ3CP160n78L60WtrlfNWNqMD1rOj/2Q3djU7Qxo1yDr66Jp8B9Q==
+X-Received: by 2002:a17:906:7f99:: with SMTP id
+ f25mr715988ejr.307.1598423942000; 
+ Tue, 25 Aug 2020 23:39:02 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8f23:5700:843d:b7c1:fb34:c675?
+ (p200300ea8f235700843db7c1fb34c675.dip0.t-ipconnect.de.
+ [2003:ea:8f23:5700:843d:b7c1:fb34:c675])
+ by smtp.googlemail.com with ESMTPSA id e14sm1201250edl.86.2020.08.25.23.39.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Aug 2020 23:39:01 -0700 (PDT)
 Subject: Re: fsl_espi errors on v5.7.15
-Thread-Topic: fsl_espi errors on v5.7.15
-Thread-Index: AQHWceVnik7XsBYbp0S+yHVGh1hdQak2WMaAgAQdSwCAAz9MAIAAfdcAgAD5u4CAB+sMAIAAYfwAgAA6JQCAAPtUgIAAOXyAgABIbAA=
-Date: Wed, 26 Aug 2020 06:07:18 +0000
-Message-ID: <42107721-614b-96e8-68d9-4b888206562e@alliedtelesis.co.nz>
-In-Reply-To: <519c3068-6c73-c17a-2016-1afe2a1d12f7@alliedtelesis.co.nz>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AA3D5DA309097148AE30D7DBD5A98822@atlnz.lc>
-Content-Transfer-Encoding: base64
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ "paulus@samba.org" <paulus@samba.org>
+References: <42107721-614b-96e8-68d9-4b888206562e@alliedtelesis.co.nz>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <1020029e-4cb9-62ba-c6d6-e6b9bdf93aac@gmail.com>
+Date: Wed, 26 Aug 2020 08:38:51 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
+In-Reply-To: <42107721-614b-96e8-68d9-4b888206562e@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,150 +96,199 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQpPbiAyNi8wOC8yMCAxOjQ4IHBtLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPg0KPiBPbiAyNi8w
-OC8yMCAxMDoyMiBhbSwgQ2hyaXMgUGFja2hhbSB3cm90ZToNCj4+IE9uIDI1LzA4LzIwIDc6MjIg
-cG0sIEhlaW5lciBLYWxsd2VpdCB3cm90ZToNCj4+DQo+PiA8c25pcD4NCj4+PiBJJ3ZlIGJlZW4g
-c3RhcmluZyBhdCBzcGktZnNsLWVzcGkuYyBmb3Igd2hpbGUgbm93IGFuZCBJIHRoaW5rIEkndmUN
-Cj4+Pj4gaWRlbnRpZmllZCBhIGNvdXBsZSBvZiBkZWZpY2llbmNpZXMgdGhhdCBtYXkgb3IgbWF5
-IG5vdCBiZSByZWxhdGVkIA0KPj4+PiB0byBteQ0KPj4+PiBpc3N1ZS4NCj4+Pj4NCj4+Pj4gRmly
-c3QgSSB0aGluayB0aGUgJ1RyYW5zZmVyIGRvbmUgYnV0IFNQSUVfRE9OIGlzbid0IHNldCcgbWVz
-c2FnZSANCj4+Pj4gY2FuIGJlDQo+Pj4+IGdlbmVyYXRlZCBzcHVyaW91c2x5LiBJbiBmc2xfZXNw
-aV9pcnEoKSB3ZSByZWFkIHRoZSBFU1BJX1NQSUUgDQo+Pj4+IHJlZ2lzdGVyLg0KPj4+PiBXZSBh
-bHNvIHdyaXRlIGJhY2sgdG8gaXQgdG8gY2xlYXIgdGhlIGN1cnJlbnQgZXZlbnRzLiBXZSByZS1y
-ZWFkIGl0IGluDQo+Pj4+IGZzbF9lc3BpX2NwdV9pcnEoKSBhbmQgY29tcGxhaW4gd2hlbiBTUElF
-X0RPTiBpcyBub3Qgc2V0LiBCdXQgd2UgY2FuDQo+Pj4+IG5hdHVyYWxseSBlbmQgdXAgaW4gdGhh
-dCBzaXR1YXRpb24gaWYgd2UncmUgZG9pbmcgYSBsYXJnZSByZWFkLiANCj4+Pj4gQ29uc2lkZXIN
-Cj4+Pj4gdGhlIG1lc3NhZ2VzIGZvciByZWFkaW5nIGEgYmxvY2sgb2YgZGF0YSBmcm9tIGEgc3Bp
-LW5vciBjaGlwDQo+Pj4+DQo+Pj4+IMKgIMKgdHggPSBSRUFEX09QICsgQUREUg0KPj4+PiDCoCDC
-oHJ4ID0gZGF0YQ0KPj4+Pg0KPj4+PiBXZSBzZXR1cCB0aGUgdHJhbnNmZXIgYW5kIHB1bXAgb3V0
-IHRoZSB0eF9idWYuIFRoZSBmaXJzdCBpbnRlcnJ1cHQgDQo+Pj4+IGdvZXMNCj4+Pj4gb2ZmIGFu
-ZCBFU1BJX1NQSUUgaGFzIFNQSU1fRE9OIGFuZCBTUElNX1JYVCBzZXQuIFdlIGVtcHR5IHRoZSBy
-eCBmaWZvLA0KPj4+PiBjbGVhciBFU1BJX1NQSUUgYW5kIHdhaXQgZm9yIHRoZSBuZXh0IGludGVy
-cnVwdC4gVGhlIG5leHQgaW50ZXJydXB0DQo+Pj4+IGZpcmVzIGFuZCB0aGlzIHRpbWUgd2UgaGF2
-ZSBFU1BJX1NQSUUgd2l0aCBqdXN0IFNQSU1fUlhUIHNldC4gVGhpcw0KPj4+PiBjb250aW51ZXMg
-dW50aWwgd2UndmUgcmVjZWl2ZWQgYWxsIHRoZSBkYXRhIGFuZCB3ZSBmaW5pc2ggd2l0aCANCj4+
-Pj4gRVNQSV9TUElFDQo+Pj4+IGhhdmluZyBvbmx5IFNQSU1fUlhUIHNldC4gV2hlbiB3ZSByZS1y
-ZWFkIGl0IHdlIGNvbXBsYWluIHRoYXQgU1BJRV9ET04NCj4+Pj4gaXNuJ3Qgc2V0Lg0KPj4+Pg0K
-Pj4+PiBUaGUgb3RoZXIgZGVmaWNpZW5jeSBpcyB0aGF0IHdlIG9ubHkgZ2V0IGFuIGludGVycnVw
-dCB3aGVuIHRoZSANCj4+Pj4gYW1vdW50IG9mDQo+Pj4+IGRhdGEgaW4gdGhlIHJ4IGZpZm8gaXMg
-YWJvdmUgRlNMX0VTUElfUlhUSFIuIElmIHRoZXJlIGFyZSBmZXdlciB0aGFuDQo+Pj4+IEZTTF9F
-U1BJX1JYVEhSIGxlZnQgdG8gYmUgcmVjZWl2ZWQgd2Ugd2lsbCBuZXZlciBwdWxsIHRoZW0gb3V0
-IG9mIA0KPj4+PiB0aGUgZmlmby4NCj4+Pj4NCj4+PiBTUElNX0RPTiB3aWxsIHRyaWdnZXIgYW4g
-aW50ZXJydXB0IG9uY2UgdGhlIGxhc3QgY2hhcmFjdGVycyBoYXZlIGJlZW4NCj4+PiB0cmFuc2Zl
-cnJlZCwgYW5kIHJlYWQgdGhlIHJlbWFpbmluZyBjaGFyYWN0ZXJzIGZyb20gdGhlIEZJRk8uDQo+
-Pg0KPj4gVGhlIFQyMDgwUk0gdGhhdCBJIGhhdmUgc2F5cyB0aGUgZm9sbG93aW5nIGFib3V0IHRo
-ZSBET04gYml0DQo+Pg0KPj4gIkxhc3QgY2hhcmFjdGVyIHdhcyB0cmFuc21pdHRlZC4gVGhlIGxh
-c3QgY2hhcmFjdGVyIHdhcyB0cmFuc21pdHRlZCANCj4+IGFuZCBhIG5ldyBjb21tYW5kIGNhbiBi
-ZSB3cml0dGVuIGZvciB0aGUgbmV4dCBmcmFtZS4iDQo+Pg0KPj4gVGhhdCBkb2VzIGF0IGxlYXN0
-IHNlZW0gdG8gZml0IHdpdGggbXkgYXNzZXJ0aW9uIHRoYXQgaXQncyBhbGwgYWJvdXQgDQo+PiB0
-aGUgVFggZGlyZWN0aW9uLiBCdXQgdGhlIGZhY3QgdGhhdCBpdCBkb2Vzbid0IGhhcHBlbiBhbGwg
-dGhlIHRpbWUgDQo+PiB0aHJvd3Mgc29tZSBkb3VidCBvbiBpdC4NCj4+DQo+Pj4gSSB0aGluayB0
-aGUgcmVhc29uIEknbSBzZWVpbmcgc29tZSB2YXJpYWJpbGl0eSBpcyBiZWNhdXNlIG9mIGhvdyBm
-YXN0DQo+Pj4+IChvciBzbG93KSB0aGUgaW50ZXJydXB0cyBnZXQgcHJvY2Vzc2VkIGFuZCBob3cg
-ZmFzdCB0aGUgc3BpLW5vciANCj4+Pj4gY2hpcCBjYW4NCj4+Pj4gZmlsbCB0aGUgQ1BVcyByeCBm
-aWZvLg0KPj4+Pg0KPj4+IFRvIHJ1bGUgb3V0IHRpbWluZyBpc3N1ZXMgYXQgaGlnaCBidXMgZnJl
-cXVlbmNpZXMgSSBpbml0aWFsbHkgYXNrZWQNCj4+PiBmb3IgcmUtdGVzdGluZyBhdCBsb3dlciBm
-cmVxdWVuY2llcy4gSWYgeW91IGUuZy4gbGltaXQgdGhlIGJ1cyB0byAxIE1Ieg0KPj4+IG9yIGV2
-ZW4gbGVzcywgdGhlbiB0aW1pbmcgc2hvdWxkbid0IGJlIGFuIGlzc3VlLg0KPj4gWWVzIEkndmUg
-Y3VycmVudGx5IGdvdCBzcGktbWF4LWZyZXF1ZW5jeSA9IDwxMDAwMDAwPjsgaW4gbXkgZHRzLiBJ
-IA0KPj4gd291bGQgYWxzbyBleHBlY3QgYSBzbG93ZXIgZnJlcXVlbmN5IHdvdWxkIGZpdCBteSAi
-RE9OIGlzIGZvciBUWCIgDQo+PiBuYXJyYXRpdmUuDQo+Pj4gTGFzdCByZWxldmFudCBmdW5jdGlv
-bmFsIGNoYW5nZXMgaGF2ZSBiZWVuIGRvbmUgYWxtb3N0IDQgeWVhcnMgYWdvLg0KPj4+IEFuZCB5
-b3VycyBpcyB0aGUgZmlyc3Qgc3VjaCByZXBvcnQgSSBzZWUuIFNvIHF1ZXN0aW9uIGlzIHdoYXQg
-Y291bGQgDQo+Pj4gYmUgc28NCj4+PiBzcGVjaWFsIHdpdGggeW91ciBzZXR1cCB0aGF0IGl0IHNl
-ZW1zIHlvdSdyZSB0aGUgb25seSBvbmUgYmVpbmcgDQo+Pj4gYWZmZWN0ZWQuDQo+Pj4gVGhlIHNj
-ZW5hcmlvcyB5b3UgZGVzY3JpYmUgYXJlIHN0YW5kYXJkLCB0aGVyZWZvcmUgbXVjaCBtb3JlIHBl
-b3BsZQ0KPj4+IHNob3VsZCBiZSBhZmZlY3RlZCBpbiBjYXNlIG9mIGEgZHJpdmVyIGJ1Zy4NCj4+
-IEFncmVlZC4gQnV0IGV2ZW4gb24gbXkgaGFyZHdhcmUgKHdoaWNoIG1heSBoYXZlIGEgbGF0ZW50
-IGlzc3VlIA0KPj4gZGVzcGl0ZSBiZWluZyBpbiB0aGUgZmllbGQgZm9yIGdvaW5nIG9uIDUgeWVh
-cnMpIHRoZSBpc3N1ZSBvbmx5IA0KPj4gdHJpZ2dlcnMgdW5kZXIgc29tZSBmYWlybHkgc3BlY2lm
-aWMgY2lyY3Vtc3RhbmNlcy4NCj4+PiBZb3Ugc2FpZCB0aGF0IGtlcm5lbCBjb25maWcgaW1wYWN0
-cyBob3cgZnJlcXVlbnRseSB0aGUgaXNzdWUgaGFwcGVucy4NCj4+PiBUaGVyZWZvcmUgcXVlc3Rp
-b24gaXMgd2hhdCdzIHRoZSBkaWZmIGluIGtlcm5lbCBjb25maWcsIGFuZCBob3cgY291bGQNCj4+
-PiB0aGUgZGlmZmVyZW5jZXMgYmUgcmVsYXRlZCB0byBTUEkuDQo+Pg0KPj4gSXQgZGlkIHNlZW0g
-dG8gYmUgc29tZXdoYXQgcmFuZG9tLiBUaGluZ3MgbGlrZSBDT05GSUdfUFJFRU1QVCBoYXZlIGFu
-IA0KPj4gaW1wYWN0IGJ1dCBldmVyeSB0aW1lIEkgZm91bmQgc29tZXRoaW5nIHRoYXQgc2VlbWVk
-IHRvIGJlIGhhdmluZyBhbiANCj4+IGltcGFjdCBJJ3ZlIGJlZW4gYWJsZSB0byBkaXNwcm92ZSBp
-dC4gSSBhY3R1YWxseSB0aGluayBpdHMgYWJvdXQgaG93IA0KPj4gYnVzeSB0aGUgc3lzdGVtIGlz
-IHdoaWNoIG1heSBvciBtYXkgbm90IGFmZmVjdCB3aGVuIHdlIGdldCByb3VuZCB0byANCj4+IHBy
-b2Nlc3NpbmcgdGhlIGludGVycnVwdHMuDQo+Pg0KPj4gSSBoYXZlIG1hbmFnZWQgdG8gZ2V0IHRo
-ZSAnVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qgc2V0IScgdG8gDQo+PiBvY2N1ciBv
-biB0aGUgVDIwODBSREIuDQo+Pg0KPj4gSSd2ZSBoYWQgdG8gYWRkIHRoZSBmb2xsb3dpbmcgdG8g
-ZXhwb3NlIHRoZSBlbnZpcm9ubWVudCBhcyBhIG10ZCANCj4+IHBhcnRpdGlvbg0KPj4NCj4+IGRp
-ZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNsL3QyMDh4cmRiLmR0c2kgDQo+PiBi
-L2FyY2gvcG93ZXJwYy9ib290L2R0cy9mc2wvdDIwOHhyZGIuZHRzaQ0KPj4gaW5kZXggZmY4N2U2
-N2M3MGRhLi5mYmY5NWZjMWZkNjggMTAwNjQ0DQo+PiAtLS0gYS9hcmNoL3Bvd2VycGMvYm9vdC9k
-dHMvZnNsL3QyMDh4cmRiLmR0c2kNCj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9ib290L2R0cy9mc2wv
-dDIwOHhyZGIuZHRzaQ0KPj4gQEAgLTExNiw2ICsxMTYsMTUgQEAgZmxhc2hAMCB7DQo+PiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBjb21wYXRpYmxlID0gIm1pY3JvbixuMjVxNTEyYXgzIiwgDQo+PiAiamVkZWMsc3BpLW5vciI7
-DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCByZWcgPSA8MD47DQo+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzcGktbWF4LWZyZXF1ZW5jeSA9IDwxMDAw
-MDAwMD47IC8qIA0KPj4gaW5wdXQgY2xvY2sgKi8NCj4+ICsNCj4+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcGFydGl0aW9uQHUt
-Ym9vdCB7DQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlZyA9IDwweDAwMDAwMDAwIDB4MDAx
-MDAwMDA+Ow0KPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBsYWJlbCA9ICJ1LWJvb3QiOw0KPj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIH07DQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgcGFydGl0aW9uQHUtYm9vdC1lbnYgew0KPj4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCByZWcgPSA8MHgwMDEwMDAwMCAweDAwMDEwMDAwPjsNCj4+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgbGFiZWwgPSAidS1ib290LWVudiI7DQo+PiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfTsNCj4+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfTsNCj4+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9Ow0KPj4NCj4+IEFuZCBJJ20gdXNpbmcgdGhlIGZv
-bGxvd2luZyBzY3JpcHQgdG8gcG9rZSBhdCB0aGUgZW52aXJvbm1lbnQgDQo+PiAod2FybmluZyBp
-ZiBhbnlvbmUgZG9lcyB0cnkgdGhpcyBhbmQgdGhlIGJ1ZyBoaXRzIGl0IGNhbiByZW5kZXIgeW91
-ciANCj4+IHUtYm9vdCBlbnZpcm9ubWVudCBpbnZhbGlkKS4NCj4+DQo+PiBjYXQgZmxhc2gvZndf
-ZW52X3Rlc3Quc2gNCj4+ICMhL2Jpbi9zaA0KPj4NCj4+IGdlbmVyYXRlX2Z3X2Vudl9jb25maWco
-KQ0KPj4gew0KPj4gwqAgY2F0IC9wcm9jL210ZCB8IHNlZCAncy9bOiJdLy9nJyB8IHdoaWxlIHJl
-YWQgZGV2IHNpemUgZXJhc2VzaXplIA0KPj4gbmFtZSA7IGRvDQo+PiDCoMKgwqDCoCBlY2hvICIk
-ZGV2ICRzaXplICRlcmFzZXNpemUgJG5hbWUiDQo+PiDCoMKgwqDCoCBbICIkbmFtZSIgPSAidS1i
-b290LWVudiIgXSAmJiBlY2hvICIvZGV2LyRkZXYgMHgwMDAwIDB4MjAwMCANCj4+ICRlcmFzZXNp
-emUiID4vZmxhc2gvZndfZW52LmNvbmZpZw0KPj4gwqAgZG9uZQ0KPj4gfQ0KPj4NCj4+IGN5Y2xl
-cz0xMA0KPj4gWyAkIyAtZ2UgMSBdICYmIGN5Y2xlcz0kMQ0KPj4NCj4+IGdlbmVyYXRlX2Z3X2Vu
-dl9jb25maWcNCj4+DQo+PiBmd19wcmludGVudiAtYyAvZmxhc2gvZndfZW52LmNvbmZpZw0KPj4N
-Cj4+IGRtZXNnIC1jID4vZGV2L251bGwNCj4+IHg9MA0KPj4gd2hpbGUgWyAkeCAtbHQgJGN5Y2xl
-cyBdOyBkbw0KPj4gwqDCoMKgIGZ3X3ByaW50ZW52IC1jIC9mbGFzaC9md19lbnYuY29uZmlnID4v
-ZGV2L251bGwgfHwgYnJlYWsNCj4+IMKgwqDCoCBmd19zZXRlbnYgLWMgL2ZsYXNoL2Z3X2Vudi5j
-b25maWcgZm9vICRSQU5ET00gfHwgYnJlYWs7DQo+PiDCoMKgwqAgZG1lc2cgLWMgfCBncmVwIC1x
-IGZzbF9lc3BpICYmIGJyZWFrOw0KPj4gwqDCoMKgIGxldCB4PXgrMQ0KPj4gZG9uZQ0KPj4NCj4+
-IGVjaG8gIlJhbiAkeCBjeWNsZXMiDQo+DQo+IEkndmUgYWxzbyBub3cgc2VlbiB0aGUgUlggRklG
-TyBub3QgZW1wdHkgZXJyb3Igb24gdGhlIFQyMDgwUkRCDQo+DQo+IGZzbF9lc3BpIGZmZTExMDAw
-MC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0IFNQSUVfRE9OIGlzbid0IHNldCENCj4gZnNsX2VzcGkg
-ZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qgc2V0IQ0KPiBm
-c2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBz
-ZXQhDQo+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0IFNQSUVfRE9O
-IGlzbid0IHNldCENCj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQg
-cngvdHggZmlmbydzIGFyZW4ndCBlbXB0eSENCj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogU1BJ
-RV9SWENOVCA9IDEsIFNQSUVfVFhDTlQgPSAzMg0KPg0KPiBXaXRoIG15IGN1cnJlbnQgd29ya2Fy
-b3VuZCBvZiBlbXB0eWluZyB0aGUgUlggRklGTy4gSXQgc2VlbXMgDQo+IHN1cnZpdmFibGUuIElu
-dGVyZXN0aW5nbHkgaXQgb25seSBldmVyIHNlZW1zIHRvIGJlIDEgZXh0cmEgYnl0ZSBpbiB0aGUg
-DQo+IFJYIEZJRk8gYW5kIGl0IHNlZW1zIHRvIGJlIGFmdGVyIGVpdGhlciBhIFJFQURfU1Igb3Ig
-YSBSRUFEX0ZTUi4NCj4NCj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogdHggNzANCj4gZnNsX2Vz
-cGkgZmZlMTEwMDAwLnNwaTogcnggMDMNCj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogRXh0cmEg
-UlggMDANCj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9E
-T04gaXNuJ3Qgc2V0IQ0KPiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1
-dCByeC90eCBmaWZvJ3MgYXJlbid0IGVtcHR5IQ0KPiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBT
-UElFX1JYQ05UID0gMSwgU1BJRV9UWENOVCA9IDMyDQo+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6
-IHR4IDA1DQo+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IHJ4IDAwDQo+IGZzbF9lc3BpIGZmZTEx
-MDAwMC5zcGk6IEV4dHJhIFJYIDAzDQo+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVy
-IGRvbmUgYnV0IFNQSUVfRE9OIGlzbid0IHNldCENCj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTog
-VHJhbnNmZXIgZG9uZSBidXQgcngvdHggZmlmbydzIGFyZW4ndCBlbXB0eSENCj4gZnNsX2VzcGkg
-ZmZlMTEwMDAwLnNwaTogU1BJRV9SWENOVCA9IDEsIFNQSUVfVFhDTlQgPSAzMg0KPiBmc2xfZXNw
-aSBmZmUxMTAwMDAuc3BpOiB0eCAwNQ0KPiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiByeCAwMA0K
-PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBFeHRyYSBSWCAwMw0KPg0KPiBGcm9tIGFsbCB0aGUg
-TWljcm9uIFNQSS1OT1IgZGF0YXNoZWV0cyBJJ3ZlIGdvdCBhY2Nlc3MgdG8gaXQgaXMgDQo+IHBv
-c3NpYmxlIHRvIGNvbnRpbnVhbGx5IHJlYWQgdGhlIFNSL0ZTUi4gQnV0IEkndmUgbm8gaWRlYSB3
-aHkgaXQgDQo+IGhhcHBlbnMgc29tZSB0aW1lcyBhbmQgbm90IG90aGVycy4NCg0KU28gSSB0aGlu
-ayBJJ3ZlIGdvdCBhIHJlcHJvZHVjdGlvbiBhbmQgSSB0aGluayBJJ3ZlIGJpc2VjdGVkIHRoZSBw
-cm9ibGVtIA0KdG8gY29tbWl0IDMyODJhM2RhMjViZCAoInBvd2VycGMvNjQ6IEltcGxlbWVudCBz
-b2Z0IGludGVycnVwdCByZXBsYXkgaW4gDQpDIikuIE15IGRheSBpcyBqdXN0IGZpbmlzaGluZyBu
-b3cgc28gSSBoYXZlbid0IGFwcGxpZWQgdG9vIG11Y2ggc2NydXRpbnkgDQp0byB0aGlzIHJlc3Vs
-dC4gR2l2ZW4gdGhlIHZhcmlvdXMgcmFiYml0IGhvbGVzIEkndmUgYmVlbiBkb3duIG9uIHRoaXMg
-DQppc3N1ZSBhbHJlYWR5IEknZCB0YWtlIHRoaXMgaW5mb3JtYXRpb24gd2l0aCBhIGdvb2QgZGVn
-cmVlIG9mIHNrZXB0aWNpc20uDQoNClRoYW5rcywNCkNocmlzDQo=
+On 26.08.2020 08:07, Chris Packham wrote:
+> 
+> On 26/08/20 1:48 pm, Chris Packham wrote:
+>>
+>> On 26/08/20 10:22 am, Chris Packham wrote:
+>>> On 25/08/20 7:22 pm, Heiner Kallweit wrote:
+>>>
+>>> <snip>
+>>>> I've been staring at spi-fsl-espi.c for while now and I think I've
+>>>>> identified a couple of deficiencies that may or may not be related 
+>>>>> to my
+>>>>> issue.
+>>>>>
+>>>>> First I think the 'Transfer done but SPIE_DON isn't set' message 
+>>>>> can be
+>>>>> generated spuriously. In fsl_espi_irq() we read the ESPI_SPIE 
+>>>>> register.
+>>>>> We also write back to it to clear the current events. We re-read it in
+>>>>> fsl_espi_cpu_irq() and complain when SPIE_DON is not set. But we can
+>>>>> naturally end up in that situation if we're doing a large read. 
+>>>>> Consider
+>>>>> the messages for reading a block of data from a spi-nor chip
+>>>>>
+>>>>>    tx = READ_OP + ADDR
+>>>>>    rx = data
+>>>>>
+>>>>> We setup the transfer and pump out the tx_buf. The first interrupt 
+>>>>> goes
+>>>>> off and ESPI_SPIE has SPIM_DON and SPIM_RXT set. We empty the rx fifo,
+>>>>> clear ESPI_SPIE and wait for the next interrupt. The next interrupt
+>>>>> fires and this time we have ESPI_SPIE with just SPIM_RXT set. This
+>>>>> continues until we've received all the data and we finish with 
+>>>>> ESPI_SPIE
+>>>>> having only SPIM_RXT set. When we re-read it we complain that SPIE_DON
+>>>>> isn't set.
+>>>>>
+>>>>> The other deficiency is that we only get an interrupt when the 
+>>>>> amount of
+>>>>> data in the rx fifo is above FSL_ESPI_RXTHR. If there are fewer than
+>>>>> FSL_ESPI_RXTHR left to be received we will never pull them out of 
+>>>>> the fifo.
+>>>>>
+>>>> SPIM_DON will trigger an interrupt once the last characters have been
+>>>> transferred, and read the remaining characters from the FIFO.
+>>>
+>>> The T2080RM that I have says the following about the DON bit
+>>>
+>>> "Last character was transmitted. The last character was transmitted 
+>>> and a new command can be written for the next frame."
+>>>
+>>> That does at least seem to fit with my assertion that it's all about 
+>>> the TX direction. But the fact that it doesn't happen all the time 
+>>> throws some doubt on it.
+>>>
+>>>> I think the reason I'm seeing some variability is because of how fast
+>>>>> (or slow) the interrupts get processed and how fast the spi-nor 
+>>>>> chip can
+>>>>> fill the CPUs rx fifo.
+>>>>>
+>>>> To rule out timing issues at high bus frequencies I initially asked
+>>>> for re-testing at lower frequencies. If you e.g. limit the bus to 1 MHz
+>>>> or even less, then timing shouldn't be an issue.
+>>> Yes I've currently got spi-max-frequency = <1000000>; in my dts. I 
+>>> would also expect a slower frequency would fit my "DON is for TX" 
+>>> narrative.
+>>>> Last relevant functional changes have been done almost 4 years ago.
+>>>> And yours is the first such report I see. So question is what could 
+>>>> be so
+>>>> special with your setup that it seems you're the only one being 
+>>>> affected.
+>>>> The scenarios you describe are standard, therefore much more people
+>>>> should be affected in case of a driver bug.
+>>> Agreed. But even on my hardware (which may have a latent issue 
+>>> despite being in the field for going on 5 years) the issue only 
+>>> triggers under some fairly specific circumstances.
+>>>> You said that kernel config impacts how frequently the issue happens.
+>>>> Therefore question is what's the diff in kernel config, and how could
+>>>> the differences be related to SPI.
+>>>
+>>> It did seem to be somewhat random. Things like CONFIG_PREEMPT have an 
+>>> impact but every time I found something that seemed to be having an 
+>>> impact I've been able to disprove it. I actually think its about how 
+>>> busy the system is which may or may not affect when we get round to 
+>>> processing the interrupts.
+>>>
+>>> I have managed to get the 'Transfer done but SPIE_DON isn't set!' to 
+>>> occur on the T2080RDB.
+>>>
+>>> I've had to add the following to expose the environment as a mtd 
+>>> partition
+>>>
+>>> diff --git a/arch/powerpc/boot/dts/fsl/t208xrdb.dtsi 
+>>> b/arch/powerpc/boot/dts/fsl/t208xrdb.dtsi
+>>> index ff87e67c70da..fbf95fc1fd68 100644
+>>> --- a/arch/powerpc/boot/dts/fsl/t208xrdb.dtsi
+>>> +++ b/arch/powerpc/boot/dts/fsl/t208xrdb.dtsi
+>>> @@ -116,6 +116,15 @@ flash@0 {
+>>>                                 compatible = "micron,n25q512ax3", 
+>>> "jedec,spi-nor";
+>>>                                 reg = <0>;
+>>>                                 spi-max-frequency = <10000000>; /* 
+>>> input clock */
+>>> +
+>>> +                               partition@u-boot {
+>>> +                                        reg = <0x00000000 0x00100000>;
+>>> +                                        label = "u-boot";
+>>> +                                };
+>>> +                                partition@u-boot-env {
+>>> +                                        reg = <0x00100000 0x00010000>;
+>>> +                                        label = "u-boot-env";
+>>> +                                };
+>>>                         };
+>>>                 };
+>>>
+>>> And I'm using the following script to poke at the environment 
+>>> (warning if anyone does try this and the bug hits it can render your 
+>>> u-boot environment invalid).
+>>>
+>>> cat flash/fw_env_test.sh
+>>> #!/bin/sh
+>>>
+>>> generate_fw_env_config()
+>>> {
+>>>   cat /proc/mtd | sed 's/[:"]//g' | while read dev size erasesize 
+>>> name ; do
+>>>      echo "$dev $size $erasesize $name"
+>>>      [ "$name" = "u-boot-env" ] && echo "/dev/$dev 0x0000 0x2000 
+>>> $erasesize" >/flash/fw_env.config
+>>>   done
+>>> }
+>>>
+>>> cycles=10
+>>> [ $# -ge 1 ] && cycles=$1
+>>>
+>>> generate_fw_env_config
+>>>
+>>> fw_printenv -c /flash/fw_env.config
+>>>
+>>> dmesg -c >/dev/null
+>>> x=0
+>>> while [ $x -lt $cycles ]; do
+>>>     fw_printenv -c /flash/fw_env.config >/dev/null || break
+>>>     fw_setenv -c /flash/fw_env.config foo $RANDOM || break;
+>>>     dmesg -c | grep -q fsl_espi && break;
+>>>     let x=x+1
+>>> done
+>>>
+>>> echo "Ran $x cycles"
+>>
+>> I've also now seen the RX FIFO not empty error on the T2080RDB
+>>
+>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>
+>> With my current workaround of emptying the RX FIFO. It seems 
+>> survivable. Interestingly it only ever seems to be 1 extra byte in the 
+>> RX FIFO and it seems to be after either a READ_SR or a READ_FSR.
+>>
+>> fsl_espi ffe110000.spi: tx 70
+>> fsl_espi ffe110000.spi: rx 03
+>> fsl_espi ffe110000.spi: Extra RX 00
+>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>> fsl_espi ffe110000.spi: tx 05
+>> fsl_espi ffe110000.spi: rx 00
+>> fsl_espi ffe110000.spi: Extra RX 03
+>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>> fsl_espi ffe110000.spi: tx 05
+>> fsl_espi ffe110000.spi: rx 00
+>> fsl_espi ffe110000.spi: Extra RX 03
+>>
+>> From all the Micron SPI-NOR datasheets I've got access to it is 
+>> possible to continually read the SR/FSR. But I've no idea why it 
+>> happens some times and not others.
+> 
+> So I think I've got a reproduction and I think I've bisected the problem 
+> to commit 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in 
+> C"). My day is just finishing now so I haven't applied too much scrutiny 
+> to this result. Given the various rabbit holes I've been down on this 
+> issue already I'd take this information with a good degree of skepticism.
+> 
+OK, so an easy test should be to re-test with a 5.4 kernel.
+It doesn't have yet the change you're referring to, and the fsl-espi driver
+is basically the same as in 5.7 (just two small changes in 5.7).
+
+> Thanks,
+> Chris
+> 
+
