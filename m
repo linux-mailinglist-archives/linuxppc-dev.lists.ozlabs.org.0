@@ -1,62 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084452533BC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 17:32:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB28C25358B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 18:55:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc8x56bP8zDqV4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 01:32:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BcBnR49dPzDqTs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 02:55:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=G+EeWxWl; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc8hd2bwLzDqBX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 01:21:16 +1000 (AEST)
-Received: from localhost (mailhub2-ext [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Bc8hM1ndwz9ttg8;
- Wed, 26 Aug 2020 17:21:07 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [172.26.127.65]) (amavisd-new, port 10024)
- with ESMTP id I4sjrkcRIIM9; Wed, 26 Aug 2020 17:21:07 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Bc8hM118mz9ttg7;
- Wed, 26 Aug 2020 17:21:07 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 68A618B84E;
- Wed, 26 Aug 2020 17:21:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lumH6pwI8T_t; Wed, 26 Aug 2020 17:21:10 +0200 (CEST)
-Received: from [192.168.204.43] (unknown [192.168.204.43])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83D148B75F;
- Wed, 26 Aug 2020 17:21:09 +0200 (CEST)
-Subject: Re: [PATCH v1 4/9] powerpc/vdso: Remove unnecessary ifdefs in
- vdso_pagelist initialization
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <df48ed76cf8a756a7f97ed42a1a39d0a404014bc.1598363608.git.christophe.leroy@csgroup.eu>
- <834f362626e18bc36226f46ed4113c461a3ad032.1598363608.git.christophe.leroy@csgroup.eu>
- <87ft89h2st.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <51cab2a3-044c-f76b-db3a-490ac7533cd2@csgroup.eu>
-Date: Wed, 26 Aug 2020 17:21:04 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BcBlH3vfrzDqD8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 02:53:47 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id E1DD32078B;
+ Wed, 26 Aug 2020 16:53:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1598460824;
+ bh=yvbxB/dXm+wxQXgZYoFFZEVL9w4GvstjJ1BXu6Uy/Hc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=G+EeWxWlvWkzBLDIG4YwXEVSUsPzaMdlqtMCM2GTdCgivysepguirOTd+5lMVVyNl
+ i9dtROwHC76N4bjFqFddps3JLinWLMBAsEFpP1G3l7IiTW4xAaIG1kIJy28biGFpXk
+ WCvP/u2YDSt5umUXhfoBNoy72IC0sT2M2Ob2p7Ns=
+Date: Wed, 26 Aug 2020 17:53:08 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Tang Bin <tangbin@cmss.chinamobile.com>
+Subject: Re: [PATCH] ASoC: fsl_spdif: Fix unnecessary check in
+ fsl_spdif_probe()
+Message-ID: <20200826165308.GJ4965@sirena.org.uk>
+References: <20200826150918.16116-1-tangbin@cmss.chinamobile.com>
 MIME-Version: 1.0
-In-Reply-To: <87ft89h2st.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="W/D3X8sky0X3AmG5"
+Content-Disposition: inline
+In-Reply-To: <20200826150918.16116-1-tangbin@cmss.chinamobile.com>
+X-Cookie: Should I do my BOBBIE VINTON medley?
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,43 +59,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, linux-kernel@vger.kernel.org,
+ tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz,
+ linuxppc-dev@lists.ozlabs.org,
+ Zhang Shengju <zhangshengju@cmss.chinamobile.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--W/D3X8sky0X3AmG5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Le 26/08/2020 à 16:58, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
->> index daef14a284a3..bbb69832fd46 100644
->> --- a/arch/powerpc/kernel/vdso.c
->> +++ b/arch/powerpc/kernel/vdso.c
->> @@ -718,16 +710,14 @@ static int __init vdso_init(void)
-> ...
->>   
->> -
->> -#ifdef CONFIG_VDSO32
->>   	vdso32_kbase = &vdso32_start;
->>   
->>   	/*
->> @@ -735,8 +725,6 @@ static int __init vdso_init(void)
->>   	 */
->>   	vdso32_pages = (&vdso32_end - &vdso32_start) >> PAGE_SHIFT;
->>   	DBG("vdso32_kbase: %p, 0x%x pages\n", vdso32_kbase, vdso32_pages);
->> -#endif
-> 
-> This didn't build for ppc64le:
-> 
->    /opt/cross/gcc-8.20_binutils-2.32/powerpc64-unknown-linux-gnu/bin/powerpc64-unknown-linux-gnu-ld: arch/powerpc/kernel/vdso.o:(.toc+0x0): undefined reference to `vdso32_end'
->    /opt/cross/gcc-8.20_binutils-2.32/powerpc64-unknown-linux-gnu/bin/powerpc64-unknown-linux-gnu-ld: arch/powerpc/kernel/vdso.o:(.toc+0x8): undefined reference to `vdso32_start'
->    make[1]: *** [/scratch/michael/build/maint/Makefile:1166: vmlinux] Error 1
->    make: *** [Makefile:185: __sub-make] Error 2
-> 
-> So I just put that ifdef back.
-> 
+On Wed, Aug 26, 2020 at 11:09:18PM +0800, Tang Bin wrote:
+> The function fsl_spdif_probe() is only called with an openfirmware
+> platform device. Therefore there is no need to check that the passed
+> in device is NULL.
 
-Argh. I guess that's the DBG() that hurts. I'll think about it.
+Why is this an issue - the check will make things more robust if someone
+manages to load the driver on a non-DT system and otherwise costs us a
+couple of instructions?
 
-Christophe
+--W/D3X8sky0X3AmG5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9Gk3MACgkQJNaLcl1U
+h9AXowf+OVsKdeEZ3BjfcRZvF73cSt5ZNgBH2LZFoif+p5duvwFhYWYpiM838REI
+CFWQz5uaMwq5pzA8Hx+iJA+HyEhiucpXw3yxW5Xs0j1nd/BgiSGKdyHlTXZ3RqD4
+Gr2QdQXO17esiaT11+ZLFIwecynN29JLQ8GThARSMc7tGfmaXy5JQJkOy5c4nOFX
+ycF3dds18vEua7ajqC3wFLTDygdqE6gv41YqIJgU3J9X/tAugKh1jtTa4k1eh/6M
+ydH9ezNoA3havqWqAAhAGbW3kbLBCQFKsndWnZbYPU0VHZw5shBWTrx2+x6z8F68
+YM/0TyIgmkvB07oBBF6wkjb5sD0hZA==
+=6aKW
+-----END PGP SIGNATURE-----
+
+--W/D3X8sky0X3AmG5--
