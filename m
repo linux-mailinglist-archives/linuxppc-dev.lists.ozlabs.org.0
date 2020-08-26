@@ -1,74 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F0C2530C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 15:58:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F2A2530CF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:04:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc6sV6986zDqDh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 23:58:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc70348nNzDqWb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 00:04:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=1dYnX6jG; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc6l76c2qzDqT3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 23:53:18 +1000 (AEST)
-Received: from localhost (mailhub2-ext [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Bc6ks4fMjz9ttg7;
- Wed, 26 Aug 2020 15:53:09 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [172.26.127.65]) (amavisd-new, port 10024)
- with ESMTP id bcDWH-i1YxpU; Wed, 26 Aug 2020 15:53:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Bc6ks3LTQz9ttfq;
- Wed, 26 Aug 2020 15:53:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83CAF8B838;
- Wed, 26 Aug 2020 15:53:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 6BwFxVAniTfy; Wed, 26 Aug 2020 15:53:12 +0200 (CEST)
-Received: from [172.25.230.109] (po15451.idsi0.si.c-s.fr [172.25.230.109])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 63DE38B84A;
- Wed, 26 Aug 2020 15:53:12 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
-To: Giuseppe Sacco <giuseppe@sguazz.it>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
- <990279c219476c4d513df52454adf583de32641a.camel@sguazz.it>
- <211a35b02193ae79a201d4d567fe1d7a53a979f5.camel@sguazz.it>
- <639a48d1-815b-33f1-3c9e-cd9ca8ec41b1@csgroup.eu>
- <aab7a9fefe9ccfa272fbc45eeaa8228fced14d3b.camel@sguazz.it>
- <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
- <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
- <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
- <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
- <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
- <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
- <a62714c0-1b17-305d-577d-529e1781ec56@csgroup.eu>
- <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
- <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
- <c707f59d379a51b83ba52e796d137887219c32fc.camel@sguazz.it>
- <f96d336d-fb81-fe9d-9890-db57c6560e85@csgroup.eu>
- <e7a620fa7521e84e2010660b87f20dd24a3b0cd4.camel@sguazz.it>
-Message-ID: <65baad98-79a0-5ee4-521e-5327029de459@csgroup.eu>
-Date: Wed, 26 Aug 2020 15:53:09 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <e7a620fa7521e84e2010660b87f20dd24a3b0cd4.camel@sguazz.it>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: fr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc6lg2pbGzDqW0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 23:53:51 +1000 (AEST)
+Received: from localhost (unknown [70.37.104.77])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id AD06422B4B;
+ Wed, 26 Aug 2020 13:53:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1598450028;
+ bh=gMVm8mMUGjtFLow1+9B5XyghKkKUfhUCmTV1Av0gOT8=;
+ h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+ b=1dYnX6jGXHQBauIIlNDf0qaLs6C4HylzjiPodPdy6YhlJOFEnQCqq4vzfHW9vkDK9
+ xBHCZUcIwid6OPgURhAVQhwicw067mk/WxIQGA3nlkk5/knYXJNeK9WYxg2ZkRa+69
+ 7twxVbRirJvrrFUugYGfMEbZ2+ZpUCtb6n8QBQ0w=
+Date: Wed, 26 Aug 2020 13:53:48 +0000
+From: Sasha Levin <sashal@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 1/2] powerpc/rtas: Restrict RTAS requests from userspace
+In-Reply-To: <20200820044512.7543-1-ajd@linux.ibm.com>
+References: <20200820044512.7543-1-ajd@linux.ibm.com>
+Message-Id: <20200826135348.AD06422B4B@mail.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,71 +54,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: nathanl@linux.ibm.com, leobras.c@gmail.com, stable@vger.kernel.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Giuseppe,
+Hi
 
-Le 24/08/2020 à 22:48, Giuseppe Sacco a écrit :
-> Hello Christophe,
->
-> Il giorno lun, 24/08/2020 alle 07.17 +0200, Christophe Leroy ha
-> scritto:
->> Hello Giuseppe,
-> [...]
->> The Oopses in the video are fixed in 5.9-rc2, see my response to your
->> other mail.
->
-> Right, I just updated from git and rebuilt the kernel whith
-> CONFIG_VMAP_STACK not set and the machine boots correctly.
->
->> So now we know that your kernel doesn't boot when CONFIG_VMAP_STACK 
->> is set.
->> Can you remind the exact problem ?
->
-> latest kernel with CONFIG_VMAP_STACK set stops after writing:
-> pmac32_cpufreq: registering PowerMac CPU frequency driver
-> pmac32_cpufreq: Low: 667 MHz, High: 867 Mhz, Boot: 667 MHz
->
->> One common problem with CONFIG_VMAP_STACK is when some drivers are
->> invalidly using buffers in stack for DMA.
->>
->> Couldn't try with CONFIG_DEBUG_VIRTUAL (without CONFIG_VMAP_STACK) and
->> see if it triggers some warnings ?
->
-> I've just tried: it boots without any special warning. What should I
-> look for? This is an excerpt of dmesg output about the line it would
-> otherwise stop:
+[This is an automated email]
 
-If there is no warning, then the issue is something else, bad luck.
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: all
 
-Could you increase the loglevel and try again both with and without 
-VMAP_STACK ? Maybe we'll get more information on where it stops.
+The bot has tested the following trees: v5.8.2, v5.7.16, v5.4.59, v4.19.140, v4.14.193, v4.9.232, v4.4.232.
 
-Christophe
+v5.8.2: Build OK!
+v5.7.16: Build OK!
+v5.4.59: Failed to apply! Possible dependencies:
+    1a8916ee3ac2 ("powerpc: Detect the secure boot mode of the system")
+    4238fad366a6 ("powerpc/ima: Add support to initialize ima policy rules")
+    9155e2341aa8 ("powerpc/powernv: Add OPAL API interface to access secure variable")
+    bd5d9c743d38 ("powerpc: expose secure variables to userspace via sysfs")
 
->
-> [...]
-> [ 6.566984] PowerMac i2c bus pmu 2 registered
-> [ 6.574879] PowerMac i2c bus pmu 1 registered
-> [ 6.582634] PowerMac i2c bus mac-io 0 registered
-> [ 6.590323] i2c i2c-2: No i2c address for 
-> /pci@f2000000/mac-io@17/i2c@18000/i2c-modem
-> [ 6.598290] PowerMac i2c bus uni-n 1 registered
-> [ 6.606196] i2c i2c-3: i2c-powermac: modalias failure on 
-> /uni-n@f8000000/i2c@f8001000/cereal@1c0
-> [ 6.614320] PowerMac i2c bus uni-n 0 registered
-> [ 6.622501] pmac32_cpufreq: Registering PowerMac CPU frequency driver
-> [ 6.630580] pmac32_cpufreq: Low: 667 Mhz, High: 867 Mhz, Boot: 667 Mhz
-> [ 6.639518] ledtrig-cpu: registered to indicate activity on CPUs
-> [ 6.647894] NET: Registered protocol family 10
-> [ 6.656492] Segment Routing with IPv6
-> [ 6.664490] mip6: Mobile IPv6
-> [ 6.672337] NET: Registered protocol family 17
-> [ 6.680213] mpls_gso: MPLS GSO support
-> [...]
->
-> Bye,
-> Giuseppe
->
+v4.19.140: Failed to apply! Possible dependencies:
+    0261a508c9fc ("powerpc/mm: dump segment registers on book3s/32")
+    136bc0397ae2 ("powerpc/pseries: Introduce option to build secure virtual machines")
+    1a8916ee3ac2 ("powerpc: Detect the secure boot mode of the system")
+    75d9fc7fd94e ("powerpc/powernv: move OPAL call wrapper tracing and interrupt handling to C")
+    7c91efce1608 ("powerpc/mm: dump block address translation on book3s/32")
+    97026b5a5ac2 ("powerpc/mm: Split dump_pagelinuxtables flag_array table")
+    a49dddbdb0cc ("powerpc/kernel: Add ucall_norets() ultravisor call handler")
+    b2133bd7a553 ("powerpc/book3s/32: do not include pte-common.h")
+    bd5d9c743d38 ("powerpc: expose secure variables to userspace via sysfs")
+    cbcbbf4afd6d ("powerpc/mm: Define platform default caches related flags")
+    d81e6f8b7c66 ("powerpc/mm: don't use _PAGE_EXEC in book3s/32")
+    d82fd29c5a8c ("powerpc/mm: Distribute platform specific PAGE and PMD flags and definitions")
+    e66c3209c7fd ("powerpc: Move page table dump files in a dedicated subdirectory")
+    fb0b0a73b223 ("powerpc: Enable kcov")
+    ff00552578ba ("powerpc/8xx: change name of a few page flags to avoid confusion")
+
+v4.14.193: Failed to apply! Possible dependencies:
+    136bc0397ae2 ("powerpc/pseries: Introduce option to build secure virtual machines")
+    1a8916ee3ac2 ("powerpc: Detect the secure boot mode of the system")
+    4e56207130ed ("kbuild: Cache a few more calls to the compiler")
+    4fa8bc949de1 ("kbuild: rename *-asn1.[ch] to *.asn1.[ch]")
+    74ce1896c6c6 ("kbuild: clean up *.dtb and *.dtb.S patterns from top-level Makefile")
+    75d9fc7fd94e ("powerpc/powernv: move OPAL call wrapper tracing and interrupt handling to C")
+    8438ee76b004 ("Makefile: disable PIE before testing asm goto")
+    8f2133cc0e1f ("powerpc/pseries: hcall_exit tracepoint retval should be signed")
+    92e3da3cf193 ("powerpc: initial pkey plumbing")
+    9a8dfb394c04 ("kbuild: clean up *.lex.c and *.tab.[ch] patterns from top-level Makefile")
+    9ce285cfe360 (".gitignore: move *-asn1.[ch] patterns to the top-level .gitignore")
+    a49dddbdb0cc ("powerpc/kernel: Add ucall_norets() ultravisor call handler")
+    bd5d9c743d38 ("powerpc: expose secure variables to userspace via sysfs")
+    c64ba044ed57 ("kbuild: gcov: enable -fno-tree-loop-im if supported")
+    d677a4d60193 ("Makefile: support flag -fsanitizer-coverage=trace-cmp")
+    d682026dd3c5 (".gitignore: ignore ASN.1 auto generated files")
+    e08d6de4e532 ("kbuild: remove kbuild cache")
+    e501ce957a78 ("x86: Force asm-goto")
+    e9666d10a567 ("jump_label: move 'asm goto' support test to Kconfig")
+    ef46d9b3dc01 ("kbuild: clean up *.i and *.lst patterns by make clean")
+
+v4.9.232: Failed to apply! Possible dependencies:
+    1515ab932156 ("powerpc/mm: Dump hash table")
+    1a8916ee3ac2 ("powerpc: Detect the secure boot mode of the system")
+    6cc89bad60a6 ("powerpc/kprobes: Invoke handlers directly")
+    7644d5819cf8 ("powerpc: Create asm/debugfs.h and move powerpc_debugfs_root there")
+    7c0f6ba682b9 ("Replace <asm/uaccess.h> with <linux/uaccess.h> globally")
+    8eb07b187000 ("powerpc/mm: Dump linux pagetables")
+    92e3da3cf193 ("powerpc: initial pkey plumbing")
+    bd5d9c743d38 ("powerpc: expose secure variables to userspace via sysfs")
+    da6658859b9c ("powerpc: Change places using CONFIG_KEXEC to use CONFIG_KEXEC_CORE instead.")
+    dd5ac03e0955 ("powerpc/mm: Fix page table dump build on non-Book3S")
+
+v4.4.232: Failed to apply! Possible dependencies:
+    019132ff3daf ("x86/mm/pkeys: Fill in pkey field in siginfo")
+    0e749e54244e ("dax: increase granularity of dax_clear_blocks() operations")
+    1a8916ee3ac2 ("powerpc: Detect the secure boot mode of the system")
+    33a709b25a76 ("mm/gup, x86/mm/pkeys: Check VMAs and PTEs for protection keys")
+    34c0fd540e79 ("mm, dax, pmem: introduce pfn_t")
+    3565fce3a659 ("mm, x86: get_user_pages() for dax mappings")
+    52db400fcd50 ("pmem, dax: clean up clear_pmem()")
+    5c1d90f51027 ("x86/mm/pkeys: Add PTE bits for storing protection key")
+    63c17fb8e5a4 ("mm/core, x86/mm/pkeys: Store protection bits in high VMA flags")
+    69660fd797c3 ("x86, mm: introduce _PAGE_DEVMAP")
+    7b2d0dbac489 ("x86/mm/pkeys: Pass VMA down in to fault signal generation code")
+    8f62c883222c ("x86/mm/pkeys: Add arch-specific VMA protection bits")
+    92e3da3cf193 ("powerpc: initial pkey plumbing")
+    b2e0d1625e19 ("dax: fix lifetime of in-kernel dax mappings with dax_map_atomic()")
+    b95f5f4391fa ("libnvdimm: convert to statically allocated badblocks")
+    bd5d9c743d38 ("powerpc: expose secure variables to userspace via sysfs")
+    f25748e3c34e ("mm, dax: convert vmf_insert_pfn_pmd() to pfn_t")
+    fe683adabfe6 ("dax: guarantee page aligned results from bdev_direct_access()")
+
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
