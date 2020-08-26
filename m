@@ -1,94 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E267C2524F8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 03:16:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39846252535
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 03:49:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BbnxT5NGzzDqYL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 11:16:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BbphC2H6QzDqb9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 11:49:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=mmc@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=2001:df5:b000:5::4;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.vnet.ibm.com
+ header.from=alliedtelesis.co.nz
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=mY7NySnB; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=orRTRkVi; 
+ dkim-atps=neutral
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [IPv6:2001:df5:b000:5::4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bbnvc0gxxzDqXl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 11:14:35 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 07Q11UV0128735; Tue, 25 Aug 2020 21:14:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=1fGRm0vddynnh19Keh/4dSR9SyJQ4VP5EgRJs9e4U2I=;
- b=mY7NySnB7xlcOh8MGAhoMKxl3zOwWP3unLRXhZdcoZjk8YWehuqJ4D86W206h9FFMHot
- nQGaPl82np1s9BPJQgNxnEmHkwjbEilIxtNkbLTCGVaWYn9lo5UkK37n0c/fHkV/bMcS
- piAFE3D6c6atL5TTzczzyWuAGz1exQM+myneXap0oKqsPn2EQwtk1uA5LxXYPZUo/fQr
- fjvVnx31/O1/Kv2c0Ys7NoM35xuIBoTVFyh5iHKKuPTvWsZ17U7Rp9moeyWGeII2F7X6
- LhGFValAjVPWWdKwIfYtlGbXYUA95SO+prBI6oGf0aoacU/q4SsHgaENHlu5Vf/Aq2kO PQ== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 335bthtrty-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Aug 2020 21:14:30 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07Q1Cso3027618;
- Wed, 26 Aug 2020 01:14:29 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04wdc.us.ibm.com with ESMTP id 332ujenv0s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 26 Aug 2020 01:14:29 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 07Q1ETu652166954
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 26 Aug 2020 01:14:29 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F40AABE054;
- Wed, 26 Aug 2020 01:14:28 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48F40BE053;
- Wed, 26 Aug 2020 01:14:28 +0000 (GMT)
-Received: from [9.85.168.187] (unknown [9.85.168.187])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 26 Aug 2020 01:14:28 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.14\))
-Subject: Re: [PATCH net v3] ibmvnic fix NULL tx_pools and rx_tools issue at
- do_reset
-From: Mingming Cao <mmc@linux.vnet.ibm.com>
-In-Reply-To: <20200825.173104.1541443546408114168.davem@davemloft.net>
-Date: Tue, 25 Aug 2020 18:14:25 -0700
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B1BB4B7E-9B18-40E7-A051-BF8AEB84A500@linux.vnet.ibm.com>
-References: <20200825172641.806912-1-drt@linux.ibm.com>
- <20200825.173104.1541443546408114168.davem@davemloft.net>
-To: David Miller <davem@davemloft.net>
-X-Mailer: Apple Mail (2.3445.104.14)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-08-25_10:2020-08-25,
- 2020-08-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0 malwarescore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=999 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008260001
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BbpfP5dS4zDqPw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 11:48:13 +1000 (AEST)
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 225428011F;
+ Wed, 26 Aug 2020 13:48:07 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1598406487;
+ bh=uHY5e9cKyi9PX257b+FS3jOiMsle0701ETS/XNRGGa0=;
+ h=From:To:CC:Subject:Date:In-Reply-To;
+ b=orRTRkViM4xzx0xOF7Tie1qJbVdMkbcQ5+6uGWyTn3T1fX+Es5q2Q0cAT3s8h7j4/
+ 137yrjaUH4AAYiYz7MyP4mhKuAmv8T553rVtRhAoYQ+SlTzwse5N1Pss6Nr5PYrDED
+ BDVPvRLmfh+yKc/TWT/YbVmDZQabHthhLIohjjCTeht+ApXhQl4AJZWg1eX/MtyePz
+ /skm3ozWl/XBZxvanKRBNC1BLu/cpg+F6NIgfejs9Mr7NnS1r1jirjtqxCw9JVvvwE
+ 1NSHH9SfdYLIcvv/yYVbt0Xjay7bIkmezvhoG3yEAqQy5IOqWs6kVw2QtMQKtSaWzZ
+ gBR5/dWs4yl1w==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
+ mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5f45bf560000>; Wed, 26 Aug 2020 13:48:06 +1200
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
+ svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Wed, 26 Aug 2020 13:48:06 +1200
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.006; Wed, 26 Aug 2020 13:48:06 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Heiner Kallweit <hkallweit1@gmail.com>, "broonie@kernel.org"
+ <broonie@kernel.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>, "paulus@samba.org"
+ <paulus@samba.org>
+Subject: Re: fsl_espi errors on v5.7.15
+Thread-Topic: fsl_espi errors on v5.7.15
+Thread-Index: AQHWceVnik7XsBYbp0S+yHVGh1hdQak2WMaAgAQdSwCAAz9MAIAAfdcAgAD5u4CAB+sMAIAAYfwAgAA6JQCAAPtUgIAAOXyA
+Date: Wed, 26 Aug 2020 01:48:06 +0000
+Message-ID: <519c3068-6c73-c17a-2016-1afe2a1d12f7@alliedtelesis.co.nz>
+In-Reply-To: <31e91237-4f87-66da-dac3-2304779e5749@alliedtelesis.co.nz>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5BEB6839103C79428A57278D4A8457EC@atlnz.lc>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,85 +82,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: drt@linux.ibm.com, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On Aug 25, 2020, at 5:31 PM, David Miller <davem@davemloft.net> wrote:
->=20
-> From: Dany Madden <drt@linux.ibm.com>
-> Date: Tue, 25 Aug 2020 13:26:41 -0400
->=20
->> From: Mingming Cao <mmc@linux.vnet.ibm.com>
->>=20
->> At the time of do_rest, ibmvnic tries to re-initalize the tx_pools
->> and rx_pools to avoid re-allocating the long term buffer. However
->> there is a window inside do_reset that the tx_pools and
->> rx_pools were freed before re-initialized making it possible to =
-deference
->> null pointers.
->>=20
->> This patch fix this issue by always check the tx_pool
->> and rx_pool are not NULL after ibmvnic_login. If so, re-allocating
->> the pools. This will avoid getting into calling reset_tx/rx_pools =
-with
->> NULL adapter tx_pools/rx_pools pointer. Also add null pointer check =
-in
->> reset_tx_pools and reset_rx_pools to safe handle NULL pointer case.
->>=20
->> Signed-off-by: Mingming Cao <mmc@linux.vnet.ibm.com>
->> Signed-off-by: Dany Madden <drt@linux.ibm.com>
->=20
-> Applied, but:
->=20
->> +	if (!adapter->rx_pool)
->> +		return -1;
->> +
->=20
-> This driver has poor error code usage, it's a random mix of hypervisor
-> error codes, normal error codes like -EINVAL, and internal error =
-codes.
-> Sometimes used all in the same function.
->=20
-
-Agree need to improve. For this patch/fix,  -1 is  chosen to follow =
-other part of the driver that check NULL pointer and return -1 . We =
-should  go through all of -1 cases and replace with normal proper error =
-code. That should be a seperate patch.=20
-
-> For example:
->=20
-> static int ibmvnic_send_crq(struct ibmvnic_adapter *adapter,
-> 			    union ibmvnic_crq *crq)
-> ...
-> 	if (!adapter->crq.active &&
-> 	    crq->generic.first !=3D IBMVNIC_CRQ_INIT_CMD) {
-> 		dev_warn(dev, "Invalid request detected while CRQ is =
-inactive, possible device state change during reset\n");
-> 		return -EINVAL;
-> 	}
-> ...
-> 	rc =3D plpar_hcall_norets(H_SEND_CRQ, ua,
-> 				cpu_to_be64(u64_crq[0]),
-> 				cpu_to_be64(u64_crq[1]));
->=20
-> 	if (rc) {
-> 		if (rc =3D=3D H_CLOSED) {
-> ...
-> 	return rc;
->=20
-> So obviously this function returns a mix of negative erro codes
-> and Hypervisor codes such as H_CLOSED.
->=20
-> And stuff like:
->=20
-> 	rc =3D __ibmvnic_open(netdev);
-> 	if (rc)
-> 		return IBMVNIC_OPEN_FAILED;
-
-Agree.=20
-
-Mingming=
+DQpPbiAyNi8wOC8yMCAxMDoyMiBhbSwgQ2hyaXMgUGFja2hhbSB3cm90ZToNCj4gT24gMjUvMDgv
+MjAgNzoyMiBwbSwgSGVpbmVyIEthbGx3ZWl0IHdyb3RlOg0KPg0KPiA8c25pcD4NCj4+IEkndmUg
+YmVlbiBzdGFyaW5nIGF0IHNwaS1mc2wtZXNwaS5jIGZvciB3aGlsZSBub3cgYW5kIEkgdGhpbmsg
+SSd2ZQ0KPj4+IGlkZW50aWZpZWQgYSBjb3VwbGUgb2YgZGVmaWNpZW5jaWVzIHRoYXQgbWF5IG9y
+IG1heSBub3QgYmUgcmVsYXRlZCANCj4+PiB0byBteQ0KPj4+IGlzc3VlLg0KPj4+DQo+Pj4gRmly
+c3QgSSB0aGluayB0aGUgJ1RyYW5zZmVyIGRvbmUgYnV0IFNQSUVfRE9OIGlzbid0IHNldCcgbWVz
+c2FnZSBjYW4gYmUNCj4+PiBnZW5lcmF0ZWQgc3B1cmlvdXNseS4gSW4gZnNsX2VzcGlfaXJxKCkg
+d2UgcmVhZCB0aGUgRVNQSV9TUElFIHJlZ2lzdGVyLg0KPj4+IFdlIGFsc28gd3JpdGUgYmFjayB0
+byBpdCB0byBjbGVhciB0aGUgY3VycmVudCBldmVudHMuIFdlIHJlLXJlYWQgaXQgaW4NCj4+PiBm
+c2xfZXNwaV9jcHVfaXJxKCkgYW5kIGNvbXBsYWluIHdoZW4gU1BJRV9ET04gaXMgbm90IHNldC4g
+QnV0IHdlIGNhbg0KPj4+IG5hdHVyYWxseSBlbmQgdXAgaW4gdGhhdCBzaXR1YXRpb24gaWYgd2Un
+cmUgZG9pbmcgYSBsYXJnZSByZWFkLiANCj4+PiBDb25zaWRlcg0KPj4+IHRoZSBtZXNzYWdlcyBm
+b3IgcmVhZGluZyBhIGJsb2NrIG9mIGRhdGEgZnJvbSBhIHNwaS1ub3IgY2hpcA0KPj4+DQo+Pj4g
+wqAgwqB0eCA9IFJFQURfT1AgKyBBRERSDQo+Pj4gwqAgwqByeCA9IGRhdGENCj4+Pg0KPj4+IFdl
+IHNldHVwIHRoZSB0cmFuc2ZlciBhbmQgcHVtcCBvdXQgdGhlIHR4X2J1Zi4gVGhlIGZpcnN0IGlu
+dGVycnVwdCBnb2VzDQo+Pj4gb2ZmIGFuZCBFU1BJX1NQSUUgaGFzIFNQSU1fRE9OIGFuZCBTUElN
+X1JYVCBzZXQuIFdlIGVtcHR5IHRoZSByeCBmaWZvLA0KPj4+IGNsZWFyIEVTUElfU1BJRSBhbmQg
+d2FpdCBmb3IgdGhlIG5leHQgaW50ZXJydXB0LiBUaGUgbmV4dCBpbnRlcnJ1cHQNCj4+PiBmaXJl
+cyBhbmQgdGhpcyB0aW1lIHdlIGhhdmUgRVNQSV9TUElFIHdpdGgganVzdCBTUElNX1JYVCBzZXQu
+IFRoaXMNCj4+PiBjb250aW51ZXMgdW50aWwgd2UndmUgcmVjZWl2ZWQgYWxsIHRoZSBkYXRhIGFu
+ZCB3ZSBmaW5pc2ggd2l0aCANCj4+PiBFU1BJX1NQSUUNCj4+PiBoYXZpbmcgb25seSBTUElNX1JY
+VCBzZXQuIFdoZW4gd2UgcmUtcmVhZCBpdCB3ZSBjb21wbGFpbiB0aGF0IFNQSUVfRE9ODQo+Pj4g
+aXNuJ3Qgc2V0Lg0KPj4+DQo+Pj4gVGhlIG90aGVyIGRlZmljaWVuY3kgaXMgdGhhdCB3ZSBvbmx5
+IGdldCBhbiBpbnRlcnJ1cHQgd2hlbiB0aGUgDQo+Pj4gYW1vdW50IG9mDQo+Pj4gZGF0YSBpbiB0
+aGUgcnggZmlmbyBpcyBhYm92ZSBGU0xfRVNQSV9SWFRIUi4gSWYgdGhlcmUgYXJlIGZld2VyIHRo
+YW4NCj4+PiBGU0xfRVNQSV9SWFRIUiBsZWZ0IHRvIGJlIHJlY2VpdmVkIHdlIHdpbGwgbmV2ZXIg
+cHVsbCB0aGVtIG91dCBvZiANCj4+PiB0aGUgZmlmby4NCj4+Pg0KPj4gU1BJTV9ET04gd2lsbCB0
+cmlnZ2VyIGFuIGludGVycnVwdCBvbmNlIHRoZSBsYXN0IGNoYXJhY3RlcnMgaGF2ZSBiZWVuDQo+
+PiB0cmFuc2ZlcnJlZCwgYW5kIHJlYWQgdGhlIHJlbWFpbmluZyBjaGFyYWN0ZXJzIGZyb20gdGhl
+IEZJRk8uDQo+DQo+IFRoZSBUMjA4MFJNIHRoYXQgSSBoYXZlIHNheXMgdGhlIGZvbGxvd2luZyBh
+Ym91dCB0aGUgRE9OIGJpdA0KPg0KPiAiTGFzdCBjaGFyYWN0ZXIgd2FzIHRyYW5zbWl0dGVkLiBU
+aGUgbGFzdCBjaGFyYWN0ZXIgd2FzIHRyYW5zbWl0dGVkIA0KPiBhbmQgYSBuZXcgY29tbWFuZCBj
+YW4gYmUgd3JpdHRlbiBmb3IgdGhlIG5leHQgZnJhbWUuIg0KPg0KPiBUaGF0IGRvZXMgYXQgbGVh
+c3Qgc2VlbSB0byBmaXQgd2l0aCBteSBhc3NlcnRpb24gdGhhdCBpdCdzIGFsbCBhYm91dCANCj4g
+dGhlIFRYIGRpcmVjdGlvbi4gQnV0IHRoZSBmYWN0IHRoYXQgaXQgZG9lc24ndCBoYXBwZW4gYWxs
+IHRoZSB0aW1lIA0KPiB0aHJvd3Mgc29tZSBkb3VidCBvbiBpdC4NCj4NCj4+IEkgdGhpbmsgdGhl
+IHJlYXNvbiBJJ20gc2VlaW5nIHNvbWUgdmFyaWFiaWxpdHkgaXMgYmVjYXVzZSBvZiBob3cgZmFz
+dA0KPj4+IChvciBzbG93KSB0aGUgaW50ZXJydXB0cyBnZXQgcHJvY2Vzc2VkIGFuZCBob3cgZmFz
+dCB0aGUgc3BpLW5vciBjaGlwIA0KPj4+IGNhbg0KPj4+IGZpbGwgdGhlIENQVXMgcnggZmlmby4N
+Cj4+Pg0KPj4gVG8gcnVsZSBvdXQgdGltaW5nIGlzc3VlcyBhdCBoaWdoIGJ1cyBmcmVxdWVuY2ll
+cyBJIGluaXRpYWxseSBhc2tlZA0KPj4gZm9yIHJlLXRlc3RpbmcgYXQgbG93ZXIgZnJlcXVlbmNp
+ZXMuIElmIHlvdSBlLmcuIGxpbWl0IHRoZSBidXMgdG8gMSBNSHoNCj4+IG9yIGV2ZW4gbGVzcywg
+dGhlbiB0aW1pbmcgc2hvdWxkbid0IGJlIGFuIGlzc3VlLg0KPiBZZXMgSSd2ZSBjdXJyZW50bHkg
+Z290IHNwaS1tYXgtZnJlcXVlbmN5ID0gPDEwMDAwMDA+OyBpbiBteSBkdHMuIEkgDQo+IHdvdWxk
+IGFsc28gZXhwZWN0IGEgc2xvd2VyIGZyZXF1ZW5jeSB3b3VsZCBmaXQgbXkgIkRPTiBpcyBmb3Ig
+VFgiIA0KPiBuYXJyYXRpdmUuDQo+PiBMYXN0IHJlbGV2YW50IGZ1bmN0aW9uYWwgY2hhbmdlcyBo
+YXZlIGJlZW4gZG9uZSBhbG1vc3QgNCB5ZWFycyBhZ28uDQo+PiBBbmQgeW91cnMgaXMgdGhlIGZp
+cnN0IHN1Y2ggcmVwb3J0IEkgc2VlLiBTbyBxdWVzdGlvbiBpcyB3aGF0IGNvdWxkIA0KPj4gYmUg
+c28NCj4+IHNwZWNpYWwgd2l0aCB5b3VyIHNldHVwIHRoYXQgaXQgc2VlbXMgeW91J3JlIHRoZSBv
+bmx5IG9uZSBiZWluZyANCj4+IGFmZmVjdGVkLg0KPj4gVGhlIHNjZW5hcmlvcyB5b3UgZGVzY3Jp
+YmUgYXJlIHN0YW5kYXJkLCB0aGVyZWZvcmUgbXVjaCBtb3JlIHBlb3BsZQ0KPj4gc2hvdWxkIGJl
+IGFmZmVjdGVkIGluIGNhc2Ugb2YgYSBkcml2ZXIgYnVnLg0KPiBBZ3JlZWQuIEJ1dCBldmVuIG9u
+IG15IGhhcmR3YXJlICh3aGljaCBtYXkgaGF2ZSBhIGxhdGVudCBpc3N1ZSBkZXNwaXRlIA0KPiBi
+ZWluZyBpbiB0aGUgZmllbGQgZm9yIGdvaW5nIG9uIDUgeWVhcnMpIHRoZSBpc3N1ZSBvbmx5IHRy
+aWdnZXJzIHVuZGVyIA0KPiBzb21lIGZhaXJseSBzcGVjaWZpYyBjaXJjdW1zdGFuY2VzLg0KPj4g
+WW91IHNhaWQgdGhhdCBrZXJuZWwgY29uZmlnIGltcGFjdHMgaG93IGZyZXF1ZW50bHkgdGhlIGlz
+c3VlIGhhcHBlbnMuDQo+PiBUaGVyZWZvcmUgcXVlc3Rpb24gaXMgd2hhdCdzIHRoZSBkaWZmIGlu
+IGtlcm5lbCBjb25maWcsIGFuZCBob3cgY291bGQNCj4+IHRoZSBkaWZmZXJlbmNlcyBiZSByZWxh
+dGVkIHRvIFNQSS4NCj4NCj4gSXQgZGlkIHNlZW0gdG8gYmUgc29tZXdoYXQgcmFuZG9tLiBUaGlu
+Z3MgbGlrZSBDT05GSUdfUFJFRU1QVCBoYXZlIGFuIA0KPiBpbXBhY3QgYnV0IGV2ZXJ5IHRpbWUg
+SSBmb3VuZCBzb21ldGhpbmcgdGhhdCBzZWVtZWQgdG8gYmUgaGF2aW5nIGFuIA0KPiBpbXBhY3Qg
+SSd2ZSBiZWVuIGFibGUgdG8gZGlzcHJvdmUgaXQuIEkgYWN0dWFsbHkgdGhpbmsgaXRzIGFib3V0
+IGhvdyANCj4gYnVzeSB0aGUgc3lzdGVtIGlzIHdoaWNoIG1heSBvciBtYXkgbm90IGFmZmVjdCB3
+aGVuIHdlIGdldCByb3VuZCB0byANCj4gcHJvY2Vzc2luZyB0aGUgaW50ZXJydXB0cy4NCj4NCj4g
+SSBoYXZlIG1hbmFnZWQgdG8gZ2V0IHRoZSAnVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNu
+J3Qgc2V0IScgdG8gDQo+IG9jY3VyIG9uIHRoZSBUMjA4MFJEQi4NCj4NCj4gSSd2ZSBoYWQgdG8g
+YWRkIHRoZSBmb2xsb3dpbmcgdG8gZXhwb3NlIHRoZSBlbnZpcm9ubWVudCBhcyBhIG10ZCANCj4g
+cGFydGl0aW9uDQo+DQo+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNsL3Qy
+MDh4cmRiLmR0c2kgDQo+IGIvYXJjaC9wb3dlcnBjL2Jvb3QvZHRzL2ZzbC90MjA4eHJkYi5kdHNp
+DQo+IGluZGV4IGZmODdlNjdjNzBkYS4uZmJmOTVmYzFmZDY4IDEwMDY0NA0KPiAtLS0gYS9hcmNo
+L3Bvd2VycGMvYm9vdC9kdHMvZnNsL3QyMDh4cmRiLmR0c2kNCj4gKysrIGIvYXJjaC9wb3dlcnBj
+L2Jvb3QvZHRzL2ZzbC90MjA4eHJkYi5kdHNpDQo+IEBAIC0xMTYsNiArMTE2LDE1IEBAIGZsYXNo
+QDAgew0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gIm1pY3JvbixuMjVxNTEyYXgzIiwgDQo+ICJqZWRl
+YyxzcGktbm9yIjsNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVnID0gPDA+Ow0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzcGktbWF4LWZyZXF1ZW5j
+eSA9IDwxMDAwMDAwMD47IC8qIA0KPiBpbnB1dCBjbG9jayAqLw0KPiArDQo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcGFydGl0
+aW9uQHUtYm9vdCB7DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVnID0gPDB4MDAwMDAwMDAg
+MHgwMDEwMDAwMD47DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbGFiZWwgPSAidS1ib290IjsN
+Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIH07DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBwYXJ0aXRpb25AdS1ib290LWVudiB7DQo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgcmVnID0gPDB4MDAxMDAwMDAgMHgwMDAxMDAwMD47DQo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgbGFiZWwgPSAidS1ib290LWVudiI7DQo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9Ow0KPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH07DQo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9Ow0KPg0KPiBBbmQgSSdtIHVzaW5nIHRoZSBmb2xsb3dp
+bmcgc2NyaXB0IHRvIHBva2UgYXQgdGhlIGVudmlyb25tZW50ICh3YXJuaW5nIA0KPiBpZiBhbnlv
+bmUgZG9lcyB0cnkgdGhpcyBhbmQgdGhlIGJ1ZyBoaXRzIGl0IGNhbiByZW5kZXIgeW91ciB1LWJv
+b3QgDQo+IGVudmlyb25tZW50IGludmFsaWQpLg0KPg0KPiBjYXQgZmxhc2gvZndfZW52X3Rlc3Qu
+c2gNCj4gIyEvYmluL3NoDQo+DQo+IGdlbmVyYXRlX2Z3X2Vudl9jb25maWcoKQ0KPiB7DQo+IMKg
+IGNhdCAvcHJvYy9tdGQgfCBzZWQgJ3MvWzoiXS8vZycgfCB3aGlsZSByZWFkIGRldiBzaXplIGVy
+YXNlc2l6ZSBuYW1lIA0KPiA7IGRvDQo+IMKgwqDCoMKgIGVjaG8gIiRkZXYgJHNpemUgJGVyYXNl
+c2l6ZSAkbmFtZSINCj4gwqDCoMKgwqAgWyAiJG5hbWUiID0gInUtYm9vdC1lbnYiIF0gJiYgZWNo
+byAiL2Rldi8kZGV2IDB4MDAwMCAweDIwMDAgDQo+ICRlcmFzZXNpemUiID4vZmxhc2gvZndfZW52
+LmNvbmZpZw0KPiDCoCBkb25lDQo+IH0NCj4NCj4gY3ljbGVzPTEwDQo+IFsgJCMgLWdlIDEgXSAm
+JiBjeWNsZXM9JDENCj4NCj4gZ2VuZXJhdGVfZndfZW52X2NvbmZpZw0KPg0KPiBmd19wcmludGVu
+diAtYyAvZmxhc2gvZndfZW52LmNvbmZpZw0KPg0KPiBkbWVzZyAtYyA+L2Rldi9udWxsDQo+IHg9
+MA0KPiB3aGlsZSBbICR4IC1sdCAkY3ljbGVzIF07IGRvDQo+IMKgwqDCoCBmd19wcmludGVudiAt
+YyAvZmxhc2gvZndfZW52LmNvbmZpZyA+L2Rldi9udWxsIHx8IGJyZWFrDQo+IMKgwqDCoCBmd19z
+ZXRlbnYgLWMgL2ZsYXNoL2Z3X2Vudi5jb25maWcgZm9vICRSQU5ET00gfHwgYnJlYWs7DQo+IMKg
+wqDCoCBkbWVzZyAtYyB8IGdyZXAgLXEgZnNsX2VzcGkgJiYgYnJlYWs7DQo+IMKgwqDCoCBsZXQg
+eD14KzENCj4gZG9uZQ0KPg0KPiBlY2hvICJSYW4gJHggY3ljbGVzIg0KDQpJJ3ZlIGFsc28gbm93
+IHNlZW4gdGhlIFJYIEZJRk8gbm90IGVtcHR5IGVycm9yIG9uIHRoZSBUMjA4MFJEQg0KDQpmc2xf
+ZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQh
+DQpmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24n
+dCBzZXQhDQpmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RP
+TiBpc24ndCBzZXQhDQpmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBT
+UElFX0RPTiBpc24ndCBzZXQhDQpmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25l
+IGJ1dCByeC90eCBmaWZvJ3MgYXJlbid0IGVtcHR5IQ0KZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTog
+U1BJRV9SWENOVCA9IDEsIFNQSUVfVFhDTlQgPSAzMg0KDQpXaXRoIG15IGN1cnJlbnQgd29ya2Fy
+b3VuZCBvZiBlbXB0eWluZyB0aGUgUlggRklGTy4gSXQgc2VlbXMgc3Vydml2YWJsZS4gDQpJbnRl
+cmVzdGluZ2x5IGl0IG9ubHkgZXZlciBzZWVtcyB0byBiZSAxIGV4dHJhIGJ5dGUgaW4gdGhlIFJY
+IEZJRk8gYW5kIA0KaXQgc2VlbXMgdG8gYmUgYWZ0ZXIgZWl0aGVyIGEgUkVBRF9TUiBvciBhIFJF
+QURfRlNSLg0KDQpmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiB0eCA3MA0KZnNsX2VzcGkgZmZlMTEw
+MDAwLnNwaTogcnggMDMNCmZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IEV4dHJhIFJYIDAwDQpmc2xf
+ZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQh
+DQpmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCByeC90eCBmaWZvJ3Mg
+YXJlbid0IGVtcHR5IQ0KZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogU1BJRV9SWENOVCA9IDEsIFNQ
+SUVfVFhDTlQgPSAzMg0KZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogdHggMDUNCmZzbF9lc3BpIGZm
+ZTExMDAwMC5zcGk6IHJ4IDAwDQpmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBFeHRyYSBSWCAwMw0K
+ZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qg
+c2V0IQ0KZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgcngvdHggZmlm
+bydzIGFyZW4ndCBlbXB0eSENCmZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFNQSUVfUlhDTlQgPSAx
+LCBTUElFX1RYQ05UID0gMzINCmZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IHR4IDA1DQpmc2xfZXNw
+aSBmZmUxMTAwMDAuc3BpOiByeCAwMA0KZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogRXh0cmEgUlgg
+MDMNCg0KIEZyb20gYWxsIHRoZSBNaWNyb24gU1BJLU5PUiBkYXRhc2hlZXRzIEkndmUgZ290IGFj
+Y2VzcyB0byBpdCBpcyANCnBvc3NpYmxlIHRvIGNvbnRpbnVhbGx5IHJlYWQgdGhlIFNSL0ZTUi4g
+QnV0IEkndmUgbm8gaWRlYSB3aHkgaXQgaGFwcGVucyANCnNvbWUgdGltZXMgYW5kIG5vdCBvdGhl
+cnMuDQo=
