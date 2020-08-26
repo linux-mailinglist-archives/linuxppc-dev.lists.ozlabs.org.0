@@ -2,47 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF10025310A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA28A253129
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:24:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc7Hj2NcWzDq9D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 00:18:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc7Qh0ytZzDqWj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 00:24:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=jSphhp/G; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc6m42qQkzDqTW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 23:54:12 +1000 (AEST)
-Received: from localhost (unknown [70.37.104.77])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2C08622BEA;
- Wed, 26 Aug 2020 13:54:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1598450050;
- bh=rF4YSV6AU33u/6I6Rn4ZWS4KG0uVcHBRxE8z07nY/Bs=;
- h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
- b=jSphhp/G0qTYj1YoacBsfmGn4fC8XSgD1ntE+ArEEAa3/R7CYCponyc6Lahzdcxry
- P3p4DgZscfPXxQKij7qxrV+V/Tj2q6E55ogMMQe7faAgJCqBf1kyT34w5AJG4/+uzT
- Jyq2+EMpQ798PKOVIZMQF8Rkvf8ETeFsZOEPae4Q=
-Date: Wed, 26 Aug 2020 13:54:09 +0000
-From: Sasha Levin <sashal@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: Re: [PATCH v2 1/4] powerpc/drmem: Make lmb_size 64 bit
-In-Reply-To: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
-References: <20200806162329.276534-1-aneesh.kumar@linux.ibm.com>
-Message-Id: <20200826135410.2C08622BEA@mail.kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc6sV1xQxzDqTs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 23:58:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=gnDhYZcc; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bc6sM3GcQz9sTY;
+ Wed, 26 Aug 2020 23:58:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1598450328;
+ bh=WtZvPT+tJcHfWDcB2bl5x2ifUWh9Vy9MLjlig77Klic=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=gnDhYZccRghiauDXrDGdwkzPQT8Lplr8Ow6tPk6IjkE0F7M7ryNIJ92vrGMdNp+xF
+ VPlukfvbrRP0N19FgbkYQGB5r7jctQXuFqoiSNqx3BDtTqn4wIzlx0jHzGz4M5x19W
+ 4Z/XUBMAVPeoFDNUjPp2iyZbUgtLc2RxbIg+TtDdV4Bfmh6/tHGU6i65muDGLqrr6V
+ nkIZisdCjYJB2kW80GY9tALHAWFZtvIZLnCJdJxpjNul/UQP1J9a0SZLwkNi9qj+I0
+ sYlHYPtS/Y3in5lLSDLRpNvfy4TgsAuntDK5dWlloid8c2U2ar2WcBXJPDGvjBbcky
+ /YBhx7gThAFWg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, nathanl@linux.ibm.com
+Subject: Re: [PATCH v8 2/8] powerpc/vdso: Remove __kernel_datapage_offset and
+ simplify __get_datapage()
+In-Reply-To: <6862421a-5a14-2e38-b825-e39e6ad3d51d@csgroup.eu>
+References: <cover.1588079622.git.christophe.leroy@c-s.fr>
+ <0d2201efe3c7727f2acc718aefd7c5bb22c66c57.1588079622.git.christophe.leroy@c-s.fr>
+ <87wo34tbas.fsf@mpe.ellerman.id.au>
+ <2f9b7d02-9e2f-4724-2608-c5573f6507a2@csgroup.eu>
+ <6862421a-5a14-2e38-b825-e39e6ad3d51d@csgroup.eu>
+Date: Wed, 26 Aug 2020 23:58:44 +1000
+Message-ID: <87imd5h5kb.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,68 +65,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, stable@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, arnd@arndb.de, Will Deacon <will@kernel.org>,
+ linux-kernel@vger.kernel.org, luto@kernel.org, tglx@linutronix.de,
+ vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 04/08/2020 =C3=A0 13:17, Christophe Leroy a =C3=A9crit=C2=A0:
+>> On 07/16/2020 02:59 AM, Michael Ellerman wrote:
+>>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>>> The VDSO datapage and the text pages are always located immediately
+>>>> next to each other, so it can be hardcoded without an indirection
+>>>> through __kernel_datapage_offset
+>>>>
+>>>> In order to ease things, move the data page in front like other
+>>>> arches, that way there is no need to know the size of the library
+>>>> to locate the data page.
+>>>>
+> [...]
+>
+>>>
+>>> I merged this but then realised it breaks the display of the vdso in=20
+>>> /proc/self/maps.
+>>>
+>>> ie. the vdso vma gets no name:
+>>>
+>>> =C2=A0=C2=A0 # cat /proc/self/maps
+>
+> [...]
+>
+>>> And it's also going to break the logic in arch_unmap() to detect if
+>>> we're unmapping (part of) the VDSO. And it will break arch_remap() too.
+>>>
+>>> And the logic to recognise the signal trampoline in
+>>> arch/powerpc/perf/callchain_*.c as well.
+>>=20
+>> I don't think it breaks that one, because ->vdsobase is still the start=
+=20
+>> of text.
+>>=20
+>>>
+>>> So I'm going to rebase and drop this for now.
+>>>
+>>> Basically we have a bunch of places that assume that vdso_base is =3D=
+=3D the
+>>> start of the VDSO vma, and also that the code starts there. So that will
+>>> need some work to tease out all those assumptions and make them work
+>>> with this change.
+>>=20
+>> Ok, one day I need to look at it in more details and see how other=20
+>> architectures handle it etc ...
+>>=20
+>
+> I just sent out a series which switches powerpc to the new=20
+> _install_special_mapping() API, the one powerpc uses being deprecated=20
+> since commit a62c34bd2a8a ("x86, mm: Improve _install_special_mapping
+> and fix x86 vdso naming")
+>
+> arch_remap() gets replaced by vdso_remap()
+>
+> For arch_unmap(), I'm wondering how/what other architectures do, because=
+=20
+> powerpc seems to be the only one to erase the vdso context pointer when=20
+> unmapping the vdso.
 
-[This is an automated email]
+Yeah. The original unmap/remap stuff was added for CRIU, which I thought
+people tested on other architectures (more than powerpc even).
 
-This commit has been processed because it contains a -stable tag.
-The stable tag indicates that it's relevant for the following trees: all
+Possibly no one really cares about vdso unmap though, vs just moving the
+vdso.
 
-The bot has tested the following trees: v5.8.2, v5.7.16, v5.4.59, v4.19.140, v4.14.193, v4.9.232, v4.4.232.
+We added a test for vdso unmap recently because it happened to trigger a
+KAUP failure, and someone actually hit it & reported it.
 
-v5.8.2: Build OK!
-v5.7.16: Build OK!
-v5.4.59: Build OK!
-v4.19.140: Build OK!
-v4.14.193: Failed to apply! Possible dependencies:
-    22508f3dc985 ("powerpc/numa: Look up device node in of_get_usable_memory()")
-    2c77721552e5 ("powerpc: Move of_drconf_cell struct to asm/drmem.h")
-    35f80debaef0 ("powerpc/numa: Look up device node in of_get_assoc_arrays()")
-    514a9cb3316a ("powerpc/numa: Update numa code use walk_drmem_lmbs")
-    6195a5001f1d ("powerpc/pseries: Update memory hotplug code to use drmem LMB array")
-    6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
-    b6eca183e23e ("powerpc/kernel: Enables memory hot-remove after reboot on pseries guests")
-    b88fc309d6ad ("powerpc/numa: Look up associativity array in of_drconf_to_nid_single")
+Running that test on arm64 segfaults:
 
-v4.9.232: Failed to apply! Possible dependencies:
-    3a2df3798d4d ("powerpc/mm: Make switch_mm_irqs_off() out of line")
-    43ed84a891b7 ("powerpc/mm: Move pgdir setting into a helper")
-    5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
-    5d451a87e5eb ("powerpc/64: Retrieve number of L1 cache sets from device-tree")
-    6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
-    70cd4c10b290 ("KVM: PPC: Book3S HV: Fix software walk of guest process page tables")
-    9b081e10805c ("powerpc: port 64 bits pgtable_cache to 32 bits")
-    a25bd72badfa ("powerpc/mm/radix: Workaround prefetch issue with KVM")
-    bd067f83b084 ("powerpc/64: Fix naming of cache block vs. cache line")
-    dbcbfee0c81c ("powerpc/64: More definitions for POWER9")
-    e2827fe5c156 ("powerpc/64: Clean up ppc64_caches using a struct per cache")
-    f4329f2ecb14 ("powerpc/64s: Reduce exception alignment")
+  # ./sigreturn_vdso=20
+  VDSO is at 0xffff8191f000-0xffff8191ffff (4096 bytes)
+  Signal delivered OK with VDSO mapped
+  VDSO moved to 0xffff8191a000-0xffff8191afff (4096 bytes)
+  Signal delivered OK with VDSO moved
+  Unmapped VDSO
+  Remapped the stack executable
+  [   48.556191] potentially unexpected fatal signal 11.
+  [   48.556752] CPU: 0 PID: 140 Comm: sigreturn_vdso Not tainted 5.9.0-rc2=
+-00057-g2ac69819ba9e #190
+  [   48.556990] Hardware name: linux,dummy-virt (DT)
+  [   48.557336] pstate: 60001000 (nZCv daif -PAN -UAO BTYPE=3D--)
+  [   48.557475] pc : 0000ffff8191a7bc
+  [   48.557603] lr : 0000ffff8191a7bc
+  [   48.557697] sp : 0000ffffc13c9e90
+  [   48.557873] x29: 0000ffffc13cb0e0 x28: 0000000000000000=20
+  [   48.558201] x27: 0000000000000000 x26: 0000000000000000=20
+  [   48.558337] x25: 0000000000000000 x24: 0000000000000000=20
+  [   48.558754] x23: 0000000000000000 x22: 0000000000000000=20
+  [   48.558893] x21: 00000000004009b0 x20: 0000000000000000=20
+  [   48.559046] x19: 0000000000400ff0 x18: 0000000000000000=20
+  [   48.559180] x17: 0000ffff817da300 x16: 0000000000412010=20
+  [   48.559312] x15: 0000000000000000 x14: 000000000000001c=20
+  [   48.559443] x13: 656c626174756365 x12: 7865206b63617473=20
+  [   48.559625] x11: 0000000000000003 x10: 0101010101010101=20
+  [   48.559828] x9 : 0000ffff818afda8 x8 : 0000000000000081=20
+  [   48.559973] x7 : 6174732065687420 x6 : 64657070616d6552=20
+  [   48.560115] x5 : 000000000e0388bd x4 : 000000000040135d=20
+  [   48.560270] x3 : 0000000000000000 x2 : 0000000000000001=20
+  [   48.560412] x1 : 0000000000000003 x0 : 00000000004120b8=20
+  Segmentation fault
+  #
 
-v4.4.232: Failed to apply! Possible dependencies:
-    11a6f6abd74a ("powerpc/mm: Move radix/hash common data structures to book3s64 headers")
-    26b6a3d9bb48 ("powerpc/mm: move pte headers to book3s directory")
-    3808a88985b4 ("powerpc: Move FW feature probing out of pseries probe()")
-    3dfcb315d81e ("powerpc/mm: make a separate copy for book3s")
-    5a61ef74f269 ("powerpc/64s: Support new device tree binding for discovering CPU features")
-    5d31a96e6c01 ("powerpc/livepatch: Add livepatch stack to struct thread_info")
-    6574ba950bbe ("powerpc/kernel: Convert cpu_has_feature() to returning bool")
-    6c6ea53725b3 ("powerpc/mm: Separate ibm, dynamic-memory data from DT format")
-    a141cca3892b ("powerpc/mm: Add early_[cpu|mmu]_has_feature()")
-    a8ed87c92adf ("powerpc/mm/radix: Add MMU_FTR_RADIX")
-    b92a226e5284 ("powerpc: Move cpu_has_feature() to a separate file")
-    da6a97bf12d5 ("powerpc: Move epapr_paravirt_early_init() to early_init_devtree()")
-    f63e6d898760 ("powerpc/livepatch: Add livepatch header")
+So I think we need to keep the unmap hook. Maybe it should be handled by
+the special_mapping stuff generically.
 
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks
-Sasha
+cheers
