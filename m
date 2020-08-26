@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7D3253179
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:37:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0288825318C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Aug 2020 16:40:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc7k70tbVzDqTv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 00:37:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bc7mz1VNqzDqGW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 00:40:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,8 +18,8 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc7g00rl7zDqMk
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 00:34:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bc7gB2bpmzDqNm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 00:35:02 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
@@ -29,7 +29,7 @@ Subject: =?UTF-8?B?W0J1ZyAyMDg5NTddIDUuOS1yYzEgZmFpbHMgdG8gYnVpbGQgZm9y?=
  =?UTF-8?B?OToyMTogZXJyb3I6IOKAmGRlZmF1bHRfdWFtb3LigJkgdW5kZWNsYXJlZCAo?=
  =?UTF-8?B?Zmlyc3QgdXNlIGluIHRoaXMgZnVuY3Rpb24pICAxMTE5IHwgICBtdHNwcihT?=
  =?UTF-8?B?UFJOX1VBTU9SLCBkZWZhdWx0X3VhbW9yKTs=?=
-Date: Wed, 26 Aug 2020 14:34:49 +0000
+Date: Wed, 26 Aug 2020 14:34:59 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -39,13 +39,13 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Status: CLOSED
 X-Bugzilla-Resolution: CODE_FIX
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc resolution
-Message-ID: <bug-208957-206035-VsGKTJNo8P@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status
+Message-ID: <bug-208957-206035-RMRb3kHLEW@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-208957-206035@https.bugzilla.kernel.org/>
 References: <bug-208957-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -74,12 +74,7 @@ Michael Ellerman (michael@ellerman.id.au) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
-                 CC|                            |michael@ellerman.id.au
-         Resolution|OBSOLETE                    |CODE_FIX
-
---- Comment #2 from Michael Ellerman (michael@ellerman.id.au) ---
-Fixed in 1e4e4bcaf70e ("powerpc/pkeys: Fix build error with PPC_MEM_KEYS
-disabled")
+             Status|RESOLVED                    |CLOSED
 
 --=20
 You are receiving this mail because:
