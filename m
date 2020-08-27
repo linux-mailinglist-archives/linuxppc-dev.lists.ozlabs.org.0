@@ -1,78 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3617254CC3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 20:17:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E98254D0B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 20:28:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BcrYM39j4zDq6k
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 04:17:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bcrnq3sJwzDqSy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 04:28:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::241;
- helo=mail-lj1-x241.google.com; envelope-from=torvalds@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=GjsK/u6i; 
- dkim-atps=neutral
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BcrWD17SNzDqBH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 04:15:34 +1000 (AEST)
-Received: by mail-lj1-x241.google.com with SMTP id v9so7497189ljk.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 11:15:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=5Ln4YDv+McQTrVSBLkYMyzgo5ffLr7W4nh7mUMFYOZo=;
- b=GjsK/u6ib7N+ctD2EUfS3Yg2gOjkfLasSaGCU/YbFFT4pm7wC/mAUjkvSP+UBZidUg
- P75Y7Q+9vqNQMjHTBy6Jwr30jghzFLvVdhlC7Nn9Ui5WCs2KOmFbugeMsgtI/Xw61N8K
- QeupHGovYgcCrHWAn29zkzD17dqNMKZTBIjAg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=5Ln4YDv+McQTrVSBLkYMyzgo5ffLr7W4nh7mUMFYOZo=;
- b=sthG554tBrOypHERy8LLCkbc2vcMDy2FAeLjSv9W7Zj+hniBjiIt9mWEKP0T0Ho0RX
- idMIMJHis0BPmBzZFyDA8YLNh/SB4lil3NrC8/hp2zpjwvZ6mytJhqSJViM98XiiC2Qa
- wxMGxhbFUIh7XiPqEEu8NwnKAoTc5abJHkEhjxEC3s9p2gydnJ55/3ypXmO/jDfB1Vcd
- Bui6lYeLbKOgRCchzUTIfwBfZLQk8ct6+5eTs5d0mEa2rYVTthtTYHmvCr2DRVXeLpe/
- nyk0luDEC8bgeh/IfmZSh0oRObWedS5VQ/Anv+bb/g3iR4HokzULr0k0B3l/4OWAwI8e
- 9L8w==
-X-Gm-Message-State: AOAM533FdU8TjrBCXHQOHfrVTOUcmYeLOd3hi0o5Et3aYEO/jCkR3JR2
- stlOTAhsIcsqoCaQzC4QGGw/EQcTV1/0dg==
-X-Google-Smtp-Source: ABdhPJw6pg0owhaf00y3u5sYpiKqE5jqFDgCigKnCmboKUAosOkTbAqev1WwYF0ga7voOSdShkJK5A==
-X-Received: by 2002:a05:651c:1182:: with SMTP id
- w2mr9458550ljo.197.1598552130723; 
- Thu, 27 Aug 2020 11:15:30 -0700 (PDT)
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com.
- [209.85.208.173])
- by smtp.gmail.com with ESMTPSA id l13sm699064lfk.18.2020.08.27.11.15.28
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Aug 2020 11:15:28 -0700 (PDT)
-Received: by mail-lj1-f173.google.com with SMTP id y2so7510987ljc.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 11:15:28 -0700 (PDT)
-X-Received: by 2002:a2e:92d0:: with SMTP id k16mr9604351ljh.70.1598552128279; 
- Thu, 27 Aug 2020 11:15:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200827150030.282762-1-hch@lst.de>
- <20200827150030.282762-9-hch@lst.de>
-In-Reply-To: <20200827150030.282762-9-hch@lst.de>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 27 Aug 2020 11:15:12 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjxeN+KrCB2TyC5s2RWhz-dWWO8vbBwWcCiKb0+8ipayw@mail.gmail.com>
-Message-ID: <CAHk-=wjxeN+KrCB2TyC5s2RWhz-dWWO8vbBwWcCiKb0+8ipayw@mail.gmail.com>
-Subject: Re: [PATCH 08/10] x86: remove address space overrides using set_fs()
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bcrlb16TSzDqcK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 04:26:15 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BcrlQ2BXmz9vCq6;
+ Thu, 27 Aug 2020 20:26:10 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id FqfuPwhYwKVM; Thu, 27 Aug 2020 20:26:10 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BcrlQ0TbHz9vCq5;
+ Thu, 27 Aug 2020 20:26:10 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E49CC8B8A5;
+ Thu, 27 Aug 2020 20:26:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ucv4HkPJyKwY; Thu, 27 Aug 2020 20:26:09 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B1A58B886;
+ Thu, 27 Aug 2020 20:26:09 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 64EE365D45; Thu, 27 Aug 2020 18:26:09 +0000 (UTC)
+Message-Id: <0c54f8e04a26701f8780c873dc7ff9296e995272.1598552753.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/32s: Disable VMAP stack which CONFIG_ADB_PMU
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ giuseppe@sguazz.it
+Date: Thu, 27 Aug 2020 18:26:09 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,49 +59,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 27, 2020 at 8:00 AM Christoph Hellwig <hch@lst.de> wrote:
->
->  SYM_FUNC_START(__get_user_2)
->         add $1,%_ASM_AX
->         jc bad_get_user
+low_sleep_handler() can't restore the context from virtual
+stack because the stack can hardly be accessed with MMU OFF.
 
-This no longer makes sense, and
+For now, disable VMAP stack when CONFIG_ADB_PMU is selected.
 
-> -       mov PER_CPU_VAR(current_task), %_ASM_DX
-> -       cmp TASK_addr_limit(%_ASM_DX),%_ASM_AX
-> +       LOAD_TASK_SIZE_MAX
-> +       cmp %_ASM_DX,%_ASM_AX
+Reported-by: Giuseppe Sacco <giuseppe@sguazz.it>
+Fixes: cd08f109e262 ("powerpc/32s: Enable CONFIG_VMAP_STACK")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/platforms/Kconfig.cputype | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This should be
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 87737ec86d39..c12768242c17 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -36,7 +36,7 @@ config PPC_BOOK3S_6xx
+ 	select PPC_HAVE_PMU_SUPPORT
+ 	select PPC_HAVE_KUEP
+ 	select PPC_HAVE_KUAP
+-	select HAVE_ARCH_VMAP_STACK
++	select HAVE_ARCH_VMAP_STACK if !CONFIG_ADB_PMU
+ 
+ config PPC_BOOK3S_601
+ 	bool "PowerPC 601"
+-- 
+2.25.0
 
-        LOAD_TASK_SIZE_MAX_MINUS_N(1)
-        cmp %_ASM_DX,%_ASM_AX
-
-instead (and then because we no longer modify _ASM_AX, we'd also
-remove the offset on the access).
-
->  SYM_FUNC_START(__put_user_2)
-> -       ENTER
-> -       mov TASK_addr_limit(%_ASM_BX),%_ASM_BX
-> +       LOAD_TASK_SIZE_MAX
->         sub $1,%_ASM_BX
-
-It's even more obvious here. We load a constant and then immediately
-do a "sub $1" on that value.
-
-It's not a huge deal, you don't have to respin the series for this, I
-just wanted to point it out so that people are aware of it and if I
-forget somebody else will hopefully remember that "we should fix that
-too".
-
-                   Linus
