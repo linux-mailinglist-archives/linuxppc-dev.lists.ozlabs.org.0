@@ -2,59 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFB0253D03
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 06:59:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7160B253D05
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 07:01:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BcVrW6L6JzDqYB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 14:59:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BcVvM1prwzDqd0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 15:01:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::244;
+ helo=mail-oi1-x244.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=D8T4bFnw; dkim-atps=neutral
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BcVps21b9zDqKN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 14:57:57 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BcVpn2Zj1z9vCxf;
- Thu, 27 Aug 2020 06:57:53 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id pt4XaqWgpYZa; Thu, 27 Aug 2020 06:57:53 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BcVpn1Qsyz9vCxd;
- Thu, 27 Aug 2020 06:57:53 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D22A98B77D;
- Thu, 27 Aug 2020 06:57:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id EljHenXme-vW; Thu, 27 Aug 2020 06:57:53 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CFC4E8B75F;
- Thu, 27 Aug 2020 06:57:52 +0200 (CEST)
-Subject: Re: [PATCH v5 08/23] powerpc/book3s64/kuap: Rename MMU_FTR_RADIX_KUAP
- to MMU_FTR_KUAP
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20200827040931.297759-1-aneesh.kumar@linux.ibm.com>
- <20200827040931.297759-9-aneesh.kumar@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <0913af16-f571-3c23-40ea-0419cbd4acdf@csgroup.eu>
-Date: Thu, 27 Aug 2020 06:57:47 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BcVsf2ndczDqKb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 15:00:22 +1000 (AEST)
+Received: by mail-oi1-x244.google.com with SMTP id v13so3580147oiv.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 22:00:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=XuQkN4EHtLe05q9W03mgSJgZys0f/ur9WGQ4+ZhwYu8=;
+ b=D8T4bFnwCA8jGHToDBwLBI2dWEYm6nZ33+sx7iYMx/BKlvm0YKlFDbFzU74kYgXPHk
+ 533XaXoDXcxN7mGbYGiCaRxZpUkzXDR9OxOGNH5Y+mrmbL5LciOmO4RG0+YFbAv9tA4r
+ TQu4fdDsFaHwUWAHS/fXmdg94SqF45eRrsNvIqWNrTI7gSySR4Lixhd/oU2INOVLIPt6
+ FqlrycvseZvThRs6tNbwbOpXvdsfWKD+EB1CI0ytAEn4FZR+v1sVK4ddwnmO8Mv9kIas
+ QPs39mfjyXGbuNREYCS7VHOODBDHgjQfrfA6pPo5KBaJa1ihfNuZ8pXX7AINBPy3OZ/F
+ bwrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=XuQkN4EHtLe05q9W03mgSJgZys0f/ur9WGQ4+ZhwYu8=;
+ b=JNf9Iyk2TTgdIe85I6krWbI+YG3O2gVnPaSXo02m198OQHxdWQvmfa0Et2u1h1R4Vx
+ ZSpdXC5dzYFJzre7KzdqoLEDi84YvmsVfuid7dpcmIEuqlTABU8B0lEUuYPZe3YnA0VX
+ 1O3NsCfe+IWCels/j/Ox5VeqTMrWseNGbrYPWTpHiY617K35EcCnGJsELfvbk6sOYL//
+ 0pt1vcCpdifXbz5h+/E6fjaZBq5kkKsWyI+/iBB02iHb6D19NqgCrUFS/0T+K0geMiSc
+ xnYfes4gztuUdNSXNp0qy/h8bqGLPPaMhNhd9UuC71HEzPYtXExfC7aEz6oVCcjVutBx
+ VqYg==
+X-Gm-Message-State: AOAM531caXARqvIWyBaQNciIhGNVcszWzYLmN2IKhgy+vwS+er0B9cyd
+ EmbVgPBPSRXZg80YtvpoRw9N3tX6JX5Wj0+ZkJKj1akQ
+X-Google-Smtp-Source: ABdhPJypE1mOeP0XmgSdMK/hpuh/Nmm5qSym2NpVbFdgYREAT8ea7Tf6cWEF35hYXhh2kMBDrfTbbh7wGMuNV7f+JL0=
+X-Received: by 2002:aca:4907:: with SMTP id w7mr1861378oia.12.1598504418218;
+ Wed, 26 Aug 2020 22:00:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200827040931.297759-9-aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20200827040556.1783-1-jniethe5@gmail.com>
+ <d71a27b8-f12d-7485-23ec-99d36ff1b0ea@csgroup.eu>
+In-Reply-To: <d71a27b8-f12d-7485-23ec-99d36ff1b0ea@csgroup.eu>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Thu, 27 Aug 2020 15:00:06 +1000
+Message-ID: <CACzsE9o4vH39BhSqr_NTCFYbAdniLGh2LWkZ-nUQnTQ-jvT_pw@mail.gmail.com>
+Subject: Re: [PATCH v2] powerpc: Update documentation of ISA versions for
+ Power10
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,168 +76,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 27/08/2020 à 06:09, Aneesh Kumar K.V a écrit :
-> This is in preparate to adding support for kuap with hash translation.
-> In preparation for that rename/move kuap related functions to
-> non radix names. Also move the feature bit closer to MMU_FTR_KUEP.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/book3s/64/kup.h | 18 +++++++++---------
->   arch/powerpc/include/asm/mmu.h           | 16 ++++++++--------
->   arch/powerpc/mm/book3s64/pkeys.c         |  2 +-
->   3 files changed, 18 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-> index 918a2fcceee7..5cec202dc42f 100644
-> --- a/arch/powerpc/include/asm/book3s/64/kup.h
-> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
-> @@ -24,7 +24,7 @@
->   	mtspr	SPRN_AMR, \gpr2
->   	/* No isync required, see kuap_restore_amr() */
->   998:
-> -	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_RADIX_KUAP, 67)
-> +	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
->   #endif
->   .endm
->   
-> @@ -36,7 +36,7 @@
->   	sldi	\gpr2, \gpr2, AMR_KUAP_SHIFT
->   999:	tdne	\gpr1, \gpr2
->   	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
-> -	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_RADIX_KUAP, 67)
-> +	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
->   #endif
->   .endm
->   
-> @@ -56,7 +56,7 @@
->   	mtspr	SPRN_AMR, \gpr2
->   	isync
->   99:
-> -	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_RADIX_KUAP, 67)
-> +	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
->   #endif
->   .endm
->   
-> @@ -69,7 +69,7 @@
->   
->   static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
->   {
-> -	if (mmu_has_feature(MMU_FTR_RADIX_KUAP) && unlikely(regs->kuap != amr)) {
-> +	if (mmu_has_feature(MMU_FTR_KUAP) && unlikely(regs->kuap != amr)) {
->   		isync();
->   		mtspr(SPRN_AMR, regs->kuap);
->   		/*
-> @@ -82,7 +82,7 @@ static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
->   
->   static inline unsigned long kuap_get_and_check_amr(void)
->   {
-> -	if (mmu_has_feature(MMU_FTR_RADIX_KUAP)) {
-> +	if (mmu_has_feature(MMU_FTR_KUAP)) {
->   		unsigned long amr = mfspr(SPRN_AMR);
->   		if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG)) /* kuap_check_amr() */
->   			WARN_ON_ONCE(amr != AMR_KUAP_BLOCKED);
-> @@ -93,7 +93,7 @@ static inline unsigned long kuap_get_and_check_amr(void)
->   
->   static inline void kuap_check_amr(void)
->   {
-> -	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_RADIX_KUAP))
-> +	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_KUAP))
->   		WARN_ON_ONCE(mfspr(SPRN_AMR) != AMR_KUAP_BLOCKED);
->   }
->   
-> @@ -122,7 +122,7 @@ static inline unsigned long kuap_get_and_check_amr(void)
->   
->   static inline unsigned long get_kuap(void)
->   {
-> -	if (!early_mmu_has_feature(MMU_FTR_RADIX_KUAP))
-> +	if (!early_mmu_has_feature(MMU_FTR_KUAP))
->   		return 0;
->   
->   	return mfspr(SPRN_AMR);
-> @@ -130,7 +130,7 @@ static inline unsigned long get_kuap(void)
->   
->   static inline void set_kuap(unsigned long value)
->   {
-> -	if (!early_mmu_has_feature(MMU_FTR_RADIX_KUAP))
-> +	if (!early_mmu_has_feature(MMU_FTR_KUAP))
->   		return;
->   
->   	/*
-> @@ -180,7 +180,7 @@ static inline void restore_user_access(unsigned long flags)
->   static inline bool
->   bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
->   {
-> -	return WARN(mmu_has_feature(MMU_FTR_RADIX_KUAP) &&
-> +	return WARN(mmu_has_feature(MMU_FTR_KUAP) &&
->   		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
->   		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
->   }
-> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-> index 255a1837e9f7..04e7a65637fb 100644
-> --- a/arch/powerpc/include/asm/mmu.h
-> +++ b/arch/powerpc/include/asm/mmu.h
-> @@ -29,7 +29,12 @@
->    */
->   
->   /*
-> - * Support for KUEP feature.
-> + * Supports KUAP (key 0 controlling userspace addresses) on radix
-> + */
-> +#define MMU_FTR_KUAP			ASM_CONST(0x00000200)
-> +
-> +/*
-> + * Suppor for KUEP feature.
-
-Unexpected change I guess. Suppor ==> Support
-
-Christophe
-
->    */
->   #define MMU_FTR_KUEP			ASM_CONST(0x00000400)
->   
-> @@ -120,11 +125,6 @@
->    */
->   #define MMU_FTR_1T_SEGMENT		ASM_CONST(0x40000000)
->   
-> -/*
-> - * Supports KUAP (key 0 controlling userspace addresses) on radix
-> - */
-> -#define MMU_FTR_RADIX_KUAP		ASM_CONST(0x80000000)
-> -
->   /* MMU feature bit sets for various CPUs */
->   #define MMU_FTRS_DEFAULT_HPTE_ARCH_V2	\
->   	MMU_FTR_HPTE_TABLE | MMU_FTR_PPCAS_ARCH_V2
-> @@ -187,10 +187,10 @@ enum {
->   #ifdef CONFIG_PPC_RADIX_MMU
->   		MMU_FTR_TYPE_RADIX |
->   		MMU_FTR_GTSE |
-> +#endif /* CONFIG_PPC_RADIX_MMU */
->   #ifdef CONFIG_PPC_KUAP
-> -		MMU_FTR_RADIX_KUAP |
-> +	MMU_FTR_KUAP |
->   #endif /* CONFIG_PPC_KUAP */
-> -#endif /* CONFIG_PPC_RADIX_MMU */
->   #ifdef CONFIG_PPC_MEM_KEYS
->   	MMU_FTR_PKEY |
->   #endif
-> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-> index 82c722fbce52..bfc27f1f0ab0 100644
-> --- a/arch/powerpc/mm/book3s64/pkeys.c
-> +++ b/arch/powerpc/mm/book3s64/pkeys.c
-> @@ -258,7 +258,7 @@ void __init setup_kuap(bool disabled)
->   
->   	if (smp_processor_id() == boot_cpuid) {
->   		pr_info("Activating Kernel Userspace Access Prevention\n");
-> -		cur_cpu_spec->mmu_features |= MMU_FTR_RADIX_KUAP;
-> +		cur_cpu_spec->mmu_features |= MMU_FTR_KUAP;
->   	}
->   
->   	/*
-> 
+On Thu, Aug 27, 2020 at 2:49 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 27/08/2020 =C3=A0 06:05, Jordan Niethe a =C3=A9crit :
+> > Update the CPU to ISA Version Mapping document to include Power10 and
+> > ISA v3.1.
+>
+> Maybe Documentation/powerpc/cpu_families.rst should be updated as well.
+Good idea it still needs Power9 too.
+>
+> Christophe
+>
+>
+>
+> >
+> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> > ---
+> > v2: Transactional Memory =3D No
+> > ---
+> >   Documentation/powerpc/isa-versions.rst | 4 ++++
+> >   1 file changed, 4 insertions(+)
+> >
+> > diff --git a/Documentation/powerpc/isa-versions.rst b/Documentation/pow=
+erpc/isa-versions.rst
+> > index a363d8c1603c..3873bbba183a 100644
+> > --- a/Documentation/powerpc/isa-versions.rst
+> > +++ b/Documentation/powerpc/isa-versions.rst
+> > @@ -7,6 +7,7 @@ Mapping of some CPU versions to relevant ISA versions.
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> >   CPU       Architecture version
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> > +Power10   Power ISA v3.1
+> >   Power9    Power ISA v3.0B
+> >   Power8    Power ISA v2.07
+> >   Power7    Power ISA v2.06
+> > @@ -32,6 +33,7 @@ Key Features
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+> >   CPU        VMX (aka. Altivec)
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
+> > +Power10    Yes
+> >   Power9     Yes
+> >   Power8     Yes
+> >   Power7     Yes
+> > @@ -47,6 +49,7 @@ PPC970     Yes
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D
+> >   CPU        VSX
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D
+> > +Power10    Yes
+> >   Power9     Yes
+> >   Power8     Yes
+> >   Power7     Yes
+> > @@ -62,6 +65,7 @@ PPC970     No
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >   CPU        Transactional Memory
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +Power10    No  (* see Power ISA v3.1 Appendix A.)
+> >   Power9     Yes (* see transactional_memory.txt)
+> >   Power8     Yes
+> >   Power7     No
+> >
