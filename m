@@ -2,51 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32DC254FBC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 22:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD9D255018
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 22:36:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BctzW45ttzDqkb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 06:06:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bcvdd3X5CzDqlL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 06:36:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
+ helo=mail-io1-xd44.google.com; envelope-from=0x7f454c46@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=TGluub3o; dkim-atps=neutral
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
+ [IPv6:2607:f8b0:4864:20::d44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bctsm004lzDqkp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 06:01:47 +1000 (AEST)
-IronPort-SDR: mHpx2lffxnFT07fYPEJXphOOdWx1+hHpH0p9NvzdKkPqQaOuCtwi3Kxr5cc93MLG0NWKtViTQ/
- UW/lfSmx5DCQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9726"; a="241374714"
-X-IronPort-AV: E=Sophos;i="5.76,360,1592895600"; d="scan'208";a="241374714"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2020 13:01:44 -0700
-IronPort-SDR: 4Oi8onxiYTQM0PnXeFNfZkaW0sbEiawW5dRucB8WwYFgYitnocxT+p6wmHJbZYC7iHCfQz6twC
- 7/tqWxPzRWHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,361,1592895600"; d="scan'208";a="373834458"
-Received: from lkp-server01.sh.intel.com (HELO 4f455964fc6c) ([10.239.97.150])
- by orsmga001.jf.intel.com with ESMTP; 27 Aug 2020 13:01:43 -0700
-Received: from kbuild by 4f455964fc6c with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kBO5f-0002GK-2s; Thu, 27 Aug 2020 20:01:43 +0000
-Date: Fri, 28 Aug 2020 04:00:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- adf3447eddc59967b18faf51dff97c07a5a8220b
-Message-ID: <5f4810ec.Lne0Dz0SoMm3V4e7%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bcvbg1GPWzDqhm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 06:34:35 +1000 (AEST)
+Received: by mail-io1-xd44.google.com with SMTP id h4so7264754ioe.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 13:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=tQmZy5Fs8y3pKGibFRn4qfvS82sf5UsP9bVenOs9w8M=;
+ b=TGluub3o0DcHHdpzdlkvAkCCrUrqPvYvrMKiUY7Oya5/GhcRW6Z8MtPqxBD6PQaENX
+ N+tC5zt1jtp/bE8E8d4I7CsnYYGj1u1Ff/mWNGRyIaO9vFQ2WkWTcEZVkBwx7xGdCEQs
+ MtyEAngQS9fnwluf2fSVj1KpNSod9p4SJw88kqHdQ0ji2ccFateEQYLoTPGeoH3TMpQs
+ h8eK7kj6Yjb5dHrS7D9h6G525ntwLHMXx5WbVu/pEq4EuJKabCCXNwK4ru3qEpjNku0s
+ 9FjfVTc4K5pixSB2VO+ORtIpkCF0iZPoFkGEwI4XNAoz6jOtDDCpVxiGN56MokOZBCMp
+ 4/yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=tQmZy5Fs8y3pKGibFRn4qfvS82sf5UsP9bVenOs9w8M=;
+ b=WP42t3hLIsN0vsL8uGWexsMEWzXe3nRcW5jiS6VV+tdHL6trkMTvLiTxBA/Y3itAl9
+ ZETZEgVYq2dYQ46qK0Lv11aVg5mriz5g1NuL9XzRaLAJQm2Xd5YM4W5eWJi8ol1+htVb
+ KUzpQC6nZ/okq94OLLA25wtouVasXWudVZEMfBoP+88P5n4LUi4SEmGzgbEiKvVL/AgY
+ bVS9ISTSB7OQxKzRtJ0wm+XTzKNPeid+WOphuuuhpRd6XxTHv2er1CjdgrhapArLakW0
+ 9GUn/PWSlalrV0TqqknnFI7ZDwFpfroIAkl7UP6t3jAjZvKaajSdAh/HqaMeVGOwHXc1
+ L/Wg==
+X-Gm-Message-State: AOAM530CyzonVyl2uU84RnkqwUfIJVBerO32888lGo33L2S7ESgAe8m3
+ LS7lbtuXGuWclT22aIkf9advjtkR6p5wJb5vFHY=
+X-Google-Smtp-Source: ABdhPJwio1s/8EqJEggK9yW52tIgV6weBWbp4FU34wVr0UPOM8b2uPn2IcThLM+sA4l+KLK8o42jIVY2RpTBaCnKptA=
+X-Received: by 2002:a05:6638:130d:: with SMTP id
+ r13mr20345874jad.89.1598560471002; 
+ Thu, 27 Aug 2020 13:34:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <cover.1588079622.git.christophe.leroy@c-s.fr>
+ <0d2201efe3c7727f2acc718aefd7c5bb22c66c57.1588079622.git.christophe.leroy@c-s.fr>
+ <87wo34tbas.fsf@mpe.ellerman.id.au>
+ <2f9b7d02-9e2f-4724-2608-c5573f6507a2@csgroup.eu>
+ <6862421a-5a14-2e38-b825-e39e6ad3d51d@csgroup.eu>
+ <87imd5h5kb.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87imd5h5kb.fsf@mpe.ellerman.id.au>
+From: Dmitry Safonov <0x7f454c46@gmail.com>
+Date: Thu, 27 Aug 2020 21:34:19 +0100
+Message-ID: <CAJwJo6ZANqYkSHbQ+3b+Fi_VT80MtrzEV5yreQAWx-L8j8x2zA@mail.gmail.com>
+Subject: Re: [PATCH v8 2/8] powerpc/vdso: Remove __kernel_datapage_offset and
+ simplify __get_datapage()
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,141 +79,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, linux-arch <linux-arch@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, open list <linux-kernel@vger.kernel.org>,
+ Will Deacon <will@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: adf3447eddc59967b18faf51dff97c07a5a8220b  powerpc: Update documentation of ISA versions for Power10
+Hello,
 
-elapsed time: 735m
+On Wed, 26 Aug 2020 at 15:39, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+[..]
+> > arch_remap() gets replaced by vdso_remap()
+> >
+> > For arch_unmap(), I'm wondering how/what other architectures do, because
+> > powerpc seems to be the only one to erase the vdso context pointer when
+> > unmapping the vdso.
+>
+> Yeah. The original unmap/remap stuff was added for CRIU, which I thought
+> people tested on other architectures (more than powerpc even).
+>
+> Possibly no one really cares about vdso unmap though, vs just moving the
+> vdso.
+>
+> We added a test for vdso unmap recently because it happened to trigger a
+> KAUP failure, and someone actually hit it & reported it.
 
-configs tested: 118
-configs skipped: 13
+You right, CRIU cares much more about moving vDSO.
+It's done for each restoree and as on most setups vDSO is premapped and
+used by the application - it's actively tested.
+Speaking about vDSO unmap - that's concerning only for heterogeneous C/R,
+i.e when an application is migrated from a system that uses vDSO to the one
+which doesn't - it's much rare scenario.
+(for arm it's !CONFIG_VDSO, for x86 it's `vdso=0` boot parameter)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Looking at the code, it seems quite easy to provide/maintain .close() for
+vm_special_mapping. A bit harder to add a test from CRIU side
+(as glibc won't know on restore that it can't use vdso anymore),
+but totally not impossible.
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-riscv                    nommu_k210_defconfig
-mips                     decstation_defconfig
-arm                   milbeaut_m10v_defconfig
-powerpc                mpc7448_hpc2_defconfig
-sh                              ul2_defconfig
-mips                           ip28_defconfig
-arm                        clps711x_defconfig
-m68k                       m5208evb_defconfig
-arm                         vf610m4_defconfig
-m68k                            mac_defconfig
-powerpc                         ps3_defconfig
-arm                             rpc_defconfig
-sh                            shmin_defconfig
-arm                         s3c2410_defconfig
-m68k                        m5272c3_defconfig
-sh                            migor_defconfig
-arm                        multi_v7_defconfig
-mips                         mpc30x_defconfig
-powerpc                      ppc40x_defconfig
-parisc                           allyesconfig
-powerpc                     mpc5200_defconfig
-arm                      pxa255-idp_defconfig
-mips                           ip22_defconfig
-arc                           tb10x_defconfig
-sparc64                          alldefconfig
-sh                        sh7757lcr_defconfig
-mips                      maltaaprp_defconfig
-arm                         hackkit_defconfig
-arm                          moxart_defconfig
-parisc                           alldefconfig
-arm                        mvebu_v7_defconfig
-nios2                         3c120_defconfig
-arm                           h3600_defconfig
-sparc                       sparc32_defconfig
-arm                       mainstone_defconfig
-m68k                             allmodconfig
-c6x                         dsk6455_defconfig
-m68k                         apollo_defconfig
-sh                             sh03_defconfig
-sh                        edosk7760_defconfig
-sh                           sh2007_defconfig
-s390                       zfcpdump_defconfig
-x86_64                           allyesconfig
-mips                      pic32mzda_defconfig
-sh                        sh7763rdp_defconfig
-arm                       netwinder_defconfig
-arm                         at91_dt_defconfig
-sh                          kfr2r09_defconfig
-arm                          pcm027_defconfig
-powerpc                      ppc6xx_defconfig
-nios2                            alldefconfig
-powerpc                    amigaone_defconfig
-powerpc                     skiroot_defconfig
-powerpc                      tqm8xx_defconfig
-arm                       aspeed_g4_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a003-20200827
-x86_64               randconfig-a002-20200827
-x86_64               randconfig-a001-20200827
-x86_64               randconfig-a005-20200827
-x86_64               randconfig-a006-20200827
-x86_64               randconfig-a004-20200827
-i386                 randconfig-a002-20200827
-i386                 randconfig-a004-20200827
-i386                 randconfig-a003-20200827
-i386                 randconfig-a005-20200827
-i386                 randconfig-a006-20200827
-i386                 randconfig-a001-20200827
-i386                 randconfig-a013-20200827
-i386                 randconfig-a012-20200827
-i386                 randconfig-a011-20200827
-i386                 randconfig-a016-20200827
-i386                 randconfig-a015-20200827
-i386                 randconfig-a014-20200827
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+> Running that test on arm64 segfaults:
+>
+>   # ./sigreturn_vdso
+>   VDSO is at 0xffff8191f000-0xffff8191ffff (4096 bytes)
+>   Signal delivered OK with VDSO mapped
+>   VDSO moved to 0xffff8191a000-0xffff8191afff (4096 bytes)
+>   Signal delivered OK with VDSO moved
+>   Unmapped VDSO
+>   Remapped the stack executable
+>   [   48.556191] potentially unexpected fatal signal 11.
+>   [   48.556752] CPU: 0 PID: 140 Comm: sigreturn_vdso Not tainted 5.9.0-rc2-00057-g2ac69819ba9e #190
+>   [   48.556990] Hardware name: linux,dummy-virt (DT)
+>   [   48.557336] pstate: 60001000 (nZCv daif -PAN -UAO BTYPE=--)
+>   [   48.557475] pc : 0000ffff8191a7bc
+>   [   48.557603] lr : 0000ffff8191a7bc
+>   [   48.557697] sp : 0000ffffc13c9e90
+>   [   48.557873] x29: 0000ffffc13cb0e0 x28: 0000000000000000
+>   [   48.558201] x27: 0000000000000000 x26: 0000000000000000
+>   [   48.558337] x25: 0000000000000000 x24: 0000000000000000
+>   [   48.558754] x23: 0000000000000000 x22: 0000000000000000
+>   [   48.558893] x21: 00000000004009b0 x20: 0000000000000000
+>   [   48.559046] x19: 0000000000400ff0 x18: 0000000000000000
+>   [   48.559180] x17: 0000ffff817da300 x16: 0000000000412010
+>   [   48.559312] x15: 0000000000000000 x14: 000000000000001c
+>   [   48.559443] x13: 656c626174756365 x12: 7865206b63617473
+>   [   48.559625] x11: 0000000000000003 x10: 0101010101010101
+>   [   48.559828] x9 : 0000ffff818afda8 x8 : 0000000000000081
+>   [   48.559973] x7 : 6174732065687420 x6 : 64657070616d6552
+>   [   48.560115] x5 : 000000000e0388bd x4 : 000000000040135d
+>   [   48.560270] x3 : 0000000000000000 x2 : 0000000000000001
+>   [   48.560412] x1 : 0000000000000003 x0 : 00000000004120b8
+>   Segmentation fault
+>   #
+>
+> So I think we need to keep the unmap hook. Maybe it should be handled by
+> the special_mapping stuff generically.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+I'll cook a patch for vm_special_mapping if you don't mind :-)
+
+Thanks,
+             Dmitry
