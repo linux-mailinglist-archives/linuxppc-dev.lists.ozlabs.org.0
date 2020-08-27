@@ -2,78 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DE7253E37
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 08:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AD0253DF3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 08:38:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BcYLy11c2zDqZQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 16:52:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BcY2Q3tvKzDqdP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 16:38:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=198.54.127.82;
- helo=se17-3.privateemail.com; envelope-from=cmr@codefail.de;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d43;
+ helo=mail-io1-xd43.google.com; envelope-from=kernelfans@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=codefail.de
-Received: from se17-3.privateemail.com (se17-3.privateemail.com
- [198.54.127.82])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=CHAJBPFB; dkim-atps=neutral
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BcYJs0hTSzDqZ2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 16:50:37 +1000 (AEST)
-Received: from new-01-3.privateemail.com ([198.54.122.47])
- by se17.registrar-servers.com with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.92)
- (envelope-from <cmr@codefail.de>)
- id 1kBAOh-0004JC-B7; Wed, 26 Aug 2020 22:24:31 -0700
-Received: from MTA-13.privateemail.com (unknown [10.20.147.29])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 6C692A73;
- Thu, 27 Aug 2020 05:24:25 +0000 (UTC)
-Received: from mta-13.privateemail.com (localhost [127.0.0.1])
- by mta-13.privateemail.com (Postfix) with ESMTP id 0481D80064;
- Thu, 27 Aug 2020 01:24:22 -0400 (EDT)
-Received: from geist.attlocal.net (unknown [10.20.151.231])
- by mta-13.privateemail.com (Postfix) with ESMTPA id 127988005D;
- Thu, 27 Aug 2020 05:24:20 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@codefail.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 3/6] Add LKDTM test to hijack a patch mapping (powerpc,
- x86_64)
-Date: Thu, 27 Aug 2020 00:26:56 -0500
-Message-Id: <20200827052659.24922-4-cmr@codefail.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200827052659.24922-1-cmr@codefail.de>
-References: <20200827052659.24922-1-cmr@codefail.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BcY0f4lM4zDqL4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 16:36:33 +1000 (AEST)
+Received: by mail-io1-xd43.google.com with SMTP id u126so4675494iod.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Aug 2020 23:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=+v9dfav1RJxNw3Emgv+Ztt/9zvW5zwZb7I8/vDQT1e4=;
+ b=CHAJBPFBN3G0bVcixHftGBfoZo/E/nDB5Dc3+B0i+xTnmiV1+4g3NPpVBcFbLefA0P
+ 73Zt0yxDbATe9aq4qQSZyOglsGNdNOjwcYEwY7I7LTmckrzdvNLgfbv1irBILW3y8fHM
+ 4m+khn+dV0dqHPejJ4R+iaRVuntZzdoy/SViwod+4qN7Rf6KIQO8/lbuMJgyJPF0kyO3
+ I/z2N/hxAomI7BuDHPdVV86oChAEXwfg2hAXRSOeCc3jTk6U274EZ0f/Lq40fAp/6HvJ
+ Ebkx4Q/98lvHw0t9j1R4FSe0vVIXh+95a0hK8q14j7Tcob0yzspJGw5dCop4mB/2/11U
+ Theg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=+v9dfav1RJxNw3Emgv+Ztt/9zvW5zwZb7I8/vDQT1e4=;
+ b=YnNc1QtPwvc/ztw6S1YbFgHVpzbfsI7TMqGErLAVMmOE7g0+b3vuMSYns7iqLcyQye
+ qNyifhjyauBpRd9S54Sy22NKzPTpGcEjaY/RGbxmVzlDZ9+xScZZNZepERun6VkrfCe9
+ Bzub8TJKynppnOB4ZTpQdtwyHZlTC8hatDGZLszR/kbE/4xAcdADRsL8JsEmHXy8xdCo
+ cTaOWNT+/gx/WqrOkq1wRxAcBJnOihrlb9nXbAzES6vuMyddBeNmsPkhIh0fN+ZasLTS
+ 4GaaDPM8+OfXkt5OQjV8eygIk8OtkOXfsqYnI4UVPZBgwKYNgDmp1r49/sYU8u93BCq0
+ 0COA==
+X-Gm-Message-State: AOAM533alCdSmOJUQ7yaD7e0tXMsP+xlEBxU60bAmwLFQOqdHx6vVn/t
+ DfZSi2gW1q5C9U145UxHVF6WPGqcNNrw/WaZqmTQ0aM=
+X-Google-Smtp-Source: ABdhPJybINJE6g8b5o9tfdT+2kbJIgqfTiwwui4QLJfIW/02T6fZR6J58zyPj1ivT7z1zWsb1oBHcFInSaTpuqCAWEA=
+X-Received: by 2002:a5d:8041:: with SMTP id b1mr15833505ior.74.1598510190114; 
+ Wed, 26 Aug 2020 23:36:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Originating-IP: 198.54.122.47
-X-SpamExperts-Domain: o3.privateemail.com
-X-SpamExperts-Username: out-03
-Authentication-Results: registrar-servers.com;
- auth=pass (plain) smtp.auth=out-03@o3.privateemail.com
-X-SpamExperts-Outgoing-Class: ham
-X-SpamExperts-Outgoing-Evidence: SB/global_tokens (0.00151812161313)
-X-Recommended-Action: accept
-X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0fJi3Ojdyt5h9PLOIGvr3lipSDasLI4SayDByyq9LIhVm21BwnYIoMwL
- iZdWQShhdkTNWdUk1Ol2OGx3IfrIJKyP9eGNFz9TW9u+Jt8z2T3Kq02yUY2BU41HLqp9U+7si8M8
- LdvJpZ7k99Lvu8YZXeI6p5bbhGYzvfahQ7X4A9L0Ye/JicEYVQv1wTfnWwJUGLoHT+TiZ2cHCmVO
- a6Hj9ogDjOgV+SX1eVkOYg0EXN5AJODXbtOodkPED+RkHjVGH2xZ/WG2ZLv5RT/cF5Q6687AHRjU
- JmjnvGEokRBTZJpViFKfD1jKgYfH+6S5qDVYoLU6Gc4zNg/uTrrCW7r3PPLbhw3Crbac1ieeuRax
- ITFpzO11BRKqT8B4uLrn7iz8uvLBMzbIQcSG8L0jOzL80Q1MxDcqDeEvahfPkDkTlH91LgaQnmF8
- H6pa6B8MTK1ligAJ9G0GMvMSOAhk0taEj8weJNI+C0vMCMVtmGEXbiaCRPGqg4v6OwYy/yt5Cj+T
- 3txbXpCgbiKBsA+Ddi6maweYdUirBly/K12a4uqqibUj/dHBojDbLVZkEx6TcwTT039q0aZI3qbh
- XsaDdLgW9brs8lq6YeUVTmb2st+aVE9JYOaeuiH/yEdZH8S1+TgcJBOjh0vPxcQOjKKOrYIQYpwa
- mUdylUIKhf3z2GAHxH7IMNrut00GZ5qvF8IF7tMR7zZ0OXNO45l0fhWSb7cPfaHCB05zrkyiXmy/
- DNFzttkswov2GavqJ07j7hZY8mVbefiuK2KN35hXmy7nXQ2QuBuxX4OQOI/UQ6jnFfMBgzwOw1To
- H/cUtROfGg27pVfRPjU3fSpvtX7kDRT+AqQr2T3rxJw/s9JEmzH0m3M+UGtqmwXmy0jjO7Ny/FPn
- 2HjX+xD+i2L8VSehE3P7KyWRnBVDPDo3pDJlUlQ25PasjIMI9uAIvgWsH+Wq0zDLDi3S8euO5TcD
- eKjrEmYPn2IVWRsZR6NeDQwp7lDA8K9tDm+p97/T4LRRVYxF+VXiiOfHJN40eTXlWiUAYdLmsJdA
- oPKCpWwKtkkGG+bEnfOEkWTNI3SjTCvjMfNBc9ze9o81pXKSQ+GI7QB7PH97h6/L6Wb57LVs51cV
- C2TOjdXlLnr1FFwa8AyQYqjO7qYtiXb+9Q==
-X-Report-Abuse-To: spam@se5.registrar-servers.com
+References: <1597049570-19536-1-git-send-email-kernelfans@gmail.com>
+ <1597049570-19536-2-git-send-email-kernelfans@gmail.com>
+In-Reply-To: <1597049570-19536-2-git-send-email-kernelfans@gmail.com>
+From: Pingfan Liu <kernelfans@gmail.com>
+Date: Thu, 27 Aug 2020 14:36:18 +0800
+Message-ID: <CAFgQCTssv8mQqcySzctwy=LUnsS81eK73QYQN7Qn95OvmVxe_Q@mail.gmail.com>
+Subject: Re: [PATCHv5 2/2] powerpc/pseries: update device tree before ejecting
+ hotplug uevents
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,227 +76,436 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-hardening@lists.openwall.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Kexec Mailing List <kexec@lists.infradead.org>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When live patching with STRICT_KERNEL_RWX, the CPU doing the patching
-must temporarily remap the page(s) containing the patch site with +W
-permissions. While this temporary mapping is in use another CPU could
-write to the same mapping and maliciously alter kernel text. Implement a
-LKDTM test to attempt to exploit such an opening from another (ie. not
-the patching) CPU. The test is implemented on x86_64 and powerpc only.
+Hello guys. Do you have further comments on this version?
 
-The LKDTM "hijack" test works as follows:
+Thanks,
+Pingfan
 
-	1. A CPU executes an infinite loop to patch an instruction.
-	   This is the "patching" CPU.
-	2. Another CPU attempts to write to the address of the temporary
-	   mapping used by the "patching" CPU. This other CPU is the
-	   "hijacker" CPU. The hijack either fails with a segfault or
-	   succeeds, in which case some kernel text is now overwritten.
-
-How to run the test:
-
-	mount -t debugfs none /sys/kernel/debug
-	(echo HIJACK_PATCH > /sys/kernel/debug/provoke-crash/DIRECT)
-
-Signed-off-by: Christopher M. Riedl <cmr@codefail.de>
----
- drivers/misc/lkdtm/core.c  |   1 +
- drivers/misc/lkdtm/lkdtm.h |   1 +
- drivers/misc/lkdtm/perms.c | 146 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 148 insertions(+)
-
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index a5e344df9166..482e72f6a1e1 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -145,6 +145,7 @@ static const struct crashtype crashtypes[] = {
- 	CRASHTYPE(WRITE_RO),
- 	CRASHTYPE(WRITE_RO_AFTER_INIT),
- 	CRASHTYPE(WRITE_KERN),
-+	CRASHTYPE(HIJACK_PATCH),
- 	CRASHTYPE(REFCOUNT_INC_OVERFLOW),
- 	CRASHTYPE(REFCOUNT_ADD_OVERFLOW),
- 	CRASHTYPE(REFCOUNT_INC_NOT_ZERO_OVERFLOW),
-diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index 8878538b2c13..8bd98e8f0443 100644
---- a/drivers/misc/lkdtm/lkdtm.h
-+++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -60,6 +60,7 @@ void lkdtm_EXEC_USERSPACE(void);
- void lkdtm_EXEC_NULL(void);
- void lkdtm_ACCESS_USERSPACE(void);
- void lkdtm_ACCESS_NULL(void);
-+void lkdtm_HIJACK_PATCH(void);
- 
- /* lkdtm_refcount.c */
- void lkdtm_REFCOUNT_INC_OVERFLOW(void);
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 2dede2ef658f..0ed32aba5216 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -9,6 +9,7 @@
- #include <linux/vmalloc.h>
- #include <linux/mman.h>
- #include <linux/uaccess.h>
-+#include <linux/kthread.h>
- #include <asm/cacheflush.h>
- 
- /* Whether or not to fill the target memory area with do_nothing(). */
-@@ -222,6 +223,151 @@ void lkdtm_ACCESS_NULL(void)
- 	pr_err("FAIL: survived bad write\n");
- }
- 
-+#if defined(CONFIG_PPC) || defined(CONFIG_X86_64)
-+#if defined(CONFIG_STRICT_KERNEL_RWX) && defined(CONFIG_SMP)
-+/*
-+ * This is just a dummy location to patch-over.
-+ */
-+static void patching_target(void)
-+{
-+	return;
-+}
-+
-+#ifdef CONFIG_PPC
-+#include <asm/code-patching.h>
-+struct ppc_inst * const patch_site = (struct ppc_inst *)&patching_target;
-+#endif
-+
-+#ifdef CONFIG_X86_64
-+#include <asm/text-patching.h>
-+int * const patch_site = (int *)&patching_target;
-+#endif
-+
-+static inline int lkdtm_do_patch(int data)
-+{
-+#ifdef CONFIG_PPC
-+	return patch_instruction(patch_site, ppc_inst(data));
-+#endif
-+#ifdef CONFIG_X86_64
-+	text_poke(patch_site, &data, sizeof(int));
-+	return 0;
-+#endif
-+}
-+
-+static inline bool lkdtm_verify_patch(int data)
-+{
-+#ifdef CONFIG_PPC
-+	return ppc_inst_equal(ppc_inst_read(READ_ONCE(patch_site)),
-+			ppc_inst(data));
-+#endif
-+#ifdef CONFIG_X86_64
-+	return READ_ONCE(*patch_site) == data;
-+#endif
-+}
-+
-+static int lkdtm_patching_cpu(void *data)
-+{
-+	int err = 0;
-+	int val = 0xdeadbeef;
-+
-+	pr_info("starting patching_cpu=%d\n", smp_processor_id());
-+	do {
-+		err = lkdtm_do_patch(val);
-+	} while (lkdtm_verify_patch(val) && !err && !kthread_should_stop());
-+
-+	if (err)
-+		pr_warn("patch_instruction returned error: %d\n", err);
-+
-+	set_current_state(TASK_INTERRUPTIBLE);
-+	while (!kthread_should_stop()) {
-+		schedule();
-+		set_current_state(TASK_INTERRUPTIBLE);
-+	}
-+
-+	return err;
-+}
-+
-+void lkdtm_HIJACK_PATCH(void)
-+{
-+#ifdef CONFIG_PPC
-+	struct ppc_inst original_insn = ppc_inst_read(READ_ONCE(patch_site));
-+#endif
-+#ifdef CONFIG_X86_64
-+	int original_insn = READ_ONCE(*patch_site);
-+#endif
-+	struct task_struct *patching_kthrd;
-+	int patching_cpu, hijacker_cpu, attempts;
-+	unsigned long addr;
-+	bool hijacked;
-+	const int bad_data = 0xbad00bad;
-+
-+	if (num_online_cpus() < 2) {
-+		pr_warn("need at least two cpus\n");
-+		return;
-+	}
-+
-+	hijacker_cpu = smp_processor_id();
-+	patching_cpu = cpumask_any_but(cpu_online_mask, hijacker_cpu);
-+
-+	patching_kthrd = kthread_create_on_node(&lkdtm_patching_cpu, NULL,
-+						cpu_to_node(patching_cpu),
-+						"lkdtm_patching_cpu");
-+	kthread_bind(patching_kthrd, patching_cpu);
-+	wake_up_process(patching_kthrd);
-+
-+	addr = offset_in_page(patch_site) | read_cpu_patching_addr(patching_cpu);
-+
-+	pr_info("starting hijacker_cpu=%d\n", hijacker_cpu);
-+	for (attempts = 0; attempts < 100000; ++attempts) {
-+		/* Use __put_user to catch faults without an Oops */
-+		hijacked = !__put_user(bad_data, (int *)addr);
-+
-+		if (hijacked) {
-+			if (kthread_stop(patching_kthrd))
-+				pr_err("error trying to stop patching thread\n");
-+			break;
-+		}
-+	}
-+	pr_info("hijack attempts: %d\n", attempts);
-+
-+	if (hijacked) {
-+		if (lkdtm_verify_patch(bad_data))
-+			pr_err("overwrote kernel text\n");
-+		/*
-+		 * There are window conditions where the hijacker cpu manages to
-+		 * write to the patch site but the site gets overwritten again by
-+		 * the patching cpu. We still consider that a "successful" hijack
-+		 * since the hijacker cpu did not fault on the write.
-+		 */
-+		pr_err("FAIL: wrote to another cpu's patching area\n");
-+	} else {
-+		kthread_stop(patching_kthrd);
-+	}
-+
-+	/* Restore the original insn for any future lkdtm tests */
-+#ifdef CONFIG_PPC
-+	patch_instruction(patch_site, original_insn);
-+#endif
-+#ifdef CONFIG_X86_64
-+	lkdtm_do_patch(original_insn);
-+#endif
-+}
-+
-+#else
-+
-+void lkdtm_HIJACK_PATCH(void)
-+{
-+	if (!IS_ENABLED(CONFIG_PPC) && !IS_ENABLED(CONFIG_X86_64))
-+		pr_err("XFAIL: this test only runs on x86_64 or powerpc\n");
-+	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-+		pr_err("XFAIL: this test requires CONFIG_STRICT_KERNEL_RWX\n");
-+	if (!IS_ENABLED(CONFIG_SMP))
-+		pr_err("XFAIL: this test requires CONFIG_SMP\n");
-+}
-+
-+#endif /* CONFIG_STRICT_KERNEL_RWX && CONFIG_SMP */
-+#endif /* CONFIG_PPC || CONFIG_X86_64 */
-+
- void __init lkdtm_perms_init(void)
- {
- 	/* Make sure we can write to __ro_after_init values during __init */
--- 
-2.28.0
-
+On Mon, Aug 10, 2020 at 4:53 PM Pingfan Liu <kernelfans@gmail.com> wrote:
+>
+> A bug is observed on pseries by taking the following steps on rhel:
+> -1. drmgr -c mem -r -q 5
+> -2. echo c > /proc/sysrq-trigger
+>
+> And then, the failure looks like:
+> kdump: saving to /sysroot//var/crash/127.0.0.1-2020-01-16-02:06:14/
+> kdump: saving vmcore-dmesg.txt
+> kdump: saving vmcore-dmesg.txt complete
+> kdump: saving vmcore
+>  Checking for memory holes                         : [  0.0 %] /         =
+          Checking for memory holes                         : [100.0 %] |  =
+                 Excluding unnecessary pages                       : [100.0=
+ %] \                   Copying data                                      :=
+ [  0.3 %] -          eta: 38s[   44.337636] hash-mmu: mm: Hashing failure =
+! EA=3D0x7fffba400000 access=3D0x8000000000000004 current=3Dmakedumpfile
+> [   44.337663] hash-mmu:     trap=3D0x300 vsid=3D0x13a109c ssize=3D1 base=
+ psize=3D2 psize 2 pte=3D0xc000000050000504
+> [   44.337677] hash-mmu: mm: Hashing failure ! EA=3D0x7fffba400000 access=
+=3D0x8000000000000004 current=3Dmakedumpfile
+> [   44.337692] hash-mmu:     trap=3D0x300 vsid=3D0x13a109c ssize=3D1 base=
+ psize=3D2 psize 2 pte=3D0xc000000050000504
+> [   44.337708] makedumpfile[469]: unhandled signal 7 at 00007fffba400000 =
+nip 00007fffbbc4d7fc lr 000000011356ca3c code 2
+> [   44.338548] Core dump to |/bin/false pipe failed
+> /lib/kdump-lib-initramfs.sh: line 98:   469 Bus error               $CORE=
+_COLLECTOR /proc/vmcore $_mp/$KDUMP_PATH/$HOST_IP-$DATEDIR/vmcore-incomplet=
+e
+> kdump: saving vmcore failed
+>
+> * Root cause *
+>   After analyzing, it turns out that in the current implementation,
+> when hot-removing lmb, the KOBJ_REMOVE event ejects before the dt updatin=
+g as
+> the code __remove_memory() comes before drmem_update_dt().
+> So in kdump kernel, when read_from_oldmem() resorts to
+> pSeries_lpar_hpte_insert() to install hpte, but fails with -2 due to
+> non-exist pfn. And finally, low_hash_fault() raise SIGBUS to process, as =
+it
+> can be observed "Bus error"
+>
+> From a viewpoint of listener and publisher, the publisher notifies the
+> listener before data is ready.  This introduces a problem where udev
+> launches kexec-tools (due to KOBJ_REMOVE) and loads a stale dt before
+> updating. And in capture kernel, makedumpfile will access the memory base=
+d
+> on the stale dt info, and hit a SIGBUS error due to an un-existed lmb.
+>
+> * Fix *
+> This bug is introduced by commit 063b8b1251fd
+> ("powerpc/pseries/memory-hotplug: Only update DT once per memory DLPAR
+> request"), which tried to combine all the dt updating into one.
+>
+> To fix this issue, meanwhile not to introduce a quadratic runtime
+> complexity by the model:
+>   dlpar_memory_add_by_count
+>     for_each_drmem_lmb             <--
+>       dlpar_add_lmb
+>         drmem_update_dt(_v1|_v2)
+>           for_each_drmem_lmb       <--
+> The dt should still be only updated once, and just before the last memory
+> online/offline event is ejected to user space. Achieve this by tracing th=
+e
+> num of lmb added or removed.
+>
+> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Nathan Fontenot <nfont@linux.vnet.ibm.com>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> To: linuxppc-dev@lists.ozlabs.org
+> Cc: kexec@lists.infradead.org
+> ---
+> v4 -> v5: change dlpar_add_lmb()/dlpar_remove_lmb() prototype to report
+>           whether dt is updated successfully.
+>           Fix a condition boundary check bug
+> v3 -> v4: resolve a quadratic runtime complexity issue.
+>           This series is applied on next-test branch
+>  arch/powerpc/platforms/pseries/hotplug-memory.c | 102 ++++++++++++++++++=
++-----
+>  1 file changed, 80 insertions(+), 22 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/power=
+pc/platforms/pseries/hotplug-memory.c
+> index 46cbcd1..1567d9f 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -350,13 +350,22 @@ static bool lmb_is_removable(struct drmem_lmb *lmb)
+>         return true;
+>  }
+>
+> -static int dlpar_add_lmb(struct drmem_lmb *);
+> +enum dt_update_status {
+> +       DT_NOUPDATE,
+> +       DT_TOUPDATE,
+> +       DT_UPDATED,
+> +};
+> +
+> +/* "*dt_update" returns DT_UPDATED if updated */
+> +static int dlpar_add_lmb(struct drmem_lmb *lmb,
+> +               enum dt_update_status *dt_update);
+>
+> -static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+> +static int dlpar_remove_lmb(struct drmem_lmb *lmb,
+> +               enum dt_update_status *dt_update)
+>  {
+>         unsigned long block_sz;
+>         phys_addr_t base_addr;
+> -       int rc, nid;
+> +       int rc, ret, nid;
+>
+>         if (!lmb_is_removable(lmb))
+>                 return -EINVAL;
+> @@ -372,6 +381,13 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+>         invalidate_lmb_associativity_index(lmb);
+>         lmb_clear_nid(lmb);
+>         lmb->flags &=3D ~DRCONF_MEM_ASSIGNED;
+> +       if (*dt_update) {
+> +               ret =3D drmem_update_dt();
+> +               if (ret)
+> +                       pr_warn("%s fail to update dt, but continue\n", _=
+_func__);
+> +               else
+> +                       *dt_update =3D DT_UPDATED;
+> +       }
+>
+>         __remove_memory(nid, base_addr, block_sz);
+>
+> @@ -387,6 +403,7 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_r=
+emove)
+>         int lmbs_removed =3D 0;
+>         int lmbs_available =3D 0;
+>         int rc;
+> +       enum dt_update_status dt_update =3D DT_NOUPDATE;
+>
+>         pr_info("Attempting to hot-remove %d LMB(s)\n", lmbs_to_remove);
+>
+> @@ -409,7 +426,11 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_=
+remove)
+>         }
+>
+>         for_each_drmem_lmb(lmb) {
+> -               rc =3D dlpar_remove_lmb(lmb);
+> +
+> +               /* combine dt updating for all LMBs */
+> +               if (lmbs_to_remove - lmbs_removed <=3D 1)
+> +                       dt_update =3D DT_TOUPDATE;
+> +               rc =3D dlpar_remove_lmb(lmb, &dt_update);
+>                 if (rc)
+>                         continue;
+>
+> @@ -424,13 +445,17 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to=
+_remove)
+>         }
+>
+>         if (lmbs_removed !=3D lmbs_to_remove) {
+> +               enum dt_update_status rollback_dt_update =3D DT_NOUPDATE;
+> +
+>                 pr_err("Memory hot-remove failed, adding LMB's back\n");
+>
+>                 for_each_drmem_lmb(lmb) {
+>                         if (!drmem_lmb_reserved(lmb))
+>                                 continue;
+>
+> -                       rc =3D dlpar_add_lmb(lmb);
+> +                       if (--lmbs_removed =3D=3D 0 && dt_update =3D=3D D=
+T_UPDATED)
+> +                               rollback_dt_update =3D DT_TOUPDATE;
+> +                       rc =3D dlpar_add_lmb(lmb, &rollback_dt_update);
+>                         if (rc)
+>                                 pr_err("Failed to add LMB back, drc index=
+ %x\n",
+>                                        lmb->drc_index);
+> @@ -458,6 +483,7 @@ static int dlpar_memory_remove_by_count(u32 lmbs_to_r=
+emove)
+>
+>  static int dlpar_memory_remove_by_index(u32 drc_index)
+>  {
+> +       enum dt_update_status dt_update =3D DT_TOUPDATE;
+>         struct drmem_lmb *lmb;
+>         int lmb_found;
+>         int rc;
+> @@ -468,7 +494,7 @@ static int dlpar_memory_remove_by_index(u32 drc_index=
+)
+>         for_each_drmem_lmb(lmb) {
+>                 if (lmb->drc_index =3D=3D drc_index) {
+>                         lmb_found =3D 1;
+> -                       rc =3D dlpar_remove_lmb(lmb);
+> +                       rc =3D dlpar_remove_lmb(lmb, &dt_update);
+>                         if (!rc)
+>                                 dlpar_release_drc(lmb->drc_index);
+>
+> @@ -490,6 +516,7 @@ static int dlpar_memory_remove_by_index(u32 drc_index=
+)
+>
+>  static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+>  {
+> +       enum dt_update_status dt_update =3D DT_NOUPDATE;
+>         struct drmem_lmb *lmb, *start_lmb, *end_lmb;
+>         int lmbs_available =3D 0;
+>         int rc;
+> @@ -519,7 +546,9 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remo=
+ve, u32 drc_index)
+>                 if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
+>                         continue;
+>
+> -               rc =3D dlpar_remove_lmb(lmb);
+> +               if (lmb =3D=3D end_lmb)
+> +                       dt_update =3D DT_TOUPDATE;
+> +               rc =3D dlpar_remove_lmb(lmb, &dt_update);
+>                 if (rc)
+>                         break;
+>
+> @@ -527,14 +556,16 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_re=
+move, u32 drc_index)
+>         }
+>
+>         if (rc) {
+> -               pr_err("Memory indexed-count-remove failed, adding any re=
+moved LMBs\n");
+> +               enum dt_update_status rollback_dt_update =3D DT_NOUPDATE;
+>
+> +               pr_err("Memory indexed-count-remove failed, adding any re=
+moved LMBs\n");
+>
+>                 for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+>                         if (!drmem_lmb_reserved(lmb))
+>                                 continue;
+> -
+> -                       rc =3D dlpar_add_lmb(lmb);
+> +                       if (lmb =3D=3D end_lmb && dt_update =3D=3D DT_UPD=
+ATED)
+> +                               rollback_dt_update =3D DT_TOUPDATE;
+> +                       rc =3D dlpar_add_lmb(lmb, &rollback_dt_update);
+>                         if (rc)
+>                                 pr_err("Failed to add LMB, drc index %x\n=
+",
+>                                        lmb->drc_index);
+> @@ -572,7 +603,7 @@ static inline int dlpar_memory_remove(struct pseries_=
+hp_errorlog *hp_elog)
+>  {
+>         return -EOPNOTSUPP;
+>  }
+> -static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+> +static int dlpar_remove_lmb(struct drmem_lmb *lmb, bool dt_update)
+>  {
+>         return -EOPNOTSUPP;
+>  }
+> @@ -591,10 +622,11 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_re=
+move, u32 drc_index)
+>  }
+>  #endif /* CONFIG_MEMORY_HOTREMOVE */
+>
+> -static int dlpar_add_lmb(struct drmem_lmb *lmb)
+> +static int dlpar_add_lmb(struct drmem_lmb *lmb,
+> +               enum dt_update_status *dt_update)
+>  {
+>         unsigned long block_sz;
+> -       int rc;
+> +       int rc, ret;
+>
+>         if (lmb->flags & DRCONF_MEM_ASSIGNED)
+>                 return -EINVAL;
+> @@ -607,6 +639,13 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>
+>         lmb_set_nid(lmb);
+>         lmb->flags |=3D DRCONF_MEM_ASSIGNED;
+> +       if (*dt_update) {
+> +               ret =3D drmem_update_dt();
+> +               if (ret)
+> +                       pr_warn("%s fail to update dt, but continue\n", _=
+_func__);
+> +               else
+> +                       *dt_update =3D DT_UPDATED;
+> +       }
+>
+>         block_sz =3D memory_block_size_bytes();
+>
+> @@ -616,6 +655,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>                 invalidate_lmb_associativity_index(lmb);
+>                 lmb_clear_nid(lmb);
+>                 lmb->flags &=3D ~DRCONF_MEM_ASSIGNED;
+> +               if (*dt_update =3D=3D DT_UPDATED)
+> +                       drmem_update_dt();
+>                 return rc;
+>         }
+>
+> @@ -627,7 +668,11 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>                 invalidate_lmb_associativity_index(lmb);
+>                 lmb_clear_nid(lmb);
+>                 lmb->flags &=3D ~DRCONF_MEM_ASSIGNED;
+> -
+> +               if (*dt_update =3D=3D DT_UPDATED) {
+> +                       ret =3D drmem_update_dt();
+> +                       if (ret)
+> +                               pr_warn("%s fail to update dt during roll=
+back, but continue\n", __func__);
+> +               }
+>                 __remove_memory(nid, base_addr, block_sz);
+>         }
+>
+> @@ -636,6 +681,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>
+>  static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>  {
+> +       enum dt_update_status dt_update =3D DT_NOUPDATE;
+>         struct drmem_lmb *lmb;
+>         int lmbs_available =3D 0;
+>         int lmbs_added =3D 0;
+> @@ -666,7 +712,9 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>                 if (rc)
+>                         continue;
+>
+> -               rc =3D dlpar_add_lmb(lmb);
+> +               if (lmbs_to_add - lmbs_added <=3D 1)
+> +                       dt_update =3D DT_TOUPDATE;
+> +               rc =3D dlpar_add_lmb(lmb, &dt_update);
+>                 if (rc) {
+>                         dlpar_release_drc(lmb->drc_index);
+>                         continue;
+> @@ -683,13 +731,18 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_ad=
+d)
+>         }
+>
+>         if (lmbs_added !=3D lmbs_to_add) {
+> +               enum dt_update_status rollback_dt_update =3D DT_NOUPDATE;
+> +
+>                 pr_err("Memory hot-add failed, removing any added LMBs\n"=
+);
+>
+>                 for_each_drmem_lmb(lmb) {
+>                         if (!drmem_lmb_reserved(lmb))
+>                                 continue;
+>
+> -                       rc =3D dlpar_remove_lmb(lmb);
+> +                       if (--lmbs_added =3D=3D 0 && dt_update =3D=3D DT_=
+UPDATED)
+> +                               rollback_dt_update =3D DT_TOUPDATE;
+> +
+> +                       rc =3D dlpar_remove_lmb(lmb, &rollback_dt_update)=
+;
+>                         if (rc)
+>                                 pr_err("Failed to remove LMB, drc index %=
+x\n",
+>                                        lmb->drc_index);
+> @@ -716,6 +769,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>
+>  static int dlpar_memory_add_by_index(u32 drc_index)
+>  {
+> +       enum dt_update_status dt_update =3D DT_TOUPDATE;
+>         struct drmem_lmb *lmb;
+>         int rc, lmb_found;
+>
+> @@ -727,7 +781,7 @@ static int dlpar_memory_add_by_index(u32 drc_index)
+>                         lmb_found =3D 1;
+>                         rc =3D dlpar_acquire_drc(lmb->drc_index);
+>                         if (!rc) {
+> -                               rc =3D dlpar_add_lmb(lmb);
+> +                               rc =3D dlpar_add_lmb(lmb, &dt_update);
+>                                 if (rc)
+>                                         dlpar_release_drc(lmb->drc_index)=
+;
+>                         }
+> @@ -750,6 +804,7 @@ static int dlpar_memory_add_by_index(u32 drc_index)
+>
+>  static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+>  {
+> +       enum dt_update_status dt_update =3D DT_NOUPDATE;
+>         struct drmem_lmb *lmb, *start_lmb, *end_lmb;
+>         int lmbs_available =3D 0;
+>         int rc;
+> @@ -783,7 +838,9 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u3=
+2 drc_index)
+>                 if (rc)
+>                         break;
+>
+> -               rc =3D dlpar_add_lmb(lmb);
+> +               if (lmb =3D=3D end_lmb)
+> +                       dt_update =3D DT_TOUPDATE;
+> +               rc =3D dlpar_add_lmb(lmb, &dt_update);
+>                 if (rc) {
+>                         dlpar_release_drc(lmb->drc_index);
+>                         break;
+> @@ -796,10 +853,14 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, =
+u32 drc_index)
+>                 pr_err("Memory indexed-count-add failed, removing any add=
+ed LMBs\n");
+>
+>                 for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+> +                       enum dt_update_status rollback_dt_update =3D DT_N=
+OUPDATE;
+> +
+>                         if (!drmem_lmb_reserved(lmb))
+>                                 continue;
+>
+> -                       rc =3D dlpar_remove_lmb(lmb);
+> +                       if (lmb =3D=3D end_lmb && dt_update =3D=3D DT_UPD=
+ATED)
+> +                               rollback_dt_update =3D DT_TOUPDATE;
+> +                       rc =3D dlpar_remove_lmb(lmb, &rollback_dt_update)=
+;
+>                         if (rc)
+>                                 pr_err("Failed to remove LMB, drc index %=
+x\n",
+>                                        lmb->drc_index);
+> @@ -879,9 +940,6 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
+>                 break;
+>         }
+>
+> -       if (!rc)
+> -               rc =3D drmem_update_dt();
+> -
+>         unlock_device_hotplug();
+>         return rc;
+>  }
+> --
+> 2.7.5
+>
