@@ -2,64 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AD1254ABD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 18:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E78CC254AC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 18:33:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BcpBH6cPpzDqJl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 02:30:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BcpDp0LykzDqkj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 02:32:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-X-Greylist: delayed 68 seconds by postgrey-1.36 at bilbo;
- Fri, 28 Aug 2020 01:59:23 AEST
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BcnV32lPYzDqCT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 01:59:22 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-127-1uCyu8HkODWHTq8BSgI4eA-1; Thu, 27 Aug 2020 16:58:02 +0100
-X-MC-Unique: 1uCyu8HkODWHTq8BSgI4eA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 27 Aug 2020 16:58:02 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Thu, 27 Aug 2020 16:58:02 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Christoph Hellwig' <hch@lst.de>, Linus Torvalds
- <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, "Michael
- Ellerman" <mpe@ellerman.id.au>, "x86@kernel.org" <x86@kernel.org>
-Subject: RE: [PATCH 01/10] fs: don't allow kernel reads and writes without
- iter ops
-Thread-Topic: [PATCH 01/10] fs: don't allow kernel reads and writes without
- iter ops
-Thread-Index: AQHWfINAnoKBzQpz30W83mcBiLuV+KlMG9NA
-Date: Thu, 27 Aug 2020 15:58:02 +0000
-Message-ID: <e5cb22d53c7c4ebea92443b8b6d86e88@AcuMS.aculab.com>
-References: <20200827150030.282762-1-hch@lst.de>
- <20200827150030.282762-2-hch@lst.de>
-In-Reply-To: <20200827150030.282762-2-hch@lst.de>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BcnW02jZRzDqgx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 02:00:11 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BcnVs700tz9v2FL;
+ Thu, 27 Aug 2020 18:00:05 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id LQewnjVSyhot; Thu, 27 Aug 2020 18:00:05 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BcnVs64DQz9tyrm;
+ Thu, 27 Aug 2020 18:00:05 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7EB7D8B884;
+ Thu, 27 Aug 2020 18:00:07 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 4NgpRi-CIKS8; Thu, 27 Aug 2020 18:00:07 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 115078B880;
+ Thu, 27 Aug 2020 18:00:07 +0200 (CEST)
+Subject: Re: [PATCH v2 25/25] powerpc/signal32: Transform save_user_regs() and
+ save_tm_user_regs() in 'unsafe' version
+To: kernel test robot <lkp@intel.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <c7b37b385ccf9666066452e58f018a86573f83e8.1597770847.git.christophe.leroy@csgroup.eu>
+ <202008271728.tFAPDKU8%lkp@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <04879ee3-2b59-fe21-9a79-f790f3e958a4@csgroup.eu>
+Date: Thu, 27 Aug 2020 17:59:59 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0.001
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <202008271728.tFAPDKU8%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,37 +65,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Kees Cook <keescook@chromium.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ kbuild-all@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christoph Hellwig
-> Sent: 27 August 2020 16:00
->=20
-> Don't allow calling ->read or ->write with set_fs as a preparation for
-> killing off set_fs.  All the instances that we use kernel_read/write on
-> are using the iter ops already.
->=20
-> If a file has both the regular ->read/->write methods and the iter
-> variants those could have different semantics for messed up enough
-> drivers.  Also fails the kernel access to them in that case.
 
-Is there a real justification for that?
-For system calls supplying both methods makes sense to avoid
-the extra code paths for a simple read/write.
 
-Any one stupid enough to make them behave differently gets
-what they deserve.
+Le 27/08/2020 à 11:07, kernel test robot a écrit :
+> Hi Christophe,
+> 
+> I love your patch! Yet something to improve:
+> 
+> [auto build test ERROR on powerpc/next]
+> [also build test ERROR on linus/master v5.9-rc2 next-20200827]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-Switch-signal-32-to-using-unsafe_put_user-and-friends/20200819-012411
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: powerpc64-randconfig-r005-20200827 (attached as .config)
+> compiler: powerpc-linux-gcc (GCC) 9.3.0
+> reproduce (this is a W=1 build):
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # save the attached .config to linux build tree
+>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=powerpc64
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>     arch/powerpc/kernel/signal_32.c: In function 'save_user_regs_unsafe':
+>>> arch/powerpc/kernel/signal_32.c:314:34: error: macro "unsafe_copy_to_user" requires 4 arguments, but only 3 given
+>       314 |         ELF_NEVRREG * sizeof(u32)), failed);
+>           |                                  ^
+>     In file included from include/linux/uaccess.h:9,
+>                      from include/linux/sched/task.h:11,
+>                      from include/linux/sched/signal.h:9,
+>                      from include/linux/rcuwait.h:6,
+>                      from include/linux/percpu-rwsem.h:7,
+>                      from include/linux/fs.h:33,
+>                      from include/linux/huge_mm.h:8,
+>                      from include/linux/mm.h:672,
+>                      from arch/powerpc/kernel/signal_32.c:17:
+>     arch/powerpc/include/asm/uaccess.h:605: note: macro "unsafe_copy_to_user" defined here
+>       605 | #define unsafe_copy_to_user(d, s, l, e) \
+>           |
+>>> arch/powerpc/kernel/signal_32.c:313:3: error: 'unsafe_copy_to_user' undeclared (first use in this function); did you mean 'raw_copy_to_user'?
+>       313 |   unsafe_copy_to_user(&frame->mc_vregs, current->thread.evr,
+>           |   ^~~~~~~~~~~~~~~~~~~
+>           |   raw_copy_to_user
+>     arch/powerpc/kernel/signal_32.c:313:3: note: each undeclared identifier is reported only once for each function it appears in
+>>> arch/powerpc/kernel/signal_32.c:314:37: error: 'failed' undeclared (first use in this function)
+>       314 |         ELF_NEVRREG * sizeof(u32)), failed);
+>           |                                     ^~~~~~
+>     arch/powerpc/kernel/signal_32.c:314:35: warning: left-hand operand of comma expression has no effect [-Wunused-value]
+>       314 |         ELF_NEVRREG * sizeof(u32)), failed);
+>           |                                   ^
+>>> arch/powerpc/kernel/signal_32.c:314:43: error: expected ';' before ')' token
+>       314 |         ELF_NEVRREG * sizeof(u32)), failed);
+>           |                                           ^
+>           |                                           ;
+>>> arch/powerpc/kernel/signal_32.c:314:43: error: expected statement before ')' token
+> 
 
-=09David
+Should be fixed by:
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/arch/powerpc/kernel/signal_32.c 
+b/arch/powerpc/kernel/signal_32.c
+index f795fe0240a1..123682299d4f 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -311,7 +311,7 @@ static int save_user_regs_unsafe(struct pt_regs 
+*regs, struct mcontext __user *f
+  	/* save spe registers */
+  	if (current->thread.used_spe) {
+  		unsafe_copy_to_user(&frame->mc_vregs, current->thread.evr,
+-				    ELF_NEVRREG * sizeof(u32)), failed);
++				    ELF_NEVRREG * sizeof(u32), failed);
+  		/* set MSR_SPE in the saved MSR value to indicate that
+  		   frame->mc_vregs contains valid data */
+  		msr |= MSR_SPE;
 
+---
+Christophe
