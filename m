@@ -1,57 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7272545D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 15:23:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D2B2546B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 16:23:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bck2P4XymzDqjX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 23:23:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BclLr5HmFzDqdw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 00:23:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::242;
+ helo=mail-lj1-x242.google.com; envelope-from=jannh@google.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=e6F7i1e7; dkim-atps=neutral
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bcjy00WcgzDqhK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 23:19:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=cU+Wi1s+; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bcjxx0CGvz9sRK;
- Thu, 27 Aug 2020 23:19:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1598534389;
- bh=xJkwUWknbzmvsAZO+hKud6INNMkQTVd5r0gjIOmuo3c=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=cU+Wi1s+D3zjNNRT1PERbDZZMoiGyzfLvx/edgAPk1WSZyC7ZBQyRo9lMYvLupYMJ
- oj91TUjDQwT2MVk3785bixwN+Xw63MeRi1SiNyQacw3wEeJiTrl5w2cHkBMzhV+QS1
- tyhq0tToa+5rrBwdNW8+CzKil8OMjsMt9NJIQphMeB8qXz5uDn3fSDPwjq0TVyfC5X
- MVTsYqYZvEaZvpz2fEY25bGbyopmsTf3J8E/OF3AF0RgJp1uRHP556HmrxYpo8sK3Y
- OTkOvCyEUU01FzA48TLmBMolK6a9O+CGdDRdGxJ2LlKVVya023TjhgVCpCNiRLHOZG
- rGrGVJo7JlbWw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v1 4/9] powerpc/vdso: Remove unnecessary ifdefs in
- vdso_pagelist initialization
-In-Reply-To: <04a968f6-88c0-0603-43aa-202196a68df2@csgroup.eu>
-References: <df48ed76cf8a756a7f97ed42a1a39d0a404014bc.1598363608.git.christophe.leroy@csgroup.eu>
- <834f362626e18bc36226f46ed4113c461a3ad032.1598363608.git.christophe.leroy@csgroup.eu>
- <87ft89h2st.fsf@mpe.ellerman.id.au>
- <04a968f6-88c0-0603-43aa-202196a68df2@csgroup.eu>
-Date: Thu, 27 Aug 2020 23:19:44 +1000
-Message-ID: <87d03c2plb.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BclC90nlRzDqdR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 00:16:13 +1000 (AEST)
+Received: by mail-lj1-x242.google.com with SMTP id w14so6631038ljj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 07:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=US45omOiVls6z8M2uEdlSDLBnxMw0pLsZXx7H6iAa+E=;
+ b=e6F7i1e7uCRbycdWn6MY+mc8EyXK0bF3SfRFHGipkwdUQ7k3vr2T03zttLLOiad2d2
+ skRT64vhWrKyTHt5lgT9fHNkbO5DUsisLmNszsUGALJnncb1yDJoI+C6bu9oUbGlw6T+
+ umSe8Hg8wBn95ZS7r6FQHoWV8ut13Co7zGXGAHZx5U/c1cCGgFHB5PqBcWVHZHdJ5QXT
+ nBzcu4qG4GKGNNPZCeKpJ3UD1mBz4rGr1THv5yarvxgkNoFLIQFIJAcM/ME3Jhpnsz5X
+ wgRXTKULn8plDLfBdv+wb2HuGRfvGTTRiREaS2rSqVxisjvwXNU4Ip+0ZH9ONnGizQp4
+ xpfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=US45omOiVls6z8M2uEdlSDLBnxMw0pLsZXx7H6iAa+E=;
+ b=cNH8y0jstmagrJxXrI2pSPika8t+g9r17x6Q7XxHTFLb+rGjiX3JTQe4RdJJXME9U0
+ VHyfV5BvWqgUmV0HDYYO/hLgGzie36eVK2Tk15D1pk4vKw4v0QdhQC03s9IBY7TGNb9P
+ iDcV3fCYNKbgkZqTqso7SsfTBvQ4nnTmDlxgUitWKUoPkjsFTMKS/pFHmnn3aaTfzKCr
+ ND45/YdGouCAjR5OakiP83gbHSuD3n8Iry3bZh3DY/ydZwJ6s9RfZ5b4b6Vq2Y/jRJMa
+ U9lbiG/wFwiCN+AhcN5IkaAKl2cOIGyNMR3ghI15MD5V6IfbgHIYsfJltEEkUZjaYeO4
+ M+RA==
+X-Gm-Message-State: AOAM533ZgxB1GJpuiV889iz0raWLHLGyL2mZldLqPNC6fMMV+DpMManm
+ tMg8OPhRJbTeUQ0xCOoOq7DeZOtHEoBCI9cqh7JwIg==
+X-Google-Smtp-Source: ABdhPJwwzdS05p3Md8eBJAAbVD2Ab/UK7O9WHzCaXcEnh7sDm7yiIvYkYueu32foh4A/22ryhCL0Jnl3dJg9J7TWDx4=
+X-Received: by 2002:a05:651c:543:: with SMTP id
+ q3mr9581431ljp.145.1598537767712; 
+ Thu, 27 Aug 2020 07:16:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200827052659.24922-1-cmr@codefail.de>
+ <20200827052659.24922-5-cmr@codefail.de>
+In-Reply-To: <20200827052659.24922-5-cmr@codefail.de>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 27 Aug 2020 16:15:41 +0200
+Message-ID: <CAG48ez1W7FcDPAnqQ7TpSnKy--vaQm_f5prsZXRxcybzGg0tpg@mail.gmail.com>
+Subject: Re: [PATCH v3 4/6] powerpc: Introduce temporary mm
+To: "Christopher M. Riedl" <cmr@codefail.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,73 +74,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+ Kernel Hardening <kernel-hardening@lists.openwall.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> On 08/26/2020 02:58 PM, Michael Ellerman wrote:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
->>> index daef14a284a3..bbb69832fd46 100644
->>> --- a/arch/powerpc/kernel/vdso.c
->>> +++ b/arch/powerpc/kernel/vdso.c
->>> @@ -718,16 +710,14 @@ static int __init vdso_init(void)
->> ...
->>>   
->>> -
->>> -#ifdef CONFIG_VDSO32
->>>   	vdso32_kbase = &vdso32_start;
->>>   
->>>   	/*
->>> @@ -735,8 +725,6 @@ static int __init vdso_init(void)
->>>   	 */
->>>   	vdso32_pages = (&vdso32_end - &vdso32_start) >> PAGE_SHIFT;
->>>   	DBG("vdso32_kbase: %p, 0x%x pages\n", vdso32_kbase, vdso32_pages);
->>> -#endif
->> 
->> This didn't build for ppc64le:
->> 
->>    /opt/cross/gcc-8.20_binutils-2.32/powerpc64-unknown-linux-gnu/bin/powerpc64-unknown-linux-gnu-ld: arch/powerpc/kernel/vdso.o:(.toc+0x0): undefined reference to `vdso32_end'
->>    /opt/cross/gcc-8.20_binutils-2.32/powerpc64-unknown-linux-gnu/bin/powerpc64-unknown-linux-gnu-ld: arch/powerpc/kernel/vdso.o:(.toc+0x8): undefined reference to `vdso32_start'
->>    make[1]: *** [/scratch/michael/build/maint/Makefile:1166: vmlinux] Error 1
->>    make: *** [Makefile:185: __sub-make] Error 2
->> 
->> So I just put that ifdef back.
->> 
+On Thu, Aug 27, 2020 at 7:24 AM Christopher M. Riedl <cmr@codefail.de> wrote:
+> x86 supports the notion of a temporary mm which restricts access to
+> temporary PTEs to a single CPU. A temporary mm is useful for situations
+> where a CPU needs to perform sensitive operations (such as patching a
+> STRICT_KERNEL_RWX kernel) requiring temporary mappings without exposing
+> said mappings to other CPUs. A side benefit is that other CPU TLBs do
+> not need to be flushed when the temporary mm is torn down.
 >
-> The problem is because is_32bit() can still return true even when 
-> CONFIG_VDSO32 is not set.
+> Mappings in the temporary mm can be set in the userspace portion of the
+> address-space.
+[...]
+> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+[...]
+> @@ -44,6 +45,70 @@ int raw_patch_instruction(struct ppc_inst *addr, struct ppc_inst instr)
+>  }
+>
+>  #ifdef CONFIG_STRICT_KERNEL_RWX
+> +
+> +struct temp_mm {
+> +       struct mm_struct *temp;
+> +       struct mm_struct *prev;
+> +       bool is_kernel_thread;
+> +       struct arch_hw_breakpoint brk[HBP_NUM_MAX];
+> +};
+> +
+> +static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_struct *mm)
+> +{
+> +       temp_mm->temp = mm;
+> +       temp_mm->prev = NULL;
+> +       temp_mm->is_kernel_thread = false;
+> +       memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
+> +}
+> +
+> +static inline void use_temporary_mm(struct temp_mm *temp_mm)
+> +{
+> +       lockdep_assert_irqs_disabled();
+> +
+> +       temp_mm->is_kernel_thread = current->mm == NULL;
 
-Hmm, you're right. My config had CONFIG_COMPAT enabled.
+(That's a somewhat misleading variable name - kernel threads can have
+a non-NULL ->mm, too.)
 
-But that seems like a bug, if someone enables COMPAT on ppc64le they are
-almost certainly going to want VDSO32 as well.
+> +       if (temp_mm->is_kernel_thread)
+> +               temp_mm->prev = current->active_mm;
+> +       else
+> +               temp_mm->prev = current->mm;
 
-So I think I'll do a lead up patch as below.
+Why the branch? Shouldn't current->active_mm work in both cases?
 
-cheers
 
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index d4fd109f177e..cf2da1e401ef 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -501,13 +501,12 @@ endmenu
- 
- config VDSO32
- 	def_bool y
--	depends on PPC32 || CPU_BIG_ENDIAN
-+	depends on PPC32 || COMPAT
- 	help
- 	  This symbol controls whether we build the 32-bit VDSO. We obviously
- 	  want to do that if we're building a 32-bit kernel. If we're building
--	  a 64-bit kernel then we only want a 32-bit VDSO if we're building for
--	  big endian. That is because the only little endian configuration we
--	  support is ppc64le which is 64-bit only.
-+	  a 64-bit kernel then we only want a 32-bit VDSO if we're also enabling
-+	  COMPAT.
- 
- choice
- 	prompt "Endianness selection"
+> +       /*
+> +        * Hash requires a non-NULL current->mm to allocate a userspace address
+> +        * when handling a page fault. Does not appear to hurt in Radix either.
+> +        */
+> +       current->mm = temp_mm->temp;
 
+This looks dangerous to me. There are various places that attempt to
+find all userspace tasks that use a given mm by iterating through all
+tasks on the system and comparing each task's ->mm pointer to
+current's. Things like current_is_single_threaded() as part of various
+security checks, mm_update_next_owner(), zap_threads(), and so on. So
+if this is reachable from userspace task context (which I think it
+is?), I don't think we're allowed to switch out the ->mm pointer here.
+
+
+> +       switch_mm_irqs_off(NULL, temp_mm->temp, current);
+
+switch_mm_irqs_off() calls switch_mmu_context(), which in the nohash
+implementation increments next->context.active and decrements
+prev->context.active if prev is non-NULL, right? So this would
+increase temp_mm->temp->context.active...
+
+> +       if (ppc_breakpoint_available()) {
+> +               struct arch_hw_breakpoint null_brk = {0};
+> +               int i = 0;
+> +
+> +               for (; i < nr_wp_slots(); ++i) {
+> +                       __get_breakpoint(i, &temp_mm->brk[i]);
+> +                       if (temp_mm->brk[i].type != 0)
+> +                               __set_breakpoint(i, &null_brk);
+> +               }
+> +       }
+> +}
+> +
+> +static inline void unuse_temporary_mm(struct temp_mm *temp_mm)
+> +{
+> +       lockdep_assert_irqs_disabled();
+> +
+> +       if (temp_mm->is_kernel_thread)
+> +               current->mm = NULL;
+> +       else
+> +               current->mm = temp_mm->prev;
+> +       switch_mm_irqs_off(NULL, temp_mm->prev, current);
+
+... whereas this would increase temp_mm->prev->context.active. As far
+as I can tell, that'll mean that both the original mm and the patching
+mm will have their .active counts permanently too high after
+use_temporary_mm()+unuse_temporary_mm()?
+
+> +       if (ppc_breakpoint_available()) {
+> +               int i = 0;
+> +
+> +               for (; i < nr_wp_slots(); ++i)
+> +                       if (temp_mm->brk[i].type != 0)
+> +                               __set_breakpoint(i, &temp_mm->brk[i]);
+> +       }
+> +}
