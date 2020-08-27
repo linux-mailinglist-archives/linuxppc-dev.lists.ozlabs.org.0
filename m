@@ -1,61 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6C825472D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 16:43:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01C6254893
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Aug 2020 17:09:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bclp71wjDzDqcm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 00:43:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BcmNR1xZGzDqZW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 01:09:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=centrum.lixper.it (client-ip=46.4.16.148; helo=centrum.lixper.it;
- envelope-from=srs0=mied=cf=sguazz.it=giuseppe@centrum.lixper.it;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+811462fdb5f870f212f0+6213+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=sguazz.it
-Received: from centrum.lixper.it (centrum.lixper.it [46.4.16.148])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=F+uxR0Mj; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BclgW0TGLzDq9V
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 00:37:26 +1000 (AEST)
-Received: from net-2-44-194-190.cust.vodafonedsl.it ([2.44.194.190] helo=uefi)
- by centrum.lixper.it with esmtpsa
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.84_2)
- (envelope-from <giuseppe@sguazz.it>) id 1kBJ1j-0006r3-8t
- for linuxppc-dev@lists.ozlabs.org; Thu, 27 Aug 2020 16:37:19 +0200
-Message-ID: <37c4253abc08ef3e93d67cae5b92252af96fcf65.camel@sguazz.it>
-Subject: Re: kernel since 5.6 do not boot anymore on Apple PowerBook
-From: Giuseppe Sacco <giuseppe@sguazz.it>
-To: linuxppc-dev@lists.ozlabs.org
-Date: Thu, 27 Aug 2020 16:37:13 +0200
-In-Reply-To: <afae7efd-0d8a-5672-7b75-9394b0ff3d3c@csgroup.eu>
-References: <89e412a76350b28f791bb8a2b6f9647a034f6fc8.camel@sguazz.it>
- <498426507489f2c8e32daaf7af1105b5adba552f.camel@sguazz.it>
- <c2a89243-6135-4edd-2c1c-42c2159b5a1e@csgroup.eu>
- <e6878657490aa34b54b3daf0430073078a9840e7.camel@sguazz.it>
- <b70a6343-a380-ff08-a401-04f9ab50be6b@csgroup.eu>
- <59de290b-4b6c-a55e-9289-e640473b1382@csgroup.eu>
- <3558dadc530a60e9e3f958f0d6d4a0f28958ae86.camel@sguazz.it>
- <a62714c0-1b17-305d-577d-529e1781ec56@csgroup.eu>
- <8ce38d9bb162268f53a2292a916c44579421e552.camel@sguazz.it>
- <5158eae8-6809-ae07-0d16-58f2a766f534@csgroup.eu>
- <c707f59d379a51b83ba52e796d137887219c32fc.camel@sguazz.it>
- <f96d336d-fb81-fe9d-9890-db57c6560e85@csgroup.eu>
- <e7a620fa7521e84e2010660b87f20dd24a3b0cd4.camel@sguazz.it>
- <65baad98-79a0-5ee4-521e-5327029de459@csgroup.eu>
- <0a18fc199cef2643bd07591205a6234c2edf6c95.camel@sguazz.it>
- <afd75c134e2c4a57f8cf1f064595455e67b17e41.camel@sguazz.it>
- <cab15033beeefa317aae40370664e108f57dc050.camel@sguazz.it>
- <afae7efd-0d8a-5672-7b75-9394b0ff3d3c@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4-2 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BcmBN3wK3zDqcy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 01:00:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:In-Reply-To:References;
+ bh=+FDq8L6rGnI/x/fcZZwnAe98btu7wV0Ys0/vNLegxzU=; b=F+uxR0Mj1uhT1FBZqAiv7eN7GW
+ v9efLGDvyKR4HMaQr2BO7JfB6QBG9Q3iERm1of9luLKOOUnD1Xrd8iSAJSSXNB/Vv6CzWMmdVu2ub
+ q8+LsIfUOTAjwJOAKQikPQK+bAtTN543PVVJwZdg9c8CQbNSXYUogS2MKD80wxL78pbufGfYKpkb7
+ 2743JUEB32qVF7u5YrUBh1rdiHvnsI0mx2Yv3lZG+aWMUO1vv+vGYlxp8RdPAU0zs4Pvx9Coofw0a
+ 6uOeFBRpcgiRt/EeooQPnfwo9WXbDe+WJaFAGo1OqfRMJD2Ml9OMqxehVjH2RtZNLBFX9T1xxEvoU
+ xyZ5WPdg==;
+Received: from [2001:4bb8:18c:45ba:9892:9e86:5202:32f0] (helo=localhost)
+ by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kBJOB-00044J-Lk; Thu, 27 Aug 2020 15:00:32 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Michael Ellerman <mpe@ellerman.id.au>,
+ x86@kernel.org
+Subject: remove the last set_fs() in common code,
+ and remove it for x86 and powerpc v2
+Date: Thu, 27 Aug 2020 17:00:20 +0200
+Message-Id: <20200827150030.282762-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GeoIP: IT
-X-SRS: Sender address rewritten from <giuseppe@sguazz.it> to
- <SRS0=Mied=CF=sguazz.it=giuseppe@centrum.lixper.it> by centrum.lixper.it.
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,36 +64,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Kees Cook <keescook@chromium.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Il giorno gio, 27/08/2020 alle 12.39 +0200, Christophe Leroy ha
-scritto:
-> Hi,
-> 
-> Le 27/08/2020 à 10:28, Giuseppe Sacco a écrit :
-[...]
-> > Sorry, I made a mistake. The real problem is down, on the same
-> > function, when it calls low_sleep_handler(). This is where the problem
-> > probably is.
-> 
-> Great, you spotted the problem.
-> 
-> I see what it is, it is in low_sleep_handler() in 
-> arch/powerpc/platforms/powermac/sleep.S
-> 
-> All critical registers are saved on the stack. At restore, they are 
-> restore BEFORE re-enabling MMU (because they are needed for that). But 
-> when we have VMAP_STACK, the stack can hardly be accessed without the 
-> MMU enabled. tophys() doesn't work for virtual stack addresses.
-> 
-> Therefore, the low_sleep_handler() has to be reworked for using an area 
-> in the linear mem instead of the stack.
+Hi all,
 
-I am sorry, but I don't know how to fix it. Should I open a bug for
-tracking this problem?
+this series removes the last set_fs() used to force a kernel address
+space for the uaccess code in the kernel read/write/splice code, and then
+stops implementing the address space overrides entirely for x86 and
+powerpc.
 
-Thank you,
-Giuseppe
+The file system part has been posted a few times, and the read/write side
+has been pretty much unchanced.  For splice this series drops the
+conversion of the seq_file and sysctl code to the iter ops, and thus loses
+the splice support for them.  The reasons for that is that it caused a lot
+of churn for not much use - splice for these small files really isn't much
+of a win, even if existing userspace uses it.  All callers I found do the
+proper fallback, but if this turns out to be an issue the conversion can
+be resurrected.
 
+Besides x86 and powerpc I plan to eventually convert all other
+architectures, although this will be a slow process, starting with the
+easier ones once the infrastructure is merged.  The process to convert
+architectures is roughtly:
+
+ (1) ensure there is no set_fs(KERNEL_DS) left in arch specific code
+ (2) implement __get_kernel_nofault and __put_kernel_nofault
+ (3) remove the arch specific address limitation functionality
+
+Changes since v1:
+ - drop the patch to remove the non-iter ops for /dev/zero and
+   /dev/null as they caused a performance regression
+ - don't enable user access in __get_kernel on powerpc
+ - xfail the set_fs() based lkdtm tests
+
+Diffstat:
