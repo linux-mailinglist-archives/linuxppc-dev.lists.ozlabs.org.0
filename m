@@ -2,57 +2,163 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0252552EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 04:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52CA255309
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 04:29:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bd39k6SR6zDqnV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 12:16:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bd3SX63nVzDqq0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 12:29:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bd37q6qnLzDqZw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 12:14:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=fZT1Uatx; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=L47wGV68; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bd37p4dhPz9sR4;
- Fri, 28 Aug 2020 12:14:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1598580871;
- bh=zbHgIvSOOwfYmIlGTu8/cRu0o1U+KPvxZ9Z4EaG6Y68=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=fZT1UatxE65b4IK+nS5xatGzpt4kggDVd1Z9XNbtxcIct8c2jMff2m7GoIPfkRFKf
- e3KIDQkGIKSCX9Wg+jPcc2d4SW6VQB71b4tl6kF74KWF0iinTMKGk1EgqDZ3PbGt7Y
- ETeG5sqhwCmC9EqHW9ZF0U8FkKZToMDtKFtKbzOd7iO5egiyY+IrN/+LHUv02qichU
- jQazusCluSR1RV8SJ9n8FiUwy939+1UFUtd8WmcmV18EzI/59OuynEbPf7EVJGqvlU
- 8oOZTWqyyARF/BclDpEuy3AAkBF06zUl14nSriPGqog2lMqQCzqPVfRRM5rZD555Fj
- 0Tu7O8vYbf82w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dmitry Safonov <0x7f454c46@gmail.com>
-Subject: Re: [PATCH v8 2/8] powerpc/vdso: Remove __kernel_datapage_offset and
- simplify __get_datapage()
-In-Reply-To: <CAJwJo6ZANqYkSHbQ+3b+Fi_VT80MtrzEV5yreQAWx-L8j8x2zA@mail.gmail.com>
-References: <cover.1588079622.git.christophe.leroy@c-s.fr>
- <0d2201efe3c7727f2acc718aefd7c5bb22c66c57.1588079622.git.christophe.leroy@c-s.fr>
- <87wo34tbas.fsf@mpe.ellerman.id.au>
- <2f9b7d02-9e2f-4724-2608-c5573f6507a2@csgroup.eu>
- <6862421a-5a14-2e38-b825-e39e6ad3d51d@csgroup.eu>
- <87imd5h5kb.fsf@mpe.ellerman.id.au>
- <CAJwJo6ZANqYkSHbQ+3b+Fi_VT80MtrzEV5yreQAWx-L8j8x2zA@mail.gmail.com>
-Date: Fri, 28 Aug 2020 12:14:28 +1000
-Message-ID: <87a6yf34aj.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bd3R3395WzDqcG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 12:27:42 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id d19so4715138pgl.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 19:27:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=QBB3ViJXjeVXr6xq5TDymDlWz187wLf2Wups+OkpPIc=;
+ b=L47wGV683+Zbw5/tOWGXiRX+YUj65SwjrwwTDVeYk2bKc50/eBgNkHvuee681PmARA
+ U74JEtCnYdCNB9A8hIVCA/ggO9Tqbu2EiatiU7Ci+xTJHaHyQQ7rbrMhkhvsWy6fskdo
+ bVu3jr0hElJ6hKDig/XMOkWnvhSoFGbdVn12l0dKAAc/K8Zx9LwSdv6yNPuC31tsguZt
+ a1/AZUd8MuoIYOJq+eUo7rYgAfVaoogeTY3+/CcKqK37qCixQsmMYI/4h/d3fY9x4jmp
+ qLJJsLN6AkvjV98jydDxdrt/0KAzXgJsJnEArjZ6NBAs0B0QskwhAbpsWmdxdr5vVA7R
+ C5bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=QBB3ViJXjeVXr6xq5TDymDlWz187wLf2Wups+OkpPIc=;
+ b=npo4pwGpbr/Cj/nlObSELi8ZZQkbAsIh+HrVYIn0FhZ/A4SKuQ5J1VtsnffiRr6hCw
+ c4IXUJGWPY3EcRhifTeuOR2z3BX+jT0zVrlso5rWMiRTbXTCaaaY+gcUPcGuHwF+yfBJ
+ wKDWKq5xl/9t3GMx1mmFnuKUDUmQB1AZS/yck/q1uI5Yfyw79aBiYnPVrIQaYJKu6WgZ
+ lwjvTow88s5rS/L9iiMtwNc9p8e74erkLna9c/fnCvpq9MFz3jE7jW0B/gwYUenfy414
+ C76jZXZzTe5tw+iwDTFVOttwNk3hZBEg0D6XWzEPjD6C1zamoFbpQDEUe3DeejwazF5V
+ 7KCQ==
+X-Gm-Message-State: AOAM532QRhJwExg3PqcMmTygi0MpJg58Dibt4zJG/jCY8tWXSV3G0xc9
+ EP0sBNdFR+jDMgighxPHcBm99oCkBXs6CQ==
+X-Google-Smtp-Source: ABdhPJwaXkAK8Z/64XVgRBW9dtVJOvjap4lEv34JrOpwXxkeCF0BNKzAAlAQ/H5IYN5Y4r5hhnp/PA==
+X-Received: by 2002:a17:902:d215:: with SMTP id
+ t21mr8724047ply.116.1598581659991; 
+ Thu, 27 Aug 2020 19:27:39 -0700 (PDT)
+Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
+ [124.171.83.152])
+ by smtp.gmail.com with ESMTPSA id q10sm4084826pfs.75.2020.08.27.19.27.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Aug 2020 19:27:39 -0700 (PDT)
+Subject: Re: [PATCH v1 01/10] powerpc/pseries/iommu: Replace hard-coded page
+ shift
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, Joel Stanley <joel@jms.id.au>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
+ <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
+ Murilo Fossa Vicentini <muvic@linux.ibm.com>,
+ David Dai <zdai@linux.vnet.ibm.com>
+References: <20200817234033.442511-1-leobras.c@gmail.com>
+ <20200817234033.442511-2-leobras.c@gmail.com>
+ <6232948f-033d-8322-e656-544f12c5f784@ozlabs.ru>
+ <31e913d842693b6e107cb2b8e51fd45118b1bd2c.camel@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <1e77a3d9-dff9-f58b-45be-77be7cbea41a@ozlabs.ru>
+Date: Fri, 28 Aug 2020 12:27:33 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <31e913d842693b6e107cb2b8e51fd45118b1bd2c.camel@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,93 +170,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, linux-arch <linux-arch@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, open list <linux-kernel@vger.kernel.org>,
- Will Deacon <will@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dmitry Safonov <0x7f454c46@gmail.com> writes:
-> Hello,
->
-> On Wed, 26 Aug 2020 at 15:39, Michael Ellerman <mpe@ellerman.id.au> wrote:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> [..]
->> > arch_remap() gets replaced by vdso_remap()
->> >
->> > For arch_unmap(), I'm wondering how/what other architectures do, because
->> > powerpc seems to be the only one to erase the vdso context pointer when
->> > unmapping the vdso.
->>
->> Yeah. The original unmap/remap stuff was added for CRIU, which I thought
->> people tested on other architectures (more than powerpc even).
->>
->> Possibly no one really cares about vdso unmap though, vs just moving the
->> vdso.
->>
->> We added a test for vdso unmap recently because it happened to trigger a
->> KAUP failure, and someone actually hit it & reported it.
->
-> You right, CRIU cares much more about moving vDSO.
-> It's done for each restoree and as on most setups vDSO is premapped and
-> used by the application - it's actively tested.
-> Speaking about vDSO unmap - that's concerning only for heterogeneous C/R,
-> i.e when an application is migrated from a system that uses vDSO to the one
-> which doesn't - it's much rare scenario.
-> (for arm it's !CONFIG_VDSO, for x86 it's `vdso=0` boot parameter)
 
-Ah OK that explains it.
 
-The case we hit of VDSO unmapping was some strange "library OS" thing
-which had explicitly unmapped the VDSO, so also very rare.
-
-> Looking at the code, it seems quite easy to provide/maintain .close() for
-> vm_special_mapping. A bit harder to add a test from CRIU side
-> (as glibc won't know on restore that it can't use vdso anymore),
-> but totally not impossible.
->
->> Running that test on arm64 segfaults:
+On 28/08/2020 01:32, Leonardo Bras wrote:
+> Hello Alexey, thank you for this feedback!
+> 
+> On Sat, 2020-08-22 at 19:33 +1000, Alexey Kardashevskiy wrote:
+>>> +#define TCE_RPN_BITS		52		/* Bits 0-51 represent RPN on TCE */
 >>
->>   # ./sigreturn_vdso
->>   VDSO is at 0xffff8191f000-0xffff8191ffff (4096 bytes)
->>   Signal delivered OK with VDSO mapped
->>   VDSO moved to 0xffff8191a000-0xffff8191afff (4096 bytes)
->>   Signal delivered OK with VDSO moved
->>   Unmapped VDSO
->>   Remapped the stack executable
->>   [   48.556191] potentially unexpected fatal signal 11.
->>   [   48.556752] CPU: 0 PID: 140 Comm: sigreturn_vdso Not tainted 5.9.0-rc2-00057-g2ac69819ba9e #190
->>   [   48.556990] Hardware name: linux,dummy-virt (DT)
->>   [   48.557336] pstate: 60001000 (nZCv daif -PAN -UAO BTYPE=--)
->>   [   48.557475] pc : 0000ffff8191a7bc
->>   [   48.557603] lr : 0000ffff8191a7bc
->>   [   48.557697] sp : 0000ffffc13c9e90
->>   [   48.557873] x29: 0000ffffc13cb0e0 x28: 0000000000000000
->>   [   48.558201] x27: 0000000000000000 x26: 0000000000000000
->>   [   48.558337] x25: 0000000000000000 x24: 0000000000000000
->>   [   48.558754] x23: 0000000000000000 x22: 0000000000000000
->>   [   48.558893] x21: 00000000004009b0 x20: 0000000000000000
->>   [   48.559046] x19: 0000000000400ff0 x18: 0000000000000000
->>   [   48.559180] x17: 0000ffff817da300 x16: 0000000000412010
->>   [   48.559312] x15: 0000000000000000 x14: 000000000000001c
->>   [   48.559443] x13: 656c626174756365 x12: 7865206b63617473
->>   [   48.559625] x11: 0000000000000003 x10: 0101010101010101
->>   [   48.559828] x9 : 0000ffff818afda8 x8 : 0000000000000081
->>   [   48.559973] x7 : 6174732065687420 x6 : 64657070616d6552
->>   [   48.560115] x5 : 000000000e0388bd x4 : 000000000040135d
->>   [   48.560270] x3 : 0000000000000000 x2 : 0000000000000001
->>   [   48.560412] x1 : 0000000000000003 x0 : 00000000004120b8
->>   Segmentation fault
->>   #
+>> Ditch this one and use MAX_PHYSMEM_BITS instead? I am pretty sure this
+>> is the actual limit.
+> 
+> I understand this MAX_PHYSMEM_BITS(51) comes from the maximum physical memory addressable in the machine. IIUC, it means we can access physical address up to (1ul << MAX_PHYSMEM_BITS). 
+> 
+> This 52 comes from PAPR "Table 9. TCE Definition" which defines bits
+> 0-51 as the RPN. By looking at code, I understand that it means we may input any address < (1ul << 52) to TCE.
+> 
+> In practice, MAX_PHYSMEM_BITS should be enough as of today, because I suppose we can't ever pass a physical page address over 
+> (1ul << 51), and TCE accepts up to (1ul << 52).
+> But if we ever increase MAX_PHYSMEM_BITS, it doesn't necessarily means that TCE_RPN_BITS will also be increased, so I think they are independent values. 
+> 
+> Does it make sense? Please let me know if I am missing something.
+
+The underlying hardware is PHB3/4 about which the IODA2 Version 2.4
+6Apr2012.pdf spec says:
+
+"The number of most significant RPN bits implemented in the TCE is
+dependent on the max size of System Memory to be supported by the platform".
+
+IODA3 is the same on this matter.
+
+This is MAX_PHYSMEM_BITS and PHB itself does not have any other limits
+on top of that. So the only real limit comes from MAX_PHYSMEM_BITS and
+where TCE_RPN_BITS comes from exactly - I have no idea.
+
+
+> 
 >>
->> So I think we need to keep the unmap hook. Maybe it should be handled by
->> the special_mapping stuff generically.
->
-> I'll cook a patch for vm_special_mapping if you don't mind :-)
+>>
+>>> +#define TCE_RPN_MASK(ps)	((1ul << (TCE_RPN_BITS - (ps))) - 1)
+>>>  #define TCE_VALID		0x800		/* TCE valid */
+>>>  #define TCE_ALLIO		0x400		/* TCE valid for all lpars */
+>>>  #define TCE_PCI_WRITE		0x2		/* write from PCI allowed */
+>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>>> index e4198700ed1a..8fe23b7dff3a 100644
+>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>> @@ -107,6 +107,9 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
+>>>  	u64 proto_tce;
+>>>  	__be64 *tcep;
+>>>  	u64 rpn;
+>>> +	const unsigned long tceshift = tbl->it_page_shift;
+>>> +	const unsigned long pagesize = IOMMU_PAGE_SIZE(tbl);
+>>> +	const u64 rpn_mask = TCE_RPN_MASK(tceshift);
+>>
+>> Using IOMMU_PAGE_SIZE macro for the page size and not using
+>> IOMMU_PAGE_MASK for the mask - this incosistency makes my small brain
+>> explode :) I understand the history but maaaaan... Oh well, ok.
+>>
+> 
+> Yeah, it feels kind of weird after two IOMMU related consts. :)
+> But sure IOMMU_PAGE_MASK() would not be useful here :)
+> 
+> And this kind of let me thinking:
+>>> +		rpn = __pa(uaddr) >> tceshift;
+>>> +		*tcep = cpu_to_be64(proto_tce | (rpn & rpn_mask) << tceshift);
+> Why not:
+> 	rpn_mask =  TCE_RPN_MASK(tceshift) << tceshift;
 
-That would be great, thanks!
 
-cheers
+A mask for a page number (but not the address!) hurts my brain, masks
+are good against addresses but numbers should already have all bits
+adjusted imho, may be it is just me :-/
+
+
+> 	
+> 	rpn = __pa(uaddr) & rpn_mask;
+> 	*tcep = cpu_to_be64(proto_tce | rpn)
+> 
+> I am usually afraid of changing stuff like this, but I think it's safe.
+> 
+>> Good, otherwise. Thanks,
+> 
+> Thank you for reviewing!
+>  
+> 
+> 
+
+-- 
+Alexey
