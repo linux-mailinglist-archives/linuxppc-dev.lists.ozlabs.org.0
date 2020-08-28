@@ -2,68 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FB22552B8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 03:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2052552E0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 04:00:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bd2ff4x3mzDqX7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 11:52:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bd2qC204TzDqPg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 12:00:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=rdyvKu3o; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20150623 header.b=NA4TtR1+; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bd2d83BRNzDqWq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 11:51:22 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id 31so4654657pgy.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 18:51:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bd2nV3HX1zDqVC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Aug 2020 11:58:37 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id mt12so3588150pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Aug 2020 18:58:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=2OnCbMPvcWuwoz19YUddW2n8/b9GyDqsB9KWF3KdZl8=;
- b=rdyvKu3oDaFwbPWuVc8QwXrVkPPVkHwGBbQJOm2fFwG5VZxZaHXysfuB2esKXFM9Yx
- KgPVBk4CwifTiliHxBxSTUk+pwjt7CgTqigstOnIz3jxzIrfoLRS4GiOit7rpdy0rcH2
- zbohpQSqaoWU74VR3arsqFf1ICZgAbPXQ9A2YipiCIcjh2fRuJkkeuHvxwmKsqT/QM7/
- S01KRRwdgeLSGpKbdiSHZOU0HOemegDoV3Npb4JNpphni5p5XJg7Ka0Z95qKgPZ2L3QC
- 3ElK5ErBVFd7DH+TZDbwqI4O1wE6EoLQR12muug8kKgSE7MccaYnTXK/8Q78s+FLILG1
- Nf9Q==
+ bh=FiWRhjp+xOfmupl0DASxFIwbbJaffgcWiwFfFsWe8HM=;
+ b=NA4TtR1+zjKrDJV6642JWprxP3m5bvl7DHvf0ls+clUJBaBCZdKHsF46/Fbh5OkPch
+ YADXO/Q6YIJH75U/dxrQaKiqJOqXh3zrMpjYKE4uBnOR9hnpdlv/3sSnlMYEpd2OJ54N
+ tHtXDwWUdgIRVnJRonzSSReeB4gaqoLCjRvzBdvsliOge+EfA7VLoVposJgjtProhS8d
+ rMaGFK5XmACV95/F0qK+pWHWF8PJK3yAi2jpAQk62FrpUxzu9JoHKfjO4slz1i0xUDGi
+ vGe4MoUnK3HShfHbYBgPx2RDyK5hn5OD54ETetRxj7bKECfXm+t37o5Abv2iGblzVxRy
+ F8QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=2OnCbMPvcWuwoz19YUddW2n8/b9GyDqsB9KWF3KdZl8=;
- b=AUb9Cp8zcFv3fYD+Lpz1Ixqrm+gk88P23FQ3MSNl+ZJYPgtZUc7x02xbmmo42VPddb
- Rg5Gibk4w/58u0v1TfsDaFfdqyG4953ABx1NOlfj+YoMHUDjWWdvLkdHEQQsH8OYtX2e
- j/3J7olsYBTtnRsUjZNk8KeO7W0TMAOg268hcP5pf69JB3wJiq3NMIb+rPkBaW7lbCKp
- oi1u3lKIQx13cw2cfqEjR+76wZAk0jHJENc+G8x2ZhEsTgUNUxu/rZxCUJp+O2BsK20l
- gB85hz5aVMcEyf9bpbLLMWzH6tSIoPPKKtKfmI7P++weZjeSKnhKO4YOyW6k/FSoC/bb
- tLow==
-X-Gm-Message-State: AOAM531fjQttQeSM3ZCMsh9F0IagPMuJD0uu5FDARRZ8CFWeFPzckLQk
- jzVZHCzgxQ74b7vtMM5JKPl8+LtT43j3aw==
-X-Google-Smtp-Source: ABdhPJzCILn963k1qbdkgClLEZXSwbQCyu06KDve+0i3g7Nh3uxRtZThkKRiyKszzItKHLWvpbyMkA==
-X-Received: by 2002:a05:6a00:1509:: with SMTP id
- q9mr18667555pfu.24.1598579479290; 
- Thu, 27 Aug 2020 18:51:19 -0700 (PDT)
+ bh=FiWRhjp+xOfmupl0DASxFIwbbJaffgcWiwFfFsWe8HM=;
+ b=cmDQ0uW8VcwoA6OOlufYNN/9H/xza5Nbde9DVErXv3EVprTPmU26JxhZYEOok00fdi
+ 7D9J0z24fHCB/yEHa3jqR4IP8n3uO82OVdIbE/6lXUg2P6uEWKVUnte7VmYjpbWfbQA7
+ Q2c3zBI0xAydTYBSsmcKl9q3XuWwIqv1MMiwZ7bVkkwyVTCvABim/rjEfRMXRMGpMVdx
+ gnUZurEQK4T8Nzm1IHyPWuPvPl+znzfv5Cq9cMy99vNYB51dsBxAosSP1VWk2RdiB/ep
+ P5dtHKYvF73L//VN2S++gheX0F2eZprefOiyWk/CbmP2r6PYU0lAw0KAmKp9bvlmL34V
+ A+Vw==
+X-Gm-Message-State: AOAM531D4J7zpRL2HcaYSbgVgR0WqR+yJ5EqBz61alm+GhrZrMPpV3AH
+ AWM2nl1R6pbqfG7ej3IyWPllUA==
+X-Google-Smtp-Source: ABdhPJwwzBL2Ga+ZfcTMI5k3FGZHxS+zmlyB38W25WmxlAfyTeiw4zKB0fXQtcvg17alM+TXvYBX8Q==
+X-Received: by 2002:a17:90b:509:: with SMTP id r9mr418871pjz.228.1598579914361; 
+ Thu, 27 Aug 2020 18:58:34 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id s198sm3607567pgc.4.2020.08.27.18.51.13
+ by smtp.gmail.com with ESMTPSA id z127sm3984777pfc.113.2020.08.27.18.58.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Aug 2020 18:51:18 -0700 (PDT)
-Subject: Re: [PATCH v1 04/10] powerpc/kernel/iommu: Add new
- iommu_table_in_use() helper
+ Thu, 27 Aug 2020 18:58:33 -0700 (PDT)
+Subject: Re: [PATCH v1 06/10] powerpc/pseries/iommu: Add ddw_list_add() helper
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Christophe Leroy
@@ -73,9 +71,9 @@ To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
 References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-5-leobras.c@gmail.com>
- <e7d0e85c-c4c4-ad1d-899a-72d4fbd92852@ozlabs.ru>
- <5f26d433abcde7cd3b4da705742e17ca6c0f0f0b.camel@gmail.com>
+ <20200817234033.442511-7-leobras.c@gmail.com>
+ <af4246bb-9357-098e-f167-8f30c6b893f2@ozlabs.ru>
+ <f80040bf941755469918fb75cf520590a4a5e3db.camel@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -150,12 +148,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <3b7bd273-6ae1-9e7d-a946-fd9380cd2ccc@ozlabs.ru>
-Date: Fri, 28 Aug 2020 11:51:11 +1000
+Message-ID: <54cfb977-6d30-47b8-b26b-f47efd10299f@ozlabs.ru>
+Date: Fri, 28 Aug 2020 11:58:27 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <5f26d433abcde7cd3b4da705742e17ca6c0f0f0b.camel@gmail.com>
+In-Reply-To: <f80040bf941755469918fb75cf520590a4a5e3db.camel@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -177,77 +175,105 @@ Sender: "Linuxppc-dev"
 
 
 
-On 28/08/2020 04:34, Leonardo Bras wrote:
-> On Sat, 2020-08-22 at 20:34 +1000, Alexey Kardashevskiy wrote:
->>> +
->>> +	/*ignore reserved bit0*/
+On 28/08/2020 08:11, Leonardo Bras wrote:
+> On Mon, 2020-08-24 at 13:46 +1000, Alexey Kardashevskiy wrote:
+>>>  static int find_existing_ddw_windows(void)
+>>>  {
+>>>  	int len;
+>>> @@ -887,18 +905,11 @@ static int find_existing_ddw_windows(void)
+>>>  		if (!direct64)
+>>>  			continue;
+>>>  
+>>> -		window = kzalloc(sizeof(*window), GFP_KERNEL);
+>>> -		if (!window || len < sizeof(struct dynamic_dma_window_prop)) {
+>>> +		window = ddw_list_add(pdn, direct64);
+>>> +		if (!window || len < sizeof(*direct64)) {
 >>
->> s/ignore reserved bit0/ ignore reserved bit0 /  (add spaces)
+>> Since you are touching this code, it looks like the "len <
+>> sizeof(*direct64)" part should go above to "if (!direct64)".
 > 
-> Fixed
-> 
->>> +	if (tbl->it_offset == 0)
->>> +		p1_start = 1;
->>> +
->>> +	/* Check if reserved memory is valid*/
->>
->> A missing space here.
-> 
-> Fixed
+> Sure, makes sense.
+> It will be fixed for v2.
 > 
 >>
->>> +	if (tbl->it_reserved_start >= tbl->it_offset &&
->>> +	    tbl->it_reserved_start <= (tbl->it_offset + tbl->it_size) &&
->>> +	    tbl->it_reserved_end   >= tbl->it_offset &&
->>> +	    tbl->it_reserved_end   <= (tbl->it_offset + tbl->it_size)) {
 >>
->> Uff. What if tbl->it_reserved_end is bigger than tbl->it_offset +
->> tbl->it_size?
 >>
->> The reserved area is to preserve MMIO32 so it is for it_offset==0 only
->> and the boundaries are checked in the only callsite, and it is unlikely
->> to change soon or ever.
+>>>  			kfree(window);
+>>>  			remove_ddw(pdn, true);
+>>> -			continue;
+>>>  		}
+>>> -
+>>> -		window->device = pdn;
+>>> -		window->prop = direct64;
+>>> -		spin_lock(&direct_window_list_lock);
+>>> -		list_add(&window->list, &direct_window_list);
+>>> -		spin_unlock(&direct_window_list_lock);
+>>>  	}
+>>>  
+>>>  	return 0;
+>>> @@ -1261,7 +1272,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
+>>>  		  create.liobn, dn);
+>>>  
+>>> -	window = kzalloc(sizeof(*window), GFP_KERNEL);
+>>> +	/* Add new window to existing DDW list */
 >>
->> Rather that bothering with fixing that, may be just add (did not test):
->>
->> if (WARN_ON((
->> (tbl->it_reserved_start || tbl->it_reserved_end) && (it_offset != 0))
->> (tbl->it_reserved_start > it_offset && tbl->it_reserved_end < it_offset
->> + it_size) && (it_offset == 0)) )
->>  return true;
->>
->> Or simply always look for it_offset..it_reserved_start and
->> it_reserved_end..it_offset+it_size and if there is no reserved area,
->> initialize it_reserved_start=it_reserved_end=it_offset so the first
->> it_offset..it_reserved_start becomes a no-op.
+>> The comment seems to duplicate what the ddw_list_add name already suggests.
 > 
-> The problem here is that the values of it_reserved_{start,end} are not
-> necessarily valid. I mean, on iommu_table_reserve_pages() the values
-> are stored however they are given (bit reserving is done only if they
-> are valid). 
+> Ok, I will remove it then.
 > 
-> Having a it_reserved_{start,end} value outside the valid ranges would
-> cause find_next_bit() to run over memory outside the bitmap.
-> Even if the those values are < tbl->it_offset, the resulting
-> subtraction on unsigned would cause it to become a big value and run
-> over memory outside the bitmap.
+>>> +	window = ddw_list_add(pdn, ddwprop);
+>>>  	if (!window)
+>>>  		goto out_clear_window;
+>>>  
+>>> @@ -1280,16 +1292,14 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  		goto out_free_window;
+>>>  	}
+>>>  
+>>> -	window->device = pdn;
+>>> -	window->prop = ddwprop;
+>>> -	spin_lock(&direct_window_list_lock);
+>>> -	list_add(&window->list, &direct_window_list);
+>>> -	spin_unlock(&direct_window_list_lock);
+>>
+>> I'd leave these 3 lines here and in find_existing_ddw_windows() (which
+>> would make  ddw_list_add -> ddw_prop_alloc). In general you want to have
+>> less stuff to do on the failure path. kmalloc may fail and needs kfree
+>> but you can safely delay list_add (which cannot fail) and avoid having
+>> the lock help twice in the same function (one of them is hidden inside
+>> ddw_list_add).
+>> Not sure if this change is really needed after all. Thanks,
 > 
-> But I think you are right. That is not the place to check if the
-> reserved values are valid. It should just trust them here.
-> I intent to change iommu_table_reserve_pages() to only store the
-> parameters in it_reserved_{start,end} if they are in the range, and or
-> it_offset in both of them if they are not.
-> 
-> What do you think?
+> I understand this leads to better performance in case anything fails.
+> Also, I think list_add happening in the end is less error-prone (in
+> case the list is checked between list_add and a fail).
 
-This should work, yes.
+Performance was not in my mind at all.
+
+I noticed you remove from a list with a lock help and it was not there
+before and there is a bunch on labels on the exit path and started
+looking for list_add() and if you do not double remove from the list.
+
+
+> But what if we put it at the end?
+> What is the chance of a kzalloc of 4 pointers (struct direct_window)
+> failing after walk_system_ram_range?
+
+This is not about chances really, it is about readability. If let's say
+kmalloc failed, you just to the error exit label and simply call kfree()
+on that pointer, kfree will do nothing if it is NULL already, simple.
+list_del() does not have this simplicity.
+
+
+> Is it not worthy doing that for making enable_ddw() easier to
+> understand?
+
+This is my goal here :)
 
 
 > 
-> Thanks for the feedback!
-> Leonardo Bras
-> 
-> 
+> Best regards,
+> Leonardo
 > 
 
 -- 
