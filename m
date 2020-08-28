@@ -1,52 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8182255F3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 18:56:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8BB255F66
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Aug 2020 19:08:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BdQjJ0yr9zDqsC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 02:56:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BdQyx60W2zDqPc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 03:08:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BdQgB2rvszDqnT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 02:54:27 +1000 (AEST)
-IronPort-SDR: QIQTjYf78zP36htmO0a5e4cA/WSIDKpsA62+MvAO0zHXqeRsdEQhshHYnGUSnTFJnc7l2jD08q
- OEXdbVJWnbtw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9727"; a="155962424"
-X-IronPort-AV: E=Sophos;i="5.76,364,1592895600"; d="scan'208";a="155962424"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2020 09:54:24 -0700
-IronPort-SDR: uepu/5YFFg77jaYq3Gb19NG02IeSSIK+neousXjMOEwxGpMdDVSPdW+q/6RCJktGeO7M+nXnla
- L1ruF+POBcsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,364,1592895600"; d="scan'208";a="403803537"
-Received: from lkp-server02.sh.intel.com (HELO 301dc1beeb51) ([10.239.97.151])
- by fmsmga001.fm.intel.com with ESMTP; 28 Aug 2020 09:54:23 -0700
-Received: from kbuild by 301dc1beeb51 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kBhdu-00006C-NS; Fri, 28 Aug 2020 16:54:22 +0000
-Date: Sat, 29 Aug 2020 00:54:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS WITH WARNING
- dd419a93bd9954cfdd333f8387a9a0d22218720d
-Message-ID: <5f4936aa.CVs0dC6iwZXk0WPy%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BdQwn2nYPzDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 03:06:17 +1000 (AEST)
+Received: from gaia (unknown [46.69.195.127])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 67CC620776;
+ Fri, 28 Aug 2020 17:06:11 +0000 (UTC)
+Date: Fri, 28 Aug 2020 18:06:08 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Will Deacon <will@kernel.org>
+Subject: Re: Flushing transparent hugepages
+Message-ID: <20200828170608.GJ3169@gaia>
+References: <20200818150736.GQ17456@casper.infradead.org>
+ <20200818160815.GA16191@willie-the-truck>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200818160815.GA16191@willie-the-truck>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,159 +47,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Vineet Gupta <vgupta@synopsys.com>, Russell King <linux@armlinux.org.uk>,
+ Matthew Wilcox <willy@infradead.org>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: dd419a93bd9954cfdd333f8387a9a0d22218720d  powerpc: Update documentation of ISA versions for Power10
+On Tue, Aug 18, 2020 at 05:08:16PM +0100, Will Deacon wrote:
+> On Tue, Aug 18, 2020 at 04:07:36PM +0100, Matthew Wilcox wrote:
+> > For example, arm64 seems confused in this scenario:
+> > 
+> > void flush_dcache_page(struct page *page)
+> > {
+> >         if (test_bit(PG_dcache_clean, &page->flags))
+> >                 clear_bit(PG_dcache_clean, &page->flags);
+> > }
+> > 
+> > ...
+> > 
+> > void __sync_icache_dcache(pte_t pte)
+> > {
+> >         struct page *page = pte_page(pte);
+> > 
+> >         if (!test_and_set_bit(PG_dcache_clean, &page->flags))
+> >                 sync_icache_aliases(page_address(page), page_size(page));
+> > }
+> > 
+> > So arm64 keeps track on a per-page basis which ones have been flushed.
+> > page_size() will return PAGE_SIZE if called on a tail page or regular
+> > page, but will return PAGE_SIZE << compound_order if called on a head
+> > page.  So this will either over-flush, or it's missing the opportunity
+> > to clear the bits on all the subpages which have now been flushed.
+> 
+> Hmm, that seems to go all the way back to 2014 as the result of a bug fix
+> in 923b8f5044da ("arm64: mm: Make icache synchronisation logic huge page
+> aware") which has a Reported-by Mark and a CC stable, suggesting something
+> _was_ going wrong at the time :/ Was there a point where the tail pages
+> could end up with PG_arch_1 uncleared on allocation?
 
-Warning in current branch:
+In my experience, it's the other way around: you can end up with
+PG_arch_1 cleared in a tail page when the head one was set (splitting
+THP).
 
-/usr/bin/powerpc64-linux-gnu-ld: warning: discarding dynamic section .rela.opd
+> > What would you _like_ to see?  Would you rather flush_dcache_page()
+> > were called once for each subpage, or would you rather maintain
+> > the page-needs-flushing state once per compound page?  We could also
+> > introduce flush_dcache_thp() if some architectures would prefer it one
+> > way and one the other, although that brings into question what to do
+> > for hugetlbfs pages.
+> 
+> For arm64, we'd like to see PG_arch_1 preserved during huge page splitting
+> [1], but there was a worry that it might break x86 and s390. It's also not
+> clear to me that we can change __sync_icache_dcache() as it's called when
+> we're installing the entry in the page-table, so why would it be called
+> again for the tail pages?
 
-Warning ids grouped by kconfigs:
+Indeed, __sync_icache_dcache() is called from set_pte_at() on the head
+page, though it could always iterate and flush the tail pages
+individually (I think we could have done this in commit 923b8f5044da).
+Currently I suspect it does some over-flushing if you use THP on
+executable pages (it's a no-op on non-exec pages).
 
-clang_recent_errors
-`-- powerpc64-randconfig-r025-20200827
-    `-- usr-bin-powerpc64-linux-gnu-ld:warning:discarding-dynamic-section-.rela.opd
+With MTE (arm64 memory tagging) I'm introducing a PG_arch_2 flag and
+losing this is more problematic as it can lead to clearing valid tags.
+In the subsequent patch [2], mte_sync_tags() (also called from
+set_pte_at()) checks the PG_arch_2 in each page of a compound one.
 
-elapsed time: 869m
+My preference would be to treat both PG_arch_1 and _2 similarly.
 
-configs tested: 129
-configs skipped: 12
+> [1] https://lore.kernel.org/linux-arch/20200703153718.16973-8-catalin.marinas@arm.com/
 
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-m68k                       m5208evb_defconfig
-m68k                        mvme147_defconfig
-openrisc                    or1ksim_defconfig
-arm                         cm_x300_defconfig
-arc                        nsim_700_defconfig
-sh                           se7206_defconfig
-s390                             alldefconfig
-mips                         rt305x_defconfig
-i386                             allyesconfig
-powerpc                     ep8248e_defconfig
-powerpc                     pseries_defconfig
-arm                        keystone_defconfig
-sh                           se7722_defconfig
-parisc                generic-64bit_defconfig
-mips                           rs90_defconfig
-m68k                       bvme6000_defconfig
-mips                        bcm47xx_defconfig
-c6x                        evmc6474_defconfig
-microblaze                    nommu_defconfig
-arm                            qcom_defconfig
-mips                  maltasmvp_eva_defconfig
-nios2                            allyesconfig
-powerpc                           allnoconfig
-powerpc                          alldefconfig
-arc                           tb10x_defconfig
-m68k                           sun3_defconfig
-sh                           se7721_defconfig
-sh                           se7780_defconfig
-arm                           efm32_defconfig
-powerpc                    adder875_defconfig
-arm                        mvebu_v7_defconfig
-arm                         lpc18xx_defconfig
-mips                        jmr3927_defconfig
-arm                          exynos_defconfig
-arm                          pxa910_defconfig
-arm                          lpd270_defconfig
-sh                           se7724_defconfig
-mips                         db1xxx_defconfig
-mips                        maltaup_defconfig
-arm                        realview_defconfig
-h8300                               defconfig
-mips                malta_kvm_guest_defconfig
-mips                  cavium_octeon_defconfig
-arc                             nps_defconfig
-arm                       spear13xx_defconfig
-s390                          debug_defconfig
-alpha                            alldefconfig
-arm                           sama5_defconfig
-arm                            mmp2_defconfig
-h8300                            allyesconfig
-mips                          rb532_defconfig
-sh                          lboxre2_defconfig
-s390                       zfcpdump_defconfig
-sh                             sh03_defconfig
-powerpc                    gamecube_defconfig
-sh                        sh7785lcr_defconfig
-arm                        oxnas_v6_defconfig
-arm                         bcm2835_defconfig
-mips                     loongson1b_defconfig
-mips                            ar7_defconfig
-arc                            hsdk_defconfig
-alpha                               defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a003-20200827
-x86_64               randconfig-a002-20200827
-x86_64               randconfig-a001-20200827
-x86_64               randconfig-a005-20200827
-x86_64               randconfig-a006-20200827
-x86_64               randconfig-a004-20200827
-i386                 randconfig-a002-20200828
-i386                 randconfig-a005-20200828
-i386                 randconfig-a003-20200828
-i386                 randconfig-a004-20200828
-i386                 randconfig-a001-20200828
-i386                 randconfig-a006-20200828
-x86_64               randconfig-a015-20200828
-x86_64               randconfig-a012-20200828
-x86_64               randconfig-a014-20200828
-x86_64               randconfig-a011-20200828
-x86_64               randconfig-a013-20200828
-x86_64               randconfig-a016-20200828
-i386                 randconfig-a013-20200828
-i386                 randconfig-a012-20200828
-i386                 randconfig-a011-20200828
-i386                 randconfig-a016-20200828
-i386                 randconfig-a014-20200828
-i386                 randconfig-a015-20200828
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+[2] https://lore.kernel.org/linux-arch/20200703153718.16973-9-catalin.marinas@arm.com/
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Catalin
