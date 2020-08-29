@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8B0256676
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 11:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A10D256677
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 11:29:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bdrht46xFzDqlp
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 19:27:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bdrkh3VgRzDqhK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 19:29:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,22 +18,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bdrd653ZszDqn4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 19:24:10 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bdrfl46wLzDqly
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 19:25:35 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id DDC8268C4E; Sat, 29 Aug 2020 11:24:06 +0200 (CEST)
-Date: Sat, 29 Aug 2020 11:24:06 +0200
+ id 217DA68C4E; Sat, 29 Aug 2020 11:25:32 +0200 (CEST)
+Date: Sat, 29 Aug 2020 11:25:31 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 05/10] lkdtm: disable set_fs-based tests for !CONFIG_SET_FS
-Message-ID: <20200829092406.GB8833@lst.de>
+Subject: Re: [PATCH 08/10] x86: remove address space overrides using set_fs()
+Message-ID: <20200829092531.GC8833@lst.de>
 References: <20200827150030.282762-1-hch@lst.de>
- <20200827150030.282762-6-hch@lst.de>
- <CAHk-=wipbWD66sU7etETXwDW5NRsU2vnbDpXXQ5i94hiTcawyw@mail.gmail.com>
+ <20200827150030.282762-9-hch@lst.de>
+ <CAHk-=wjxeN+KrCB2TyC5s2RWhz-dWWO8vbBwWcCiKb0+8ipayw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wipbWD66sU7etETXwDW5NRsU2vnbDpXXQ5i94hiTcawyw@mail.gmail.com>
+In-Reply-To: <CAHk-=wjxeN+KrCB2TyC5s2RWhz-dWWO8vbBwWcCiKb0+8ipayw@mail.gmail.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,18 +56,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 27, 2020 at 11:06:28AM -0700, Linus Torvalds wrote:
-> On Thu, Aug 27, 2020 at 8:00 AM Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > Once we can't manipulate the address limit, we also can't test what
-> > happens when the manipulation is abused.
+On Thu, Aug 27, 2020 at 11:15:12AM -0700, Linus Torvalds wrote:
+> >  SYM_FUNC_START(__put_user_2)
+> > -       ENTER
+> > -       mov TASK_addr_limit(%_ASM_BX),%_ASM_BX
+> > +       LOAD_TASK_SIZE_MAX
+> >         sub $1,%_ASM_BX
 > 
-> Just remove these tests entirely.
+> It's even more obvious here. We load a constant and then immediately
+> do a "sub $1" on that value.
 > 
-> Once set_fs() doesn't exist on x86, the tests no longer make any sense
-> what-so-ever, because test coverage will be basically zero.
-> 
-> So don't make the code uglier just to maintain a fiction that
-> something is tested when it isn't really.
+> It's not a huge deal, you don't have to respin the series for this, I
+> just wanted to point it out so that people are aware of it and if I
+> forget somebody else will hopefully remember that "we should fix that
+> too".
 
-Sure fine with me unless Kees screams.
+The changes seem easy enough and I need to respin at least for the
+lkdtm changes, and probaby also for a pending fix in the low-level
+x86 code that will hopefully be picked up for 5.9.
+
+But the more important questions is: how do we want to pick the series
+up?  Especially due to the splice changes I really want it to be in
+linux-next as long as possible.
