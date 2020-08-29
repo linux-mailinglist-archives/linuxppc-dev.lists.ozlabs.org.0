@@ -2,57 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890CC2568F1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 18:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B4C256970
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 19:32:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bf1R74K1gzDqkk
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 02:01:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bf3SB6BNGzDqlS
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 03:32:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::241;
+ helo=mail-lj1-x241.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=YhUjtZ6U; 
+ dkim-atps=neutral
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bf1Nf45pTzDqZ9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 01:58:55 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Bf1NS3lsKz9v7Dc;
- Sat, 29 Aug 2020 17:58:48 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id AZI3cKIA-s-O; Sat, 29 Aug 2020 17:58:48 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Bf1NS1r4Pz9v7Db;
- Sat, 29 Aug 2020 17:58:48 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EECD58B7B5;
- Sat, 29 Aug 2020 17:58:49 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qSw0-iSMqS91; Sat, 29 Aug 2020 17:58:49 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 29E728B767;
- Sat, 29 Aug 2020 17:58:49 +0200 (CEST)
-Subject: Re: [PATCH] fsldma: fsl_ioread64*() do not need lower_32_bits()
-To: Guenter Roeck <linux@roeck-us.net>,
- Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-References: <20200829150551.GA27225@roeck-us.net>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <dc4491f8-f74c-c3c4-82c4-3986c5352205@csgroup.eu>
-Date: Sat, 29 Aug 2020 17:58:24 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bf3Q70W6ZzDqdV
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 03:30:20 +1000 (AEST)
+Received: by mail-lj1-x241.google.com with SMTP id r13so2323008ljm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 10:30:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Tcoa+YjQiCXzGdpiXTdeu40vvjnErZlPnbw45C2h1Hg=;
+ b=YhUjtZ6UWDO6ICBxyUejNtYoojZ1/MzasHc6HRhV1QQG0ZTdq1nBIaLOW2DmRHE1RK
+ 8sokc72j0PovTAfxw6ZBkZRQnzWFlOSdsut22Y5F3m8DXx3aZaYvcaysiimrlXYjmvVQ
+ fx718s8yIazse/haX/97e3zZOvICf6iGBWCFE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Tcoa+YjQiCXzGdpiXTdeu40vvjnErZlPnbw45C2h1Hg=;
+ b=FH2Zj9ZOtYfhACDmrT5Aj/qCNtE7rgYhwHtfXML4g/VNb/Tc8r/DcaO4mzAWbUOlP/
+ uynUomFAoT5mY2uAsYxGfd0NGgcp6uEDIy7WzI2LDzkp7uosrFzQ3la16Jta/OnyT/OO
+ rx6CWLmxhCEWaM/bJMebGUNoFvJuEx62GgAPeYKao9WDB8SQgE+W/iu7YCe2sgiBtFzp
+ XYqZSAzTRXrWF42Ct92WfJcSZLC2+n1JWaOfvUUUtBCoUgi7nzcj1uhAI4R9PN64gDWP
+ gQ5S7fXdoXBPpzguJkqaPzMHCgmqKkdzOpCl0Z9W415ERRQiU8zGUCxfbsoqCXzxsNsh
+ qQdQ==
+X-Gm-Message-State: AOAM531YKDwR5EMpq9SqAsF+6SgXa2fjmSC1h4VVnrQD0/1moFkQnMom
+ yjyeMdeGw6QEGf75rlhLPD34stCF3oJzOA==
+X-Google-Smtp-Source: ABdhPJy3kxrGiQDUJz+fufRy1YESQP5xLqlcH7QkXJiHbpFyxnVQN+elQ2+L7ZqH0JNkDfge++ZYZg==
+X-Received: by 2002:a2e:b892:: with SMTP id r18mr1746569ljp.249.1598722214519; 
+ Sat, 29 Aug 2020 10:30:14 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com.
+ [209.85.167.43])
+ by smtp.gmail.com with ESMTPSA id j17sm743295lfr.32.2020.08.29.10.30.12
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 29 Aug 2020 10:30:12 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id k10so1344023lfm.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 10:30:12 -0700 (PDT)
+X-Received: by 2002:ac2:58db:: with SMTP id u27mr2019987lfo.142.1598722211766; 
+ Sat, 29 Aug 2020 10:30:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200829150551.GA27225@roeck-us.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20200829105116.GA246533@roeck-us.net>
+ <20200829124538.7475-1-luc.vanoostenryck@gmail.com>
+In-Reply-To: <20200829124538.7475-1-luc.vanoostenryck@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 29 Aug 2020 10:29:55 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whH0ApHy0evN0q6AwQ+-a5RK56oMkYkkCJtTMnaq4FrNQ@mail.gmail.com>
+Message-ID: <CAHk-=whH0ApHy0evN0q6AwQ+-a5RK56oMkYkkCJtTMnaq4FrNQ@mail.gmail.com>
+Subject: Re: [PATCH] fsldma: fsl_ioread64*() do not need lower_32_bits()
+To: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+Content-Type: multipart/mixed; boundary="0000000000008765a305ae078552"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,89 +85,101 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Herbert Xu <herbert@gondor.apana.org.au>,
  Joerg Roedel <joerg.roedel@amd.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>,
- Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Dan Williams <dan.j.williams@intel.com>
+ Vinod Koul <vkoul@kernel.org>, dma <dmaengine@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Dan Williams <dan.j.williams@intel.com>, Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+--0000000000008765a305ae078552
+Content-Type: text/plain; charset="UTF-8"
 
+On Sat, Aug 29, 2020 at 5:46 AM Luc Van Oostenryck
+<luc.vanoostenryck@gmail.com> wrote:
+>
+> But the pointer is already 32-bit, so simply cast the pointer to u32.
 
-Le 29/08/2020 à 17:05, Guenter Roeck a écrit :
-> On Sat, Aug 29, 2020 at 02:45:38PM +0200, Luc Van Oostenryck wrote:
->> For ppc32, the functions fsl_ioread64() & fsl_ioread64be()
->> use lower_32_bits() as a fancy way to cast the pointer to u32
->> in order to do non-atomic 64-bit IO.
->>
->> But the pointer is already 32-bit, so simply cast the pointer to u32.
->>
->> This fixes a compile error introduced by
->>     ef91bb196b0d ("kernel.h: Silence sparse warning in lower_32_bits")
->>
->> Fixes: ef91bb196b0db1013ef8705367bc2d7944ef696b
-> 
-> checkpatch complains about this and prefers
-> 
-> Fixes: ef91bb196b0d ("kernel.h: Silence sparse warning in lower_32_bits")
+Yeah, that code was completely pointless. If the pointer had actually
+been 64-bit, the old code would have warned too.
 
-Checkpatch also complains about spacing:
+The odd thing is that the fsl_iowrite64() functions make sense. It's
+only the fsl_ioread64() functions that seem to be written by somebody
+who is really confused.
 
-CHECK:SPACING: No space is necessary after a cast
-#39: FILE: drivers/dma/fsldma.h:208:
-+	u32 fsl_addr = (u32) addr;
+That said, this patch only humors the confusion. The cast to 'u32' is
+completely pointless. In fact, it seems to be actively wrong, because
+it means that the later "fsl_addr + 1" is done entirely incorrectly -
+it now literally adds "1" to an integer value, while the iowrite()
+functions will add one to a "u32 __iomem *" pointer (so will do
+pointer arithmetic, and add 4).
 
-CHECK:SPACING: No space is necessary after a cast
-#48: FILE: drivers/dma/fsldma.h:222:
-+	u32 fsl_addr = (u32) addr;
+So this code has never ever worked correctly to begin with, but the
+patches to fix the warning miss the point. The problem isn't the
+warning, the problem is that the code is broken and completely wrong
+to begin with.
 
-total: 0 errors, 0 warnings, 2 checks, 16 lines checked
+And the "lower_32_bits()" thing has always been pure and utter
+confusion and complete garbage.
 
-Christophe
+I *think* the right patch is the one attached, but since this code is
+clearly utterly broken, I'd want somebody to test it.
 
-> 
-> Otherwise
-> 
-> Tested-by: Guenter Roeck <linux@roeck-us.net>
-> 
->> Reported-by: Guenter Roeck <linux@roeck-us.net>
->> Cc: Li Yang <leoyang.li@nxp.com>
->> Cc: Zhang Wei <zw@zh-kernel.org>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Vinod Koul <vkoul@kernel.org>
->> Cc: Herbert Xu <herbert@gondor.apana.org.au>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: dmaengine@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
->> ---
->>   drivers/dma/fsldma.h | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/dma/fsldma.h b/drivers/dma/fsldma.h
->> index 56f18ae99233..6f6fa7641fa2 100644
->> --- a/drivers/dma/fsldma.h
->> +++ b/drivers/dma/fsldma.h
->> @@ -205,7 +205,7 @@ struct fsldma_chan {
->>   #else
->>   static u64 fsl_ioread64(const u64 __iomem *addr)
->>   {
->> -	u32 fsl_addr = lower_32_bits(addr);
->> +	u32 fsl_addr = (u32) addr;
->>   	u64 fsl_addr_hi = (u64)in_le32((u32 *)(fsl_addr + 1)) << 32;
->>   
->>   	return fsl_addr_hi | in_le32((u32 *)fsl_addr);
->> @@ -219,7 +219,7 @@ static void fsl_iowrite64(u64 val, u64 __iomem *addr)
->>   
->>   static u64 fsl_ioread64be(const u64 __iomem *addr)
->>   {
->> -	u32 fsl_addr = lower_32_bits(addr);
->> +	u32 fsl_addr = (u32) addr;
->>   	u64 fsl_addr_hi = (u64)in_be32((u32 *)fsl_addr) << 32;
->>   
->>   	return fsl_addr_hi | in_be32((u32 *)(fsl_addr + 1));
->> -- 
->> 2.28.0
->>
+It has probably never ever worked on 32-bit powerpc, or did so purely
+by mistake (perhaps because nobody really cares - the only 64-bit use
+is this:
+
+    static dma_addr_t get_cdar(struct fsldma_chan *chan)
+    {
+        return FSL_DMA_IN(chan, &chan->regs->cdar, 64) & ~FSL_DMA_SNEN;
+    }
+
+and there are two users of that: one which ignores the return value,
+and one that looks like it might end up half-way working even if the
+value read was garbage (it's used only to compare against a "current
+descriptor" value).
+
+Anyway, the fix is definitely not to just shut up the warning. The
+warning is only a sign of utter confusion in that driver.
+
+Can somebody with the hardware test this on 32-bit ppc?
+
+And if not (judging by just how broken those functions are, maybe it
+never did work), can somebody with a ppc32 setup at least compile-test
+this patch and look at whether it makes sense, in ways the old code
+did not.
+
+                Linus
+
+--0000000000008765a305ae078552
+Content-Type: application/octet-stream; name=patch
+Content-Disposition: attachment; filename=patch
+Content-Transfer-Encoding: base64
+Content-ID: <f_kefxvfs30>
+X-Attachment-Id: f_kefxvfs30
+
+IGRyaXZlcnMvZG1hL2ZzbGRtYS5oIHwgMTIgKysrKysrLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwg
+NiBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZG1h
+L2ZzbGRtYS5oIGIvZHJpdmVycy9kbWEvZnNsZG1hLmgKaW5kZXggNTZmMThhZTk5MjMzLi5jNTc0
+ZDIyM2Q1MmUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvZG1hL2ZzbGRtYS5oCisrKyBiL2RyaXZlcnMv
+ZG1hL2ZzbGRtYS5oCkBAIC0yMDUsMTAgKzIwNSwxMCBAQCBzdHJ1Y3QgZnNsZG1hX2NoYW4gewog
+I2Vsc2UKIHN0YXRpYyB1NjQgZnNsX2lvcmVhZDY0KGNvbnN0IHU2NCBfX2lvbWVtICphZGRyKQog
+ewotCXUzMiBmc2xfYWRkciA9IGxvd2VyXzMyX2JpdHMoYWRkcik7Ci0JdTY0IGZzbF9hZGRyX2hp
+ID0gKHU2NClpbl9sZTMyKCh1MzIgKikoZnNsX2FkZHIgKyAxKSkgPDwgMzI7CisJdTMyIHZhbF9s
+byA9IGluX2xlMzIoKHUzMiBfX2lvbWVtICopYWRkcik7CisJdTMyIHZhbF9oaSA9IGluX2xlMzIo
+KHUzMiBfX2lvbWVtICopYWRkciArIDEpOwogCi0JcmV0dXJuIGZzbF9hZGRyX2hpIHwgaW5fbGUz
+MigodTMyICopZnNsX2FkZHIpOworCXJldHVybiAoKHU2NCl2YWxfaGkgPDwgMzIpICsgdmFsX2xv
+OwogfQogCiBzdGF0aWMgdm9pZCBmc2xfaW93cml0ZTY0KHU2NCB2YWwsIHU2NCBfX2lvbWVtICph
+ZGRyKQpAQCAtMjE5LDEwICsyMTksMTAgQEAgc3RhdGljIHZvaWQgZnNsX2lvd3JpdGU2NCh1NjQg
+dmFsLCB1NjQgX19pb21lbSAqYWRkcikKIAogc3RhdGljIHU2NCBmc2xfaW9yZWFkNjRiZShjb25z
+dCB1NjQgX19pb21lbSAqYWRkcikKIHsKLQl1MzIgZnNsX2FkZHIgPSBsb3dlcl8zMl9iaXRzKGFk
+ZHIpOwotCXU2NCBmc2xfYWRkcl9oaSA9ICh1NjQpaW5fYmUzMigodTMyICopZnNsX2FkZHIpIDw8
+IDMyOworCXUzMiB2YWxfaGkgPSBpbl9iZTMyKCh1MzIgX19pb21lbSAqKWFkZHIpOworCXUzMiB2
+YWxfbG8gPSBpbl9iZTMyKCh1MzIgX19pb21lbSAqKWFkZHIrMSk7CiAKLQlyZXR1cm4gZnNsX2Fk
+ZHJfaGkgfCBpbl9iZTMyKCh1MzIgKikoZnNsX2FkZHIgKyAxKSk7CisJcmV0dXJuICgodTY0KXZh
+bF9oaSA8PCAzMikgKyB2YWxfbG87CiB9CiAKIHN0YXRpYyB2b2lkIGZzbF9pb3dyaXRlNjRiZSh1
+NjQgdmFsLCB1NjQgX19pb21lbSAqYWRkcikK
+--0000000000008765a305ae078552--
