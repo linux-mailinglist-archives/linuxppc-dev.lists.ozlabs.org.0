@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EE2256673
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 11:25:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8B0256676
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 11:27:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bdrfw3FPPzDqlf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 19:25:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bdrht46xFzDqlp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Aug 2020 19:27:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bdrcr1GF7zDqfX
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 19:23:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bdrd653ZszDqn4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Aug 2020 19:24:10 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 2BE3968C4E; Sat, 29 Aug 2020 11:23:48 +0200 (CEST)
-Date: Sat, 29 Aug 2020 11:23:47 +0200
-From: 'Christoph Hellwig' <hch@lst.de>
-To: David Laight <David.Laight@ACULAB.COM>
-Subject: Re: [PATCH 01/10] fs: don't allow kernel reads and writes without
- iter ops
-Message-ID: <20200829092347.GA8833@lst.de>
+ id DDC8268C4E; Sat, 29 Aug 2020 11:24:06 +0200 (CEST)
+Date: Sat, 29 Aug 2020 11:24:06 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 05/10] lkdtm: disable set_fs-based tests for !CONFIG_SET_FS
+Message-ID: <20200829092406.GB8833@lst.de>
 References: <20200827150030.282762-1-hch@lst.de>
- <20200827150030.282762-2-hch@lst.de>
- <e5cb22d53c7c4ebea92443b8b6d86e88@AcuMS.aculab.com>
+ <20200827150030.282762-6-hch@lst.de>
+ <CAHk-=wipbWD66sU7etETXwDW5NRsU2vnbDpXXQ5i94hiTcawyw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e5cb22d53c7c4ebea92443b8b6d86e88@AcuMS.aculab.com>
+In-Reply-To: <CAHk-=wipbWD66sU7etETXwDW5NRsU2vnbDpXXQ5i94hiTcawyw@mail.gmail.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -47,24 +46,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- Kees Cook <keescook@chromium.org>, "x86@kernel.org" <x86@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  Al Viro <viro@zeniv.linux.org.uk>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- 'Christoph Hellwig' <hch@lst.de>
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 27, 2020 at 03:58:02PM +0000, David Laight wrote:
-> Is there a real justification for that?
-> For system calls supplying both methods makes sense to avoid
-> the extra code paths for a simple read/write.
+On Thu, Aug 27, 2020 at 11:06:28AM -0700, Linus Torvalds wrote:
+> On Thu, Aug 27, 2020 at 8:00 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > Once we can't manipulate the address limit, we also can't test what
+> > happens when the manipulation is abused.
+> 
+> Just remove these tests entirely.
+> 
+> Once set_fs() doesn't exist on x86, the tests no longer make any sense
+> what-so-ever, because test coverage will be basically zero.
+> 
+> So don't make the code uglier just to maintain a fiction that
+> something is tested when it isn't really.
 
-Al asked for it as two of our four in-tree instances do have weird
-semantics, and we can't change that any more.  And the other two
-don't make sense to be used with kernel_read and kernel_write (
-(/dev/null and /dev/zero).
+Sure fine with me unless Kees screams.
