@@ -1,75 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03039256D97
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 14:14:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11790256DA4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 14:29:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BfXLm0q3xzDqZ9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 22:14:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BfXhv40DFzDqYp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 22:29:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643;
- helo=mail-ej1-x643.google.com; envelope-from=luc.vanoostenryck@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UsFqJfCX; dkim-atps=neutral
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
- [IPv6:2a00:1450:4864:20::643])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BfXJP3zsczDqTD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 22:12:03 +1000 (AEST)
-Received: by mail-ej1-x643.google.com with SMTP id d26so4926851ejr.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 05:12:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=qshWuo/PMDUT2LJmbVBMnw6b8Zf9zlNuTmEls1ekJ0U=;
- b=UsFqJfCX0P9KcqTkG3XSmY1iuH1x9+PnaSu9U6Nvjs7U+EWRLwOvUb5HJ9uHPkx2uc
- mN5Pt5hsv1IXTgEzHKqU7hXwsatu87CTl/FxsIfWfmRxjxe4KatgxXytg4OC/G36GbUu
- GGSMDgk8/+OHRuAatveS9SjHVLWS1LAa7xwUo0MQN5t6Hc7rmAxtewtb8DkAawb8ek+x
- 2T/AvMyCvQ+NF79DFOBVCEkx+JEjTE7DXPZAGR8JS8zHjnUWptodtPW8I9TJIUg050io
- vpbUKkHBs6vTuRA7AxST1ivHK0GscrNxLNNBozlZ+LtOTn1ghlLYLqKerzDBHadHxFyY
- T4iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=qshWuo/PMDUT2LJmbVBMnw6b8Zf9zlNuTmEls1ekJ0U=;
- b=gjNlzERm6iUR7tEKsXa60Xnq7YZj/PFBT09MJE3ZYkCJi94ST0Ritg+rPVDiAxIjQ/
- OjMBom+XX+gh73MAzE2637TkJMt8xZe5B0fTjt1VFnjTpXvwTqRh8HczvfMb52AHIycd
- F6jrOqoXBKoFvdqdKAN2rgmPlD7aEJ/5ZfUf80tOGK9Zv553NHvQgMxMgydDr74/86IT
- nJUYVBEKgqLmRX8dvENlnhLme339/x4isJV2nln9XVFznivGKIihDuDl0uueVOeoj/57
- kBKajhXbUKxSlSJNYUszkfM7zuL1WGkOHtPETPp37rdYjm29naMQWw2/rUe34895F12C
- M8xg==
-X-Gm-Message-State: AOAM5300H3YNVUPwusBQ+5LaroDORJY/a/q+QW22TvTgzdRC0X0Fi+I9
- QT3lqSe6spRiAWOddcNTqDA=
-X-Google-Smtp-Source: ABdhPJxOJA5wZn5NrOfMFMOv1nhwV+b9MWXiMCq2DdY4+4H8iKGf7KEA59WSNTM7XyEIxhZtsuU0Qw==
-X-Received: by 2002:a17:906:d182:: with SMTP id
- c2mr7289675ejz.378.1598789517357; 
- Sun, 30 Aug 2020 05:11:57 -0700 (PDT)
-Received: from ltop.local ([2a02:a03f:a7fb:e200:64d5:3b87:7078:3025])
- by smtp.gmail.com with ESMTPSA id bn14sm5115767ejb.115.2020.08.30.05.11.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Aug 2020 05:11:56 -0700 (PDT)
-Date: Sun, 30 Aug 2020 14:11:54 +0200
-From: Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BfXfB2khvzDq7d
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 22:27:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=JIgXg6C7; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BfXf93h19z9sSP;
+ Sun, 30 Aug 2020 22:27:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1598790450;
+ bh=2MLIj4dW/5jOfVSMbtoRZCbtssdTQ2QkrOKiGG+EQmU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=JIgXg6C7KmIiic0G2rxmWJ50eqP3NCYv1uOQVZ0Pk6b7gP/yrYy5nfyCchZsJr2h5
+ OCUBn4z5xh7ywixHI5W0AET2GcO5/zyUP8CO+ss+GXDQjyrWfYQjHyTyrsrOmvhnWz
+ +klauMlKPt5J2yByk7F0ChQnN9BmTcxQ3k18t8WFa7HCNKPR6mwJg4vkE0YANKQOnd
+ 2mysd10zaxHGGiijvgD3TY4RiJbcnpthJxokEM53bE5qjIg3LrxI2ZB7qzx60TSbBX
+ qaSAqBCMGzywR6YncRH3hikGalTBfSPLSmq5wDk0JDuiN0RE3ObryEncr2KXYODjrS
+ YMG6CHAff4fsQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH] fsldma: fsl_ioread64*() do not need lower_32_bits()
-Message-ID: <20200830121154.zo54k5ywpdk2rw4m@ltop.local>
-References: <20200829105116.GA246533@roeck-us.net>
- <20200829124538.7475-1-luc.vanoostenryck@gmail.com>
- <CAHk-=whH0ApHy0evN0q6AwQ+-a5RK56oMkYkkCJtTMnaq4FrNQ@mail.gmail.com>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.9-4 tag
+Date: Sun, 30 Aug 2020 22:27:25 +1000
+Message-ID: <877dtg2uaa.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whH0ApHy0evN0q6AwQ+-a5RK56oMkYkkCJtTMnaq4FrNQ@mail.gmail.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,38 +55,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dma <dmaengine@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Guenter Roeck <linux@roeck-us.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: atrajeev@linux.vnet.ibm.com, shawn@anastas.io, b.zolnierkie@samsung.com,
+ aik@ozlabs.ru, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, psampat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 29, 2020 at 10:29:55AM -0700, Linus Torvalds wrote:
-> On Sat, Aug 29, 2020 at 5:46 AM Luc Van Oostenryck
-> <luc.vanoostenryck@gmail.com> wrote:
-> >
-> > But the pointer is already 32-bit, so simply cast the pointer to u32.
-> 
-> Yeah, that code was completely pointless. If the pointer had actually
-> been 64-bit, the old code would have warned too.
-> 
-> The odd thing is that the fsl_iowrite64() functions make sense. It's
-> only the fsl_ioread64() functions that seem to be written by somebody
-> who is really confused.
-> 
-> That said, this patch only humors the confusion. The cast to 'u32' is
-> completely pointless. In fact, it seems to be actively wrong, because
-> it means that the later "fsl_addr + 1" is done entirely incorrectly -
-> it now literally adds "1" to an integer value, while the iowrite()
-> functions will add one to a "u32 __iomem *" pointer (so will do
-> pointer arithmetic, and add 4).
-> 
-My bad. I had noticed the '+ 1' and so automatically assumed
-'OK, pointer arithmetic now' without noticing that the cast was
-done only after the addition. Grrr.
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-FWIW, the version you committed looks much better to me.
+Hi Linus,
 
--- Luc
+Please pull some more powerpc fixes for 5.9:
+
+The following changes since commit 64ef8f2c4791940d7f3945507b6a45c20d959260:
+
+  powerpc/perf/hv-24x7: Move cpumask file to top folder of hv-24x7 driver (2020-08-21 23:35:27 +1000)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.9-4
+
+for you to fetch changes up to 4a133eb351ccc275683ad49305d0b04dde903733:
+
+  powerpc/32s: Disable VMAP stack which CONFIG_ADB_PMU (2020-08-28 12:03:18 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.9 #4
+
+Revert our removal of PROT_SAO, at least one user expressed an interest in using
+it on Power9. Instead don't allow it to be used in guests unless enabled
+explicitly at compile time.
+
+A fix for a crash introduced by a recent change to FP handling.
+
+Revert a change to our idle code that left Power10 with no idle support.
+
+One minor fix for the new scv system call path to set PPR.
+
+Fix a crash in our "generic" PMU if branch stack events were enabled.
+
+A fix for the IMC PMU, to correctly identify host kernel samples.
+
+The ADB_PMU powermac code was found to be incompatible with VMAP_STACK, so make
+them incompatible in Kconfig until the code can be fixed.
+
+A build fix in drivers/video/fbdev/controlfb.c, and a documentation fix.
+
+Thanks to:
+  Alexey Kardashevskiy, Athira Rajeev, Christophe Leroy, Giuseppe Sacco,
+  Madhavan Srinivasan, Milton Miller, Nicholas Piggin, Pratik Rajesh Sampat,
+  Randy Dunlap, Shawn Anastasio, Vaidyanathan Srinivasan.
+
+- ------------------------------------------------------------------
+Alexey Kardashevskiy (1):
+      powerpc/perf: Fix crashes with generic_compat_pmu & BHRB
+
+Athira Rajeev (1):
+      powerpc/perf: Fix reading of MSR[HV/PR] bits in trace-imc
+
+Christophe Leroy (1):
+      powerpc/32s: Disable VMAP stack which CONFIG_ADB_PMU
+
+Michael Ellerman (2):
+      video: fbdev: controlfb: Fix build for COMPILE_TEST=y && PPC_PMAC=n
+      powerpc/64s: Fix crash in load_fp_state() due to fpexc_mode
+
+Nicholas Piggin (1):
+      powerpc/64s: scv entry should set PPR
+
+Pratik Rajesh Sampat (1):
+      Revert "powerpc/powernv/idle: Replace CPU feature check with PVR check"
+
+Randy Dunlap (1):
+      Documentation/powerpc: fix malformed table in syscall64-abi
+
+Shawn Anastasio (3):
+      Revert "powerpc/64s: Remove PROT_SAO support"
+      powerpc/64s: Disallow PROT_SAO in LPARs by default
+      selftests/powerpc: Update PROT_SAO test to skip ISA 3.1
+
+
+ Documentation/powerpc/syscall64-abi.rst       |  4 +-
+ arch/powerpc/Kconfig                          | 12 ++++++
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  8 ++--
+ arch/powerpc/include/asm/cputable.h           | 10 ++---
+ arch/powerpc/include/asm/mman.h               | 31 ++++++++++++--
+ arch/powerpc/include/asm/nohash/64/pgtable.h  |  2 +
+ arch/powerpc/include/uapi/asm/mman.h          |  2 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c             |  2 +-
+ arch/powerpc/kernel/entry_64.S                |  4 ++
+ arch/powerpc/kernel/process.c                 | 12 ++++--
+ arch/powerpc/mm/book3s64/hash_utils.c         |  2 +
+ arch/powerpc/perf/core-book3s.c               | 19 ++++++---
+ arch/powerpc/perf/imc-pmu.c                   |  4 +-
+ arch/powerpc/platforms/Kconfig.cputype        |  2 +-
+ arch/powerpc/platforms/powernv/idle.c         |  2 +-
+ drivers/video/fbdev/controlfb.c               |  2 +
+ include/linux/mm.h                            |  2 +
+ include/trace/events/mmflags.h                |  2 +
+ mm/ksm.c                                      |  4 ++
+ tools/testing/selftests/powerpc/mm/.gitignore |  1 +
+ tools/testing/selftests/powerpc/mm/Makefile   |  4 +-
+ tools/testing/selftests/powerpc/mm/prot_sao.c | 43 ++++++++++++++++++++
+ 22 files changed, 144 insertions(+), 30 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/mm/prot_sao.c
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl9LmmkACgkQUevqPMjh
+pYBw8w//RQpss9mLAe8NTVBF9bV6sMRWaTugjaRwQIIzbhu21eygaIcW9d4XFtXz
+xVB83HHRoD4ND+DH/7rOq6ZCIzusbfeqhm0uRBzkrlwVZuo4Y/ZuCvW+0Bo06qRp
+nkayAtpoI1wGoeWQcHUpHunZgwQTbWVNAo1yRo4cm8ux5wP88E1iEiZdNXcP/IPr
+V3p0BGYpCrwuNUKE54N3JPOHRP1UILBff1agjfhfctTTVY+tUB5katgMxYh8Euv+
+HVTm7U5QHnvkqhLSxdP76UP6R1DCN+E8GruXbDpR+ofJ5PLd1TgY5w3CLNjE88Pn
+fnM7GigG6xB3x/DunbVOD3RRGKKg6FFJIRvJ6YrSEWkf84IUKxsQ6Y0Noeb2bLs9
+04C5hN0d7GBi7JSjW0nZZvB3jZT0ptiAl3BggEhOshfaqyloogOHEk4pxyXG2/ja
+fkTFDdhEgNBO/iAjGCsXaUmaSa1OimpENKNZtosPL6dYbG/FFQ2UgKz+lUR7jsD8
+5uH8H1gKH1565JmRfckcplX2hkwPteVDQ2HzSQAD3KyjIMmvDPLCAynTlvxxxn/V
+wPeoXpeD1DDZA7RSiV+jaVtjK6rNcjbAUUOhlngigSiXCjBvfsA4lDhovQzivsOF
+E1TRnWSmCrTlV21+rtSZjbEdg/WLiBIHVu0DLGjcSw/XeaVa9g8=
+=3NM9
+-----END PGP SIGNATURE-----
