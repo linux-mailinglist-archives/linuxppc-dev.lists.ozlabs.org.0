@@ -2,80 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47022570A1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 23:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 225A92570C4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Aug 2020 23:42:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfm4c1sX9zDqCg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 07:02:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfmys6jKvzDqDm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 07:42:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::542;
+ helo=mail-ed1-x542.google.com; envelope-from=hkallweit1@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=e28trhzh; 
- dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=u71Dr6TY; dkim-atps=neutral
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
+ [IPv6:2a00:1450:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfm2Y5fswzDqR1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 07:00:53 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 1072A84487;
- Mon, 31 Aug 2020 09:00:50 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1598821250;
- bh=EJLjX89WdyvDHn+7R8EgEdBdf2Jw0A+9k5f1ib+1iE0=;
- h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=e28trhzhMurFnBLdOrtw7kt43zg6bwHPTRXnMG6fflcQy81CaWCEa628Ykg6LtwUK
- E9O/e9oz5+Icz1NjRQEtUc/GmOTEi1uyJdByO1/NDWnnneyo/+ec4noB0Op1X6ZEqY
- vwVDXqbeMBYwVQKceyObolzgQmbKliwb2x1gzhLDWKcp5Zm2RHN4ONS7uYc/87SOhw
- TsuLcYQW86Le6go6GypcLfY0O20q4LjDW/8qvbpFd+HGytS2Fuqp9O0PBs2IAWKh0F
- 8p3Hie/9Zc3T+7Ka4v5Ay3+Q4YDIFKLQQ47HBJlIKWrj2WmOM5nxdZ2NUJkhqe2qiA
- 7JoolEoOEs2Jg==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5f4c13820000>; Mon, 31 Aug 2020 09:00:50 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 31 Aug 2020 09:00:49 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Mon, 31 Aug 2020 09:00:49 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: Nicholas Piggin <npiggin@gmail.com>, "benh@kernel.crashing.org"
- <benh@kernel.crashing.org>, "broonie@kernel.org" <broonie@kernel.org>,
- "Heiner Kallweit" <hkallweit1@gmail.com>, "mpe@ellerman.id.au"
- <mpe@ellerman.id.au>, "paulus@samba.org" <paulus@samba.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BfmxG18jSzDqBm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 07:41:20 +1000 (AEST)
+Received: by mail-ed1-x542.google.com with SMTP id l63so3680908edl.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 14:41:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=flkqAUAGSpmzpt/BTyP/u7Uv4MTDnK9nGy4kWyS0QGo=;
+ b=u71Dr6TY0sD/uSIJYQEuGVHJCQGYmaY0GU+G58XVwH8WR64ZTGNn1UEmJbohP5d92q
+ u1PBtJK0dC8tuCvqztGjmwS/zYAL+p3ekXU0PkvQltj/tmyZP176jAyHONR0hNqtV2kq
+ 4SG0WjG6NLcxcggj6DPd9adsbtSkj6hxkYcBG1C5moP1LvPDQBRV773a8TZCdTBCAw+c
+ Gp2MVg5+4lvwPk9SCgCyju7FcgWi2zQLlTNz7ghIB9cg1ZSsy7nDejP6cEKCHRPRosug
+ QqJ9UVNrac+OBO4Cs1F/EqOoqqMPc7A8qLgzd4DR+TYh3UgdxkZeOmpKEG9Ttzlf0Py6
+ l/+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=flkqAUAGSpmzpt/BTyP/u7Uv4MTDnK9nGy4kWyS0QGo=;
+ b=KQtX58x/2I7ZTd+gNYcyjt9nLRbDvb48YtzNyulf5OZhJ95WKVSUiV9Z/IpCdv07Ns
+ QFuF53teioT1QFlUTCp4t4jKdY4hTa/AHs2HPnu5cU9mqictg4vXTKZbnkLT+zUs1tvT
+ ohzd3JQdLranyUW0sQ1frRUtWOERksSWJAmA5aqPsrki41fTWrwBSSTWHjsNETLQpLeO
+ /QltAlTMrzVJ+P8CcoS0b/k2PC0v43vwOicKwQS6RE7Wj3B2U9Y/7wpQEPUzs74ZMdZV
+ tT1sHXagro7Th5N9mLqaa5+I4/mq3wGPQI9/s0VQORzugs02BtQOzGVelniEyRbLlGws
+ x25g==
+X-Gm-Message-State: AOAM533FkRWyP76UhRNwh1VdxSMhS3u/lDYqv/NfBU2caZGZTsbW0Il3
+ zCpDCRHdoJlqLIx6APYRzAA=
+X-Google-Smtp-Source: ABdhPJz3o5Zk2bTMguju6wk5PKk2UphvYY9jIjAZMA4V/FqbZruJ7mdUtaopyePbbsOAmnHOuioFCQ==
+X-Received: by 2002:a50:f197:: with SMTP id x23mr5560626edl.367.1598823674095; 
+ Sun, 30 Aug 2020 14:41:14 -0700 (PDT)
+Received: from ?IPv6:2003:ea:8f23:5700:b849:b64c:7fd2:8e54?
+ (p200300ea8f235700b849b64c7fd28e54.dip0.t-ipconnect.de.
+ [2003:ea:8f23:5700:b849:b64c:7fd2:8e54])
+ by smtp.googlemail.com with ESMTPSA id n15sm5671590eja.26.2020.08.30.14.41.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 30 Aug 2020 14:41:13 -0700 (PDT)
 Subject: Re: fsl_espi errors on v5.7.15
-Thread-Topic: fsl_espi errors on v5.7.15
-Thread-Index: AQHWceVnik7XsBYbp0S+yHVGh1hdQak2WMaAgAQdSwCAAz9MAIAAfdcAgAD5u4CAB+sMAIAAYfwAgAA6JQCAAPtUgIAAOXyAgABIbACAAAjRgIABm7wAgAD5+gCABBXPAIAAjqOA
-Date: Sun, 30 Aug 2020 21:00:49 +0000
-Message-ID: <524a0f50-f954-f5a7-eccb-66eece59c7c4@alliedtelesis.co.nz>
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+ "broonie@kernel.org" <broonie@kernel.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "paulus@samba.org" <paulus@samba.org>
 References: <42107721-614b-96e8-68d9-4b888206562e@alliedtelesis.co.nz>
  <1020029e-4cb9-62ba-c6d6-e6b9bdf93aac@gmail.com>
  <1598510348.1g7wt0s02s.astroid@bobo.none>
  <0068446e-06f8-6648-2f40-56f324c1ee6e@alliedtelesis.co.nz>
  <1598788275.m90vz24p6x.astroid@bobo.none>
-In-Reply-To: <1598788275.m90vz24p6x.astroid@bobo.none>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <074623954D471445A42C0B113966A6EA@atlnz.lc>
-Content-Transfer-Encoding: base64
+ <524a0f50-f954-f5a7-eccb-66eece59c7c4@alliedtelesis.co.nz>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Message-ID: <5ca7ba48-ef9c-2b7c-67ff-88d0a2c9f380@gmail.com>
+Date: Sun, 30 Aug 2020 23:41:08 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
+In-Reply-To: <524a0f50-f954-f5a7-eccb-66eece59c7c4@alliedtelesis.co.nz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,79 +101,104 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQpPbiAzMS8wOC8yMCAxMjozMCBhbSwgTmljaG9sYXMgUGlnZ2luIHdyb3RlOg0KPiBFeGNlcnB0
-cyBmcm9tIENocmlzIFBhY2toYW0ncyBtZXNzYWdlIG9mIEF1Z3VzdCAyOCwgMjAyMCA4OjA3IGFt
-Og0KDQo8c25pcD4NCg0KPj4+Pj4+IEkndmUgYWxzbyBub3cgc2VlbiB0aGUgUlggRklGTyBub3Qg
-ZW1wdHkgZXJyb3Igb24gdGhlIFQyMDgwUkRCDQo+Pj4+Pj4NCj4+Pj4+PiBmc2xfZXNwaSBmZmUx
-MTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+Pj4+Pj4g
-ZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qg
-c2V0IQ0KPj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0IFNQ
-SUVfRE9OIGlzbid0IHNldCENCj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2Zl
-ciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAw
-LnNwaTogVHJhbnNmZXIgZG9uZSBidXQgcngvdHggZmlmbydzIGFyZW4ndCBlbXB0eSENCj4+Pj4+
-PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBTUElFX1JYQ05UID0gMSwgU1BJRV9UWENOVCA9IDMy
-DQo+Pj4+Pj4NCj4+Pj4+PiBXaXRoIG15IGN1cnJlbnQgd29ya2Fyb3VuZCBvZiBlbXB0eWluZyB0
-aGUgUlggRklGTy4gSXQgc2VlbXMNCj4+Pj4+PiBzdXJ2aXZhYmxlLiBJbnRlcmVzdGluZ2x5IGl0
-IG9ubHkgZXZlciBzZWVtcyB0byBiZSAxIGV4dHJhIGJ5dGUgaW4gdGhlDQo+Pj4+Pj4gUlggRklG
-TyBhbmQgaXQgc2VlbXMgdG8gYmUgYWZ0ZXIgZWl0aGVyIGEgUkVBRF9TUiBvciBhIFJFQURfRlNS
-Lg0KPj4+Pj4+DQo+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogdHggNzANCj4+Pj4+PiBm
-c2xfZXNwaSBmZmUxMTAwMDAuc3BpOiByeCAwMw0KPj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5z
-cGk6IEV4dHJhIFJYIDAwDQo+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIg
-ZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qgc2V0IQ0KPj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5z
-cGk6IFRyYW5zZmVyIGRvbmUgYnV0IHJ4L3R4IGZpZm8ncyBhcmVuJ3QgZW1wdHkhDQo+Pj4+Pj4g
-ZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogU1BJRV9SWENOVCA9IDEsIFNQSUVfVFhDTlQgPSAzMg0K
-Pj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IHR4IDA1DQo+Pj4+Pj4gZnNsX2VzcGkgZmZl
-MTEwMDAwLnNwaTogcnggMDANCj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBFeHRyYSBS
-WCAwMw0KPj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0IFNQ
-SUVfRE9OIGlzbid0IHNldCENCj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2Zl
-ciBkb25lIGJ1dCByeC90eCBmaWZvJ3MgYXJlbid0IGVtcHR5IQ0KPj4+Pj4+IGZzbF9lc3BpIGZm
-ZTExMDAwMC5zcGk6IFNQSUVfUlhDTlQgPSAxLCBTUElFX1RYQ05UID0gMzINCj4+Pj4+PiBmc2xf
-ZXNwaSBmZmUxMTAwMDAuc3BpOiB0eCAwNQ0KPj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6
-IHJ4IDAwDQo+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogRXh0cmEgUlggMDMNCj4+Pj4+
-Pg0KPj4+Pj4+ICAgRnJvbSBhbGwgdGhlIE1pY3JvbiBTUEktTk9SIGRhdGFzaGVldHMgSSd2ZSBn
-b3QgYWNjZXNzIHRvIGl0IGlzDQo+Pj4+Pj4gcG9zc2libGUgdG8gY29udGludWFsbHkgcmVhZCB0
-aGUgU1IvRlNSLiBCdXQgSSd2ZSBubyBpZGVhIHdoeSBpdA0KPj4+Pj4+IGhhcHBlbnMgc29tZSB0
-aW1lcyBhbmQgbm90IG90aGVycy4NCj4+Pj4+IFNvIEkgdGhpbmsgSSd2ZSBnb3QgYSByZXByb2R1
-Y3Rpb24gYW5kIEkgdGhpbmsgSSd2ZSBiaXNlY3RlZCB0aGUgcHJvYmxlbQ0KPj4+Pj4gdG8gY29t
-bWl0IDMyODJhM2RhMjViZCAoInBvd2VycGMvNjQ6IEltcGxlbWVudCBzb2Z0IGludGVycnVwdCBy
-ZXBsYXkgaW4NCj4+Pj4+IEMiKS4gTXkgZGF5IGlzIGp1c3QgZmluaXNoaW5nIG5vdyBzbyBJIGhh
-dmVuJ3QgYXBwbGllZCB0b28gbXVjaCBzY3J1dGlueQ0KPj4+Pj4gdG8gdGhpcyByZXN1bHQuIEdp
-dmVuIHRoZSB2YXJpb3VzIHJhYmJpdCBob2xlcyBJJ3ZlIGJlZW4gZG93biBvbiB0aGlzDQo+Pj4+
-PiBpc3N1ZSBhbHJlYWR5IEknZCB0YWtlIHRoaXMgaW5mb3JtYXRpb24gd2l0aCBhIGdvb2QgZGVn
-cmVlIG9mIHNrZXB0aWNpc20uDQo+Pj4+Pg0KPj4+PiBPSywgc28gYW4gZWFzeSB0ZXN0IHNob3Vs
-ZCBiZSB0byByZS10ZXN0IHdpdGggYSA1LjQga2VybmVsLg0KPj4+PiBJdCBkb2Vzbid0IGhhdmUg
-eWV0IHRoZSBjaGFuZ2UgeW91J3JlIHJlZmVycmluZyB0bywgYW5kIHRoZSBmc2wtZXNwaSBkcml2
-ZXINCj4+Pj4gaXMgYmFzaWNhbGx5IHRoZSBzYW1lIGFzIGluIDUuNyAoanVzdCB0d28gc21hbGwg
-Y2hhbmdlcyBpbiA1LjcpLg0KPj4+IFRoZXJlJ3MgNmNjMGMxNmQ4MmY4OCBhbmQgbWF5YmUgYWxz
-byBvdGhlciBpbnRlcnJ1cHQgcmVsYXRlZCBwYXRjaGVzDQo+Pj4gYXJvdW5kIHRoaXMgdGltZSB0
-aGF0IGNvdWxkIGFmZmVjdCBib29rIEUsIHNvIGl0J3MgZ29vZCBpZiB0aGF0IGV4YWN0DQo+Pj4g
-cGF0Y2ggaXMgY29uZmlybWVkLg0KPj4gTXkgY29uZmlybWF0aW9uIGlzIGJhc2ljYWxseSB0aGF0
-IEkgY2FuIGluZHVjZSB0aGUgaXNzdWUgaW4gYSA1LjQga2VybmVsDQo+PiBieSBjaGVycnktcGlj
-a2luZyAzMjgyYTNkYTI1YmQuIEknbSBhbHNvIGFibGUgdG8gImZpeCIgdGhlIGlzc3VlIGluDQo+
-PiA1LjktcmMyIGJ5IHJldmVydGluZyB0aGF0IG9uZSBjb21taXQuDQo+Pg0KPj4gSSBib3RoIGNh
-c2VzIGl0J3Mgbm90IGV4YWN0bHkgYSBjbGVhbiBjaGVycnktcGljay9yZXZlcnQgc28gSSBhbHNv
-DQo+PiBjb25maXJtZWQgdGhlIGJpc2VjdGlvbiByZXN1bHQgYnkgYnVpbGRpbmcgYXQgMzI4MmEz
-ZGEyNWJkICh3aGljaCBzZWVzDQo+PiB0aGUgaXNzdWUpIGFuZCB0aGUgY29tbWl0IGp1c3QgYmVm
-b3JlICh3aGljaCBkb2VzIG5vdCkuDQo+IFRoYW5rcyBmb3IgdGVzdGluZywgdGhhdCBjb25maXJt
-cyBpdCB3ZWxsLg0KPg0KPiBbc25pcCBwYXRjaF0NCj4NCj4+IEkgc3RpbGwgc2F3IHRoZSBpc3N1
-ZSB3aXRoIHRoaXMgY2hhbmdlIGFwcGxpZWQuIFBQQ19JUlFfU09GVF9NQVNLX0RFQlVHDQo+PiBk
-aWRuJ3QgcmVwb3J0IGFueXRoaW5nIChlaXRoZXIgd2l0aCBvciB3aXRob3V0IHRoZSBjaGFuZ2Ug
-YWJvdmUpLg0KPiBPa2F5LCBpdCB3YXMgYSBiaXQgb2YgYSBzaG90IGluIHRoZSBkYXJrLiBJIHN0
-aWxsIGNhbid0IHNlZSB3aGF0DQo+IGVsc2UgaGFzIGNoYW5nZWQuDQo+DQo+IFdoYXQgd291bGQg
-Y2F1c2UgdGhpcywgYSBsb3N0IGludGVycnVwdD8gQSBzcHVyaW91cyBpbnRlcnJ1cHQ/IE9yDQo+
-IGhpZ2hlciBpbnRlcnJ1cHQgbGF0ZW5jeT8NCj4NCj4gSSBkb24ndCB0aGluayB0aGUgcGF0Y2gg
-c2hvdWxkIGNhdXNlIHNpZ25pZmljYW50bHkgd29yc2UgbGF0ZW5jeSwNCj4gKGl0J3Mgc3VwcG9z
-ZWQgdG8gYmUgYSBiaXQgYmV0dGVyIGlmIGFueXRoaW5nIGJlY2F1c2UgaXQgZG9lc24ndCBzZXQN
-Cj4gdXAgdGhlIGZ1bGwgaW50ZXJydXB0IGZyYW1lKS4gQnV0IGl0J3MgcG9zc2libGUuDQoNCk15
-IHdvcmtpbmcgdGhlb3J5IGlzIHRoYXQgdGhlIFNQSV9ET04gaW5kaWNhdGlvbiBpcyBhbGwgYWJv
-dXQgdGhlIFRYIA0KZGlyZWN0aW9uIGFuIG5vdyB0aGF0IHRoZSBpbnRlcnJ1cHRzIGFyZSBmYXN0
-ZXIgd2UncmUgaGl0dGluZyBhbiBlcnJvciANCmJlY2F1c2UgdGhlcmUgaXMgc3RpbGwgUlggYWN0
-aXZpdHkgZ29pbmcgb24uIEhlaW5lciBkaXNhZ3JlZXMgd2l0aCBteSANCmludGVycHJldGF0aW9u
-IG9mIHRoZSBTUElfRE9OIGluZGljYXRpb24gYW5kIHRoZSBmYWN0IHRoYXQgaXQgZG9lc24ndCAN
-CmhhcHBlbiBldmVyeSB0aW1lIGRvZXMgdGhyb3cgZG91YnQgb24gaXQuDQoNCkkgY2FuJ3QgcmVh
-bGx5IGV4cGxhaW4gdGhlIGV4dHJhIFJYIGJ5dGUgaW4gdGhlIGZpZm8uIFdlIGtub3cgaG93IG1h
-bnkgDQpieXRlcyB0byBleHBlY3QgYW5kIHdlIHB1bGwgdGhhdCBtYW55IGZyb20gdGhlIGZpZm8g
-c28gaXQncyBub3QgYXMgaWYgDQp3ZSdyZSBtaXNzaW5nIGFuIGludGVycnVwdCBjYXVzaW5nIHVz
-IHRvIHNraXAgdGhlIGxhc3QgYnl0ZS4gSSd2ZSBiZWVuIA0KbG9va2luZyBmb3Igc29tZSBraW5k
-IG9mIG9mZi1ieS1vbmUgY2FsY3VsYXRpb24gYnV0IGFnYWluIGlmIGl0IHdlcmUgDQpzb21ldGhp
-bmcgbGlrZSB0aGF0IGl0J2QgaGFwcGVuIGFsbCB0aGUgdGltZS4NCg0K
+On 30.08.2020 23:00, Chris Packham wrote:
+> 
+> On 31/08/20 12:30 am, Nicholas Piggin wrote:
+>> Excerpts from Chris Packham's message of August 28, 2020 8:07 am:
+> 
+> <snip>
+> 
+>>>>>>> I've also now seen the RX FIFO not empty error on the T2080RDB
+>>>>>>>
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>>>>>
+>>>>>>> With my current workaround of emptying the RX FIFO. It seems
+>>>>>>> survivable. Interestingly it only ever seems to be 1 extra byte in the
+>>>>>>> RX FIFO and it seems to be after either a READ_SR or a READ_FSR.
+>>>>>>>
+>>>>>>> fsl_espi ffe110000.spi: tx 70
+>>>>>>> fsl_espi ffe110000.spi: rx 03
+>>>>>>> fsl_espi ffe110000.spi: Extra RX 00
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>>>>> fsl_espi ffe110000.spi: tx 05
+>>>>>>> fsl_espi ffe110000.spi: rx 00
+>>>>>>> fsl_espi ffe110000.spi: Extra RX 03
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
+>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
+>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT = 1, SPIE_TXCNT = 32
+>>>>>>> fsl_espi ffe110000.spi: tx 05
+>>>>>>> fsl_espi ffe110000.spi: rx 00
+>>>>>>> fsl_espi ffe110000.spi: Extra RX 03
+>>>>>>>
+>>>>>>>   From all the Micron SPI-NOR datasheets I've got access to it is
+>>>>>>> possible to continually read the SR/FSR. But I've no idea why it
+>>>>>>> happens some times and not others.
+>>>>>> So I think I've got a reproduction and I think I've bisected the problem
+>>>>>> to commit 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in
+>>>>>> C"). My day is just finishing now so I haven't applied too much scrutiny
+>>>>>> to this result. Given the various rabbit holes I've been down on this
+>>>>>> issue already I'd take this information with a good degree of skepticism.
+>>>>>>
+>>>>> OK, so an easy test should be to re-test with a 5.4 kernel.
+>>>>> It doesn't have yet the change you're referring to, and the fsl-espi driver
+>>>>> is basically the same as in 5.7 (just two small changes in 5.7).
+>>>> There's 6cc0c16d82f88 and maybe also other interrupt related patches
+>>>> around this time that could affect book E, so it's good if that exact
+>>>> patch is confirmed.
+>>> My confirmation is basically that I can induce the issue in a 5.4 kernel
+>>> by cherry-picking 3282a3da25bd. I'm also able to "fix" the issue in
+>>> 5.9-rc2 by reverting that one commit.
+>>>
+>>> I both cases it's not exactly a clean cherry-pick/revert so I also
+>>> confirmed the bisection result by building at 3282a3da25bd (which sees
+>>> the issue) and the commit just before (which does not).
+>> Thanks for testing, that confirms it well.
+>>
+>> [snip patch]
+>>
+>>> I still saw the issue with this change applied. PPC_IRQ_SOFT_MASK_DEBUG
+>>> didn't report anything (either with or without the change above).
+>> Okay, it was a bit of a shot in the dark. I still can't see what
+>> else has changed.
+>>
+>> What would cause this, a lost interrupt? A spurious interrupt? Or
+>> higher interrupt latency?
+>>
+>> I don't think the patch should cause significantly worse latency,
+>> (it's supposed to be a bit better if anything because it doesn't set
+>> up the full interrupt frame). But it's possible.
+> 
+> My working theory is that the SPI_DON indication is all about the TX 
+> direction an now that the interrupts are faster we're hitting an error 
+> because there is still RX activity going on. Heiner disagrees with my 
+> interpretation of the SPI_DON indication and the fact that it doesn't 
+> happen every time does throw doubt on it.
+> 
+It's right that the eSPI spec can be interpreted that SPI_DON refers to
+TX only. However this wouldn't really make sense, because also for RX
+we program the frame length, and therefore want to be notified once the
+full frame was received. Also practical experience shows that SPI_DON
+is set also after RX-only transfers.
+Typical SPI NOR use case is that you write read command + start address,
+followed by a longer read. If the TX-only interpretation would be right,
+we'd always end up with SPI_DON not being set.
+
+> I can't really explain the extra RX byte in the fifo. We know how many 
+> bytes to expect and we pull that many from the fifo so it's not as if 
+> we're missing an interrupt causing us to skip the last byte. I've been 
+> looking for some kind of off-by-one calculation but again if it were 
+> something like that it'd happen all the time.
+> 
+Maybe it helps to know what value this extra byte in the FIFO has. Is it:
+- a duplicate of the last read byte
+- or the next byte (at <end address> + 1)
+- or a fixed value, e.g. always 0x00 or 0xff
+
+
