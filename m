@@ -2,61 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B44258301
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 22:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB532258304
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 22:54:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BgMmW2P2XzDqJg
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 06:50:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BgMrK6Q8MzDqBM
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 06:54:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=QBwNrPdf; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=gR5PpDjG; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BgMVg0DWgzDqRx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 06:38:50 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id a8so3749175plm.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 13:38:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BgMVh6hhCzDqRq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 06:38:52 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id x18so2516387pll.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 13:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=UkH8Mq/WpiesfkXrapLTRLCROpdsRyoJty+98OOSpss=;
- b=QBwNrPdfcSAA97dtBnIWUfFN68G3dlx1D0NnviFoEsXwwJ685l3hFpoUYeYtJQzsk/
- fa7q/UtZxp6YwHBe+lUXHOQ1+GfSZzVh/DlB4nJjGv8Y+GG4bROeovNbk90Dcxd5OiaP
- gYkpuhwWCgw69+Fd2vWpUnQw4H4CpId8WgPawlAj3OSXL312ysfq8SYTiTBN4xm5ThPO
- F5+hNzC4yo3iGIb2RECwzNn7zXfvrk0NhPLH5HEpZ91StyGiVU6TKHdKBob3F9RMPnA2
- XmuYHqTMy4gsXlEfIEJipnHZkQI0n3KRv58zBJxo9DDi8lOQS6j3A/NxhJQ1wSezy3yl
- U1oQ==
+ bh=BI+WbPuZGThU4BWLVNvoFFhzj5+C2fzEktzsEUkpSP0=;
+ b=gR5PpDjGTc4mcdgzORFbKP4d1AiAwkVi/JzR7l/ib+cyHmQPGLbKfpUrikJPQaUIMo
+ LpTR0X8Jg9eVhAatfNdZaFdJ0zFkFEJUG+8v5BMLR6kkb9oHqRfftQgWkgA6qxf9quse
+ lROpA3J8t9mSvpbsMV9tU4LX7vcAEpkDa4s9wwoD4Qu++Vr5O5gPKrBlWuC/Ay0MdtgT
+ qKg5RmGywHyRO8j6OpZlVQR61HYu15Th9bxrkdryA6DNBYCTDlAWdwWcJsgnwk8T67AL
+ A7lXxZKuWxzGNAIA9+LsqrYFw9a8SZXlFzp3BzKuJNmh7Pec87dsL4CHM+5FO+8XcyTm
+ E31Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=UkH8Mq/WpiesfkXrapLTRLCROpdsRyoJty+98OOSpss=;
- b=g6h7sWsuaPgD6IznyePOz75sAF3cF46IJXFfL9oOfLhOlEi/j4Jb/HDMEBiJDX/1DU
- Rf4rNTO/eBdn1zwavHgovpg4RcIGUrRGzPb+VocbIcUAqYXMOi0zQDB33gm7vaSuQPVe
- +sd9pDnkzBDk4A3ftmAi5CoAkT36o5xxoU/IJc2bQQkrbSmJWwlZ2fd8gLrRX0NF90/l
- W/ubSX4AldgGkpPiuN4F3dhIqV/Rr04A4TP2HQmI/66EVbdEjf08O0AbMRQarIjnltwf
- LT9SOH4Lo/CtAdrD0BJ5pMwfVuWFEkmn1VzgqmxZi0aCSeTxjoWGQZEyK34XSXluay0Y
- VoTA==
-X-Gm-Message-State: AOAM533NMsBrlTMrWbp4R2/0NLG8CnWUxmjWXa+8wn0imAPxBbUBmDxQ
- 3e/Gq3rv9xytV6uKrsMWxlE=
-X-Google-Smtp-Source: ABdhPJyXoduzDrrOfdBPGH2aNf+3wAYQRVLuMBfbGQJgA2G8/prLtxMZHSUPNIUyBa+AP5hiPpK76w==
-X-Received: by 2002:a17:90a:5a01:: with SMTP id b1mr918526pjd.27.1598906328871; 
- Mon, 31 Aug 2020 13:38:48 -0700 (PDT)
+ bh=BI+WbPuZGThU4BWLVNvoFFhzj5+C2fzEktzsEUkpSP0=;
+ b=orNShelUQEmugLddtNrBDXWhPAGENVCWj+69DC1eItNwFDLIhICbyWhulqAG3zJWSf
+ wkhfYnZp1XO1vlbjgG3+7vsPbwKZM7HMyLGTxFLinTyTr63gFC3tUxRJ9EL0jX3O/StW
+ VNbNKbY84AE0h2KH2zXZ5/FB+MZLhVspCSIuA42EmQ/D2JSQQhX+ENJjarfre01K9Nal
+ Pg4OjtxkR8bnIPNpXPSrxTUaIOEimJyF/1TL1jZcfh74f9FdqX1WVEVqJ1+jjVOFAtM0
+ r1uNFePEhakROklpr++Vh2rIGivgR4kDI1kivMEjmpE/WdgQ3ss3sITOg6L3m3tfSOg/
+ hxcQ==
+X-Gm-Message-State: AOAM5310VMRTx5BpdokDqjiyAi4GjfB+4u5r/WYXDruf4HEvVr3lgszy
+ kjIWqPII0Rw+f6QVQS1Djhg=
+X-Google-Smtp-Source: ABdhPJzE+1okR4PaSl3NyWN+d7c4HMg48AFq3FjgXSuZ/VyANvpvu1Ta+4fFzAJJuzjZQxhFKBo9PQ==
+X-Received: by 2002:a17:90b:1b09:: with SMTP id
+ nu9mr937639pjb.214.1598906330259; 
+ Mon, 31 Aug 2020 13:38:50 -0700 (PDT)
 Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
  [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id a26sm116850pfn.93.2020.08.31.13.38.47
+ by smtp.gmail.com with ESMTPSA id a26sm116850pfn.93.2020.08.31.13.38.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Aug 2020 13:38:48 -0700 (PDT)
+ Mon, 31 Aug 2020 13:38:49 -0700 (PDT)
 From: Nicolin Chen <nicoleotsuka@gmail.com>
 To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
  rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
@@ -65,9 +66,9 @@ To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
  borntraeger@de.ibm.com, davem@davemloft.net, tglx@linutronix.de,
  mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
  James.Bottomley@HansenPartnership.com, deller@gmx.de
-Subject: [RESEND][PATCH 4/7] s390/pci_dma: Avoid overflow at boundary_size
-Date: Mon, 31 Aug 2020 13:38:08 -0700
-Message-Id: <20200831203811.8494-5-nicoleotsuka@gmail.com>
+Subject: [RESEND][PATCH 5/7] sparc: Avoid overflow at boundary_size
+Date: Mon, 31 Aug 2020 13:38:09 -0700
+Message-Id: <20200831203811.8494-6-nicoleotsuka@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200831203811.8494-1-nicoleotsuka@gmail.com>
 References: <20200831203811.8494-1-nicoleotsuka@gmail.com>
@@ -111,24 +112,62 @@ So fixing a potential overflow with the safer shortcut.
 Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
 Cc: Christoph Hellwig <hch@lst.de>
 ---
- arch/s390/pci/pci_dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sparc/kernel/iommu-common.c | 9 +++------
+ arch/sparc/kernel/iommu.c        | 4 ++--
+ arch/sparc/kernel/pci_sun4v.c    | 4 ++--
+ 3 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/arch/s390/pci/pci_dma.c b/arch/s390/pci/pci_dma.c
-index 64b1399a73f0..ecb067acc6d5 100644
---- a/arch/s390/pci/pci_dma.c
-+++ b/arch/s390/pci/pci_dma.c
-@@ -263,8 +263,8 @@ static unsigned long __dma_alloc_iommu(struct device *dev,
- 	struct zpci_dev *zdev = to_zpci(to_pci_dev(dev));
- 	unsigned long boundary_size;
+diff --git a/arch/sparc/kernel/iommu-common.c b/arch/sparc/kernel/iommu-common.c
+index 59cb16691322..843e71894d04 100644
+--- a/arch/sparc/kernel/iommu-common.c
++++ b/arch/sparc/kernel/iommu-common.c
+@@ -166,13 +166,10 @@ unsigned long iommu_tbl_range_alloc(struct device *dev,
+ 		}
+ 	}
  
--	boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
--			      PAGE_SIZE) >> PAGE_SHIFT;
+-	if (dev)
+-		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
+-				      1 << iommu->table_shift);
+-	else
+-		boundary_size = ALIGN(1ULL << 32, 1 << iommu->table_shift);
++	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+ 
+-	boundary_size = boundary_size >> iommu->table_shift;
 +	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-+	boundary_size = (dma_get_seg_boundary(dev) >> PAGE_SHIFT) + 1;
- 	return iommu_area_alloc(zdev->iommu_bitmap, zdev->iommu_pages,
- 				start, size, zdev->start_dma >> PAGE_SHIFT,
- 				boundary_size, 0);
++	boundary_size = (boundary_size >> iommu->table_shift) + 1;
+ 	/*
+ 	 * if the skip_span_boundary_check had been set during init, we set
+ 	 * things up so that iommu_is_span_boundary() merely checks if the
+diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
+index 4ae7388b1bff..d981c37305ae 100644
+--- a/arch/sparc/kernel/iommu.c
++++ b/arch/sparc/kernel/iommu.c
+@@ -472,8 +472,8 @@ static int dma_4u_map_sg(struct device *dev, struct scatterlist *sglist,
+ 	outs->dma_length = 0;
+ 
+ 	max_seg_size = dma_get_max_seg_size(dev);
+-	seg_boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
+-				  IO_PAGE_SIZE) >> IO_PAGE_SHIFT;
++	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
++	seg_boundary_size = (dma_get_seg_boundary(dev) >> IO_PAGE_SHIFT) + 1;
+ 	base_shift = iommu->tbl.table_map_base >> IO_PAGE_SHIFT;
+ 	for_each_sg(sglist, s, nelems, i) {
+ 		unsigned long paddr, npages, entry, out_entry = 0, slen;
+diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
+index 14b93c5564e3..233fe8a20cec 100644
+--- a/arch/sparc/kernel/pci_sun4v.c
++++ b/arch/sparc/kernel/pci_sun4v.c
+@@ -508,8 +508,8 @@ static int dma_4v_map_sg(struct device *dev, struct scatterlist *sglist,
+ 	iommu_batch_start(dev, prot, ~0UL);
+ 
+ 	max_seg_size = dma_get_max_seg_size(dev);
+-	seg_boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
+-				  IO_PAGE_SIZE) >> IO_PAGE_SHIFT;
++	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
++	seg_boundary_size = (dma_get_seg_boundary(dev) >> IO_PAGE_SHIFT) + 1;
+ 
+ 	mask = *dev->dma_mask;
+ 	if (!iommu_use_atu(iommu, mask))
 -- 
 2.17.1
 
