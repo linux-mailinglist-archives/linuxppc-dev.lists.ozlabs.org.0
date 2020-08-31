@@ -1,41 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8482573E4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 08:43:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3912574E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 10:00:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bg0yK06DyzDqSv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 16:43:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bg2gV5hGKzDqS4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 18:00:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bg0vg2lXNzDqSh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 16:40:47 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 245D868CF0; Mon, 31 Aug 2020 08:40:39 +0200 (CEST)
-Date: Mon, 31 Aug 2020 08:40:38 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH 5/5] powerpc: use the generic dma_ops_bypass mode
-Message-ID: <20200831064038.GB27617@lst.de>
-References: <20200708152449.316476-1-hch@lst.de>
- <20200708152449.316476-6-hch@lst.de>
- <505bcc1d-01a7-9655-88e1-ebddd0b94d56@kaod.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <505bcc1d-01a7-9655-88e1-ebddd0b94d56@kaod.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bg2dL3sk6zDqRw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 17:58:25 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Bg2d25dfrz9v46s;
+ Mon, 31 Aug 2020 09:58:14 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id ziN4ogZZ3b0q; Mon, 31 Aug 2020 09:58:14 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Bg2d24hCCz9v46r;
+ Mon, 31 Aug 2020 09:58:14 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AB3FD8B79B;
+ Mon, 31 Aug 2020 09:58:19 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 3qjn3q60cyjq; Mon, 31 Aug 2020 09:58:19 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.104])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E24C8B799;
+ Mon, 31 Aug 2020 09:58:19 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 4FCBE65D48; Mon, 31 Aug 2020 07:58:19 +0000 (UTC)
+Message-Id: <f0cb2a5477cd87d1eaadb128042e20aeb2bc2859.1598860677.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: Fix random segfault when freeing hugetlb range
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 31 Aug 2020 07:58:19 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,170 +59,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Daniel Borkmann <daniel@iogearbox.net>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@gmail.com>,
- Joerg Roedel <joro@8bytes.org>, Jesper Dangaard Brouer <brouer@redhat.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Oliver O'Halloran <oohall@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, aacraid@microsemi.com,
- Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 30, 2020 at 11:04:21AM +0200, Cédric Le Goater wrote:
-> Hello,
-> 
-> On 7/8/20 5:24 PM, Christoph Hellwig wrote:
-> > Use the DMA API bypass mechanism for direct window mappings.  This uses
-> > common code and speed up the direct mapping case by avoiding indirect
-> > calls just when not using dma ops at all.  It also fixes a problem where
-> > the sync_* methods were using the bypass check for DMA allocations, but
-> > those are part of the streaming ops.
-> > 
-> > Note that this patch loses the DMA_ATTR_WEAK_ORDERING override, which
-> > has never been well defined, as is only used by a few drivers, which
-> > IIRC never showed up in the typical Cell blade setups that are affected
-> > by the ordering workaround.
-> > 
-> > Fixes: efd176a04bef ("powerpc/pseries/dma: Allow SWIOTLB")
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > ---
-> >  arch/powerpc/Kconfig              |  1 +
-> >  arch/powerpc/include/asm/device.h |  5 --
-> >  arch/powerpc/kernel/dma-iommu.c   | 90 ++++---------------------------
-> >  3 files changed, 10 insertions(+), 86 deletions(-)
-> 
-> I am seeing corruptions on a couple of POWER9 systems (boston) when
-> stressed with IO. stress-ng gives some results but I have first seen
-> it when compiling the kernel in a guest and this is still the best way
-> to raise the issue.
-> 
-> These systems have of a SAS Adaptec controller :
-> 
->   0003:01:00.0 Serial Attached SCSI controller: Adaptec Series 8 12G SAS/PCIe 3 (rev 01)
-> 
-> When the failure occurs, the POWERPC EEH interrupt fires and dumps
-> lowlevel PHB4 registers among which :
-> 					  
->   [ 2179.251069490,3] PHB#0003[0:3]:           phbErrorStatus = 0000028000000000
->   [ 2179.251117476,3] PHB#0003[0:3]:      phbFirstErrorStatus = 0000020000000000
-> 
-> The bits raised identify a PPC 'TCE' error, which means it is related
-> to DMAs. See below for more details.
-> 
-> 
-> Reverting this patch "fixes" the issue but it is probably else where,
-> in some other layers or in the aacraid driver. How should I proceed 
-> to get more information ?
+The following random segfault is observed from time to time with
+map_hugetlb selftest:
 
-The aacraid DMA masks look like a mess.  Can you try the hack
-below and see it it helps?
+root@localhost:~# ./map_hugetlb 1 19
+524288 kB hugepages
+Mapping 1 Mbytes
+Segmentation fault
 
-diff --git a/drivers/scsi/aacraid/aachba.c b/drivers/scsi/aacraid/aachba.c
-index 769af4ca9ca97e..79c6b744dbb66c 100644
---- a/drivers/scsi/aacraid/aachba.c
-+++ b/drivers/scsi/aacraid/aachba.c
-@@ -2228,18 +2228,6 @@ int aac_get_adapter_info(struct aac_dev* dev)
- 		expose_physicals = 0;
- 	}
+[   31.219972] map_hugetlb[365]: segfault (11) at 117 nip 77974f8c lr 779a6834 code 1 in ld-2.23.so[77966000+21000]
+[   31.220192] map_hugetlb[365]: code: 9421ffc0 480318d1 93410028 90010044 9361002c 93810030 93a10034 93c10038
+[   31.220307] map_hugetlb[365]: code: 93e1003c 93210024 8123007c 81430038 <80e90004> 814a0004 7f443a14 813a0004
+[   31.221911] BUG: Bad rss-counter state mm:(ptrval) type:MM_FILEPAGES val:33
+[   31.229362] BUG: Bad rss-counter state mm:(ptrval) type:MM_ANONPAGES val:5
+
+This fault is due to hugetlb_free_pgd_range() freeing page tables
+that are also used by regular pages.
+
+As explain in the comment at the beginning of
+hugetlb_free_pgd_range(), the verification done in free_pgd_range()
+on floor and ceiling is not done here, which means
+hugetlb_free_pte_range() can free outside the expected range.
+
+As the verification cannot be done in hugetlb_free_pgd_range(), it
+must be done in hugetlb_free_pte_range().
+
+Fixes: b250c8c08c79 ("powerpc/8xx: Manage 512k huge pages as standard pages.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/mm/hugetlbpage.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+index 26292544630f..e7ae2a2c4545 100644
+--- a/arch/powerpc/mm/hugetlbpage.c
++++ b/arch/powerpc/mm/hugetlbpage.c
+@@ -330,10 +330,24 @@ static void free_hugepd_range(struct mmu_gather *tlb, hugepd_t *hpdp, int pdshif
+ 				 get_hugepd_cache_index(pdshift - shift));
+ }
  
--	if (dev->dac_support) {
--		if (!pci_set_dma_mask(dev->pdev, DMA_BIT_MASK(64))) {
--			if (!dev->in_reset)
--				dev_info(&dev->pdev->dev, "64 Bit DAC enabled\n");
--		} else if (!pci_set_dma_mask(dev->pdev, DMA_BIT_MASK(32))) {
--			dev_info(&dev->pdev->dev, "DMA mask set failed, 64 Bit DAC disabled\n");
--			dev->dac_support = 0;
--		} else {
--			dev_info(&dev->pdev->dev, "No suitable DMA available\n");
--			rcode = -ENOMEM;
--		}
--	}
- 	/*
- 	 * Deal with configuring for the individualized limits of each packet
- 	 * interface.
-diff --git a/drivers/scsi/aacraid/commsup.c b/drivers/scsi/aacraid/commsup.c
-index adbdc3b7c7a706..dbb23b351a4e7d 100644
---- a/drivers/scsi/aacraid/commsup.c
-+++ b/drivers/scsi/aacraid/commsup.c
-@@ -1479,7 +1479,6 @@ static int _aac_reset_adapter(struct aac_dev *aac, int forced, u8 reset_type)
- 	struct Scsi_Host *host = aac->scsi_host_ptr;
- 	int jafo = 0;
- 	int bled;
--	u64 dmamask;
- 	int num_of_fibs = 0;
+-static void hugetlb_free_pte_range(struct mmu_gather *tlb, pmd_t *pmd, unsigned long addr)
++static void hugetlb_free_pte_range(struct mmu_gather *tlb, pmd_t *pmd,
++				   unsigned long addr, unsigned long end,
++				   unsigned long floor, unsigned long ceiling)
+ {
++	unsigned long start = addr;
+ 	pgtable_t token = pmd_pgtable(*pmd);
  
- 	/*
-@@ -1558,22 +1557,7 @@ static int _aac_reset_adapter(struct aac_dev *aac, int forced, u8 reset_type)
- 	kfree(aac->fsa_dev);
- 	aac->fsa_dev = NULL;
++	start &= PMD_MASK;
++	if (start < floor)
++		return;
++	if (ceiling) {
++		ceiling &= PMD_MASK;
++		if (!ceiling)
++			return;
++	}
++	if (end - 1 > ceiling - 1)
++		return;
++
+ 	pmd_clear(pmd);
+ 	pte_free_tlb(tlb, token, addr);
+ 	mm_dec_nr_ptes(tlb->mm);
+@@ -363,7 +377,7 @@ static void hugetlb_free_pmd_range(struct mmu_gather *tlb, pud_t *pud,
+ 			 */
+ 			WARN_ON(!IS_ENABLED(CONFIG_PPC_8xx));
  
--	dmamask = DMA_BIT_MASK(32);
- 	quirks = aac_get_driver_ident(index)->quirks;
--	if (quirks & AAC_QUIRK_31BIT)
--		retval = pci_set_dma_mask(aac->pdev, dmamask);
--	else if (!(quirks & AAC_QUIRK_SRC))
--		retval = pci_set_dma_mask(aac->pdev, dmamask);
--	else
--		retval = pci_set_consistent_dma_mask(aac->pdev, dmamask);
--
--	if (quirks & AAC_QUIRK_31BIT && !retval) {
--		dmamask = DMA_BIT_MASK(31);
--		retval = pci_set_consistent_dma_mask(aac->pdev, dmamask);
--	}
--
--	if (retval)
--		goto out;
+-			hugetlb_free_pte_range(tlb, pmd, addr);
++			hugetlb_free_pte_range(tlb, pmd, addr, end, floor, ceiling);
  
- 	if ((retval = (*(aac_get_driver_ident(index)->init))(aac)))
- 		goto out;
-diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
-index 8588da0a065551..d897a9d59e24a1 100644
---- a/drivers/scsi/aacraid/linit.c
-+++ b/drivers/scsi/aacraid/linit.c
-@@ -1634,8 +1634,6 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	struct list_head *insert = &aac_devices;
- 	int error;
- 	int unique_id = 0;
--	u64 dmamask;
--	int mask_bits = 0;
- 	extern int aac_sync_mode;
- 
- 	/*
-@@ -1658,33 +1656,6 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (error)
- 		goto out;
- 
--	if (!(aac_drivers[index].quirks & AAC_QUIRK_SRC)) {
--		error = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
--		if (error) {
--			dev_err(&pdev->dev, "PCI 32 BIT dma mask set failed");
--			goto out_disable_pdev;
--		}
--	}
--
--	/*
--	 * If the quirk31 bit is set, the adapter needs adapter
--	 * to driver communication memory to be allocated below 2gig
--	 */
--	if (aac_drivers[index].quirks & AAC_QUIRK_31BIT) {
--		dmamask = DMA_BIT_MASK(31);
--		mask_bits = 31;
--	} else {
--		dmamask = DMA_BIT_MASK(32);
--		mask_bits = 32;
--	}
--
--	error = pci_set_consistent_dma_mask(pdev, dmamask);
--	if (error) {
--		dev_err(&pdev->dev, "PCI %d B consistent dma mask set failed\n"
--				, mask_bits);
--		goto out_disable_pdev;
--	}
--
- 	pci_set_master(pdev);
- 
- 	shost = scsi_host_alloc(&aac_driver_template, sizeof(struct aac_dev));
+ 			continue;
+ 		}
+-- 
+2.25.0
+
