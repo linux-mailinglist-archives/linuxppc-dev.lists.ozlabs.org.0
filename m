@@ -1,55 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D77257574
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 10:32:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7831D25760A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 11:09:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bg3NW1kYRzDqFw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 18:32:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bg4Bn54H4zDqRC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 19:09:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bg3Ld0q8DzDqQk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 18:30:48 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Bg3LS3VFFz9v478;
- Mon, 31 Aug 2020 10:30:40 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xUqf6y9tCXfm; Mon, 31 Aug 2020 10:30:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Bg3LS2Y5bz9v470;
- Mon, 31 Aug 2020 10:30:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4E2628B799;
- Mon, 31 Aug 2020 10:30:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PouFLmaQOdgA; Mon, 31 Aug 2020 10:30:45 +0200 (CEST)
-Received: from po17688vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 101108B7BB;
- Mon, 31 Aug 2020 10:30:45 +0200 (CEST)
-Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 83FC065D48; Mon, 31 Aug 2020 08:30:44 +0000 (UTC)
-Message-Id: <a518abc29266a708dfbccc8fce9ae6694fe4c2c6.1598862623.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <f6ea2483c2c389567b007945948f704d18cfaeea.1598862623.git.christophe.leroy@csgroup.eu>
-References: <f6ea2483c2c389567b007945948f704d18cfaeea.1598862623.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 2/2] powerpc/8xx: Support 16k hugepages with 4k pages
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 31 Aug 2020 08:30:44 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bg48l11KVzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 19:07:19 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 1560CB6A0;
+ Mon, 31 Aug 2020 09:07:51 +0000 (UTC)
+Date: Mon, 31 Aug 2020 11:07:15 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
+ Reimplement book3s idle code in C")
+Message-ID: <20200831090715.GB29521@kitsune.suse.cz>
+References: <20200830201145.GA29521@kitsune.suse.cz>
+ <1598835313.5688ngko4f.astroid@bobo.none>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1598835313.5688ngko4f.astroid@bobo.none>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,151 +49,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: ro@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The 8xx has 4 page sizes: 4k, 16k, 512k and 8M
+On Mon, Aug 31, 2020 at 11:14:18AM +1000, Nicholas Piggin wrote:
+> Excerpts from Michal Suchánek's message of August 31, 2020 6:11 am:
+> > Hello,
+> > 
+> > on POWER8 KVM hosts lock up since commit 10d91611f426 ("powerpc/64s:
+> > Reimplement book3s idle code in C").
+> > 
+> > The symptom is host locking up completely after some hours of KVM
+> > workload with messages like
+> > 
+> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
+> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
+> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> > 
+> > printed before the host locks up.
+> > 
+> > The machines run sandboxed builds which is a mixed workload resulting in
+> > IO/single core/mutiple core load over time and there are periods of no
+> > activity and no VMS runnig as well. The VMs are shortlived so VM
+> > setup/terdown is somewhat excercised as well.
+> > 
+> > POWER9 with the new guest entry fast path does not seem to be affected.
+> > 
+> > Reverted the patch and the followup idle fixes on top of 5.2.14 and
+> > re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Restore IAMR
+> > after idle") which gives same idle code as 5.1.16 and the kernel seems
+> > stable.
+> > 
+> > Config is attached.
+> > 
+> > I cannot easily revert this commit, especially if I want to use the same
+> > kernel on POWER8 and POWER9 - many of the POWER9 fixes are applicable
+> > only to the new idle code.
+> > 
+> > Any idea what can be the problem?
+> 
+> So hwthread_state is never getting back to to HWTHREAD_IN_IDLE on
+> those threads. I wonder what they are doing. POWER8 doesn't have a good
+> NMI IPI and I don't know if it supports pdbg dumping registers from the
+> BMC unfortunately. Do the messages always come in pairs of CPUs?
+> 
+> I'm not sure where to start with reproducing, I'll have to try. How many
+> vCPUs in the guests? Do you have several guests running at once?
 
-4k and 16k can be selected at build time as standard page sizes,
-and 512k and 8M are hugepages.
+The guests are spawned on demand - there are like 20-30 'slots'
+configured where a VM may be running or it may be idle with no VM
+spawned when there are no jobs available.
 
-When 4k standard pages are selected, 16k pages are not available.
+Thanks
 
-Allow 16k pages as hugepages when 4k pages are used.
-
-To allow that, implement arch_make_huge_pte() which receives
-the necessary arguments to allow setting the PTE in accordance
-with the page size:
-- 512 k pages must have _PAGE_HUGE and _PAGE_SPS. They are set
-by pte_mkhuge(). arch_make_huge_pte() does nothing.
-- 16 k pages must have only _PAGE_SPS. arch_make_huge_pte() clears
-_PAGE_HUGE.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h | 14 ++++++++++++++
- arch/powerpc/include/asm/nohash/32/pgtable.h     |  2 ++
- arch/powerpc/mm/hugetlbpage.c                    |  2 +-
- arch/powerpc/mm/nohash/tlb.c                     |  4 ----
- arch/powerpc/mm/ptdump/8xx.c                     |  5 +++++
- include/uapi/asm-generic/hugetlb_encode.h        |  1 +
- include/uapi/linux/mman.h                        |  1 +
- 7 files changed, 24 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-index e752a5807a59..39be9aea86db 100644
---- a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-@@ -65,4 +65,18 @@ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
- 	pte_update(mm, addr, ptep, clr, set, 1);
- }
- 
-+#ifdef CONFIG_PPC_4K_PAGES
-+static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
-+				       struct page *page, int writable)
-+{
-+	size_t size = huge_page_size(hstate_vma(vma));
-+
-+	if (size == SZ_16K)
-+		return __pte(pte_val(entry) & ~_PAGE_HUGE);
-+	else
-+		return entry;
-+}
-+#define arch_make_huge_pte arch_make_huge_pte
-+#endif
-+
- #endif /* _ASM_POWERPC_NOHASH_32_HUGETLB_8XX_H */
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index 80bbc21b87f0..ee2243ba96cf 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -235,6 +235,8 @@ static int number_of_cells_per_pte(pmd_t *pmd, pte_basic_t val, int huge)
- 		return PAGE_SIZE / SZ_4K;
- 	else if (hugepd_ok(*((hugepd_t *)pmd)))
- 		return 1;
-+	else if (IS_ENABLED(CONFIG_PPC_4K_PAGES) && !(val & _PAGE_HUGE))
-+		return SZ_16K / SZ_4K;
- 	else
- 		return SZ_512K / SZ_4K;
- }
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index e7ae2a2c4545..36c3800769fb 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -180,7 +180,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, unsigned long addr, unsigned long sz
- 	if (!hpdp)
- 		return NULL;
- 
--	if (IS_ENABLED(CONFIG_PPC_8xx) && sz == SZ_512K)
-+	if (IS_ENABLED(CONFIG_PPC_8xx) && pshift < PMD_SHIFT)
- 		return pte_alloc_map(mm, (pmd_t *)hpdp, addr);
- 
- 	BUG_ON(!hugepd_none(*hpdp) && !hugepd_ok(*hpdp));
-diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
-index 14514585db98..5872f69141d5 100644
---- a/arch/powerpc/mm/nohash/tlb.c
-+++ b/arch/powerpc/mm/nohash/tlb.c
-@@ -83,16 +83,12 @@ struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
- };
- #elif defined(CONFIG_PPC_8xx)
- struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
--	/* we only manage 4k and 16k pages as normal pages */
--#ifdef CONFIG_PPC_4K_PAGES
- 	[MMU_PAGE_4K] = {
- 		.shift	= 12,
- 	},
--#else
- 	[MMU_PAGE_16K] = {
- 		.shift	= 14,
- 	},
--#endif
- 	[MMU_PAGE_512K] = {
- 		.shift	= 19,
- 	},
-diff --git a/arch/powerpc/mm/ptdump/8xx.c b/arch/powerpc/mm/ptdump/8xx.c
-index 8a797dcbf475..86da2a669680 100644
---- a/arch/powerpc/mm/ptdump/8xx.c
-+++ b/arch/powerpc/mm/ptdump/8xx.c
-@@ -11,8 +11,13 @@
- 
- static const struct flag_info flag_array[] = {
- 	{
-+#ifdef CONFIG_PPC_16K_PAGES
- 		.mask	= _PAGE_HUGE,
- 		.val	= _PAGE_HUGE,
-+#else
-+		.mask	= _PAGE_SPS,
-+		.val	= _PAGE_SPS,
-+#endif
- 		.set	= "huge",
- 		.clear	= "    ",
- 	}, {
-diff --git a/include/uapi/asm-generic/hugetlb_encode.h b/include/uapi/asm-generic/hugetlb_encode.h
-index b0f8e87235bd..4f3d5aaa11f5 100644
---- a/include/uapi/asm-generic/hugetlb_encode.h
-+++ b/include/uapi/asm-generic/hugetlb_encode.h
-@@ -20,6 +20,7 @@
- #define HUGETLB_FLAG_ENCODE_SHIFT	26
- #define HUGETLB_FLAG_ENCODE_MASK	0x3f
- 
-+#define HUGETLB_FLAG_ENCODE_16KB	(14 << HUGETLB_FLAG_ENCODE_SHIFT)
- #define HUGETLB_FLAG_ENCODE_64KB	(16 << HUGETLB_FLAG_ENCODE_SHIFT)
- #define HUGETLB_FLAG_ENCODE_512KB	(19 << HUGETLB_FLAG_ENCODE_SHIFT)
- #define HUGETLB_FLAG_ENCODE_1MB		(20 << HUGETLB_FLAG_ENCODE_SHIFT)
-diff --git a/include/uapi/linux/mman.h b/include/uapi/linux/mman.h
-index 923cc162609c..f55bc680b5b0 100644
---- a/include/uapi/linux/mman.h
-+++ b/include/uapi/linux/mman.h
-@@ -27,6 +27,7 @@
- #define MAP_HUGE_SHIFT	HUGETLB_FLAG_ENCODE_SHIFT
- #define MAP_HUGE_MASK	HUGETLB_FLAG_ENCODE_MASK
- 
-+#define MAP_HUGE_16KB	HUGETLB_FLAG_ENCODE_16KB
- #define MAP_HUGE_64KB	HUGETLB_FLAG_ENCODE_64KB
- #define MAP_HUGE_512KB	HUGETLB_FLAG_ENCODE_512KB
- #define MAP_HUGE_1MB	HUGETLB_FLAG_ENCODE_1MB
--- 
-2.25.0
-
+Michal
