@@ -1,164 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819DA257152
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 02:52:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33978257170
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 03:16:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfs9R3Bh0zDqBv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 10:52:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfsj074HyzDqSx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 11:16:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Hc5BjyPG; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=NL/YyWVk; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfs7P4zZ8zDqRG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 10:50:25 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id ds1so2252348pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 17:50:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=T72j5wynVI1JVm5QYaekdyXfWhQKc9IY9oJ7ZdZfgrI=;
- b=Hc5BjyPGwhtnMrYBw+FUYMSy1sg0AoBxyUp0Tse+A7cXvELA8mA630/2240HRQt8Ez
- W+DN7Vm+88l5OOuHkg6GXor8IDJMY6v2viB9wTWYAgysZ4zU/C32V8UpigLJkzgJ5fiS
- +mxeGjyQO6G7q1hQYTC5/TdGg5WXafgj1Udn1Zu+2pFK+JyZFvvochhTOFny2KIV1mq/
- K6+2KaqRM/NPa+YERRSRwtfCSvghzDyYobJn3oY2fMVR5BsN1f7Ym4GBF6/YP957RB3Z
- jp4LDRXOCc/qdcnOoreONpwVd16Bl5d86vkB+OkkouqkslgY7Wk4oKbbdtk4UJWYK+sB
- MAIQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BfsgB2l0CzDqQq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 11:14:28 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id c15so2266688plq.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 18:14:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=iEkN5DrwXOJlxnjsZrjs16H1dRLrcYYPk+EaJagHbD0=;
+ b=NL/YyWVkzgGzpi9k3ZzyOGrSTo7tGrED5rkR8At1/MThdr/lciHSE4Bpp+oMwXBUVu
+ uCCct8p+AOg5xtazdO0O1g65hiqTPHZQWuHjZIcp1/rJbdcfAuxhwgiuzrDhmLag85k/
+ ug+cHpi3hZ23Nll2gQylwsVUB0EHbJh5i79JmbfNZpFXDGOel/USq4jCbrGXBsuMOcGm
+ oO8A2ULpaOpZ4txaD9fwYo1iWoD1VdPa57UZkuMLEh1tvQKBHANbBXZ8JwjFS8X3gmDM
+ vPBn1kPUiL9DqYM0dNftdfJHsMaqIA8zivb/PYNMKC/TyKsz0o0uabAlf7lV4kPtnlXr
+ XGBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=T72j5wynVI1JVm5QYaekdyXfWhQKc9IY9oJ7ZdZfgrI=;
- b=eWpaieKA3T/08TQIZMAN/SLT3GVfblVJeYP9jYB7PB6QXCtxgecxyw3hYIcfNJjle3
- 6EpD2iSbZ53MxNptaOfaBX2BjWT/WFCsY5EiXgv4kuBGToTl2afxOqTHybv+nl0cTpyZ
- GtC4svdR1UBrznsjZd7Si5AQaUn38bsLSfbvoSRUQnFmTYfdOSXi9LvVCs5WnKHppsUa
- q9rcsHcZYSkiQTk7Un7CuNeyvtsT4DzJ61sNqnF7/jbrMw/xJOoeQFTbmiTFspbiwJyY
- XVyLRKPrYE8UnEIwfBqeEnNLq+P8C+5yB0jIqiyE0k3PZk4J5zto0FS8dGM8lk7NaR4z
- tuyg==
-X-Gm-Message-State: AOAM531Qje26f/RZiD0BCZJkIuLMk+1kvqH2d/NkQBQXqQjv6wS8ROWk
- 9HgG83ykTqdqe/yW8KwHi1sXG0J7pvH2ag==
-X-Google-Smtp-Source: ABdhPJzXW3yHm0QPGiDAqOBvMiwye/arrSSA89MzkAmAkRNLT8WD8A8x9rFSnxLlHHbpj8qCqKoM7w==
-X-Received: by 2002:a17:90b:4ac7:: with SMTP id
- mh7mr7968021pjb.99.1598835023639; 
- Sun, 30 Aug 2020 17:50:23 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id v13sm5814819pfn.153.2020.08.30.17.50.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Aug 2020 17:50:22 -0700 (PDT)
-Subject: Re: [PATCH v1 07/10] powerpc/pseries/iommu: Allow DDW windows
- starting at 0x00
-To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Christophe Leroy
- <christophe.leroy@c-s.fr>, Joel Stanley <joel@jms.id.au>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
- <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
- Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- David Dai <zdai@linux.vnet.ibm.com>
-References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-8-leobras.c@gmail.com>
- <3fda1c2d-20f2-7789-e072-47fe966f0265@ozlabs.ru>
- <2d2b1a048faf75c8e68f95b3bf2d9514721786c6.camel@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <cc8e2e4b-561c-3f1d-7a00-f1043753c964@ozlabs.ru>
-Date: Mon, 31 Aug 2020 10:50:16 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=iEkN5DrwXOJlxnjsZrjs16H1dRLrcYYPk+EaJagHbD0=;
+ b=K7WvBGFcwV1F94iLPDFNlQSfb1yTWH3zNms5d6nCUiglSQ7aW/KRJQBvtjWzoOSsha
+ 3hN5bvx1O/NCPusZViBeTVG5lTZX2yOvvtlw2Aw2DCuVOYt01w4RrlU0w0oPduCUggUo
+ siNUOO6nIFFadJ29tCHv0UEiH4URzohSeigk+VyESup0j5VWROWlfIN5lBHblFJthORM
+ lTYs1UvFFigUGFwdCanoVZKtJay+hJ0kZvYBVLb64CvGW6Bm+T6PSY/+oDIpOO6xMLEx
+ 4McoqYSWY46gmBSShy4svGXayOnHLDh68yaID/hg4p5DUsl50pIZA8+PHnujhMc4UTmo
+ aHAA==
+X-Gm-Message-State: AOAM531k4vXSUE5FOcrl5cGjrT39UzbOY6hW/HNeycjZS6AvFxDEy8dG
+ 39EYQheEWJh66krBYRq44ShJQ8d0K/s=
+X-Google-Smtp-Source: ABdhPJxSPxSCHHkmQ1ZrzB6EK0xBQxfZQDwkhDGAX5H3iWMV44tsVN03+/UnKkkbkK9JaUf5/+AL3A==
+X-Received: by 2002:a17:90a:5216:: with SMTP id
+ v22mr8418714pjh.97.1598836465361; 
+ Sun, 30 Aug 2020 18:14:25 -0700 (PDT)
+Received: from localhost ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id d131sm5507078pgc.88.2020.08.30.18.14.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 30 Aug 2020 18:14:24 -0700 (PDT)
+Date: Mon, 31 Aug 2020 11:14:18 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
+ Reimplement book3s idle code in C")
+To: linuxppc-dev@lists.ozlabs.org, Michal =?iso-8859-1?q?Such=E1nek?=
+ <msuchanek@suse.de>
+References: <20200830201145.GA29521@kitsune.suse.cz>
+In-Reply-To: <20200830201145.GA29521@kitsune.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <2d2b1a048faf75c8e68f95b3bf2d9514721786c6.camel@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Message-Id: <1598835313.5688ngko4f.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -170,128 +81,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: ro@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Michal Such=C3=A1nek's message of August 31, 2020 6:11 am:
+> Hello,
+>=20
+> on POWER8 KVM hosts lock up since commit 10d91611f426 ("powerpc/64s:
+> Reimplement book3s idle code in C").
+>=20
+> The symptom is host locking up completely after some hours of KVM
+> workload with messages like
+>=20
+> 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
+> 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+> 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
+> 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
+>=20
+> printed before the host locks up.
+>=20
+> The machines run sandboxed builds which is a mixed workload resulting in
+> IO/single core/mutiple core load over time and there are periods of no
+> activity and no VMS runnig as well. The VMs are shortlived so VM
+> setup/terdown is somewhat excercised as well.
+>=20
+> POWER9 with the new guest entry fast path does not seem to be affected.
+>=20
+> Reverted the patch and the followup idle fixes on top of 5.2.14 and
+> re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Restore IAMR
+> after idle") which gives same idle code as 5.1.16 and the kernel seems
+> stable.
+>=20
+> Config is attached.
+>=20
+> I cannot easily revert this commit, especially if I want to use the same
+> kernel on POWER8 and POWER9 - many of the POWER9 fixes are applicable
+> only to the new idle code.
+>=20
+> Any idea what can be the problem?
 
+So hwthread_state is never getting back to to HWTHREAD_IN_IDLE on
+those threads. I wonder what they are doing. POWER8 doesn't have a good
+NMI IPI and I don't know if it supports pdbg dumping registers from the
+BMC unfortunately. Do the messages always come in pairs of CPUs?
 
-On 29/08/2020 00:04, Leonardo Bras wrote:
-> On Mon, 2020-08-24 at 13:44 +1000, Alexey Kardashevskiy wrote:
->>
->>> On 18/08/2020 09:40, Leonardo Bras wrote:
->>> enable_ddw() currently returns the address of the DMA window, which is
->>> considered invalid if has the value 0x00.
->>>
->>> Also, it only considers valid an address returned from find_existing_ddw
->>> if it's not 0x00.
->>>
->>> Changing this behavior makes sense, given the users of enable_ddw() only
->>> need to know if direct mapping is possible. It can also allow a DMA window
->>> starting at 0x00 to be used.
->>>
->>> This will be helpful for using a DDW with indirect mapping, as the window
->>> address will be different than 0x00, but it will not map the whole
->>> partition.
->>>
->>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
->>> ---
->>>  arch/powerpc/platforms/pseries/iommu.c | 30 ++++++++++++--------------
->>>  1 file changed, 14 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
->>> index fcdefcc0f365..4031127c9537 100644
->>> --- a/arch/powerpc/platforms/pseries/iommu.c
->>> +++ b/arch/powerpc/platforms/pseries/iommu.c
->>> @@ -852,24 +852,25 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
->>>  			np, ret);
->>>  }
->>>>  
->>> -static u64 find_existing_ddw(struct device_node *pdn)
->>> +static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
->>>  {
->>>  	struct direct_window *window;
->>>  	const struct dynamic_dma_window_prop *direct64;
->>> -	u64 dma_addr = 0;
->>> +	bool found = false;
->>>  
->>>  	spin_lock(&direct_window_list_lock);
->>>  	/* check if we already created a window and dupe that config if so */
->>>  	list_for_each_entry(window, &direct_window_list, list) {
->>>  		if (window->device == pdn) {
->>>  			direct64 = window->prop;
->>> -			dma_addr = be64_to_cpu(direct64->dma_base);
->>> +			*dma_addr = be64_to_cpu(direct64->dma_base);
->>> +			found = true;
->>>  			break;
->>>  		}
->>>  	}
->>>  	spin_unlock(&direct_window_list_lock);
->>>  
->>> -	return dma_addr;
->>> +	return found;
->>>  }
->>>  
->>>  static struct direct_window *ddw_list_add(struct device_node *pdn,
->>> @@ -1131,15 +1132,15 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
->>>   * pdn: the parent pe node with the ibm,dma_window property
->>>   * Future: also check if we can remap the base window for our base page size
->>>   *
->>> - * returns the dma offset for use by the direct mapped DMA code.
->>> + * returns true if can map all pages (direct mapping), false otherwise..
->>>   */
->>> -static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>> +static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>>  {
->>>  	int len, ret;
->>>  	struct ddw_query_response query;
->>>  	struct ddw_create_response create;
->>>  	int page_shift;
->>> -	u64 dma_addr, max_addr;
->>> +	u64 max_addr;
->>>  	struct device_node *dn;
->>>  	u32 ddw_avail[DDW_APPLICABLE_SIZE];
->>>  	struct direct_window *window;
->>> @@ -1150,8 +1151,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>>  
->>>  	mutex_lock(&direct_window_init_mutex);
->>>  
->>> -	dma_addr = find_existing_ddw(pdn);
->>> -	if (dma_addr != 0)
->>> +	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset))
->>>  		goto out_unlock;
->>>  
->>>  	/*
->>> @@ -1292,7 +1292,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>>  		goto out_free_window;
->>>  	}
->>>  
->>> -	dma_addr = be64_to_cpu(ddwprop->dma_base);
->>> +	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
->>
->> Do not you need the same chunk in the find_existing_ddw() case above as
->> well? Thanks,
-> 
-> The new signature of find_existing_ddw() is 
-> static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
-> 
-> And on enable_ddw(), we call 
-> find_existing_ddw(pdn, &dev->dev.archdata.dma_offset)
-> 
-> And inside the function we do:
-> *dma_addr = be64_to_cpu(direct64->dma_base);
-> 
-> I think it's the same as the chunk before.
-> Am I missing something?
+I'm not sure where to start with reproducing, I'll have to try. How many
+vCPUs in the guests? Do you have several guests running at once?
 
-ah no, sorry, you are not missing anything.
+Thanks,
+Nick
 
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-
-
-
--- 
-Alexey
