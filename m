@@ -2,77 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C115257276
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 05:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B742572E0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 06:36:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfx8Z4cf9zDqSc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 13:51:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfy8f3JHmzDqSj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 14:36:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Fth+nhDD; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20150623 header.b=jylSosw0; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfx5S2mGdzDqQs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 13:48:58 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id ls14so2282200pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 20:48:58 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfy6j4b3BzDqRq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 14:35:07 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id h2so2452024plr.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 21:35:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=q19Ah/81RNhSSUoDdSA3qN0BsGo/zMdRerlp4Tfhi0I=;
- b=Fth+nhDDLQG50Ss+0l3gRgXCF8BXKE4rUp0l8pcUQhp6sL/jQPd+NSeaWf8ZufNrgw
- WNA/KAzoP/VQR0LXlpNg8HF4OyD85DZwPmFCubfRH/6ddzNv37LyCEoqXTSDvEF0+4Yr
- XVdRq1Bg7VCqVOcgRc2905NVvbos89CR1ZmwqKLFDpNbqmBx14rDult6nNGCDRNmp58v
- JNZVv/Es6RKIqbzft7gJLIH9n0LwNbS58kAeYmZq+PLl5mMvdvTMCG/dHL3bYFcUDtUQ
- tjI0WwCVa3liO+AjA2k8rUfxPL1vgBH0TbKzCtNkcAsuWicuwGpcrEDV+KGIFZCqyI0l
- zDCQ==
+ bh=wkyLdwK5AWkLSd0kiOmLJIoSgTYFe7HR0Fnu56z+MVY=;
+ b=jylSosw0CGwG6YV7bMvaxEwTIwmb5XA686fIWfEPnNnZ3/7M5tZzJICNRKXkX+Dys4
+ tUWM7zxizf6jJt28Q04tgVyLmwV7aCqsm79D5nABoVpIziJtTfFCNRnxkUVyL8E/q1A7
+ 3zr0c4dlpwO1EzokZYaBA/1joe94N3QaAqi3Ghp9uxf4a/2iN3hbeUw9syHAAOipBg1y
+ kkF/VdBj/j5VmtecqQ5v+Ne9TQWQAralJ7eg5qr9kPF5GEhZPstn+fA8q0YPdbdUEZdp
+ MiHwpqvUrB9tItz7AjSSIXVe1oGawK5FguaF0vAq5wcLBRX5ZCWi1GgaQgodBkr27m9c
+ xnmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=q19Ah/81RNhSSUoDdSA3qN0BsGo/zMdRerlp4Tfhi0I=;
- b=aZu5/kk7Y0y74PLc99A+TiodEIHfJPzJzXJjcFRhtZeiha4QVxct41SwWewvJeykWD
- e6UIC/TIVI96zTxmKBR4MYK46scxCCZ4UUW93WwxWAxSI1PvQX86rSE+8h/yesWAM+Qx
- ZzPmtciYCZqASgzqtGpPawvYAhXaCp4nsqTEigFUx3L7OKYS1F+6zLDFFKUsjPsi/Rvo
- yupYtgRVqGl9wMIlSEIPpsIhudqLKj1rclEcGGnZ7+7ilWADzMxrAISlow5SSzxGU0VN
- ohusVwxqHlOLDRJw3KZvlCg2grJebTWXDNJnbEI9UwMDhqBuDtH+p7ojj5HmIT1RMQAq
- PShQ==
-X-Gm-Message-State: AOAM530F8xdmie9l2U5UWCl2APqLr3b5er/JM3MNZtZvf7rhqVuk3KTv
- HKbs34wb3IIANBtPOri7vR4/tA==
-X-Google-Smtp-Source: ABdhPJzO5ilNMmxhH9hkfytSN97xviAVxs3X9YvkCrB5rkGWoADzociXWq/PkxE+nRfu6ETCOOok4w==
-X-Received: by 2002:a17:90a:8e82:: with SMTP id
- f2mr9055568pjo.11.1598845733887; 
- Sun, 30 Aug 2020 20:48:53 -0700 (PDT)
+ bh=wkyLdwK5AWkLSd0kiOmLJIoSgTYFe7HR0Fnu56z+MVY=;
+ b=Dd3ztT7n6aaZAgtUGComOzoC4+wNhpLNSixR/jvj3PdrfwRUMg12kQenicTw1s2rsr
+ NhWwvlvFnbc1/mN2mOElQy/1BAazQt7vEa8oXjjLhZ7ZJ0KjU2NqA8XhOlsTA751idiR
+ CP4+BoZr0jkhWm9UJeFUTzIjWQeOikpV8xJfBRo9zz0TFjiSpNY0bf6IreuhWz5HlV2V
+ HmeQsyuMY+8XBuYQdD0nbQwfWY6pb5uauRTfhQfKBY/bn2Aee1Pb27dkI20gnKeahp2z
+ Y7ML7MoWCDs/oAewDnILh7xRYARqbk12Rm63wy+IfQW08Be4g5i+SsF44FZgqxn/oOFa
+ vlUg==
+X-Gm-Message-State: AOAM533qIPQf+RZbbaEoDm2/bsrsabLJABfi/Jvamwxkk6lmPFBwaBM5
+ YmT2pbP2KNSFVgQtEZNIKqcEhw==
+X-Google-Smtp-Source: ABdhPJydX7OxyVhGb8p8AcVb3oGlZpOv8W77lxyQ2ykz9zHQT/tm/gG1uWkvlhkTe9fkH95ze+ncUw==
+X-Received: by 2002:a17:90a:e7c8:: with SMTP id
+ kb8mr9263178pjb.104.1598848504358; 
+ Sun, 30 Aug 2020 21:35:04 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id b24sm5399634pjp.22.2020.08.30.20.48.48
+ by smtp.gmail.com with ESMTPSA id q25sm6190551pfn.181.2020.08.30.21.34.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Aug 2020 20:48:53 -0700 (PDT)
-Subject: Re: [PATCH v1 01/10] powerpc/pseries/iommu: Replace hard-coded page
- shift
-To: Oliver O'Halloran <oohall@gmail.com>
+ Sun, 30 Aug 2020 21:35:03 -0700 (PDT)
+Subject: Re: [PATCH v1 08/10] powerpc/pseries/iommu: Add ddw_property_create()
+ and refactor enable_ddw()
+To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, Joel Stanley <joel@jms.id.au>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, Ram Pai
+ <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
+ Murilo Fossa Vicentini <muvic@linux.ibm.com>,
+ David Dai <zdai@linux.vnet.ibm.com>
 References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-2-leobras.c@gmail.com>
- <6232948f-033d-8322-e656-544f12c5f784@ozlabs.ru>
- <31e913d842693b6e107cb2b8e51fd45118b1bd2c.camel@gmail.com>
- <1e77a3d9-dff9-f58b-45be-77be7cbea41a@ozlabs.ru>
- <93037398c7afaabc0411890998f3f29f741c8aff.camel@gmail.com>
- <aaaf993a-d233-f5be-b809-5911a6a9872d@ozlabs.ru>
- <CAOSf1CG49ztvNoG43hcSHyLB9UY6Nc8maY_q6nvQmiyFQOAp3A@mail.gmail.com>
+ <20200817234033.442511-9-leobras.c@gmail.com>
+ <952fb640-01dd-003f-7fcb-bd48446d526c@ozlabs.ru>
+ <06f732abbc3e6d4745428c4fc8cc98baf960a2e0.camel@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -147,12 +150,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <1bba12c6-f1ec-9f1e-1d3e-c1efa5ceb7c7@ozlabs.ru>
-Date: Mon, 31 Aug 2020 13:48:46 +1000
+Message-ID: <1a469384-91ad-81f0-2a42-4c985cbc92da@ozlabs.ru>
+Date: Mon, 31 Aug 2020 14:34:57 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <CAOSf1CG49ztvNoG43hcSHyLB9UY6Nc8maY_q6nvQmiyFQOAp3A@mail.gmail.com>
+In-Reply-To: <06f732abbc3e6d4745428c4fc8cc98baf960a2e0.camel@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -167,88 +170,251 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Leonardo Bras <leobras.c@gmail.com>, David Dai <zdai@linux.vnet.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
- Brian King <brking@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 31/08/2020 11:41, Oliver O'Halloran wrote:
-> On Mon, Aug 31, 2020 at 10:08 AM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+On 29/08/2020 01:25, Leonardo Bras wrote:
+> On Mon, 2020-08-24 at 15:07 +1000, Alexey Kardashevskiy wrote:
 >>
->> On 29/08/2020 05:55, Leonardo Bras wrote:
->>> On Fri, 2020-08-28 at 12:27 +1000, Alexey Kardashevskiy wrote:
->>>>
->>>> On 28/08/2020 01:32, Leonardo Bras wrote:
->>>>> Hello Alexey, thank you for this feedback!
->>>>>
->>>>> On Sat, 2020-08-22 at 19:33 +1000, Alexey Kardashevskiy wrote:
->>>>>>> +#define TCE_RPN_BITS             52              /* Bits 0-51 represent RPN on TCE */
->>>>>>
->>>>>> Ditch this one and use MAX_PHYSMEM_BITS instead? I am pretty sure this
->>>>>> is the actual limit.
->>>>>
->>>>> I understand this MAX_PHYSMEM_BITS(51) comes from the maximum physical memory addressable in the machine. IIUC, it means we can access physical address up to (1ul << MAX_PHYSMEM_BITS).
->>>>>
->>>>> This 52 comes from PAPR "Table 9. TCE Definition" which defines bits
->>>>> 0-51 as the RPN. By looking at code, I understand that it means we may input any address < (1ul << 52) to TCE.
->>>>>
->>>>> In practice, MAX_PHYSMEM_BITS should be enough as of today, because I suppose we can't ever pass a physical page address over
->>>>> (1ul << 51), and TCE accepts up to (1ul << 52).
->>>>> But if we ever increase MAX_PHYSMEM_BITS, it doesn't necessarily means that TCE_RPN_BITS will also be increased, so I think they are independent values.
->>>>>
->>>>> Does it make sense? Please let me know if I am missing something.
->>>>
->>>> The underlying hardware is PHB3/4 about which the IODA2 Version 2.4
->>>> 6Apr2012.pdf spec says:
->>>>
->>>> "The number of most significant RPN bits implemented in the TCE is
->>>> dependent on the max size of System Memory to be supported by the platform".
->>>>
->>>> IODA3 is the same on this matter.
->>>>
->>>> This is MAX_PHYSMEM_BITS and PHB itself does not have any other limits
->>>> on top of that. So the only real limit comes from MAX_PHYSMEM_BITS and
->>>> where TCE_RPN_BITS comes from exactly - I have no idea.
+>> On 18/08/2020 09:40, Leonardo Bras wrote:
+>>> Code used to create a ddw property that was previously scattered in
+>>> enable_ddw() is now gathered in ddw_property_create(), which deals with
+>>> allocation and filling the property, letting it ready for
+>>> of_property_add(), which now occurs in sequence.
 >>>
->>> Well, I created this TCE_RPN_BITS = 52 because the previous mask was a
->>> hardcoded 40-bit mask (0xfffffffffful), for hard-coded 12-bit (4k)
->>> pagesize, and on PAPR+/LoPAR also defines TCE as having bits 0-51
->>> described as RPN, as described before.
+>>> This created an opportunity to reorganize the second part of enable_ddw():
 >>>
->>> IODA3 Revision 3.0_prd1 (OpenPowerFoundation), Figure 3.4 and 3.5.
->>> shows system memory mapping into a TCE, and the TCE also has bits 0-51
->>> for the RPN (52 bits). "Table 3.6. TCE Definition" also shows it.
->>>> In fact, by the looks of those figures, the RPN_MASK should always be a
->>> 52-bit mask, and RPN = (page >> tceshift) & RPN_MASK.
+>>> Without this patch enable_ddw() does, in order:
+>>> kzalloc() property & members, create_ddw(), fill ddwprop inside property,
+>>> ddw_list_add(), do tce_setrange_multi_pSeriesLP_walk in all memory,
+>>> of_add_property().
+>>>
+>>> With this patch enable_ddw() does, in order:
+>>> create_ddw(), ddw_property_create(), of_add_property(), ddw_list_add(),
+>>> do tce_setrange_multi_pSeriesLP_walk in all memory.
+>>>
+>>> This change requires of_remove_property() in case anything fails after
+>>> of_add_property(), but we get to do tce_setrange_multi_pSeriesLP_walk
+>>> in all memory, which looks the most expensive operation, only if
+>>> everything else succeeds.
+>>>
+>>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+>>> ---
+>>>  arch/powerpc/platforms/pseries/iommu.c | 97 +++++++++++++++-----------
+>>>  1 file changed, 57 insertions(+), 40 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>>> index 4031127c9537..3a1ef02ad9d5 100644
+>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>> @@ -1123,6 +1123,31 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+>>>  			 ret);
+>>>  }
+>>>  
+>>> +static int ddw_property_create(struct property **ddw_win, const char *propname,
 >>
->> I suspect the mask is there in the first place for extra protection
->> against too big addresses going to the TCE table (or/and for virtial vs
->> physical addresses). Using 52bit mask makes no sense for anything, you
->> could just drop the mask and let c compiler deal with 64bit "uint" as it
->> is basically a 4K page address anywhere in the 64bit space. Thanks,
+>> @propname is always the same, do you really want to pass it every time?
 > 
-> Assuming 4K pages you need 52 RPN bits to cover the whole 64bit
-> physical address space. The IODA3 spec does explicitly say the upper
-> bits are optional and the implementation only needs to support enough
-> to cover up to the physical address limit, which is 56bits of P9 /
-> PHB4. If you want to validate that the address will fit inside of
-> MAX_PHYSMEM_BITS then fine, but I think that should be done as a
-> WARN_ON or similar rather than just silently masking off the bits.
+> I think it reads better, like "create a ddw property with this name".
 
-We can do this and probably should anyway but I am also pretty sure we
-can just ditch the mask and have the hypervisor return an error which
-will show up in dmesg.
+This reads as "there are at least two ddw properties".
 
+> Also, it makes possible to create ddw properties with other names, in
+> case we decide to create properties with different names depending on
+> the window created.
+
+It is one window at any given moment, why call it different names... I
+get the part that it is not always "direct" anymore but still...
+
+
+> Also, it's probably optimized / inlined at this point.
+> Is it ok doing it like this?
+> 
+>>
+>>> +			       u32 liobn, u64 dma_addr, u32 page_shift, u32 window_shift)
+>>> +{
+>>> +	struct dynamic_dma_window_prop *ddwprop;
+>>> +	struct property *win64;
+>>> +
+>>> +	*ddw_win = win64 = kzalloc(sizeof(*win64), GFP_KERNEL);
+>>> +	if (!win64)
+>>> +		return -ENOMEM;
+>>> +
+>>> +	win64->name = kstrdup(propname, GFP_KERNEL);
+>>
+>> Not clear why "win64->name = DIRECT64_PROPNAME" would not work here, the
+>> generic OF code does not try kfree() it but it is probably out of scope
+>> here.
+> 
+> Yeah, I had that question too. 
+> Previous code was like that, and I as trying not to mess too much on
+> how it's done.
+> 
+>>> +	ddwprop = kzalloc(sizeof(*ddwprop), GFP_KERNEL);
+>>> +	win64->value = ddwprop;
+>>> +	win64->length = sizeof(*ddwprop);
+>>> +	if (!win64->name || !win64->value)
+>>> +		return -ENOMEM;
+>>
+>> Up to 2 memory leaks here. I see the cleanup at "out_free_prop:" but
+>> still looks fragile. Instead you could simply return win64 as the only
+>> error possible here is -ENOMEM and returning NULL is equally good.
+> 
+> I agree. It's better if this function have it's own cleaning routine.
+> It will be fixed for next version.
+> 
+>>
+>>
+>>> +
+>>> +	ddwprop->liobn = cpu_to_be32(liobn);
+>>> +	ddwprop->dma_base = cpu_to_be64(dma_addr);
+>>> +	ddwprop->tce_shift = cpu_to_be32(page_shift);
+>>> +	ddwprop->window_shift = cpu_to_be32(window_shift);
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>>  /*
+>>>   * If the PE supports dynamic dma windows, and there is space for a table
+>>>   * that can map all pages in a linear offset, then setup such a table,
+>>> @@ -1140,12 +1165,11 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  	struct ddw_query_response query;
+>>>  	struct ddw_create_response create;
+>>>  	int page_shift;
+>>> -	u64 max_addr;
+>>> +	u64 max_addr, win_addr;
+>>>  	struct device_node *dn;
+>>>  	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+>>>  	struct direct_window *window;
+>>> -	struct property *win64;
+>>> -	struct dynamic_dma_window_prop *ddwprop;
+>>> +	struct property *win64 = NULL;
+>>>  	struct failed_ddw_pdn *fpdn;
+>>>  	bool default_win_removed = false;
+>>>  
+>>> @@ -1244,38 +1268,34 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  		goto out_failed;
+>>>  	}
+>>>  	len = order_base_2(max_addr);
+>>> -	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
+>>> -	if (!win64) {
+>>> -		dev_info(&dev->dev,
+>>> -			"couldn't allocate property for 64bit dma window\n");
+>>> +
+>>> +	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
+>>> +	if (ret != 0)
+>>
+>> It is usually just "if (ret)"
+> 
+> It was previously like that, and all query_ddw() checks return value
+> this way.
+
+ah I see.
+
+> Should I update them all or just this one?
+
+Pick one variant and make sure all new lines use just that. In this
+patch you add both variants. Thanks,
+
+> 
+> Thanks!
+> 
+>>
+>>
+>>>  		goto out_failed;
+>>> -	}
+>>> -	win64->name = kstrdup(DIRECT64_PROPNAME, GFP_KERNEL);
+>>> -	win64->value = ddwprop = kmalloc(sizeof(*ddwprop), GFP_KERNEL);
+>>> -	win64->length = sizeof(*ddwprop);
+>>> -	if (!win64->name || !win64->value) {
+>>> +
+>>> +	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
+>>> +		create.liobn, dn);
+>>> +
+>>> +	win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
+>>> +	ret = ddw_property_create(&win64, DIRECT64_PROPNAME, create.liobn, win_addr,
+>>> +				  page_shift, len);
+>>> +	if (ret) {
+>>>  		dev_info(&dev->dev,
+>>> -			"couldn't allocate property name and value\n");
+>>> +			 "couldn't allocate property, property name, or value\n");
+>>>  		goto out_free_prop;
+>>>  	}
+>>>  
+>>> -	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
+>>> -	if (ret != 0)
+>>> +	ret = of_add_property(pdn, win64);
+>>> +	if (ret) {
+>>> +		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
+>>> +			pdn, ret);
+>>>  		goto out_free_prop;
+>>> -
+>>> -	ddwprop->liobn = cpu_to_be32(create.liobn);
+>>> -	ddwprop->dma_base = cpu_to_be64(((u64)create.addr_hi << 32) |
+>>> -			create.addr_lo);
+>>> -	ddwprop->tce_shift = cpu_to_be32(page_shift);
+>>> -	ddwprop->window_shift = cpu_to_be32(len);
+>>> -
+>>> -	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
+>>> -		  create.liobn, dn);
+>>> +	}
+>>>  
+>>>  	/* Add new window to existing DDW list */
+>>> -	window = ddw_list_add(pdn, ddwprop);
+>>> +	window = ddw_list_add(pdn, win64->value);
+>>>  	if (!window)
+>>> -		goto out_clear_window;
+>>> +		goto out_prop_del;
+>>>  
+>>>  	ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+>>>  			win64->value, tce_setrange_multi_pSeriesLP_walk);
+>>> @@ -1285,14 +1305,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  		goto out_free_window;
+>>>  	}
+>>>  
+>>> -	ret = of_add_property(pdn, win64);
+>>> -	if (ret) {
+>>> -		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
+>>> -			 pdn, ret);
+>>> -		goto out_free_window;
+>>> -	}
+>>> -
+>>> -	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
+>>> +	dev->dev.archdata.dma_offset = win_addr;
+>>>  	goto out_unlock;
+>>>  
+>>>  out_free_window:
+>>> @@ -1302,14 +1315,18 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  
+>>>  	kfree(window);
+>>>  
+>>> -out_clear_window:
+>>> -	remove_ddw(pdn, true);
+>>> +out_prop_del:
+>>> +	of_remove_property(pdn, win64);
+>>>  
+>>>  out_free_prop:
+>>> -	kfree(win64->name);
+>>> -	kfree(win64->value);
+>>> -	kfree(win64);
+>>> -	win64 = NULL;
+>>> +	if (win64) {
+>>> +		kfree(win64->name);
+>>> +		kfree(win64->value);
+>>> +		kfree(win64);
+>>> +		win64 = NULL;
+>>> +	}
+>>> +
+>>> +	remove_ddw(pdn, true);
+>>>  
+>>>  out_failed:
+>>>  	if (default_win_removed)
+>>>
+> 
 
 -- 
 Alexey
