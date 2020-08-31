@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599C425711D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 02:08:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E178C25714D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 02:49:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BfrCD3cVyzDqSY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 10:08:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfs663wwMzDqRb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 10:49:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=TlXIB4Mp; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+ header.s=20150623 header.b=aiQXvlVe; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfr9J5DQWzDqQX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 10:06:57 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id y6so2197848plk.10
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 17:06:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfs456sB2zDqRG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 10:47:33 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id kx11so2104839pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 17:47:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=dPg6pIp0d6+IMW2eCyPuihZz92GIZill6IOikyCStwY=;
- b=TlXIB4MpnJHxFvHJueLLfeaBG1G6nE8C+Egk4sOkfAP8/FrCz60fAICJztXIiP0kNs
- eUtXcJ1UPbC4MblKNLR48Y/UkPiok4rV15/bKrR+/B/GvzwC5scvbkVZjHJUZg3SNAXL
- JZ2Nxu85goPVtOHPv2/ec6yYY+7b2KMUqLz5AUR8+gFbyS2NewAMUUyhy06ZuSXfOvxg
- 7OcTPPIejcgFuUYW2/APHNLE/bBsU2QHXVAlr2K5fPnl72ynnkzrc4IkRn5U6Uy+hvcR
- 5B7i1AQfAw8LHe7kQvXwxdAdUCO/vrpJELso/hjD2nvOuY2lQa7ws5BmHar1i3MLJMuR
- 3/ZA==
+ bh=L2uPUbd0diUizFH/aG7R18BTYC2GKF82YOhW5bfvmaE=;
+ b=aiQXvlVe91+tRR7IJAiHSRYz8WLvkiqoR/eFB9uGZ6q2CXHTafY4a3fFMX3KOV14HY
+ +45wopGPwmC7B/I03pHC5sonoGvQAZCo5Cldnzotx1/QyxhbsiN90zPjtEbXuaVZkwrA
+ eQftUgpyE/nmiFSpRH7sguWZ6LJ19DI+dSkpgdgsZJq8I/pWfRQvosKcE5KTJ8geoXl1
+ mw/tX+1aCJxkOjKZxJV+pAGFmmlUZZs2uF1CspjE9Jk1YGbzZJ5Nhck+hqLaX5qK1Z6z
+ mdq1NTqhzd5dHXI39vZsGfs+NVx/W7Ii1HFYqQGkaRzUpNAnNEey/r9yJ4uxxXV4ajZM
+ iQ8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=dPg6pIp0d6+IMW2eCyPuihZz92GIZill6IOikyCStwY=;
- b=qzVp61mKyMlg2tBjSP/UKhueqOp79rBf19rFiTVMP1KORieBdVn7UnIYujwhUpROtT
- r1lDiUrL7iMyKJBYTBomfWxOJB9ipqa/Nbla0qvzqNBkOdW4SMwTvb+tsBTpVuuXNkJl
- 7r1e0at/r/Ary2chZqNaThvPM6aNKXyuyXKb9Swmdvp9q5fJTKk/ib+r70Vn7XROuQs+
- n4+AhZ0oyATcjF06zCeRVYMFEwJQGZ8V/3aoCO+yQ3uoeRc8hpVX2Pg3A62P+e4o8Td1
- rBytcn7djQ5ZjNeebXxPktUTn0D1GuCIh1Zqo+t+2gnCLCvwVhYTgNZNZ7zdUY1Xjqj1
- KoMQ==
-X-Gm-Message-State: AOAM5305AU9/05KRxZUcgAJEIuCF+Z9XCX20Siw6VeHNJYGNTFIqBxZ2
- dZaBra935JqlSo4DPZcPvNdScw==
-X-Google-Smtp-Source: ABdhPJzDxhtQpxEwUEtVv5mpaSy+ixf9hbfjwDfZwDB111Xo6VzJEX7Z661UBYIL64R/ele2CHSgEA==
-X-Received: by 2002:a17:90b:245:: with SMTP id
- fz5mr3537237pjb.131.1598832415794; 
- Sun, 30 Aug 2020 17:06:55 -0700 (PDT)
+ bh=L2uPUbd0diUizFH/aG7R18BTYC2GKF82YOhW5bfvmaE=;
+ b=qfysqt0ScfIRZVFXHEpzbIClUK44F1u8/I+I5dyWKtFZ2v3GJt1OnvZfmNSLVdRjN6
+ wdbEizHfSPMlfWt4z/ezdha9qtpRQgoOcO6RQIcjHjdjPAam/RxOw4Uar3lRhYJxXfj0
+ MSM+0rv3qvFuPk5ODq3VSe+FrqU/eSbi234YpnQtix+JAt7XHD4JzAMEez9sYNTY+WVA
+ K2JhjdlLZ7LPfC7OR0HKfmqpQHfmHg0L+oJuzJETNdJAqWnSHxhr2BhYcV17L9vxkWRc
+ K2i+MVrK+OE/7LOIWfKRB/GdHo8oqsgoooq4yak9U4F1OTDnoPplpp2a83cMIEMeiWKz
+ 1YRw==
+X-Gm-Message-State: AOAM531+fHsouPf+f6RP5/p2L53zicpz+Xm/CYvD8JRpIIMzxvNkZxRT
+ A2Obxo0UOkTPyL2/csyUCIFR/g==
+X-Google-Smtp-Source: ABdhPJydC1w3S16BGGStxnLDdFfR75Yp9pasz1f4+1XeLYpZYCUrddpUbDNkliDxUay5FW50KnSoJA==
+X-Received: by 2002:a17:902:c402:: with SMTP id
+ k2mr7001722plk.308.1598834849823; 
+ Sun, 30 Aug 2020 17:47:29 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id y5sm1833839pge.62.2020.08.30.17.06.50
+ by smtp.gmail.com with ESMTPSA id u21sm5197991pjn.27.2020.08.30.17.47.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Aug 2020 17:06:54 -0700 (PDT)
-Subject: Re: [PATCH v1 01/10] powerpc/pseries/iommu: Replace hard-coded page
- shift
+ Sun, 30 Aug 2020 17:47:29 -0700 (PDT)
+Subject: Re: [PATCH v1 02/10] powerpc/kernel/iommu: Align size for
+ IOMMU_PAGE_SIZE on iommu_*_coherent()
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Christophe Leroy
@@ -73,11 +73,11 @@ To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
 References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-2-leobras.c@gmail.com>
- <6232948f-033d-8322-e656-544f12c5f784@ozlabs.ru>
- <31e913d842693b6e107cb2b8e51fd45118b1bd2c.camel@gmail.com>
- <1e77a3d9-dff9-f58b-45be-77be7cbea41a@ozlabs.ru>
- <93037398c7afaabc0411890998f3f29f741c8aff.camel@gmail.com>
+ <20200817234033.442511-3-leobras.c@gmail.com>
+ <7b9640e0-568f-1470-40f4-a3ccec8abcf2@ozlabs.ru>
+ <c67c66e466ad27d15aa2b970c48d2336d95b2971.camel@gmail.com>
+ <da473389-f921-075a-ec8e-ea516de4f177@ozlabs.ru>
+ <2aacd45f047489642da1731c92d3555ad101e3c7.camel@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -152,12 +152,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <aaaf993a-d233-f5be-b809-5911a6a9872d@ozlabs.ru>
-Date: Mon, 31 Aug 2020 10:06:47 +1000
+Message-ID: <81f106bd-8962-22f2-f14a-378d3486f57e@ozlabs.ru>
+Date: Mon, 31 Aug 2020 10:47:22 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <93037398c7afaabc0411890998f3f29f741c8aff.camel@gmail.com>
+In-Reply-To: <2aacd45f047489642da1731c92d3555ad101e3c7.camel@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -179,116 +179,160 @@ Sender: "Linuxppc-dev"
 
 
 
-On 29/08/2020 05:55, Leonardo Bras wrote:
-> On Fri, 2020-08-28 at 12:27 +1000, Alexey Kardashevskiy wrote:
+On 29/08/2020 06:41, Leonardo Bras wrote:
+> On Fri, 2020-08-28 at 11:40 +1000, Alexey Kardashevskiy wrote:
+>>> I think it would be better to keep the code as much generic as possible
+>>> regarding page sizes. 
 >>
->> On 28/08/2020 01:32, Leonardo Bras wrote:
->>> Hello Alexey, thank you for this feedback!
->>>
->>> On Sat, 2020-08-22 at 19:33 +1000, Alexey Kardashevskiy wrote:
->>>>> +#define TCE_RPN_BITS		52		/* Bits 0-51 represent RPN on TCE */
->>>>
->>>> Ditch this one and use MAX_PHYSMEM_BITS instead? I am pretty sure this
->>>> is the actual limit.
->>>
->>> I understand this MAX_PHYSMEM_BITS(51) comes from the maximum physical memory addressable in the machine. IIUC, it means we can access physical address up to (1ul << MAX_PHYSMEM_BITS). 
->>>
->>> This 52 comes from PAPR "Table 9. TCE Definition" which defines bits
->>> 0-51 as the RPN. By looking at code, I understand that it means we may input any address < (1ul << 52) to TCE.
->>>
->>> In practice, MAX_PHYSMEM_BITS should be enough as of today, because I suppose we can't ever pass a physical page address over 
->>> (1ul << 51), and TCE accepts up to (1ul << 52).
->>> But if we ever increase MAX_PHYSMEM_BITS, it doesn't necessarily means that TCE_RPN_BITS will also be increased, so I think they are independent values. 
->>>
->>> Does it make sense? Please let me know if I am missing something.
->>
->> The underlying hardware is PHB3/4 about which the IODA2 Version 2.4
->> 6Apr2012.pdf spec says:
->>
->> "The number of most significant RPN bits implemented in the TCE is
->> dependent on the max size of System Memory to be supported by the platform".
->>
->> IODA3 is the same on this matter.
->>
->> This is MAX_PHYSMEM_BITS and PHB itself does not have any other limits
->> on top of that. So the only real limit comes from MAX_PHYSMEM_BITS and
->> where TCE_RPN_BITS comes from exactly - I have no idea.
+>> Then you need to test it. Does 4K guest even boot (it should but I would
+>> not bet much on it)?
 > 
-> Well, I created this TCE_RPN_BITS = 52 because the previous mask was a
-> hardcoded 40-bit mask (0xfffffffffful), for hard-coded 12-bit (4k)
-> pagesize, and on PAPR+/LoPAR also defines TCE as having bits 0-51
-> described as RPN, as described before.
+> Maybe testing with host 64k pagesize and IOMMU 16MB pagesize in qemu
+> should be enough, is there any chance to get indirect mapping in qemu
+> like this? (DDW but with smaller DMA window available) 
+
+
+You will have to hack the guest kernel to always do indirect mapping or
+hack QEMU's rtas_ibm_query_pe_dma_window() to return a small number of
+available TCEs. But you will be testing QEMU/KVM which behave quite
+differently to pHyp in this particular case.
+
+
+
+>>>> Because if we want the former (==support), then we'll have to align the
+>>>> size up to the bigger page size when allocating/zeroing system pages,
+>>>> etc. 
+>>>
+>>> This part I don't understand. Why do we need to align everything to the
+>>> bigger pagesize? 
+>>>
+>>> I mean, is not that enough that the range [ret, ret + size[ is both
+>>> allocated by mm and mapped on a iommu range?
+>>>
+>>> Suppose a iommu_alloc_coherent() of 16kB on PAGESIZE = 4k and
+>>> IOMMU_PAGE_SIZE() == 64k.
+>>> Why 4 * cpu_pages mapped by a 64k IOMMU page is not enough? 
+>>> All the space the user asked for is allocated and mapped for DMA.
+>>
+>> The user asked to map 16K, the rest - 48K - is used for something else
+>> (may be even mapped to another device) but you are making all 64K
+>> accessible by the device which only should be able to access 16K.
+>>
+>> In practice, if this happens, H_PUT_TCE will simply fail.
 > 
-> IODA3 Revision 3.0_prd1 (OpenPowerFoundation), Figure 3.4 and 3.5.
-> shows system memory mapping into a TCE, and the TCE also has bits 0-51
-> for the RPN (52 bits). "Table 3.6. TCE Definition" also shows it.
->> In fact, by the looks of those figures, the RPN_MASK should always be a
-> 52-bit mask, and RPN = (page >> tceshift) & RPN_MASK.
+> I have noticed mlx5 driver getting a few bytes in a buffer, and using
+> iommu_map_page(). It does map a whole page for as few bytes as the user
 
 
-I suspect the mask is there in the first place for extra protection
-against too big addresses going to the TCE table (or/and for virtial vs
-physical addresses). Using 52bit mask makes no sense for anything, you
-could just drop the mask and let c compiler deal with 64bit "uint" as it
-is basically a 4K page address anywhere in the 64bit space. Thanks,
+Whole 4K system page or whole 64K iommu page?
+
+> wants mapped, and the other bytes get used for something else, or just
+> mapped on another DMA page.
+> It seems to work fine.  
 
 
-> Maybe that's it?
 
+With 4K system page and 64K IOMMU page? In practice it would take an
+effort or/and bad luck to see it crashing. Thanks,
 
 
 
 > 
 >>
 >>
->>>>
->>>>> +#define TCE_RPN_MASK(ps)	((1ul << (TCE_RPN_BITS - (ps))) - 1)
->>>>>  #define TCE_VALID		0x800		/* TCE valid */
->>>>>  #define TCE_ALLIO		0x400		/* TCE valid for all lpars */
->>>>>  #define TCE_PCI_WRITE		0x2		/* write from PCI allowed */
->>>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
->>>>> index e4198700ed1a..8fe23b7dff3a 100644
->>>>> --- a/arch/powerpc/platforms/pseries/iommu.c
->>>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
->>>>> @@ -107,6 +107,9 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
->>>>>  	u64 proto_tce;
->>>>>  	__be64 *tcep;
->>>>>  	u64 rpn;
->>>>> +	const unsigned long tceshift = tbl->it_page_shift;
->>>>> +	const unsigned long pagesize = IOMMU_PAGE_SIZE(tbl);
->>>>> +	const u64 rpn_mask = TCE_RPN_MASK(tceshift);
->>>>
->>>> Using IOMMU_PAGE_SIZE macro for the page size and not using
->>>> IOMMU_PAGE_MASK for the mask - this incosistency makes my small brain
->>>> explode :) I understand the history but maaaaan... Oh well, ok.
->>>>
+>>>> Bigger pages are not the case here as I understand it.
 >>>
->>> Yeah, it feels kind of weird after two IOMMU related consts. :)
->>> But sure IOMMU_PAGE_MASK() would not be useful here :)
->>>
->>> And this kind of let me thinking:
->>>>> +		rpn = __pa(uaddr) >> tceshift;
->>>>> +		*tcep = cpu_to_be64(proto_tce | (rpn & rpn_mask) << tceshift);
->>> Why not:
->>> 	rpn_mask =  TCE_RPN_MASK(tceshift) << tceshift;
+>>> I did not get this part, what do you mean?
 >>
->> A mask for a page number (but not the address!) hurts my brain, masks
->> are good against addresses but numbers should already have all bits
->> adjusted imho, may be it is just me :-/
+>> Possible IOMMU page sizes are 4K, 64K, 2M, 16M, 256M, 1GB, and the
+>> supported set of sizes is different for P8/P9 and type of IO (PHB,
+>> NVLink/CAPI).
 >>
 >>
->>> 	
->>> 	rpn = __pa(uaddr) & rpn_mask;
->>> 	*tcep = cpu_to_be64(proto_tce | rpn)
+>>>>> Update those functions to guarantee alignment with requested size
+>>>>> using IOMMU_PAGE_ALIGN() before doing iommu_alloc() / iommu_free().
+>>>>>
+>>>>> Also, on iommu_range_alloc(), replace ALIGN(n, 1 << tbl->it_page_shift)
+>>>>> with IOMMU_PAGE_ALIGN(n, tbl), which seems easier to read.
+>>>>>
+>>>>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+>>>>> ---
+>>>>>  arch/powerpc/kernel/iommu.c | 17 +++++++++--------
+>>>>>  1 file changed, 9 insertions(+), 8 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+>>>>> index 9704f3f76e63..d7086087830f 100644
+>>>>> --- a/arch/powerpc/kernel/iommu.c
+>>>>> +++ b/arch/powerpc/kernel/iommu.c
+>>>>> @@ -237,10 +237,9 @@ static unsigned long iommu_range_alloc(struct device *dev,
+>>>>>  	}
+>>>>>  
+>>>>>  	if (dev)
+>>>>> -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
+>>>>> -				      1 << tbl->it_page_shift);
+>>>>> +		boundary_size = IOMMU_PAGE_ALIGN(dma_get_seg_boundary(dev) + 1, tbl);
+>>>>
+>>>> Run checkpatch.pl, should complain about a long line.
 >>>
->>> I am usually afraid of changing stuff like this, but I think it's safe.
+>>> It's 86 columns long, which is less than the new limit of 100 columns
+>>> Linus announced a few weeks ago. checkpatch.pl was updated too:
+>>> https://www.phoronix.com/scan.php?page=news_item&px=Linux-Kernel-Deprecates-80-Col
+>>
+>> Yay finally :) Thanks,
+> 
+> :)
+> 
+>>
+>>
+>>>>
+>>>>>  	else
+>>>>> -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
+>>>>> +		boundary_size = IOMMU_PAGE_ALIGN(1UL << 32, tbl);
+>>>>>  	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
+>>>>>  
+>>>>>  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
+>>>>> @@ -858,6 +857,7 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
+>>>>>  	unsigned int order;
+>>>>>  	unsigned int nio_pages, io_order;
+>>>>>  	struct page *page;
+>>>>> +	size_t size_io = size;
+>>>>>  
+>>>>>  	size = PAGE_ALIGN(size);
+>>>>>  	order = get_order(size);
+>>>>> @@ -884,8 +884,9 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
+>>>>>  	memset(ret, 0, size);
+>>>>>  
+>>>>>  	/* Set up tces to cover the allocated range */
+>>>>> -	nio_pages = size >> tbl->it_page_shift;
+>>>>> -	io_order = get_iommu_order(size, tbl);
+>>>>> +	size_io = IOMMU_PAGE_ALIGN(size_io, tbl);
+>>>>> +	nio_pages = size_io >> tbl->it_page_shift;
+>>>>> +	io_order = get_iommu_order(size_io, tbl);
+>>>>>  	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
+>>>>>  			      mask >> tbl->it_page_shift, io_order, 0);
+>>>>>  	if (mapping == DMA_MAPPING_ERROR) {
+>>>>> @@ -900,11 +901,11 @@ void iommu_free_coherent(struct iommu_table *tbl, size_t size,
+>>>>>  			 void *vaddr, dma_addr_t dma_handle)
+>>>>>  {
+>>>>>  	if (tbl) {
+>>>>> -		unsigned int nio_pages;
+>>>>> +		size_t size_io = IOMMU_PAGE_ALIGN(size, tbl);
+>>>>> +		unsigned int nio_pages = size_io >> tbl->it_page_shift;
+>>>>>  
+>>>>> -		size = PAGE_ALIGN(size);
+>>>>> -		nio_pages = size >> tbl->it_page_shift;
+>>>>>  		iommu_free(tbl, dma_handle, nio_pages);
+>>>>> +
+>>>>
+>>>> Unrelated new line.
 >>>
->>>> Good, otherwise. Thanks,
+>>> Will be removed. Thanks!
 >>>
->>> Thank you for reviewing!
->>>  
->>>
->>>
+>>>>
+>>>>>  		size = PAGE_ALIGN(size);
+>>>>>  		free_pages((unsigned long)vaddr, get_order(size));
+>>>>>  	}
+>>>>>
 > 
 
 -- 
