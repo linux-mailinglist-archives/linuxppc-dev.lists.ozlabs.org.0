@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E178C25714D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 02:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819DA257152
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 02:52:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfs663wwMzDqRb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 10:49:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bfs9R3Bh0zDqBv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Aug 2020 10:52:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,52 +18,52 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=aiQXvlVe; dkim-atps=neutral
+ header.s=20150623 header.b=Hc5BjyPG; dkim-atps=neutral
 Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
  [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfs456sB2zDqRG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 10:47:33 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id kx11so2104839pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 17:47:32 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bfs7P4zZ8zDqRG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Aug 2020 10:50:25 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id ds1so2252348pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Aug 2020 17:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=L2uPUbd0diUizFH/aG7R18BTYC2GKF82YOhW5bfvmaE=;
- b=aiQXvlVe91+tRR7IJAiHSRYz8WLvkiqoR/eFB9uGZ6q2CXHTafY4a3fFMX3KOV14HY
- +45wopGPwmC7B/I03pHC5sonoGvQAZCo5Cldnzotx1/QyxhbsiN90zPjtEbXuaVZkwrA
- eQftUgpyE/nmiFSpRH7sguWZ6LJ19DI+dSkpgdgsZJq8I/pWfRQvosKcE5KTJ8geoXl1
- mw/tX+1aCJxkOjKZxJV+pAGFmmlUZZs2uF1CspjE9Jk1YGbzZJ5Nhck+hqLaX5qK1Z6z
- mdq1NTqhzd5dHXI39vZsGfs+NVx/W7Ii1HFYqQGkaRzUpNAnNEey/r9yJ4uxxXV4ajZM
- iQ8w==
+ bh=T72j5wynVI1JVm5QYaekdyXfWhQKc9IY9oJ7ZdZfgrI=;
+ b=Hc5BjyPGwhtnMrYBw+FUYMSy1sg0AoBxyUp0Tse+A7cXvELA8mA630/2240HRQt8Ez
+ W+DN7Vm+88l5OOuHkg6GXor8IDJMY6v2viB9wTWYAgysZ4zU/C32V8UpigLJkzgJ5fiS
+ +mxeGjyQO6G7q1hQYTC5/TdGg5WXafgj1Udn1Zu+2pFK+JyZFvvochhTOFny2KIV1mq/
+ K6+2KaqRM/NPa+YERRSRwtfCSvghzDyYobJn3oY2fMVR5BsN1f7Ym4GBF6/YP957RB3Z
+ jp4LDRXOCc/qdcnOoreONpwVd16Bl5d86vkB+OkkouqkslgY7Wk4oKbbdtk4UJWYK+sB
+ MAIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:autocrypt
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=L2uPUbd0diUizFH/aG7R18BTYC2GKF82YOhW5bfvmaE=;
- b=qfysqt0ScfIRZVFXHEpzbIClUK44F1u8/I+I5dyWKtFZ2v3GJt1OnvZfmNSLVdRjN6
- wdbEizHfSPMlfWt4z/ezdha9qtpRQgoOcO6RQIcjHjdjPAam/RxOw4Uar3lRhYJxXfj0
- MSM+0rv3qvFuPk5ODq3VSe+FrqU/eSbi234YpnQtix+JAt7XHD4JzAMEez9sYNTY+WVA
- K2JhjdlLZ7LPfC7OR0HKfmqpQHfmHg0L+oJuzJETNdJAqWnSHxhr2BhYcV17L9vxkWRc
- K2i+MVrK+OE/7LOIWfKRB/GdHo8oqsgoooq4yak9U4F1OTDnoPplpp2a83cMIEMeiWKz
- 1YRw==
-X-Gm-Message-State: AOAM531+fHsouPf+f6RP5/p2L53zicpz+Xm/CYvD8JRpIIMzxvNkZxRT
- A2Obxo0UOkTPyL2/csyUCIFR/g==
-X-Google-Smtp-Source: ABdhPJydC1w3S16BGGStxnLDdFfR75Yp9pasz1f4+1XeLYpZYCUrddpUbDNkliDxUay5FW50KnSoJA==
-X-Received: by 2002:a17:902:c402:: with SMTP id
- k2mr7001722plk.308.1598834849823; 
- Sun, 30 Aug 2020 17:47:29 -0700 (PDT)
+ bh=T72j5wynVI1JVm5QYaekdyXfWhQKc9IY9oJ7ZdZfgrI=;
+ b=eWpaieKA3T/08TQIZMAN/SLT3GVfblVJeYP9jYB7PB6QXCtxgecxyw3hYIcfNJjle3
+ 6EpD2iSbZ53MxNptaOfaBX2BjWT/WFCsY5EiXgv4kuBGToTl2afxOqTHybv+nl0cTpyZ
+ GtC4svdR1UBrznsjZd7Si5AQaUn38bsLSfbvoSRUQnFmTYfdOSXi9LvVCs5WnKHppsUa
+ q9rcsHcZYSkiQTk7Un7CuNeyvtsT4DzJ61sNqnF7/jbrMw/xJOoeQFTbmiTFspbiwJyY
+ XVyLRKPrYE8UnEIwfBqeEnNLq+P8C+5yB0jIqiyE0k3PZk4J5zto0FS8dGM8lk7NaR4z
+ tuyg==
+X-Gm-Message-State: AOAM531Qje26f/RZiD0BCZJkIuLMk+1kvqH2d/NkQBQXqQjv6wS8ROWk
+ 9HgG83ykTqdqe/yW8KwHi1sXG0J7pvH2ag==
+X-Google-Smtp-Source: ABdhPJzXW3yHm0QPGiDAqOBvMiwye/arrSSA89MzkAmAkRNLT8WD8A8x9rFSnxLlHHbpj8qCqKoM7w==
+X-Received: by 2002:a17:90b:4ac7:: with SMTP id
+ mh7mr7968021pjb.99.1598835023639; 
+ Sun, 30 Aug 2020 17:50:23 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
  [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id u21sm5197991pjn.27.2020.08.30.17.47.24
+ by smtp.gmail.com with ESMTPSA id v13sm5814819pfn.153.2020.08.30.17.50.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Aug 2020 17:47:29 -0700 (PDT)
-Subject: Re: [PATCH v1 02/10] powerpc/kernel/iommu: Align size for
- IOMMU_PAGE_SIZE on iommu_*_coherent()
+ Sun, 30 Aug 2020 17:50:22 -0700 (PDT)
+Subject: Re: [PATCH v1 07/10] powerpc/pseries/iommu: Allow DDW windows
+ starting at 0x00
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Christophe Leroy
@@ -73,11 +73,9 @@ To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
 References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-3-leobras.c@gmail.com>
- <7b9640e0-568f-1470-40f4-a3ccec8abcf2@ozlabs.ru>
- <c67c66e466ad27d15aa2b970c48d2336d95b2971.camel@gmail.com>
- <da473389-f921-075a-ec8e-ea516de4f177@ozlabs.ru>
- <2aacd45f047489642da1731c92d3555ad101e3c7.camel@gmail.com>
+ <20200817234033.442511-8-leobras.c@gmail.com>
+ <3fda1c2d-20f2-7789-e072-47fe966f0265@ozlabs.ru>
+ <2d2b1a048faf75c8e68f95b3bf2d9514721786c6.camel@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -152,12 +150,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <81f106bd-8962-22f2-f14a-378d3486f57e@ozlabs.ru>
-Date: Mon, 31 Aug 2020 10:47:22 +1000
+Message-ID: <cc8e2e4b-561c-3f1d-7a00-f1043753c964@ozlabs.ru>
+Date: Mon, 31 Aug 2020 10:50:16 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <2aacd45f047489642da1731c92d3555ad101e3c7.camel@gmail.com>
+In-Reply-To: <2d2b1a048faf75c8e68f95b3bf2d9514721786c6.camel@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -179,161 +177,121 @@ Sender: "Linuxppc-dev"
 
 
 
-On 29/08/2020 06:41, Leonardo Bras wrote:
-> On Fri, 2020-08-28 at 11:40 +1000, Alexey Kardashevskiy wrote:
->>> I think it would be better to keep the code as much generic as possible
->>> regarding page sizes. 
+On 29/08/2020 00:04, Leonardo Bras wrote:
+> On Mon, 2020-08-24 at 13:44 +1000, Alexey Kardashevskiy wrote:
 >>
->> Then you need to test it. Does 4K guest even boot (it should but I would
->> not bet much on it)?
+>>> On 18/08/2020 09:40, Leonardo Bras wrote:
+>>> enable_ddw() currently returns the address of the DMA window, which is
+>>> considered invalid if has the value 0x00.
+>>>
+>>> Also, it only considers valid an address returned from find_existing_ddw
+>>> if it's not 0x00.
+>>>
+>>> Changing this behavior makes sense, given the users of enable_ddw() only
+>>> need to know if direct mapping is possible. It can also allow a DMA window
+>>> starting at 0x00 to be used.
+>>>
+>>> This will be helpful for using a DDW with indirect mapping, as the window
+>>> address will be different than 0x00, but it will not map the whole
+>>> partition.
+>>>
+>>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+>>> ---
+>>>  arch/powerpc/platforms/pseries/iommu.c | 30 ++++++++++++--------------
+>>>  1 file changed, 14 insertions(+), 16 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>>> index fcdefcc0f365..4031127c9537 100644
+>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>> @@ -852,24 +852,25 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
+>>>  			np, ret);
+>>>  }
+>>>>  
+>>> -static u64 find_existing_ddw(struct device_node *pdn)
+>>> +static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
+>>>  {
+>>>  	struct direct_window *window;
+>>>  	const struct dynamic_dma_window_prop *direct64;
+>>> -	u64 dma_addr = 0;
+>>> +	bool found = false;
+>>>  
+>>>  	spin_lock(&direct_window_list_lock);
+>>>  	/* check if we already created a window and dupe that config if so */
+>>>  	list_for_each_entry(window, &direct_window_list, list) {
+>>>  		if (window->device == pdn) {
+>>>  			direct64 = window->prop;
+>>> -			dma_addr = be64_to_cpu(direct64->dma_base);
+>>> +			*dma_addr = be64_to_cpu(direct64->dma_base);
+>>> +			found = true;
+>>>  			break;
+>>>  		}
+>>>  	}
+>>>  	spin_unlock(&direct_window_list_lock);
+>>>  
+>>> -	return dma_addr;
+>>> +	return found;
+>>>  }
+>>>  
+>>>  static struct direct_window *ddw_list_add(struct device_node *pdn,
+>>> @@ -1131,15 +1132,15 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+>>>   * pdn: the parent pe node with the ibm,dma_window property
+>>>   * Future: also check if we can remap the base window for our base page size
+>>>   *
+>>> - * returns the dma offset for use by the direct mapped DMA code.
+>>> + * returns true if can map all pages (direct mapping), false otherwise..
+>>>   */
+>>> -static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>> +static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  {
+>>>  	int len, ret;
+>>>  	struct ddw_query_response query;
+>>>  	struct ddw_create_response create;
+>>>  	int page_shift;
+>>> -	u64 dma_addr, max_addr;
+>>> +	u64 max_addr;
+>>>  	struct device_node *dn;
+>>>  	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+>>>  	struct direct_window *window;
+>>> @@ -1150,8 +1151,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  
+>>>  	mutex_lock(&direct_window_init_mutex);
+>>>  
+>>> -	dma_addr = find_existing_ddw(pdn);
+>>> -	if (dma_addr != 0)
+>>> +	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset))
+>>>  		goto out_unlock;
+>>>  
+>>>  	/*
+>>> @@ -1292,7 +1292,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>>  		goto out_free_window;
+>>>  	}
+>>>  
+>>> -	dma_addr = be64_to_cpu(ddwprop->dma_base);
+>>> +	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
+>>
+>> Do not you need the same chunk in the find_existing_ddw() case above as
+>> well? Thanks,
 > 
-> Maybe testing with host 64k pagesize and IOMMU 16MB pagesize in qemu
-> should be enough, is there any chance to get indirect mapping in qemu
-> like this? (DDW but with smaller DMA window available) 
-
-
-You will have to hack the guest kernel to always do indirect mapping or
-hack QEMU's rtas_ibm_query_pe_dma_window() to return a small number of
-available TCEs. But you will be testing QEMU/KVM which behave quite
-differently to pHyp in this particular case.
-
-
-
->>>> Because if we want the former (==support), then we'll have to align the
->>>> size up to the bigger page size when allocating/zeroing system pages,
->>>> etc. 
->>>
->>> This part I don't understand. Why do we need to align everything to the
->>> bigger pagesize? 
->>>
->>> I mean, is not that enough that the range [ret, ret + size[ is both
->>> allocated by mm and mapped on a iommu range?
->>>
->>> Suppose a iommu_alloc_coherent() of 16kB on PAGESIZE = 4k and
->>> IOMMU_PAGE_SIZE() == 64k.
->>> Why 4 * cpu_pages mapped by a 64k IOMMU page is not enough? 
->>> All the space the user asked for is allocated and mapped for DMA.
->>
->> The user asked to map 16K, the rest - 48K - is used for something else
->> (may be even mapped to another device) but you are making all 64K
->> accessible by the device which only should be able to access 16K.
->>
->> In practice, if this happens, H_PUT_TCE will simply fail.
+> The new signature of find_existing_ddw() is 
+> static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
 > 
-> I have noticed mlx5 driver getting a few bytes in a buffer, and using
-> iommu_map_page(). It does map a whole page for as few bytes as the user
-
-
-Whole 4K system page or whole 64K iommu page?
-
-> wants mapped, and the other bytes get used for something else, or just
-> mapped on another DMA page.
-> It seems to work fine.  
-
-
-
-With 4K system page and 64K IOMMU page? In practice it would take an
-effort or/and bad luck to see it crashing. Thanks,
-
-
-
+> And on enable_ddw(), we call 
+> find_existing_ddw(pdn, &dev->dev.archdata.dma_offset)
 > 
->>
->>
->>>> Bigger pages are not the case here as I understand it.
->>>
->>> I did not get this part, what do you mean?
->>
->> Possible IOMMU page sizes are 4K, 64K, 2M, 16M, 256M, 1GB, and the
->> supported set of sizes is different for P8/P9 and type of IO (PHB,
->> NVLink/CAPI).
->>
->>
->>>>> Update those functions to guarantee alignment with requested size
->>>>> using IOMMU_PAGE_ALIGN() before doing iommu_alloc() / iommu_free().
->>>>>
->>>>> Also, on iommu_range_alloc(), replace ALIGN(n, 1 << tbl->it_page_shift)
->>>>> with IOMMU_PAGE_ALIGN(n, tbl), which seems easier to read.
->>>>>
->>>>> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
->>>>> ---
->>>>>  arch/powerpc/kernel/iommu.c | 17 +++++++++--------
->>>>>  1 file changed, 9 insertions(+), 8 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
->>>>> index 9704f3f76e63..d7086087830f 100644
->>>>> --- a/arch/powerpc/kernel/iommu.c
->>>>> +++ b/arch/powerpc/kernel/iommu.c
->>>>> @@ -237,10 +237,9 @@ static unsigned long iommu_range_alloc(struct device *dev,
->>>>>  	}
->>>>>  
->>>>>  	if (dev)
->>>>> -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
->>>>> -				      1 << tbl->it_page_shift);
->>>>> +		boundary_size = IOMMU_PAGE_ALIGN(dma_get_seg_boundary(dev) + 1, tbl);
->>>>
->>>> Run checkpatch.pl, should complain about a long line.
->>>
->>> It's 86 columns long, which is less than the new limit of 100 columns
->>> Linus announced a few weeks ago. checkpatch.pl was updated too:
->>> https://www.phoronix.com/scan.php?page=news_item&px=Linux-Kernel-Deprecates-80-Col
->>
->> Yay finally :) Thanks,
+> And inside the function we do:
+> *dma_addr = be64_to_cpu(direct64->dma_base);
 > 
-> :)
-> 
->>
->>
->>>>
->>>>>  	else
->>>>> -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
->>>>> +		boundary_size = IOMMU_PAGE_ALIGN(1UL << 32, tbl);
->>>>>  	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
->>>>>  
->>>>>  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
->>>>> @@ -858,6 +857,7 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
->>>>>  	unsigned int order;
->>>>>  	unsigned int nio_pages, io_order;
->>>>>  	struct page *page;
->>>>> +	size_t size_io = size;
->>>>>  
->>>>>  	size = PAGE_ALIGN(size);
->>>>>  	order = get_order(size);
->>>>> @@ -884,8 +884,9 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
->>>>>  	memset(ret, 0, size);
->>>>>  
->>>>>  	/* Set up tces to cover the allocated range */
->>>>> -	nio_pages = size >> tbl->it_page_shift;
->>>>> -	io_order = get_iommu_order(size, tbl);
->>>>> +	size_io = IOMMU_PAGE_ALIGN(size_io, tbl);
->>>>> +	nio_pages = size_io >> tbl->it_page_shift;
->>>>> +	io_order = get_iommu_order(size_io, tbl);
->>>>>  	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
->>>>>  			      mask >> tbl->it_page_shift, io_order, 0);
->>>>>  	if (mapping == DMA_MAPPING_ERROR) {
->>>>> @@ -900,11 +901,11 @@ void iommu_free_coherent(struct iommu_table *tbl, size_t size,
->>>>>  			 void *vaddr, dma_addr_t dma_handle)
->>>>>  {
->>>>>  	if (tbl) {
->>>>> -		unsigned int nio_pages;
->>>>> +		size_t size_io = IOMMU_PAGE_ALIGN(size, tbl);
->>>>> +		unsigned int nio_pages = size_io >> tbl->it_page_shift;
->>>>>  
->>>>> -		size = PAGE_ALIGN(size);
->>>>> -		nio_pages = size >> tbl->it_page_shift;
->>>>>  		iommu_free(tbl, dma_handle, nio_pages);
->>>>> +
->>>>
->>>> Unrelated new line.
->>>
->>> Will be removed. Thanks!
->>>
->>>>
->>>>>  		size = PAGE_ALIGN(size);
->>>>>  		free_pages((unsigned long)vaddr, get_order(size));
->>>>>  	}
->>>>>
-> 
+> I think it's the same as the chunk before.
+> Am I missing something?
+
+ah no, sorry, you are not missing anything.
+
+
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+
+
+
 
 -- 
 Alexey
