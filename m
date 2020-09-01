@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73E7258A10
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 10:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CFD258A1B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 10:12:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgfmc6gfkzDqX0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 18:06:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgfv06HjYzDq9H
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 18:12:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,41 +17,39 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BgfjB28xKzDqXN
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 18:03:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bgfs36bWdzDqFF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 18:10:46 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Bgfj35351z9v0Hp;
- Tue,  1 Sep 2020 10:03:51 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Bgfry2VXhz9v0Hs;
+ Tue,  1 Sep 2020 10:10:42 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id o-eFXfCEiBu6; Tue,  1 Sep 2020 10:03:51 +0200 (CEST)
+ with ESMTP id bsZ0Kuxa-RDg; Tue,  1 Sep 2020 10:10:42 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Bgfj348tSz9v0Hm;
- Tue,  1 Sep 2020 10:03:51 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Bgfry13f8z9v0Hm;
+ Tue,  1 Sep 2020 10:10:42 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7698C8B774;
- Tue,  1 Sep 2020 10:03:52 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2206A8B75E;
+ Tue,  1 Sep 2020 10:10:43 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id UvDPBkwWDzC9; Tue,  1 Sep 2020 10:03:52 +0200 (CEST)
+ with ESMTP id P9d6EWu7goK6; Tue,  1 Sep 2020 10:10:43 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 838268B75E;
- Tue,  1 Sep 2020 10:03:51 +0200 (CEST)
-Subject: Re: [PATCH v2 00/13] mm/debug_vm_pgtable fixes
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
- <52e9743e-fa2f-3fd2-f50e-2c6c38464b96@arm.com>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 70E8B8B777;
+ Tue,  1 Sep 2020 10:10:42 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/mm: Remove DEBUG_VM_PGTABLE support on ppc64
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+References: <20200901080245.67950-1-aneesh.kumar@linux.ibm.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <c0de2c68-826b-bf0f-dc2c-a501fa7bef38@csgroup.eu>
-Date: Tue, 1 Sep 2020 10:03:43 +0200
+Message-ID: <4519baaa-cb95-6ebb-200f-4520badb56f6@csgroup.eu>
+Date: Tue, 1 Sep 2020 10:10:33 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <52e9743e-fa2f-3fd2-f50e-2c6c38464b96@arm.com>
+In-Reply-To: <20200901080245.67950-1-aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -66,54 +64,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Qian Cai <cai@lca.pw>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- linuxppc-dev@lists.ozlabs.org,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 21/08/2020 à 10:51, Anshuman Khandual a écrit :
+Le 01/09/2020 à 10:02, Aneesh Kumar K.V a écrit :
+> The test is broken w.r.t page table update rules and results in kernel
+> crash as below. Disable the support untill we get the tests updated.
 > 
-> On 08/19/2020 06:30 PM, Aneesh Kumar K.V wrote:
->> This patch series includes fixes for debug_vm_pgtable test code so that
->> they follow page table updates rules correctly. The first two patches introduce
->> changes w.r.t ppc64. The patches are included in this series for completeness. We can
->> merge them via ppc64 tree if required.
->>
->> Hugetlb test is disabled on ppc64 because that needs larger change to satisfy
->> page table update rules.
->>
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-> 
-> Changes proposed here will impact other enabled platforms as well.
-> Adding the following folks and mailing lists, and hoping to get a
-> broader review and test coverage. Please do include them in the
-> next iteration as well.
-> 
-> + linux-arm-kernel@lists.infradead.org
-> + linux-s390@vger.kernel.org
-> + linux-snps-arc@lists.infradead.org
-> + x86@kernel.org
-> + linux-arch@vger.kernel.org
-> 
-> + Gerald Schaefer <gerald.schaefer@de.ibm.com>
-> + Christophe Leroy <christophe.leroy@c-s.fr>
+Any Fixes: tag ?
 
-Please don't use anymore the above address. Only use the one below.
+> ---
+>   arch/powerpc/Kconfig | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 65bed1fdeaad..787e829b6f25 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -116,7 +116,6 @@ config PPC
+>   	#
+>   	select ARCH_32BIT_OFF_T if PPC32
+>   	select ARCH_HAS_DEBUG_VIRTUAL
+> -	select ARCH_HAS_DEBUG_VM_PGTABLE
 
-> + Christophe Leroy <christophe.leroy@csgroup.eu>
-> + Vineet Gupta <vgupta@synopsys.com>
-> + Mike Rapoport <rppt@linux.ibm.com>
-> + Qian Cai <cai@lca.pw>
+
+You say you remove support for ppc64 but you are removing it for both 
+PPC64 and PPC32. Should you replace the line by:
+
+	select ARCH_HAS_DEBUG_VM_PGTABLE if PPC32
+
+>   	select ARCH_HAS_DEVMEM_IS_ALLOWED
+>   	select ARCH_HAS_ELF_RANDOMIZE
+>   	select ARCH_HAS_FORTIFY_SOURCE
 > 
 
-Thanks
+What about Documentation/features/debug/debug-vm-pgtable/arch-support.txt ?
+
 Christophe
