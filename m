@@ -1,59 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1812588FA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 09:26:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF18258940
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 09:33:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgdsq0N49zDqQH
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 17:26:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgf1P3fSCzDqHY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 17:32:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bgdqp5tmCzDqM1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 17:24:35 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Bgdqf4sSrz9v4j1;
- Tue,  1 Sep 2020 09:24:30 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Sue7XSqcYqIi; Tue,  1 Sep 2020 09:24:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Bgdqf43vxz9v4hy;
- Tue,  1 Sep 2020 09:24:30 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 84BA98B75E;
- Tue,  1 Sep 2020 09:24:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fN6AmSliq6_W; Tue,  1 Sep 2020 09:24:31 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 203528B774;
- Tue,  1 Sep 2020 09:24:31 +0200 (CEST)
-Subject: Re: [PATCH v11] Fixup for "powerpc/vdso: Provide
- __kernel_clock_gettime64() on vdso32"
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-References: <7b3e35bdf93b93f3f1f0dcb4e1f373ce3b8a0035.1598938114.git.christophe.leroy@csgroup.eu>
- <20200901071908.GF29521@kitsune.suse.cz>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <f0152154-1edb-a51e-b24e-443b072b8ea0@csgroup.eu>
-Date: Tue, 1 Sep 2020 09:24:32 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BgdzB2L5TzDqM1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 17:31:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=a/bpJOhS; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bgdz92lPxz9sTC;
+ Tue,  1 Sep 2020 17:31:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1598945461;
+ bh=03sHYm631sdFvHM5NaS/cwjM4VK1GZ0RfuJMTFnqpEc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=a/bpJOhSiqrggdqpabXGJruLmgoojqIjNOtKdWPNocerR0Tx+kpxlpwOBXWByNo/u
+ 4MMDvjMJXHZd3qpIFjDpNQwir2JtlbC9QuIRNfQv7+DKiRCdMAqVS2zB0NNm3xvlxi
+ hvo4hfX2X+T6n9TewBPyqOaQPF1dB6lLff4nNk3wepYL7lE7hDv4mTN4tfQemSqXSJ
+ WI1dVOLHIsHxXYqamewX3UAYivUNxFlBxI1JOPhVmYtR5K6iqZSaxTQcLo/zn3B6PJ
+ QNOduqvxUP/5omK0ZAxn1i6wfTDPjM1ab8plb48Tm0DDJw3DYQUCXwF5Hbpl36yYaa
+ HcDxgeuynTQ2A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v2 16/23] powerpc: use asm-generic/mmu_context.h for no-op
+ implementations
+In-Reply-To: <20200826145249.745432-17-npiggin@gmail.com>
+References: <20200826145249.745432-1-npiggin@gmail.com>
+ <20200826145249.745432-17-npiggin@gmail.com>
+Date: Tue, 01 Sep 2020 17:30:59 +1000
+Message-ID: <87sgc20x8s.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200901071908.GF29521@kitsune.suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,49 +59,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@ozlabs.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/include/asm/mmu_context.h | 22 +++++++---------------
+>  1 file changed, 7 insertions(+), 15 deletions(-)
 
-Le 01/09/2020 à 09:19, Michal Suchánek a écrit :
-> Hello,
-> 
-> can you add Fixes: ?
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-That's a commit which is still in powerpc/next-test.
-My intention was to provide something that Michael can squash/fixup into 
-the culprit commit.
-
-Christophe
+cheers
 
 
-> 
-> Thanks
-> 
-> Michal
-> 
-> On Tue, Sep 01, 2020 at 05:28:57AM +0000, Christophe Leroy wrote:
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/include/asm/vdso/gettimeofday.h | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
->> index 59a609a48b63..8da84722729b 100644
->> --- a/arch/powerpc/include/asm/vdso/gettimeofday.h
->> +++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
->> @@ -186,6 +186,8 @@ int __c_kernel_clock_getres(clockid_t clock_id, struct __kernel_timespec *res,
->>   #else
->>   int __c_kernel_clock_gettime(clockid_t clock, struct old_timespec32 *ts,
->>   			     const struct vdso_data *vd);
->> +int __c_kernel_clock_gettime64(clockid_t clock, struct __kernel_timespec *ts,
->> +			       const struct vdso_data *vd);
->>   int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res,
->>   			    const struct vdso_data *vd);
->>   #endif
->> -- 
->> 2.25.0
->>
+> diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+> index 7f3658a97384..bc22e247ab55 100644
+> --- a/arch/powerpc/include/asm/mmu_context.h
+> +++ b/arch/powerpc/include/asm/mmu_context.h
+> @@ -14,7 +14,9 @@
+>  /*
+>   * Most if the context management is out of line
+>   */
+> +#define init_new_context init_new_context
+>  extern int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
+> +#define destroy_context destroy_context
+>  extern void destroy_context(struct mm_struct *mm);
+>  #ifdef CONFIG_SPAPR_TCE_IOMMU
+>  struct mm_iommu_table_group_mem_t;
+> @@ -235,27 +237,15 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+>  }
+>  #define switch_mm_irqs_off switch_mm_irqs_off
+>  
+> -
+> -#define deactivate_mm(tsk,mm)	do { } while (0)
+> -
+> -/*
+> - * After we have set current->mm to a new value, this activates
+> - * the context for the new mm so we see the new mappings.
+> - */
+> -static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
+> -{
+> -	switch_mm(prev, next, current);
+> -}
+> -
+> -/* We don't currently use enter_lazy_tlb() for anything */
+> +#ifdef CONFIG_PPC_BOOK3E_64
+> +#define enter_lazy_tlb enter_lazy_tlb
+>  static inline void enter_lazy_tlb(struct mm_struct *mm,
+>  				  struct task_struct *tsk)
+>  {
+>  	/* 64-bit Book3E keeps track of current PGD in the PACA */
+> -#ifdef CONFIG_PPC_BOOK3E_64
+>  	get_paca()->pgd = NULL;
+> -#endif
+>  }
+> +#endif
+>  
+>  extern void arch_exit_mmap(struct mm_struct *mm);
+>  
+> @@ -298,5 +288,7 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
+>  	return 0;
+>  }
+>  
+> +#include <asm-generic/mmu_context.h>
+> +
+>  #endif /* __KERNEL__ */
+>  #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
+> -- 
+> 2.23.0
