@@ -2,38 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C837258B29
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 11:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FAF258B3F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 11:17:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BghF50L47zDqVd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 19:13:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BghKd03k1zDqVJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 19:17:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BghBm4CjYzDqQm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 19:11:11 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 5724168B05; Tue,  1 Sep 2020 11:11:05 +0200 (CEST)
-Date: Tue, 1 Sep 2020 11:11:05 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Subject: Re: [RESEND][PATCH 0/7] Avoid overflow at boundary_size
-Message-ID: <20200901091105.GA4959@lst.de>
-References: <20200831203811.8494-1-nicoleotsuka@gmail.com>
- <20200901073623.GA30418@lst.de> <20200901075401.GA5667@Asurada-Nvidia>
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BghDQ4W2NzDqTP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 19:12:36 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1D4D330E;
+ Tue,  1 Sep 2020 02:12:33 -0700 (PDT)
+Received: from [10.163.69.134] (unknown [10.163.69.134])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13CEF3F71F;
+ Tue,  1 Sep 2020 02:12:27 -0700 (PDT)
+Subject: Re: [PATCH v2 00/13] mm/debug_vm_pgtable fixes
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <20200819130107.478414-1-aneesh.kumar@linux.ibm.com>
+ <52e9743e-fa2f-3fd2-f50e-2c6c38464b96@arm.com>
+ <c0de2c68-826b-bf0f-dc2c-a501fa7bef38@csgroup.eu>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <74db4583-36a3-629b-9423-4e4961a91ea6@arm.com>
+Date: Tue, 1 Sep 2020 14:41:55 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200901075401.GA5667@Asurada-Nvidia>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <c0de2c68-826b-bf0f-dc2c-a501fa7bef38@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,42 +52,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, sfr@canb.auug.org.au, deller@gmx.de,
- x86@kernel.org, borntraeger@de.ibm.com, mingo@redhat.com, mattst88@gmail.com,
- fenghua.yu@intel.com, gor@linux.ibm.com, schnelle@linux.ibm.com,
- hca@linux.ibm.com, ink@jurassic.park.msu.ru, tglx@linutronix.de,
- gerald.schaefer@linux.ibm.com, rth@twiddle.net, tony.luck@intel.com,
- linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, bp@alien8.de,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Linux-Arch <linux-arch@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Qian Cai <cai@lca.pw>, Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 01, 2020 at 12:54:01AM -0700, Nicolin Chen wrote:
-> Hi Christoph,
-> 
-> On Tue, Sep 01, 2020 at 09:36:23AM +0200, Christoph Hellwig wrote:
-> > I really don't like all the open coded smarts in the various drivers.
-> > What do you think about a helper like the one in the untested patch
-> 
-> A helper function will be actually better. I was thinking of
-> one yet not very sure about the naming and where to put it.
-> 
-> > below (on top of your series).  Also please include the original
-> > segment boundary patch with the next resend so that the series has
-> > the full context.
-> 
-> I will use your change instead and resend with the ULONG_MAX
-> change. But in that case, should I make separate changes for
-> different files like this series, or just one single change
-> like yours?
-> 
-> Asking this as I was expecting that those changes would get
-> applied by different maintainers. But now it feels like you
-> will merge it to your tree at once?
 
-I guess one patch is fine.  I can queue it up in the dma-mapping
-tree as a prep patch for the default boundary change.
+
+On 09/01/2020 01:33 PM, Christophe Leroy wrote:
+> 
+> 
+> Le 21/08/2020 à 10:51, Anshuman Khandual a écrit :
+>>
+>> On 08/19/2020 06:30 PM, Aneesh Kumar K.V wrote:
+>>> This patch series includes fixes for debug_vm_pgtable test code so that
+>>> they follow page table updates rules correctly. The first two patches introduce
+>>> changes w.r.t ppc64. The patches are included in this series for completeness. We can
+>>> merge them via ppc64 tree if required.
+>>>
+>>> Hugetlb test is disabled on ppc64 because that needs larger change to satisfy
+>>> page table update rules.
+>>>
+> 
+>>
+>> Changes proposed here will impact other enabled platforms as well.
+>> Adding the following folks and mailing lists, and hoping to get a
+>> broader review and test coverage. Please do include them in the
+>> next iteration as well.
+>>
+>> + linux-arm-kernel@lists.infradead.org
+>> + linux-s390@vger.kernel.org
+>> + linux-snps-arc@lists.infradead.org
+>> + x86@kernel.org
+>> + linux-arch@vger.kernel.org
+>>
+>> + Gerald Schaefer <gerald.schaefer@de.ibm.com>
+>> + Christophe Leroy <christophe.leroy@c-s.fr>
+> 
+> Please don't use anymore the above address. Only use the one below.
+> 
+>> + Christophe Leroy <christophe.leroy@csgroup.eu>
+
+Sure, noted.
+
+>> + Vineet Gupta <vgupta@synopsys.com>
+>> + Mike Rapoport <rppt@linux.ibm.com>
+>> + Qian Cai <cai@lca.pw>
+>>
+> 
+> Thanks
+> Christophe
+> 
+>
