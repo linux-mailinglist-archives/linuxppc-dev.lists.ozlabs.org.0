@@ -1,69 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBC5258D75
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 13:31:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB83258DCA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 14:02:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BglK13qwtzDqZw
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 21:31:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgm0C6VPDzDqNQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 22:02:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
- helo=mail-qt1-x843.google.com; envelope-from=green.hu@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IERvtppr; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BglH016zPzDqXf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 21:30:00 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id p65so554638qtd.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 04:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=Bmg6XgtUWDx4HuERt6+WNca9MkrxDIzUrFEsZ8s0eNY=;
- b=IERvtpprRpsI2hed0dHnnYBJc2bTsfXDoVwNNjG0Ec1Sz8CRuOUarz+Porf5yRfHFu
- 30cRoDkuZP41QRrigZa6y9lS/Q9+jFle0rPTgtwQN4bp84V8ocprAVuzMQ9FqTehBEzY
- 4MDJIPAYpDQqg5MZ+6ZUTXTmOnuGZXEK8IgCV4orCkGUrRtsYcj/Ywc1ICPwnctC/GyI
- dJzhbEYwl61cZTl24h34xARkW2Zaqa/kOmK3OayGekDtkeFds1gFNQRmSyQ/QvyDfdw+
- OEnwNuiuobwmd/AEPMOV6cmL4S085Ju8J83/4o3yZA4u2o3mkHjbyG61560pFu+G2c5p
- TvfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=Bmg6XgtUWDx4HuERt6+WNca9MkrxDIzUrFEsZ8s0eNY=;
- b=J3jDl/Jwg/ikbtTIQmuKbmv/LD/rMp0tXedv+liApkzuVwxUPU5N1mpzIEeXykamkQ
- ZWVNq+N3ARYGDdQbKS9XUdIMvNNcIh9xsPRYraA75wT73CXiBtduN2vuy3XAE4mvNBub
- 0RE1P0jo20TyEtsApgFIaeL0wGHv2agkxfKD8VvMZTR2R0TpMfQmrXQBlBqgV31+xpY+
- xB9Dxz/a0FzibvdhacWJa2ZaAaWwqjyTKm3BJ1IeRqFiQQtqfF9qt2FygbeA92zI2p3w
- 8E6vGiiKQBEUy68jBxxtNEdKo+Ek1Yeoz4cqNpDlIjnV4fXqGyVD55eItiIXOk5qap0E
- mLIA==
-X-Gm-Message-State: AOAM531nQvsZH/ClIInIdKL2osuEkqbdqigYJjrtwlKpzQf5NnzZNVKW
- RnaXqDLrbif+p18TsFRf6ZsaQ2/OhER8eSwqPJM=
-X-Google-Smtp-Source: ABdhPJwVT407rq1wSU6XLfBx35x7TqzLfOV0jdufGiWqhxHXDja0Uvn0+tpPRWaGd0lmv1UnRMyszboqVwIOVOloAYU=
-X-Received: by 2002:ac8:7741:: with SMTP id g1mr1183471qtu.28.1598959796622;
- Tue, 01 Sep 2020 04:29:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bgly34DzSzDqXt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 22:00:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=E17/BDja; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bgly111gqz9sVS;
+ Tue,  1 Sep 2020 22:00:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1598961626;
+ bh=bNF75aZajY8dqH+S8STH5rR/AlZdtT5JXvFy8iAsGMo=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=E17/BDja+BGxSe7whyBgQehfG9HYsbuS0N2b54qlT+T+cAB2KLGOtAxvb2OGmXrJA
+ bQthxgUNnHzp89QxLQQSNbrAwruCWESMzbhoRX5MjYqIdlS0OzA7TZ5ghxvom32cqH
+ nNAKwDeHIiQzirC92lmv6+7QMv0TEFTnqrQr4bGJ7XPvz9xuTp+rfsdQNeaA4qEPxN
+ m/yr7Odq5uA4LxkxOZ5RkVFmkUaTt3fxyUix1Y2acOTlY09WsqhDpqGJtmna8Vmr1q
+ BNj5ShKytxaGa3uyCI9wd1wZir0Dt1ZRWrQhpejLoWhQPRsYGYE4GkQPBxfdNU9ha0
+ Kq0RR7TEYO5PA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org
+Subject: Re: [PATCH 4/4] powerpc/64s/radix: Fix mm_cpumask trimming race vs
+ kthread_use_mm
+In-Reply-To: <20200828100022.1099682-5-npiggin@gmail.com>
+References: <20200828100022.1099682-1-npiggin@gmail.com>
+ <20200828100022.1099682-5-npiggin@gmail.com>
+Date: Tue, 01 Sep 2020 22:00:20 +1000
+Message-ID: <87pn751zcb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200831182239.480317-1-masahiroy@kernel.org>
-In-Reply-To: <20200831182239.480317-1-masahiroy@kernel.org>
-From: Greentime Hu <green.hu@gmail.com>
-Date: Tue, 1 Sep 2020 19:29:19 +0800
-Message-ID: <CAEbi=3cqogHs=p_y=_jfcC+D5a9e5=Nic=ECr_YvJ9p-DZEAJQ@mail.gmail.com>
-Subject: Re: [PATCH] arch: vdso: add vdso linker script to 'targets' instead
- of extra-y
-To: Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,127 +59,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Nick Hu <nickhu@andestech.com>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <masahiroy@kernel.org> =E6=96=BC 2020=E5=B9=B49=E6=9C=881=
-=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8A=E5=8D=882:23=E5=AF=AB=E9=81=93=EF=BC=
-=9A
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Commit 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of
+> single-threaded mm_cpumask") added a mechanism to trim the mm_cpumask of
+> a process under certain conditions. One of the assumptions is that
+> mm_users would not be incremented via a reference outside the process
+> context with mmget_not_zero() then go on to kthread_use_mm() via that
+> reference.
 >
-> The vdso linker script is preprocessed on demand.
-> Adding it to 'targets' is enough to include the .cmd file.
+> That invariant was broken by io_uring code (see previous sparc64 fix),
+> but I'll point Fixes: to the original powerpc commit because we are
+> changing that assumption going forward, so this will make backports
+> match up.
 >
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Fix this by no longer relying on that assumption, but by having each CPU
+> check the mm is not being used, and clearing their own bit from the mask
+> if it's okay. This fix relies on commit 38cf307c1f20 ("mm: fix
+> kthread_use_mm() vs TLB invalidate") to disable irqs over the mm switch,
+> and ARCH_WANT_IRQS_OFF_ACTIVATE_MM to be enabled.
+
+You could use:
+
+Depends-on: 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB invalidate")
+
+> Fixes: 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of single-threaded mm_cpumask")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->
->  arch/arm64/kernel/vdso/Makefile     | 2 +-
->  arch/arm64/kernel/vdso32/Makefile   | 2 +-
->  arch/nds32/kernel/vdso/Makefile     | 2 +-
->  arch/powerpc/kernel/vdso32/Makefile | 2 +-
->  arch/powerpc/kernel/vdso64/Makefile | 2 +-
->  arch/s390/kernel/vdso64/Makefile    | 2 +-
->  6 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Mak=
-efile
-> index 45d5cfe46429..7cd8aafbe96e 100644
-> --- a/arch/arm64/kernel/vdso/Makefile
-> +++ b/arch/arm64/kernel/vdso/Makefile
-> @@ -54,7 +54,7 @@ endif
->  GCOV_PROFILE :=3D n
->
->  obj-y +=3D vdso.o
-> -extra-y +=3D vdso.lds
-> +targets +=3D vdso.lds
->  CPPFLAGS_vdso.lds +=3D -P -C -U$(ARCH)
->
->  # Force dependency (incbin is bad)
-> diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32=
-/Makefile
-> index d6adb4677c25..572475b7b7ed 100644
-> --- a/arch/arm64/kernel/vdso32/Makefile
-> +++ b/arch/arm64/kernel/vdso32/Makefile
-> @@ -155,7 +155,7 @@ asm-obj-vdso :=3D $(addprefix $(obj)/, $(asm-obj-vdso=
-))
->  obj-vdso :=3D $(c-obj-vdso) $(c-obj-vdso-gettimeofday) $(asm-obj-vdso)
->
->  obj-y +=3D vdso.o
-> -extra-y +=3D vdso.lds
-> +targets +=3D vdso.lds
->  CPPFLAGS_vdso.lds +=3D -P -C -U$(ARCH)
->
->  # Force dependency (vdso.s includes vdso.so through incbin)
-> diff --git a/arch/nds32/kernel/vdso/Makefile b/arch/nds32/kernel/vdso/Mak=
-efile
-> index 7c3c1ccb196e..55df25ef0057 100644
-> --- a/arch/nds32/kernel/vdso/Makefile
-> +++ b/arch/nds32/kernel/vdso/Makefile
-> @@ -20,7 +20,7 @@ GCOV_PROFILE :=3D n
->
->
->  obj-y +=3D vdso.o
-> -extra-y +=3D vdso.lds
-> +targets +=3D vdso.lds
->  CPPFLAGS_vdso.lds +=3D -P -C -U$(ARCH)
->
->  # Force dependency
-> diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vd=
-so32/Makefile
-> index 87ab1152d5ce..fd5072a4c73c 100644
-> --- a/arch/powerpc/kernel/vdso32/Makefile
-> +++ b/arch/powerpc/kernel/vdso32/Makefile
-> @@ -29,7 +29,7 @@ ccflags-y :=3D -shared -fno-common -fno-builtin -nostdl=
-ib \
->  asflags-y :=3D -D__VDSO32__ -s
->
->  obj-y +=3D vdso32_wrapper.o
-> -extra-y +=3D vdso32.lds
-> +targets +=3D vdso32.lds
->  CPPFLAGS_vdso32.lds +=3D -P -C -Upowerpc
->
->  # Force dependency (incbin is bad)
-> diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vd=
-so64/Makefile
-> index 38c317f25141..c737b3ea3207 100644
-> --- a/arch/powerpc/kernel/vdso64/Makefile
-> +++ b/arch/powerpc/kernel/vdso64/Makefile
-> @@ -17,7 +17,7 @@ ccflags-y :=3D -shared -fno-common -fno-builtin -nostdl=
-ib \
->  asflags-y :=3D -D__VDSO64__ -s
->
->  obj-y +=3D vdso64_wrapper.o
-> -extra-y +=3D vdso64.lds
-> +targets +=3D vdso64.lds
->  CPPFLAGS_vdso64.lds +=3D -P -C -U$(ARCH)
->
->  # Force dependency (incbin is bad)
-> diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/M=
-akefile
-> index 4a66a1cb919b..d0d406cfffa9 100644
-> --- a/arch/s390/kernel/vdso64/Makefile
-> +++ b/arch/s390/kernel/vdso64/Makefile
-> @@ -25,7 +25,7 @@ $(targets:%=3D$(obj)/%.dbg): KBUILD_CFLAGS =3D $(KBUILD=
-_CFLAGS_64)
->  $(targets:%=3D$(obj)/%.dbg): KBUILD_AFLAGS =3D $(KBUILD_AFLAGS_64)
->
->  obj-y +=3D vdso64_wrapper.o
-> -extra-y +=3D vdso64.lds
-> +targets +=3D vdso64.lds
->  CPPFLAGS_vdso64.lds +=3D -P -C -U$(ARCH)
->
->  # Disable gcov profiling, ubsan and kasan for VDSO code
+>  arch/powerpc/include/asm/tlb.h       | 13 -------------
+>  arch/powerpc/mm/book3s64/radix_tlb.c | 23 ++++++++++++++++-------
+>  2 files changed, 16 insertions(+), 20 deletions(-)
 
-For nds32:
+One minor nit below if you're respinning anyway.
 
-Acked-by: Greentime Hu <green.hu@gmail.com>
+You know this stuff better than me, but I still reviewed it and it seems
+good to me.
+
+Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+
+> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
+> index fbc6f3002f23..d97f061fecac 100644
+> --- a/arch/powerpc/include/asm/tlb.h
+> +++ b/arch/powerpc/include/asm/tlb.h
+> @@ -66,19 +66,6 @@ static inline int mm_is_thread_local(struct mm_struct *mm)
+>  		return false;
+>  	return cpumask_test_cpu(smp_processor_id(), mm_cpumask(mm));
+>  }
+> -static inline void mm_reset_thread_local(struct mm_struct *mm)
+> -{
+> -	WARN_ON(atomic_read(&mm->context.copros) > 0);
+> -	/*
+> -	 * It's possible for mm_access to take a reference on mm_users to
+> -	 * access the remote mm from another thread, but it's not allowed
+> -	 * to set mm_cpumask, so mm_users may be > 1 here.
+> -	 */
+> -	WARN_ON(current->mm != mm);
+> -	atomic_set(&mm->context.active_cpus, 1);
+> -	cpumask_clear(mm_cpumask(mm));
+> -	cpumask_set_cpu(smp_processor_id(), mm_cpumask(mm));
+> -}
+>  #else /* CONFIG_PPC_BOOK3S_64 */
+>  static inline int mm_is_thread_local(struct mm_struct *mm)
+>  {
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+> index 0d233763441f..a421a0e3f930 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -645,19 +645,29 @@ static void do_exit_flush_lazy_tlb(void *arg)
+>  	struct mm_struct *mm = arg;
+>  	unsigned long pid = mm->context.id;
+>  
+> +	/*
+> +	 * A kthread could have done a mmget_not_zero() after the flushing CPU
+> +	 * checked mm_users == 1, and be in the process of kthread_use_mm when
+                                ^
+                                in mm_is_singlethreaded()
+
+Adding that reference would help join the dots for a new reader I think.
+
+cheers
+
+> +	 * interrupted here. In that case, current->mm will be set to mm,
+> +	 * because kthread_use_mm() setting ->mm and switching to the mm is
+> +	 * done with interrupts off.
+> +	 */
+>  	if (current->mm == mm)
+> -		return; /* Local CPU */
+> +		goto out_flush;
+>  
+>  	if (current->active_mm == mm) {
+> -		/*
+> -		 * Must be a kernel thread because sender is single-threaded.
+> -		 */
+> -		BUG_ON(current->mm);
+> +		WARN_ON_ONCE(current->mm != NULL);
+> +		/* Is a kernel thread and is using mm as the lazy tlb */
+>  		mmgrab(&init_mm);
+> -		switch_mm(mm, &init_mm, current);
+>  		current->active_mm = &init_mm;
+> +		switch_mm_irqs_off(mm, &init_mm, current);
+>  		mmdrop(mm);
+>  	}
+> +
+> +	atomic_dec(&mm->context.active_cpus);
+> +	cpumask_clear_cpu(smp_processor_id(), mm_cpumask(mm));
+> +
+> +out_flush:
+>  	_tlbiel_pid(pid, RIC_FLUSH_ALL);
+>  }
+>  
+> @@ -672,7 +682,6 @@ static void exit_flush_lazy_tlbs(struct mm_struct *mm)
+>  	 */
+>  	smp_call_function_many(mm_cpumask(mm), do_exit_flush_lazy_tlb,
+>  				(void *)mm, 1);
+> -	mm_reset_thread_local(mm);
+>  }
+>  
+>  void radix__flush_tlb_mm(struct mm_struct *mm)
