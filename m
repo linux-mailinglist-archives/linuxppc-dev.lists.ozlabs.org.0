@@ -2,88 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E16425A190
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 00:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB7525A1EE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 01:31:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh24K2KLYzDqVV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:36:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh3HT6HKvzDqRc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 09:31:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=alliedtelesis.co.nz
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gF5wBGgq; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=vDA3+zqu; 
+ dkim-atps=neutral
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [202.36.163.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh2296YmxzDqJs
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 08:34:57 +1000 (AEST)
-Received: by mail-qk1-x744.google.com with SMTP id w12so2508349qki.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 15:34:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=7MwszBb2S3FFQiLXkpCgU+/rECZFKBDqmxTKw+Pa+WQ=;
- b=gF5wBGgq9MXzk7YrLip5sEn+7JfsjKQQL8GaLDSMnLOPni/gzJtf/i+VAaRt5CAXmi
- 81VM1zqMFR6H6CTU9UlAeaSGr68oAssloF4YWHLJ2CeWQCekX03gVDcDwxu7Qcoo6exp
- Eiww8XPBDcbYYgYjZ/lcPCOUXMiJ0NS3OB0eF8iFVsWDLaTL6rMlLDQDlv43pBAjlKDe
- gQkBKxxE+1rnsfoHm97dYf5WuMgKwk4qlxXkqRlnfytqnAA08l47jj+RGuJ8hrUo55gW
- +jExI5lxvuHBlCAXAtWcQq/BGUkWicQL24e658YYu8oMQNw6K/MdfURnAFgQYwCA/JDP
- cRHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=7MwszBb2S3FFQiLXkpCgU+/rECZFKBDqmxTKw+Pa+WQ=;
- b=G37Hmy/k5JmBgW6bk5ydRONd1XHB7uj3MryOeEKdq6TBlGnKZKQCrfIJK40/8hkEfx
- Kk5SlY1LHJnpwTCaDhtPTUZB6z6GngqhuYgVdsnU3EX3arTY2QcYcI4yhzQp4Zar9iNv
- 8GGLkoIjAbqsgYSdYpASZh7H6wy1GknG4GrAkIhTrwzCnc2ii3RD3oMeQxac5aMXtTZo
- KocwhmqMgUtysREksgoRVwH2Kqehq4degH5sPNHM4nMc6rNGP3VC4iWyYzk4Vh32nwCj
- MQF90aGx3I75/kLYymGgEu0sUwA8Bq2oW6VZFUfDouo0JwGcFMYCkUYw/pIOXtBV7wMs
- CDNQ==
-X-Gm-Message-State: AOAM531t9DRWZ32WQfW6n1uF5ZiLaOoQAYKBKZTHMbBAaU8UQBxbrKBP
- hlTnFQpFBx9gq4X/x3A4+nQ=
-X-Google-Smtp-Source: ABdhPJzvWfquSTgJoCzf32bVlstktcaCMsBgQXBXdG3v/MsspFKc38an9Bg7hBzyRo3IvyI2GYy9cQ==
-X-Received: by 2002:a37:9f95:: with SMTP id i143mr4206169qke.121.1598999694218; 
- Tue, 01 Sep 2020 15:34:54 -0700 (PDT)
-Received: from LeoBras (179-125-130-62.dynamic.desktop.com.br.
- [179.125.130.62])
- by smtp.gmail.com with ESMTPSA id t186sm3167503qkc.98.2020.09.01.15.34.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Sep 2020 15:34:52 -0700 (PDT)
-Message-ID: <39ad3a9c103faf9c5fc2fd5700d8606eb4a2b67e.camel@gmail.com>
-Subject: Re: [PATCH v1 02/10] powerpc/kernel/iommu: Align size for
- IOMMU_PAGE_SIZE on iommu_*_coherent()
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Christophe Leroy
- <christophe.leroy@c-s.fr>,  Joel Stanley <joel@jms.id.au>, Thiago Jung
- Bauermann <bauerman@linux.ibm.com>, Ram Pai <linuxram@us.ibm.com>,  Brian
- King <brking@linux.vnet.ibm.com>, Murilo Fossa Vicentini
- <muvic@linux.ibm.com>, David Dai <zdai@linux.vnet.ibm.com>
-Date: Tue, 01 Sep 2020 19:34:46 -0300
-In-Reply-To: <81f106bd-8962-22f2-f14a-378d3486f57e@ozlabs.ru>
-References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-3-leobras.c@gmail.com>
- <7b9640e0-568f-1470-40f4-a3ccec8abcf2@ozlabs.ru>
- <c67c66e466ad27d15aa2b970c48d2336d95b2971.camel@gmail.com>
- <da473389-f921-075a-ec8e-ea516de4f177@ozlabs.ru>
- <2aacd45f047489642da1731c92d3555ad101e3c7.camel@gmail.com>
- <81f106bd-8962-22f2-f14a-378d3486f57e@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh3F86fMZzDqQV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 09:29:32 +1000 (AEST)
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 28FC5806B5;
+ Wed,  2 Sep 2020 11:29:30 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1599002970;
+ bh=vZrHA9j1neX/oBKuHXt/KZoqEVrjTWim+MGNjIR9Dmc=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=vDA3+zqu4w0zr4NCJBnXrN3yLUOljQuh4HVrR7aWgqaB8ZXUk5Nd0qz9BJKUnKwVt
+ oJPHMFrcQHJPjWfVxnX4/LT0xH2NEUZ+KjrUqNhcwD9TPZCN6u6Ux4KicgDtcImBIY
+ BALlLRsM12sIQHMj+kR01+99zLbdCIE+nKXhxwMAV2f7EnNUoFH8lr0rQrPG24XRe5
+ mRrCd+VUwWcvUPGQY2C/qCBwPwFK+VBX8ia0R3l8XvP28LXgzVWRAOoW8Yr2Yty3VH
+ 5LDmNSMeYDMc0rIm4bY3ND17b2NPcZxPpOZDRaCkxogc5pd4jSQjAkKGnz+OSpDX/b
+ Ta6I8ZdN7UmOw==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
+ mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
+ id <B5f4ed95a0000>; Wed, 02 Sep 2020 11:29:30 +1200
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
+ by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 2 Sep 2020 11:29:29 +1200
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.006; Wed, 2 Sep 2020 11:29:29 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Nicholas Piggin <npiggin@gmail.com>, "benh@kernel.crashing.org"
+ <benh@kernel.crashing.org>, "broonie@kernel.org" <broonie@kernel.org>,
+ "Heiner Kallweit" <hkallweit1@gmail.com>, "mpe@ellerman.id.au"
+ <mpe@ellerman.id.au>, "paulus@samba.org" <paulus@samba.org>
+Subject: Re: fsl_espi errors on v5.7.15
+Thread-Topic: fsl_espi errors on v5.7.15
+Thread-Index: AQHWceVnik7XsBYbp0S+yHVGh1hdQak2WMaAgAQdSwCAAz9MAIAAfdcAgAD5u4CAB+sMAIAAYfwAgAA6JQCAAPtUgIAAOXyAgABIbACAAAjRgIABm7wAgAD5+gCABBXPAIAAjqOAgAALRACAAAUXgIAA9CsAgADXoQCAAFDQAIABITyA
+Date: Tue, 1 Sep 2020 23:29:29 +0000
+Message-ID: <bfaaa982-33b9-c427-48a4-ddf9dd35e7b9@alliedtelesis.co.nz>
+References: <1598940515.6e06nwgi0c.astroid@bobo.none>
+In-Reply-To: <1598940515.6e06nwgi0c.astroid@bobo.none>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C992A02FF2309441B77AC0835BB560FE@atlnz.lc>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,166 +83,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2020-08-31 at 10:47 +1000, Alexey Kardashevskiy wrote:
-> > 
-> > Maybe testing with host 64k pagesize and IOMMU 16MB pagesize in qemu
-> > should be enough, is there any chance to get indirect mapping in qemu
-> > like this? (DDW but with smaller DMA window available) 
-> 
-> You will have to hack the guest kernel to always do indirect mapping or
-> hack QEMU's rtas_ibm_query_pe_dma_window() to return a small number of
-> available TCEs. But you will be testing QEMU/KVM which behave quite
-> differently to pHyp in this particular case.
-> 
-
-As you suggested before, building for 4k cpu pagesize should be the
-best approach. It would allow testing for both pHyp and qemu scenarios.
-
-> > > > > Because if we want the former (==support), then we'll have to align the
-> > > > > size up to the bigger page size when allocating/zeroing system pages,
-> > > > > etc. 
-> > > > 
-> > > > This part I don't understand. Why do we need to align everything to the
-> > > > bigger pagesize? 
-> > > > 
-> > > > I mean, is not that enough that the range [ret, ret + size[ is both
-> > > > allocated by mm and mapped on a iommu range?
-> > > > 
-> > > > Suppose a iommu_alloc_coherent() of 16kB on PAGESIZE = 4k and
-> > > > IOMMU_PAGE_SIZE() == 64k.
-> > > > Why 4 * cpu_pages mapped by a 64k IOMMU page is not enough? 
-> > > > All the space the user asked for is allocated and mapped for DMA.
-> > > 
-> > > The user asked to map 16K, the rest - 48K - is used for something else
-> > > (may be even mapped to another device) but you are making all 64K
-> > > accessible by the device which only should be able to access 16K.
-> > > 
-> > > In practice, if this happens, H_PUT_TCE will simply fail.
-> > 
-> > I have noticed mlx5 driver getting a few bytes in a buffer, and using
-> > iommu_map_page(). It does map a whole page for as few bytes as the user
-> 
-> Whole 4K system page or whole 64K iommu page?
-
-I tested it in 64k system page + 64k iommu page.
-
-The 64K system page may be used for anything, and a small portion of it
-(say 128 bytes) needs to be used for DMA. 
-The whole page is mapped by IOMMU, and the driver gets info of the
-memory range it should access / modify.
-
-> 
-> > wants mapped, and the other bytes get used for something else, or just
-> > mapped on another DMA page.
-> > It seems to work fine.  
-> 
-> 
-> With 4K system page and 64K IOMMU page? In practice it would take an
-> effort or/and bad luck to see it crashing. Thanks,
-
-I haven't tested it yet. On a 64k system page and 4k/64k iommu page, it
-works as described above.
-
-I am new to this, so I am trying to understand how a memory page mapped
-as DMA, and used for something else could be a problem.
-
-Thanks!
-
-> 
-> > > 
-> > > > > Bigger pages are not the case here as I understand it.
-> > > > 
-> > > > I did not get this part, what do you mean?
-> > > 
-> > > Possible IOMMU page sizes are 4K, 64K, 2M, 16M, 256M, 1GB, and the
-> > > supported set of sizes is different for P8/P9 and type of IO (PHB,
-> > > NVLink/CAPI).
-> > > 
-> > > 
-> > > > > > Update those functions to guarantee alignment with requested size
-> > > > > > using IOMMU_PAGE_ALIGN() before doing iommu_alloc() / iommu_free().
-> > > > > > 
-> > > > > > Also, on iommu_range_alloc(), replace ALIGN(n, 1 << tbl->it_page_shift)
-> > > > > > with IOMMU_PAGE_ALIGN(n, tbl), which seems easier to read.
-> > > > > > 
-> > > > > > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> > > > > > ---
-> > > > > >  arch/powerpc/kernel/iommu.c | 17 +++++++++--------
-> > > > > >  1 file changed, 9 insertions(+), 8 deletions(-)
-> > > > > > 
-> > > > > > diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> > > > > > index 9704f3f76e63..d7086087830f 100644
-> > > > > > --- a/arch/powerpc/kernel/iommu.c
-> > > > > > +++ b/arch/powerpc/kernel/iommu.c
-> > > > > > @@ -237,10 +237,9 @@ static unsigned long iommu_range_alloc(struct device *dev,
-> > > > > >  	}
-> > > > > >  
-> > > > > >  	if (dev)
-> > > > > > -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
-> > > > > > -				      1 << tbl->it_page_shift);
-> > > > > > +		boundary_size = IOMMU_PAGE_ALIGN(dma_get_seg_boundary(dev) + 1, tbl);
-> > > > > 
-> > > > > Run checkpatch.pl, should complain about a long line.
-> > > > 
-> > > > It's 86 columns long, which is less than the new limit of 100 columns
-> > > > Linus announced a few weeks ago. checkpatch.pl was updated too:
-> > > > https://www.phoronix.com/scan.php?page=news_item&px=Linux-Kernel-Deprecates-80-Col
-> > > 
-> > > Yay finally :) Thanks,
-> > 
-> > :)
-> > 
-> > > 
-> > > > > >  	else
-> > > > > > -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
-> > > > > > +		boundary_size = IOMMU_PAGE_ALIGN(1UL << 32, tbl);
-> > > > > >  	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
-> > > > > >  
-> > > > > >  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
-> > > > > > @@ -858,6 +857,7 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
-> > > > > >  	unsigned int order;
-> > > > > >  	unsigned int nio_pages, io_order;
-> > > > > >  	struct page *page;
-> > > > > > +	size_t size_io = size;
-> > > > > >  
-> > > > > >  	size = PAGE_ALIGN(size);
-> > > > > >  	order = get_order(size);
-> > > > > > @@ -884,8 +884,9 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
-> > > > > >  	memset(ret, 0, size);
-> > > > > >  
-> > > > > >  	/* Set up tces to cover the allocated range */
-> > > > > > -	nio_pages = size >> tbl->it_page_shift;
-> > > > > > -	io_order = get_iommu_order(size, tbl);
-> > > > > > +	size_io = IOMMU_PAGE_ALIGN(size_io, tbl);
-> > > > > > +	nio_pages = size_io >> tbl->it_page_shift;
-> > > > > > +	io_order = get_iommu_order(size_io, tbl);
-> > > > > >  	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
-> > > > > >  			      mask >> tbl->it_page_shift, io_order, 0);
-> > > > > >  	if (mapping == DMA_MAPPING_ERROR) {
-> > > > > > @@ -900,11 +901,11 @@ void iommu_free_coherent(struct iommu_table *tbl, size_t size,
-> > > > > >  			 void *vaddr, dma_addr_t dma_handle)
-> > > > > >  {
-> > > > > >  	if (tbl) {
-> > > > > > -		unsigned int nio_pages;
-> > > > > > +		size_t size_io = IOMMU_PAGE_ALIGN(size, tbl);
-> > > > > > +		unsigned int nio_pages = size_io >> tbl->it_page_shift;
-> > > > > >  
-> > > > > > -		size = PAGE_ALIGN(size);
-> > > > > > -		nio_pages = size >> tbl->it_page_shift;
-> > > > > >  		iommu_free(tbl, dma_handle, nio_pages);
-> > > > > > +
-> > > > > 
-> > > > > Unrelated new line.
-> > > > 
-> > > > Will be removed. Thanks!
-> > > > 
-> > > > > >  		size = PAGE_ALIGN(size);
-> > > > > >  		free_pages((unsigned long)vaddr, get_order(size));
-> > > > > >  	}
-> > > > > > 
-
+DQpPbiAxLzA5LzIwIDY6MTQgcG0sIE5pY2hvbGFzIFBpZ2dpbiB3cm90ZToNCj4gRXhjZXJwdHMg
+ZnJvbSBDaHJpcyBQYWNraGFtJ3MgbWVzc2FnZSBvZiBTZXB0ZW1iZXIgMSwgMjAyMCAxMToyNSBh
+bToNCj4+IE9uIDEvMDkvMjAgMTI6MzMgYW0sIEhlaW5lciBLYWxsd2VpdCB3cm90ZToNCj4+PiBP
+biAzMC4wOC4yMDIwIDIzOjU5LCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPj4+PiBPbiAzMS8wOC8y
+MCA5OjQxIGFtLCBIZWluZXIgS2FsbHdlaXQgd3JvdGU6DQo+Pj4+PiBPbiAzMC4wOC4yMDIwIDIz
+OjAwLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPj4+Pj4+IE9uIDMxLzA4LzIwIDEyOjMwIGFtLCBO
+aWNob2xhcyBQaWdnaW4gd3JvdGU6DQo+Pj4+Pj4+IEV4Y2VycHRzIGZyb20gQ2hyaXMgUGFja2hh
+bSdzIG1lc3NhZ2Ugb2YgQXVndXN0IDI4LCAyMDIwIDg6MDcgYW06DQo+Pj4+Pj4gPHNuaXA+DQo+
+Pj4+Pj4NCj4+Pj4+Pj4+Pj4+PiBJJ3ZlIGFsc28gbm93IHNlZW4gdGhlIFJYIEZJRk8gbm90IGVt
+cHR5IGVycm9yIG9uIHRoZSBUMjA4MFJEQg0KPj4+Pj4+Pj4+Pj4+DQo+Pj4+Pj4+Pj4+Pj4gZnNs
+X2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qgc2V0
+IQ0KPj4+Pj4+Pj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0
+IFNQSUVfRE9OIGlzbid0IHNldCENCj4+Pj4+Pj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3Bp
+OiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+Pj4+Pj4+Pj4+Pj4gZnNs
+X2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qgc2V0
+IQ0KPj4+Pj4+Pj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0
+IHJ4L3R4IGZpZm8ncyBhcmVuJ3QgZW1wdHkhDQo+Pj4+Pj4+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEw
+MDAwLnNwaTogU1BJRV9SWENOVCA9IDEsIFNQSUVfVFhDTlQgPSAzMg0KPj4+Pj4+Pj4+Pj4+DQo+
+Pj4+Pj4+Pj4+Pj4gV2l0aCBteSBjdXJyZW50IHdvcmthcm91bmQgb2YgZW1wdHlpbmcgdGhlIFJY
+IEZJRk8uIEl0IHNlZW1zDQo+Pj4+Pj4+Pj4+Pj4gc3Vydml2YWJsZS4gSW50ZXJlc3RpbmdseSBp
+dCBvbmx5IGV2ZXIgc2VlbXMgdG8gYmUgMSBleHRyYSBieXRlIGluIHRoZQ0KPj4+Pj4+Pj4+Pj4+
+IFJYIEZJRk8gYW5kIGl0IHNlZW1zIHRvIGJlIGFmdGVyIGVpdGhlciBhIFJFQURfU1Igb3IgYSBS
+RUFEX0ZTUi4NCj4+Pj4+Pj4+Pj4+Pg0KPj4+Pj4+Pj4+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5z
+cGk6IHR4IDcwDQo+Pj4+Pj4+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogcnggMDMNCj4+
+Pj4+Pj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBFeHRyYSBSWCAwMA0KPj4+Pj4+Pj4+
+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0IFNQSUVfRE9OIGlz
+bid0IHNldCENCj4+Pj4+Pj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBk
+b25lIGJ1dCByeC90eCBmaWZvJ3MgYXJlbid0IGVtcHR5IQ0KPj4+Pj4+Pj4+Pj4+IGZzbF9lc3Bp
+IGZmZTExMDAwMC5zcGk6IFNQSUVfUlhDTlQgPSAxLCBTUElFX1RYQ05UID0gMzINCj4+Pj4+Pj4+
+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiB0eCAwNQ0KPj4+Pj4+Pj4+Pj4+IGZzbF9lc3Bp
+IGZmZTExMDAwMC5zcGk6IHJ4IDAwDQo+Pj4+Pj4+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNw
+aTogRXh0cmEgUlggMDMNCj4+Pj4+Pj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFu
+c2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+Pj4+Pj4+Pj4+Pj4gZnNsX2VzcGkg
+ZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgcngvdHggZmlmbydzIGFyZW4ndCBlbXB0
+eSENCj4+Pj4+Pj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBTUElFX1JYQ05UID0gMSwg
+U1BJRV9UWENOVCA9IDMyDQo+Pj4+Pj4+Pj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogdHgg
+MDUNCj4+Pj4+Pj4+Pj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiByeCAwMA0KPj4+Pj4+Pj4+
+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IEV4dHJhIFJYIDAzDQo+Pj4+Pj4+Pj4+Pj4NCj4+
+Pj4+Pj4+Pj4+PiAgICAgIEZyb20gYWxsIHRoZSBNaWNyb24gU1BJLU5PUiBkYXRhc2hlZXRzIEkn
+dmUgZ290IGFjY2VzcyB0byBpdCBpcw0KPj4+Pj4+Pj4+Pj4+IHBvc3NpYmxlIHRvIGNvbnRpbnVh
+bGx5IHJlYWQgdGhlIFNSL0ZTUi4gQnV0IEkndmUgbm8gaWRlYSB3aHkgaXQNCj4+Pj4+Pj4+Pj4+
+PiBoYXBwZW5zIHNvbWUgdGltZXMgYW5kIG5vdCBvdGhlcnMuDQo+Pj4+Pj4+Pj4+PiBTbyBJIHRo
+aW5rIEkndmUgZ290IGEgcmVwcm9kdWN0aW9uIGFuZCBJIHRoaW5rIEkndmUgYmlzZWN0ZWQgdGhl
+IHByb2JsZW0NCj4+Pj4+Pj4+Pj4+IHRvIGNvbW1pdCAzMjgyYTNkYTI1YmQgKCJwb3dlcnBjLzY0
+OiBJbXBsZW1lbnQgc29mdCBpbnRlcnJ1cHQgcmVwbGF5IGluDQo+Pj4+Pj4+Pj4+PiBDIikuIE15
+IGRheSBpcyBqdXN0IGZpbmlzaGluZyBub3cgc28gSSBoYXZlbid0IGFwcGxpZWQgdG9vIG11Y2gg
+c2NydXRpbnkNCj4+Pj4+Pj4+Pj4+IHRvIHRoaXMgcmVzdWx0LiBHaXZlbiB0aGUgdmFyaW91cyBy
+YWJiaXQgaG9sZXMgSSd2ZSBiZWVuIGRvd24gb24gdGhpcw0KPj4+Pj4+Pj4+Pj4gaXNzdWUgYWxy
+ZWFkeSBJJ2QgdGFrZSB0aGlzIGluZm9ybWF0aW9uIHdpdGggYSBnb29kIGRlZ3JlZSBvZiBza2Vw
+dGljaXNtLg0KPj4+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4gT0ssIHNvIGFuIGVhc3kgdGVzdCBzaG91
+bGQgYmUgdG8gcmUtdGVzdCB3aXRoIGEgNS40IGtlcm5lbC4NCj4+Pj4+Pj4+Pj4gSXQgZG9lc24n
+dCBoYXZlIHlldCB0aGUgY2hhbmdlIHlvdSdyZSByZWZlcnJpbmcgdG8sIGFuZCB0aGUgZnNsLWVz
+cGkgZHJpdmVyDQo+Pj4+Pj4+Pj4+IGlzIGJhc2ljYWxseSB0aGUgc2FtZSBhcyBpbiA1LjcgKGp1
+c3QgdHdvIHNtYWxsIGNoYW5nZXMgaW4gNS43KS4NCj4+Pj4+Pj4+PiBUaGVyZSdzIDZjYzBjMTZk
+ODJmODggYW5kIG1heWJlIGFsc28gb3RoZXIgaW50ZXJydXB0IHJlbGF0ZWQgcGF0Y2hlcw0KPj4+
+Pj4+Pj4+IGFyb3VuZCB0aGlzIHRpbWUgdGhhdCBjb3VsZCBhZmZlY3QgYm9vayBFLCBzbyBpdCdz
+IGdvb2QgaWYgdGhhdCBleGFjdA0KPj4+Pj4+Pj4+IHBhdGNoIGlzIGNvbmZpcm1lZC4NCj4+Pj4+
+Pj4+IE15IGNvbmZpcm1hdGlvbiBpcyBiYXNpY2FsbHkgdGhhdCBJIGNhbiBpbmR1Y2UgdGhlIGlz
+c3VlIGluIGEgNS40IGtlcm5lbA0KPj4+Pj4+Pj4gYnkgY2hlcnJ5LXBpY2tpbmcgMzI4MmEzZGEy
+NWJkLiBJJ20gYWxzbyBhYmxlIHRvICJmaXgiIHRoZSBpc3N1ZSBpbg0KPj4+Pj4+Pj4gNS45LXJj
+MiBieSByZXZlcnRpbmcgdGhhdCBvbmUgY29tbWl0Lg0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+IEkgYm90
+aCBjYXNlcyBpdCdzIG5vdCBleGFjdGx5IGEgY2xlYW4gY2hlcnJ5LXBpY2svcmV2ZXJ0IHNvIEkg
+YWxzbw0KPj4+Pj4+Pj4gY29uZmlybWVkIHRoZSBiaXNlY3Rpb24gcmVzdWx0IGJ5IGJ1aWxkaW5n
+IGF0IDMyODJhM2RhMjViZCAod2hpY2ggc2Vlcw0KPj4+Pj4+Pj4gdGhlIGlzc3VlKSBhbmQgdGhl
+IGNvbW1pdCBqdXN0IGJlZm9yZSAod2hpY2ggZG9lcyBub3QpLg0KPj4+Pj4+PiBUaGFua3MgZm9y
+IHRlc3RpbmcsIHRoYXQgY29uZmlybXMgaXQgd2VsbC4NCj4+Pj4+Pj4NCj4+Pj4+Pj4gW3NuaXAg
+cGF0Y2hdDQo+Pj4+Pj4+DQo+Pj4+Pj4+PiBJIHN0aWxsIHNhdyB0aGUgaXNzdWUgd2l0aCB0aGlz
+IGNoYW5nZSBhcHBsaWVkLiBQUENfSVJRX1NPRlRfTUFTS19ERUJVRw0KPj4+Pj4+Pj4gZGlkbid0
+IHJlcG9ydCBhbnl0aGluZyAoZWl0aGVyIHdpdGggb3Igd2l0aG91dCB0aGUgY2hhbmdlIGFib3Zl
+KS4NCj4+Pj4+Pj4gT2theSwgaXQgd2FzIGEgYml0IG9mIGEgc2hvdCBpbiB0aGUgZGFyay4gSSBz
+dGlsbCBjYW4ndCBzZWUgd2hhdA0KPj4+Pj4+PiBlbHNlIGhhcyBjaGFuZ2VkLg0KPj4+Pj4+Pg0K
+Pj4+Pj4+PiBXaGF0IHdvdWxkIGNhdXNlIHRoaXMsIGEgbG9zdCBpbnRlcnJ1cHQ/IEEgc3B1cmlv
+dXMgaW50ZXJydXB0PyBPcg0KPj4+Pj4+PiBoaWdoZXIgaW50ZXJydXB0IGxhdGVuY3k/DQo+Pj4+
+Pj4+DQo+Pj4+Pj4+IEkgZG9uJ3QgdGhpbmsgdGhlIHBhdGNoIHNob3VsZCBjYXVzZSBzaWduaWZp
+Y2FudGx5IHdvcnNlIGxhdGVuY3ksDQo+Pj4+Pj4+IChpdCdzIHN1cHBvc2VkIHRvIGJlIGEgYml0
+IGJldHRlciBpZiBhbnl0aGluZyBiZWNhdXNlIGl0IGRvZXNuJ3Qgc2V0DQo+Pj4+Pj4+IHVwIHRo
+ZSBmdWxsIGludGVycnVwdCBmcmFtZSkuIEJ1dCBpdCdzIHBvc3NpYmxlLg0KPj4+Pj4+IE15IHdv
+cmtpbmcgdGhlb3J5IGlzIHRoYXQgdGhlIFNQSV9ET04gaW5kaWNhdGlvbiBpcyBhbGwgYWJvdXQg
+dGhlIFRYDQo+Pj4+Pj4gZGlyZWN0aW9uIGFuIG5vdyB0aGF0IHRoZSBpbnRlcnJ1cHRzIGFyZSBm
+YXN0ZXIgd2UncmUgaGl0dGluZyBhbiBlcnJvcg0KPj4+Pj4+IGJlY2F1c2UgdGhlcmUgaXMgc3Rp
+bGwgUlggYWN0aXZpdHkgZ29pbmcgb24uIEhlaW5lciBkaXNhZ3JlZXMgd2l0aCBteQ0KPj4+Pj4+
+IGludGVycHJldGF0aW9uIG9mIHRoZSBTUElfRE9OIGluZGljYXRpb24gYW5kIHRoZSBmYWN0IHRo
+YXQgaXQgZG9lc24ndA0KPj4+Pj4+IGhhcHBlbiBldmVyeSB0aW1lIGRvZXMgdGhyb3cgZG91YnQg
+b24gaXQuDQo+Pj4+Pj4NCj4+Pj4+IEl0J3MgcmlnaHQgdGhhdCB0aGUgZVNQSSBzcGVjIGNhbiBi
+ZSBpbnRlcnByZXRlZCB0aGF0IFNQSV9ET04gcmVmZXJzIHRvDQo+Pj4+PiBUWCBvbmx5LiBIb3dl
+dmVyIHRoaXMgd291bGRuJ3QgcmVhbGx5IG1ha2Ugc2Vuc2UsIGJlY2F1c2UgYWxzbyBmb3IgUlgN
+Cj4+Pj4+IHdlIHByb2dyYW0gdGhlIGZyYW1lIGxlbmd0aCwgYW5kIHRoZXJlZm9yZSB3YW50IHRv
+IGJlIG5vdGlmaWVkIG9uY2UgdGhlDQo+Pj4+PiBmdWxsIGZyYW1lIHdhcyByZWNlaXZlZC4gQWxz
+byBwcmFjdGljYWwgZXhwZXJpZW5jZSBzaG93cyB0aGF0IFNQSV9ET04NCj4+Pj4+IGlzIHNldCBh
+bHNvIGFmdGVyIFJYLW9ubHkgdHJhbnNmZXJzLg0KPj4+Pj4gVHlwaWNhbCBTUEkgTk9SIHVzZSBj
+YXNlIGlzIHRoYXQgeW91IHdyaXRlIHJlYWQgY29tbWFuZCArIHN0YXJ0IGFkZHJlc3MsDQo+Pj4+
+PiBmb2xsb3dlZCBieSBhIGxvbmdlciByZWFkLiBJZiB0aGUgVFgtb25seSBpbnRlcnByZXRhdGlv
+biB3b3VsZCBiZSByaWdodCwNCj4+Pj4+IHdlJ2QgYWx3YXlzIGVuZCB1cCB3aXRoIFNQSV9ET04g
+bm90IGJlaW5nIHNldC4NCj4+Pj4+DQo+Pj4+Pj4gSSBjYW4ndCByZWFsbHkgZXhwbGFpbiB0aGUg
+ZXh0cmEgUlggYnl0ZSBpbiB0aGUgZmlmby4gV2Uga25vdyBob3cgbWFueQ0KPj4+Pj4+IGJ5dGVz
+IHRvIGV4cGVjdCBhbmQgd2UgcHVsbCB0aGF0IG1hbnkgZnJvbSB0aGUgZmlmbyBzbyBpdCdzIG5v
+dCBhcyBpZg0KPj4+Pj4+IHdlJ3JlIG1pc3NpbmcgYW4gaW50ZXJydXB0IGNhdXNpbmcgdXMgdG8g
+c2tpcCB0aGUgbGFzdCBieXRlLiBJJ3ZlIGJlZW4NCj4+Pj4+PiBsb29raW5nIGZvciBzb21lIGtp
+bmQgb2Ygb2ZmLWJ5LW9uZSBjYWxjdWxhdGlvbiBidXQgYWdhaW4gaWYgaXQgd2VyZQ0KPj4+Pj4+
+IHNvbWV0aGluZyBsaWtlIHRoYXQgaXQnZCBoYXBwZW4gYWxsIHRoZSB0aW1lLg0KPj4+Pj4+DQo+
+Pj4+PiBNYXliZSBpdCBoZWxwcyB0byBrbm93IHdoYXQgdmFsdWUgdGhpcyBleHRyYSBieXRlIGlu
+IHRoZSBGSUZPIGhhcy4gSXMgaXQ6DQo+Pj4+PiAtIGEgZHVwbGljYXRlIG9mIHRoZSBsYXN0IHJl
+YWQgYnl0ZQ0KPj4+Pj4gLSBvciB0aGUgbmV4dCBieXRlIChhdCA8ZW5kIGFkZHJlc3M+ICsgMSkN
+Cj4+Pj4+IC0gb3IgYSBmaXhlZCB2YWx1ZSwgZS5nLiBhbHdheXMgMHgwMCBvciAweGZmDQo+Pj4+
+IFRoZSB2YWx1ZXMgd2VyZSB1cCB0aHJlYWQgYSBiaXQgYnV0IEknbGwgcmVwZWF0IHRoZW0gaGVy
+ZQ0KPj4+Pg0KPj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiB0eCA3MA0KPj4+PiBmc2xfZXNw
+aSBmZmUxMTAwMDAuc3BpOiByeCAwMw0KPj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBFeHRy
+YSBSWCAwMA0KPj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBT
+UElFX0RPTiBpc24ndCBzZXQhDQo+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IFRyYW5zZmVy
+IGRvbmUgYnV0IHJ4L3R4IGZpZm8ncyBhcmVuJ3QgZW1wdHkhDQo+Pj4+IGZzbF9lc3BpIGZmZTEx
+MDAwMC5zcGk6IFNQSUVfUlhDTlQgPSAxLCBTUElFX1RYQ05UID0gMzINCj4+Pj4gZnNsX2VzcGkg
+ZmZlMTEwMDAwLnNwaTogdHggMDUNCj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogcnggMDAN
+Cj4+Pj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogRXh0cmEgUlggMDMNCj4+Pj4gZnNsX2VzcGkg
+ZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9uZSBidXQgU1BJRV9ET04gaXNuJ3Qgc2V0IQ0KPj4+
+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCByeC90eCBmaWZvJ3Mg
+YXJlbid0IGVtcHR5IQ0KPj4+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBTUElFX1JYQ05UID0g
+MSwgU1BJRV9UWENOVCA9IDMyDQo+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IHR4IDA1DQo+
+Pj4+IGZzbF9lc3BpIGZmZTExMDAwMC5zcGk6IHJ4IDAwDQo+Pj4+IGZzbF9lc3BpIGZmZTExMDAw
+MC5zcGk6IEV4dHJhIFJYIDAzDQo+Pj4+DQo+Pj4+DQo+Pj4+IFRoZSByeCAwMCBFeHRyYSBSWCAw
+MyBpcyBhIGJpdCBjb25jZXJuaW5nLiBJJ3ZlIG9ubHkgZXZlciBzZWVuIHRoZW0gd2l0aA0KPj4+
+PiBlaXRoZXIgYSBSRUFEX1NSIG9yIGEgUkVBRF9GU1IuIE5ldmVyIGEgZGF0YSByZWFkLg0KPj4+
+Pg0KPj4+IEp1c3QgcmVtZW1iZXJlZCBzb21ldGhpbmcgYWJvdXQgU1BJRV9ET046DQo+Pj4gVHJh
+bnNmZXJzIGFyZSBhbHdheXMgZnVsbCBkdXBsZXgsIHRoZXJlZm9yZSBpbiBjYXNlIG9mIGEgcmVh
+ZCB0aGUgY2hpcA0KPj4+IHNlbmRzIGR1bW15IHplcm8ncy4gSGF2aW5nIHNhaWQgdGhhdCBpbiBj
+YXNlIG9mIGEgcmVhZCBTUElFX0RPTiBtZWFucw0KPj4+IHRoYXQgdGhlIGxhc3QgZHVtbXkgemVy
+byB3YXMgc2hpZnRlZCBvdXQuDQo+Pj4NCj4+PiBSRUFEX1NSIGFuZCBSRUFEX0ZTUiBhcmUgdGhl
+IHNob3J0ZXN0IHRyYW5zZmVycywgMSBieXRlIG91dCBhbmQgMSBieXRlIGluLg0KPj4+IFNvIHRo
+ZSBpc3N1ZSBtYXkgaGF2ZSBhIGRlcGVuZGVuY3kgb24gdGhlIGxlbmd0aCBvZiB0aGUgdHJhbnNm
+ZXIuDQo+Pj4gSG93ZXZlciBJIHNlZSBubyBnb29kIGV4cGxhbmF0aW9uIHNvIGZhci4gWW91IGNh
+biB0cnkgYWRkaW5nIGEgZGVsYXkgb2YNCj4+PiBhIGZldyBtaXJvc2Vjb25kcyBiZXR3ZWVuIHRo
+ZSBmb2xsb3dpbmcgdG8gY29tbWFuZHMgaW4gZnNsX2VzcGlfYnVmcygpLg0KPj4+DQo+Pj4gCWZz
+bF9lc3BpX3dyaXRlX3JlZyhlc3BpLCBFU1BJX1NQSU0sIG1hc2spOw0KPj4+DQo+Pj4gCS8qIFBy
+ZXZlbnQgZmlsbGluZyB0aGUgZmlmbyBmcm9tIGdldHRpbmcgaW50ZXJydXB0ZWQgKi8NCj4+PiAJ
+c3Bpbl9sb2NrX2lycSgmZXNwaS0+bG9jayk7DQo+Pj4NCj4+PiBNYXliZSBlbmFibGluZyBpbnRl
+cnJ1cHRzIGFuZCBzZWVpbmcgdGhlIFNQSUVfRE9OIGludGVycnVwdCBhcmUgdG9vIGNsb3NlLg0K
+Pj4gSSB0aGluayB0aGlzIG1pZ2h0IGJlIGhlYWRpbmcgaW4gdGhlIHJpZ2h0IGRpcmVjdGlvbi4g
+UGxheWluZyBhYm91dCB3aXRoDQo+PiBhIGRlbGF5IGRvZXMgc2VlbSB0byBtYWtlIHRoZSB0d28g
+c3ltcHRvbXMgbGVzcyBsaWtlbHkuIEFsdGhvdWdoIEkgaGF2ZQ0KPj4gdG8gc2V0IGl0IHF1aXRl
+IGhpZ2ggKGkuZS4gbXNsZWVwKDEwMCkpIHRvIGNvbXBsZXRlbHkgYXZvaWQgYW55DQo+PiBwb3Nz
+aWJpbGl0eSBvZiBzZWVpbmcgZWl0aGVyIG1lc3NhZ2UuDQo+IFRoZSBwYXRjaCBtaWdodCByZXBs
+YXkgdGhlIGludGVycnVwdCBhIGxpdHRsZSBiaXQgZmFzdGVyLCBidXQgaXQgd291bGQNCj4gYmUg
+YSBmZXcgbWljcm9zZWNvbmRzIGF0IG1vc3QgSSB0aGluayAoanVzdCBmcm9tIGltcHJvdmVkIGNv
+ZGUpLg0KPg0KPiBXb3VsZCB5b3UgYmUgYWJsZSB0byBmdHJhY2UgdGhlIGludGVycnVwdCBoYW5k
+bGVyIGZ1bmN0aW9uIGFuZCBzZWUgaWYgeW91DQo+IGNhbiBzZWUgYSBkaWZmZXJlbmNlIGluIG51
+bWJlciBvciB0aW1pbmcgb2YgaW50ZXJydXB0cz8gSSdtIGF0IGEgYml0IG9mDQo+IGEgbG9zcy4N
+ClRoaXMgaXMgZ2V0dGluZyByZWFsbHkgd2VpcmQuIEkgd2FzIHNldHRpbmcgdXAgdG8gcnVuIHdp
+dGggZnRyYWNlIGFuZCANCmZvdW5kIEkgY291bGRuJ3QgcmVwcm9kdWNlIGl0IG9uIHRoZSB0aXAg
+b2YgTGludXMncyB0cmVlIChjdXJyZW50bHkgDQpwb2ludGluZyBhdCBlN2E1MjJjODNiODYpLiBC
+dXQgSSBzd2VhciBJIGNvdWxkIGxhc3Qgd2Vlay4gU3VyZSBlbm91Z2ggaWYgDQpJIGNoZWNrb3V0
+IDUuOS1yYzIgKG9yIDUuNy4xNSkgSSBjYW4gcmVwcm9kdWNlIHRoZSBwcm9ibGVtIGFnYWluLg0K
+PiBUaGFua3MsDQo+IE5pY2sNCj4=
