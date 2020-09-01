@@ -1,48 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E27258992
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 09:49:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5114025899B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 09:53:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BgfN54wlBzDqVN
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 17:49:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BgfSy0lZFzDqGY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 17:53:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BgfKJ01FQzDqSr
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 17:46:43 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A67F51FB;
- Tue,  1 Sep 2020 00:46:41 -0700 (PDT)
-Received: from [10.163.69.134] (unknown [10.163.69.134])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 587ED3F71F;
- Tue,  1 Sep 2020 00:46:37 -0700 (PDT)
-Subject: Re: [PATCH v3 03/13] mm/debug_vm_pgtable/ppc64: Avoid setting top
- bits in radom value
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BgfQt2xp8zDqB2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 17:51:30 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BgfQj5ZqZz9v4j1;
+ Tue,  1 Sep 2020 09:51:25 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id otG6xobMGX17; Tue,  1 Sep 2020 09:51:25 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BgfQj4hHYz9v1SD;
+ Tue,  1 Sep 2020 09:51:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A99F68B774;
+ Tue,  1 Sep 2020 09:51:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 0bfitLpUFTsu; Tue,  1 Sep 2020 09:51:26 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C8C8D8B75E;
+ Tue,  1 Sep 2020 09:51:25 +0200 (CEST)
+Subject: Re: [PATCH v3 08/13] mm/debug_vm_pgtable/thp: Use page table
+ depost/withdraw with THP
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org
 References: <20200827080438.315345-1-aneesh.kumar@linux.ibm.com>
- <20200827080438.315345-4-aneesh.kumar@linux.ibm.com>
- <3a0b0101-e6ec-26c5-e104-5b0bb95c3e51@arm.com>
- <1a8abe92-032b-f60f-1df1-52bb409b35a3@linux.ibm.com>
- <75771782-734b-69f6-4a07-2d3542458319@arm.com>
- <e5d32d12-d904-ed8c-8963-d43d2c3744d9@linux.ibm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <c371e316-7533-62c7-a1c6-9b6745d8d1ea@arm.com>
-Date: Tue, 1 Sep 2020 13:16:05 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ <20200827080438.315345-9-aneesh.kumar@linux.ibm.com>
+ <e7877a8d-b433-0cb4-50a7-631de0022c24@arm.com>
+ <9beaaf93-b2dd-6d56-7737-9f022760f246@linux.ibm.com>
+ <d80a91c3-0edf-7e2f-8101-2d37a371f4bd@csgroup.eu>
+ <2fb4ac88-d417-2bdd-3c56-a816c356636a@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <5d25b02a-887a-432e-7ecd-cc5cbcea9b02@csgroup.eu>
+Date: Tue, 1 Sep 2020 09:51:22 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <e5d32d12-d904-ed8c-8963-d43d2c3744d9@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <2fb4ac88-d417-2bdd-3c56-a816c356636a@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -55,8 +71,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Christophe Leroy <christophe.leroy@c-s.fr>, x86@kernel.org,
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
  Mike Rapoport <rppt@linux.ibm.com>, Qian Cai <cai@lca.pw>,
  Gerald Schaefer <gerald.schaefer@de.ibm.com>,
  Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org,
@@ -67,61 +82,51 @@ Sender: "Linuxppc-dev"
 
 
 
-On 09/01/2020 01:06 PM, Aneesh Kumar K.V wrote:
-> On 9/1/20 1:02 PM, Anshuman Khandual wrote:
+Le 01/09/2020 à 09:40, Aneesh Kumar K.V a écrit :
+> On 9/1/20 12:20 PM, Christophe Leroy wrote:
 >>
 >>
->> On 09/01/2020 11:51 AM, Aneesh Kumar K.V wrote:
->>> On 9/1/20 8:45 AM, Anshuman Khandual wrote:
+>> Le 01/09/2020 à 08:25, Aneesh Kumar K.V a écrit :
+>>> On 9/1/20 8:52 AM, Anshuman Khandual wrote:
 >>>>
 >>>>
->>>> On 08/27/2020 01:34 PM, Aneesh Kumar K.V wrote:
->>>>> ppc64 use bit 62 to indicate a pte entry (_PAGE_PTE). Avoid setting that bit in
->>>>> random value.
->>>>>
->>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>>> ---
->>>>>    mm/debug_vm_pgtable.c | 13 ++++++++++---
->>>>>    1 file changed, 10 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->>>>> index 086309fb9b6f..bbf9df0e64c6 100644
->>>>> --- a/mm/debug_vm_pgtable.c
->>>>> +++ b/mm/debug_vm_pgtable.c
->>>>> @@ -44,10 +44,17 @@
->>>>>     * entry type. But these bits might affect the ability to clear entries with
->>>>>     * pxx_clear() because of how dynamic page table folding works on s390. So
->>>>>     * while loading up the entries do not change the lower 4 bits. It does not
->>>>> - * have affect any other platform.
->>>>> + * have affect any other platform. Also avoid the 62nd bit on ppc64 that is
->>>>> + * used to mark a pte entry.
->>>>>     */
->>>>> -#define S390_MASK_BITS    4
->>>>> -#define RANDOM_ORVALUE    GENMASK(BITS_PER_LONG - 1, S390_MASK_BITS)
->>>>> +#define S390_SKIP_MASK        GENMASK(3, 0)
->>>>> +#ifdef CONFIG_PPC_BOOK3S_64
->>>>> +#define PPC64_SKIP_MASK        GENMASK(62, 62)
->>>>> +#else
->>>>> +#define PPC64_SKIP_MASK        0x0
->>>>> +#endif
 >>>>
->>>> Please drop the #ifdef CONFIG_PPC_BOOK3S_64 here. We already accommodate skip
->>>> bits for a s390 platform requirement and can also do so for ppc64 as well. As
->>>> mentioned before, please avoid adding any platform specific constructs in the
->>>> test.
+>>>> There is a checkpatch.pl warning here.
+>>>>
+>>>> WARNING: Possible unwrapped commit description (prefer a maximum 75 
+>>>> chars per line)
+>>>> #7:
+>>>> Architectures like ppc64 use deposited page table while updating the 
+>>>> huge pte
+>>>>
+>>>> total: 0 errors, 1 warnings, 40 lines checked
 >>>>
 >>>
+>>> I will ignore all these, because they are not really important IMHO.
 >>>
->>> that is needed so that it can be built on 32 bit architectures.I did face build errors with arch-linux
 >>
->> Could not (#if __BITS_PER_LONG == 32) be used instead or something like
->> that. But should be a generic conditional check identifying 32 bit arch
->> not anything platform specific.
+>> When doing a git log in a 80 chars terminal window, having wrapping 
+>> lines is not really convenient. It should be easy to avoid it.
 >>
 > 
-> that _PAGE_PTE bit is pretty much specific to PPC BOOK3S_64.  Not sure why other architectures need to bothered about ignoring bit 62.
+> We have been ignoring that for a long time  isn't it?
+> 
+> For example ppc64 checkpatch already had
+> --max-line-length=90
+> 
+> 
+> There was also recent discussion whether 80 character limit is valid any 
+> more. But I do keep it restricted to 80 character where ever it is 
+> easy/make sense.
+> 
 
-Thats okay as long it does not adversely affect other architectures, ignoring
-some more bits is acceptable. Like existing S390_MASK_BITS gets ignored on all
-other platforms even if it is a s390 specific constraint. Not having platform
-specific #ifdef here, is essential.
+Here we are not talking about the code, but the commit log.
+
+As far as I know, the discussions about 80 character lines, 90 lines in 
+powerpc etc ... is for the code.
+
+We still aim at keeping lines not longer than 75 chars in the commit log.
+
+Christophe
+
+Christophe
