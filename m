@@ -1,43 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A129D258D06
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 12:50:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C5B258D8E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 13:44:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BgkPP4ZdszDqZT
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 20:50:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bglc409p0zDqY2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 21:44:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BgkMh64ghzDqWM
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 20:49:02 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4083E1045;
- Tue,  1 Sep 2020 03:48:59 -0700 (PDT)
-Received: from [10.163.69.134] (unknown [10.163.69.134])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF1DF3F68F;
- Tue,  1 Sep 2020 03:48:57 -0700 (PDT)
-Subject: Re: [PATCH v2] powerpc/mm: Remove DEBUG_VM_PGTABLE support on powerpc
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20200901094423.100149-1-aneesh.kumar@linux.ibm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <ab7b4fe6-9b4a-8d65-85e0-689303b61fdf@arm.com>
-Date: Tue, 1 Sep 2020 16:18:25 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20200901094423.100149-1-aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BglZH2JypzDqXr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 21:43:18 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6EEEF1A006E;
+ Tue,  1 Sep 2020 13:07:11 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id BF7B11A004F;
+ Tue,  1 Sep 2020 13:07:06 +0200 (CEST)
+Received: from 10.192.242.69 (shlinux2.ap.freescale.net [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id F32454024E;
+ Tue,  1 Sep 2020 13:07:00 +0200 (CEST)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org, lgirdwood@gmail.com
+Subject: [PATCH] ASoC: fsl_sai: Support multiple data channel enable bits
+Date: Tue,  1 Sep 2020 19:01:08 +0800
+Message-Id: <1598958068-10552-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,79 +50,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+One data channel is one data line. From imx7ulp, the SAI IP is
+enhanced to support multiple data channels.
 
+If there is only two channels input and slots is 2, then enable one
+data channel is enough for data transfer. So enable the TCE/RCE and
+transmit/receive mask register according to the input channels and
+slots configuration.
 
-On 09/01/2020 03:14 PM, Aneesh Kumar K.V wrote:
-> The test is broken w.r.t page table update rules and results in kernel
-> crash as below. Disable the support until we get the tests updated.
-> 
-> [   21.083519] kernel BUG at arch/powerpc/mm/pgtable.c:304!
-> cpu 0x0: Vector: 700 (Program Check) at [c000000c6d1e76c0]
->     pc: c00000000009a5ec: assert_pte_locked+0x14c/0x380
->     lr: c0000000005eeeec: pte_update+0x11c/0x190
->     sp: c000000c6d1e7950
->    msr: 8000000002029033
->   current = 0xc000000c6d172c80
->   paca    = 0xc000000003ba0000   irqmask: 0x03   irq_happened: 0x01
->     pid   = 1, comm = swapper/0
-> kernel BUG at arch/powerpc/mm/pgtable.c:304!
-> [link register   ] c0000000005eeeec pte_update+0x11c/0x190
-> [c000000c6d1e7950] 0000000000000001 (unreliable)
-> [c000000c6d1e79b0] c0000000005eee14 pte_update+0x44/0x190
-> [c000000c6d1e7a10] c000000001a2ca9c pte_advanced_tests+0x160/0x3d8
-> [c000000c6d1e7ab0] c000000001a2d4fc debug_vm_pgtable+0x7e8/0x1338
-> [c000000c6d1e7ba0] c0000000000116ec do_one_initcall+0xac/0x5f0
-> [c000000c6d1e7c80] c0000000019e4fac kernel_init_freeable+0x4dc/0x5a4
-> [c000000c6d1e7db0] c000000000012474 kernel_init+0x24/0x160
-> [c000000c6d1e7e20] c00000000000cbd0 ret_from_kernel_thread+0x5c/0x6c
-> 
-> With DEBUG_VM disabled
-> 
-> [   20.530152] BUG: Kernel NULL pointer dereference on read at 0x00000000
-> [   20.530183] Faulting instruction address: 0xc0000000000df330
-> cpu 0x33: Vector: 380 (Data SLB Access) at [c000000c6d19f700]
->     pc: c0000000000df330: memset+0x68/0x104
->     lr: c00000000009f6d8: hash__pmdp_huge_get_and_clear+0xe8/0x1b0
->     sp: c000000c6d19f990
->    msr: 8000000002009033
->    dar: 0
->   current = 0xc000000c6d177480
->   paca    = 0xc00000001ec4f400   irqmask: 0x03   irq_happened: 0x01
->     pid   = 1, comm = swapper/0
-> [link register   ] c00000000009f6d8 hash__pmdp_huge_get_and_clear+0xe8/0x1b0
-> [c000000c6d19f990] c00000000009f748 hash__pmdp_huge_get_and_clear+0x158/0x1b0 (unreliable)
-> [c000000c6d19fa10] c0000000019ebf30 pmd_advanced_tests+0x1f0/0x378
-> [c000000c6d19fab0] c0000000019ed088 debug_vm_pgtable+0x79c/0x1244
-> [c000000c6d19fba0] c0000000000116ec do_one_initcall+0xac/0x5f0
-> [c000000c6d19fc80] c0000000019a4fac kernel_init_freeable+0x4dc/0x5a4
-> [c000000c6d19fdb0] c000000000012474 kernel_init+0x24/0x160
-> [c000000c6d19fe20] c00000000000cbd0 ret_from_kernel_thread+0x5c/0x6c
-> 33:mon>
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 65bed1fdeaad..787e829b6f25 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -116,7 +116,6 @@ config PPC
->  	#
->  	select ARCH_32BIT_OFF_T if PPC32
->  	select ARCH_HAS_DEBUG_VIRTUAL
-> -	select ARCH_HAS_DEBUG_VM_PGTABLE
->  	select ARCH_HAS_DEVMEM_IS_ALLOWED
->  	select ARCH_HAS_ELF_RANDOMIZE
->  	select ARCH_HAS_FORTIFY_SOURCE
-> 
+Move the data channel enablement from startup() to hw_params().
 
-If support for powerpc is being dropped, please update the features file
-here as well. They should be in sync.
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_sai.c | 30 ++++++++++++------------------
+ sound/soc/fsl/fsl_sai.h |  2 +-
+ 2 files changed, 13 insertions(+), 19 deletions(-)
 
-Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 62c5fdb678fc..38c7bcbb361d 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -443,6 +443,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 	u32 slots = (channels == 1) ? 2 : channels;
+ 	u32 slot_width = word_width;
+ 	int adir = tx ? RX : TX;
++	u32 pins;
+ 	int ret;
+ 
+ 	if (sai->slots)
+@@ -451,6 +452,8 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 	if (sai->slot_width)
+ 		slot_width = sai->slot_width;
+ 
++	pins = DIV_ROUND_UP(channels, slots);
++
+ 	if (!sai->is_slave_mode) {
+ 		if (sai->bclk_ratio)
+ 			ret = fsl_sai_set_bclk(cpu_dai, tx,
+@@ -501,13 +504,17 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 				   FSL_SAI_CR5_FBT_MASK, val_cr5);
+ 	}
+ 
++	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
++			   FSL_SAI_CR3_TRCE_MASK,
++			   FSL_SAI_CR3_TRCE((1 << pins) - 1));
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
+ 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK,
+ 			   val_cr4);
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
+ 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
+ 			   FSL_SAI_CR5_FBT_MASK, val_cr5);
+-	regmap_write(sai->regmap, FSL_SAI_xMR(tx), ~0UL - ((1 << channels) - 1));
++	regmap_write(sai->regmap, FSL_SAI_xMR(tx),
++		     ~0UL - ((1 << min(channels, slots)) - 1));
+ 
+ 	return 0;
+ }
+@@ -517,6 +524,10 @@ static int fsl_sai_hw_free(struct snd_pcm_substream *substream,
+ {
+ 	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
+ 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
++	unsigned int ofs = sai->soc_data->reg_offset;
++
++	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
++			   FSL_SAI_CR3_TRCE_MASK, 0);
+ 
+ 	if (!sai->is_slave_mode &&
+ 			sai->mclk_streams & BIT(substream->stream)) {
+@@ -651,14 +662,9 @@ static int fsl_sai_startup(struct snd_pcm_substream *substream,
+ 		struct snd_soc_dai *cpu_dai)
+ {
+ 	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
+-	unsigned int ofs = sai->soc_data->reg_offset;
+ 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
+ 	int ret;
+ 
+-	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
+-			   FSL_SAI_CR3_TRCE_MASK,
+-			   FSL_SAI_CR3_TRCE);
+-
+ 	/*
+ 	 * EDMA controller needs period size to be a multiple of
+ 	 * tx/rx maxburst
+@@ -675,17 +681,6 @@ static int fsl_sai_startup(struct snd_pcm_substream *substream,
+ 	return ret;
+ }
+ 
+-static void fsl_sai_shutdown(struct snd_pcm_substream *substream,
+-		struct snd_soc_dai *cpu_dai)
+-{
+-	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
+-	unsigned int ofs = sai->soc_data->reg_offset;
+-	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
+-
+-	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
+-			   FSL_SAI_CR3_TRCE_MASK, 0);
+-}
+-
+ static const struct snd_soc_dai_ops fsl_sai_pcm_dai_ops = {
+ 	.set_bclk_ratio	= fsl_sai_set_dai_bclk_ratio,
+ 	.set_sysclk	= fsl_sai_set_dai_sysclk,
+@@ -695,7 +690,6 @@ static const struct snd_soc_dai_ops fsl_sai_pcm_dai_ops = {
+ 	.hw_free	= fsl_sai_hw_free,
+ 	.trigger	= fsl_sai_trigger,
+ 	.startup	= fsl_sai_startup,
+-	.shutdown	= fsl_sai_shutdown,
+ };
+ 
+ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index 6aba7d28f5f3..5f630be74853 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -109,7 +109,7 @@
+ #define FSL_SAI_CR2_DIV_MASK	0xff
+ 
+ /* SAI Transmit and Receive Configuration 3 Register */
+-#define FSL_SAI_CR3_TRCE	BIT(16)
++#define FSL_SAI_CR3_TRCE(x)     ((x) << 16)
+ #define FSL_SAI_CR3_TRCE_MASK	GENMASK(23, 16)
+ #define FSL_SAI_CR3_WDFL(x)	(x)
+ #define FSL_SAI_CR3_WDFL_MASK	0x1f
+-- 
+2.27.0
+
