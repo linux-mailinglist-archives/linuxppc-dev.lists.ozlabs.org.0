@@ -2,55 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C31258F14
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 15:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F9E258F89
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 15:54:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BgnxP17lJzDqYt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 23:30:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BgpTQ03b7zDqbx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 23:54:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bgntp71CwzDqJ2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 23:27:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BgpQn3vwtzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 23:52:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=pXwfFcp7; 
+ header.a=rsa-sha256 header.s=201909 header.b=GPpcXF7G; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bgntf72DLz9sTN;
- Tue,  1 Sep 2020 23:27:38 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BgpQn0QvFz9sTN;
+ Tue,  1 Sep 2020 23:52:01 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1598966866;
- bh=b8fBMPirmgEDaVPbjXdRIYPwIrTUtQaTXRmfGBF/egk=;
+ s=201909; t=1598968321;
+ bh=nYqvP+dw+TWX0bGiNvp1oka1bz3WEq7TaswJF5tEftU=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=pXwfFcp7DEZhdSaVT5PD8DrmDNJcZnA4u3LePXbs+Xb49cAmRXaxJrmXg/VJlWIzR
- Q9Z+EfZBm7r6mhEVXxyXQhUmW0fa5OWGfrmOVAZI3itGQAU61ebluXbCJK+AIc60vF
- 1lpEQtozskWFVBMd7eJLB6Kr3ed2+dixG5IYLvugFo8ywj0S6XpgkfnAthm3BhrzXv
- 8D0og0Lq9pFYRuwgHyCnfhfBZXrYFBGSojjeGeHhiOdKVVtQpLLH9UWs9qF4OuV5Cr
- KzxdsR4L7qCBMFnd1HxBtLQKZU2Du8AyMTHI6pRxfwvNsOSSUSd9mxXbEuet6K+c7h
- OfGS3/kjMeThw==
+ b=GPpcXF7GsgPmaYbw0Rii1WQu1TAu7F/I/vUhOMf2Rh0S4bAV8LjkkcFaiM2/f9yRX
+ ij9CaL0L0Oq12GKo2VT37JTCTfsomDtCpkF2wGGSGAIKS11GzVM1U+UcL3ihILUX8s
+ dqXVBv39lYt53ItgurRJH5xhd3P6vY7cXbXOF1TrzWe4w9UzzuAGWHT0E+tvZBVnrs
+ +v64FSZF6Pql8Rwb+n0Do1nRkmlx6m25ZOkukRDAxdouEUDraOBthCfwVBOPBSmnvv
+ FsDxh0BC/IukNZ22mvF/K5uDsRgnBQcZbpZey0gI0SPNeOz/nyAoSzMBExama2dOjO
+ BQXm+RDis19Wg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicolin Chen <nicoleotsuka@gmail.com>, benh@kernel.crashing.org,
- paulus@samba.org, rth@twiddle.net, ink@jurassic.park.msu.ru,
- mattst88@gmail.com, tony.luck@intel.com, fenghua.yu@intel.com,
- schnelle@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, James.Bottomley@HansenPartnership.com, deller@gmx.de
-Subject: Re: [RESEND][PATCH 1/7] powerpc/iommu: Avoid overflow at boundary_size
-In-Reply-To: <20200831203811.8494-2-nicoleotsuka@gmail.com>
-References: <20200831203811.8494-1-nicoleotsuka@gmail.com>
- <20200831203811.8494-2-nicoleotsuka@gmail.com>
-Date: Tue, 01 Sep 2020 23:27:36 +1000
-Message-ID: <87lfht1vav.fsf@mpe.ellerman.id.au>
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/powernv/pci: Drop pnv_phb->initialized
+In-Reply-To: <20200831061500.1646445-1-oohall@gmail.com>
+References: <20200831061500.1646445-1-oohall@gmail.com>
+Date: Tue, 01 Sep 2020 23:52:00 +1000
+Message-ID: <87h7sh1u67.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -64,80 +57,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicolin Chen <nicoleotsuka@gmail.com> writes:
-> The boundary_size might be as large as ULONG_MAX, which means
-> that a device has no specific boundary limit. So either "+ 1"
-> or passing it to ALIGN() would potentially overflow.
+Oliver O'Halloran <oohall@gmail.com> writes:
+
+> The pnv_phb->initialized flag is an odd beast. It was added back in 2012 in
+> commit db1266c85261 ("powerpc/powernv: Skip check on PE if necessary") to
+> allow devices to be enabled even if their PE assignments hadn't been
+> completed yet. I can't think of any situation where we would (or should)
+> have PCI devices being enabled before their PEs are assigned, so I can only
+> assume it was a workaround for a bug or some other undesirable behaviour
+> from the PCI core.
 >
-> According to kernel defines:
->     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
->     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
+> Since commit dc3d8f85bb57 ("powerpc/powernv/pci: Re-work bus PE
+> configuration") the PE setup occurs before the PCI core allows driver to
+> attach to the device so the problem should no longer exist. Even it does
+> allowing the device to be enabled before we have assigned the device to a
+> PE is almost certainly broken and will cause spurious EEH events so we
+> should probably just remove it.
 >
-> We can simplify the logic here:
->   ALIGN(boundary + 1, 1 << shift) >> shift
-> = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
-> = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
-> = [b + 1 + (1 << s) - 1] >> s
-> = [b + (1 << s)] >> s
-> = (b >> s) + 1
->
-> So fixing a potential overflow with the safer shortcut.
->
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Nicolin Chen <nicoleotsuka@gmail.com>
-> Cc: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/powerpc/kernel/iommu.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
+> It's also worth pointing out that ->initialized flag is set in
+> pnv_pci_ioda_create_dbgfs() which has the entire function body wrapped in
+> flag.
 
-Are you asking for acks, or for maintainers to merge the patches
-individually?
+"body wrapped in flag." ?
 
-> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> index 9704f3f76e63..c01ccbf8afdd 100644
-> --- a/arch/powerpc/kernel/iommu.c
-> +++ b/arch/powerpc/kernel/iommu.c
-> @@ -236,15 +236,14 @@ static unsigned long iommu_range_alloc(struct device *dev,
->  		}
->  	}
->  
-> -	if (dev)
-> -		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
-> -				      1 << tbl->it_page_shift);
-> -	else
-> -		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
->  	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
-> +	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+I guess you meant:
 
-Is there any path that passes a NULL dev anymore?
+"wrapped in #ifdef CONFIG_DEBUG_FS" ?
 
-Both iseries_hv_alloc() and iseries_hv_map() were removed years ago.
-See:
-  8ee3e0d69623 ("powerpc: Remove the main legacy iSerie platform code")
+> That has the fun side effect of bypassing any other checks in
+> pnv_pci_enable_device_hook() which is probably not what anybody wants.
 
-
-So maybe we should do a lead-up patch that drops the NULL dev support,
-which will then make this patch simpler.
+That would only be true for CONFIG_DEBUG_FS=n builds though.
 
 cheers
 
-
-> +	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> +	boundary_size = (boundary_size >> tbl->it_page_shift) + 1;
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index 023a4f987bb2..6ac3c637b313 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -2410,9 +2410,6 @@ static void pnv_pci_ioda_create_dbgfs(void)
+>  	list_for_each_entry_safe(hose, tmp, &hose_list, list_node) {
+>  		phb = hose->private_data;
 >  
->  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
-> -			     boundary_size >> tbl->it_page_shift, align_mask);
-> +			     boundary_size, align_mask);
->  	if (n == -1) {
->  		if (likely(pass == 0)) {
->  			/* First try the pool from the start */
+> -		/* Notify initialization of PHB done */
+> -		phb->initialized = 1;
+> -
+>  		sprintf(name, "PCI%04x", hose->global_number);
+>  		phb->dbgfs = debugfs_create_dir(name, powerpc_debugfs_root);
+>  
+> @@ -2609,17 +2606,8 @@ static resource_size_t pnv_pci_default_alignment(void)
+>   */
+>  static bool pnv_pci_enable_device_hook(struct pci_dev *dev)
+>  {
+> -	struct pnv_phb *phb = pci_bus_to_pnvhb(dev->bus);
+>  	struct pci_dn *pdn;
+>  
+> -	/* The function is probably called while the PEs have
+> -	 * not be created yet. For example, resource reassignment
+> -	 * during PCI probe period. We just skip the check if
+> -	 * PEs isn't ready.
+> -	 */
+> -	if (!phb->initialized)
+> -		return true;
+> -
+>  	pdn = pci_get_pdn(dev);
+>  	if (!pdn || pdn->pe_number == IODA_INVALID_PE)
+>  		return false;
+> @@ -2629,14 +2617,9 @@ static bool pnv_pci_enable_device_hook(struct pci_dev *dev)
+>  
+>  static bool pnv_ocapi_enable_device_hook(struct pci_dev *dev)
+>  {
+> -	struct pci_controller *hose = pci_bus_to_host(dev->bus);
+> -	struct pnv_phb *phb = hose->private_data;
+>  	struct pci_dn *pdn;
+>  	struct pnv_ioda_pe *pe;
+>  
+> -	if (!phb->initialized)
+> -		return true;
+> -
+>  	pdn = pci_get_pdn(dev);
+>  	if (!pdn)
+>  		return false;
+> diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
+> index 739a0b3b72e1..36d22920f5a3 100644
+> --- a/arch/powerpc/platforms/powernv/pci.h
+> +++ b/arch/powerpc/platforms/powernv/pci.h
+> @@ -119,7 +119,6 @@ struct pnv_phb {
+>  	int			flags;
+>  	void __iomem		*regs;
+>  	u64			regs_phys;
+> -	int			initialized;
+>  	spinlock_t		lock;
+>  
+>  #ifdef CONFIG_DEBUG_FS
 > -- 
-> 2.17.1
+> 2.26.2
