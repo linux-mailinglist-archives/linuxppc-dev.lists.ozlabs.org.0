@@ -1,85 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E59E25A0E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 23:41:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89A925A0F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 23:49:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh0qv5DSpzDqVr
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 07:40:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh11K6MTkzDqY4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 07:49:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
- helo=mail-qt1-x843.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mgq/rdcG; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
+ dmarc=fail (p=none dis=none) header.from=nxp.com
+Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
+ [209.85.210.67])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh0nf0zpZzDqHp
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 07:38:59 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id n18so2141318qtw.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 14:38:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=0wt0Kuaq0tmnkhHuwXET4PhGnm4atGZXoNq5U4y8d/M=;
- b=mgq/rdcGU4bevby5Hlt3CzlEdoPTc7IOr4f0kpKR036Ghpq41mvUUOV242Sb4pegiq
- nItSycVWuRj25AVkilg7HiVX6yWHtvNqKc/xbxvV1DVxpzy6WEV5s+Op6iI2ERv6TKd3
- elYYhmNlsAaDgytzwWaXoAZtR6uVG2I9R7IKUfAlWxHZQwNJK01PR+jSMz3WHrc/PG0p
- SfDA3/1pDqN0mFjHMNwRCoN4uzhqQyfM447D4H8D7T9zJw7xrSy97m3UyzDhMnngAqw6
- E7ZlZF5hrX/SNnYanNGI8StgNmz9T+pBsqXw9fhKB7QNn0E1oPBDwqNWdm8cXcmagOMJ
- KKJg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh0zG49k4zDqJT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 07:47:21 +1000 (AEST)
+Received: by mail-ot1-f67.google.com with SMTP id e23so2514919otk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 14:47:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=0wt0Kuaq0tmnkhHuwXET4PhGnm4atGZXoNq5U4y8d/M=;
- b=rGC5c29ZiGCssSPxJoVeOKel19HqU4qFVDrL1IKDdMhdjlR+skLG6yEe4bQsyPiFbx
- RHZLkJOGGA3K3h/A4hoLTOWnlm2O+U8HbpX64wNFHi/NRRY2snv+weNt/yTLSTlYM8Jn
- U2eX5tBeVtllxQWk9ByTGYE7uvN9ORxyrBl9iqcwC7CCeLE5ikjqrIlXJlPgIyBaiUGX
- IUAlVzlvCFtwRhavsywUBFoDhynL5c2TpjO7V/S8VDXyrhgP2X14KiAsCdCp4tF7ZMr5
- G1sCLvT41dEIXzx1WjkP+X9ndRzrjaEkjjfzMmxy2mFMJRWgetCuvYDcWz55MF8qc5wq
- J/bg==
-X-Gm-Message-State: AOAM532kSleNRMHDkBGB46AnkTGSv6k9JGxlTVjXN9GK+WqP/H4W4Oq5
- 3XrSSzA/vnXcfLkL3l2rgxE=
-X-Google-Smtp-Source: ABdhPJwS5J9BIXwt+G+buetpCLmAXOFuR/gX5UAID4DPPAy7GpdTArczhpDIQAnFk4qy+5/xN7f1ew==
-X-Received: by 2002:ac8:7246:: with SMTP id l6mr1816360qtp.145.1598996336093; 
- Tue, 01 Sep 2020 14:38:56 -0700 (PDT)
-Received: from LeoBras (179-125-130-62.dynamic.desktop.com.br.
- [179.125.130.62])
- by smtp.gmail.com with ESMTPSA id w20sm2865190qki.108.2020.09.01.14.38.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Sep 2020 14:38:55 -0700 (PDT)
-Message-ID: <c381d7e60d0924e432b0f36dce9a44b89733a129.camel@gmail.com>
-Subject: Re: [PATCH v1 01/10] powerpc/pseries/iommu: Replace hard-coded page
- shift
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Oliver O'Halloran <oohall@gmail.com>
-Date: Tue, 01 Sep 2020 18:38:48 -0300
-In-Reply-To: <1bba12c6-f1ec-9f1e-1d3e-c1efa5ceb7c7@ozlabs.ru>
-References: <20200817234033.442511-1-leobras.c@gmail.com>
- <20200817234033.442511-2-leobras.c@gmail.com>
- <6232948f-033d-8322-e656-544f12c5f784@ozlabs.ru>
- <31e913d842693b6e107cb2b8e51fd45118b1bd2c.camel@gmail.com>
- <1e77a3d9-dff9-f58b-45be-77be7cbea41a@ozlabs.ru>
- <93037398c7afaabc0411890998f3f29f741c8aff.camel@gmail.com>
- <aaaf993a-d233-f5be-b809-5911a6a9872d@ozlabs.ru>
- <CAOSf1CG49ztvNoG43hcSHyLB9UY6Nc8maY_q6nvQmiyFQOAp3A@mail.gmail.com>
- <1bba12c6-f1ec-9f1e-1d3e-c1efa5ceb7c7@ozlabs.ru>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=HtDmdS2o4yWHgA155sIUrMDEsVQmMWq03sAjdZrfpNk=;
+ b=YAGTNtgzk1JT0rRIuZVB97JtSCb0RZFduwN1RkCnod0f0BT8TBtGUrUNN+GEqOofzf
+ rgDBouEl9KKq4ji7LG3qk0gY0IHrXEIylZZ97Lbl1KmegE25bEG01EM1Snt2O7C47ad4
+ MYloh3lv9zgkN64JrKKMaoEvtYya9kMl5UUfgL0o0RXHruNbQK2wSJzpH+dNMJjS0orF
+ /q57htUtWokLC2J6pDHjawxEyrcBkJ4fkd2tZJdNCTykNSLiJlNL5P1gQsDltN3hd2uh
+ RC8L8zw0bwDyaNL94yj+vC9TupIlzNFhFudoBmwku8OozvX2QQ4VHmInmful5C3FzszS
+ J1Tg==
+X-Gm-Message-State: AOAM532AbFlXycuOIPTBRe/vkWtI3mJiBD7rw3ePzrq/Ge0OV4GKMVff
+ Ix9e/xLV9x4YLWCHLkj1Cs9OIXx55bo=
+X-Google-Smtp-Source: ABdhPJxQcCn5AMUxxBqRbce6L2fcuqikuDht0/03kCXDqB23Lo2StWDoZTXMXJXAvzIizzA1u0dLZQ==
+X-Received: by 2002:a05:6830:1209:: with SMTP id
+ r9mr3059740otp.206.1598996429897; 
+ Tue, 01 Sep 2020 14:40:29 -0700 (PDT)
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com.
+ [209.85.210.51])
+ by smtp.gmail.com with ESMTPSA id o7sm413032otl.63.2020.09.01.14.40.29
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Sep 2020 14:40:29 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id a2so1641499otr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 14:40:29 -0700 (PDT)
+X-Received: by 2002:a05:6830:12c3:: with SMTP id
+ a3mr3039860otq.74.1598996428949; 
+ Tue, 01 Sep 2020 14:40:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20200730125259.GA8948@gondor.apana.org.au>
+ <VE1PR04MB6687FB075B9A6A0923F576978F2E0@VE1PR04MB6687.eurprd04.prod.outlook.com>
+ <20200901015630.GA9065@gondor.apana.org.au>
+In-Reply-To: <20200901015630.GA9065@gondor.apana.org.au>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Tue, 1 Sep 2020 16:40:16 -0500
+X-Gmail-Original-Message-ID: <CADRPPNTt5dCX1pRUp5OenZBuMNJcN+k8jMVmUo5qw5g0VLZ4hQ@mail.gmail.com>
+Message-ID: <CADRPPNTt5dCX1pRUp5OenZBuMNJcN+k8jMVmUo5qw5g0VLZ4hQ@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: Remove bogus packed attributes from qman.h
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,48 +75,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- David Dai <zdai@linux.vnet.ibm.com>, Ram Pai <linuxram@us.ibm.com>,
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Murilo Fossa Vicentini <muvic@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
- Brian King <brking@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2020-08-31 at 13:48 +1000, Alexey Kardashevskiy wrote:
-> > > > Well, I created this TCE_RPN_BITS = 52 because the previous mask was a
-> > > > hardcoded 40-bit mask (0xfffffffffful), for hard-coded 12-bit (4k)
-> > > > pagesize, and on PAPR+/LoPAR also defines TCE as having bits 0-51
-> > > > described as RPN, as described before.
-> > > > 
-> > > > IODA3 Revision 3.0_prd1 (OpenPowerFoundation), Figure 3.4 and 3.5.
-> > > > shows system memory mapping into a TCE, and the TCE also has bits 0-51
-> > > > for the RPN (52 bits). "Table 3.6. TCE Definition" also shows it.
-> > > > In fact, by the looks of those figures, the RPN_MASK should always be a
-> > > > 52-bit mask, and RPN = (page >> tceshift) & RPN_MASK.
-> > > 
-> > > I suspect the mask is there in the first place for extra protection
-> > > against too big addresses going to the TCE table (or/and for virtial vs
-> > > physical addresses). Using 52bit mask makes no sense for anything, you
-> > > could just drop the mask and let c compiler deal with 64bit "uint" as it
-> > > is basically a 4K page address anywhere in the 64bit space. Thanks,
-> > 
-> > Assuming 4K pages you need 52 RPN bits to cover the whole 64bit
-> > physical address space. The IODA3 spec does explicitly say the upper
-> > bits are optional and the implementation only needs to support enough
-> > to cover up to the physical address limit, which is 56bits of P9 /
-> > PHB4. If you want to validate that the address will fit inside of
-> > MAX_PHYSMEM_BITS then fine, but I think that should be done as a
-> > WARN_ON or similar rather than just silently masking off the bits.
-> 
-> We can do this and probably should anyway but I am also pretty sure we
-> can just ditch the mask and have the hypervisor return an error which
-> will show up in dmesg.
+On Mon, Aug 31, 2020 at 8:57 PM Herbert Xu <herbert@gondor.apana.org.au> wr=
+ote:
+>
+> On Tue, Sep 01, 2020 at 01:50:38AM +0000, Leo Li wrote:
+> >
+> > Sorry for the late response.  I missed this email previously.
+> >
+> > These structures are descriptors used by hardware, we cannot have _ANY_=
+ padding from the compiler.  The compiled result might be the same with or =
+without the __packed attribute for now, but I think keep it there probably =
+is safer for dealing with unexpected alignment requirements from the compil=
+er in the future.
+> >
+> > Having conflicting alignment requirements warning might means something=
+ is wrong with the structure in certain scenario.  I just tried a ARM64 bui=
+ld but didn't see the warnings.  Could you share the warning you got and th=
+e build setup?  Thanks.
+>
+> Just do a COMPILE_TEST build on x86-64:
+>
+> In file included from ../drivers/crypto/caam/qi.c:12:
 
-Ok then, ditching the mask.
-Thanks!
+Looks like the CAAM driver and dependent QBMAN driver doesn't support
+COMPILE_TEST yet.  Are you trying to add the support for it?
 
+I changed the Kconfig to enable the COMPILE_TEST anyway and updated my
+toolchain to gcc-10 trying to duplicate the issue.  The issues can
+only be reproduced with "W=3D1".
+
+> ../include/soc/fsl/qman.h:259:1: warning: alignment 1 of =E2=80=98struct =
+qm_dqrr_entry=E2=80=99 is less than 8 [-Wpacked-not-aligned]
+>  } __packed;
+>  ^
+> ../include/soc/fsl/qman.h:292:2: warning: alignment 1 of =E2=80=98struct =
+<anonymous>=E2=80=99 is less than 8 [-Wpacked-not-aligned]
+>   } __packed ern;
+>   ^
+
+I think this is a valid concern that if the parent structure doesn't
+meet certain alignment requirements, the alignment for the
+sub-structure cannot be guaranteed.  If we just remove the __packed
+attribute from the parent structure, the compiler could try to add
+padding in the parent structure to fulfill the alignment requirements
+of the sub structure which is not good.  I think the following changes
+are a better fix for the warnings:
+
+diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
+index cfe00e08e85b..9f484113cfda 100644
+--- a/include/soc/fsl/qman.h
++++ b/include/soc/fsl/qman.h
+@@ -256,7 +256,7 @@ struct qm_dqrr_entry {
+        __be32 context_b;
+        struct qm_fd fd;
+        u8 __reserved4[32];
+-} __packed;
++} __packed __aligned(64);
+ #define QM_DQRR_VERB_VBIT              0x80
+ #define QM_DQRR_VERB_MASK              0x7f    /* where the verb contains;=
+ */
+ #define QM_DQRR_VERB_FRAME_DEQUEUE     0x60    /* "this format" */
+@@ -289,7 +289,7 @@ union qm_mr_entry {
+                __be32 tag;
+                struct qm_fd fd;
+                u8 __reserved1[32];
+-       } __packed ern;
++       } __packed __aligned(64) ern;
+        struct {
+                u8 verb;
+                u8 fqs;         /* Frame Queue Status */
+
+
+Regards,
+Leo
