@@ -1,74 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A3C2589E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 09:57:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ABB2589EC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 09:59:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BgfYc508JzDqWG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 17:57:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgfbj1wqfzDqWl
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 17:59:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pFCuT3VF; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=WeMGrXOj; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BgfVJ312CzDqRX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 17:54:32 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id g6so224994pjl.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 00:54:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=7jGjGUK8hwkcJIJuEkpJ1L3GK78KMzt4UEGzm9C/+9A=;
- b=pFCuT3VFAxeR4pUSxmgW6PUf9vY9952hHQbglWQSJvUrV36XaxiVUOT4j2gXMEVEyX
- hyi4WhFVMdiuAL334LmxATm2GsvkL2zUX0NkAdPBvUl1pOksNHHzp6R3Z61aCeASWLUd
- VcJ6DWrJNxnIZ46JY3oB7irUk4vbMCfMWMMcdkQgQYt4FpC1jZ9ji5GRZTyYBP64fgff
- JGVkvH2VNpw5tSBPVLdmFTViuqKhiIwC7uiCvPhruNhhbRcCksDhoInof0pSriW/4THC
- gnfvIhuyQ5FBHEwZyELTXZdBxBhD3IMa5z3MYZfnH3LZapFh8Teca1kgFYDOT4xO6lcz
- RdaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=7jGjGUK8hwkcJIJuEkpJ1L3GK78KMzt4UEGzm9C/+9A=;
- b=HDL6U8vG2mh2SHzzAIy7HFLR4fSLx5qjVTzAXgM8oJDuuM2PGmjS/Sxjt4uJ9EUiA5
- QP1tziCNOW/5OIO174cc9/2y7ZkVewsxD6g4LLS/Pth1aLd0884yQ20aQPeFb8RUBIHM
- Fec3WyzyqlDt1mmvN1uX4LswVWsZIpYMYpAK5n6qzU9yQyYoGzLmPq1v39zoQmZlP1j+
- 8t92i0NSmJLNdXl0agBFJH3JEYmn69rv44AJg0WApNX5FXNWBqC7uqSYbM+Um2N9aT9K
- zjh6OLWhS+VnQB4YQONiJlp+wABOJG3l0U8geftLeox9tO4FkpVHS3jJYshcJ2BFk1z1
- iggQ==
-X-Gm-Message-State: AOAM5329+cXK4A5T1OVmZZTRv4ufNE8TCiLpE+UVKZkCCicFQdt7Jv+O
- XEekyfO4fDtq6iQ+EKXUhvs=
-X-Google-Smtp-Source: ABdhPJx6/GpkX8jjV0dE5E7lET9GFIzoMfNZc+Zwt55BOscCTpLCiCIcsImNL6fpf6770IWflxbdgg==
-X-Received: by 2002:a17:902:8c84:: with SMTP id t4mr308447plo.99.1598946868982; 
- Tue, 01 Sep 2020 00:54:28 -0700 (PDT)
-Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id 205sm774947pfz.14.2020.09.01.00.54.28
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 01 Sep 2020 00:54:28 -0700 (PDT)
-Date: Tue, 1 Sep 2020 00:54:01 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [RESEND][PATCH 0/7] Avoid overflow at boundary_size
-Message-ID: <20200901075401.GA5667@Asurada-Nvidia>
-References: <20200831203811.8494-1-nicoleotsuka@gmail.com>
- <20200901073623.GA30418@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BgfWR0CLdzDqTl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Sep 2020 17:55:30 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0817WoKV140706; Tue, 1 Sep 2020 03:55:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=XTtN1jV7Et+1GeMKl4ogc3mT6nlqn7rNPzY6fodlILc=;
+ b=WeMGrXOj3vUVmEPVhPMDloTByUNUfWr1R97STPPM5BmD0izC3CZfXJtHcZqNl5DQzwgB
+ 4e73CzdTi3INFo/8HvUztz/iZA/UpIZQVYGRtewCguyyEh8fKT9xCP25QmbVr1sHpIOx
+ 8f52syLL5bKCSMRrXEheztpQlyE0CO2ymhoRmbycefwcIFwo7TVFXPIiaCxzRkM0RoMH
+ aOEHREG6EnfS8vh9PcsRPU4SLcnVNgHz3DgQe53i04klUWcvzX/6ogul4kIbNtzU7z9O
+ /cS0zV9ozyojYi5TFvrlOej13AQiAAa8nkLJcn3Jbo4Iv4CIRVyD14clYjWQcW2AfRsb JA== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 339g8jbnp2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Sep 2020 03:55:09 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0817qArf007322;
+ Tue, 1 Sep 2020 07:55:07 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma02fra.de.ibm.com with ESMTP id 337en7hx1u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Sep 2020 07:55:07 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0817t5I221430600
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Sep 2020 07:55:05 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4388111C052;
+ Tue,  1 Sep 2020 07:55:05 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DC9E711C05B;
+ Tue,  1 Sep 2020 07:55:02 +0000 (GMT)
+Received: from [9.85.87.174] (unknown [9.85.87.174])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Sep 2020 07:55:02 +0000 (GMT)
+Subject: Re: [PATCH v3 03/13] mm/debug_vm_pgtable/ppc64: Avoid setting top
+ bits in radom value
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <20200827080438.315345-1-aneesh.kumar@linux.ibm.com>
+ <20200827080438.315345-4-aneesh.kumar@linux.ibm.com>
+ <3a0b0101-e6ec-26c5-e104-5b0bb95c3e51@arm.com>
+ <1a8abe92-032b-f60f-1df1-52bb409b35a3@linux.ibm.com>
+ <75771782-734b-69f6-4a07-2d3542458319@arm.com>
+ <e5d32d12-d904-ed8c-8963-d43d2c3744d9@linux.ibm.com>
+ <c371e316-7533-62c7-a1c6-9b6745d8d1ea@arm.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <3f20130a-f9fc-db9d-50a9-76aca5a1a6d7@linux.ibm.com>
+Date: Tue, 1 Sep 2020 13:25:02 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200901073623.GA30418@lst.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <c371e316-7533-62c7-a1c6-9b6745d8d1ea@arm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-01_04:2020-09-01,
+ 2020-09-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 impostorscore=0
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 clxscore=1015 spamscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009010065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,235 +107,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org,
- sfr@canb.auug.org.au, deller@gmx.de, x86@kernel.org, borntraeger@de.ibm.com,
- mingo@redhat.com, mattst88@gmail.com, fenghua.yu@intel.com, gor@linux.ibm.com,
- schnelle@linux.ibm.com, hca@linux.ibm.com, ink@jurassic.park.msu.ru,
- tglx@linutronix.de, gerald.schaefer@linux.ibm.com, rth@twiddle.net,
- tony.luck@intel.com, linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, bp@alien8.de,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Christophe Leroy <christophe.leroy@c-s.fr>, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, Qian Cai <cai@lca.pw>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
+On 9/1/20 1:16 PM, Anshuman Khandual wrote:
+> 
+> 
+> On 09/01/2020 01:06 PM, Aneesh Kumar K.V wrote:
+>> On 9/1/20 1:02 PM, Anshuman Khandual wrote:
+>>>
+>>>
+>>> On 09/01/2020 11:51 AM, Aneesh Kumar K.V wrote:
+>>>> On 9/1/20 8:45 AM, Anshuman Khandual wrote:
+>>>>>
+>>>>>
+>>>>> On 08/27/2020 01:34 PM, Aneesh Kumar K.V wrote:
+>>>>>> ppc64 use bit 62 to indicate a pte entry (_PAGE_PTE). Avoid setting that bit in
+>>>>>> random value.
+>>>>>>
+>>>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>>>>> ---
+>>>>>>     mm/debug_vm_pgtable.c | 13 ++++++++++---
+>>>>>>     1 file changed, 10 insertions(+), 3 deletions(-)
+>>>>>>
+>>>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>>>>>> index 086309fb9b6f..bbf9df0e64c6 100644
+>>>>>> --- a/mm/debug_vm_pgtable.c
+>>>>>> +++ b/mm/debug_vm_pgtable.c
+>>>>>> @@ -44,10 +44,17 @@
+>>>>>>      * entry type. But these bits might affect the ability to clear entries with
+>>>>>>      * pxx_clear() because of how dynamic page table folding works on s390. So
+>>>>>>      * while loading up the entries do not change the lower 4 bits. It does not
+>>>>>> - * have affect any other platform.
+>>>>>> + * have affect any other platform. Also avoid the 62nd bit on ppc64 that is
+>>>>>> + * used to mark a pte entry.
+>>>>>>      */
+>>>>>> -#define S390_MASK_BITS    4
+>>>>>> -#define RANDOM_ORVALUE    GENMASK(BITS_PER_LONG - 1, S390_MASK_BITS)
+>>>>>> +#define S390_SKIP_MASK        GENMASK(3, 0)
+>>>>>> +#ifdef CONFIG_PPC_BOOK3S_64
+>>>>>> +#define PPC64_SKIP_MASK        GENMASK(62, 62)
+>>>>>> +#else
+>>>>>> +#define PPC64_SKIP_MASK        0x0
+>>>>>> +#endif
+>>>>>
+>>>>> Please drop the #ifdef CONFIG_PPC_BOOK3S_64 here. We already accommodate skip
+>>>>> bits for a s390 platform requirement and can also do so for ppc64 as well. As
+>>>>> mentioned before, please avoid adding any platform specific constructs in the
+>>>>> test.
+>>>>>
+>>>>
+>>>>
+>>>> that is needed so that it can be built on 32 bit architectures.I did face build errors with arch-linux
+>>>
+>>> Could not (#if __BITS_PER_LONG == 32) be used instead or something like
+>>> that. But should be a generic conditional check identifying 32 bit arch
+>>> not anything platform specific.
+>>>
+>>
+>> that _PAGE_PTE bit is pretty much specific to PPC BOOK3S_64.  Not sure why other architectures need to bothered about ignoring bit 62.
+> 
+> Thats okay as long it does not adversely affect other architectures, ignoring
+> some more bits is acceptable. Like existing S390_MASK_BITS gets ignored on all
+> other platforms even if it is a s390 specific constraint. Not having platform
+> specific #ifdef here, is essential.
+> 
 
-On Tue, Sep 01, 2020 at 09:36:23AM +0200, Christoph Hellwig wrote:
-> I really don't like all the open coded smarts in the various drivers.
-> What do you think about a helper like the one in the untested patch
+Why is it essential?
 
-A helper function will be actually better. I was thinking of
-one yet not very sure about the naming and where to put it.
-
-> below (on top of your series).  Also please include the original
-> segment boundary patch with the next resend so that the series has
-> the full context.
-
-I will use your change instead and resend with the ULONG_MAX
-change. But in that case, should I make separate changes for
-different files like this series, or just one single change
-like yours?
-
-Asking this as I was expecting that those changes would get
-applied by different maintainers. But now it feels like you
-will merge it to your tree at once?
-
-Thanks
-Nic
-
-> diff --git a/arch/alpha/kernel/pci_iommu.c b/arch/alpha/kernel/pci_iommu.c
-> index 1ef2c647bd3ec2..6f7de4f4e191e7 100644
-> --- a/arch/alpha/kernel/pci_iommu.c
-> +++ b/arch/alpha/kernel/pci_iommu.c
-> @@ -141,10 +141,7 @@ iommu_arena_find_pages(struct device *dev, struct pci_iommu_arena *arena,
->  	unsigned long boundary_size;
->  
->  	base = arena->dma_base >> PAGE_SHIFT;
-> -
-> -	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (boundary_size >> PAGE_SHIFT) + 1;
-> +	boundary_size = dma_get_seg_boundary_nr_pages(dev, PAGE_SHIFT);
->  
->  	/* Search forward for the first mask-aligned sequence of N free ptes */
->  	ptes = arena->ptes;
-> diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
-> index 945954903bb0ba..b49b73a95067d2 100644
-> --- a/arch/ia64/hp/common/sba_iommu.c
-> +++ b/arch/ia64/hp/common/sba_iommu.c
-> @@ -485,8 +485,7 @@ sba_search_bitmap(struct ioc *ioc, struct device *dev,
->  	ASSERT(((unsigned long) ioc->res_hint & (sizeof(unsigned long) - 1UL)) == 0);
->  	ASSERT(res_ptr < res_end);
->  
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (dma_get_seg_boundary(dev) >> iovp_shift) + 1;
-> +	boundary_size = dma_get_seg_boundary_nr_pages(dev, iovp_shift);
->  
->  	BUG_ON(ioc->ibase & ~iovp_mask);
->  	shift = ioc->ibase >> iovp_shift;
-> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-> index c01ccbf8afdd42..cbc2e62db597cf 100644
-> --- a/arch/powerpc/kernel/iommu.c
-> +++ b/arch/powerpc/kernel/iommu.c
-> @@ -236,11 +236,7 @@ static unsigned long iommu_range_alloc(struct device *dev,
->  		}
->  	}
->  
-> -	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
-> -	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
-> -
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (boundary_size >> tbl->it_page_shift) + 1;
-> +	boundary_size = dma_get_seg_boundary_nr_pages(dev, tbl->it_page_shift);
->  
->  	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
->  			     boundary_size, align_mask);
-> diff --git a/arch/s390/pci/pci_dma.c b/arch/s390/pci/pci_dma.c
-> index ecb067acc6d532..4a37d8f4de9d9d 100644
-> --- a/arch/s390/pci/pci_dma.c
-> +++ b/arch/s390/pci/pci_dma.c
-> @@ -261,13 +261,11 @@ static unsigned long __dma_alloc_iommu(struct device *dev,
->  				       unsigned long start, int size)
->  {
->  	struct zpci_dev *zdev = to_zpci(to_pci_dev(dev));
-> -	unsigned long boundary_size;
->  
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (dma_get_seg_boundary(dev) >> PAGE_SHIFT) + 1;
->  	return iommu_area_alloc(zdev->iommu_bitmap, zdev->iommu_pages,
->  				start, size, zdev->start_dma >> PAGE_SHIFT,
-> -				boundary_size, 0);
-> +				dma_get_seg_boundary_nr_pages(dev, PAGE_SHIFT),
-> +				0);
->  }
->  
->  static dma_addr_t dma_alloc_address(struct device *dev, int size)
-> diff --git a/arch/sparc/kernel/iommu-common.c b/arch/sparc/kernel/iommu-common.c
-> index 843e71894d0482..e6139c99762e11 100644
-> --- a/arch/sparc/kernel/iommu-common.c
-> +++ b/arch/sparc/kernel/iommu-common.c
-> @@ -166,10 +166,6 @@ unsigned long iommu_tbl_range_alloc(struct device *dev,
->  		}
->  	}
->  
-> -	boundary_size = dev ? dma_get_seg_boundary(dev) : U32_MAX;
-> -
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (boundary_size >> iommu->table_shift) + 1;
->  	/*
->  	 * if the skip_span_boundary_check had been set during init, we set
->  	 * things up so that iommu_is_span_boundary() merely checks if the
-> @@ -178,7 +174,11 @@ unsigned long iommu_tbl_range_alloc(struct device *dev,
->  	if ((iommu->flags & IOMMU_NO_SPAN_BOUND) != 0) {
->  		shift = 0;
->  		boundary_size = iommu->poolsize * iommu->nr_pools;
-> +	} else {
-> +		boundary_size = dma_get_seg_boundary_nr_pages(dev,
-> +					iommu->table_shift);
->  	}
-> +
->  	n = iommu_area_alloc(iommu->map, limit, start, npages, shift,
->  			     boundary_size, align_mask);
->  	if (n == -1) {
-> diff --git a/arch/sparc/kernel/iommu.c b/arch/sparc/kernel/iommu.c
-> index d981c37305ae31..c3e4e2df26a8b8 100644
-> --- a/arch/sparc/kernel/iommu.c
-> +++ b/arch/sparc/kernel/iommu.c
-> @@ -472,8 +472,7 @@ static int dma_4u_map_sg(struct device *dev, struct scatterlist *sglist,
->  	outs->dma_length = 0;
->  
->  	max_seg_size = dma_get_max_seg_size(dev);
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	seg_boundary_size = (dma_get_seg_boundary(dev) >> IO_PAGE_SHIFT) + 1;
-> +	seg_boundary_size = dma_get_seg_boundary_nr_pages(dev, IO_PAGE_SHIFT);
->  	base_shift = iommu->tbl.table_map_base >> IO_PAGE_SHIFT;
->  	for_each_sg(sglist, s, nelems, i) {
->  		unsigned long paddr, npages, entry, out_entry = 0, slen;
-> diff --git a/arch/sparc/kernel/pci_sun4v.c b/arch/sparc/kernel/pci_sun4v.c
-> index 233fe8a20cec33..6b92dd51c0026f 100644
-> --- a/arch/sparc/kernel/pci_sun4v.c
-> +++ b/arch/sparc/kernel/pci_sun4v.c
-> @@ -508,8 +508,7 @@ static int dma_4v_map_sg(struct device *dev, struct scatterlist *sglist,
->  	iommu_batch_start(dev, prot, ~0UL);
->  
->  	max_seg_size = dma_get_max_seg_size(dev);
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	seg_boundary_size = (dma_get_seg_boundary(dev) >> IO_PAGE_SHIFT) + 1;
-> +	seg_boundary_size = dma_get_seg_boundary_nr_pages(dev, IO_PAGE_SHIFT);
->  
->  	mask = *dev->dma_mask;
->  	if (!iommu_use_atu(iommu, mask))
-> diff --git a/arch/x86/kernel/amd_gart_64.c b/arch/x86/kernel/amd_gart_64.c
-> index 7fa0bb490065a1..bccc5357bffd6c 100644
-> --- a/arch/x86/kernel/amd_gart_64.c
-> +++ b/arch/x86/kernel/amd_gart_64.c
-> @@ -96,8 +96,7 @@ static unsigned long alloc_iommu(struct device *dev, int size,
->  
->  	base_index = ALIGN(iommu_bus_base & dma_get_seg_boundary(dev),
->  			   PAGE_SIZE) >> PAGE_SHIFT;
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (dma_get_seg_boundary(dev) >> PAGE_SHIFT) + 1;
-> +	boundary_size = dma_get_seg_boundary_nr_pages(dev, PAGE_SHIFT);
->  
->  	spin_lock_irqsave(&iommu_bitmap_lock, flags);
->  	offset = iommu_area_alloc(iommu_gart_bitmap, iommu_pages, next_bit,
-> diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
-> index c667d6aba7646e..ba16b7f8f80612 100644
-> --- a/drivers/parisc/ccio-dma.c
-> +++ b/drivers/parisc/ccio-dma.c
-> @@ -356,8 +356,7 @@ ccio_alloc_range(struct ioc *ioc, struct device *dev, size_t size)
->  	** ggg sacrifices another 710 to the computer gods.
->  	*/
->  
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (dma_get_seg_boundary(dev) >> IOVP_SHIFT) + 1;
-> +	boundary_size = dma_get_seg_boundary_nr_pages(dev, IOVP_SHIFT);
->  
->  	if (pages_needed <= 8) {
->  		/*
-> diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
-> index 96bc2c617cbd19..959bda193b9603 100644
-> --- a/drivers/parisc/sba_iommu.c
-> +++ b/drivers/parisc/sba_iommu.c
-> @@ -342,8 +342,7 @@ sba_search_bitmap(struct ioc *ioc, struct device *dev,
->  	unsigned long shift;
->  	int ret;
->  
-> -	/* Overflow-free shortcut for: ALIGN(b + 1, 1 << s) >> s */
-> -	boundary_size = (dma_get_seg_boundary(dev) >> IOVP_SHIFT) + 1;
-> +	boundary_size = dma_get_seg_boundary_nr_pages(dev, IOVP_SHIFT);
->  
->  #if defined(ZX1_SUPPORT)
->  	BUG_ON(ioc->ibase & ~IOVP_MASK);
-> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-> index 52635e91143b25..7477a164500adb 100644
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -632,6 +632,25 @@ static inline unsigned long dma_get_seg_boundary(struct device *dev)
->  	return DMA_BIT_MASK(32);
->  }
->  
-> +/**
-> + * dma_get_seg_boundary_nr_pages - return the segment boundary in "page" units
-> + * @dev: device to guery the boundary for
-> + * @page_shift: ilog() of the the IOMMU page size
-> + *
-> + * Return the segment boundary in IOMMU page units (which may be different from
-> + * the CPU page size) for the passed in device.
-> + *
-> + * If @dev is NULL a boundary of U32_MAX is assumed, this case is just for
-> + * non-DMA API callers.
-> + */
-> +static inline unsigned long dma_get_seg_boundary_nr_pages(struct device *dev,
-> +		unsigned int page_shift)
-> +{
-> +	if (!dev)
-> +		return (U32_MAX >> page_shift) + 1;
-> +	return (dma_get_seg_boundary(dev) >> page_shift) + 1;
-> +}
-> +
->  static inline int dma_set_seg_boundary(struct device *dev, unsigned long mask)
->  {
->  	if (dev->dma_parms) {
+-aneesh
