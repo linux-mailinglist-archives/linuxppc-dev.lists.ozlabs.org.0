@@ -2,73 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C96F25903C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 16:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2979C2594A9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 17:42:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgq5T49rtzDqMx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 00:22:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bgrsk4wMkzDqZb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 01:42:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=BxF08WZg; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BgpzW6MXMzDqMC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 00:16:53 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id ls14so675173pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 07:16:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=czZmpjb3vWAAbgZB/UHnONa23SwklaXJVc63sdY/64U=;
- b=BxF08WZg7f9I9Et2+jcWpVaEzPjARaog5uM5wGwG4A58L3P0zaVBFSmpRtrYT6Hy0W
- bKOQSv85r2Fkq2HviYC2riKtzPV6ReyulkO7gR214ovKByXCloxpk+/fHJjwRWkryA1X
- TTgsWzcq8LK326EbUzegAFcO2haF3IQLJEcS7BDHgFvEUC48w+8ePTaVSr8G/d2S/G1L
- bZGFFm/WYLmc1vGGVcq/8nbBrjCVXfJwI9PW44HCjeKraYST3Cd0XckNAD5no3j4Wt5H
- uP3ZVzkLnLNLQ4U60lo2QOjU4i1QXJ+ooiqDUUe9iUn0vKTL4JrCKKLafGzybt/7LLfq
- g+jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=czZmpjb3vWAAbgZB/UHnONa23SwklaXJVc63sdY/64U=;
- b=VlReTHiioMWCe2bw2sfJ/usPNA9ToUw8DTQVbEGL0MwTvV+MBmUi/fTQo1j+wERucO
- fTEeg3oy49FdBwT0v/U9qq8PAovXrAjqSqybahGm+/+RFOewep7V/ZA4MOnQLjyv0Gta
- RchHRAbb35FmCdcWt9opTsOBm9iArpRyw1bpb4vc5hsrFcqB+Yw4NNP2XMkKy9gcN3mO
- Kf2CASAL+qqee4YApH35MvhGm66kf8/nVnsx7r0sEO+/sKjkEniffewTqGCHdTwIjEqU
- ygNC3bWlgGFBzzfn9c+fdZuICSvTuIsHpdKhhqBbbk/rkUTvssgwJ4xqM+0/PrTKQ4eM
- ujWA==
-X-Gm-Message-State: AOAM532cPEzZY0n6FtffXAUo9Vt/1JnC4T591t77OWp24URyOKoBU6Wb
- AdlSuZBwv6LxIJyA5w6gmuI=
-X-Google-Smtp-Source: ABdhPJxhNbtvq/3SFlenMBvIZJCfMciJFkJ0i1FlBjYooCyqjinZrlhhJXw4FKe0Q5JjFy8BKa4yrw==
-X-Received: by 2002:a17:90a:de87:: with SMTP id
- n7mr1784368pjv.208.1598969809728; 
- Tue, 01 Sep 2020 07:16:49 -0700 (PDT)
-Received: from bobo.ibm.com ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id w9sm2212816pgg.76.2020.09.01.07.16.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Sep 2020 07:16:49 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linux-arch@vger.kernel.org
-Subject: [PATCH v3 16/23] powerpc: use asm-generic/mmu_context.h for no-op
- implementations
-Date: Wed,  2 Sep 2020 00:15:32 +1000
-Message-Id: <20200901141539.1757549-17-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200901141539.1757549-1-npiggin@gmail.com>
-References: <20200901141539.1757549-1-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BgrhL6HLDzDqXf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 01:33:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CfPe+jOl; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BgrhH3TlCz8tYs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 01:33:51 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BgrhG6ncFz9sVk; Wed,  2 Sep 2020 01:33:50 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CfPe+jOl; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4BgrhG1rkyz9sVZ;
+ Wed,  2 Sep 2020 01:33:48 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 081FXCdg055388; Tue, 1 Sep 2020 11:33:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=gpV/L2njA62LINCUtALCHUzidqR2WJz0LKEhhTHaX0g=;
+ b=CfPe+jOlc25sEvdbxW9K6zsd3Fyr83gTKM5DF8n3cBlLn8NKrSFBOXJNtI4MqPBPyvP2
+ ZTjEPDAAYOFGBJryl0GStDhowuaHrQ8+jU/DzxhSVTl9qB1JeQSyO1wa/m2qfHr21n07
+ OlqG7PNaXXCGei+0kuNCjt/oeX01APYlgIVNJ9cDOLr/+ltDj16pA6IcFXV9Xlhcqv3n
+ F2zIufUyrUWGW0POiXDsSqCorOe2DJyc16p7O7nbjmaGrJMEW6Q62b6UbjxTtoGNTJAy
+ xBzF4RMcE6cLktj95FoOSa034/M16CazCNAdXe5GdSlQez9yESa/542Alz/MOmuEgw9Q 2g== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 339qyp2a2d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Sep 2020 11:33:45 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 081FRPVe020544;
+ Tue, 1 Sep 2020 15:33:43 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 337en8bj92-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Sep 2020 15:33:43 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 081FXfeL19464470
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Sep 2020 15:33:41 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 19AAF42041;
+ Tue,  1 Sep 2020 15:33:41 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9415E4204F;
+ Tue,  1 Sep 2020 15:33:40 +0000 (GMT)
+Received: from [9.199.52.16] (unknown [9.199.52.16])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Sep 2020 15:33:40 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.15\))
+Subject: Re: [PATCH] selftests/powerpc: Skip PROT_SAO test in guests/LPARS
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <20200901124653.523182-1-mpe@ellerman.id.au>
+Date: Tue, 1 Sep 2020 21:03:39 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5E12FA66-4147-46E6-9D8A-358FFAFDC3FB@linux.vnet.ibm.com>
+References: <20200901124653.523182-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3445.104.15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-01_10:2020-09-01,
+ 2020-09-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=999
+ suspectscore=0 impostorscore=0 malwarescore=0 bulkscore=0 clxscore=1011
+ spamscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009010128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,74 +114,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Cc: linuxppc-dev@lists.ozlabs.org
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/mmu_context.h | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-index 7f3658a97384..a3a12a8341b2 100644
---- a/arch/powerpc/include/asm/mmu_context.h
-+++ b/arch/powerpc/include/asm/mmu_context.h
-@@ -14,7 +14,9 @@
- /*
-  * Most if the context management is out of line
-  */
-+#define init_new_context init_new_context
- extern int init_new_context(struct task_struct *tsk, struct mm_struct *mm);
-+#define destroy_context destroy_context
- extern void destroy_context(struct mm_struct *mm);
- #ifdef CONFIG_SPAPR_TCE_IOMMU
- struct mm_iommu_table_group_mem_t;
-@@ -235,27 +237,26 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
- }
- #define switch_mm_irqs_off switch_mm_irqs_off
- 
--
--#define deactivate_mm(tsk,mm)	do { } while (0)
--
- /*
-  * After we have set current->mm to a new value, this activates
-  * the context for the new mm so we see the new mappings.
-  */
-+#define activate_mm activate_mm
- static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
- {
- 	switch_mm(prev, next, current);
- }
- 
- /* We don't currently use enter_lazy_tlb() for anything */
-+#ifdef CONFIG_PPC_BOOK3E_64
-+#define enter_lazy_tlb enter_lazy_tlb
- static inline void enter_lazy_tlb(struct mm_struct *mm,
- 				  struct task_struct *tsk)
- {
- 	/* 64-bit Book3E keeps track of current PGD in the PACA */
--#ifdef CONFIG_PPC_BOOK3E_64
- 	get_paca()->pgd = NULL;
--#endif
- }
-+#endif
- 
- extern void arch_exit_mmap(struct mm_struct *mm);
- 
-@@ -298,5 +299,7 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
- 	return 0;
- }
- 
-+#include <asm-generic/mmu_context.h>
-+
- #endif /* __KERNEL__ */
- #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
--- 
-2.23.0
+
+> On 01-Sep-2020, at 6:16 PM, Michael Ellerman <mpe@ellerman.id.au> =
+wrote:
+>=20
+> In commit 9b725a90a8f1 ("powerpc/64s: Disallow PROT_SAO in LPARs by
+> default") PROT_SAO was disabled in guests/LPARs by default. So skip
+> the test if we are running in a guest to avoid a spurious failure.
+>=20
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> =E2=80=94
+
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+
+With the fix test is skipped while running in a guest
+
+# ./prot_sao=20
+test: prot-sao
+tags: git_version:unknown
+[SKIP] Test skipped on line 25
+skip: prot-sao
+#
 
