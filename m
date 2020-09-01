@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89A925A0F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Sep 2020 23:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D399D25A15A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 00:21:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh11K6MTkzDqY4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 07:49:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh1k94DmvzDqRn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:21:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.67; helo=mail-ot1-f67.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com
- [209.85.210.67])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=p925V7sn; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh0zG49k4zDqJT
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 07:47:21 +1000 (AEST)
-Received: by mail-ot1-f67.google.com with SMTP id e23so2514919otk.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 14:47:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh1dx5F9kzDqP4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 08:17:25 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id j11so1254493plk.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 15:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id;
+ bh=M8j6Ldkq7Y6L6HNtPJpdtArkg82hNoz7EQt2ZZQpQiE=;
+ b=p925V7snElOQZXlWMLip8xP1dwydX4MO40+mVFj0KyAvGYuTSaLzAdLMfBDDV081Yc
+ fEnLq463d09UGAfhsrrBF62cGT/GqQtYjv0nq5ng6OZ5m4jKNTDM86uafLdc6j721eOg
+ 6f1p/HTw+taNTu4O7whEf+6bZmHYqxDOIiy5obUbw/5UsCVHJ9vf6MEnKgvy+pQvF+5J
+ IeXr6w2XCQR8Hs6QTtvSXHW9D7hGl2Fnpi3RZZppFwo5+UafHLipz4crtYIUn/PHLBWc
+ C/yluXJaWRsBj31/j7ffRgYozI9+twYp8EsiVCVuCJtaxWo11IwJJw/rhIA2CmV/TP98
+ 71mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=HtDmdS2o4yWHgA155sIUrMDEsVQmMWq03sAjdZrfpNk=;
- b=YAGTNtgzk1JT0rRIuZVB97JtSCb0RZFduwN1RkCnod0f0BT8TBtGUrUNN+GEqOofzf
- rgDBouEl9KKq4ji7LG3qk0gY0IHrXEIylZZ97Lbl1KmegE25bEG01EM1Snt2O7C47ad4
- MYloh3lv9zgkN64JrKKMaoEvtYya9kMl5UUfgL0o0RXHruNbQK2wSJzpH+dNMJjS0orF
- /q57htUtWokLC2J6pDHjawxEyrcBkJ4fkd2tZJdNCTykNSLiJlNL5P1gQsDltN3hd2uh
- RC8L8zw0bwDyaNL94yj+vC9TupIlzNFhFudoBmwku8OozvX2QQ4VHmInmful5C3FzszS
- J1Tg==
-X-Gm-Message-State: AOAM532AbFlXycuOIPTBRe/vkWtI3mJiBD7rw3ePzrq/Ge0OV4GKMVff
- Ix9e/xLV9x4YLWCHLkj1Cs9OIXx55bo=
-X-Google-Smtp-Source: ABdhPJxQcCn5AMUxxBqRbce6L2fcuqikuDht0/03kCXDqB23Lo2StWDoZTXMXJXAvzIizzA1u0dLZQ==
-X-Received: by 2002:a05:6830:1209:: with SMTP id
- r9mr3059740otp.206.1598996429897; 
- Tue, 01 Sep 2020 14:40:29 -0700 (PDT)
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com.
- [209.85.210.51])
- by smtp.gmail.com with ESMTPSA id o7sm413032otl.63.2020.09.01.14.40.29
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Sep 2020 14:40:29 -0700 (PDT)
-Received: by mail-ot1-f51.google.com with SMTP id a2so1641499otr.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 14:40:29 -0700 (PDT)
-X-Received: by 2002:a05:6830:12c3:: with SMTP id
- a3mr3039860otq.74.1598996428949; 
- Tue, 01 Sep 2020 14:40:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200730125259.GA8948@gondor.apana.org.au>
- <VE1PR04MB6687FB075B9A6A0923F576978F2E0@VE1PR04MB6687.eurprd04.prod.outlook.com>
- <20200901015630.GA9065@gondor.apana.org.au>
-In-Reply-To: <20200901015630.GA9065@gondor.apana.org.au>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Tue, 1 Sep 2020 16:40:16 -0500
-X-Gmail-Original-Message-ID: <CADRPPNTt5dCX1pRUp5OenZBuMNJcN+k8jMVmUo5qw5g0VLZ4hQ@mail.gmail.com>
-Message-ID: <CADRPPNTt5dCX1pRUp5OenZBuMNJcN+k8jMVmUo5qw5g0VLZ4hQ@mail.gmail.com>
-Subject: Re: [PATCH] soc: fsl: Remove bogus packed attributes from qman.h
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=M8j6Ldkq7Y6L6HNtPJpdtArkg82hNoz7EQt2ZZQpQiE=;
+ b=NvkYKhZH59tdEXefiW0+ckN6BvtOtQZTZRMaZEmudoZgMWsy3lSPed5yLmwYMeVQM9
+ eBt8r0Wo/Rm05Csnwuyl4s8yJX9vyqpE+2Ef16mZb08ZkbS4qY2inhxvbzmmljDlUN5I
+ Kbws2C9pv/nL1Cz/tsEldGkoKba2sOZm+X+Je7zlfccnOVIgAEHMhIfsLQTesbRmRZgL
+ R5TAHMI2A8/pANpiVlY/U+Wm9bjtv9ZrR7iUEg/lCJ81OfcCkWZlZlccn2gUcYo8offl
+ izRav2fya/BR4/Ri7NcHgmTfm+1/FwxjO9SV3AQJrwSAoyaQBP84gisFZivoAohO5UJa
+ S+9w==
+X-Gm-Message-State: AOAM533nB7H51Jr4YMS++khtKJvfXhBjmka2H7ua63It5y5gLt2Rh2r4
+ 6Dx5beEBwrhgAPSXfbqIO0s=
+X-Google-Smtp-Source: ABdhPJzHMtqQ9oWwXWEViAEvRErMfjdDqEOcrOWlNbyGgorcxLjtTk6m7wzAANlJgigaSW1gJ7x2hQ==
+X-Received: by 2002:a17:902:9a8e:: with SMTP id
+ w14mr3206869plp.6.1598998641433; 
+ Tue, 01 Sep 2020 15:17:21 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id w203sm3201356pfc.97.2020.09.01.15.17.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Sep 2020 15:17:21 -0700 (PDT)
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: hch@lst.de
+Subject: [PATCH 0/2] dma-mapping: update default segment_boundary_mask
+Date: Tue,  1 Sep 2020 15:16:44 -0700
+Message-Id: <20200901221646.26491-1-nicoleotsuka@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,83 +74,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linux-ia64@vger.kernel.org, James.Bottomley@HansenPartnership.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org,
+ sfr@canb.auug.org.au, deller@gmx.de, x86@kernel.org, borntraeger@de.ibm.com,
+ mingo@redhat.com, mattst88@gmail.com, fenghua.yu@intel.com, gor@linux.ibm.com,
+ schnelle@linux.ibm.com, hca@linux.ibm.com, ink@jurassic.park.msu.ru,
+ tglx@linutronix.de, gerald.schaefer@linux.ibm.com, rth@twiddle.net,
+ tony.luck@intel.com, linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, bp@alien8.de,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 31, 2020 at 8:57 PM Herbert Xu <herbert@gondor.apana.org.au> wr=
-ote:
->
-> On Tue, Sep 01, 2020 at 01:50:38AM +0000, Leo Li wrote:
-> >
-> > Sorry for the late response.  I missed this email previously.
-> >
-> > These structures are descriptors used by hardware, we cannot have _ANY_=
- padding from the compiler.  The compiled result might be the same with or =
-without the __packed attribute for now, but I think keep it there probably =
-is safer for dealing with unexpected alignment requirements from the compil=
-er in the future.
-> >
-> > Having conflicting alignment requirements warning might means something=
- is wrong with the structure in certain scenario.  I just tried a ARM64 bui=
-ld but didn't see the warnings.  Could you share the warning you got and th=
-e build setup?  Thanks.
->
-> Just do a COMPILE_TEST build on x86-64:
->
-> In file included from ../drivers/crypto/caam/qi.c:12:
+These two patches are to update default segment_boundary_mask.
 
-Looks like the CAAM driver and dependent QBMAN driver doesn't support
-COMPILE_TEST yet.  Are you trying to add the support for it?
+PATCH-1 fixes overflow issues in callers of dma_get_seg_boundary.
+Previous version was a series: https://lkml.org/lkml/2020/8/31/1026
 
-I changed the Kconfig to enable the COMPILE_TEST anyway and updated my
-toolchain to gcc-10 trying to duplicate the issue.  The issues can
-only be reproduced with "W=3D1".
+Then PATCH-2 sets default segment_boundary_mask to ULONG_MAX.
 
-> ../include/soc/fsl/qman.h:259:1: warning: alignment 1 of =E2=80=98struct =
-qm_dqrr_entry=E2=80=99 is less than 8 [-Wpacked-not-aligned]
->  } __packed;
->  ^
-> ../include/soc/fsl/qman.h:292:2: warning: alignment 1 of =E2=80=98struct =
-<anonymous>=E2=80=99 is less than 8 [-Wpacked-not-aligned]
->   } __packed ern;
->   ^
+Nicolin Chen (2):
+  dma-mapping: introduce dma_get_seg_boundary_nr_pages()
+  dma-mapping: set default segment_boundary_mask to ULONG_MAX
 
-I think this is a valid concern that if the parent structure doesn't
-meet certain alignment requirements, the alignment for the
-sub-structure cannot be guaranteed.  If we just remove the __packed
-attribute from the parent structure, the compiler could try to add
-padding in the parent structure to fulfill the alignment requirements
-of the sub structure which is not good.  I think the following changes
-are a better fix for the warnings:
+ arch/alpha/kernel/pci_iommu.c    |  7 +------
+ arch/ia64/hp/common/sba_iommu.c  |  3 +--
+ arch/powerpc/kernel/iommu.c      |  9 ++-------
+ arch/s390/pci/pci_dma.c          |  6 ++----
+ arch/sparc/kernel/iommu-common.c | 10 +++-------
+ arch/sparc/kernel/iommu.c        |  3 +--
+ arch/sparc/kernel/pci_sun4v.c    |  3 +--
+ arch/x86/kernel/amd_gart_64.c    |  3 +--
+ drivers/parisc/ccio-dma.c        |  3 +--
+ drivers/parisc/sba_iommu.c       |  3 +--
+ include/linux/dma-mapping.h      | 21 ++++++++++++++++++++-
+ 11 files changed, 34 insertions(+), 37 deletions(-)
 
-diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
-index cfe00e08e85b..9f484113cfda 100644
---- a/include/soc/fsl/qman.h
-+++ b/include/soc/fsl/qman.h
-@@ -256,7 +256,7 @@ struct qm_dqrr_entry {
-        __be32 context_b;
-        struct qm_fd fd;
-        u8 __reserved4[32];
--} __packed;
-+} __packed __aligned(64);
- #define QM_DQRR_VERB_VBIT              0x80
- #define QM_DQRR_VERB_MASK              0x7f    /* where the verb contains;=
- */
- #define QM_DQRR_VERB_FRAME_DEQUEUE     0x60    /* "this format" */
-@@ -289,7 +289,7 @@ union qm_mr_entry {
-                __be32 tag;
-                struct qm_fd fd;
-                u8 __reserved1[32];
--       } __packed ern;
-+       } __packed __aligned(64) ern;
-        struct {
-                u8 verb;
-                u8 fqs;         /* Frame Queue Status */
+-- 
+2.17.1
 
-
-Regards,
-Leo
