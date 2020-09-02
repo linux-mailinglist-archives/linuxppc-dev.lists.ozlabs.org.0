@@ -1,63 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FC325A211
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 01:52:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A24A25A224
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 02:02:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh3lz38z9zDqTL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 09:52:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh3zR0tQczDqG1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 10:02:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=joel.stan@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linutronix.de
+ dmarc=none (p=none dis=none) header.from=jms.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=qrFZU/0h; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=BhgC21YO; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=I3wFWCSK; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh3k20VJRzDqVr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 09:51:06 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1599004255;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wK6RDi1krNWXVmj0inMohutKNsAx8frJh82p3BOn6WY=;
- b=qrFZU/0h6bgCxn+pt/aoDLNvlU+oeGlo3pWB5KbFEToUpizcOig27PSh7G6rUi020/eJuK
- leZlBnHg7YBLohHF4rhXmZH62tNPyXiWKDkXkQ4T+KqsntxKUMuGqOeSARFrip9hV9jeec
- taUGX5Rq6ElrD6qaOCku9pjgW33kbZSgD8rRLKBezyOJFA3IsuOR3Y3iQo9bBi1vlqTFZv
- CJPYGNHGEeHq7lqZ+yHrBYLzTxFauqlDnL0go8luoIneibPXJiimta9ocfJ+A83MmqDPOU
- odW9OKK0O38PRNzu4rIoduK2EfEc1bwgJmr0KFWpw1SsrN7mW4bOL74fGZ7HRg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1599004255;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wK6RDi1krNWXVmj0inMohutKNsAx8frJh82p3BOn6WY=;
- b=BhgC21YOoROYrIYwEjc5/tHh16okw6IRuQspc0YjCo4rtnDkQJBqnZMigw0YNOTKniQ8Gn
- 44fVd/glXw4GwTDg==
-To: Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>
-Subject: Re: ptrace_syscall_32 is failing
-In-Reply-To: <CALCETrXY1x0MReMoTOG2awcZvr4c7gp99JVNthK37vUUk-kyew@mail.gmail.com>
-References: <CALCETrWXvAMA7tQ3XZdAk2FixKfzQ_0fBmyNVyyPHVAomLvrWQ@mail.gmail.com>
- <CAMzpN2hmR+0-Yse1csbiVOiqgZ0e+VRkCBBXUKoPSTSMOOOFAQ@mail.gmail.com>
- <CALCETrXY1x0MReMoTOG2awcZvr4c7gp99JVNthK37vUUk-kyew@mail.gmail.com>
-Date: Wed, 02 Sep 2020 01:50:54 +0200
-Message-ID: <87k0xdjbtt.fsf@nanos.tec.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh3xQ28XXzDqLT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 10:00:58 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id p37so1587784pgl.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 17:00:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=gLgEk3oGYS9l0OApWlO9HFN2XY5iBk93OwZsgGJtEj0=;
+ b=I3wFWCSK/UvUd39MfLJZs/LPVIq/xRbdSHiY4YXM6Z3lICDgaLiTLOifdOVjqEV/GX
+ QPuGZsTwrWQOj8cp/8ckWBfnNE/Er1zf5aflJtK88IcX8nsn02chroog+FjwYlXPB6EC
+ /kZ7XN6mZ5DuUejJk1+Pv7ILE1Z9Vo6vNKqCMcZNmXdYclhsr6bQQ15ShCkeIGqh9fAg
+ jeCjZGkPUEAKhZmGVRBhfFOrzv/eyFiDSLSWhQ06hQSs2fCFaIdCmLRmSajbkhEkNjQr
+ QXnkgo/tBW28PYZi6LlAGFKNr5bqgvQA1R6zvSeEmO9GsZZoMCyHs55Y64DvD+k484mi
+ hZig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=gLgEk3oGYS9l0OApWlO9HFN2XY5iBk93OwZsgGJtEj0=;
+ b=SrRt3Bk0wNTrYvJHhwqtwLp0ygfV2k3dRmWfgRAEd+BGiNxyWdsTwrge+lbTC7+xhC
+ S2ZWrzuCtxkWMPG5jCAcyPy7xZY/OKysH6Zz83yAtAO/CJECEipaA0G7mZCVKkWqRLFz
+ RAJCJMg/WhcvXOQpCZUoAiwiiuH2Q9LXYkHT1eY9FreB0oGxriD7zlfUs0uP2NbWuQqR
+ z/tQxPHP2kKBCYkl/H6ZAPDmkppSzr1u/mAyLOITeiBWNajAzxRhj6BxT4iOnfGwINu4
+ V/xQnKcXHW/lWlTcXFgBf0PaHEHeqsn5cKMxy0fLaKNvC0bjBIFwQdaZJA0iaNmQGCA5
+ ALQw==
+X-Gm-Message-State: AOAM531Tnfhxs9mb0yCpdObTsJC9vJPkFjTmfusVD/k1YQ6RSSVVGKbc
+ 5lnvAF2lHZDvKJZ02q20JWD3Uk3uC0//FA==
+X-Google-Smtp-Source: ABdhPJxaekKuwnoezWo88n5gDtI35ajcVnYQxsZvsHePfpF5r50wgXiVw5H3M9owb98AKZBj4nQiig==
+X-Received: by 2002:a63:342:: with SMTP id 63mr3733954pgd.134.1599004853766;
+ Tue, 01 Sep 2020 17:00:53 -0700 (PDT)
+Received: from localhost.localdomain ([45.124.203.19])
+ by smtp.gmail.com with ESMTPSA id d77sm3339372pfd.121.2020.09.01.17.00.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Sep 2020 17:00:52 -0700 (PDT)
+From: Joel Stanley <joel@jms.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] powerpc: Warn about use of smt_snooze_delay
+Date: Wed,  2 Sep 2020 09:30:11 +0930
+Message-Id: <20200902000012.3440389-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,291 +76,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
- Will Deacon <will@kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 30 2020 at 08:52, Andy Lutomirski wrote:
->> > [RUN]    SYSCALL
->> > [FAIL]    Initial args are wrong (nr=29, args=0 0 0 0 0 4289172732)
->> > [RUN]    SYSCALL
->> > [OK]    Args after SIGUSR1 are correct (ax = -514)
->> > [OK]    Child got SIGUSR1
->> > [RUN]    Step again
->> > [OK]    pause(2) restarted correctly
->>
->> Bisected to commit 0b085e68f407 ("x86/entry: Consolidate 32/64 bit
->> syscall entry").
->> It looks like it is because syscall_enter_from_user_mode() is called
->> before reading the 6th argument from the user stack.
+It's not done anything for a long time. Save the percpu variable, and
+emit a warning to remind users to not expect it to do anything.
 
-Bah.I don't know how I managed to miss that part and interestingly
-enough that none of the robots caught that either
+This uses pr_warn_once instead of pr_warn_ratelimit as testing
+'ppc64_cpu --smt=off' on a 24 core / 4 SMT system showed the warning to
+be noisy, as the online/offline loop is slow.
 
-> Thomas, can we revert the syscall_enter() and syscall_exit() part of
-> the series?
-
-Hrm.
-
-> I think that they almost work for x86, but not quite as
-> indicated by this bug.  Even if we imagine we can somehow hack around
-> this bug, I imagine we're going to find other problems with this
-> model, e.g. the potential upcoming exit problem I noted in my review.
-
-What's the upcoming problem?
-
-> I really think the model should be:
->
-> void do_syscall_whatever(...)
-> {
->   irqentry_enter(...);
->   instrumentation_begin();
->
->   /* Do whatever arch ABI oddities are needed on entry. */
->
->   Then either:
->   syscall_begin(arch, nr, regs);
->   dispatch the syscall;
->   syscall_end(arch, nr, regs);
->
->   Or just:
->   generic_do_syscall(arch, nr, regs);
->
->   /* Do whatever arch ABI oddities are needed on exit from the syscall. */
->
->   instrumentation_end();
->   irqentry_exit(...);
-> }
-
-I don't think we want that in general. The current variant is perfectly
-fine for everything except the 32bit fast syscall nonsense. Also
-irqentry_entry/exit is not equivalent to the syscall_enter/exit
-counterparts.
-
-> x86 has an ABI oddity needed on entry: this fast syscall argument
-> fixup.  We also might end up with ABI oddities on exit if we ever try
-> to make single-stepping of syscalls work fully correctly.  x86 sort of
-> gets away without specifying arch because the arch helpers that get
-> called for audit, etc can deduce the arch, but this is kind of gross.
-> I suppose we could omit arch as an explicit parameter.
-
-I had that in one of the early versions and was advised to drop that.
-
-> Or I suppose we could try to rejigger the API in time for 5.9.
-> Fortunately only x86 uses the new APIs so far.  I cc'd a bunch of
-> other arch maintainers to see if other architectures fit well in the
-> new syscall_enter() model, but I feel like the fact that x86 is
-> already broken indicates that we messed it up a bit.
-
-It's not unfixable and the fix is close to what you suggested above
-except that it preserves the straight forward stuff for the !32bit fast
-syscall case. Completely untested patch below. I run proper tests
-tomorrow with brain awake.
-
-Thanks,
-
-        tglx
+Fixes: 3fa8cad82b94 ("powerpc/pseries/cpuidle: smt-snooze-delay cleanup.")
+Cc: stable@vger.kernel.org # v3.14
+Acked-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+--
+v3:
+ pr_warn_once instead of pr_warn_ratelimited
+ Update meessages with mpe's suggestions
+v2:
+ Use pr_warn instead of WARN
+ Reword and print proccess name with pid in message
+ Leave CPU_FTR_SMT test in
 ---
- arch/x86/entry/common.c      |   29 ++++++++++++++++--------
- include/linux/entry-common.h |   51 +++++++++++++++++++++++++++++++++++--------
- kernel/entry/common.c        |   35 ++++++++++++++++++++++++-----
- 3 files changed, 91 insertions(+), 24 deletions(-)
+ arch/powerpc/kernel/sysfs.c | 42 +++++++++++++++----------------------
+ 1 file changed, 17 insertions(+), 25 deletions(-)
 
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -60,16 +60,10 @@
- #if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
- static __always_inline unsigned int syscall_32_enter(struct pt_regs *regs)
- {
--	unsigned int nr = (unsigned int)regs->orig_ax;
+diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+index 46b4ebc33db7..5dea98fa2f93 100644
+--- a/arch/powerpc/kernel/sysfs.c
++++ b/arch/powerpc/kernel/sysfs.c
+@@ -32,29 +32,27 @@
+ 
+ static DEFINE_PER_CPU(struct cpu, cpu_devices);
+ 
+-/*
+- * SMT snooze delay stuff, 64-bit only for now
+- */
 -
- 	if (IS_ENABLED(CONFIG_IA32_EMULATION))
- 		current_thread_info()->status |= TS_COMPAT;
--	/*
--	 * Subtlety here: if ptrace pokes something larger than 2^32-1 into
--	 * orig_ax, the unsigned int return value truncates it.  This may
--	 * or may not be necessary, but it matches the old asm behavior.
--	 */
--	return (unsigned int)syscall_enter_from_user_mode(regs, nr);
-+
-+	return (unsigned int)regs->orig_ax;
- }
+ #ifdef CONFIG_PPC64
  
- /*
-@@ -91,15 +85,29 @@ static __always_inline void do_syscall_3
- {
- 	unsigned int nr = syscall_32_enter(regs);
- 
-+	/*
-+	 * Subtlety here: if ptrace pokes something larger than 2^32-1 into
-+	 * orig_ax, the unsigned int return value truncates it.  This may
-+	 * or may not be necessary, but it matches the old asm behavior.
-+	 */
-+	nr = (unsigned int)syscall_enter_from_user_mode(regs, nr);
-+
- 	do_syscall_32_irqs_on(regs, nr);
- 	syscall_exit_to_user_mode(regs);
- }
- 
- static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
- {
--	unsigned int nr	= syscall_32_enter(regs);
-+	unsigned int nr = syscall_32_enter(regs);
- 	int res;
- 
-+	/*
-+	 * This cannot use syscall_enter_from_user_mode() as it has to
-+	 * fetch EBP before invoking any of the syscall entry work
-+	 * functions.
-+	 */
-+	syscall_enter_from_user_mode_prepare(regs);
-+
- 	instrumentation_begin();
- 	/* Fetch EBP from where the vDSO stashed it. */
- 	if (IS_ENABLED(CONFIG_X86_64)) {
-@@ -122,6 +130,9 @@ static noinstr bool __do_fast_syscall_32
- 		return false;
- 	}
- 
-+	/* The case truncates any ptrace induced syscall nr > 2^32 -1 */
-+	nr = (unsigned int)syscall_enter_from_user_mode_work(regs, nr);
-+
- 	/* Now this is just like a normal syscall. */
- 	do_syscall_32_irqs_on(regs, nr);
- 	syscall_exit_to_user_mode(regs);
---- a/include/linux/entry-common.h
-+++ b/include/linux/entry-common.h
-@@ -110,15 +110,30 @@ static inline __must_check int arch_sysc
- #endif
- 
- /**
-- * syscall_enter_from_user_mode - Check and handle work before invoking
-- *				 a syscall
-+ * syscall_enter_from_user_mode_prepare - Establish state and enable interrupts
-  * @regs:	Pointer to currents pt_regs
-- * @syscall:	The syscall number
-  *
-  * Invoked from architecture specific syscall entry code with interrupts
-  * disabled. The calling code has to be non-instrumentable. When the
-- * function returns all state is correct and the subsequent functions can be
-- * instrumented.
-+ * function returns all state is correct, interrupts are enabled and the
-+ * subsequent functions can be instrumented.
+-/* Time in microseconds we delay before sleeping in the idle loop */
+-static DEFINE_PER_CPU(long, smt_snooze_delay) = { 100 };
++/*
++ * Snooze delay has not been hooked up since 3fa8cad82b94 ("powerpc/pseries/cpuidle:
++ * smt-snooze-delay cleanup.") and has been broken even longer. As was foretold in
++ * 2014:
 + *
-+ * This handles lockdep, RCU (context tracking) and tracing state.
++ *  "ppc64_util currently utilises it. Once we fix ppc64_util, propose to clean
++ *  up the kernel code."
 + *
-+ * This is invoked when there is extra architecture specific functionality
-+ * to be done between establishing state and handling user mode entry work.
++ * powerpc-utils stopped using it as of 1.3.8. At some point in the future this
++ * code should be removed.
 + */
-+void syscall_enter_from_user_mode_prepare(struct pt_regs *regs);
-+
-+/**
-+ * syscall_enter_from_user_mode_work - Check and handle work before invoking
-+ *				       a syscall
-+ * @regs:	Pointer to currents pt_regs
-+ * @syscall:	The syscall number
-+ *
-+ * Invoked from architecture specific syscall entry code with interrupts
-+ * enabled after invoking syscall_enter_from_user_mode_prepare() and extra
-+ * architecture specific work.
-  *
-  * Returns: The original or a modified syscall number
-  *
-@@ -127,12 +142,30 @@ static inline __must_check int arch_sysc
-  * syscall_set_return_value() first.  If neither of those are called and -1
-  * is returned, then the syscall will fail with ENOSYS.
-  *
-- * The following functionality is handled here:
-+ * It handles the following work items:
-  *
-- *  1) Establish state (lockdep, RCU (context tracking), tracing)
-- *  2) TIF flag dependent invocations of arch_syscall_enter_tracehook(),
-+ *  1) TIF flag dependent invocations of arch_syscall_enter_tracehook(),
-  *     __secure_computing(), trace_sys_enter()
-- *  3) Invocation of audit_syscall_entry()
-+ *  2) Invocation of audit_syscall_entry()
-+ */
-+long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall);
-+
-+/**
-+ * syscall_enter_from_user_mode - Establish state and check and handle work
-+ *				  before invoking a syscall
-+ * @regs:	Pointer to currents pt_regs
-+ * @syscall:	The syscall number
-+ *
-+ * Invoked from architecture specific syscall entry code with interrupts
-+ * disabled. The calling code has to be non-instrumentable. When the
-+ * function returns all state is correct, interrupts are enabled and the
-+ * subsequent functions can be instrumented.
-+ *
-+ * This is combination of syscall_enter_from_user_mode_prepare() and
-+ * syscall_enter_from_user_mode_work().
-+ *
-+ * Returns: The original or a modified syscall number. See
-+ * syscall_enter_from_user_mode_work() for further explanation.
-  */
- long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall);
  
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -68,22 +68,45 @@ static long syscall_trace_enter(struct p
- 	return ret ? : syscall;
- }
- 
--noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
-+static __always_inline long
-+__syscall_enter_from_user_work(struct pt_regs *regs, long syscall)
+ static ssize_t store_smt_snooze_delay(struct device *dev,
+ 				      struct device_attribute *attr,
+ 				      const char *buf,
+ 				      size_t count)
  {
- 	unsigned long ti_work;
- 
--	enter_from_user_mode(regs);
--	instrumentation_begin();
+-	struct cpu *cpu = container_of(dev, struct cpu, dev);
+-	ssize_t ret;
+-	long snooze;
 -
--	local_irq_enable();
- 	ti_work = READ_ONCE(current_thread_info()->flags);
- 	if (ti_work & SYSCALL_ENTER_WORK)
- 		syscall = syscall_trace_enter(regs, syscall, ti_work);
--	instrumentation_end();
- 
- 	return syscall;
+-	ret = sscanf(buf, "%ld", &snooze);
+-	if (ret != 1)
+-		return -EINVAL;
+-
+-	per_cpu(smt_snooze_delay, cpu->dev.id) = snooze;
++	pr_warn_once("%s (%d) stored to unsupported smt_snooze_delay, which has no effect.\n",
++		     current->comm, current->pid);
+ 	return count;
  }
  
-+long syscall_enter_from_user_mode_work(struct pt_regs *regs, long syscall)
-+{
-+	return __syscall_enter_from_user_work(regs, syscall);
-+}
-+
-+noinstr long syscall_enter_from_user_mode(struct pt_regs *regs, long syscall)
-+{
-+	long ret;
-+
-+	enter_from_user_mode(regs);
-+
-+	instrumentation_begin();
-+	local_irq_enable();
-+	ret = __syscall_enter_from_user_work(regs, syscall);
-+	instrumentation_end();
-+
-+	return ret;
-+}
-+
-+noinstr void syscall_enter_from_user_mode_prepare(struct pt_regs *regs)
-+{
-+	enter_from_user_mode(regs);
-+	instrumentation_begin();
-+	local_irq_enable();
-+	instrumentation_end();
-+}
-+
- /**
-  * exit_to_user_mode - Fixup state when exiting to user mode
-  *
+@@ -62,9 +60,9 @@ static ssize_t show_smt_snooze_delay(struct device *dev,
+ 				     struct device_attribute *attr,
+ 				     char *buf)
+ {
+-	struct cpu *cpu = container_of(dev, struct cpu, dev);
+-
+-	return sprintf(buf, "%ld\n", per_cpu(smt_snooze_delay, cpu->dev.id));
++	pr_warn_once("%s (%d) read from unsupported smt_snooze_delay\n",
++		     current->comm, current->pid);
++	return sprintf(buf, "100\n");
+ }
+ 
+ static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
+@@ -72,16 +70,10 @@ static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
+ 
+ static int __init setup_smt_snooze_delay(char *str)
+ {
+-	unsigned int cpu;
+-	long snooze;
+-
+ 	if (!cpu_has_feature(CPU_FTR_SMT))
+ 		return 1;
+ 
+-	snooze = simple_strtol(str, NULL, 10);
+-	for_each_possible_cpu(cpu)
+-		per_cpu(smt_snooze_delay, cpu) = snooze;
+-
++	pr_warn("smt-snooze-delay command line option has no effect\n");
+ 	return 1;
+ }
+ __setup("smt-snooze-delay=", setup_smt_snooze_delay);
+-- 
+2.28.0
+
