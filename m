@@ -1,59 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6266325A230
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 02:11:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DAD25A28F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 03:10:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh49c65LWzDqWM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 10:11:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh5Tn6csdzDqbh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:10:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643;
+ helo=mail-ej1-x643.google.com; envelope-from=joel.stan@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ dmarc=none (p=none dis=none) header.from=jms.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=TMu2S3Iz; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
+ header.s=google header.b=TAeyufl1; dkim-atps=neutral
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
+ [IPv6:2a00:1450:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh47g3D55zDqQQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 10:09:51 +1000 (AEST)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
- [209.85.128.44])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6111F20E65
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 00:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1599005388;
- bh=ue8KFmWAURt4lhvOfblC/6hWxuPhGkaF5B0T2fLxa7I=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=TMu2S3IzHfz+o6ohiqDLBmmcmE/E3rINy8vvAXGieza4ImIhAEf776UnghnDuHvzd
- 5RUSUwl4gq1gDaK4mi1DBXXH+ZDeKELWu02LXQKCNxeqTYN929b+1mZTWtyLPaPna1
- +yVVQs19uJk+DPC0V7/4RRNdHi/w9iCHs5rjuS/c=
-Received: by mail-wm1-f44.google.com with SMTP id e11so1988956wme.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 17:09:48 -0700 (PDT)
-X-Gm-Message-State: AOAM532lly8WfSC9JLso2sixYuGR34BovNrIQzp8dac2FmgSeJWLTcqS
- lUovpObEJnza7XzhL3ulAuRmwVZCdMQMUepbiwwgIA==
-X-Google-Smtp-Source: ABdhPJyyfibJgmTm5WYzNGqNFdu9nOVgGk+6VQWbLUP3cCSoL53YNiq4XcCEUyla/kGQQVBTYc7jpCQ/5AYmCiDL+Ho=
-X-Received: by 2002:a1c:7e02:: with SMTP id z2mr4078821wmc.138.1599005386776; 
- Tue, 01 Sep 2020 17:09:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh5Rm3vxdzDqJ3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 11:08:52 +1000 (AEST)
+Received: by mail-ej1-x643.google.com with SMTP id d11so4217158ejt.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 18:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=PJmsjMjQXD9euSDFDAcpYgZuaejqzhy2qITfzbgNpKE=;
+ b=TAeyufl1suFcqLh+QauL42AgfbkE13Sa2w2NWZJ/rEDu8d08pjJyzxTeVnwh2WEcnD
+ sTrtJLhT1iBSQ1cPak0dvNxTUTN96v6br9TBPWGGoWA1DO6ELlZ+3ap486eedQZV7nLb
+ r88wUh9wtr/7MUzyFRxearWkGGjRFhRcol/IM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=PJmsjMjQXD9euSDFDAcpYgZuaejqzhy2qITfzbgNpKE=;
+ b=RducQKVXuxhz7c40jVZsuk1LejWduvOH53+LeeAvvo/A6I5gXRq/tPQeoyKeGdYoBh
+ aLwmF8ykMeVVLQR0T/w6VkubEd/WCJmgHnUDV/SiVjker4ouQXA7w5wgPfoZkDHDa9+s
+ P+ihqsw6Qt8cxTNzdT4vyyJL8A2xZ/VwlthajFwdp6mSLdqE/5yQZL8IGKQGclaoa8eB
+ RF/COJxbh+AN/dxyI4zbRrhaAdXixgf6ApQJN/1n7wPj58eCbT/BCaN4qYj8YTuhm/N+
+ QjdxpENcsdQQRdODKZkPFaePvox0esPj9RW7UsCnfQvzwBeQPLkQFjIVGr8WpvGQco3p
+ JX8Q==
+X-Gm-Message-State: AOAM533WuISVJcQynqJ9GkhriRmGI/0VIs5yB9gSginmliuoKNhj5oVy
+ rUg38DdM7lcU+gakDFUj6SkgbajgYTq6+2x5Oec=
+X-Google-Smtp-Source: ABdhPJzT3Dik4BO60pm+fdl9vlDHqT+pk5zT0GT/JkiiAEnkjOqWwch8KcIADNWOBsQFD2hK/CkwbOXoIgzgO75LL1Y=
+X-Received: by 2002:a17:906:c351:: with SMTP id
+ ci17mr3945397ejb.266.1599008928180; 
+ Tue, 01 Sep 2020 18:08:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <CALCETrWXvAMA7tQ3XZdAk2FixKfzQ_0fBmyNVyyPHVAomLvrWQ@mail.gmail.com>
- <CAMzpN2hmR+0-Yse1csbiVOiqgZ0e+VRkCBBXUKoPSTSMOOOFAQ@mail.gmail.com>
- <CALCETrXY1x0MReMoTOG2awcZvr4c7gp99JVNthK37vUUk-kyew@mail.gmail.com>
- <87k0xdjbtt.fsf@nanos.tec.linutronix.de>
-In-Reply-To: <87k0xdjbtt.fsf@nanos.tec.linutronix.de>
-From: Andy Lutomirski <luto@kernel.org>
-Date: Tue, 1 Sep 2020 17:09:35 -0700
-X-Gmail-Original-Message-ID: <CALCETrUpjUPPvnPuS9fP4jgid7U_qdU_yTKSq9PjJ=z2w9HvHg@mail.gmail.com>
-Message-ID: <CALCETrUpjUPPvnPuS9fP4jgid7U_qdU_yTKSq9PjJ=z2w9HvHg@mail.gmail.com>
-Subject: Re: ptrace_syscall_32 is failing
-To: Thomas Gleixner <tglx@linutronix.de>
+References: <1598969293-29228-1-git-send-email-ego@linux.vnet.ibm.com>
+In-Reply-To: <1598969293-29228-1-git-send-email-ego@linux.vnet.ibm.com>
+From: Joel Stanley <joel@jms.id.au>
+Date: Wed, 2 Sep 2020 01:08:35 +0000
+Message-ID: <CACPK8XfZdnKusEuu8i=-aH=Wfr6X6sMrvX=btFq9PtnXJ2w-SQ@mail.gmail.com>
+Subject: Re: [PATCH] cpuidle-pseries: Fix CEDE latency conversion from tb to us
+To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,145 +70,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Brian Gerst <brgerst@gmail.com>,
- Heiko Carstens <hca@linux.ibm.com>, X86 ML <x86@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Andy Lutomirski <luto@kernel.org>, Will Deacon <will@kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 1, 2020 at 4:50 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+On Tue, 1 Sep 2020 at 14:09, Gautham R. Shenoy <ego@linux.vnet.ibm.com> wrote:
 >
-> On Sun, Aug 30 2020 at 08:52, Andy Lutomirski wrote:
-> >> > [RUN]    SYSCALL
-> >> > [FAIL]    Initial args are wrong (nr=29, args=0 0 0 0 0 4289172732)
-> >> > [RUN]    SYSCALL
-> >> > [OK]    Args after SIGUSR1 are correct (ax = -514)
-> >> > [OK]    Child got SIGUSR1
-> >> > [RUN]    Step again
-> >> > [OK]    pause(2) restarted correctly
-> >>
-> >> Bisected to commit 0b085e68f407 ("x86/entry: Consolidate 32/64 bit
-> >> syscall entry").
-> >> It looks like it is because syscall_enter_from_user_mode() is called
-> >> before reading the 6th argument from the user stack.
+> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 >
-> Bah.I don't know how I managed to miss that part and interestingly
-> enough that none of the robots caught that either
+> commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
+> CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
+> of the Extended CEDE states advertised by the platform. The values
+> advertised by the platform are in timebase ticks. However the cpuidle
+> framework requires the latency values in microseconds.
 >
-> > Thomas, can we revert the syscall_enter() and syscall_exit() part of
-> > the series?
+> If the tb-ticks value advertised by the platform correspond to a value
+> smaller than 1us, during the conversion from tb-ticks to microseconds,
+> in the current code, the result becomes zero. This is incorrect as it
+> puts a CEDE state on par with the snooze state.
 >
-> Hrm.
+> This patch fixes this by rounding up the result obtained while
+> converting the latency value from tb-ticks to microseconds.
 >
-> > I think that they almost work for x86, but not quite as
-> > indicated by this bug.  Even if we imagine we can somehow hack around
-> > this bug, I imagine we're going to find other problems with this
-> > model, e.g. the potential upcoming exit problem I noted in my review.
+> Fixes: commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
+> CEDE(0)")
 >
-> What's the upcoming problem?
+> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 
-If we ever want to get single-stepping fully correct across syscalls,
-we might need to inject SIGTRAP on syscall return. This would be more
-awkward if we can't run instrumentable code after the syscall part of
-the syscall is done.
+Reviewed-by: Joel Stanley <joel@jms.id.au>
 
->
-> > I really think the model should be:
-> >
-> > void do_syscall_whatever(...)
-> > {
-> >   irqentry_enter(...);
-> >   instrumentation_begin();
-> >
-> >   /* Do whatever arch ABI oddities are needed on entry. */
-> >
-> >   Then either:
-> >   syscall_begin(arch, nr, regs);
-> >   dispatch the syscall;
-> >   syscall_end(arch, nr, regs);
-> >
-> >   Or just:
-> >   generic_do_syscall(arch, nr, regs);
-> >
-> >   /* Do whatever arch ABI oddities are needed on exit from the syscall. */
-> >
-> >   instrumentation_end();
-> >   irqentry_exit(...);
-> > }
->
-> I don't think we want that in general. The current variant is perfectly
-> fine for everything except the 32bit fast syscall nonsense. Also
-> irqentry_entry/exit is not equivalent to the syscall_enter/exit
-> counterparts.
-
-If there are any architectures in which actual work is needed to
-figure out whether something is a syscall in the first place, they'll
-want to do the usual kernel entry work before the syscall entry work.
-Maybe your patch actually makes this possible -- I haven't digested
-all the details yet.
-
-Who advised you to drop the arch parameter?
+Should you check for the zero case and print a warning?
 
 > ---
->  arch/x86/entry/common.c      |   29 ++++++++++++++++--------
->  include/linux/entry-common.h |   51 +++++++++++++++++++++++++++++++++++--------
->  kernel/entry/common.c        |   35 ++++++++++++++++++++++++-----
->  3 files changed, 91 insertions(+), 24 deletions(-)
+>  drivers/cpuidle/cpuidle-pseries.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> --- a/arch/x86/entry/common.c
-> +++ b/arch/x86/entry/common.c
-> @@ -60,16 +60,10 @@
->  #if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
->  static __always_inline unsigned int syscall_32_enter(struct pt_regs *regs)
->  {
-> -       unsigned int nr = (unsigned int)regs->orig_ax;
-> -
->         if (IS_ENABLED(CONFIG_IA32_EMULATION))
->                 current_thread_info()->status |= TS_COMPAT;
-> -       /*
-> -        * Subtlety here: if ptrace pokes something larger than 2^32-1 into
-> -        * orig_ax, the unsigned int return value truncates it.  This may
-> -        * or may not be necessary, but it matches the old asm behavior.
-> -        */
-> -       return (unsigned int)syscall_enter_from_user_mode(regs, nr);
-> +
-> +       return (unsigned int)regs->orig_ax;
->  }
+> diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+> index ff6d99e..9043358 100644
+> --- a/drivers/cpuidle/cpuidle-pseries.c
+> +++ b/drivers/cpuidle/cpuidle-pseries.c
+> @@ -361,7 +361,7 @@ static void __init fixup_cede0_latency(void)
+>         for (i = 0; i < nr_xcede_records; i++) {
+>                 struct xcede_latency_record *record = &payload->records[i];
+>                 u64 latency_tb = be64_to_cpu(record->latency_ticks);
+> -               u64 latency_us = tb_to_ns(latency_tb) / NSEC_PER_USEC;
+> +               u64 latency_us = DIV_ROUND_UP_ULL(tb_to_ns(latency_tb), NSEC_PER_USEC);
 >
->  /*
-> @@ -91,15 +85,29 @@ static __always_inline void do_syscall_3
->  {
->         unsigned int nr = syscall_32_enter(regs);
+>                 if (latency_us < min_latency_us)
+>                         min_latency_us = latency_us;
+> --
+> 1.9.4
 >
-> +       /*
-> +        * Subtlety here: if ptrace pokes something larger than 2^32-1 into
-> +        * orig_ax, the unsigned int return value truncates it.  This may
-> +        * or may not be necessary, but it matches the old asm behavior.
-> +        */
-> +       nr = (unsigned int)syscall_enter_from_user_mode(regs, nr);
-> +
->         do_syscall_32_irqs_on(regs, nr);
->         syscall_exit_to_user_mode(regs);
->  }
->
->  static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
->  {
-> -       unsigned int nr = syscall_32_enter(regs);
-> +       unsigned int nr = syscall_32_enter(regs);
->         int res;
->
-> +       /*
-> +        * This cannot use syscall_enter_from_user_mode() as it has to
-> +        * fetch EBP before invoking any of the syscall entry work
-> +        * functions.
-> +        */
-> +       syscall_enter_from_user_mode_prepare(regs);
-
-I'm getting lost in all these "enter" functions...
