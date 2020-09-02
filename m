@@ -2,74 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720E225A8EB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DFF25A946
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 12:19:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhK1j46BBzDqsN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 19:50:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhKfV58H6zDqY6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 20:18:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=QLpYc9FB; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhJzt2HwjzDqVb
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 19:48:57 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id w186so2266420pgb.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Sep 2020 02:48:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=ux3HYVB/twlQxBcSTqnhWPU2AHJs+FvCx+/z5WDVFJA=;
- b=QLpYc9FBvtf6jo9nK102wCzMR9/mge0/dioBMTh/v1a4B+JEU/RenX7oalAr56yIZn
- Vw2hcZQ5uRDbXZFueRaM8oVZPG0YRCw31NJIVVC4EIoPjBwdHPXQoxAirsz12JdleEpZ
- c/LNuVRZKxnX+Ok5jSv8Dcx6PdpAzitK30c4CJKUg1abwFyWXck4hjp03VMhAKbrEOO0
- sskujutTj9SZak6W74eCKFWdUgCPpAq3ZYu69/1UgqYEdSjJQwo/yto74hobN8h2uuqY
- iJvsu8wROTb6Do/xdyM4sruaXLKl48VhMRHt69NLg1fHzE/D/k1rMJ6pMfQNXYwaCPRF
- VQKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=ux3HYVB/twlQxBcSTqnhWPU2AHJs+FvCx+/z5WDVFJA=;
- b=rK99NPVO00ZQmCagrIiayvbmx8QUCeRFwVLBCeoIKhlD1cPWsxC9zBZPpfOrwqce8v
- Hv2KDLStEZ/Ma2adeedslWiOjTe/e8gfKtPc3rKJY93egelg+EaqGFkXWhmA+3LBA1IZ
- YNuq9zAEI4z95qgEZzYMibo5+WXYoaJ1oxdGEX+hcUXkwShFWDeC6uKrl7cvGP5nm3AF
- NE53PwMMBD+l+tSc14ymMx76JbPMwmeo1/SNE2YjIxmWvVfSh7zNV1zmeO/KgJ+z+WUG
- yaIm1NRD5TEcofWxfGdGWQLvcg9ttAxHsYO6GXPINX40ri39kHCRYvYfXnlqd0gXW5Kz
- zaUA==
-X-Gm-Message-State: AOAM532tR9EzwuyJ1Er4uFvNXAkizIqra0CVOFRwm5Qa/bVMNa80n2fb
- 7dslkznRmCxTWGIiJ+NMyH4=
-X-Google-Smtp-Source: ABdhPJw2Gdu85lsEOOBHC+PCTNvx970ucNEWXKOugZTaqo6EkmkDIuAOpg0ck/tyA4uRQCobvrmPXg==
-X-Received: by 2002:a63:a08:: with SMTP id 8mr1218714pgk.300.1599040134303;
- Wed, 02 Sep 2020 02:48:54 -0700 (PDT)
-Received: from localhost ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id q201sm4899665pfq.80.2020.09.02.02.48.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Sep 2020 02:48:53 -0700 (PDT)
-Date: Wed, 02 Sep 2020 19:48:48 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 4/4] powerpc/64s/radix: Fix mm_cpumask trimming race vs
- kthread_use_mm
-To: linux-mm@kvack.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <20200828100022.1099682-1-npiggin@gmail.com>
- <20200828100022.1099682-5-npiggin@gmail.com>
- <87pn751zcb.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87pn751zcb.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhKcG0nKGzDqjY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 20:16:56 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BhKc21349z9vG2L;
+ Wed,  2 Sep 2020 12:16:50 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id QGu27BKWDP8Y; Wed,  2 Sep 2020 12:16:50 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BhKc14zNyz9vG2K;
+ Wed,  2 Sep 2020 12:16:49 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 522338B7A5;
+ Wed,  2 Sep 2020 12:16:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 1Rd4fa65cdvD; Wed,  2 Sep 2020 12:16:47 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [10.25.210.31])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C7088B784;
+ Wed,  2 Sep 2020 12:16:46 +0200 (CEST)
+Subject: Re: [PATCH 2/2] powerpc/vdso32: link vdso64 with linker
+To: Nick Desaulniers <ndesaulniers@google.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20200901222523.1941988-1-ndesaulniers@google.com>
+ <20200901222523.1941988-3-ndesaulniers@google.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <dea7ef74-821f-0a1c-07dc-54e0c0d739aa@csgroup.eu>
+Date: Wed, 2 Sep 2020 10:16:35 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Message-Id: <1599040088.z7acx6fvvf.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200901222523.1941988-3-ndesaulniers@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,104 +65,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-arch@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Fangrui Song <maskray@google.com>, linux-kernel@vger.kernel.org,
+ clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of September 1, 2020 10:00 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> Commit 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of
->> single-threaded mm_cpumask") added a mechanism to trim the mm_cpumask of
->> a process under certain conditions. One of the assumptions is that
->> mm_users would not be incremented via a reference outside the process
->> context with mmget_not_zero() then go on to kthread_use_mm() via that
->> reference.
->>
->> That invariant was broken by io_uring code (see previous sparc64 fix),
->> but I'll point Fixes: to the original powerpc commit because we are
->> changing that assumption going forward, so this will make backports
->> match up.
->>
->> Fix this by no longer relying on that assumption, but by having each CPU
->> check the mm is not being used, and clearing their own bit from the mask
->> if it's okay. This fix relies on commit 38cf307c1f20 ("mm: fix
->> kthread_use_mm() vs TLB invalidate") to disable irqs over the mm switch,
->> and ARCH_WANT_IRQS_OFF_ACTIVATE_MM to be enabled.
->=20
-> You could use:
->=20
-> Depends-on: 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB invalidate")
 
-Good idea I wil.
 
->> Fixes: 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of singl=
-e-threaded mm_cpumask")
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>  arch/powerpc/include/asm/tlb.h       | 13 -------------
->>  arch/powerpc/mm/book3s64/radix_tlb.c | 23 ++++++++++++++++-------
->>  2 files changed, 16 insertions(+), 20 deletions(-)
->=20
-> One minor nit below if you're respinning anyway.
->=20
-> You know this stuff better than me, but I still reviewed it and it seems
-> good to me.
->=20
-> Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+On 9/1/20 10:25 PM, Nick Desaulniers wrote:
+> Rather than invoke the compiler as the driver, use the linker. That way
+> we can check --orphan-handling=warn support correctly, as cc-ldoption
+> was removed in
+> commit 055efab3120b ("kbuild: drop support for cc-ldoption").
+> 
+> Requires dropping the .got section.  I couldn't find how it was used in
+> the vdso32.
+> 
+> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
+> Link: https://lore.kernel.org/lkml/CAKwvOdnn3wxYdJomvnveyD_njwRku3fABWT_bS92duihhywLJQ@mail.gmail.com/
+> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> ---
+> Not sure removing .got is a good idea or not.  Otherwise I observe the
+> following link error:
+> powerpc-linux-gnu-ld: warning: orphan section `.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.got'
+> powerpc-linux-gnu-ld: _GLOBAL_OFFSET_TABLE_ not defined in linker created .got
+> powerpc-linux-gnu-ld: final link failed: bad value
 
-Thanks.
+Finally I spotted it I think:
 
->=20
->> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/t=
-lb.h
->> index fbc6f3002f23..d97f061fecac 100644
->> --- a/arch/powerpc/include/asm/tlb.h
->> +++ b/arch/powerpc/include/asm/tlb.h
->> @@ -66,19 +66,6 @@ static inline int mm_is_thread_local(struct mm_struct=
- *mm)
->>  		return false;
->>  	return cpumask_test_cpu(smp_processor_id(), mm_cpumask(mm));
->>  }
->> -static inline void mm_reset_thread_local(struct mm_struct *mm)
->> -{
->> -	WARN_ON(atomic_read(&mm->context.copros) > 0);
->> -	/*
->> -	 * It's possible for mm_access to take a reference on mm_users to
->> -	 * access the remote mm from another thread, but it's not allowed
->> -	 * to set mm_cpumask, so mm_users may be > 1 here.
->> -	 */
->> -	WARN_ON(current->mm !=3D mm);
->> -	atomic_set(&mm->context.active_cpus, 1);
->> -	cpumask_clear(mm_cpumask(mm));
->> -	cpumask_set_cpu(smp_processor_id(), mm_cpumask(mm));
->> -}
->>  #else /* CONFIG_PPC_BOOK3S_64 */
->>  static inline int mm_is_thread_local(struct mm_struct *mm)
->>  {
->> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book=
-3s64/radix_tlb.c
->> index 0d233763441f..a421a0e3f930 100644
->> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
->> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
->> @@ -645,19 +645,29 @@ static void do_exit_flush_lazy_tlb(void *arg)
->>  	struct mm_struct *mm =3D arg;
->>  	unsigned long pid =3D mm->context.id;
->> =20
->> +	/*
->> +	 * A kthread could have done a mmget_not_zero() after the flushing CPU
->> +	 * checked mm_users =3D=3D 1, and be in the process of kthread_use_mm =
-when
->                                 ^
->                                 in mm_is_singlethreaded()
->=20
-> Adding that reference would help join the dots for a new reader I think.
+	make arch/powerpc/kernel/vdso32/ V=1
 
-Yes you're right I can change that.
+powerpc64-linux-ld  -EB -m elf64ppc -shared -soname linux-vdso32.so.1 
+--eh-frame-hdr  --orphan-handling=warn -T 
+arch/powerpc/kernel/vdso32/vdso32.lds 
+arch/powerpc/kernel/vdso32/sigtramp.o 
+arch/powerpc/kernel/vdso32/gettimeofday.o 
+arch/powerpc/kernel/vdso32/datapage.o 
+arch/powerpc/kernel/vdso32/cacheflush.o 
+arch/powerpc/kernel/vdso32/note.o arch/powerpc/kernel/vdso32/getcpu.o -o 
+arch/powerpc/kernel/vdso32/vdso32.so.dbg
 
-Thanks,
-Nick
+
+
+If I do the same manually but with -m elf32ppc instead of -m elf64ppc, 
+there is no failure.
+
+Adding -m elf32ppc to ldflags-y also works, allthough I don't like too 
+much having "-m elf64ppc -m elf32ppc" on the line.
+
+Christophe
