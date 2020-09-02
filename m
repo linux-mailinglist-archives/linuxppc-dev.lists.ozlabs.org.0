@@ -1,54 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA5825ADEC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:51:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D66125AE51
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 17:06:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhRhX2w8YzDr0C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 00:51:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhS2Y3q0jzDqwh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 01:06:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=ri07=cl=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhRZL4MR6zDqcw
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Sep 2020 00:45:46 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 206203] kmemleak reports various leaks in drivers/of/unittest.c
-Date: Wed, 02 Sep 2020 14:45:40 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-206203-206035-p0sJYmYApW@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206203-206035@https.bugzilla.kernel.org/>
-References: <bug-206203-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhRxH06SjzDqZj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Sep 2020 01:02:10 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-288-m2mOhcL7OFeLx9bWhCsspw-1; Wed, 02 Sep 2020 16:02:01 +0100
+X-MC-Unique: m2mOhcL7OFeLx9bWhCsspw-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Wed, 2 Sep 2020 16:02:00 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Wed, 2 Sep 2020 16:02:00 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, 'Christoph Hellwig'
+ <hch@lst.de>
+Subject: RE: [PATCH 10/10] powerpc: remove address space overrides using
+ set_fs()
+Thread-Topic: [PATCH 10/10] powerpc: remove address space overrides using
+ set_fs()
+Thread-Index: AQHWgSXGxcHfrrTX9UCmYjSyVg3SwKlVUsKA///zAICAABMqAP//+kwAgAAcsTA=
+Date: Wed, 2 Sep 2020 15:02:00 +0000
+Message-ID: <1599b80426ec4759b5c1beb9d9543fdc@AcuMS.aculab.com>
+References: <20200827150030.282762-1-hch@lst.de>
+ <20200827150030.282762-11-hch@lst.de>
+ <8974838a-a0b1-1806-4a3a-e983deda67ca@csgroup.eu>
+ <20200902123646.GA31184@lst.de>
+ <61b9a880a6424a34b841cf3dddb463ad@AcuMS.aculab.com>
+ <8de54fe0-4be9-5624-dd1d-d95d792e933d@csgroup.eu>
+ <0c298e0d972a48bd9ee178225e404b12@AcuMS.aculab.com>
+ <6e88048a-8b30-400e-11c6-8d91ba77cbb0@csgroup.eu>
+In-Reply-To: <6e88048a-8b30-400e-11c6-8d91ba77cbb0@csgroup.eu>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0.001
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,24 +74,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Kees Cook <keescook@chromium.org>, "x86@kernel.org" <x86@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206203
+RnJvbTogQ2hyaXN0b3BoZSBMZXJveQ0KPiBTZW50OiAwMiBTZXB0ZW1iZXIgMjAyMCAxNToxMw0K
+PiANCj4gDQo+IExlIDAyLzA5LzIwMjAgw6AgMTU6NTEsIERhdmlkIExhaWdodCBhIMOpY3JpdMKg
+Og0KPiA+IEZyb206IENocmlzdG9waGUgTGVyb3kNCj4gPj4gU2VudDogMDIgU2VwdGVtYmVyIDIw
+MjAgMTQ6MjUNCj4gPj4gTGUgMDIvMDkvMjAyMCDDoCAxNToxMywgRGF2aWQgTGFpZ2h0IGEgw6lj
+cml0wqA6DQo+ID4+PiBGcm9tOiBDaHJpc3RvcGggSGVsbHdpZw0KPiA+Pj4+IFNlbnQ6IDAyIFNl
+cHRlbWJlciAyMDIwIDEzOjM3DQo+ID4+Pj4NCj4gPj4+PiBPbiBXZWQsIFNlcCAwMiwgMjAyMCBh
+dCAwODoxNToxMkFNICswMjAwLCBDaHJpc3RvcGhlIExlcm95IHdyb3RlOg0KPiA+Pj4+Pj4gLQkJ
+cmV0dXJuIDA7DQo+ID4+Pj4+PiAtCXJldHVybiAoc2l6ZSA9PSAwIHx8IHNpemUgLSAxIDw9IHNl
+Zy5zZWcgLSBhZGRyKTsNCj4gPj4+Pj4+ICsJaWYgKGFkZHIgPj0gVEFTS19TSVpFX01BWCkNCj4g
+Pj4+Pj4+ICsJCXJldHVybiBmYWxzZTsNCj4gPj4+Pj4+ICsJaWYgKHNpemUgPT0gMCkNCj4gPj4+
+Pj4+ICsJCXJldHVybiBmYWxzZTsNCj4gPj4+Pj4NCj4gPj4+Pj4gX19hY2Nlc3Nfb2soKSB3YXMg
+cmV0dXJuaW5nIHRydWUgd2hlbiBzaXplID09IDAgdXAgdG8gbm93LiBBbnkgcmVhc29uIHRvDQo+
+ID4+Pj4+IHJldHVybiBmYWxzZSBub3cgPw0KPiA+Pj4+DQo+ID4+Pj4gTm8sIHRoaXMgaXMgYWNj
+aWRlbnRhbCBhbmQgYnJva2VuLiAgQ2FuIHlvdSByZS1ydW4geW91ciBiZW5jaG1hcmsgd2l0aA0K
+PiA+Pj4+IHRoaXMgZml4ZWQ/DQo+ID4+Pg0KPiA+Pj4gSXMgVEFTS19TSVpFX01BU0sgZGVmaW5l
+ZCBzdWNoIHRoYXQgeW91IGNhbiBkbzoNCj4gPj4+DQo+ID4+PiAJcmV0dXJuIChhZGRyIHwgc2l6
+ZSkgPCBUQVNLX1NJWkVfTUFYKSB8fCAhc2l6ZTsNCj4gPj4NCj4gPj4gVEFTS19TSVpFX01BWCB3
+aWxsIHVzdWFsbHkgYmUgMHhjMDAwMDAwMA0KPiA+Pg0KPiA+PiBXaXRoOg0KPiA+PiBhZGRyID0g
+MHg4MDAwMDAwMDsNCj4gPj4gc2l6ZSA9IDB4ODAwMDAwMDA7DQo+ID4+DQo+ID4+IEkgZXhwZWN0
+IGl0IHRvIGZhaWwgLi4uLg0KPiA+Pg0KPiA+PiBXaXRoIHRoZSBmb3JtdWxhIHlvdSBwcm9wb3Nl
+IGl0IHdpbGwgc3VjY2VlZCwgd29uJ3QgaXQgPw0KPiA+DQo+ID4gSG1tbS4uLiBXYXMgaSBnZXR0
+aW5nIGNvbmZ1c2VkIGFib3V0IHNvbWUgY29tbWVudHMgZm9yIDY0Yml0DQo+ID4gYWJvdXQgdGhl
+cmUgYmVpbmcgc3VjaCBhIGJpZyBob2xlIGJldHdlZW4gdmFsaWQgdXNlciBhbmQga2VybmVsDQo+
+ID4gYWRkcmVzc2VzIHRoYXQgaXQgd2FzIGVub3VnaCB0byBjaGVjayB0aGF0ICdzaXplIDwgVEFT
+S19TSVpFX01BWCcuDQo+ID4NCj4gPiBUaGF0IHdvdWxkIGJlIHRydWUgZm9yIDY0Yml0IHg4NiAo
+YW5kIHByb2JhYmx5IHBwYyAoJiBhcm0/PykpDQo+ID4gaWYgVEFTS19TSVpFX01BWCB3ZXJlIDB4
+NCA8PCA2MC4NCj4gPiBJSVVDIHRoZSBoaWdoZXN0IHVzZXIgYWRkcmVzcyBpcyAobXVjaCkgbGVz
+cyB0aGFuIDB4MCA8PCA2MA0KPiA+IGFuZCB0aGUgbG93ZXN0IGtlcm5lbCBhZGRyZXNzIChtdWNo
+KSBncmVhdGVyIHRoYW4gMHhmIDw8IDYwDQo+ID4gb24gYWxsIHRoZXNlIDY0Yml0IHBsYXRmb3Jt
+cy4NCj4gPg0KPiA+IEFjdHVhbGx5IGlmIGRvaW5nIGFjY2Vzc19vaygpIGluc2lkZSBnZXRfdXNl
+cigpIHlvdSBkb24ndA0KPiA+IG5lZWQgdG8gY2hlY2sgdGhlIHNpemUgYXQgYWxsLg0KPiANCj4g
+WW91IG1lYW4gb24gNjQgYml0IG9yIG9uIGFueSBwbGF0Zm9ybSA/DQoNCjY0Yml0IGFuZCAzMmJp
+dA0KDQo+IFdoYXQgYWJvdXQgYSB3b3JkIHdyaXRlIHRvIDB4YmZmZmZmZmUsIHdvbid0IGl0IG92
+ZXJ3cml0ZSAweGMwMDAwMDAwID8NCj4gDQo+ID4gWW91IGRvbid0IGV2ZW4gbmVlZCB0byBpbiBj
+b3B5X3RvL2Zyb21fdXNlcigpIHByb3ZpZGVkDQo+ID4gaXQgYWx3YXlzIGRvZXMgYSBmb3J3YXJk
+cyBjb3B5Lg0KPiANCj4gRG8geW91IG1lYW4gZHVlIHRvIHRoZSBnYXAgPw0KPiBJcyBpdCBnYXJh
+bnRpZWQgdG8gYmUgYSBnYXAgPyBFdmVuIG9uIGEgMzIgYml0cyBoYXZpbmcgVEFTS19TSVpFIHNl
+dCB0bw0KPiAweGMwMDAwMDAwIGFuZCBQQUdFX09GRlNFVCBzZXQgdG8gdGhlIHNhbWUgPw0KDQpJ
+IHJlYWQgc29tZXdoZXJlIChJIHdvbid0IGZpbmQgaXQgYWdhaW4pIHRoYXQgdGhlIGxhc3QgNGsg
+cGFnZQ0KKGJlbG93IDB4YzAwMDAwMDApIG11c3Qgbm90IGJlIGFsbG9jYXRlZCBvbiBpMzg2IGJl
+Y2F1c2Ugc29tZQ0KY3B1IChib3RoIGludGVsIGFuZCBhbWQpIGRvICdob3JyaWQgdGhpbmdzJyBp
+ZiB0aGV5IHRyeSB0bw0KKElJUkMpIGRvIGluc3RydWN0aW9uIHByZWZldGNoZXMgYWNyb3NzIHRo
+ZSBib3VuZGFyeS4NClNvIHRoZSBhY2Nlc3NlcyB0byAweGJmZmZmZmZlIHdpbGwgZmF1bHQgYW5k
+IHRoZSBvbmUgdG8gMHhjMDAwMDAwMA0Kd29uJ3QgaGFwcGVuIChpbiBhbnkgdXNlZnVsIHdheSBh
+dCBsZWFzdCkuDQoNCkknZCBzdXNwZWN0IHRoYXQgbm90IGFsbG9jYXRpbmcgdGhlIDNHLTRrIHBh
+Z2Ugd291bGQgYmUgYSBzYWZlDQpiZXQgb24gYWxsIGFyY2hpdGVjdHVyZXMgLSBldmVuIDY4ay4N
+Cg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2Fk
+LCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5v
+OiAxMzk3Mzg2IChXYWxlcykNCg==
 
-Erhard F. (erhard_f@mailbox.org) changed:
-
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
- Attachment #288187|0                           |1
-        is obsolete|                            |
-
---- Comment #20 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 292289
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D292289&action=3Dedit
-kernel .config (kernel 5.9-rc3, Talos II)
-
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
