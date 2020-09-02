@@ -1,52 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3669C25A424
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 05:49:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F6C25A429
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 05:51:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh9145Ch3zDqTV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 13:49:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh93X73wnzDqfP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 13:51:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh8x33PGvzDqVQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 13:45:58 +1000 (AEST)
-IronPort-SDR: x/qYPZcAHQ/h4j/RlOqtahq4CrDK1bEbwrLMwFVLuRhcDlKCldtbcXCLrzDdO0r8qo2TSRxDdR
- xdYvY2ERV5qQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9731"; a="157317935"
-X-IronPort-AV: E=Sophos;i="5.76,381,1592895600"; d="scan'208";a="157317935"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2020 20:45:55 -0700
-IronPort-SDR: +m36M7nIXY0yZX0NfWatTg7hRYYurf8cqE9qhwUP4GDwFR7N8Su+ptAEpReBmwkqDxQzpnoA6L
- 0btxHpl49nig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,381,1592895600"; d="scan'208";a="301671066"
-Received: from lkp-server02.sh.intel.com (HELO 500e1ab2883a) ([10.239.97.151])
- by orsmga006.jf.intel.com with ESMTP; 01 Sep 2020 20:45:54 -0700
-Received: from kbuild by 500e1ab2883a with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kDJic-00001N-2g; Wed, 02 Sep 2020 03:45:54 +0000
-Date: Wed, 02 Sep 2020 11:45:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 64cc8701ff3161ff1c257f90375a1a3a8a083d78
-Message-ID: <5f4f1547.5yN6umKp+eQAKkHC%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Bh8x77494zDqcR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 13:46:01 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 370CDD6E;
+ Tue,  1 Sep 2020 20:45:59 -0700 (PDT)
+Received: from [192.168.0.130] (unknown [172.31.20.19])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 382A73F66F;
+ Tue,  1 Sep 2020 20:45:54 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH v3 03/13] mm/debug_vm_pgtable/ppc64: Avoid setting top
+ bits in radom value
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <20200827080438.315345-1-aneesh.kumar@linux.ibm.com>
+ <20200827080438.315345-4-aneesh.kumar@linux.ibm.com>
+ <3a0b0101-e6ec-26c5-e104-5b0bb95c3e51@arm.com>
+ <1a8abe92-032b-f60f-1df1-52bb409b35a3@linux.ibm.com>
+ <75771782-734b-69f6-4a07-2d3542458319@arm.com>
+ <e5d32d12-d904-ed8c-8963-d43d2c3744d9@linux.ibm.com>
+ <c371e316-7533-62c7-a1c6-9b6745d8d1ea@arm.com>
+ <3f20130a-f9fc-db9d-50a9-76aca5a1a6d7@linux.ibm.com>
+Message-ID: <2f6f2e26-5c77-d9cb-667c-0f7d35923e31@arm.com>
+Date: Wed, 2 Sep 2020 09:15:12 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <3f20130a-f9fc-db9d-50a9-76aca5a1a6d7@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,181 +57,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Christophe Leroy <christophe.leroy@c-s.fr>, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, Qian Cai <cai@lca.pw>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 64cc8701ff3161ff1c257f90375a1a3a8a083d78  powerpc/powernv: Print helpful message when cores guarded
 
-elapsed time: 807m
 
-configs tested: 155
-configs skipped: 10
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-sh                           se7206_defconfig
-mips                 pnx8335_stb225_defconfig
-arm                            mmp2_defconfig
-sh                           sh2007_defconfig
-sh                        edosk7705_defconfig
-mips                      bmips_stb_defconfig
-sh                             espt_defconfig
-mips                           rs90_defconfig
-c6x                        evmc6474_defconfig
-powerpc                           allnoconfig
-arm                     eseries_pxa_defconfig
-arm                      footbridge_defconfig
-sh                            migor_defconfig
-arm                         shannon_defconfig
-riscv                             allnoconfig
-powerpc                      pasemi_defconfig
-sh                ecovec24-romimage_defconfig
-arm                        mvebu_v5_defconfig
-mips                      maltasmvp_defconfig
-sh                          rsk7264_defconfig
-powerpc                      mgcoge_defconfig
-sh                          r7780mp_defconfig
-sh                           se7712_defconfig
-sparc                       sparc64_defconfig
-powerpc                             defconfig
-h8300                       h8s-sim_defconfig
-powerpc                  storcenter_defconfig
-arm                   milbeaut_m10v_defconfig
-mips                            e55_defconfig
-arm                           efm32_defconfig
-arm                        shmobile_defconfig
-sh                         microdev_defconfig
-arm                             rpc_defconfig
-powerpc                      ppc40x_defconfig
-powerpc                  mpc885_ads_defconfig
-arm                       imx_v6_v7_defconfig
-c6x                                 defconfig
-ia64                         bigsur_defconfig
-mips                        bcm63xx_defconfig
-sh                          rsk7269_defconfig
-ia64                                defconfig
-sh                  sh7785lcr_32bit_defconfig
-s390                       zfcpdump_defconfig
-arm                         hackkit_defconfig
-xtensa                       common_defconfig
-arm                            lart_defconfig
-arm                      pxa255-idp_defconfig
-arm                         mv78xx0_defconfig
-arm                         s3c2410_defconfig
-arm                              alldefconfig
-riscv                    nommu_k210_defconfig
-nios2                         3c120_defconfig
-m68k                             alldefconfig
-m68k                       m5475evb_defconfig
-mips                         tb0287_defconfig
-mips                     cu1000-neo_defconfig
-mips                          malta_defconfig
-powerpc                    gamecube_defconfig
-mips                      malta_kvm_defconfig
-m68k                       m5249evb_defconfig
-x86_64                              defconfig
-nds32                               defconfig
-sh                          r7785rp_defconfig
-mips                         tb0226_defconfig
-xtensa                         virt_defconfig
-mips                         tb0219_defconfig
-arm                          moxart_defconfig
-arm                        magician_defconfig
-nds32                            alldefconfig
-mips                    maltaup_xpa_defconfig
-arm                            qcom_defconfig
-mips                          rm200_defconfig
-arc                         haps_hs_defconfig
-powerpc                      ppc64e_defconfig
-arm                          ixp4xx_defconfig
-mips                         cobalt_defconfig
-powerpc                       maple_defconfig
-arm                          simpad_defconfig
-sh                          rsk7201_defconfig
-arm                         nhk8815_defconfig
-arm                             pxa_defconfig
-mips                         bigsur_defconfig
-arm                        realview_defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a004-20200901
-x86_64               randconfig-a006-20200901
-x86_64               randconfig-a003-20200901
-x86_64               randconfig-a005-20200901
-x86_64               randconfig-a001-20200901
-x86_64               randconfig-a002-20200901
-i386                 randconfig-a004-20200901
-i386                 randconfig-a005-20200901
-i386                 randconfig-a006-20200901
-i386                 randconfig-a002-20200901
-i386                 randconfig-a001-20200901
-i386                 randconfig-a003-20200901
-i386                 randconfig-a016-20200901
-i386                 randconfig-a015-20200901
-i386                 randconfig-a011-20200901
-i386                 randconfig-a013-20200901
-i386                 randconfig-a014-20200901
-i386                 randconfig-a012-20200901
-i386                 randconfig-a016-20200902
-i386                 randconfig-a015-20200902
-i386                 randconfig-a011-20200902
-i386                 randconfig-a013-20200902
-i386                 randconfig-a014-20200902
-i386                 randconfig-a012-20200902
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a013-20200901
-x86_64               randconfig-a016-20200901
-x86_64               randconfig-a011-20200901
-x86_64               randconfig-a012-20200901
-x86_64               randconfig-a015-20200901
-x86_64               randconfig-a014-20200901
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+On 09/01/2020 01:25 PM, Aneesh Kumar K.V wrote:
+> On 9/1/20 1:16 PM, Anshuman Khandual wrote:
+>>
+>>
+>> On 09/01/2020 01:06 PM, Aneesh Kumar K.V wrote:
+>>> On 9/1/20 1:02 PM, Anshuman Khandual wrote:
+>>>>
+>>>>
+>>>> On 09/01/2020 11:51 AM, Aneesh Kumar K.V wrote:
+>>>>> On 9/1/20 8:45 AM, Anshuman Khandual wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 08/27/2020 01:34 PM, Aneesh Kumar K.V wrote:
+>>>>>>> ppc64 use bit 62 to indicate a pte entry (_PAGE_PTE). Avoid setting that bit in
+>>>>>>> random value.
+>>>>>>>
+>>>>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>>>>>> ---
+>>>>>>>     mm/debug_vm_pgtable.c | 13 ++++++++++---
+>>>>>>>     1 file changed, 10 insertions(+), 3 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>>>>>>> index 086309fb9b6f..bbf9df0e64c6 100644
+>>>>>>> --- a/mm/debug_vm_pgtable.c
+>>>>>>> +++ b/mm/debug_vm_pgtable.c
+>>>>>>> @@ -44,10 +44,17 @@
+>>>>>>>      * entry type. But these bits might affect the ability to clear entries with
+>>>>>>>      * pxx_clear() because of how dynamic page table folding works on s390. So
+>>>>>>>      * while loading up the entries do not change the lower 4 bits. It does not
+>>>>>>> - * have affect any other platform.
+>>>>>>> + * have affect any other platform. Also avoid the 62nd bit on ppc64 that is
+>>>>>>> + * used to mark a pte entry.
+>>>>>>>      */
+>>>>>>> -#define S390_MASK_BITS    4
+>>>>>>> -#define RANDOM_ORVALUE    GENMASK(BITS_PER_LONG - 1, S390_MASK_BITS)
+>>>>>>> +#define S390_SKIP_MASK        GENMASK(3, 0)
+>>>>>>> +#ifdef CONFIG_PPC_BOOK3S_64
+>>>>>>> +#define PPC64_SKIP_MASK        GENMASK(62, 62)
+>>>>>>> +#else
+>>>>>>> +#define PPC64_SKIP_MASK        0x0
+>>>>>>> +#endif
+>>>>>>
+>>>>>> Please drop the #ifdef CONFIG_PPC_BOOK3S_64 here. We already accommodate skip
+>>>>>> bits for a s390 platform requirement and can also do so for ppc64 as well. As
+>>>>>> mentioned before, please avoid adding any platform specific constructs in the
+>>>>>> test.
+>>>>>>
+>>>>>
+>>>>>
+>>>>> that is needed so that it can be built on 32 bit architectures.I did face build errors with arch-linux
+>>>>
+>>>> Could not (#if __BITS_PER_LONG == 32) be used instead or something like
+>>>> that. But should be a generic conditional check identifying 32 bit arch
+>>>> not anything platform specific.
+>>>>
+>>>
+>>> that _PAGE_PTE bit is pretty much specific to PPC BOOK3S_64.  Not sure why other architectures need to bothered about ignoring bit 62.
+>>
+>> Thats okay as long it does not adversely affect other architectures, ignoring
+>> some more bits is acceptable. Like existing S390_MASK_BITS gets ignored on all
+>> other platforms even if it is a s390 specific constraint. Not having platform
+>> specific #ifdef here, is essential.
+>>
+> 
+> Why is it essential?
+IIRC, I might have already replied on this couple of times. But let me try once more.
+It is a generic test aimed at finding inconsistencies between different architectures
+in terms of the page table helper semantics. Any platform specific construct here, to
+'make things work' has the potential to hide such inconsistencies and defeat the very
+purpose. The test/file here follows this rule consistently i.e there is not a single
+platform specific #ifdef right now and would really like to continue maintaining this
+property, unless until absolutely necessary. Current situation here wrt 32 bit archs
+can easily be accommodated with a generic check such as __BITS_PER_LONG.
