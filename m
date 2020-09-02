@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D896B25AD90
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA5825ADEC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:51:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhRYs0CfdzDqTK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 00:45:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhRhX2w8YzDr0C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 00:51:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,14 +18,14 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhRRb4KTkzDqwY
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Sep 2020 00:39:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhRZL4MR6zDqcw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Sep 2020 00:45:46 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 206203] kmemleak reports various leaks in drivers/of/unittest.c
-Date: Wed, 02 Sep 2020 14:39:52 +0000
+Date: Wed, 02 Sep 2020 14:45:40 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -41,7 +41,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-206203-206035-oKLERFQgi9@https.bugzilla.kernel.org/>
+Message-ID: <bug-206203-206035-p0sJYmYApW@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-206203-206035@https.bugzilla.kernel.org/>
 References: <bug-206203-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -70,13 +70,13 @@ Erhard F. (erhard_f@mailbox.org) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
- Attachment #288189|0                           |1
+ Attachment #288187|0                           |1
         is obsolete|                            |
 
---- Comment #19 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 292287
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D292287&action=3Dedit
-kmemleak output (kernel 5.9-rc3, Talos II)
+--- Comment #20 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 292289
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D292289&action=3Dedit
+kernel .config (kernel 5.9-rc3, Talos II)
 
 --=20
 You are receiving this mail because:
