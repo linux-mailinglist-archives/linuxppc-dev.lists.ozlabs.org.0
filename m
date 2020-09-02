@@ -2,87 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177F925A860
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE09B25A882
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:21:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhJ8h4fLczDqr6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 19:11:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhJND6hLgzDqqW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 19:21:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=mXeGjyM/; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=cSnVWxgU; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhJ6J0l4lzDqlm
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 19:09:27 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08292jM8004758; Wed, 2 Sep 2020 05:09:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=tDxGVhOX0cCEXcDAZ8mLZt95/LUEO78Nvk7je6okY4s=;
- b=mXeGjyM/p43+bv+J3fpYg1C/MwliHRR/CFPpUZO+YYuVQncjli7efXUPBvDyyBVoUJdr
- a/JM68yNW24XzA1zlXvKwAJIFXomOJr9ooPrjKYQIftRmFTrt3b0aM7POFLgCNcdcmMP
- Nz4B0Ax/DPwYb3ogD9xyssR6YT1bSviSu+n55taE3HHV6XBIxCvDbmwE3B0G4qlbzXX1
- NDiz89dfE5Q/h3p4r858MHwrHcPwUby63n9WeQskdLdKhOZcAXwnBAPBdyYmDk34Ctd9
- HFdOj9L3iI2BtHufwIsngFYMtA4DCYrEhbFKTVGf0qpFCn0tWWOU50QKKO4Ieu9cdtOG Zw== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 33a8dnr4yh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 05:09:18 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 082983SQ001107;
- Wed, 2 Sep 2020 09:09:16 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03fra.de.ibm.com with ESMTP id 337en8arxg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 09:09:16 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 08299D0L30540124
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Sep 2020 09:09:13 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 320C2AE074;
- Wed,  2 Sep 2020 09:09:13 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7685AE056;
- Wed,  2 Sep 2020 09:09:12 +0000 (GMT)
-Received: from pomme.tlslab.ibm.com (unknown [9.145.28.120])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  2 Sep 2020 09:09:12 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH] mm: check for memory's node later during boot
-Date: Wed,  2 Sep 2020 11:09:11 +0200
-Message-Id: <20200902090911.11363-1-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.28.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhJL00pLpzDqnr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 19:19:33 +1000 (AEST)
+Received: by mail-ot1-x341.google.com with SMTP id i4so3685158ota.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Sep 2020 02:19:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=OXMTCYKKDHUBQdldt8AzU2mUeg41hBCxakL+XCbBpKs=;
+ b=cSnVWxgU0+gX0Cl711d7S/2g8jICe89QKFmbmYivR7A9cZxv9//44M0x3vxH3g0Ym5
+ hTYmzBAU8dI0tRGow1vLG+K7TBCB4mG4yM2GHg9hgwtEYZtBwP4nVW15INvFKWxkRfJj
+ jNBG4bLMNZ46IQYTDb//qqw6K3TwO0z9dmLdXrYsTPYtjYVehDun5f/BW4UN000g+yVy
+ XFmAlyKM7ExthPHjdYh0waEAptpXw4p34ju0hIUSwmP2o1lfECQMUBnWBTfulyhagwHJ
+ y/DpJxJ+5KniiA85NsIjhzAWNswP5dA8KqyTws5ULBX84MzF4d1n6gMba/zOd+xNJVRk
+ PLwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=OXMTCYKKDHUBQdldt8AzU2mUeg41hBCxakL+XCbBpKs=;
+ b=NhUQiXauPVg2XCOfGrkvVDSEIV5SQyyjLOuaIulLk1ZAkI5IyDIHWEOC5vtI1JooGo
+ ULAArmWTAAzEFnNW1fcNu7OQS6E9fClO90YbfwhztpgnGy8IXmpoDyROjDHh0s95lkxT
+ Db57wcmPAxuh6mTuLvPcaMcxNSp6vdI9jMZ4stvEOz40N6KI9qXDUym0QA/8LGwUzAf/
+ E3pyLAuKEV96Nada1T/N/HvcVXIyejL84hNdZ3bT5RKgfhVjULdNetqd3jwXH8zy2sTt
+ 4LOFrB/Mt+xH+dTUyVTcTG5rU45i9peMA7jmMvGCCEqiH5opSoPwulWDR6CAxMkDs9bZ
+ b4fQ==
+X-Gm-Message-State: AOAM531uU/A6mqtIzQN1cZJdgEdfn/Ak8tkzANHAgvG9M3mgLFrzbw+G
+ 7T/zWG5qWdmCBfT5+x+2C8ODyVVR0WeMrSYBY6I=
+X-Google-Smtp-Source: ABdhPJwbWD8tSzF0QVqiA/05NYJo6VEKYL57PswdCntj5l5+QTb26hx7UUIMjEEIwQ0tyInsXpzPX6k5OFMkK7tNt9w=
+X-Received: by 2002:a05:6830:1283:: with SMTP id
+ z3mr4409133otp.51.1599038371804; 
+ Wed, 02 Sep 2020 02:19:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-02_03:2020-09-02,
- 2020-09-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- spamscore=0 mlxscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1011 phishscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009020085
+References: <20200820033922.32311-1-jniethe5@gmail.com>
+ <20200820033922.32311-2-jniethe5@gmail.com>
+ <20200902061829.GF272502@thinks.paulus.ozlabs.org>
+In-Reply-To: <20200902061829.GF272502@thinks.paulus.ozlabs.org>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Wed, 2 Sep 2020 19:19:20 +1000
+Message-ID: <CACzsE9oeNBRyrf9Tm+3uSypO0mn00Aib=2zCbSE3J5q-i5Ceew@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] KVM: PPC: Book3S HV: Support prefixed instructions
+To: Paul Mackerras <paulus@ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,87 +75,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, cheloha@linux.ibm.com,
- Andrew Morton <akpm@linux-foundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-register_mem_sect_under_nodem() is checking the memory block's node id only
-if the system state is "SYSTEM_BOOTING". On PowerPC, the memory blocks are
-registered while the system state is "SYSTEM_SCHEDULING", the one before
-SYSTEM_RUNNING.
-
-The consequence on PowerPC guest with interleaved memory node's ranges is
-that some memory block could be assigned to multiple nodes on sysfs. This
-lately prevents some memory hot-plug and hot-unplug to succeed because
-links are remaining. Such a panic is then displayed:
-
-------------[ cut here ]------------
-kernel BUG at /Users/laurent/src/linux-ppc/mm/memory_hotplug.c:1084!
-Oops: Exception in kernel mode, sig: 5 [#1]
-LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-Modules linked in: rpadlpar_io rpaphp pseries_rng rng_core vmx_crypto gf128mul binfmt_misc ip_tables x_tables xfs libcrc32c crc32c_vpmsum autofs4
-CPU: 8 PID: 10256 Comm: drmgr Not tainted 5.9.0-rc1+ #25
-NIP:  c000000000403f34 LR: c000000000403f2c CTR: 0000000000000000
-REGS: c0000004876e3660 TRAP: 0700   Not tainted  (5.9.0-rc1+)
-MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24000448  XER: 20040000
-CFAR: c000000000846d20 IRQMASK: 0
-GPR00: c000000000403f2c c0000004876e38f0 c0000000012f6f00 ffffffffffffffef
-GPR04: 0000000000000227 c0000004805ae680 0000000000000000 00000004886f0000
-GPR08: 0000000000000226 0000000000000003 0000000000000002 fffffffffffffffd
-GPR12: 0000000088000484 c00000001ec96280 0000000000000000 0000000000000000
-GPR16: 0000000000000000 0000000000000000 0000000000000004 0000000000000003
-GPR20: c00000047814ffe0 c0000007ffff7c08 0000000000000010 c0000000013332c8
-GPR24: 0000000000000000 c0000000011f6cc0 0000000000000000 0000000000000000
-GPR28: ffffffffffffffef 0000000000000001 0000000150000000 0000000010000000
-NIP [c000000000403f34] add_memory_resource+0x244/0x340
-LR [c000000000403f2c] add_memory_resource+0x23c/0x340
-Call Trace:
-[c0000004876e38f0] [c000000000403f2c] add_memory_resource+0x23c/0x340 (unreliable)
-[c0000004876e39c0] [c00000000040408c] __add_memory+0x5c/0xf0
-[c0000004876e39f0] [c0000000000e2b94] dlpar_add_lmb+0x1b4/0x500
-[c0000004876e3ad0] [c0000000000e3888] dlpar_memory+0x1f8/0xb80
-[c0000004876e3b60] [c0000000000dc0d0] handle_dlpar_errorlog+0xc0/0x190
-[c0000004876e3bd0] [c0000000000dc398] dlpar_store+0x198/0x4a0
-[c0000004876e3c90] [c00000000072e630] kobj_attr_store+0x30/0x50
-[c0000004876e3cb0] [c00000000051f954] sysfs_kf_write+0x64/0x90
-[c0000004876e3cd0] [c00000000051ee40] kernfs_fop_write+0x1b0/0x290
-[c0000004876e3d20] [c000000000438dd8] vfs_write+0xe8/0x290
-[c0000004876e3d70] [c0000000004391ac] ksys_write+0xdc/0x130
-[c0000004876e3dc0] [c000000000034e40] system_call_exception+0x160/0x270
-[c0000004876e3e20] [c00000000000d740] system_call_common+0xf0/0x27c
-Instruction dump:
-48442e35 60000000 0b030000 3cbe0001 7fa3eb78 7bc48402 38a5fffe 7ca5fa14
-78a58402 48442db1 60000000 7c7c1b78 <0b030000> 7f23cb78 4bda371d 60000000
----[ end trace 562fd6c109cd0fb2 ]---
-
-To prevent this multiple links, make the node checking done for states
-prior to SYSTEM_RUNNING.
-
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 4fbce633910e ("mm/memory_hotplug.c: make register_mem_sect_under_node() a callback of walk_memory_range()")
----
- drivers/base/node.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 508b80f6329b..8e9f39b562ef 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -789,7 +789,7 @@ static int register_mem_sect_under_node(struct memory_block *mem_blk,
- 		 * case, during hotplug we know that all pages in the memory
- 		 * block belong to the same node.
- 		 */
--		if (system_state == SYSTEM_BOOTING) {
-+		if (system_state < SYSTEM_RUNNING) {
- 			page_nid = get_nid_for_pfn(pfn);
- 			if (page_nid < 0)
- 				continue;
--- 
-2.28.0
-
+On Wed, Sep 2, 2020 at 4:18 PM Paul Mackerras <paulus@ozlabs.org> wrote:
+>
+> On Thu, Aug 20, 2020 at 01:39:22PM +1000, Jordan Niethe wrote:
+> > There are two main places where instructions are loaded from the guest:
+> >     * Emulate loadstore - such as when performing MMIO emulation
+> >       triggered by an HDSI
+> >     * After an HV emulation assistance interrupt (e40)
+> >
+> > If it is a prefixed instruction that triggers these cases, its suffix
+> > must be loaded. Use the SRR1_PREFIX bit to decide if a suffix needs to
+> > be loaded. Make sure if this bit is set inject_interrupt() also sets it
+> > when giving an interrupt to the guest.
+> >
+> > ISA v3.10 extends the Hypervisor Emulation Instruction Register (HEIR)
+> > to 64 bits long to accommodate prefixed instructions. For interrupts
+> > caused by a word instruction the instruction is loaded into bits 32:63
+> > and bits 0:31 are zeroed. When caused by a prefixed instruction the
+> > prefix and suffix are loaded into bits 0:63.
+> >
+> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> > ---
+> >  arch/powerpc/kvm/book3s.c               | 15 +++++++++++++--
+> >  arch/powerpc/kvm/book3s_64_mmu_hv.c     | 10 +++++++---
+> >  arch/powerpc/kvm/book3s_hv_builtin.c    |  3 +++
+> >  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 14 ++++++++++++++
+> >  4 files changed, 37 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
+> > index 70d8967acc9b..18b1928a571b 100644
+> > --- a/arch/powerpc/kvm/book3s.c
+> > +++ b/arch/powerpc/kvm/book3s.c
+> > @@ -456,13 +456,24 @@ int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
+> >  {
+> >       ulong pc = kvmppc_get_pc(vcpu);
+> >       u32 word;
+> > +     u64 doubleword;
+> >       int r;
+> >
+> >       if (type == INST_SC)
+> >               pc -= 4;
+> >
+> > -     r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
+> > -     *inst = ppc_inst(word);
+> > +     if ((kvmppc_get_msr(vcpu) & SRR1_PREFIXED)) {
+> > +             r = kvmppc_ld(vcpu, &pc, sizeof(u64), &doubleword, false);
+>
+> Should we also have a check here that the doubleword is not crossing a
+> page boundary?  I can't think of a way to get this code to cross a
+> page boundary, assuming the hardware is working correctly, but it
+> makes me just a little nervous.
+I didn't think it could happen but I will add a check to be safe.
+>
+> > +#ifdef CONFIG_CPU_LITTLE_ENDIAN
+> > +             *inst = ppc_inst_prefix(doubleword & 0xffffffff, doubleword >> 32);
+> > +#else
+> > +             *inst = ppc_inst_prefix(doubleword >> 32, doubleword & 0xffffffff);
+> > +#endif
+>
+> Ick.  Is there a cleaner way to do this?
+Would it be nicer to read the prefix as u32 then the suffix as a u32 too?
+>
+> > +     } else {
+> > +             r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
+> > +             *inst = ppc_inst(word);
+> > +     }
+> > +
+> >       if (r == EMULATE_DONE)
+> >               return r;
+> >       else
+> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > index 775ce41738ce..0802471f4856 100644
+> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> > @@ -411,9 +411,13 @@ static int instruction_is_store(struct ppc_inst instr)
+> >       unsigned int mask;
+> >
+> >       mask = 0x10000000;
+> > -     if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
+> > -             mask = 0x100;           /* major opcode 31 */
+> > -     return (ppc_inst_val(instr) & mask) != 0;
+> > +     if (ppc_inst_prefixed(instr)) {
+> > +             return (ppc_inst_suffix(instr) & mask) != 0;
+> > +     } else {
+> > +             if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
+> > +                     mask = 0x100;           /* major opcode 31 */
+> > +             return (ppc_inst_val(instr) & mask) != 0;
+> > +     }
+>
+> The way the code worked before, the mask depended on whether the
+> instruction was a D-form (or DS-form or other variant) instruction,
+> where you can tell loads and stores apart by looking at the major
+> opcode, or an X-form instruction, where you look at the minor opcode.
+>
+> Now we are only looking at the minor opcode if it is not a prefixed
+> instruction.  Are there no X-form prefixed loads or stores?
+I could not see an X-form load/stores so I went with just that.
+But checking the ISA it does mention  "..X-form instructions that are
+preceded by an MLS-form or MMLS-form prefix..." so I shall use the
+other mask too.
+>
+> Paul.
+Thank you for the comments and suggestions.
