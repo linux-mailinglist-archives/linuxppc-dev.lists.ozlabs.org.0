@@ -1,69 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE09B25A882
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:21:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C236225A8B0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:34:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhJND6hLgzDqqW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 19:21:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhJgY2mpjzDqqW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 19:34:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
- helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cSnVWxgU; dkim-atps=neutral
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhJL00pLpzDqnr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 19:19:33 +1000 (AEST)
-Received: by mail-ot1-x341.google.com with SMTP id i4so3685158ota.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Sep 2020 02:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=OXMTCYKKDHUBQdldt8AzU2mUeg41hBCxakL+XCbBpKs=;
- b=cSnVWxgU0+gX0Cl711d7S/2g8jICe89QKFmbmYivR7A9cZxv9//44M0x3vxH3g0Ym5
- hTYmzBAU8dI0tRGow1vLG+K7TBCB4mG4yM2GHg9hgwtEYZtBwP4nVW15INvFKWxkRfJj
- jNBG4bLMNZ46IQYTDb//qqw6K3TwO0z9dmLdXrYsTPYtjYVehDun5f/BW4UN000g+yVy
- XFmAlyKM7ExthPHjdYh0waEAptpXw4p34ju0hIUSwmP2o1lfECQMUBnWBTfulyhagwHJ
- y/DpJxJ+5KniiA85NsIjhzAWNswP5dA8KqyTws5ULBX84MzF4d1n6gMba/zOd+xNJVRk
- PLwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=OXMTCYKKDHUBQdldt8AzU2mUeg41hBCxakL+XCbBpKs=;
- b=NhUQiXauPVg2XCOfGrkvVDSEIV5SQyyjLOuaIulLk1ZAkI5IyDIHWEOC5vtI1JooGo
- ULAArmWTAAzEFnNW1fcNu7OQS6E9fClO90YbfwhztpgnGy8IXmpoDyROjDHh0s95lkxT
- Db57wcmPAxuh6mTuLvPcaMcxNSp6vdI9jMZ4stvEOz40N6KI9qXDUym0QA/8LGwUzAf/
- E3pyLAuKEV96Nada1T/N/HvcVXIyejL84hNdZ3bT5RKgfhVjULdNetqd3jwXH8zy2sTt
- 4LOFrB/Mt+xH+dTUyVTcTG5rU45i9peMA7jmMvGCCEqiH5opSoPwulWDR6CAxMkDs9bZ
- b4fQ==
-X-Gm-Message-State: AOAM531uU/A6mqtIzQN1cZJdgEdfn/Ak8tkzANHAgvG9M3mgLFrzbw+G
- 7T/zWG5qWdmCBfT5+x+2C8ODyVVR0WeMrSYBY6I=
-X-Google-Smtp-Source: ABdhPJwbWD8tSzF0QVqiA/05NYJo6VEKYL57PswdCntj5l5+QTb26hx7UUIMjEEIwQ0tyInsXpzPX6k5OFMkK7tNt9w=
-X-Received: by 2002:a05:6830:1283:: with SMTP id
- z3mr4409133otp.51.1599038371804; 
- Wed, 02 Sep 2020 02:19:31 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhJd10YS1zDqmb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 19:32:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=toflBDUA; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4BhJd01Pwjz9sVC; Wed,  2 Sep 2020 19:32:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1599039156; bh=Kizt9X0kTnda/s/85a3DzRuk5nTGzcVy2NygEUxiPVg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=toflBDUAFckn6EHGnHGTLZqb5s9A8mcETSfohJQ2IqPRF/Khbi8rgjBdZhsBX2XVR
+ 2rVXjPxNSKWD0/7463vpSCMGKHZwm4GAapq03/zU6JtBaPyoRUmQ83cUszVdI6qQML
+ NKZRuAukl2kTUqs1jVZD/3IZArUo94jYDWFEpOZPyE/SlLafJgr/9zaElAB0L6hGVI
+ BXYakQRwERdHt/1Vs6RWd6nUYkibxTs439t/lPXu/kTqemsdwFLstqpMTISrqPDUkB
+ t2mVOrkBRaEZNikeE7yRcZupNsbq8o+9IjEnYT1YVsukgGZNl/ZO15FoNKZt1KKOFN
+ Tlu6FJ1fjFJ1A==
+Date: Wed, 2 Sep 2020 19:32:31 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: Re: [RFC PATCH 1/2] KVM: PPC: Use the ppc_inst type
+Message-ID: <20200902093231.GG272502@thinks.paulus.ozlabs.org>
 References: <20200820033922.32311-1-jniethe5@gmail.com>
- <20200820033922.32311-2-jniethe5@gmail.com>
- <20200902061829.GF272502@thinks.paulus.ozlabs.org>
-In-Reply-To: <20200902061829.GF272502@thinks.paulus.ozlabs.org>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Wed, 2 Sep 2020 19:19:20 +1000
-Message-ID: <CACzsE9oeNBRyrf9Tm+3uSypO0mn00Aib=2zCbSE3J5q-i5Ceew@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/2] KVM: PPC: Book3S HV: Support prefixed instructions
-To: Paul Mackerras <paulus@ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+ <20200902061318.GE272502@thinks.paulus.ozlabs.org>
+ <CACzsE9qrgs8ujQ7HeHVo-8oyY2bdwFVnVxR5dEZns5V7qK7Cbg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACzsE9qrgs8ujQ7HeHVo-8oyY2bdwFVnVxR5dEZns5V7qK7Cbg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,110 +54,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 2, 2020 at 4:18 PM Paul Mackerras <paulus@ozlabs.org> wrote:
->
-> On Thu, Aug 20, 2020 at 01:39:22PM +1000, Jordan Niethe wrote:
-> > There are two main places where instructions are loaded from the guest:
-> >     * Emulate loadstore - such as when performing MMIO emulation
-> >       triggered by an HDSI
-> >     * After an HV emulation assistance interrupt (e40)
+On Wed, Sep 02, 2020 at 06:00:24PM +1000, Jordan Niethe wrote:
+> On Wed, Sep 2, 2020 at 4:18 PM Paul Mackerras <paulus@ozlabs.org> wrote:
 > >
-> > If it is a prefixed instruction that triggers these cases, its suffix
-> > must be loaded. Use the SRR1_PREFIX bit to decide if a suffix needs to
-> > be loaded. Make sure if this bit is set inject_interrupt() also sets it
-> > when giving an interrupt to the guest.
+> > On Thu, Aug 20, 2020 at 01:39:21PM +1000, Jordan Niethe wrote:
+> > > The ppc_inst type was added to help cope with the addition of prefixed
+> > > instructions to the ISA. Convert KVM to use this new type for dealing
+> > > wiht instructions. For now do not try to add further support for
+> > > prefixed instructions.
 > >
-> > ISA v3.10 extends the Hypervisor Emulation Instruction Register (HEIR)
-> > to 64 bits long to accommodate prefixed instructions. For interrupts
-> > caused by a word instruction the instruction is loaded into bits 32:63
-> > and bits 0:31 are zeroed. When caused by a prefixed instruction the
-> > prefix and suffix are loaded into bits 0:63.
+> > This change does seem to splatter itself across a lot of code that
+> > mostly or exclusively runs on machines which are not POWER10 and will
+> > never need to handle prefixed instructions, unfortunately.  I wonder
+> > if there is a less invasive way to approach this.
+> Something less invasive would be good.
 > >
-> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> > ---
-> >  arch/powerpc/kvm/book3s.c               | 15 +++++++++++++--
-> >  arch/powerpc/kvm/book3s_64_mmu_hv.c     | 10 +++++++---
-> >  arch/powerpc/kvm/book3s_hv_builtin.c    |  3 +++
-> >  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 14 ++++++++++++++
-> >  4 files changed, 37 insertions(+), 5 deletions(-)
+> > In particular we are inflicting this 64-bit struct on 32-bit platforms
+> > unnecessarily (I assume, correct me if I am wrong here).
+> No, that is something that I wanted to to avoid, on 32 bit platforms
+> it is a 32bit struct:
+> 
+> struct ppc_inst {
+>         u32 val;
+> #ifdef CONFIG_PPC64
+>         u32 suffix;
+> #endif
+> } __packed;
 > >
-> > diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-> > index 70d8967acc9b..18b1928a571b 100644
-> > --- a/arch/powerpc/kvm/book3s.c
-> > +++ b/arch/powerpc/kvm/book3s.c
-> > @@ -456,13 +456,24 @@ int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
-> >  {
-> >       ulong pc = kvmppc_get_pc(vcpu);
-> >       u32 word;
-> > +     u64 doubleword;
-> >       int r;
+> > How would it be to do something like:
 > >
-> >       if (type == INST_SC)
-> >               pc -= 4;
+> > typedef unsigned long ppc_inst_t;
 > >
-> > -     r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
-> > -     *inst = ppc_inst(word);
-> > +     if ((kvmppc_get_msr(vcpu) & SRR1_PREFIXED)) {
-> > +             r = kvmppc_ld(vcpu, &pc, sizeof(u64), &doubleword, false);
->
-> Should we also have a check here that the doubleword is not crossing a
-> page boundary?  I can't think of a way to get this code to cross a
-> page boundary, assuming the hardware is working correctly, but it
-> makes me just a little nervous.
-I didn't think it could happen but I will add a check to be safe.
->
-> > +#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> > +             *inst = ppc_inst_prefix(doubleword & 0xffffffff, doubleword >> 32);
-> > +#else
-> > +             *inst = ppc_inst_prefix(doubleword >> 32, doubleword & 0xffffffff);
-> > +#endif
->
-> Ick.  Is there a cleaner way to do this?
-Would it be nicer to read the prefix as u32 then the suffix as a u32 too?
->
-> > +     } else {
-> > +             r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
-> > +             *inst = ppc_inst(word);
-> > +     }
-> > +
-> >       if (r == EMULATE_DONE)
-> >               return r;
-> >       else
-> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > index 775ce41738ce..0802471f4856 100644
-> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > @@ -411,9 +411,13 @@ static int instruction_is_store(struct ppc_inst instr)
-> >       unsigned int mask;
-> >
-> >       mask = 0x10000000;
-> > -     if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
-> > -             mask = 0x100;           /* major opcode 31 */
-> > -     return (ppc_inst_val(instr) & mask) != 0;
-> > +     if (ppc_inst_prefixed(instr)) {
-> > +             return (ppc_inst_suffix(instr) & mask) != 0;
-> > +     } else {
-> > +             if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
-> > +                     mask = 0x100;           /* major opcode 31 */
-> > +             return (ppc_inst_val(instr) & mask) != 0;
-> > +     }
->
-> The way the code worked before, the mask depended on whether the
-> instruction was a D-form (or DS-form or other variant) instruction,
-> where you can tell loads and stores apart by looking at the major
-> opcode, or an X-form instruction, where you look at the minor opcode.
->
-> Now we are only looking at the minor opcode if it is not a prefixed
-> instruction.  Are there no X-form prefixed loads or stores?
-I could not see an X-form load/stores so I went with just that.
-But checking the ISA it does mention  "..X-form instructions that are
-preceded by an MLS-form or MMLS-form prefix..." so I shall use the
-other mask too.
->
-> Paul.
-Thank you for the comments and suggestions.
+> > so it is 32 bits on 32-bit platforms and 64 bits on 64-bit platforms,
+> > and then use that instead of 'struct ppc_inst'?  You would still need
+> > to change the function declarations but I think most of the function
+> > bodies would not need to be changed.  In particular you would avoid a
+> > lot of the churn related to having to add ppc_inst_val() and suchlike.
+> 
+> Would the idea be to get rid of `struct ppc_inst` entirely or just not
+> use it in kvm?
+> In an earlier series I did something similar (at least code shared
+> between 32bit and 64bit would need helpers, but 32bit only code need
+> not change):
+> 
+> #ifdef __powerpc64__
+> 
+> typedef struct ppc_inst {
+>     union {
+>         struct {
+>             u32 word;
+>             u32 pad;
+>         } __packed;
+>         struct {
+>             u32 prefix;
+>             u32 suffix;
+>         } __packed;
+>     };
+> } ppc_inst;
+> 
+> #else /* !__powerpc64__ */
+> 
+> typedef u32 ppc_inst;
+> #endif
+> 
+> However mpe wanted to avoid using a typedef
+> (https://patchwork.ozlabs.org/comment/2391845/)
+
+Well it doesn't have to be typedef'd, it could just be "unsigned
+long", which is used in other places for things that want to be 32-bit
+on 32-bit machines and 64-bit on 64-bit machines.
+
+I do however think that it should be a numeric type so that we can
+mask, shift and compare it more easily.  I know that's less "abstract"
+but it's also a lot less obfuscated and I think that will lead to
+clearer code.  If you got the opposite advice from Michael Ellerman or
+Nick Piggin then I will discuss it with them.
+
+> We did also talk about just using a u64 for instructions
+> (https://lore.kernel.org/linuxppc-dev/1585028462.t27rstc2uf.astroid@bobo.none/)
+> but the concern was that as prefixed instructions act as two separate
+> u32s (prefix is always before the suffix regardless of endianess)
+> keeping it as a u64 would lead to lot of macros and potential
+> confusion.
+> But it does seem if that can avoid a lot of needless churn it might
+> worth the trade off.
+
+	u32 *ip;
+
+	instr = *ip++;
+	if (is_prefix(instr) && is_suitably_aligned(ip))
+		instr = (instr << 32) | *ip++;
+
+would avoid the endian issues pretty cleanly I think.  In other words
+the prefix would always be the high half of the 64-bit value, so you
+can't just do a single 64-bit of the instruction on little-endian
+platforms; but you can't do a single 64-bit load for other reasons as
+well, such as alignment.
+
+Paul.
