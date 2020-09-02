@@ -2,46 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372DD25A57B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB90225A5BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:48:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhDPD29L1zDqgL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:22:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhDzX2TSdzDqQK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:48:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhDK70lCwzDqMr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 16:18:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=Ffc2tECG; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4BhDK64lNVz9sV8; Wed,  2 Sep 2020 16:18:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1599027514; bh=SvqrLtSy7O4r2ulnso5MmauMzcR2/XPprpW6tHLdmU0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Ffc2tECGO/BfdwgaKDDzmaBTJHLSERwSxWOrUXDRUFZmpDniBaHsrswbonOJpjcBF
- 6zrgDy8atFX7fKYRdRRkVCOrl5b/8pEHyUszcURis/g4MKfrlIhHu+03gnuz9BRPDH
- qp0Kg65i41QOuU99/vPq38d0FbXqAo7lg4QnuU1NsQyI022Q+aDsR5ZDUByM30LJJ6
- PnKN6Til4YplHTxVPpENQH5x6ZslU5wA+AwOL91UrR49bkCOeJjBpsMOry0XWU04Ll
- JxX1pOfKU+6VlnJkTMU6FF/xJwVc5YdtPaJxfvembQcSIYlSn9Q/ggMr3CAU/pq8in
- LNaEwQgmR13Kw==
-Date: Wed, 2 Sep 2020 16:18:29 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [RFC PATCH 2/2] KVM: PPC: Book3S HV: Support prefixed instructions
-Message-ID: <20200902061829.GF272502@thinks.paulus.ozlabs.org>
-References: <20200820033922.32311-1-jniethe5@gmail.com>
- <20200820033922.32311-2-jniethe5@gmail.com>
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhDxz4f08zDqf1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 16:47:01 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BhDxr6VGJz9tybc;
+ Wed,  2 Sep 2020 08:46:56 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id iEERQsHpL4eE; Wed,  2 Sep 2020 08:46:56 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BhDxr5Sfgz9tybb;
+ Wed,  2 Sep 2020 08:46:56 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B9D0E8B788;
+ Wed,  2 Sep 2020 08:46:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id cHWP0PZXhRVt; Wed,  2 Sep 2020 08:46:57 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [10.25.210.31])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 18CA78B784;
+ Wed,  2 Sep 2020 08:46:57 +0200 (CEST)
+Subject: Re: [PATCH 2/2] powerpc/vdso32: link vdso64 with linker
+To: Nick Desaulniers <ndesaulniers@google.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20200901222523.1941988-1-ndesaulniers@google.com>
+ <20200901222523.1941988-3-ndesaulniers@google.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b2066ccd-2b81-6032-08e3-41105b400f75@csgroup.eu>
+Date: Wed, 2 Sep 2020 06:46:45 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200820033922.32311-2-jniethe5@gmail.com>
+In-Reply-To: <20200901222523.1941988-3-ndesaulniers@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,101 +65,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Fangrui Song <maskray@google.com>, linux-kernel@vger.kernel.org,
+ clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 20, 2020 at 01:39:22PM +1000, Jordan Niethe wrote:
-> There are two main places where instructions are loaded from the guest:
->     * Emulate loadstore - such as when performing MMIO emulation
->       triggered by an HDSI
->     * After an HV emulation assistance interrupt (e40)
+
+
+On 09/01/2020 10:25 PM, Nick Desaulniers wrote:
+> Rather than invoke the compiler as the driver, use the linker. That way
+> we can check --orphan-handling=warn support correctly, as cc-ldoption
+> was removed in
+> commit 055efab3120b ("kbuild: drop support for cc-ldoption").
 > 
-> If it is a prefixed instruction that triggers these cases, its suffix
-> must be loaded. Use the SRR1_PREFIX bit to decide if a suffix needs to
-> be loaded. Make sure if this bit is set inject_interrupt() also sets it
-> when giving an interrupt to the guest.
+> Requires dropping the .got section.  I couldn't find how it was used in
+> the vdso32.
+
+ld crashes:
+
+   LD      arch/powerpc/kernel/vdso32/vdso32.so.dbg
+/bin/sh: line 1: 23780 Segmentation fault      (core dumped) 
+ppc-linux-ld -EB -m elf32ppc -shared -soname linux-vdso32.so.1 
+--eh-frame-hdr --orphan-handling=warn -T 
+arch/powerpc/kernel/vdso32/vdso32.lds 
+arch/powerpc/kernel/vdso32/sigtramp.o 
+arch/powerpc/kernel/vdso32/gettimeofday.o 
+arch/powerpc/kernel/vdso32/datapage.o 
+arch/powerpc/kernel/vdso32/cacheflush.o 
+arch/powerpc/kernel/vdso32/note.o arch/powerpc/kernel/vdso32/getcpu.o -o 
+arch/powerpc/kernel/vdso32/vdso32.so.dbg
+make[4]: *** [arch/powerpc/kernel/vdso32/vdso32.so.dbg] Error 139
+
+
+[root@localhost linux-powerpc]# ppc-linux-ld --version
+GNU ld (GNU Binutils) 2.26.20160125
+
+
+Christophe
+
 > 
-> ISA v3.10 extends the Hypervisor Emulation Instruction Register (HEIR)
-> to 64 bits long to accommodate prefixed instructions. For interrupts
-> caused by a word instruction the instruction is loaded into bits 32:63
-> and bits 0:31 are zeroed. When caused by a prefixed instruction the
-> prefix and suffix are loaded into bits 0:63.
-> 
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
+> Link: https://lore.kernel.org/lkml/CAKwvOdnn3wxYdJomvnveyD_njwRku3fABWT_bS92duihhywLJQ@mail.gmail.com/
+> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
 > ---
->  arch/powerpc/kvm/book3s.c               | 15 +++++++++++++--
->  arch/powerpc/kvm/book3s_64_mmu_hv.c     | 10 +++++++---
->  arch/powerpc/kvm/book3s_hv_builtin.c    |  3 +++
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 14 ++++++++++++++
->  4 files changed, 37 insertions(+), 5 deletions(-)
+> Not sure removing .got is a good idea or not.  Otherwise I observe the
+> following link error:
+> powerpc-linux-gnu-ld: warning: orphan section `.got' from `arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.got'
+> powerpc-linux-gnu-ld: _GLOBAL_OFFSET_TABLE_ not defined in linker created .got
+> powerpc-linux-gnu-ld: final link failed: bad value
 > 
-> diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-> index 70d8967acc9b..18b1928a571b 100644
-> --- a/arch/powerpc/kvm/book3s.c
-> +++ b/arch/powerpc/kvm/book3s.c
-> @@ -456,13 +456,24 @@ int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
->  {
->  	ulong pc = kvmppc_get_pc(vcpu);
->  	u32 word;
-> +	u64 doubleword;
->  	int r;
->  
->  	if (type == INST_SC)
->  		pc -= 4;
->  
-> -	r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
-> -	*inst = ppc_inst(word);
-> +	if ((kvmppc_get_msr(vcpu) & SRR1_PREFIXED)) {
-> +		r = kvmppc_ld(vcpu, &pc, sizeof(u64), &doubleword, false);
-
-Should we also have a check here that the doubleword is not crossing a
-page boundary?  I can't think of a way to get this code to cross a
-page boundary, assuming the hardware is working correctly, but it
-makes me just a little nervous.
-
-> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> +		*inst = ppc_inst_prefix(doubleword & 0xffffffff, doubleword >> 32);
-> +#else
-> +		*inst = ppc_inst_prefix(doubleword >> 32, doubleword & 0xffffffff);
-> +#endif
-
-Ick.  Is there a cleaner way to do this?
-
-> +	} else {
-> +		r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
-> +		*inst = ppc_inst(word);
-> +	}
-> +
->  	if (r == EMULATE_DONE)
->  		return r;
->  	else
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> index 775ce41738ce..0802471f4856 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> @@ -411,9 +411,13 @@ static int instruction_is_store(struct ppc_inst instr)
->  	unsigned int mask;
->  
->  	mask = 0x10000000;
-> -	if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
-> -		mask = 0x100;		/* major opcode 31 */
-> -	return (ppc_inst_val(instr) & mask) != 0;
-> +	if (ppc_inst_prefixed(instr)) {
-> +		return (ppc_inst_suffix(instr) & mask) != 0;
-> +	} else {
-> +		if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
-> +			mask = 0x100;		/* major opcode 31 */
-> +		return (ppc_inst_val(instr) & mask) != 0;
-> +	}
-
-The way the code worked before, the mask depended on whether the
-instruction was a D-form (or DS-form or other variant) instruction,
-where you can tell loads and stores apart by looking at the major
-opcode, or an X-form instruction, where you look at the minor opcode.
-
-Now we are only looking at the minor opcode if it is not a prefixed
-instruction.  Are there no X-form prefixed loads or stores?
-
-Paul.
+> sigtramp.c doesn't mention anything from the GOT AFAICT, and doesn't
+> look like it contains relocations that do, so I'm not sure where
+> references to _GLOBAL_OFFSET_TABLE_ are coming from.
+> 
+>   arch/powerpc/kernel/vdso32/Makefile     | 7 +++++--
+>   arch/powerpc/kernel/vdso32/vdso32.lds.S | 3 ++-
+>   2 files changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vdso32/Makefile
+> index 87ab1152d5ce..611a5951945a 100644
+> --- a/arch/powerpc/kernel/vdso32/Makefile
+> +++ b/arch/powerpc/kernel/vdso32/Makefile
+> @@ -27,6 +27,9 @@ UBSAN_SANITIZE := n
+>   ccflags-y := -shared -fno-common -fno-builtin -nostdlib \
+>   	-Wl,-soname=linux-vdso32.so.1 -Wl,--hash-style=both
+>   asflags-y := -D__VDSO32__ -s
+> +ldflags-y := -shared -soname linux-vdso32.so.1 \
+> +	$(call ld-option, --eh-frame-hdr) \
+> +	$(call ld-option, --orphan-handling=warn) -T
+>   
+>   obj-y += vdso32_wrapper.o
+>   extra-y += vdso32.lds
+> @@ -49,8 +52,8 @@ $(obj-vdso32): %.o: %.S FORCE
+>   	$(call if_changed_dep,vdso32as)
+>   
+>   # actual build commands
+> -quiet_cmd_vdso32ld = VDSO32L $@
+> -      cmd_vdso32ld = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ $(call cc-ldoption, -Wl$(comma)--orphan-handling=warn) -Wl,-T$(filter %.lds,$^) $(filter %.o,$^)
+> +quiet_cmd_vdso32ld = LD      $@
+> +      cmd_vdso32ld = $(cmd_ld)
+>   quiet_cmd_vdso32as = VDSO32A $@
+>         cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) -c -o $@ $<
+>   
+> diff --git a/arch/powerpc/kernel/vdso32/vdso32.lds.S b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+> index 4c985467a668..0ccdebad18b8 100644
+> --- a/arch/powerpc/kernel/vdso32/vdso32.lds.S
+> +++ b/arch/powerpc/kernel/vdso32/vdso32.lds.S
+> @@ -61,7 +61,6 @@ SECTIONS
+>   	.fixup		: { *(.fixup) }
+>   
+>   	.dynamic	: { *(.dynamic) }		:text	:dynamic
+> -	.got		: { *(.got) }			:text
+>   	.plt		: { *(.plt) }
+>   
+>   	_end = .;
+> @@ -108,7 +107,9 @@ SECTIONS
+>   	.debug_varnames  0 : { *(.debug_varnames) }
+>   
+>   	/DISCARD/	: {
+> +		*(.got)
+>   		*(.note.GNU-stack)
+> +		*(.branch_lt)
+>   		*(.data .data.* .gnu.linkonce.d.* .sdata*)
+>   		*(.bss .sbss .dynbss .dynsbss)
+>   		*(.glink .iplt .plt .rela*)
+> 
