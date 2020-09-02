@@ -1,74 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2468225AA85
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 13:48:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E45425AA80
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 13:47:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhMfC6FhfzDqkx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 21:48:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhMcB1fZhzDqF1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 21:47:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=axvOKxi6; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=fQTHAORU; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhMWD3hBWzDqnV
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhMWF1KDkzDqqY
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 21:42:48 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 082BWAoq035404; Wed, 2 Sep 2020 07:42:37 -0400
+ 082BWEau123237; Wed, 2 Sep 2020 07:42:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=LVwTeyKe/+eadJkxhdcPDPb/XZX3HzejRljrDbr75SI=;
- b=axvOKxi6yC4hQD+HszDRSjPxzhBDCbkjbYNNDY09EqRLXmzZtiVZyskb/JY1eNzrttky
- pgX5XHr5r43+e1hqsPklwXSFWycQLEmyA4M6nc8j4YFyzm0QLp4T4QJsUOgmh1N83YhK
- mtoqDS95q/ptk3LjnJLnByEjPzvXPcyLfBqRwb1QpZkijjTXfc8gC9sRY0zviINz0FgZ
- Y0u97vIZAN/d5Le+epmThHZM97u+RvMvtsZ2x0f5gXqjx+VsGLDjub0ekRg7NRPo+PZM
- zCwYKYAyDTZjXSJBlPbTm9rvKV6gvgTXHijMkp8MngjvopS36xbV+ga7PG5aIde47wCr 0A== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33a7pa5udu-1
+ bh=fnHs+ObetPyH/R67d3Le4srwaclpFjagskg9RFe+pUA=;
+ b=fQTHAORUxrknejI4cUpsR8huoOw/C4oGHnYYzJo6S++HGkZLHHE3l5bMDxyp0HDsP6Ho
+ 2V5d0Re5Er90k48k6DNl6Oid7N9wqcaxc+PqvKykxJEA7pk9P+XOIci+FZ3AMKPQnFfl
+ Wpe9up3QGqgtGSAKTABcWmacxH3Hrs+HOZrHPVsolM88kLirHVj5/krZQ4bq0NGvMggJ
+ DGPRFdqOTAb4GIG/k5O/80XSvXRikkzW4w/bMXSQ3TJ5RchKwZhVpGsKkCuxlr8CR5rN
+ 66YpYuJ53IPdCwmLjSX2mGwDiLhs3ucO62cc8xg39UqAb5GlnO0osz4iNvCXSw6JgYkG 2Q== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33aa5fs3ka-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 07:42:37 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 082BbRZH031106;
- Wed, 2 Sep 2020 11:42:36 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02wdc.us.ibm.com with ESMTP id 337en9qcs0-1
+ Wed, 02 Sep 2020 07:42:40 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 082BbKd7013654;
+ Wed, 2 Sep 2020 11:42:39 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 337en97fhy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 11:42:36 +0000
+ Wed, 02 Sep 2020 11:42:39 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 082BgaU852036004
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 082BgdrI55771462
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Sep 2020 11:42:36 GMT
+ Wed, 2 Sep 2020 11:42:39 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4236DB2064;
+ by IMSVA (Postfix) with ESMTP id E5E53B205F;
+ Wed,  2 Sep 2020 11:42:38 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BFD92B2066;
  Wed,  2 Sep 2020 11:42:36 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2244FB205F;
- Wed,  2 Sep 2020 11:42:34 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.61.124])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  2 Sep 2020 11:42:33 +0000 (GMT)
+ Wed,  2 Sep 2020 11:42:36 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v4 01/13] powerpc/mm: Add DEBUG_VM WARN for pmd_clear
-Date: Wed,  2 Sep 2020 17:12:10 +0530
-Message-Id: <20200902114222.181353-2-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v4 02/13] powerpc/mm: Move setting pte specific flags to
+ pfn_pte
+Date: Wed,  2 Sep 2020 17:12:11 +0530
+Message-Id: <20200902114222.181353-3-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
 References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
@@ -79,9 +80,9 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-09-02_03:2020-09-02,
  2020-09-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
- mlxscore=0 clxscore=1015 impostorscore=0 adultscore=0 lowpriorityscore=0
+ mlxscore=0 mlxlogscore=622
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 clxscore=1015 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2009020105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -102,46 +103,103 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With the hash page table, the kernel should not use pmd_clear for clearing
-huge pte entries. Add a DEBUG_VM WARN to catch the wrong usage.
+powerpc used to set the pte specific flags in set_pte_at(). This is
+different from other architectures. To be consistent with other
+architecture update pfn_pte to set _PAGE_PTE on ppc64. Also, drop now
+unused pte_mkpte.
+
+We add a VM_WARN_ON() to catch the usage of calling set_pte_at()
+without setting _PAGE_PTE bit. We will remove that after a few releases.
+
+With respect to huge pmd entries, pmd_mkhuge() takes care of adding the
+_PAGE_PTE bit.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 15 +++++++++------
+ arch/powerpc/include/asm/nohash/pgtable.h    |  5 -----
+ arch/powerpc/mm/pgtable.c                    |  5 -----
+ 3 files changed, 9 insertions(+), 16 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 6de56c3b33c4..079211968987 100644
+index 079211968987..2382fd516f6b 100644
 --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
 +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -868,6 +868,13 @@ static inline bool pte_ci(pte_t pte)
+@@ -619,7 +619,7 @@ static inline pte_t pfn_pte(unsigned long pfn, pgprot_t pgprot)
+ 	VM_BUG_ON(pfn >> (64 - PAGE_SHIFT));
+ 	VM_BUG_ON((pfn << PAGE_SHIFT) & ~PTE_RPN_MASK);
  
- static inline void pmd_clear(pmd_t *pmdp)
- {
-+	if (IS_ENABLED(CONFIG_DEBUG_VM) && !radix_enabled()) {
-+		/*
-+		 * Don't use this if we can possibly have a hash page table
-+		 * entry mapping this.
-+		 */
-+		WARN_ON((pmd_val(*pmdp) & (H_PAGE_HASHPTE | _PAGE_PTE)) == (H_PAGE_HASHPTE | _PAGE_PTE));
-+	}
- 	*pmdp = __pmd(0);
+-	return __pte(((pte_basic_t)pfn << PAGE_SHIFT) | pgprot_val(pgprot));
++	return __pte(((pte_basic_t)pfn << PAGE_SHIFT) | pgprot_val(pgprot) | _PAGE_PTE);
  }
  
-@@ -916,6 +923,13 @@ static inline int pmd_bad(pmd_t pmd)
- 
- static inline void pud_clear(pud_t *pudp)
- {
-+	if (IS_ENABLED(CONFIG_DEBUG_VM) && !radix_enabled()) {
-+		/*
-+		 * Don't use this if we can possibly have a hash page table
-+		 * entry mapping this.
-+		 */
-+		WARN_ON((pud_val(*pudp) & (H_PAGE_HASHPTE | _PAGE_PTE)) == (H_PAGE_HASHPTE | _PAGE_PTE));
-+	}
- 	*pudp = __pud(0);
+ static inline unsigned long pte_pfn(pte_t pte)
+@@ -655,11 +655,6 @@ static inline pte_t pte_mkexec(pte_t pte)
+ 	return __pte_raw(pte_raw(pte) | cpu_to_be64(_PAGE_EXEC));
  }
  
+-static inline pte_t pte_mkpte(pte_t pte)
+-{
+-	return __pte_raw(pte_raw(pte) | cpu_to_be64(_PAGE_PTE));
+-}
+-
+ static inline pte_t pte_mkwrite(pte_t pte)
+ {
+ 	/*
+@@ -823,6 +818,14 @@ static inline int pte_none(pte_t pte)
+ static inline void __set_pte_at(struct mm_struct *mm, unsigned long addr,
+ 				pte_t *ptep, pte_t pte, int percpu)
+ {
++
++	VM_WARN_ON(!(pte_raw(pte) & cpu_to_be64(_PAGE_PTE)));
++	/*
++	 * Keep the _PAGE_PTE added till we are sure we handle _PAGE_PTE
++	 * in all the callers.
++	 */
++	 pte = __pte_raw(pte_raw(pte) | cpu_to_be64(_PAGE_PTE));
++
+ 	if (radix_enabled())
+ 		return radix__set_pte_at(mm, addr, ptep, pte, percpu);
+ 	return hash__set_pte_at(mm, addr, ptep, pte, percpu);
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index 4b7c3472eab1..6277e7596ae5 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -140,11 +140,6 @@ static inline pte_t pte_mkold(pte_t pte)
+ 	return __pte(pte_val(pte) & ~_PAGE_ACCESSED);
+ }
+ 
+-static inline pte_t pte_mkpte(pte_t pte)
+-{
+-	return pte;
+-}
+-
+ static inline pte_t pte_mkspecial(pte_t pte)
+ {
+ 	return __pte(pte_val(pte) | _PAGE_SPECIAL);
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index 9c0547d77af3..ab57b07ef39a 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -184,9 +184,6 @@ void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+ 	 */
+ 	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
+ 
+-	/* Add the pte bit when trying to set a pte */
+-	pte = pte_mkpte(pte);
+-
+ 	/* Note: mm->context.id might not yet have been assigned as
+ 	 * this context might not have been activated yet when this
+ 	 * is called.
+@@ -275,8 +272,6 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_
+ 	 */
+ 	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
+ 
+-	pte = pte_mkpte(pte);
+-
+ 	pte = set_pte_filter(pte);
+ 
+ 	val = pte_val(pte);
 -- 
 2.26.2
 
