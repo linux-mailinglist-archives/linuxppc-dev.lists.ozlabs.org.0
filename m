@@ -2,69 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A24A25A224
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 02:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6266325A230
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 02:11:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh3zR0tQczDqG1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 10:02:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh49c65LWzDqWM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 10:11:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=I3wFWCSK; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=TMu2S3Iz; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh3xQ28XXzDqLT
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 10:00:58 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id p37so1587784pgl.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 17:00:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=gLgEk3oGYS9l0OApWlO9HFN2XY5iBk93OwZsgGJtEj0=;
- b=I3wFWCSK/UvUd39MfLJZs/LPVIq/xRbdSHiY4YXM6Z3lICDgaLiTLOifdOVjqEV/GX
- QPuGZsTwrWQOj8cp/8ckWBfnNE/Er1zf5aflJtK88IcX8nsn02chroog+FjwYlXPB6EC
- /kZ7XN6mZ5DuUejJk1+Pv7ILE1Z9Vo6vNKqCMcZNmXdYclhsr6bQQ15ShCkeIGqh9fAg
- jeCjZGkPUEAKhZmGVRBhfFOrzv/eyFiDSLSWhQ06hQSs2fCFaIdCmLRmSajbkhEkNjQr
- QXnkgo/tBW28PYZi6LlAGFKNr5bqgvQA1R6zvSeEmO9GsZZoMCyHs55Y64DvD+k484mi
- hZig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :mime-version:content-transfer-encoding;
- bh=gLgEk3oGYS9l0OApWlO9HFN2XY5iBk93OwZsgGJtEj0=;
- b=SrRt3Bk0wNTrYvJHhwqtwLp0ygfV2k3dRmWfgRAEd+BGiNxyWdsTwrge+lbTC7+xhC
- S2ZWrzuCtxkWMPG5jCAcyPy7xZY/OKysH6Zz83yAtAO/CJECEipaA0G7mZCVKkWqRLFz
- RAJCJMg/WhcvXOQpCZUoAiwiiuH2Q9LXYkHT1eY9FreB0oGxriD7zlfUs0uP2NbWuQqR
- z/tQxPHP2kKBCYkl/H6ZAPDmkppSzr1u/mAyLOITeiBWNajAzxRhj6BxT4iOnfGwINu4
- V/xQnKcXHW/lWlTcXFgBf0PaHEHeqsn5cKMxy0fLaKNvC0bjBIFwQdaZJA0iaNmQGCA5
- ALQw==
-X-Gm-Message-State: AOAM531Tnfhxs9mb0yCpdObTsJC9vJPkFjTmfusVD/k1YQ6RSSVVGKbc
- 5lnvAF2lHZDvKJZ02q20JWD3Uk3uC0//FA==
-X-Google-Smtp-Source: ABdhPJxaekKuwnoezWo88n5gDtI35ajcVnYQxsZvsHePfpF5r50wgXiVw5H3M9owb98AKZBj4nQiig==
-X-Received: by 2002:a63:342:: with SMTP id 63mr3733954pgd.134.1599004853766;
- Tue, 01 Sep 2020 17:00:53 -0700 (PDT)
-Received: from localhost.localdomain ([45.124.203.19])
- by smtp.gmail.com with ESMTPSA id d77sm3339372pfd.121.2020.09.01.17.00.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Sep 2020 17:00:52 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc: Warn about use of smt_snooze_delay
-Date: Wed,  2 Sep 2020 09:30:11 +0930
-Message-Id: <20200902000012.3440389-1-joel@jms.id.au>
-X-Mailer: git-send-email 2.28.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh47g3D55zDqQQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 10:09:51 +1000 (AEST)
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
+ [209.85.128.44])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6111F20E65
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 00:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1599005388;
+ bh=ue8KFmWAURt4lhvOfblC/6hWxuPhGkaF5B0T2fLxa7I=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=TMu2S3IzHfz+o6ohiqDLBmmcmE/E3rINy8vvAXGieza4ImIhAEf776UnghnDuHvzd
+ 5RUSUwl4gq1gDaK4mi1DBXXH+ZDeKELWu02LXQKCNxeqTYN929b+1mZTWtyLPaPna1
+ +yVVQs19uJk+DPC0V7/4RRNdHi/w9iCHs5rjuS/c=
+Received: by mail-wm1-f44.google.com with SMTP id e11so1988956wme.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 17:09:48 -0700 (PDT)
+X-Gm-Message-State: AOAM532lly8WfSC9JLso2sixYuGR34BovNrIQzp8dac2FmgSeJWLTcqS
+ lUovpObEJnza7XzhL3ulAuRmwVZCdMQMUepbiwwgIA==
+X-Google-Smtp-Source: ABdhPJyyfibJgmTm5WYzNGqNFdu9nOVgGk+6VQWbLUP3cCSoL53YNiq4XcCEUyla/kGQQVBTYc7jpCQ/5AYmCiDL+Ho=
+X-Received: by 2002:a1c:7e02:: with SMTP id z2mr4078821wmc.138.1599005386776; 
+ Tue, 01 Sep 2020 17:09:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CALCETrWXvAMA7tQ3XZdAk2FixKfzQ_0fBmyNVyyPHVAomLvrWQ@mail.gmail.com>
+ <CAMzpN2hmR+0-Yse1csbiVOiqgZ0e+VRkCBBXUKoPSTSMOOOFAQ@mail.gmail.com>
+ <CALCETrXY1x0MReMoTOG2awcZvr4c7gp99JVNthK37vUUk-kyew@mail.gmail.com>
+ <87k0xdjbtt.fsf@nanos.tec.linutronix.de>
+In-Reply-To: <87k0xdjbtt.fsf@nanos.tec.linutronix.de>
+From: Andy Lutomirski <luto@kernel.org>
+Date: Tue, 1 Sep 2020 17:09:35 -0700
+X-Gmail-Original-Message-ID: <CALCETrUpjUPPvnPuS9fP4jgid7U_qdU_yTKSq9PjJ=z2w9HvHg@mail.gmail.com>
+Message-ID: <CALCETrUpjUPPvnPuS9fP4jgid7U_qdU_yTKSq9PjJ=z2w9HvHg@mail.gmail.com>
+Subject: Re: ptrace_syscall_32 is failing
+To: Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,112 +66,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>
+Cc: linux-s390 <linux-s390@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Vasily Gorbik <gor@linux.ibm.com>, Brian Gerst <brgerst@gmail.com>,
+ Heiko Carstens <hca@linux.ibm.com>, X86 ML <x86@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Andy Lutomirski <luto@kernel.org>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's not done anything for a long time. Save the percpu variable, and
-emit a warning to remind users to not expect it to do anything.
+On Tue, Sep 1, 2020 at 4:50 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+>
+> On Sun, Aug 30 2020 at 08:52, Andy Lutomirski wrote:
+> >> > [RUN]    SYSCALL
+> >> > [FAIL]    Initial args are wrong (nr=29, args=0 0 0 0 0 4289172732)
+> >> > [RUN]    SYSCALL
+> >> > [OK]    Args after SIGUSR1 are correct (ax = -514)
+> >> > [OK]    Child got SIGUSR1
+> >> > [RUN]    Step again
+> >> > [OK]    pause(2) restarted correctly
+> >>
+> >> Bisected to commit 0b085e68f407 ("x86/entry: Consolidate 32/64 bit
+> >> syscall entry").
+> >> It looks like it is because syscall_enter_from_user_mode() is called
+> >> before reading the 6th argument from the user stack.
+>
+> Bah.I don't know how I managed to miss that part and interestingly
+> enough that none of the robots caught that either
+>
+> > Thomas, can we revert the syscall_enter() and syscall_exit() part of
+> > the series?
+>
+> Hrm.
+>
+> > I think that they almost work for x86, but not quite as
+> > indicated by this bug.  Even if we imagine we can somehow hack around
+> > this bug, I imagine we're going to find other problems with this
+> > model, e.g. the potential upcoming exit problem I noted in my review.
+>
+> What's the upcoming problem?
 
-This uses pr_warn_once instead of pr_warn_ratelimit as testing
-'ppc64_cpu --smt=off' on a 24 core / 4 SMT system showed the warning to
-be noisy, as the online/offline loop is slow.
+If we ever want to get single-stepping fully correct across syscalls,
+we might need to inject SIGTRAP on syscall return. This would be more
+awkward if we can't run instrumentable code after the syscall part of
+the syscall is done.
 
-Fixes: 3fa8cad82b94 ("powerpc/pseries/cpuidle: smt-snooze-delay cleanup.")
-Cc: stable@vger.kernel.org # v3.14
-Acked-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-Signed-off-by: Joel Stanley <joel@jms.id.au>
---
-v3:
- pr_warn_once instead of pr_warn_ratelimited
- Update meessages with mpe's suggestions
-v2:
- Use pr_warn instead of WARN
- Reword and print proccess name with pid in message
- Leave CPU_FTR_SMT test in
----
- arch/powerpc/kernel/sysfs.c | 42 +++++++++++++++----------------------
- 1 file changed, 17 insertions(+), 25 deletions(-)
+>
+> > I really think the model should be:
+> >
+> > void do_syscall_whatever(...)
+> > {
+> >   irqentry_enter(...);
+> >   instrumentation_begin();
+> >
+> >   /* Do whatever arch ABI oddities are needed on entry. */
+> >
+> >   Then either:
+> >   syscall_begin(arch, nr, regs);
+> >   dispatch the syscall;
+> >   syscall_end(arch, nr, regs);
+> >
+> >   Or just:
+> >   generic_do_syscall(arch, nr, regs);
+> >
+> >   /* Do whatever arch ABI oddities are needed on exit from the syscall. */
+> >
+> >   instrumentation_end();
+> >   irqentry_exit(...);
+> > }
+>
+> I don't think we want that in general. The current variant is perfectly
+> fine for everything except the 32bit fast syscall nonsense. Also
+> irqentry_entry/exit is not equivalent to the syscall_enter/exit
+> counterparts.
 
-diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-index 46b4ebc33db7..5dea98fa2f93 100644
---- a/arch/powerpc/kernel/sysfs.c
-+++ b/arch/powerpc/kernel/sysfs.c
-@@ -32,29 +32,27 @@
- 
- static DEFINE_PER_CPU(struct cpu, cpu_devices);
- 
--/*
-- * SMT snooze delay stuff, 64-bit only for now
-- */
--
- #ifdef CONFIG_PPC64
- 
--/* Time in microseconds we delay before sleeping in the idle loop */
--static DEFINE_PER_CPU(long, smt_snooze_delay) = { 100 };
-+/*
-+ * Snooze delay has not been hooked up since 3fa8cad82b94 ("powerpc/pseries/cpuidle:
-+ * smt-snooze-delay cleanup.") and has been broken even longer. As was foretold in
-+ * 2014:
-+ *
-+ *  "ppc64_util currently utilises it. Once we fix ppc64_util, propose to clean
-+ *  up the kernel code."
-+ *
-+ * powerpc-utils stopped using it as of 1.3.8. At some point in the future this
-+ * code should be removed.
-+ */
- 
- static ssize_t store_smt_snooze_delay(struct device *dev,
- 				      struct device_attribute *attr,
- 				      const char *buf,
- 				      size_t count)
- {
--	struct cpu *cpu = container_of(dev, struct cpu, dev);
--	ssize_t ret;
--	long snooze;
--
--	ret = sscanf(buf, "%ld", &snooze);
--	if (ret != 1)
--		return -EINVAL;
--
--	per_cpu(smt_snooze_delay, cpu->dev.id) = snooze;
-+	pr_warn_once("%s (%d) stored to unsupported smt_snooze_delay, which has no effect.\n",
-+		     current->comm, current->pid);
- 	return count;
- }
- 
-@@ -62,9 +60,9 @@ static ssize_t show_smt_snooze_delay(struct device *dev,
- 				     struct device_attribute *attr,
- 				     char *buf)
- {
--	struct cpu *cpu = container_of(dev, struct cpu, dev);
--
--	return sprintf(buf, "%ld\n", per_cpu(smt_snooze_delay, cpu->dev.id));
-+	pr_warn_once("%s (%d) read from unsupported smt_snooze_delay\n",
-+		     current->comm, current->pid);
-+	return sprintf(buf, "100\n");
- }
- 
- static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
-@@ -72,16 +70,10 @@ static DEVICE_ATTR(smt_snooze_delay, 0644, show_smt_snooze_delay,
- 
- static int __init setup_smt_snooze_delay(char *str)
- {
--	unsigned int cpu;
--	long snooze;
--
- 	if (!cpu_has_feature(CPU_FTR_SMT))
- 		return 1;
- 
--	snooze = simple_strtol(str, NULL, 10);
--	for_each_possible_cpu(cpu)
--		per_cpu(smt_snooze_delay, cpu) = snooze;
--
-+	pr_warn("smt-snooze-delay command line option has no effect\n");
- 	return 1;
- }
- __setup("smt-snooze-delay=", setup_smt_snooze_delay);
--- 
-2.28.0
+If there are any architectures in which actual work is needed to
+figure out whether something is a syscall in the first place, they'll
+want to do the usual kernel entry work before the syscall entry work.
+Maybe your patch actually makes this possible -- I haven't digested
+all the details yet.
 
+Who advised you to drop the arch parameter?
+
+> ---
+>  arch/x86/entry/common.c      |   29 ++++++++++++++++--------
+>  include/linux/entry-common.h |   51 +++++++++++++++++++++++++++++++++++--------
+>  kernel/entry/common.c        |   35 ++++++++++++++++++++++++-----
+>  3 files changed, 91 insertions(+), 24 deletions(-)
+>
+> --- a/arch/x86/entry/common.c
+> +++ b/arch/x86/entry/common.c
+> @@ -60,16 +60,10 @@
+>  #if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
+>  static __always_inline unsigned int syscall_32_enter(struct pt_regs *regs)
+>  {
+> -       unsigned int nr = (unsigned int)regs->orig_ax;
+> -
+>         if (IS_ENABLED(CONFIG_IA32_EMULATION))
+>                 current_thread_info()->status |= TS_COMPAT;
+> -       /*
+> -        * Subtlety here: if ptrace pokes something larger than 2^32-1 into
+> -        * orig_ax, the unsigned int return value truncates it.  This may
+> -        * or may not be necessary, but it matches the old asm behavior.
+> -        */
+> -       return (unsigned int)syscall_enter_from_user_mode(regs, nr);
+> +
+> +       return (unsigned int)regs->orig_ax;
+>  }
+>
+>  /*
+> @@ -91,15 +85,29 @@ static __always_inline void do_syscall_3
+>  {
+>         unsigned int nr = syscall_32_enter(regs);
+>
+> +       /*
+> +        * Subtlety here: if ptrace pokes something larger than 2^32-1 into
+> +        * orig_ax, the unsigned int return value truncates it.  This may
+> +        * or may not be necessary, but it matches the old asm behavior.
+> +        */
+> +       nr = (unsigned int)syscall_enter_from_user_mode(regs, nr);
+> +
+>         do_syscall_32_irqs_on(regs, nr);
+>         syscall_exit_to_user_mode(regs);
+>  }
+>
+>  static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
+>  {
+> -       unsigned int nr = syscall_32_enter(regs);
+> +       unsigned int nr = syscall_32_enter(regs);
+>         int res;
+>
+> +       /*
+> +        * This cannot use syscall_enter_from_user_mode() as it has to
+> +        * fetch EBP before invoking any of the syscall entry work
+> +        * functions.
+> +        */
+> +       syscall_enter_from_user_mode_prepare(regs);
+
+I'm getting lost in all these "enter" functions...
