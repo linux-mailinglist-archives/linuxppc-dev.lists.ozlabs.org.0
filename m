@@ -2,47 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C236225A8B0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 720E225A8EB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 11:50:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhJgY2mpjzDqqW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 19:34:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhK1j46BBzDqsN
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 19:50:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=QLpYc9FB; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhJd10YS1zDqmb
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 19:32:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=toflBDUA; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4BhJd01Pwjz9sVC; Wed,  2 Sep 2020 19:32:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1599039156; bh=Kizt9X0kTnda/s/85a3DzRuk5nTGzcVy2NygEUxiPVg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=toflBDUAFckn6EHGnHGTLZqb5s9A8mcETSfohJQ2IqPRF/Khbi8rgjBdZhsBX2XVR
- 2rVXjPxNSKWD0/7463vpSCMGKHZwm4GAapq03/zU6JtBaPyoRUmQ83cUszVdI6qQML
- NKZRuAukl2kTUqs1jVZD/3IZArUo94jYDWFEpOZPyE/SlLafJgr/9zaElAB0L6hGVI
- BXYakQRwERdHt/1Vs6RWd6nUYkibxTs439t/lPXu/kTqemsdwFLstqpMTISrqPDUkB
- t2mVOrkBRaEZNikeE7yRcZupNsbq8o+9IjEnYT1YVsukgGZNl/ZO15FoNKZt1KKOFN
- Tlu6FJ1fjFJ1A==
-Date: Wed, 2 Sep 2020 19:32:31 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [RFC PATCH 1/2] KVM: PPC: Use the ppc_inst type
-Message-ID: <20200902093231.GG272502@thinks.paulus.ozlabs.org>
-References: <20200820033922.32311-1-jniethe5@gmail.com>
- <20200902061318.GE272502@thinks.paulus.ozlabs.org>
- <CACzsE9qrgs8ujQ7HeHVo-8oyY2bdwFVnVxR5dEZns5V7qK7Cbg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhJzt2HwjzDqVb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 19:48:57 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id w186so2266420pgb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Sep 2020 02:48:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=ux3HYVB/twlQxBcSTqnhWPU2AHJs+FvCx+/z5WDVFJA=;
+ b=QLpYc9FBvtf6jo9nK102wCzMR9/mge0/dioBMTh/v1a4B+JEU/RenX7oalAr56yIZn
+ Vw2hcZQ5uRDbXZFueRaM8oVZPG0YRCw31NJIVVC4EIoPjBwdHPXQoxAirsz12JdleEpZ
+ c/LNuVRZKxnX+Ok5jSv8Dcx6PdpAzitK30c4CJKUg1abwFyWXck4hjp03VMhAKbrEOO0
+ sskujutTj9SZak6W74eCKFWdUgCPpAq3ZYu69/1UgqYEdSjJQwo/yto74hobN8h2uuqY
+ iJvsu8wROTb6Do/xdyM4sruaXLKl48VhMRHt69NLg1fHzE/D/k1rMJ6pMfQNXYwaCPRF
+ VQKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=ux3HYVB/twlQxBcSTqnhWPU2AHJs+FvCx+/z5WDVFJA=;
+ b=rK99NPVO00ZQmCagrIiayvbmx8QUCeRFwVLBCeoIKhlD1cPWsxC9zBZPpfOrwqce8v
+ Hv2KDLStEZ/Ma2adeedslWiOjTe/e8gfKtPc3rKJY93egelg+EaqGFkXWhmA+3LBA1IZ
+ YNuq9zAEI4z95qgEZzYMibo5+WXYoaJ1oxdGEX+hcUXkwShFWDeC6uKrl7cvGP5nm3AF
+ NE53PwMMBD+l+tSc14ymMx76JbPMwmeo1/SNE2YjIxmWvVfSh7zNV1zmeO/KgJ+z+WUG
+ yaIm1NRD5TEcofWxfGdGWQLvcg9ttAxHsYO6GXPINX40ri39kHCRYvYfXnlqd0gXW5Kz
+ zaUA==
+X-Gm-Message-State: AOAM532tR9EzwuyJ1Er4uFvNXAkizIqra0CVOFRwm5Qa/bVMNa80n2fb
+ 7dslkznRmCxTWGIiJ+NMyH4=
+X-Google-Smtp-Source: ABdhPJw2Gdu85lsEOOBHC+PCTNvx970ucNEWXKOugZTaqo6EkmkDIuAOpg0ck/tyA4uRQCobvrmPXg==
+X-Received: by 2002:a63:a08:: with SMTP id 8mr1218714pgk.300.1599040134303;
+ Wed, 02 Sep 2020 02:48:54 -0700 (PDT)
+Received: from localhost ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id q201sm4899665pfq.80.2020.09.02.02.48.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 02 Sep 2020 02:48:53 -0700 (PDT)
+Date: Wed, 02 Sep 2020 19:48:48 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 4/4] powerpc/64s/radix: Fix mm_cpumask trimming race vs
+ kthread_use_mm
+To: linux-mm@kvack.org, Michael Ellerman <mpe@ellerman.id.au>
+References: <20200828100022.1099682-1-npiggin@gmail.com>
+ <20200828100022.1099682-5-npiggin@gmail.com>
+ <87pn751zcb.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87pn751zcb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACzsE9qrgs8ujQ7HeHVo-8oyY2bdwFVnVxR5dEZns5V7qK7Cbg@mail.gmail.com>
+Message-Id: <1599040088.z7acx6fvvf.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,107 +81,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, linux-arch@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 02, 2020 at 06:00:24PM +1000, Jordan Niethe wrote:
-> On Wed, Sep 2, 2020 at 4:18 PM Paul Mackerras <paulus@ozlabs.org> wrote:
-> >
-> > On Thu, Aug 20, 2020 at 01:39:21PM +1000, Jordan Niethe wrote:
-> > > The ppc_inst type was added to help cope with the addition of prefixed
-> > > instructions to the ISA. Convert KVM to use this new type for dealing
-> > > wiht instructions. For now do not try to add further support for
-> > > prefixed instructions.
-> >
-> > This change does seem to splatter itself across a lot of code that
-> > mostly or exclusively runs on machines which are not POWER10 and will
-> > never need to handle prefixed instructions, unfortunately.  I wonder
-> > if there is a less invasive way to approach this.
-> Something less invasive would be good.
-> >
-> > In particular we are inflicting this 64-bit struct on 32-bit platforms
-> > unnecessarily (I assume, correct me if I am wrong here).
-> No, that is something that I wanted to to avoid, on 32 bit platforms
-> it is a 32bit struct:
-> 
-> struct ppc_inst {
->         u32 val;
-> #ifdef CONFIG_PPC64
->         u32 suffix;
-> #endif
-> } __packed;
-> >
-> > How would it be to do something like:
-> >
-> > typedef unsigned long ppc_inst_t;
-> >
-> > so it is 32 bits on 32-bit platforms and 64 bits on 64-bit platforms,
-> > and then use that instead of 'struct ppc_inst'?  You would still need
-> > to change the function declarations but I think most of the function
-> > bodies would not need to be changed.  In particular you would avoid a
-> > lot of the churn related to having to add ppc_inst_val() and suchlike.
-> 
-> Would the idea be to get rid of `struct ppc_inst` entirely or just not
-> use it in kvm?
-> In an earlier series I did something similar (at least code shared
-> between 32bit and 64bit would need helpers, but 32bit only code need
-> not change):
-> 
-> #ifdef __powerpc64__
-> 
-> typedef struct ppc_inst {
->     union {
->         struct {
->             u32 word;
->             u32 pad;
->         } __packed;
->         struct {
->             u32 prefix;
->             u32 suffix;
->         } __packed;
->     };
-> } ppc_inst;
-> 
-> #else /* !__powerpc64__ */
-> 
-> typedef u32 ppc_inst;
-> #endif
-> 
-> However mpe wanted to avoid using a typedef
-> (https://patchwork.ozlabs.org/comment/2391845/)
+Excerpts from Michael Ellerman's message of September 1, 2020 10:00 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> Commit 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of
+>> single-threaded mm_cpumask") added a mechanism to trim the mm_cpumask of
+>> a process under certain conditions. One of the assumptions is that
+>> mm_users would not be incremented via a reference outside the process
+>> context with mmget_not_zero() then go on to kthread_use_mm() via that
+>> reference.
+>>
+>> That invariant was broken by io_uring code (see previous sparc64 fix),
+>> but I'll point Fixes: to the original powerpc commit because we are
+>> changing that assumption going forward, so this will make backports
+>> match up.
+>>
+>> Fix this by no longer relying on that assumption, but by having each CPU
+>> check the mm is not being used, and clearing their own bit from the mask
+>> if it's okay. This fix relies on commit 38cf307c1f20 ("mm: fix
+>> kthread_use_mm() vs TLB invalidate") to disable irqs over the mm switch,
+>> and ARCH_WANT_IRQS_OFF_ACTIVATE_MM to be enabled.
+>=20
+> You could use:
+>=20
+> Depends-on: 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB invalidate")
 
-Well it doesn't have to be typedef'd, it could just be "unsigned
-long", which is used in other places for things that want to be 32-bit
-on 32-bit machines and 64-bit on 64-bit machines.
+Good idea I wil.
 
-I do however think that it should be a numeric type so that we can
-mask, shift and compare it more easily.  I know that's less "abstract"
-but it's also a lot less obfuscated and I think that will lead to
-clearer code.  If you got the opposite advice from Michael Ellerman or
-Nick Piggin then I will discuss it with them.
+>> Fixes: 0cef77c7798a7 ("powerpc/64s/radix: flush remote CPUs out of singl=
+e-threaded mm_cpumask")
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>  arch/powerpc/include/asm/tlb.h       | 13 -------------
+>>  arch/powerpc/mm/book3s64/radix_tlb.c | 23 ++++++++++++++++-------
+>>  2 files changed, 16 insertions(+), 20 deletions(-)
+>=20
+> One minor nit below if you're respinning anyway.
+>=20
+> You know this stuff better than me, but I still reviewed it and it seems
+> good to me.
+>=20
+> Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
 
-> We did also talk about just using a u64 for instructions
-> (https://lore.kernel.org/linuxppc-dev/1585028462.t27rstc2uf.astroid@bobo.none/)
-> but the concern was that as prefixed instructions act as two separate
-> u32s (prefix is always before the suffix regardless of endianess)
-> keeping it as a u64 would lead to lot of macros and potential
-> confusion.
-> But it does seem if that can avoid a lot of needless churn it might
-> worth the trade off.
+Thanks.
 
-	u32 *ip;
+>=20
+>> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/t=
+lb.h
+>> index fbc6f3002f23..d97f061fecac 100644
+>> --- a/arch/powerpc/include/asm/tlb.h
+>> +++ b/arch/powerpc/include/asm/tlb.h
+>> @@ -66,19 +66,6 @@ static inline int mm_is_thread_local(struct mm_struct=
+ *mm)
+>>  		return false;
+>>  	return cpumask_test_cpu(smp_processor_id(), mm_cpumask(mm));
+>>  }
+>> -static inline void mm_reset_thread_local(struct mm_struct *mm)
+>> -{
+>> -	WARN_ON(atomic_read(&mm->context.copros) > 0);
+>> -	/*
+>> -	 * It's possible for mm_access to take a reference on mm_users to
+>> -	 * access the remote mm from another thread, but it's not allowed
+>> -	 * to set mm_cpumask, so mm_users may be > 1 here.
+>> -	 */
+>> -	WARN_ON(current->mm !=3D mm);
+>> -	atomic_set(&mm->context.active_cpus, 1);
+>> -	cpumask_clear(mm_cpumask(mm));
+>> -	cpumask_set_cpu(smp_processor_id(), mm_cpumask(mm));
+>> -}
+>>  #else /* CONFIG_PPC_BOOK3S_64 */
+>>  static inline int mm_is_thread_local(struct mm_struct *mm)
+>>  {
+>> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book=
+3s64/radix_tlb.c
+>> index 0d233763441f..a421a0e3f930 100644
+>> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+>> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+>> @@ -645,19 +645,29 @@ static void do_exit_flush_lazy_tlb(void *arg)
+>>  	struct mm_struct *mm =3D arg;
+>>  	unsigned long pid =3D mm->context.id;
+>> =20
+>> +	/*
+>> +	 * A kthread could have done a mmget_not_zero() after the flushing CPU
+>> +	 * checked mm_users =3D=3D 1, and be in the process of kthread_use_mm =
+when
+>                                 ^
+>                                 in mm_is_singlethreaded()
+>=20
+> Adding that reference would help join the dots for a new reader I think.
 
-	instr = *ip++;
-	if (is_prefix(instr) && is_suitably_aligned(ip))
-		instr = (instr << 32) | *ip++;
+Yes you're right I can change that.
 
-would avoid the endian issues pretty cleanly I think.  In other words
-the prefix would always be the high half of the 64-bit value, so you
-can't just do a single 64-bit of the instruction on little-endian
-platforms; but you can't do a single 64-bit load for other reasons as
-well, such as alignment.
-
-Paul.
+Thanks,
+Nick
