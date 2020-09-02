@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB90225A5BC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:48:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04A925A72C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 09:58:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhDzX2TSdzDqQK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:48:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhGXM69pwzDqhn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 17:58:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhDxz4f08zDqf1
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 16:47:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhGV8627RzDqhn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 17:56:29 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BhDxr6VGJz9tybc;
- Wed,  2 Sep 2020 08:46:56 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4BhGV10PBXzB09Zc;
+ Wed,  2 Sep 2020 09:56:25 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iEERQsHpL4eE; Wed,  2 Sep 2020 08:46:56 +0200 (CEST)
+ with ESMTP id X4dnrfZE-x6l; Wed,  2 Sep 2020 09:56:24 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BhDxr5Sfgz9tybb;
- Wed,  2 Sep 2020 08:46:56 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BhGV05Xz7zB09Zb;
+ Wed,  2 Sep 2020 09:56:24 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B9D0E8B788;
- Wed,  2 Sep 2020 08:46:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B79728B7A4;
+ Wed,  2 Sep 2020 09:56:25 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id cHWP0PZXhRVt; Wed,  2 Sep 2020 08:46:57 +0200 (CEST)
+ with ESMTP id NtV84Jj5A1jP; Wed,  2 Sep 2020 09:56:25 +0200 (CEST)
 Received: from po17688vm.idsi0.si.c-s.fr (unknown [10.25.210.31])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 18CA78B784;
- Wed,  2 Sep 2020 08:46:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 42EF18B784;
+ Wed,  2 Sep 2020 09:56:25 +0200 (CEST)
 Subject: Re: [PATCH 2/2] powerpc/vdso32: link vdso64 with linker
 To: Nick Desaulniers <ndesaulniers@google.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
 References: <20200901222523.1941988-1-ndesaulniers@google.com>
  <20200901222523.1941988-3-ndesaulniers@google.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <b2066ccd-2b81-6032-08e3-41105b400f75@csgroup.eu>
-Date: Wed, 2 Sep 2020 06:46:45 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+Message-ID: <371fd179-7d25-1393-f878-10eeb6ad12cc@csgroup.eu>
+Date: Wed, 2 Sep 2020 07:56:13 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
 In-Reply-To: <20200901222523.1941988-3-ndesaulniers@google.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
@@ -76,7 +76,7 @@ Sender: "Linuxppc-dev"
 
 
 
-On 09/01/2020 10:25 PM, Nick Desaulniers wrote:
+On 9/1/20 10:25 PM, Nick Desaulniers wrote:
 > Rather than invoke the compiler as the driver, use the linker. That way
 > we can check --orphan-handling=warn support correctly, as cc-ldoption
 > was removed in
@@ -84,29 +84,6 @@ On 09/01/2020 10:25 PM, Nick Desaulniers wrote:
 > 
 > Requires dropping the .got section.  I couldn't find how it was used in
 > the vdso32.
-
-ld crashes:
-
-   LD      arch/powerpc/kernel/vdso32/vdso32.so.dbg
-/bin/sh: line 1: 23780 Segmentation fault      (core dumped) 
-ppc-linux-ld -EB -m elf32ppc -shared -soname linux-vdso32.so.1 
---eh-frame-hdr --orphan-handling=warn -T 
-arch/powerpc/kernel/vdso32/vdso32.lds 
-arch/powerpc/kernel/vdso32/sigtramp.o 
-arch/powerpc/kernel/vdso32/gettimeofday.o 
-arch/powerpc/kernel/vdso32/datapage.o 
-arch/powerpc/kernel/vdso32/cacheflush.o 
-arch/powerpc/kernel/vdso32/note.o arch/powerpc/kernel/vdso32/getcpu.o -o 
-arch/powerpc/kernel/vdso32/vdso32.so.dbg
-make[4]: *** [arch/powerpc/kernel/vdso32/vdso32.so.dbg] Error 139
-
-
-[root@localhost linux-powerpc]# ppc-linux-ld --version
-GNU ld (GNU Binutils) 2.26.20160125
-
-
-Christophe
-
 > 
 > Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
 > Link: https://lore.kernel.org/lkml/CAKwvOdnn3wxYdJomvnveyD_njwRku3fABWT_bS92duihhywLJQ@mail.gmail.com/
@@ -121,6 +98,61 @@ Christophe
 > sigtramp.c doesn't mention anything from the GOT AFAICT, and doesn't
 > look like it contains relocations that do, so I'm not sure where
 > references to _GLOBAL_OFFSET_TABLE_ are coming from.
+
+I'm getting the same but only when building for PPC64.
+I don't get any reference to sigtramp.o though:
+
+   CALL    scripts/checksyscalls.sh
+   CALL    scripts/atomic/check-atomics.sh
+   VDSO32A arch/powerpc/kernel/vdso32/sigtramp.o
+   VDSO32A arch/powerpc/kernel/vdso32/gettimeofday.o
+   VDSO32A arch/powerpc/kernel/vdso32/datapage.o
+   VDSO32A arch/powerpc/kernel/vdso32/cacheflush.o
+   VDSO32A arch/powerpc/kernel/vdso32/note.o
+   VDSO32A arch/powerpc/kernel/vdso32/getcpu.o
+   LD      arch/powerpc/kernel/vdso32/vdso32.so.dbg
+powerpc64-linux-ld: _GLOBAL_OFFSET_TABLE_ not defined in linker created .got
+powerpc64-linux-ld: final link failed: Bad value
+
+(GCC 8.1, Binutils 2.30)
+
+So it seems that the got section is being created by the linker. Don't 
+know why though.
+
+
+With GCC 10.1, binutils 2.34 I get:
+
+   LDS     arch/powerpc/kernel/vdso32/vdso32.lds
+   VDSO32A arch/powerpc/kernel/vdso32/sigtramp.o
+   VDSO32A arch/powerpc/kernel/vdso32/gettimeofday.o
+   VDSO32A arch/powerpc/kernel/vdso32/datapage.o
+   VDSO32A arch/powerpc/kernel/vdso32/cacheflush.o
+   VDSO32A arch/powerpc/kernel/vdso32/note.o
+   VDSO32A arch/powerpc/kernel/vdso32/getcpu.o
+   LD      arch/powerpc/kernel/vdso32/vdso32.so.dbg
+powerpc64-linux-ld: warning: orphan section `.branch_lt' from 
+`arch/powerpc/kernel/vdso32/sigtramp.o' being placed in section `.branch_lt'
+powerpc64-linux-ld: _GLOBAL_OFFSET_TABLE_ not defined in linker created .got
+powerpc64-linux-ld: final link failed: bad value
+
+I can't see any .branch_lt section when objdumping sigtramp.o or any 
+other .o
+
+When I move sigtramp.o at the end of the definition of obj-vdso32 in 
+Makefile, I then get:
+
+powerpc64-linux-ld: warning: orphan section `.branch_lt' from 
+`arch/powerpc/kernel/vdso32/gettimeofday.o' being placed in section 
+`.branch_lt'
+powerpc64-linux-ld: _GLOBAL_OFFSET_TABLE_ not defined in linker created .got
+powerpc64-linux-ld: final link failed: bad value
+
+
+gettimeofday.o now being the first object in obj-vdso32
+
+
+Christophe
+
 > 
 >   arch/powerpc/kernel/vdso32/Makefile     | 7 +++++--
 >   arch/powerpc/kernel/vdso32/vdso32.lds.S | 3 ++-
