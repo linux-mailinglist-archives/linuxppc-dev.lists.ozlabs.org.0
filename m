@@ -2,47 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923C225A42F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 05:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7996725A430
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 05:57:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh98z5S1fzDqNs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 13:56:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh9Bn0by6zDqcM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 13:57:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Bh91w3yZfzDqfH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 13:50:11 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 033D3D6E;
- Tue,  1 Sep 2020 20:50:10 -0700 (PDT)
-Received: from [192.168.0.130] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 200CE3F66F;
- Tue,  1 Sep 2020 20:50:04 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH v3 13/13] mm/debug_vm_pgtable: populate a pte entry before
- fetching it
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20200827080438.315345-1-aneesh.kumar@linux.ibm.com>
- <20200827080438.315345-14-aneesh.kumar@linux.ibm.com>
- <edc68223-7f8a-13df-68eb-9682f585adb8@arm.com>
- <abef1791-8779-6b34-3178-3bf3ab36d42b@linux.ibm.com>
- <e3140b44-993e-aa4b-130d-ee2230eff2b5@arm.com>
- <7ef7c302-e7e6-570e-3100-5dd1bf9551be@linux.ibm.com>
-Message-ID: <4ba15b8f-ac90-17ec-9b95-0451e2a38e98@arm.com>
-Date: Wed, 2 Sep 2020 09:19:28 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=KdcQ4l7d; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh93Y2NLKzDqf6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 13:51:36 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id w7so2091649pfi.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 20:51:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QEokR90sV8IAWQ7JwMcce8PzaEOzPPIQ0YkmdqEIwBk=;
+ b=KdcQ4l7dPSX5BBxmyoBNHiGAygHNYHI8K8i4xt+l71MxgxVXuxuOSVuAEo8se0yFSc
+ UKSsxeB1H+2I/xKtwCE9txyP0UMIxm0eeIuEDmx8wgzJy+c6BuWT8yP9C4kwK0rjz9JW
+ oCcs1xeETtobCCHX04Sbw6Njy9BpRyP8frVQOuVQhKsZFRrzCBcfPj2gvdn64YdMnHX3
+ SeUOQZRE1uGh8zd5mXsiaVcbXkfM+OZuTfTgcubUjyxaaj0U4T8FgJgJw4dGlmbnM8jn
+ zAVTUFo06SFXgg5fTg1ifYfUiJOsVKm4A52KAnSkQwS/1sorfeSiPNBIYNvBmElfGpUF
+ L2bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QEokR90sV8IAWQ7JwMcce8PzaEOzPPIQ0YkmdqEIwBk=;
+ b=DhbSW3Xce6AvBTuWVNolqiLv6aVWtzUGckrnn2e6tWMjf7SjKfDd4UZZVzOgLC9gWd
+ Klrh+pDWeg17HYP6Nw9dEHnxCLSz5K0s9LEf52B6mk1nLTkNz7xAKtNeItlUaWROpEy5
+ qKBdS9ZpSSKadU+YBHX1hWvXDMGNGnkB2IkfZcUmj8K8P++rKdBGjw2sAcfduRd0n2mM
+ CD7AaDSVBeiKiCtzSYgOtJfkDHJUjT+SRd6d5Bl5ml688QUe96fjGfp8kW7r7thOnipZ
+ 1pbtfevzGK6Kxkb86OjiCTla2aOkuomRNswDmRaMH9+VOf9Z9Hor6hsPBZadEn4DsfoG
+ iGiA==
+X-Gm-Message-State: AOAM532rpE4dvKAscxQd0CxBLgVND4+tHZZWjhS6lkTk7QV9Ha+hP1UJ
+ CbNdr3tffJmjlxGmq4C6p3PxbWrObJ6o7Q==
+X-Google-Smtp-Source: ABdhPJy1rqM6FDniV/N+cNqqKaioy4Ad5X2dXoOPIpr29+/niR3UmFgCyVHV81r7OE+d77HfsGtdyg==
+X-Received: by 2002:aa7:947b:: with SMTP id t27mr1415247pfq.240.1599018693084; 
+ Tue, 01 Sep 2020 20:51:33 -0700 (PDT)
+Received: from localhost.ibm.com (194-193-34-182.tpgi.com.au. [194.193.34.182])
+ by smtp.gmail.com with ESMTPSA id y8sm3794112pfr.23.2020.09.01.20.51.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Sep 2020 20:51:32 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pci: Delete traverse_pci_dn()
+Date: Wed,  2 Sep 2020 13:51:21 +1000
+Message-Id: <20200902035121.1762475-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <7ef7c302-e7e6-570e-3100-5dd1bf9551be@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -55,108 +76,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Christophe Leroy <christophe.leroy@c-s.fr>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, Qian Cai <cai@lca.pw>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nothing uses it.
 
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+---
+ arch/powerpc/include/asm/ppc-pci.h |  3 ---
+ arch/powerpc/kernel/pci_dn.c       | 40 ------------------------------
+ 2 files changed, 43 deletions(-)
 
-On 09/01/2020 03:28 PM, Aneesh Kumar K.V wrote:
-> On 9/1/20 1:08 PM, Anshuman Khandual wrote:
->>
->>
->> On 09/01/2020 12:07 PM, Aneesh Kumar K.V wrote:
->>> On 9/1/20 8:55 AM, Anshuman Khandual wrote:
->>>>
->>>>
->>>> On 08/27/2020 01:34 PM, Aneesh Kumar K.V wrote:
->>>>> pte_clear_tests operate on an existing pte entry. Make sure that is not a none
->>>>> pte entry.
->>>>>
->>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>>> ---
->>>>>    mm/debug_vm_pgtable.c | 6 ++++--
->>>>>    1 file changed, 4 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->>>>> index 21329c7d672f..8527ebb75f2c 100644
->>>>> --- a/mm/debug_vm_pgtable.c
->>>>> +++ b/mm/debug_vm_pgtable.c
->>>>> @@ -546,7 +546,7 @@ static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
->>>>>    static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
->>>>>                       unsigned long vaddr)
->>>>>    {
->>>>> -    pte_t pte = ptep_get(ptep);
->>>>> +    pte_t pte =  ptep_get_and_clear(mm, vaddr, ptep);
->>>>
->>>> Seems like ptep_get_and_clear() here just clears the entry in preparation
->>>> for a following set_pte_at() which otherwise would have been a problem on
->>>> ppc64 as you had pointed out earlier i.e set_pte_at() should not update an
->>>> existing valid entry. So the commit message here is bit misleading.
->>>>
->>>
->>> and also fetch the pte value which is used further.
->>>
->>>
->>>>>          pr_debug("Validating PTE clear\n");
->>>>>        pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
->>>>> @@ -944,7 +944,7 @@ static int __init debug_vm_pgtable(void)
->>>>>        p4d_t *p4dp, *saved_p4dp;
->>>>>        pud_t *pudp, *saved_pudp;
->>>>>        pmd_t *pmdp, *saved_pmdp, pmd;
->>>>> -    pte_t *ptep;
->>>>> +    pte_t *ptep, pte;
->>>>>        pgtable_t saved_ptep;
->>>>>        pgprot_t prot, protnone;
->>>>>        phys_addr_t paddr;
->>>>> @@ -1049,6 +1049,8 @@ static int __init debug_vm_pgtable(void)
->>>>>         */
->>>>>          ptep = pte_alloc_map_lock(mm, pmdp, vaddr, &ptl);
->>>>> +    pte = pfn_pte(pte_aligned, prot);
->>>>> +    set_pte_at(mm, vaddr, ptep, pte);
->>>>
->>>> Not here, creating and populating an entry must be done in respective
->>>> test functions itself. Besides, this seems bit redundant as well. The
->>>> test pte_clear_tests() with the above change added, already
->>>>
->>>> - Clears the PTEP entry with ptep_get_and_clear()
->>>
->>> and fetch the old value set previously.
->>
->> In that case, please move above two lines i.e
->>
->> pte = pfn_pte(pte_aligned, prot);
->> set_pte_at(mm, vaddr, ptep, pte);
->>
->> from debug_vm_pgtable() to pte_clear_tests() and update it's arguments
->> as required.
->>
-> 
-> Frankly, I don't understand what these tests are testing. It all looks like some random clear and set.
+diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
+index 0745422a8e57..2b9edbf6e929 100644
+--- a/arch/powerpc/include/asm/ppc-pci.h
++++ b/arch/powerpc/include/asm/ppc-pci.h
+@@ -28,9 +28,6 @@ struct pci_dn;
+ void *pci_traverse_device_nodes(struct device_node *start,
+ 				void *(*fn)(struct device_node *, void *),
+ 				void *data);
+-void *traverse_pci_dn(struct pci_dn *root,
+-		      void *(*fn)(struct pci_dn *, void *),
+-		      void *data);
+ extern void pci_devs_phb_init_dynamic(struct pci_controller *phb);
+ 
+ /* From rtas_pci.h */
+diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+index e99b7c547d7e..54e240597fd9 100644
+--- a/arch/powerpc/kernel/pci_dn.c
++++ b/arch/powerpc/kernel/pci_dn.c
+@@ -443,46 +443,6 @@ void *pci_traverse_device_nodes(struct device_node *start,
+ }
+ EXPORT_SYMBOL_GPL(pci_traverse_device_nodes);
+ 
+-static struct pci_dn *pci_dn_next_one(struct pci_dn *root,
+-				      struct pci_dn *pdn)
+-{
+-	struct list_head *next = pdn->child_list.next;
+-
+-	if (next != &pdn->child_list)
+-		return list_entry(next, struct pci_dn, list);
+-
+-	while (1) {
+-		if (pdn == root)
+-			return NULL;
+-
+-		next = pdn->list.next;
+-		if (next != &pdn->parent->child_list)
+-			break;
+-
+-		pdn = pdn->parent;
+-	}
+-
+-	return list_entry(next, struct pci_dn, list);
+-}
+-
+-void *traverse_pci_dn(struct pci_dn *root,
+-		      void *(*fn)(struct pci_dn *, void *),
+-		      void *data)
+-{
+-	struct pci_dn *pdn = root;
+-	void *ret;
+-
+-	/* Only scan the child nodes */
+-	for (pdn = pci_dn_next_one(root, pdn); pdn;
+-	     pdn = pci_dn_next_one(root, pdn)) {
+-		ret = fn(pdn, data);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	return NULL;
+-}
+-
+ static void *add_pdn(struct device_node *dn, void *data)
+ {
+ 	struct pci_controller *hose = data;
+-- 
+2.26.2
 
-The idea here is to have some value with some randomness preferably, in
-a given PTEP before attempting to clear the entry, in order to make sure
-that pte_clear() is indeed clearing something of non-zero value.
-
-> 
-> static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
->                    unsigned long vaddr, unsigned long pfn,
->                    pgprot_t prot)
-> {
-> 
->     pte_t pte = pfn_pte(pfn, prot);
->     set_pte_at(mm, vaddr, ptep, pte);
-> 
->     pte =  ptep_get_and_clear(mm, vaddr, ptep);
-
-Looking at this again, this preceding pfn_pte() followed by set_pte_at()
-is not really required. Its reasonable to start with what ever was there
-in the PTEP as a seed value which anyway gets added with RANDOM_ORVALUE.
-s/ptep_get/ptep_get_and_clear is sufficient to take care of the powerpc
-set_pte_at() constraint.
