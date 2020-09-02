@@ -1,90 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5EA25AAF1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 14:14:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 840F125AB08
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 14:20:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhND06BWCzDqwH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 22:14:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhNLY02TyzDqx2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 22:20:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=SU3joZb8; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhMbS6htYzDqsH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 21:46:28 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 082BVaMj075811; Wed, 2 Sep 2020 07:46:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=en0XsHWuI6UOt6cyyh+V7Jw5iVGs31evTM1mBp9AH6o=;
- b=SU3joZb8KgpNwPRd5vU0BILr01ceEQ3zyW7+d9c7sKuoXewVopVWPcZPp8E3wWxBnKge
- 4njjpAkhcGlMB/YVNccIgNy0l6RECgd0JVyqKhm+4BYIixwkUwhTqitLCyGiow5AUdl/
- ojJf1AaQZShnKoUJpqgFVZ874b0yQEv7VhIPM2618NBCZFDIOHTobvPAysdWkj2aPu7x
- ImE/tns8Mf0UOdyn7M9fi14kGd3Nh6D5mGlTTLcYPw0idK1qMrm0GdoEuzVSpcEZOKhU
- xZOtQZmgE/xKTu1Qe4fZQOoI2bv8RtjZW6K8lVRB9HwddTWRXVPj6ziSh8F31N+ZWdo4 UQ== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33aaae0w1j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 07:46:20 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 082BfxJi002678;
- Wed, 2 Sep 2020 11:46:19 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma04dal.us.ibm.com with ESMTP id 339tmuy79s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 11:46:19 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 082BkEOD24314262
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Sep 2020 11:46:14 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFE256E04C;
- Wed,  2 Sep 2020 11:46:17 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 34AD36E059;
- Wed,  2 Sep 2020 11:46:15 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.61.124])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  2 Sep 2020 11:46:14 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v4 13/13] mm/debug_vm_pgtable: Avoid none pte in pte_clear_test
-Date: Wed,  2 Sep 2020 17:16:01 +0530
-Message-Id: <20200902114601.183715-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
-References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhNCT53TbzDqwN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 22:14:13 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=DOiRv5WB; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BhNCS0clSz9sV7;
+ Wed,  2 Sep 2020 22:14:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1599048853;
+ bh=u4WWAXM88hVefxFyxLfz+DGbiZnudGHqADUN9wCOsFU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=DOiRv5WBfhOoyHB+Y9LK9XXtcPB9y5yFTRG7u9ZOpuMnDA7AWyKODxqemDp89GGGj
+ XEdHJoQDfsvbyzi+3WWbI9IC1Ljy5pclYq7m/2HFJxZawHGKVlm51XmvN52tdDl1jq
+ x+eojCI4PkO1UwVgrH4xJO0Jr5C/KBxgycw2G+saZLxXjNOvGE1FVr283fy8iAATx4
+ VBwGf2TpnHC/UguioMM6/CIjSHh7Tk5e0oUwjwf6XeRyh4DmTHDSkSxa2qiCefrsh2
+ nyobTnnNu6Tposg0HzMWWUw50/pC3VfcLNbEUxakrx3srHhNIdrocQ5F5VDdoMYKAz
+ ASLXceFnxXbnQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nick Desaulniers <ndesaulniers@google.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 1/2] powerpc/vdso64: link vdso64 with linker
+In-Reply-To: <20200901222523.1941988-2-ndesaulniers@google.com>
+References: <20200901222523.1941988-1-ndesaulniers@google.com>
+ <20200901222523.1941988-2-ndesaulniers@google.com>
+Date: Wed, 02 Sep 2020 22:14:05 +1000
+Message-ID: <87blio1ilu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-02_03:2020-09-02,
- 2020-09-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1015 malwarescore=0
- mlxlogscore=871 mlxscore=0 suspectscore=0 impostorscore=0 phishscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009020105
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,47 +59,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Fangrui Song <maskray@google.com>, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pte_clear_tests operate on an existing pte entry. Make sure that
-is not a none pte entry.
+Nick Desaulniers <ndesaulniers@google.com> writes:
+> Rather than invoke the compiler as the driver, use the linker. That way
+> we can check --orphan-handling=warn support correctly, as cc-ldoption
+> was removed in
+> commit 055efab3120b ("kbuild: drop support for cc-ldoption").
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- mm/debug_vm_pgtable.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Ouch.
 
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 9afa1354326b..c36530c69e33 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -542,9 +542,10 @@ static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
- #endif /* PAGETABLE_P4D_FOLDED */
- 
- static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
--				   unsigned long vaddr)
-+				   unsigned long pfn, unsigned long vaddr,
-+				   pgprot_t prot)
- {
--	pte_t pte = ptep_get(ptep);
-+	pte_t pte = pfn_pte(pfn, prot);
- 
- 	pr_debug("Validating PTE clear\n");
- 	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
-@@ -1049,7 +1050,7 @@ static int __init debug_vm_pgtable(void)
- 
- 	ptl = pte_lockptr(mm, pmdp);
- 	spin_lock(ptl);
--	pte_clear_tests(mm, ptep, vaddr);
-+	pte_clear_tests(mm, ptep, pte_aligned, vaddr, prot);
- 	pte_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
- 	pte_unmap_unlock(ptep, ptl);
- 
--- 
-2.26.2
+Seems make is quite happy to $(call deadbeef, ...) and not print a
+warning, which I guess is probably a feature.
 
+> Painstakingly compared the output between `objdump -a` before and after
+> this change. Now function symbols have the correct type of FUNC rather
+> than NONE, and the entry is slightly different (which doesn't matter for
+> the vdso). Binary size is the same.
+>
+> Fixes: commit f2af201002a8 ("powerpc/build: vdso linker warning for orphan sections")
+
+I think I'll just revert that for v5.9 ?
+
+cheers
+
+> Link: https://lore.kernel.org/lkml/CAKwvOdnn3wxYdJomvnveyD_njwRku3fABWT_bS92duihhywLJQ@mail.gmail.com/
+> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> ---
+>  arch/powerpc/include/asm/vdso.h         | 17 ++---------------
+>  arch/powerpc/kernel/vdso64/Makefile     |  8 ++++++--
+>  arch/powerpc/kernel/vdso64/vdso64.lds.S |  1 -
+>  3 files changed, 8 insertions(+), 18 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
+> index 2ff884853f97..11b2ecf49f79 100644
+> --- a/arch/powerpc/include/asm/vdso.h
+> +++ b/arch/powerpc/include/asm/vdso.h
+> @@ -24,19 +24,7 @@ int vdso_getcpu_init(void);
+>  
+>  #else /* __ASSEMBLY__ */
+>  
+> -#ifdef __VDSO64__
+> -#define V_FUNCTION_BEGIN(name)		\
+> -	.globl name;			\
+> -	name:				\
+> -
+> -#define V_FUNCTION_END(name)		\
+> -	.size name,.-name;
+> -
+> -#define V_LOCAL_FUNC(name) (name)
+> -#endif /* __VDSO64__ */
+> -
+> -#ifdef __VDSO32__
+> -
+> +#if defined(__VDSO32__) || defined (__VDSO64__)
+>  #define V_FUNCTION_BEGIN(name)		\
+>  	.globl name;			\
+>  	.type name,@function; 		\
+> @@ -46,8 +34,7 @@ int vdso_getcpu_init(void);
+>  	.size name,.-name;
+>  
+>  #define V_LOCAL_FUNC(name) (name)
+> -
+> -#endif /* __VDSO32__ */
+> +#endif /* __VDSO{32|64}__ */
+>  
+>  #endif /* __ASSEMBLY__ */
+>  
+> diff --git a/arch/powerpc/kernel/vdso64/Makefile b/arch/powerpc/kernel/vdso64/Makefile
+> index 38c317f25141..7ea3ce537d0a 100644
+> --- a/arch/powerpc/kernel/vdso64/Makefile
+> +++ b/arch/powerpc/kernel/vdso64/Makefile
+> @@ -32,9 +32,13 @@ $(obj)/%.so: OBJCOPYFLAGS := -S
+>  $(obj)/%.so: $(obj)/%.so.dbg FORCE
+>  	$(call if_changed,objcopy)
+>  
+> +ldflags-y := -shared -soname linux-vdso64.so.1 \
+> +	$(call ld-option, --eh-frame-hdr) \
+> +	$(call ld-option, --orphan-handling=warn) -T
+> +
+>  # actual build commands
+> -quiet_cmd_vdso64ld = VDSO64L $@
+> -      cmd_vdso64ld = $(CC) $(c_flags) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) $(call cc-ldoption, -Wl$(comma)--orphan-handling=warn)
+> +quiet_cmd_vdso64ld = LD      $@
+> +      cmd_vdso64ld = $(cmd_ld)
+>  
+>  # install commands for the unstripped file
+>  quiet_cmd_vdso_install = INSTALL $@
+> diff --git a/arch/powerpc/kernel/vdso64/vdso64.lds.S b/arch/powerpc/kernel/vdso64/vdso64.lds.S
+> index 4e3a8d4ee614..58c33b704b6a 100644
+> --- a/arch/powerpc/kernel/vdso64/vdso64.lds.S
+> +++ b/arch/powerpc/kernel/vdso64/vdso64.lds.S
+> @@ -11,7 +11,6 @@ OUTPUT_FORMAT("elf64-powerpcle", "elf64-powerpcle", "elf64-powerpcle")
+>  OUTPUT_FORMAT("elf64-powerpc", "elf64-powerpc", "elf64-powerpc")
+>  #endif
+>  OUTPUT_ARCH(powerpc:common64)
+> -ENTRY(_start)
+>  
+>  SECTIONS
+>  {
+> -- 
+> 2.28.0.402.g5ffc5be6b7-goog
