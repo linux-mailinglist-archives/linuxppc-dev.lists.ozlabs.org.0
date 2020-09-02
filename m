@@ -1,60 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C14D25A799
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 10:18:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337EB25A7AF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 10:21:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhGzN08wQzDqbD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 18:18:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhH2N24M8zDqbD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 18:21:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=MUAq85PR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhGqT658qzDqTv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 18:11:33 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BhGqL3C3xz9vCyG;
- Wed,  2 Sep 2020 10:11:26 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id E0RZ90cem4bM; Wed,  2 Sep 2020 10:11:26 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BhGqL2Pdyz9vBnC;
- Wed,  2 Sep 2020 10:11:26 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6958E8B7A3;
- Wed,  2 Sep 2020 10:11:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LF3wCfD47HqP; Wed,  2 Sep 2020 10:11:27 +0200 (CEST)
-Received: from [10.25.210.31] (unknown [10.25.210.31])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2C76D8B784;
- Wed,  2 Sep 2020 10:11:27 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: Fix random segfault when freeing hugetlb range
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <f0cb2a5477cd87d1eaadb128042e20aeb2bc2859.1598860677.git.christophe.leroy@csgroup.eu>
- <875z8weua7.fsf@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <96409d24-c8bf-7f3a-0a81-0830174d6bcc@csgroup.eu>
-Date: Wed, 2 Sep 2020 10:11:23 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhGtC6SMvzDqkc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 18:13:55 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0828390p133343; Wed, 2 Sep 2020 04:13:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=a3eXUdWb9RaaXm+62pNlv1dQyk3xkRZiWvAIB6OZmnA=;
+ b=MUAq85PRK89Wm8cYXUeziaM3qczOQB6DXwm7XfAyjRA8UKx+paii7V7YMn8j5XDDomV1
+ kr0ybB6VitA71nayULAWiSUVcQ6WLFGmA6psCpl6F2RFQ6vKUlFOZ97UwAtW8ca4Pq2W
+ cf8pynKWfdqYvthy6Up5CbC/EWPJ7+Q0t7KqvFCipUhYn8eWlOZMLFi9DRQK4cqOnbqw
+ QrLvfIROHcqf/RLL0ccXA0H+YFwb060+5PNPAHWAf1XaCv693bWErsVknr7kJRjso7zn
+ 5x8vXhc7nljLFOM6oDreF+oF5syUKxovYNLfSpkD11x1Ll+rKtmVQgw+LvQJ4kCntgED aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33a7hwra2h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Sep 2020 04:13:20 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08283IGY133724;
+ Wed, 2 Sep 2020 04:13:19 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33a7hwra1m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Sep 2020 04:13:19 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0828DCBO002494;
+ Wed, 2 Sep 2020 08:13:17 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 337en8ce7v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Sep 2020 08:13:17 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0828DEhL29819180
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Sep 2020 08:13:14 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A4C3A4051;
+ Wed,  2 Sep 2020 08:13:14 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B6ABA405D;
+ Wed,  2 Sep 2020 08:13:12 +0000 (GMT)
+Received: from oc5500677777.ibm.com (unknown [9.145.78.43])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Sep 2020 08:13:12 +0000 (GMT)
+Subject: Re: [PATCH 0/2] dma-mapping: update default segment_boundary_mask
+To: Nicolin Chen <nicoleotsuka@gmail.com>, hch@lst.de
+References: <20200901221646.26491-1-nicoleotsuka@gmail.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+Message-ID: <2c8db0aa-e8b5-e577-b971-1de10ecc6747@linux.ibm.com>
+Date: Wed, 2 Sep 2020 10:13:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <875z8weua7.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200901221646.26491-1-nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-02_03:2020-09-02,
+ 2020-09-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
+ adultscore=0 clxscore=1015 mlxscore=0 priorityscore=1501 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009020074
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,87 +106,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, James.Bottomley@HansenPartnership.com,
+ paulus@samba.org, hpa@zytor.com, sparclinux@vger.kernel.org,
+ sfr@canb.auug.org.au, deller@gmx.de, x86@kernel.org, borntraeger@de.ibm.com,
+ mingo@redhat.com, mattst88@gmail.com, fenghua.yu@intel.com, gor@linux.ibm.com,
+ linux-s390@vger.kernel.org, hca@linux.ibm.com, ink@jurassic.park.msu.ru,
+ tglx@linutronix.de, gerald.schaefer@linux.ibm.com, rth@twiddle.net,
+ tony.luck@intel.com, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, bp@alien8.de,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 02/09/2020 à 05:23, Aneesh Kumar K.V a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+On 9/2/20 12:16 AM, Nicolin Chen wrote:
+> These two patches are to update default segment_boundary_mask.
 > 
->> The following random segfault is observed from time to time with
->> map_hugetlb selftest:
->>
->> root@localhost:~# ./map_hugetlb 1 19
->> 524288 kB hugepages
->> Mapping 1 Mbytes
->> Segmentation fault
->>
->> [   31.219972] map_hugetlb[365]: segfault (11) at 117 nip 77974f8c lr 779a6834 code 1 in ld-2.23.so[77966000+21000]
->> [   31.220192] map_hugetlb[365]: code: 9421ffc0 480318d1 93410028 90010044 9361002c 93810030 93a10034 93c10038
->> [   31.220307] map_hugetlb[365]: code: 93e1003c 93210024 8123007c 81430038 <80e90004> 814a0004 7f443a14 813a0004
->> [   31.221911] BUG: Bad rss-counter state mm:(ptrval) type:MM_FILEPAGES val:33
->> [   31.229362] BUG: Bad rss-counter state mm:(ptrval) type:MM_ANONPAGES val:5
->>
->> This fault is due to hugetlb_free_pgd_range() freeing page tables
->> that are also used by regular pages.
->>
->> As explain in the comment at the beginning of
->> hugetlb_free_pgd_range(), the verification done in free_pgd_range()
->> on floor and ceiling is not done here, which means
->> hugetlb_free_pte_range() can free outside the expected range.
->>
->> As the verification cannot be done in hugetlb_free_pgd_range(), it
->> must be done in hugetlb_free_pte_range().
->>
+> PATCH-1 fixes overflow issues in callers of dma_get_seg_boundary.
+> Previous version was a series: https://lkml.org/lkml/2020/8/31/1026
 > 
-> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Then PATCH-2 sets default segment_boundary_mask to ULONG_MAX.
 > 
->> Fixes: b250c8c08c79 ("powerpc/8xx: Manage 512k huge pages as standard pages.")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/mm/hugetlbpage.c | 18 ++++++++++++++++--
->>   1 file changed, 16 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
->> index 26292544630f..e7ae2a2c4545 100644
->> --- a/arch/powerpc/mm/hugetlbpage.c
->> +++ b/arch/powerpc/mm/hugetlbpage.c
->> @@ -330,10 +330,24 @@ static void free_hugepd_range(struct mmu_gather *tlb, hugepd_t *hpdp, int pdshif
->>   				 get_hugepd_cache_index(pdshift - shift));
->>   }
->>   
->> -static void hugetlb_free_pte_range(struct mmu_gather *tlb, pmd_t *pmd, unsigned long addr)
->> +static void hugetlb_free_pte_range(struct mmu_gather *tlb, pmd_t *pmd,
->> +				   unsigned long addr, unsigned long end,
->> +				   unsigned long floor, unsigned long ceiling)
->>   {
->> +	unsigned long start = addr;
->>   	pgtable_t token = pmd_pgtable(*pmd);
->>   
->> +	start &= PMD_MASK;
->> +	if (start < floor)
->> +		return;
->> +	if (ceiling) {
->> +		ceiling &= PMD_MASK;
->> +		if (!ceiling)
->> +			return;
->> +	}
->> +	if (end - 1 > ceiling - 1)
->> +		return;
->> +
-> 
-> We do repeat that for pud/pmd/pte hugetlb_free_range. Can we consolidate
-> that with comment explaining we are checking if the pgtable entry is
-> mapping outside the range?
+> Nicolin Chen (2):
+>   dma-mapping: introduce dma_get_seg_boundary_nr_pages()
+>   dma-mapping: set default segment_boundary_mask to ULONG_MAX
 
-I was thinking about refactoring that into a helper and add all the 
-necessary comments to explain what it does.
+I gave both of your patches a quick test ride on a couple of dev mainframes,
+both NVMe, ConnectX and virtio-pci devices all seems to work fine.
+I already commented on Christoph's mail that I like the helper approach,
+so as for s390 you can add my
 
-Will do that in a followup series if you are OK. This patch is a bug fix 
-and also have to go through stable.
+Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
 
-Christophe
+> 
+>  arch/alpha/kernel/pci_iommu.c    |  7 +------
+>  arch/ia64/hp/common/sba_iommu.c  |  3 +--
+>  arch/powerpc/kernel/iommu.c      |  9 ++-------
+>  arch/s390/pci/pci_dma.c          |  6 ++----
+>  arch/sparc/kernel/iommu-common.c | 10 +++-------
+>  arch/sparc/kernel/iommu.c        |  3 +--
+>  arch/sparc/kernel/pci_sun4v.c    |  3 +--
+>  arch/x86/kernel/amd_gart_64.c    |  3 +--
+>  drivers/parisc/ccio-dma.c        |  3 +--
+>  drivers/parisc/sba_iommu.c       |  3 +--
+>  include/linux/dma-mapping.h      | 21 ++++++++++++++++++++-
+>  11 files changed, 34 insertions(+), 37 deletions(-)
+> 
