@@ -1,62 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE3C25A575
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:17:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372DD25A57B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:22:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhDHy1QYVzDqP5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:17:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhDPD29L1zDqgL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:22:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhDFX0LR4zDqLq
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 16:15:26 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BhDFM1jjKz9tyTH;
- Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 3We4wFWomQ2D; Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BhDFM0fQQz9tyTG;
- Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 111128B788;
- Wed,  2 Sep 2020 08:15:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id bC4OSETSJupy; Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
-Received: from [10.25.210.31] (unknown [10.25.210.31])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C01518B784;
- Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
-Subject: Re: [PATCH 10/10] powerpc: remove address space overrides using
- set_fs()
-To: Christoph Hellwig <hch@lst.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Michael Ellerman <mpe@ellerman.id.au>,
- x86@kernel.org
-References: <20200827150030.282762-1-hch@lst.de>
- <20200827150030.282762-11-hch@lst.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <8974838a-a0b1-1806-4a3a-e983deda67ca@csgroup.eu>
-Date: Wed, 2 Sep 2020 08:15:12 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhDK70lCwzDqMr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 16:18:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=Ffc2tECG; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4BhDK64lNVz9sV8; Wed,  2 Sep 2020 16:18:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1599027514; bh=SvqrLtSy7O4r2ulnso5MmauMzcR2/XPprpW6tHLdmU0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Ffc2tECGO/BfdwgaKDDzmaBTJHLSERwSxWOrUXDRUFZmpDniBaHsrswbonOJpjcBF
+ 6zrgDy8atFX7fKYRdRRkVCOrl5b/8pEHyUszcURis/g4MKfrlIhHu+03gnuz9BRPDH
+ qp0Kg65i41QOuU99/vPq38d0FbXqAo7lg4QnuU1NsQyI022Q+aDsR5ZDUByM30LJJ6
+ PnKN6Til4YplHTxVPpENQH5x6ZslU5wA+AwOL91UrR49bkCOeJjBpsMOry0XWU04Ll
+ JxX1pOfKU+6VlnJkTMU6FF/xJwVc5YdtPaJxfvembQcSIYlSn9Q/ggMr3CAU/pq8in
+ LNaEwQgmR13Kw==
+Date: Wed, 2 Sep 2020 16:18:29 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: Re: [RFC PATCH 2/2] KVM: PPC: Book3S HV: Support prefixed instructions
+Message-ID: <20200902061829.GF272502@thinks.paulus.ozlabs.org>
+References: <20200820033922.32311-1-jniethe5@gmail.com>
+ <20200820033922.32311-2-jniethe5@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200827150030.282762-11-hch@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200820033922.32311-2-jniethe5@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,117 +53,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Kees Cook <keescook@chromium.org>,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 27/08/2020 à 17:00, Christoph Hellwig a écrit :
-> Stop providing the possibility to override the address space using
-> set_fs() now that there is no need for that any more.
+On Thu, Aug 20, 2020 at 01:39:22PM +1000, Jordan Niethe wrote:
+> There are two main places where instructions are loaded from the guest:
+>     * Emulate loadstore - such as when performing MMIO emulation
+>       triggered by an HDSI
+>     * After an HV emulation assistance interrupt (e40)
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> If it is a prefixed instruction that triggers these cases, its suffix
+> must be loaded. Use the SRR1_PREFIX bit to decide if a suffix needs to
+> be loaded. Make sure if this bit is set inject_interrupt() also sets it
+> when giving an interrupt to the guest.
+> 
+> ISA v3.10 extends the Hypervisor Emulation Instruction Register (HEIR)
+> to 64 bits long to accommodate prefixed instructions. For interrupts
+> caused by a word instruction the instruction is loaded into bits 32:63
+> and bits 0:31 are zeroed. When caused by a prefixed instruction the
+> prefix and suffix are loaded into bits 0:63.
+> 
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > ---
->   arch/powerpc/Kconfig                   |  1 -
->   arch/powerpc/include/asm/processor.h   |  7 ---
->   arch/powerpc/include/asm/thread_info.h |  5 +--
->   arch/powerpc/include/asm/uaccess.h     | 62 ++++++++------------------
->   arch/powerpc/kernel/signal.c           |  3 --
->   arch/powerpc/lib/sstep.c               |  6 +--
->   6 files changed, 22 insertions(+), 62 deletions(-)
+>  arch/powerpc/kvm/book3s.c               | 15 +++++++++++++--
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c     | 10 +++++++---
+>  arch/powerpc/kvm/book3s_hv_builtin.c    |  3 +++
+>  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 14 ++++++++++++++
+>  4 files changed, 37 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index 7fe3531ad36a77..39727537d39701 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -8,62 +8,36 @@
->   #include <asm/extable.h>
->   #include <asm/kup.h>
->   
-> -/*
-> - * The fs value determines whether argument validity checking should be
-> - * performed or not.  If get_fs() == USER_DS, checking is performed, with
-> - * get_fs() == KERNEL_DS, checking is bypassed.
-> - *
-> - * For historical reasons, these macros are grossly misnamed.
-> - *
-> - * The fs/ds values are now the highest legal address in the "segment".
-> - * This simplifies the checking in the routines below.
-> - */
-> -
-> -#define MAKE_MM_SEG(s)  ((mm_segment_t) { (s) })
-> -
-> -#define KERNEL_DS	MAKE_MM_SEG(~0UL)
->   #ifdef __powerpc64__
->   /* We use TASK_SIZE_USER64 as TASK_SIZE is not constant */
-> -#define USER_DS		MAKE_MM_SEG(TASK_SIZE_USER64 - 1)
-> -#else
-> -#define USER_DS		MAKE_MM_SEG(TASK_SIZE - 1)
-> -#endif
-> -
-> -#define get_fs()	(current->thread.addr_limit)
-> +#define TASK_SIZE_MAX		TASK_SIZE_USER64
->   
-> -static inline void set_fs(mm_segment_t fs)
-> +static inline bool __access_ok(unsigned long addr, unsigned long size)
->   {
-> -	current->thread.addr_limit = fs;
-> -	/* On user-mode return check addr_limit (fs) is correct */
-> -	set_thread_flag(TIF_FSCHECK);
-> +	if (addr >= TASK_SIZE_MAX)
-> +		return false;
-> +	/*
-> +	 * This check is sufficient because there is a large enough gap between
-> +	 * user addresses and the kernel addresses.
-> +	 */
-> +	return size <= TASK_SIZE_MAX;
->   }
-> -
-> -#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
-> -#define user_addr_max()	(get_fs().seg)
-> -
-> -#ifdef __powerpc64__
-> -/*
-> - * This check is sufficient because there is a large enough
-> - * gap between user addresses and the kernel addresses
-> - */
-> -#define __access_ok(addr, size, segment)	\
-> -	(((addr) <= (segment).seg) && ((size) <= (segment).seg))
-> -
->   #else
-> +#define TASK_SIZE_MAX		TASK_SIZE
->   
-> -static inline int __access_ok(unsigned long addr, unsigned long size,
-> -			mm_segment_t seg)
-> +static inline bool __access_ok(unsigned long addr, unsigned long size)
->   {
-> -	if (addr > seg.seg)
-> -		return 0;
-> -	return (size == 0 || size - 1 <= seg.seg - addr);
-> +	if (addr >= TASK_SIZE_MAX)
-> +		return false;
-> +	if (size == 0)
-> +		return false;
+> diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
+> index 70d8967acc9b..18b1928a571b 100644
+> --- a/arch/powerpc/kvm/book3s.c
+> +++ b/arch/powerpc/kvm/book3s.c
+> @@ -456,13 +456,24 @@ int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
+>  {
+>  	ulong pc = kvmppc_get_pc(vcpu);
+>  	u32 word;
+> +	u64 doubleword;
+>  	int r;
+>  
+>  	if (type == INST_SC)
+>  		pc -= 4;
+>  
+> -	r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
+> -	*inst = ppc_inst(word);
+> +	if ((kvmppc_get_msr(vcpu) & SRR1_PREFIXED)) {
+> +		r = kvmppc_ld(vcpu, &pc, sizeof(u64), &doubleword, false);
 
-__access_ok() was returning true when size == 0 up to now. Any reason to 
-return false now ?
+Should we also have a check here that the doubleword is not crossing a
+page boundary?  I can't think of a way to get this code to cross a
+page boundary, assuming the hardware is working correctly, but it
+makes me just a little nervous.
 
-> +	return size <= TASK_SIZE_MAX - addr;
->   }
-> -
-> -#endif
-> +#endif /* __powerpc64__ */
->   
->   #define access_ok(addr, size)		\
->   	(__chk_user_ptr(addr),		\
-> -	 __access_ok((__force unsigned long)(addr), (size), get_fs()))
-> +	 __access_ok((unsigned long)(addr), (size)))
->   
->   /*
->    * These are the main single-value transfer routines.  They automatically
+> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
+> +		*inst = ppc_inst_prefix(doubleword & 0xffffffff, doubleword >> 32);
+> +#else
+> +		*inst = ppc_inst_prefix(doubleword >> 32, doubleword & 0xffffffff);
+> +#endif
 
-Christophe
+Ick.  Is there a cleaner way to do this?
+
+> +	} else {
+> +		r = kvmppc_ld(vcpu, &pc, sizeof(u32), &word, false);
+> +		*inst = ppc_inst(word);
+> +	}
+> +
+>  	if (r == EMULATE_DONE)
+>  		return r;
+>  	else
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> index 775ce41738ce..0802471f4856 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> @@ -411,9 +411,13 @@ static int instruction_is_store(struct ppc_inst instr)
+>  	unsigned int mask;
+>  
+>  	mask = 0x10000000;
+> -	if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
+> -		mask = 0x100;		/* major opcode 31 */
+> -	return (ppc_inst_val(instr) & mask) != 0;
+> +	if (ppc_inst_prefixed(instr)) {
+> +		return (ppc_inst_suffix(instr) & mask) != 0;
+> +	} else {
+> +		if ((ppc_inst_val(instr) & 0xfc000000) == 0x7c000000)
+> +			mask = 0x100;		/* major opcode 31 */
+> +		return (ppc_inst_val(instr) & mask) != 0;
+> +	}
+
+The way the code worked before, the mask depended on whether the
+instruction was a D-form (or DS-form or other variant) instruction,
+where you can tell loads and stores apart by looking at the major
+opcode, or an X-form instruction, where you look at the minor opcode.
+
+Now we are only looking at the minor opcode if it is not a prefixed
+instruction.  Are there no X-form prefixed loads or stores?
+
+Paul.
