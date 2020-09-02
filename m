@@ -1,102 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A96425A4F1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 07:19:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 569C025A4FB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 07:22:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhC163vnlzDqk8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 15:19:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhC4s4CvBzDqP6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 15:22:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=natechancellor@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=px5rCbOH; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=CoA4IxJ6; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhBtR2818zDqk9
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 15:13:51 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0824Wo1Q129282; Wed, 2 Sep 2020 01:13:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=bcFjTM9prI7H/cWTGkaxNjaQRb2P7oXYF4edeXsqgw0=;
- b=px5rCbOH6Y3t3FkN6B+xOpxyoMI1sMjzEda43gR0g2PQfP8qDg8IIwv+GGLco5Ix+wD7
- sJdjSd/35XRC1E7AY03EF6mvtdecgaiVBSLkkl99oM7jqtzZStFk/x+UzFLlS5MYj3TU
- lrC54lY9MkhFCPDx3yxGkkHWBnwNq+D9z5Voil5lJAwUZVlwbyUZXlWrq7eShLkwfsyt
- JY7i/wh/Y8LJtWjL+GX0ri2y1tpS/LxWHgJgNrMGZFPflE33iM8AO8N0wQPahKh4zyUs
- dRh1WF+NnBQ10H+doBUwwJnpF6A0CeXZ+bB6ejTtUAMQgKupRDpPjBwrWujGT2g9NbGO Ng== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33a462h7va-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 01:13:44 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 082514j8045612;
- Wed, 2 Sep 2020 01:13:44 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33a462h7uj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 01:13:43 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0825DG0p014118;
- Wed, 2 Sep 2020 05:13:41 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 337e9gva6m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 05:13:41 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0825Dbie30867902
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Sep 2020 05:13:37 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7A16DA405F;
- Wed,  2 Sep 2020 05:13:37 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C056A4054;
- Wed,  2 Sep 2020 05:13:34 +0000 (GMT)
-Received: from [9.199.37.120] (unknown [9.199.37.120])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  2 Sep 2020 05:13:33 +0000 (GMT)
-Subject: Re: [PATCH 0/7] powerpc/watchpoint: 2nd DAWR kvm enablement +
- selftests
-To: Paul Mackerras <paulus@ozlabs.org>
-References: <20200723102058.312282-1-ravi.bangoria@linux.ibm.com>
- <20200902023259.GC272502@thinks.paulus.ozlabs.org>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <38177cfb-3abf-2629-174a-cdd958286be2@linux.ibm.com>
-Date: Wed, 2 Sep 2020 10:43:33 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhC3D5M7pzDqMy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 15:21:27 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id u3so3289603qkd.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 22:21:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=pUaYX9zKEjE3UC87tIgYQTtj9y801Ydigt+bunW6HZ0=;
+ b=CoA4IxJ6ah2GKpke3J8wgjl3AqhJAtr5OAZo3b0AeRdtZbNM8OI6vkKf8k3cFvkUHU
+ DLEzwLmnFhOBIOuYL2DvY/ZIwhGoccBCDS/Q3Sj2t/oY4SujxKfv/CeJgWid/pylr/wa
+ YbPbmPqxrL5GZu/gmN71BUgIIuNR+1+8Mwreekz3HyH61PQxNBqiLwlIYoBmMH7FFK+8
+ xhy9xNcfFVxk9yJT4gmfpVTCaxIVv1YahHKWeR5Cb0w80G+AvCdTKKVJqjMyLymHnW/r
+ b79288BW5J5ScjhDLEIKwr9iiuVV4zUBpK5TKiYDTGSxShQaQqHKdYVVsCh+ccb5O7uN
+ j1vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=pUaYX9zKEjE3UC87tIgYQTtj9y801Ydigt+bunW6HZ0=;
+ b=ZawmqmYIdaOOyp2GuIPRwhk6NIXvSSrSELpAK37as0aVQbqQhY/BMTjZPs8y7hBWqQ
+ 16+qv2U+UJTDW2R6Yor9mV2ShbXPjAJMwhHgaa+WcyJt6/qI5fboQwx7L4Q+l+G9qhgG
+ ifXjqd803kfUJ5hckBBVJVin0yPH+ipgJdOIXbocfG8lJYhvAu8Qz1OBNoVr4L+sgOeb
+ KXWK5OSM+vwgYJJXXaGNMpP5lO/rlLW4zQfOVymqe4QTF2Y2hTiEE2WfvSEN0w56zD2D
+ S4x5rDtbZmILXnh/0GSo+zKMQVcYXmjdouoaw+2Ki/hWj5YnlgOULtS4octIPmy/kZvo
+ Oaqw==
+X-Gm-Message-State: AOAM53019P3QiK4rzrAK6B5M14dxKwS7TIrNo87oboHNZG3pFQk/UcVq
+ C5S57CcIiuNvoFQMYKiTM9k=
+X-Google-Smtp-Source: ABdhPJxMs/gCZgP754nd0TdIGrbNuQQ+VnPVejCRLYJ3xskqjAMOrIDdIzUXGUj4cBIZThgEV1rWJQ==
+X-Received: by 2002:a05:620a:a1d:: with SMTP id
+ i29mr1185377qka.76.1599024085579; 
+ Tue, 01 Sep 2020 22:21:25 -0700 (PDT)
+Received: from ubuntu-n2-xlarge-x86 ([2604:1380:45d1:2600::1])
+ by smtp.gmail.com with ESMTPSA id e23sm3697017qkl.67.2020.09.01.22.21.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Sep 2020 22:21:24 -0700 (PDT)
+Date: Tue, 1 Sep 2020 22:21:23 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH 0/2] link vdso with linker
+Message-ID: <20200902052123.GA2687902@ubuntu-n2-xlarge-x86>
+References: <20200901222523.1941988-1-ndesaulniers@google.com>
 MIME-Version: 1.0
-In-Reply-To: <20200902023259.GC272502@thinks.paulus.ozlabs.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-02_02:2020-09-01,
- 2020-09-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- malwarescore=0 mlxlogscore=999 impostorscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2009020042
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200901222523.1941988-1-ndesaulniers@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,36 +79,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: christophe.leroy@c-s.fr, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- mikey@neuling.org, rogealve@br.ibm.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, kvm-ppc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, jniethe5@gmail.com, pedromfc@br.ibm.com,
- pbonzini@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Fangrui Song <maskray@google.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Paul,
-
-On 9/2/20 8:02 AM, Paul Mackerras wrote:
-> On Thu, Jul 23, 2020 at 03:50:51PM +0530, Ravi Bangoria wrote:
->> Patch #1, #2 and #3 enables p10 2nd DAWR feature for Book3S kvm guest. DAWR
->> is a hypervisor resource and thus H_SET_MODE hcall is used to set/unset it.
->> A new case H_SET_MODE_RESOURCE_SET_DAWR1 is introduced in H_SET_MODE hcall
->> for setting/unsetting 2nd DAWR. Also, new capability KVM_CAP_PPC_DAWR1 has
->> been added to query 2nd DAWR support via kvm ioctl.
->>
->> This feature also needs to be enabled in Qemu to really use it. I'll reply
->> link to qemu patches once I post them in qemu-devel mailing list.
->>
->> Patch #4, #5, #6 and #7 adds selftests to test 2nd DAWR.
+On Tue, Sep 01, 2020 at 03:25:21PM -0700, Nick Desaulniers wrote:
+> Kees Cook is working on series that adds --orphan-section=warn to arm,
+> arm64, and x86.  I noticed that ppc vdso were still using cc-ldoption
+> for these which I removed.  It seems this results in that flag being
+> silently dropped.
 > 
-> If/when you resubmit these patches, please split the KVM patches into
-> a separate series, since the KVM patches would go via my tree whereas
-> I expect the selftests/powerpc patches would go through Michael
-> Ellerman's tree.
+> I'm very confident with the first patch, but the second needs closer
+> review around the error mentioned below the fold related to the .got
+> section.
+> 
+> Nick Desaulniers (2):
+>   powerpc/vdso64: link vdso64 with linker
+>   powerpc/vdso32: link vdso64 with linker
+> 
+>  arch/powerpc/include/asm/vdso.h         | 17 ++---------------
+>  arch/powerpc/kernel/vdso32/Makefile     |  7 +++++--
+>  arch/powerpc/kernel/vdso32/vdso32.lds.S |  3 ++-
+>  arch/powerpc/kernel/vdso64/Makefile     |  8 ++++++--
+>  arch/powerpc/kernel/vdso64/vdso64.lds.S |  1 -
+>  5 files changed, 15 insertions(+), 21 deletions(-)
+> 
+> -- 
+> 2.28.0.402.g5ffc5be6b7-goog
+> 
 
-Sure. Will split it.
+ppc44x_defconfig and powernv_defconfig start failing with this series
+when LD=ld.lld is used.
 
-Thanks,
-Ravi
+
+$ make -skj"$(nproc)" ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- LLVM=1 O=out/ppc32 distclean ppc44x_defconfig uImage
+ld.lld: error: relocation R_PPC_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso32/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso32/gettimeofday.o:(__kernel_gettimeofday)
+
+ld.lld: error: relocation R_PPC_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso32/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso32/gettimeofday.o:(__kernel_clock_gettime)
+
+ld.lld: error: relocation R_PPC_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso32/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso32/gettimeofday.o:(__kernel_clock_getres)
+
+ld.lld: error: relocation R_PPC_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso32/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso32/gettimeofday.o:(__kernel_time)
+...
+
+
+$ make -skj"$(nproc)" ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- LLVM=1 O=out/ppc64le distclean powernv_defconfig zImage.epapr
+ld.lld: error: relocation R_PPC64_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso64/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso64/gettimeofday.o:(__kernel_gettimeofday)
+
+ld.lld: error: relocation R_PPC64_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso64/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso64/gettimeofday.o:(__kernel_clock_gettime)
+
+ld.lld: error: relocation R_PPC64_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso64/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso64/gettimeofday.o:(__kernel_clock_getres)
+
+ld.lld: error: relocation R_PPC64_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso64/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso64/gettimeofday.o:(__kernel_time)
+
+ld.lld: error: relocation R_PPC64_REL16_LO cannot be used against symbol __kernel_datapage_offset; recompile with -fPIC
+>>> defined in arch/powerpc/kernel/vdso64/datapage.o
+>>> referenced by arch/powerpc/kernel/vdso64/cacheflush.o:(__kernel_sync_dicache)
+...
+
+
+We need Fangrui's patch to fix ppc44x_defconfig:
+
+https://lore.kernel.org/lkml/20200205005054.k72fuikf6rwrgfe4@google.com/
+
+That exact same fix is needed in arch/powerpc/kernel/vdso64/datapage.S
+to fix powernv_defconfig.
+
+Cheers,
+Nathan
