@@ -1,46 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8673B25A579
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:20:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE3C25A575
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 08:17:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhDM60wrQzDqWg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:20:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhDHy1QYVzDqP5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 16:17:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhDK70BkXzDq9k
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 16:18:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=sOvM+oWr; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4BhDK65dhWz9sSJ; Wed,  2 Sep 2020 16:18:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1599027514; bh=92OiPKNwGzvI92aBDZKrl9ja+G+TFCy0aCOwfiebq1E=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=sOvM+oWr+E6AxOGH5S4kSqMjRLhG/3AI5+MldMl6wLi+xcjohCQcgq2Z+WqW+MCFa
- lmm6FGnVUUkf3tmf3QO0UgdQmyRpIMsGNktzV23GQXwB74q9s6gCYU705hmpqXXwej
- Z9JMtLx4LCGbJCVIKKvXMaIdaPasq1oDGu8ED/xf+fpRKsikvk+iqwPB3gCaRz4qNr
- aM9ja/ABQMowYWaZcvLWAWr1Tyj0IhdOPeWS1wR9xP68KhU+lNOogCKNvt3klGE2nT
- qOzHv2qg2+p0YOkrSZOJTdfCISwkU/jhy4W20DwLVGO+qhc54P7BwywCnvb7n4XGU/
- C4g6F4gsHXpQA==
-Date: Wed, 2 Sep 2020 16:13:18 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [RFC PATCH 1/2] KVM: PPC: Use the ppc_inst type
-Message-ID: <20200902061318.GE272502@thinks.paulus.ozlabs.org>
-References: <20200820033922.32311-1-jniethe5@gmail.com>
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhDFX0LR4zDqLq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 16:15:26 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BhDFM1jjKz9tyTH;
+ Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 3We4wFWomQ2D; Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BhDFM0fQQz9tyTG;
+ Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 111128B788;
+ Wed,  2 Sep 2020 08:15:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id bC4OSETSJupy; Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
+Received: from [10.25.210.31] (unknown [10.25.210.31])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C01518B784;
+ Wed,  2 Sep 2020 08:15:19 +0200 (CEST)
+Subject: Re: [PATCH 10/10] powerpc: remove address space overrides using
+ set_fs()
+To: Christoph Hellwig <hch@lst.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Michael Ellerman <mpe@ellerman.id.au>,
+ x86@kernel.org
+References: <20200827150030.282762-1-hch@lst.de>
+ <20200827150030.282762-11-hch@lst.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <8974838a-a0b1-1806-4a3a-e983deda67ca@csgroup.eu>
+Date: Wed, 2 Sep 2020 08:15:12 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200820033922.32311-1-jniethe5@gmail.com>
+In-Reply-To: <20200827150030.282762-11-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,88 +68,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Kees Cook <keescook@chromium.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 20, 2020 at 01:39:21PM +1000, Jordan Niethe wrote:
-> The ppc_inst type was added to help cope with the addition of prefixed
-> instructions to the ISA. Convert KVM to use this new type for dealing
-> wiht instructions. For now do not try to add further support for
-> prefixed instructions.
 
-This change does seem to splatter itself across a lot of code that
-mostly or exclusively runs on machines which are not POWER10 and will
-never need to handle prefixed instructions, unfortunately.  I wonder
-if there is a less invasive way to approach this.
 
-In particular we are inflicting this 64-bit struct on 32-bit platforms
-unnecessarily (I assume, correct me if I am wrong here).
+Le 27/08/2020 à 17:00, Christoph Hellwig a écrit :
+> Stop providing the possibility to override the address space using
+> set_fs() now that there is no need for that any more.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   arch/powerpc/Kconfig                   |  1 -
+>   arch/powerpc/include/asm/processor.h   |  7 ---
+>   arch/powerpc/include/asm/thread_info.h |  5 +--
+>   arch/powerpc/include/asm/uaccess.h     | 62 ++++++++------------------
+>   arch/powerpc/kernel/signal.c           |  3 --
+>   arch/powerpc/lib/sstep.c               |  6 +--
+>   6 files changed, 22 insertions(+), 62 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> index 7fe3531ad36a77..39727537d39701 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -8,62 +8,36 @@
+>   #include <asm/extable.h>
+>   #include <asm/kup.h>
+>   
+> -/*
+> - * The fs value determines whether argument validity checking should be
+> - * performed or not.  If get_fs() == USER_DS, checking is performed, with
+> - * get_fs() == KERNEL_DS, checking is bypassed.
+> - *
+> - * For historical reasons, these macros are grossly misnamed.
+> - *
+> - * The fs/ds values are now the highest legal address in the "segment".
+> - * This simplifies the checking in the routines below.
+> - */
+> -
+> -#define MAKE_MM_SEG(s)  ((mm_segment_t) { (s) })
+> -
+> -#define KERNEL_DS	MAKE_MM_SEG(~0UL)
+>   #ifdef __powerpc64__
+>   /* We use TASK_SIZE_USER64 as TASK_SIZE is not constant */
+> -#define USER_DS		MAKE_MM_SEG(TASK_SIZE_USER64 - 1)
+> -#else
+> -#define USER_DS		MAKE_MM_SEG(TASK_SIZE - 1)
+> -#endif
+> -
+> -#define get_fs()	(current->thread.addr_limit)
+> +#define TASK_SIZE_MAX		TASK_SIZE_USER64
+>   
+> -static inline void set_fs(mm_segment_t fs)
+> +static inline bool __access_ok(unsigned long addr, unsigned long size)
+>   {
+> -	current->thread.addr_limit = fs;
+> -	/* On user-mode return check addr_limit (fs) is correct */
+> -	set_thread_flag(TIF_FSCHECK);
+> +	if (addr >= TASK_SIZE_MAX)
+> +		return false;
+> +	/*
+> +	 * This check is sufficient because there is a large enough gap between
+> +	 * user addresses and the kernel addresses.
+> +	 */
+> +	return size <= TASK_SIZE_MAX;
+>   }
+> -
+> -#define uaccess_kernel() (get_fs().seg == KERNEL_DS.seg)
+> -#define user_addr_max()	(get_fs().seg)
+> -
+> -#ifdef __powerpc64__
+> -/*
+> - * This check is sufficient because there is a large enough
+> - * gap between user addresses and the kernel addresses
+> - */
+> -#define __access_ok(addr, size, segment)	\
+> -	(((addr) <= (segment).seg) && ((size) <= (segment).seg))
+> -
+>   #else
+> +#define TASK_SIZE_MAX		TASK_SIZE
+>   
+> -static inline int __access_ok(unsigned long addr, unsigned long size,
+> -			mm_segment_t seg)
+> +static inline bool __access_ok(unsigned long addr, unsigned long size)
+>   {
+> -	if (addr > seg.seg)
+> -		return 0;
+> -	return (size == 0 || size - 1 <= seg.seg - addr);
+> +	if (addr >= TASK_SIZE_MAX)
+> +		return false;
+> +	if (size == 0)
+> +		return false;
 
-How would it be to do something like:
+__access_ok() was returning true when size == 0 up to now. Any reason to 
+return false now ?
 
-typedef unsigned long ppc_inst_t;
+> +	return size <= TASK_SIZE_MAX - addr;
+>   }
+> -
+> -#endif
+> +#endif /* __powerpc64__ */
+>   
+>   #define access_ok(addr, size)		\
+>   	(__chk_user_ptr(addr),		\
+> -	 __access_ok((__force unsigned long)(addr), (size), get_fs()))
+> +	 __access_ok((unsigned long)(addr), (size)))
+>   
+>   /*
+>    * These are the main single-value transfer routines.  They automatically
 
-so it is 32 bits on 32-bit platforms and 64 bits on 64-bit platforms,
-and then use that instead of 'struct ppc_inst'?  You would still need
-to change the function declarations but I think most of the function
-bodies would not need to be changed.  In particular you would avoid a
-lot of the churn related to having to add ppc_inst_val() and suchlike.
-
-> -static inline unsigned make_dsisr(unsigned instr)
-> +static inline unsigned make_dsisr(struct ppc_inst instr)
->  {
->  	unsigned dsisr;
-> +	u32 word = ppc_inst_val(instr);
->  
->  
->  	/* bits  6:15 --> 22:31 */
-> -	dsisr = (instr & 0x03ff0000) >> 16;
-> +	dsisr = (word & 0x03ff0000) >> 16;
->  
->  	if (IS_XFORM(instr)) {
->  		/* bits 29:30 --> 15:16 */
-> -		dsisr |= (instr & 0x00000006) << 14;
-> +		dsisr |= (word & 0x00000006) << 14;
->  		/* bit     25 -->    17 */
-> -		dsisr |= (instr & 0x00000040) << 8;
-> +		dsisr |= (word & 0x00000040) << 8;
->  		/* bits 21:24 --> 18:21 */
-> -		dsisr |= (instr & 0x00000780) << 3;
-> +		dsisr |= (word & 0x00000780) << 3;
->  	} else {
->  		/* bit      5 -->    17 */
-> -		dsisr |= (instr & 0x04000000) >> 12;
-> +		dsisr |= (word & 0x04000000) >> 12;
->  		/* bits  1: 4 --> 18:21 */
-> -		dsisr |= (instr & 0x78000000) >> 17;
-> +		dsisr |= (word & 0x78000000) >> 17;
->  		/* bits 30:31 --> 12:13 */
->  		if (IS_DSFORM(instr))
-> -			dsisr |= (instr & 0x00000003) << 18;
-> +			dsisr |= (word & 0x00000003) << 18;
-
-Here I would have done something like:
-
-> -static inline unsigned make_dsisr(unsigned instr)
-> +static inline unsigned make_dsisr(struct ppc_inst pi)
->  {
->  	unsigned dsisr;
-> +	u32 instr = ppc_inst_val(pi);
-
-and left the rest of the function unchanged.
-
-At first I wondered why we still had that function, since IBM Power
-CPUs have not set DSISR on an alignment interrupt since POWER3 days.
-It turns out it this function is used by PR KVM when it is emulating
-one of the old 32-bit PowerPC CPUs (601, 603, 604, 750, 7450 etc.).
-
-> diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
-
-Despite the file name, this code is not used on IBM Power servers.
-It is for platforms which run under an ePAPR (not server PAPR)
-hypervisor (which would be a KVM variant, but generally book E KVM not
-book 3S).
-
-Paul.
+Christophe
