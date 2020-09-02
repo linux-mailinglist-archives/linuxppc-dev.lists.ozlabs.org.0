@@ -2,100 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01CE25A434
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 06:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E85225A43B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 06:06:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh9KY0h6TzDqfs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 14:03:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh9N7703zzDqZj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 14:05:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Lez2m5b2; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=iVKbenO8; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh9Cf5cn8zDqN0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 13:58:38 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0823WoJu151620; Tue, 1 Sep 2020 23:58:17 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh9H93FYhzDqg3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 14:01:41 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08240iV8183679; Wed, 2 Sep 2020 00:01:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=NRMxz31et6UNTlJA7+QKz+EOKxjkgpK3zxuT1c6AiN4=;
- b=Lez2m5b261V98rccfFzz0hwukbPMRg+fN6kpKMbUHKhoQx6ijiHRiHmZ5z7/SjEtQYIa
- Lotrl01VlG6KIIbqDAQ7eQdCrJOOgn91SVwSSQlK5kFFNRjIMAZNWSM/vApHas8Z9ypp
- 10pujNky2D9tyeDZU3GnQEWmrjm+UHgynRi/sxhWndiLR3n7XeJS2janOBgaT4V/Ej2/
- Pc0QBGcQ7iWfP2rkuvEOGs1JstKp4ovpzGwSsrXpvndrk6Mdj7sRawxwtUiUzmwi0EJJ
- GLPdrHJ8Icf+KFWxCy0l6WwIhLdzvgmQENJQJY5Fg7mQYua1prtkWi4IzFlATglVucEl Ng== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33a3dern4m-1
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=CnzQ4+5jWPUw8wT4aFpo3p9+hSlVzAYgt2GZmkBQUh0=;
+ b=iVKbenO8ZFBV6f+1d5WHd4/3aw11EupDaFZMsom1Zc939783HD+v6ZRguyFnANvxqSOm
+ 4KS1Wz54pqDBhD3mNNT9Gib20ZN/qmqLeVlMIuj1VAFi6bMTiE2LbihwFHiK5oou1QDA
+ Z0AmeU1Ww0iwTtkYGDq16NY8w4PoI2htZf0Rrv/HMCkViFfqo+9+9L8Lq1jixE/9BMc0
+ fawNHf/twrvsJYgGSQcAm0n1V/r7FB2h+GtDPzXF5ru3JW5MiirJj0sr42+3qO99cBCn
+ JfW2wkzNwfiMdx1ms70wiVSJal7A8ScoFgjdN9X5EMaOWhcc4sQfNaU+gQPLDNbQjafi Aw== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33a39xgtdw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Sep 2020 23:58:17 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0823vMJ3016533;
- Wed, 2 Sep 2020 03:58:15 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06fra.de.ibm.com with ESMTP id 337e9h2k3j-1
+ Wed, 02 Sep 2020 00:01:28 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0823vQho015085;
+ Wed, 2 Sep 2020 04:01:28 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma01wdc.us.ibm.com with ESMTP id 337en951wh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Sep 2020 03:58:14 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0823wCjS30998800
+ Wed, 02 Sep 2020 04:01:28 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08241Riv40239606
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Sep 2020 03:58:12 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7544EA404D;
- Wed,  2 Sep 2020 03:58:12 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 89808A4055;
- Wed,  2 Sep 2020 03:58:09 +0000 (GMT)
-Received: from [9.199.61.124] (unknown [9.199.61.124])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  2 Sep 2020 03:58:09 +0000 (GMT)
-Subject: Re: [PATCH v3 13/13] mm/debug_vm_pgtable: populate a pte entry before
- fetching it
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20200827080438.315345-1-aneesh.kumar@linux.ibm.com>
- <20200827080438.315345-14-aneesh.kumar@linux.ibm.com>
- <edc68223-7f8a-13df-68eb-9682f585adb8@arm.com>
- <abef1791-8779-6b34-3178-3bf3ab36d42b@linux.ibm.com>
- <e3140b44-993e-aa4b-130d-ee2230eff2b5@arm.com>
- <7ef7c302-e7e6-570e-3100-5dd1bf9551be@linux.ibm.com>
- <4ba15b8f-ac90-17ec-9b95-0451e2a38e98@arm.com>
+ Wed, 2 Sep 2020 04:01:27 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6C88112064;
+ Wed,  2 Sep 2020 04:01:27 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 97BE8112062;
+ Wed,  2 Sep 2020 04:01:25 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.61.124])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Sep 2020 04:01:25 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <7de344c3-26ea-be34-4435-8842360ed565@linux.ibm.com>
-Date: Wed, 2 Sep 2020 09:28:08 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v3] powerpc/mm: Remove DEBUG_VM_PGTABLE support on powerpc
+Date: Wed,  2 Sep 2020 09:31:22 +0530
+Message-Id: <20200902040122.136414-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <4ba15b8f-ac90-17ec-9b95-0451e2a38e98@arm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
  definitions=2020-09-02_02:2020-09-01,
  2020-09-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 mlxscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2006250000 definitions=main-2009020028
+ lowpriorityscore=0
+ mlxlogscore=775 bulkscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ adultscore=0 malwarescore=0 phishscore=0 clxscore=1015 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009020031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,134 +92,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Christophe Leroy <christophe.leroy@c-s.fr>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, Qian Cai <cai@lca.pw>,
- Gerald Schaefer <gerald.schaefer@de.ibm.com>,
- Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/2/20 9:19 AM, Anshuman Khandual wrote:
-> 
-> 
-> On 09/01/2020 03:28 PM, Aneesh Kumar K.V wrote:
->> On 9/1/20 1:08 PM, Anshuman Khandual wrote:
->>>
->>>
->>> On 09/01/2020 12:07 PM, Aneesh Kumar K.V wrote:
->>>> On 9/1/20 8:55 AM, Anshuman Khandual wrote:
->>>>>
->>>>>
->>>>> On 08/27/2020 01:34 PM, Aneesh Kumar K.V wrote:
->>>>>> pte_clear_tests operate on an existing pte entry. Make sure that is not a none
->>>>>> pte entry.
->>>>>>
->>>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>>>> ---
->>>>>>     mm/debug_vm_pgtable.c | 6 ++++--
->>>>>>     1 file changed, 4 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->>>>>> index 21329c7d672f..8527ebb75f2c 100644
->>>>>> --- a/mm/debug_vm_pgtable.c
->>>>>> +++ b/mm/debug_vm_pgtable.c
->>>>>> @@ -546,7 +546,7 @@ static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
->>>>>>     static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
->>>>>>                        unsigned long vaddr)
->>>>>>     {
->>>>>> -    pte_t pte = ptep_get(ptep);
->>>>>> +    pte_t pte =  ptep_get_and_clear(mm, vaddr, ptep);
->>>>>
->>>>> Seems like ptep_get_and_clear() here just clears the entry in preparation
->>>>> for a following set_pte_at() which otherwise would have been a problem on
->>>>> ppc64 as you had pointed out earlier i.e set_pte_at() should not update an
->>>>> existing valid entry. So the commit message here is bit misleading.
->>>>>
->>>>
->>>> and also fetch the pte value which is used further.
->>>>
->>>>
->>>>>>           pr_debug("Validating PTE clear\n");
->>>>>>         pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
->>>>>> @@ -944,7 +944,7 @@ static int __init debug_vm_pgtable(void)
->>>>>>         p4d_t *p4dp, *saved_p4dp;
->>>>>>         pud_t *pudp, *saved_pudp;
->>>>>>         pmd_t *pmdp, *saved_pmdp, pmd;
->>>>>> -    pte_t *ptep;
->>>>>> +    pte_t *ptep, pte;
->>>>>>         pgtable_t saved_ptep;
->>>>>>         pgprot_t prot, protnone;
->>>>>>         phys_addr_t paddr;
->>>>>> @@ -1049,6 +1049,8 @@ static int __init debug_vm_pgtable(void)
->>>>>>          */
->>>>>>           ptep = pte_alloc_map_lock(mm, pmdp, vaddr, &ptl);
->>>>>> +    pte = pfn_pte(pte_aligned, prot);
->>>>>> +    set_pte_at(mm, vaddr, ptep, pte);
->>>>>
->>>>> Not here, creating and populating an entry must be done in respective
->>>>> test functions itself. Besides, this seems bit redundant as well. The
->>>>> test pte_clear_tests() with the above change added, already
->>>>>
->>>>> - Clears the PTEP entry with ptep_get_and_clear()
->>>>
->>>> and fetch the old value set previously.
->>>
->>> In that case, please move above two lines i.e
->>>
->>> pte = pfn_pte(pte_aligned, prot);
->>> set_pte_at(mm, vaddr, ptep, pte);
->>>
->>> from debug_vm_pgtable() to pte_clear_tests() and update it's arguments
->>> as required.
->>>
->>
->> Frankly, I don't understand what these tests are testing. It all looks like some random clear and set.
-> 
-> The idea here is to have some value with some randomness preferably, in
-> a given PTEP before attempting to clear the entry, in order to make sure
-> that pte_clear() is indeed clearing something of non-zero value.
-> 
->>
->> static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
->>                     unsigned long vaddr, unsigned long pfn,
->>                     pgprot_t prot)
->> {
->>
->>      pte_t pte = pfn_pte(pfn, prot);
->>      set_pte_at(mm, vaddr, ptep, pte);
->>
->>      pte =  ptep_get_and_clear(mm, vaddr, ptep);
-> 
-> Looking at this again, this preceding pfn_pte() followed by set_pte_at()
-> is not really required. Its reasonable to start with what ever was there
-> in the PTEP as a seed value which anyway gets added with RANDOM_ORVALUE.
-> s/ptep_get/ptep_get_and_clear is sufficient to take care of the powerpc
-> set_pte_at() constraint.
-> 
+The test is broken w.r.t page table update rules and results in kernel
+crash as below. Disable the support until we get the tests updated.
 
-But the way test is written we had none pte before. That is why I added 
-that set_pte_at to put something there. With none pte the below sequence 
-fails.
+[   21.083519] kernel BUG at arch/powerpc/mm/pgtable.c:304!
+cpu 0x0: Vector: 700 (Program Check) at [c000000c6d1e76c0]
+    pc: c00000000009a5ec: assert_pte_locked+0x14c/0x380
+    lr: c0000000005eeeec: pte_update+0x11c/0x190
+    sp: c000000c6d1e7950
+   msr: 8000000002029033
+  current = 0xc000000c6d172c80
+  paca    = 0xc000000003ba0000   irqmask: 0x03   irq_happened: 0x01
+    pid   = 1, comm = swapper/0
+kernel BUG at arch/powerpc/mm/pgtable.c:304!
+[link register   ] c0000000005eeeec pte_update+0x11c/0x190
+[c000000c6d1e7950] 0000000000000001 (unreliable)
+[c000000c6d1e79b0] c0000000005eee14 pte_update+0x44/0x190
+[c000000c6d1e7a10] c000000001a2ca9c pte_advanced_tests+0x160/0x3d8
+[c000000c6d1e7ab0] c000000001a2d4fc debug_vm_pgtable+0x7e8/0x1338
+[c000000c6d1e7ba0] c0000000000116ec do_one_initcall+0xac/0x5f0
+[c000000c6d1e7c80] c0000000019e4fac kernel_init_freeable+0x4dc/0x5a4
+[c000000c6d1e7db0] c000000000012474 kernel_init+0x24/0x160
+[c000000c6d1e7e20] c00000000000cbd0 ret_from_kernel_thread+0x5c/0x6c
 
-	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
-	set_pte_at(mm, vaddr, ptep, pte);
+With DEBUG_VM disabled
 
+[   20.530152] BUG: Kernel NULL pointer dereference on read at 0x00000000
+[   20.530183] Faulting instruction address: 0xc0000000000df330
+cpu 0x33: Vector: 380 (Data SLB Access) at [c000000c6d19f700]
+    pc: c0000000000df330: memset+0x68/0x104
+    lr: c00000000009f6d8: hash__pmdp_huge_get_and_clear+0xe8/0x1b0
+    sp: c000000c6d19f990
+   msr: 8000000002009033
+   dar: 0
+  current = 0xc000000c6d177480
+  paca    = 0xc00000001ec4f400   irqmask: 0x03   irq_happened: 0x01
+    pid   = 1, comm = swapper/0
+[link register   ] c00000000009f6d8 hash__pmdp_huge_get_and_clear+0xe8/0x1b0
+[c000000c6d19f990] c00000000009f748 hash__pmdp_huge_get_and_clear+0x158/0x1b0 (unreliable)
+[c000000c6d19fa10] c0000000019ebf30 pmd_advanced_tests+0x1f0/0x378
+[c000000c6d19fab0] c0000000019ed088 debug_vm_pgtable+0x79c/0x1244
+[c000000c6d19fba0] c0000000000116ec do_one_initcall+0xac/0x5f0
+[c000000c6d19fc80] c0000000019a4fac kernel_init_freeable+0x4dc/0x5a4
+[c000000c6d19fdb0] c000000000012474 kernel_init+0x24/0x160
+[c000000c6d19fe20] c00000000000cbd0 ret_from_kernel_thread+0x5c/0x6c
+33:mon>
 
-because nobody is marking a _PAGE_PTE there.
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ Documentation/features/debug/debug-vm-pgtable/arch-support.txt | 2 +-
+ arch/powerpc/Kconfig                                           | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-	pte_t pte = pfn_pte(pfn, prot);
+diff --git a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+index 53da483c8326..1c49723e7534 100644
+--- a/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
++++ b/Documentation/features/debug/debug-vm-pgtable/arch-support.txt
+@@ -22,7 +22,7 @@
+     |       nios2: | TODO |
+     |    openrisc: | TODO |
+     |      parisc: | TODO |
+-    |     powerpc: |  ok  |
++    |     powerpc: | TODO |
+     |       riscv: |  ok  |
+     |        s390: |  ok  |
+     |          sh: | TODO |
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 65bed1fdeaad..787e829b6f25 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -116,7 +116,6 @@ config PPC
+ 	#
+ 	select ARCH_32BIT_OFF_T if PPC32
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+-	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_HAS_ELF_RANDOMIZE
+ 	select ARCH_HAS_FORTIFY_SOURCE
+-- 
+2.26.2
 
-	pr_debug("Validating PTE clear\n");
-	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
-	set_pte_at(mm, vaddr, ptep, pte);
-	barrier();
-	pte_clear(mm, vaddr, ptep);
-	pte = ptep_get(ptep);
-	WARN_ON(!pte_none(pte));
-
-will that work for you?
-
--aneesh
