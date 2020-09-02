@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E5025A431
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 05:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9067525A433
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 06:01:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh9Df0hYszDqfS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 13:59:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bh9HB3tjZzDqf9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Sep 2020 14:01:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oT/juwHS; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20161025 header.b=qUl1WJIk; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh93r6n2czDqfD
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 13:51:52 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id q1so1694201pjd.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 20:51:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bh94G6vNWzDqMb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Sep 2020 13:52:14 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id c15so1647992plq.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Sep 2020 20:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=PlVEy4g/6lQIrdD1XcYlH8N/MJxXENO2H7A8geJceOY=;
- b=oT/juwHShzZsVFlPiiXJrnMsIXqSlOGVQHAbMOAX9eDVEaeVSTsmp8pkknOWPvcjM/
- RfF/egsNx7OtlleJ82GGOLx6TwoU3URs5uu6r5ksZM75tlWO4a7VY6xi6iQXcJbsw2OC
- QspfI/jqZISWreav63YjlceuVVAdHs4Bn6MmDZd1HKW6RAmNUzBMVKRxaVd1Y4ohfwK3
- C+kfojcfE+I3k1k3fWRO58wF0uv6LX7/HYvGd+92u+WYUuHto/va7JGOhVylrhWTdtBq
- h+D5nEdAxV/9T4cnjCnubay5t/bdhWDBvvvYNKNy+LZJK2v9SaT7wXWY6TdbIDnIP181
- M0cQ==
+ bh=3mE+hpo4ICBWbEi7xh+FqBBZwpmRS766avAgmm2Lrbc=;
+ b=qUl1WJIkCNIPS5SXX8cu5XFs+SL2nkCV/M0MUuEiDzXKZwyXW28pSZm9+dNC31gxEd
+ Kvigxj7sNSz5YHWCRZFj1k/tD6ct3AT0VxNWt1WhEqJyS/goTgTHuKSW0baBsbJsDwhd
+ +/yuQiECn4HvhXqdCt2EAacdOktsG1Td4D+HOUfA7SC1h8m0RYeQ/Gv9YWKun8dQjZ41
+ oNNv13ApQJOkr0abFCO2kUGlRpoF1XFX8LGQoElcjzRyXtHmI5AnsOjs7e6icYYFoC3O
+ uXrFuYUUcrXsR92x6bg4AYQ4bwdiREKq9pncu+N6sVoWSaxI9UAu0IQmfYaUCHtDGwXu
+ YwqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=PlVEy4g/6lQIrdD1XcYlH8N/MJxXENO2H7A8geJceOY=;
- b=oUSFXbgd80LsZeg68RypqEG7AZ32kEtyqrjLkV9n8H0sMFhXvyXZLIcUcUZfPqHUTy
- DuKVPx0qGJwxAZwtNXPL/M8uls8jGNJ1DuvrJjcdqqfj9TFIUDNMUejis+KRvB+1kpzC
- lfv5oPzORKRkNWZJ1hILEhf1F6P6aH/eK6qXHgzEZvfHFD7GRhTo4rZSnaYCnkJddJmH
- fn+qIRAwWBei3eIYFx63M3JxPAnry0PEcwWWVPvqu13YjEq6FWJH4eY+3hiXlHtdr8y/
- fmTX4a8VXcHtwp9sTZC2vIpBAPL97aPwik1rEz21IlbGEE3yloPE0J24HxbpGxGIeyQK
- 5Eiw==
-X-Gm-Message-State: AOAM533LtGk+xEI6n5rVCccCJE2jNhRnkvJ0Q5Y8ptqtQsahbyPeXWG6
- KFNe4fXl0gxLy8ABEP87j5UIxS7ZLMS/kQ==
-X-Google-Smtp-Source: ABdhPJx1tpE1N1HZsUTdsfGpZQPUe76mDmcDeB20mpjsqGAORXQ1+VS7BZfFQlP05YigErds4lv6eQ==
-X-Received: by 2002:a17:902:8f82:: with SMTP id
- z2mr370803plo.177.1599018709285; 
- Tue, 01 Sep 2020 20:51:49 -0700 (PDT)
+ bh=3mE+hpo4ICBWbEi7xh+FqBBZwpmRS766avAgmm2Lrbc=;
+ b=Ubi/kPW4lfpHh5ZWFc57pxeDy7v9On7KRAI6T+Xi4a7Vd6ii+W9t3vG+/0ZGdb/293
+ WxUfdoZPGjgXmId0ZtpOpTKXnrPt77PxKSkROl3zhtX1/O3ozbVE3SyzwrTYION7BVUV
+ DRiHaaq2Q8FCz8JF65xYgXJ1FAt3WKFgCIrnizRpHFrJFracjVl3Y7RYAD5e7zfvEoAo
+ lfIwZVXLzncYM+O8IgKCRfChKKf23IPNnppas4jU+GpnP0gcNH2vO97ykkuFacST0o6P
+ a0nEXR/VfJQPrmOrCrTH4HLv2KSudNOMJl/6r9888oIf+VizWhORSfC0mw72eu1G2vb1
+ B02w==
+X-Gm-Message-State: AOAM5333QYRc1dv0HlozG24zolZgXriIJZ4k/DfBrD1pXHNZHN/NTEIX
+ 6rbyz9SZzC77H9uqw2HnoWayhVIHJrV2Qw==
+X-Google-Smtp-Source: ABdhPJwKaILmv1YUvv6LW/tbntYJ/eNgtpRK6xglMAnP1djBNiYd7cUt9Ml591092/AaYpk57qjXbQ==
+X-Received: by 2002:a17:90a:9382:: with SMTP id
+ q2mr456385pjo.118.1599018731352; 
+ Tue, 01 Sep 2020 20:52:11 -0700 (PDT)
 Received: from localhost.ibm.com (194-193-34-182.tpgi.com.au. [194.193.34.182])
- by smtp.gmail.com with ESMTPSA id u15sm1190670pjx.50.2020.09.01.20.51.47
+ by smtp.gmail.com with ESMTPSA id n128sm3790510pfd.29.2020.09.01.20.52.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Sep 2020 20:51:48 -0700 (PDT)
+ Tue, 01 Sep 2020 20:52:10 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/pci: Remove unimplemented prototypes
-Date: Wed,  2 Sep 2020 13:51:38 +1000
-Message-Id: <20200902035138.1762531-1-oohall@gmail.com>
+Subject: [PATCH] powerpc/powernv/pci: Drop VF MPS fixup
+Date: Wed,  2 Sep 2020 13:51:59 +1000
+Message-Id: <20200902035159.1762596-1-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -82,30 +82,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The corresponding definitions were deleted in commit 3d5134ee8341
-("[POWERPC] Rewrite IO allocation & mapping on powerpc64") which
-was merged a mere 13 years ago.
+The MPS field in the VF config space is marked as reserved in current
+versions of the SR-IOV spec. In other words, this fixup doesn't do
+anything.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/include/asm/ppc-pci.h | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/platforms/powernv/eeh-powernv.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
-index 7f4be5a05eb3..0745422a8e57 100644
---- a/arch/powerpc/include/asm/ppc-pci.h
-+++ b/arch/powerpc/include/asm/ppc-pci.h
-@@ -13,10 +13,6 @@
+diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
+index 9af8c3b98853..0cabe4e632e3 100644
+--- a/arch/powerpc/platforms/powernv/eeh-powernv.c
++++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+@@ -1689,24 +1689,6 @@ static struct eeh_ops pnv_eeh_ops = {
+ 	.notify_resume		= NULL
+ };
  
- extern unsigned long isa_io_base;
- 
--extern void pci_setup_phb_io(struct pci_controller *hose, int primary);
--extern void pci_setup_phb_io_dynamic(struct pci_controller *hose, int primary);
+-#ifdef CONFIG_PCI_IOV
+-static void pnv_pci_fixup_vf_mps(struct pci_dev *pdev)
+-{
+-	struct pci_dn *pdn = pci_get_pdn(pdev);
+-	int parent_mps;
 -
+-	if (!pdev->is_virtfn)
+-		return;
 -
- extern struct list_head hose_list;
- 
- extern struct pci_dev *isa_bridge_pcidev;	/* may be NULL if no ISA bus */
+-	/* Synchronize MPS for VF and PF */
+-	parent_mps = pcie_get_mps(pdev->physfn);
+-	if ((128 << pdev->pcie_mpss) >= parent_mps)
+-		pcie_set_mps(pdev, parent_mps);
+-	pdn->mps = pcie_get_mps(pdev);
+-}
+-DECLARE_PCI_FIXUP_HEADER(PCI_ANY_ID, PCI_ANY_ID, pnv_pci_fixup_vf_mps);
+-#endif /* CONFIG_PCI_IOV */
+-
+ /**
+  * eeh_powernv_init - Register platform dependent EEH operations
+  *
 -- 
 2.26.2
 
