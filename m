@@ -2,93 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA8A25BA1D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 07:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D62C25BA30
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 07:40:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BhqGG3BfWzDr5l
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 15:33:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BhqR71njVzDr3P
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 15:40:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
+ helo=mail-qt1-x843.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=P/1oVpN+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=BlG2wNJP; dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BhqDM6GFHzDr2g
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Sep 2020 15:31:30 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08352OFG053557; Thu, 3 Sep 2020 01:31:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4HGc7/6+Pw+aIlehXfflhn1TuMbzH3zeJUxuQa5CQaE=;
- b=P/1oVpN+XIULm43HcP2/i56HkLqraf+8hhOq+RhppUR7w608E83av0w1QuErodbyDu7g
- HsYoQUzYMtQopLWsvf9AmGGhezqig+UP7oSG4ZEHhxb+TnHU6WLkZgETnRc0mHlWxtlx
- 8kmPut7cPoLhvKs4te2A1feiCVjudwFC4KWTX5zt1ZqK/Oj1hxbPqh7R7XZrPOdU/fu2
- YRF0+E8eWOwntx4gkxjHBqocmbWRBMQmHR8v25VLTu7jPevH1jIP740MONg1Jr02Fuw+
- TDFW+7BQ6gQAK1RRdY9dppIIG0/sHM0wFvmUKPE2MH4gKF4o8cTWpCnFO/a9qQWyF5dT 6g== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 33ahswv4bh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Sep 2020 01:31:24 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0835RTXg015452;
- Thu, 3 Sep 2020 05:31:23 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 337en9xnd5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 03 Sep 2020 05:31:23 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0835VMwQ41681180
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 3 Sep 2020 05:31:23 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC015AE060;
- Thu,  3 Sep 2020 05:31:22 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 021E3AE068;
- Thu,  3 Sep 2020 05:31:21 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.65.215.230])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  3 Sep 2020 05:31:21 +0000 (GMT)
-Subject: Re: [PATCH v2] scsi: ibmvfc: interface updates for future FPIN and MQ
- support
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-References: <20200901002420.648532-1-tyreld@linux.ibm.com>
- <yq1y2lrd2ys.fsf@ca-mkp.ca.oracle.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <3fe3e9be-9671-aa0a-b18b-10f77433ab56@linux.ibm.com>
-Date: Wed, 2 Sep 2020 22:31:21 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BhqNj4S73zDqdt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Sep 2020 15:38:45 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id t20so1063879qtr.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Sep 2020 22:38:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=/srxmXOQUdGOTgQu2IuqE2j58tt26cmpQAGEQoUfF/k=;
+ b=BlG2wNJPYLR+rFryCKSetR5cKCniB4g/4HijU9okP0ui0rIsM3wxVymFTj14GFBX6q
+ pK5+3rG4FJjOIgBAIpAjbQVoXniXWSV0TdHquceFaLdMTu8y7tro9mpkEiFR+UX5OlXU
+ FmrMJRd16wseT1va/r33k5gJEc7XwRoD2CVA8REXK0RmYehVgri6Wsm8Wrsw31hc/BAo
+ O+Va8jlRuamwJ81xgknpaV/yP8nR2C2oRaC32NUaqJxSUwmLsvx1W0uTxBP7Tv+NOj5Q
+ MyLctmJl7IfP+gDw0n0DhQtOdg4Q3DG6Tm/GmE/zgu9UqsqiPeH5aB0lP77qRuuxhuWq
+ 8lCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=/srxmXOQUdGOTgQu2IuqE2j58tt26cmpQAGEQoUfF/k=;
+ b=WlmK/FiEq6FrtuFsUA8SYOxUwrrZblalyGY4zZNVaH+Eu2Izz7J0/rU6bDwSKYbfpp
+ 9qWO+zOVQaKIDUJ2CDTqkGDtezmao2nqnOUk6Pc6KSpzBNNb+NIKQ559Gz8+tyC06nbi
+ joIOeq63j9H6sG93xsBoWAdAn2tC6swXfZvoHWy6ZQgPceI9WCId1HmsjmC4P1guarcF
+ 47Airj0RY9fF6uO9Mlf5FpRdgWjwvl4+flnQIkvtXNSf1No/KUSvv7ZLrEoComM6UbvY
+ yDRHWkSmktXEcfUkGlYz63wGgyViCE/xrU6ZNkjNnWPrPNSktCnPhcJuyuylFdt0Fz5+
+ d0BA==
+X-Gm-Message-State: AOAM531xKijQDZB6i6GXULIAMjzhHq2zwJR8y7wLL4i2JY3OmoVeP3B7
+ z1AM4sYaqNJ9ZGri5wIeDMJTva87FGFQoQq+aoE=
+X-Google-Smtp-Source: ABdhPJzaK6BoZepXoJ10dK0NPS4TvabWN2zlZEZXM5iY2qiaE4SmYwSpCXEsJMm/APS6kZyYQg8zAMlaCjyRxI4OR/8=
+X-Received: by 2002:ac8:67ca:: with SMTP id r10mr1883306qtp.54.1599111521573; 
+ Wed, 02 Sep 2020 22:38:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <yq1y2lrd2ys.fsf@ca-mkp.ca.oracle.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-02_17:2020-09-02,
- 2020-09-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0 malwarescore=0
- impostorscore=0 mlxlogscore=999 mlxscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009030042
+References: <1599102555-17178-1-git-send-email-shengjiu.wang@nxp.com>
+ <20200903034018.GC4517@Asurada-Nvidia>
+In-Reply-To: <20200903034018.GC4517@Asurada-Nvidia>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 3 Sep 2020 13:38:30 +0800
+Message-ID: <CAA+D8AOJGH77cpbC9dqaE_BES208sgEPDNPWbZ8HGpfom_FoRg@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: Set SAI Channel Mode to Output Mode
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,26 +73,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: james.bottomley@hansenpartnership.com, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-scsi@vger.kernel.org
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/2/20 7:11 PM, Martin K. Petersen wrote:
-> 
-> Tyrel,
-> 
->> 	Fixup complier errors from neglected commit --amend
-> 
-> Bunch of formatting-related checkpatch warnings. Please fix.
-> 
-> Thanks!
-> 
+On Thu, Sep 3, 2020 at 11:42 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+>
+> On Thu, Sep 03, 2020 at 11:09:15AM +0800, Shengjiu Wang wrote:
+> > Transmit data pins will output zero when slots are masked or channels
+> > are disabled. In CHMOD TDM mode, transmit data pins are tri-stated when
+> > slots are masked or channels are disabled. When data pins are tri-stated,
+> > there is noise on some channels when FS clock value is high and data is
+> > read while fsclk is transitioning from high to low.
+> >
+> > Signed-off-by: Cosmin-Gabriel Samoila <cosmin.samoila@nxp.com>
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>
+> Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+>
+> Though one nit inline:
+>
+> > ---
+> >  sound/soc/fsl/fsl_sai.c | 12 ++++++++++--
+> >  sound/soc/fsl/fsl_sai.h |  2 ++
+> >  2 files changed, 12 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> > index 62c5fdb678fc..33b194a5c1dc 100644
+> > --- a/sound/soc/fsl/fsl_sai.c
+> > +++ b/sound/soc/fsl/fsl_sai.c
+> > @@ -486,6 +486,12 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+> >
+> >       val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
+> >
+> > +     /* Output Mode - data pins transmit 0 when slots are masked
+> > +      * or channels are disabled
+> > +      */
+>
+> Coding style for multi-line comments. Yet, probably can simplify?
+>
+>         /* Set to output mode to avoid tri-stated data pins */
+Ok, will update in v2.
 
-So, I stuck to the existing style already in that header. If I'm going to fixup
-to make checkpatch happy I imagine it makes sense to send a prerequisite patch
-that fixes up the rest of the header.
-
--Tyrel
+best regards
+wang shengjiu
