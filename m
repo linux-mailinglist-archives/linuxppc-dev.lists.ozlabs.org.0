@@ -1,97 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C64D25CC1F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 23:24:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992C425CC49
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 23:32:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BjDMW2pKrzDr7P
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 07:24:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BjDXq4rBPzDr8H
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 07:32:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BjDKL3CQzzDqkf
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 07:22:14 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uhJId/G7; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4BjDKL035Xz8tjC
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 07:22:14 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4BjDKK6c4Rz9sTK; Fri,  4 Sep 2020 07:22:13 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::541;
- helo=mail-ed1-x541.google.com; envelope-from=chunkeey@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uhJId/G7; dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4BjDKK632Fz9sSP
- for <linuxppc-dev@ozlabs.org>; Fri,  4 Sep 2020 07:22:13 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id c10so4104232edk.6
- for <linuxppc-dev@ozlabs.org>; Thu, 03 Sep 2020 14:22:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-transfer-encoding:content-language;
- bh=vBV+kSnYK7stIvbafZ/3dbWe9aWGsvygRzHJWB0ieE8=;
- b=uhJId/G7YwMUYivWz2MZK3Va/d8mPsiMb0N+6zAkgrYfvNnwAwfineuyIElhIT9fm8
- UEnrMrc77YqYUN8f43yJh94SLJOIo8N6KKbqGvzUfwD2sTt4Ho6gFZ9hzoS2x/nyZBZ5
- RJO1Ejc9wTVAUFRxKN8m+ae/1PbnIeBdEOdF5dZH/xStNU2pcy/UIuPF+bdeqzWS1LWQ
- xuGm4EeelCyMZ6o8gthD4P2PAoeZ6VKlg1bMhpDZRcrUyphfx6fnAwuQMv9MfTw299df
- gYz0F0xAKOw/7DHVeED4oxoz2LANUPoea9m/wPdUXgzUk55aVxm4vVYiV/sTZMP2MX+m
- mt5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-transfer-encoding
- :content-language;
- bh=vBV+kSnYK7stIvbafZ/3dbWe9aWGsvygRzHJWB0ieE8=;
- b=In+IEZIyqHTUaDf+u8MRRdOTa0sZIptIG0m7SoVQvwCmwrlO5MQdskwkyZbGEpSGLb
- zVMkzt4JmYSqah8teg8EIbqHufVO9BC7GeEqVbLCP5wKnvaAeTuqHncGx2vi/Llc9j1H
- GlkXtNr7G3I+I1hY7DkK3IvaSB3evzhF5B5F3VRXWfdTzkkkprJKzRS3NafMBv+uV6jw
- dPv7mr8LAK0hUcexaxVBWzR7LfYiGw20MLFKMCHzrgh7jCp6lQIUbBGc5EQ3p0cgxqDb
- WM08wmsMKTKC9jgBLt3CSstSiHBAvy6HISbjq1BOa3QlCEBZ+wGazshjiiZ61IL4xYtC
- PHNg==
-X-Gm-Message-State: AOAM530ktXGmwi5Wa7U7BNo8VSLPON4j1pZEItdu3CReqQli8S2qADQS
- uY4ar9zX1Y/+u7E0u0rG6KY=
-X-Google-Smtp-Source: ABdhPJwHqLjDfnZhEB3lyW8q9fTU/0jaonIf9K1wnH01NxTQX8L6z74aTonkHYqT3BjZoQz25mzs9g==
-X-Received: by 2002:a50:9dc6:: with SMTP id l6mr5557421edk.136.1599168124276; 
- Thu, 03 Sep 2020 14:22:04 -0700 (PDT)
-Received: from debian64.daheim (p5b0d7509.dip0.t-ipconnect.de. [91.13.117.9])
- by smtp.gmail.com with ESMTPSA id
- l23sm4096769eje.46.2020.09.03.14.22.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Sep 2020 14:22:03 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
- by debian64.daheim with esmtp (Exim 4.94)
- (envelope-from <chunkeey@gmail.com>)
- id 1kDwfe-005t99-NH; Thu, 03 Sep 2020 23:21:26 +0200
-Subject: Re: [PATCH] powerpc/boot/dts: Fix dtc "pciex" warnings
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-References: <20200623130320.405852-1-mpe@ellerman.id.au>
-From: Christian Lamparter <chunkeey@gmail.com>
-Message-ID: <d2652e63-b136-a805-fd6d-00584b64c772@gmail.com>
-Date: Thu, 3 Sep 2020 23:21:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BjDVm25yMzDr6L
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 07:30:21 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-262-_4fCYuHMPVerwxIv1vLjVw-1; Thu, 03 Sep 2020 22:30:15 +0100
+X-MC-Unique: _4fCYuHMPVerwxIv1vLjVw-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 3 Sep 2020 22:30:14 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Thu, 3 Sep 2020 22:30:14 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christoph Hellwig' <hch@lst.de>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, "x86@kernel.org" <x86@kernel.org>
+Subject: RE: [PATCH 12/14] x86: remove address space overrides using set_fs()
+Thread-Topic: [PATCH 12/14] x86: remove address space overrides using set_fs()
+Thread-Index: AQHWggEOyEQXa7QqyE6TJTq6U2S8aalXbNZg
+Date: Thu, 3 Sep 2020 21:30:14 +0000
+Message-ID: <9ab40244a2164f7db2ff0c1d23ab59a0@AcuMS.aculab.com>
+References: <20200903142242.925828-1-hch@lst.de>
+ <20200903142242.925828-13-hch@lst.de>
+In-Reply-To: <20200903142242.925828-13-hch@lst.de>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <20200623130320.405852-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0.001
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -104,76 +67,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, Chris Blake <chrisrblake93@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Alexey Dobriyan <adobriyan@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-06-23 15:03, Michael Ellerman wrote:
-> With CONFIG_OF_ALL_DTBS=y, as set by eg. allmodconfig, we see lots of
-> warnings about our dts files, such as:
->
->    arch/powerpc/boot/dts/glacier.dts:492.26-532.5:
->    Warning (pci_bridge): /plb/pciex@d00000000: node name is not "pci"
->    or "pcie"
->
-> The node name should not particularly matter, it's just a name, and
-> AFAICS there's no kernel code that cares whether nodes are *named*
-> "pciex" or "pcie". So shutup these warnings by converting to the name
-> dtc wants.
->
-> As always there's some risk this could break something obscure that
-> does rely on the name, in which case we can revert.
+From: Christoph Hellwig
+> Sent: 03 September 2020 15:23
+>=20
+> Stop providing the possibility to override the address space using
+> set_fs() now that there is no need for that any more.  To properly
+> handle the TASK_SIZE_MAX checking for 4 vs 5-level page tables on
+> x86 a new alternative is introduced, which just like the one in
+> entry_64.S has to use the hardcoded virtual address bits to escape
+> the fact that TASK_SIZE_MAX isn't actually a constant when 5-level
+> page tables are enabled.
 
-Hmm, I noticed this when I was looking up why nobody commented
-on my series of adding more devices to the APM82181/bluestone series:
+Why does it matter whether 4 or 5 level page tables are in use?
+Surely all access_ok() needs to do is ensure that a valid kernel
+address isn't supplied.
+A non-canonical (is that the right term) address between the highest
+valid user address and the lowest valid kernel address (7ffe to fffe?)
+will fault anyway.
+So any limit between the valid user and kernel addresses should
+work?
+So a limit of 1<<63 would seem appropriate.
 
-<https://lore.kernel.org/linuxppc-dev/cover.1598124791.git.chunkeey@gmail.com/>
-(I'll post a v3 "soonish".)
+=09David
 
-
-Unfortunately yes. This patch will break uboot code in Meraki MX60(W) / MX60.
-
- > https://github.com/riptidewave93/meraki-uboot/blob/mx60w-20180413/board/amcc/bluestone/bluestone.c#L1178
-
-| if (!pci_available()) {
-|     fdt_find_and_setprop(blob, "/plb/pciex@d00000000", "status",
-|                   "disabled", sizeof("disabled"), 1);
-| }
-
-
-Backstory: There are two version of the Meraki MX60. The MX60
-and the MX60W. The difference is that the MX60W has a populated
-mini-pcie slot on the PCB for a >W<ireless card.
-
-That said, this is not earth shattering.
-
-(In theory, this can also cause problems for the bluestone and canyonlands
-dev boards that have the option to be configured as either dual sata or
-pcie+sata.... But this is probably not a problem for customer boards)
-
-OT: Please note that the plb, opb and ebc node paths (/plb/opb/ebc) are
-hardcoded too :(. Amending the proper unit-addresses will lead to no-longer
-working DTBs as the "ranges" are missing.
-
-Cheers,
-Christian
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->
-> diff --git a/arch/powerpc/boot/dts/bluestone.dts b/arch/powerpc/boot/dts/bluestone.dts
-> index cc965a1816b6..aa1ae94cd776 100644
-> --- a/arch/powerpc/boot/dts/bluestone.dts
-> +++ b/arch/powerpc/boot/dts/bluestone.dts
-> @@ -325,7 +325,7 @@ EMAC0: ethernet@ef600c00 {
->   			};
->   		};
->   
-> -		PCIE0: pciex@d00000000 {
-> +		PCIE0: pcie@d00000000 {
->   			device_type = "pci";
->   			#interrupt-cells = <1>;
->   			#size-cells = <2>;
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
