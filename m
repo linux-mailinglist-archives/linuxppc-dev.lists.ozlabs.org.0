@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F4625C34D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 16:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771EC25C385
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Sep 2020 16:53:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bj3bS6T61zDqpy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 00:48:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bj3hZ0Nh3zDr7g
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 00:53:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,35 +18,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=npobupm2; 
+ header.s=casper.20170209 header.b=popZrL8P; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bj31b4M8kzDr3j
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 00:22:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bj31c6cqVzDr3h
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 00:23:00 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=WnUT44U564BtTxR+CgxY1D0BXTu5a2MR+R2q2mWaxn8=; b=npobupm2FJ/ShjeQU9TdFnBhkM
- nPVNuPixcBkXw7gWQKCAmSY+n3xIY3Jrg7bEy2hQADLEiwj4hgfgufJEEOyrwvHXFGRF3nG9HKKYw
- Ecs708Q625fTF0Sp0UaDzkrCiGwe1LzKGi2UO3jMIFrmaPOD5ArD63EPQYApmj68a63R6WcB7SsJQ
- 5cXErqx6Mijk7YBgwUeqEZsxUv428r0sFr9s+XqIapqDQrum3Hoj+5Z/mD2V60gLriQpLz//TW+iJ
- pLhxJafohAeOwbHCpmOeyfDf5esfLuvbGfSASzk/uuFoWQdAbsswQsEWZltKYegGfyKF3/+RxJ7Aq
- yBS/n+Pw==;
+ bh=SQdHM2VLoZetKqW2OYcNprtrCZT26+7Z4k+2D4WNncE=; b=popZrL8PCblOIFRTKHvMUBBNSp
+ ZCEAoKC4hHQXQ8WsMz/WgnelztBwRBbSWbZHevz3hxSFXqeTedGT4SDDD1YgTbTaAEr6V5lGWQg8a
+ HVtyugUOZKnSjmEExUTr7SXbzDmaJEAJf56QWd/JMBsJ8BQ/4x79ZFtIBKRs+Jc/iPJZE5sgtOPlP
+ 7+72C+iGX0glUPQjpqNvi3+m4hRvm+yv1MfMaehTQ2M5ez45nq/6BBdv7UKe7SNOW4M0TgHFEHDPC
+ QvGRf6aLWoPga1Wv6BiYziRkJ/4mN9dwOlkDH0xH2f6RiGRbERDwBog/M7Goi1Bz2hSsBPejUnB3G
+ sE+Tog0Q==;
 Received: from [2001:4bb8:184:af1:c70:4a89:bc61:2] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kDq8X-0004aj-UW; Thu, 03 Sep 2020 14:22:50 +0000
+ id 1kDq8Z-0004az-6M; Thu, 03 Sep 2020 14:22:51 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
  Al Viro <viro@zeniv.linux.org.uk>, Michael Ellerman <mpe@ellerman.id.au>,
  x86@kernel.org
-Subject: [PATCH 05/14] fs: don't allow kernel reads and writes without iter ops
-Date: Thu,  3 Sep 2020 16:22:33 +0200
-Message-Id: <20200903142242.925828-6-hch@lst.de>
+Subject: [PATCH 06/14] fs: don't allow splice read/write without explicit ops
+Date: Thu,  3 Sep 2020 16:22:34 +0200
+Message-Id: <20200903142242.925828-7-hch@lst.de>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200903142242.925828-1-hch@lst.de>
 References: <20200903142242.925828-1-hch@lst.de>
@@ -73,123 +73,217 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Don't allow calling ->read or ->write with set_fs as a preparation for
-killing off set_fs.  All the instances that we use kernel_read/write on
-are using the iter ops already.
-
-If a file has both the regular ->read/->write methods and the iter
-variants those could have different semantics for messed up enough
-drivers.  Also fails the kernel access to them in that case.
+default_file_splice_write is the last piece of generic code that uses
+set_fs to make the uaccess routines operate on kernel pointers.  It
+implements a "fallback loop" for splicing from files that do not actually
+provide a proper splice_read method.  The usual file systems and other
+high bandwidth instances all provide a ->splice_read, so this just removes
+support for various device drivers and procfs/debugfs files.  If splice
+support for any of those turns out to be important it can be added back
+by switching them to the iter ops and using generic_file_splice_read.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Kees Cook <keescook@chromium.org>
 ---
- fs/read_write.c | 67 +++++++++++++++++++++++++++++++------------------
- 1 file changed, 42 insertions(+), 25 deletions(-)
+ fs/read_write.c    |   2 +-
+ fs/splice.c        | 130 +++++----------------------------------------
+ include/linux/fs.h |   2 -
+ 3 files changed, 15 insertions(+), 119 deletions(-)
 
 diff --git a/fs/read_write.c b/fs/read_write.c
-index 5db58b8c78d0dd..702c4301d9eb6b 100644
+index 702c4301d9eb6b..8c61f67453e3d3 100644
 --- a/fs/read_write.c
 +++ b/fs/read_write.c
-@@ -419,27 +419,41 @@ static ssize_t new_sync_read(struct file *filp, char __user *buf, size_t len, lo
- 	return ret;
+@@ -1077,7 +1077,7 @@ ssize_t vfs_iter_write(struct file *file, struct iov_iter *iter, loff_t *ppos,
  }
+ EXPORT_SYMBOL(vfs_iter_write);
+ 
+-ssize_t vfs_readv(struct file *file, const struct iovec __user *vec,
++static ssize_t vfs_readv(struct file *file, const struct iovec __user *vec,
+ 		  unsigned long vlen, loff_t *pos, rwf_t flags)
+ {
+ 	struct iovec iovstack[UIO_FASTIOV];
+diff --git a/fs/splice.c b/fs/splice.c
+index d7c8a7c4db07ff..412df7b48f9eb7 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -342,89 +342,6 @@ const struct pipe_buf_operations nosteal_pipe_buf_ops = {
+ };
+ EXPORT_SYMBOL(nosteal_pipe_buf_ops);
+ 
+-static ssize_t kernel_readv(struct file *file, const struct kvec *vec,
+-			    unsigned long vlen, loff_t offset)
+-{
+-	mm_segment_t old_fs;
+-	loff_t pos = offset;
+-	ssize_t res;
+-
+-	old_fs = get_fs();
+-	set_fs(KERNEL_DS);
+-	/* The cast to a user pointer is valid due to the set_fs() */
+-	res = vfs_readv(file, (const struct iovec __user *)vec, vlen, &pos, 0);
+-	set_fs(old_fs);
+-
+-	return res;
+-}
+-
+-static ssize_t default_file_splice_read(struct file *in, loff_t *ppos,
+-				 struct pipe_inode_info *pipe, size_t len,
+-				 unsigned int flags)
+-{
+-	struct kvec *vec, __vec[PIPE_DEF_BUFFERS];
+-	struct iov_iter to;
+-	struct page **pages;
+-	unsigned int nr_pages;
+-	unsigned int mask;
+-	size_t offset, base, copied = 0;
+-	ssize_t res;
+-	int i;
+-
+-	if (pipe_full(pipe->head, pipe->tail, pipe->max_usage))
+-		return -EAGAIN;
+-
+-	/*
+-	 * Try to keep page boundaries matching to source pagecache ones -
+-	 * it probably won't be much help, but...
+-	 */
+-	offset = *ppos & ~PAGE_MASK;
+-
+-	iov_iter_pipe(&to, READ, pipe, len + offset);
+-
+-	res = iov_iter_get_pages_alloc(&to, &pages, len + offset, &base);
+-	if (res <= 0)
+-		return -ENOMEM;
+-
+-	nr_pages = DIV_ROUND_UP(res + base, PAGE_SIZE);
+-
+-	vec = __vec;
+-	if (nr_pages > PIPE_DEF_BUFFERS) {
+-		vec = kmalloc_array(nr_pages, sizeof(struct kvec), GFP_KERNEL);
+-		if (unlikely(!vec)) {
+-			res = -ENOMEM;
+-			goto out;
+-		}
+-	}
+-
+-	mask = pipe->ring_size - 1;
+-	pipe->bufs[to.head & mask].offset = offset;
+-	pipe->bufs[to.head & mask].len -= offset;
+-
+-	for (i = 0; i < nr_pages; i++) {
+-		size_t this_len = min_t(size_t, len, PAGE_SIZE - offset);
+-		vec[i].iov_base = page_address(pages[i]) + offset;
+-		vec[i].iov_len = this_len;
+-		len -= this_len;
+-		offset = 0;
+-	}
+-
+-	res = kernel_readv(in, vec, nr_pages, *ppos);
+-	if (res > 0) {
+-		copied = res;
+-		*ppos += res;
+-	}
+-
+-	if (vec != __vec)
+-		kfree(vec);
+-out:
+-	for (i = 0; i < nr_pages; i++)
+-		put_page(pages[i]);
+-	kvfree(pages);
+-	iov_iter_advance(&to, copied);	/* truncates and discards */
+-	return res;
+-}
+-
+ /*
+  * Send 'sd->len' bytes to socket from 'sd->file' at position 'sd->pos'
+  * using sendpage(). Return the number of bytes sent.
+@@ -788,33 +705,6 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
+ 
+ EXPORT_SYMBOL(iter_file_splice_write);
+ 
+-static int write_pipe_buf(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+-			  struct splice_desc *sd)
+-{
+-	int ret;
+-	void *data;
+-	loff_t tmp = sd->pos;
+-
+-	data = kmap(buf->page);
+-	ret = __kernel_write(sd->u.file, data + buf->offset, sd->len, &tmp);
+-	kunmap(buf->page);
+-
+-	return ret;
+-}
+-
+-static ssize_t default_file_splice_write(struct pipe_inode_info *pipe,
+-					 struct file *out, loff_t *ppos,
+-					 size_t len, unsigned int flags)
+-{
+-	ssize_t ret;
+-
+-	ret = splice_from_pipe(pipe, out, ppos, len, flags, write_pipe_buf);
+-	if (ret > 0)
+-		*ppos += ret;
+-
+-	return ret;
+-}
+-
+ /**
+  * generic_splice_sendpage - splice data from a pipe to a socket
+  * @pipe:	pipe to splice from
+@@ -836,15 +726,23 @@ ssize_t generic_splice_sendpage(struct pipe_inode_info *pipe, struct file *out,
+ 
+ EXPORT_SYMBOL(generic_splice_sendpage);
  
 +static int warn_unsupported(struct file *file, const char *op)
 +{
-+	pr_warn_ratelimited(
-+		"kernel %s not supported for file %pD4 (pid: %d comm: %.20s)\n",
++	pr_debug_ratelimited(
++		"splice %s not supported for file %pD4 (pid: %d comm: %.20s)\n",
 +		op, file, current->pid, current->comm);
 +	return -EINVAL;
 +}
 +
- ssize_t __kernel_read(struct file *file, void *buf, size_t count, loff_t *pos)
+ /*
+  * Attempt to initiate a splice from pipe to file.
+  */
+ static long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
+ 			   loff_t *ppos, size_t len, unsigned int flags)
  {
--	mm_segment_t old_fs = get_fs();
-+	struct kvec iov = {
-+		.iov_base	= buf,
-+		.iov_len	= min_t(size_t, count, MAX_RW_COUNT),
-+	};
-+	struct kiocb kiocb;
-+	struct iov_iter iter;
- 	ssize_t ret;
+-	if (out->f_op->splice_write)
+-		return out->f_op->splice_write(pipe, out, ppos, len, flags);
+-	return default_file_splice_write(pipe, out, ppos, len, flags);
++	if (unlikely(!out->f_op->splice_write))
++		return warn_unsupported(out, "write");
++	return out->f_op->splice_write(pipe, out, ppos, len, flags);
+ }
  
- 	if (WARN_ON_ONCE(!(file->f_mode & FMODE_READ)))
- 		return -EINVAL;
- 	if (!(file->f_mode & FMODE_CAN_READ))
- 		return -EINVAL;
-+	/*
-+	 * Also fail if ->read_iter and ->read are both wired up as that
-+	 * implies very convoluted semantics.
-+	 */
-+	if (unlikely(!file->f_op->read_iter || file->f_op->read))
-+		return warn_unsupported(file, "read");
+ /*
+@@ -866,9 +764,9 @@ static long do_splice_to(struct file *in, loff_t *ppos,
+ 	if (unlikely(len > MAX_RW_COUNT))
+ 		len = MAX_RW_COUNT;
  
--	if (count > MAX_RW_COUNT)
--		count =  MAX_RW_COUNT;
--	set_fs(KERNEL_DS);
--	if (file->f_op->read)
--		ret = file->f_op->read(file, (void __user *)buf, count, pos);
--	else if (file->f_op->read_iter)
--		ret = new_sync_read(file, (void __user *)buf, count, pos);
--	else
--		ret = -EINVAL;
--	set_fs(old_fs);
-+	init_sync_kiocb(&kiocb, file);
-+	kiocb.ki_pos = *pos;
-+	iov_iter_kvec(&iter, READ, &iov, 1, iov.iov_len);
-+	ret = file->f_op->read_iter(&kiocb, &iter);
- 	if (ret > 0) {
-+		*pos = kiocb.ki_pos;
- 		fsnotify_access(file);
- 		add_rchar(current, ret);
- 	}
-@@ -510,28 +524,31 @@ static ssize_t new_sync_write(struct file *filp, const char __user *buf, size_t
- /* caller is responsible for file_start_write/file_end_write */
- ssize_t __kernel_write(struct file *file, const void *buf, size_t count, loff_t *pos)
- {
--	mm_segment_t old_fs;
--	const char __user *p;
-+	struct kvec iov = {
-+		.iov_base	= (void *)buf,
-+		.iov_len	= min_t(size_t, count, MAX_RW_COUNT),
-+	};
-+	struct kiocb kiocb;
-+	struct iov_iter iter;
- 	ssize_t ret;
+-	if (in->f_op->splice_read)
+-		return in->f_op->splice_read(in, ppos, pipe, len, flags);
+-	return default_file_splice_read(in, ppos, pipe, len, flags);
++	if (unlikely(!in->f_op->splice_read))
++		return warn_unsupported(in, "read");
++	return in->f_op->splice_read(in, ppos, pipe, len, flags);
+ }
  
- 	if (WARN_ON_ONCE(!(file->f_mode & FMODE_WRITE)))
- 		return -EBADF;
- 	if (!(file->f_mode & FMODE_CAN_WRITE))
- 		return -EINVAL;
-+	/*
-+	 * Also fail if ->write_iter and ->write are both wired up as that
-+	 * implies very convoluted semantics.
-+	 */
-+	if (unlikely(!file->f_op->write_iter || file->f_op->write))
-+		return warn_unsupported(file, "write");
+ /**
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 7519ae003a082c..839eeccf10174b 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1894,8 +1894,6 @@ ssize_t rw_copy_check_uvector(int type, const struct iovec __user * uvector,
  
--	old_fs = get_fs();
--	set_fs(KERNEL_DS);
--	p = (__force const char __user *)buf;
--	if (count > MAX_RW_COUNT)
--		count =  MAX_RW_COUNT;
--	if (file->f_op->write)
--		ret = file->f_op->write(file, p, count, pos);
--	else if (file->f_op->write_iter)
--		ret = new_sync_write(file, p, count, pos);
--	else
--		ret = -EINVAL;
--	set_fs(old_fs);
-+	init_sync_kiocb(&kiocb, file);
-+	kiocb.ki_pos = *pos;
-+	iov_iter_kvec(&iter, WRITE, &iov, 1, iov.iov_len);
-+	ret = file->f_op->write_iter(&kiocb, &iter);
- 	if (ret > 0) {
-+		*pos = kiocb.ki_pos;
- 		fsnotify_modify(file);
- 		add_wchar(current, ret);
- 	}
+ extern ssize_t vfs_read(struct file *, char __user *, size_t, loff_t *);
+ extern ssize_t vfs_write(struct file *, const char __user *, size_t, loff_t *);
+-extern ssize_t vfs_readv(struct file *, const struct iovec __user *,
+-		unsigned long, loff_t *, rwf_t);
+ extern ssize_t vfs_copy_file_range(struct file *, loff_t , struct file *,
+ 				   loff_t, size_t, unsigned int);
+ extern ssize_t generic_copy_file_range(struct file *file_in, loff_t pos_in,
 -- 
 2.28.0
 
