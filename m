@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC52425D035
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 06:06:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A3625D03A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 06:10:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BjPHR3w6YzDrCJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 14:06:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BjPMr124DzDrCC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 14:10:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,27 +16,27 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=arm.com
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BjPFN2BR6zDr24
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 14:04:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BjPLH6B9PzDqw2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 14:08:39 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 12BC6101E;
- Thu,  3 Sep 2020 21:04:21 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 28E6A101E;
+ Thu,  3 Sep 2020 21:08:38 -0700 (PDT)
 Received: from [10.163.70.23] (unknown [10.163.70.23])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B9653F71F;
- Thu,  3 Sep 2020 21:04:18 -0700 (PDT)
-Subject: Re: [PATCH v4 03/13] mm/debug_vm_pgtable/ppc64: Avoid setting top
- bits in radom value
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 498243F71F;
+ Thu,  3 Sep 2020 21:08:35 -0700 (PDT)
+Subject: Re: [PATCH v4 04/13] mm/debug_vm_pgtables/hugevmap: Use the arch
+ helper to identify huge vmap support.
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org
 References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
- <20200902114222.181353-4-aneesh.kumar@linux.ibm.com>
+ <20200902114222.181353-5-aneesh.kumar@linux.ibm.com>
 From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <74b87dca-1c8d-6458-8af6-392b87c0bfc6@arm.com>
-Date: Fri, 4 Sep 2020 09:33:47 +0530
+Message-ID: <10e4a2c4-48c3-8d7f-9294-0b64a89d37d9@arm.com>
+Date: Fri, 4 Sep 2020 09:38:04 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20200902114222.181353-4-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200902114222.181353-5-aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -59,39 +59,75 @@ Sender: "Linuxppc-dev"
 
 
 On 09/02/2020 05:12 PM, Aneesh Kumar K.V wrote:
-> ppc64 use bit 62 to indicate a pte entry (_PAGE_PTE). Avoid setting
-> that bit in random value.
+> ppc64 supports huge vmap only with radix translation. Hence use arch helper
+> to determine the huge vmap support.
 > 
 > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  mm/debug_vm_pgtable.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
+>  mm/debug_vm_pgtable.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
 > 
 > diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 086309fb9b6f..00649b47f6e0 100644
+> index 00649b47f6e0..4c73e63b4ceb 100644
 > --- a/mm/debug_vm_pgtable.c
 > +++ b/mm/debug_vm_pgtable.c
-> @@ -44,10 +44,17 @@
->   * entry type. But these bits might affect the ability to clear entries with
->   * pxx_clear() because of how dynamic page table folding works on s390. So
->   * while loading up the entries do not change the lower 4 bits. It does not
-> - * have affect any other platform.
-> + * have affect any other platform. Also avoid the 62nd bit on ppc64 that is
-> + * used to mark a pte entry.
->   */
-> -#define S390_MASK_BITS	4
-> -#define RANDOM_ORVALUE	GENMASK(BITS_PER_LONG - 1, S390_MASK_BITS)
-> +#define S390_SKIP_MASK		GENMASK(3, 0)
-> +#if __BITS_PER_LONG == 64
-> +#define PPC64_SKIP_MASK		GENMASK(62, 62)
-> +#else
-> +#define PPC64_SKIP_MASK		0x0
-> +#endif
-> +#define ARCH_SKIP_MASK (S390_SKIP_MASK | PPC64_SKIP_MASK)
-> +#define RANDOM_ORVALUE (GENMASK(BITS_PER_LONG - 1, 0) & ~ARCH_SKIP_MASK)
->  #define RANDOM_NZVALUE	GENMASK(7, 0)
+> @@ -28,6 +28,7 @@
+>  #include <linux/swapops.h>
+>  #include <linux/start_kernel.h>
+>  #include <linux/sched/mm.h>
+> +#include <linux/io.h>
+>  #include <asm/pgalloc.h>
+>  #include <asm/tlbflush.h>
 >  
->  static void __init pte_basic_tests(unsigned long pfn, pgprot_t prot)
+> @@ -206,11 +207,12 @@ static void __init pmd_leaf_tests(unsigned long pfn, pgprot_t prot)
+>  	WARN_ON(!pmd_leaf(pmd));
+>  }
+>  
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+>  static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+>  {
+>  	pmd_t pmd;
+>  
+> -	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+> +	if (!arch_ioremap_pmd_supported())
+>  		return;
+>  
+>  	pr_debug("Validating PMD huge\n");
+> @@ -224,6 +226,9 @@ static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+>  	pmd = READ_ONCE(*pmdp);
+>  	WARN_ON(!pmd_none(pmd));
+>  }
+> +#else /* CONFIG_HAVE_ARCH_HUGE_VMAP */
+> +static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot) { }
+> +#endif /* CONFIG_HAVE_ARCH_HUGE_VMAP */
+>  
+>  static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+>  {
+> @@ -320,11 +325,12 @@ static void __init pud_leaf_tests(unsigned long pfn, pgprot_t prot)
+>  	WARN_ON(!pud_leaf(pud));
+>  }
+>  
+> +#ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+>  static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
+>  {
+>  	pud_t pud;
+>  
+> -	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
+> +	if (!arch_ioremap_pud_supported())
+>  		return;
+>  
+>  	pr_debug("Validating PUD huge\n");
+> @@ -338,6 +344,10 @@ static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot)
+>  	pud = READ_ONCE(*pudp);
+>  	WARN_ON(!pud_none(pud));
+>  }
+> +#else /* !CONFIG_HAVE_ARCH_HUGE_VMAP */
+> +static void __init pud_huge_tests(pud_t *pudp, unsigned long pfn, pgprot_t prot) { }
+> +#endif /* !CONFIG_HAVE_ARCH_HUGE_VMAP */
+> +
+>  #else  /* !CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+>  static void __init pud_basic_tests(unsigned long pfn, pgprot_t prot) { }
+>  static void __init pud_advanced_tests(struct mm_struct *mm,
 > 
 
 Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
