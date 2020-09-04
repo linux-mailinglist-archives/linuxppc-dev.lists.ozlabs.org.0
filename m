@@ -1,35 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390C825E435
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 01:33:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAEB25E444
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 01:39:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BjvBB1XdhzDqq8
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 09:33:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BjvKR1tF7zDqbv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 09:39:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
- helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=telegraphics.com.au
-Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
- [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Bjv2G18KfzDqmh
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 09:26:29 +1000 (AEST)
-Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
- id 94D8E2ACD5; Fri,  4 Sep 2020 19:26:27 -0400 (EDT)
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Message-Id: <bb61650bea4f4c91fb8e24b9a6f130a1438651a7.1599260540.git.fthain@telegraphics.com.au>
-In-Reply-To: <cover.1599260540.git.fthain@telegraphics.com.au>
-References: <cover.1599260540.git.fthain@telegraphics.com.au>
-From: Finn Thain <fthain@telegraphics.com.au>
-Subject: [PATCH 2/5] powerpc/tau: Convert from timer to workqueue
-Date: Sat, 05 Sep 2020 09:02:20 +1000
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=C8ViL/s7; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bjv632CM5zDqmb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 09:29:46 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 084N21Hj163406; Fri, 4 Sep 2020 19:29:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=54a2dzktp+EaHtCMf6qtkuWphngdICkTER0HUdbympk=;
+ b=C8ViL/s7FNY8h8WhwaEB098tY71QdtO6ajR4dK8hOk9u5znLJdD2s/bzySznfSFLEVCh
+ VM29V81lqCr7ZDQBFMkI3ZDigjQ8ieI7AVC+9ddDkjklpWamCnwwKwVjv9t0uNPZFH0l
+ uhhlznvHKakKr8AgbmQNqm+rLqmnn/+pAkgAannk2FzPE10CWUbqvNq/T003WNJ5dZB2
+ oqRgY0l/RrRiSE4NO/jE6fMFbXNok8P9Zagclp2O+vLkINaePckAyds0MsoRUrU/WBrO
+ E9zVlpQZt0DyjCCoi55g9erVGMdFGB2yLhWPFt2VJVeQQBYM2ddrep+EQ5Ay2Vqmv9Lm nQ== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33bwga9x0r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Sep 2020 19:29:40 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 084NRaOt017407;
+ Fri, 4 Sep 2020 23:29:39 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 337enafmse-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Sep 2020 23:29:39 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 084NTcea57213326
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 4 Sep 2020 23:29:38 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B5C542805A;
+ Fri,  4 Sep 2020 23:29:38 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 426CE28059;
+ Fri,  4 Sep 2020 23:29:38 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.40.195.188])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri,  4 Sep 2020 23:29:38 +0000 (GMT)
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+To: james.bottomley@hansenpartnership.com
+Subject: [PATCH v3 1/2] scsi: ibmvfc: use compiler attribute defines instead
+ of __attribute__()
+Date: Fri,  4 Sep 2020 18:29:35 -0500
+Message-Id: <20200904232936.840193-1-tyreld@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-04_15:2020-09-04,
+ 2020-09-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 adultscore=0 spamscore=0 priorityscore=1501
+ malwarescore=0 clxscore=1015 phishscore=0 mlxlogscore=999 suspectscore=1
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009040191
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,150 +93,261 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, martin.petersen@oracle.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, brking@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 19dbdcb8039cf ("smp: Warn on function calls from softirq
-context") the Thermal Assist Unit driver causes a warning like the
-following when CONFIG_SMP is enabled.
+Update ibmvfc.h structs to use the preferred  __packed and __aligned()
+attribute macros defined in include/linux/compiler_attributes.h in place
+of __attribute__().
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 0 at kernel/smp.c:428 smp_call_function_many_cond+0xf4/0x38c
-Modules linked in:
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.7.0-pmac #3
-NIP:  c00b37a8 LR: c00b3abc CTR: c001218c
-REGS: c0799c60 TRAP: 0700   Not tainted  (5.7.0-pmac)
-MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 42000224  XER: 00000000
-
-GPR00: c00b3abc c0799d18 c076e300 c079ef5c c0011fec 00000000 00000000 00000000
-GPR08: 00000100 00000100 00008000 ffffffff 42000224 00000000 c079d040 c079d044
-GPR16: 00000001 00000000 00000004 c0799da0 c079f054 c07a0000 c07a0000 00000000
-GPR24: c0011fec 00000000 c079ef5c c079ef5c 00000000 00000000 00000000 00000000
-NIP [c00b37a8] smp_call_function_many_cond+0xf4/0x38c
-LR [c00b3abc] on_each_cpu+0x38/0x68
-Call Trace:
-[c0799d18] [ffffffff] 0xffffffff (unreliable)
-[c0799d68] [c00b3abc] on_each_cpu+0x38/0x68
-[c0799d88] [c0096704] call_timer_fn.isra.26+0x20/0x7c
-[c0799d98] [c0096b40] run_timer_softirq+0x1d4/0x3fc
-[c0799df8] [c05b4368] __do_softirq+0x118/0x240
-[c0799e58] [c0039c44] irq_exit+0xc4/0xcc
-[c0799e68] [c000ade8] timer_interrupt+0x1b0/0x230
-[c0799ea8] [c0013520] ret_from_except+0x0/0x14
---- interrupt: 901 at arch_cpu_idle+0x24/0x6c
-    LR = arch_cpu_idle+0x24/0x6c
-[c0799f70] [00000001] 0x1 (unreliable)
-[c0799f80] [c0060990] do_idle+0xd8/0x17c
-[c0799fa0] [c0060ba8] cpu_startup_entry+0x24/0x28
-[c0799fb0] [c072d220] start_kernel+0x434/0x44c
-[c0799ff0] [00003860] 0x3860
-Instruction dump:
-8129f204 2f890000 40beff98 3d20c07a 8929eec4 2f890000 40beff88 0fe00000
-81220000 552805de 550802ef 4182ff84 <0fe00000> 3860ffff 7f65db78 7f44d378
----[ end trace 34a886e47819c2eb ]---
-
-Don't call on_each_cpu() from a timer callback, call it from a worker
-thread instead.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
+Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
 ---
- arch/powerpc/kernel/tau_6xx.c | 38 +++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 20 deletions(-)
+ drivers/scsi/ibmvscsi/ibmvfc.h | 56 +++++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/arch/powerpc/kernel/tau_6xx.c b/arch/powerpc/kernel/tau_6xx.c
-index 976d5bc1b5176..268205cc347da 100644
---- a/arch/powerpc/kernel/tau_6xx.c
-+++ b/arch/powerpc/kernel/tau_6xx.c
-@@ -13,13 +13,14 @@
-  */
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
+index 907889f1fa9d..6da23666f5be 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.h
++++ b/drivers/scsi/ibmvscsi/ibmvfc.h
+@@ -133,16 +133,16 @@ struct ibmvfc_mad_common {
+ 	__be16 status;
+ 	__be16 length;
+ 	__be64 tag;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
- #include <linux/errno.h>
--#include <linux/jiffies.h>
- #include <linux/kernel.h>
- #include <linux/param.h>
- #include <linux/string.h>
- #include <linux/mm.h>
- #include <linux/interrupt.h>
- #include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/workqueue.h>
+ struct ibmvfc_npiv_login_mad {
+ 	struct ibmvfc_mad_common common;
+ 	struct srp_direct_buf buffer;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
- #include <asm/io.h>
- #include <asm/reg.h>
-@@ -39,8 +40,6 @@ static struct tau_temp
- 	unsigned char grew;
- } tau[NR_CPUS];
+ struct ibmvfc_npiv_logout_mad {
+ 	struct ibmvfc_mad_common common;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
--struct timer_list tau_timer;
--
- #undef DEBUG
+ #define IBMVFC_MAX_NAME 256
  
- /* TODO: put these in a /proc interface, with some sanity checks, and maybe
-@@ -50,7 +49,7 @@ struct timer_list tau_timer;
- #define step_size		2	/* step size when temp goes out of range */
- #define window_expand		1	/* expand the window by this much */
- /* configurable values for shrinking the window */
--#define shrink_timer	2*HZ	/* period between shrinking the window */
-+#define shrink_timer	2000	/* period between shrinking the window */
- #define min_window	2	/* minimum window size, degrees C */
+@@ -168,7 +168,7 @@ struct ibmvfc_npiv_login {
+ 	u8 device_name[IBMVFC_MAX_NAME];
+ 	u8 drc_name[IBMVFC_MAX_NAME];
+ 	__be64 reserved2[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
- static void set_thresholds(unsigned long cpu)
-@@ -187,14 +186,18 @@ static void tau_timeout(void * info)
- 	local_irq_restore(flags);
- }
+ struct ibmvfc_common_svc_parms {
+ 	__be16 fcph_version;
+@@ -177,7 +177,7 @@ struct ibmvfc_common_svc_parms {
+ 	__be16 bb_rcv_sz; /* upper nibble is BB_SC_N */
+ 	__be32 ratov;
+ 	__be32 edtov;
+-}__attribute__((packed, aligned (4)));
++} __packed __aligned(4);
  
--static void tau_timeout_smp(struct timer_list *unused)
--{
-+static struct workqueue_struct *tau_workq;
+ struct ibmvfc_service_parms {
+ 	struct ibmvfc_common_svc_parms common;
+@@ -192,7 +192,7 @@ struct ibmvfc_service_parms {
+ 	__be32 ext_len;
+ 	__be32 reserved[30];
+ 	__be32 clk_sync_qos[2];
+-}__attribute__((packed, aligned (4)));
++} __packed __aligned(4);
  
--	/* schedule ourselves to be run again */
--	mod_timer(&tau_timer, jiffies + shrink_timer) ;
-+static void tau_work_func(struct work_struct *work)
-+{
-+	msleep(shrink_timer);
- 	on_each_cpu(tau_timeout, NULL, 0);
-+	/* schedule ourselves to be run again */
-+	queue_work(tau_workq, work);
- }
+ struct ibmvfc_npiv_login_resp {
+ 	__be32 version;
+@@ -217,12 +217,12 @@ struct ibmvfc_npiv_login_resp {
+ 	u8 drc_name[IBMVFC_MAX_NAME];
+ 	struct ibmvfc_service_parms service_parms;
+ 	__be64 reserved2;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
-+DECLARE_WORK(tau_work, tau_work_func);
-+
- /*
-  * setup the TAU
-  *
-@@ -227,21 +230,16 @@ static int __init TAU_init(void)
- 		return 1;
- 	}
+ union ibmvfc_npiv_login_data {
+ 	struct ibmvfc_npiv_login login;
+ 	struct ibmvfc_npiv_login_resp resp;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
--
--	/* first, set up the window shrinking timer */
--	timer_setup(&tau_timer, tau_timeout_smp, 0);
--	tau_timer.expires = jiffies + shrink_timer;
--	add_timer(&tau_timer);
-+	tau_workq = alloc_workqueue("tau", WQ_UNBOUND, 1, 0);
-+	if (!tau_workq)
-+		return -ENOMEM;
+ struct ibmvfc_discover_targets_buf {
+ 	__be32 scsi_id[1];
+@@ -239,7 +239,7 @@ struct ibmvfc_discover_targets {
+ 	__be32 num_avail;
+ 	__be32 num_written;
+ 	__be64 reserved[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
- 	on_each_cpu(TAU_init_smp, NULL, 0);
+ enum ibmvfc_fc_reason {
+ 	IBMVFC_INVALID_ELS_CMD_CODE	= 0x01,
+@@ -283,7 +283,7 @@ struct ibmvfc_port_login {
+ 	struct ibmvfc_service_parms service_parms;
+ 	struct ibmvfc_service_parms service_parms_change;
+ 	__be64 reserved3[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
  
--	printk("Thermal assist unit ");
--#ifdef CONFIG_TAU_INT
--	printk("using interrupts, ");
--#else
--	printk("using timers, ");
--#endif
--	printk("shrink_timer: %d jiffies\n", shrink_timer);
-+	queue_work(tau_workq, &tau_work);
-+
-+	pr_info("Thermal assist unit using %s, shrink_timer: %d ms\n",
-+		IS_ENABLED(CONFIG_TAU_INT) ? "interrupts" : "workqueue", shrink_timer);
- 	tau_initialized = 1;
+ struct ibmvfc_prli_svc_parms {
+ 	u8 type;
+@@ -303,7 +303,7 @@ struct ibmvfc_prli_svc_parms {
+ #define IBMVFC_PRLI_TARGET_FUNC			0x00000010
+ #define IBMVFC_PRLI_READ_FCP_XFER_RDY_DISABLED	0x00000002
+ #define IBMVFC_PRLI_WR_FCP_XFER_RDY_DISABLED	0x00000001
+-}__attribute__((packed, aligned (4)));
++} __packed __aligned(4);
  
- 	return 0;
+ struct ibmvfc_process_login {
+ 	struct ibmvfc_mad_common common;
+@@ -314,7 +314,7 @@ struct ibmvfc_process_login {
+ 	__be16 error;			/* also fc_reason */
+ 	__be32 reserved2;
+ 	__be64 reserved3[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_query_tgt {
+ 	struct ibmvfc_mad_common common;
+@@ -325,13 +325,13 @@ struct ibmvfc_query_tgt {
+ 	__be16 fc_explain;
+ 	__be16 fc_type;
+ 	__be64 reserved[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_implicit_logout {
+ 	struct ibmvfc_mad_common common;
+ 	__be64 old_scsi_id;
+ 	__be64 reserved[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_tmf {
+ 	struct ibmvfc_mad_common common;
+@@ -348,7 +348,7 @@ struct ibmvfc_tmf {
+ 	__be32 my_cancel_key;
+ 	__be32 pad;
+ 	__be64 reserved[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ enum ibmvfc_fcp_rsp_info_codes {
+ 	RSP_NO_FAILURE		= 0x00,
+@@ -361,7 +361,7 @@ struct ibmvfc_fcp_rsp_info {
+ 	u8 reserved[3];
+ 	u8 rsp_code;
+ 	u8 reserved2[4];
+-}__attribute__((packed, aligned (2)));
++} __packed __aligned(2);
+ 
+ enum ibmvfc_fcp_rsp_flags {
+ 	FCP_BIDI_RSP			= 0x80,
+@@ -377,7 +377,7 @@ enum ibmvfc_fcp_rsp_flags {
+ union ibmvfc_fcp_rsp_data {
+ 	struct ibmvfc_fcp_rsp_info info;
+ 	u8 sense[SCSI_SENSE_BUFFERSIZE + sizeof(struct ibmvfc_fcp_rsp_info)];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_fcp_rsp {
+ 	__be64 reserved;
+@@ -388,7 +388,7 @@ struct ibmvfc_fcp_rsp {
+ 	__be32 fcp_sense_len;
+ 	__be32 fcp_rsp_len;
+ 	union ibmvfc_fcp_rsp_data data;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ enum ibmvfc_cmd_flags {
+ 	IBMVFC_SCATTERLIST	= 0x0001,
+@@ -422,7 +422,7 @@ struct ibmvfc_fcp_cmd_iu {
+ #define IBMVFC_WRDATA		0x01
+ 	u8 cdb[IBMVFC_MAX_CDB_LEN];
+ 	__be32 xfer_len;
+-}__attribute__((packed, aligned (4)));
++} __packed __aligned(4);
+ 
+ struct ibmvfc_cmd {
+ 	__be64 task_tag;
+@@ -446,7 +446,7 @@ struct ibmvfc_cmd {
+ 	__be64 reserved3[2];
+ 	struct ibmvfc_fcp_cmd_iu iu;
+ 	struct ibmvfc_fcp_rsp rsp;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_passthru_fc_iu {
+ 	__be32 payload[7];
+@@ -473,18 +473,18 @@ struct ibmvfc_passthru_iu {
+ 	__be64 scsi_id;
+ 	__be64 tag;
+ 	__be64 reserved2[2];
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_passthru_mad {
+ 	struct ibmvfc_mad_common common;
+ 	struct srp_direct_buf cmd_ioba;
+ 	struct ibmvfc_passthru_iu iu;
+ 	struct ibmvfc_passthru_fc_iu fc_iu;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_trace_start_entry {
+ 	u32 xfer_len;
+-}__attribute__((packed));
++} __packed;
+ 
+ struct ibmvfc_trace_end_entry {
+ 	u16 status;
+@@ -493,7 +493,7 @@ struct ibmvfc_trace_end_entry {
+ 	u8 rsp_code;
+ 	u8 scsi_status;
+ 	u8 reserved;
+-}__attribute__((packed));
++} __packed;
+ 
+ struct ibmvfc_trace_entry {
+ 	struct ibmvfc_event *evt;
+@@ -510,7 +510,7 @@ struct ibmvfc_trace_entry {
+ 		struct ibmvfc_trace_start_entry start;
+ 		struct ibmvfc_trace_end_entry end;
+ 	} u;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ enum ibmvfc_crq_formats {
+ 	IBMVFC_CMD_FORMAT		= 0x01,
+@@ -545,7 +545,7 @@ struct ibmvfc_crq {
+ 	volatile u8 format;
+ 	u8 reserved[6];
+ 	volatile __be64 ioba;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_crq_queue {
+ 	struct ibmvfc_crq *msgs;
+@@ -570,7 +570,7 @@ struct ibmvfc_async_crq {
+ 	volatile __be64 wwpn;
+ 	volatile __be64 node_name;
+ 	__be64 reserved;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ struct ibmvfc_async_crq_queue {
+ 	struct ibmvfc_async_crq *msgs;
+@@ -590,7 +590,7 @@ union ibmvfc_iu {
+ 	struct ibmvfc_tmf tmf;
+ 	struct ibmvfc_cmd cmd;
+ 	struct ibmvfc_passthru_mad passthru;
+-}__attribute__((packed, aligned (8)));
++} __packed __aligned(8);
+ 
+ enum ibmvfc_target_action {
+ 	IBMVFC_TGT_ACTION_NONE = 0,
 -- 
-2.26.2
+2.27.0
 
