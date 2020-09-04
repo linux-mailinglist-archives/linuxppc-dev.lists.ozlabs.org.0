@@ -2,66 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B0D25E690
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 10:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FC425E692
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 10:42:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bk7LL4xHdzDqpf
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 18:41:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bk7N95y6BzDqsq
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 18:42:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::432;
- helo=mail-wr1-x432.google.com; envelope-from=hkallweit1@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=YSI+ZBRC; dkim-atps=neutral
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com
- [IPv6:2a00:1450:4864:20::432])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=X2/XgrWs; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BjkzG1VpxzDqpM
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 03:23:20 +1000 (AEST)
-Received: by mail-wr1-x432.google.com with SMTP id k15so7451254wrn.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Sep 2020 10:23:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=E8FqCt6t38dImRby4iUwfizmSh/d4KR9tnYbKg3B/eQ=;
- b=YSI+ZBRCs/5Nvq8g5P85uNlZ+Qjvymf0Z8KPoBQev9L+hoIp/gIyFp47CoP/ZU0GvA
- QYqx41dk9zz/luwPsOkcA1VBBK5q2nslMBJQvTP42vbRLOi6ePbK/umrncp1iPRpDVz0
- LGXRwXdJetqXllgb68v5tE+2zOGWusfwjUwCCdoHQME1k6k2mGe5PzDS6m0MS+G2CxxP
- 13PX7HV3tg8KghDnKOa97xNbTCfiDnzWF91xNUPrZQlIR+XOHiWiYf7Gn3NM+GP8s6Wg
- 63zWRAE1L7e7louDXaGb3oc2Ew26tKEbrC7WkpDsPBrUYryK7dY3Xu1ooXnU7kMVrw/g
- +pow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=E8FqCt6t38dImRby4iUwfizmSh/d4KR9tnYbKg3B/eQ=;
- b=KRU6JDMt1MJqnmfoT1vL77DD1Cfe5dxHdQivS2ftTi90iNI5wQR24o56EUHQ2CEy2s
- 2VlXEF4xlBq7gQgqiND6qCeiSd/LWkAsUVNmPo2dkY3UhJFh2UL3pwgKf27sF5SPzVdE
- k/hAP+2gKymIcSYdLpIx9fp/tOMgByisoTg1Nw5jj075U52GApBfqLpU85jlBIGCC/VN
- 2ZyXmXcsl/Z1Um3aA0/PpG551Sx0K6v3wDVVzSjjVI1sapa74tTU+3IY1EArhdYWmjeX
- /V9X9dJnT7ITB1BC6RC017SozxO1DKo1iPXUWX3L58ZlbMr5Dld2CL9og9NEJchFelsm
- dqHQ==
-X-Gm-Message-State: AOAM531aN3IU08FsTzCBRUwF8+EHdZI1DYbMM91wweRXFUBB6YoIOpI1
- HH3sXQuSkH04WqlmHNGgWDXLR1dvDqVmHHqh7/Y=
-X-Google-Smtp-Source: ABdhPJzZbm/lXPnbc0DhAMosvgWOhh1osZwTonHob0iZla64Gha6jca4b7y6JtA5gIY5gVM+BELGvWmeJvBwqLmh+Ic=
-X-Received: by 2002:adf:e74d:: with SMTP id c13mr8246340wrn.45.1599240196353; 
- Fri, 04 Sep 2020 10:23:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bjlfl5WrpzDqpM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 03:54:07 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 084Hnsb4052673; Fri, 4 Sep 2020 13:53:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=yUwiUsR+8pfCd8/Oe3nJOgCQnOxguf1sT1Io3v31IJI=;
+ b=X2/XgrWsAIL9UepV8yC8rmfRQCostHAfJWqAgQ2YKvbl2k5130EJSY6mRo+3Qi9+TsA1
+ pu9bBzajqg0j/nORa5Mu7IlgbM5cmJfSGAGCSmRMZHdKYEsVnQPZGRkkykexxYGM3i5y
+ PuprY2NbTQVuP4Mx2Chb3iB0owf38SJFVClXhaNVMi0bj2j7Hm0JJkQNJOLVDOJyN9dg
+ vdYjIPk6yz0ZpBO5a010NXWKtgI369URywPCoHRwmYsl2cCu0G4vtnmVEViAldqT4jM/
+ 3xCzf+vnqKmRiZg+Nzd36O0+FYntPcXkjKJmiuJGWzgnsFTmi/eXIs1uRr/xGBEtXufP Gg== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33btay82hx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Sep 2020 13:53:53 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 084HgfTB014554;
+ Fri, 4 Sep 2020 17:53:51 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03fra.de.ibm.com with ESMTP id 33act59ds3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Sep 2020 17:53:51 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 084HrmGj51249538
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 4 Sep 2020 17:53:48 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 64D2452050;
+ Fri,  4 Sep 2020 17:53:48 +0000 (GMT)
+Received: from thinkpad (unknown [9.171.24.200])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id EB5535204F;
+ Fri,  4 Sep 2020 17:53:47 +0000 (GMT)
+Date: Fri, 4 Sep 2020 19:53:46 +0200
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH v4 00/13] mm/debug_vm_pgtable fixes
+Message-ID: <20200904195346.6d57ff9f@thinkpad>
+In-Reply-To: <20200904180115.07ee5f00@thinkpad>
+References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
+ <bb0f3427-e2bd-f713-3ea8-d264be0e690b@arm.com>
+ <20200904172647.002113d3@thinkpad>
+ <20200904180115.07ee5f00@thinkpad>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <1598940515.6e06nwgi0c.astroid@bobo.none>
- <6054f0ec-d994-105b-6399-6cdb65ddd1b6@alliedtelesis.co.nz>
-In-Reply-To: <6054f0ec-d994-105b-6399-6cdb65ddd1b6@alliedtelesis.co.nz>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Date: Fri, 4 Sep 2020 19:23:05 +0200
-Message-ID: <CAFSsGVvRMQoEoBN1hpao_4uM1yF2wwuKPbMkAcwFWyE1X8HDbQ@mail.gmail.com>
-Subject: Re: fsl_espi errors on v5.7.15
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Content-Type: multipart/alternative; boundary="000000000000d0723905ae801f03"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-04_11:2020-09-04,
+ 2020-09-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ bulkscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0 suspectscore=0
+ clxscore=1015 phishscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009040147
 X-Mailman-Approved-At: Sat, 05 Sep 2020 18:36:43 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,674 +98,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "paulus@samba.org" <paulus@samba.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ Vineet Gupta <vgupta@synopsys.com>, akpm@linux-foundation.org,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv <linux-riscv@lists.infradead.org>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000d0723905ae801f03
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, 4 Sep 2020 18:01:15 +0200
+Gerald Schaefer <gerald.schaefer@linux.ibm.com> wrote:
 
-On Fri 4. Sep 2020 at 01:58, Chris Packham <
-Chris.Packham@alliedtelesis.co.nz> wrote:
+> On Fri, 4 Sep 2020 17:26:47 +0200
+> Gerald Schaefer <gerald.schaefer@linux.ibm.com> wrote:
+> 
+> > On Fri, 4 Sep 2020 12:18:05 +0530
+> > Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> > 
+> > > 
+> > > 
+> > > On 09/02/2020 05:12 PM, Aneesh Kumar K.V wrote:
+> > > > This patch series includes fixes for debug_vm_pgtable test code so that
+> > > > they follow page table updates rules correctly. The first two patches introduce
+> > > > changes w.r.t ppc64. The patches are included in this series for completeness. We can
+> > > > merge them via ppc64 tree if required.
+> > > > 
+> > > > Hugetlb test is disabled on ppc64 because that needs larger change to satisfy
+> > > > page table update rules.
+> > > > 
+> > > > These tests are broken w.r.t page table update rules and results in kernel
+> > > > crash as below. 
+> > > > 
+> > > > [   21.083519] kernel BUG at arch/powerpc/mm/pgtable.c:304!
+> > > > cpu 0x0: Vector: 700 (Program Check) at [c000000c6d1e76c0]
+> > > >     pc: c00000000009a5ec: assert_pte_locked+0x14c/0x380
+> > > >     lr: c0000000005eeeec: pte_update+0x11c/0x190
+> > > >     sp: c000000c6d1e7950
+> > > >    msr: 8000000002029033
+> > > >   current = 0xc000000c6d172c80
+> > > >   paca    = 0xc000000003ba0000   irqmask: 0x03   irq_happened: 0x01
+> > > >     pid   = 1, comm = swapper/0
+> > > > kernel BUG at arch/powerpc/mm/pgtable.c:304!
+> > > > [link register   ] c0000000005eeeec pte_update+0x11c/0x190
+> > > > [c000000c6d1e7950] 0000000000000001 (unreliable)
+> > > > [c000000c6d1e79b0] c0000000005eee14 pte_update+0x44/0x190
+> > > > [c000000c6d1e7a10] c000000001a2ca9c pte_advanced_tests+0x160/0x3d8
+> > > > [c000000c6d1e7ab0] c000000001a2d4fc debug_vm_pgtable+0x7e8/0x1338
+> > > > [c000000c6d1e7ba0] c0000000000116ec do_one_initcall+0xac/0x5f0
+> > > > [c000000c6d1e7c80] c0000000019e4fac kernel_init_freeable+0x4dc/0x5a4
+> > > > [c000000c6d1e7db0] c000000000012474 kernel_init+0x24/0x160
+> > > > [c000000c6d1e7e20] c00000000000cbd0 ret_from_kernel_thread+0x5c/0x6c
+> > > > 
+> > > > With DEBUG_VM disabled
+> > > > 
+> > > > [   20.530152] BUG: Kernel NULL pointer dereference on read at 0x00000000
+> > > > [   20.530183] Faulting instruction address: 0xc0000000000df330
+> > > > cpu 0x33: Vector: 380 (Data SLB Access) at [c000000c6d19f700]
+> > > >     pc: c0000000000df330: memset+0x68/0x104
+> > > >     lr: c00000000009f6d8: hash__pmdp_huge_get_and_clear+0xe8/0x1b0
+> > > >     sp: c000000c6d19f990
+> > > >    msr: 8000000002009033
+> > > >    dar: 0
+> > > >   current = 0xc000000c6d177480
+> > > >   paca    = 0xc00000001ec4f400   irqmask: 0x03   irq_happened: 0x01
+> > > >     pid   = 1, comm = swapper/0
+> > > > [link register   ] c00000000009f6d8 hash__pmdp_huge_get_and_clear+0xe8/0x1b0
+> > > > [c000000c6d19f990] c00000000009f748 hash__pmdp_huge_get_and_clear+0x158/0x1b0 (unreliable)
+> > > > [c000000c6d19fa10] c0000000019ebf30 pmd_advanced_tests+0x1f0/0x378
+> > > > [c000000c6d19fab0] c0000000019ed088 debug_vm_pgtable+0x79c/0x1244
+> > > > [c000000c6d19fba0] c0000000000116ec do_one_initcall+0xac/0x5f0
+> > > > [c000000c6d19fc80] c0000000019a4fac kernel_init_freeable+0x4dc/0x5a4
+> > > > [c000000c6d19fdb0] c000000000012474 kernel_init+0x24/0x160
+> > > > [c000000c6d19fe20] c00000000000cbd0 ret_from_kernel_thread+0x5c/0x6c
+> > > > 
+> > > > Changes from v3:
+> > > > * Address review feedback
+> > > > * Move page table depost and withdraw patch after adding pmdlock to avoid bisect failure.
+> > > 
+> > > This version
+> > > 
+> > > - Builds on x86, arm64, s390, arc, powerpc and riscv (defconfig with DEBUG_VM_PGTABLE)
+> > > - Runs on arm64 and x86 without any regression, atleast nothing that I have noticed
+> > > - Will be great if this could get tested on s390, arc, riscv, ppc32 platforms as well
+> > 
+> > When I quickly tested v3, it worked fine, but now it turned out to
+> > only work fine "sometimes", both v3 and v4. I need to look into it
+> > further, but so far it seems related to the hugetlb_advanced_tests().
+> > 
+> > I guess there was already some discussion on this test, but we did
+> > not receive all of the thread(s). Please always add at least
+> > linux-s390@vger.kernel.org and maybe myself and Vasily Gorbik <gor@linux.ibm.com>
+> > for further discussions.
+> 
+> BTW, with myself I mean the new address gerald.schaefer@linux.ibm.com.
+> The old gerald.schaefer@de.ibm.com seems to work (again), but is not
+> very reliable.
+> 
+> BTW2, a quick test with this change (so far) made the issues on s390
+> go away:
+> 
+> @@ -1069,7 +1074,7 @@ static int __init debug_vm_pgtable(void)
+>         spin_unlock(ptl);
+> 
+>  #ifndef CONFIG_PPC_BOOK3S_64
+> -       hugetlb_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
+> +       hugetlb_advanced_tests(mm, vma, (pte_t *) pmdp, pmd_aligned, vaddr, prot);
+>  #endif
+> 
+>         spin_lock(&mm->page_table_lock);
+> 
+> That would more match the "pte_t pointer" usage for hugetlb code,
+> i.e. just cast a pmd_t pointer to it. Also changed to pmd_aligned,
+> but I think the root cause is the pte_t pointer.
+> 
+> Not entirely sure though if that would really be the correct fix.
+> I somehow lost whatever little track I had about what these tests
+> really want to check, and if that would still be valid with that
+> change.
 
->
->
-> On 1/09/20 6:14 pm, Nicholas Piggin wrote:
->
-> > Excerpts from Chris Packham's message of September 1, 2020 11:25 am:
->
-> >> On 1/09/20 12:33 am, Heiner Kallweit wrote:
->
-> >>> On 30.08.2020 23:59, Chris Packham wrote:
->
-> >>>> On 31/08/20 9:41 am, Heiner Kallweit wrote:
->
-> >>>>> On 30.08.2020 23:00, Chris Packham wrote:
->
-> >>>>>> On 31/08/20 12:30 am, Nicholas Piggin wrote:
->
-> >>>>>>> Excerpts from Chris Packham's message of August 28, 2020 8:07 am:
->
-> >>>>>> <snip>
->
-> >>>>>>
->
-> >>>>>>>>>>>> I've also now seen the RX FIFO not empty error on the T2080R=
-DB
->
-> >>>>>>>>>>>>
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set=
-!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set=
-!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set=
-!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set=
-!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren'=
-t
-> empty!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32
->
-> >>>>>>>>>>>>
->
-> >>>>>>>>>>>> With my current workaround of emptying the RX FIFO. It seems
->
-> >>>>>>>>>>>> survivable. Interestingly it only ever seems to be 1 extra
-> byte in the
->
-> >>>>>>>>>>>> RX FIFO and it seems to be after either a READ_SR or a
-> READ_FSR.
->
-> >>>>>>>>>>>>
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: tx 70
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: rx 03
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Extra RX 00
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set=
-!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren'=
-t
-> empty!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: tx 05
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: rx 00
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Extra RX 03
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set=
-!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren'=
-t
-> empty!
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: tx 05
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: rx 00
->
-> >>>>>>>>>>>> fsl_espi ffe110000.spi: Extra RX 03
->
-> >>>>>>>>>>>>
->
-> >>>>>>>>>>>>      From all the Micron SPI-NOR datasheets I've got access
-> to it is
->
-> >>>>>>>>>>>> possible to continually read the SR/FSR. But I've no idea wh=
-y
-> it
->
-> >>>>>>>>>>>> happens some times and not others.
->
-> >>>>>>>>>>> So I think I've got a reproduction and I think I've bisected
-> the problem
->
-> >>>>>>>>>>> to commit 3282a3da25bd ("powerpc/64: Implement soft interrupt
-> replay in
->
-> >>>>>>>>>>> C"). My day is just finishing now so I haven't applied too
-> much scrutiny
->
-> >>>>>>>>>>> to this result. Given the various rabbit holes I've been down
-> on this
->
-> >>>>>>>>>>> issue already I'd take this information with a good degree of
-> skepticism.
->
-> >>>>>>>>>>>
->
-> >>>>>>>>>> OK, so an easy test should be to re-test with a 5.4 kernel.
->
-> >>>>>>>>>> It doesn't have yet the change you're referring to, and the
-> fsl-espi driver
->
-> >>>>>>>>>> is basically the same as in 5.7 (just two small changes in 5.7=
-).
->
-> >>>>>>>>> There's 6cc0c16d82f88 and maybe also other interrupt related
-> patches
->
-> >>>>>>>>> around this time that could affect book E, so it's good if that
-> exact
->
-> >>>>>>>>> patch is confirmed.
->
-> >>>>>>>> My confirmation is basically that I can induce the issue in a 5.=
-4
-> kernel
->
-> >>>>>>>> by cherry-picking 3282a3da25bd. I'm also able to "fix" the issue
-> in
->
-> >>>>>>>> 5.9-rc2 by reverting that one commit.
->
-> >>>>>>>>
->
-> >>>>>>>> I both cases it's not exactly a clean cherry-pick/revert so I al=
-so
->
-> >>>>>>>> confirmed the bisection result by building at 3282a3da25bd (whic=
-h
-> sees
->
-> >>>>>>>> the issue) and the commit just before (which does not).
->
-> >>>>>>> Thanks for testing, that confirms it well.
->
-> >>>>>>>
->
-> >>>>>>> [snip patch]
->
-> >>>>>>>
->
-> >>>>>>>> I still saw the issue with this change applied.
-> PPC_IRQ_SOFT_MASK_DEBUG
->
-> >>>>>>>> didn't report anything (either with or without the change above)=
-.
->
-> >>>>>>> Okay, it was a bit of a shot in the dark. I still can't see what
->
-> >>>>>>> else has changed.
->
-> >>>>>>>
->
-> >>>>>>> What would cause this, a lost interrupt? A spurious interrupt? Or
->
-> >>>>>>> higher interrupt latency?
->
-> >>>>>>>
->
-> >>>>>>> I don't think the patch should cause significantly worse latency,
->
-> >>>>>>> (it's supposed to be a bit better if anything because it doesn't
-> set
->
-> >>>>>>> up the full interrupt frame). But it's possible.
->
-> >>>>>> My working theory is that the SPI_DON indication is all about the =
-TX
->
-> >>>>>> direction an now that the interrupts are faster we're hitting an
-> error
->
-> >>>>>> because there is still RX activity going on. Heiner disagrees with
-> my
->
-> >>>>>> interpretation of the SPI_DON indication and the fact that it
-> doesn't
->
-> >>>>>> happen every time does throw doubt on it.
->
-> >>>>>>
->
-> >>>>> It's right that the eSPI spec can be interpreted that SPI_DON refer=
-s
-> to
->
-> >>>>> TX only. However this wouldn't really make sense, because also for =
-RX
->
-> >>>>> we program the frame length, and therefore want to be notified once
-> the
->
-> >>>>> full frame was received. Also practical experience shows that SPI_D=
-ON
->
-> >>>>> is set also after RX-only transfers.
->
-> >>>>> Typical SPI NOR use case is that you write read command + start
-> address,
->
-> >>>>> followed by a longer read. If the TX-only interpretation would be
-> right,
->
-> >>>>> we'd always end up with SPI_DON not being set.
->
-> >>>>>
->
-> >>>>>> I can't really explain the extra RX byte in the fifo. We know how
-> many
->
-> >>>>>> bytes to expect and we pull that many from the fifo so it's not as
-> if
->
-> >>>>>> we're missing an interrupt causing us to skip the last byte. I've
-> been
->
-> >>>>>> looking for some kind of off-by-one calculation but again if it we=
-re
->
-> >>>>>> something like that it'd happen all the time.
->
-> >>>>>>
->
-> >>>>> Maybe it helps to know what value this extra byte in the FIFO has.
-> Is it:
->
-> >>>>> - a duplicate of the last read byte
->
-> >>>>> - or the next byte (at <end address> + 1)
->
-> >>>>> - or a fixed value, e.g. always 0x00 or 0xff
->
-> >>>> The values were up thread a bit but I'll repeat them here
->
-> >>>>
->
-> >>>> fsl_espi ffe110000.spi: tx 70
->
-> >>>> fsl_espi ffe110000.spi: rx 03
->
-> >>>> fsl_espi ffe110000.spi: Extra RX 00
->
-> >>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
->
-> >>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
->
-> >>>> fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32
->
-> >>>> fsl_espi ffe110000.spi: tx 05
->
-> >>>> fsl_espi ffe110000.spi: rx 00
->
-> >>>> fsl_espi ffe110000.spi: Extra RX 03
->
-> >>>> fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn't set!
->
-> >>>> fsl_espi ffe110000.spi: Transfer done but rx/tx fifo's aren't empty!
->
-> >>>> fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32
->
-> >>>> fsl_espi ffe110000.spi: tx 05
->
-> >>>> fsl_espi ffe110000.spi: rx 00
->
-> >>>> fsl_espi ffe110000.spi: Extra RX 03
->
-> >>>>
->
-> >>>>
->
-> >>>> The rx 00 Extra RX 03 is a bit concerning. I've only ever seen them
-> with
->
-> >>>> either a READ_SR or a READ_FSR. Never a data read.
->
-> >>>>
->
-> >>> Just remembered something about SPIE_DON:
->
-> >>> Transfers are always full duplex, therefore in case of a read the chi=
-p
->
-> >>> sends dummy zero's. Having said that in case of a read SPIE_DON means
->
-> >>> that the last dummy zero was shifted out.
->
-> >>>
->
-> >>> READ_SR and READ_FSR are the shortest transfers, 1 byte out and 1 byt=
-e
-> in.
->
-> >>> So the issue may have a dependency on the length of the transfer.
->
-> >>> However I see no good explanation so far. You can try adding a delay =
-of
->
-> >>> a few miroseconds between the following to commands in fsl_espi_bufs(=
-).
->
-> >>>
->
-> >>>     fsl_espi_write_reg(espi, ESPI_SPIM, mask);
->
-> >>>
->
-> >>>     /* Prevent filling the fifo from getting interrupted */
->
-> >>>     spin_lock_irq(&espi->lock);
->
-> >>>
->
-> >>> Maybe enabling interrupts and seeing the SPIE_DON interrupt are too
-> close.
->
-> >> I think this might be heading in the right direction. Playing about wi=
-th
->
-> >> a delay does seem to make the two symptoms less likely. Although I hav=
-e
->
-> >> to set it quite high (i.e. msleep(100)) to completely avoid any
->
-> >> possibility of seeing either message.
->
-> > The patch might replay the interrupt a little bit faster, but it would
->
-> > be a few microseconds at most I think (just from improved code).
->
-> >
->
-> > Would you be able to ftrace the interrupt handler function and see if y=
-ou
->
-> > can see a difference in number or timing of interrupts? I'm at a bit of
->
-> > a loss.
->
->
->
-> I tried ftrace but I really wasn't sure what I was looking for.
->
-> Capturing a "bad" case was pretty tricky. But I think I've identified a
->
-> fix (I'll send it as a proper patch shortly). The gist is
->
->
->
-> diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
->
-> index 7e7c92cafdbb..cb120b68c0e2 100644
->
-> --- a/drivers/spi/spi-fsl-espi.c
->
-> +++ b/drivers/spi/spi-fsl-espi.c
->
-> @@ -574,13 +574,14 @@ static void fsl_espi_cpu_irq(struct fsl_espi
->
-> *espi, u32 events)
->
->   static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
->
->   {
->
->          struct fsl_espi *espi =3D context_data;
->
-> -       u32 events;
->
-> +       u32 events, mask;
->
->
->
->          spin_lock(&espi->lock);
->
->
->
->          /* Get interrupt events(tx/rx) */
->
->          events =3D fsl_espi_read_reg(espi, ESPI_SPIE);
->
-> -       if (!events) {
->
-> +       mask =3D fsl_espi_read_reg(espi, ESPI_SPIM);
->
-> +       if (!(events & mask)) {
->
->                  spin_unlock(&espi->lock);
->
->                  return IRQ_NONE;
->
->          }
->
->
->
-> The SPIE register contains the TXCNT so events is pretty much always
->
-> going to have something set. By checking events against what we've
->
-> actually requested interrupts for we don't see any spurious events.
->
->
-Usually we shouldn=E2=80=99t receive interrupts we=E2=80=99re not intereste=
-d in, except the
-interrupt is shared. This leads to the question: is the SPI interrupt
-shared with another device on your system? Do you see spurious interrupts
-with the patch under /proc/irq/(irq)/spurious?
+Another potential issue, apparently not for s390, but maybe for
+others, is that the vaddr passed to hugetlb_advanced_tests() is
+also not pmd/pud size aligned, like you did in pmd/pud_advanced_tests().
 
+I guess for the hugetlb_advanced_tests() you need to choose if
+you want to test pmd or pud hugepages, and accordingly prepare
+the *ptep, pfn and vaddr input. If you only check for CONFIG_HUGETLB_PAGE,
+then probably only pmd hugepages would be safe, there might be
+architectures only supporting one hugepage size.
 
->
-> I've tested this on the T2080RDB and on our custom hardware and it seems
->
-> to resolve the problem.
->
->
->
->
+So, for s390, at least the ptep input value is a problem. Still
+need to better understand how it goes wrong, but it seems to be
+fixed when using proper pmdp, and also works with pudp.
 
---000000000000d0723905ae801f03
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+For others, especially the apparent issues on ppc64, the other
+non-hugepage aligned input pfn and vaddr might also be an issue,
+e.g. power at least seems to use the vaddr in its set_huge_pte_at()
+implementation for some pmd_off(mm, addr) calculation.
 
-<div><br></div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
-=3D"gmail_attr">On Fri 4. Sep 2020 at 01:58, Chris Packham &lt;<a href=3D"m=
-ailto:Chris.Packham@alliedtelesis.co.nz">Chris.Packham@alliedtelesis.co.nz<=
-/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
- 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><br><br>On 1/09/20 6=
-:14 pm, Nicholas Piggin wrote:<br><br>&gt; Excerpts from Chris Packham&#39;=
-s message of September 1, 2020 11:25 am:<br><br>&gt;&gt; On 1/09/20 12:33 a=
-m, Heiner Kallweit wrote:<br><br>&gt;&gt;&gt; On 30.08.2020 23:59, Chris Pa=
-ckham wrote:<br><br>&gt;&gt;&gt;&gt; On 31/08/20 9:41 am, Heiner Kallweit w=
-rote:<br><br>&gt;&gt;&gt;&gt;&gt; On 30.08.2020 23:00, Chris Packham wrote:=
-<br><br>&gt;&gt;&gt;&gt;&gt;&gt; On 31/08/20 12:30 am, Nicholas Piggin wrot=
-e:<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; Excerpts from Chris Packham&#39;s me=
-ssage of August 28, 2020 8:07 am:<br><br>&gt;&gt;&gt;&gt;&gt;&gt; &lt;snip&=
-gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;=
-&gt;&gt;&gt;&gt; I&#39;ve also now seen the RX FIFO not empty error on the =
-T2080RDB<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt=
-;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: Trans=
-fer done but SPIE_DON isn&#39;t set!<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt=
-;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: Transfer done but SPIE_DON isn&#3=
-9;t set!<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi f=
-fe110000.spi: Transfer done but SPIE_DON isn&#39;t set!<br><br>&gt;&gt;&gt;=
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: Transfer done =
-but SPIE_DON isn&#39;t set!<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;=
-&gt;&gt; fsl_espi ffe110000.spi: Transfer done but rx/tx fifo&#39;s aren&#3=
-9;t empty!<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi=
- ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32<br><br>&gt;&gt;&gt;&gt;=
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt=
-;&gt;&gt;&gt; With my current workaround of emptying the RX FIFO. It seems<=
-br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; survivable. Interes=
-tingly it only ever seems to be 1 extra byte in the<br><br>&gt;&gt;&gt;&gt;=
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; RX FIFO and it seems to be after either a =
-READ_SR or a READ_FSR.<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&=
-gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110=
-000.spi: tx 70<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_=
-espi ffe110000.spi: rx 03<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&g=
-t;&gt; fsl_espi ffe110000.spi: Extra RX 00<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&=
-gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: Transfer done but SPIE_DON =
-isn&#39;t set!<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_=
-espi ffe110000.spi: Transfer done but rx/tx fifo&#39;s aren&#39;t empty!<br=
-><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.sp=
-i: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&=
-gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: tx 05<br><br>&gt;&gt;&gt;&gt;&g=
-t;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: rx 00<br><br>&gt;&gt=
-;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: Extra RX =
-03<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe1100=
-00.spi: Transfer done but SPIE_DON isn&#39;t set!<br><br>&gt;&gt;&gt;&gt;&g=
-t;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: Transfer done but rx=
-/tx fifo&#39;s aren&#39;t empty!<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt=
-;&gt;&gt;&gt; fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =3D 32<b=
-r><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi ffe110000.s=
-pi: tx 05<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; fsl_espi =
-ffe110000.spi: rx 00<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt=
-; fsl_espi ffe110000.spi: Extra RX 03<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&g=
-t;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;=
-=C2=A0 =C2=A0 =C2=A0 From all the Micron SPI-NOR datasheets I&#39;ve got ac=
-cess to it is<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; possi=
-ble to continually read the SR/FSR. But I&#39;ve no idea why it<br><br>&gt;=
-&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; happens some times and not oth=
-ers.<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; So I think I&#39;v=
-e got a reproduction and I think I&#39;ve bisected the problem<br><br>&gt;&=
-gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; to commit 3282a3da25bd (&quot;power=
-pc/64: Implement soft interrupt replay in<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&g=
-t;&gt;&gt;&gt;&gt; C&quot;). My day is just finishing now so I haven&#39;t =
-applied too much scrutiny<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&g=
-t; to this result. Given the various rabbit holes I&#39;ve been down on thi=
-s<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; issue already I&#39;d=
- take this information with a good degree of skepticism.<br><br>&gt;&gt;&gt=
-;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&g=
-t;&gt; OK, so an easy test should be to re-test with a 5.4 kernel.<br><br>&=
-gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; It doesn&#39;t have yet the change =
-you&#39;re referring to, and the fsl-espi driver<br><br>&gt;&gt;&gt;&gt;&gt=
-;&gt;&gt;&gt;&gt;&gt; is basically the same as in 5.7 (just two small chang=
-es in 5.7).<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; There&#39;s 6cc0c16=
-d82f88 and maybe also other interrupt related patches<br><br>&gt;&gt;&gt;&g=
-t;&gt;&gt;&gt;&gt;&gt; around this time that could affect book E, so it&#39=
-;s good if that exact<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; patch is =
-confirmed.<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; My confirmation is basic=
-ally that I can induce the issue in a 5.4 kernel<br><br>&gt;&gt;&gt;&gt;&gt=
-;&gt;&gt;&gt; by cherry-picking 3282a3da25bd. I&#39;m also able to &quot;fi=
-x&quot; the issue in<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; 5.9-rc2 by rev=
-erting that one commit.<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;=
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; I both cases it&#39;s not exactly a clean cher=
-ry-pick/revert so I also<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; confirmed =
-the bisection result by building at 3282a3da25bd (which sees<br><br>&gt;&gt=
-;&gt;&gt;&gt;&gt;&gt;&gt; the issue) and the commit just before (which does=
- not).<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; Thanks for testing, that confirm=
-s it well.<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt;&=
-gt;&gt; [snip patch]<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt=
-;&gt;&gt;&gt;&gt;&gt; I still saw the issue with this change applied. PPC_I=
-RQ_SOFT_MASK_DEBUG<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; didn&#39;t repor=
-t anything (either with or without the change above).<br><br>&gt;&gt;&gt;&g=
-t;&gt;&gt;&gt; Okay, it was a bit of a shot in the dark. I still can&#39;t =
-see what<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; else has changed.<br><br>&gt;&=
-gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; What would caus=
-e this, a lost interrupt? A spurious interrupt? Or<br><br>&gt;&gt;&gt;&gt;&=
-gt;&gt;&gt; higher interrupt latency?<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<b=
-r><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; I don&#39;t think the patch should cause=
- significantly worse latency,<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt; (it&#39;s=
- supposed to be a bit better if anything because it doesn&#39;t set<br><br>=
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; up the full interrupt frame). But it&#39;s pos=
-sible.<br><br>&gt;&gt;&gt;&gt;&gt;&gt; My working theory is that the SPI_DO=
-N indication is all about the TX<br><br>&gt;&gt;&gt;&gt;&gt;&gt; direction =
-an now that the interrupts are faster we&#39;re hitting an error<br><br>&gt=
-;&gt;&gt;&gt;&gt;&gt; because there is still RX activity going on. Heiner d=
-isagrees with my<br><br>&gt;&gt;&gt;&gt;&gt;&gt; interpretation of the SPI_=
-DON indication and the fact that it doesn&#39;t<br><br>&gt;&gt;&gt;&gt;&gt;=
-&gt; happen every time does throw doubt on it.<br><br>&gt;&gt;&gt;&gt;&gt;&=
-gt;<br><br>&gt;&gt;&gt;&gt;&gt; It&#39;s right that the eSPI spec can be in=
-terpreted that SPI_DON refers to<br><br>&gt;&gt;&gt;&gt;&gt; TX only. Howev=
-er this wouldn&#39;t really make sense, because also for RX<br><br>&gt;&gt;=
-&gt;&gt;&gt; we program the frame length, and therefore want to be notified=
- once the<br><br>&gt;&gt;&gt;&gt;&gt; full frame was received. Also practic=
-al experience shows that SPI_DON<br><br>&gt;&gt;&gt;&gt;&gt; is set also af=
-ter RX-only transfers.<br><br>&gt;&gt;&gt;&gt;&gt; Typical SPI NOR use case=
- is that you write read command + start address,<br><br>&gt;&gt;&gt;&gt;&gt=
-; followed by a longer read. If the TX-only interpretation would be right,<=
-br><br>&gt;&gt;&gt;&gt;&gt; we&#39;d always end up with SPI_DON not being s=
-et.<br><br>&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt;&gt; I can&#39;t=
- really explain the extra RX byte in the fifo. We know how many<br><br>&gt;=
-&gt;&gt;&gt;&gt;&gt; bytes to expect and we pull that many from the fifo so=
- it&#39;s not as if<br><br>&gt;&gt;&gt;&gt;&gt;&gt; we&#39;re missing an in=
-terrupt causing us to skip the last byte. I&#39;ve been<br><br>&gt;&gt;&gt;=
-&gt;&gt;&gt; looking for some kind of off-by-one calculation but again if i=
-t were<br><br>&gt;&gt;&gt;&gt;&gt;&gt; something like that it&#39;d happen =
-all the time.<br><br>&gt;&gt;&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;&gt; M=
-aybe it helps to know what value this extra byte in the FIFO has. Is it:<br=
-><br>&gt;&gt;&gt;&gt;&gt; - a duplicate of the last read byte<br><br>&gt;&g=
-t;&gt;&gt;&gt; - or the next byte (at &lt;end address&gt; + 1)<br><br>&gt;&=
-gt;&gt;&gt;&gt; - or a fixed value, e.g. always 0x00 or 0xff<br><br>&gt;&gt=
-;&gt;&gt; The values were up thread a bit but I&#39;ll repeat them here<br>=
-<br>&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: tx 70<=
-br><br>&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: rx 03<br><br>&gt;&gt;&gt;&g=
-t; fsl_espi ffe110000.spi: Extra RX 00<br><br>&gt;&gt;&gt;&gt; fsl_espi ffe=
-110000.spi: Transfer done but SPIE_DON isn&#39;t set!<br><br>&gt;&gt;&gt;&g=
-t; fsl_espi ffe110000.spi: Transfer done but rx/tx fifo&#39;s aren&#39;t em=
-pty!<br><br>&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE=
-_TXCNT =3D 32<br><br>&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: tx 05<br><br>=
-&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: rx 00<br><br>&gt;&gt;&gt;&gt; fsl_=
-espi ffe110000.spi: Extra RX 03<br><br>&gt;&gt;&gt;&gt; fsl_espi ffe110000.=
-spi: Transfer done but SPIE_DON isn&#39;t set!<br><br>&gt;&gt;&gt;&gt; fsl_=
-espi ffe110000.spi: Transfer done but rx/tx fifo&#39;s aren&#39;t empty!<br=
-><br>&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: SPIE_RXCNT =3D 1, SPIE_TXCNT =
-=3D 32<br><br>&gt;&gt;&gt;&gt; fsl_espi ffe110000.spi: tx 05<br><br>&gt;&gt=
-;&gt;&gt; fsl_espi ffe110000.spi: rx 00<br><br>&gt;&gt;&gt;&gt; fsl_espi ff=
-e110000.spi: Extra RX 03<br><br>&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt;&gt;<br=
-><br>&gt;&gt;&gt;&gt; The rx 00 Extra RX 03 is a bit concerning. I&#39;ve o=
-nly ever seen them with<br><br>&gt;&gt;&gt;&gt; either a READ_SR or a READ_=
-FSR. Never a data read.<br><br>&gt;&gt;&gt;&gt;<br><br>&gt;&gt;&gt; Just re=
-membered something about SPIE_DON:<br><br>&gt;&gt;&gt; Transfers are always=
- full duplex, therefore in case of a read the chip<br><br>&gt;&gt;&gt; send=
-s dummy zero&#39;s. Having said that in case of a read SPIE_DON means<br><b=
-r>&gt;&gt;&gt; that the last dummy zero was shifted out.<br><br>&gt;&gt;&gt=
-;<br><br>&gt;&gt;&gt; READ_SR and READ_FSR are the shortest transfers, 1 by=
-te out and 1 byte in.<br><br>&gt;&gt;&gt; So the issue may have a dependenc=
-y on the length of the transfer.<br><br>&gt;&gt;&gt; However I see no good =
-explanation so far. You can try adding a delay of<br><br>&gt;&gt;&gt; a few=
- miroseconds between the following to commands in fsl_espi_bufs().<br><br>&=
-gt;&gt;&gt;<br><br>&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=A0fsl_espi_write_reg(espi,=
- ESPI_SPIM, mask);<br><br>&gt;&gt;&gt;<br><br>&gt;&gt;&gt;=C2=A0 =C2=A0 =C2=
-=A0/* Prevent filling the fifo from getting interrupted */<br><br>&gt;&gt;&=
-gt;=C2=A0 =C2=A0 =C2=A0spin_lock_irq(&amp;espi-&gt;lock);<br><br>&gt;&gt;&g=
-t;<br><br>&gt;&gt;&gt; Maybe enabling interrupts and seeing the SPIE_DON in=
-terrupt are too close.<br><br>&gt;&gt; I think this might be heading in the=
- right direction. Playing about with<br><br>&gt;&gt; a delay does seem to m=
-ake the two symptoms less likely. Although I have<br><br>&gt;&gt; to set it=
- quite high (i.e. msleep(100)) to completely avoid any<br><br>&gt;&gt; poss=
-ibility of seeing either message.<br><br>&gt; The patch might replay the in=
-terrupt a little bit faster, but it would<br><br>&gt; be a few microseconds=
- at most I think (just from improved code).<br><br>&gt;<br><br>&gt; Would y=
-ou be able to ftrace the interrupt handler function and see if you<br><br>&=
-gt; can see a difference in number or timing of interrupts? I&#39;m at a bi=
-t of<br><br>&gt; a loss.<br><br><br><br>I tried ftrace but I really wasn&#3=
-9;t sure what I was looking for. <br><br>Capturing a &quot;bad&quot; case w=
-as pretty tricky. But I think I&#39;ve identified a <br><br>fix (I&#39;ll s=
-end it as a proper patch shortly). The gist is<br><br><br><br>diff --git a/=
-drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c<br><br>index 7e7c92=
-cafdbb..cb120b68c0e2 100644<br><br>--- a/drivers/spi/spi-fsl-espi.c<br><br>=
-+++ b/drivers/spi/spi-fsl-espi.c<br><br>@@ -574,13 +574,14 @@ static void f=
-sl_espi_cpu_irq(struct fsl_espi <br><br>*espi, u32 events)<br><br>=C2=A0=C2=
-=A0static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)<br><br>=C2=
-=A0=C2=A0{<br><br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct f=
-sl_espi *espi =3D context_data;<br><br>-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 u32 events;<br><br>+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u32 events, ma=
-sk;<br><br><br><br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_lo=
-ck(&amp;espi-&gt;lock);<br><br><br><br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 /* Get interrupt events(tx/rx) */<br><br>=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 events =3D fsl_espi_read_reg(espi, ESPI_SPIE);<=
-br><br>-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!events) {<br><br>+=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mask =3D fsl_espi_read_reg(espi, ESPI_SPIM);=
-<br><br>+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!(events &amp; mask)) {<b=
-r><br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_unlock(&amp;espi-&gt;lock);<br><br>=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return IRQ_NONE;<br><br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 }<br><br><br><br>The SPIE register contains the TXCNT so ev=
-ents is pretty much always <br><br>going to have something set. By checking=
- events against what we&#39;ve <br><br>actually requested interrupts for we=
- don&#39;t see any spurious events.<br><br></blockquote><div dir=3D"auto"><=
-br></div><div dir=3D"auto">Usually we shouldn=E2=80=99t receive interrupts =
-we=E2=80=99re not interested in, except the interrupt is shared. This leads=
- to the question: is the SPI interrupt shared with another device on your s=
-ystem? Do you see spurious interrupts with the patch under /proc/irq/(irq)/=
-spurious?</div><div dir=3D"auto"><br></div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><=
-br><br>I&#39;ve tested this on the T2080RDB and on our custom hardware and =
-it seems <br><br>to resolve the problem.<br><br><br><br></blockquote></div>=
-</div>
-
---000000000000d0723905ae801f03--
+Again, sorry if this was already discussed, I missed most of it
+and honestly didn't properly look at the scarce mails that we did
+receive...
