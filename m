@@ -2,39 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0400825D0A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 06:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB5725D0D8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 07:23:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BjQ6k0YRQzDr4M
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 14:43:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BjR0r49h4zDrJ1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 15:23:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
- helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BjQ4c2sGYzDrDZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 14:41:52 +1000 (AEST)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1kE3Xe-00AAXp-Va; Fri, 04 Sep 2020 04:41:39 +0000
-Date: Fri, 4 Sep 2020 05:41:38 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 12/14] x86: remove address space overrides using set_fs()
-Message-ID: <20200904044138.GP1236603@ZenIV.linux.org.uk>
-References: <20200903142242.925828-1-hch@lst.de>
- <20200903142242.925828-13-hch@lst.de>
- <20200904025510.GO1236603@ZenIV.linux.org.uk>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BjQzF2XYLzDqkd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 15:22:14 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F0F4101E;
+ Thu,  3 Sep 2020 22:22:11 -0700 (PDT)
+Received: from [10.163.70.23] (unknown [10.163.70.23])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 928713F71F;
+ Thu,  3 Sep 2020 22:22:09 -0700 (PDT)
+Subject: Re: [PATCH v4 06/13] mm/debug_vm_pgtable/THP: Mark the pte entry huge
+ before using set_pmd/pud_at
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
+ <20200902114222.181353-7-aneesh.kumar@linux.ibm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <62a7c8e8-f063-879a-2676-0d6ce59f8c6e@arm.com>
+Date: Fri, 4 Sep 2020 10:51:37 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200904025510.GO1236603@ZenIV.linux.org.uk>
+In-Reply-To: <20200902114222.181353-7-aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,72 +51,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Kees Cook <keescook@chromium.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- linux-fsdevel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- Alexey Dobriyan <adobriyan@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 04, 2020 at 03:55:10AM +0100, Al Viro wrote:
-> On Thu, Sep 03, 2020 at 04:22:40PM +0200, Christoph Hellwig wrote:
-> 
-> > diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
-> > index c8a85b512796e1..94f7be4971ed04 100644
-> > --- a/arch/x86/lib/getuser.S
-> > +++ b/arch/x86/lib/getuser.S
-> > @@ -35,10 +35,19 @@
-> >  #include <asm/smap.h>
-> >  #include <asm/export.h>
-> >  
-> > +#ifdef CONFIG_X86_5LEVEL
-> > +#define LOAD_TASK_SIZE_MINUS_N(n) \
-> > +	ALTERNATIVE "mov $((1 << 47) - 4096 - (n)),%rdx", \
-> > +		    "mov $((1 << 56) - 4096 - (n)),%rdx", X86_FEATURE_LA57
-> > +#else
-> > +#define LOAD_TASK_SIZE_MINUS_N(n) \
-> > +	mov $(TASK_SIZE_MAX - (n)),%_ASM_DX
-> > +#endif
-> 
-> Wait a sec... how is that supposed to build with X86_5LEVEL?  Do you mean
-> 
-> #define LOAD_TASK_SIZE_MINUS_N(n) \
-> 	ALTERNATIVE __stringify(mov $((1 << 47) - 4096 - (n)),%rdx), \
-> 		    __stringify(mov $((1 << 56) - 4096 - (n)),%rdx), X86_FEATURE_LA57
-> 
-> there?
 
-Pushed out with the following folded in.
 
-diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
-index 94f7be4971ed..2f052bc96866 100644
---- a/arch/x86/lib/getuser.S
-+++ b/arch/x86/lib/getuser.S
-@@ -37,8 +37,8 @@
- 
- #ifdef CONFIG_X86_5LEVEL
- #define LOAD_TASK_SIZE_MINUS_N(n) \
--	ALTERNATIVE "mov $((1 << 47) - 4096 - (n)),%rdx", \
--		    "mov $((1 << 56) - 4096 - (n)),%rdx", X86_FEATURE_LA57
-+	ALTERNATIVE __stringify(mov $((1 << 47) - 4096 - (n)),%rdx), \
-+		    __stringify(mov $((1 << 56) - 4096 - (n)),%rdx), X86_FEATURE_LA57
- #else
- #define LOAD_TASK_SIZE_MINUS_N(n) \
- 	mov $(TASK_SIZE_MAX - (n)),%_ASM_DX
-diff --git a/arch/x86/lib/putuser.S b/arch/x86/lib/putuser.S
-index 445374885153..358239d77dff 100644
---- a/arch/x86/lib/putuser.S
-+++ b/arch/x86/lib/putuser.S
-@@ -33,8 +33,8 @@
- 
- #ifdef CONFIG_X86_5LEVEL
- #define LOAD_TASK_SIZE_MINUS_N(n) \
--	ALTERNATIVE "mov $((1 << 47) - 4096 - (n)),%rbx", \
--		    "mov $((1 << 56) - 4096 - (n)),%rbx", X86_FEATURE_LA57
-+	ALTERNATIVE __stringify(mov $((1 << 47) - 4096 - (n)),%rbx), \
-+		    __stringify(mov $((1 << 56) - 4096 - (n)),%rbx), X86_FEATURE_LA57
- #else
- #define LOAD_TASK_SIZE_MINUS_N(n) \
- 	mov $(TASK_SIZE_MAX - (n)),%_ASM_BX
+On 09/02/2020 05:12 PM, Aneesh Kumar K.V wrote:
+> kernel expects entries to be marked huge before we use
+> set_pmd_at()/set_pud_at().
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  mm/debug_vm_pgtable.c | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 8704901f6bd8..9cafed39c236 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -155,7 +155,7 @@ static void __init pmd_advanced_tests(struct mm_struct *mm,
+>  				      unsigned long pfn, unsigned long vaddr,
+>  				      pgprot_t prot)
+>  {
+> -	pmd_t pmd = pfn_pmd(pfn, prot);
+> +	pmd_t pmd;
+>  
+>  	if (!has_transparent_hugepage())
+>  		return;
+> @@ -164,19 +164,19 @@ static void __init pmd_advanced_tests(struct mm_struct *mm,
+>  	/* Align the address wrt HPAGE_PMD_SIZE */
+>  	vaddr = (vaddr & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE;
+>  
+> -	pmd = pfn_pmd(pfn, prot);
+> +	pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
+>  	set_pmd_at(mm, vaddr, pmdp, pmd);
+>  	pmdp_set_wrprotect(mm, vaddr, pmdp);
+>  	pmd = READ_ONCE(*pmdp);
+>  	WARN_ON(pmd_write(pmd));
+>  
+> -	pmd = pfn_pmd(pfn, prot);
+> +	pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
+>  	set_pmd_at(mm, vaddr, pmdp, pmd);
+>  	pmdp_huge_get_and_clear(mm, vaddr, pmdp);
+>  	pmd = READ_ONCE(*pmdp);
+>  	WARN_ON(!pmd_none(pmd));
+>  
+> -	pmd = pfn_pmd(pfn, prot);
+> +	pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
+>  	pmd = pmd_wrprotect(pmd);
+>  	pmd = pmd_mkclean(pmd);
+>  	set_pmd_at(mm, vaddr, pmdp, pmd);
+> @@ -236,7 +236,7 @@ static void __init pmd_huge_tests(pmd_t *pmdp, unsigned long pfn, pgprot_t prot)
+>  
+>  static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+>  {
+> -	pmd_t pmd = pfn_pmd(pfn, prot);
+> +	pmd_t pmd = pmd_mkhuge(pfn_pmd(pfn, prot));
+>  
+>  	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
+>  		return;
+> @@ -276,7 +276,7 @@ static void __init pud_advanced_tests(struct mm_struct *mm,
+>  				      unsigned long pfn, unsigned long vaddr,
+>  				      pgprot_t prot)
+>  {
+> -	pud_t pud = pfn_pud(pfn, prot);
+> +	pud_t pud;
+>  
+>  	if (!has_transparent_hugepage())
+>  		return;
+> @@ -285,25 +285,27 @@ static void __init pud_advanced_tests(struct mm_struct *mm,
+>  	/* Align the address wrt HPAGE_PUD_SIZE */
+>  	vaddr = (vaddr & HPAGE_PUD_MASK) + HPAGE_PUD_SIZE;
+>  
+> +	pud = pud_mkhuge(pfn_pud(pfn, prot));
+>  	set_pud_at(mm, vaddr, pudp, pud);
+>  	pudp_set_wrprotect(mm, vaddr, pudp);
+>  	pud = READ_ONCE(*pudp);
+>  	WARN_ON(pud_write(pud));
+>  
+>  #ifndef __PAGETABLE_PMD_FOLDED
+> -	pud = pfn_pud(pfn, prot);
+> +	pud = pud_mkhuge(pfn_pud(pfn, prot));
+>  	set_pud_at(mm, vaddr, pudp, pud);
+>  	pudp_huge_get_and_clear(mm, vaddr, pudp);
+>  	pud = READ_ONCE(*pudp);
+>  	WARN_ON(!pud_none(pud));
+>  
+> -	pud = pfn_pud(pfn, prot);
+> +	pud = pud_mkhuge(pfn_pud(pfn, prot));
+>  	set_pud_at(mm, vaddr, pudp, pud);
+>  	pudp_huge_get_and_clear_full(mm, vaddr, pudp, 1);
+>  	pud = READ_ONCE(*pudp);
+>  	WARN_ON(!pud_none(pud));
+>  #endif /* __PAGETABLE_PMD_FOLDED */
+> -	pud = pfn_pud(pfn, prot);
+> +
+> +	pud = pud_mkhuge(pfn_pud(pfn, prot));
+>  	pud = pud_wrprotect(pud);
+>  	pud = pud_mkclean(pud);
+>  	set_pud_at(mm, vaddr, pudp, pud);
+> 
+
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
