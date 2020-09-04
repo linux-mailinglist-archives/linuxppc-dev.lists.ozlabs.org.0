@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C2125D03C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 06:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AB625D046
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 06:18:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BjPQ00dXZzDrKW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 14:11:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BjPYm3DkszDr5j
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Sep 2020 14:18:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,27 +16,27 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=arm.com
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BjPMr73qjzDr7W
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 14:10:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BjPX01WppzDqwg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Sep 2020 14:17:03 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7066101E;
- Thu,  3 Sep 2020 21:09:58 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B730C101E;
+ Thu,  3 Sep 2020 21:17:01 -0700 (PDT)
 Received: from [10.163.70.23] (unknown [10.163.70.23])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D26E53F71F;
- Thu,  3 Sep 2020 21:09:56 -0700 (PDT)
-Subject: Re: [PATCH v4 05/13] mm/debug_vm_pgtable/savedwrite: Enable
- savedwrite test with CONFIG_NUMA_BALANCING
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E00393F71F;
+ Thu,  3 Sep 2020 21:16:59 -0700 (PDT)
+Subject: Re: [PATCH v4 13/13] mm/debug_vm_pgtable: Avoid none pte in
+ pte_clear_test
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org
 References: <20200902114222.181353-1-aneesh.kumar@linux.ibm.com>
- <20200902114222.181353-6-aneesh.kumar@linux.ibm.com>
+ <20200902114601.183715-1-aneesh.kumar@linux.ibm.com>
 From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <b89d69b2-caa0-e8e2-9401-8b3ff1546fbe@arm.com>
-Date: Fri, 4 Sep 2020 09:39:24 +0530
+Message-ID: <44674c44-2873-77a8-fe99-d706c2043501@arm.com>
+Date: Fri, 4 Sep 2020 09:46:27 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20200902114222.181353-6-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200902114601.183715-1-aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -58,61 +58,41 @@ Sender: "Linuxppc-dev"
 
 
 
-On 09/02/2020 05:12 PM, Aneesh Kumar K.V wrote:
-> Saved write support was added to track the write bit of a pte after
-> marking the pte protnone. This was done so that AUTONUMA can convert
-> a write pte to protnone and still track the old write bit. When converting
-> it back we set the pte write bit correctly thereby avoiding a write fault
-> again. Hence enable the test only when CONFIG_NUMA_BALANCING is enabled and
-> use protnone protflags.
+On 09/02/2020 05:16 PM, Aneesh Kumar K.V wrote:
+> pte_clear_tests operate on an existing pte entry. Make sure that
+> is not a none pte entry.
 > 
 > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  mm/debug_vm_pgtable.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  mm/debug_vm_pgtable.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 > 
 > diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-> index 4c73e63b4ceb..8704901f6bd8 100644
+> index 9afa1354326b..c36530c69e33 100644
 > --- a/mm/debug_vm_pgtable.c
 > +++ b/mm/debug_vm_pgtable.c
-> @@ -119,10 +119,14 @@ static void __init pte_savedwrite_tests(unsigned long pfn, pgprot_t prot)
+> @@ -542,9 +542,10 @@ static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
+>  #endif /* PAGETABLE_P4D_FOLDED */
+>  
+>  static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
+> -				   unsigned long vaddr)
+> +				   unsigned long pfn, unsigned long vaddr,
+> +				   pgprot_t prot)
 >  {
->  	pte_t pte = pfn_pte(pfn, prot);
+> -	pte_t pte = ptep_get(ptep);
+> +	pte_t pte = pfn_pte(pfn, prot);
 >  
-> +	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
-> +		return;
-> +
->  	pr_debug("Validating PTE saved write\n");
->  	WARN_ON(!pte_savedwrite(pte_mk_savedwrite(pte_clear_savedwrite(pte))));
->  	WARN_ON(pte_savedwrite(pte_clear_savedwrite(pte_mk_savedwrite(pte))));
->  }
-> +
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  static void __init pmd_basic_tests(unsigned long pfn, pgprot_t prot)
->  {
-> @@ -234,6 +238,9 @@ static void __init pmd_savedwrite_tests(unsigned long pfn, pgprot_t prot)
->  {
->  	pmd_t pmd = pfn_pmd(pfn, prot);
+>  	pr_debug("Validating PTE clear\n");
+>  	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+> @@ -1049,7 +1050,7 @@ static int __init debug_vm_pgtable(void)
 >  
-> +	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
-> +		return;
-> +
->  	pr_debug("Validating PMD saved write\n");
->  	WARN_ON(!pmd_savedwrite(pmd_mk_savedwrite(pmd_clear_savedwrite(pmd))));
->  	WARN_ON(pmd_savedwrite(pmd_clear_savedwrite(pmd_mk_savedwrite(pmd))));
-> @@ -1019,8 +1026,8 @@ static int __init debug_vm_pgtable(void)
->  	pmd_huge_tests(pmdp, pmd_aligned, prot);
->  	pud_huge_tests(pudp, pud_aligned, prot);
->  
-> -	pte_savedwrite_tests(pte_aligned, prot);
-> -	pmd_savedwrite_tests(pmd_aligned, prot);
-> +	pte_savedwrite_tests(pte_aligned, protnone);
-> +	pmd_savedwrite_tests(pmd_aligned, protnone);
->  
+>  	ptl = pte_lockptr(mm, pmdp);
+>  	spin_lock(ptl);
+> -	pte_clear_tests(mm, ptep, vaddr);
+> +	pte_clear_tests(mm, ptep, pte_aligned, vaddr, prot);
+>  	pte_advanced_tests(mm, vma, ptep, pte_aligned, vaddr, prot);
 >  	pte_unmap_unlock(ptep, ptl);
 >  
 > 
-
-No more checkpatch.pl warnings.
 
 Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
