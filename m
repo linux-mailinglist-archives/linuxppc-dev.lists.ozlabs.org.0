@@ -2,53 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A530B25E3E9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 00:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6098125E42A
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 01:28:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BjtQW07zSzDqlw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 08:58:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bjv4M1FlRzDqQs
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 09:28:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=jykm=cn=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
+ helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BjtNw2M6JzDqQt
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 08:57:35 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 208181] BUG: KASAN: stack-out-of-bounds in strcmp+0x58/0xd8
-Date: Fri, 04 Sep 2020 22:57:33 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: OBSOLETE
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-208181-206035-y6h7RcUqMq@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-208181-206035@https.bugzilla.kernel.org/>
-References: <bug-208181-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
-MIME-Version: 1.0
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=telegraphics.com.au
+Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
+ [98.124.60.144])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Bjv2F6JShzDqmY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 09:26:29 +1000 (AEST)
+Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
+ id 7745D2ACD4; Fri,  4 Sep 2020 19:26:27 -0400 (EDT)
+Message-Id: <cover.1599260540.git.fthain@telegraphics.com.au>
+From: Finn Thain <fthain@telegraphics.com.au>
+Subject: [PATCH 0/5] powerpc/tau: TAU driver fixes
+Date: Sat, 05 Sep 2020 09:02:20 +1000
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,24 +39,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D208181
+This patch series fixes various bugs in the Thermal Assist Unit driver.
+It was tested on 266 MHz and 292 MHz PowerBook G3 laptops.
 
-Erhard F. (erhard_f@mailbox.org) changed:
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |RESOLVED
-         Resolution|---                         |OBSOLETE
+Finn Thain (5):
+  powerpc/tau: Use appropriate temperature sample interval
+  powerpc/tau: Convert from timer to workqueue
+  powerpc/tau: Remove duplicated set_thresholds() call
+  powerpc/tau: Check processor type before enabling TAU interrupt
+  powerpc/tau: Disable TAU between measurements
 
---- Comment #19 from Erhard F. (erhard_f@mailbox.org) ---
-I noticed that I covered the "do_IRQ: stack overflow: ...." problem already=
- in
-bug #207129 so closing this one as suggested before.
+ arch/powerpc/include/asm/reg.h |   2 +-
+ arch/powerpc/kernel/tau_6xx.c  | 147 +++++++++++++--------------------
+ arch/powerpc/platforms/Kconfig |  14 +---
+ 3 files changed, 62 insertions(+), 101 deletions(-)
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+-- 
+2.26.2
+
