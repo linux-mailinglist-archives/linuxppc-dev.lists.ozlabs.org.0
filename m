@@ -1,90 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A8C25E448
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 01:41:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C24625E5F4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 09:17:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BjvMY4RknzDqtY
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 09:41:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bk5VC08pyzDqsj
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 17:17:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TcRrEcUw; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bjv632DtRzDqmh
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 09:29:45 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 084N3AEQ091888; Fri, 4 Sep 2020 19:29:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=aeCxjDPzA4p1lGvHwMUq7VxTcyA3YFwfsfPU7jiiRM4=;
- b=TcRrEcUwGEG186JgdXvC8deKUuiTW7q9B5DB4/JoYvj9c8s8ZCNSBQJGf3HvZE53cQes
- /9C2GdsgguirpsmaN/9sTkJeWwJWLrvzTV/KSjiNVuoVjEs5LovriW/71Jc7l9OvLEkg
- TXBgM7fMh4zo0jXFvwL9xXCIK/3+8LzNzrQY8XDTmFfeFyoIhIj/auop8e7YbL7KHNxt
- nmnHiEQku1QG8efsE+iZnxmin7t+owW0H9nJ6FhQOEIEHkaQ6cv2fOEYrTTJCzT/Ul13
- 7Pr+1an6ghKyYnwlvy5bc/DxG91otBYLlr4YiT/zmcWzlZjnAme5x5iNBnitkPtlkuNu 5g== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33bvxkjrnp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Sep 2020 19:29:40 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 084NROal009043;
- Fri, 4 Sep 2020 23:29:39 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma04wdc.us.ibm.com with ESMTP id 337ena2xwh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Sep 2020 23:29:39 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 084NTdEB55443762
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Sep 2020 23:29:39 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4B1A928058;
- Fri,  4 Sep 2020 23:29:39 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CCBCB28059;
- Fri,  4 Sep 2020 23:29:38 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.40.195.188])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  4 Sep 2020 23:29:38 +0000 (GMT)
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-To: james.bottomley@hansenpartnership.com
-Subject: [PATCH v3 2/2] scsi: ibmvfc: interface updates for future FPIN and MQ
- support
-Date: Fri,  4 Sep 2020 18:29:36 -0500
-Message-Id: <20200904232936.840193-2-tyreld@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200904232936.840193-1-tyreld@linux.ibm.com>
-References: <20200904232936.840193-1-tyreld@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bk5SS00g7zDqly
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 17:16:19 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4Bk5SF0YcXz9v21X;
+ Sat,  5 Sep 2020 09:16:13 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id I2kWpVRgLGRj; Sat,  5 Sep 2020 09:16:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Bk5SD6rtHz9v21V;
+ Sat,  5 Sep 2020 09:16:12 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F36098B76E;
+ Sat,  5 Sep 2020 09:16:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id LbgFIZMjw9IA; Sat,  5 Sep 2020 09:16:13 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C9E268B75B;
+ Sat,  5 Sep 2020 09:16:12 +0200 (CEST)
+Subject: Re: remove the last set_fs() in common code, and remove it for x86
+ and powerpc v3
+To: David Laight <David.Laight@ACULAB.COM>,
+ 'Alexey Dobriyan' <adobriyan@gmail.com>, Ingo Molnar <mingo@kernel.org>
+References: <20200903142242.925828-1-hch@lst.de>
+ <20200904060024.GA2779810@gmail.com>
+ <20200904175823.GA500051@localhost.localdomain>
+ <63f3c9342a784a0890b3b641a71a8aa1@AcuMS.aculab.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <4500d8d9-7318-4505-6086-2d2dc41f3866@csgroup.eu>
+Date: Sat, 5 Sep 2020 09:16:06 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
+In-Reply-To: <63f3c9342a784a0890b3b641a71a8aa1@AcuMS.aculab.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-04_15:2020-09-04,
- 2020-09-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 spamscore=0 impostorscore=0 priorityscore=1501
- clxscore=1015 bulkscore=0 phishscore=0 adultscore=0 malwarescore=0
- suspectscore=1 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009040195
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,162 +68,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VIOS partitions with SLI-4 enabled Emulex adapters will be capable of
-driving IO in parallel through mulitple work queues or channels, and
-with new hyperviosr firmware that supports multiple interrupt sources
-an ibmvfc NPIV single initiator can be modified to exploit end to end
-channelization in a PowerVM environment.
 
-VIOS hosts will also be able to expose fabric perfromance impact
-notifications (FPIN) via a new asynchronous event to ibmvfc clients that
-advertise support via IBMVFC_CAN_HANDLE_FPIN in their capabilities flag
-during NPIV_LOGIN.
 
-This patch introduces three new Management Datagrams (MADs) for
-channelization support negotiation as well as the FPIN asynchronous
-event and FPIN status flags. Follow up work is required to plumb the
-ibmvfc client driver to use these new interfaces.
+Le 04/09/2020 à 23:01, David Laight a écrit :
+> From: Alexey Dobriyan
+>> Sent: 04 September 2020 18:58
+>>
+>> On Fri, Sep 04, 2020 at 08:00:24AM +0200, Ingo Molnar wrote:
+>>> * Christoph Hellwig <hch@lst.de> wrote:
+>>>> this series removes the last set_fs() used to force a kernel address
+>>>> space for the uaccess code in the kernel read/write/splice code, and then
+>>>> stops implementing the address space overrides entirely for x86 and
+>>>> powerpc.
+>>>
+>>> Cool! For the x86 bits:
+>>>
+>>>    Acked-by: Ingo Molnar <mingo@kernel.org>
+>>
+>> set_fs() is older than some kernel hackers!
+>>
+>> 	$ cd linux-0.11/
+>> 	$ find . -type f -name '*.h' | xargs grep -e set_fs -w -n -A3
+>> 	./include/asm/segment.h:61:extern inline void set_fs(unsigned long val)
+>> 	./include/asm/segment.h-62-{
+>> 	./include/asm/segment.h-63-     __asm__("mov %0,%%fs"::"a" ((unsigned short) val));
+>> 	./include/asm/segment.h-64-}
+> 
+> What is this strange %fs register you are talking about.
+> Figure 2-4 only has CS, DS, SS and ES.
+> 
 
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
----
-v2 -> v3:
-	Fixup checkpatch warnings about using __attribute__()
-v1 -> v2:
-        Fixup complier errors from neglected commit --amend
+Intel added registers FS and GS in the i386
 
----
- drivers/scsi/ibmvscsi/ibmvfc.h | 66 +++++++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
-index 6da23666f5be..e6e1c255a79c 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.h
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.h
-@@ -124,6 +124,9 @@ enum ibmvfc_mad_types {
- 	IBMVFC_PASSTHRU		= 0x0200,
- 	IBMVFC_TMF_MAD		= 0x0100,
- 	IBMVFC_NPIV_LOGOUT	= 0x0800,
-+	IBMVFC_CHANNEL_ENQUIRY	= 0x1000,
-+	IBMVFC_CHANNEL_SETUP	= 0x2000,
-+	IBMVFC_CONNECTION_INFO	= 0x4000,
- };
- 
- struct ibmvfc_mad_common {
-@@ -162,6 +165,8 @@ struct ibmvfc_npiv_login {
- 	__be32 max_cmds;
- 	__be64 capabilities;
- #define IBMVFC_CAN_MIGRATE		0x01
-+#define IBMVFC_CAN_USE_CHANNELS		0x02
-+#define IBMVFC_CAN_HANDLE_FPIN		0x04
- 	__be64 node_name;
- 	struct srp_direct_buf async;
- 	u8 partition_name[IBMVFC_MAX_NAME];
-@@ -204,6 +209,7 @@ struct ibmvfc_npiv_login_resp {
- 	__be64 capabilities;
- #define IBMVFC_CAN_FLUSH_ON_HALT	0x08
- #define IBMVFC_CAN_SUPPRESS_ABTS	0x10
-+#define IBMVFC_CAN_SUPPORT_CHANNELS	0x20
- 	__be32 max_cmds;
- 	__be32 scsi_id_sz;
- 	__be64 max_dma_len;
-@@ -482,6 +488,52 @@ struct ibmvfc_passthru_mad {
- 	struct ibmvfc_passthru_fc_iu fc_iu;
- } __packed __aligned(8);
- 
-+struct ibmvfc_channel_enquiry {
-+	struct ibmvfc_mad_common common;
-+	__be32 flags;
-+#define IBMVFC_NO_CHANNELS_TO_CRQ_SUPPORT	0x01
-+#define IBMVFC_SUPPORT_VARIABLE_SUBQ_MSG	0x02
-+#define IBMVFC_NO_N_TO_M_CHANNELS_SUPPORT	0x04
-+	__be32 num_scsi_subq_channels;
-+	__be32 num_nvmeof_subq_channels;
-+	__be32 num_scsi_vas_channels;
-+	__be32 num_nvmeof_vas_channels;
-+} __packed __aligned(8);
-+
-+struct ibmvfc_channel_setup_mad {
-+	struct ibmvfc_mad_common common;
-+	struct srp_direct_buf buffer;
-+} __packed __aligned(8);
-+
-+#define IBMVFC_MAX_CHANNELS	502
-+
-+struct ibmvfc_channel_setup {
-+	__be32 flags;
-+#define IBMVFC_CANCEL_CHANNELS		0x01
-+#define IBMVFC_USE_BUFFER		0x02
-+#define IBMVFC_CHANNELS_CANCELED	0x04
-+	__be32 reserved;
-+	__be32 num_scsi_subq_channels;
-+	__be32 num_nvmeof_subq_channels;
-+	__be32 num_scsi_vas_channels;
-+	__be32 num_nvmeof_vas_channels;
-+	struct srp_direct_buf buffer;
-+	__be64 reserved2[5];
-+	__be64 channel_handles[IBMVFC_MAX_CHANNELS];
-+} __packed __aligned(8);
-+
-+struct ibmvfc_connection_info {
-+	struct ibmvfc_mad_common common;
-+	__be64 information_bits;
-+#define IBMVFC_NO_FC_IO_CHANNEL		0x01
-+#define IBMVFC_NO_PHYP_VAS		0x02
-+#define IBMVFC_NO_PHYP_SUBQ		0x04
-+#define IBMVFC_PHYP_DEPRECATED_SUBQ	0x08
-+#define IBMVFC_PHYP_PRESERVED_SUBQ	0x10
-+#define IBMVFC_PHYP_FULL_SUBQ		0x20
-+	__be64 reserved[16];
-+} __packed __aligned(8);
-+
- struct ibmvfc_trace_start_entry {
- 	u32 xfer_len;
- } __packed;
-@@ -532,6 +584,7 @@ enum ibmvfc_async_event {
- 	IBMVFC_AE_HALT			= 0x0400,
- 	IBMVFC_AE_RESUME			= 0x0800,
- 	IBMVFC_AE_ADAPTER_FAILED	= 0x1000,
-+	IBMVFC_AE_FPIN			= 0x2000,
- };
- 
- struct ibmvfc_async_desc {
-@@ -560,10 +613,18 @@ enum ibmvfc_ae_link_state {
- 	IBMVFC_AE_LS_LINK_DEAD		= 0x08,
- };
- 
-+enum ibmvfc_ae_fpin_status {
-+	IBMVFC_AE_FPIN_LINK_CONGESTED	= 0x1,
-+	IBMVFC_AE_FPIN_PORT_CONGESTED	= 0x2,
-+	IBMVFC_AE_FPIN_PORT_CLEARED	= 0x3,
-+	IBMVFC_AE_FPIN_PORT_DEGRADED	= 0x4,
-+};
-+
- struct ibmvfc_async_crq {
- 	volatile u8 valid;
- 	u8 link_state;
--	u8 pad[2];
-+	u8 fpin_status;
-+	u8 pad;
- 	__be32 pad2;
- 	volatile __be64 event;
- 	volatile __be64 scsi_id;
-@@ -590,6 +651,9 @@ union ibmvfc_iu {
- 	struct ibmvfc_tmf tmf;
- 	struct ibmvfc_cmd cmd;
- 	struct ibmvfc_passthru_mad passthru;
-+	struct ibmvfc_channel_enquiry channel_enquiry;
-+	struct ibmvfc_channel_setup_mad channel_setup;
-+	struct ibmvfc_connection_info connection_info;
- } __packed __aligned(8);
- 
- enum ibmvfc_target_action {
--- 
-2.27.0
-
+Christophe
