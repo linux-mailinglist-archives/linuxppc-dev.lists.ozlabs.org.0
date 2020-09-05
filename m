@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FA025E99B
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 20:00:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 704C725E99C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 20:03:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BkMll0YDkzDqg8
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 04:00:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BkMqG15BHzDqgk
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 04:03:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=K6N1sCOv; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20161025 header.b=r/cyMiQ4; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BkMNc2vsmzDqk9
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Sep 2020 03:44:00 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id np15so6205506pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Sep 2020 10:44:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BkMNg0nRxzDqjv
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Sep 2020 03:44:02 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id v196so6384459pfc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Sep 2020 10:44:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=NC8ldo5hOvRK/MNcluFLcOgqfNk3vvV/gcf/ePyBKGU=;
- b=K6N1sCOvEji4GnbavBQfBNwCR90saYetO+Hh62/eE7s3WRBCxBLyElxulj1qxgjplh
- fZCOCrPGfxLEphKXANVvocThQ9oajb+nij+vuTKV080ZfnNEO3f2E+MUNc0o3Q4yQaVx
- ozsDEdmnZ0tGz+MElb+JKnEtbFENllsPAAqYhavbmu05xZ1wu6agzJzzFGNukkRHRW5h
- iW0k8hbFjse8E8NBplYh/o2KjStTRYNxB9ib4stjP6vIr5JUit00rI+aiGDvpuWX4Rog
- DhtHW0dcWhLUGCpNER9Y1KvvuarYBiGZwrbwSE1kuyyLdoSmw0OLdnuR37k0EkQDjl7v
- 8nUg==
+ bh=7KhhnoQdMEnvWcciO0hVHK/KPb3a9cEu1cINwbDGgDg=;
+ b=r/cyMiQ4bG8LVfHuSes7H19Cyy4W0XP7rvYr+C/7tEwZsr/D3LhGfmgPx43cSetY8M
+ 4zxYJSpDRZVttzASJ8UxC9mFvgEbNqWBoB3S0xIZPEUqAvxVDihifcEAFXlFfOrIBKD2
+ fdPcORH13NGYNLn8p0cFLH3KHtYhXUPbw465QWYyMaA1vkZg0t3navVLMImBiQ5vx8qN
+ /ZzX8yGsQfwPykJhMBvZZr748W08zl7luvGtBC4ePCLkAdOdSLxhBwB619JllmxvySmr
+ GtKoF1FFO6Et5IiS2JJdtfhFvsey90DF+SuYPmgLu/aXsQMY+5/N7A029wH3Uphcl57j
+ G3sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=NC8ldo5hOvRK/MNcluFLcOgqfNk3vvV/gcf/ePyBKGU=;
- b=OpeYLpS6pnZUt+EWEsVnaLdoUj8mNQS15lFzLfGaeA1+2yn40pKAJjj3HrT1jXLSmV
- AGuNaCDLMY1LdyKgSdCna6Via2e7WVhZhMY3t4oRM7TmQsiNdMwGdt8+yoC8rom5c5Bp
- EjB7af3WzsPO/EAL/NOmnvuGT6ZSrAjinM7q0DpZmGFXEhxcvr4HVWBzZ/h6Uh+eIO1v
- Ryf+MDK4sX/y4ZbhyBv7Iq8XCevRVMrQcUgn4duKA1nNcyfjKPi5PFZYCak0WoZd59TP
- 3KWkOJoKi3Mjn7R9r9vzlZzle0eKNKdJtfsgKy257nIj4gfIRzEyUusNOdR8NLNG2M/o
- efLw==
-X-Gm-Message-State: AOAM530F0u05/qqYQ6S5LOZyGnVPj63DEow/bXtBnMD7SBtIH3R9L9RB
- boc7K/8UyoqELNLAmDz5cMjAxHsaxuU=
-X-Google-Smtp-Source: ABdhPJwp8HxNrBSs/ij5HSKvo5LRgwiD1OxVLIo90+bkAiaCBNGzMY9iWT06KAHgu7HG6X6nlwVmXw==
-X-Received: by 2002:a17:90a:aa89:: with SMTP id
- l9mr9886350pjq.226.1599327837856; 
- Sat, 05 Sep 2020 10:43:57 -0700 (PDT)
+ bh=7KhhnoQdMEnvWcciO0hVHK/KPb3a9cEu1cINwbDGgDg=;
+ b=bweHJv2VJ7PacgRHUYNwCG5AC9MbYr9y5FFXl/spHfVhkIRnlca5jllYSWlYeAY1iI
+ CtHsT0tTofLX3yDSO166L6KEUvFKIRDidaexQ2X7qkfsSqqzDgAD4J41K9AvNfMveUaH
+ /G3StxSYnTqEDv6m2EBYnWUJIIebZ8CS6xLQQR07f8VWyZInX6OlMevNhsheFgVDdWVM
+ SMwSyCKPPBR+WhE2dTMWWi2nPjkCtk4Azq1IHtq31/5HEPjFyNkx8w1xhDF8msxWA0xs
+ 5oVLKu1veobzQKGZQZSczpf71uaGMpleYLy6l7zNWDWyd78QYKD3cXzlOxuR7uyE79DT
+ I96Q==
+X-Gm-Message-State: AOAM531TVLUw9b0p+MCLK2O0AlOE7YwI9skHxDs0WMhm7w/UW8TTKRcY
+ /QhK6uEiSTS/sbVzmIwuiKQATIQu48k=
+X-Google-Smtp-Source: ABdhPJwusiKvv4UTvxNDtmFLJzYxSKUOd6gcfLtefqWAV865auEJpAGIS4KaVnnLHfwdePVTTjyU+w==
+X-Received: by 2002:aa7:871a:0:b029:138:b052:3dc2 with SMTP id
+ b26-20020aa7871a0000b0290138b0523dc2mr12605082pfo.1.1599327840415; 
+ Sat, 05 Sep 2020 10:44:00 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id i1sm10405317pfk.21.2020.09.05.10.43.55
+ by smtp.gmail.com with ESMTPSA id i1sm10405317pfk.21.2020.09.05.10.43.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Sep 2020 10:43:57 -0700 (PDT)
+ Sat, 05 Sep 2020 10:44:00 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: 
-Subject: [RFC PATCH 05/12] powerpc/64s: Do context tracking in interrupt entry
- wrapper
-Date: Sun,  6 Sep 2020 03:43:28 +1000
-Message-Id: <20200905174335.3161229-6-npiggin@gmail.com>
+Subject: [RFC PATCH 06/12] powerpc/64s: reconcile interrupts in C
+Date: Sun,  6 Sep 2020 03:43:29 +1000
+Message-Id: <20200905174335.3161229-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200905174335.3161229-1-npiggin@gmail.com>
 References: <20200905174335.3161229-1-npiggin@gmail.com>
@@ -85,500 +84,206 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Context tracking is very broken currently. Add a helper function that is to
-be called first thing by any normal interrupt handler function to track user
-exits, and user entry is done by the interrupt exit prepare functions.
-
-Context tracking is disabled on 64e for now, it must move to interrupt exit
-in C before enabling it.
+There is no need for this to be in asm, use the new intrrupt entry wrapper.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig                  |  2 +-
- arch/powerpc/include/asm/interrupt.h  | 23 +++++++++
- arch/powerpc/kernel/ptrace/ptrace.c   |  4 --
- arch/powerpc/kernel/signal.c          |  4 --
- arch/powerpc/kernel/syscall_64.c      | 14 +++++
- arch/powerpc/kernel/traps.c           | 74 ++++++---------------------
- arch/powerpc/mm/book3s64/hash_utils.c |  2 -
- arch/powerpc/mm/fault.c               |  3 --
- 8 files changed, 55 insertions(+), 71 deletions(-)
+ arch/powerpc/include/asm/interrupt.h |  4 ++++
+ arch/powerpc/kernel/exceptions-64s.S | 26 --------------------------
+ 2 files changed, 4 insertions(+), 26 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1f48bbfb3ce9..3da7bbff46a9 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -189,7 +189,7 @@ config PPC
- 	select HAVE_CBPF_JIT			if !PPC64
- 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
- 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
--	select HAVE_CONTEXT_TRACKING		if PPC64
-+	select HAVE_CONTEXT_TRACKING		if PPC_BOOK3S_64
- 	select HAVE_TIF_NOHZ			if PPC64
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DEBUG_STACKOVERFLOW
 diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 7231949fc1c8..98acfbb2df04 100644
+index 98acfbb2df04..511b3304722b 100644
 --- a/arch/powerpc/include/asm/interrupt.h
 +++ b/arch/powerpc/include/asm/interrupt.h
-@@ -6,6 +6,23 @@
- #include <linux/hardirq.h>
- #include <asm/ftrace.h>
- 
-+#ifdef CONFIG_PPC_BOOK3S_64
-+static inline void interrupt_enter_prepare(struct pt_regs *regs)
-+{
-+	if (user_mode(regs)) {
-+		CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
-+		user_exit_irqoff();
-+	} else {
-+		CT_WARN_ON(ct_state() == CONTEXT_USER);
-+	}
-+}
+@@ -9,6 +9,10 @@
+ #ifdef CONFIG_PPC_BOOK3S_64
+ static inline void interrupt_enter_prepare(struct pt_regs *regs)
+ {
++	if (irq_soft_mask_set_return(IRQS_ALL_DISABLED) == IRQS_ENABLED)
++		trace_hardirqs_off();
++	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
 +
-+#else /* CONFIG_PPC_BOOK3S_64 */
-+static inline void interrupt_enter_prepare(struct pt_regs *regs)
-+{
-+}
-+#endif /* CONFIG_PPC_BOOK3S_64 */
-+
- /**
-  * DECLARE_INTERRUPT_HANDLER_RAW - Declare raw interrupt handler function
-  * @func:	Function name of the entry point
-@@ -60,6 +77,8 @@ static __always_inline void ___##func(struct pt_regs *regs);		\
- 									\
- __visible noinstr void func(struct pt_regs *regs)			\
- {									\
-+	interrupt_enter_prepare(regs);					\
-+									\
- 	___##func (regs);						\
- }									\
- 									\
-@@ -90,6 +109,8 @@ __visible noinstr long func(struct pt_regs *regs)			\
- {									\
- 	long ret;							\
- 									\
-+	interrupt_enter_prepare(regs);					\
-+									\
- 	ret = ___##func (regs);						\
- 									\
- 	return ret;							\
-@@ -118,6 +139,8 @@ static __always_inline void ___##func(struct pt_regs *regs);		\
- 									\
- __visible noinstr void func(struct pt_regs *regs)			\
- {									\
-+	interrupt_enter_prepare(regs);					\
-+									\
- 	___##func (regs);						\
- }									\
- 									\
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index f6e51be47c6e..8970400e521c 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -290,8 +290,6 @@ long do_syscall_trace_enter(struct pt_regs *regs)
- {
- 	u32 flags;
- 
--	user_exit();
--
- 	flags = READ_ONCE(current_thread_info()->flags) &
- 		(_TIF_SYSCALL_EMU | _TIF_SYSCALL_TRACE);
- 
-@@ -368,8 +366,6 @@ void do_syscall_trace_leave(struct pt_regs *regs)
- 	step = test_thread_flag(TIF_SINGLESTEP);
- 	if (step || test_thread_flag(TIF_SYSCALL_TRACE))
- 		tracehook_report_syscall_exit(regs, step);
--
--	user_enter();
- }
- 
- void __init pt_regs_check(void);
-diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-index d15a98c758b8..f5f347fa3c31 100644
---- a/arch/powerpc/kernel/signal.c
-+++ b/arch/powerpc/kernel/signal.c
-@@ -310,8 +310,6 @@ static void do_signal(struct task_struct *tsk)
- 
- void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
- {
--	user_exit();
--
- 	/* Check valid addr_limit, TIF check is done there */
- 	addr_limit_user_check();
- 
-@@ -331,8 +329,6 @@ void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
- 		tracehook_notify_resume(regs);
- 		rseq_handle_notify_resume(NULL, regs);
- 	}
--
--	user_enter();
- }
- 
- unsigned long get_tm_stackpointer(struct task_struct *tsk)
-diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
-index 8e50818aa50b..58eec1c7fdb8 100644
---- a/arch/powerpc/kernel/syscall_64.c
-+++ b/arch/powerpc/kernel/syscall_64.c
-@@ -1,9 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
-+#include <linux/context_tracking.h>
- #include <linux/err.h>
- #include <asm/asm-prototypes.h>
- #include <asm/book3s/64/kup-radix.h>
- #include <asm/cputime.h>
-+#include <asm/interrupt.h>
- #include <asm/hw_irq.h>
- #include <asm/kprobes.h>
- #include <asm/paca.h>
-@@ -27,6 +29,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
- 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
- 		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
- 
-+	CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
-+	user_exit_irqoff();
-+
- 	trace_hardirqs_off(); /* finish reconciling */
- 
- 	if (IS_ENABLED(CONFIG_PPC_BOOK3S))
-@@ -157,6 +162,8 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 	unsigned long ti_flags;
- 	unsigned long ret = 0;
- 
-+	CT_WARN_ON(ct_state() == CONTEXT_USER);
-+
- 	kuap_check_amr();
- 
- 	regs->result = r3;
-@@ -233,8 +240,11 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 		}
- 	}
- 
-+	user_enter_irqoff();
-+
- 	/* scv need not set RI=0 because SRRs are not used */
- 	if (unlikely(!prep_irq_for_enabled_exit(!scv))) {
-+		user_exit_irqoff();
- 		local_irq_enable();
- 		goto again;
- 	}
-@@ -264,6 +274,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	BUG_ON(!(regs->msr & MSR_PR));
- 	BUG_ON(!FULL_REGS(regs));
- 	BUG_ON(regs->softe != IRQS_ENABLED);
-+	CT_WARN_ON(ct_state() == CONTEXT_USER);
- 
- 	/*
- 	 * We don't need to restore AMR on the way back to userspace for KUAP.
-@@ -306,7 +317,9 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 		}
- 	}
- 
-+	user_enter_irqoff();
- 	if (unlikely(!prep_irq_for_enabled_exit(true))) {
-+		user_exit_irqoff();
- 		local_irq_enable();
- 		local_irq_disable();
- 		goto again;
-@@ -347,6 +360,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- 		unrecoverable_exception(regs);
- 	BUG_ON(regs->msr & MSR_PR);
- 	BUG_ON(!FULL_REGS(regs));
-+	CT_WARN_ON(ct_state() == CONTEXT_USER);
- 
- 	amr = kuap_get_and_check_amr();
- 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index a850647b7062..3784578db630 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1112,41 +1112,28 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(handle_hmi_exception)
- 
- DEFINE_INTERRUPT_HANDLER(unknown_exception)
- {
--	enum ctx_state prev_state = exception_enter();
--
- 	printk("Bad trap at PC: %lx, SR: %lx, vector=%lx\n",
- 	       regs->nip, regs->msr, regs->trap);
- 
- 	_exception(SIGTRAP, regs, TRAP_UNK, 0);
--
--	exception_exit(prev_state);
- }
- 
- DEFINE_INTERRUPT_HANDLER_ASYNC(unknown_async_exception)
- {
--	enum ctx_state prev_state = exception_enter();
--
- 	printk("Bad trap at PC: %lx, SR: %lx, vector=%lx\n",
- 	       regs->nip, regs->msr, regs->trap);
- 
- 	_exception(SIGTRAP, regs, TRAP_UNK, 0);
--
--	exception_exit(prev_state);
- }
- 
- DEFINE_INTERRUPT_HANDLER(instruction_breakpoint_exception)
- {
--	enum ctx_state prev_state = exception_enter();
--
- 	if (notify_die(DIE_IABR_MATCH, "iabr_match", regs, 5,
- 					5, SIGTRAP) == NOTIFY_STOP)
--		goto bail;
-+		return;
- 	if (debugger_iabr_match(regs))
--		goto bail;
-+		return;
- 	_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
--
--bail:
--	exception_exit(prev_state);
- }
- 
- DEFINE_INTERRUPT_HANDLER(RunModeException)
-@@ -1156,8 +1143,6 @@ DEFINE_INTERRUPT_HANDLER(RunModeException)
- 
- DEFINE_INTERRUPT_HANDLER(single_step_exception)
- {
--	enum ctx_state prev_state = exception_enter();
--
- 	clear_single_step(regs);
- 	clear_br_trace(regs);
- 
-@@ -1166,14 +1151,11 @@ DEFINE_INTERRUPT_HANDLER(single_step_exception)
- 
- 	if (notify_die(DIE_SSTEP, "single_step", regs, 5,
- 					5, SIGTRAP) == NOTIFY_STOP)
--		goto bail;
-+		return;
- 	if (debugger_sstep(regs))
--		goto bail;
-+		return;
- 
- 	_exception(SIGTRAP, regs, TRAP_TRACE, regs->nip);
--
--bail:
--	exception_exit(prev_state);
- }
- NOKPROBE_SYMBOL(single_step_exception);
- 
-@@ -1499,7 +1481,6 @@ static inline int emulate_math(struct pt_regs *regs) { return -1; }
- 
- DEFINE_INTERRUPT_HANDLER(program_check_exception)
- {
--	enum ctx_state prev_state = exception_enter();
- 	unsigned int reason = get_reason(regs);
- 
- 	/* We can now get here via a FP Unavailable exception if the core
-@@ -1508,22 +1489,22 @@ DEFINE_INTERRUPT_HANDLER(program_check_exception)
- 	if (reason & REASON_FP) {
- 		/* IEEE FP exception */
- 		parse_fpe(regs);
--		goto bail;
-+		return;
- 	}
- 	if (reason & REASON_TRAP) {
- 		unsigned long bugaddr;
- 		/* Debugger is first in line to stop recursive faults in
- 		 * rcu_lock, notify_die, or atomic_notifier_call_chain */
- 		if (debugger_bpt(regs))
--			goto bail;
-+			return;
- 
- 		if (kprobe_handler(regs))
--			goto bail;
-+			return;
- 
- 		/* trap exception */
- 		if (notify_die(DIE_BPT, "breakpoint", regs, 5, 5, SIGTRAP)
- 				== NOTIFY_STOP)
--			goto bail;
-+			return;
- 
- 		bugaddr = regs->nip;
- 		/*
-@@ -1535,10 +1516,10 @@ DEFINE_INTERRUPT_HANDLER(program_check_exception)
- 		if (!(regs->msr & MSR_PR) &&  /* not user-mode */
- 		    report_bug(bugaddr, regs) == BUG_TRAP_TYPE_WARN) {
- 			regs->nip += 4;
--			goto bail;
-+			return;
- 		}
- 		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
--		goto bail;
-+		return;
- 	}
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	if (reason & REASON_TM) {
-@@ -1559,7 +1540,7 @@ DEFINE_INTERRUPT_HANDLER(program_check_exception)
- 		 */
- 		if (user_mode(regs)) {
- 			_exception(SIGILL, regs, ILL_ILLOPN, regs->nip);
--			goto bail;
-+			return;
- 		} else {
- 			printk(KERN_EMERG "Unexpected TM Bad Thing exception "
- 			       "at %lx (msr 0x%lx) tm_scratch=%llx\n",
-@@ -1590,7 +1571,7 @@ DEFINE_INTERRUPT_HANDLER(program_check_exception)
- 	 * pattern to occurrences etc. -dgibson 31/Mar/2003
- 	 */
- 	if (!emulate_math(regs))
--		goto bail;
-+		return;
- 
- 	/* Try to emulate it if we should. */
- 	if (reason & (REASON_ILLEGAL | REASON_PRIVILEGED)) {
-@@ -1598,10 +1579,10 @@ DEFINE_INTERRUPT_HANDLER(program_check_exception)
- 		case 0:
- 			regs->nip += 4;
- 			emulate_single_step(regs);
--			goto bail;
-+			return;
- 		case -EFAULT:
- 			_exception(SIGSEGV, regs, SEGV_MAPERR, regs->nip);
--			goto bail;
-+			return;
- 		}
- 	}
- 
-@@ -1610,9 +1591,6 @@ DEFINE_INTERRUPT_HANDLER(program_check_exception)
- 		_exception(SIGILL, regs, ILL_PRVOPC, regs->nip);
- 	else
- 		_exception(SIGILL, regs, ILL_ILLOPC, regs->nip);
--
--bail:
--	exception_exit(prev_state);
- }
- NOKPROBE_SYMBOL(program_check_exception);
- 
-@@ -1629,14 +1607,12 @@ NOKPROBE_SYMBOL(emulation_assist_interrupt);
- 
- DEFINE_INTERRUPT_HANDLER(alignment_exception)
- {
--	enum ctx_state prev_state = exception_enter();
- 	int sig, code, fixed = 0;
- 	unsigned long  reason;
- 
- 	interrupt_cond_local_irq_enable(regs);
- 
- 	reason = get_reason(regs);
--
- 	if (reason & REASON_BOUNDARY) {
- 		sig = SIGBUS;
- 		code = BUS_ADRALN;
-@@ -1644,7 +1620,7 @@ DEFINE_INTERRUPT_HANDLER(alignment_exception)
- 	}
- 
- 	if (tm_abort_check(regs, TM_CAUSE_ALIGNMENT | TM_CAUSE_PERSISTENT))
--		goto bail;
-+		return;
- 
- 	/* we don't implement logging of alignment exceptions */
- 	if (!(current->thread.align_ctl & PR_UNALIGN_SIGBUS))
-@@ -1654,7 +1630,7 @@ DEFINE_INTERRUPT_HANDLER(alignment_exception)
- 		/* skip over emulated instruction */
- 		regs->nip += inst_length(reason);
- 		emulate_single_step(regs);
--		goto bail;
-+		return;
- 	}
- 
- 	/* Operand address was bad */
-@@ -1670,9 +1646,6 @@ DEFINE_INTERRUPT_HANDLER(alignment_exception)
- 		_exception(sig, regs, code, regs->dar);
- 	else
- 		bad_page_fault(regs, regs->dar, sig);
--
--bail:
--	exception_exit(prev_state);
- }
- 
- DEFINE_INTERRUPT_HANDLER(StackOverflow)
-@@ -1686,41 +1659,28 @@ DEFINE_INTERRUPT_HANDLER(StackOverflow)
- 
- DEFINE_INTERRUPT_HANDLER(stack_overflow_exception)
- {
--	enum ctx_state prev_state = exception_enter();
--
- 	die("Kernel stack overflow", regs, SIGSEGV);
--
--	exception_exit(prev_state);
- }
- 
- DEFINE_INTERRUPT_HANDLER(kernel_fp_unavailable_exception)
- {
--	enum ctx_state prev_state = exception_enter();
--
- 	printk(KERN_EMERG "Unrecoverable FP Unavailable Exception "
- 			  "%lx at %lx\n", regs->trap, regs->nip);
- 	die("Unrecoverable FP Unavailable Exception", regs, SIGABRT);
--
--	exception_exit(prev_state);
- }
- 
- DEFINE_INTERRUPT_HANDLER(altivec_unavailable_exception)
- {
--	enum ctx_state prev_state = exception_enter();
--
  	if (user_mode(regs)) {
- 		/* A user program has executed an altivec instruction,
- 		   but this kernel doesn't support altivec. */
- 		_exception(SIGILL, regs, ILL_ILLOPC, regs->nip);
--		goto bail;
-+		return;
- 	}
+ 		CT_WARN_ON(ct_state() == CONTEXT_KERNEL);
+ 		user_exit_irqoff();
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index f6989321136d..b36247ad1f64 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -139,7 +139,6 @@ name:
+ #define IKVM_VIRT	.L_IKVM_VIRT_\name\()	/* Virt entry tests KVM */
+ #define ISTACK		.L_ISTACK_\name\()	/* Set regular kernel stack */
+ #define __ISTACK(name)	.L_ISTACK_ ## name
+-#define IRECONCILE	.L_IRECONCILE_\name\()	/* Do RECONCILE_IRQ_STATE */
+ #define IKUAP		.L_IKUAP_\name\()	/* Do KUAP lock */
  
- 	printk(KERN_EMERG "Unrecoverable VMX/Altivec Unavailable Exception "
- 			"%lx at %lx\n", regs->trap, regs->nip);
- 	die("Unrecoverable VMX/Altivec Unavailable Exception", regs, SIGABRT);
+ #define INT_DEFINE_BEGIN(n)						\
+@@ -203,9 +202,6 @@ do_define_int n
+ 	.ifndef ISTACK
+ 		ISTACK=1
+ 	.endif
+-	.ifndef IRECONCILE
+-		IRECONCILE=1
+-	.endif
+ 	.ifndef IKUAP
+ 		IKUAP=1
+ 	.endif
+@@ -653,10 +649,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+ 	.if ISTACK
+ 	ACCOUNT_STOLEN_TIME
+ 	.endif
 -
--bail:
--	exception_exit(prev_state);
- }
+-	.if IRECONCILE
+-	RECONCILE_IRQ_STATE(r10, r11)
+-	.endif
+ .endm
  
- DEFINE_INTERRUPT_HANDLER(vsx_unavailable_exception)
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 360748a8042c..4abdf29a6c8d 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1279,7 +1279,6 @@ int hash_page_mm(struct mm_struct *mm, unsigned long ea,
- 		 unsigned long flags)
- {
- 	bool is_thp;
--	enum ctx_state prev_state = exception_enter();
- 	pgd_t *pgdir;
- 	unsigned long vsid;
- 	pte_t *ptep;
-@@ -1479,7 +1478,6 @@ int hash_page_mm(struct mm_struct *mm, unsigned long ea,
- 	DBG_LOW(" -> rc=%d\n", rc);
+ /*
+@@ -935,7 +927,6 @@ INT_DEFINE_BEGIN(system_reset)
+ 	 */
+ 	ISET_RI=0
+ 	ISTACK=0
+-	IRECONCILE=0
+ 	IKVM_REAL=1
+ INT_DEFINE_END(system_reset)
  
- bail:
--	exception_exit(prev_state);
- 	return rc;
- }
- EXPORT_SYMBOL_GPL(hash_page_mm);
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index fd8e28944293..655d00765627 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -548,7 +548,6 @@ NOKPROBE_SYMBOL(__do_page_fault);
+@@ -1125,7 +1116,6 @@ INT_DEFINE_BEGIN(machine_check_early)
+ 	ISTACK=0
+ 	IDAR=1
+ 	IDSISR=1
+-	IRECONCILE=0
+ 	IKUAP=0 /* We don't touch AMR here, we never go to virtual mode */
+ INT_DEFINE_END(machine_check_early)
  
- DEFINE_INTERRUPT_HANDLER_RET(do_page_fault)
- {
--	enum ctx_state prev_state = exception_enter();
- 	unsigned long address = regs->dar;
- 	unsigned long error_code = regs->dsisr;
- 	long err;
-@@ -571,8 +570,6 @@ DEFINE_INTERRUPT_HANDLER_RET(do_page_fault)
- 	}
+@@ -1473,7 +1463,6 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ INT_DEFINE_BEGIN(data_access_slb)
+ 	IVEC=0x380
+ 	IAREA=PACA_EXSLB
+-	IRECONCILE=0
+ 	IDAR=1
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+ 	IKVM_SKIP=1
+@@ -1502,7 +1491,6 @@ MMU_FTR_SECTION_ELSE
+ 	li	r3,-EFAULT
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 	std	r3,RESULT(r1)
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	do_bad_slb_fault
+ 	b	interrupt_return
+@@ -1564,7 +1552,6 @@ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ INT_DEFINE_BEGIN(instruction_access_slb)
+ 	IVEC=0x480
+ 	IAREA=PACA_EXSLB
+-	IRECONCILE=0
+ 	IISIDE=1
+ 	IDAR=1
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+@@ -1593,7 +1580,6 @@ MMU_FTR_SECTION_ELSE
+ 	li	r3,-EFAULT
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 	std	r3,RESULT(r1)
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	do_bad_slb_fault
+ 	b	interrupt_return
+@@ -1753,7 +1739,6 @@ EXC_COMMON_BEGIN(program_check_common)
+  */
+ INT_DEFINE_BEGIN(fp_unavailable)
+ 	IVEC=0x800
+-	IRECONCILE=0
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+ 	IKVM_REAL=1
  #endif
+@@ -1768,7 +1753,6 @@ EXC_VIRT_END(fp_unavailable, 0x4800, 0x100)
+ EXC_COMMON_BEGIN(fp_unavailable_common)
+ 	GEN_COMMON fp_unavailable
+ 	bne	1f			/* if from user, just load it up */
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	kernel_fp_unavailable_exception
+ 0:	trap
+@@ -1787,7 +1771,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_TM)
+ 	b	fast_interrupt_return
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 2:	/* User process was in a transaction */
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	fp_unavailable_tm
+ 	b	interrupt_return
+@@ -1852,7 +1835,6 @@ INT_DEFINE_BEGIN(hdecrementer)
+ 	IVEC=0x980
+ 	IHSRR=1
+ 	ISTACK=0
+-	IRECONCILE=0
+ 	IKVM_REAL=1
+ 	IKVM_VIRT=1
+ INT_DEFINE_END(hdecrementer)
+@@ -2226,7 +2208,6 @@ INT_DEFINE_BEGIN(hmi_exception_early)
+ 	IHSRR=1
+ 	IREALMODE_COMMON=1
+ 	ISTACK=0
+-	IRECONCILE=0
+ 	IKUAP=0 /* We don't touch AMR here, we never go to virtual mode */
+ 	IKVM_REAL=1
+ INT_DEFINE_END(hmi_exception_early)
+@@ -2400,7 +2381,6 @@ EXC_COMMON_BEGIN(performance_monitor_common)
+  */
+ INT_DEFINE_BEGIN(altivec_unavailable)
+ 	IVEC=0xf20
+-	IRECONCILE=0
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+ 	IKVM_REAL=1
+ #endif
+@@ -2430,7 +2410,6 @@ BEGIN_FTR_SECTION
+ 	b	fast_interrupt_return
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 2:	/* User process was in a transaction */
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	altivec_unavailable_tm
+ 	b	interrupt_return
+@@ -2438,7 +2417,6 @@ BEGIN_FTR_SECTION
+ 1:
+ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+ #endif
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	altivec_unavailable_exception
+ 	b	interrupt_return
+@@ -2454,7 +2432,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+  */
+ INT_DEFINE_BEGIN(vsx_unavailable)
+ 	IVEC=0xf40
+-	IRECONCILE=0
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+ 	IKVM_REAL=1
+ #endif
+@@ -2483,7 +2460,6 @@ BEGIN_FTR_SECTION
+ 	b	load_up_vsx
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 2:	/* User process was in a transaction */
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	vsx_unavailable_tm
+ 	b	interrupt_return
+@@ -2491,7 +2467,6 @@ BEGIN_FTR_SECTION
+ 1:
+ END_FTR_SECTION_IFSET(CPU_FTR_VSX)
+ #endif
+-	RECONCILE_IRQ_STATE(r10, r11)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+ 	bl	vsx_unavailable_exception
+ 	b	interrupt_return
+@@ -2826,7 +2801,6 @@ EXC_VIRT_NONE(0x5800, 0x100)
+ INT_DEFINE_BEGIN(soft_nmi)
+ 	IVEC=0x900
+ 	ISTACK=0
+-	IRECONCILE=0	/* Soft-NMI may fire under local_irq_disable */
+ INT_DEFINE_END(soft_nmi)
  
--	exception_exit(prev_state);
--
- 	return err;
- }
- NOKPROBE_SYMBOL(do_page_fault);
+ /*
 -- 
 2.23.0
 
