@@ -1,35 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BEB25EBDE
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 02:46:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D888625EBDF
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 02:48:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BkXmH4XlxzDqhm
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 10:46:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BkXp45yrnzDqpr
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 10:48:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
  envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BkBrd5k25zDqSV
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 21:19:03 +1000 (AEST)
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 5F274D650A2997407E73;
- Sat,  5 Sep 2020 19:18:57 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Sat, 5 Sep 2020
- 19:18:50 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BkC223jmszDqTN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Sep 2020 21:27:22 +1000 (AEST)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 0816BF94880A8F88B017;
+ Sat,  5 Sep 2020 19:27:13 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Sat, 5 Sep 2020
+ 19:27:04 +0800
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH -next] powerpc/eeh: fix compile warning with CONFIG_PROC_FS=n
-Date: Sat, 5 Sep 2020 19:17:49 +0800
-Message-ID: <20200905111749.3198998-1-yangyingliang@huawei.com>
+Subject: [PATCH -next] powerpc/book3s64: fix link error with
+ CONFIG_PPC_RADIX_MMU=n
+Date: Sat, 5 Sep 2020 19:25:48 +0800
+Message-ID: <20200905112548.3265530-1-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -48,42 +49,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: yangyingliang@huawei.com, oohall@gmail.com
+Cc: yangyingliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the compile warning:
-
-arch/powerpc/kernel/eeh.c:1639:12: error: 'proc_eeh_show' defined but not used [-Werror=unused-function]
- static int proc_eeh_show(struct seq_file *m, void *v)
+Fix link error when CONFIG_PPC_RADIX_MMU is disabled:
+powerpc64-linux-gnu-ld: arch/powerpc/platforms/pseries/lpar.o:(.toc+0x0): undefined reference to `mmu_pid_bits'
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- arch/powerpc/kernel/eeh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/mm/book3s64/mmu_context.c | 4 ++++
+ arch/powerpc/platforms/pseries/lpar.c  | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 94682382fc8c..420c3c25c6e7 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1636,6 +1636,7 @@ int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
- }
- EXPORT_SYMBOL_GPL(eeh_pe_inject_err);
+diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
+index 0ba30b8b935b..a8e292cd88f0 100644
+--- a/arch/powerpc/mm/book3s64/mmu_context.c
++++ b/arch/powerpc/mm/book3s64/mmu_context.c
+@@ -152,6 +152,7 @@ void hash__setup_new_exec(void)
  
-+#ifdef CONFIG_PROC_FS
- static int proc_eeh_show(struct seq_file *m, void *v)
+ static int radix__init_new_context(struct mm_struct *mm)
  {
- 	if (!eeh_enabled()) {
-@@ -1662,6 +1663,7 @@ static int proc_eeh_show(struct seq_file *m, void *v)
++#ifdef CONFIG_PPC_RADIX_MMU
+ 	unsigned long rts_field;
+ 	int index, max_id;
  
- 	return 0;
- }
+@@ -177,6 +178,9 @@ static int radix__init_new_context(struct mm_struct *mm)
+ 	mm->context.hash_context = NULL;
+ 
+ 	return index;
++#else
++	return -ENOTSUPP;
 +#endif
+ }
  
- #ifdef CONFIG_DEBUG_FS
- static int eeh_enable_dbgfs_set(void *data, u64 val)
+ int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index baf24eacd268..e454e218dbba 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -1726,10 +1726,12 @@ void __init hpte_init_pseries(void)
+ 
+ void radix_init_pseries(void)
+ {
++#ifdef CONFIG_PPC_RADIX_MMU
+ 	pr_info("Using radix MMU under hypervisor\n");
+ 
+ 	pseries_lpar_register_process_table(__pa(process_tb),
+ 						0, PRTB_SIZE_SHIFT - 12);
++#endif
+ }
+ 
+ #ifdef CONFIG_PPC_SMLPAR
 -- 
 2.25.1
 
