@@ -1,83 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA0525E8E1
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 17:49:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489DB25E98C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Sep 2020 19:46:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BkJrX6mGbzDqkx
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 01:49:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BkMRn3ckKzDqkf
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Sep 2020 03:46:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Hnu0TMoi; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=dCDx+YiD; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BkJm03TpyzDqjn
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Sep 2020 01:45:34 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id u3so1168607pjr.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Sep 2020 08:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=0zomv6SLpBCgRUcNigIvJpvA8Tydvp1pLbt33s7KfSg=;
- b=Hnu0TMoiEodwJYjQuYaWa1t2E+EpttYP4C490ikFzotrHDz6qAJBxTSBFrzBM9ZWFV
- rlJOySqH7G7hN7IYcBZDSQ4IoOZTMhy0m+8VIsKIQ4QSWRRgbMZIsztMcCzfk9DmFbHy
- 8Dg6Yc+q3/o3SRY7/RIUOoW5mKjeMe35qCXWfrslnb1fCi13pdd3EM37UFUuQfHGAltL
- keQHRRBWLicT0pLW5vtR+CKe7sn2VXWnPG++EEi0qVq2QmkQoEcwLwSUFOaBBUPQ4Uc3
- qmRxoht8EFp8lgseX12iqurjQfGvOi3uikHIwDwOe8MOCLrXdhZo/XYFicKrYcN01vbM
- XPwA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BkMNR3ZLYzDqdM
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Sep 2020 03:43:48 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id 2so4654798pjx.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Sep 2020 10:43:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QVEafzz2OAHgTyyYpHpI3ib5F3DU9WXpuJ+M8mZXv/0=;
+ b=dCDx+YiDK6f4WpKNiuRmA+x3nbWZbN6C9O9Dk23UOVvETFKk0vd1Sh1sReQH4VZ7DO
+ tQCssF1638aYXDWAZ4s3hi78LPkypSNNvOQX1mdqfLrKKmq77PrAlfuJ7B1T8AdS4cgt
+ Wth3eMuvtVPdtr5zaDtxAsG6NU06gHl1phGVQhINi89pPPePUCKlYNSmQGJtopwwkaYa
+ h/DxMA6nicAQGjwfLXAYWw4bH8/zu/a8TmAtr7TlNZRXmGVjeP+POT8DvQPjCe/qvuqv
+ 4+LEP4YdeCiZNGWjwqnJT8NedPB1QRsWqQRQTOsTHC+KGTmPxSA3mPclIXo52ASubTFu
+ f+MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=0zomv6SLpBCgRUcNigIvJpvA8Tydvp1pLbt33s7KfSg=;
- b=K/jBrEqSo0bi4znGJ1y81EQ12K59MV26pNgKqGq+x2a1bSk3l6eb8S/hqoOkPVEtdL
- j3KmjDCZkKjzQ6OKBVopiDEpy3jdhfem49AxptgaztL5bc4xrZkrBUBLorPi78g4wgH/
- iwY7xuk2so/Paw77LpTJHrrK3W9KhZeQyz7ElZAlA7w9/fUmoaCnovfUXCFJdxh3rBZ4
- +yK81Z4MNP8Eaq/Ic4rLKrk8X6r5fijMDDxiOXS+aUiHB6JhXSYW94xSFigrnNoE3xQr
- QJ4WA8+rMOxoBSU/xDX2yemaEHeFK3UKm6mGn0e2VZck0ImldCPhHHgKZCrBsFK26AdB
- U5FA==
-X-Gm-Message-State: AOAM532DXeVMIauYoBd2UttIE5GVi7WOdP8ZQwlTHzEryJXCS4SvSHEb
- 8HRWQVraGrOdKGFk5hYGyBgxxA==
-X-Google-Smtp-Source: ABdhPJy2DO7Qwem10G6tlX9grnI3fcQoduoCr4ZB3PxiacIYR680sRJ0i6xLUCnOjlQ7wVZiNvvTjg==
-X-Received: by 2002:a17:90a:f117:: with SMTP id
- cc23mr12744737pjb.155.1599320729072; 
- Sat, 05 Sep 2020 08:45:29 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id c22sm1900861pgb.52.2020.09.05.08.45.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 05 Sep 2020 08:45:27 -0700 (PDT)
-Subject: Re: [PATCH 5/5] powerpc: use the generic dma_ops_bypass mode
-To: Christoph Hellwig <hch@lst.de>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>
-References: <20200708152449.316476-1-hch@lst.de>
- <20200708152449.316476-6-hch@lst.de>
- <505bcc1d-01a7-9655-88e1-ebddd0b94d56@kaod.org>
- <20200831064038.GB27617@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <48e38110-2a8f-1701-2e30-06fb07bbfffe@ozlabs.ru>
-Date: Sun, 6 Sep 2020 01:45:20 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ bh=QVEafzz2OAHgTyyYpHpI3ib5F3DU9WXpuJ+M8mZXv/0=;
+ b=QF3tMEsImDchSkGh6BuM/TwUZ+Su80eqBAwkecxcNCaTe8Pz3HLihhGaLnPP2oudSv
+ baKcyT9wNJv+ffbAsx2OdEsVE0OHjfTI++6AxR9qd5hzGU7Oaa3T9kihGhhRIXNH2J1V
+ jssw3QXD22+MqH1VIWFiOSRCYd4umc4fP1CoQ2zoZzZV6qosWuEVAUi+WTM1m5t+bdkM
+ jvhBB/roUk4dpKQce1KvKmEpVe0KHYdRk6Gj9WVPM3XC+sP/1wp+6t+cc2n+yM7RyASy
+ lZQ2fhw7huH02xOh3DPiffCIldIN6aemAFIr2xqyaPskXjQBwouLovCgWSaMEFHxJ3AY
+ MPbg==
+X-Gm-Message-State: AOAM531lRjbqsEszUekAw4t6U2KliQJfSkoKquaXXbpo9hVNWJTL1ADC
+ S1z/4RBBhXwJIcaJdc19yvE=
+X-Google-Smtp-Source: ABdhPJxcDSMIYwFzzCRT0nqP5TpESWSYeLJ9z2TVPDF+VlmuB8oRUvZ0Amch5JFWMnAhx0dG7t6SCQ==
+X-Received: by 2002:a17:902:758d:: with SMTP id
+ j13mr12487071pll.160.1599327825074; 
+ Sat, 05 Sep 2020 10:43:45 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id i1sm10405317pfk.21.2020.09.05.10.43.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 05 Sep 2020 10:43:44 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: 
+Subject: [RFC PATCH 00/12] interrupt entry wrappers
+Date: Sun,  6 Sep 2020 03:43:23 +1000
+Message-Id: <20200905174335.3161229-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20200831064038.GB27617@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -90,121 +77,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Daniel Borkmann <daniel@iogearbox.net>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@gmail.com>,
- Joerg Roedel <joro@8bytes.org>, Jesper Dangaard Brouer <brouer@redhat.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Oliver O'Halloran <oohall@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, aacraid@microsemi.com,
- Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series moves more stuff to C, and fixes context tracking on
+64s.
 
+Nicholas Piggin (12):
+  powerpc/64s: move the last of the page fault handling logic to C
+  powerpc: remove arguments from interrupt handler functions
+  powerpc: interrupt handler wrapper functions
+  powerpc: add interrupt_cond_local_irq_enable helper
+  powerpc/64s: Do context tracking in interrupt entry wrapper
+  powerpc/64s: reconcile interrupts in C
+  powerpc/64: move account_stolen_time into its own function
+  powerpc/64: entry cpu time accounting in C
+  powerpc: move NMI entry/exit code into wrapper
+  powerpc/64s: move NMI soft-mask handling to C
+  powerpc/64s: runlatch interrupt handling in C
+  powerpc/64s: power4 nap fixup in C
 
-On 31/08/2020 16:40, Christoph Hellwig wrote:
-> On Sun, Aug 30, 2020 at 11:04:21AM +0200, Cédric Le Goater wrote:
->> Hello,
->>
->> On 7/8/20 5:24 PM, Christoph Hellwig wrote:
->>> Use the DMA API bypass mechanism for direct window mappings.  This uses
->>> common code and speed up the direct mapping case by avoiding indirect
->>> calls just when not using dma ops at all.  It also fixes a problem where
->>> the sync_* methods were using the bypass check for DMA allocations, but
->>> those are part of the streaming ops.
->>>
->>> Note that this patch loses the DMA_ATTR_WEAK_ORDERING override, which
->>> has never been well defined, as is only used by a few drivers, which
->>> IIRC never showed up in the typical Cell blade setups that are affected
->>> by the ordering workaround.
->>>
->>> Fixes: efd176a04bef ("powerpc/pseries/dma: Allow SWIOTLB")
->>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>> ---
->>>   arch/powerpc/Kconfig              |  1 +
->>>   arch/powerpc/include/asm/device.h |  5 --
->>>   arch/powerpc/kernel/dma-iommu.c   | 90 ++++---------------------------
->>>   3 files changed, 10 insertions(+), 86 deletions(-)
->>
->> I am seeing corruptions on a couple of POWER9 systems (boston) when
->> stressed with IO. stress-ng gives some results but I have first seen
->> it when compiling the kernel in a guest and this is still the best way
->> to raise the issue.
->>
->> These systems have of a SAS Adaptec controller :
->>
->>    0003:01:00.0 Serial Attached SCSI controller: Adaptec Series 8 12G SAS/PCIe 3 (rev 01)
->>
->> When the failure occurs, the POWERPC EEH interrupt fires and dumps
->> lowlevel PHB4 registers among which :
->> 					
->>    [ 2179.251069490,3] PHB#0003[0:3]:           phbErrorStatus = 0000028000000000
->>    [ 2179.251117476,3] PHB#0003[0:3]:      phbFirstErrorStatus = 0000020000000000
->>
->> The bits raised identify a PPC 'TCE' error, which means it is related
->> to DMAs. See below for more details.
->>
->>
->> Reverting this patch "fixes" the issue but it is probably else where,
->> in some other layers or in the aacraid driver. How should I proceed
->> to get more information ?
-> 
-> The aacraid DMA masks look like a mess.
-
-
-It kinds does and is. The thing is that after f1565c24b596 the driver 
-sets 32 bit DMA mask which in turn enables the small DMA window (not 
-bypass) and since the aacraid driver has at least one bug with double 
-unmap of the same DMA handle, this somehow leads to EEH (PCI DMA error).
-
-
-The driver sets 32but mask because it callis dma_get_required_mask() 
-_before_ setting the mask so dma_get_required_mask() does not go the 
-dma_alloc_direct() path and calls the powerpc's 
-dma_iommu_get_required_mask() which:
-
-1. does the math like this (spot 2 bugs):
-
-mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1)
-
-2. but even after fixing that, the driver crashes as f1565c24b596 
-removed the call to dma_iommu_bypass_supported() so it enforces IOMMU.
-
-
-The patch below (the first hunk to be precise) brings the things back to 
-where they were (64bit mask). The double unmap bug in the driver is 
-still to be investigated.
-
-
-
-diff --git a/arch/powerpc/kernel/dma-iommu.c 
-b/arch/powerpc/kernel/dma-iommu.c
-index 569fecd7b5b2..785abccb90fc 100644
---- a/arch/powerpc/kernel/dma-iommu.c
-+++ b/arch/powerpc/kernel/dma-iommu.c
-@@ -117,10 +117,18 @@ u64 dma_iommu_get_required_mask(struct device *dev)
-         struct iommu_table *tbl = get_iommu_table_base(dev);
-         u64 mask;
-
-+       if (dev_is_pci(dev)) {
-+               u64 bypass_mask = dma_direct_get_required_mask(dev);
-+
-+               if (dma_iommu_bypass_supported(dev, bypass_mask))
-+                       return bypass_mask;
-+       }
-+
-         if (!tbl)
-                 return 0;
-
--       mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1);
-+       mask = 1ULL << (fls_long(tbl->it_offset + tbl->it_size) +
-+                       tbl->it_page_shift - 1);
-         mask += mask - 1;
-
-         return mask;
-
-
+ arch/powerpc/Kconfig                      |   2 +-
+ arch/powerpc/include/asm/asm-prototypes.h |  28 --
+ arch/powerpc/include/asm/bug.h            |   2 +-
+ arch/powerpc/include/asm/cputime.h        |  15 +
+ arch/powerpc/include/asm/hw_irq.h         |   9 -
+ arch/powerpc/include/asm/interrupt.h      | 316 ++++++++++++++++++++++
+ arch/powerpc/include/asm/ppc_asm.h        |  24 --
+ arch/powerpc/include/asm/processor.h      |   1 +
+ arch/powerpc/include/asm/thread_info.h    |   6 +
+ arch/powerpc/include/asm/time.h           |   2 +
+ arch/powerpc/kernel/dbell.c               |   3 +-
+ arch/powerpc/kernel/exceptions-64e.S      |   3 -
+ arch/powerpc/kernel/exceptions-64s.S      | 307 ++-------------------
+ arch/powerpc/kernel/idle_book3s.S         |   4 +
+ arch/powerpc/kernel/irq.c                 |   3 +-
+ arch/powerpc/kernel/mce.c                 |  17 +-
+ arch/powerpc/kernel/ptrace/ptrace.c       |   4 -
+ arch/powerpc/kernel/signal.c              |   4 -
+ arch/powerpc/kernel/syscall_64.c          |  24 +-
+ arch/powerpc/kernel/tau_6xx.c             |   2 +-
+ arch/powerpc/kernel/time.c                |   3 +-
+ arch/powerpc/kernel/traps.c               | 198 ++++++--------
+ arch/powerpc/kernel/watchdog.c            |  15 +-
+ arch/powerpc/kvm/book3s_hv_builtin.c      |   1 +
+ arch/powerpc/mm/book3s64/hash_utils.c     |  82 ++++--
+ arch/powerpc/mm/book3s64/slb.c            |  12 +-
+ arch/powerpc/mm/fault.c                   |  74 ++++-
+ arch/powerpc/platforms/powernv/idle.c     |   1 +
+ 28 files changed, 608 insertions(+), 554 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/interrupt.h
 
 -- 
-Alexey
+2.23.0
+
