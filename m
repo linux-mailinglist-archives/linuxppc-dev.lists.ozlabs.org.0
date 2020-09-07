@@ -2,75 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6AF25F167
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 03:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF0525F18F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 03:53:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bl9LJ3CLbzDqJQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 11:14:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlBBW26tfzDqSY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 11:53:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codefail.de (client-ip=198.54.127.82;
- helo=se17-3.privateemail.com; envelope-from=cmr@codefail.de;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=codefail.de
-Received: from se17-3.privateemail.com (se17-3.privateemail.com
- [198.54.127.82])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bl9JL06vQzDqQj
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 11:13:05 +1000 (AEST)
-Received: from new-01-3.privateemail.com ([198.54.122.47])
- by se17.registrar-servers.com with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.92)
- (envelope-from <cmr@codefail.de>)
- id 1kF5iK-0004ne-6c; Sun, 06 Sep 2020 18:12:58 -0700
-Received: from MTA-07-1.privateemail.com (unknown [10.20.147.17])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 1C4E3A6F;
- Mon,  7 Sep 2020 01:12:55 +0000 (UTC)
-Received: from MTA-07.privateemail.com (localhost [127.0.0.1])
- by MTA-07.privateemail.com (Postfix) with ESMTP id 63BEB60049;
- Sun,  6 Sep 2020 21:12:54 -0400 (EDT)
-Received: from localhost (unknown [10.20.151.224])
- by MTA-07.privateemail.com (Postfix) with ESMTPA id 1F85560046;
- Mon,  7 Sep 2020 01:12:54 +0000 (UTC)
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH v3 4/6] powerpc: Introduce temporary mm
-From: "Christopher M. Riedl" <cmr@codefail.de>
-To: "Jann Horn" <jannh@google.com>
-Date: Sun, 06 Sep 2020 19:15:02 -0500
-Message-Id: <C5GPCGQNRBQ2.8LRBQFQQ8QRK@geist>
-In-Reply-To: <CAG48ez1W7FcDPAnqQ7TpSnKy--vaQm_f5prsZXRxcybzGg0tpg@mail.gmail.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Originating-IP: 198.54.122.47
-X-SpamExperts-Domain: o3.privateemail.com
-X-SpamExperts-Username: out-03
-Authentication-Results: registrar-servers.com;
- auth=pass (plain) smtp.auth=out-03@o3.privateemail.com
-X-SpamExperts-Outgoing-Class: ham
-X-SpamExperts-Outgoing-Evidence: Combined (0.02)
-X-Recommended-Action: accept
-X-Filter-ID: Mvzo4OR0dZXEDF/gcnlw0VKALJWqpbz84ezJUOplsTqpSDasLI4SayDByyq9LIhVViWPu4qwxrHG
- on7QCRBH60TNWdUk1Ol2OGx3IfrIJKyP9eGNFz9TW9u+Jt8z2T3K0kAEPCk9rIF2PFRPd9oD/+mU
- epBsntXvmzMKp70qHIVy06HjBCNevvMk3/tz3RhKppPDurF249hEi/hXuZV0Bfydg2dPJIOdvML0
- pmuMjL+sSRVE/Yi9caFO9s+hJUIag7Mr+LdmEPMuzjcDLgIpUp4KqOh03z3Jnl1IbrFC3WxWd62Q
- 4tf7w1n56gL5R3iTitzRVjQKpyyasW/cnw+IYZ3P7SXZfF/PMa7BKaW4aUHy0JCEIEBpwRrTof3G
- nw4dOSMe/wvVcKjx/+UKUJ2dAQHXl4wgwTqJlTT/fetzilMGV02hzj+6Clu59u5sr7HikapUBPW9
- YV4SESdWyVtFdVGH7sydZvDt9c5R0PA8ODZs3zuom9668jgWRpPOjHntXKEKMgzNLgjKsVkPoQlW
- r+vjEfTaJe0WbjDSwI4VsDh/Ak5UMKR5Jabn4uqWeMpVV+j5NTNoBBmpJESzDIAZD+ijHBtexFH6
- /O9QemIWoIxJHU2xvEqMW59RROlnpVhs3WYdNxMU6g6rgAqTbJg65XJ7Wcw/vHrkNz0yR/nxmRhz
- HDeqqFz43py4SDhdaHkWfNr5H/lmx0CkCS1/c0I+vQBJgDK7W7IEgz6hLB4NE7r4xc7DI5pUcvgC
- 2qkeP00Sk+1FWQ+vJ8qzoMDtBircbZyj4Vr2fJau/pSKTnHZpmzev7R5gLj25cxY39MfuDbvaQ11
- y3lWUHxy16UznfzqmjgtcanFiK6d7wZEdGX/n8cTMXL2ASzO2/x/FXAqsRfgwBXfs6ClNsb8ml4Z
- rgPQJkxUuqZsyTFf9tJdo1NX/ThvA3QEKTMFvUWB5kl7tpOKiZ05cqMnXxzdxIfkHhcHe2JzRhXU
- TdwrTzwY0h5CMWU4m+NxLqLodZwv2BZA26yO5xS/zVfrqzZpLvpYwP30rKEsmgNU80KTDQcWwe0S
- 4mBBUkQTxmW44eWEf55rQAvvoiIOeoh24KMUdfqAzhfhkHj0OOJajA6cq8jxoXiPMC6r+737L3jx
- JfXzftJwbfbaqDNKToL2xQmqr15vNQO8SQ==
-X-Report-Abuse-To: spam@se5.registrar-servers.com
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlB904tc3zDqRc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 11:51:45 +1000 (AEST)
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id D9344EEC0A19FB7B6FD2;
+ Mon,  7 Sep 2020 09:51:29 +0800 (CST)
+Received: from [127.0.0.1] (10.174.176.211) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.487.0;
+ Mon, 7 Sep 2020 09:51:29 +0800
+Subject: Re: [PATCH -next] powerpc/book3s64: fix link error with
+ CONFIG_PPC_RADIX_MMU=n
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+References: <20200905112548.3265530-1-yangyingliang@huawei.com>
+ <39a976b8-896c-e878-bac7-50bbf3ccbc4f@csgroup.eu>
+From: Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <af37c513-6232-c35c-33e3-f6d8d82c8175@huawei.com>
+Date: Mon, 7 Sep 2020 09:51:28 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <39a976b8-896c-e878-bac7-50bbf3ccbc4f@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Originating-IP: [10.174.176.211]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,153 +54,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Kernel Hardening <kernel-hardening@lists.openwall.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Aug 27, 2020 at 11:15 AM CDT, Jann Horn wrote:
-> On Thu, Aug 27, 2020 at 7:24 AM Christopher M. Riedl <cmr@codefail.de>
-> wrote:
-> > x86 supports the notion of a temporary mm which restricts access to
-> > temporary PTEs to a single CPU. A temporary mm is useful for situations
-> > where a CPU needs to perform sensitive operations (such as patching a
-> > STRICT_KERNEL_RWX kernel) requiring temporary mappings without exposing
-> > said mappings to other CPUs. A side benefit is that other CPU TLBs do
-> > not need to be flushed when the temporary mm is torn down.
-> >
-> > Mappings in the temporary mm can be set in the userspace portion of the
-> > address-space.
-> [...]
-> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-p=
-atching.c
-> [...]
-> > @@ -44,6 +45,70 @@ int raw_patch_instruction(struct ppc_inst *addr, str=
-uct ppc_inst instr)
-> >  }
-> >
-> >  #ifdef CONFIG_STRICT_KERNEL_RWX
-> > +
-> > +struct temp_mm {
-> > +       struct mm_struct *temp;
-> > +       struct mm_struct *prev;
-> > +       bool is_kernel_thread;
-> > +       struct arch_hw_breakpoint brk[HBP_NUM_MAX];
-> > +};
-> > +
-> > +static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_str=
-uct *mm)
-> > +{
-> > +       temp_mm->temp =3D mm;
-> > +       temp_mm->prev =3D NULL;
-> > +       temp_mm->is_kernel_thread =3D false;
-> > +       memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
-> > +}
-> > +
-> > +static inline void use_temporary_mm(struct temp_mm *temp_mm)
-> > +{
-> > +       lockdep_assert_irqs_disabled();
-> > +
-> > +       temp_mm->is_kernel_thread =3D current->mm =3D=3D NULL;
->
-> (That's a somewhat misleading variable name - kernel threads can have
-> a non-NULL ->mm, too.)
->
 
-Oh I didn't know that, in that case yes this is not a good name. I am
-considering some changes (based on your comments about current->mm
-below) which would make this variable superfluous.
+On 2020/9/6 14:50, Christophe Leroy wrote:
+>
+>
+> Le 05/09/2020 à 13:25, Yang Yingliang a écrit :
+>> Fix link error when CONFIG_PPC_RADIX_MMU is disabled:
+>> powerpc64-linux-gnu-ld: 
+>> arch/powerpc/platforms/pseries/lpar.o:(.toc+0x0): undefined reference 
+>> to `mmu_pid_bits'
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+>> ---
+>>   arch/powerpc/mm/book3s64/mmu_context.c | 4 ++++
+>
+> In your commit log, you are just mentionning 
+> arch/powerpc/platforms/pseries/lpar.o, which is right.
+>
+> You shouldn't need to modify arch/powerpc/mm/book3s64/mmu_context.c at 
+> all, see below.
+>
+>>   arch/powerpc/platforms/pseries/lpar.c  | 2 ++
+>>   2 files changed, 6 insertions(+)
+>>
+>> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c 
+>> b/arch/powerpc/mm/book3s64/mmu_context.c
+>> index 0ba30b8b935b..a8e292cd88f0 100644
+>> --- a/arch/powerpc/mm/book3s64/mmu_context.c
+>> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
+>> @@ -152,6 +152,7 @@ void hash__setup_new_exec(void)
+>>     static int radix__init_new_context(struct mm_struct *mm)
+>>   {
+>> +#ifdef CONFIG_PPC_RADIX_MMU
+>
+> This shouldn't be required. radix__init_new_context() is only called 
+> when radix_enabled() returns true.
+> As it is a static function, when it is not called it gets optimised 
+> away, so you will never get an undefined reference to `mmu_pid_bits` 
+> there.
+powerpc64-linux-gnu-ld: 
+arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x0): undefined reference 
+to `mmu_pid_bits'
+powerpc64-linux-gnu-ld: 
+arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x8): undefined reference 
+to `mmu_base_pid'
 
-> > +       if (temp_mm->is_kernel_thread)
-> > +               temp_mm->prev =3D current->active_mm;
-> > +       else
-> > +               temp_mm->prev =3D current->mm;
->
-> Why the branch? Shouldn't current->active_mm work in both cases?
->
->
 
-Yes you are correct.
+mmu_context.c is always compiled, it uses mmu_pid_bits and mmu_base_pid.
 
-> > +       /*
-> > +        * Hash requires a non-NULL current->mm to allocate a userspace=
- address
-> > +        * when handling a page fault. Does not appear to hurt in Radix=
- either.
-> > +        */
-> > +       current->mm =3D temp_mm->temp;
 >
-> This looks dangerous to me. There are various places that attempt to
-> find all userspace tasks that use a given mm by iterating through all
-> tasks on the system and comparing each task's ->mm pointer to
-> current's. Things like current_is_single_threaded() as part of various
-> security checks, mm_update_next_owner(), zap_threads(), and so on. So
-> if this is reachable from userspace task context (which I think it
-> is?), I don't think we're allowed to switch out the ->mm pointer here.
+>>       unsigned long rts_field;
+>>       int index, max_id;
+>>   @@ -177,6 +178,9 @@ static int radix__init_new_context(struct 
+>> mm_struct *mm)
+>>       mm->context.hash_context = NULL;
+>>         return index;
+>> +#else
+>> +    return -ENOTSUPP;
+>> +#endif
+>>   }
+>>     int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
+>> diff --git a/arch/powerpc/platforms/pseries/lpar.c 
+>> b/arch/powerpc/platforms/pseries/lpar.c
+>> index baf24eacd268..e454e218dbba 100644
+>> --- a/arch/powerpc/platforms/pseries/lpar.c
+>> +++ b/arch/powerpc/platforms/pseries/lpar.c
+>> @@ -1726,10 +1726,12 @@ void __init hpte_init_pseries(void)
+>>     void radix_init_pseries(void)
+>>   {
+>> +#ifdef CONFIG_PPC_RADIX_MMU
 >
+> This function is only called from 
+> /arch/powerpc/mm/book3s64/radix_pgtable.c which is only built when 
+> CONFIG_PPC_RADIX_MMU is selected.
 >
-
-Thanks for pointing this out! I took a step back and looked at this
-again in more detail. The only reason for reassigning the ->mm pointer
-is that when patching we need to hash the page and allocate an SLB=20
-entry w/ the hash MMU. That codepath includes a check to ensure that
-->mm is not NULL. Overwriting ->mm temporarily and restoring it is
-pretty crappy in retrospect. I _think_ a better approach is to just call
-the hashing and allocate SLB functions from `map_patch` directly - this
-both removes the need to overwrite ->mm (since the functions take an mm
-parameter) and it avoids taking two exceptions when doing the actual
-patching.
-
-This works fine on Power9 and a Power8 at least but needs some testing
-on PPC32 before I can send a v4.
-
-> > +       switch_mm_irqs_off(NULL, temp_mm->temp, current);
+> So the entire function should be encloded in the #ifdef.
+OK, I will send a v2 later.
 >
-> switch_mm_irqs_off() calls switch_mmu_context(), which in the nohash
-> implementation increments next->context.active and decrements
-> prev->context.active if prev is non-NULL, right? So this would
-> increase temp_mm->temp->context.active...
+>>       pr_info("Using radix MMU under hypervisor\n");
+>>         pseries_lpar_register_process_table(__pa(process_tb),
+>>                           0, PRTB_SIZE_SHIFT - 12);
+>> +#endif
+>>   }
+>>     #ifdef CONFIG_PPC_SMLPAR
+>>
 >
-> > +       if (ppc_breakpoint_available()) {
-> > +               struct arch_hw_breakpoint null_brk =3D {0};
-> > +               int i =3D 0;
-> > +
-> > +               for (; i < nr_wp_slots(); ++i) {
-> > +                       __get_breakpoint(i, &temp_mm->brk[i]);
-> > +                       if (temp_mm->brk[i].type !=3D 0)
-> > +                               __set_breakpoint(i, &null_brk);
-> > +               }
-> > +       }
-> > +}
-> > +
-> > +static inline void unuse_temporary_mm(struct temp_mm *temp_mm)
-> > +{
-> > +       lockdep_assert_irqs_disabled();
-> > +
-> > +       if (temp_mm->is_kernel_thread)
-> > +               current->mm =3D NULL;
-> > +       else
-> > +               current->mm =3D temp_mm->prev;
-> > +       switch_mm_irqs_off(NULL, temp_mm->prev, current);
->
-> ... whereas this would increase temp_mm->prev->context.active. As far
-> as I can tell, that'll mean that both the original mm and the patching
-> mm will have their .active counts permanently too high after
-> use_temporary_mm()+unuse_temporary_mm()?
->
-
-Yes you are correct. Hmm, I can't immediately recall why prev=3DNULL here,
-and I can't find anything in the various powerpc
-switch_mm_irqs_off/switch_mmu_context implementations that would break
-by setting prev=3Dactual previous mm here. I will fix this for v4. Thanks!
-
-> > +       if (ppc_breakpoint_available()) {
-> > +               int i =3D 0;
-> > +
-> > +               for (; i < nr_wp_slots(); ++i)
-> > +                       if (temp_mm->brk[i].type !=3D 0)
-> > +                               __set_breakpoint(i, &temp_mm->brk[i]);
-> > +       }
-> > +}
+> Christophe
+> .
 
