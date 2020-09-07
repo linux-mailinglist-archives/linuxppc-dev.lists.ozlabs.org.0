@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A2125F31A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 08:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A074D25F31E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 08:21:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlJ660X72zDqNB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 16:19:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlJ8367SzzDqNH
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 16:21:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,14 +18,14 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlJ4K2tKhzDqM6
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 16:18:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlJ5H0LVqzDqNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 16:18:59 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 209181] kernel BUG at arch/powerpc/mm/pgtable.c:304!
-Date: Mon, 07 Sep 2020 06:18:02 +0000
+Date: Mon, 07 Sep 2020 06:18:54 +0000
 X-Bugzilla-Reason: CC
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: None
@@ -35,13 +35,13 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: zlang@redhat.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: DUPLICATE
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: akpm@linux-foundation.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-209181-206035-w28FoYW0Su@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-209181-206035-M6x6WxV50S@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-209181-206035@https.bugzilla.kernel.org/>
 References: <bug-209181-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -66,16 +66,17 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D209181
 
---- Comment #2 from Zorro Lang (zlang@redhat.com) ---
-(In reply to Christophe Leroy from comment #1)
-> See https://bugzilla.kernel.org/show_bug.cgi?id=3D209029
->=20
-> Patch at
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200902040122.
-> 136414-1-aneesh.kumar@linux.ibm.com/ to deactivate CONFIG_DEBUG_VM_PGTABLE
-> on powerpc until the issue is fixes.
+Zorro Lang (zlang@redhat.com) changed:
 
-Thanks for this info
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |DUPLICATE
+
+--- Comment #3 from Zorro Lang (zlang@redhat.com) ---
+
+
+*** This bug has been marked as a duplicate of bug 209029 ***
 
 --=20
 You are receiving this mail because:
