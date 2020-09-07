@@ -2,87 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84D025F3F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 09:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDC625F4BF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 10:13:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlKcd6PqqzDqQw
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 17:27:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlLct1rrjzDqRd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 18:13:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=f0RNSh/q; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlKZV2ZCBzDqKj
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 17:25:53 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08773Vgl011992; Mon, 7 Sep 2020 03:25:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=OJnNOq+oby8aRLHI0Gsl4COqtZxElFM6BmGCcqNgiOs=;
- b=f0RNSh/qXlJ34K8Iuj22cVWKNPPt2D9+U9CeugXPQZWCLLjGqxy7lGYjXNDKbkP+SdiV
- LLh3VzPEmqwM1SqzjgST/c92twVJoFq00pO9EtIxaE+HlGsSnES6ICjLWVWFoKv2JNLU
- bieLZQ5D4xRUulY5hMrnwTXqZ6tnlTRsdyAqVHSjHU6Ao8Y3Fw0tGdzE8DKQrxvdgeh+
- uN9LwIBoXsbKrILuD7zxbNY6X1SIJm+BwCga4oOvtLPRj7LJPD6aZzi8fRG+9FIdm9Vy
- 4EdHSqy8svy+PO7/hfEcvpJ3TMbR+LxB5H3h9BJLWH0z0aS/snKmodpmEUz1N+VCOPfu VQ== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 33dd78cv8t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Sep 2020 03:25:45 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0877LZhu022859;
- Mon, 7 Sep 2020 07:25:45 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma01wdc.us.ibm.com with ESMTP id 33c2a8e85d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Sep 2020 07:25:45 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0877PhuJ66650534
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Sep 2020 07:25:43 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C29906E05B;
- Mon,  7 Sep 2020 07:25:43 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 617116E04C;
- Mon,  7 Sep 2020 07:25:42 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.38.157])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  7 Sep 2020 07:25:41 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerepc/book3s64/hash: Align start/end address correctly
- with bolt mapping
-Date: Mon,  7 Sep 2020 12:55:39 +0530
-Message-Id: <20200907072539.67310-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlLb43YxfzDqPc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 18:11:22 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BlLZg2H9Mz9v0xg;
+ Mon,  7 Sep 2020 10:11:07 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id QumHwXbMT3sE; Mon,  7 Sep 2020 10:11:06 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BlLZf6Z4mz9v0xb;
+ Mon,  7 Sep 2020 10:11:06 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DFDE98B77F;
+ Mon,  7 Sep 2020 10:11:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id fm4wLaGXinXK; Mon,  7 Sep 2020 10:11:11 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 812A08B787;
+ Mon,  7 Sep 2020 10:11:11 +0200 (CEST)
+Subject: Re: [PATCH -next] powerpc/book3s64: fix link error with
+ CONFIG_PPC_RADIX_MMU=n
+To: Yang Yingliang <yangyingliang@huawei.com>, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org
+References: <20200905112548.3265530-1-yangyingliang@huawei.com>
+ <39a976b8-896c-e878-bac7-50bbf3ccbc4f@csgroup.eu>
+ <af37c513-6232-c35c-33e3-f6d8d82c8175@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <88101db4-a1bb-6a6d-521e-84dcec8b44d0@csgroup.eu>
+Date: Mon, 7 Sep 2020 10:11:01 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
+In-Reply-To: <af37c513-6232-c35c-33e3-f6d8d82c8175@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-07_01:2020-09-07,
- 2020-09-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 priorityscore=1501
- mlxlogscore=999 adultscore=0 mlxscore=0 impostorscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009070068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,71 +67,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This ensures we don't do a partial mapping of memory. With nvdimm, when
-creating namespaces with size not aligned to 16MB, the kernel ends up partially
-mapping the pages. This can result in kernel adding multiple hash page table
-entries for the same range. A new namespace will result in
-create_section_mapping() with start and end overlapping an already existing
-bolted hash page table entry.
 
-commit: 6acd7d5ef264 ("libnvdimm/namespace: Enforce memremap_compat_align()")
-made sure that we always create namespaces aligned to 16MB. But we can do
-better by avoiding mapping pages that are not aligned. This helps to catch
-access to these partially mapped pages early.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/book3s64/hash_utils.c    | 12 +++++++++---
- arch/powerpc/mm/book3s64/radix_pgtable.c |  1 +
- 2 files changed, 10 insertions(+), 3 deletions(-)
+Le 07/09/2020 à 03:51, Yang Yingliang a écrit :
+> 
+> On 2020/9/6 14:50, Christophe Leroy wrote:
+>>
+>>
+>> Le 05/09/2020 à 13:25, Yang Yingliang a écrit :
+>>> Fix link error when CONFIG_PPC_RADIX_MMU is disabled:
+>>> powerpc64-linux-gnu-ld: 
+>>> arch/powerpc/platforms/pseries/lpar.o:(.toc+0x0): undefined reference 
+>>> to `mmu_pid_bits'
+>>>
+>>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+>>> ---
+>>>   arch/powerpc/mm/book3s64/mmu_context.c | 4 ++++
+>>
+>> In your commit log, you are just mentionning 
+>> arch/powerpc/platforms/pseries/lpar.o, which is right.
+>>
+>> You shouldn't need to modify arch/powerpc/mm/book3s64/mmu_context.c at 
+>> all, see below.
+>>
+>>>   arch/powerpc/platforms/pseries/lpar.c  | 2 ++
+>>>   2 files changed, 6 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c 
+>>> b/arch/powerpc/mm/book3s64/mmu_context.c
+>>> index 0ba30b8b935b..a8e292cd88f0 100644
+>>> --- a/arch/powerpc/mm/book3s64/mmu_context.c
+>>> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
+>>> @@ -152,6 +152,7 @@ void hash__setup_new_exec(void)
+>>>     static int radix__init_new_context(struct mm_struct *mm)
+>>>   {
+>>> +#ifdef CONFIG_PPC_RADIX_MMU
+>>
+>> This shouldn't be required. radix__init_new_context() is only called 
+>> when radix_enabled() returns true.
+>> As it is a static function, when it is not called it gets optimised 
+>> away, so you will never get an undefined reference to `mmu_pid_bits` 
+>> there.
+> powerpc64-linux-gnu-ld: 
+> arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x0): undefined reference 
+> to `mmu_pid_bits'
+> powerpc64-linux-gnu-ld: 
+> arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x8): undefined reference 
+> to `mmu_base_pid'
+> 
+> 
+> mmu_context.c is always compiled, it uses mmu_pid_bits and mmu_base_pid.
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index c663e7ba801f..7185bc43b24f 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -260,8 +260,12 @@ int htab_bolt_mapping(unsigned long vstart, unsigned long vend,
- 	DBG("htab_bolt_mapping(%lx..%lx -> %lx (%lx,%d,%d)\n",
- 	    vstart, vend, pstart, prot, psize, ssize);
- 
--	for (vaddr = vstart, paddr = pstart; vaddr < vend;
--	     vaddr += step, paddr += step) {
-+	/* Carefully map only the possible range */
-+	vaddr = ALIGN(vstart, step);
-+	paddr = ALIGN(pstart, step);
-+	vend  = ALIGN_DOWN(vend, step);
-+
-+	for (; vaddr < vend; vaddr += step, paddr += step) {
- 		unsigned long hash, hpteg;
- 		unsigned long vsid = get_kernel_vsid(vaddr, ssize);
- 		unsigned long vpn  = hpt_vpn(vaddr, vsid, ssize);
-@@ -343,7 +347,9 @@ int htab_remove_mapping(unsigned long vstart, unsigned long vend,
- 	if (!mmu_hash_ops.hpte_removebolted)
- 		return -ENODEV;
- 
--	for (vaddr = vstart; vaddr < vend; vaddr += step) {
-+	/* Unmap the full range specificied */
-+	vaddr = ALIGN_DOWN(vstart, step);
-+	for (;vaddr < vend; vaddr += step) {
- 		rc = mmu_hash_ops.hpte_removebolted(vaddr, psize, ssize);
- 		if (rc == -ENOENT) {
- 			ret = -ENOENT;
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index d5f0c10d752a..5c8adeb8c955 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -276,6 +276,7 @@ static int __meminit create_physical_mapping(unsigned long start,
- 	int psize;
- 
- 	start = ALIGN(start, PAGE_SIZE);
-+	end   = ALIGN_DOWN(end, PAGE_SIZE);
- 	for (addr = start; addr < end; addr += mapping_size) {
- 		unsigned long gap, previous_size;
- 		int rc;
--- 
-2.26.2
+Yes, mmu_context.c is always compiled, but as I explained, 
+radix__init_new_context() is defined as 'static' so it is optimised out 
+when radix_enabled() returns false because there is no caller in that case.
 
+I just made the test with ppc64_defconfig + CONFIG_PPC_RADIX_MMU=n (GCC 8.1)
+
+The only failure I got was on lpar.c, which I fixed by enclosing the 
+entire radix_init_pseries() in an #ifdef.
+
+Once this is fixed, the build is OK, without any modification to 
+mmu_context.c
+
+powerpc64-linux-objdump -x arch/powerpc/mm/book3s64/mmu_context.o shows 
+only the following objects in the .toc:
+
+RELOCATION RECORDS FOR [.toc]:
+OFFSET           TYPE              VALUE
+0000000000000000 R_PPC64_ADDR64    kmalloc_caches
+0000000000000008 R_PPC64_ADDR64    vmemmap
+0000000000000010 R_PPC64_ADDR64    __pmd_frag_nr
+0000000000000018 R_PPC64_ADDR64    __pmd_frag_size_shift
+
+mmu_pid_bits and mmu_base_pid are not part of the undefined objetcs:
+
+0000000000000000         *UND*	0000000000000000 vmemmap
+0000000000000000         *UND*	0000000000000000 .mm_iommu_init
+0000000000000000         *UND*	0000000000000000 __pmd_frag_nr
+0000000000000000         *UND*	0000000000000000 .ida_alloc_range
+0000000000000000         *UND*	0000000000000000 .slb_setup_new_exec
+0000000000000000         *UND*	0000000000000000 mmu_feature_keys
+0000000000000000         *UND*	0000000000000000 .memset
+0000000000000000         *UND*	0000000000000000 .memcpy
+0000000000000000         *UND*	0000000000000000 .slice_init_new_context_exec
+0000000000000000         *UND*	0000000000000000 ._mcount
+0000000000000000         *UND*	0000000000000000 .__free_pages
+0000000000000000         *UND*	0000000000000000 __pmd_frag_size_shift
+0000000000000000         *UND*	0000000000000000 .slice_setup_new_exec
+0000000000000000         *UND*	0000000000000000 .ida_free
+0000000000000000         *UND*	0000000000000000 .pte_frag_destroy
+0000000000000000         *UND*	0000000000000000 .kfree
+0000000000000000         *UND*	0000000000000000 .pkey_mm_init
+0000000000000000         *UND*	0000000000000000 .kmem_cache_alloc_trace
+0000000000000000         *UND*	0000000000000000 .__warn_printk
+0000000000000000         *UND*	0000000000000000 _mcount
+0000000000000000         *UND*	0000000000000000 kmalloc_caches
+
+Christophe
