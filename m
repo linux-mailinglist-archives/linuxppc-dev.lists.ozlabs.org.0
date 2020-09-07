@@ -1,45 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C3D25FB49
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 15:27:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1147425FB7A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 15:32:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlTbz4DGVzDqPR
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 23:27:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlTjT4CJZzDqPc
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 23:32:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=KRrpWHcL; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlTYt1nx9zDqHF
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 23:25:53 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
- by mx2.suse.de (Postfix) with ESMTP id BD505ABB2;
- Mon,  7 Sep 2020 13:25:50 +0000 (UTC)
-Date: Mon, 7 Sep 2020 15:25:48 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
- Reimplement book3s idle code in C")
-Message-ID: <20200907132548.GX29521@kitsune.suse.cz>
-References: <20200830201145.GA29521@kitsune.suse.cz>
- <1598835313.5688ngko4f.astroid@bobo.none>
- <20200831091523.GC29521@kitsune.suse.cz>
- <87y2lv1430.fsf@mpe.ellerman.id.au>
- <1599484062.vgmycu6q5i.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlTgP53SbzDqHR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 23:30:41 +1000 (AEST)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6570221481;
+ Mon,  7 Sep 2020 13:30:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1599485438;
+ bh=5+5cu0m/GDXW1vdvbD9k7dHxXUwtrx3YfHl3e5jZzVw=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=KRrpWHcLtkZ3gsEWWQEUwiKCvFKuq+nxBQ17eXU7UnEmvJeWgaU3SCkt9a3hJWgsx
+ FLThsuMmNCxz4K2Oz4Z8viDJXy/BmBg7IfsTrbiKWDEihgV76wvP8FTW7mluj45XcF
+ jls9imQ81JnzCuK1kjqMeF696TtfPWoy3cmflzvQ=
+Date: Mon, 7 Sep 2020 14:30:30 +0100
+From: Will Deacon <will@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] kbuild: preprocess module linker script
+Message-ID: <20200907133029.GB12551@willie-the-truck>
+References: <20200904133122.133071-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1599484062.vgmycu6q5i.astroid@bobo.none>
+In-Reply-To: <20200904133122.133071-1-masahiroy@kernel.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -52,74 +56,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ro@suse.de, linuxppc-dev@lists.ozlabs.org,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: linux-ia64@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
+ linux-riscv@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-arch@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Fenghua Yu <fenghua.yu@intel.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kbuild@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
+ Jessica Yu <jeyu@kernel.org>, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org,
+ Michal Marek <michal.lkml@markovi.net>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 07, 2020 at 11:13:47PM +1000, Nicholas Piggin wrote:
-> Excerpts from Michael Ellerman's message of August 31, 2020 8:50 pm:
-> > Michal Suchánek <msuchanek@suse.de> writes:
-> >> On Mon, Aug 31, 2020 at 11:14:18AM +1000, Nicholas Piggin wrote:
-> >>> Excerpts from Michal Suchánek's message of August 31, 2020 6:11 am:
-> >>> > Hello,
-> >>> > 
-> >>> > on POWER8 KVM hosts lock up since commit 10d91611f426 ("powerpc/64s:
-> >>> > Reimplement book3s idle code in C").
-> >>> > 
-> >>> > The symptom is host locking up completely after some hours of KVM
-> >>> > workload with messages like
-> >>> > 
-> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
-> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
-> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
-> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
-> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
-> >>> > 
-> >>> > printed before the host locks up.
-> >>> > 
-> >>> > The machines run sandboxed builds which is a mixed workload resulting in
-> >>> > IO/single core/mutiple core load over time and there are periods of no
-> >>> > activity and no VMS runnig as well. The VMs are shortlived so VM
-> >>> > setup/terdown is somewhat excercised as well.
-> >>> > 
-> >>> > POWER9 with the new guest entry fast path does not seem to be affected.
-> >>> > 
-> >>> > Reverted the patch and the followup idle fixes on top of 5.2.14 and
-> >>> > re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Restore IAMR
-> >>> > after idle") which gives same idle code as 5.1.16 and the kernel seems
-> >>> > stable.
-> >>> > 
-> >>> > Config is attached.
-> >>> > 
-> >>> > I cannot easily revert this commit, especially if I want to use the same
-> >>> > kernel on POWER8 and POWER9 - many of the POWER9 fixes are applicable
-> >>> > only to the new idle code.
-> >>> > 
-> >>> > Any idea what can be the problem?
-> >>> 
-> >>> So hwthread_state is never getting back to to HWTHREAD_IN_IDLE on
-> >>> those threads. I wonder what they are doing. POWER8 doesn't have a good
-> >>> NMI IPI and I don't know if it supports pdbg dumping registers from the
-> >>> BMC unfortunately.
-> >>
-> >> It may be possible to set up fadump with a later kernel version that
-> >> supports it on powernv and dump the whole kernel.
-> > 
-> > Your firmware won't support it AFAIK.
-> > 
-> > You could try kdump, but if we have CPUs stuck in KVM then there's a
-> > good chance it won't work :/
+On Fri, Sep 04, 2020 at 10:31:21PM +0900, Masahiro Yamada wrote:
+> There was a request to preprocess the module linker script like we do
+> for the vmlinux one (https://lkml.org/lkml/2020/8/21/512).
 > 
-> I haven't had any luck yet reproducing this still. Testing with sub 
-> cores of various different combinations, etc. I'll keep trying though.
+> The difference between vmlinux.lds and module.lds is that the latter
+> is needed for external module builds, thus must be cleaned up by
+> 'make mrproper' instead of 'make clean' (also, it must be created by
+> 'make modules_prepare').
 > 
-> I don't know if there's much we can add to debug it. Can we run pdbg
-> on the BMCs on these things?
+> You cannot put it in arch/*/kernel/ because 'make clean' descends into
+> it. I moved arch/*/kernel/module.lds to arch/*/include/asm/module.lds.h,
+> which is included from scripts/module.lds.S.
+> 
+> scripts/module.lds is fine because 'make clean' keeps all the build
+> artifacts under scripts/.
+> 
+> You can add arch-specific sections in <asm/module.lds.h>.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Tested-by: Jessica Yu <jeyu@kernel.org>
+> ---
 
-I suppose it depends on the machine type?
+For the arm64 bits:
 
-Thanks
+Acked-by: Will Deacon <will@kernel.org>
 
-Michal
+Thanks,
+
+Will
