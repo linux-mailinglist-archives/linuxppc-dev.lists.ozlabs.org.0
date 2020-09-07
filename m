@@ -1,54 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204CD25FFCE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 18:39:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713D3260450
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 20:12:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlYs40jFjzDq7k
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 02:39:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlbwX6dDQzDqQH
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 04:12:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Bipxg5Ev; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=oNHElOGv; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlYkg3ChHzDqP0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 02:33:47 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A197121941;
- Mon,  7 Sep 2020 16:33:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1599496424;
- bh=VBDolsQa9bah2f35ikQNeh3bGYSd5ANyLGcQxwSCoX4=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Bipxg5EvnC8hQy5NauJaafk7Ed/G1z9HlXnee8PLGFIgzon2N8yz/PXAobN71xJIB
- d5/3TY+hRTZ6fjWk2y32qn8D/MuFhtU5Hxz8eRXlqTMcVFtBKwYShdFFZrcGpSNwhY
- 3nNGaSMByW1KI7s+t+U4uK+rOcvH1I5MVpDHaTQM=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 11/43] ibmvnic fix NULL tx_pools and rx_tools
- issue at do_reset
-Date: Mon,  7 Sep 2020 12:32:57 -0400
-Message-Id: <20200907163329.1280888-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200907163329.1280888-1-sashal@kernel.org>
-References: <20200907163329.1280888-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlblJ02VQzDqPf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 04:04:27 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 087I2giF154827; Mon, 7 Sep 2020 14:03:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=8rnGmMRkvkgX5N8u5JthtpfXJszyHTkxMnCJPQcMOTk=;
+ b=oNHElOGvXv7QXaLspNhgBWGRiX738kpCkhlwlGjGhW6WQSn4ILECsFVDKMAVhX3jycTY
+ 38iL6cj6qt5KHOA5IKdtBFd56Jm5DiojDCi8u4JNsJ+HFhE+hC5bhGO63+ArV7j3jjMB
+ KteVXwVtQZJeib4KCJ6hc5VnJQKdQAat7P3f72FdC1i36tpErUh8TqRfKmZRP2QuGoGY
+ Pdy7bDmtvf4/HMsucF8Kje/WAlqFgobYWiWEi2jGt+lFsg/ZnhW1xFMmUJcOHEMHPa6V
+ 8pQIR5nOC70xYKb0WzbXHw2pq5dWHFQN75UtWq9ix/i7BtYF2GrVUkK8+Ie/tMW96IYy wQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33dspe85a1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Sep 2020 14:03:10 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 087I39BQ157737;
+ Mon, 7 Sep 2020 14:03:09 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33dspe858x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Sep 2020 14:03:09 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 087I2pTg014263;
+ Mon, 7 Sep 2020 18:03:07 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03fra.de.ibm.com with ESMTP id 33c2a89kw2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Sep 2020 18:03:06 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 087I33R861538636
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Sep 2020 18:03:03 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C035B42045;
+ Mon,  7 Sep 2020 18:03:03 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A4C4C4203F;
+ Mon,  7 Sep 2020 18:03:02 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Sep 2020 18:03:02 +0000 (GMT)
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>
+Subject: [RFC PATCH v2 0/3] mm/gup: fix gup_fast with dynamic page table
+ folding
+Date: Mon,  7 Sep 2020 20:00:55 +0200
+Message-Id: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-07_11:2020-09-07,
+ 2020-09-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 spamscore=0 clxscore=1011 mlxlogscore=914
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009070173
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,88 +98,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
- Mingming Cao <mmc@linux.vnet.ibm.com>, Dany Madden <drt@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Jeff Dike <jdike@addtoit.com>,
+ linux-um <linux-um@lists.infradead.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm <linux-arm-kernel@lists.infradead.org>,
+ linux-power <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mingming Cao <mmc@linux.vnet.ibm.com>
+This is v2 of an RFC previously discussed here:
+https://lore.kernel.org/lkml/20200828140314.8556-1-gerald.schaefer@linux.ibm.com/
 
-[ Upstream commit 9f13457377907fa253aef560e1a37e1ca4197f9b ]
+Patch 1 is a fix for a regression in gup_fast on s390, after our conversion
+to common gup_fast code. It will introduce special helper functions
+pXd_addr_end_folded(), which have to be used in places where pagetable walk
+is done w/o lock and with READ_ONCE, so currently only in gup_fast.
 
-At the time of do_rest, ibmvnic tries to re-initalize the tx_pools
-and rx_pools to avoid re-allocating the long term buffer. However
-there is a window inside do_reset that the tx_pools and
-rx_pools were freed before re-initialized making it possible to deference
-null pointers.
+Patch 2 is an attempt to make that more generic, i.e. change pXd_addr_end()
+themselves by adding an extra pXd value parameter. That was suggested by
+Jason during v1 discussion, because he is already thinking of some other
+places where he might want to switch to the READ_ONCE logic for pagetable
+walks. In general, that would be the cleanest / safest solution, but there
+is some impact on other architectures and common code, hence the new and
+greatly enlarged recipient list.
 
-This patch fix this issue by always check the tx_pool
-and rx_pool are not NULL after ibmvnic_login. If so, re-allocating
-the pools. This will avoid getting into calling reset_tx/rx_pools with
-NULL adapter tx_pools/rx_pools pointer. Also add null pointer check in
-reset_tx_pools and reset_rx_pools to safe handle NULL pointer case.
+Patch 3 is a "nice to have" add-on, which makes pXd_addr_end() inline
+functions instead of #defines, so that we get some type checking for the
+new pXd value parameter.
 
-Signed-off-by: Mingming Cao <mmc@linux.vnet.ibm.com>
-Signed-off-by: Dany Madden <drt@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Not sure about Fixes/stable tags for the generic solution. Only patch 1
+fixes a real bug on s390, and has Fixes/stable tags. Patches 2 + 3 might
+still be nice to have in stable, to ease future backports, but I guess
+"nice to have" does not really qualify for stable backports.
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 2d20a48f0ba0a..de45b3709c14e 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -416,6 +416,9 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
- 	int i, j, rc;
- 	u64 *size_array;
- 
-+	if (!adapter->rx_pool)
-+		return -1;
-+
- 	size_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
- 		be32_to_cpu(adapter->login_rsp_buf->off_rxadd_buff_size));
- 
-@@ -586,6 +589,9 @@ static int reset_tx_pools(struct ibmvnic_adapter *adapter)
- 	int tx_scrqs;
- 	int i, rc;
- 
-+	if (!adapter->tx_pool)
-+		return -1;
-+
- 	tx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_txsubm_subcrqs);
- 	for (i = 0; i < tx_scrqs; i++) {
- 		rc = reset_one_tx_pool(adapter, &adapter->tso_pool[i]);
-@@ -1918,7 +1924,10 @@ static int do_reset(struct ibmvnic_adapter *adapter,
- 		    adapter->req_rx_add_entries_per_subcrq !=
- 		    old_num_rx_slots ||
- 		    adapter->req_tx_entries_per_subcrq !=
--		    old_num_tx_slots) {
-+		    old_num_tx_slots ||
-+		    !adapter->rx_pool ||
-+		    !adapter->tso_pool ||
-+		    !adapter->tx_pool) {
- 			release_rx_pools(adapter);
- 			release_tx_pools(adapter);
- 			release_napi(adapter);
-@@ -1931,10 +1940,14 @@ static int do_reset(struct ibmvnic_adapter *adapter,
- 		} else {
- 			rc = reset_tx_pools(adapter);
- 			if (rc)
-+				netdev_dbg(adapter->netdev, "reset tx pools failed (%d)\n",
-+						rc);
- 				goto out;
- 
- 			rc = reset_rx_pools(adapter);
- 			if (rc)
-+				netdev_dbg(adapter->netdev, "reset rx pools failed (%d)\n",
-+						rc);
- 				goto out;
- 		}
- 		ibmvnic_disable_irqs(adapter);
+Changes in v2:
+- Pick option 2 from v1 discussion (pXd_addr_end_folded helpers)
+- Add patch 2 + 3 for more generic approach
+
+Alexander Gordeev (3):
+  mm/gup: fix gup_fast with dynamic page table folding
+  mm: make pXd_addr_end() functions page-table entry aware
+  mm: make generic pXd_addr_end() macros inline functions
+
+ arch/arm/include/asm/pgtable-2level.h    |  2 +-
+ arch/arm/mm/idmap.c                      |  6 ++--
+ arch/arm/mm/mmu.c                        |  8 ++---
+ arch/arm64/kernel/hibernate.c            | 16 +++++----
+ arch/arm64/kvm/mmu.c                     | 16 ++++-----
+ arch/arm64/mm/kasan_init.c               |  8 ++---
+ arch/arm64/mm/mmu.c                      | 25 +++++++-------
+ arch/powerpc/mm/book3s64/radix_pgtable.c |  7 ++--
+ arch/powerpc/mm/hugetlbpage.c            |  6 ++--
+ arch/s390/include/asm/pgtable.h          | 42 ++++++++++++++++++++++++
+ arch/s390/mm/page-states.c               |  8 ++---
+ arch/s390/mm/pageattr.c                  |  8 ++---
+ arch/s390/mm/vmem.c                      |  8 ++---
+ arch/sparc/mm/hugetlbpage.c              |  6 ++--
+ arch/um/kernel/tlb.c                     |  8 ++---
+ arch/x86/mm/init_64.c                    | 15 ++++-----
+ arch/x86/mm/kasan_init_64.c              | 16 ++++-----
+ include/asm-generic/pgtable-nop4d.h      |  2 +-
+ include/asm-generic/pgtable-nopmd.h      |  2 +-
+ include/asm-generic/pgtable-nopud.h      |  2 +-
+ include/linux/pgtable.h                  | 38 ++++++++++++---------
+ mm/gup.c                                 |  8 ++---
+ mm/ioremap.c                             |  8 ++---
+ mm/kasan/init.c                          | 17 +++++-----
+ mm/madvise.c                             |  4 +--
+ mm/memory.c                              | 40 +++++++++++-----------
+ mm/mlock.c                               | 18 +++++++---
+ mm/mprotect.c                            |  8 ++---
+ mm/pagewalk.c                            |  8 ++---
+ mm/swapfile.c                            |  8 ++---
+ mm/vmalloc.c                             | 16 ++++-----
+ 31 files changed, 219 insertions(+), 165 deletions(-)
+
 -- 
-2.25.1
+2.17.1
 
