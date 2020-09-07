@@ -1,60 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B8625F291
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 06:50:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047AF25F2A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 07:46:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlG6s3JQRzDqRf
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 14:50:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlHMC6K6dzDqGF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 15:45:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=pnrx=cq=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlG521VBTzDqLG
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 14:48:34 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BlG4m4CZHz9twhX;
- Mon,  7 Sep 2020 06:48:24 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 1_nfQxoIiaYq; Mon,  7 Sep 2020 06:48:24 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BlG4m2qwLz9twhW;
- Mon,  7 Sep 2020 06:48:24 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 576698B779;
- Mon,  7 Sep 2020 06:48:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SjW8cKVnuXtG; Mon,  7 Sep 2020 06:48:27 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 546378B75B;
- Mon,  7 Sep 2020 06:48:25 +0200 (CEST)
-Subject: Re: [RFC PATCH 12/12] powerpc/64s: power4 nap fixup in C
-To: Nicholas Piggin <npiggin@gmail.com>
-References: <20200905174335.3161229-1-npiggin@gmail.com>
- <20200905174335.3161229-13-npiggin@gmail.com>
- <53f5fa9b-03d4-150e-199b-7ffa75d91666@csgroup.eu>
- <1599450777.weoux16jk2.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <9a647445-a438-ae93-f8d5-c177b7fe9662@csgroup.eu>
-Date: Mon, 7 Sep 2020 06:48:22 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlHKH5drCzDqLq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 15:44:19 +1000 (AEST)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 209181] New: kernel BUG at arch/powerpc/mm/pgtable.c:304!
+Date: Mon, 07 Sep 2020 05:44:15 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Page Allocator
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: zlang@redhat.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cc cf_regression
+Message-ID: <bug-209181-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <1599450777.weoux16jk2.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,56 +60,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D209181
 
+            Bug ID: 209181
+           Summary: kernel BUG at arch/powerpc/mm/pgtable.c:304!
+           Product: Memory Management
+           Version: 2.5
+    Kernel Version: Linux 5.9-rc4
+          Hardware: All
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: Page Allocator
+          Assignee: akpm@linux-foundation.org
+          Reporter: zlang@redhat.com
+                CC: linuxppc-dev@lists.ozlabs.org
+        Regression: No
 
-Le 07/09/2020 à 06:02, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of September 6, 2020 5:32 pm:
->>
->>
->> Le 05/09/2020 à 19:43, Nicholas Piggin a écrit :
->>> There is no need for this to be in asm, use the new intrrupt entry wrapper.
->>>
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>    arch/powerpc/include/asm/interrupt.h   | 14 ++++++++
->>>    arch/powerpc/include/asm/processor.h   |  1 +
->>>    arch/powerpc/include/asm/thread_info.h |  6 ++++
->>>    arch/powerpc/kernel/exceptions-64s.S   | 45 --------------------------
->>>    arch/powerpc/kernel/idle_book3s.S      |  4 +++
->>>    5 files changed, 25 insertions(+), 45 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
->>> index ed0d633ab5aa..3da1dba91386 100644
->>> --- a/arch/powerpc/include/asm/processor.h
->>> +++ b/arch/powerpc/include/asm/processor.h
->>> @@ -424,6 +424,7 @@ extern unsigned long isa300_idle_stop_mayloss(unsigned long psscr_val);
->>>    extern unsigned long isa206_idle_insn_mayloss(unsigned long type);
->>>    #ifdef CONFIG_PPC_970_NAP
->>>    extern void power4_idle_nap(void);
->>> +extern void power4_idle_nap_return(void);
->>
->> Please please please, 'extern' keyword is pointless and deprecated for
->> function prototypes. Don't add new ones.
->>
->> Also, put it outside the #ifdef, so that you can use IS_ENABLED()
->> instead of #ifdef when using it.
-> 
-> I just copy paste and forget to remove it. I expect someone will do a
-> "cleanup" patch to get rid of them in one go, I find a random assortment
-> of extern and not extern to be even uglier :(
+Description of problem:
+The latest upstream mainline kernel always panic on ppc64le machine (P9) as
+below:
 
-If we don't want to make fixes backporting a huge headache, some 
-transition with random assortment is the price to pay.
+[    1.406462] Loading compiled-in X.509 certificates=20
+[    1.436966] Loaded X.509 cert 'Build time autogenerated kernel key:
+834a47793f474746e698c2f3a32aa53ffded35db'=20
+[    1.437154] zswap: loaded using pool lzo/zbud=20
+[    1.437509] debug_vm_pgtable: [debug_vm_pgtable         ]: Validating
+architecture page table helpers=20
+[    1.437571] ------------[ cut here ]------------=20
+[    1.437584] WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/pgtable.c:185
+set_pte_at+0xd8/0x1c0=20
+[    1.437589] Modules linked in:=20
+[    1.437596] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.9.0-rc4 #1=20
+[    1.437602] NIP:  c00000000009bb28 LR: c00000000152e1c0 CTR:
+0000000000000000=20
+[    1.437608] REGS: c0000001fb6eb7b0 TRAP: 0700   Not tainted  (5.9.0-rc4)=
+=20
+[    1.437613] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24002=
+824=20
+XER: 0000000a=20
+[    1.437624] CFAR: c00000000009ba74 IRQMASK: 0=20=20
+[    1.437624] GPR00: c00000000152e1c0 c0000001fb6eba40 c000000002138900
+c0000000120f4100=20=20
+[    1.437624] GPR04: 000b701718150000 c0000000122400a8 05014e0100000080
+0000000000000000=20=20
+[    1.437624] GPR08: 0000000000000080 07000000000000c0 05000000000000c0
+0000000000000001=20=20
+[    1.437624] GPR12: 0000000000002000 c000000004050000 0000000000000000
+c000000001569d38=20=20
+[    1.437624] GPR16: c000000012210000 f0ffffffffffffff c0000001fb52f8a0
+c000000002231cb8=20=20
+[    1.437624] GPR20: c0000000010d8de0 c000000001000000 c00000001220b2e8
+c0000000122f8000=20=20
+[    1.437624] GPR24: 0000000000000100 000000000000014e c0000000122f8028
+8000000000000105=20=20
+[    1.437624] GPR28: 000b701718150000 c0000000122118c0 c0000000120f4100
+c0000000122400a8=20=20
+[    1.437668] NIP [c00000000009bb28] set_pte_at+0xd8/0x1c0=20
+[    1.437674] LR [c00000000152e1c0] debug_vm_pgtable+0x8f4/0x1e14=20
+[    1.437679] Call Trace:=20
+[    1.437685] [c0000001fb6eba40] [c000000001082f48] _raw_spin_lock+0x88/0x=
+100
+(unreliable)=20
+[    1.437693] [c0000001fb6eba80] [c00000000152dfd4]
+debug_vm_pgtable+0x708/0x1e14=20
+[    1.437700] [c0000001fb6ebb90] [c00000000001208c] do_one_initcall+0xbc/0=
+x5f0=20
+[    1.437707] [c0000001fb6ebc80] [c0000000014e4d04]
+kernel_init_freeable+0x4bc/0x58c=20
+[    1.437714] [c0000001fb6ebdb0] [c000000000012de8] kernel_init+0x2c/0x164=
+=20
+[    1.437721] [c0000001fb6ebe20] [c00000000000d5d0]
+ret_from_kernel_thread+0x5c/0x6c=20
+[    1.437726] Instruction dump:=20
+[    1.437731] 41820068 e8010050 ebc10030 7c0803a6 4bffff8c 4bffff88 3d2007=
+00
+792907c6=20=20
+[    1.437741] 612900c0 7d4a4838 2faa00c0 419eff54 <0fe00000> 4bffff4c 3fe0=
+bfef
+63ffffff=20=20
+[    1.437751] irq event stamp: 275292=20
+[    1.437757] hardirqs last  enabled at (275291): [<c0000000004ef4d0>]
+inc_zone_page_state+0xa0/0xd0=20
+[    1.437764] hardirqs last disabled at (275292): [<c0000000000096fc>]
+program_check_common_virt+0x2bc/0x310=20
+[    1.437771] softirqs last  enabled at (273036): [<c000000000f97044>]
+inet6_register_protosw+0x154/0x2a0=20
+[    1.437778] softirqs last disabled at (273034): [<c000000000f96f34>]
+inet6_register_protosw+0x44/0x2a0=20
+[    1.437784] ---[ end trace 39aeb34808a575d2 ]---=20
+[    1.437790] ------------[ cut here ]------------=20
+[    1.437795] kernel BUG at arch/powerpc/mm/pgtable.c:304!=20
+[    1.437801] Oops: Exception in kernel mode, sig: 5 [#1]=20
+[    1.437805] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA pSerie=
+s=20
+[    1.437807] Modules linked in:=20
+[    1.437811] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W=20=20=20=
+=20=20=20=20=20
+5.9.0-rc4 #1=20
+[    1.437815] NIP:  c00000000009c1a8 LR: c0000000005f9de0 CTR:
+0000000000000000=20
+[    1.437819] REGS: c0000001fb6eb720 TRAP: 0700   Tainted: G        W=20=
+=20=20=20=20=20=20=20=20
+(5.9.0-rc4)=20
+[    1.437822] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24002=
+828=20
+XER: 0000000a=20
+[    1.437829] CFAR: c00000000009c148 IRQMASK: 0=20=20
+[    1.437829] GPR00: c0000000005f9de0 c0000001fb6eb9b0 c000000002138900
+c0000000120f4100=20=20
+[    1.437829] GPR04: 000b701718150000 c0000000122400a8 00000000122f8000
+0000000000802f12=20=20
+[    1.437829] GPR08: 0000000000000000 0000000000000001 0000000000000028
+0000000000000001=20=20
+[    1.437829] GPR12: 0000000000002000 c000000004050000 0000000000000000
+c000000001569d38=20=20
+[    1.437829] GPR16: c000000012210000 f0ffffffffffffff c0000001fb52f8a0
+c000000002231cb8=20=20
+[    1.437829] GPR20: c0000000010d8de0 c000000001000000 c00000001220b2e8
+c0000000122f8000=20=20
+[    1.437829] GPR24: 0000000000000100 0000000000000008 c000000002231ca8
+000000000000000a=20=20
+[    1.437829] GPR28: c000000002231cb8 c000000002231cb0 000b701718150000
+000000000002dc05=20=20
+[    1.437860] NIP [c00000000009c1a8] assert_pte_locked+0x218/0x360=20
+[    1.437864] LR [c0000000005f9de0] pte_update+0xc0/0x180=20
+[    1.437867] Call Trace:=20
+[    1.437870] [c0000001fb6eb9b0] [0000000000000100] 0x100 (unreliable)=20
+[    1.437875] [c0000001fb6eba20] [c0000000005f9de0] pte_update+0xc0/0x180=
+=20
+[    1.437879] [c0000001fb6eba80] [c00000000152e1e0]
+debug_vm_pgtable+0x914/0x1e14=20
+[    1.437884] [c0000001fb6ebb90] [c00000000001208c] do_one_initcall+0xbc/0=
+x5f0=20
+[    1.437888] [c0000001fb6ebc80] [c0000000014e4d04]
+kernel_init_freeable+0x4bc/0x58c=20
+[    1.437893] [c0000001fb6ebdb0] [c000000000012de8] kernel_init+0x2c/0x164=
+=20
+[    1.437897] [c0000001fb6ebe20] [c00000000000d5d0]
+ret_from_kernel_thread+0x5c/0x6c=20
+[    1.437900] Instruction dump:=20
+[    1.437903] 7c0803a6 60000000 39400001 7fdffc36 7d4ad830 394affff 7d4a07=
+b4
+7d4af838=20=20
+[    1.437909] 794a1f24 7d09502a 7d090074 7929d182 <0b090000> 79090022 550a=
+c03e
+ebfc0000=20=20
+[    1.437916] ---[ end trace 39aeb34808a575d3 ]--
 
-One day, when 'extern' have become the minority, we can get rid of the 
-few last ones.
+How reproducible:
+100% on our ppc64le machines
 
-But if someone believe it is not such a problem with backporting, I can 
-provide a cleanup patch now.
+Steps to Reproduce:
+1. git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.g=
+it
+2. build and intall the kernel (I'll update the .config file later)
+3. boot the kernel
+<panic at here>
 
-Christophe
+Additional info:
+The HEAD of my test kernel is:
+commit f4d51dffc6c01a9e94650d95ce0104964f8ae822
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun Sep 6 17:11:40 2020 -0700
+
+    Linux 5.9-rc4
+
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
