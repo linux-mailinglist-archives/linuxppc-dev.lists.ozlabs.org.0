@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74EF25FF9C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 18:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 204CD25FFCE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 18:39:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlYmS0tBczDqDZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 02:35:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlYs40jFjzDq7k
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 02:39:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ad6Z2xkO; dkim-atps=neutral
+ header.s=default header.b=Bipxg5Ev; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlYjR0DnPzDqLJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 02:32:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlYkg3ChHzDqP0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 02:33:47 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 871AC2080A;
- Mon,  7 Sep 2020 16:32:38 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A197121941;
+ Mon,  7 Sep 2020 16:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1599496359;
- bh=qrGrQGi+49D1Bobayjx6dob/oyG0cJnyBGPihvoBMYg=;
+ s=default; t=1599496424;
+ bh=VBDolsQa9bah2f35ikQNeh3bGYSd5ANyLGcQxwSCoX4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ad6Z2xkOftAQb/6eYERzMPIRLCrHuCfFKicEY1rdCHkotGI739N/ECexxYHybBler
- p2/CZ51XxzRf0v/eKlP8HM7QZlXT0HOyQhJ+dJtLhJKj7PNVO4A4duWPB0br4kc/5k
- aBu636W6fOdT2BZEP76mFO83t4teQiIBe1Lf233o=
+ b=Bipxg5EvnC8hQy5NauJaafk7Ed/G1z9HlXnee8PLGFIgzon2N8yz/PXAobN71xJIB
+ d5/3TY+hRTZ6fjWk2y32qn8D/MuFhtU5Hxz8eRXlqTMcVFtBKwYShdFFZrcGpSNwhY
+ 3nNGaSMByW1KI7s+t+U4uK+rOcvH1I5MVpDHaTQM=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 14/53] ibmvnic fix NULL tx_pools and rx_tools
+Subject: [PATCH AUTOSEL 5.4 11/43] ibmvnic fix NULL tx_pools and rx_tools
  issue at do_reset
-Date: Mon,  7 Sep 2020 12:31:40 -0400
-Message-Id: <20200907163220.1280412-14-sashal@kernel.org>
+Date: Mon,  7 Sep 2020 12:32:57 -0400
+Message-Id: <20200907163329.1280888-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200907163220.1280412-1-sashal@kernel.org>
-References: <20200907163220.1280412-1-sashal@kernel.org>
+In-Reply-To: <20200907163329.1280888-1-sashal@kernel.org>
+References: <20200907163329.1280888-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -92,10 +92,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 5afb3c9c52d20..d3a774331afc7 100644
+index 2d20a48f0ba0a..de45b3709c14e 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -479,6 +479,9 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
+@@ -416,6 +416,9 @@ static int reset_rx_pools(struct ibmvnic_adapter *adapter)
  	int i, j, rc;
  	u64 *size_array;
  
@@ -105,7 +105,7 @@ index 5afb3c9c52d20..d3a774331afc7 100644
  	size_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
  		be32_to_cpu(adapter->login_rsp_buf->off_rxadd_buff_size));
  
-@@ -649,6 +652,9 @@ static int reset_tx_pools(struct ibmvnic_adapter *adapter)
+@@ -586,6 +589,9 @@ static int reset_tx_pools(struct ibmvnic_adapter *adapter)
  	int tx_scrqs;
  	int i, rc;
  
@@ -115,7 +115,7 @@ index 5afb3c9c52d20..d3a774331afc7 100644
  	tx_scrqs = be32_to_cpu(adapter->login_rsp_buf->num_txsubm_subcrqs);
  	for (i = 0; i < tx_scrqs; i++) {
  		rc = reset_one_tx_pool(adapter, &adapter->tso_pool[i]);
-@@ -2011,7 +2017,10 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+@@ -1918,7 +1924,10 @@ static int do_reset(struct ibmvnic_adapter *adapter,
  		    adapter->req_rx_add_entries_per_subcrq !=
  		    old_num_rx_slots ||
  		    adapter->req_tx_entries_per_subcrq !=
@@ -127,7 +127,7 @@ index 5afb3c9c52d20..d3a774331afc7 100644
  			release_rx_pools(adapter);
  			release_tx_pools(adapter);
  			release_napi(adapter);
-@@ -2024,10 +2033,14 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+@@ -1931,10 +1940,14 @@ static int do_reset(struct ibmvnic_adapter *adapter,
  		} else {
  			rc = reset_tx_pools(adapter);
  			if (rc)
