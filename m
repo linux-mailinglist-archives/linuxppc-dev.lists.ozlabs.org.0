@@ -1,48 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF0525F18F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 03:53:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0146E25F23F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 06:04:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlBBW26tfzDqSY
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 11:53:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlF5z5yknzDqQg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Sep 2020 14:04:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=j9RowUrL; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlB904tc3zDqRc
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 11:51:45 +1000 (AEST)
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id D9344EEC0A19FB7B6FD2;
- Mon,  7 Sep 2020 09:51:29 +0800 (CST)
-Received: from [127.0.0.1] (10.174.176.211) by DGGEMS403-HUB.china.huawei.com
- (10.3.19.203) with Microsoft SMTP Server id 14.3.487.0;
- Mon, 7 Sep 2020 09:51:29 +0800
-Subject: Re: [PATCH -next] powerpc/book3s64: fix link error with
- CONFIG_PPC_RADIX_MMU=n
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-References: <20200905112548.3265530-1-yangyingliang@huawei.com>
- <39a976b8-896c-e878-bac7-50bbf3ccbc4f@csgroup.eu>
-From: Yang Yingliang <yangyingliang@huawei.com>
-Message-ID: <af37c513-6232-c35c-33e3-f6d8d82c8175@huawei.com>
-Date: Mon, 7 Sep 2020 09:51:28 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlF4D63NNzDqQb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Sep 2020 14:02:51 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id b16so6024395pjp.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 06 Sep 2020 21:02:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=Kc9NA+nC6CcqwdV4Yo7oAOJpDnp4wUXaXcV2Zn/ZSVA=;
+ b=j9RowUrLKOqjsuexQnTT5JxuXgpuue25FsIvba7irbM2cDh7yg2eJdCNfPYErbLBmQ
+ rTYwJVodw66wmbexZt5/2kE29NTi+eQLoWm0yvwZn04PeJO8xYuspFCg/zB9tFUUUocN
+ 0qI27SUjq/LhB7tdSwMbAp2SfwMarcZcRQNsVLfgTNx1v/KaJh1st1sFsMgSkGj8LMUy
+ nIdXucmO5jmaViG4+zUsKC25S8zh9NWBnKkTOUiAWfBGIjDMGilSf6IfaRSJ1f/M7BNu
+ dlp0bWj+Vm7nJHvSGYHmGUYCRhsJHjm9M8SPUM+g7EC5JlX5sKn+uzJ+ilY13LZOoI9Q
+ JXqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=Kc9NA+nC6CcqwdV4Yo7oAOJpDnp4wUXaXcV2Zn/ZSVA=;
+ b=eZnLmh6DcS7z7B46Ngt2ZcR+5s4G9OqdVQpBrZynCnTYpnIC34B8Mg6tm6Rp1mIkRZ
+ QwxhZav/Ikjg3FfBz+UO1SWZCLMmvAo0j238ZZw1D7N7vtGr8g/o0AlERqtM72kq+7Z8
+ J9jLvmujXX0asl5lAI92fuQRI3ga2uNMhkc+jLs+x+uKOae4Gvqf65t0HZ6R51cH8Otq
+ Fbs2UqFsNgcxLed4zoEz6GbVAyARQvgfL2EMHmH/lRfvLkBczcJbZ58g+I1B9pDMEi7k
+ vwHdkwJHCz4Vzai0SftuhTod1h3tej+l15eJ8F041reQgMOMJrU5gJ/LU8mOl1w/9Pvk
+ YgZw==
+X-Gm-Message-State: AOAM5335sAprZSqXQKcbxy2ViiUoZWTHkSNHWXM3/tK7xie1rf6nPcxc
+ nDx3SrnhwgvcHgtu/YkxoIIiq/R0Hzc=
+X-Google-Smtp-Source: ABdhPJxFAXxJd+BM35nZtR9pfaByiLVgzou+cKhg7LFkBj5pI4DXmOykKxIY1EhsPI6hxx2c5LXiVw==
+X-Received: by 2002:a17:902:9347:: with SMTP id
+ g7mr18273990plp.200.1599451368353; 
+ Sun, 06 Sep 2020 21:02:48 -0700 (PDT)
+Received: from localhost ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id e27sm7251969pfj.62.2020.09.06.21.02.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 06 Sep 2020 21:02:47 -0700 (PDT)
+Date: Mon, 07 Sep 2020 14:02:42 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH 12/12] powerpc/64s: power4 nap fixup in C
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20200905174335.3161229-1-npiggin@gmail.com>
+ <20200905174335.3161229-13-npiggin@gmail.com>
+ <53f5fa9b-03d4-150e-199b-7ffa75d91666@csgroup.eu>
+In-Reply-To: <53f5fa9b-03d4-150e-199b-7ffa75d91666@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <39a976b8-896c-e878-bac7-50bbf3ccbc4f@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.174.176.211]
-X-CFilter-Loop: Reflected
+Message-Id: <1599450777.weoux16jk2.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,96 +81,262 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-On 2020/9/6 14:50, Christophe Leroy wrote:
->
->
-> Le 05/09/2020 à 13:25, Yang Yingliang a écrit :
->> Fix link error when CONFIG_PPC_RADIX_MMU is disabled:
->> powerpc64-linux-gnu-ld: 
->> arch/powerpc/platforms/pseries/lpar.o:(.toc+0x0): undefined reference 
->> to `mmu_pid_bits'
->>
->> Reported-by: Hulk Robot <hulkci@huawei.com>
->> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Excerpts from Christophe Leroy's message of September 6, 2020 5:32 pm:
+>=20
+>=20
+> Le 05/09/2020 =C3=A0 19:43, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> There is no need for this to be in asm, use the new intrrupt entry wrapp=
+er.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
->>   arch/powerpc/mm/book3s64/mmu_context.c | 4 ++++
->
-> In your commit log, you are just mentionning 
-> arch/powerpc/platforms/pseries/lpar.o, which is right.
->
-> You shouldn't need to modify arch/powerpc/mm/book3s64/mmu_context.c at 
-> all, see below.
->
->>   arch/powerpc/platforms/pseries/lpar.c  | 2 ++
->>   2 files changed, 6 insertions(+)
->>
->> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c 
->> b/arch/powerpc/mm/book3s64/mmu_context.c
->> index 0ba30b8b935b..a8e292cd88f0 100644
->> --- a/arch/powerpc/mm/book3s64/mmu_context.c
->> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
->> @@ -152,6 +152,7 @@ void hash__setup_new_exec(void)
->>     static int radix__init_new_context(struct mm_struct *mm)
->>   {
->> +#ifdef CONFIG_PPC_RADIX_MMU
->
-> This shouldn't be required. radix__init_new_context() is only called 
-> when radix_enabled() returns true.
-> As it is a static function, when it is not called it gets optimised 
-> away, so you will never get an undefined reference to `mmu_pid_bits` 
-> there.
-powerpc64-linux-gnu-ld: 
-arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x0): undefined reference 
-to `mmu_pid_bits'
-powerpc64-linux-gnu-ld: 
-arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x8): undefined reference 
-to `mmu_base_pid'
+>>   arch/powerpc/include/asm/interrupt.h   | 14 ++++++++
+>>   arch/powerpc/include/asm/processor.h   |  1 +
+>>   arch/powerpc/include/asm/thread_info.h |  6 ++++
+>>   arch/powerpc/kernel/exceptions-64s.S   | 45 --------------------------
+>>   arch/powerpc/kernel/idle_book3s.S      |  4 +++
+>>   5 files changed, 25 insertions(+), 45 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include=
+/asm/interrupt.h
+>> index 3ae3d2f93b61..acfcc7d5779b 100644
+>> --- a/arch/powerpc/include/asm/interrupt.h
+>> +++ b/arch/powerpc/include/asm/interrupt.h
+>> @@ -8,6 +8,16 @@
+>>   #include <asm/ftrace.h>
+>>   #include <asm/runlatch.h>
+>>  =20
+>> +static inline void nap_adjust_return(struct pt_regs *regs)
+>> +{
+>> +#ifdef CONFIG_PPC_970_NAP
+>=20
+> Avoid #ifdef, you can use IS_ENABLED(CONFIG_PPC_970_NAP) in the 'if' belo=
+w
 
+Yeah I guess.
 
-mmu_context.c is always compiled, it uses mmu_pid_bits and mmu_base_pid.
-
->
->>       unsigned long rts_field;
->>       int index, max_id;
->>   @@ -177,6 +178,9 @@ static int radix__init_new_context(struct 
->> mm_struct *mm)
->>       mm->context.hash_context = NULL;
->>         return index;
->> +#else
->> +    return -ENOTSUPP;
+>> +	if (test_thread_local_flags(_TLF_NAPPING)) {
+>> +		clear_thread_local_flags(_TLF_NAPPING);
+>> +		regs->nip =3D (unsigned long)power4_idle_nap_return;
+>> +	}
 >> +#endif
->>   }
->>     int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
->> diff --git a/arch/powerpc/platforms/pseries/lpar.c 
->> b/arch/powerpc/platforms/pseries/lpar.c
->> index baf24eacd268..e454e218dbba 100644
->> --- a/arch/powerpc/platforms/pseries/lpar.c
->> +++ b/arch/powerpc/platforms/pseries/lpar.c
->> @@ -1726,10 +1726,12 @@ void __init hpte_init_pseries(void)
->>     void radix_init_pseries(void)
->>   {
->> +#ifdef CONFIG_PPC_RADIX_MMU
->
-> This function is only called from 
-> /arch/powerpc/mm/book3s64/radix_pgtable.c which is only built when 
-> CONFIG_PPC_RADIX_MMU is selected.
->
-> So the entire function should be encloded in the #ifdef.
-OK, I will send a v2 later.
->
->>       pr_info("Using radix MMU under hypervisor\n");
->>         pseries_lpar_register_process_table(__pa(process_tb),
->>                           0, PRTB_SIZE_SHIFT - 12);
->> +#endif
->>   }
->>     #ifdef CONFIG_PPC_SMLPAR
->>
->
-> Christophe
-> .
+>> +}
+>> +
+>>   #ifdef CONFIG_PPC_BOOK3S_64
+>>   static inline void interrupt_enter_prepare(struct pt_regs *regs)
+>>   {
+>> @@ -33,6 +43,8 @@ static inline void interrupt_async_enter_prepare(struc=
+t pt_regs *regs)
+>>   	if (cpu_has_feature(CPU_FTR_CTRL) &&
+>>   	    !test_thread_local_flags(_TLF_RUNLATCH))
+>>   		__ppc64_runlatch_on();
+>> +
+>> +	nap_adjust_return(regs);
+>>   }
+>>  =20
+>>   #else /* CONFIG_PPC_BOOK3S_64 */
+>> @@ -72,6 +84,8 @@ static inline void interrupt_nmi_enter_prepare(struct =
+pt_regs *regs, struct inte
+>>  =20
+>>   	this_cpu_set_ftrace_enabled(0);
+>>  =20
+>> +	nap_adjust_return(regs);
+>> +
+>>   	nmi_enter();
+>>   }
+>>  =20
+>> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include=
+/asm/processor.h
+>> index ed0d633ab5aa..3da1dba91386 100644
+>> --- a/arch/powerpc/include/asm/processor.h
+>> +++ b/arch/powerpc/include/asm/processor.h
+>> @@ -424,6 +424,7 @@ extern unsigned long isa300_idle_stop_mayloss(unsign=
+ed long psscr_val);
+>>   extern unsigned long isa206_idle_insn_mayloss(unsigned long type);
+>>   #ifdef CONFIG_PPC_970_NAP
+>>   extern void power4_idle_nap(void);
+>> +extern void power4_idle_nap_return(void);
+>=20
+> Please please please, 'extern' keyword is pointless and deprecated for=20
+> function prototypes. Don't add new ones.
+>=20
+> Also, put it outside the #ifdef, so that you can use IS_ENABLED()=20
+> instead of #ifdef when using it.
 
+I just copy paste and forget to remove it. I expect someone will do a=20
+"cleanup" patch to get rid of them in one go, I find a random assortment
+of extern and not extern to be even uglier :(
+
+>>   #endif
+>>  =20
+>>   extern unsigned long cpuidle_disable;
+>> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/inclu=
+de/asm/thread_info.h
+>> index ca6c97025704..9b15f7edb0cb 100644
+>> --- a/arch/powerpc/include/asm/thread_info.h
+>> +++ b/arch/powerpc/include/asm/thread_info.h
+>> @@ -156,6 +156,12 @@ void arch_setup_new_exec(void);
+>>  =20
+>>   #ifndef __ASSEMBLY__
+>>  =20
+>> +static inline void clear_thread_local_flags(unsigned int flags)
+>> +{
+>> +	struct thread_info *ti =3D current_thread_info();
+>> +	ti->local_flags &=3D ~flags;
+>> +}
+>> +
+>>   static inline bool test_thread_local_flags(unsigned int flags)
+>>   {
+>>   	struct thread_info *ti =3D current_thread_info();
+>> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/=
+exceptions-64s.S
+>> index 227bad3a586d..1db6b3438c88 100644
+>> --- a/arch/powerpc/kernel/exceptions-64s.S
+>> +++ b/arch/powerpc/kernel/exceptions-64s.S
+>> @@ -692,25 +692,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+>>   	ld	r1,GPR1(r1)
+>>   .endm
+>>  =20
+>> -/*
+>> - * When the idle code in power4_idle puts the CPU into NAP mode,
+>> - * it has to do so in a loop, and relies on the external interrupt
+>> - * and decrementer interrupt entry code to get it out of the loop.
+>> - * It sets the _TLF_NAPPING bit in current_thread_info()->local_flags
+>> - * to signal that it is in the loop and needs help to get out.
+>> - */
+>> -#ifdef CONFIG_PPC_970_NAP
+>> -#define FINISH_NAP				\
+>> -BEGIN_FTR_SECTION				\
+>> -	ld	r11, PACA_THREAD_INFO(r13);	\
+>> -	ld	r9,TI_LOCAL_FLAGS(r11);		\
+>> -	andi.	r10,r9,_TLF_NAPPING;		\
+>> -	bnel	power4_fixup_nap;		\
+>> -END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
+>> -#else
+>> -#define FINISH_NAP
+>> -#endif
+>> -
+>>   /*
+>>    * There are a few constraints to be concerned with.
+>>    * - Real mode exceptions code/data must be located at their physical =
+location.
+>> @@ -1250,7 +1231,6 @@ EXC_COMMON_BEGIN(machine_check_common)
+>>   	 */
+>>   	GEN_COMMON machine_check
+>>  =20
+>> -	FINISH_NAP
+>>   	/* Enable MSR_RI when finished with PACA_EXMC */
+>>   	li	r10,MSR_RI
+>>   	mtmsrd 	r10,1
+>> @@ -1572,7 +1552,6 @@ EXC_VIRT_BEGIN(hardware_interrupt, 0x4500, 0x100)
+>>   EXC_VIRT_END(hardware_interrupt, 0x4500, 0x100)
+>>   EXC_COMMON_BEGIN(hardware_interrupt_common)
+>>   	GEN_COMMON hardware_interrupt
+>> -	FINISH_NAP
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>   	bl	do_IRQ
+>>   	b	interrupt_return
+>> @@ -1757,7 +1736,6 @@ EXC_VIRT_BEGIN(decrementer, 0x4900, 0x80)
+>>   EXC_VIRT_END(decrementer, 0x4900, 0x80)
+>>   EXC_COMMON_BEGIN(decrementer_common)
+>>   	GEN_COMMON decrementer
+>> -	FINISH_NAP
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>   	bl	timer_interrupt
+>>   	b	interrupt_return
+>> @@ -1842,7 +1820,6 @@ EXC_VIRT_BEGIN(doorbell_super, 0x4a00, 0x100)
+>>   EXC_VIRT_END(doorbell_super, 0x4a00, 0x100)
+>>   EXC_COMMON_BEGIN(doorbell_super_common)
+>>   	GEN_COMMON doorbell_super
+>> -	FINISH_NAP
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>   #ifdef CONFIG_PPC_DOORBELL
+>>   	bl	doorbell_exception
+>> @@ -2196,7 +2173,6 @@ EXC_COMMON_BEGIN(hmi_exception_early_common)
+>>  =20
+>>   EXC_COMMON_BEGIN(hmi_exception_common)
+>>   	GEN_COMMON hmi_exception
+>> -	FINISH_NAP
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>   	bl	handle_hmi_exception
+>>   	b	interrupt_return
+>> @@ -2225,7 +2201,6 @@ EXC_VIRT_BEGIN(h_doorbell, 0x4e80, 0x20)
+>>   EXC_VIRT_END(h_doorbell, 0x4e80, 0x20)
+>>   EXC_COMMON_BEGIN(h_doorbell_common)
+>>   	GEN_COMMON h_doorbell
+>> -	FINISH_NAP
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>   #ifdef CONFIG_PPC_DOORBELL
+>>   	bl	doorbell_exception
+>> @@ -2258,7 +2233,6 @@ EXC_VIRT_BEGIN(h_virt_irq, 0x4ea0, 0x20)
+>>   EXC_VIRT_END(h_virt_irq, 0x4ea0, 0x20)
+>>   EXC_COMMON_BEGIN(h_virt_irq_common)
+>>   	GEN_COMMON h_virt_irq
+>> -	FINISH_NAP
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>   	bl	do_IRQ
+>>   	b	interrupt_return
+>> @@ -2304,7 +2278,6 @@ EXC_VIRT_BEGIN(performance_monitor, 0x4f00, 0x20)
+>>   EXC_VIRT_END(performance_monitor, 0x4f00, 0x20)
+>>   EXC_COMMON_BEGIN(performance_monitor_common)
+>>   	GEN_COMMON performance_monitor
+>> -	FINISH_NAP
+>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>   	bl	performance_monitor_exception
+>>   	b	interrupt_return
+>> @@ -3032,24 +3005,6 @@ USE_FIXED_SECTION(virt_trampolines)
+>>   __end_interrupts:
+>>   DEFINE_FIXED_SYMBOL(__end_interrupts)
+>>  =20
+>> -#ifdef CONFIG_PPC_970_NAP
+>> -	/*
+>> -	 * Called by exception entry code if _TLF_NAPPING was set, this clears
+>> -	 * the NAPPING flag, and redirects the exception exit to
+>> -	 * power4_fixup_nap_return.
+>> -	 */
+>> -	.globl power4_fixup_nap
+>> -EXC_COMMON_BEGIN(power4_fixup_nap)
+>> -	andc	r9,r9,r10
+>> -	std	r9,TI_LOCAL_FLAGS(r11)
+>> -	LOAD_REG_ADDR(r10, power4_idle_nap_return)
+>> -	std	r10,_NIP(r1)
+>> -	blr
+>> -
+>> -power4_idle_nap_return:
+>> -	blr
+>> -#endif
+>> -
+>>   CLOSE_FIXED_SECTION(real_vectors);
+>>   CLOSE_FIXED_SECTION(real_trampolines);
+>>   CLOSE_FIXED_SECTION(virt_vectors);
+>> diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idl=
+e_book3s.S
+>> index 22f249b6f58d..27d2e6a72ec9 100644
+>> --- a/arch/powerpc/kernel/idle_book3s.S
+>> +++ b/arch/powerpc/kernel/idle_book3s.S
+>> @@ -201,4 +201,8 @@ _GLOBAL(power4_idle_nap)
+>>   	mtmsrd	r7
+>>   	isync
+>>   	b	1b
+>> +
+>> +	.globl power4_idle_nap_return
+>> +power4_idle_nap_return:
+>> +	blr
+>=20
+> Can't this be written in C somewhere ?
+
+Yes I think so if you did the entire power4_idle_nap function in C and=20
+used inline asm for the mtmsrd and fixup label (basically the same way
+as copy user exceptions return to a fixup location).
+
+You have to return to the same C function of course because you can't
+control the stack otherwise. But I don't care too much about avoiding
+an extra function call/return here, all the important stuff is in C now.=20
+
+Thanks,
+Nick
