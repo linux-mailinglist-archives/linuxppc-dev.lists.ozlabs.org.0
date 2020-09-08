@@ -2,51 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A932606E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 00:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D1F26081E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 04:00:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BljXZ2QBbzDqMW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 08:25:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlpJN6JMnzDqQ8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 12:00:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=dCQM0mMb; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BljVw4zX6zDqPG
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 08:24:08 +1000 (AEST)
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0FC482177B;
- Mon,  7 Sep 2020 22:24:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1599517445;
- bh=Zw8k17EFrc+/63emBncYD49Ff5pxZKxzzOMgy+BQJLI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=dCQM0mMbBmsuXq6UiB6gfFobsHNxnlX3Kk4wLQa8AevAHky7abtJqi/+ADi5VCech
- AimdyxuYXf0XIhdZP91Xjk4gQYYSIVwEHMDANE0DH5RqXC/Vxo1TxhoENe+na8hCS9
- KpNgXEXwD6oqJYWh/Feb1GZ86rYfY8DK9ZhM4KRM=
-Date: Mon, 7 Sep 2020 18:24:03 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH AUTOSEL 5.8 14/53] ibmvnic fix NULL tx_pools and rx_tools
- issue at do_reset
-Message-ID: <20200907222403.GQ8670@sasha-vm>
-References: <20200907163220.1280412-1-sashal@kernel.org>
- <20200907163220.1280412-14-sashal@kernel.org>
- <20200907141026.093fc160@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200907141026.093fc160@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+X-Greylist: delayed 403 seconds by postgrey-1.36 at bilbo;
+ Tue, 08 Sep 2020 11:58:27 AEST
+Received: from ozlabs.ru (unknown [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BlpGC3kGMzDqPF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 11:58:27 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id F3099AE8001C;
+ Mon,  7 Sep 2020 21:50:54 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
+Date: Tue,  8 Sep 2020 11:51:06 +1000
+Message-Id: <20200908015106.79661-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,44 +39,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Mingming Cao <mmc@linux.vnet.ibm.com>,
- Dany Madden <drt@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Oliver O'Halloran <oohall@gmail.com>,
+ Christoph Hellwig <hch@lst.de>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 07, 2020 at 02:10:26PM -0700, Jakub Kicinski wrote:
->On Mon,  7 Sep 2020 12:31:40 -0400 Sasha Levin wrote:
->> [ Upstream commit 9f13457377907fa253aef560e1a37e1ca4197f9b ]
->
->> @@ -2024,10 +2033,14 @@ static int do_reset(struct ibmvnic_adapter *adapter,
->>  		} else {
->>  			rc = reset_tx_pools(adapter);
->>  			if (rc)
->> +				netdev_dbg(adapter->netdev, "reset tx pools failed (%d)\n",
->> +						rc);
->>  				goto out;
->>
->>  			rc = reset_rx_pools(adapter);
->>  			if (rc)
->> +				netdev_dbg(adapter->netdev, "reset rx pools failed (%d)\n",
->> +						rc);
->>  				goto out;
->>  		}
->>  		ibmvnic_disable_irqs(adapter);
->
->Hi Sasha!
->
->I just pushed this to net:
->
->8ae4dff882eb ("ibmvnic: add missing parenthesis in do_reset()")
->
->You definitely want to pull that in if you decide to backport this one.
+There are 2 problems with it:
+1. "<" vs expected "<<"
+2. the shift number is an IOMMU page number mask, not an address mask
+as the IOMMU page shift is missing.
 
-Will do, thanks!
+This did not hit us before f1565c24b596 ("powerpc: use the generic
+dma_ops_bypass mode") because we had there additional code to handle
+bypass mask so this chunk (almost?) never executed. However there
+were reports that aacraid does not work with "iommu=nobypass".
+After f1565c24b596, aacraid (and probably others which call
+dma_get_required_mask() before setting the mask) was unable to
+enable 64bit DMA and fall back to using IOMMU which was known not to work,
+one of the problems is double free of an IOMMU page.
 
+This fixes DMA for aacraid, both with and without "iommu=nobypass"
+in the kernel command line. Verified with "stress-ng -d 4".
+
+Fixes: f1565c24b596 ("powerpc: use the generic dma_ops_bypass mode")
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+
+The original code came Jun 24 2011:
+6a5c7be5e484 ("powerpc: Override dma_get_required_mask by platform hook and ops")
+
+
+What is dma_get_required_mask() for anyway? What "requires" what here?
+
+Even though it works for now (due to huge - >4GB - default DMA window),
+I am still not convinced we do not want this chunk here
+(this is what f1565c24b596 removed):
+
+if (dev_is_pci(dev)) {
+        u64 bypass_mask = dma_direct_get_required_mask(dev);
+
+        if (dma_iommu_bypass_supported(dev, bypass_mask))
+                return bypass_mask;
+}
+---
+ arch/powerpc/kernel/dma-iommu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
+index 569fecd7b5b2..9053fc9d20c7 100644
+--- a/arch/powerpc/kernel/dma-iommu.c
++++ b/arch/powerpc/kernel/dma-iommu.c
+@@ -120,7 +120,8 @@ u64 dma_iommu_get_required_mask(struct device *dev)
+ 	if (!tbl)
+ 		return 0;
+ 
+-	mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1);
++	mask = 1ULL << (fls_long(tbl->it_offset + tbl->it_size) +
++			tbl->it_page_shift - 1);
+ 	mask += mask - 1;
+ 
+ 	return mask;
 -- 
-Thanks,
-Sasha
+2.17.1
+
