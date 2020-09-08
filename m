@@ -1,77 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADB0260D8F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:30:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8665260D95
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:32:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Blyyb2bLpzDqRW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:30:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Blz0v1BRszDqRG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:32:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qDwAzoF1; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bly2b6hyfzDqRC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 17:48:55 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id m5so9461497pgj.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 00:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=VvEFGowA+wK2W6qNulPSUNosobtFAVCsLQZybi/EwSQ=;
- b=qDwAzoF1OIleeqQ++Rws4QKfwIOb8W0pzh6PIa+SBp6uXK1oXcRrJ8QHPkD4fKkbIJ
- xeFgYNycovthxUs6W0pd1oOHx9J0I/+tnSCIJVb2Qp3oYO4x98UXFT2AnnhaIFljyxGC
- Qmn7kU7GsJqB4453dVTPa1z0peBe4ATr1UvDGyY0aVu3kYEsO2EXftDqI1VoKllnEivY
- ydDNjqJjnQ+aE0UbScJVzNw72k4Pcv6DxtAdz2cbcpJR5wm/xwHf38gWQ9O2WIROSgrF
- 1esJyA5XwVCMsCYx3Tf6+7B7+RKsU7WtmD66OCFJtyw5lXP7tv9rtw1zIg33rLf8MeXh
- EYYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=VvEFGowA+wK2W6qNulPSUNosobtFAVCsLQZybi/EwSQ=;
- b=eXOrMxurr16ZsXgsm2/utqIA9ifgM9b6Xo+ZqZ6468CetV1WSJ822mbv7veXl8HDs8
- B64BDBtQz7ha+Z8PNH49zNHKHkhdKMerp4+cOwQ8ptYh/xq8Ie5KlMd2MUCwYFqBfRYy
- Gzk+xbIeQNyN/2+v4c7EJEdzcyUleSxXUrnom7fh+yIs+huZaVpSki6Z2wk5UU4npe/n
- 9xohi3scWEI1TVnwDxLcaZIP59zqcp61Xo48/K45tYo/PBzg8XJbHTKVSIAmG05U08//
- m7524PddKYi9dHZIU4hfK3vNTSNypvX/KpRt5KCdD/mN4lp4gwO1VEhWnz6IcUI1cJs7
- qHeA==
-X-Gm-Message-State: AOAM531qjih43vFY6O4UcApP317Zk48PxRTQgzZN9YhgSGcDoyMcrwNu
- pTHAJ2cEUX04kH7mM1b1p8s=
-X-Google-Smtp-Source: ABdhPJz9jTPvPRw89uOQDcIuXo7Ms95yP431hJK8P22Ki3Hy7XJXSveRWcECqv7tjaX5FXjtLeREfw==
-X-Received: by 2002:a62:dd01:0:b029:13c:f607:5fff with SMTP id
- w1-20020a62dd010000b029013cf6075fffmr15747741pff.3.1599551332557; 
- Tue, 08 Sep 2020 00:48:52 -0700 (PDT)
-Received: from localhost ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id s67sm18580315pfs.117.2020.09.08.00.48.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Sep 2020 00:48:52 -0700 (PDT)
-Date: Tue, 08 Sep 2020 17:48:46 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 02/12] powerpc: remove arguments from interrupt
- handler functions
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20200905174335.3161229-1-npiggin@gmail.com>
- <20200905174335.3161229-3-npiggin@gmail.com>
- <e34fead9-a356-3ae6-aa33-544380230bd5@csgroup.eu>
- <1599478457.27656.1.camel@po17688vm.idsi0.si.c-s.fr>
-In-Reply-To: <1599478457.27656.1.camel@po17688vm.idsi0.si.c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Blygd45PqzDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 18:17:29 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BlygQ2VM3z9tyfZ;
+ Tue,  8 Sep 2020 10:17:22 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 8E9ZAY1YbiyQ; Tue,  8 Sep 2020 10:17:22 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BlygQ1YKJz9tyfY;
+ Tue,  8 Sep 2020 10:17:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B1BE8B7A1;
+ Tue,  8 Sep 2020 10:17:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id k9FC2ZI-dL_g; Tue,  8 Sep 2020 10:17:23 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D4E3E8B768;
+ Tue,  8 Sep 2020 10:17:20 +0200 (CEST)
+Subject: Re: [RFC PATCH v2 2/3] mm: make pXd_addr_end() functions page-table
+ entry aware
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+ <20200907180058.64880-3-gerald.schaefer@linux.ibm.com>
+ <31dfb3ed-a0cc-3024-d389-ab9bd19e881f@csgroup.eu>
+ <20200908074638.GA19099@oc3871087118.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <5d4f5546-afd0-0b8f-664d-700ae346b9ec@csgroup.eu>
+Date: Tue, 8 Sep 2020 10:16:49 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Message-Id: <1599551224.3zoap14y55.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200908074638.GA19099@oc3871087118.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,83 +68,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Ingo Molnar <mingo@redhat.com>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Jeff Dike <jdike@addtoit.com>,
+ Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>,
+ Heiko Carstens <hca@linux.ibm.com>, linux-um <linux-um@lists.infradead.org>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm <linux-arm-kernel@lists.infradead.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-power <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of September 7, 2020 9:34 pm:
-> On Mon, 2020-09-07 at 11:20 +0200, Christophe Leroy wrote:
->>=20
->> Le 05/09/2020 =C3=A0 19:43, Nicholas Piggin a =C3=A9crit :
->> > Make interrupt handlers all just take the pt_regs * argument and load
->> > DAR/DSISR etc from that. Make those that return a value return long.
->>=20
->> I like this, it will likely simplify a bit the VMAP_STACK mess.
->>=20
->> Not sure it is that easy. My board is stuck after the start of init.
->>=20
->>=20
->> On the 8xx, on Instruction TLB Error exception, we do
->>=20
->> 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
->>=20
->> On book3s/32, on ISI exception we do:
->> 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
->>=20
->> On 40x and bookE, on ISI exception we do:
->> 	li	r5,0			/* Pass zero as arg3 */
->>=20
->>=20
->> And regs->dsisr will just contain nothing
->>=20
->> So it means we should at least write back r5 into regs->dsisr from there=
-=20
->> ? The performance impact should be minimal as we already write _DAR so=20
->> the cache line should already be in the cache.
->>=20
->> A hacky 'stw r5, _DSISR(r1)' in handle_page_fault() does the trick,=20
->> allthough we don't want to do it for both ISI and DSI at the end, so=20
->> you'll have to do it in every head_xxx.S
->=20
-> To get you series build and work, I did the following hacks:
 
-Great, thanks for this.
 
-> diff --git a/arch/powerpc/include/asm/interrupt.h
-> b/arch/powerpc/include/asm/interrupt.h
-> index acfcc7d5779b..c11045d3113a 100644
-> --- a/arch/powerpc/include/asm/interrupt.h
-> +++ b/arch/powerpc/include/asm/interrupt.h
-> @@ -93,7 +93,9 @@ static inline void interrupt_nmi_exit_prepare(struct
-> pt_regs *regs, struct inter
->  {
->  	nmi_exit();
-> =20
-> +#ifdef CONFIG_PPC64
->  	this_cpu_set_ftrace_enabled(state->ftrace_enabled);
-> +#endif
+Le 08/09/2020 à 09:46, Alexander Gordeev a écrit :
+> On Tue, Sep 08, 2020 at 07:14:38AM +0200, Christophe Leroy wrote:
+>> You forgot arch/powerpc/mm/book3s64/subpage_prot.c it seems.
+> 
+> Yes, and also two more sources :/
+> 	arch/powerpc/mm/kasan/8xx.c
+> 	arch/powerpc/mm/kasan/kasan_init_32.c
+> 
+> But these two are not quite obvious wrt pgd_addr_end() used
+> while traversing pmds. Could you please clarify a bit?
+> 
+> 
+> diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
+> index 2784224..89c5053 100644
+> --- a/arch/powerpc/mm/kasan/8xx.c
+> +++ b/arch/powerpc/mm/kasan/8xx.c
+> @@ -15,8 +15,8 @@
+>   	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block += SZ_8M) {
+>   		pte_basic_t *new;
+>   
+> -		k_next = pgd_addr_end(k_cur, k_end);
+> -		k_next = pgd_addr_end(k_next, k_end);
+> +		k_next = pmd_addr_end(k_cur, k_end);
+> +		k_next = pmd_addr_end(k_next, k_end);
 
-This seems okay, not a hack.
+No, I don't think so.
+On powerpc32 we have only two levels, so pgd and pmd are more or less 
+the same.
+But pmd_addr_end() as defined in include/asm-generic/pgtable-nopmd.h is 
+a no-op, so I don't think it will work.
 
->  #ifdef CONFIG_PPC_BOOK3S_64
->  	/* Check we didn't change the pending interrupt mask. */
-> diff --git a/arch/powerpc/kernel/entry_32.S
-> b/arch/powerpc/kernel/entry_32.S
-> index f4d0af8e1136..66f7adbe1076 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -663,6 +663,7 @@ ppc_swapcontext:
->   */
->  	.globl	handle_page_fault
->  handle_page_fault:
-> +	stw	r5,_DSISR(r1)
->  	addi	r3,r1,STACK_FRAME_OVERHEAD
->  #ifdef CONFIG_PPC_BOOK3S_32
->  	andis.  r0,r5,DSISR_DABRMATCH@h
+It is likely that this function should iterate on pgd, then you get pmd 
+= pmd_offset(pud_offset(p4d_offset(pgd)));
 
-Is this what you want to do for 32, or do you want to seperate
-ISI and DSI sides?
+>   		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+>   			continue;
+>   
+> diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
+> index fb29404..3f7d6dc6 100644
+> --- a/arch/powerpc/mm/kasan/kasan_init_32.c
+> +++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+> @@ -38,7 +38,7 @@ int __init kasan_init_shadow_page_tables(unsigned long k_start, unsigned long k_
+>   	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd++) {
+>   		pte_t *new;
+>   
+> -		k_next = pgd_addr_end(k_cur, k_end);
+> +		k_next = pmd_addr_end(k_cur, k_end);
 
-Thanks,
-Nick
+Same here I get, iterate on pgd then get pmd = 
+pmd_offset(pud_offset(p4d_offset(pgd)));
+
+>   		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+>   			continue;
+>   
+> @@ -196,7 +196,7 @@ void __init kasan_early_init(void)
+>   	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
+>   
+>   	do {
+> -		next = pgd_addr_end(addr, end);
+> +		next = pmd_addr_end(addr, end);
+>   		pmd_populate_kernel(&init_mm, pmd, kasan_early_shadow_pte);
+>   	} while (pmd++, addr = next, addr != end);
+>   
+> 
+
+Christophe
