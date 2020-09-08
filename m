@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85AD260DD8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D600260DEB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:47:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlzHx1cvNzDqC3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:45:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlzL63DLSzDqHk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:47:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VVzWZ0PL; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+ header.s=20161025 header.b=lkL9TzTO; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlzG64xYvzDqLj
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 18:43:58 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id gf14so7666651pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 01:43:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlzHB2cPQzDqLH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 18:44:53 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id d9so4103833pfd.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 01:44:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=OXlcroGke2HNevojS8gO7AGdbKr5HayaXxgh0v0a9Rw=;
- b=VVzWZ0PLhoBOyRnLqIhBP8KlfFI1wesE/ceDJIN6T0dgy7xPyIv2MSxmQkM/5WqrTI
- CFU0k8luUZ6jx5bUjXraLG3G3v1aUp5DWnYzAckklhZatgNFvBRMP8G1bzLRwmUMQ/M0
- PYyMPqh2IN0GJ0D6oJTzBd42wd9VCjv+SxeubQlPrU8G6nL2DQlHoxGas0g2MmPNJuYf
- jNUkMDi95Xfdu5HXwvf/SFKXlsv4hdCtz4HZ8itfx96TewzGNl5b32ilpqFKNr97eC44
- EWfDRmXwk+OGeJhaEDqBuHIlDO4cI5awDYMI2K0bmd5V6Oned79/6dnQ+TEbTTg+rtwM
- +wQA==
+ bh=PiRn9NwzKohrwBuFF5bFBZNNmANW0xplBGn4HXUwbyY=;
+ b=lkL9TzTOhf4dkeNPtCdPcsSlTqHtEC3Af69+imHnsfVc4F94f5/uTawrqMRt05G5Bf
+ /qaZ53cp41K2BtaTuxHKI6SIFU2/JREPuLvrJY4NitPTxqv5gYoomX4xuz/gpgJecN3i
+ eP28Rkfm6Cy4k3eh7YbN2LMnakrJcXtDXzMGn2OPeG3QPdlbAiFlVPc5etn9ivr941Fs
+ SS9pgsRNxYVBWFzJUuDj78/LkJ3c2935s12UMZlGaq4+SOm8gpNG/TtrtZDdh0HwkrZM
+ SRzcendWednW5KpWFaKBv4RryDecjCJmJLPB6o6ob39pQvvSgLBSfSkMTgqlEjyUrudF
+ NCTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=OXlcroGke2HNevojS8gO7AGdbKr5HayaXxgh0v0a9Rw=;
- b=mWASjHVGjmwaiboDOGrjtnw8RePo8y69GFTRkxB7P+XuEPb0bC0Rj9wJrZd6IeXk7+
- L2wN6aGCLgQtxAogQUa6/u0UyiJvL0TKPWB9sWSYW8XehCT+K8ODSgrpM/QsE5hs7/bT
- keMt3B3cjci0cgyDZlplNCdmX3sGkdrGzzz4LVYelf8hxb2RNtwg9b7WEJGVvFSjlH/V
- ujkYvUq7WuqBvGnjpw898BnM0tOWvGN4MN7JTQxzfaw8T0Oxxc796bzYPuVrqsACr1m/
- nobbojspT7SzQmkErxwjGI19Jnfb0yIH/AuqMAvgGHgCUvefnIwR6nXuJ0edWhG4jGwm
- Zi5A==
-X-Gm-Message-State: AOAM533cLzDsasahsn5QTQ3lBcYn5fFLnKmg7Gw/7RhxVIoYq89aymuv
- OYsdIwO646PEDimJEMvAAoE=
-X-Google-Smtp-Source: ABdhPJxzyS9TfAzWvwCFoho2mIVMNDIB0pBbFX9ag1Dk5md5II1gAiOC+3ef0morgOeUwDCSINndIw==
-X-Received: by 2002:a17:90a:e795:: with SMTP id
- iz21mr2979053pjb.8.1599554634620; 
- Tue, 08 Sep 2020 01:43:54 -0700 (PDT)
+ bh=PiRn9NwzKohrwBuFF5bFBZNNmANW0xplBGn4HXUwbyY=;
+ b=ObB6dAi5MEm8KPj3WcFZKHjmOg6IDztvzfjla6VNYKOzZgK5IvI4vDKIB5EAFHQYuL
+ B1p7w/DMEO4DM74Pb0BNkDd8BLBva+K+p9mgRX2kEGOH4gkA97f7hejFIBiroKzJcNjJ
+ Aq/w+7fYhT46BdH5NzZvWzRTaA+4/6Og7OxgneV2ygVOoz4R8Ew5uRPBRX9fqV0PhmfR
+ hlQ+Lzo0mFCf5o6AXF5yJLx2wnoXGyOle11kLORA9v8Ah1LIxmVnmdnyhdqPCW1iZnxR
+ tT0EOJDJ87yZDAy+0x+hMh6xkLGFzxu588F6WEeiUsPQ2BmzJKM1dRAXS8YPoUxifeI5
+ rSjQ==
+X-Gm-Message-State: AOAM530OartLfL6zX/QDrdW08lODjlKTWMA5KY5ik9I5IWEL0m739jg8
+ +KI0piIXNhoyS0weVp5aEEY=
+X-Google-Smtp-Source: ABdhPJxVM8x5twFdRZ5+HrEYOCxGbZDu70wGmAmIaGeAjbvnI0yPo6twAe3uTH9ciTVhFg1ASQWuUw==
+X-Received: by 2002:a63:6d0d:: with SMTP id i13mr19811682pgc.372.1599554691406; 
+ Tue, 08 Sep 2020 01:44:51 -0700 (PDT)
 Received: from localhost ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id b10sm16891473pff.85.2020.09.08.01.43.53
+ by smtp.gmail.com with ESMTPSA id 82sm14468515pgd.6.2020.09.08.01.44.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Sep 2020 01:43:54 -0700 (PDT)
-Date: Tue, 08 Sep 2020 18:43:48 +1000
+ Tue, 08 Sep 2020 01:44:50 -0700 (PDT)
+Date: Tue, 08 Sep 2020 18:44:45 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v1 1/5] powerpc/mm: sanity_check_fault() should work for
- all, not only BOOK3S
+Subject: Re: [PATCH v1 2/5] powerpc/fault: Unnest definition of
+ page_fault_is_write() and page_fault_is_bad()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
  <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
  Paul Mackerras <paulus@samba.org>
 References: <7baae4086cbb9ffb08c933b065ff7d29dbc03dd6.1596734104.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <7baae4086cbb9ffb08c933b065ff7d29dbc03dd6.1596734104.git.christophe.leroy@csgroup.eu>
+ <4cd127f8988b7b5d3a9b24b67dbad81fef3aee7f.1596734104.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <4cd127f8988b7b5d3a9b24b67dbad81fef3aee7f.1596734104.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1599554359.m174sr2fhg.astroid@bobo.none>
+Message-Id: <1599554667.yx7o7g5m0l.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,65 +88,45 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Christophe Leroy's message of August 7, 2020 3:15 am:
-> The verification and message introduced by commit 374f3f5979f9
-> ("powerpc/mm/hash: Handle user access of kernel address gracefully")
-> applies to all platforms, it should not be limited to BOOK3S.
->=20
-> Make the BOOK3S version of sanity_check_fault() the one for all,
-> and bail out earlier if not BOOK3S.
->=20
-> Fixes: 374f3f5979f9 ("powerpc/mm/hash: Handle user access of kernel addre=
-ss gracefully")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/mm/fault.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
->=20
-> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> index 925a7231abb3..2efa34d7e644 100644
-> --- a/arch/powerpc/mm/fault.c
-> +++ b/arch/powerpc/mm/fault.c
-> @@ -303,7 +303,6 @@ static inline void cmo_account_page_fault(void)
->  static inline void cmo_account_page_fault(void) { }
->  #endif /* CONFIG_PPC_SMLPAR */
-> =20
-> -#ifdef CONFIG_PPC_BOOK3S
->  static void sanity_check_fault(bool is_write, bool is_user,
->  			       unsigned long error_code, unsigned long address)
->  {
-> @@ -320,6 +319,9 @@ static void sanity_check_fault(bool is_write, bool is=
-_user,
->  		return;
->  	}
-> =20
-> +	if (!IS_ENABLED(CONFIG_PPC_BOOK3S))
-> +		return;
-
-Seems okay. Why is address =3D=3D -1 special though? I guess it's because=20
-it may not be an exploit kernel reference but a buggy pointer underflow?=20
-In that case -1 doesn't seem like it would catch very much. Would it be=20
-better to test for high bit set for example ((long)address < 0) ?
-
-Anyway for your patch
+> To make it more readable, separate page_fault_is_write() and page_fault_i=
+s_bad()
+> to avoir several levels of #ifdefs
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/mm/fault.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index 2efa34d7e644..9ef9ee244f72 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -363,17 +363,19 @@ static void sanity_check_fault(bool is_write, bool =
+is_user,
+>   */
+>  #if (defined(CONFIG_4xx) || defined(CONFIG_BOOKE))
+>  #define page_fault_is_write(__err)	((__err) & ESR_DST)
+> -#define page_fault_is_bad(__err)	(0)
+>  #else
+>  #define page_fault_is_write(__err)	((__err) & DSISR_ISSTORE)
+> -#if defined(CONFIG_PPC_8xx)
+> +#endif
 > +
->  	/*
->  	 * For hash translation mode, we should never get a
->  	 * PROTFAULT. Any update to pte to reduce access will result in us
-> @@ -354,10 +356,6 @@ static void sanity_check_fault(bool is_write, bool i=
-s_user,
-> =20
->  	WARN_ON_ONCE(error_code & DSISR_PROTFAULT);
->  }
-> -#else
-> -static void sanity_check_fault(bool is_write, bool is_user,
-> -			       unsigned long error_code, unsigned long address) { }
-> -#endif /* CONFIG_PPC_BOOK3S */
+> +#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+> +#define page_fault_is_bad(__err)	(0)
+> +#elif defined(CONFIG_PPC_8xx)
+>  #define page_fault_is_bad(__err)	((__err) & DSISR_NOEXEC_OR_G)
+>  #elif defined(CONFIG_PPC64)
+>  #define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_64S)
+>  #else
+>  #define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_32S)
+>  #endif
+> -#endif
 > =20
 >  /*
->   * Define the correct "is_write" bit in error_code based
+>   * For 600- and 800-family processors, the error_code parameter is DSISR
 > --=20
 > 2.25.0
 >=20
