@@ -1,54 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B849260B79
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 09:01:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F366A260BA1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 09:13:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Blwzx4cv8zDqRM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 17:01:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlxFn16N9zDqN0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 17:13:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
- helo=mail-oi1-f194.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
- [209.85.167.194])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Blwy96vXCzDqHf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 17:00:01 +1000 (AEST)
-Received: by mail-oi1-f194.google.com with SMTP id 185so15500611oie.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 00:00:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=80BY8rNg7RfD6oxznXYOKPcFZuo8wajfOpZ0OBeC/wY=;
- b=RC6KIUr4sUDBhyrMquVwkErHuE9+M6aAJC50OO0gpty4/LR/Y0S1Ez948iBN37HX2z
- uzTvvtIY3Pq13+d9f4/diK1j6R7DLYp/IVqb+claodkw2p/r0SnHPiVYfd1o5U26SgUw
- e+HrqlPFJEK3f0JmzZLZG4IFWlUGz2xZMHNrNijvcYwsyaQVzmSG2zeISbTvsi7nN9bf
- KT5G90YOpAxsaa1zRPY1f0aDMzaajjPAR4CbAhNtkZXyYDZqLmM/4FtOeUh03Eestp9y
- s0ntET/DeoNy1/2Ou25djNGTspbeICpcBbEY9dE2r6WuqE6WhQe69MnzZNeVF9lKv+CJ
- fPiQ==
-X-Gm-Message-State: AOAM531Q7ukhLZtIfB00xgOfKSXMTHFg5A3egQqqC90wiI4l8b1MTHz/
- BHHDBk3QA8KAtHRGWr0KojCUL6fn1PgzGbbaM+k=
-X-Google-Smtp-Source: ABdhPJw+Sdn/Kf/NbESMrEGT3ykKzS7L5e1uWHMt5PE98XyXUrM0snkLRMMoZ/Q/NW5lb7vt9j4vz11Ltnr3Qr8PC/E=
-X-Received: by 2002:aca:b742:: with SMTP id h63mr1711017oif.148.1599548399253; 
- Mon, 07 Sep 2020 23:59:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlxCz4xSlzDqMg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 17:11:59 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=BZwweZaA; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4BlxCz3rzVz9sTW; Tue,  8 Sep 2020 17:11:59 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BlxCz2bZGz9sTM;
+ Tue,  8 Sep 2020 17:11:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1599549119;
+ bh=3efI13X54DGkzx1Rpyo+HHculy/7YIzgSvQGS5+rp/g=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=BZwweZaAxN7a6jnerLAXaBZoFLytkt/tL6r/PM4y2NNqhX7pFF/W4qDE3aTijEinf
+ 9Vo+artcy0cFMJzsy88Gr+H5rpUix6v+Wj9LJla2XM6S0xOeqbTWL7duR5qxB+S/qd
+ 7VNIjFhBEfBbVGh2fqixT4VauccNkm5mcCEXcue/P8mRouAyjpR7/ANc/qB+eJJbOq
+ vpc/Y4ooxWR03D6RkTk51BERHR7FNh29/QqNuPRHw0npG0IKOCgC2faSfYq2y4vXf2
+ liFj7+QORzjOBMmOx8oYVCkPB8MvgdxGTkuYnOIk0bdqf50XzO56hCXVnJBlRo0nhA
+ DD61e+2j+CEzg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christian Lamparter <chunkeey@gmail.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH] powerpc/boot/dts: Fix dtc "pciex" warnings
+In-Reply-To: <d2652e63-b136-a805-fd6d-00584b64c772@gmail.com>
+References: <20200623130320.405852-1-mpe@ellerman.id.au>
+ <d2652e63-b136-a805-fd6d-00584b64c772@gmail.com>
+Date: Tue, 08 Sep 2020 17:11:58 +1000
+Message-ID: <87mu20spxd.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200908042708.2511528-1-masahiroy@kernel.org>
-In-Reply-To: <20200908042708.2511528-1-masahiroy@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 8 Sep 2020 08:59:48 +0200
-Message-ID: <CAMuHMdVobzKWKnN0ScqSY+Jv3N1ri8=mWEd-SZfH5+je+CVVcQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: preprocess module linker script
-To: Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,61 +62,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Linux-Arch <linux-arch@vger.kernel.org>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, Fenghua Yu <fenghua.yu@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, Jeff Dike <jdike@addtoit.com>,
- linux-um <linux-um@lists.infradead.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>, Tony Luck <tony.luck@intel.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Michal Marek <michal.lkml@markovi.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Jessica Yu <jeyu@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: sfr@canb.auug.org.au, Chris Blake <chrisrblake93@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 8, 2020 at 6:29 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> There was a request to preprocess the module linker script like we
-> do for the vmlinux one. (https://lkml.org/lkml/2020/8/21/512)
+Christian Lamparter <chunkeey@gmail.com> writes:
+> On 2020-06-23 15:03, Michael Ellerman wrote:
+>> With CONFIG_OF_ALL_DTBS=3Dy, as set by eg. allmodconfig, we see lots of
+>> warnings about our dts files, such as:
+>>
+>>    arch/powerpc/boot/dts/glacier.dts:492.26-532.5:
+>>    Warning (pci_bridge): /plb/pciex@d00000000: node name is not "pci"
+>>    or "pcie"
+>>
+>> The node name should not particularly matter, it's just a name, and
+>> AFAICS there's no kernel code that cares whether nodes are *named*
+>> "pciex" or "pcie". So shutup these warnings by converting to the name
+>> dtc wants.
+>>
+>> As always there's some risk this could break something obscure that
+>> does rely on the name, in which case we can revert.
 >
-> The difference between vmlinux.lds and module.lds is that the latter
-> is needed for external module builds, thus must be cleaned up by
-> 'make mrproper' instead of 'make clean'. Also, it must be created
-> by 'make modules_prepare'.
+> Hmm, I noticed this when I was looking up why nobody commented
+> on my series of adding more devices to the APM82181/bluestone series:
 >
-> You cannot put it in arch/$(SRCARCH)/kernel/, which is cleaned up by
-> 'make clean'. I moved arch/$(SRCARCH)/kernel/module.lds to
-> arch/$(SRCARCH)/include/asm/module.lds.h, which is included from
-> scripts/module.lds.S.
+> <https://lore.kernel.org/linuxppc-dev/cover.1598124791.git.chunkeey@gmail=
+.com/>
+> (I'll post a v3 "soonish".)
 >
-> scripts/module.lds is fine because 'make clean' keeps all the
-> build artifacts under scripts/.
 >
-> You can add arch-specific sections in <asm/module.lds.h>.
+> Unfortunately yes. This patch will break uboot code in Meraki MX60(W) / M=
+X60.
 >
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> Tested-by: Jessica Yu <jeyu@kernel.org>
-> Acked-by: Will Deacon <will@kernel.org>
+>  > https://github.com/riptidewave93/meraki-uboot/blob/mx60w-20180413/boar=
+d/amcc/bluestone/bluestone.c#L1178
+>
+> | if (!pci_available()) {
+> | =C2=A0=C2=A0=C2=A0 fdt_find_and_setprop(blob, "/plb/pciex@d00000000", "=
+status",
+> |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "disabled", sizeof("disabled"), 1);
+> | }
+>
+>
+> Backstory: There are two version of the Meraki MX60. The MX60
+> and the MX60W. The difference is that the MX60W has a populated
+> mini-pcie slot on the PCB for a >W<ireless card.
+>
+> That said, this is not earth shattering.
 
->  arch/m68k/Makefile                                     |  1 -
->  .../{kernel/module.lds => include/asm/module.lds.h}    |  0
+I'm happy to revert that hunk if you think any one is actually booting
+mainline on those.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+cheers
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> (In theory, this can also cause problems for the bluestone and canyonlands
+> dev boards that have the option to be configured as either dual sata or
+> pcie+sata.... But this is probably not a problem for customer boards)
+>
+> OT: Please note that the plb, opb and ebc node paths (/plb/opb/ebc) are
+> hardcoded too :(. Amending the proper unit-addresses will lead to no-long=
+er
+> working DTBs as the "ranges" are missing.
+>
+> Cheers,
+> Christian
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> ---
+>>
+>> diff --git a/arch/powerpc/boot/dts/bluestone.dts b/arch/powerpc/boot/dts=
+/bluestone.dts
+>> index cc965a1816b6..aa1ae94cd776 100644
+>> --- a/arch/powerpc/boot/dts/bluestone.dts
+>> +++ b/arch/powerpc/boot/dts/bluestone.dts
+>> @@ -325,7 +325,7 @@ EMAC0: ethernet@ef600c00 {
+>>   			};
+>>   		};
+>>=20=20=20
+>> -		PCIE0: pciex@d00000000 {
+>> +		PCIE0: pcie@d00000000 {
+>>   			device_type =3D "pci";
+>>   			#interrupt-cells =3D <1>;
+>>   			#size-cells =3D <2>;
