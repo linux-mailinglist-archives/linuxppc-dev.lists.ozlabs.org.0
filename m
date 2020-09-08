@@ -2,56 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77FF2610EB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 13:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C7F261117
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 14:09:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bm3Kf5JJ7zDqST
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 21:47:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bm3pm12lGzDqSh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 22:09:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=1yr1j8u4; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bm3Hb4tS1zDqHh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 21:45:28 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.20.195])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4EC8F58B7BEF;
- Tue,  8 Sep 2020 13:45:04 +0200 (CEST)
-Received: from kaod.org (37.59.142.100) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Tue, 8 Sep 2020
- 13:45:03 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R003710aca84-74e5-4363-be75-62e9e2f68754,
- C140F6A5C7B222948263C4B5CC45CB8199AAF5B0) smtp.auth=clg@kaod.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bm3mT38DPzDqMp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 22:07:03 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id jw11so2027730pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 05:07:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=NIbtG5Q2rIwBLkq2SFzM1e6Kg81Hn9yCTElsdPgvuxo=;
+ b=1yr1j8u4/gcbAyilFJAMaPdFd9c7c2Yq23z6glMSzlft8KR2gOYxpGKVgNf69E2HvB
+ AY53u00GFZiaAv+JVaMNCLn7T3Pxv5rDdjZxwC6iHRNSsQrmi0qTww0ZWrCdYLRTOggm
+ Mk1hTq8RykeMw0duVmiBOn84KRzPUaidI8aIyQEvlFmElIdbgVxoypmyneu1h8g4V9QC
+ 1brsc95T2+Vj6qHT/RbOoG5CagduWG0Io7ejDmbCM3AL7MgD3/2koXIy0r7eF+RYttOl
+ MN0et8MsFoKjotNFoWYGqBS6mEj4uE3m1ZLU9oXKtJfXC1IGicY/vIVd7NjH7juD8A1T
+ gyWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=NIbtG5Q2rIwBLkq2SFzM1e6Kg81Hn9yCTElsdPgvuxo=;
+ b=Vee9PYHH7TyaR9SOecOmDdEpu6TnrD+nEq/c+ZEEToFe84qM8I+lU/UJcTBsyTnfCO
+ pWtRquvahIxZy8ZRJyRXoLJ+a+FoY4bekktePFEPxRpn5cUH1nVkELAg8YyAkcmTlcBS
+ jJ6nch3sZZJWSX998rvnRhuoaTqqbvJ10fbGCdrh22tV8bSt+kRrOCUVP4CfNRhY5CyZ
+ sLYOr9iigTbiu52d+BDgDO52dl5jeQViz/VH61HfuEuFRlae0i7AFucez15oWhCjJB1B
+ 5JRAgNglNnrUyQrgAK+iosBMyN1yV5ygAy7JuuL2FvZFly0HdUcSXLnuX8VV5LEHKb2r
+ F/+w==
+X-Gm-Message-State: AOAM5319DJLpZmTPPucSAhX1QDa/287xBGeGy9OpnlqLuy6/ni5Fk9I7
+ qQQoDKsoFN7uFQOflRPS64LWHw==
+X-Google-Smtp-Source: ABdhPJz111e1vIuWI4BQlP723OOW6ppNywTh0N/m3q/2t02dJRfYq94/p/ArWpWLE/eiOrzNlXq1pQ==
+X-Received: by 2002:a17:90a:ca82:: with SMTP id
+ y2mr3636033pjt.233.1599566820799; 
+ Tue, 08 Sep 2020 05:07:00 -0700 (PDT)
+Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
+ [124.171.83.152])
+ by smtp.gmail.com with ESMTPSA id z23sm10913089pfj.177.2020.09.08.05.06.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Sep 2020 05:07:00 -0700 (PDT)
 Subject: Re: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, <linuxppc-dev@lists.ozlabs.org>
+To: Christoph Hellwig <hch@lst.de>
 References: <20200908015106.79661-1-aik@ozlabs.ru>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <03b46b7c-b51b-4f84-21d5-79d5e49a338e@kaod.org>
-Date: Tue, 8 Sep 2020 13:45:03 +0200
+ <20200908054416.GA13585@lst.de>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Message-ID: <94353228-2262-cfa1-7177-7eed2288ca63@ozlabs.ru>
+Date: Tue, 8 Sep 2020 22:06:56 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200908015106.79661-1-aik@ozlabs.ru>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20200908054416.GA13585@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: e1504cdb-b552-4bb9-958c-5505e5140b66
-X-Ovh-Tracer-Id: 7980378543706049504
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrudehfedgvdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegrihhksehoiihlrggsshdrrhhu
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,77 +87,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, Christoph Hellwig <hch@lst.de>
+Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/8/20 3:51 AM, Alexey Kardashevskiy wrote:
-> There are 2 problems with it:
-> 1. "<" vs expected "<<"
-> 2. the shift number is an IOMMU page number mask, not an address mask
-> as the IOMMU page shift is missing.
-> 
-> This did not hit us before f1565c24b596 ("powerpc: use the generic
-> dma_ops_bypass mode") because we had there additional code to handle
-> bypass mask so this chunk (almost?) never executed. However there
-> were reports that aacraid does not work with "iommu=nobypass".
-> After f1565c24b596, aacraid (and probably others which call
-> dma_get_required_mask() before setting the mask) was unable to
-> enable 64bit DMA and fall back to using IOMMU which was known not to work,
-> one of the problems is double free of an IOMMU page.
-> 
-> This fixes DMA for aacraid, both with and without "iommu=nobypass"
-> in the kernel command line. Verified with "stress-ng -d 4".
-> 
-> Fixes: f1565c24b596 ("powerpc: use the generic dma_ops_bypass mode")
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 
-The boston system looks solid with this patch.
+On 08/09/2020 15:44, Christoph Hellwig wrote:
+> On Tue, Sep 08, 2020 at 11:51:06AM +1000, Alexey Kardashevskiy wrote:
+>> What is dma_get_required_mask() for anyway? What "requires" what here?
+> 
+> Yes, it is a really odd API.  It comes from classic old PCI where
+> 64-bit addressing required an additional bus cycle, and various devices
+> had different addressing schemes, with the smaller addresses beeing
+> more efficient.  So this allows the driver to request the "required"
+> addressing mode to address all memory.  "preferred" might be a better
+> name as we'll bounce buffer if it isn't met.  I also don't really see
+> why a driver would ever want to use it for a modern PCIe device.
 
-Tested-by: Cédric Le Goater <clg@kaod.org>
 
-Thanks a lot ! 
-
-C. 
+a-ha, this makes more sense, thanks. Then I guess we need to revert that 
+one bit from yours f1565c24b596, do not we?
 
 
-> ---
-> 
-> The original code came Jun 24 2011:
-> 6a5c7be5e484 ("powerpc: Override dma_get_required_mask by platform hook and ops")
-> 
-> 
-> What is dma_get_required_mask() for anyway? What "requires" what here?
-> 
-> Even though it works for now (due to huge - >4GB - default DMA window),
-> I am still not convinced we do not want this chunk here
-> (this is what f1565c24b596 removed):
-> 
-> if (dev_is_pci(dev)) {
->         u64 bypass_mask = dma_direct_get_required_mask(dev);
-> 
->         if (dma_iommu_bypass_supported(dev, bypass_mask))
->                 return bypass_mask;
-> }
-> ---
->  arch/powerpc/kernel/dma-iommu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-> index 569fecd7b5b2..9053fc9d20c7 100644
-> --- a/arch/powerpc/kernel/dma-iommu.c
-> +++ b/arch/powerpc/kernel/dma-iommu.c
-> @@ -120,7 +120,8 @@ u64 dma_iommu_get_required_mask(struct device *dev)
->  	if (!tbl)
->  		return 0;
->  
-> -	mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1);
-> +	mask = 1ULL << (fls_long(tbl->it_offset + tbl->it_size) +
-> +			tbl->it_page_shift - 1);
->  	mask += mask - 1;
->  
->  	return mask;
-> 
-
+-- 
+Alexey
