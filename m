@@ -2,75 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190EF260C63
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 09:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7525260D8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:28:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bly2k2SLRzDqQW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 17:49:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Blyvn5DsMzDq8g
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:28:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pLZi3/af; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Js9F8PhV; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bly0Z3XwMzDqNs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 17:47:09 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id v15so9462580pgh.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 00:47:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=esWxwITpd48A7faZUHJwZ9TUfahg+Tdi9MtHhXdhMj0=;
- b=pLZi3/afb7HbD/9HfHNXuNaEOQcA3XkxQ4Cu65yzGQ2T9sqjX25pDoBDquT161zLnS
- ijBaQzHhCbpRzkJkkTQ9zF3XaT4YeB6aKjAzpPHzFXv096DZABaO9ERjV+qeBibCe/93
- g6EOGMvku0guNP3rF/aFt2+tIb3k6LsL6SF+0Gt4adzy5XFMo9796IqgZQvhVb5gm0Lm
- +uNzE7NfWtToEvtOedThkqe//lgstYf+iFf5LBHD0mfRz73w/4VX0FG5u0aQe7Gwo8wn
- 0C18yu/8doOGv95Tjaqo8CzDUNrQhacxrg0lNiYme+YMtuZWPKjUobFvVnHfy5wjlw6b
- 7Xmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=esWxwITpd48A7faZUHJwZ9TUfahg+Tdi9MtHhXdhMj0=;
- b=Ky0f6MtdNCZGLtPHi+rx9FQsWBkIozhqm45INO1kVGGo/NgXPcyHurItN9U38UJqPj
- prAMQO69gJePsdv5MVt+4F14Crwpn99yDL39MZcJEnzOtyBhj29fn5+JqYrZrl8hbqwn
- tT2Z7UrHsl4IO8DossGVdn1NHHcmeUPlSONMITho5ikKw1cEevl3lCCcvo7wBKKI8rRz
- SyVXsFRKm3wdh9CIX/9/5ExwEoOvCQtyPdhw5hTEv8HF39PLMItTOL1fqUTuwcGO1XFL
- T0Hqor3urjATQxLLiBYt4UR1Qegyg6ODLWHl3wt/eiHdF96t5Azf5/7Oax3ZzyAWV27u
- Y8lg==
-X-Gm-Message-State: AOAM530WloiR2u20YJOvLSYffVMiKRC33Ow35hky8/cNF3FJbin/8ihV
- Ml5m/Z0Vl4G9G37ryBrRbMTD9FCYF60=
-X-Google-Smtp-Source: ABdhPJzR9MjIvoxxFvUhB0KWuliPG1EQYoIGrlqd3YyhUxY+9j8CTlUjw+7qow0DGAFltEEL0IaUCw==
-X-Received: by 2002:a62:7c82:0:b029:13c:1611:66b9 with SMTP id
- x124-20020a627c820000b029013c161166b9mr21961340pfc.4.1599551225882; 
- Tue, 08 Sep 2020 00:47:05 -0700 (PDT)
-Received: from localhost ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id u27sm3160683pgm.60.2020.09.08.00.47.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Sep 2020 00:47:05 -0700 (PDT)
-Date: Tue, 08 Sep 2020 17:46:58 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 02/12] powerpc: remove arguments from interrupt
- handler functions
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20200905174335.3161229-1-npiggin@gmail.com>
- <20200905174335.3161229-3-npiggin@gmail.com>
- <e34fead9-a356-3ae6-aa33-544380230bd5@csgroup.eu>
-In-Reply-To: <e34fead9-a356-3ae6-aa33-544380230bd5@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bly144SWkzDqP0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 17:47:30 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0887WvWo103539; Tue, 8 Sep 2020 03:46:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=7Wyqh7MeIDjAi+eJ5NjBqYqiJMPciT86nd2J6e9RnVc=;
+ b=Js9F8PhV3ve4wSZgPSOWcU4+eeye6MkHg/szXsay/J6iuPgAhdofffSX07lx5D0GB0MR
+ aF3AWsVsPiNuALSZ2Ww/0ODHXvdsSuWL2ppLGknUwxHOojMVlJKQWQ34+3Z4zGHemuf/
+ CG+DBQmn90MfyDRP9EFKac+an9e+LBFMUCrkGiSHfzLuAdo5+lU362NCriWYQIykpxcL
+ nTkdHznuDua9GcQmyPXh+3kC0kqSDkEpsTsJH/nm3C7tr5g+T4aKtUwaNYqIXkBH3INy
+ MxdZyJfAA/AsR3Auowrl4nya8/gDktt2AioTDodBt0qKN6TD7l4QjnGSkQ6rUS8oadYV QQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33e4x71s09-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 03:46:46 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0887Xmoc107206;
+ Tue, 8 Sep 2020 03:46:46 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33e4x71rye-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 03:46:46 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0887g14q000548;
+ Tue, 8 Sep 2020 07:46:44 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04fra.de.ibm.com with ESMTP id 33cm5hhgv4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 07:46:44 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0887kfuH31916436
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Sep 2020 07:46:41 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7F7D15204E;
+ Tue,  8 Sep 2020 07:46:41 +0000 (GMT)
+Received: from oc3871087118.ibm.com (unknown [9.145.35.55])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id E6CF352050;
+ Tue,  8 Sep 2020 07:46:39 +0000 (GMT)
+Date: Tue, 8 Sep 2020 09:46:38 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [RFC PATCH v2 2/3] mm: make pXd_addr_end() functions page-table
+ entry aware
+Message-ID: <20200908074638.GA19099@oc3871087118.ibm.com>
+References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+ <20200907180058.64880-3-gerald.schaefer@linux.ibm.com>
+ <31dfb3ed-a0cc-3024-d389-ab9bd19e881f@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1599550991.5091a1442f.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <31dfb3ed-a0cc-3024-d389-ab9bd19e881f@csgroup.eu>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-08_03:2020-09-08,
+ 2020-09-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ clxscore=1011 malwarescore=0 mlxlogscore=999 adultscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009080066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,63 +104,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Ingo Molnar <mingo@redhat.com>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Jeff Dike <jdike@addtoit.com>,
+ Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>,
+ Heiko Carstens <hca@linux.ibm.com>, linux-um <linux-um@lists.infradead.org>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm <linux-arm-kernel@lists.infradead.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-power <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of September 7, 2020 7:20 pm:
->=20
->=20
-> Le 05/09/2020 =C3=A0 19:43, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Make interrupt handlers all just take the pt_regs * argument and load
->> DAR/DSISR etc from that. Make those that return a value return long.
->=20
-> I like this, it will likely simplify a bit the VMAP_STACK mess.
->=20
-> Not sure it is that easy. My board is stuck after the start of init.
->=20
->=20
-> On the 8xx, on Instruction TLB Error exception, we do
->=20
-> 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
->=20
-> On book3s/32, on ISI exception we do:
-> 	andis.	r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 bits */
->=20
-> On 40x and bookE, on ISI exception we do:
-> 	li	r5,0			/* Pass zero as arg3 */
->=20
->=20
-> And regs->dsisr will just contain nothing
->=20
-> So it means we should at least write back r5 into regs->dsisr from there=20
-> ? The performance impact should be minimal as we already write _DAR so=20
-> the cache line should already be in the cache.
+On Tue, Sep 08, 2020 at 07:14:38AM +0200, Christophe Leroy wrote:
+> You forgot arch/powerpc/mm/book3s64/subpage_prot.c it seems.
 
-Yes, I think that would be required. Sorry I didn't look closely at
-32 bit.
+Yes, and also two more sources :/
+	arch/powerpc/mm/kasan/8xx.c
+	arch/powerpc/mm/kasan/kasan_init_32.c
 
-> A hacky 'stw r5, _DSISR(r1)' in handle_page_fault() does the trick,=20
-> allthough we don't want to do it for both ISI and DSI at the end, so=20
-> you'll have to do it in every head_xxx.S
->=20
->=20
-> While you are at it, it would probably also make sense to do remove the=20
-> address param of bad_page_fault(), there is no point in loading back=20
-> regs->dar in handle_page_fault() and machine_check_8xx() and=20
-> alignment_exception(), just read regs->dar in bad_page_fault()
->=20
-> The case of do_break() should also be looked at.
+But these two are not quite obvious wrt pgd_addr_end() used
+while traversing pmds. Could you please clarify a bit?
 
-Yeah that's valid, I didn't do that because bad_page_fault was also
-being called from asm, but an incremental patch should be quite easy.
 
-> Why changing return code from int to long ?
+diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
+index 2784224..89c5053 100644
+--- a/arch/powerpc/mm/kasan/8xx.c
++++ b/arch/powerpc/mm/kasan/8xx.c
+@@ -15,8 +15,8 @@
+ 	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block += SZ_8M) {
+ 		pte_basic_t *new;
+ 
+-		k_next = pgd_addr_end(k_cur, k_end);
+-		k_next = pgd_addr_end(k_next, k_end);
++		k_next = pmd_addr_end(k_cur, k_end);
++		k_next = pmd_addr_end(k_next, k_end);
+ 		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+ 			continue;
+ 
+diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
+index fb29404..3f7d6dc6 100644
+--- a/arch/powerpc/mm/kasan/kasan_init_32.c
++++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+@@ -38,7 +38,7 @@ int __init kasan_init_shadow_page_tables(unsigned long k_start, unsigned long k_
+ 	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd++) {
+ 		pte_t *new;
+ 
+-		k_next = pgd_addr_end(k_cur, k_end);
++		k_next = pmd_addr_end(k_cur, k_end);
+ 		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+ 			continue;
+ 
+@@ -196,7 +196,7 @@ void __init kasan_early_init(void)
+ 	kasan_populate_pte(kasan_early_shadow_pte, PAGE_KERNEL);
+ 
+ 	do {
+-		next = pgd_addr_end(addr, end);
++		next = pmd_addr_end(addr, end);
+ 		pmd_populate_kernel(&init_mm, pmd, kasan_early_shadow_pte);
+ 	} while (pmd++, addr = next, addr != end);
+ 
 
-Oh it's to make the next patch work without any changes to function
-prototypes. Some handlers are returning int, others long. There is
-no reason not to just return long AFAIKS so that's what I changed to.
-
-Thanks,
-Nick
+> Christophe
