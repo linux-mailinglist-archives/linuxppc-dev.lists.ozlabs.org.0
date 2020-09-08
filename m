@@ -1,51 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD7B260B31
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 08:47:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FF5260B65
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 08:57:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlwgW1FYjzDqR3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 16:47:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Blwvk4QwNzDqLP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 16:57:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlwdH6bYrzDqKL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 16:45:23 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=LZ3GQ+WV; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BlwdH1rTfz9sTK;
- Tue,  8 Sep 2020 16:45:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1599547523;
- bh=r/3rfuxatP3YbEsc7UBrCC3zIODpBHcxZX3ayVuwoik=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=LZ3GQ+WVb+t9Sld9hUw21h0OEahyGIF+YF+jTAscXCZgvz0vJlmNGQclbkUx8dGqA
- /Uc/673TwzRiGZ5WCdG6B2U/BVQRgWTFKhPOT96783AXxtgrwx4IFThpoBd8fTTQJo
- unvyD+M0u8ppUsJlEgzs5HTR4D2oRDNMAhcNoxa4wPE23D8/W2tmz214lmIxCeWFV5
- 0GUCf2R2hyfLOI4hlj4MV4vTockmDZaUw5MEWPzGQe9NUimP8EjZ/NxDWDfWa6M/FK
- RTZ281NinksirpPFmItRRwyygrPpUje9LGV2YZUkSn4glePgEV1RPIw7BcUQ3vr9tZ
- PW4C62z7lLh8w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
-In-Reply-To: <20200908015106.79661-1-aik@ozlabs.ru>
-References: <20200908015106.79661-1-aik@ozlabs.ru>
-Date: Tue, 08 Sep 2020 16:45:20 +1000
-Message-ID: <87pn6wsr5r.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Vrb0alsf; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Blwsx6dJ8zDqGh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 16:56:20 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0886h7FX132359; Tue, 8 Sep 2020 02:56:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zJa4EgsFOxCK5aElUhhJCn5CwSplmXoTNrszQTtnxhw=;
+ b=Vrb0alsfzPMt1a4kaCt+8AabrusCBJ8Hgoh9kGnZ99X0gdSIUCDt0p7/vrgTJ98Ju5KR
+ ZAYm3KFWIxj7HpJbCp74TTm0lQ4o/MEqJfj+57Qr6RxuAiaJhY/rbYXew4cxiFnPsW/7
+ 20Qac8v5QkmMLYFvOb0NE7nVDlzUbGxhaJNAJ7m2ROSYmt9IrFV4so3BJoQK0t4iouuY
+ IUXtqopzPN03muk0fXqIRPqMSREtK+scG2DNnXUzXhSEj0mLZACS28wXlZEe0QAY77JT
+ t/F2A/4dlhvGLztrhaxWp0dwFWDXugD/iUlgreeQNYp4uU146CV8/2zjagOoUglvlAD7 vw== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33e4x70b6q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 02:56:13 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0886gKsY015931;
+ Tue, 8 Sep 2020 06:56:11 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 33c2a8b4yr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 06:56:11 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0886u8Ul36503812
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Sep 2020 06:56:09 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF84452054;
+ Tue,  8 Sep 2020 06:56:08 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.82.85])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 83B755204F;
+ Tue,  8 Sep 2020 06:56:08 +0000 (GMT)
+Subject: Re: [PATCH] mm: check for memory's node later during boot
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <20200902090911.11363-1-ldufour@linux.ibm.com>
+ <20200903143523.02e163bf06be3b48bac7f967@linux-foundation.org>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <2abef8b6-932d-2aac-68d0-e8d202aab76e@linux.ibm.com>
+Date: Tue, 8 Sep 2020 08:56:08 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200903143523.02e163bf06be3b48bac7f967@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-08_02:2020-09-07,
+ 2020-09-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 mlxlogscore=999 adultscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009080059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,75 +97,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Oliver O'Halloran <oohall@gmail.com>,
- Christoph Hellwig <hch@lst.de>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Cc: nathanl@linux.ibm.com, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, cheloha@linux.ibm.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Alexey Kardashevskiy <aik@ozlabs.ru> writes:
-> There are 2 problems with it:
-> 1. "<" vs expected "<<"
-> 2. the shift number is an IOMMU page number mask, not an address mask
-> as the IOMMU page shift is missing.
->
-> This did not hit us before f1565c24b596 ("powerpc: use the generic
-> dma_ops_bypass mode") because we had there additional code to handle
-> bypass mask so this chunk (almost?) never executed. However there
-> were reports that aacraid does not work with "iommu=nobypass".
-> After f1565c24b596, aacraid (and probably others which call
-> dma_get_required_mask() before setting the mask) was unable to
-> enable 64bit DMA and fall back to using IOMMU which was known not to work,
-> one of the problems is double free of an IOMMU page.
->
-> This fixes DMA for aacraid, both with and without "iommu=nobypass"
-> in the kernel command line. Verified with "stress-ng -d 4".
->
-> Fixes: f1565c24b596 ("powerpc: use the generic dma_ops_bypass mode")
+Le 03/09/2020 à 23:35, Andrew Morton a écrit :
+> On Wed,  2 Sep 2020 11:09:11 +0200 Laurent Dufour <ldufour@linux.ibm.com> wrote:
+> 
+>> register_mem_sect_under_nodem() is checking the memory block's node id only
+>> if the system state is "SYSTEM_BOOTING". On PowerPC, the memory blocks are
+>> registered while the system state is "SYSTEM_SCHEDULING", the one before
+>> SYSTEM_RUNNING.
+>>
+>> The consequence on PowerPC guest with interleaved memory node's ranges is
+>> that some memory block could be assigned to multiple nodes on sysfs. This
+>> lately prevents some memory hot-plug and hot-unplug to succeed because
+>> links are remaining. Such a panic is then displayed:
+>>
+>> ------------[ cut here ]------------
+>> kernel BUG at /Users/laurent/src/linux-ppc/mm/memory_hotplug.c:1084!
+>> Oops: Exception in kernel mode, sig: 5 [#1]
+>> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+>> Modules linked in: rpadlpar_io rpaphp pseries_rng rng_core vmx_crypto gf128mul binfmt_misc ip_tables x_tables xfs libcrc32c crc32c_vpmsum autofs4
+>> CPU: 8 PID: 10256 Comm: drmgr Not tainted 5.9.0-rc1+ #25
+>> NIP:  c000000000403f34 LR: c000000000403f2c CTR: 0000000000000000
+>> REGS: c0000004876e3660 TRAP: 0700   Not tainted  (5.9.0-rc1+)
+>> MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24000448  XER: 20040000
+>> CFAR: c000000000846d20 IRQMASK: 0
+>> GPR00: c000000000403f2c c0000004876e38f0 c0000000012f6f00 ffffffffffffffef
+>> GPR04: 0000000000000227 c0000004805ae680 0000000000000000 00000004886f0000
+>> GPR08: 0000000000000226 0000000000000003 0000000000000002 fffffffffffffffd
+>> GPR12: 0000000088000484 c00000001ec96280 0000000000000000 0000000000000000
+>> GPR16: 0000000000000000 0000000000000000 0000000000000004 0000000000000003
+>> GPR20: c00000047814ffe0 c0000007ffff7c08 0000000000000010 c0000000013332c8
+>> GPR24: 0000000000000000 c0000000011f6cc0 0000000000000000 0000000000000000
+>> GPR28: ffffffffffffffef 0000000000000001 0000000150000000 0000000010000000
+>> NIP [c000000000403f34] add_memory_resource+0x244/0x340
+>> LR [c000000000403f2c] add_memory_resource+0x23c/0x340
+>> Call Trace:
+>> [c0000004876e38f0] [c000000000403f2c] add_memory_resource+0x23c/0x340 (unreliable)
+>> [c0000004876e39c0] [c00000000040408c] __add_memory+0x5c/0xf0
+>> [c0000004876e39f0] [c0000000000e2b94] dlpar_add_lmb+0x1b4/0x500
+>> [c0000004876e3ad0] [c0000000000e3888] dlpar_memory+0x1f8/0xb80
+>> [c0000004876e3b60] [c0000000000dc0d0] handle_dlpar_errorlog+0xc0/0x190
+>> [c0000004876e3bd0] [c0000000000dc398] dlpar_store+0x198/0x4a0
+>> [c0000004876e3c90] [c00000000072e630] kobj_attr_store+0x30/0x50
+>> [c0000004876e3cb0] [c00000000051f954] sysfs_kf_write+0x64/0x90
+>> [c0000004876e3cd0] [c00000000051ee40] kernfs_fop_write+0x1b0/0x290
+>> [c0000004876e3d20] [c000000000438dd8] vfs_write+0xe8/0x290
+>> [c0000004876e3d70] [c0000000004391ac] ksys_write+0xdc/0x130
+>> [c0000004876e3dc0] [c000000000034e40] system_call_exception+0x160/0x270
+>> [c0000004876e3e20] [c00000000000d740] system_call_common+0xf0/0x27c
+>> Instruction dump:
+>> 48442e35 60000000 0b030000 3cbe0001 7fa3eb78 7bc48402 38a5fffe 7ca5fa14
+>> 78a58402 48442db1 60000000 7c7c1b78 <0b030000> 7f23cb78 4bda371d 60000000
+>> ---[ end trace 562fd6c109cd0fb2 ]---
+>>
+>> To prevent this multiple links, make the node checking done for states
+>> prior to SYSTEM_RUNNING.
+> 
+> Did you consider adding a cc:stable to this fix?
 
-I think it'd be better to point the Fixes tag at 6a5c7be5e484, which
-originally introduced the bug, even if we didn't notice it until
-f1565c24b596 exposed it (or made it more likely).
+I should have, but now I've to review the fix based on David's comment.
 
-cheers
-
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
->
-> The original code came Jun 24 2011:
-> 6a5c7be5e484 ("powerpc: Override dma_get_required_mask by platform hook and ops")
->
->
-> What is dma_get_required_mask() for anyway? What "requires" what here?
->
-> Even though it works for now (due to huge - >4GB - default DMA window),
-> I am still not convinced we do not want this chunk here
-> (this is what f1565c24b596 removed):
->
-> if (dev_is_pci(dev)) {
->         u64 bypass_mask = dma_direct_get_required_mask(dev);
->
->         if (dma_iommu_bypass_supported(dev, bypass_mask))
->                 return bypass_mask;
-> }
-> ---
->  arch/powerpc/kernel/dma-iommu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-> index 569fecd7b5b2..9053fc9d20c7 100644
-> --- a/arch/powerpc/kernel/dma-iommu.c
-> +++ b/arch/powerpc/kernel/dma-iommu.c
-> @@ -120,7 +120,8 @@ u64 dma_iommu_get_required_mask(struct device *dev)
->  	if (!tbl)
->  		return 0;
->  
-> -	mask = 1ULL < (fls_long(tbl->it_offset + tbl->it_size) - 1);
-> +	mask = 1ULL << (fls_long(tbl->it_offset + tbl->it_size) +
-> +			tbl->it_page_shift - 1);
->  	mask += mask - 1;
->  
->  	return mask;
-> -- 
-> 2.17.1
