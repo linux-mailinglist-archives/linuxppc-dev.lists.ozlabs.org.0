@@ -2,50 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF612621EE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 23:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3623E262224
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 23:51:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmJFJ3SvnzDqT7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 07:29:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BmJkJ2BNSzDqMF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 07:51:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.196;
+ helo=mail-il1-f196.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-il1-f196.google.com (mail-il1-f196.google.com
+ [209.85.166.196])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BmJCd38J5zDqFv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 07:27:56 +1000 (AEST)
-IronPort-SDR: pH7ViE9Sab35HC0qVC6q0vKcHboiYK4DK5b+FWf2IPpx12W5EPRPlXLpo+PqyybBfetbFQ/vl7
- mC7/wbCmNZyQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9738"; a="145949034"
-X-IronPort-AV: E=Sophos;i="5.76,407,1592895600"; d="scan'208";a="145949034"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2020 14:27:53 -0700
-IronPort-SDR: hwcjq7Pqa0jT08ahd3lviO5aItJ8tdYYEohvQkRbr5SMQYLLE0tI/WJR/vWuSO8HZXglMKmkMe
- GDGZw9vyLKtw==
-X-IronPort-AV: E=Sophos;i="5.76,407,1592895600"; d="scan'208";a="299929072"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2020 14:27:52 -0700
-Date: Tue, 8 Sep 2020 14:27:52 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/papr_scm: Limit the readability of
- 'perf_stats' sysfs attribute
-Message-ID: <20200908212752.GD1930795@iweiny-DESK2.sc.intel.com>
-References: <20200907110540.21349-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BmJgc0YRkzDqL9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 07:48:43 +1000 (AEST)
+Received: by mail-il1-f196.google.com with SMTP id t13so371321ile.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 14:48:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=ykDez5db4Tg7JVuX7yTUCZ67kcBqZSeX+Z9NmcRdJzo=;
+ b=ELCmL+U7vYDDxqILdBV22YtV22i9oqLHLCBWsueJVQr8055NBvwDg8LoQ3nNs6OIib
+ FipyPslvUdGDKHIAP+8IWEwlq9TTIfhBmeCyuEPxZTKJNyuVA0Cf7xMUSjI9hj/2jDsz
+ 70WCrOC935XEMt5+0JoWDuKoN2VD23RlsC+6vOWgSpPx0afNqyfGfEqIKTRA3RnZRcpa
+ fnmdUekddk9fYsujSkZ2Qkv4LtfBUnQsa9kjzNZeGbRHz50kDasXp5u//Y7ICs+OcCOI
+ Sm/LTIG1GNvcmpi4wrXju1yURKzyuJE+xIIZts9T2IKVwRighN5vEDoxOqNrxW/sxWli
+ +NEQ==
+X-Gm-Message-State: AOAM5302XOf6nVXNaAc6wumBbaBFOnh5irHSMYwi+XA3jbwi+UKy24Y/
+ Il8+WLAvNgz/bvuWaI9EpA==
+X-Google-Smtp-Source: ABdhPJwskaz0wCDXi8foT/IWYK5iyOa+/wg9K9BuESseQJfz6jF847jD/XiRsH6le8yJLULQsKFXXA==
+X-Received: by 2002:a92:d792:: with SMTP id d18mr791213iln.195.1599601721478; 
+ Tue, 08 Sep 2020 14:48:41 -0700 (PDT)
+Received: from xps15 ([64.188.179.251])
+ by smtp.gmail.com with ESMTPSA id k11sm294466iof.40.2020.09.08.14.48.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Sep 2020 14:48:40 -0700 (PDT)
+Received: (nullmailer pid 987185 invoked by uid 1000);
+ Tue, 08 Sep 2020 21:48:39 -0000
+Date: Tue, 8 Sep 2020 15:48:39 -0600
+From: Rob Herring <robh@kernel.org>
+To: Christian Lamparter <chunkeey@gmail.com>
+Subject: Re: [PATCH v2] dt-bindings: vendor-prefixes: Add Cisco Meraki vendor
+ prefix
+Message-ID: <20200908214839.GA987127@bogus>
+References: <20200822154045.16036-1-chunkeey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200907110540.21349-1-vaibhav@linux.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20200822154045.16036-1-chunkeey@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,66 +68,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, f.fainelli@gmail.com,
+ Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
+ Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 07, 2020 at 04:35:40PM +0530, Vaibhav Jain wrote:
-> The newly introduced 'perf_stats' attribute uses the default access
-> mode of 0444 letting non-root users access performance stats of an
-> nvdimm and potentially force the kernel into issuing large number of
-> expensive HCALLs. Since the information exposed by this attribute
-> cannot be cached hence its better to ward of access to this attribute
-	                                   ^^^
-                                           off?
-
-> from users who don't need to access these performance statistics.
+On Sat, 22 Aug 2020 17:40:45 +0200, Christian Lamparter wrote:
+> Meraki was founded in 2006. The start-up quickly rose to prominence
+> by being based in part on the MIT Roofnet Project.
+> In December 2012, Cisco Systems, Inc. bought Meraki.
+> The "Meraki" branding is still around to this day.
 > 
-> Hence this patch updates access mode of 'perf_stats' attribute to
-> be only readable by root users.
-
-Generally it is bad form to say "this patch".  See 4c here:
-
-	-- https://www.ozlabs.org/~akpm/stuff/tpp.txt
-
-But I'm not picky...  :-D
-
-With the s/of/off/ change:
-
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-
+> Web site of the company: https://meraki.cisco.com/
 > 
-> Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
-> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
 > ---
-> Change-log:
 > 
-> v2:
-> * Instead of checking for perfmon_capable() inside show_perf_stats()
->   set the attribute as DEVICE_ATTR_ADMIN_RO [ Aneesh ]
-> * Update patch description
+> v1 -> v2:
+> 	Split from Meraki MR32 upstreaming attempt. (Florian Fainelli)
+> 	(This patch will be needed for the MR24 upstreaming series as well)
 > ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index f439f0dfea7d1..a88a707a608aa 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -822,7 +822,7 @@ static ssize_t perf_stats_show(struct device *dev,
->  	kfree(stats);
->  	return rc ? rc : seq_buf_used(&s);
->  }
-> -DEVICE_ATTR_RO(perf_stats);
-> +DEVICE_ATTR_ADMIN_RO(perf_stats);
->  
->  static ssize_t flags_show(struct device *dev,
->  			  struct device_attribute *attr, char *buf)
-> -- 
-> 2.26.2
-> 
+
+Applied, thanks!
