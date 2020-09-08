@@ -2,60 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E2C260E39
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFEE260E7A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 11:15:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlzZX4KY4zDqCt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:58:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Blzy94tN6zDqJf
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 19:15:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VGlRdYkT; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlzXm01MCzDqSL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 18:56:39 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BlzXf0t6Nz9v06V;
- Tue,  8 Sep 2020 10:56:34 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id F3nHJ8RTcc_q; Tue,  8 Sep 2020 10:56:34 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BlzXf060rz9v06Q;
- Tue,  8 Sep 2020 10:56:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1AD2F8B7A1;
- Tue,  8 Sep 2020 10:56:35 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ZCgTkuGxxvKw; Tue,  8 Sep 2020 10:56:35 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 93F4D8B768;
- Tue,  8 Sep 2020 10:56:34 +0200 (CEST)
-Subject: Re: [PATCH v1 1/5] powerpc/mm: sanity_check_fault() should work for
- all, not only BOOK3S
-To: Nicholas Piggin <npiggin@gmail.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlzwX04lmzDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 19:13:46 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id b124so10418021pfg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 02:13:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=w+fgoFgrvub+PVRBQAqPAVJ0vJ5KWjyrTSwEc7m3Tac=;
+ b=VGlRdYkT+u84u3Y6Kjvu8qHXN3TW1XyiJ+KOLZEjSJ5tEz1ZmoqFnTL7tM859f6NfT
+ BdSeby2ktDOTnLqHtsjBLtOtDf7DBioZPYsJYDACD0+jKLWjnLDLqD6OeITQ9gl9K4WT
+ j9II5uAli4pvZKiluAWuUKzG2ECNFoJ6Mv83A01XZhJk9FKWdpkG8ekvXBfPUZ51Zt2e
+ G9u1lgB5oXrcz9v7Ltcd3aN3QqumGn5P8ONfN9SYqi2QLMQ5ZlCA+pQWmZFQdAMMDtxI
+ ERSsOQ4uuml18R8UR1VgtJg98TEJFsPfgwbLjxZYTaAQ5GuZQPPsNGS8xU1HwgA/bLen
+ OiSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=w+fgoFgrvub+PVRBQAqPAVJ0vJ5KWjyrTSwEc7m3Tac=;
+ b=L91kzJyeNX3n+iQAMAd4oL5iGfs1AFGpYiRGVpRWFwY5FfbG7GQT71ZZJMyY86N+9e
+ sN3xodRUsHEix2L9BVs6RH0hu38DcMh1c2zolJpr4MW0oBUtaregl1OblOXjyjJT8kI3
+ /OYfe4gmw31+9ccUCLD7NRymdEfkcKVJEgjW7Be8DrJ5rHaNjzqQGf24mu6n8eW1DMPs
+ p9xGzK80uzxRjewRAWUH5X5vjEgIRSOMkey2LnOUnyX0UXI7llGET6RDltRdnOsrvkZ1
+ uUX0HdIYOaHRAnkET1VqinuKv9ak8Cd4opIO2xEpXj12putq9VlzKT0V+8CJvrSzpBVl
+ H5Uw==
+X-Gm-Message-State: AOAM530YPxuG6+iC7c9KtxCwtt+qhk2CVhQJ6h+m3EQejOYI2u3nypky
+ 382pnhiNg3Gy0z8Cs1WowcM=
+X-Google-Smtp-Source: ABdhPJwd4muQSZj47jYzjoWHw0sLP9vUqRC+sbt0sjdS5yOxhOJAjexMEe+LdHqfY09BJ08YufwJXQ==
+X-Received: by 2002:a62:7c82:0:b029:13c:1611:6532 with SMTP id
+ x124-20020a627c820000b029013c16116532mr22326829pfc.4.1599556424068; 
+ Tue, 08 Sep 2020 02:13:44 -0700 (PDT)
+Received: from localhost ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id f12sm3178494pjm.5.2020.09.08.02.13.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Sep 2020 02:13:43 -0700 (PDT)
+Date: Tue, 08 Sep 2020 19:13:37 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v1 5/5] powerpc/fault: Perform exception fixup in
+ do_page_fault()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
 References: <7baae4086cbb9ffb08c933b065ff7d29dbc03dd6.1596734104.git.christophe.leroy@csgroup.eu>
- <1599554359.m174sr2fhg.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <b5a84cb6-2f54-6c4d-6326-2cc21074490b@csgroup.eu>
-Date: Tue, 8 Sep 2020 10:56:29 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ <5748c8f5cf0a9b3686169e2c7709107e6aaec408.1596734105.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <5748c8f5cf0a9b3686169e2c7709107e6aaec408.1596734105.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <1599554359.m174sr2fhg.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Message-Id: <1599555291.xys33gyt02.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,63 +88,156 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Christophe Leroy's message of August 7, 2020 3:15 am:
+> Exception fixup doesn't require the heady full regs saving,
+                                      heavy
+
+> do it from do_page_fault() directly.
+>=20
+> For that, split bad_page_fault() in two parts.
+>=20
+> As bad_page_fault() can also be called from other places than
+> handle_page_fault(), it will still perform exception fixup and
+> fallback on __bad_page_fault().
+>=20
+> handle_page_fault() directly calls __bad_page_fault() as the
+> exception fixup will now be done by do_page_fault()
+
+Looks good. We can probably get rid of bad_page_fault completely after=20
+this too.
+
+Hmm, the alignment exception might(?) hit user copies if the user points=20
+it to CI memory. Then you could race and the memory gets unmapped. In=20
+that case the exception table check might be better to be explicit there
+with comments.
+
+The first call in do_hash_fault is not required (copy user will never
+be in nmi context). The second one and the one in slb_fault could be
+made explicit too. Anyway for now this is fine.
+
+Thanks,
+Nick
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 
-Le 08/09/2020 à 10:43, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of August 7, 2020 3:15 am:
->> The verification and message introduced by commit 374f3f5979f9
->> ("powerpc/mm/hash: Handle user access of kernel address gracefully")
->> applies to all platforms, it should not be limited to BOOK3S.
->>
->> Make the BOOK3S version of sanity_check_fault() the one for all,
->> and bail out earlier if not BOOK3S.
->>
->> Fixes: 374f3f5979f9 ("powerpc/mm/hash: Handle user access of kernel address gracefully")
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/mm/fault.c | 8 +++-----
->>   1 file changed, 3 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
->> index 925a7231abb3..2efa34d7e644 100644
->> --- a/arch/powerpc/mm/fault.c
->> +++ b/arch/powerpc/mm/fault.c
->> @@ -303,7 +303,6 @@ static inline void cmo_account_page_fault(void)
->>   static inline void cmo_account_page_fault(void) { }
->>   #endif /* CONFIG_PPC_SMLPAR */
->>   
->> -#ifdef CONFIG_PPC_BOOK3S
->>   static void sanity_check_fault(bool is_write, bool is_user,
->>   			       unsigned long error_code, unsigned long address)
->>   {
->> @@ -320,6 +319,9 @@ static void sanity_check_fault(bool is_write, bool is_user,
->>   		return;
->>   	}
->>   
->> +	if (!IS_ENABLED(CONFIG_PPC_BOOK3S))
->> +		return;
-> 
-> Seems okay. Why is address == -1 special though? I guess it's because
-> it may not be an exploit kernel reference but a buggy pointer underflow?
-> In that case -1 doesn't seem like it would catch very much. Would it be
-> better to test for high bit set for example ((long)address < 0) ?
-
-See 
-https://github.com/linuxppc/linux/commit/0f9aee0cb9da7db7d96f63cfa2dc5e4f1bffeb87#diff-f9658f412252f3bb3093e0a95b37f3ac
-
--1 is what mmap() returns on error, if the app uses that as a pointer 
-that's a programming error not an exploit.
-
-Euh .. If you test (long)address < 0, then the entire kernel falls into 
-that range as usually it goes from 0xc0000000 to 0xffffffff
-
-But we could skip the top page entirely, anyway it is never mapped.
-
-> 
-> Anyway for your patch
-> 
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-Thanks
-Christophe
-
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/kernel/entry_32.S       |  2 +-
+>  arch/powerpc/kernel/exceptions-64e.S |  2 +-
+>  arch/powerpc/kernel/exceptions-64s.S |  2 +-
+>  arch/powerpc/mm/fault.c              | 33 ++++++++++++++++++++--------
+>  4 files changed, 27 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_3=
+2.S
+> index f4d0af8e1136..c198786591f9 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -678,7 +678,7 @@ handle_page_fault:
+>  	mr	r5,r3
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+>  	lwz	r4,_DAR(r1)
+> -	bl	bad_page_fault
+> +	bl	__bad_page_fault
+>  	b	ret_from_except_full
+> =20
+>  #ifdef CONFIG_PPC_BOOK3S_32
+> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/e=
+xceptions-64e.S
+> index d9ed79415100..dd9161ea5da8 100644
+> --- a/arch/powerpc/kernel/exceptions-64e.S
+> +++ b/arch/powerpc/kernel/exceptions-64e.S
+> @@ -1024,7 +1024,7 @@ storage_fault_common:
+>  	mr	r5,r3
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+>  	ld	r4,_DAR(r1)
+> -	bl	bad_page_fault
+> +	bl	__bad_page_fault
+>  	b	ret_from_except
+> =20
+>  /*
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/e=
+xceptions-64s.S
+> index f7d748b88705..2cb3bcfb896d 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -3254,7 +3254,7 @@ handle_page_fault:
+>  	mr	r5,r3
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+>  	ld	r4,_DAR(r1)
+> -	bl	bad_page_fault
+> +	bl	__bad_page_fault
+>  	b	interrupt_return
+> =20
+>  /* We have a data breakpoint exception - handle it */
+> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> index edde169ba3a6..bd6e397eb84a 100644
+> --- a/arch/powerpc/mm/fault.c
+> +++ b/arch/powerpc/mm/fault.c
+> @@ -542,10 +542,20 @@ NOKPROBE_SYMBOL(__do_page_fault);
+>  int do_page_fault(struct pt_regs *regs, unsigned long address,
+>  		  unsigned long error_code)
+>  {
+> +	const struct exception_table_entry *entry;
+>  	enum ctx_state prev_state =3D exception_enter();
+>  	int rc =3D __do_page_fault(regs, address, error_code);
+>  	exception_exit(prev_state);
+> -	return rc;
+> +	if (likely(!rc))
+> +		return 0;
+> +
+> +	entry =3D search_exception_tables(regs->nip);
+> +	if (unlikely(!entry))
+> +		return rc;
+> +
+> +	instruction_pointer_set(regs, extable_fixup(entry));
+> +
+> +	return 0;
+>  }
+>  NOKPROBE_SYMBOL(do_page_fault);
+> =20
+> @@ -554,17 +564,10 @@ NOKPROBE_SYMBOL(do_page_fault);
+>   * It is called from the DSI and ISI handlers in head.S and from some
+>   * of the procedures in traps.c.
+>   */
+> -void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig=
+)
+> +void __bad_page_fault(struct pt_regs *regs, unsigned long address, int s=
+ig)
+>  {
+> -	const struct exception_table_entry *entry;
+>  	int is_write =3D page_fault_is_write(regs->dsisr);
+> =20
+> -	/* Are we prepared to handle this fault?  */
+> -	if ((entry =3D search_exception_tables(regs->nip)) !=3D NULL) {
+> -		regs->nip =3D extable_fixup(entry);
+> -		return;
+> -	}
+> -
+>  	/* kernel has accessed a bad area */
+> =20
+>  	switch (TRAP(regs)) {
+> @@ -598,3 +601,15 @@ void bad_page_fault(struct pt_regs *regs, unsigned l=
+ong address, int sig)
+> =20
+>  	die("Kernel access of bad area", regs, sig);
+>  }
+> +
+> +void bad_page_fault(struct pt_regs *regs, unsigned long address, int sig=
+)
+> +{
+> +	const struct exception_table_entry *entry;
+> +
+> +	/* Are we prepared to handle this fault?  */
+> +	entry =3D search_exception_tables(instruction_pointer(regs));
+> +	if (entry)
+> +		instruction_pointer_set(regs, extable_fixup(entry));
+> +	else
+> +		__bad_page_fault(regs, address, sig);
+> +}
+> --=20
+> 2.25.0
+>=20
+>=20
