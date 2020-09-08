@@ -1,61 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECCB2616F4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 19:23:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B2B261728
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 19:27:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmBn54FvvzDqRM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 03:23:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BmBsl40zbzDqNZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 03:27:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=L8+4aczg; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BmBkJ47XGzDqN9
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 03:20:36 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BmBk46RHRz9txPY;
- Tue,  8 Sep 2020 19:20:28 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id YAOBL0_HRwVU; Tue,  8 Sep 2020 19:20:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BmBk45P4rz9txPb;
- Tue,  8 Sep 2020 19:20:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83AF88B7BE;
- Tue,  8 Sep 2020 19:20:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id rrT5wpXHgDDS; Tue,  8 Sep 2020 19:20:30 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D57098B7C7;
- Tue,  8 Sep 2020 19:20:28 +0200 (CEST)
-Subject: Re: [RFC PATCH v2 3/3] mm: make generic pXd_addr_end() macros inline
- functions
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
- <20200907180058.64880-4-gerald.schaefer@linux.ibm.com>
- <4c101685-5b29-dace-9dd2-b6f0ae193a9c@csgroup.eu>
- <20200908154859.GA11583@oc3871087118.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <af04f078-4991-6260-8bd5-9d9601105d76@csgroup.eu>
-Date: Tue, 8 Sep 2020 19:20:20 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <20200908154859.GA11583@oc3871087118.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BmBl658vBzDqRb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 03:21:22 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2E757206B5;
+ Tue,  8 Sep 2020 17:21:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1599585679;
+ bh=l5Q+9JBKRPoCD6QymRFJVpPNknfC6qEsMVteCOdwfp8=;
+ h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+ b=L8+4aczgivxtFFzt6J8jzxpFMUENyq/HhBGekGW9/9I+NxKIqJmk5IgRVkwEVxBzD
+ LsGocg1cJ8V1KkWcHUDwZQ3MmqVUi1TbsAZ63bvPXTz/Q2PddnRChMjljXf3wAjyb9
+ jgnrkTYj1E6uMVIN3jnNF+LsnoXAeVZfD7s3hUMk=
+Date: Tue, 08 Sep 2020 18:20:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: kernel@pengutronix.de, lgirdwood@gmail.com, xobs@kosagi.com,
+ nicoleotsuka@gmail.com, linux-imx@nxp.com, shengjiu.wang@gmail.com,
+ tiwai@suse.com, s.hauer@pengutronix.de, timur@kernel.org, festevam@gmail.com,
+ perex@perex.cz, Yu Kuai <yukuai3@huawei.com>, shawnguo@kernel.org,
+ Xiubo.Lee@gmail.com
+In-Reply-To: <20200825130224.1488694-1-yukuai3@huawei.com>
+References: <20200825130224.1488694-1-yukuai3@huawei.com>
+Subject: Re: [PATCH V2] ASoC: fsl: imx-es8328: add missing put_device() call
+ in imx_es8328_probe()
+Message-Id: <159958562064.16576.4755759237768710693.b4-ty@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,72 +57,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@ziepe.ca>,
- Ingo Molnar <mingo@redhat.com>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Jeff Dike <jdike@addtoit.com>,
- Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>,
- Heiko Carstens <hca@linux.ibm.com>, linux-um <linux-um@lists.infradead.org>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linux-arm <linux-arm-kernel@lists.infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linux-power <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ yi.zhang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 25 Aug 2020 21:02:24 +0800, Yu Kuai wrote:
+> if of_find_device_by_node() succeed, imx_es8328_probe() doesn't have
+> a corresponding put_device(). Thus add a jump target to fix the exception
+> handling for this function implementation.
 
+Applied to
 
-Le 08/09/2020 à 17:48, Alexander Gordeev a écrit :
-> On Tue, Sep 08, 2020 at 07:19:38AM +0200, Christophe Leroy wrote:
-> 
-> [...]
-> 
->>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->>> index 67ebc22cf83d..d9e7d16c2263 100644
->>> --- a/include/linux/pgtable.h
->>> +++ b/include/linux/pgtable.h
->>> @@ -656,31 +656,35 @@ static inline int arch_unmap_one(struct mm_struct *mm,
->>>    */
->>>   #ifndef pgd_addr_end
->>> -#define pgd_addr_end(pgd, addr, end)					\
->>> -({	unsigned long __boundary = ((addr) + PGDIR_SIZE) & PGDIR_MASK;	\
->>> -	(__boundary - 1 < (end) - 1)? __boundary: (end);		\
->>> -})
->>> +#define pgd_addr_end pgd_addr_end
->>
->> I think that #define is pointless, usually there is no such #define
->> for the default case.
-> 
-> Default pgd_addr_end() gets overriden on s390 (arch/s390/include/asm/pgtable.h):
-> 
-> #define pgd_addr_end pgd_addr_end
-> static inline unsigned long pgd_addr_end(pgd_t pgd, unsigned long addr, unsigned long end)
-> {
-> 	return rste_addr_end_folded(pgd_val(pgd), addr, end);
-> }
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Yes, there in s390 the #define is needed to hit the #ifndef pgd_addr_end 
-that's in include/linux/pgtable.h
+Thanks!
 
-But in include/linux/pgtable.h, there is no need of an #define 
-pgd_addr_end pgd_addr_end I think
+[1/1] ASoC: fsl: imx-es8328: add missing put_device() call in imx_es8328_probe()
+      commit: e525db7e4b44c5b2b5aac0dad24e23cb58c54d22
 
-> 
->>> +static inline unsigned long pgd_addr_end(pgd_t pgd, unsigned long addr, unsigned long end)
->>> +{	unsigned long __boundary = (addr + PGDIR_SIZE) & PGDIR_MASK;
->>> +	return (__boundary - 1 < end - 1) ? __boundary : end;
->>> +}
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Christophe
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
