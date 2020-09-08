@@ -2,76 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8184E2611FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 15:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 391B726121E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 15:42:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bm5ZH0S9RzDqMp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 23:28:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bm5tV5kslzDqS6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 23:42:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::744;
- helo=mail-qk1-x744.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
- header.s=google header.b=Lf6G5poV; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=VYO3+yMy; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bm5Wx4jBKzDqMb
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 23:26:15 +1000 (AEST)
-Received: by mail-qk1-x744.google.com with SMTP id n133so15148448qkn.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 06:26:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=0Bd9eUG3DnE6D+neFj9R3QfT/oWxBp+wzdY7i+GsBSw=;
- b=Lf6G5poVVU9DTO5y/Kk8H2Ke1/yuvwq44QRfLlgtzVksH3W4CflZYO6N1CS6Gkgf+O
- 36N3+8wD9pObYI1CMdwZYMYRu7HbXVUKEFPJ2AjNcK9X3BID5PsppQaFjSnqxa7JtCNT
- aY2EX4mu669m3AJgX7WT/I/zIn+qpP2LPn3ueNiUgo8NZRJ/0OvY6GqXffz02hp9ASt6
- Kw7kagCQ12/ztkbDpZvauMGFhf/ti5rup7TXyfyR2MZlnoY6C7+c78nhZr2bXok7Z+TB
- z94051jMYxpI6fAzrkfx1CYHrWeWBF5AFFZLbShjEyTsCM8ydvp1pulj0ri7yDSPS5ma
- HXGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=0Bd9eUG3DnE6D+neFj9R3QfT/oWxBp+wzdY7i+GsBSw=;
- b=dzB+AVmDymk+MkeAlENckfXmCcrg+cXWWr+I5uST0GhO77rnXLJbE6VbtXuUqNrvv+
- 5netf/mug++wNdD6f85lgLwBSwd7vExYV0QODJM/gWZ2fNIub9eDV0xalpw35V125GbZ
- P2vDsFlhbUVBDPoZc7FDtEQgJOLy+7FShHY/4s6Jf/CyPxanSGc2Se1RhoiLPznCtuMc
- xShnc+7/qdRXaGQ/XASq3RVGPksEjjv9DhwuFgal1I7OFv7JUjCy1GRh83GQ9JjZYgNC
- M3Rd7J9HIgSwN9u4iEhMRz8Ira0oAAMxruoJW9W1XJ2bPFwG2c5qo4MuwCKMnT0vu2d5
- koNg==
-X-Gm-Message-State: AOAM5316L+CZ1ckBfIrbTuMRKg5kfN627acRZxzxzxlFVnH8gpHYjCps
- VeRxJAQPTGgouot2mNfV4CSSYg==
-X-Google-Smtp-Source: ABdhPJytassnqIHgDUzIEWSN+bwEo6szoZotvnjMoppJpA+RAkN2BANjzTq153kTDs5DZf5N4KZr1w==
-X-Received: by 2002:a05:620a:6d9:: with SMTP id 25mr18567qky.269.1599571572011; 
- Tue, 08 Sep 2020 06:26:12 -0700 (PDT)
-Received: from ziepe.ca
- (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [156.34.48.30])
- by smtp.gmail.com with ESMTPSA id j8sm14658360qth.90.2020.09.08.06.26.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Sep 2020 06:26:11 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.94) (envelope-from <jgg@ziepe.ca>)
- id 1kFddS-002zaX-9j; Tue, 08 Sep 2020 10:26:10 -0300
-Date: Tue, 8 Sep 2020 10:26:10 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 2/3] mm: make pXd_addr_end() functions page-table
- entry aware
-Message-ID: <20200908132610.GB87483@ziepe.ca>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bm5qS75NLzDqQF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 23:39:48 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 088DXjY1185320; Tue, 8 Sep 2020 09:39:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=XDC5FoG+KgqujaeAyg7l2gVOSzxylPnVZ4pvoUk44a4=;
+ b=VYO3+yMyhC4rNfbvQWVAf5wbndHjAv0y1eUtuG+dUlXfVqTQtsPZvyeD2EVRCQwQQ0wd
+ TutpfKWEHZoLzIbERiftaWVuVc99voCzqPxTVSB9+YrYy6euMilc2SV3S3+AUJEHZzl6
+ ihNPJWVkh4bcuARr0D/TtoyzkoaOoqOBTZlZVuvvVdBSZExlgcWLsmWBRCtCcScknnJM
+ Ep2A/5wcBkn7cJ6Ezi1btOwR/nf4YJeQRUpzhpfg8FcOd6UTG4U015Ax4tass/gg39oy
+ Rm1FvI1JyI2tuzS/qT18SDIuFSSSLeaq3wUR+ugqzw10JLi+rfH7iOYXdexSkPJLZ3eI rw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33e9scu0a2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 09:39:07 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 088DXs8j186234;
+ Tue, 8 Sep 2020 09:39:06 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33e9scu08p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 09:39:06 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 088DapAZ028999;
+ Tue, 8 Sep 2020 13:39:03 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 33c2a8a4s6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Sep 2020 13:39:03 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 088Dd0lD38535586
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Sep 2020 13:39:00 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5967852051;
+ Tue,  8 Sep 2020 13:39:00 +0000 (GMT)
+Received: from thinkpad (unknown [9.171.25.197])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 260485204F;
+ Tue,  8 Sep 2020 13:38:59 +0000 (GMT)
+Date: Tue, 8 Sep 2020 15:38:57 +0200
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
+ folding
+Message-ID: <20200908153857.08d09581@thinkpad>
+In-Reply-To: <96b80926-cf5b-1afa-9b7a-949a2188e61f@csgroup.eu>
 References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
- <20200907180058.64880-3-gerald.schaefer@linux.ibm.com>
+ <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
+ <82fbe8f9-f199-5fc2-4168-eb43ad0b0346@csgroup.eu>
+ <70a3dcb5-5ed1-6efa-6158-d0573d6927da@de.ibm.com>
+ <96b80926-cf5b-1afa-9b7a-949a2188e61f@csgroup.eu>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200907180058.64880-3-gerald.schaefer@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-08_07:2020-09-08,
+ 2020-09-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ mlxlogscore=999 bulkscore=0 suspectscore=0 clxscore=1011 adultscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009080128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,58 +107,108 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
  Dave Hansen <dave.hansen@linux.intel.com>, linux-mm <linux-mm@kvack.org>,
  Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
  Alexander Gordeev <agordeev@linux.ibm.com>,
  Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
  linux-arch <linux-arch@vger.kernel.org>,
  linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
  Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>, Heiko Carstens <hca@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>,
- Jeff Dike <jdike@addtoit.com>, linux-um <linux-um@lists.infradead.org>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
+ Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Ingo Molnar <mingo@redhat.com>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Jeff Dike <jdike@addtoit.com>, Arnd Bergmann <arnd@arndb.de>,
+ John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-um <linux-um@lists.infradead.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
  linux-arm <linux-arm-kernel@lists.infradead.org>,
- linux-power <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>
+ LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-power <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 07, 2020 at 08:00:57PM +0200, Gerald Schaefer wrote:
-> From: Alexander Gordeev <agordeev@linux.ibm.com>
-> 
-> Unlike all other page-table abstractions pXd_addr_end() do not take
-> into account a particular table entry in which context the functions
-> are called. On architectures with dynamic page-tables folding that
-> might lead to lack of necessary information that is difficult to
-> obtain other than from the table entry itself. That already led to
-> a subtle memory corruption issue on s390.
-> 
-> By letting pXd_addr_end() functions know about the page-table entry
-> we allow archs not only make extra checks, but also optimizations.
-> 
-> As result of this change the pXd_addr_end_folded() functions used
-> in gup_fast traversal code become unnecessary and get replaced with
-> universal pXd_addr_end() variants.
-> 
-> The arch-specific updates not only add dereferencing of page-table
-> entry pointers, but also small changes to the code flow to make those
-> dereferences possible, at least for x86 and powerpc. Also for arm64,
-> but in way that should not have any impact.
-> 
-> So, even though the dereferenced page-table entries are not used on
-> archs other than s390, and are optimized out by the compiler, there
-> is a small change in kernel size and this is what bloat-o-meter reports:
+On Tue, 8 Sep 2020 14:40:10 +0200
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-This looks pretty clean and straightfoward, only
-__munlock_pagevec_fill() had any real increased complexity.
+>=20
+>=20
+> Le 08/09/2020 =C3=A0 14:09, Christian Borntraeger a =C3=A9crit=C2=A0:
+> >=20
+> >=20
+> > On 08.09.20 07:06, Christophe Leroy wrote:
+> >>
+> >>
+> >> Le 07/09/2020 =C3=A0 20:00, Gerald Schaefer a =C3=A9crit=C2=A0:
+> >>> From: Alexander Gordeev <agordeev@linux.ibm.com>
+> >>>
+> >>> Commit 1a42010cdc26 ("s390/mm: convert to the generic get_user_pages_=
+fast
+> >>> code") introduced a subtle but severe bug on s390 with gup_fast, due =
+to
+> >>> dynamic page table folding.
+> >>>
+> >>> The question "What would it require for the generic code to work for =
+s390"
+> >>> has already been discussed here
+> >>> https://lkml.kernel.org/r/20190418100218.0a4afd51@mschwideX1
+> >>> and ended with a promising approach here
+> >>> https://lkml.kernel.org/r/20190419153307.4f2911b5@mschwideX1
+> >>> which in the end unfortunately didn't quite work completely.
+> >>>
+> >>> We tried to mimic static level folding by changing pgd_offset to alwa=
+ys
+> >>> calculate top level page table offset, and do nothing in folded pXd_o=
+ffset.
+> >>> What has been overlooked is that PxD_SIZE/MASK and thus pXd_addr_end =
+do
+> >>> not reflect this dynamic behaviour, and still act like static 5-level
+> >>> page tables.
+> >>>
+> >>
+> >> [...]
+> >>
+> >>>
+> >>> Fix this by introducing new pXd_addr_end_folded helpers, which take an
+> >>> additional pXd entry value parameter, that can be used on s390
+> >>> to determine the correct page table level and return corresponding
+> >>> end / boundary. With that, the pointer iteration will always
+> >>> happen in gup_pgd_range for s390. No change for other architectures
+> >>> introduced.
+> >>
+> >> Not sure pXd_addr_end_folded() is the best understandable name, alltho=
+ugh I don't have any alternative suggestion at the moment.
+> >> Maybe could be something like pXd_addr_end_fixup() as it will disappea=
+r in the next patch, or pXd_addr_end_gup() ?
+> >>
+> >> Also, if it happens to be acceptable to get patch 2 in stable, I think=
+ you should switch patch 1 and patch 2 to avoid the step through pXd_addr_e=
+nd_folded()
+> >=20
+> > given that this fixes a data corruption issue, wouldnt it be the best t=
+o go forward
+> > with this patch ASAP and then handle the other patches on top with all =
+the time that
+> > we need?
+>=20
+> I have no strong opinion on this, but I feel rather tricky to have to=20
+> change generic part of GUP to use a new fonction then revert that change=
+=20
+> in the following patch, just because you want the first patch in stable=20
+> and not the second one.
+>=20
+> Regardless, I was wondering, why do we need a reference to the pXd at=20
+> all when calling pXd_addr_end() ?
+>=20
+> Couldn't S390 retrieve the pXd by using the pXd_offset() dance with the=20
+> passed addr ?
 
-Thanks,
-Jason
+Apart from performance impact when re-doing that what has already been
+done by the caller, I think we would also break the READ_ONCE semantics.
+After all, the pXd_offset() would also require some pXd pointer input,
+which we don't have. So we would need to start over again from mm->pgd.
+
+Also, it seems to be more in line with other primitives that take
+a pXd value or pointer.
