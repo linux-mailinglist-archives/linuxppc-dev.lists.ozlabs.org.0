@@ -2,75 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BAFF260DF9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FE0260E13
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 10:52:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BlzN54Fx7zDq72
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:49:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BlzRY1mrMzDqHv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Sep 2020 18:52:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=orjZ5zvY; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BlzJx0qx5zDqL9
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 18:46:25 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id 5so9565006pgl.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 01:46:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=iUr/Su9o46jDL8dJ97KU/SAIedxE8wYUU6GmXx2CUe4=;
- b=orjZ5zvYHX979PfoKGpK6WspSuFOTkxwX+tutMgFqQql4M7UyfLeQxMK5lPexMjT95
- ut0MocRiWDV0e0jPYbfYYfuqNmzVPI31yAL6SXg3ItxY3hRT9MoKEAaThjHivXZl5Uby
- I+tt5L/77G4e6MLCU0itxGoXrulmY7LWH9ewfXKrW77ybimd45poRnO/QqTW5nu6rSmV
- On2jwLueoyDZItDZFJGbqt+xk23C+xK2+42z/3wpK4ZgPQcSXYMTO3UoZDpROXy0qJDM
- 17XmYsDJoW0aBquPs0QgONe+OebBLtBf7dtVlnfUna13qSd6AjJVIQRGn+DLJqoP58Hb
- 138g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=iUr/Su9o46jDL8dJ97KU/SAIedxE8wYUU6GmXx2CUe4=;
- b=jXMas1qqJSWzVlDt7PY3nWwh85XzKdRPEFpWX0+8r3P93n/P4ZQFVHqRBc/ShbMNBc
- VKQHJlq2dkARlZ1JwmpbiOaiBYoNzlGnV6g29P8vp2NoTpJYM3klCAnNo+xCF59C1DH7
- U0wUtsu3fnCJeMA5SqQ5CKW5WCOJUSLLc/ehSj+0oson53edccVNFhxzfWioSHK5BayH
- fUc+zK3K7BejCdVOx8Eot+5vZalRo7ZnPJF3CwMyPnkAEjfSHMSuOeYgUA4iP/1S7Hqe
- hrPZ4h5nkRZTMzHv9o0oGk0/69bNSGE7eMIldIIeeNgJ052FmLRJ4SSWpDOsuC+cRsl2
- ztmw==
-X-Gm-Message-State: AOAM531p2okSI50GRYjMMd6WKoTCV6F9b8EoC00Hyn9oeHHXEtxcadL0
- MwCg+HebnUmHX1TUoljquJQ=
-X-Google-Smtp-Source: ABdhPJyOVyOCMnX/Do5FoHS/0+ie/pYHozaQjsvIasZ99RXIt7QLRxoOzJZqK1cCqM7u0UKA66JdPw==
-X-Received: by 2002:a17:902:b493:b029:d0:cbe1:e782 with SMTP id
- y19-20020a170902b493b02900d0cbe1e782mr196976plr.41.1599554780729; 
- Tue, 08 Sep 2020 01:46:20 -0700 (PDT)
-Received: from localhost ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id e125sm3802182pfe.154.2020.09.08.01.46.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Sep 2020 01:46:20 -0700 (PDT)
-Date: Tue, 08 Sep 2020 18:46:15 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v1 3/5] powerpc/fault: Reorder tests in bad_kernel_fault()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>
-References: <7baae4086cbb9ffb08c933b065ff7d29dbc03dd6.1596734104.git.christophe.leroy@csgroup.eu>
- <ef827b73770a7b155079393f8d8430e10a99ec94.1596734104.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <ef827b73770a7b155079393f8d8430e10a99ec94.1596734104.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BlzPZ4CnmzDq8v
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Sep 2020 18:50:24 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BlzPR2x8Xz9v06W;
+ Tue,  8 Sep 2020 10:50:19 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id rH4fOfzRr4R0; Tue,  8 Sep 2020 10:50:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BlzPR00Ytz9v06Q;
+ Tue,  8 Sep 2020 10:50:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1BCF98B7AE;
+ Tue,  8 Sep 2020 10:50:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ZFfPAcgG0Axc; Tue,  8 Sep 2020 10:50:19 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A4D998B7AD;
+ Tue,  8 Sep 2020 10:50:19 +0200 (CEST)
+Subject: Re: [RFC PATCH 02/12] powerpc: remove arguments from interrupt
+ handler functions
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nicholas Piggin <npiggin@gmail.com>
+References: <20200905174335.3161229-1-npiggin@gmail.com>
+ <20200905174335.3161229-3-npiggin@gmail.com>
+ <e34fead9-a356-3ae6-aa33-544380230bd5@csgroup.eu>
+ <1599478457.27656.1.camel@po17688vm.idsi0.si.c-s.fr>
+ <1599551224.3zoap14y55.astroid@bobo.none>
+ <a4eac9b0-da50-de8a-439e-173da7c20252@csgroup.eu>
+Message-ID: <08ed0a91-b231-1dbc-ba21-6247de03bcd2@csgroup.eu>
+Date: Tue, 8 Sep 2020 10:50:14 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Message-Id: <1599554731.otayyrz92r.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <a4eac9b0-da50-de8a-439e-173da7c20252@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,55 +69,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of August 7, 2020 3:15 am:
-> Check address earlier to simplify the following test.
 
-Good logic reduction.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Le 08/09/2020 à 10:29, Christophe Leroy a écrit :
+> 
+> 
+> Le 08/09/2020 à 09:48, Nicholas Piggin a écrit :
+>> Excerpts from Christophe Leroy's message of September 7, 2020 9:34 pm:
+>>> On Mon, 2020-09-07 at 11:20 +0200, Christophe Leroy wrote:
+>>>>
+>>>> Le 05/09/2020 à 19:43, Nicholas Piggin a écrit :
+>>>>> Make interrupt handlers all just take the pt_regs * argument and load
+>>>>> DAR/DSISR etc from that. Make those that return a value return long.
+>>>>
+>>>> I like this, it will likely simplify a bit the VMAP_STACK mess.
+>>>>
+>>>> Not sure it is that easy. My board is stuck after the start of init.
+>>>>
+>>>>
+>>>> On the 8xx, on Instruction TLB Error exception, we do
+>>>>
+>>>>     andis.    r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 
+>>>> bits */
+>>>>
+>>>> On book3s/32, on ISI exception we do:
+>>>>     andis.    r5,r9,DSISR_SRR1_MATCH_32S@h /* Filter relevant SRR1 
+>>>> bits */
+>>>>
+>>>> On 40x and bookE, on ISI exception we do:
+>>>>     li    r5,0            /* Pass zero as arg3 */
+>>>>
+>>>>
+>>>> And regs->dsisr will just contain nothing
+>>>>
+>>>> So it means we should at least write back r5 into regs->dsisr from 
+>>>> there
+>>>> ? The performance impact should be minimal as we already write _DAR so
+>>>> the cache line should already be in the cache.
+>>>>
+>>>> A hacky 'stw r5, _DSISR(r1)' in handle_page_fault() does the trick,
+>>>> allthough we don't want to do it for both ISI and DSI at the end, so
+>>>> you'll have to do it in every head_xxx.S
+>>>
+>>> To get you series build and work, I did the following hacks:
+>>
+>> Great, thanks for this.
+>>
+>>> diff --git a/arch/powerpc/include/asm/interrupt.h
+>>> b/arch/powerpc/include/asm/interrupt.h
+>>> index acfcc7d5779b..c11045d3113a 100644
+>>> --- a/arch/powerpc/include/asm/interrupt.h
+>>> +++ b/arch/powerpc/include/asm/interrupt.h
+>>> @@ -93,7 +93,9 @@ static inline void interrupt_nmi_exit_prepare(struct
+>>> pt_regs *regs, struct inter
+>>>   {
+>>>       nmi_exit();
+>>> +#ifdef CONFIG_PPC64
+>>>       this_cpu_set_ftrace_enabled(state->ftrace_enabled);
+>>> +#endif
+>>
+>> This seems okay, not a hack.
+>>
+>>>   #ifdef CONFIG_PPC_BOOK3S_64
+>>>       /* Check we didn't change the pending interrupt mask. */
+>>> diff --git a/arch/powerpc/kernel/entry_32.S
+>>> b/arch/powerpc/kernel/entry_32.S
+>>> index f4d0af8e1136..66f7adbe1076 100644
+>>> --- a/arch/powerpc/kernel/entry_32.S
+>>> +++ b/arch/powerpc/kernel/entry_32.S
+>>> @@ -663,6 +663,7 @@ ppc_swapcontext:
+>>>    */
+>>>       .globl    handle_page_fault
+>>>   handle_page_fault:
+>>> +    stw    r5,_DSISR(r1)
+>>>       addi    r3,r1,STACK_FRAME_OVERHEAD
+>>>   #ifdef CONFIG_PPC_BOOK3S_32
+>>>       andis.  r0,r5,DSISR_DABRMATCH@h
+>>
+>> Is this what you want to do for 32, or do you want to seperate
+>> ISI and DSI sides?
+>>
+> 
+> No I think we want to separate ISI and DSI sides.
+> 
+> And I think the specific filtering done in ISI could be done in 
+> do_page_fault() in C. Ok, it would make a special handling for is_exec 
+> but there are already several places where the behaviour differs based 
+> on is_exec.
+> The only thing we need to keep at ASM level is the DABR stuff for 
+> calling do_break() in handle_page_fault(), because it is used to decide 
+> whether full regs are saved or not. But it could be a test done earlier 
+> in the prolog and the result being kept in one of the CR bits.
 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/mm/fault.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->=20
-> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> index 9ef9ee244f72..525e0c2b5406 100644
-> --- a/arch/powerpc/mm/fault.c
-> +++ b/arch/powerpc/mm/fault.c
-> @@ -210,17 +210,17 @@ static bool bad_kernel_fault(struct pt_regs *regs, =
-unsigned long error_code,
->  		return true;
->  	}
-> =20
-> -	if (!is_exec && address < TASK_SIZE && (error_code & DSISR_PROTFAULT) &=
-&
-> +	// Kernel fault on kernel address is bad
-> +	if (address >=3D TASK_SIZE)
-> +		return true;
-> +
-> +	if (!is_exec && (error_code & DSISR_PROTFAULT) &&
->  	    !search_exception_tables(regs->nip)) {
->  		pr_crit_ratelimited("Kernel attempted to access user page (%lx) - expl=
-oit attempt? (uid: %d)\n",
->  				    address,
->  				    from_kuid(&init_user_ns, current_uid()));
->  	}
-> =20
-> -	// Kernel fault on kernel address is bad
-> -	if (address >=3D TASK_SIZE)
-> -		return true;
-> -
->  	// Fault on user outside of certain regions (eg. copy_tofrom_user()) is=
- bad
->  	if (!search_exception_tables(regs->nip))
->  		return true;
-> --=20
-> 2.25.0
->=20
->=20
+Looking at it once more, I'm wondering whether we really need a full regs.
+
+Before commit 
+https://github.com/linuxppc/linux/commit/d300627c6a53693fb01479b59b0cdd293761b1fa#diff-f9658f412252f3bb3093e0a95b37f3ac 
+do_break() was called from do_page_fault() without a full regs set.
+
+Christophe
