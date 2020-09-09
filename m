@@ -2,50 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86DD2638F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 00:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3C426393A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 00:37:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmxSz0QXFzDqcN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 08:26:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bmxjf6hY4zDqfS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 08:37:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=kbusch@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::744;
+ helo=mail-qk1-x744.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=MIR0n2v6; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
+ header.s=google header.b=NyzBsT+J; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BmvSR5c6LzDqRf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 06:56:07 +1000 (AEST)
-Received: from dhcp-10-100-145-180.wdl.wdc.com (unknown [199.255.45.60])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A2AC920BED;
- Wed,  9 Sep 2020 20:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1599684963;
- bh=HOi/gRnNWCADuH3C2tuPouagH6ACKRSW8Me9mQGESc8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=MIR0n2v6jYMLvL9ylCeswSmSkNjM38pD+hUWnq3QNBxdxavUAFW1nFlTLHe2pybfD
- odrRmpSK6VaBtY4y/JW5mI6voxGDP7xP7wyaKsNWcxcK7TIQVymwmw1HPj8MEaIJrr
- wYpwdfF4aTXncxhcjdHkCnRIxxiQ6/mo+8A6FHH4=
-Date: Wed, 9 Sep 2020 13:55:58 -0700
-From: Keith Busch <kbusch@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bmxgt4TjMzDqM5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 08:36:07 +1000 (AEST)
+Received: by mail-qk1-x744.google.com with SMTP id v123so4101648qkd.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Sep 2020 15:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=c134n78aG+T1D05fG/7gwyDy+RohECK5LAEVlOiODCw=;
+ b=NyzBsT+JUu0U0kwfTlzpDClheXiWwFCChT8B3B3AnRObKvk4drNujFjFruGeHjyE5E
+ J/ekKdFGX4ZPNWUfEPhKExoK0sWWjXwST+pbBqDSQQLO3bhHO97u7XE9KwITCllyZTNP
+ KD49/yc1MfvhSPgbWZUU1AxUsv6U0vCFkivBcLxiu3ppVdmJeK1Itxs2CD5ayafEhare
+ Y4u34snA9MTl4Likr5RS+E4LR0hKde+fx41J4h2BvlUn7go15Yxb6eLzvLXVka4Mre/N
+ zumvX8Blxljzlanq14R9XGa7dbkpGn90Uvx/RhT36f5UMVOZXDvQeH4wAZB+Eu6xRGBh
+ woew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=c134n78aG+T1D05fG/7gwyDy+RohECK5LAEVlOiODCw=;
+ b=nAKzcVx5lj/xaDvVkOwsnq3V8LZQ8qfF4lkpI5U//k3bHkqliZ0niGTHBsl+mtjKfQ
+ SRAoX0yPb6lz2+w7OKrEyQASALw4iR3domAklRxbItY1vNexyP5jpplXEMouL9nhPYt8
+ o9mvXS4mR6/LV82EPnMH9y0BlQjen0uQf2UxS4S5rsWfB/Xf8L+zNA3FSxkpcqnHinlF
+ Pa+J6+Iu0Dz0FaZRMyuq1Tw/j15g4nv78eZN+97UvlT0qcHiVJyGKYx909hxiozOCJLG
+ Xdym0NWGzC2MuMni/DVvXfC+8jM8A2O/dCnif7KbJu4I70ygJh17JaUHTS1Nw3zvBjeU
+ oRLw==
+X-Gm-Message-State: AOAM530xdPXpR3qTCfl6/tn4R+6z/gtsYV0llPJySbW7eTclStBohKRq
+ /1WV3PeOVnfdpB/5RdRvDUg2pQ==
+X-Google-Smtp-Source: ABdhPJx7fgh7UgPdTXT6uFy6snoRxxciP2Hd+WS8NFMVek051RlvF5/SRN4VKGquIHZA++zqp1uC0Q==
+X-Received: by 2002:a05:620a:2225:: with SMTP id
+ n5mr5229154qkh.171.1599690963887; 
+ Wed, 09 Sep 2020 15:36:03 -0700 (PDT)
+Received: from ziepe.ca
+ (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net.
+ [156.34.48.30])
+ by smtp.gmail.com with ESMTPSA id g5sm4497430qtx.43.2020.09.09.15.36.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Sep 2020 15:36:03 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.94) (envelope-from <jgg@ziepe.ca>)
+ id 1kG8h8-004BIN-8t; Wed, 09 Sep 2020 19:36:02 -0300
+Date: Wed, 9 Sep 2020 19:36:02 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Joe Perches <joe@perches.com>
 Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
  break;
-Message-ID: <20200909205558.GA3384631@dhcp-10-100-145-180.wdl.wdc.com>
+Message-ID: <20200909223602.GJ87483@ziepe.ca>
 References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-X-Mailman-Approved-At: Thu, 10 Sep 2020 08:25:16 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,20 +111,29 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Wed, Sep 09, 2020 at 01:06:39PM -0700, Joe Perches wrote:
-> diff --git a/crypto/tcrypt.c b/crypto/tcrypt.c
-> index eea0f453cfb6..8aac5bc60f4c 100644
-> --- a/crypto/tcrypt.c
-> +++ b/crypto/tcrypt.c
-> @@ -2464,7 +2464,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
->  		test_hash_speed("streebog512", sec,
->  				generic_hash_speed_template);
->  		if (mode > 300 && mode < 400) break;
-> -		fallthrough;
-> +		break;
->  	case 399:
->  		break;
+> fallthrough to a separate case/default label break; isn't very readable.
+> 
+> Convert pseudo-keyword fallthrough; statements to a simple break; when
+> the next label is case or default and the only statement in the next
+> label block is break;
+> 
+> Found using:
+> 
+> $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
+> 
+> Miscellanea:
+> 
+> o Move or coalesce a couple label blocks above a default: block.
+> 
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+> 
+> Compiled allyesconfig x86-64 only.
+> A few files for other arches were not compiled.
 
-Just imho, this change makes the preceding 'if' look even more
-pointless. Maybe the fallthrough was a deliberate choice? Not that my
-opinion matters here as I don't know this module, but it looked a bit
-odd to me.
+IB part looks OK, I prefer it like this
+
+You could do the same for continue as well, I saw a few of those..
+
+Thanks,
+Jason
