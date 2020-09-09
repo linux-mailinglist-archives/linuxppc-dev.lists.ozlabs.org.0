@@ -2,90 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B56F26250B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 04:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D0826265C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 06:29:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmQd63BmyzDqKr
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 12:16:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BmTYR2g2czDqT6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 14:28:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=palmer@dabbelt.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=none (p=none dis=none) header.from=dabbelt.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=xBu1bvtf; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=dabbelt-com.20150623.gappssmtp.com
+ header.i=@dabbelt-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=MtK9QLXz; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BmQWH0wzVzDqSH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 12:11:54 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0892AS5c094075;
- Wed, 9 Sep 2020 02:11:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=vtum29krzlUsLIvRnyVxjLuvhWBtLTr/qnU9AvnGbCE=;
- b=xBu1bvtfDZ9503xniraz9muXI2Eg0qhYCYcOf6RobuyNUO3o1Po7XLCiySpH1j3NqLzx
- 2jgXXHktcetcwXVddyuNr8Y2tEFe3S1Fic84p/c7b/8cWZhzNvssHJn72rt+zNyDQI3g
- W6nGbDQrnBPjzFv3JHhmeBC2Lng7TyLH4twd3n8hvyY34Y8B6srBiufkC1dha4TbTt8U
- iYM7VJ+79F4uaHjvVJydS3mD7NcVtBky/+GEZFGwxEWNcRrsg0F0s6PbT0Xh+BU3JioS
- 8YO2a/M76MlnuYxeGIlhqTuBmwNwX5juOavRg+aCtHeGvwObjWNA43YKkCVKSbI3nWmM bw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by aserp2120.oracle.com with ESMTP id 33c2mkxvtd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 09 Sep 2020 02:11:40 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 089252Ah095301;
- Wed, 9 Sep 2020 02:09:40 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
- by aserp3020.oracle.com with ESMTP id 33cmk53euj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 09 Sep 2020 02:09:40 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
- by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08929Zlw022818;
- Wed, 9 Sep 2020 02:09:35 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 08 Sep 2020 19:09:35 -0700
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
- Joe Perches <joe@perches.com>, oprofile-list@lists.sf.net,
- linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, drbd-dev@tron.linbit.com,
- intel-gfx@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-input@vger.kernel.org, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org, reiserfs-devel@vger.kernel.org,
- linux-bcache@vger.kernel.org, Jiri Kosina <trivial@kernel.org>
-Subject: Re: [PATCH 00/29] treewide: Convert comma separated statements
-Date: Tue,  8 Sep 2020 22:09:14 -0400
-Message-Id: <159961731707.5787.13988542229153933257.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <cover.1598331148.git.joe@perches.com>
-References: <cover.1598331148.git.joe@perches.com>
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BmTWR2b6ZzDqP4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 14:27:12 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id jw11so713233pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Sep 2020 21:27:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+ h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+ :content-transfer-encoding;
+ bh=KxYznu6/RaMBq3XnQcZXFLCOwvFdZBNPnHf5lL/gtks=;
+ b=MtK9QLXzOhZk3vWk1zQ7UUZUYCXM3qd9bRt5KSABkJ4L8vbr/v+UbmS8f/RaSdqoBX
+ GjURmZz8wJAx2hce99G5+t6B5cz7HtbSyZiLFOJ3INGrDhOti3NOlhaUu/6hudbuhGVx
+ bHm6aWt52fZyuPch9HiXJZbflwaCaF8Ls1rlNXBuBbUObBc+2EaNGG9qXW3dUeScgaJR
+ CRY198ws1rMH7JBWN5owtp36Suea7e4+RrSN9FlZd+uu0m3cswR0wqOCGDm2nhcR5BUQ
+ 82qFD58+ezefPhiyUQEgPpurMTn03A1GslE2/XtpFNEjOY/MjGpCGUZnNFQClwvKlhBI
+ YqfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+ :mime-version:content-transfer-encoding;
+ bh=KxYznu6/RaMBq3XnQcZXFLCOwvFdZBNPnHf5lL/gtks=;
+ b=G6+Svvr6glSWLJ+qe4/Q+bUznIcHvviaANKmTnkuM6TBPv9GEfqjOBfYErlnx3QIe+
+ U81u9QNqibwlXKjKUgr9aPNHe6ryXmQV1cfqN7G0dwzJoJPs/vOVnLwsMFTHpZ3BrkKx
+ Ahugk9rjryLY/09afdmoEWmZtFGzNg0//A/Wjk13oDVz8wvEkJudXhk7Cs3agc/u2a1O
+ rvssooMVKOBYmRyTQv9/YYnvkxDLFiDQDvq8CcyxX5Y+vGqyOvnIknxUX/+KSkVPyUnB
+ WmpgmAAhTotqqqavVQjIZ6mSlzkIQ7sRbPauE/XDuYYZxVsprbVrJ0j1j6PgtybSpDth
+ Knzw==
+X-Gm-Message-State: AOAM5331U1GQH4lOaJAdJNSX+DEFGZzAIEPoJiYV9QmWiL30uy9tVT+p
+ GieJRvtwcYawPjEFr+rtISR4eA==
+X-Google-Smtp-Source: ABdhPJwdYcFaX2ADEhk739T179fDYwdfJE8FRUv6HiW4fv0EOhyxEYKQPL4AizpkC7OJU3f+nSIaMw==
+X-Received: by 2002:a17:90a:a081:: with SMTP id
+ r1mr1979398pjp.159.1599625626651; 
+ Tue, 08 Sep 2020 21:27:06 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net.
+ [76.210.143.223])
+ by smtp.gmail.com with ESMTPSA id l13sm731744pgq.33.2020.09.08.21.27.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Sep 2020 21:27:06 -0700 (PDT)
+Date: Tue, 08 Sep 2020 21:27:06 -0700 (PDT)
+X-Google-Original-Date: Tue, 08 Sep 2020 21:27:04 PDT (-0700)
+Subject: Re: [PATCH v2] kbuild: preprocess module linker script
+In-Reply-To: <20200908042708.2511528-1-masahiroy@kernel.org>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: masahiroy@kernel.org
+Message-ID: <mhng-66fe209f-04d5-4177-a305-d67af7bbdb8b@palmerdabbelt-glaptop1>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- malwarescore=0 phishscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009090018
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- priorityscore=1501
- phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
- malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009090018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,90 +82,377 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-scsi@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>,
- linux-doc@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-kselftest@vger.kernel.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, catalin.marinas@arm.com, paulus@samba.org,
+ linux-riscv@lists.infradead.org, will@kernel.org,
+ anton.ivanov@cambridgegreys.com, linux-arch@vger.kernel.org, richard@nod.at,
+ masahiroy@kernel.org, linux@armlinux.org.uk, geert@linux-m68k.org,
+ fenghua.yu@intel.com, aou@eecs.berkeley.edu, Arnd Bergmann <arnd@arndb.de>,
+ linux-kbuild@vger.kernel.org, jdike@addtoit.com, jeyu@kernel.org,
+ linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+ michal.lkml@markovi.net, Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-arm-kernel@lists.infradead.org, tony.luck@intel.com,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 24 Aug 2020 21:55:57 -0700, Joe Perches wrote:
+On Mon, 07 Sep 2020 21:27:08 PDT (-0700), masahiroy@kernel.org wrote:
+> There was a request to preprocess the module linker script like we
+> do for the vmlinux one. (https://lkml.org/lkml/2020/8/21/512)
+>
+> The difference between vmlinux.lds and module.lds is that the latter
+> is needed for external module builds, thus must be cleaned up by
+> 'make mrproper' instead of 'make clean'. Also, it must be created
+> by 'make modules_prepare'.
+>
+> You cannot put it in arch/$(SRCARCH)/kernel/, which is cleaned up by
+> 'make clean'. I moved arch/$(SRCARCH)/kernel/module.lds to
+> arch/$(SRCARCH)/include/asm/module.lds.h, which is included from
+> scripts/module.lds.S.
+>
+> scripts/module.lds is fine because 'make clean' keeps all the
+> build artifacts under scripts/.
+>
+> You can add arch-specific sections in <asm/module.lds.h>.
 
-> There are many comma separated statements in the kernel.
-> See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
-> 
-> Convert the comma separated statements that are in if/do/while blocks
-> to use braces and semicolons.
-> 
-> Many comma separated statements still exist but those are changes for
-> another day.
-> 
-> [...]
+for the arch/riscv stuff
 
-Applied to 5.10/scsi-queue, thanks!
+Acked-by: Palmer Dabbelt <palmerdabbelt@google.com>
 
-[01/29] coding-style.rst: Avoid comma statements
-        (no commit info)
-[02/29] alpha: Avoid comma separated statements
-        (no commit info)
-[03/29] ia64: Avoid comma separated statements
-        (no commit info)
-[04/29] sparc: Avoid comma separated statements
-        (no commit info)
-[05/29] ata: Avoid comma separated statements
-        (no commit info)
-[06/29] drbd: Avoid comma separated statements
-        (no commit info)
-[07/29] lp: Avoid comma separated statements
-        (no commit info)
-[08/29] dma-buf: Avoid comma separated statements
-        (no commit info)
-[09/29] drm/gma500: Avoid comma separated statements
-        (no commit info)
-[10/29] drm/i915: Avoid comma separated statements
-        (no commit info)
-[11/29] hwmon: (scmi-hwmon): Avoid comma separated statements
-        (no commit info)
-[12/29] Input: MT - Avoid comma separated statements
-        (no commit info)
-[13/29] bcache: Avoid comma separated statements
-        (no commit info)
-[14/29] media: Avoid comma separated statements
-        (no commit info)
-[15/29] mtd: Avoid comma separated statements
-        (no commit info)
-[16/29] 8390: Avoid comma separated statements
-        (no commit info)
-[17/29] fs_enet: Avoid comma separated statements
-        (no commit info)
-[18/29] wan: sbni: Avoid comma separated statements
-        (no commit info)
-[19/29] s390/tty3270: Avoid comma separated statements
-        (no commit info)
-[20/29] scsi: arm: Avoid comma separated statements
-        https://git.kernel.org/mkp/scsi/c/a08a07326510
-[21/29] media: atomisp: Avoid comma separated statements
-        (no commit info)
-[22/29] video: fbdev: Avoid comma separated statements
-        (no commit info)
-[23/29] fuse: Avoid comma separated statements
-        (no commit info)
-[24/29] reiserfs: Avoid comma separated statements
-        (no commit info)
-[25/29] lib/zlib: Avoid comma separated statements
-        (no commit info)
-[26/29] lib: zstd: Avoid comma separated statements
-        (no commit info)
-[27/29] ipv6: fib6: Avoid comma separated statements
-        (no commit info)
-[28/29] sunrpc: Avoid comma separated statements
-        (no commit info)
-[29/29] tools: Avoid comma separated statements
-        (no commit info)
+Thanks!
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Tested-by: Jessica Yu <jeyu@kernel.org>
+> Acked-by: Will Deacon <will@kernel.org>
+> ---
+>
+> Changes in v2:
+>   - Fix the race between the two targets 'scripts' and 'asm-generic'
+>
+>  Makefile                                               | 10 ++++++----
+>  arch/arm/Makefile                                      |  4 ----
+>  .../{kernel/module.lds => include/asm/module.lds.h}    |  2 ++
+>  arch/arm64/Makefile                                    |  4 ----
+>  .../{kernel/module.lds => include/asm/module.lds.h}    |  2 ++
+>  arch/ia64/Makefile                                     |  1 -
+>  arch/ia64/{module.lds => include/asm/module.lds.h}     |  0
+>  arch/m68k/Makefile                                     |  1 -
+>  .../{kernel/module.lds => include/asm/module.lds.h}    |  0
+>  arch/powerpc/Makefile                                  |  1 -
+>  .../{kernel/module.lds => include/asm/module.lds.h}    |  0
+>  arch/riscv/Makefile                                    |  3 ---
+>  .../{kernel/module.lds => include/asm/module.lds.h}    |  3 ++-
+>  arch/um/include/asm/Kbuild                             |  1 +
+>  include/asm-generic/Kbuild                             |  1 +
+>  include/asm-generic/module.lds.h                       | 10 ++++++++++
+>  scripts/.gitignore                                     |  1 +
+>  scripts/Makefile                                       |  3 +++
+>  scripts/Makefile.modfinal                              |  5 ++---
+>  scripts/{module-common.lds => module.lds.S}            |  3 +++
+>  scripts/package/builddeb                               |  2 +-
+>  21 files changed, 34 insertions(+), 23 deletions(-)
+>  rename arch/arm/{kernel/module.lds => include/asm/module.lds.h} (72%)
+>  rename arch/arm64/{kernel/module.lds => include/asm/module.lds.h} (76%)
+>  rename arch/ia64/{module.lds => include/asm/module.lds.h} (100%)
+>  rename arch/m68k/{kernel/module.lds => include/asm/module.lds.h} (100%)
+>  rename arch/powerpc/{kernel/module.lds => include/asm/module.lds.h} (100%)
+>  rename arch/riscv/{kernel/module.lds => include/asm/module.lds.h} (84%)
+>  create mode 100644 include/asm-generic/module.lds.h
+>  rename scripts/{module-common.lds => module.lds.S} (93%)
+>
+> diff --git a/Makefile b/Makefile
+> index 37739ee53f27..97b1dae1783b 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -505,7 +505,6 @@ KBUILD_CFLAGS_KERNEL :=
+>  KBUILD_AFLAGS_MODULE  := -DMODULE
+>  KBUILD_CFLAGS_MODULE  := -DMODULE
+>  KBUILD_LDFLAGS_MODULE :=
+> -export KBUILD_LDS_MODULE := $(srctree)/scripts/module-common.lds
+>  KBUILD_LDFLAGS :=
+>  CLANG_FLAGS :=
+>
+> @@ -1395,7 +1394,7 @@ endif
+>  # using awk while concatenating to the final file.
+>
+>  PHONY += modules
+> -modules: $(if $(KBUILD_BUILTIN),vmlinux) modules_check
+> +modules: $(if $(KBUILD_BUILTIN),vmlinux) modules_check modules_prepare
+>  	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modpost
+>
+>  PHONY += modules_check
+> @@ -1412,6 +1411,7 @@ targets += modules.order
+>  # Target to prepare building external modules
+>  PHONY += modules_prepare
+>  modules_prepare: prepare
+> +	$(Q)$(MAKE) $(build)=scripts scripts/module.lds
+>
+>  # Target to install modules
+>  PHONY += modules_install
+> @@ -1743,7 +1743,9 @@ help:
+>  	@echo  '  clean           - remove generated files in module directory only'
+>  	@echo  ''
+>
+> -PHONY += prepare
+> +# no-op for external module builds
+> +PHONY += prepare modules_prepare
+> +
+>  endif # KBUILD_EXTMOD
+>
+>  # Single targets
+> @@ -1776,7 +1778,7 @@ MODORDER := .modules.tmp
+>  endif
+>
+>  PHONY += single_modpost
+> -single_modpost: $(single-no-ko)
+> +single_modpost: $(single-no-ko) modules_prepare
+>  	$(Q){ $(foreach m, $(single-ko), echo $(extmod-prefix)$m;) } > $(MODORDER)
+>  	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modpost
+>
+> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> index 4e877354515f..a0cb15de9677 100644
+> --- a/arch/arm/Makefile
+> +++ b/arch/arm/Makefile
+> @@ -16,10 +16,6 @@ LDFLAGS_vmlinux	+= --be8
+>  KBUILD_LDFLAGS_MODULE	+= --be8
+>  endif
+>
+> -ifeq ($(CONFIG_ARM_MODULE_PLTS),y)
+> -KBUILD_LDS_MODULE	+= $(srctree)/arch/arm/kernel/module.lds
+> -endif
+> -
+>  GZFLAGS		:=-9
+>  #KBUILD_CFLAGS	+=-pipe
+>
+> diff --git a/arch/arm/kernel/module.lds b/arch/arm/include/asm/module.lds.h
+> similarity index 72%
+> rename from arch/arm/kernel/module.lds
+> rename to arch/arm/include/asm/module.lds.h
+> index 79cb6af565e5..0e7cb4e314b4 100644
+> --- a/arch/arm/kernel/module.lds
+> +++ b/arch/arm/include/asm/module.lds.h
+> @@ -1,5 +1,7 @@
+>  /* SPDX-License-Identifier: GPL-2.0 */
+> +#ifdef CONFIG_ARM_MODULE_PLTS
+>  SECTIONS {
+>  	.plt : { BYTE(0) }
+>  	.init.plt : { BYTE(0) }
+>  }
+> +#endif
+> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+> index b45f0124cc16..76667ad47980 100644
+> --- a/arch/arm64/Makefile
+> +++ b/arch/arm64/Makefile
+> @@ -115,10 +115,6 @@ endif
+>
+>  CHECKFLAGS	+= -D__aarch64__
+>
+> -ifeq ($(CONFIG_ARM64_MODULE_PLTS),y)
+> -KBUILD_LDS_MODULE	+= $(srctree)/arch/arm64/kernel/module.lds
+> -endif
+> -
+>  ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_REGS),y)
+>    KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
+>    CC_FLAGS_FTRACE := -fpatchable-function-entry=2
+> diff --git a/arch/arm64/kernel/module.lds b/arch/arm64/include/asm/module.lds.h
+> similarity index 76%
+> rename from arch/arm64/kernel/module.lds
+> rename to arch/arm64/include/asm/module.lds.h
+> index 22e36a21c113..691f15af788e 100644
+> --- a/arch/arm64/kernel/module.lds
+> +++ b/arch/arm64/include/asm/module.lds.h
+> @@ -1,5 +1,7 @@
+> +#ifdef CONFIG_ARM64_MODULE_PLTS
+>  SECTIONS {
+>  	.plt (NOLOAD) : { BYTE(0) }
+>  	.init.plt (NOLOAD) : { BYTE(0) }
+>  	.text.ftrace_trampoline (NOLOAD) : { BYTE(0) }
+>  }
+> +#endif
+> diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
+> index 2876a7df1b0a..703b1c4f6d12 100644
+> --- a/arch/ia64/Makefile
+> +++ b/arch/ia64/Makefile
+> @@ -20,7 +20,6 @@ CHECKFLAGS	+= -D__ia64=1 -D__ia64__=1 -D_LP64 -D__LP64__
+>
+>  OBJCOPYFLAGS	:= --strip-all
+>  LDFLAGS_vmlinux	:= -static
+> -KBUILD_LDS_MODULE += $(srctree)/arch/ia64/module.lds
+>  KBUILD_AFLAGS_KERNEL := -mconstant-gp
+>  EXTRA		:=
+>
+> diff --git a/arch/ia64/module.lds b/arch/ia64/include/asm/module.lds.h
+> similarity index 100%
+> rename from arch/ia64/module.lds
+> rename to arch/ia64/include/asm/module.lds.h
+> diff --git a/arch/m68k/Makefile b/arch/m68k/Makefile
+> index 4438ffb4bbe1..ea14f2046fb4 100644
+> --- a/arch/m68k/Makefile
+> +++ b/arch/m68k/Makefile
+> @@ -75,7 +75,6 @@ KBUILD_CPPFLAGS += -D__uClinux__
+>  endif
+>
+>  KBUILD_LDFLAGS := -m m68kelf
+> -KBUILD_LDS_MODULE += $(srctree)/arch/m68k/kernel/module.lds
+>
+>  ifdef CONFIG_SUN3
+>  LDFLAGS_vmlinux = -N
+> diff --git a/arch/m68k/kernel/module.lds b/arch/m68k/include/asm/module.lds.h
+> similarity index 100%
+> rename from arch/m68k/kernel/module.lds
+> rename to arch/m68k/include/asm/module.lds.h
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index 3e8da9cf2eb9..8935658fcd06 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -65,7 +65,6 @@ UTS_MACHINE := $(subst $(space),,$(machine-y))
+>  ifdef CONFIG_PPC32
+>  KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
+>  else
+> -KBUILD_LDS_MODULE += $(srctree)/arch/powerpc/kernel/module.lds
+>  ifeq ($(call ld-ifversion, -ge, 225000000, y),y)
+>  # Have the linker provide sfpr if possible.
+>  # There is a corresponding test in arch/powerpc/lib/Makefile
+> diff --git a/arch/powerpc/kernel/module.lds b/arch/powerpc/include/asm/module.lds.h
+> similarity index 100%
+> rename from arch/powerpc/kernel/module.lds
+> rename to arch/powerpc/include/asm/module.lds.h
+> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> index fb6e37db836d..8edaa8bd86d6 100644
+> --- a/arch/riscv/Makefile
+> +++ b/arch/riscv/Makefile
+> @@ -53,9 +53,6 @@ endif
+>  ifeq ($(CONFIG_CMODEL_MEDANY),y)
+>  	KBUILD_CFLAGS += -mcmodel=medany
+>  endif
+> -ifeq ($(CONFIG_MODULE_SECTIONS),y)
+> -	KBUILD_LDS_MODULE += $(srctree)/arch/riscv/kernel/module.lds
+> -endif
+>  ifeq ($(CONFIG_PERF_EVENTS),y)
+>          KBUILD_CFLAGS += -fno-omit-frame-pointer
+>  endif
+> diff --git a/arch/riscv/kernel/module.lds b/arch/riscv/include/asm/module.lds.h
+> similarity index 84%
+> rename from arch/riscv/kernel/module.lds
+> rename to arch/riscv/include/asm/module.lds.h
+> index 295ecfb341a2..4254ff2ff049 100644
+> --- a/arch/riscv/kernel/module.lds
+> +++ b/arch/riscv/include/asm/module.lds.h
+> @@ -1,8 +1,9 @@
+>  /* SPDX-License-Identifier: GPL-2.0 */
+>  /* Copyright (C) 2017 Andes Technology Corporation */
+> -
+> +#ifdef CONFIG_MODULE_SECTIONS
+>  SECTIONS {
+>  	.plt (NOLOAD) : { BYTE(0) }
+>  	.got (NOLOAD) : { BYTE(0) }
+>  	.got.plt (NOLOAD) : { BYTE(0) }
+>  }
+> +#endif
+> diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
+> index 8d435f8a6dec..1c63b260ecc4 100644
+> --- a/arch/um/include/asm/Kbuild
+> +++ b/arch/um/include/asm/Kbuild
+> @@ -16,6 +16,7 @@ generic-y += kdebug.h
+>  generic-y += mcs_spinlock.h
+>  generic-y += mm-arch-hooks.h
+>  generic-y += mmiowb.h
+> +generic-y += module.lds.h
+>  generic-y += param.h
+>  generic-y += pci.h
+>  generic-y += percpu.h
+> diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+> index 74b0612601dd..7cd4e627e00e 100644
+> --- a/include/asm-generic/Kbuild
+> +++ b/include/asm-generic/Kbuild
+> @@ -40,6 +40,7 @@ mandatory-y += mmiowb.h
+>  mandatory-y += mmu.h
+>  mandatory-y += mmu_context.h
+>  mandatory-y += module.h
+> +mandatory-y += module.lds.h
+>  mandatory-y += msi.h
+>  mandatory-y += pci.h
+>  mandatory-y += percpu.h
+> diff --git a/include/asm-generic/module.lds.h b/include/asm-generic/module.lds.h
+> new file mode 100644
+> index 000000000000..f210d5c1b78b
+> --- /dev/null
+> +++ b/include/asm-generic/module.lds.h
+> @@ -0,0 +1,10 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef __ASM_GENERIC_MODULE_LDS_H
+> +#define __ASM_GENERIC_MODULE_LDS_H
+> +
+> +/*
+> + * <asm/module.lds.h> can specify arch-specific sections for linking modules.
+> + * Empty for the asm-generic header.
+> + */
+> +
+> +#endif /* __ASM_GENERIC_MODULE_LDS_H */
+> diff --git a/scripts/.gitignore b/scripts/.gitignore
+> index 0d1c8e217cd7..a6c11316c969 100644
+> --- a/scripts/.gitignore
+> +++ b/scripts/.gitignore
+> @@ -8,3 +8,4 @@ asn1_compiler
+>  extract-cert
+>  sign-file
+>  insert-sys-cert
+> +/module.lds
+> diff --git a/scripts/Makefile b/scripts/Makefile
+> index bc018e4b733e..b5418ec587fb 100644
+> --- a/scripts/Makefile
+> +++ b/scripts/Makefile
+> @@ -29,6 +29,9 @@ endif
+>  # The following programs are only built on demand
+>  hostprogs += unifdef
+>
+> +# The module linker script is preprocessed on demand
+> +targets += module.lds
+> +
+>  subdir-$(CONFIG_GCC_PLUGINS) += gcc-plugins
+>  subdir-$(CONFIG_MODVERSIONS) += genksyms
+>  subdir-$(CONFIG_SECURITY_SELINUX) += selinux
+> diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+> index 411c1e600e7d..ae01baf96f4e 100644
+> --- a/scripts/Makefile.modfinal
+> +++ b/scripts/Makefile.modfinal
+> @@ -33,11 +33,10 @@ quiet_cmd_ld_ko_o = LD [M]  $@
+>        cmd_ld_ko_o =                                                     \
+>  	$(LD) -r $(KBUILD_LDFLAGS)					\
+>  		$(KBUILD_LDFLAGS_MODULE) $(LDFLAGS_MODULE)		\
+> -		$(addprefix -T , $(KBUILD_LDS_MODULE))			\
+> -		-o $@ $(filter %.o, $^);				\
+> +		-T scripts/module.lds -o $@ $(filter %.o, $^);		\
+>  	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
+>
+> -$(modules): %.ko: %.o %.mod.o $(KBUILD_LDS_MODULE) FORCE
+> +$(modules): %.ko: %.o %.mod.o scripts/module.lds FORCE
+>  	+$(call if_changed,ld_ko_o)
+>
+>  targets += $(modules) $(modules:.ko=.mod.o)
+> diff --git a/scripts/module-common.lds b/scripts/module.lds.S
+> similarity index 93%
+> rename from scripts/module-common.lds
+> rename to scripts/module.lds.S
+> index d61b9e8678e8..69b9b71a6a47 100644
+> --- a/scripts/module-common.lds
+> +++ b/scripts/module.lds.S
+> @@ -24,3 +24,6 @@ SECTIONS {
+>
+>  	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
+>  }
+> +
+> +/* bring in arch-specific sections */
+> +#include <asm/module.lds.h>
+> diff --git a/scripts/package/builddeb b/scripts/package/builddeb
+> index 6df3c9f8b2da..44f212e37935 100755
+> --- a/scripts/package/builddeb
+> +++ b/scripts/package/builddeb
+> @@ -55,7 +55,7 @@ deploy_kernel_headers () {
+>  		cd $srctree
+>  		find . arch/$SRCARCH -maxdepth 1 -name Makefile\*
+>  		find include scripts -type f -o -type l
+> -		find arch/$SRCARCH -name module.lds -o -name Kbuild.platforms -o -name Platform
+> +		find arch/$SRCARCH -name Kbuild.platforms -o -name Platform
+>  		find $(find arch/$SRCARCH -name include -o -name scripts -type d) -type f
+>  	) > debian/hdrsrcfiles
