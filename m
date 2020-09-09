@@ -1,74 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070E6262E02
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 13:42:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16882262E3A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 13:53:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bmg9709gPzDqVK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 21:42:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BmgQV2ZHmzDqVR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 21:53:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=CQ/zcpVW; 
+ header.s=mimecast20190719 header.b=ZJMsYbGh; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=MNfVdPRj; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZJMsYbGh; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bmg4Y4n7xzDqP1
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 21:38:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BmgNk542DzDq9V
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 21:52:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1599651482;
+ s=mimecast20190719; t=1599652323;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=FCFUYYeoBcjmQ0F9ueGasNRUTC8JgiuKj1I3e23EEys=;
- b=CQ/zcpVWvMbvGxQlBZ0dAyeUuAfdgoBqHhGE5wkL8OEGjY6qe1Fjqk8OuljW3mTZa2PO4k
- j76px4l+Bg3zDHPfBKl37l5L1ONM75Pf8LiMa5yvTI+SR5rFe8MhTfZC5Rj9SIS0na3RoJ
- MZrpUiBkLXbcugtGs0FheseJAJPsjFE=
+ bh=eUouh1bk+Xc6NMfj6Wwsz4gM4esEPlLXRWSoWFarQ/U=;
+ b=ZJMsYbGhQbKxVmS/Nfi+dANwmmwKquOs9ZxoEyFMcx77oahRWNHNIcDRRyqw8pSLinZZ5I
+ Cu+jy3/V90yR3uw4scwhZgem33123PbaN4UvPhAoJrSHPeJt03WkW7hzj/6dRHRy0ZoVfZ
+ Iau3Pkcb92aMc5t+RGX2IMVXmaecOb0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1599651483;
+ s=mimecast20190719; t=1599652323;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=FCFUYYeoBcjmQ0F9ueGasNRUTC8JgiuKj1I3e23EEys=;
- b=MNfVdPRjG02FQANCrfS68N60TnczEw0pXLXBYvwuGwtoUlc4OUMubHR7kwD2bID5npJ0wB
- niwl3DF9mT7zg26aSnFDjkDthoKlYgqkTDD/2c9L2N8LXulxXftn90CDJVp8DoLkzPlvlL
- Hj/rTOSLJA4GOjfdX5ZOmuAtX3bSpvk=
+ bh=eUouh1bk+Xc6NMfj6Wwsz4gM4esEPlLXRWSoWFarQ/U=;
+ b=ZJMsYbGhQbKxVmS/Nfi+dANwmmwKquOs9ZxoEyFMcx77oahRWNHNIcDRRyqw8pSLinZZ5I
+ Cu+jy3/V90yR3uw4scwhZgem33123PbaN4UvPhAoJrSHPeJt03WkW7hzj/6dRHRy0ZoVfZ
+ Iau3Pkcb92aMc5t+RGX2IMVXmaecOb0=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-388-C1TRk_n8PX6w3j9z38H1gA-1; Wed, 09 Sep 2020 07:37:58 -0400
-X-MC-Unique: C1TRk_n8PX6w3j9z38H1gA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
+ us-mta-243-wAUM1KqrMFK4TOvqtacRug-1; Wed, 09 Sep 2020 07:51:58 -0400
+X-MC-Unique: wAUM1KqrMFK4TOvqtacRug-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 655BB80B702;
- Wed,  9 Sep 2020 11:37:53 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7627710BBED2;
+ Wed,  9 Sep 2020 11:51:53 +0000 (UTC)
 Received: from [10.36.113.90] (ovpn-113-90.ams2.redhat.com [10.36.113.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E5A997E46E;
- Wed,  9 Sep 2020 11:37:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 092FD60C0F;
+ Wed,  9 Sep 2020 11:51:41 +0000 (UTC)
 Subject: Re: [PATCH v2 3/7] mm/memory_hotplug: prepare passing flags to
  add_memory() and friends
+From: David Hildenbrand <david@redhat.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20200908201012.44168-1-david@redhat.com>
  <20200908201012.44168-4-david@redhat.com> <20200909071759.GD435421@kroah.com>
  <3bc5b464-3229-d442-714a-ec33b5728ac6@redhat.com>
  <87eenbry5p.fsf@mpe.ellerman.id.au>
-From: David Hildenbrand <david@redhat.com>
+ <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -114,16 +115,16 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
-Date: Wed, 9 Sep 2020 13:37:41 +0200
+Message-ID: <4e83103c-14a0-6cc4-ae1b-438282edaea3@redhat.com>
+Date: Wed, 9 Sep 2020 13:51:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <87eenbry5p.fsf@mpe.ellerman.id.au>
+In-Reply-To: <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -160,46 +161,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09.09.20 13:24, Michael Ellerman wrote:
-> David Hildenbrand <david@redhat.com> writes:
->> On 09.09.20 09:17, Greg Kroah-Hartman wrote:
->>> On Tue, Sep 08, 2020 at 10:10:08PM +0200, David Hildenbrand wrote:
->>>> We soon want to pass flags, e.g., to mark added System RAM resources.
->>>> mergeable. Prepare for that.
+On 09.09.20 13:37, David Hildenbrand wrote:
+> On 09.09.20 13:24, Michael Ellerman wrote:
+>> David Hildenbrand <david@redhat.com> writes:
+>>> On 09.09.20 09:17, Greg Kroah-Hartman wrote:
+>>>> On Tue, Sep 08, 2020 at 10:10:08PM +0200, David Hildenbrand wrote:
+>>>>> We soon want to pass flags, e.g., to mark added System RAM resources.
+>>>>> mergeable. Prepare for that.
+>>>>
+>>>> What are these random "flags", and how do we know what should be passed
+>>>> to them?
+>>>>
+>>>> Why not make this an enumerated type so that we know it all works
+>>>> properly, like the GPF_* flags are?  Passing around a random unsigned
+>>>> long feels very odd/broken...
 >>>
->>> What are these random "flags", and how do we know what should be passed
->>> to them?
->>>
->>> Why not make this an enumerated type so that we know it all works
->>> properly, like the GPF_* flags are?  Passing around a random unsigned
->>> long feels very odd/broken...
+>>> Agreed, an enum (mhp_flags) seems to give a better hint what can
+>>> actually be passed. Thanks!
 >>
->> Agreed, an enum (mhp_flags) seems to give a better hint what can
->> actually be passed. Thanks!
+>> You probably know this but ...
+>>
+>> Just using a C enum doesn't get you any type safety.
+>>
+>> You can get some checking via sparse by using __bitwise, which is what
+>> gfp_t does. You don't actually have to use an enum for that, it works
+>> with #defines also.
 > 
-> You probably know this but ...
+> Yeah, we seem to be using different approaches. And there is always a
+> way to mess things up :)
 > 
-> Just using a C enum doesn't get you any type safety.
+> gfp_t is one (extreme) example, enum memblock_flags is another example.
+> I tend to prefer an enum in this particular case, because it's simple
+> and at least tells the user which values are expected.
 > 
-> You can get some checking via sparse by using __bitwise, which is what
-> gfp_t does. You don't actually have to use an enum for that, it works
-> with #defines also.
 
-Yeah, we seem to be using different approaches. And there is always a
-way to mess things up :)
-
-gfp_t is one (extreme) example, enum memblock_flags is another example.
-I tend to prefer an enum in this particular case, because it's simple
-and at least tells the user which values are expected.
-
-Thoughts?
-
-> 
-> Or you can wrap the flag in a struct, the way atomic_t does, and then
-> the compiler will prevent passing plain integers in place of your custom
-> type.
-
-
+Gave it another try, looks like mhp_t (like gfp_t) is actually nicer.
 
 -- 
 Thanks,
