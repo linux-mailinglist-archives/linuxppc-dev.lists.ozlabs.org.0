@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC7F2630CE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 17:44:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3D92630F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 17:50:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmmYD71ZrzDqC0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 01:44:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bmmgh4k6TzDqDm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 01:50:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bmjkd0XjzzDqFh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 23:37:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bmjnd3smvzDqTp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 23:40:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4BmjkY6Y9Xz9sVZ; Wed,  9 Sep 2020 23:37:41 +1000 (AEST)
+ id 4Bmjnc0kPxz9sVR; Wed,  9 Sep 2020 23:40:19 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, zhengbin <zhengbin13@huawei.com>,
- linuxppc-dev@lists.ozlabs.org, benh@kernel.crashing.org, paulus@samba.org
-In-Reply-To: <1574144074-142032-1-git-send-email-zhengbin13@huawei.com>
-References: <1574144074-142032-1-git-send-email-zhengbin13@huawei.com>
-Subject: Re: [PATCH 0/5] powerpc: Remove five unused variables
-Message-Id: <159965824298.811679.9055020425603694906.b4-ty@ellerman.id.au>
-Date: Wed,  9 Sep 2020 23:37:41 +1000 (AEST)
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20200813151131.2070161-1-nathanl@linux.ibm.com>
+References: <20200813151131.2070161-1-nathanl@linux.ibm.com>
+Subject: Re: [PATCH v3] powerpc/pseries: explicitly reschedule during
+ drmem_lmb list traversal
+Message-Id: <159965880868.842807.7404059898652054900.b4-ty@ellerman.id.au>
+Date: Wed,  9 Sep 2020 23:40:19 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,27 +38,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: tyreld@linux.ibm.com, cheloha@linux.ibm.com, ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 19 Nov 2019 14:14:29 +0800, zhengbin wrote:
-> zhengbin (5):
->   powerpc/fadump: Remove set but not used variable 'elf'
->   powerpc/perf: Remove set but not used variable 'target'
->   powerpc/powernv: Remove set but not used variable 'total_vfs'
->   powerpc/powernv: Remove set but not used variable 'pdn'
->   powerpc/powernv: Remove set but not used variable 'parent'
+On Thu, 13 Aug 2020 10:11:31 -0500, Nathan Lynch wrote:
+> The drmem lmb list can have hundreds of thousands of entries, and
+> unfortunately lookups take the form of linear searches. As long as
+> this is the case, traversals have the potential to monopolize the CPU
+> and provoke lockup reports, workqueue stalls, and the like unless
+> they explicitly yield.
+> 
+> Rather than placing cond_resched() calls within various
+> for_each_drmem_lmb() loop blocks in the code, put it in the iteration
+> expression of the loop macro itself so users can't omit it.
 > 
 > [...]
 
-Patches 1, 2 & 5 applied to powerpc/next.
+Applied to powerpc/next.
 
-[1/5] powerpc/fadump: Remove set but not used variable 'elf'
-      https://git.kernel.org/powerpc/c/738e6cad0ace88edec8f4ffa082749ad5df26409
-[2/5] powerpc/perf: Remove set but not used variable 'target'
-      https://git.kernel.org/powerpc/c/ef23cf9a89a7aec19a29d548d1e219d436b23b6e
-[5/5] powerpc/powernv: Remove set but not used variable 'parent'
-      https://git.kernel.org/powerpc/c/18102e4bcc47f5b5ac70e2e4461d022c1ee6df24
+[1/1] powerpc/pseries: explicitly reschedule during drmem_lmb list traversal
+      https://git.kernel.org/powerpc/c/9d6792ffe140240ae54c881cc4183f9acc24b4df
 
 cheers
