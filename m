@@ -2,86 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEEFA262C15
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 11:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0437A262D39
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 12:32:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmcQk2QD9zDqTR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 19:38:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bmdcn6BbhzDqTb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 20:32:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=K5guSpfI; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=RrZs/nyX; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BmcMx5QhgzDqQV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 19:36:12 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id md22so1079322pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Sep 2020 02:36:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:references:from:message-id:date:user-agent:mime-version
- :in-reply-to:content-language:content-transfer-encoding;
- bh=VF5oJuxgFTtCT5oe4tEW43NjHl9Bmt0FUeRffBKQurw=;
- b=K5guSpfI44P26cOxJ0RNKwWl4f8DXNqVem33TF/5xv6jP2Z5pvdz9X+7J50S2AFGck
- R8fkRZLfeUD2dGTc1WCIrmZhY5UIBz3l7omUmO46AbS50Zrn5hT3cEbEm8UHb/soWr64
- Xsw67IN6o0Qra3Eq4Df1+I8uHI2iOjWSKQQ6wBa0PJTC6kcthBwRAK73s1pmYvsufNxD
- 4Fu2ddKTbQfKcUI39UIamjI+LRBH6REbcNb89/cj0fRxzg1IlM6Es8WEONXtM81rb0YP
- zxwbgUWGhd7K7Q83q823+IfFXhsod6f1R30x2Prg4eWMx8K3Aio7jS+ldaRlzes7PNOJ
- flxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=VF5oJuxgFTtCT5oe4tEW43NjHl9Bmt0FUeRffBKQurw=;
- b=JbyZWNpjCeEfo4xG5/6BIKioArwm+71OWZS6nu410/SZ0QqrQUQ/x/ToOaZHdyts3S
- X7B7lwt74dwdk6LpXijzoEopzZAEZY1FPVX4kTcigc27R2hSo8ewftTwZJWQZFlp6LJt
- V6pdBEX5+Z3WLfSa009bTeHxum+noLu2zU+LC2YJonTusoFUme5ShV94CZbuFJnM4zZC
- QhaJ6qE1P1ZJdra81nczpYW+0n2neaIKRmg1Y56LchQU2D8yNn9LfKzZu0L/woGKqAND
- gWQLPLSuDIO1CfjnuRJeGHFVraZCA6vU4IM2Tzd7oNrECZ5Ru4DMxZ9wuk2bdqUEshEo
- xQeQ==
-X-Gm-Message-State: AOAM531E3bN310eYPCzZFp0H36Xc9IrIM0O4hEm2w0MvKjNXYfokWqGX
- vxDsWi6tNMY7MgENOxB52eIcDG9NXyWaPGdy
-X-Google-Smtp-Source: ABdhPJzeuGYTsgnYUrQsWBVdRj7IBFv4KO9n0pBbsGagc2pC2DIDCAMHtOhxayD0+LTUisdUCidTRw==
-X-Received: by 2002:a17:90a:e545:: with SMTP id ei5mr63181pjb.45.1599644168651; 
- Wed, 09 Sep 2020 02:36:08 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-83-152.dyn.iinet.net.au.
- [124.171.83.152])
- by smtp.gmail.com with ESMTPSA id e207sm1576097pfh.171.2020.09.09.02.36.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Sep 2020 02:36:07 -0700 (PDT)
-Subject: Re: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
-To: Christoph Hellwig <hch@lst.de>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Oliver OHalloran <oliveroh@au1.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20200908015106.79661-1-aik@ozlabs.ru>
- <20200908054416.GA13585@lst.de>
- <94353228-2262-cfa1-7177-7eed2288ca63@ozlabs.ru>
- <20200908121937.GA31559@lst.de>
- <1746dd66810.27bb.1ca38dd7e845b990cd13d431eb58563d@ozlabs.ru>
- <20200909075849.GA12282@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Message-ID: <0a7a992f-ad2e-e76a-7bee-1ed4ed607748@ozlabs.ru>
-Date: Wed, 9 Sep 2020 19:36:04 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.2.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BmdWH1hFXzDqS5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 20:27:37 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 089A2ZCv195896; Wed, 9 Sep 2020 06:27:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=YEpZ1XyTfdUWIVWwW3Ff4Nf6q12vIx7sVHOKBnj6u8g=;
+ b=RrZs/nyXQlGRttvQhgHGbvKfOEZGoDCilws/V+4CwBDa44UhPDRAaxyY3jjivUF5MXjG
+ /UTt3JbpYT1z3iOXfBkMc33Sr+MyuWVhywIJ5++70gLu30j1DNFnGFTkYTOsBvbHh+ZN
+ 0wCqUQanHg1LW8vapxWNSBS+1HIuPCcCbB2vPLvrdHu3UbJXE/8r9zioC+W9NHh/C8aU
+ +oHiIpos0DStadvKQ2TywX3i+81CE0v2IS3MUWD/JbzFVMdPjqSGiO1y8eUZndBYtDEm
+ 9PCrsfziZ8+CtnCa06ouY37h/5vB9ImP2vPO2tbvtt/5te/dVS7V2qaIXjfXbyRq2Mp+ Uw== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33evv38y7q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Sep 2020 06:27:07 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 089ADJ3t012978;
+ Wed, 9 Sep 2020 10:27:06 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma03wdc.us.ibm.com with ESMTP id 33cebutt38-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Sep 2020 10:27:06 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 089AR6iG60686618
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 9 Sep 2020 10:27:06 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EF3336E050;
+ Wed,  9 Sep 2020 10:27:05 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E60D6E04E;
+ Wed,  9 Sep 2020 10:27:01 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.93.29])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed,  9 Sep 2020 10:27:00 +0000 (GMT)
+X-Mailer: emacs 27.1 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Matthew Wilcox <willy@infradead.org>, linux-arch@vger.kernel.org
+Subject: Re: Flushing transparent hugepages
+In-Reply-To: <20200818150736.GQ17456@casper.infradead.org>
+References: <20200818150736.GQ17456@casper.infradead.org>
+Date: Wed, 09 Sep 2020 15:56:58 +0530
+Message-ID: <87tuw74559.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200909075849.GA12282@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-09_03:2020-09-08,
+ 2020-09-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=521 adultscore=0
+ mlxscore=0 suspectscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1011 priorityscore=1501 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009090085
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,41 +95,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Will Deacon <will@kernel.org>, Vineet Gupta <vgupta@synopsys.com>,
+ Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, sparclinux@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Matthew Wilcox <willy@infradead.org> writes:
 
+> PowerPC has special handling of hugetlbfs pages.  Well, that's what
+> the config option says, but actually it handles THP as well.  If
+> the config option is enabled.
+>
+> #ifdef CONFIG_HUGETLB_PAGE
+>         if (PageCompound(page)) {
+>                 flush_dcache_icache_hugepage(page);
+>                 return;
+>         }
+> #endif
 
-On 09/09/2020 17:58, Christoph Hellwig wrote:
-> On Tue, Sep 08, 2020 at 11:10:03PM +1000, Alexey Kardashevskiy wrote:
->>>> a-ha, this makes more sense, thanks. Then I guess we need to revert that
->>>> one bit from yours f1565c24b596, do not we?
->>>
->>> Why?  The was the original intent of the API, but now we also use
->>> internally to check the addressing capabilities.
->>
->> The bigger mask the better, no? As it is now, it's limited by the window 
->> size which happens to be bigger than 4GB but smaller then full 64bit (48bit 
->> on my system)
-> 
-> Yes, the bigger mask is better.  But I don't see why you'd want to
-> revert the dma bypass code for that entirely.
-> 
+I do have a change posted sometime back to avoid that confusion.
+http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200320103256.229365-1-aneesh.kumar@linux.ibm.com/
 
-I want dma_get_required_mask() to return the bigger mask always.
+But IIUC we use the head page flags (PG_arch_1) to track whether we need
+the flush or not.
 
-Now it depends on (in dma_alloc_direct()):
-1. dev->dma_ops_bypass: set via pci_set_(coherent_)dma_mask();
-2. dev->coherent_dma_mask - the same;
-3. dev->bus_dma_limit - usually not set at all.
-
-So until we set the mask, dma_get_required_mask() returns smaller mask.
-So aacraid and likes (which calls dma_get_required_mask() before setting
-it) will remain prone for breaks.
-
-
-[forgot to cc: other folks last time, fixed now]
-
--- 
-Alexey
+>
+> By the way, THPs can be mapped askew -- that is, at an offset which
+> means you can't use a PMD to map a PMD sized page.
+>
+> Anyway, we don't really have consensus between the various architectures
+> on how to handle either THPs or hugetlb pages.  It's not contemplated
+> in Documentation/core-api/cachetlb.rst so there's no real surprise
+> we've diverged.
+>
+> What would you _like_ to see?  Would you rather flush_dcache_page()
+> were called once for each subpage, or would you rather maintain
+> the page-needs-flushing state once per compound page?  We could also
+> introduce flush_dcache_thp() if some architectures would prefer it one
+> way and one the other, although that brings into question what to do
+> for hugetlbfs pages.
+>
+> It might not be a bad idea to centralise the handling of all this stuff
+> somewhere.  Sounds like the kind of thing Arnd would like to do ;-) I'll
+> settle for getting enough clear feedback about what the various arch
+> maintainers want that I can write a documentation update for cachetlb.rst.
