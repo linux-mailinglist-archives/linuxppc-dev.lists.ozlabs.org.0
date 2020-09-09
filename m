@@ -2,51 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BD0262509
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 04:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B56F26250B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 04:17:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmQb64VwGzDqBP
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 12:15:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BmQd63BmyzDqKr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 12:16:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=xBu1bvtf; 
+ dkim-atps=neutral
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BmQNm2qh5zDqM0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 12:06:15 +1000 (AEST)
-IronPort-SDR: MakxrcdFunoZz+aGtRvpUhjDGAy0LgV6JjebsJjUWjdDOgMh5KDWxXewSPxuzvarDoV8778L2b
- mjhN6U+AOJmg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9738"; a="219813622"
-X-IronPort-AV: E=Sophos;i="5.76,408,1592895600"; d="scan'208";a="219813622"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2020 19:05:52 -0700
-IronPort-SDR: o8ZR5CRLcqwmsN4r5IaDCucJe2h9aKialljkwRVeiUgtblC55Q9aTrBnO8SO/FQ1W12PhLZoh/
- X0a3tJRILCmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,408,1592895600"; d="scan'208";a="328725566"
-Received: from lkp-server01.sh.intel.com (HELO fc0154cbc871) ([10.239.97.150])
- by fmsmga004.fm.intel.com with ESMTP; 08 Sep 2020 19:05:51 -0700
-Received: from kbuild by fc0154cbc871 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1kFpUd-0000Jf-00; Wed, 09 Sep 2020 02:05:51 +0000
-Date: Wed, 09 Sep 2020 10:05:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 1caa0de62d8cfeb6874fba2a6af5fbe67ebfca70
-Message-ID: <5f583870.K0InkiNtroOYJ7rI%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BmQWH0wzVzDqSH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 12:11:54 +1000 (AEST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+ by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0892AS5c094075;
+ Wed, 9 Sep 2020 02:11:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=vtum29krzlUsLIvRnyVxjLuvhWBtLTr/qnU9AvnGbCE=;
+ b=xBu1bvtfDZ9503xniraz9muXI2Eg0qhYCYcOf6RobuyNUO3o1Po7XLCiySpH1j3NqLzx
+ 2jgXXHktcetcwXVddyuNr8Y2tEFe3S1Fic84p/c7b/8cWZhzNvssHJn72rt+zNyDQI3g
+ W6nGbDQrnBPjzFv3JHhmeBC2Lng7TyLH4twd3n8hvyY34Y8B6srBiufkC1dha4TbTt8U
+ iYM7VJ+79F4uaHjvVJydS3mD7NcVtBky/+GEZFGwxEWNcRrsg0F0s6PbT0Xh+BU3JioS
+ 8YO2a/M76MlnuYxeGIlhqTuBmwNwX5juOavRg+aCtHeGvwObjWNA43YKkCVKSbI3nWmM bw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+ by aserp2120.oracle.com with ESMTP id 33c2mkxvtd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Wed, 09 Sep 2020 02:11:40 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+ by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 089252Ah095301;
+ Wed, 9 Sep 2020 02:09:40 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+ by aserp3020.oracle.com with ESMTP id 33cmk53euj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 09 Sep 2020 02:09:40 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+ by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08929Zlw022818;
+ Wed, 9 Sep 2020 02:09:35 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 08 Sep 2020 19:09:35 -0700
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
+ Joe Perches <joe@perches.com>, oprofile-list@lists.sf.net,
+ linux-fsdevel@vger.kernel.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, drbd-dev@tron.linbit.com,
+ intel-gfx@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-input@vger.kernel.org, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, reiserfs-devel@vger.kernel.org,
+ linux-bcache@vger.kernel.org, Jiri Kosina <trivial@kernel.org>
+Subject: Re: [PATCH 00/29] treewide: Convert comma separated statements
+Date: Tue,  8 Sep 2020 22:09:14 -0400
+Message-Id: <159961731707.5787.13988542229153933257.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <cover.1598331148.git.joe@perches.com>
+References: <cover.1598331148.git.joe@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738
+ signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ malwarescore=0 phishscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009090018
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738
+ signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ priorityscore=1501
+ phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
+ malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009090018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,183 +97,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-scsi@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>,
+ linux-doc@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-kselftest@vger.kernel.org,
+ linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: 1caa0de62d8cfeb6874fba2a6af5fbe67ebfca70  powerpc/64: Make VDSO32 track COMPAT on 64-bit
+On Mon, 24 Aug 2020 21:55:57 -0700, Joe Perches wrote:
 
-elapsed time: 744m
+> There are many comma separated statements in the kernel.
+> See:https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2008201856110.2524@hadrien/
+> 
+> Convert the comma separated statements that are in if/do/while blocks
+> to use braces and semicolons.
+> 
+> Many comma separated statements still exist but those are changes for
+> another day.
+> 
+> [...]
 
-configs tested: 157
-configs skipped: 13
+Applied to 5.10/scsi-queue, thanks!
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+[01/29] coding-style.rst: Avoid comma statements
+        (no commit info)
+[02/29] alpha: Avoid comma separated statements
+        (no commit info)
+[03/29] ia64: Avoid comma separated statements
+        (no commit info)
+[04/29] sparc: Avoid comma separated statements
+        (no commit info)
+[05/29] ata: Avoid comma separated statements
+        (no commit info)
+[06/29] drbd: Avoid comma separated statements
+        (no commit info)
+[07/29] lp: Avoid comma separated statements
+        (no commit info)
+[08/29] dma-buf: Avoid comma separated statements
+        (no commit info)
+[09/29] drm/gma500: Avoid comma separated statements
+        (no commit info)
+[10/29] drm/i915: Avoid comma separated statements
+        (no commit info)
+[11/29] hwmon: (scmi-hwmon): Avoid comma separated statements
+        (no commit info)
+[12/29] Input: MT - Avoid comma separated statements
+        (no commit info)
+[13/29] bcache: Avoid comma separated statements
+        (no commit info)
+[14/29] media: Avoid comma separated statements
+        (no commit info)
+[15/29] mtd: Avoid comma separated statements
+        (no commit info)
+[16/29] 8390: Avoid comma separated statements
+        (no commit info)
+[17/29] fs_enet: Avoid comma separated statements
+        (no commit info)
+[18/29] wan: sbni: Avoid comma separated statements
+        (no commit info)
+[19/29] s390/tty3270: Avoid comma separated statements
+        (no commit info)
+[20/29] scsi: arm: Avoid comma separated statements
+        https://git.kernel.org/mkp/scsi/c/a08a07326510
+[21/29] media: atomisp: Avoid comma separated statements
+        (no commit info)
+[22/29] video: fbdev: Avoid comma separated statements
+        (no commit info)
+[23/29] fuse: Avoid comma separated statements
+        (no commit info)
+[24/29] reiserfs: Avoid comma separated statements
+        (no commit info)
+[25/29] lib/zlib: Avoid comma separated statements
+        (no commit info)
+[26/29] lib: zstd: Avoid comma separated statements
+        (no commit info)
+[27/29] ipv6: fib6: Avoid comma separated statements
+        (no commit info)
+[28/29] sunrpc: Avoid comma separated statements
+        (no commit info)
+[29/29] tools: Avoid comma separated statements
+        (no commit info)
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-parisc                              defconfig
-powerpc                    mvme5100_defconfig
-sh                         microdev_defconfig
-c6x                         dsk6455_defconfig
-powerpc                          allmodconfig
-arm                       omap2plus_defconfig
-powerpc                    adder875_defconfig
-mips                            ar7_defconfig
-arm                           omap1_defconfig
-sh                           se7619_defconfig
-mips                malta_qemu_32r6_defconfig
-powerpc                     ep8248e_defconfig
-xtensa                              defconfig
-arm                          pxa910_defconfig
-arm                        spear3xx_defconfig
-mips                malta_kvm_guest_defconfig
-m68k                        m5407c3_defconfig
-c6x                              allyesconfig
-mips                            gpr_defconfig
-sh                           se7780_defconfig
-powerpc                           allnoconfig
-c6x                        evmc6457_defconfig
-m68k                            q40_defconfig
-sparc                            allyesconfig
-sh                        sh7763rdp_defconfig
-arm                            zeus_defconfig
-sh                           se7705_defconfig
-riscv                    nommu_k210_defconfig
-arm                       spear13xx_defconfig
-arc                     haps_hs_smp_defconfig
-m68k                       m5275evb_defconfig
-h8300                               defconfig
-c6x                        evmc6474_defconfig
-mips                   sb1250_swarm_defconfig
-mips                         tb0287_defconfig
-riscv                            alldefconfig
-m68k                         amcore_defconfig
-arm                           h5000_defconfig
-sh                          lboxre2_defconfig
-arm                            qcom_defconfig
-sh                   sh7724_generic_defconfig
-mips                     loongson1b_defconfig
-parisc                generic-32bit_defconfig
-arm                        spear6xx_defconfig
-ia64                          tiger_defconfig
-microblaze                      mmu_defconfig
-powerpc                     mpc512x_defconfig
-arm                          collie_defconfig
-arm                         hackkit_defconfig
-powerpc                 linkstation_defconfig
-arm                      footbridge_defconfig
-mips                      bmips_stb_defconfig
-arm                             rpc_defconfig
-mips                        nlm_xlr_defconfig
-m68k                        stmark2_defconfig
-h8300                            alldefconfig
-sh                        sh7785lcr_defconfig
-arc                          axs103_defconfig
-xtensa                           allyesconfig
-s390                          debug_defconfig
-c6x                        evmc6678_defconfig
-arm                         shannon_defconfig
-arm                            pleb_defconfig
-arc                          axs101_defconfig
-nios2                            allyesconfig
-sh                        apsh4ad0a_defconfig
-c6x                        evmc6472_defconfig
-riscv                          rv32_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a006-20200907
-x86_64               randconfig-a004-20200907
-x86_64               randconfig-a003-20200907
-x86_64               randconfig-a005-20200907
-x86_64               randconfig-a001-20200907
-x86_64               randconfig-a002-20200907
-i386                 randconfig-a004-20200908
-i386                 randconfig-a005-20200908
-i386                 randconfig-a006-20200908
-i386                 randconfig-a002-20200908
-i386                 randconfig-a001-20200908
-i386                 randconfig-a003-20200908
-i386                 randconfig-a004-20200907
-i386                 randconfig-a005-20200907
-i386                 randconfig-a006-20200907
-i386                 randconfig-a002-20200907
-i386                 randconfig-a003-20200907
-i386                 randconfig-a001-20200907
-x86_64               randconfig-a013-20200908
-x86_64               randconfig-a016-20200908
-x86_64               randconfig-a011-20200908
-x86_64               randconfig-a012-20200908
-x86_64               randconfig-a015-20200908
-x86_64               randconfig-a014-20200908
-i386                 randconfig-a016-20200907
-i386                 randconfig-a015-20200907
-i386                 randconfig-a011-20200907
-i386                 randconfig-a013-20200907
-i386                 randconfig-a014-20200907
-i386                 randconfig-a012-20200907
-i386                 randconfig-a016-20200908
-i386                 randconfig-a015-20200908
-i386                 randconfig-a011-20200908
-i386                 randconfig-a013-20200908
-i386                 randconfig-a014-20200908
-i386                 randconfig-a012-20200908
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                           allyesconfig
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-a004-20200908
-x86_64               randconfig-a006-20200908
-x86_64               randconfig-a003-20200908
-x86_64               randconfig-a001-20200908
-x86_64               randconfig-a005-20200908
-x86_64               randconfig-a002-20200908
-x86_64               randconfig-a013-20200907
-x86_64               randconfig-a011-20200907
-x86_64               randconfig-a016-20200907
-x86_64               randconfig-a012-20200907
-x86_64               randconfig-a015-20200907
-x86_64               randconfig-a014-20200907
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-- 
+Martin K. Petersen	Oracle Linux Engineering
