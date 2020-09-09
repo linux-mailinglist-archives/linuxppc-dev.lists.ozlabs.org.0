@@ -2,55 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368CE26239D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 01:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0EDB2624C9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 04:06:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BmM1H3Q3CzDqSF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 09:34:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BmQPM6HDVzDqTR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Sep 2020 12:06:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BmLzC09YyzDqRW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 09:32:23 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=bQzdy8g6; 
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=gjWo4A9O; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 4BmLzB5tp6z9sTR; Wed,  9 Sep 2020 09:32:22 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BmLzB216gz9sTN;
- Wed,  9 Sep 2020 09:32:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1599607942;
- bh=KGKOesVtPd6PDAQC1tAaZl1z6ab+oEPIGywREwf0LMM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=bQzdy8g6LWmxHQo5c9bWtyivp3pTdGlRwX7kqQVPUQwaQxJIKNnxncEx2iwHjkUep
- BXw62H6f38O1j5q6FMEJ306cL+xWh/dWpdB0G9cTmRKoZZmOP/doVlkkqF+AESbU9f
- +1W6bYGd2AlfKxOxfvYUh5ruAzueYyt9K2hszwKyPUQdWmBu1JlxRN/knYPzYGDt2z
- y00MDpKfKdw43WUpfAT2marJjN4mHFaZCtTBXp3+L9uUjJWNVOMftkJ8IpQCxOuCBE
- 920OCqkNpcoQxKe5UTKvdoltbTwG4QC91zisrFgSTRIzo/HR4QzEu8uMjvsccllIzK
- 1GWCkSDrQqIQA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH] powerpc/64: Make VDSO32 track COMPAT on 64-bit
-In-Reply-To: <f5ca915b-81b5-aa7b-727e-e43681ab825f@csgroup.eu>
-References: <20200908125850.407939-1-mpe@ellerman.id.au>
- <f5ca915b-81b5-aa7b-727e-e43681ab825f@csgroup.eu>
-Date: Wed, 09 Sep 2020 09:32:21 +1000
-Message-ID: <87h7s7sv3u.fsf@mpe.ellerman.id.au>
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BmQM407HLzDq8w
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Sep 2020 12:04:47 +1000 (AEST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08920GpD146724;
+ Wed, 9 Sep 2020 02:04:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=bI725EQwXGyV5rV6Dx/1p9ZvC5gDqSHkDjKs8RyZZcI=;
+ b=gjWo4A9OdkpmR2GgRZ7/WDzHi5WH6OLxxR+kVVkaSoeLdY3LHQetaawlDsEUKImatxYK
+ 3qzOhDFguUcP2+q3t3CxXxJHBRXDry8LxpvtK25pLktHkSkemLZD+l3ftM8fYmUdmURm
+ dPYzlQT0tjr2MtLNqRqcOjh6K5kP5FwePUZVTl8I3Y4oXtVqgBIQla4V/4oty6PZopQm
+ +594hG96mkFC64N9ia8fYB2rhAAKXw/MI1wpxaqPnlVaVF9NWnFcs1eNk3xjah5exAp1
+ QYlM9XIysLNiBx+OnmlJYWtw2YQMSxosjdmAnEcdEWkS9b5oKCzT41TIVXOCNlu7zffW 8A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+ by userp2120.oracle.com with ESMTP id 33c3amxtaw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Wed, 09 Sep 2020 02:04:37 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+ by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08920LeC172607;
+ Wed, 9 Sep 2020 02:04:36 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by userp3030.oracle.com with ESMTP id 33cmkwwanq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 09 Sep 2020 02:04:36 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08924RJu009260;
+ Wed, 9 Sep 2020 02:04:32 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 08 Sep 2020 19:04:25 -0700
+To: Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH v3 1/2] scsi: ibmvfc: use compiler attribute defines
+ instead of __attribute__()
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1a6xz66zs.fsf@ca-mkp.ca.oracle.com>
+References: <20200904232936.840193-1-tyreld@linux.ibm.com>
+Date: Tue, 08 Sep 2020 22:04:23 -0400
+In-Reply-To: <20200904232936.840193-1-tyreld@linux.ibm.com> (Tyrel Datwyler's
+ message of "Fri, 4 Sep 2020 18:29:35 -0500")
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738
+ signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ phishscore=0 suspectscore=1
+ spamscore=0 mlxlogscore=945 adultscore=0 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009090017
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9738
+ signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ priorityscore=1501
+ clxscore=1015 bulkscore=0 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=977 suspectscore=1 adultscore=0 mlxscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009090017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,37 +91,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: msuchanek@suse.de
+Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, james.bottomley@hansenpartnership.com,
+ brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 08/09/2020 =C3=A0 14:58, Michael Ellerman a =C3=A9crit=C2=A0:
->> When we added the VDSO32 kconfig symbol, which controls building of
->> the 32-bit VDSO, we made it depend on CPU_BIG_ENDIAN (for 64-bit).
->>=20
->> That was because back then COMPAT was always enabled for 64-bit, so
->> depending on it would have left the 32-bit VDSO always enabled, which
->> we didn't want.
->>=20
->> But since then we have made COMPAT selectable, and off by default for
->> ppc64le, so VDSO32 should really depend on that.
->>=20
->> For most people this makes no difference, none of the defconfigs
->> change, it's only if someone is building ppc64le with COMPAT=3Dy, they
->> will now also get VDSO32. If they've enabled COMPAT in order to run
->> 32-bit binaries they presumably also want the 32-bit VDSO.
->>=20
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->
->
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->
-> Michael, please note that christophe.leroy@c-s.fr is a deprecated=20
-> address that will one day not work anymore. Please use the new one=20
-> whenever possible.
 
-OK, I had the old one in my ~/.mailrc, fixed now.
+Tyrel,
 
-cheers
+> Update ibmvfc.h structs to use the preferred  __packed and __aligned()
+> attribute macros defined in include/linux/compiler_attributes.h in place
+> of __attribute__().
+
+Applied 1+2 to my 5.10 staging tree. Thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
