@@ -2,69 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035E126460A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 14:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD7B264670
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 14:58:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnJBC5ZsgzDqD5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 22:30:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnJpv533GzDqg6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 22:58:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=207.82.80.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [207.82.80.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnJ6b50G4zDqdr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 22:27:01 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-242-gUIwh0VwNUeXA06T7Iw4zQ-1; Thu, 10 Sep 2020 13:26:54 +0100
-X-MC-Unique: gUIwh0VwNUeXA06T7Iw4zQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 10 Sep 2020 13:26:53 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Thu, 10 Sep 2020 13:26:53 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: David Laight <David.Laight@ACULAB.COM>, 'Christophe Leroy'
- <christophe.leroy@csgroup.eu>, 'Linus Torvalds'
- <torvalds@linux-foundation.org>, Segher Boessenkool
- <segher@kernel.crashing.org>
-Subject: RE: remove the last set_fs() in common code, and remove it for x86
- and powerpc v3
-Thread-Topic: remove the last set_fs() in common code, and remove it for x86
- and powerpc v3
-Thread-Index: AQHWhvDyD2c/lZfV3kC0Ftay5UVebqlhgjnw///zuACAABnIEIAAOoMg
-Date: Thu, 10 Sep 2020 12:26:53 +0000
-Message-ID: <5050b43687c84515a49b345174a98822@AcuMS.aculab.com>
-References: <20200903142242.925828-1-hch@lst.de>
- <20200903142803.GM1236603@ZenIV.linux.org.uk>
- <CAHk-=wgQNyeHxXfckd1WtiYnoDZP1Y_kD-tJKqWSksRoDZT=Aw@mail.gmail.com>
- <20200909184001.GB28786@gate.crashing.org>
- <CAHk-=whu19Du_rZ-zBtGsXAB-Qo7NtoJjQjd-Sa9OB5u1Cq_Zw@mail.gmail.com>
- <3beb8b019e4a4f7b81fdb1bc68bd1e2d@AcuMS.aculab.com>
- <186a62fc-042c-d6ab-e7dc-e61b18945498@csgroup.eu>
- <59a64e9a210847b59f70f9bd2d02b5c3@AcuMS.aculab.com>
-In-Reply-To: <59a64e9a210847b59f70f9bd2d02b5c3@AcuMS.aculab.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
-MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0.001
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnJlV19xlzDqcy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 22:55:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4BnJlT4jccz9sTr; Thu, 10 Sep 2020 22:55:33 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Joel Stanley <joel@jms.id.au>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <1599125247-28488-1-git-send-email-ego@linux.vnet.ibm.com>
+References: <1599125247-28488-1-git-send-email-ego@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2] cpuidle-pseries: Fix CEDE latency conversion from tb
+ to us
+Message-Id: <159974250748.1017939.3766182148722011711.b4-ty@ellerman.id.au>
+Date: Thu, 10 Sep 2020 22:55:33 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,50 +41,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
- the arch/x86 maintainers <x86@kernel.org>, Nick
- Desaulniers <ndesaulniers@google.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>, Luis
- Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alexey Dobriyan <adobriyan@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogRGF2aWQgTGFpZ2h0DQo+IFNlbnQ6IDEwIFNlcHRlbWJlciAyMDIwIDEwOjI2DQouLi4N
-Cj4gPiA+IEkgaGFkIGFuICdpbnRlcmVzdGluZycgaWRlYS4NCj4gPiA+DQo+ID4gPiBDYW4geW91
-IHVzZSBhIGxvY2FsIGFzbSByZWdpc3RlciB2YXJpYWJsZSBhcyBhbiBpbnB1dCBhbmQgb3V0cHV0
-IHRvDQo+ID4gPiBhbiAnYXNtIHZvbGF0aWxlIGdvdG8nIHN0YXRlbWVudD8NCj4gPiA+DQo+ID4g
-PiBXZWxsIHlvdSBjYW4gLSBidXQgaXMgaXQgZ3VhcmFudGVlZCB0byB3b3JrIDotKQ0KPiA+ID4N
-Cj4gPg0KPiA+IFdpdGggZ2NjIGF0IGxlYXN0IGl0IHNob3VsZCB3b3JrIGFjY29yZGluZyB0bw0K
-PiA+IGh0dHBzOi8vZ2NjLmdudS5vcmcvb25saW5lZG9jcy9nY2MvTG9jYWwtUmVnaXN0ZXItVmFy
-aWFibGVzLmh0bWwNCj4gPg0KPiA+IFRoZXkgZXZlbiBleHBsaWNpdGVseSB0ZWxsOiAiVGhlIG9u
-bHkgc3VwcG9ydGVkIHVzZSBmb3IgdGhpcyBmZWF0dXJlIGlzDQo+ID4gdG8gc3BlY2lmeSByZWdp
-c3RlcnMgZm9yIGlucHV0IGFuZCBvdXRwdXQgb3BlcmFuZHMgd2hlbiBjYWxsaW5nIEV4dGVuZGVk
-DQo+ID4gYXNtICINCj4gDQo+IEEgcXVpY2sgdGVzdCBpc24ndCBnb29kLi4uLg0KPiANCj4gaW50
-IGJhcihjaGFyICp6KQ0KPiB7DQo+ICAgICAgICAgX19sYWJlbF9fIGxhYmVsOw0KPiAgICAgICAg
-IHJlZ2lzdGVyIGludCBlYXggYXNtICgiZWF4IikgPSA2Ow0KPiAgICAgICAgIGFzbSB2b2xhdGls
-ZSBnb3RvICgiIG1vdiAkMSwgJSVlYXgiIDo6OiAiZWF4IiA6IGxhYmVsKTsNCj4gbGFiZWw6DQo+
-ICAgICAgICAgcmV0dXJuIGVheDsNCj4gfQ0KPiANCj4gMDAwMDAwMDAwMDAwMDA0MCA8YmFyPjoN
-Cj4gICA0MDogICBiOCAwMSAwMCAwMCAwMCAgICAgICAgICBtb3YgICAgJDB4MSwlZWF4DQo+ICAg
-NDU6ICAgYjggMDYgMDAgMDAgMDAgICAgICAgICAgbW92ICAgICQweDYsJWVheA0KPiAgIDRhOiAg
-IGMzICAgICAgICAgICAgICAgICAgICAgIHJldHENCj4gDQo+IGFsdGhvdWdoIGFkZGluZzoNCj4g
-ICAgICAgICBhc20gdm9sYXRpbGUgKCIiIDogIityIiAoZWF4KSk7DQo+IGVpdGhlciBzaWRlIG9m
-IHRoZSAnYXNtIHZvbGF0aWxlIGdvdG8nIGRvZXMgZml4IGl0Lg0KDQpBY3R1YWxseSB0aGlzIGlz
-IHByZXR0eSBzb3VuZDoNCglfX2xhYmVsX18gbGFiZWw7DQoJcmVnaXN0ZXIgaW50IGVheCBhc20g
-KCJlYXgiKTsNCgkvLyBFbnN1cmUgZWF4IGNhbid0IGJlIHJlbG9hZGVkIGZyb20gYW55d2hlcmUN
-CgkvLyBJbiBwYXJ0aWN1bGFyIGl0IGNhbid0IGJlIHJlbG9hZGVkIGFmdGVyIHRoZSBhc20gZ290
-byBsaW5lDQoJYXNtIHZvbGF0aWxlICgiIiA6ICI9ciIgKGVheCkpOw0KCS8vIFByb3ZpZGVkIGdj
-YyBkb2Vzbid0IHNhdmUgZWF4IGhlcmUuLi4NCglhc20gdm9sYXRpbGUgZ290byAoInh4eHh4IiA6
-OjogImVheCIgOiBsYWJlbCk7DQoJLy8gLi4uIGFuZCByZWxvYWQgdGhlIHNhdmVkIHZhbHVlIGhl
-cmUuDQoJLy8gVGhlIGlucHV0IHZhbHVlIGhlcmUgd2lsbCBiZSB0aGF0IG1vZGlmaWVkIGJ5IHRo
-ZSAnYXNtIGdvdG8nLg0KCS8vIFNpbmNlIHRoaXMgbW9kaWZpZXMgZWF4IGl0IGNhbid0IGJlIG1v
-dmVkIGJlZm9yZSB0aGUgJ2FzbSBnb3RvJy4NCglhc20gdm9sYXRpbGUgKCIiIDogIityIiAoZWF4
-KSk7DQoJLy8gU28gaGVyZSBlYXggbXVzdCBjb250YWluIHRoZSB2YWx1ZSBzZXQgYnkgdGhlICJ4
-eHh4eCIgaW5zdHJ1Y3Rpb25zLg0KDQogICAgRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNz
-IExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAx
-UFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+On Thu, 3 Sep 2020 14:57:27 +0530, Gautham R. Shenoy wrote:
+> commit d947fb4c965c ("cpuidle: pseries: Fixup exit latency for
+> CEDE(0)") sets the exit latency of CEDE(0) based on the latency values
+> of the Extended CEDE states advertised by the platform. The values
+> advertised by the platform are in timebase ticks. However the cpuidle
+> framework requires the latency values in microseconds.
+> 
+> If the tb-ticks value advertised by the platform correspond to a value
+> smaller than 1us, during the conversion from tb-ticks to microseconds,
+> in the current code, the result becomes zero. This is incorrect as it
+> puts a CEDE state on par with the snooze state.
+> 
+> [...]
 
+Applied to powerpc/fixes.
+
+[1/1] cpuidle: pseries: Fix CEDE latency conversion from tb to us
+      https://git.kernel.org/powerpc/c/1d3ee7df009a46440c58508b8819213c09503acd
+
+cheers
