@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D27263CD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 07:56:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBED263CDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 07:58:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bn7SF1flFzDqZB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 15:56:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bn7V54MGwzDqDN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 15:58:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FOLm7Qgh; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=gTpU1bEX; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bn7Cr3BQZzDqYj
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bn7Cr3qSrzDqZF
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 15:46:00 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id b124so3957512pfg.13
+Received: by mail-pg1-x542.google.com with SMTP id u13so3658805pgh.1
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Sep 2020 22:46:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=3vRj4Moc96wsSoUNAszrNT/KuRF0z5gpUdqr1Keyhf4=;
- b=FOLm7QghhDbDcS0CSXPw6YHPOY7wyq53G6p3wBNKxfor88Z+1/mQCqiXS69sBzwO5e
- kQvvsk2oBVyLs24qZ6vL+aSq8rn8kBHzs3Ah4VkunmCrnU95BHC1uxlrRTF6FbK5VX6y
- TmBHakT6IwRP7Jm8rPI/sh9yrAcFBYbFVaGFm+zUaguVxeSR1QgKmoZbXT2i7Ibwn+3L
- +oRfAuolFh5w/DLBfTgYWCW75sxnU6PjV38Qimj11w/Meu5NHLaNllpVKNbjDnPJm32H
- kAMCS16HmSxnJOzf4XlKy5sS6Ji/Dptho3b25q5jd0OERtMHgh1ysXR0wH6QYEQRvGKu
- GYrg==
+ bh=jlZZ9WIzffYJqqW5m/7iFT1/yI4XkdcSDIdoDJxuEhA=;
+ b=gTpU1bEXTDJ+IgAIQZccyI6JC1w9aqEZkPLeOv8/eDhPr8PGFuQinqZEIQJ7ztY6Hm
+ 1L9xxrLLprGZtfFT9T0+SiHIvb8zrNr/5zAR73cwOg3AaMSFF5fpHSq39JGfILvUekOb
+ jY1mx5PIjug1aS03OwNLwBrLrfyJcc07ObjGFi6RRxneGhFBO8CH8rvIQO3/AsCgpiiP
+ d/t5xa5L+/tOqxzD1WGRGSnLloxIWsvAbbP30pgtcGhgEVLQK722WG/Q8iiE7shrReB2
+ iuu5B2iMHtTTtbHGZiJ11aQoJAJnmn0zq9Hw0NCJRIXEmHcZWs01n05rcLk/H0MOL6aQ
+ XwPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=3vRj4Moc96wsSoUNAszrNT/KuRF0z5gpUdqr1Keyhf4=;
- b=DvLhmwWQH/jos00IyvafDuTKBUkiq2mF/xSuS3nG0H4vjVmtutmNcoLGSv6IW3JYhb
- yvphn/DYQpS6O+uZUhvwb5GJvBHxZG9pAecI4H7GYzFMAgs/nA073EaWFsibPzxvV9aW
- coVemr6D3LwWj/gxTHZkfGgJ81xpDstWBsiRG8C9eHRhSRku8QVLWgxkA+z4sCQshEpi
- 6k8nkbVssOg0xwuMHP57FMrZFNA0At3Wfly9uJH3I9+lKpOjCBn7RfxFo90Rvz9oAiog
- 8I49WE/0GiaNozuW+CPBQGM74e9KswS8Y/k0JiRQg+UFGNHVDIgb+NlzeutEhvBq8e7u
- /J0w==
-X-Gm-Message-State: AOAM531eNKTn85REPsmB0y/9ZtEIYnEmmQwqDX9g8mJ45PnUFsKUtC4b
- plknPMtJmCzJESbAUbeVyh5ORYKLVL7hog==
-X-Google-Smtp-Source: ABdhPJzvP5psF0sronWLjDvHRqLjw78sJzfK/8lp7FkZQqzD4IJe64LH18YNwRA3H7TXzNTDWV4OyA==
-X-Received: by 2002:a62:838a:: with SMTP id h132mr3817815pfe.72.1599716756178; 
- Wed, 09 Sep 2020 22:45:56 -0700 (PDT)
+ bh=jlZZ9WIzffYJqqW5m/7iFT1/yI4XkdcSDIdoDJxuEhA=;
+ b=VGNd9fUv6gtWI/6FmHLXPWO7l+keLI3sLG9E3fCtwHXXwta/n29tInvpcNXMtyHstz
+ a6j3fUWYtOrl33R7I/KdW3JJvmwiSL+UehD/XfGgqboKiGGPl/hxCU1yYJp5ELig8EJ6
+ y3Bob54ssc7l9RjPGuI5xW1gTYFbDw3dYywRAWO/Bvj7PJXJQgYFhZlotQLEKGo6k0T8
+ b6vUoZ5+bPCIRo4j7+fLgl17OC2H3cRvBJNK28axRnSDDAOGvO8GCAIzZ17e3iNRnai3
+ iTpKMiZ1ogdAoB4FHTNbXHgDjwmx548rpMkTxIV9F5CbmOmlFODs0T00G083O3i0breW
+ Mseg==
+X-Gm-Message-State: AOAM530S2BRoW+j4a0lI1uD3bTRlDwODUPVx/pNcgE9SDtrMvvRQOTAR
+ G6AIg/bTOKjGJ7V8ByuEa4PoxmAghoqFvQ==
+X-Google-Smtp-Source: ABdhPJzBL0L42w9IuqfY+TCQpWPQs9/TT/t3uCaRNSMtxgMqF0DCJuJP3y/XrgyvdR3nlV3S1PIDzg==
+X-Received: by 2002:a62:4e89:0:b029:13e:d13d:a132 with SMTP id
+ c131-20020a624e890000b029013ed13da132mr3779711pfb.26.1599716758177; 
+ Wed, 09 Sep 2020 22:45:58 -0700 (PDT)
 Received: from localhost.ibm.com (194-193-34-182.tpgi.com.au. [194.193.34.182])
- by smtp.gmail.com with ESMTPSA id o30sm3960374pgc.45.2020.09.09.22.45.54
+ by smtp.gmail.com with ESMTPSA id o30sm3960374pgc.45.2020.09.09.22.45.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Sep 2020 22:45:55 -0700 (PDT)
+ Wed, 09 Sep 2020 22:45:57 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 5/9] powerpc/eeh: Move EEH initialisation to an arch initcall
-Date: Thu, 10 Sep 2020 15:45:28 +1000
-Message-Id: <20200910054532.2043724-6-oohall@gmail.com>
+Subject: [PATCH 6/9] powerpc/pseries/eeh: Clean up pe_config_addr lookups
+Date: Thu, 10 Sep 2020 15:45:29 +1000
+Message-Id: <20200910054532.2043724-7-oohall@gmail.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200910054532.2043724-1-oohall@gmail.com>
 References: <20200910054532.2043724-1-oohall@gmail.com>
@@ -83,144 +84,154 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The initialisation of EEH mostly happens in a core_initcall_sync initcall,
-followed by registering a bus notifier later on in an arch_initcall.
-Anything involving initcall dependecies is mostly incomprehensible unless
-you've spent a while staring at code so here's the full sequence:
-
-ppc_md.setup_arch       <-- pci_controllers are created here
-
-...time passes...
-
-core_initcall           <-- pci_dns are created from DT nodes
-core_initcall_sync      <-- platforms call eeh_init()
-postcore_initcall       <-- PCI bus type is registered
-postcore_initcall_sync
-arch_initcall           <-- EEH pci_bus notifier registered
-subsys_initcall         <-- PHBs are scanned here
-
-There's no real requirement to do the EEH setup at the core_initcall_sync
-level. It just needs to be done after pci_dn's are created and before we
-start scanning PHBs. Simplify the flow a bit by moving the platform EEH
-inititalisation to an arch_initcall so we can fold the bus notifier
-registration into eeh_init().
+De-duplicate, and fix up the comments, and make the prototype just take a
+pci_dn since the job of the function is to return the pe_config_addr of the
+PE which contains a given device.
 
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/kernel/eeh.c                    | 64 ++++++++++----------
- arch/powerpc/platforms/powernv/eeh-powernv.c |  2 +-
- arch/powerpc/platforms/pseries/eeh_pseries.c |  2 +-
- 3 files changed, 34 insertions(+), 34 deletions(-)
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 80 +++-----------------
+ 1 file changed, 11 insertions(+), 69 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 98faf139e676..c9e25cfce8f0 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -940,6 +940,30 @@ static struct notifier_block eeh_reboot_nb = {
- 	.notifier_call = eeh_reboot_notifier,
- };
- 
-+static int eeh_device_notifier(struct notifier_block *nb,
-+			       unsigned long action, void *data)
-+{
-+	struct device *dev = data;
-+
-+	switch (action) {
-+	/*
-+	 * Note: It's not possible to perform EEH device addition (i.e.
-+	 * {pseries,pnv}_pcibios_bus_add_device()) here because it depends on
-+	 * the device's resources, which have not yet been set up.
-+	 */
-+	case BUS_NOTIFY_DEL_DEVICE:
-+		eeh_remove_device(to_pci_dev(dev));
-+		break;
-+	default:
-+		break;
-+	}
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block eeh_device_nb = {
-+	.notifier_call = eeh_device_notifier,
-+};
-+
- /**
-  * eeh_init - System wide EEH initialization
-  *
-@@ -960,7 +984,14 @@ int eeh_init(struct eeh_ops *ops)
- 	/* Register reboot notifier */
- 	ret = register_reboot_notifier(&eeh_reboot_nb);
- 	if (ret) {
--		pr_warn("%s: Failed to register notifier (%d)\n",
-+		pr_warn("%s: Failed to register reboot notifier (%d)\n",
-+			__func__, ret);
-+		return ret;
-+	}
-+
-+	ret = bus_register_notifier(&pci_bus_type, &eeh_device_nb);
-+	if (ret) {
-+		pr_warn("%s: Failed to register bus notifier (%d)\n",
- 			__func__, ret);
- 		return ret;
- 	}
-@@ -975,37 +1006,6 @@ int eeh_init(struct eeh_ops *ops)
- 	return eeh_event_init();
- }
- 
--static int eeh_device_notifier(struct notifier_block *nb,
--			       unsigned long action, void *data)
--{
--	struct device *dev = data;
--
--	switch (action) {
--	/*
--	 * Note: It's not possible to perform EEH device addition (i.e.
--	 * {pseries,pnv}_pcibios_bus_add_device()) here because it depends on
--	 * the device's resources, which have not yet been set up.
--	 */
--	case BUS_NOTIFY_DEL_DEVICE:
--		eeh_remove_device(to_pci_dev(dev));
--		break;
--	default:
--		break;
--	}
--	return NOTIFY_DONE;
--}
--
--static struct notifier_block eeh_device_nb = {
--	.notifier_call = eeh_device_notifier,
--};
--
--static __init int eeh_set_bus_notifier(void)
--{
--	bus_register_notifier(&pci_bus_type, &eeh_device_nb);
--	return 0;
--}
--arch_initcall(eeh_set_bus_notifier);
--
- /**
-  * eeh_probe_device() - Perform EEH initialization for the indicated pci device
-  * @dev: pci device for which to set up EEH
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index 03e566874595..d03c5873defc 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -1721,4 +1721,4 @@ static int __init eeh_powernv_init(void)
- 
- 	return ret;
- }
--machine_core_initcall_sync(powernv, eeh_powernv_init);
-+machine_arch_initcall(powernv, eeh_powernv_init);
 diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-index fd3444428632..b1561961c7ff 100644
+index b1561961c7ff..10303de3d8d5 100644
 --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
 +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-@@ -989,4 +989,4 @@ static int __init eeh_pseries_init(void)
- 			ret);
+@@ -33,8 +33,6 @@
+ #include <asm/ppc-pci.h>
+ #include <asm/rtas.h>
+ 
+-static int pseries_eeh_get_pe_addr(struct pci_dn *pdn);
+-
+ /* RTAS tokens */
+ static int ibm_set_eeh_option;
+ static int ibm_set_slot_reset;
+@@ -86,7 +84,8 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
+ 
+ 
+ /**
+- * pseries_eeh_get_config_addr - Retrieve config address
++ * pseries_eeh_get_pe_config_addr - Find the pe_config_addr for a device
++ * @pdn: pci_dn of the input device
+  *
+  * Retrieve the assocated config address. Actually, there're 2 RTAS
+  * function calls dedicated for the purpose. We need implement
+@@ -97,16 +96,17 @@ void pseries_pcibios_bus_add_device(struct pci_dev *pdev)
+  * It's notable that zero'ed return value means invalid PE config
+  * address.
+  */
+-static int pseries_eeh_get_config_addr(struct pci_controller *phb, int config_addr)
++static int pseries_eeh_get_pe_config_addr(struct pci_dn *pdn)
+ {
++	int config_addr = rtas_config_addr(pdn->busno, pdn->devfn, 0);
++	struct pci_controller *phb = pdn->phb;
+ 	int ret = 0;
+ 	int rets[3];
+ 
+ 	if (ibm_get_config_addr_info2 != RTAS_UNKNOWN_SERVICE) {
+ 		/*
+-		 * First of all, we need to make sure there has one PE
+-		 * associated with the device. Otherwise, PE address is
+-		 * meaningless.
++		 * First of all, use function 1 to determine if this device is
++		 * part of a PE or not. ret[0] being zero indicates it's not.
+ 		 */
+ 		ret = rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
+ 				config_addr, BUID_HI(phb->buid),
+@@ -431,7 +431,7 @@ void pseries_eeh_init_edev(struct pci_dn *pdn)
+ 		struct eeh_pe *parent;
+ 
+ 		/* Retrieve PE address */
+-		edev->pe_config_addr = pseries_eeh_get_pe_addr(pdn);
++		edev->pe_config_addr = pseries_eeh_get_pe_config_addr(pdn);
+ 		pe.addr = edev->pe_config_addr;
+ 
+ 		/* Some older systems (Power4) allow the ibm,set-eeh-option
+@@ -551,64 +551,6 @@ static int pseries_eeh_set_option(struct eeh_pe *pe, int option)
  	return ret;
  }
--machine_core_initcall_sync(pseries, eeh_pseries_init);
-+machine_arch_initcall(pseries, eeh_pseries_init);
+ 
+-/**
+- * pseries_eeh_get_pe_addr - Retrieve PE address
+- * @pe: EEH PE
+- *
+- * Retrieve the assocated PE address. Actually, there're 2 RTAS
+- * function calls dedicated for the purpose. We need implement
+- * it through the new function and then the old one. Besides,
+- * you should make sure the config address is figured out from
+- * FDT node before calling the function.
+- *
+- * It's notable that zero'ed return value means invalid PE config
+- * address.
+- */
+-static int pseries_eeh_get_pe_addr(struct pci_dn *pdn)
+-{
+-	int config_addr = rtas_config_addr(pdn->busno, pdn->devfn, 0);
+-	unsigned long buid = pdn->phb->buid;
+-	int ret = 0;
+-	int rets[3];
+-
+-	if (ibm_get_config_addr_info2 != RTAS_UNKNOWN_SERVICE) {
+-		/*
+-		 * First of all, we need to make sure there has one PE
+-		 * associated with the device. Otherwise, PE address is
+-		 * meaningless.
+-		 */
+-		ret = rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
+-				config_addr, BUID_HI(buid), BUID_LO(buid), 1);
+-		if (ret || (rets[0] == 0))
+-			return 0;
+-
+-		/* Retrieve the associated PE config address */
+-		ret = rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
+-				config_addr, BUID_HI(buid), BUID_LO(buid), 0);
+-		if (ret) {
+-			pr_warn("%s: Failed to get address for PHB#%x-PE#%x\n",
+-				__func__, pdn->phb->global_number, config_addr);
+-			return 0;
+-		}
+-
+-		return rets[0];
+-	}
+-
+-	if (ibm_get_config_addr_info != RTAS_UNKNOWN_SERVICE) {
+-		ret = rtas_call(ibm_get_config_addr_info, 4, 2, rets,
+-				config_addr, BUID_HI(buid), BUID_LO(buid), 0);
+-		if (ret) {
+-			pr_warn("%s: Failed to get address for PHB#%x-PE#%x\n",
+-				__func__, pdn->phb->global_number, config_addr);
+-			return 0;
+-		}
+-
+-		return rets[0];
+-	}
+-
+-	return ret;
+-}
+-
+ /**
+  * pseries_eeh_get_state - Retrieve PE state
+  * @pe: EEH PE
+@@ -911,7 +853,7 @@ static int __init eeh_pseries_init(void)
+ {
+ 	struct pci_controller *phb;
+ 	struct pci_dn *pdn;
+-	int ret, addr, config_addr;
++	int ret, config_addr;
+ 
+ 	/* figure out EEH RTAS function call tokens */
+ 	ibm_set_eeh_option		= rtas_token("ibm,set-eeh-option");
+@@ -969,8 +911,8 @@ static int __init eeh_pseries_init(void)
+ 		pr_info("Issue PHB reset ...\n");
+ 		list_for_each_entry(phb, &hose_list, list_node) {
+ 			pdn = list_first_entry(&PCI_DN(phb->dn)->child_list, struct pci_dn, list);
+-			addr = (pdn->busno << 16) | (pdn->devfn << 8);
+-			config_addr = pseries_eeh_get_config_addr(phb, addr);
++			config_addr = pseries_eeh_get_pe_config_addr(pdn);
++
+ 			/* invalid PE config addr */
+ 			if (config_addr == 0)
+ 				continue;
 -- 
 2.26.2
 
