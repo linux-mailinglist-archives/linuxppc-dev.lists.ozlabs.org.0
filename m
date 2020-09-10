@@ -2,77 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220742654F5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 00:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807B1265577
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 01:23:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnYH10qrszDqkW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 08:20:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnZgQ642bzDqjT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 09:22:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
- helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::f44;
+ helo=mail-qv1-xf44.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.a=rsa-sha256
- header.s=n1 header.b=pf7Gb/6Y; dkim-atps=neutral
-Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
- [216.228.121.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
+ header.s=google header.b=ek3aEVh6; dkim-atps=neutral
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com
+ [IPv6:2607:f8b0:4864:20::f44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnYDd1b1HzDqgp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 08:18:08 +1000 (AEST)
-Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5f5aa60d0000>; Thu, 10 Sep 2020 15:17:49 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate102.nvidia.com (PGP Universal service);
- Thu, 10 Sep 2020 15:18:02 -0700
-X-PGP-Universal: processed;
- by hqpgpgate102.nvidia.com on Thu, 10 Sep 2020 15:18:02 -0700
-Received: from [10.2.54.52] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 10 Sep
- 2020 22:17:55 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnZdR5zvRzDqfj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 09:21:13 +1000 (AEST)
+Received: by mail-qv1-xf44.google.com with SMTP id cv8so4228986qvb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 16:21:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=fIHL0Rq33O5ozDdBNb92cfl0GBqGdNKvR/YdlpxGcAc=;
+ b=ek3aEVh6EDZv0MY4CyKrIOtcGg9hcQrcK0LNTKZQKq5D36Q4OOful56d1fLsdvbySj
+ gIxGsvrf3KCS0cBe2Cddj6sjM6xxgr+gzrdl7qNDkNuApsUa7CiM5w7gHpJiiyXmHOM7
+ z0Fmkdon1hMn3l1idV0bhKgpCa6PUJSq4CW7y6g23Ml8DO+r/mDIQI9+zVDERUCtr5L5
+ WJuVfXkINtgWDQegahH+XHGH+cQJScV2EOHwfsx92Xl2/qRCRlsZDeCmHgB5ogwUgrhe
+ yUNj2pRXsNm4WiFcUh2LoLVRUAZ5EBB0j8EQP9F4uwiM1oP8TqSobCs8onyBplaZNq9X
+ j4og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=fIHL0Rq33O5ozDdBNb92cfl0GBqGdNKvR/YdlpxGcAc=;
+ b=OwlnJld0GEgJ5hCG3Y2P6WoaGAFCaQRBXVR6DKs+tPeiMxp7hXBYrVnn4qDfLYqnf8
+ GloV4c5ZKGKFRo/y+qOVs/t/eEuuFSwPqMvNGqKi0OCqJif2pWAbpHEPBFL3eermTI5K
+ X2ABJffmgsrRDvkB+8YB0619qSnMLVkam/K2C9ib9HwpYMM8nyf4YferoSaRzYaAb1Pi
+ YpKholyhoybmyfKP/29ygHqahpg67x34DXDsdV+GkZB5wuuE6XOwOGO4RGKvKOqG6bW9
+ cMlPx9FqQvS7trSHbqNQtIaUc3PheXq/5YE0eyBk549kbJ75D/35IDBttVS+SXHQQAAL
+ TrfQ==
+X-Gm-Message-State: AOAM5311yDX7QcspnP7BK+qrpk6hhEGOzeGlrL4EzvD9f7yUrTWgIfb0
+ m3KKv/8TGPZD8sVvmlmYg/Fl5w==
+X-Google-Smtp-Source: ABdhPJwWb13ftCj9Nx7W+uTucDyXl8x3WeSQXroWv7fkEgHTFAhsxe/mYAzhjXYKGK+4OJt2xnAqTg==
+X-Received: by 2002:a05:6214:954:: with SMTP id
+ dn20mr10867015qvb.122.1599780068776; 
+ Thu, 10 Sep 2020 16:21:08 -0700 (PDT)
+Received: from ziepe.ca
+ (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net.
+ [156.34.48.30])
+ by smtp.gmail.com with ESMTPSA id m36sm289969qtd.10.2020.09.10.16.21.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Sep 2020 16:21:07 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.94) (envelope-from <jgg@ziepe.ca>)
+ id 1kGVsI-004SPL-RD; Thu, 10 Sep 2020 20:21:06 -0300
+Date: Thu, 10 Sep 2020 20:21:06 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
  folding
-To: Jason Gunthorpe <jgg@ziepe.ca>
-References: <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
+Message-ID: <20200910232106.GR87483@ziepe.ca>
+References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+ <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
  <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
  <20200909142904.00b72921@thinkpad>
  <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad> <20200909180324.GI87483@ziepe.ca>
+ <20200909192534.442f8984@thinkpad>
+ <20200909180324.GI87483@ziepe.ca>
  <20200910093925.GB29166@oc3871087118.ibm.com>
- <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
- <20200910181319.GO87483@ziepe.ca>
- <0c9bcb54-914b-e582-dd6d-3861267b6c94@nvidia.com>
- <20200910221116.GQ87483@ziepe.ca>
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <7188221f-37db-9792-4885-d2fa14ff894d@nvidia.com>
-Date: Thu, 10 Sep 2020 15:17:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ <20200910130233.GK87483@ziepe.ca>
+ <20200910195749.795232d1@thinkpad>
 MIME-Version: 1.0
-In-Reply-To: <20200910221116.GQ87483@ziepe.ca>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1599776269; bh=iwRoz1y5O8TbYdNUszhiA+vAQr7U9YxF7ekZoQ5W1Yk=;
- h=X-PGP-Universal:Subject:To:CC:References:From:Message-ID:Date:
- User-Agent:MIME-Version:In-Reply-To:X-Originating-IP:
- X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=pf7Gb/6YBDTqOCEDJuZ+rf4BfPFTGAk8OcLbOb7K+v6FIaG9RzNB0J3T6fe9quopL
- Z+ZPOoYzy+CPdC8eNfwxG52K013+7dFLb6XoB+71dt5jaaUjgW3/Yd+Qa0g/akV9fA
- tQooYBDWtKesVkRQCkYEkicElTFs+3GtpIu0ue7DQtpJI1f7AfE94uKLP6KsjC8rjc
- gBnPKFdEZZjBDt9zvqWyzMyouKLws8HP3qsfGIVfi7dffxmHX6EBFD/EhSz445AfW2
- xdXCwOn/c+CRugCswXB9NnGL9VhGOiW9DFF76qT//6Pd4taPGNhkyd7b8sw4GeB8yW
- gUNk5AGewIISQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200910195749.795232d1@thinkpad>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,9 +103,8 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
  Russell King <linux@armlinux.org.uk>,
  Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
  Catalin Marinas <catalin.marinas@arm.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko
- Carstens <hca@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>,
  Jeff Dike <jdike@addtoit.com>, linux-um <linux-um@lists.infradead.org>,
  Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>,
@@ -110,44 +117,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/10/20 3:11 PM, Jason Gunthorpe wrote:
-> On Thu, Sep 10, 2020 at 02:22:37PM -0700, John Hubbard wrote:
+On Thu, Sep 10, 2020 at 07:57:49PM +0200, Gerald Schaefer wrote:
+> On Thu, 10 Sep 2020 10:02:33 -0300
+> Jason Gunthorpe <jgg@ziepe.ca> wrote:
 > 
->> Or am I way off here, and it really is possible (aside from the current
->> s390 situation) to observe something that "is no longer a page table"?
+> > On Thu, Sep 10, 2020 at 11:39:25AM +0200, Alexander Gordeev wrote:
+> > 
+> > > As Gerald mentioned, it is very difficult to explain in a clear way.
+> > > Hopefully, one could make sense ot of it.
+> > 
+> > I would say the page table API requires this invariant:
+> > 
+> >         pud = pud_offset(p4d, addr);
+> >         do {
+> > 		WARN_ON(pud != pud_offset(p4d, addr);
+> >                 next = pud_addr_end(addr, end);
+> >         } while (pud++, addr = next, addr != end);
+> > 
+> > ie pud++ is supposed to be a shortcut for 
+> >   pud_offset(p4d, next)
+> > 
 > 
-> Yes, that is the issue. Remember there is no locking for GUP
-> fast. While a page table cannot be freed there is nothing preventing
-> the page table entry from being concurrently modified.
-> 
+> Hmm, IIUC, all architectures with static folding will simply return
+> the passed-in p4d pointer for pud_offset(p4d, addr), for 3-level
+> pagetables.
 
-OK, then we are saying the same thing after all, good.
+It is probably moot now, but since other arch's don't crash they also
+return pud_addr_end() == end so the loop only does one iteration.
 
-> Without the stack variable it looks like this:
-> 
->         pud_t pud = READ_ONCE(*pudp);
->         if (!pud_present(pud))
->              return
->         pmd_offset(pudp, address);
-> 
-> And pmd_offset() expands to
-> 
->      return (pmd_t *)pud_page_vaddr(*pud) + pmd_index(address);
-> 
-> Between the READ_ONCE(*pudp) and (*pud) inside pmd_offset() the value
-> of *pud can change, eg to !pud_present.
-> 
-> Then pud_page_vaddr(*pud) will crash. It is not use after free, it
-> is using data that has not been validated.
-> 
+ie pud == pud_offset(p4d, addr) for all iterations as the pud++ never
+happens.
 
-Right, that matches what I had in mind, too: you can still have a problem
-even though you're in the same page table. I just wanted to confirm that
-there's not some odd way to launch out into completely non-page-table
-memory.
+Which is what this addr_end patch does for s390..
 
-
-thanks,
--- 
-John Hubbard
-NVIDIA
+Jason
