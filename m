@@ -2,52 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57AD263EE4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 09:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD77D263F4A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 10:06:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bn9nw39fFzDqcm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 17:42:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnBL86X8RzDqcv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 18:06:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bn9ky6VR4zDqcl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 17:39:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=TtYadyhT; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bn9ky1h0kz9sTN;
- Thu, 10 Sep 2020 17:39:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1599723578;
- bh=nKPtyqBT+cZzuIl7eAPaflm+WURPjkTyEz/nF4q7arA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=TtYadyhT2SJrSAOl0AhRMAFcK6CaZ92+a8yreYgJt4cnL3hhdTSze26qDdsHw1lUM
- mAEw3GXMC52YYM3zl06NtAajfT06fEvLe0lWJ1/Jvno66P2Hws+Cg/K5wsJTAHfQB6
- +fX1bfLDoTkS04gIkKQyTROXav+vRp23BwhXsgn1ywDt79AL4uQ2LdKsu/p0Y9R3Jp
- ZoR5pp8dEpw4pkAkpJ+VPeTfXcte37LAmbxWupXX2q7lhl00dIEpW7TvmJekZbQQMm
- Y+jewt4dwbEYqUzIJFizX1D87McyOLDdDXz418G+qodP/vAXEoxfJNN8n8zHN+icW+
- 3Cc2XoHmjUzUQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>
-Subject: Re: [PATCH v2] powerpc: Warn about use of smt_snooze_delay
-In-Reply-To: <159965716554.808686.4840855488904790852.b4-ty@ellerman.id.au>
-References: <20200630015935.2675676-1-joel@jms.id.au>
- <159965716554.808686.4840855488904790852.b4-ty@ellerman.id.au>
-Date: Thu, 10 Sep 2020 17:39:37 +1000
-Message-ID: <874ko6rsg6.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnBHd5qwJzDqc7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 18:04:26 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-237-7fX8YZt7N6qAR3EaMh4m2w-1; Thu, 10 Sep 2020 09:04:19 +0100
+X-MC-Unique: 7fX8YZt7N6qAR3EaMh4m2w-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 10 Sep 2020 09:04:19 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Thu, 10 Sep 2020 09:04:19 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Linus Torvalds' <torvalds@linux-foundation.org>, Segher Boessenkool
+ <segher@kernel.crashing.org>
+Subject: RE: remove the last set_fs() in common code, and remove it for x86
+ and powerpc v3
+Thread-Topic: remove the last set_fs() in common code, and remove it for x86
+ and powerpc v3
+Thread-Index: AQHWhvDyD2c/lZfV3kC0Ftay5UVebqlhgjnw
+Date: Thu, 10 Sep 2020 08:04:19 +0000
+Message-ID: <3beb8b019e4a4f7b81fdb1bc68bd1e2d@AcuMS.aculab.com>
+References: <20200903142242.925828-1-hch@lst.de>
+ <20200903142803.GM1236603@ZenIV.linux.org.uk>
+ <CAHk-=wgQNyeHxXfckd1WtiYnoDZP1Y_kD-tJKqWSksRoDZT=Aw@mail.gmail.com>
+ <20200909184001.GB28786@gate.crashing.org>
+ <CAHk-=whu19Du_rZ-zBtGsXAB-Qo7NtoJjQjd-Sa9OB5u1Cq_Zw@mail.gmail.com>
+In-Reply-To: <CAHk-=whu19Du_rZ-zBtGsXAB-Qo7NtoJjQjd-Sa9OB5u1Cq_Zw@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0.001
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,34 +71,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Linux
+ Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>, Luis Chamberlain <mcgrof@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alexey Dobriyan <adobriyan@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <patch-notifications@ellerman.id.au> writes:
-> On Tue, 30 Jun 2020 11:29:35 +0930, Joel Stanley wrote:
->> It's not done anything for a long time. Save the percpu variable, and
->> emit a warning to remind users to not expect it to do anything.
->> 
->> Fixes: 3fa8cad82b94 ("powerpc/pseries/cpuidle: smt-snooze-delay cleanup.")
->> Cc: stable@vger.kernel.org # v3.14
->> Signed-off-by: Joel Stanley <joel@jms.id.au>
->> --
->> v2:
->>  Use pr_warn instead of WARN
->>  Reword and print proccess name with pid in message
->>  Leave CPU_FTR_SMT test in
->>  Add Fixes line
->> 
->> [...]
->
-> Applied to powerpc/next.
->
-> [1/1] powerpc: Warn about use of smt_snooze_delay
->       https://git.kernel.org/powerpc/c/a02f6d42357acf6e5de6ffc728e6e77faf3ad217
+RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMDkgU2VwdGVtYmVyIDIwMjAgMjI6MzQNCj4g
+T24gV2VkLCBTZXAgOSwgMjAyMCBhdCAxMTo0MiBBTSBTZWdoZXIgQm9lc3Nlbmtvb2wNCj4gPHNl
+Z2hlckBrZXJuZWwuY3Jhc2hpbmcub3JnPiB3cm90ZToNCj4gPg0KPiA+IEl0IHdpbGwgbm90IHdv
+cmsgbGlrZSB0aGlzIGluIEdDQywgbm8uICBUaGUgTExWTSBwZW9wbGUga25vdyBhYm91dCB0aGF0
+Lg0KPiA+IEkgZG8gbm90IGtub3cgd2h5IHRoZXkgaW5zaXN0IG9uIHB1c2hpbmcgdGhpcywgYmVp
+bmcgaW5jb21wYXRpYmxlIGFuZA0KPiA+IGV2ZXJ5dGhpbmcuDQo+IA0KPiBVbW0uIFNpbmNlIHRo
+ZXknZCBiZSB0aGUgb25lcyBzdXBwb3J0aW5nIHRoaXMsICpnY2MqIHdvdWxkIGJlIHRoZQ0KPiBp
+bmNvbXBhdGlibGUgb25lLCBub3QgY2xhbmcuDQoNCkkgaGFkIGFuICdpbnRlcmVzdGluZycgaWRl
+YS4NCg0KQ2FuIHlvdSB1c2UgYSBsb2NhbCBhc20gcmVnaXN0ZXIgdmFyaWFibGUgYXMgYW4gaW5w
+dXQgYW5kIG91dHB1dCB0bw0KYW4gJ2FzbSB2b2xhdGlsZSBnb3RvJyBzdGF0ZW1lbnQ/DQoNCldl
+bGwgeW91IGNhbiAtIGJ1dCBpcyBpdCBndWFyYW50ZWVkIHRvIHdvcmsgOi0pDQoNCglEYXZpZA0K
+DQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFy
+bSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAo
+V2FsZXMpDQo=
 
-I applied v3 actually.
-
-cheers
