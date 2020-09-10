@@ -2,108 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF07264E64
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 21:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FEDD264F19
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 21:34:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnT7P63NWzDqg3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 05:13:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnTby1yNyzDqLh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 05:34:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::244;
+ helo=mail-lj1-x244.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fiX1ACq3; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=gkhGKJWF; 
+ dkim-atps=neutral
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnT5X3vfyzDqdv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 05:11:44 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08AJ9hP3029497; Thu, 10 Sep 2020 15:10:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=bhd54zBM73u/yq2HRIihmqiW/u3pPjFAxPUoy8ryJBY=;
- b=fiX1ACq35ttt4+RJzwrdq4hwCPjAMWBrDgv3xzYVNddsOEjpjmKVN/bLEVE8kNI+lrd8
- 2V5zTdbCzuXAIJKq06+cnwjWbI31iPSz7u7Ge8uXXw+CIgsnK8KHIKz1LzLmJVdTfLzP
- DZJWo1BxWF3t9Tnu0A/E+OBkqlSOrCeRJOrzIPYvxxl00Fgbg632fYbSMUtCV6PpKmjR
- 4ErZ4aBfwdBmotGSYNehkgwhAoSWzdwI0XagEpEY/JylEXyM3nrO3NVxHaO9iuXS7Ej5
- yLW9JUMZCRajaJ5NdBvtbAxd3enCiY/0o8F+GRFYCWfupIyYCvwzJyllPkcBLqneWy6r 5g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33fsga12eb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Sep 2020 15:10:48 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08AJ9pxe034482;
- Thu, 10 Sep 2020 15:10:38 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33fsga122a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Sep 2020 15:10:38 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08AJ87np004123;
- Thu, 10 Sep 2020 19:10:17 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 33c2a86cjs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Sep 2020 19:10:16 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 08AJADKl32637386
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Sep 2020 19:10:13 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 389AC4C059;
- Thu, 10 Sep 2020 19:10:13 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0CAD14C046;
- Thu, 10 Sep 2020 19:10:12 +0000 (GMT)
-Received: from thinkpad (unknown [9.171.93.242])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu, 10 Sep 2020 19:10:11 +0000 (GMT)
-Date: Thu, 10 Sep 2020 21:10:10 +0200
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
- folding
-Message-ID: <20200910211010.46d064a7@thinkpad>
-In-Reply-To: <CAHk-=wh3SjOE2r4WCfagL5Zq4Oj4Jsu1=1jTTi2GxGDTxP-J0Q@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnTYT2dgWzDqgZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 05:32:28 +1000 (AEST)
+Received: by mail-lj1-x244.google.com with SMTP id a15so9752889ljk.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 12:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=nTbGWidANXm2pjjCI9iaMQBY/df45EdumvXop+9a4ao=;
+ b=gkhGKJWFcLTHyB5x5aFfN6rnXH8dCRqQWjJKd9NZmHZK/NC/oX0q6HVDmBmeekhRv6
+ GTPYMsgUuX5KTeHU91CyIJtiMizZNYrRnX9QG0ENhdKweAOaB0W4mGxVSrji+PC28UP6
+ VshPJp7YLq+DwXcjz/A/kXWDuc/ae+MhCxRmA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=nTbGWidANXm2pjjCI9iaMQBY/df45EdumvXop+9a4ao=;
+ b=uTR7rYBRenAXlyvnE/tYCCTuYsHjhO9Y3wiONV0mp5ePE/9toCsGBAhQvAqQXibg78
+ aTPYKvz4AIL+LNZisEx4gs0mgjhvhFvUt+d6vRo58BcPWlUZRwFqkjL6KdtwTw4CO+GS
+ 2QugB/L8wnL/3Cevs8OPoWDeAHPjqk7WBfUSCkeheFbyoAoCYm1wYW2z8m3utJKsQBYU
+ yFDRmw17f7FLGeqnLKTRxejjS8oBEn+PUJYfw2gLbleOk1js1QIoeRf1K6QQAzaOkrmJ
+ qlox12ElDMt9wHo+6QwMXa2zuDw0AeobI39iVY/OlRxtY3C0mhmSGT2d578xME26Msjg
+ 17tQ==
+X-Gm-Message-State: AOAM532hDm0PkSGPLEDeVrJjHkkgZ0p72ZoueFN57myXjHaM0iyK+ODv
+ KN7W2ufHG+vvjG1DYJrBzcxXKNSjoCjApA==
+X-Google-Smtp-Source: ABdhPJwTTGqkGP3NKZWawC9wqhGlC4qK4tgh2dGXEsqPvVuzjkcbAQvW9KpzDwq3ngvuprgBze8NCQ==
+X-Received: by 2002:a2e:8e71:: with SMTP id t17mr3539470ljk.413.1599766344908; 
+ Thu, 10 Sep 2020 12:32:24 -0700 (PDT)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com.
+ [209.85.208.175])
+ by smtp.gmail.com with ESMTPSA id i63sm1821318lji.66.2020.09.10.12.32.22
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Sep 2020 12:32:23 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id k25so9661330ljg.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 12:32:22 -0700 (PDT)
+X-Received: by 2002:a2e:7819:: with SMTP id t25mr5043564ljc.371.1599766341582; 
+ Thu, 10 Sep 2020 12:32:21 -0700 (PDT)
+MIME-Version: 1.0
 References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
  <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
  <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
  <20200909142904.00b72921@thinkpad>
  <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad>
- <20200909180324.GI87483@ziepe.ca>
+ <20200909192534.442f8984@thinkpad> <20200909180324.GI87483@ziepe.ca>
  <20200910093925.GB29166@oc3871087118.ibm.com>
  <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
  <20200910181319.GO87483@ziepe.ca>
  <CAHk-=wh3SjOE2r4WCfagL5Zq4Oj4Jsu1=1jTTi2GxGDTxP-J0Q@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-10_08:2020-09-10,
- 2020-09-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=999
- suspectscore=0 clxscore=1015 spamscore=0 phishscore=0 priorityscore=1501
- adultscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009100173
+ <20200910211010.46d064a7@thinkpad>
+In-Reply-To: <20200910211010.46d064a7@thinkpad>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 10 Sep 2020 12:32:05 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
+Message-ID: <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
+ folding
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,47 +117,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 10 Sep 2020 11:33:17 -0700
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On Thu, Sep 10, 2020 at 12:11 PM Gerald Schaefer
+<gerald.schaefer@linux.ibm.com> wrote:
+>
+> That sounds a lot like the pXd_offset_orig() from Martins first approach
+> in this thread:
+> https://lore.kernel.org/linuxppc-dev/20190418100218.0a4afd51@mschwideX1/
 
-> On Thu, Sep 10, 2020 at 11:13 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> >
-> > So.. To change away from the stack option I think we'd have to pass
-> > the READ_ONCE value to pXX_offset() as an extra argument instead of it
-> > derefing the pointer internally.
-> 
-> Yeah, but I think that would actually be the better model than passing
-> an address to a random stack location.
-> 
-> It's also effectively what we do in some other places, eg the whole
-> logic with "orig" in the regular pte fault handling is basically doing
-> unlocked loads of the pte, various decisions on that, and then doing a
-> final "is this still the same pte" after it has gotten the page table
-> lock.
+I have to admit to finding that name horrible, but aside from that, yes.
 
-That sounds a lot like the pXd_offset_orig() from Martins first approach
-in this thread:
-https://lore.kernel.org/linuxppc-dev/20190418100218.0a4afd51@mschwideX1/
+I don't think "pXd_offset_orig()" makes any sense as a name. Yes,
+"orig" may make sense as the variable name (as in "this was the
+original value we read"), but a function name should describe what it
+*does*, not what the arguments are.
 
-It is also the "Patch 1" option from the start of this thread:
-https://lore.kernel.org/lkml/20200828140314.8556-1-gerald.schaefer@linux.ibm.com/
+Plus "original" doesn't make sense to me anyway, since we're not
+modifying it. To me, "original" means that there's a final version
+too, which this interface in no way implies. It's just "this is the
+value we already read".
 
-I guess I chose wrongly there, should have had more trust in Martins
-approach, and not try so hard to do it like others...
+("orig" does make some sense in that fault path - because by
+definition we *are* going to modify the page table entry, that's the
+whole point of the fault - we need to do something to not keep
+faulting. But here, we're not at all necessarily modifying the page
+table contents, we're just following them and readign the values once)
 
-So, maybe we can start over again, from that patch option. It would of
-course also initially introduce some gup-specific helpers, like with
-the other approach. It seemed harder to generalize when I thought
-about it back then, but I guess it should not be a lot harder than
-the _addr_end stuff.
+Of course, I don't know what a better name would be to describe what
+is actually going on, I'm just explaining why I hate that naming.
 
-Or, maybe this time, just not to risk Christian getting a heart attack,
-we could go for the gup-specific helper first, so that we would at
-least have a fix for the possible s390 data corruption. Jason, would
-you agree that we send a new RFC, this time with pXd_offset_orig()
-approach, and have that accepted as short-term fix?
+*Maybe* something like just "pXd_offset_value()" together with a
+comment explaining that it's given the upper pXd pointer _and_ the
+value behind it, and it needs to return the next level offset? I
+dunno. "value" doesn't really seem horribly descriptive either, but at
+least it doesn't feel actively misleading to me.
 
-Or would you rather also wait for some proper generic change? Have
-lost that option from my radar, so cannot really judge how much more
-effort it would be. I'm on vacation next week anyway, but Alexander
-or Vasily (who did the option 1 patch) could look into this further.
+Yeah, I get hung up on naming sometimes. I don't tend to care much
+about private local variables ("i" is a perfectly fine variable name),
+but these kinds of somewhat subtle cross-architecture definitions I
+feel matter.
+
+               Linus
