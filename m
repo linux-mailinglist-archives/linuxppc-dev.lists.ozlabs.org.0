@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD77D263F4A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 10:06:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E38263F7D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 10:16:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnBL86X8RzDqcv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 18:06:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnBXt10hwzDqCg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 18:15:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnBHd5qwJzDqc7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 18:04:26 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-237-7fX8YZt7N6qAR3EaMh4m2w-1; Thu, 10 Sep 2020 09:04:19 +0100
-X-MC-Unique: 7fX8YZt7N6qAR3EaMh4m2w-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 10 Sep 2020 09:04:19 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
- Thu, 10 Sep 2020 09:04:19 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Linus Torvalds' <torvalds@linux-foundation.org>, Segher Boessenkool
- <segher@kernel.crashing.org>
-Subject: RE: remove the last set_fs() in common code, and remove it for x86
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnBVV2qZ2zDqY7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 18:13:51 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BnBVJ36t0z9txjs;
+ Thu, 10 Sep 2020 10:13:44 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id mLdPjtz4MI3T; Thu, 10 Sep 2020 10:13:44 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BnBVJ24wQz9txjr;
+ Thu, 10 Sep 2020 10:13:44 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C4A28B820;
+ Thu, 10 Sep 2020 10:13:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id yqpTmoCr2JC9; Thu, 10 Sep 2020 10:13:45 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 71AD28B81D;
+ Thu, 10 Sep 2020 10:13:43 +0200 (CEST)
+Subject: Re: remove the last set_fs() in common code, and remove it for x86
  and powerpc v3
-Thread-Topic: remove the last set_fs() in common code, and remove it for x86
- and powerpc v3
-Thread-Index: AQHWhvDyD2c/lZfV3kC0Ftay5UVebqlhgjnw
-Date: Thu, 10 Sep 2020 08:04:19 +0000
-Message-ID: <3beb8b019e4a4f7b81fdb1bc68bd1e2d@AcuMS.aculab.com>
+To: David Laight <David.Laight@ACULAB.COM>,
+ 'Linus Torvalds' <torvalds@linux-foundation.org>,
+ Segher Boessenkool <segher@kernel.crashing.org>
 References: <20200903142242.925828-1-hch@lst.de>
  <20200903142803.GM1236603@ZenIV.linux.org.uk>
  <CAHk-=wgQNyeHxXfckd1WtiYnoDZP1Y_kD-tJKqWSksRoDZT=Aw@mail.gmail.com>
  <20200909184001.GB28786@gate.crashing.org>
  <CAHk-=whu19Du_rZ-zBtGsXAB-Qo7NtoJjQjd-Sa9OB5u1Cq_Zw@mail.gmail.com>
-In-Reply-To: <CAHk-=whu19Du_rZ-zBtGsXAB-Qo7NtoJjQjd-Sa9OB5u1Cq_Zw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ <3beb8b019e4a4f7b81fdb1bc68bd1e2d@AcuMS.aculab.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <186a62fc-042c-d6ab-e7dc-e61b18945498@csgroup.eu>
+Date: Thu, 10 Sep 2020 10:13:42 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0.001
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-Content-Language: en-US
+In-Reply-To: <3beb8b019e4a4f7b81fdb1bc68bd1e2d@AcuMS.aculab.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,29 +73,44 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
  the arch/x86 maintainers <x86@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Linux
- Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>, Luis Chamberlain <mcgrof@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Alexey Dobriyan <adobriyan@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
  Al Viro <viro@zeniv.linux.org.uk>,
  linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alexey Dobriyan <adobriyan@gmail.com>
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMDkgU2VwdGVtYmVyIDIwMjAgMjI6MzQNCj4g
-T24gV2VkLCBTZXAgOSwgMjAyMCBhdCAxMTo0MiBBTSBTZWdoZXIgQm9lc3Nlbmtvb2wNCj4gPHNl
-Z2hlckBrZXJuZWwuY3Jhc2hpbmcub3JnPiB3cm90ZToNCj4gPg0KPiA+IEl0IHdpbGwgbm90IHdv
-cmsgbGlrZSB0aGlzIGluIEdDQywgbm8uICBUaGUgTExWTSBwZW9wbGUga25vdyBhYm91dCB0aGF0
-Lg0KPiA+IEkgZG8gbm90IGtub3cgd2h5IHRoZXkgaW5zaXN0IG9uIHB1c2hpbmcgdGhpcywgYmVp
-bmcgaW5jb21wYXRpYmxlIGFuZA0KPiA+IGV2ZXJ5dGhpbmcuDQo+IA0KPiBVbW0uIFNpbmNlIHRo
-ZXknZCBiZSB0aGUgb25lcyBzdXBwb3J0aW5nIHRoaXMsICpnY2MqIHdvdWxkIGJlIHRoZQ0KPiBp
-bmNvbXBhdGlibGUgb25lLCBub3QgY2xhbmcuDQoNCkkgaGFkIGFuICdpbnRlcmVzdGluZycgaWRl
-YS4NCg0KQ2FuIHlvdSB1c2UgYSBsb2NhbCBhc20gcmVnaXN0ZXIgdmFyaWFibGUgYXMgYW4gaW5w
-dXQgYW5kIG91dHB1dCB0bw0KYW4gJ2FzbSB2b2xhdGlsZSBnb3RvJyBzdGF0ZW1lbnQ/DQoNCldl
-bGwgeW91IGNhbiAtIGJ1dCBpcyBpdCBndWFyYW50ZWVkIHRvIHdvcmsgOi0pDQoNCglEYXZpZA0K
-DQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFy
-bSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAo
-V2FsZXMpDQo=
 
+
+Le 10/09/2020 à 10:04, David Laight a écrit :
+> From: Linus Torvalds
+>> Sent: 09 September 2020 22:34
+>> On Wed, Sep 9, 2020 at 11:42 AM Segher Boessenkool
+>> <segher@kernel.crashing.org> wrote:
+>>>
+>>> It will not work like this in GCC, no.  The LLVM people know about that.
+>>> I do not know why they insist on pushing this, being incompatible and
+>>> everything.
+>>
+>> Umm. Since they'd be the ones supporting this, *gcc* would be the
+>> incompatible one, not clang.
+> 
+> I had an 'interesting' idea.
+> 
+> Can you use a local asm register variable as an input and output to
+> an 'asm volatile goto' statement?
+> 
+> Well you can - but is it guaranteed to work :-)
+> 
+
+With gcc at least it should work according to 
+https://gcc.gnu.org/onlinedocs/gcc/Local-Register-Variables.html
+
+They even explicitely tell: "The only supported use for this feature is 
+to specify registers for input and output operands when calling Extended 
+asm "
+
+Christophe
