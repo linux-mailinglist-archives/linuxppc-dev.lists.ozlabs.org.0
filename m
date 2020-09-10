@@ -2,68 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB3C264FA4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 21:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 868BD26524C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 23:14:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnTv56H4ZzDqhF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 05:47:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnWq15CkRzDqkC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 07:14:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=clg@kaod.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=eC6xHFZe; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo804.mail-out.ovh.net
+ (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnTrw4VxXzDqVj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 05:45:50 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id s65so3771930pgb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 12:45:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=kT3st5L2W/yGrskNA7hV4WTKcp+VzTZ5Pgaqe30vqT8=;
- b=eC6xHFZebGzDOu2iJFlC4sYhGBsPBPtk9a7oklICzLNlEMzSAdGnasLCc1rhvVduzw
- WWGkAB927UqclP1++HPY0zndFIqCAsSEoCB33GsJW1zgx9zdnqi9fNwkG+wGtFEr+T3z
- bUYjH1Oc2jBMRnj0f0FQ3tH0tHQIOzzYF+914=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=kT3st5L2W/yGrskNA7hV4WTKcp+VzTZ5Pgaqe30vqT8=;
- b=pU4ey+h76ctooDly6MkcygZOIo8Q06yPte7ULka2+wxlHLyqRmt2+Lu18xrUp85F3d
- 2c0FoJTjWPifRV4eyLdZtNkQFHBD6buFDU4mV9KcaOqr3gZ/6vZhPZpiuU66wf30hixn
- Igah2cxq1v6POGVeKTMs2cbJhHVAxrHUCGyg+GnGAHnJ3rEukJa5G+uU83L9dE94V0Uq
- PjzwfT1fhvbUjF7td0UT+Dl6ymcYheDVjFuB2EiYUeRjJooNQW6nnZTJ+UbOWQroNTZd
- X4b0cX+OT65m9q3vZiTPCM2blgA1ZTQynsmsT/6fIbMeYaTUgKJm5tg0CKIvdpogMbH3
- Ypkg==
-X-Gm-Message-State: AOAM531B+nmtf//1icQTrEmQFqbGFaokRBSDG4rimxdsuDXlEu3P4Qff
- 0UZe7k5VtnJ/W3IktHBSyPRDVA==
-X-Google-Smtp-Source: ABdhPJwWpKs77i2Pw4YhFhAT5cZe6s0qx17kIVE+as0BWVJNc55TKLnEBagdP5cQWEjWPugWxrbACw==
-X-Received: by 2002:aa7:858e:: with SMTP id w14mr2753410pfn.95.1599767146631; 
- Thu, 10 Sep 2020 12:45:46 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id l79sm2905776pfd.210.2020.09.10.12.45.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Sep 2020 12:45:45 -0700 (PDT)
-Date: Thu, 10 Sep 2020 12:45:44 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH] kbuild: preprocess module linker script
-Message-ID: <202009101245.493610D05@keescook>
-References: <20200904133122.133071-1-masahiroy@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnWYx3629zDqh3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 07:02:59 +1000 (AEST)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.138.7])
+ by mo804.mail-out.ovh.net (Postfix) with ESMTPS id B2650603F5F3;
+ Thu, 10 Sep 2020 23:02:53 +0200 (CEST)
+Received: from kaod.org (37.59.142.104) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Thu, 10 Sep
+ 2020 23:02:52 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-104R005d4c8401b-9bff-41b3-a517-02ceadfe2a05,
+ 8FE11AEDAF16247B821E16C08928A26F58BE1972) smtp.auth=clg@kaod.org
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 0/7] powerpc: Fix a few W=1 compile warnings
+Date: Thu, 10 Sep 2020 23:02:43 +0200
+Message-ID: <20200910210250.1962595-1-clg@kaod.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200904133122.133071-1-masahiroy@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.104]
+X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: f4e652df-ca7c-43ad-8e2c-213c1f6b9d6d
+X-Ovh-Tracer-Id: 10699708292865297373
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrudehjedgudehtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffogggtgfhisehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfedvuedtvdeikeekuefhkedujeejgffggffhtefglefgveevfeeghfdvgedtleevnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,47 +59,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Paul Mackerras <paulus@samba.org>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-arch@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Fenghua Yu <fenghua.yu@intel.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- linux-kbuild@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
- linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
- Michal Marek <michal.lkml@markovi.net>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Jessica Yu <jeyu@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 04, 2020 at 10:31:21PM +0900, Masahiro Yamada wrote:
-> There was a request to preprocess the module linker script like we do
-> for the vmlinux one (https://lkml.org/lkml/2020/8/21/512).
-> 
-> The difference between vmlinux.lds and module.lds is that the latter
-> is needed for external module builds, thus must be cleaned up by
-> 'make mrproper' instead of 'make clean' (also, it must be created by
-> 'make modules_prepare').
-> 
-> You cannot put it in arch/*/kernel/ because 'make clean' descends into
-> it. I moved arch/*/kernel/module.lds to arch/*/include/asm/module.lds.h,
-> which is included from scripts/module.lds.S.
-> 
-> scripts/module.lds is fine because 'make clean' keeps all the build
-> artifacts under scripts/.
-> 
-> You can add arch-specific sections in <asm/module.lds.h>.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Hello,
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Here is a small contribution on improving compile with W=1.	
+
+Thanks,
+
+C.
+
+Cédric Le Goater (7):
+  powerpc/sysfs: Fix W=1 compile warning
+  powerpc/prom: Fix W=1 compile warning
+  powerpc/sstep: Fix W=1 compile warning
+  powerpc/xive: Fix W=1 compile warning
+  powerpc/powernv/pci: Fix W=1 compile warning
+  powerpc/perf: Fix W=1 compile warning
+  powerpc/32: Fix W=1 compile warning
+
+ arch/powerpc/include/asm/asm-prototypes.h |  1 +
+ arch/powerpc/kernel/prom.c                | 51 ++++++++++++-----------
+ arch/powerpc/kernel/sysfs.c               |  3 +-
+ arch/powerpc/lib/sstep.c                  |  3 +-
+ arch/powerpc/perf/imc-pmu.c               |  3 --
+ arch/powerpc/platforms/powernv/pci-ioda.c |  8 ----
+ arch/powerpc/sysdev/xive/common.c         |  4 +-
+ 7 files changed, 32 insertions(+), 41 deletions(-)
 
 -- 
-Kees Cook
+2.25.4
+
