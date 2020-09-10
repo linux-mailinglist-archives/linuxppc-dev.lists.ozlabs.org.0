@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494862648A9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 17:24:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D02A2648B5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 17:28:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnN3h2kbyzDqcM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 01:24:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnN7X3qVFzDqgl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 01:28:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,22 +17,22 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=kernel.crashing.org
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BnMzQ0dvzzDqH6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 01:21:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BnN3h6ckWzDqdX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 01:24:48 +1000 (AEST)
 Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 08AFGK0M032611;
- Thu, 10 Sep 2020 10:16:20 -0500
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 08AFKVl2000394;
+ Thu, 10 Sep 2020 10:20:31 -0500
 Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 08AFGJBX032610;
- Thu, 10 Sep 2020 10:16:19 -0500
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 08AFKUG8000392;
+ Thu, 10 Sep 2020 10:20:30 -0500
 X-Authentication-Warning: gate.crashing.org: segher set sender to
  segher@kernel.crashing.org using -f
-Date: Thu, 10 Sep 2020 10:16:19 -0500
+Date: Thu, 10 Sep 2020 10:20:30 -0500
 From: Segher Boessenkool <segher@kernel.crashing.org>
 To: David Laight <David.Laight@aculab.com>
 Subject: Re: remove the last set_fs() in common code,
  and remove it for x86 and powerpc v3
-Message-ID: <20200910151619.GI28786@gate.crashing.org>
+Message-ID: <20200910152030.GJ28786@gate.crashing.org>
 References: <20200903142242.925828-1-hch@lst.de>
  <20200903142803.GM1236603@ZenIV.linux.org.uk>
  <CAHk-=wgQNyeHxXfckd1WtiYnoDZP1Y_kD-tJKqWSksRoDZT=Aw@mail.gmail.com>
@@ -41,11 +41,11 @@ References: <20200903142242.925828-1-hch@lst.de>
  <3beb8b019e4a4f7b81fdb1bc68bd1e2d@AcuMS.aculab.com>
  <186a62fc-042c-d6ab-e7dc-e61b18945498@csgroup.eu>
  <59a64e9a210847b59f70f9bd2d02b5c3@AcuMS.aculab.com>
+ <5050b43687c84515a49b345174a98822@AcuMS.aculab.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <59a64e9a210847b59f70f9bd2d02b5c3@AcuMS.aculab.com>
+In-Reply-To: <5050b43687c84515a49b345174a98822@AcuMS.aculab.com>
 User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,62 +63,40 @@ Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
  the arch/x86 maintainers <x86@kernel.org>,
  Nick Desaulniers <ndesaulniers@google.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Alexey Dobriyan <adobriyan@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, Luis Chamberlain <mcgrof@kernel.org>,
  Al Viro <viro@zeniv.linux.org.uk>,
  linux-fsdevel <linux-fsdevel@vger.kernel.org>,
  'Linus Torvalds' <torvalds@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>
+ Alexey Dobriyan <adobriyan@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 10, 2020 at 09:26:28AM +0000, David Laight wrote:
-> From: Christophe Leroy
-> > Sent: 10 September 2020 09:14
-> > 
-> > Le 10/09/2020 à 10:04, David Laight a écrit :
-> > > From: Linus Torvalds
-> > >> Sent: 09 September 2020 22:34
-> > >> On Wed, Sep 9, 2020 at 11:42 AM Segher Boessenkool
-> > >> <segher@kernel.crashing.org> wrote:
-> > >>>
-> > >>> It will not work like this in GCC, no.  The LLVM people know about that.
-> > >>> I do not know why they insist on pushing this, being incompatible and
-> > >>> everything.
-> > >>
-> > >> Umm. Since they'd be the ones supporting this, *gcc* would be the
-> > >> incompatible one, not clang.
-> > >
-> > > I had an 'interesting' idea.
-> > >
-> > > Can you use a local asm register variable as an input and output to
-> > > an 'asm volatile goto' statement?
-> > >
-> > > Well you can - but is it guaranteed to work :-)
-> > >
-> > 
-> > With gcc at least it should work according to
-> > https://gcc.gnu.org/onlinedocs/gcc/Local-Register-Variables.html
-> > 
-> > They even explicitely tell: "The only supported use for this feature is
-> > to specify registers for input and output operands when calling Extended
-> > asm "
-> 
-> A quick test isn't good....
-> 
-> int bar(char *z)
-> {
->         __label__ label;
->         register int eax asm ("eax") = 6;
->         asm volatile goto (" mov $1, %%eax" ::: "eax" : label);
-> 
-> label:
->         return eax;
-> }
+On Thu, Sep 10, 2020 at 12:26:53PM +0000, David Laight wrote:
+> Actually this is pretty sound:
+> 	__label__ label;
+> 	register int eax asm ("eax");
+> 	// Ensure eax can't be reloaded from anywhere
+> 	// In particular it can't be reloaded after the asm goto line
+> 	asm volatile ("" : "=r" (eax));
 
-It is neither input nor output operand here!  Only *then* is a local
-register asm guaranteed to be in the given reg: as input or output to an
-inline asm.
+This asm is fine.  It says it writes the "eax" variable, which lives in
+the eax register *in that asm* (so *not* guaranteed after it!).
+
+> 	// Provided gcc doesn't save eax here...
+> 	asm volatile goto ("xxxxx" ::: "eax" : label);
+
+So this is incorrect.
+
+> 	// ... and reload the saved value here.
+> 	// The input value here will be that modified by the 'asm goto'.
+> 	// Since this modifies eax it can't be moved before the 'asm goto'.
+> 	asm volatile ("" : "+r" (eax));
+> 	// So here eax must contain the value set by the "xxxxx" instructions.
+
+No, the register eax will contain the value of the eax variable.  In the
+asm; it might well be there before or after the asm as well, but none of
+that is guaranteed.
 
 
 Segher
