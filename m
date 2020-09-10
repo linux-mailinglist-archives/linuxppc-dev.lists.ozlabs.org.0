@@ -2,83 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042D62639EB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 04:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C290E263CB8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 07:47:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bn2W71b9mzDqbh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 12:13:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bn7Fw0tZxzDqcV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 15:47:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=ByQbn9Jd; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Tbw4TN+F; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bn2TG4KCfzDqZT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 12:12:18 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08A2AccQ088409;
- Thu, 10 Sep 2020 02:12:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=0Ob3xkYnA7g87tw9QRrxEgtLXmHMT5ZuRH5gPzD9bu4=;
- b=ByQbn9JdMyJhjBqhbUKTU1FHB5qP+V2HKUbVR14Yum0o1FMdcJ2wGyiS19Fl28HagoYo
- efUT/z0KgFbzRRhUtWDnZtdhcn5qU828kCrduExDf1Fr8h8sLPAHuKsjKR0caEytaeHf
- 93R0kjidhQ2o+Gxdfhb0kxOkD2etGvRas6tqUJsNSKex9y6koIvlvHKic/XMO4XK3kAK
- KngrXaUKLRV3bT8D5SCbWO7ZrS4p69fOaUe4VjuhprCCFO+Bin29BD7LmiLk4VwPawoW
- yjZp2USgw1ahg2U2OIs0KANsabWtIpcxzVz5MKtM7et1OHxYE0mlzLc8/53oSAFRQeHV Ag== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by aserp2120.oracle.com with ESMTP id 33c2mm56ma-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Thu, 10 Sep 2020 02:12:01 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08A2APkX082529;
- Thu, 10 Sep 2020 02:12:01 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
- by userp3030.oracle.com with ESMTP id 33cmkyy6r9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Sep 2020 02:12:01 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
- by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08A2BvFi012904;
- Thu, 10 Sep 2020 02:11:59 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 09 Sep 2020 19:11:56 -0700
-To: Jing Xiangfeng <jingxiangfeng@huawei.com>
-Subject: Re: [PATCH] scsi: ibmvfc: Fix error return in ibmvfc_probe()
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1r1ra2xf0.fsf@ca-mkp.ca.oracle.com>
-References: <20200907083949.154251-1-jingxiangfeng@huawei.com>
-Date: Wed, 09 Sep 2020 22:11:50 -0400
-In-Reply-To: <20200907083949.154251-1-jingxiangfeng@huawei.com> (Jing
- Xiangfeng's message of "Mon, 7 Sep 2020 16:39:49 +0800")
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bn7Cg21PKzDqYX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 15:45:48 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id w186so3636454pgb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Sep 2020 22:45:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=5vAFs8FFwXqMONU7mZ0mSAnhghsElkW4VBZD+NbKq/I=;
+ b=Tbw4TN+Fyj/1ywtz46PBF5uSSfgtYHc17A7QOg+8UivkkUH3H5tbGF4gyBgt9ym9K6
+ GnZ8ikXDvia/qXJiokRDFWmf4ZmLnqf1S3K972OwhNeeTLYtSsq0f+bRKZLunERMARtW
+ VRp0hcqLLe72oMosD3jnwJOHgAs7r4IeB7XrofAN0G2dcnByZe8p0dZ3gt5ziPlnFIh9
+ icFYIYQ3rtcoEB6tsUwLN8k/KCbWUIt/F4tdGu+uw0eoH9gAjAx9dJpumdouYkLs2Bgu
+ gyGFst16OBhJn2y19GU5a4ZXub0quwqbbuR7u/OSycHj58PF3jZ9KvD77pu4pSdVPYMh
+ RK5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=5vAFs8FFwXqMONU7mZ0mSAnhghsElkW4VBZD+NbKq/I=;
+ b=WCAoKS6UKqE0e6HCs6dTdnecJu0Ckuqfyg7MnCap3MayoVDtKT8v1oIlVv52MzXP/q
+ McoDvZxZ8sp21Po0TZrw3nKL/xElueTRV6chBAHN0/gryTyqcmmYqiSv1IHhGasLRei1
+ lgyl+hkMXabrdic8snt+J0qF8oUyUkUX2XYN52fTyhgAEBt5oNIw+qU+eAR28TEROtz9
+ xIXaBPYHazDJgGVmCsO5HBHH/repfLm3zYEVquft0FqvCtmHm2F35J8AvdLK+DnE27qR
+ X2ehIAH7u31hrKJfpws1KgtRo4mDyX+lYXTmXGQVlTlC2Ud5sZCaYV5ratCO+QBeuIdz
+ fPKw==
+X-Gm-Message-State: AOAM53052tuuat0HiZmhpy8T7uvQAaFZ5s8C5QeGKTAN3D/2ZO3jNPvt
+ KsyQNcWfn80Y30tIJtpeu0Wy5/IdOqGzAw==
+X-Google-Smtp-Source: ABdhPJxS9K1vmtyZm0oOOTHgb8vUrC3dB8O1qIPjNUDr1PGulSm7xu6RP4VjU8KGDAV2xVVfXXNHRA==
+X-Received: by 2002:a63:4451:: with SMTP id t17mr3093800pgk.92.1599716745363; 
+ Wed, 09 Sep 2020 22:45:45 -0700 (PDT)
+Received: from localhost.ibm.com (194-193-34-182.tpgi.com.au. [194.193.34.182])
+ by smtp.gmail.com with ESMTPSA id o30sm3960374pgc.45.2020.09.09.22.45.43
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Sep 2020 22:45:44 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: EEH cleanups and reworks
+Date: Thu, 10 Sep 2020 15:45:23 +1000
+Message-Id: <20200910054532.2043724-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9739
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- phishscore=0 suspectscore=1
- spamscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009100019
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9739
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- priorityscore=1501
- phishscore=0 adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
- malwarescore=0 suspectscore=1 lowpriorityscore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009100018
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,20 +77,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, linux-scsi@vger.kernel.org,
- martin.petersen@oracle.com, jejb@linux.ibm.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is really two series joined together since they end up conflicting
+with each other lighty slightly and I figured this is easier for all
+involved.
 
-Jing,
+Patches 1-5 streamline how the generic and platform specfic parts of EEH
+are initialised at boot so more of the setup process happens in linear code
+rather in initcalls.
 
-> Fix to return error code PTR_ERR() from the error handling case instead
-> of 0.
+Patches 6-9 re-work how the per-device EEH probing works on pseries to
+make it line up better with the process outlined in PAPR. It also
+removes the pe->config_addr field which has always confused me since
+it's not really clear what or why it's needed (spoiler: it's not).
 
-Applied to 5.10/scsi-staging. Thanks!
+Oliver
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+
+
