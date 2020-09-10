@@ -2,67 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A0E2642E4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 11:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F57264297
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 11:42:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnDht03dPzDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 19:53:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnDSN3C6rzDqfW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 19:42:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d43;
- helo=mail-io1-xd43.google.com; envelope-from=idryomov@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=BoSxMilj; dkim-atps=neutral
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
- [IPv6:2607:f8b0:4864:20::d43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=JnI3+HuS; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnD4H40xQzDqZq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 19:24:41 +1000 (AEST)
-Received: by mail-io1-xd43.google.com with SMTP id u6so6291284iow.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 02:24:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UyqGiyvWtrvEPIbfLtgakvWHIPcO7f2wwjJnMPORWG0=;
- b=BoSxMiljYiAjMP/XBn/hYGNVKL/oHxnqnEUJ7qSdwoJLG0pxR2qK3V4/fkUTSaV51s
- 3pvr292/IyS8ps68VC6dxn72XHdiWpnrMVrw8xogJTOMYamirEZ059PvshX7H4Z5GWuh
- Vr7j8283bIhfaNsK7sxUGLf6s0Z2Efi6Yl4vefoBSqVlIDK265aYxjjSjS69bDYpqbGV
- /GSb5UhzJJFq63scKHt5GhqSRkybY6g2zuA571aN2zohyHumpin0aZgpFfaeOPy0WbSg
- Mpw6iHtgik0cTA/OjEeiGwKuBqjHR2p7i1mxyZ7WrSW4CGvjjQTt8jjc//sWyeGDOFMK
- 9KBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=UyqGiyvWtrvEPIbfLtgakvWHIPcO7f2wwjJnMPORWG0=;
- b=AXnnrfaUoPTn7fkhilazAt48rnOtv9eMpf+gz/Fq4jy9ID/l9W6b+zwDbzQveScuPv
- GQOjFh7H/Z9TaS2A9LMJHsS6f5YfQRVHEEqa9htbXZyW5rApYeh9JgKtB2Uis1lqDJbT
- JcbcAiN3a81iSVRcHTuRd0c7gtQ+2Fqh9g7WAfIiTFB5TeAefZKBuIavE8sAwglgZ/Ya
- gv4IcpykN8lsLG9JWdFD7emXqKDUx+6qv9hVP3+DfY+rHrwoc4jTaFxKD+OL8iclTvJM
- HO6FXaL6l8ERiahVc6S9Ur/gvuyNjJ8xEfhGuezD5x9fe75xykPbx48r8cnktr6i7Di3
- 5N5A==
-X-Gm-Message-State: AOAM530vvjO5WGdgZZBGeIay2un58mecRSL7OQbV352L1CJBMunIzv3J
- nxhMmihiGU+D8Hkr0UHEOU6kIm1Geg+EcVCPks0=
-X-Google-Smtp-Source: ABdhPJzJ/LFpexv9kLm1kjwc0/B+7GHCOB8WQagf03Hz+gzhVFwgLWrpkGefOcCCEeSFlcKtCwndocR5oDNlZlvNymM=
-X-Received: by 2002:a5d:8846:: with SMTP id t6mr7056972ios.123.1599729876856; 
- Thu, 10 Sep 2020 02:24:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnDQJ3FVrzDqYP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 19:40:24 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08A9Vt6b119469; Thu, 10 Sep 2020 05:39:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=41BJsvawiBO1ghr06VQIrffJCPHY4UzVo4fvKE+7RMs=;
+ b=JnI3+HuSFQICzixnbEr3lD/KU407bMni7V5mL/H47oPLaomhPs6t57kI2sBNlnitleWU
+ Ljv2tAQ6Y00VBu0RV7fJV/uOYIaFn2+L3EVF73PBzpDn0xMhXi4S9uZF+n3tyogr9cL8
+ ytPNf7pxi3XLZLzrvhLCPhCFdXv9qVuX2Is4ueWpwdN5VmTvJ7ZPUFIC/eAC2eqsGvRz
+ 0ArbCVZIdHdWjs4nUhCUUciXheJ/YGqiDnhHtZPbG7C2gBZK+PQzRO1oEWokDf3RJaPK
+ qEdPrU10FoZR5nshuEVIEbRP9lZ8x2Pm0AWZdo3HKCBJEvEDjwjaM3Kk9J6p8hBlCJ8m ng== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33fg9ejw18-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Sep 2020 05:39:36 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08A9WV5v121274;
+ Thu, 10 Sep 2020 05:39:35 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33fg9ejvxx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Sep 2020 05:39:35 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08A9c3QB011125;
+ Thu, 10 Sep 2020 09:39:32 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 33c2a81b0c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Sep 2020 09:39:32 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08A9dTSv34800078
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Sep 2020 09:39:29 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2EE38AE04D;
+ Thu, 10 Sep 2020 09:39:29 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7BD21AE053;
+ Thu, 10 Sep 2020 09:39:27 +0000 (GMT)
+Received: from oc3871087118.ibm.com (unknown [9.145.67.15])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 10 Sep 2020 09:39:27 +0000 (GMT)
+Date: Thu, 10 Sep 2020 11:39:25 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
+ folding
+Message-ID: <20200910093925.GB29166@oc3871087118.ibm.com>
+References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+ <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
+ <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
+ <20200909142904.00b72921@thinkpad>
+ <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
+ <20200909192534.442f8984@thinkpad>
+ <20200909180324.GI87483@ziepe.ca>
 MIME-Version: 1.0
-References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-In-Reply-To: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Thu, 10 Sep 2020 11:24:26 +0200
-Message-ID: <CAOi1vP-v77pj3G5Ez94CDYVs2jSO828c4uV_wzNi6sRKp=Yvyg@mail.gmail.com>
-Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough;
- to break; 
-To: Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Thu, 10 Sep 2020 19:49:35 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200909180324.GI87483@ziepe.ca>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-10_01:2020-09-10,
+ 2020-09-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 mlxscore=0 suspectscore=0 clxscore=1011 adultscore=0
+ spamscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009100085
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,131 +110,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-wireless@vger.kernel.org, linux-fbdev@vger.kernel.org,
- oss-drivers@netronome.com, nouveau@lists.freedesktop.org,
- alsa-devel <alsa-devel@alsa-project.org>, dri-devel@lists.freedesktop.org,
- linux-mips@vger.kernel.org, linux-ide@vger.kernel.org, dm-devel@redhat.com,
- linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org,
- sparclinux@vger.kernel.org, kvmarm@lists.cs.columbia.edu,
- linux-rtc@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-atm-general@lists.sourceforge.net, linux-afs@lists.infradead.org,
- coreteam@netfilter.org, intel-wired-lan@lists.osuosl.org,
- linux-serial@vger.kernel.org, linux-input@vger.kernel.org,
- linux-mmc@vger.kernel.org, Kees Cook <kees.cook@canonical.com>,
- linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, linux-sctp@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-nvme@lists.infradead.org,
- storagedev@microchip.com, Ceph Development <ceph-devel@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org,
- Jiri Kosina <trivial@kernel.org>, linux-parisc@vger.kernel.org,
- netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org,
- Nick Desaulniers <ndesaulniers@google.com>,
- LKML <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
- netfilter-devel@vger.kernel.org,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ John Hubbard <jhubbard@nvidia.com>, Jeff Dike <jdike@addtoit.com>,
+ linux-um <linux-um@lists.infradead.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm <linux-arm-kernel@lists.infradead.org>,
+ linux-mm <linux-mm@kvack.org>, linux-power <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 9, 2020 at 10:10 PM Joe Perches <joe@perches.com> wrote:
->
-> fallthrough to a separate case/default label break; isn't very readable.
->
-> Convert pseudo-keyword fallthrough; statements to a simple break; when
-> the next label is case or default and the only statement in the next
-> label block is break;
->
-> Found using:
->
-> $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
->
-> Miscellanea:
->
-> o Move or coalesce a couple label blocks above a default: block.
->
-> Signed-off-by: Joe Perches <joe@perches.com>
-> ---
->
-> Compiled allyesconfig x86-64 only.
-> A few files for other arches were not compiled.
->
->  arch/arm/mach-mmp/pm-pxa910.c                             |  2 +-
->  arch/arm64/kvm/handle_exit.c                              |  2 +-
->  arch/mips/kernel/cpu-probe.c                              |  2 +-
->  arch/mips/math-emu/cp1emu.c                               |  2 +-
->  arch/s390/pci/pci.c                                       |  2 +-
->  crypto/tcrypt.c                                           |  4 ++--
->  drivers/ata/sata_mv.c                                     |  2 +-
->  drivers/atm/lanai.c                                       |  2 +-
->  drivers/gpu/drm/i915/display/intel_sprite.c               |  2 +-
->  drivers/gpu/drm/nouveau/nvkm/engine/disp/hdmi.c           |  2 +-
->  drivers/hid/wacom_wac.c                                   |  2 +-
->  drivers/i2c/busses/i2c-i801.c                             |  2 +-
->  drivers/infiniband/ulp/rtrs/rtrs-clt.c                    | 14 +++++++-------
->  drivers/infiniband/ulp/rtrs/rtrs-srv.c                    |  6 +++---
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c               |  2 +-
->  drivers/irqchip/irq-vic.c                                 |  4 ++--
->  drivers/md/dm.c                                           |  2 +-
->  drivers/media/dvb-frontends/drxd_hard.c                   |  2 +-
->  drivers/media/i2c/ov5640.c                                |  2 +-
->  drivers/media/i2c/ov6650.c                                |  5 ++---
->  drivers/media/i2c/smiapp/smiapp-core.c                    |  2 +-
->  drivers/media/i2c/tvp5150.c                               |  2 +-
->  drivers/media/pci/ddbridge/ddbridge-core.c                |  2 +-
->  drivers/media/usb/cpia2/cpia2_core.c                      |  2 +-
->  drivers/mfd/iqs62x.c                                      |  3 +--
->  drivers/mmc/host/atmel-mci.c                              |  2 +-
->  drivers/mtd/nand/raw/nandsim.c                            |  2 +-
->  drivers/net/ethernet/intel/e1000e/phy.c                   |  2 +-
->  drivers/net/ethernet/intel/fm10k/fm10k_pf.c               |  2 +-
->  drivers/net/ethernet/intel/i40e/i40e_adminq.c             |  2 +-
->  drivers/net/ethernet/intel/i40e/i40e_txrx.c               |  2 +-
->  drivers/net/ethernet/intel/iavf/iavf_txrx.c               |  2 +-
->  drivers/net/ethernet/intel/igb/e1000_phy.c                |  2 +-
->  drivers/net/ethernet/intel/ixgbe/ixgbe_82599.c            |  2 +-
->  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c             |  2 +-
->  drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c            |  2 +-
->  drivers/net/ethernet/intel/ixgbevf/vf.c                   |  2 +-
->  drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c |  2 +-
->  drivers/net/ethernet/qlogic/qed/qed_mcp.c                 |  2 +-
->  drivers/net/ethernet/sfc/falcon/farch.c                   |  2 +-
->  drivers/net/ethernet/sfc/farch.c                          |  2 +-
->  drivers/net/phy/adin.c                                    |  3 +--
->  drivers/net/usb/pegasus.c                                 |  4 ++--
->  drivers/net/usb/usbnet.c                                  |  2 +-
->  drivers/net/wireless/ath/ath5k/eeprom.c                   |  2 +-
->  drivers/net/wireless/mediatek/mt7601u/dma.c               |  8 ++++----
->  drivers/nvme/host/core.c                                  | 12 ++++++------
->  drivers/pcmcia/db1xxx_ss.c                                |  4 ++--
->  drivers/power/supply/abx500_chargalg.c                    |  2 +-
->  drivers/power/supply/charger-manager.c                    |  2 +-
->  drivers/rtc/rtc-pcf85063.c                                |  2 +-
->  drivers/s390/scsi/zfcp_fsf.c                              |  2 +-
->  drivers/scsi/aic7xxx/aic79xx_core.c                       |  4 ++--
->  drivers/scsi/aic94xx/aic94xx_tmf.c                        |  2 +-
->  drivers/scsi/lpfc/lpfc_sli.c                              |  2 +-
->  drivers/scsi/smartpqi/smartpqi_init.c                     |  2 +-
->  drivers/scsi/sr.c                                         |  2 +-
->  drivers/tty/serial/sunsu.c                                |  2 +-
->  drivers/tty/serial/sunzilog.c                             |  2 +-
->  drivers/tty/vt/vt_ioctl.c                                 |  2 +-
->  drivers/usb/dwc3/core.c                                   |  2 +-
->  drivers/usb/gadget/legacy/inode.c                         |  2 +-
->  drivers/usb/gadget/udc/pxa25x_udc.c                       |  4 ++--
->  drivers/usb/host/ohci-hcd.c                               |  2 +-
->  drivers/usb/isp1760/isp1760-hcd.c                         |  2 +-
->  drivers/usb/musb/cppi_dma.c                               |  2 +-
->  drivers/usb/phy/phy-fsl-usb.c                             |  2 +-
->  drivers/video/fbdev/stifb.c                               |  2 +-
->  fs/afs/yfsclient.c                                        |  8 ++++----
->  fs/ceph/dir.c                                             |  2 +-
+On Wed, Sep 09, 2020 at 03:03:24PM -0300, Jason Gunthorpe wrote:
+> On Wed, Sep 09, 2020 at 07:25:34PM +0200, Gerald Schaefer wrote:
+> > I actually had to draw myself a picture to get some hold of
+> > this, or rather a walk-through with a certain pud-crossing
+> > range in a folded 3-level scenario. Not sure if I would have
+> > understood my explanation above w/o that, but I hope you can
+> > make some sense out of it. Or draw yourself a picture :-)
+> 
+> What I don't understand is how does anything work with S390 today?
+> 
+> If the fix is only to change pxx_addr_end() then than generic code
+> like mm/pagewalk.c will iterate over a *different list* of page table
+> entries. 
+> 
+> It's choice of entries to look at is entirely driven by pxx_addr_end().
+> 
+> Which suggest to me that mm/pagewalk.c also doesn't work properly
+> today on S390 and this issue is not really about stack variables?
+> 
+> Fundamentally if pXX_offset() and pXX_addr_end() must be consistent
+> together, if pXX_offset() is folded then pXX_addr_end() must cause a
+> single iteration of that level.
 
-For ceph:
+Your observation is correct.
 
-Acked-by: Ilya Dryomov <idryomov@gmail.com>
+Another way to describe the problem is existing pXd_addr_end helpers
+could be applied to mismatching levels on s390 (e.g p4d_addr_end
+applied to pud or pgd_addr_end applied to p4d). As you noticed,
+all *_pXd_range iterators could be called with address ranges that
+exceed single pXd table.
 
-Thanks,
+However, when it happens with pointers to real page tables (passed to
+*_pXd_range iterators) we still operate on valid tables, which just
+(lucky for us) happened to be folded. Thus we still reference correct
+table entries.
 
-                Ilya
+It is only gup_fast case that exposes the issue. It hits because
+pointers to stack copies are passed to gup_pXd_range iterators, not
+pointers to real page tables itself.
+
+As Gerald mentioned, it is very difficult to explain in a clear way.
+Hopefully, one could make sense ot of it.
+
+> Jason
