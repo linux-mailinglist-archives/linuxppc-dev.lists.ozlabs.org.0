@@ -2,50 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F675264937
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 17:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDE7264A51
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 18:52:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnNqJ6QYQzDqfN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 01:59:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnQ0K0cCZzDqh2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 02:52:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.68; helo=mail-io1-f68.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-io1-f68.google.com (mail-io1-f68.google.com
+ [209.85.166.68])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnNlg5lV7zDqdf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 01:55:56 +1000 (AEST)
-IronPort-SDR: HoPNvUDQa3KY00PJW/8OK9wwbvAnkk00rWods022gH1bS/YYbGrSMZHndO3z8mCyNlyjd+0v4N
- PaB+p1VUisKw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9739"; a="146268336"
-X-IronPort-AV: E=Sophos;i="5.76,413,1592895600"; d="scan'208";a="146268336"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2020 08:55:53 -0700
-IronPort-SDR: mdE+NB6LIJFFEpYlXw+w/dp1bIOLDHSskRELYdPHSV87quvSW71AhFkqp6C9isjWBxvi00K/Ij
- QcMBUzhKiWiA==
-X-IronPort-AV: E=Sophos;i="5.76,413,1592895600"; d="scan'208";a="480943809"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2020 08:55:52 -0700
-Date: Thu, 10 Sep 2020 08:55:52 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/papr_scm: Fix warning triggered by
- perf_stats_show()
-Message-ID: <20200910155552.GN1930795@iweiny-DESK2.sc.intel.com>
-References: <20200910092212.107674-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnPvh3M0VzDqg7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 02:47:57 +1000 (AEST)
+Received: by mail-io1-f68.google.com with SMTP id r9so7858900ioa.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 09:47:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=8fGVKyujTXfspLo9JJxZPzvPko08bc51xw+f5J3oCdk=;
+ b=mv10p6Un4d5HghKK0DdOvkrZjIT54p5b0+6DJ+NXBSktCPhbPdZs0bGdbN7vjG7QA0
+ ATwQOhGKEiL1GNn1AqAD1panjspoFzaADxLp6PVItFteHrsJdPI+YyYjP0JX0w4i5x0G
+ aEwMUyoPYJdlTBHYljAqhTBNYvPpGfFIC8xF4+P5oMJA7/qPGjcknHOHi7WTfMyidKDU
+ /Rv5r8mxfu3B84GyxKVd3pUQRombnGCIY7NrKivK7WWmyjbTf7sbsjfeFNxEmKVH+Ufb
+ qfTuUodpmEmyEpV/pmu7WLALOR+UMlhw2+OKd5ree7uW57Sztfj4piCm+8UlBUirsMbl
+ IA7Q==
+X-Gm-Message-State: AOAM530wnvswqWXqIGNviea7vbfz0pO0SompP69vx6zZok2wxCa+PvzB
+ zJV+9tdAl75F0JIcWiritg==
+X-Google-Smtp-Source: ABdhPJwkuwX0aPaAkSbWdGm7o1Ri1aLdjcJ5kGgtZ1S+LH4iKuSnnyuKFwKcAm7mIz2wxQQQ1TSTTg==
+X-Received: by 2002:a5d:8245:: with SMTP id n5mr2399112ioo.149.1599756474870; 
+ Thu, 10 Sep 2020 09:47:54 -0700 (PDT)
+Received: from xps15 ([64.188.179.251])
+ by smtp.gmail.com with ESMTPSA id d23sm3039062ioh.22.2020.09.10.09.47.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Sep 2020 09:47:53 -0700 (PDT)
+Received: (nullmailer pid 505061 invoked by uid 1000);
+ Thu, 10 Sep 2020 16:47:51 -0000
+Date: Thu, 10 Sep 2020 10:47:51 -0600
+From: Rob Herring <robh@kernel.org>
+To: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
+Subject: Re: [PATCHv7 10/12] arm64: dts: layerscape: Add PCIe EP node for
+ ls1088a
+Message-ID: <20200910164751.GA501845@bogus>
+References: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
+ <20200811095441.7636-11-Zhiqiang.Hou@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200910092212.107674-1-vaibhav@linux.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20200811095441.7636-11-Zhiqiang.Hou@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,79 +68,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, lorenzo.pieralisi@arm.com,
+ Xiaowei Bao <xiaowei.bao@nxp.com>, roy.zang@nxp.com, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, leoyang.li@nxp.com, minghuan.Lian@nxp.com,
+ jingoohan1@gmail.com, andrew.murray@arm.com, mingkai.hu@nxp.com,
+ gustavo.pimentel@synopsys.com, bhelgaas@google.com, shawnguo@kernel.org,
+ kishon@ti.com, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 10, 2020 at 02:52:12PM +0530, Vaibhav Jain wrote:
-> A warning is reported by the kernel in case perf_stats_show() returns
-> an error code. The warning is of the form below:
+On Tue, Aug 11, 2020 at 05:54:39PM +0800, Zhiqiang Hou wrote:
+> From: Xiaowei Bao <xiaowei.bao@nxp.com>
 > 
->  papr_scm ibm,persistent-memory:ibm,pmemory@44100001:
->  	  Failed to query performance stats, Err:-10
->  dev_attr_show: perf_stats_show+0x0/0x1c0 [papr_scm] returned bad count
->  fill_read_buffer: dev_attr_show+0x0/0xb0 returned bad count
+> Add PCIe EP node for ls1088a to support EP mode.
 > 
-> On investigation it looks like that the compiler is silently truncating the
-> return value of drc_pmem_query_stats() from 'long' to 'int', since the
-> variable used to store the return code 'rc' is an 'int'. This
-> truncated value is then returned back as a 'ssize_t' back from
-> perf_stats_show() to 'dev_attr_show()' which thinks of it as a large
-> unsigned number and triggers this warning..
-> 
-> To fix this we update the type of variable 'rc' from 'int' to
-> 'ssize_t' that prevents the compiler from truncating the return value
-> of drc_pmem_query_stats() and returning correct signed value back from
-> perf_stats_show().
-> 
-> Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance
->        stats from PHYP')
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> Reviewed-by: Andrew Murray <andrew.murray@arm.com>
+> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
 > ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> V7:
+>  - Rebase the patch without functionality change.
 > 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index a88a707a608aa..9f00b61676ab9 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -785,7 +785,8 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
->  static ssize_t perf_stats_show(struct device *dev,
->  			       struct device_attribute *attr, char *buf)
->  {
-> -	int index, rc;
-> +	int index;
-> +	ssize_t rc;
+>  .../arm64/boot/dts/freescale/fsl-ls1088a.dtsi | 31 +++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
+> index 169f4742ae3b..915592141f1b 100644
+> --- a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
+> @@ -499,6 +499,17 @@
+>  			status = "disabled";
+>  		};
+>  
+> +		pcie_ep@3400000 {
 
-I'm not sure this is really fixing everything here.
+pci-ep@...
 
-drc_pmem_query_stats() can return negative errno's.  Why are those not checked
-somewhere in perf_stats_show()?
-
-It seems like all this fix is handling is a > 0 return value: 'ret[0]' from
-line 289 in papr_scm.c...  Or something?
-
-Worse yet drc_pmem_query_stats() is returning ssize_t which is a signed value.
-Therefore, it should not be returning -errno.  I'm surprised the static
-checkers did not catch that.
-
-I believe I caught similar errors with a patch series before which did not pay
-attention to variable types.
-
-Please audit this code for these types of errors and ensure you are really
-doing the correct thing when using the sysfs interface.  I'm pretty sure bad
-things will eventually happen (if they are not already) if you return some
-really big number to the sysfs core from *_show().
-
-Ira
-
->  	struct seq_buf s;
->  	struct papr_scm_perf_stat *stat;
->  	struct papr_scm_perf_stats *stats;
+> +			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
+> +			reg = <0x00 0x03400000 0x0 0x00100000
+> +			       0x20 0x00000000 0x8 0x00000000>;
+> +			reg-names = "regs", "addr_space";
+> +			num-ib-windows = <24>;
+> +			num-ob-windows = <128>;
+> +			max-functions = /bits/ 8 <2>;
+> +			status = "disabled";
+> +		};
+> +
+>  		pcie@3500000 {
+>  			compatible = "fsl,ls1088a-pcie";
+>  			reg = <0x00 0x03500000 0x0 0x00100000   /* controller registers */
+> @@ -525,6 +536,16 @@
+>  			status = "disabled";
+>  		};
+>  
+> +		pcie_ep@3500000 {
+> +			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
+> +			reg = <0x00 0x03500000 0x0 0x00100000
+> +			       0x28 0x00000000 0x8 0x00000000>;
+> +			reg-names = "regs", "addr_space";
+> +			num-ib-windows = <6>;
+> +			num-ob-windows = <8>;
+> +			status = "disabled";
+> +		};
+> +
+>  		pcie@3600000 {
+>  			compatible = "fsl,ls1088a-pcie";
+>  			reg = <0x00 0x03600000 0x0 0x00100000   /* controller registers */
+> @@ -551,6 +572,16 @@
+>  			status = "disabled";
+>  		};
+>  
+> +		pcie_ep@3600000 {
+> +			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
+> +			reg = <0x00 0x03600000 0x0 0x00100000
+> +			       0x30 0x00000000 0x8 0x00000000>;
+> +			reg-names = "regs", "addr_space";
+> +			num-ib-windows = <6>;
+> +			num-ob-windows = <8>;
+> +			status = "disabled";
+> +		};
+> +
+>  		smmu: iommu@5000000 {
+>  			compatible = "arm,mmu-500";
+>  			reg = <0 0x5000000 0 0x800000>;
 > -- 
-> 2.26.2
+> 2.17.1
 > 
