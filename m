@@ -2,86 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEDD264F19
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 21:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB3C264FA4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 21:47:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnTby1yNyzDqLh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 05:34:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnTv56H4ZzDqhF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 05:47:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::244;
- helo=mail-lj1-x244.google.com; envelope-from=torvalds@linuxfoundation.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=gkhGKJWF; 
- dkim-atps=neutral
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=eC6xHFZe; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnTYT2dgWzDqgZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 05:32:28 +1000 (AEST)
-Received: by mail-lj1-x244.google.com with SMTP id a15so9752889ljk.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 12:32:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=nTbGWidANXm2pjjCI9iaMQBY/df45EdumvXop+9a4ao=;
- b=gkhGKJWFcLTHyB5x5aFfN6rnXH8dCRqQWjJKd9NZmHZK/NC/oX0q6HVDmBmeekhRv6
- GTPYMsgUuX5KTeHU91CyIJtiMizZNYrRnX9QG0ENhdKweAOaB0W4mGxVSrji+PC28UP6
- VshPJp7YLq+DwXcjz/A/kXWDuc/ae+MhCxRmA=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnTrw4VxXzDqVj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 05:45:50 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id s65so3771930pgb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 12:45:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=kT3st5L2W/yGrskNA7hV4WTKcp+VzTZ5Pgaqe30vqT8=;
+ b=eC6xHFZebGzDOu2iJFlC4sYhGBsPBPtk9a7oklICzLNlEMzSAdGnasLCc1rhvVduzw
+ WWGkAB927UqclP1++HPY0zndFIqCAsSEoCB33GsJW1zgx9zdnqi9fNwkG+wGtFEr+T3z
+ bUYjH1Oc2jBMRnj0f0FQ3tH0tHQIOzzYF+914=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=nTbGWidANXm2pjjCI9iaMQBY/df45EdumvXop+9a4ao=;
- b=uTR7rYBRenAXlyvnE/tYCCTuYsHjhO9Y3wiONV0mp5ePE/9toCsGBAhQvAqQXibg78
- aTPYKvz4AIL+LNZisEx4gs0mgjhvhFvUt+d6vRo58BcPWlUZRwFqkjL6KdtwTw4CO+GS
- 2QugB/L8wnL/3Cevs8OPoWDeAHPjqk7WBfUSCkeheFbyoAoCYm1wYW2z8m3utJKsQBYU
- yFDRmw17f7FLGeqnLKTRxejjS8oBEn+PUJYfw2gLbleOk1js1QIoeRf1K6QQAzaOkrmJ
- qlox12ElDMt9wHo+6QwMXa2zuDw0AeobI39iVY/OlRxtY3C0mhmSGT2d578xME26Msjg
- 17tQ==
-X-Gm-Message-State: AOAM532hDm0PkSGPLEDeVrJjHkkgZ0p72ZoueFN57myXjHaM0iyK+ODv
- KN7W2ufHG+vvjG1DYJrBzcxXKNSjoCjApA==
-X-Google-Smtp-Source: ABdhPJwTTGqkGP3NKZWawC9wqhGlC4qK4tgh2dGXEsqPvVuzjkcbAQvW9KpzDwq3ngvuprgBze8NCQ==
-X-Received: by 2002:a2e:8e71:: with SMTP id t17mr3539470ljk.413.1599766344908; 
- Thu, 10 Sep 2020 12:32:24 -0700 (PDT)
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com.
- [209.85.208.175])
- by smtp.gmail.com with ESMTPSA id i63sm1821318lji.66.2020.09.10.12.32.22
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Sep 2020 12:32:23 -0700 (PDT)
-Received: by mail-lj1-f175.google.com with SMTP id k25so9661330ljg.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 12:32:22 -0700 (PDT)
-X-Received: by 2002:a2e:7819:: with SMTP id t25mr5043564ljc.371.1599766341582; 
- Thu, 10 Sep 2020 12:32:21 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=kT3st5L2W/yGrskNA7hV4WTKcp+VzTZ5Pgaqe30vqT8=;
+ b=pU4ey+h76ctooDly6MkcygZOIo8Q06yPte7ULka2+wxlHLyqRmt2+Lu18xrUp85F3d
+ 2c0FoJTjWPifRV4eyLdZtNkQFHBD6buFDU4mV9KcaOqr3gZ/6vZhPZpiuU66wf30hixn
+ Igah2cxq1v6POGVeKTMs2cbJhHVAxrHUCGyg+GnGAHnJ3rEukJa5G+uU83L9dE94V0Uq
+ PjzwfT1fhvbUjF7td0UT+Dl6ymcYheDVjFuB2EiYUeRjJooNQW6nnZTJ+UbOWQroNTZd
+ X4b0cX+OT65m9q3vZiTPCM2blgA1ZTQynsmsT/6fIbMeYaTUgKJm5tg0CKIvdpogMbH3
+ Ypkg==
+X-Gm-Message-State: AOAM531B+nmtf//1icQTrEmQFqbGFaokRBSDG4rimxdsuDXlEu3P4Qff
+ 0UZe7k5VtnJ/W3IktHBSyPRDVA==
+X-Google-Smtp-Source: ABdhPJwWpKs77i2Pw4YhFhAT5cZe6s0qx17kIVE+as0BWVJNc55TKLnEBagdP5cQWEjWPugWxrbACw==
+X-Received: by 2002:aa7:858e:: with SMTP id w14mr2753410pfn.95.1599767146631; 
+ Thu, 10 Sep 2020 12:45:46 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id l79sm2905776pfd.210.2020.09.10.12.45.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Sep 2020 12:45:45 -0700 (PDT)
+Date: Thu, 10 Sep 2020 12:45:44 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] kbuild: preprocess module linker script
+Message-ID: <202009101245.493610D05@keescook>
+References: <20200904133122.133071-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
- <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
- <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
- <20200909142904.00b72921@thinkpad>
- <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad> <20200909180324.GI87483@ziepe.ca>
- <20200910093925.GB29166@oc3871087118.ibm.com>
- <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
- <20200910181319.GO87483@ziepe.ca>
- <CAHk-=wh3SjOE2r4WCfagL5Zq4Oj4Jsu1=1jTTi2GxGDTxP-J0Q@mail.gmail.com>
- <20200910211010.46d064a7@thinkpad>
-In-Reply-To: <20200910211010.46d064a7@thinkpad>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 10 Sep 2020 12:32:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
-Message-ID: <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
- folding
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200904133122.133071-1-masahiroy@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,67 +75,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@ziepe.ca>,
- Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>, Heiko Carstens <hca@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, John Hubbard <jhubbard@nvidia.com>,
- Jeff Dike <jdike@addtoit.com>, linux-um <linux-um@lists.infradead.org>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linux-arm <linux-arm-kernel@lists.infradead.org>,
- linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-power <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-ia64@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Paul Mackerras <paulus@samba.org>, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-arch@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Fenghua Yu <fenghua.yu@intel.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
+ linux-kbuild@vger.kernel.org, Jeff Dike <jdike@addtoit.com>,
+ linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+ Michal Marek <michal.lkml@markovi.net>,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Jessica Yu <jeyu@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 10, 2020 at 12:11 PM Gerald Schaefer
-<gerald.schaefer@linux.ibm.com> wrote:
->
-> That sounds a lot like the pXd_offset_orig() from Martins first approach
-> in this thread:
-> https://lore.kernel.org/linuxppc-dev/20190418100218.0a4afd51@mschwideX1/
+On Fri, Sep 04, 2020 at 10:31:21PM +0900, Masahiro Yamada wrote:
+> There was a request to preprocess the module linker script like we do
+> for the vmlinux one (https://lkml.org/lkml/2020/8/21/512).
+> 
+> The difference between vmlinux.lds and module.lds is that the latter
+> is needed for external module builds, thus must be cleaned up by
+> 'make mrproper' instead of 'make clean' (also, it must be created by
+> 'make modules_prepare').
+> 
+> You cannot put it in arch/*/kernel/ because 'make clean' descends into
+> it. I moved arch/*/kernel/module.lds to arch/*/include/asm/module.lds.h,
+> which is included from scripts/module.lds.S.
+> 
+> scripts/module.lds is fine because 'make clean' keeps all the build
+> artifacts under scripts/.
+> 
+> You can add arch-specific sections in <asm/module.lds.h>.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-I have to admit to finding that name horrible, but aside from that, yes.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-I don't think "pXd_offset_orig()" makes any sense as a name. Yes,
-"orig" may make sense as the variable name (as in "this was the
-original value we read"), but a function name should describe what it
-*does*, not what the arguments are.
-
-Plus "original" doesn't make sense to me anyway, since we're not
-modifying it. To me, "original" means that there's a final version
-too, which this interface in no way implies. It's just "this is the
-value we already read".
-
-("orig" does make some sense in that fault path - because by
-definition we *are* going to modify the page table entry, that's the
-whole point of the fault - we need to do something to not keep
-faulting. But here, we're not at all necessarily modifying the page
-table contents, we're just following them and readign the values once)
-
-Of course, I don't know what a better name would be to describe what
-is actually going on, I'm just explaining why I hate that naming.
-
-*Maybe* something like just "pXd_offset_value()" together with a
-comment explaining that it's given the upper pXd pointer _and_ the
-value behind it, and it needs to return the next level offset? I
-dunno. "value" doesn't really seem horribly descriptive either, but at
-least it doesn't feel actively misleading to me.
-
-Yeah, I get hung up on naming sometimes. I don't tend to care much
-about private local variables ("i" is a perfectly fine variable name),
-but these kinds of somewhat subtle cross-architecture definitions I
-feel matter.
-
-               Linus
+-- 
+Kees Cook
