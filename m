@@ -2,47 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416C9263979
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 03:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87245263981
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 03:23:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bn1Bw56BJzDqLj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 11:14:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bn1NQ3d10zDqYp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 11:23:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bn19K2cc6zDqXt
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 11:13:21 +1000 (AEST)
-IronPort-SDR: wMYclO/VlMWJN2VTNIwgFGgjRT70+WetxA/zRpPjN4Fbocdu1KIZdvGrGpP6EaS9O5/TJdusak
- RuwJuBAeTWDw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9739"; a="176513164"
-X-IronPort-AV: E=Sophos;i="5.76,411,1592895600"; d="scan'208";a="176513164"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bn1JD5V6fzDqY0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 11:19:24 +1000 (AEST)
+IronPort-SDR: /t7+dNFlb5BS4rM+yNxxzvRR6N7hufE2QhTIjxPSfflVcvEpJG0INoyeJAlGI1FPTQHcoZacWB
+ otYtgHgGIyuA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9739"; a="157732226"
+X-IronPort-AV: E=Sophos;i="5.76,411,1592895600"; d="scan'208";a="157732226"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2020 18:13:17 -0700
-IronPort-SDR: Y7/QEnxt3Q2iBuJwRNxIfuZGLdRP8u2kpchZFwMAZ61zpTy8naMcl3uUcFciSj8WT+2aKOLzBl
- 7ojB/B/kzEug==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2020 18:19:22 -0700
+IronPort-SDR: tOGzuj49fmjgpuYcc3sjtH7dBpw4Z402OzU10VgDAGVhwTvidfIMZjIYd6NN7Ik9lrVVe/5jot
+ VP8kEanRtZGg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,411,1592895600"; d="scan'208";a="449408825"
+X-IronPort-AV: E=Sophos;i="5.76,411,1592895600"; d="scan'208";a="334007949"
 Received: from lkp-server01.sh.intel.com (HELO 12ff3cf3f2e9) ([10.239.97.150])
- by orsmga004.jf.intel.com with ESMTP; 09 Sep 2020 18:13:16 -0700
+ by orsmga008.jf.intel.com with ESMTP; 09 Sep 2020 18:19:20 -0700
 Received: from kbuild by 12ff3cf3f2e9 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1kGB9H-0000fE-GJ; Thu, 10 Sep 2020 01:13:15 +0000
-Date: Thu, 10 Sep 2020 09:12:39 +0800
+ id 1kGBF9-0000fa-UH; Thu, 10 Sep 2020 01:19:19 +0000
+Date: Thu, 10 Sep 2020 09:18:48 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 0460534b532e5518c657c7d6492b9337d975eaa3
-Message-ID: <5f597d87.uPMi574R05d1eSIh%lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS 4b552a4cbf286ff9dcdab19153f3c1c7d1680fab
+Message-ID: <5f597ef8.bn/zMFSfzR+K/1PQ%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -63,13 +62,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes-test
-branch HEAD: 0460534b532e5518c657c7d6492b9337d975eaa3  powerpc/papr_scm: Limit the readability of 'perf_stats' sysfs attribute
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 4b552a4cbf286ff9dcdab19153f3c1c7d1680fab  Automatic merge of 'master', 'next' and 'fixes' (2020-09-09 22:40)
 
-elapsed time: 721m
+elapsed time: 726m
 
-configs tested: 159
-configs skipped: 22
+configs tested: 129
+configs skipped: 11
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -80,17 +79,15 @@ arm64                            allyesconfig
 arm64                               defconfig
 arm                              allyesconfig
 arm                              allmodconfig
-mips                malta_kvm_guest_defconfig
-mips                         db1xxx_defconfig
-mips                          rm200_defconfig
-arm                        vexpress_defconfig
-mips                         tb0226_defconfig
-mips                      maltasmvp_defconfig
+arm                            zeus_defconfig
+powerpc                 linkstation_defconfig
+sparc64                             defconfig
 h8300                       h8s-sim_defconfig
 mips                      fuloong2e_defconfig
 sh                         apsh4a3a_defconfig
 arm                      footbridge_defconfig
 sh                         ecovec24_defconfig
+mips                malta_kvm_guest_defconfig
 sh                            shmin_defconfig
 powerpc                        cell_defconfig
 powerpc                     powernv_defconfig
@@ -102,70 +99,43 @@ mips                           mtx1_defconfig
 sh                          r7785rp_defconfig
 arc                           tb10x_defconfig
 arm                        spear3xx_defconfig
-i386                             allyesconfig
 arm                           sama5_defconfig
 arm                       netwinder_defconfig
 microblaze                      mmu_defconfig
 sh                           se7721_defconfig
-arm                       imx_v4_v5_defconfig
-mips                       lemote2f_defconfig
-arc                              allyesconfig
-h8300                               defconfig
-mips                      loongson3_defconfig
-sh                           se7750_defconfig
-xtensa                    xip_kc705_defconfig
-m68k                       bvme6000_defconfig
 arm                         lpc18xx_defconfig
 mips                           jazz_defconfig
 m68k                       m5249evb_defconfig
 parisc                generic-32bit_defconfig
 arm                         assabet_defconfig
 arm                            dove_defconfig
-mips                         bigsur_defconfig
-mips                     cu1000-neo_defconfig
-arm                          pxa910_defconfig
-openrisc                         alldefconfig
-c6x                         dsk6455_defconfig
-mips                 decstation_r4k_defconfig
-mips                  maltasmvp_eva_defconfig
-sh                            titan_defconfig
-mips                        vocore2_defconfig
-arm                         cm_x300_defconfig
-sh                ecovec24-romimage_defconfig
-csky                                defconfig
-i386                                defconfig
-arm                    vt8500_v6_v7_defconfig
-arm                  colibri_pxa300_defconfig
-xtensa                generic_kc705_defconfig
-arm                         s3c2410_defconfig
-um                            kunit_defconfig
-sh                          polaris_defconfig
-m68k                        mvme16x_defconfig
-c6x                              allyesconfig
-openrisc                 simple_smp_defconfig
-arm                        shmobile_defconfig
-arm64                            alldefconfig
-mips                           rs90_defconfig
-mips                          ath25_defconfig
+arc                          axs101_defconfig
+mips                       bmips_be_defconfig
+powerpc                     mpc83xx_defconfig
+m68k                           sun3_defconfig
+powerpc                     mpc512x_defconfig
+sh                        sh7757lcr_defconfig
+s390                             allyesconfig
+arm                        cerfcube_defconfig
+sh                             shx3_defconfig
 arm                        clps711x_defconfig
 arc                        vdk_hs38_defconfig
-sh                               alldefconfig
-powerpc                     ep8248e_defconfig
-sh                              ul2_defconfig
-m68k                          multi_defconfig
-arm                         nhk8815_defconfig
-alpha                               defconfig
+openrisc                         alldefconfig
+sh                         ap325rxa_defconfig
+arm                        mvebu_v7_defconfig
+arm                       spear13xx_defconfig
+openrisc                 simple_smp_defconfig
+arm                          collie_defconfig
+sh                           se7750_defconfig
+arm                         hackkit_defconfig
+arm                          gemini_defconfig
+sh                         microdev_defconfig
+arm                          ixp4xx_defconfig
 sh                          landisk_defconfig
 arc                     haps_hs_smp_defconfig
 arm                           tegra_defconfig
-powerpc                      chrp32_defconfig
-arm                           corgi_defconfig
-sh                           se7780_defconfig
-x86_64                           alldefconfig
-arc                        nsim_700_defconfig
-arm                        multi_v7_defconfig
-arm                      jornada720_defconfig
 sh                           se7206_defconfig
+xtensa                    xip_kc705_defconfig
 mips                          rb532_defconfig
 ia64                             allmodconfig
 ia64                                defconfig
@@ -174,20 +144,25 @@ m68k                                defconfig
 m68k                             allyesconfig
 m68k                             allmodconfig
 nios2                               defconfig
+arc                              allyesconfig
 nds32                             allnoconfig
+c6x                              allyesconfig
 nds32                               defconfig
 nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
 alpha                            allyesconfig
 xtensa                           allyesconfig
 h8300                            allyesconfig
 arc                                 defconfig
 sh                               allmodconfig
 parisc                              defconfig
-s390                             allyesconfig
 parisc                           allyesconfig
 s390                                defconfig
+i386                             allyesconfig
 sparc                            allyesconfig
 sparc                               defconfig
+i386                                defconfig
 mips                             allyesconfig
 mips                             allmodconfig
 powerpc                             defconfig
@@ -212,12 +187,6 @@ i386                 randconfig-a011-20200909
 i386                 randconfig-a013-20200909
 i386                 randconfig-a014-20200909
 i386                 randconfig-a012-20200909
-x86_64               randconfig-a004-20200910
-x86_64               randconfig-a006-20200910
-x86_64               randconfig-a003-20200910
-x86_64               randconfig-a002-20200910
-x86_64               randconfig-a005-20200910
-x86_64               randconfig-a001-20200910
 riscv                            allyesconfig
 riscv                             allnoconfig
 riscv                               defconfig
