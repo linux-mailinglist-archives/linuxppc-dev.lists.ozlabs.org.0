@@ -1,62 +1,108 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDE7264A51
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 18:52:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716BF264ABD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Sep 2020 19:10:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnQ0K0cCZzDqh2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 02:52:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnQPr2q47zDqB3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 03:10:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.68; helo=mail-io1-f68.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-io1-f68.google.com (mail-io1-f68.google.com
- [209.85.166.68])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=EYBhJJNU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnPvh3M0VzDqg7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 02:47:57 +1000 (AEST)
-Received: by mail-io1-f68.google.com with SMTP id r9so7858900ioa.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 09:47:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=8fGVKyujTXfspLo9JJxZPzvPko08bc51xw+f5J3oCdk=;
- b=mv10p6Un4d5HghKK0DdOvkrZjIT54p5b0+6DJ+NXBSktCPhbPdZs0bGdbN7vjG7QA0
- ATwQOhGKEiL1GNn1AqAD1panjspoFzaADxLp6PVItFteHrsJdPI+YyYjP0JX0w4i5x0G
- aEwMUyoPYJdlTBHYljAqhTBNYvPpGfFIC8xF4+P5oMJA7/qPGjcknHOHi7WTfMyidKDU
- /Rv5r8mxfu3B84GyxKVd3pUQRombnGCIY7NrKivK7WWmyjbTf7sbsjfeFNxEmKVH+Ufb
- qfTuUodpmEmyEpV/pmu7WLALOR+UMlhw2+OKd5ree7uW57Sztfj4piCm+8UlBUirsMbl
- IA7Q==
-X-Gm-Message-State: AOAM530wnvswqWXqIGNviea7vbfz0pO0SompP69vx6zZok2wxCa+PvzB
- zJV+9tdAl75F0JIcWiritg==
-X-Google-Smtp-Source: ABdhPJwkuwX0aPaAkSbWdGm7o1Ri1aLdjcJ5kGgtZ1S+LH4iKuSnnyuKFwKcAm7mIz2wxQQQ1TSTTg==
-X-Received: by 2002:a5d:8245:: with SMTP id n5mr2399112ioo.149.1599756474870; 
- Thu, 10 Sep 2020 09:47:54 -0700 (PDT)
-Received: from xps15 ([64.188.179.251])
- by smtp.gmail.com with ESMTPSA id d23sm3039062ioh.22.2020.09.10.09.47.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Sep 2020 09:47:53 -0700 (PDT)
-Received: (nullmailer pid 505061 invoked by uid 1000);
- Thu, 10 Sep 2020 16:47:51 -0000
-Date: Thu, 10 Sep 2020 10:47:51 -0600
-From: Rob Herring <robh@kernel.org>
-To: Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
-Subject: Re: [PATCHv7 10/12] arm64: dts: layerscape: Add PCIe EP node for
- ls1088a
-Message-ID: <20200910164751.GA501845@bogus>
-References: <20200811095441.7636-1-Zhiqiang.Hou@nxp.com>
- <20200811095441.7636-11-Zhiqiang.Hou@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnQMm3T9MzDqgF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 03:08:51 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08AH5DM2116839; Thu, 10 Sep 2020 13:08:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=qilzlS56H4QvuSWRp/oOCj8An/EyVcbeh6b059Wu1Uw=;
+ b=EYBhJJNU5006w3JWzXMvr6IDwOyibiam9QzfW13xlknHHkRr+aIWIng7UFmS6bOotzDb
+ 5lfmVi8OcQs5qrQwFM/p8dfjBliLZmRkvzKuWTkjLiNr4GaxYlRG6vt9bMXLTEzSygCw
+ vckVGWjTm4sFNJuONtYX6eLt9NjVBp4i/TD/P0lr1gOVILDmTMme9Ohaau2bE3L/3i/k
+ lpUCy/pwRXQ7w8KKJBiSAc6NnBHzNDLBHDTJfNoLkcqEJNvwaohOnF3helbYWNGo2ml4
+ epxy54qQiIclEE373bqTgka/jcK0fo1+41jOe3UuF/q6UGFmpAb2SUHZTApN7fFiAZdp rQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33fr31r7yt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Sep 2020 13:08:08 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08AH6CMB119744;
+ Thu, 10 Sep 2020 13:08:06 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33fr31r7xj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Sep 2020 13:08:06 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08AGwMEF016155;
+ Thu, 10 Sep 2020 17:08:03 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 33f91w8ftk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Sep 2020 17:08:03 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08AH80PM25428362
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Sep 2020 17:08:00 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 88F2442047;
+ Thu, 10 Sep 2020 17:08:00 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3171B4203F;
+ Thu, 10 Sep 2020 17:07:59 +0000 (GMT)
+Received: from thinkpad (unknown [9.171.93.242])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 10 Sep 2020 17:07:59 +0000 (GMT)
+Date: Thu, 10 Sep 2020 19:07:57 +0200
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
+ folding
+Message-ID: <20200910190757.153319d4@thinkpad>
+In-Reply-To: <20200910151026.GL87483@ziepe.ca>
+References: <20200907180058.64880-1-gerald.schaefer@linux.ibm.com>
+ <20200907180058.64880-2-gerald.schaefer@linux.ibm.com>
+ <0dbc6ec8-45ea-0853-4856-2bc1e661a5a5@intel.com>
+ <20200909142904.00b72921@thinkpad>
+ <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
+ <20200909192534.442f8984@thinkpad>
+ <20200909180324.GI87483@ziepe.ca>
+ <20200910093925.GB29166@oc3871087118.ibm.com>
+ <20200910130233.GK87483@ziepe.ca>
+ <20200910152803.1a930afc@thinkpad>
+ <20200910151026.GL87483@ziepe.ca>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200811095441.7636-11-Zhiqiang.Hou@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-10_05:2020-09-10,
+ 2020-09-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ bulkscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
+ impostorscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009100157
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,91 +114,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, lorenzo.pieralisi@arm.com,
- Xiaowei Bao <xiaowei.bao@nxp.com>, roy.zang@nxp.com, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com, minghuan.Lian@nxp.com,
- jingoohan1@gmail.com, andrew.murray@arm.com, mingkai.hu@nxp.com,
- gustavo.pimentel@synopsys.com, bhelgaas@google.com, shawnguo@kernel.org,
- kishon@ti.com, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
+ John Hubbard <jhubbard@nvidia.com>, Jeff Dike <jdike@addtoit.com>,
+ linux-um <linux-um@lists.infradead.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm <linux-arm-kernel@lists.infradead.org>,
+ linux-mm <linux-mm@kvack.org>, linux-power <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 11, 2020 at 05:54:39PM +0800, Zhiqiang Hou wrote:
-> From: Xiaowei Bao <xiaowei.bao@nxp.com>
-> 
-> Add PCIe EP node for ls1088a to support EP mode.
-> 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Reviewed-by: Andrew Murray <andrew.murray@arm.com>
-> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> ---
-> V7:
->  - Rebase the patch without functionality change.
-> 
->  .../arm64/boot/dts/freescale/fsl-ls1088a.dtsi | 31 +++++++++++++++++++
->  1 file changed, 31 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-> index 169f4742ae3b..915592141f1b 100644
-> --- a/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi
-> @@ -499,6 +499,17 @@
->  			status = "disabled";
->  		};
->  
-> +		pcie_ep@3400000 {
+On Thu, 10 Sep 2020 12:10:26 -0300
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
-pci-ep@...
-
-> +			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
-> +			reg = <0x00 0x03400000 0x0 0x00100000
-> +			       0x20 0x00000000 0x8 0x00000000>;
-> +			reg-names = "regs", "addr_space";
-> +			num-ib-windows = <24>;
-> +			num-ob-windows = <128>;
-> +			max-functions = /bits/ 8 <2>;
-> +			status = "disabled";
-> +		};
-> +
->  		pcie@3500000 {
->  			compatible = "fsl,ls1088a-pcie";
->  			reg = <0x00 0x03500000 0x0 0x00100000   /* controller registers */
-> @@ -525,6 +536,16 @@
->  			status = "disabled";
->  		};
->  
-> +		pcie_ep@3500000 {
-> +			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
-> +			reg = <0x00 0x03500000 0x0 0x00100000
-> +			       0x28 0x00000000 0x8 0x00000000>;
-> +			reg-names = "regs", "addr_space";
-> +			num-ib-windows = <6>;
-> +			num-ob-windows = <8>;
-> +			status = "disabled";
-> +		};
-> +
->  		pcie@3600000 {
->  			compatible = "fsl,ls1088a-pcie";
->  			reg = <0x00 0x03600000 0x0 0x00100000   /* controller registers */
-> @@ -551,6 +572,16 @@
->  			status = "disabled";
->  		};
->  
-> +		pcie_ep@3600000 {
-> +			compatible = "fsl,ls1088a-pcie-ep","fsl,ls-pcie-ep";
-> +			reg = <0x00 0x03600000 0x0 0x00100000
-> +			       0x30 0x00000000 0x8 0x00000000>;
-> +			reg-names = "regs", "addr_space";
-> +			num-ib-windows = <6>;
-> +			num-ob-windows = <8>;
-> +			status = "disabled";
-> +		};
-> +
->  		smmu: iommu@5000000 {
->  			compatible = "arm,mmu-500";
->  			reg = <0 0x5000000 0 0x800000>;
-> -- 
-> 2.17.1
+> On Thu, Sep 10, 2020 at 03:28:03PM +0200, Gerald Schaefer wrote:
+> > On Thu, 10 Sep 2020 10:02:33 -0300
+> > Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> >   
+> > > On Thu, Sep 10, 2020 at 11:39:25AM +0200, Alexander Gordeev wrote:
+> > >   
+> > > > As Gerald mentioned, it is very difficult to explain in a clear way.
+> > > > Hopefully, one could make sense ot of it.    
+> > > 
+> > > I would say the page table API requires this invariant:
+> > > 
+> > >         pud = pud_offset(p4d, addr);
+> > >         do {
+> > > 		WARN_ON(pud != pud_offset(p4d, addr);
+> > >                 next = pud_addr_end(addr, end);
+> > >         } while (pud++, addr = next, addr != end);
+> > > 
+> > > ie pud++ is supposed to be a shortcut for 
+> > >   pud_offset(p4d, next)
+> > > 
+> > > While S390 does not follow this. Fixing addr_end brings it into
+> > > alignment by preventing pud++ from happening.
+> > > 
+> > > The only currently known side effect is that gup_fast crashes, but it
+> > > sure is an unexpected thing.  
+> > 
+> > It only is unexpected in a "top-level folding" world, see my other reply.
+> > Consider it an optimization, which was possible because of how our dynamic
+> > folding works, and e.g. because we can determine the correct pagetable
+> > level from a pXd value in pXd_offset.  
 > 
+> No, I disagree. The page walker API the arch presents has to have well
+> defined semantics. For instance, there is an effort to define tests
+> and invarients for the page table accesses to bring this understanding
+> and uniformity:
+> 
+>  mm/debug_vm_pgtable.c
+> 
+> If we fix S390 using the pX_addr_end() change then the above should be
+> updated with an invariant to check it. I've added Anshuman for some
+> thoughts..
+
+We are very aware of those tests, and actually a big supporter of the
+idea. Also part of the supported architectures already, and it has
+already helped us find / fix some s390 oddities.
+
+However, we did not see any issues wrt to our pagetable walking,
+neither with the current version, nor with the new generic approach.
+We do currently see other issues, Anshuman will know what I mean :-)
+
+> For better or worse, that invariant does exclude arches from using
+> other folding techniques.
+> 
+> The other solution would be to address the other side of != and adjust
+> the pud++
+> 
+> eg replcae pud++ with something like:
+>   pud = pud_next_entry(p4d, pud, next)
+> 
+> Such that:
+>   pud_next_entry(p4d, pud, next) === pud_offset(p4d, next)
+> 
+> In which case the invarient changes to 'callers can never do pointer
+> arithmetic on the result of pXX_offset()' which is a bit harder to
+> enforce.
+
+I might have lost track a bit. Are we still talking about possible
+functional impacts of either our current pagetable walking with s390
+(apart from gup_fast), or the proposed generic change (for s390, or
+others?)?
+
+Or is this rather some (other) generic issue / idea that you have,
+in order to put "some more structure / enforcement" to generic
+pagetable walkers?
