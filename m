@@ -1,101 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3AE2669EB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 23:12:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40423266A11
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 23:30:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp7jn5rJ4zDqw6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 07:11:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp87Z6xK1zDqcD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 07:30:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp7gL5P00zDqfy
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 07:09:50 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=G+4oRrpy; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4Bp7gL3lJwz8tVZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 07:09:50 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4Bp7gL35b9z9sVB; Sat, 12 Sep 2020 07:09:50 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::642;
- helo=mail-ej1-x642.google.com; envelope-from=chunkeey@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=G+4oRrpy; dkim-atps=neutral
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
- [IPv6:2a00:1450:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Te3PZ0h7; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4Bp7gL0YGkz9sTR
- for <linuxppc-dev@ozlabs.org>; Sat, 12 Sep 2020 07:09:49 +1000 (AEST)
-Received: by mail-ej1-x642.google.com with SMTP id q13so15471993ejo.9
- for <linuxppc-dev@ozlabs.org>; Fri, 11 Sep 2020 14:09:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:from:to:cc:references:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=PW6gwlYrQ/xJZVS5FNz7Gn291YO1xYiazPQYuv0PJIg=;
- b=G+4oRrpy7gRtKijz7nt5srMuTxBp9f+vEefiMIe1AT+TK4aZ/BIEFj8PhgznoW4z63
- r3W6Plj29EVvSQawkW883cqzNvDR3LFABovod6T/VKpPYa006uQBTzse3c71+9PVNcIC
- 67qwrLfcAbA03xW6tUOrAnXrayUCk88eYCFR9SiPEBJD69TG5/Tb/IfFQn2nuoSDERch
- f4Y3dvQ0FW4+wwQfuoNPO4MtRz2i88NzKgbESJGno3rHHId48usOn6Oxrimbmh530HTv
- 1p7ajRbhzwhkW2omSaCqUy9W72dYwM2XNJXBOVDidt/dMaKaulxBRb2m8K82L3A6lBy3
- oG4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:from:to:cc:references:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=PW6gwlYrQ/xJZVS5FNz7Gn291YO1xYiazPQYuv0PJIg=;
- b=ENW38Xse2egwEQYqHCDvIoNUYuiXJOngyedDP3DFMEEuhmJaitkRqoXuOjevsG/9df
- 2cddCLdsUt9E2Ihqk5aowypM0m0F1DPtcdxJnRUZ/4cYCh449ekAd2mHk1aCZ32WkYP/
- ++O4sooW1k3txLc4Otn94znqB0RmCvdC7LXdcySudXXi2vcDGmTtFcgjPWBTExOo/z12
- 9+56djXEzb+OVJIm+8OK61uTrKMHSADq+2EMLhZl3GME9+QnUYxiGJ7tNiTAo1N72/yk
- upPAMIQIQ0MtLSpNMXTj1k1PAq5sM2+Woj42Mph9Jc3zFW6LsMSaS+q+F4jul8U6ey2W
- eTIw==
-X-Gm-Message-State: AOAM532IsVMao9f57G9jYVa4/ikkCw8oNmJdm+lTOFfa2aR8SdubSxDv
- /2GIcEDclXFxNj29KbINzaQ=
-X-Google-Smtp-Source: ABdhPJwCoJaePEJl9mjXG2eltyOjIDRiURjsQEPhgmsa1KXcb4qyx44kaxThS8J6+r5H6ywDhbLWeA==
-X-Received: by 2002:a17:906:1c4f:: with SMTP id
- l15mr3744630ejg.419.1599858585024; 
- Fri, 11 Sep 2020 14:09:45 -0700 (PDT)
-Received: from debian64.daheim (p5b0d78be.dip0.t-ipconnect.de. [91.13.120.190])
- by smtp.gmail.com with ESMTPSA id cn21sm2620204edb.14.2020.09.11.14.09.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Sep 2020 14:09:44 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
- by debian64.daheim with esmtp (Exim 4.94)
- (envelope-from <chunkeey@gmail.com>)
- id 1kGqIY-001y1t-K3; Fri, 11 Sep 2020 23:09:34 +0200
-Subject: Re: [PATCH] powerpc/boot/dts: Fix dtc "pciex" warnings
-From: Christian Lamparter <chunkeey@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20200623130320.405852-1-mpe@ellerman.id.au>
- <d2652e63-b136-a805-fd6d-00584b64c772@gmail.com>
- <87mu20spxd.fsf@mpe.ellerman.id.au>
- <CAAd0S9Cc2M+JsqC+3DhLtaQEecweVX-toC2SxNAzNdogFeeTOw@mail.gmail.com>
-Message-ID: <c141ab78-d28f-6682-6831-3278718aab4b@gmail.com>
-Date: Fri, 11 Sep 2020 23:09:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <CAAd0S9Cc2M+JsqC+3DhLtaQEecweVX-toC2SxNAzNdogFeeTOw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: de-DE
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp85L5qGqzDqtd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 07:28:48 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08BL2CYg083121; Fri, 11 Sep 2020 17:28:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=JHRUpoDv4uORlvEHFrHdwSDNyztSjz++rqLWmVXj2Nc=;
+ b=Te3PZ0h7fyIVNDc2WVxVbD46rbKyv4MLm86I4tv7e/stStmv7iH2V0mOmsX4VHSm7NDS
+ eaVP8pZen3AJd7W+c9COePNO4yxmEI4EqehLZiv5lfFwEiMHU9FACayCu2O6HWwk9TSv
+ RL0Yh502gIGxrhejBHIciQY/y4DGStLPr7KTi7KZ6S7qEq4vODcWyTi1/Z4a1wfJHf/I
+ 8UkTr91i3GUYQsCfio/qA6CJUCYkWP4K457hqkmu3zNy4aypLgNdiAsQeJbjWVBjkmNR
+ FwnGxXZj7MyzJe04pOk/yqt78l7PrkamTTLLdfAJ9906n4DoHKVtxPGtxLRggsb43iuF dg== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33ggp5rqvb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Sep 2020 17:28:46 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08BLRFKd011339;
+ Fri, 11 Sep 2020 21:28:44 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03wdc.us.ibm.com with ESMTP id 33cebvf223-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Sep 2020 21:28:44 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08BLSiPL53543264
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Sep 2020 21:28:44 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FB9CAE05C;
+ Fri, 11 Sep 2020 21:28:44 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1AE5AE060;
+ Fri, 11 Sep 2020 21:28:43 +0000 (GMT)
+Received: from oc6034535106.ibm.com (unknown [9.65.206.179])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 11 Sep 2020 21:28:43 +0000 (GMT)
+From: Brian King <brking@linux.vnet.ibm.com>
+To: linux-scsi@vger.kernel.org
+Subject: [PATCH] ibmvfc: Avoid link down on FS9100 canister reboot
+Date: Fri, 11 Sep 2020 16:28:26 -0500
+Message-Id: <1599859706-8505-1-git-send-email-brking@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-11_10:2020-09-10,
+ 2020-09-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 adultscore=0
+ mlxscore=0 phishscore=0 bulkscore=0 suspectscore=4 malwarescore=0
+ clxscore=1011 impostorscore=0 lowpriorityscore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009110167
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,355 +89,486 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, Chris Blake <chrisrblake93@gmail.com>,
- sfr@canb.auug.org.au
+Cc: Brian King <brking@linux.vnet.ibm.com>, tyreld@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, martin.petersen@oracle.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+When a canister on a FS9100, or similar storage, running in NPIV mode,
+is rebooted, its WWPNs will fail over to another canister. When this
+occurs, we see a WWPN going away from the fabric at one N-Port ID,
+and, a short time later, the same WWPN appears at a different N-Port ID.
+When the canister is fully operational again, the WWPNs fail back to
+the original canister. If there is any I/O outstanding to the target
+when this occurs, it will result in the implicit logout the ibmvfc driver
+issues before removing the rport to fail. When the WWPN then shows up at a
+different N-Port ID, and we issue a PLOGI to it, the VIOS will
+see that it still has a login for this WWPN at the old N-Port ID,
+which results in the VIOS simulating a link down / link up sequence
+to the client, in order to get the VIOS and client LPAR in sync.
 
-On 2020-09-08 20:52, Christian Lamparter wrote:
-> On Tue, Sep 8, 2020 at 9:12 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->> Christian Lamparter <chunkeey@gmail.com> writes:
->>> On 2020-06-23 15:03, Michael Ellerman wrote:
->>>> With CONFIG_OF_ALL_DTBS=y, as set by eg. allmodconfig, we see lots of
->>>> warnings about our dts files, such as:
->>>>
->>>>     arch/powerpc/boot/dts/glacier.dts:492.26-532.5:
->>>>     Warning (pci_bridge): /plb/pciex@d00000000: node name is not "pci"
->>>>     or "pcie"
->>>>
->>>
->>>
->>> Unfortunately yes. This patch will break uboot code in Meraki MX60(W) / MX60.
->>>
->>>   > https://github.com/riptidewave93/meraki-uboot/blob/mx60w-20180413/board/amcc/bluestone/bluestone.c#L1178
->>>
->>> | if (!pci_available()) {
->>> |     fdt_find_and_setprop(blob, "/plb/pciex@d00000000", "status",
->>> |                   "disabled", sizeof("disabled"), 1);
->>> | }
->>>
->>>
->>> Backstory: There are two version of the Meraki MX60. The MX60
->>> and the MX60W. The difference is that the MX60W has a populated
->>> mini-pcie slot on the PCB for a >W<ireless card.
->>>
->>> That said, this is not earth shattering.
->>
->> I'm happy to revert that hunk if you think any one is actually booting
->> mainline on those.
-> 
-> The MX60(W) or APM82181 in general?
-> 
-> The APM82181 devices run really well on the kernel 5.8. The APM82181
-> had some bitrot and missing pieces. But I started at around 4.4 with
-> upstreaming various bits and stuff. For proof, I can post a bootlog from
-> my MyBook Live dev station running my mbl-debian on this weekend:
-> <https://github.com/chunkeey/mbl-debian>.
+The patch below improves the way we handle this scenario so as to
+avoid the link bounce, which affects all targets under the virtual
+host adapter. The change is to utilize the Move Login MAD, which
+will work even when I/O is outstanding to the target. The change
+only alters the target state machine for the case where the implicit
+logout fails prior to deleting the rport. If this implicit logout fails,
+we defer deleting the ibmvfc_target object after calling
+fc_remote_port_delete. This enables us to later retry the implicit logout
+after terminate_rport_io occurs, or to issue the Move Login request if
+a WWPN shows up at a new N-Port ID prior to this occurring.
 
-Here is the MyBook Live's Single Bootlog for 5.9-rc4.
+This has been tested by IBM's storage interoperability team
+on a FS9100, forcing the failover to occur. With debug tracing enabled
+in the ibmvfc driver, we confirmed the move login was sent
+in this scenario and confirmed the link bounce no longer occurred.
 
-root@mbl-debian:~# dmesg
-[    0.000000] printk: bootconsole [udbg0] enabled
-[    0.000000] Linux version 5.9.0-rc4+ (root@debian64) (powerpc-linux-gnu-gcc (Debian 10.2.0-3) 10.2.0, GNU ld (GNU Binutils for Debian) 2.35) #1 Fri Sep 11 22:13:07 CEST 2020
-[    0.000000] Using PowerPC 44x Platform machine description
-[    0.000000] -----------------------------------------------------
-[    0.000000] phys_mem_size     = 0x10000000
-[    0.000000] dcache_bsize      = 0x20
-[    0.000000] icache_bsize      = 0x20
-[    0.000000] cpu_features      = 0x0000000000000120
-[    0.000000]   possible        = 0x0000000040000120
-[    0.000000]   always          = 0x0000000000000020
-[    0.000000] cpu_user_features = 0x8c008000 0x00000000
-[    0.000000] mmu_features      = 0x00000008
-[    0.000000] -----------------------------------------------------
-[    0.000000] Top of RAM: 0x10000000, Total RAM: 0x10000000
-[    0.000000] Memory hole size: 0MB
-[    0.000000] Zone ranges:
-[    0.000000]   Normal   [mem 0x0000000000000000-0x000000000fffffff]
-[    0.000000] Movable zone start for each node
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x0000000000000000-0x000000000fffffff]
-[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x000000000fffffff]
-[    0.000000] On node 0 totalpages: 16384
-[    0.000000]   Normal zone: 40 pages used for memmap
-[    0.000000]   Normal zone: 0 pages reserved
-[    0.000000]   Normal zone: 16384 pages, LIFO batch:3
-[    0.000000] MMU: Allocated 1088 bytes of context maps for 255 contexts
-[    0.000000] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
-[    0.000000] pcpu-alloc: [0] 0
-[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 16344
-[    0.000000] Kernel command line: root=PARTUUID=25a9cfcc-6b0d-4ae4-abbf-e5e2e3889a40 rw console=ttyS0,115200
-[    0.000000] Dentry cache hash table entries: 32768 (order: 3, 131072 bytes, linear)
-[    0.000000] Inode-cache hash table entries: 16384 (order: 2, 65536 bytes, linear)
-[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-[    0.000000] Memory: 252528K/262144K available (5840K kernel code, 448K rwdata, 1824K rodata, 224K init, 312K bss, 9616K reserved, 0K cma-reserved)
-[    0.000000] Kernel virtual memory layout:
-[    0.000000]   * 0xffbdc000..0xffffc000  : fixmap
-[    0.000000]   * 0xd1000000..0xffbdc000  : vmalloc & ioremap
-[    0.000000] random: get_random_u32 called from cache_random_seq_create+0x68/0x128 with crng_init=0
-[    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
-[    0.000000] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
-[    0.000000] UIC0 (32 IRQ sources) at DCR 0xc0
-[    0.000000] UIC1 (32 IRQ sources) at DCR 0xd0
-[    0.000000] UIC2 (32 IRQ sources) at DCR 0xe0
-[    0.000000] UIC3 (32 IRQ sources) at DCR 0xf0
-[    0.000000] time_init: decrementer frequency = 800.000008 MHz
-[    0.000000] time_init: processor frequency   = 800.000008 MHz
-[    0.000016] clocksource: timebase: mask: 0xffffffffffffffff max_cycles: 0xb881274fa3, max_idle_ns: 440795210636 ns
-[    0.008990] clocksource: timebase mult[1400000] shift[24] registered
-[    0.014011] clockevent: decrementer mult[ccccccef] shift[32] cpu[0]
-[    0.019133] Console: colour dummy device 80x25
-[    0.022213] pid_max: default: 32768 minimum: 301
-[    0.025920] Mount-cache hash table entries: 4096 (order: 0, 16384 bytes, linear)
-[    0.031945] Mountpoint-cache hash table entries: 4096 (order: 0, 16384 bytes, linear)
-[    0.040909] devtmpfs: initialized
-[    0.045808] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
-[    0.054182] futex hash table entries: 256 (order: -3, 3072 bytes, linear)
-[    0.060719] NET: Registered protocol family 16
-[    0.067099] DMA: preallocated 128 KiB GFP_KERNEL pool for atomic allocations
-[    0.072996] audit: initializing netlink subsys (disabled)
-[    0.078210] thermal_sys: Registered thermal governor 'step_wise'
-[    0.078219] thermal_sys: Registered thermal governor 'user_space'
-[    0.082970] cpuidle: using governor ladder
-[    0.090429] cpuidle: using governor menu
-[    0.094588] 256k L2-cache enabled
-[    0.096586] PCIE0: Port disabled via device-tree
-[    0.100007] gpiochip_find_base: found new base at 480
-[    0.104395] audit: type=2000 audit(0.040:1): state=initialized audit_enabled=0 res=1
-[    0.113209] gpio gpiochip0: (/plb/opb/gpio@ef600b00): added GPIO chardev (254:0)
-[    0.119316] gpio gpiochip0: registered GPIOs 480 to 511 on /plb/opb/gpio@ef600b00
-[    0.125949] PCI: Probing PCI hardware
-[    5.927343] vgaarb: loaded
-[    5.929112] SCSI subsystem initialized
-[    5.933393] libata version 3.00 loaded.
-[    5.936123] usbcore: registered new interface driver usbfs
-[    5.940272] usbcore: registered new interface driver hub
-[    5.944233] usbcore: registered new device driver usb
-[    5.952187] clocksource: Switched to clocksource timebase
-[    5.956449] VFS: Disk quotas dquot_6.6.0
-[    5.959041] VFS: Dquot-cache hash table entries: 4096 (order 0, 16384 bytes)
-[    5.991157] NET: Registered protocol family 2
-[    5.994695] tcp_listen_portaddr_hash hash table entries: 2048 (order: 0, 16384 bytes, linear)
-[    6.001871] TCP established hash table entries: 4096 (order: 0, 16384 bytes, linear)
-[    6.008246] TCP bind hash table entries: 4096 (order: 0, 16384 bytes, linear)
-[    6.014029] TCP: Hash tables configured (established 4096 bind 4096)
-[    6.019190] MPTCP token hash table entries: 2048 (order: 0, 24576 bytes, linear)
-[    6.025300] UDP hash table entries: 1024 (order: 0, 16384 bytes, linear)
-[    6.030653] UDP-Lite hash table entries: 1024 (order: 0, 16384 bytes, linear)
-[    6.036615] NET: Registered protocol family 1
-[    6.041688] RPC: Registered named UNIX socket transport module.
-[    6.046236] RPC: Registered udp transport module.
-[    6.049577] RPC: Registered tcp transport module.
-[    6.052947] RPC: Registered tcp NFSv4.1 backchannel transport module.
-[    6.058052] NET: Registered protocol family 44
-[    6.061166] PCI: CLS 0 bytes, default 32
-[    6.085333] reg-fixed-voltage plb:opb:usb-regulator: GPIO lookup for consumer (null)
-[    6.091686] reg-fixed-voltage plb:opb:usb-regulator: using device tree for GPIO lookup
-[    6.098262] reg-fixed-voltage plb:opb:usb-regulator: No GPIO consumer (null) found
-[    6.105841] reg-fixed-voltage plb:opb:sata1-regulator: GPIO lookup for consumer (null)
-[    6.112364] reg-fixed-voltage plb:opb:sata1-regulator: using device tree for GPIO lookup
-[    6.119106] reg-fixed-voltage plb:opb:sata1-regulator: No GPIO consumer (null) found
-[    6.126852] reg-fixed-voltage plb:opb:sata0-regulator: GPIO lookup for consumer (null)
-[    6.133376] reg-fixed-voltage plb:opb:sata0-regulator: using device tree for GPIO lookup
-[    6.140118] reg-fixed-voltage plb:opb:sata0-regulator: No GPIO consumer (null) found
-[    6.149872] dw_dmac 4bffd0800.dma: DesignWare DMA Controller, 2 channels
-[    6.165651] Initialise system trusted keyrings
-[    6.168752] Key type blacklist registered
-[    6.172713] workingset: timestamp_bits=30 max_order=14 bucket_order=0
-[    6.185449] squashfs: version 4.0 (2009/01/31) Phillip Lougher
-[    6.350439] Key type asymmetric registered
-[    6.353161] Asymmetric key parser 'x509' registered
-[    6.356754] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 249)
-[    6.362744] io scheduler mq-deadline registered
-[    6.365932] io scheduler kyber registered
-[    6.369230] gpiochip_find_base: found new base at 472
-[    6.372932] gpio-473 (Enable Reset Button, disable NOR): hogged as output/low
-[    6.379779] gpio gpiochip1: (4e0000000.gpio): added GPIO chardev (254:1)
-[    6.385199] gpio gpiochip1: registered GPIOs 472 to 479 on 4e0000000.gpio
-[    6.390720] gpiochip_find_base: found new base at 464
-[    6.395145] gpio gpiochip2: (4e0100000.gpio): added GPIO chardev (254:2)
-[    6.400555] gpio gpiochip2: registered GPIOs 464 to 471 on 4e0100000.gpio
-[    6.408444] Serial: 8250/16550 driver, 2 ports, IRQ sharing enabled
-[    6.415420] printk: console [ttyS0] disabled
-[    6.418351] of_serial 4ef600300.serial: GPIO lookup for consumer rs485-term
-[    6.423929] of_serial 4ef600300.serial: using device tree for GPIO lookup
-[    6.429390] of_get_named_gpiod_flags: can't parse 'rs485-term-gpios' property of node '/plb/opb/serial@ef600300[0]'
-[    6.438453] of_get_named_gpiod_flags: can't parse 'rs485-term-gpio' property of node '/plb/opb/serial@ef600300[0]'
-[    6.447427] of_serial 4ef600300.serial: using lookup tables for GPIO lookup
-[    6.453036] of_serial 4ef600300.serial: No GPIO consumer rs485-term found
-[    6.458525] 4ef600300.serial: ttyS0 at MMIO 0x4ef600300 (irq = 32, base_baud = 462962) is a TI16750
-[    6.466201] printk: console [ttyS0] enabled
-[    6.471883] printk: bootconsole [udbg0] disabled
-[    6.500228] brd: module loaded
-[    6.514232] loop: module loaded
-[    6.516963] sata-dwc 4bffd1000.sata: id 0, controller version 1.91
-[    6.523635] scsi host0: sata-dwc
-[    6.525992] ata1: SATA max UDMA/133 irq 39
-[    6.529027] sata-dwc 4bffd1800.sata: id 0, controller version 1.91
-[    6.536207] scsi host1: sata-dwc
-[    6.538343] ata2: SATA max UDMA/133 irq 40
-[    6.541630] platform physmap-flash.0: failed to claim resource 0: [mem 0x08000000-0x07ffffff]
-[    6.549935] mdio_bus fixed-0: GPIO lookup for consumer reset
-[    6.554301] mdio_bus fixed-0: using lookup tables for GPIO lookup
-[    6.559081] mdio_bus fixed-0: No GPIO consumer reset found
-[    6.563278] libphy: Fixed MDIO Bus: probed
-[    6.566066] PPC 4xx OCP EMAC driver, version 3.54
-[    6.570154] MAL v2 /plb/mcmal, 1 TX channels, 1 RX channels
-[    6.574722] RGMII /plb/opb/emac-rgmii@ef601500 initialized with MDIO support
-[    6.580630] TAH /plb/opb/emac-tah@ef601350 initialized
-[    6.584789] /plb/opb/emac-rgmii@ef601500: input 0 in rgmii mode
-[    6.730396] mdio_bus 4ef600c00.ethernet: GPIO lookup for consumer reset
-[    6.735695] mdio_bus 4ef600c00.ethernet: using device tree for GPIO lookup
-[    6.741293] of_get_named_gpiod_flags: parsed 'reset-gpios' property of node '/plb/opb/ethernet@ef600c00/mdio[0]' - status (0)
-[    6.751283] libphy: emac_mdio: probed
-[    6.761226] mdio_bus 4ef600c00.ethernet:01: GPIO lookup for consumer reset
-[    6.766807] mdio_bus 4ef600c00.ethernet:01: using device tree for GPIO lookup
-[    6.772660] of_get_named_gpiod_flags: can't parse 'reset-gpios' property of node '/plb/opb/ethernet@ef600c00/mdio/phy@1[0]'
-[    6.782469] of_get_named_gpiod_flags: can't parse 'reset-gpio' property of node '/plb/opb/ethernet@ef600c00/mdio/phy@1[0]'
-[    6.792186] mdio_bus 4ef600c00.ethernet:01: using lookup tables for GPIO lookup
-[    6.798177] mdio_bus 4ef600c00.ethernet:01: No GPIO consumer reset found
-[    6.806518] eth0: EMAC-0 /plb/opb/ethernet@ef600c00, MAC 00:90:a9:35:31:25
-[    6.812091] eth0: found Broadcom BCM50610 PHY (0x01)
-[    6.816240] dwc2 4bff80000.usbotg: mapped PA bff80000 to VA (ptrval)
-[    6.821304] dwc2 4bff80000.usbotg: supply vusb_d not found, using dummy regulator
-[    6.827610] dwc2 4bff80000.usbotg: supply vusb_a not found, using dummy regulator
-[    6.833848] dwc2 4bff80000.usbotg: registering common handler for irq35
-[    6.841266] usbcore: registered new interface driver usb-storage
-[    6.846140] of_get_named_gpiod_flags: parsed 'gpios' property of node '/plb/opb/keys/reset-button[0]' - status (0)
-[    6.855351] input: plb:opb:keys as /devices/platform/plb/plb:opb/plb:opb:keys/input/input0
-[    6.862521] ata1: SATA link down (SStatus 0 SControl 300)
-[    6.867654] i2c /dev entries driver
-[    6.870052] IR NEC protocol handler initialized
-[    6.873290] IR RC5(x/sz) protocol handler initialized
-[    6.877028] IR RC6 protocol handler initialized
-[    6.880242] IR JVC protocol handler initialized
-[    6.883451] IR Sony protocol handler initialized
-[    6.886756] IR SANYO protocol handler initialized
-[    6.890143] IR Sharp protocol handler initialized
-[    6.893530] IR MCE Keyboard/mouse protocol handler initialized
-[    6.898040] IR XMP protocol handler initialized
-[    6.903391] device-mapper: ioctl: 4.42.0-ioctl (2020-02-27) initialised: dm-devel@redhat.com
-[    6.910678] of_get_named_gpiod_flags: parsed 'gpios' property of node '/plb/opb/leds/power-red[0]' - status (0)
-[    6.919442] gpio-476 (?): no flags found for gpios
-[    6.923065] of_get_named_gpiod_flags: parsed 'gpios' property of node '/plb/opb/leds/power-green[0]' - status (0)
-[    6.932001] gpio-477 (?): no flags found for gpios
-[    6.935587] of_get_named_gpiod_flags: parsed 'gpios' property of node '/plb/opb/leds/power-blue[0]' - status (0)
-[    6.944433] gpio-478 (?): no flags found for gpios
-[    6.948135] ledtrig-cpu: registered to indicate activity on CPUs
-[    7.069005] ata2: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
-[    7.126707] ata2.00: ATA-7: ST3808110AS, 3.AAE, max UDMA/133
-[    7.131071] ata2.00: 156301488 sectors, multi 0: LBA48 NCQ (depth 1/32)
-[    7.193344] ata2.00: configured for UDMA/133
-[    7.196475] blk_queue_segment_boundary: set to minimum 3fff
-[    7.200991] scsi 1:0:0:0: Direct-Access     ATA      ST3808110AS      E    PQ: 0 ANSI: 5
-[    7.250704] sd 1:0:0:0: [sda] 156301488 512-byte logical blocks: (80.0 GB/74.5 GiB)
-[    7.257636] sd 1:0:0:0: [sda] Write Protect is off
-[    7.261147] sd 1:0:0:0: [sda] Mode Sense: 00 3a 00 00
-[    7.265069] sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-[    7.300288] GPT:Primary header thinks Alt. header is not at the end of the disk.
-[    7.306386] GPT:8380415 != 156301487
-[    7.308658] GPT:Alternate GPT header not at the end of the disk.
-[    7.313349] GPT:8380415 != 156301487
-[    7.315615] GPT: Use GNU Parted to correct GPT errors.
-[    7.319511]  sda: sda1 sda2 sda3
-[    7.323342] sd 1:0:0:0: [sda] Attached SCSI disk
-[    8.291046] random: fast init done
-[   10.926506] alg: No test for stdrng (crypto4xx_rng)
-[   10.930969] usbcore: registered new interface driver usbhid
-[   10.935247] usbhid: USB HID core driver
-[   10.937991] Initializing XFRM netlink socket
-[   10.941514] NET: Registered protocol family 10
-[   10.948675] Segment Routing with IPv6
-[   10.951112] NET: Registered protocol family 17
-[   10.954288] NET: Registered protocol family 15
-[   10.957606] 8021q: 802.1Q VLAN Support v1.8
-[   10.960602] drmem: No dynamic reconfiguration memory found
-[   10.965094] registered taskstats version 1
-[   10.967885] Loading compiled-in X.509 certificates
-[   10.971451] Key type ._fscrypt registered
-[   10.974160] Key type .fscrypt registered
-[   10.976768] Key type fscrypt-provisioning registered
-[   10.980859] reg-fixed-voltage plb:opb:usb-regulator: GPIO lookup for consumer (null)
-[   10.987298] reg-fixed-voltage plb:opb:usb-regulator: using device tree for GPIO lookup
-[   10.993930] of_get_named_gpiod_flags: parsed 'gpios' property of node '/plb/opb/usb-regulator[0]' - status (0)
-[   11.002906] reg-fixed-voltage plb:opb:sata1-regulator: GPIO lookup for consumer (null)
-[   11.009516] reg-fixed-voltage plb:opb:sata1-regulator: using device tree for GPIO lookup
-[   11.016311] of_get_named_gpiod_flags: parsed 'gpios' property of node '/plb/opb/sata1-regulator[0]' - status (0)
-[   11.025450] reg-fixed-voltage plb:opb:sata0-regulator: GPIO lookup for consumer (null)
-[   11.032058] reg-fixed-voltage plb:opb:sata0-regulator: using device tree for GPIO lookup
-[   11.038852] of_get_named_gpiod_flags: parsed 'gpios' property of node '/plb/opb/sata0-regulator[0]' - status (0)
-[   11.048060] dwc2 4bff80000.usbotg: mapped PA bff80000 to VA (ptrval)
-[   11.053139] dwc2 4bff80000.usbotg: supply vusb_d not found, using dummy regulator
-[   11.059428] dwc2 4bff80000.usbotg: supply vusb_a not found, using dummy regulator
-[   11.065671] dwc2 4bff80000.usbotg: registering common handler for irq35
-[   11.072892] dwc2 4bff80000.usbotg: Bad value for GSNPSID: 0x00000000
-[   11.078824] md: Waiting for all devices to be available before autodetect
-[   11.084315] md: If you don't use raid, use raid=noautodetect
-[   11.088657] md: Autodetecting RAID arrays.
-[   11.091432] md: autorun ...
-[   11.092924] md: ... autorun DONE.
-[   11.140266] EXT4-fs (sda3): mounted filesystem with ordered data mode. Opts: (null)
-[   11.146665] VFS: Mounted root (ext4 filesystem) on device 8:3.
-[   11.160049] devtmpfs: mounted
-[   11.162700] Freeing unused kernel memory: 224K
-[   11.165920] Run /sbin/init as init process
-[   11.168719]   with arguments:
-[   11.170377]     /sbin/init
-[   11.171775]   with environment:
-[   11.173613]     HOME=/
-[   11.174662]     TERM=linux
-[   12.215915] systemd[1]: System time before build time, advancing clock.
-[   12.479770] systemd[1]: systemd 246.4-1 running in system mode. (+PAM +AUDIT +SELINUX +IMA +APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +ZSTD +SECCOMP +BLKID +ELFUTILS +KMOD +IDN2 -IDN +PCRE2 default-hierarchy=hybrid)
-[   12.501058] systemd[1]: Detected architecture ppc.
-[   12.557673] systemd[1]: Set hostname to <mbl-debian>.
-
+Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
 ---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 211 ++++++++++++++++++++++++++++++++++++++---
+ drivers/scsi/ibmvscsi/ibmvfc.h |  38 +++++++-
+ 2 files changed, 232 insertions(+), 17 deletions(-)
 
-root@mbl-debian:~# cat /proc/cpuinfo
-processor       : 0
-cpu             : APM821XX
-clock           : 800.000008MHz
-revision        : 28.131 (pvr 12c4 1c83)
-bogomips        : 1600.00
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 175a165..322bb30 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -134,6 +134,7 @@
+ static void ibmvfc_tgt_query_target(struct ibmvfc_target *);
+ static void ibmvfc_npiv_logout(struct ibmvfc_host *);
+ static void ibmvfc_tgt_implicit_logout_and_del(struct ibmvfc_target *);
++static void ibmvfc_tgt_move_login(struct ibmvfc_target *);
+ 
+ static const char *unknown_error = "unknown error";
+ 
+@@ -431,7 +432,20 @@ static int ibmvfc_set_tgt_action(struct ibmvfc_target *tgt,
+ 		}
+ 		break;
+ 	case IBMVFC_TGT_ACTION_LOGOUT_RPORT_WAIT:
+-		if (action == IBMVFC_TGT_ACTION_DEL_RPORT) {
++		if (action == IBMVFC_TGT_ACTION_DEL_RPORT ||
++		    action == IBMVFC_TGT_ACTION_DEL_AND_LOGOUT_RPORT) {
++			tgt->action = action;
++			rc = 0;
++		}
++		break;
++	case IBMVFC_TGT_ACTION_LOGOUT_DELETED_RPORT:
++		if (action == IBMVFC_TGT_ACTION_LOGOUT_RPORT) {
++			tgt->action = action;
++			rc = 0;
++		}
++		break;
++	case IBMVFC_TGT_ACTION_DEL_AND_LOGOUT_RPORT:
++		if (action == IBMVFC_TGT_ACTION_LOGOUT_DELETED_RPORT) {
+ 			tgt->action = action;
+ 			rc = 0;
+ 		}
+@@ -441,16 +455,18 @@ static int ibmvfc_set_tgt_action(struct ibmvfc_target *tgt,
+ 			tgt->action = action;
+ 			rc = 0;
+ 		}
++		break;
+ 	case IBMVFC_TGT_ACTION_DELETED_RPORT:
+ 		break;
+ 	default:
+-		if (action >= IBMVFC_TGT_ACTION_LOGOUT_RPORT)
+-			tgt->add_rport = 0;
+ 		tgt->action = action;
+ 		rc = 0;
+ 		break;
+ 	}
+ 
++	if (action >= IBMVFC_TGT_ACTION_LOGOUT_RPORT)
++		tgt->add_rport = 0;
++
+ 	return rc;
+ }
+ 
+@@ -548,7 +564,8 @@ static void ibmvfc_set_host_action(struct ibmvfc_host *vhost,
+  **/
+ static void ibmvfc_reinit_host(struct ibmvfc_host *vhost)
+ {
+-	if (vhost->action == IBMVFC_HOST_ACTION_NONE) {
++	if (vhost->action == IBMVFC_HOST_ACTION_NONE &&
++	    vhost->state == IBMVFC_ACTIVE) {
+ 		if (!ibmvfc_set_host_state(vhost, IBMVFC_INITIALIZING)) {
+ 			scsi_block_requests(vhost->host);
+ 			ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_QUERY);
+@@ -2574,7 +2591,9 @@ static void ibmvfc_terminate_rport_io(struct fc_rport *rport)
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 	struct fc_rport *dev_rport;
+ 	struct scsi_device *sdev;
+-	unsigned long rc;
++	struct ibmvfc_target *tgt;
++	unsigned long rc, flags;
++	unsigned int found;
+ 
+ 	ENTER;
+ 	shost_for_each_device(sdev, shost) {
+@@ -2588,6 +2607,25 @@ static void ibmvfc_terminate_rport_io(struct fc_rport *rport)
+ 
+ 	if (rc == FAILED)
+ 		ibmvfc_issue_fc_host_lip(shost);
++
++	spin_lock_irqsave(shost->host_lock, flags);
++	found = 0;
++	list_for_each_entry(tgt, &vhost->targets, queue) {
++		if (tgt->scsi_id == rport->port_id) {
++			found++;
++			break;
++		}
++	}
++
++	if (found && tgt->action == IBMVFC_TGT_ACTION_LOGOUT_DELETED_RPORT) {
++		/* If we get here, that means we previously attempted to send
++		 an implicit logout to the target but it failed, most likely
++		 due to I/O being pending, so we need to send it again */
++		ibmvfc_del_tgt(tgt);
++		ibmvfc_reinit_host(vhost);
++	}
++
++	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	LEAVE;
+ }
+ 
+@@ -3623,7 +3661,15 @@ static void ibmvfc_tgt_implicit_logout_and_del_done(struct ibmvfc_event *evt)
+ 
+ 	vhost->discovery_threads--;
+ 	ibmvfc_free_event(evt);
+-	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_DEL_RPORT);
++
++	/* If our state is IBMVFC_HOST_OFFLINE, we could be unloading the driver
++	 in which case we need to free up all the targets. If we are not unloading,
++	 we will still go through a hard reset to get out of offline state, so there
++	 is no need to track the old targets in that case */
++	if (status == IBMVFC_MAD_SUCCESS || vhost->state == IBMVFC_HOST_OFFLINE)
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_DEL_RPORT);
++	else
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_DEL_AND_LOGOUT_RPORT);
+ 
+ 	tgt_dbg(tgt, "Implicit Logout %s\n", (status == IBMVFC_MAD_SUCCESS) ? "succeeded" : "failed");
+ 	kref_put(&tgt->kref, ibmvfc_release_tgt);
+@@ -3662,6 +3708,92 @@ static void ibmvfc_tgt_implicit_logout_and_del(struct ibmvfc_target *tgt)
+ }
+ 
+ /**
++ * ibmvfc_tgt_move_login_done - Completion handler for Move Login
++ * @evt:	ibmvfc event struct
++ *
++ **/
++static void ibmvfc_tgt_move_login_done(struct ibmvfc_event *evt)
++{
++	struct ibmvfc_target *tgt = evt->tgt;
++	struct ibmvfc_host *vhost = evt->vhost;
++	struct ibmvfc_move_login *rsp = &evt->xfer_iu->move_login;
++	u32 status = be16_to_cpu(rsp->common.status);
++	int level = IBMVFC_DEFAULT_LOG_LEVEL;
++
++	vhost->discovery_threads--;
++	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_NONE);
++	switch (status) {
++	case IBMVFC_MAD_SUCCESS:
++		tgt_dbg(tgt, "Move Login succeeded for old scsi_id: %llX\n", tgt->old_scsi_id);
++		tgt->ids.node_name = wwn_to_u64(rsp->service_parms.node_name);
++		tgt->ids.port_name = wwn_to_u64(rsp->service_parms.port_name);
++		tgt->ids.port_id = tgt->scsi_id;
++		memcpy(&tgt->service_parms, &rsp->service_parms,
++		       sizeof(tgt->service_parms));
++		memcpy(&tgt->service_parms_change, &rsp->service_parms_change,
++		       sizeof(tgt->service_parms_change));
++		ibmvfc_init_tgt(tgt, ibmvfc_tgt_send_prli);
++		break;
++	case IBMVFC_MAD_DRIVER_FAILED:
++		break;
++	case IBMVFC_MAD_CRQ_ERROR:
++		ibmvfc_retry_tgt_init(tgt, ibmvfc_tgt_move_login);
++		break;
++	case IBMVFC_MAD_FAILED:
++	default:
++		level += ibmvfc_retry_tgt_init(tgt, ibmvfc_tgt_move_login);
++
++		tgt_log(tgt, level, "Move Login failed: old scsi_id: %llX, flags:%x, vios_flags:%x, rc=0x%02X\n",
++			tgt->old_scsi_id, be32_to_cpu(rsp->flags), be16_to_cpu(rsp->vios_flags), status);
++		break;
++	}
++
++	kref_put(&tgt->kref, ibmvfc_release_tgt);
++	ibmvfc_free_event(evt);
++	wake_up(&vhost->work_wait_q);
++}
++
++
++/**
++ * ibmvfc_tgt_move_login - Initiate a move login for specified target
++ * @tgt:		ibmvfc target struct
++ *
++ **/
++static void ibmvfc_tgt_move_login(struct ibmvfc_target *tgt)
++{
++	struct ibmvfc_host *vhost = tgt->vhost;
++	struct ibmvfc_move_login *move;
++	struct ibmvfc_event *evt;
++
++	if (vhost->discovery_threads >= disc_threads)
++		return;
++
++	kref_get(&tgt->kref);
++	evt = ibmvfc_get_event(vhost);
++	vhost->discovery_threads++;
++	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_INIT_WAIT);
++	ibmvfc_init_event(evt, ibmvfc_tgt_move_login_done, IBMVFC_MAD_FORMAT);
++	evt->tgt = tgt;
++	move = &evt->iu.move_login;
++	memset(move, 0, sizeof(*move));
++	move->common.version = cpu_to_be32(1);
++	move->common.opcode = cpu_to_be32(IBMVFC_MOVE_LOGIN);
++	move->common.length = cpu_to_be16(sizeof(*move));
++
++	move->old_scsi_id = cpu_to_be64(tgt->old_scsi_id);
++	move->new_scsi_id = cpu_to_be64(tgt->scsi_id);
++	move->wwpn = cpu_to_be64(tgt->wwpn);
++	move->node_name = cpu_to_be64(tgt->ids.node_name);
++
++	if (ibmvfc_send_event(evt, vhost, default_timeout)) {
++		vhost->discovery_threads--;
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_DEL_RPORT);
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++	} else
++		tgt_dbg(tgt, "Sent Move Login for old scsi_id: %llX\n", tgt->old_scsi_id);
++}
++
++/**
+  * ibmvfc_adisc_needs_plogi - Does device need PLOGI?
+  * @mad:	ibmvfc passthru mad struct
+  * @tgt:	ibmvfc target struct
+@@ -3979,24 +4111,62 @@ static void ibmvfc_tgt_query_target(struct ibmvfc_target *tgt)
+  * Returns:
+  *	0 on success / other on failure
+  **/
+-static int ibmvfc_alloc_target(struct ibmvfc_host *vhost, u64 scsi_id)
++static int ibmvfc_alloc_target(struct ibmvfc_host *vhost,struct ibmvfc_discover_targets_entry *target)
+ {
++	struct ibmvfc_target *stgt = NULL;
++	struct ibmvfc_target *wtgt = NULL;
+ 	struct ibmvfc_target *tgt;
+ 	unsigned long flags;
++	u64 scsi_id = be32_to_cpu(target->scsi_id) & IBMVFC_DISC_TGT_SCSI_ID_MASK;
++	u64 wwpn = be64_to_cpu(target->wwpn);
+ 
++	/* Look to see if we already have a target allocated for this SCSI ID or WWPN */
+ 	spin_lock_irqsave(vhost->host->host_lock, flags);
+ 	list_for_each_entry(tgt, &vhost->targets, queue) {
++		if (tgt->wwpn == wwpn) {
++			wtgt = tgt;
++			break;
++		}
++	}
++
++	list_for_each_entry(tgt, &vhost->targets, queue) {
+ 		if (tgt->scsi_id == scsi_id) {
+-			if (tgt->need_login)
+-				ibmvfc_init_tgt(tgt, ibmvfc_tgt_implicit_logout);
++			stgt = tgt;
++			break;
++		}
++	}
++
++	if (wtgt && !stgt) {
++		/* A WWPN target has moved and we still are tracking the old SCSI ID.
++		 The only way we should be able to get here is if we attempted to
++		 send an implicit logout for the old SCSI ID and it failed for some
++		 reason, such as there being I/O pending to the target. In this
++		 case, we will have already deleted the rport from the FC transport
++		 so we do a move login, which works even with I/O pending, as it
++		 will cancel any active commands. */
++		if (wtgt->action == IBMVFC_TGT_ACTION_LOGOUT_DELETED_RPORT) {
++			/* Do a move login here. The old target is no longer known to the transport layer
++			 We don't use the normal ibmvfc_set_tgt_action to set this, as
++			 we don't normally want to allow this state change */
++			wtgt->old_scsi_id = wtgt->scsi_id;
++			wtgt->scsi_id = scsi_id;
++			wtgt->action = IBMVFC_TGT_ACTION_INIT;
++			ibmvfc_init_tgt(wtgt, ibmvfc_tgt_move_login);
+ 			goto unlock_out;
++		} else {
++			tgt_err(wtgt, "Unexpected target state: %d, %p\n", wtgt->action, wtgt->rport);
+ 		}
++	} else if (stgt) {
++		if (tgt->need_login)
++			ibmvfc_init_tgt(tgt, ibmvfc_tgt_implicit_logout);
++		goto unlock_out;
+ 	}
+ 	spin_unlock_irqrestore(vhost->host->host_lock, flags);
+ 
+ 	tgt = mempool_alloc(vhost->tgt_pool, GFP_NOIO);
+ 	memset(tgt, 0, sizeof(*tgt));
+ 	tgt->scsi_id = scsi_id;
++	tgt->wwpn = wwpn;
+ 	tgt->vhost = vhost;
+ 	tgt->need_login = 1;
+ 	tgt->cancel_key = vhost->task_set++;
+@@ -4023,9 +4193,7 @@ static int ibmvfc_alloc_targets(struct ibmvfc_host *vhost)
+ 	int i, rc;
+ 
+ 	for (i = 0, rc = 0; !rc && i < vhost->num_targets; i++)
+-		rc = ibmvfc_alloc_target(vhost,
+-					 be32_to_cpu(vhost->disc_buf->scsi_id[i]) &
+-					 IBMVFC_DISC_TGT_SCSI_ID_MASK);
++		rc = ibmvfc_alloc_target(vhost, &vhost->disc_buf[i]);
+ 
+ 	return rc;
+ }
+@@ -4085,6 +4253,7 @@ static void ibmvfc_discover_targets(struct ibmvfc_host *vhost)
+ 	mad->bufflen = cpu_to_be32(vhost->disc_buf_sz);
+ 	mad->buffer.va = cpu_to_be64(vhost->disc_buf_dma);
+ 	mad->buffer.len = cpu_to_be32(vhost->disc_buf_sz);
++	mad->flags = cpu_to_be32(IBMVFC_DISC_TGT_PORT_ID_WWPN_LIST);
+ 	ibmvfc_set_host_action(vhost, IBMVFC_HOST_ACTION_INIT_WAIT);
+ 
+ 	if (!ibmvfc_send_event(evt, vhost, default_timeout))
+@@ -4420,6 +4589,13 @@ static void ibmvfc_tgt_add_rport(struct ibmvfc_target *tgt)
+ 		del_timer_sync(&tgt->timer);
+ 		kref_put(&tgt->kref, ibmvfc_release_tgt);
+ 		return;
++	} else if (rport && tgt->action == IBMVFC_TGT_ACTION_DEL_AND_LOGOUT_RPORT) {
++		tgt_dbg(tgt, "Deleting rport with outstanding I/O\n");
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_LOGOUT_DELETED_RPORT);
++		tgt->rport = NULL;
++		spin_unlock_irqrestore(vhost->host->host_lock, flags);
++		fc_remote_port_delete(rport);
++		return;
+ 	} else if (rport && tgt->action == IBMVFC_TGT_ACTION_DELETED_RPORT) {
+ 		spin_unlock_irqrestore(vhost->host->host_lock, flags);
+ 		return;
+@@ -4543,6 +4719,15 @@ static void ibmvfc_do_work(struct ibmvfc_host *vhost)
+ 				del_timer_sync(&tgt->timer);
+ 				kref_put(&tgt->kref, ibmvfc_release_tgt);
+ 				return;
++			} else if (tgt->action == IBMVFC_TGT_ACTION_DEL_AND_LOGOUT_RPORT) {
++				tgt_dbg(tgt, "Deleting rport with I/O outstanding\n");
++				rport = tgt->rport;
++				tgt->rport = NULL;
++				ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_LOGOUT_DELETED_RPORT);
++				spin_unlock_irqrestore(vhost->host->host_lock, flags);
++				if (rport)
++					fc_remote_port_delete(rport);
++				return;
+ 			}
+ 		}
+ 
+@@ -4775,7 +4960,7 @@ static int ibmvfc_alloc_mem(struct ibmvfc_host *vhost)
+ 		goto free_sg_pool;
+ 	}
+ 
+-	vhost->disc_buf_sz = sizeof(vhost->disc_buf->scsi_id[0]) * max_targets;
++	vhost->disc_buf_sz = sizeof(*vhost->disc_buf) * max_targets;
+ 	vhost->disc_buf = dma_alloc_coherent(dev, vhost->disc_buf_sz,
+ 					     &vhost->disc_buf_dma, GFP_KERNEL);
+ 
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.h b/drivers/scsi/ibmvscsi/ibmvfc.h
+index e6e1c25..6a21ac3 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.h
++++ b/drivers/scsi/ibmvscsi/ibmvfc.h
+@@ -120,6 +120,7 @@ enum ibmvfc_mad_types {
+ 	IBMVFC_PORT_LOGIN		= 0x0004,
+ 	IBMVFC_PROCESS_LOGIN	= 0x0008,
+ 	IBMVFC_QUERY_TARGET	= 0x0010,
++	IBMVFC_MOVE_LOGIN		= 0x0020,
+ 	IBMVFC_IMPLICIT_LOGOUT	= 0x0040,
+ 	IBMVFC_PASSTHRU		= 0x0200,
+ 	IBMVFC_TMF_MAD		= 0x0100,
+@@ -197,6 +198,7 @@ struct ibmvfc_service_parms {
+ 	__be32 ext_len;
+ 	__be32 reserved[30];
+ 	__be32 clk_sync_qos[2];
++	__be32 reserved2;
+ } __packed __aligned(4);
+ 
+ struct ibmvfc_npiv_login_resp {
+@@ -230,15 +232,18 @@ struct ibmvfc_npiv_login_resp {
+ 	struct ibmvfc_npiv_login_resp resp;
+ } __packed __aligned(8);
+ 
+-struct ibmvfc_discover_targets_buf {
+-	__be32 scsi_id[1];
++struct ibmvfc_discover_targets_entry {
++	__be32 scsi_id;
++	__be32 pad;
++	__be64 wwpn;
+ #define IBMVFC_DISC_TGT_SCSI_ID_MASK	0x00ffffff
+-};
++}__packed __aligned(8);
+ 
+ struct ibmvfc_discover_targets {
+ 	struct ibmvfc_mad_common common;
+ 	struct srp_direct_buf buffer;
+ 	__be32 flags;
++#define IBMVFC_DISC_TGT_PORT_ID_WWPN_LIST	0x02
+ 	__be16 status;
+ 	__be16 error;
+ 	__be32 bufflen;
+@@ -291,6 +296,26 @@ struct ibmvfc_port_login {
+ 	__be64 reserved3[2];
+ } __packed __aligned(8);
+ 
++struct ibmvfc_move_login {
++	struct ibmvfc_mad_common common;
++	__be64 old_scsi_id;
++	__be64 new_scsi_id;
++	__be64 wwpn;
++	__be64 node_name;
++	__be32 flags;
++#define IBMVFC_MOVE_LOGIN_IMPLICIT_OLD_FAILED	0x01
++#define IBMVFC_MOVE_LOGIN_IMPLICIT_NEW_FAILED	0x02
++#define IBMVFC_MOVE_LOGIN_PORT_LOGIN_FAILED	0x04
++	__be32 reserved;
++	struct ibmvfc_service_parms service_parms;
++	struct ibmvfc_service_parms service_parms_change;
++	__be32 reserved2;
++	__be16 service_class;
++	__be16 vios_flags;
++#define IBMVFC_MOVE_LOGIN_VF_NOT_SENT_ADAPTER	0x01
++	__be64 reserved3;
++}__packed __aligned(8);
++
+ struct ibmvfc_prli_svc_parms {
+ 	u8 type;
+ #define IBMVFC_SCSI_FCP_TYPE		0x08
+@@ -646,6 +671,7 @@ struct ibmvfc_async_crq_queue {
+ 	struct ibmvfc_discover_targets discover_targets;
+ 	struct ibmvfc_port_login plogi;
+ 	struct ibmvfc_process_login prli;
++	struct ibmvfc_move_login move_login;
+ 	struct ibmvfc_query_tgt query_tgt;
+ 	struct ibmvfc_implicit_logout implicit_logout;
+ 	struct ibmvfc_tmf tmf;
+@@ -664,12 +690,16 @@ enum ibmvfc_target_action {
+ 	IBMVFC_TGT_ACTION_LOGOUT_RPORT_WAIT,
+ 	IBMVFC_TGT_ACTION_DEL_RPORT,
+ 	IBMVFC_TGT_ACTION_DELETED_RPORT,
++	IBMVFC_TGT_ACTION_DEL_AND_LOGOUT_RPORT,
++	IBMVFC_TGT_ACTION_LOGOUT_DELETED_RPORT,
+ };
+ 
+ struct ibmvfc_target {
+ 	struct list_head queue;
+ 	struct ibmvfc_host *vhost;
+ 	u64 scsi_id;
++	u64 wwpn;
++	u64 old_scsi_id;
+ 	struct fc_rport *rport;
+ 	int target_id;
+ 	enum ibmvfc_target_action action;
+@@ -765,7 +795,7 @@ struct ibmvfc_host {
+ 	dma_addr_t login_buf_dma;
+ 	int disc_buf_sz;
+ 	int log_level;
+-	struct ibmvfc_discover_targets_buf *disc_buf;
++	struct ibmvfc_discover_targets_entry *disc_buf;
+ 	struct mutex passthru_mutex;
+ 	int task_set;
+ 	int init_retries;
+-- 
+1.8.3.1
 
-timebase        : 800000008
-platform        : PowerPC 44x Platform
-model           : MyBook Live
-Memory          : 256 MB
-
-root@mbl-debian:~# cat /proc/iomem
-00000000-0fffffff : System RAM
-4bffd0800-4bffd0bff : 4bffd0800.dma dma@bffd0800
-4bffd1000-4bffd17ff : 4bffd1000.sata sata@bffd1000
-4bffd1800-4bffd1fff : 4bffd1800.sata sata@bffd1800
-4e0000000-4e0000000 : 4e0000000.gpio dat
-4e0100000-4e0100000 : 4e0100000.gpio dat
-4ef600300-4ef600307 : serial
-
-root@mbl-debian:~# cat /proc/interrupts
-            CPU0
-  18:          0       UIC  11 Edge      L2C
-  20:       2597       UIC   6 Level     MAL TX EOB
-  21:      23062       UIC   7 Level     MAL RX EOB
-  22:          0       UIC   3 Level     MAL SERR
-  23:          0       UIC   4 Level     MAL TX DE
-  24:          0       UIC   5 Level     MAL RX DE
-  29:        735       UIC  29 Level     crypto4xx
-  32:        538       UIC   1 Level     ttyS0
-  33:          0       UIC  16 Level     EMAC
-  38:       2765       UIC  25 Level     dw:dmac-1
-  39:          0       UIC  26 Level     sata-dwc[4bffd1000.sata]
-  40:       5680       UIC  27 Level     sata-dwc[4bffd1800.sata]
-LOC:      25755   Local timer interrupts for timer event device
-BCT:          0   Broadcast timer interrupts for timer event device
-LOC:          4   Local timer interrupts for others
-SPU:          0   Spurious interrupts
-PMI:          0   Performance monitoring interrupts
-MCE:          0   Machine check exceptions
-NMI:          0   System Reset interrupts
-
-root@mbl-debian:~# cat /etc/debian_version
-bullseye/sid
