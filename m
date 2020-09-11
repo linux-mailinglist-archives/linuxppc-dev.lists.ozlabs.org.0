@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CEA26661C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CC726663A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:23:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp2c35VJKzDqtv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 03:21:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp2fR2N9wzDqxW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 03:23:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::842;
- helo=mail-qt1-x842.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lFwSMGCN; dkim-atps=neutral
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
+ header.s=20161025 header.b=Q7FQMxc5; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp2P42WFYzDqsH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 03:12:08 +1000 (AEST)
-Received: by mail-qt1-x842.google.com with SMTP id t20so8409514qtr.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 10:12:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp2P72KWdzDqsG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 03:12:11 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id f142so10538022qke.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 10:12:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=aw85+UqyidAe2hKfEz2eXEJZcZy1gx6vda5mlAxA9S0=;
- b=lFwSMGCN2VCqQmfLH6jQeDobt0/S/hR4KVokdNiJHshio2Yq3Jcw12I6C/zHiCs3ls
- 7snZBJnHuEiayWMHN/YylBcpaP3n/z3RXuNHQVscithZNxSskrWCHB7NrVuwSZeBy++2
- GsQvi9sTtOGVV/0Vkp+Z6U4R6GvpgmI6xz0mTkziUL4yAMCirYcn+OinA0gaO0u+nI4/
- idXvhMnBR5HkBlZTnd8t9X44iIRBzKrbV8PupE51klfxTExmcZeXsvEyCkNzpO6qrTTU
- Qo4IeTFv/saeyu9XFV3WK0hALEZt3I0rmqaOT7HoF6NmgRxY0P5x49xZmgqF9WLMuRbx
- oFcQ==
+ bh=L+FVoRQONMvbu4AQAX/4SHLVmGHv0hK8cFz4kSjRKDQ=;
+ b=Q7FQMxc5+27RYREYc7GPgId9EB7hH/hsiMEQhDyiJ0Y6lU0vDUnpgbTNFtgdnVECog
+ ERdUdMtaA+UadZ9pK+pmOz2iUsE2XceE5OQnT8qaMyKBppyKiWl4UMN9hFmTWqHdUSxv
+ Nt73GJwyKNmlqn6zLWY/C9yPdlZhdx3aqFG3EIMAVus2bZqsVdp7rPAGSjQBku460y4H
+ A11lYF6Tn/WxK9uP8Y9uRFCODuIMFXr6eLOVrSt0opGd/zrI33Hv/XzgkVN7GQk53jxM
+ McxP26JAuGpIOK0+tgUT5iazJELrl+z0be1l6dZAE3vnOv2rBbDEaY1oJRpTqrTkJoHU
+ aBSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=aw85+UqyidAe2hKfEz2eXEJZcZy1gx6vda5mlAxA9S0=;
- b=emE+gZL/f+pEZzRn46wiu3RhRlh0fSGgJoqgPzp+MHjlypSbFE2YSMHviVeXnh3PWO
- ETq30v+3DglKsoxKF79Mk5vXiJJPk4fnESwg2WJ4H3XckrtdTNBnHVkOyPmONTL7r2oF
- spqxgGAfmS16KjWbUMoVt3qMzCrrPez+RLfmRRla2Vu2Qyj2p7em2CHcqO7+9cJooLXF
- iGvzRqekNon3RrsuTgIn/nWZKEZQWdNsVpuiEjmndrG741Gc6RvP7GohUzlg5X2ozWeo
- ANa37YVA1aLvbTYI6dVIxqlbG05L8egIpUFL5YJxUuUjffHbZrhCFsMjfzO7UgbwI9vz
- 1dnQ==
-X-Gm-Message-State: AOAM5327nbx8I2KUwoOm+p2+OeyRFkqNsBeCjuCqnOT0W9mt0B0Pq8aS
- yW8ZE8d2K/6Rr3B95Jakeww=
-X-Google-Smtp-Source: ABdhPJx9d9kknUVZ+uuFnEdKRRu1iglcSMg/ziDo70E1eTpHpvzdlGDzsTwKvPDNHBtZiNHNR1nNRw==
-X-Received: by 2002:ac8:705d:: with SMTP id y29mr2847720qtm.231.1599844325478; 
- Fri, 11 Sep 2020 10:12:05 -0700 (PDT)
+ bh=L+FVoRQONMvbu4AQAX/4SHLVmGHv0hK8cFz4kSjRKDQ=;
+ b=YvRqS5VEEGAPo7LaHkK3Rc5ebWKBFncLgJu0N2pVXfD4qJkoxDS6iGImcdNgv+a1D/
+ GHe/nOsIZj9AOa8T3MzPGOzFEEzZy1bYN7utqUywQcIt531Uk6x8DWx9+Ad6mb84oOtv
+ R0sGvdJPGEIavoNuF1hbhAEYDewv8yN7bmoJo0Oo4meieUX4H7sn4NjcwDMFXUkDesVd
+ djhKCqVL0ClmfHb52MgcBmqP8srQUrqYsGFtVpvlabN2cA8kyx5jRKvw1ooHxRdx716l
+ jCnfM3XT5hgMY4ClXJdo2BCyWndPQeLsFjZLmivIgw92LoFfDsJCm2OIKtzL89Nl3q2C
+ DejQ==
+X-Gm-Message-State: AOAM531hKV++1BtUWJuxYbQatFahj8fusc0b0Zp/WuAAEwAe6sPBfzic
+ Sp5cV0ly0t78ZBIQixiH62o=
+X-Google-Smtp-Source: ABdhPJzraDeqepND2McHhr8MzlAfKhWxVLPPXEJH4y7ZajHDaTIanw9n5IjZSz9NDtpEc9+L6kPqnA==
+X-Received: by 2002:a37:9d57:: with SMTP id g84mr2325729qke.111.1599844329153; 
+ Fri, 11 Sep 2020 10:12:09 -0700 (PDT)
 Received: from LeoBras.ibmuc.com (179-125-254-96.dynamic.desktop.com.br.
  [179.125.254.96])
- by smtp.gmail.com with ESMTPSA id l5sm3533330qtc.28.2020.09.11.10.12.01
+ by smtp.gmail.com with ESMTPSA id l5sm3533330qtc.28.2020.09.11.10.12.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Sep 2020 10:12:04 -0700 (PDT)
+ Fri, 11 Sep 2020 10:12:08 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -68,10 +68,10 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Ram Pai <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
-Subject: [PATCH v2 03/14] powerpc/kernel/iommu: Align size for
- IOMMU_PAGE_SIZE() to save TCEs
-Date: Fri, 11 Sep 2020 14:07:28 -0300
-Message-Id: <20200911170738.82818-4-leobras.c@gmail.com>
+Subject: [PATCH v2 04/14] powerpc/kernel/iommu: Use largepool as a last resort
+ when !largealloc
+Date: Fri, 11 Sep 2020 14:07:29 -0300
+Message-Id: <20200911170738.82818-5-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20200911170738.82818-1-leobras.c@gmail.com>
 References: <20200911170738.82818-1-leobras.c@gmail.com>
@@ -95,84 +95,42 @@ Sender: "Linuxppc-dev"
 
 Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
 
-Currently both iommu_alloc_coherent() and iommu_free_coherent() align the
-desired allocation size to PAGE_SIZE, and gets system pages and IOMMU
-mappings (TCEs) for that value.
+As of today, doing iommu_range_alloc() only for !largealloc (npages <= 15)
+will only be able to use 3/4 of the available pages, given pages on
+largepool  not being available for !largealloc.
 
-When IOMMU_PAGE_SIZE < PAGE_SIZE, this behavior may cause unnecessary
-TCEs to be created for mapping the whole system page.
+This could mean some drivers not being able to fully use all the available
+pages for the DMA window.
 
-Example:
-- PAGE_SIZE = 64k, IOMMU_PAGE_SIZE() = 4k
-- iommu_alloc_coherent() is called for 128 bytes
-- 1 system page (64k) is allocated
-- 16 IOMMU pages (16 x 4k) are allocated (16 TCEs used)
-
-It would be enough to use a single TCE for this, so 15 TCEs are
-wasted in the process.
-
-Update iommu_*_coherent() to make sure the size alignment happens only
-for IOMMU_PAGE_SIZE() before calling iommu_alloc() and iommu_free().
-
-Also, on iommu_range_alloc(), replace ALIGN(n, 1 << tbl->it_page_shift)
-with IOMMU_PAGE_ALIGN(n, tbl), which is easier to read and does the
-same.
+Add pages on largepool as a last resort for !largealloc, making all pages
+of the DMA window available.
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/kernel/iommu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/iommu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 9704f3f76e63..7961645a6980 100644
+index 7961645a6980..ffb2637dc82b 100644
 --- a/arch/powerpc/kernel/iommu.c
 +++ b/arch/powerpc/kernel/iommu.c
-@@ -237,10 +237,9 @@ static unsigned long iommu_range_alloc(struct device *dev,
- 	}
+@@ -261,6 +261,15 @@ static unsigned long iommu_range_alloc(struct device *dev,
+ 			pass++;
+ 			goto again;
  
- 	if (dev)
--		boundary_size = ALIGN(dma_get_seg_boundary(dev) + 1,
--				      1 << tbl->it_page_shift);
-+		boundary_size = IOMMU_PAGE_ALIGN(dma_get_seg_boundary(dev) + 1, tbl);
- 	else
--		boundary_size = ALIGN(1UL << 32, 1 << tbl->it_page_shift);
-+		boundary_size = IOMMU_PAGE_ALIGN(1UL << 32, tbl);
- 	/* 4GB boundary for iseries_hv_alloc and iseries_hv_map */
- 
- 	n = iommu_area_alloc(tbl->it_map, limit, start, npages, tbl->it_offset,
-@@ -858,6 +857,7 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
- 	unsigned int order;
- 	unsigned int nio_pages, io_order;
- 	struct page *page;
-+	size_t size_io = size;
- 
- 	size = PAGE_ALIGN(size);
- 	order = get_order(size);
-@@ -884,8 +884,9 @@ void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
- 	memset(ret, 0, size);
- 
- 	/* Set up tces to cover the allocated range */
--	nio_pages = size >> tbl->it_page_shift;
--	io_order = get_iommu_order(size, tbl);
-+	size_io = IOMMU_PAGE_ALIGN(size_io, tbl);
-+	nio_pages = size_io >> tbl->it_page_shift;
-+	io_order = get_iommu_order(size_io, tbl);
- 	mapping = iommu_alloc(dev, tbl, ret, nio_pages, DMA_BIDIRECTIONAL,
- 			      mask >> tbl->it_page_shift, io_order, 0);
- 	if (mapping == DMA_MAPPING_ERROR) {
-@@ -900,10 +901,9 @@ void iommu_free_coherent(struct iommu_table *tbl, size_t size,
- 			 void *vaddr, dma_addr_t dma_handle)
- {
- 	if (tbl) {
--		unsigned int nio_pages;
-+		size_t size_io = IOMMU_PAGE_ALIGN(size, tbl);
-+		unsigned int nio_pages = size_io >> tbl->it_page_shift;
- 
--		size = PAGE_ALIGN(size);
--		nio_pages = size >> tbl->it_page_shift;
- 		iommu_free(tbl, dma_handle, nio_pages);
- 		size = PAGE_ALIGN(size);
- 		free_pages((unsigned long)vaddr, get_order(size));
++		} else if (pass == tbl->nr_pools + 1) {
++			/* Last resort: try largepool */
++			spin_unlock(&pool->lock);
++			pool = &tbl->large_pool;
++			spin_lock(&pool->lock);
++			pool->hint = pool->start;
++			pass++;
++			goto again;
++
+ 		} else {
+ 			/* Give up */
+ 			spin_unlock_irqrestore(&(pool->lock), flags);
 -- 
 2.25.4
 
