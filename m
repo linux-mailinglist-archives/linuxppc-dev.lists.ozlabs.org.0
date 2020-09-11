@@ -2,63 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3042666B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5322666E0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:34:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp2qY1Z7LzDr7C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 03:31:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp2tt6W1RzDrQ9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 03:34:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
- helo=mail-qk1-x743.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::741;
+ helo=mail-qk1-x741.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FEoazk/P; dkim-atps=neutral
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
+ header.s=20161025 header.b=c7a0s/Pg; dkim-atps=neutral
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
+ [IPv6:2607:f8b0:4864:20::741])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp2PT1MDKzDqsJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 03:12:29 +1000 (AEST)
-Received: by mail-qk1-x743.google.com with SMTP id o5so10550447qke.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 10:12:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp2PW36lnzDqsp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 03:12:31 +1000 (AEST)
+Received: by mail-qk1-x741.google.com with SMTP id q63so9791064qkf.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 10:12:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=vncbdKkZMxDx93dLCHYt303W8BUQzI6tYwbZJ+71aqk=;
- b=FEoazk/Pn3O4S1kDYhwsEfHQIeAYRHzC9YG0+8fRTJjfL/LX9NBPzEulhk81kwU/hr
- t54JSn/lMl2j4OrVUAdg7AUJnjdkVYKs2eeMhCRxh+y6fufJA/+9TUYm6Xq4bjo/RFKR
- EaY1AWjnK3o2uET7kUs96qokQev4QM8JQt6yx8Iyz+u7Q54ehNYSfdgw675Yy0NXjb27
- OFwEPEE+JCjuJ8Qj1Ku5xtK/7c7H+GrrVbsL71YCx/c5oEdaJts2bA0ijLESNohtRxWO
- 8zBvS+mVPRfbekrR522UawCaoBLxy+EefpEx6gfXCQKpAmocuaq2DY7af3MjnvAmmlhj
- a7Eg==
+ bh=shfKO2FG9d5ahnlk4//07u62jXq/fOaSmlpn8ouFUCQ=;
+ b=c7a0s/PgQQ4CMZzul/Frz+ithoWWTIpnydqOAcI3dnqaGue6LNJm6T/AEaSjyzO20p
+ A9vERT4jA+7qHwApW5C3My4MdrP9rrSpUlvJSS0jCp2uetRuI9cqTwKV7w3q6J8eSJRt
+ LkGhWDRuLaUfrUyP0DSK5J9+eegvNRbclKUrzEL4P34H+xAwHKIejEqeRGiUa+grioX3
+ QbqET+Jgjb7UyGjelF+xm6xw4qWybtz6BleL1gtU5F0bnB/SoJQ4Sb0wCSOsyJGLZ3y9
+ mH3jexm6Zdpbsa2GmReVDZHfWO6l8RQMW3kRdeaN1xUATV05WlKvnUtnxO5dlInSE4Qh
+ l2NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=vncbdKkZMxDx93dLCHYt303W8BUQzI6tYwbZJ+71aqk=;
- b=ahcnvR2mfasZClZ67ntMl1WZjGU0WU6iTxRMPuOvQMhNujuAKy6EUjmmim/NZeDyyU
- fDVP1lYpcNs0TZCvRsP3Bb9dtWG5IcERuBYRy4MtNVmKPEWGpgzD/CaRLp2AgA4hQir2
- ay1FA/XXqsni2VYUGCw7KdTvx0hdBXtASFE1b0IU7VWnzO8h11cN5bSVIOJ6WYnerLDE
- 5nvbHYinDX18EcIUMFOCCskun85513NcgnbGgHjSklmxeQPL8KnTdn9wEoDjyMDpqfWi
- EvOLNCvflgi+r2m//b7GurAz/3JP8dj3nK2Sm220+V9VeQo40Mm9n8D4gKKbjZmq4ZkP
- miow==
-X-Gm-Message-State: AOAM530m+MV1+3HFaDG2cRUk8v6h2jPZNtemnw7+H0BGuhLjby+SfwYq
- SlX4MRzxTrldctmWenjJNd8=
-X-Google-Smtp-Source: ABdhPJxugwxqgFaOMs+yWkXHojifErmmsqUBaqRrOFgApazd0lk5o2dLeUlx9UJY2IAyk02HUsZyYg==
-X-Received: by 2002:a05:620a:5f4:: with SMTP id
- z20mr2489796qkg.260.1599844345422; 
- Fri, 11 Sep 2020 10:12:25 -0700 (PDT)
+ bh=shfKO2FG9d5ahnlk4//07u62jXq/fOaSmlpn8ouFUCQ=;
+ b=Ns0MwgN5GfkaX2XElSZ+bJEyl8injMZ5So7Yd4cTd1UHiqZATqG+wZVnQy3OHr4h6n
+ JP0Wirpb6ha/+h8Oe0aK/00en7Q9/s3z6YoT/WFb6z+3Teahm8lsatTvrQEiZlo6vdfm
+ U1f0ZDRgsnb8zhqHOyo61okcPdXV3f5sYe84URgg9h8Xr0K5U01qjlw+wSPBJnAc0H1d
+ tcOA1bcrpLwHb3zsnRxa6a2UfPvv2SvuVaP0VB3KQM3taPl+rW77kewPW9HmDJYSOGaA
+ QuXeulT5vJ1ANs6ZYWcBZXO3vV6/ZsJFOUpVW1i/tjHYoOnvuEsJ5XXm8+IcU9rU1cVg
+ fHFw==
+X-Gm-Message-State: AOAM531D6D3Eu4ojADfwDGNfT36EIvXc3hFQ1KZqXK58yz+XunSLfkzY
+ Ce/SzUXrdUkSuhyT4bsVQW8=
+X-Google-Smtp-Source: ABdhPJzM13dVx+EGEh0GHIBPGz+IWDdyketW0/Ra8ym50c3sxqD4ocM+G9zOovpnFHgbHxHEVyvSEQ==
+X-Received: by 2002:a37:a881:: with SMTP id r123mr2305114qke.335.1599844349299; 
+ Fri, 11 Sep 2020 10:12:29 -0700 (PDT)
 Received: from LeoBras.ibmuc.com (179-125-254-96.dynamic.desktop.com.br.
  [179.125.254.96])
- by smtp.gmail.com with ESMTPSA id l5sm3533330qtc.28.2020.09.11.10.12.21
+ by smtp.gmail.com with ESMTPSA id l5sm3533330qtc.28.2020.09.11.10.12.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Sep 2020 10:12:24 -0700 (PDT)
+ Fri, 11 Sep 2020 10:12:28 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -69,10 +68,10 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Ram Pai <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
-Subject: [PATCH v2 08/14] powerpc/pseries/iommu: Allow DDW windows starting at
- 0x00
-Date: Fri, 11 Sep 2020 14:07:33 -0300
-Message-Id: <20200911170738.82818-9-leobras.c@gmail.com>
+Subject: [PATCH v2 09/14] powerpc/pseries/iommu: Add ddw_property_create() and
+ refactor enable_ddw()
+Date: Fri, 11 Sep 2020 14:07:34 -0300
+Message-Id: <20200911170738.82818-10-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20200911170738.82818-1-leobras.c@gmail.com>
 References: <20200911170738.82818-1-leobras.c@gmail.com>
@@ -96,129 +95,217 @@ Sender: "Linuxppc-dev"
 
 Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
 
-enable_ddw() currently returns the address of the DMA window, which is
-considered invalid if has the value 0x00.
+Code used to create a ddw property that was previously scattered in
+enable_ddw() is now gathered in ddw_property_create(), which deals with
+allocation and filling the property, letting it ready for
+of_property_add(), which now occurs in sequence.
 
-Also, it only considers valid an address returned from find_existing_ddw
-if it's not 0x00.
+This created an opportunity to reorganize the second part of enable_ddw():
 
-Changing this behavior makes sense, given the users of enable_ddw() only
-need to know if direct mapping is possible. It can also allow a DMA window
-starting at 0x00 to be used.
+Without this patch enable_ddw() does, in order:
+kzalloc() property & members, create_ddw(), fill ddwprop inside property,
+ddw_list_new_entry(), do tce_setrange_multi_pSeriesLP_walk in all memory,
+of_add_property(), and list_add().
 
-This will be helpful for using a DDW with indirect mapping, as the window
-address will be different than 0x00, but it will not map the whole
-partition.
+With this patch enable_ddw() does, in order:
+create_ddw(), ddw_property_create(), of_add_property(),
+ddw_list_new_entry(), do tce_setrange_multi_pSeriesLP_walk in all memory,
+and list_add().
+
+This change requires of_remove_property() in case anything fails after
+of_add_property(), but we get to do tce_setrange_multi_pSeriesLP_walk
+in all memory, which looks the most expensive operation, only if
+everything else succeeds.
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 30 ++++++++++++--------------
- 1 file changed, 14 insertions(+), 16 deletions(-)
+ arch/powerpc/platforms/pseries/iommu.c | 106 +++++++++++++++----------
+ 1 file changed, 63 insertions(+), 43 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e4c17d27dcf3..bba8584a8f9d 100644
+index bba8584a8f9d..510ccb0521af 100644
 --- a/arch/powerpc/platforms/pseries/iommu.c
 +++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -849,24 +849,25 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
- 			np, ret);
- }
- 
--static u64 find_existing_ddw(struct device_node *pdn)
-+static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr)
- {
- 	struct direct_window *window;
- 	const struct dynamic_dma_window_prop *direct64;
--	u64 dma_addr = 0;
-+	bool found = false;
- 
- 	spin_lock(&direct_window_list_lock);
- 	/* check if we already created a window and dupe that config if so */
- 	list_for_each_entry(window, &direct_window_list, list) {
- 		if (window->device == pdn) {
- 			direct64 = window->prop;
--			dma_addr = be64_to_cpu(direct64->dma_base);
-+			*dma_addr = be64_to_cpu(direct64->dma_base);
-+			found = true;
+@@ -177,7 +177,7 @@ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
+ 		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
+ 			ret = (int)rc;
+ 			tce_free_pSeriesLP(liobn, tcenum_start, tceshift,
+-			                   (npages_start - (npages + 1)));
++					   (npages_start - (npages + 1)));
  			break;
  		}
- 	}
- 	spin_unlock(&direct_window_list_lock);
  
--	return dma_addr;
-+	return found;
+@@ -215,7 +215,7 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+ 	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_PUT_TCE_IND)) {
+ 		return tce_build_pSeriesLP(tbl->it_index, tcenum,
+ 					   tceshift, npages, uaddr,
+-		                           direction, attrs);
++					   direction, attrs);
+ 	}
+ 
+ 	local_irq_save(flags);	/* to protect tcep and the page behind it */
+@@ -269,7 +269,7 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+ 	if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
+ 		ret = (int)rc;
+ 		tce_freemulti_pSeriesLP(tbl, tcenum_start,
+-		                        (npages_start - (npages + limit)));
++					(npages_start - (npages + limit)));
+ 		return ret;
+ 	}
+ 
+@@ -1121,6 +1121,35 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+ 			 ret);
  }
  
- static struct direct_window *ddw_list_new_entry(struct device_node *pdn,
-@@ -1129,15 +1130,15 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
-  * pdn: the parent pe node with the ibm,dma_window property
-  * Future: also check if we can remap the base window for our base page size
-  *
-- * returns the dma offset for use by the direct mapped DMA code.
-+ * returns true if can map all pages (direct mapping), false otherwise..
-  */
--static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
-+static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- {
- 	int len, ret;
++static struct property *ddw_property_create(const char *propname, u32 liobn, u64 dma_addr,
++					    u32 page_shift, u32 window_shift)
++{
++	struct dynamic_dma_window_prop *ddwprop;
++	struct property *win64;
++
++	win64 = kzalloc(sizeof(*win64), GFP_KERNEL);
++	if (!win64)
++		return NULL;
++
++	win64->name = kstrdup(propname, GFP_KERNEL);
++	ddwprop = kzalloc(sizeof(*ddwprop), GFP_KERNEL);
++	win64->value = ddwprop;
++	win64->length = sizeof(*ddwprop);
++	if (!win64->name || !win64->value) {
++		kfree(win64);
++		kfree(win64->name);
++		kfree(win64->value);
++		return NULL;
++	}
++
++	ddwprop->liobn = cpu_to_be32(liobn);
++	ddwprop->dma_base = cpu_to_be64(dma_addr);
++	ddwprop->tce_shift = cpu_to_be32(page_shift);
++	ddwprop->window_shift = cpu_to_be32(window_shift);
++
++	return win64;
++}
++
+ /*
+  * If the PE supports dynamic dma windows, and there is space for a table
+  * that can map all pages in a linear offset, then setup such a table,
+@@ -1138,12 +1167,11 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
  	struct ddw_query_response query;
  	struct ddw_create_response create;
  	int page_shift;
--	u64 dma_addr, max_addr;
-+	u64 max_addr;
+-	u64 max_addr;
++	u64 max_addr, win_addr;
  	struct device_node *dn;
  	u32 ddw_avail[DDW_APPLICABLE_SIZE];
  	struct direct_window *window;
-@@ -1148,8 +1149,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+-	struct property *win64;
+-	struct dynamic_dma_window_prop *ddwprop;
++	struct property *win64 = NULL;
+ 	struct failed_ddw_pdn *fpdn;
+ 	bool default_win_removed = false;
  
- 	mutex_lock(&direct_window_init_mutex);
+@@ -1245,72 +1273,64 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 		goto out_failed;
+ 	}
+ 	len = order_base_2(max_addr);
+-	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
+-	if (!win64) {
+-		dev_info(&dev->dev,
+-			"couldn't allocate property for 64bit dma window\n");
+-		goto out_failed;
+-	}
+-	win64->name = kstrdup(DIRECT64_PROPNAME, GFP_KERNEL);
+-	win64->value = ddwprop = kmalloc(sizeof(*ddwprop), GFP_KERNEL);
+-	win64->length = sizeof(*ddwprop);
+-	if (!win64->name || !win64->value) {
+-		dev_info(&dev->dev,
+-			"couldn't allocate property name and value\n");
+-		goto out_free_prop;
+-	}
  
--	dma_addr = find_existing_ddw(pdn);
--	if (dma_addr != 0)
-+	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset))
- 		goto out_unlock;
+ 	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
+ 	if (ret != 0)
+-		goto out_free_prop;
+-
+-	ddwprop->liobn = cpu_to_be32(create.liobn);
+-	ddwprop->dma_base = cpu_to_be64(((u64)create.addr_hi << 32) |
+-			create.addr_lo);
+-	ddwprop->tce_shift = cpu_to_be32(page_shift);
+-	ddwprop->window_shift = cpu_to_be32(len);
++		goto out_failed;
  
- 	/*
-@@ -1296,7 +1296,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
+-		  create.liobn, dn);
++		create.liobn, dn);
+ 
+-	window = ddw_list_new_entry(pdn, ddwprop);
++	win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
++	win64 = ddw_property_create(DIRECT64_PROPNAME, create.liobn, win_addr,
++				    page_shift, len);
++	if (!win64) {
++		dev_info(&dev->dev,
++			 "couldn't allocate property, property name, or value\n");
++		goto out_win_del;
++	}
++
++	ret = of_add_property(pdn, win64);
++	if (ret) {
++		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
++			pdn, ret);
++		goto out_prop_free;
++	}
++
++	window = ddw_list_new_entry(pdn, win64->value);
+ 	if (!window)
+-		goto out_clear_window;
++		goto out_prop_del;
+ 
+ 	ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+ 			win64->value, tce_setrange_multi_pSeriesLP_walk);
+ 	if (ret) {
+ 		dev_info(&dev->dev, "failed to map direct window for %pOF: %d\n",
+ 			 dn, ret);
+-		goto out_free_window;
+-	}
+-
+-	ret = of_add_property(pdn, win64);
+-	if (ret) {
+-		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
+-			 pdn, ret);
+-		goto out_free_window;
++		goto out_list_del;
+ 	}
+ 
+ 	spin_lock(&direct_window_list_lock);
  	list_add(&window->list, &direct_window_list);
  	spin_unlock(&direct_window_list_lock);
  
--	dma_addr = be64_to_cpu(ddwprop->dma_base);
-+	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
+-	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
++	dev->dev.archdata.dma_offset = win_addr;
  	goto out_unlock;
  
- out_free_window:
-@@ -1309,6 +1309,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+-out_free_window:
++out_list_del:
+ 	kfree(window);
+ 
+-out_clear_window:
+-	remove_ddw(pdn, true);
++out_prop_del:
++	of_remove_property(pdn, win64);
+ 
+-out_free_prop:
++out_prop_free:
  	kfree(win64->name);
  	kfree(win64->value);
  	kfree(win64);
-+	win64 = NULL;
+ 	win64 = NULL;
  
++out_win_del:
++	remove_ddw(pdn, true);
++
  out_failed:
  	if (default_win_removed)
-@@ -1322,7 +1323,7 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 
- out_unlock:
- 	mutex_unlock(&direct_window_init_mutex);
--	return dma_addr;
-+	return win64;
- }
- 
- static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
-@@ -1401,11 +1402,8 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
- 			break;
- 	}
- 
--	if (pdn && PCI_DN(pdn)) {
--		pdev->dev.archdata.dma_offset = enable_ddw(pdev, pdn);
--		if (pdev->dev.archdata.dma_offset)
--			return true;
--	}
-+	if (pdn && PCI_DN(pdn))
-+		return enable_ddw(pdev, pdn);
- 
- 	return false;
- }
+ 		reset_dma_window(dev, pdn);
 -- 
 2.25.4
 
