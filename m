@@ -2,52 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54ACC2675BE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 00:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F0426763C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 00:56:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp96P74QKzDqwv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 08:14:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BpB2w5ySFzDqxM
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 08:56:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=HN05FZ3y; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp94b101yzDqqD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 08:13:14 +1000 (AEST)
-IronPort-SDR: y/rMe4GaTfwpDf+7lSnQpRQ/WriXBxKT7z87QHM6Tt6EZ4RvJxFERSVFd4VaK2BpIwGw4HIHhM
- r1CUFhMqYxRw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9741"; a="138878068"
-X-IronPort-AV: E=Sophos;i="5.76,417,1592895600"; d="scan'208";a="138878068"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2020 15:13:09 -0700
-IronPort-SDR: eTBig4hSfL6lnTJoihIlCligSUTrY/gvwuRRv5l5i1orlyCrKapzQqaoAgppDDKttlAwqw58YC
- lpb7mf49z4Kw==
-X-IronPort-AV: E=Sophos;i="5.76,417,1592895600"; d="scan'208";a="481488523"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2020 15:13:09 -0700
-Date: Fri, 11 Sep 2020 15:13:08 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/papr_scm: Fix warning triggered by
- perf_stats_show()
-Message-ID: <20200911221308.GP1930795@iweiny-DESK2.sc.intel.com>
-References: <20200910092212.107674-1-vaibhav@linux.ibm.com>
- <20200910155552.GN1930795@iweiny-DESK2.sc.intel.com>
- <878sdgqdrd.fsf@vajain21.in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BpB115vMKzDqY1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 08:55:17 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id v14so1043496pjd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 15:55:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=iX6KR3pc5397HS6ez1wFsDhHanMLDv7OBoBWmZ3PEHo=;
+ b=HN05FZ3yebd7C8xF8qlewkgl2Rwb8UhTBnIb4gX37F6tu74AWBloSnZ3FUvxEYXy0S
+ hHOe/C3ueHONgOSsFiyTrgkkQNtGuA36Vlo9FAEvnjm6HGX/l58wDqlAazc3IrSEOhgS
+ U5acurJDk1UKic45wjMeDqp9xdcvnYjPRmESo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=iX6KR3pc5397HS6ez1wFsDhHanMLDv7OBoBWmZ3PEHo=;
+ b=FFqfCQ8Ckf6LS39iuv78Of8kwgZc2QgARJG40n7rBQ8WnMMGVK9HODABroACUYzPo8
+ RaR6YnWwn2ozR9Ostbe5sAEnNBOnnekxd/P/HvtMkMrHgf4Y29cKlNhI1eRRwKB90ak8
+ dkTH57E6JHtWj1HnVeEvS9sSDFwE412qCzFjrH9rwtF8Xvt4vYWupNv4QfdA60m4gpeg
+ 48scqHB19iQn+R3/vilwXhGowQ67CjZixoKUmqAy8ebvlHfxUxYv9YqCzYB2yzGgBEX2
+ RZR7Tv/VqITUnO/7pE0i1WPE30AH7xb3f2LDpoB5oWx7ED4Gs1T+yhNaeNveea0U+OZi
+ w1hQ==
+X-Gm-Message-State: AOAM532waW3H8HNjy38jzc1SVHMAhXa8rEe0gYr5Y3l/VhhzeKKFUejl
+ +zaa0BUvBvoyvuIyFsjv+qXUbQ==
+X-Google-Smtp-Source: ABdhPJwRzbReZ3ccesoO8GBhTg3vNXkSnDymKYLOphShCuQvCPw0S/l7+g4VX1awcE2hETunelGaDA==
+X-Received: by 2002:a17:90a:d488:: with SMTP id
+ s8mr4332117pju.176.1599864914549; 
+ Fri, 11 Sep 2020 15:55:14 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id a27sm3270050pfk.52.2020.09.11.15.55.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Sep 2020 15:55:13 -0700 (PDT)
+Date: Fri, 11 Sep 2020 15:55:12 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Subject: Re: [PATCH v2] selftests/seccomp: fix ptrace tests on powerpc
+Message-ID: <202009111550.07017FE49@keescook>
+References: <20200911181012.171027-1-cascardo@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <878sdgqdrd.fsf@vajain21.in.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20200911181012.171027-1-cascardo@canonical.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,138 +76,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Shuah Khan <shuah@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 12, 2020 at 01:36:46AM +0530, Vaibhav Jain wrote:
-> Thanks for reviewing this patch Ira,
+On Fri, Sep 11, 2020 at 03:10:12PM -0300, Thadeu Lima de Souza Cascardo wrote:
+> As pointed out by Michael Ellerman, the ptrace ABI on powerpc does not
+> allow or require the return code to be set on syscall entry when
+> skipping the syscall. It will always return ENOSYS and the return code
+> must be set on syscall exit.
 > 
+> This code does that, behaving more similarly to strace. It still sets
+> the return code on entry, which is overridden on powerpc, and it will
+> always repeat the same on exit. Also, on powerpc, the errno is not
+> inverted, and depends on ccr.so being set.
 > 
-> Ira Weiny <ira.weiny@intel.com> writes:
-> 
-> > On Thu, Sep 10, 2020 at 02:52:12PM +0530, Vaibhav Jain wrote:
-> >> A warning is reported by the kernel in case perf_stats_show() returns
-> >> an error code. The warning is of the form below:
-> >> 
-> >>  papr_scm ibm,persistent-memory:ibm,pmemory@44100001:
-> >>  	  Failed to query performance stats, Err:-10
-> >>  dev_attr_show: perf_stats_show+0x0/0x1c0 [papr_scm] returned bad count
-> >>  fill_read_buffer: dev_attr_show+0x0/0xb0 returned bad count
-> >> 
-> >> On investigation it looks like that the compiler is silently truncating the
-> >> return value of drc_pmem_query_stats() from 'long' to 'int', since the
-> >> variable used to store the return code 'rc' is an 'int'. This
-> >> truncated value is then returned back as a 'ssize_t' back from
-> >> perf_stats_show() to 'dev_attr_show()' which thinks of it as a large
-> >> unsigned number and triggers this warning..
-> >> 
-> >> To fix this we update the type of variable 'rc' from 'int' to
-> >> 'ssize_t' that prevents the compiler from truncating the return value
-> >> of drc_pmem_query_stats() and returning correct signed value back from
-> >> perf_stats_show().
-> >> 
-> >> Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance
-> >>        stats from PHYP')
-> >> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> >> ---
-> >>  arch/powerpc/platforms/pseries/papr_scm.c | 3 ++-
-> >>  1 file changed, 2 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> >> index a88a707a608aa..9f00b61676ab9 100644
-> >> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> >> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> >> @@ -785,7 +785,8 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
-> >>  static ssize_t perf_stats_show(struct device *dev,
-> >>  			       struct device_attribute *attr, char *buf)
-> >>  {
-> >> -	int index, rc;
-> >> +	int index;
-> >> +	ssize_t rc;
-> >
-> > I'm not sure this is really fixing everything here.
-> 
-> The issue is with the statement in perf_stats_show():
-> 
-> 'return rc ? rc : seq_buf_used(&s);'
-> 
-> The function seq_buf_used() returns an 'unsigned int' and with 'rc'
-> typed as 'int', forces a promotion of the expression to 'unsigned int'
-> which causes a loss of signedness of 'rc' and compiler silently
-> assigns this unsigned value to the function return typed as 'signed
-> long'.
-> 
-> Making 'rc', a 'signed long' forces a promotion of the expresion to
-> 'signed long' which preserves the signedness of 'rc' and will also be
-> compatible with the function return type.
+> This has been tested on powerpc and amd64.
 
-Ok, ok, I read this all wrong.
+This looks like two fixes in one, so this should be split. :)
 
-FWIW I would also cast seq_buf_used() to ssize_t to show you know what you are
-doing there.
-
+>  tools/testing/selftests/seccomp/seccomp_bpf.c | 81 ++++++++++++-------
+>  1 file changed, 53 insertions(+), 28 deletions(-)
 > 
-> >
-> > drc_pmem_query_stats() can return negative errno's.  Why are those not checked
-> > somewhere in perf_stats_show()?
-> >
-> For the specific invocation 'drc_pmem_query_stats(p, stats, 0)' we only
-> expect return value 'rc <=0' with '0' indicating a successful fetch of
-> nvdimm performance stats from hypervisor. Hence there are no explicit
-> checks for negative error codes in the functions as all return values
-> !=0 indicate an error.
-> 
-> 
-> > It seems like all this fix is handling is a > 0 return value: 'ret[0]' from
-> > line 289 in papr_scm.c...  Or something?
-> No, in case the arg 'num_stats' is '0' and 'buff_stats != NULL' the
-> variable 'size' is assigned a non-zero value hence that specific branch
-> you mentioned  is never taken. Instead in case of success
-> drc_pmem_query_stats() return '0' and in case of an error a negative
-> error code is returned.
-> 
-> >
-> > Worse yet drc_pmem_query_stats() is returning ssize_t which is a signed value.
-> > Therefore, it should not be returning -errno.  I'm surprised the static
-> > checkers did not catch that.
-> Didnt quite get the assertion here. The function is marked to return
-> 'ssize_t' because we can return both +ve for success and -ve values to
-> indicate errors.
+> diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
+> index 7a6d40286a42..0ddc0846e9c0 100644
+> --- a/tools/testing/selftests/seccomp/seccomp_bpf.c
+> +++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+> @@ -1837,15 +1837,24 @@ void change_syscall(struct __test_metadata *_metadata,
+>  #endif
+>  
+>  	/* If syscall is skipped, change return value. */
+> -	if (syscall == -1)
+> +	if (syscall == -1) {
+>  #ifdef SYSCALL_NUM_RET_SHARE_REG
+>  		TH_LOG("Can't modify syscall return on this architecture");
+> -
+>  #elif defined(__xtensa__)
+>  		regs.SYSCALL_RET(regs) = result;
+> +#elif defined(__powerpc__)
+> +		/* Error is signaled by CR0 SO bit and error code is positive. */
+> +		if (result < 0) {
+> +			regs.SYSCALL_RET = -result;
+> +			regs.ccr |= 0x10000000;
+> +		} else {
+> +			regs.SYSCALL_RET = result;
+> +			regs.ccr &= ~0x10000000;
+> +		}
+>  #else
+>  		regs.SYSCALL_RET = result;
+>  #endif
+> +	}
 
-Sorry I was reading this as size_t and meant to say unsigned...  I was looking
-at this too quickly.
+I'll send a series soon that will include this bit, since I don't want
+to collect these kinds of arch-specific things in the functions. (And
+the xtensa one went in without my review!)
 
-> 
-> >
-> > I believe I caught similar errors with a patch series before which did not pay
-> > attention to variable types.
-> >
-> > Please audit this code for these types of errors and ensure you are really
-> > doing the correct thing when using the sysfs interface.  I'm pretty sure bad
-> > things will eventually happen (if they are not already) if you return some
-> > really big number to the sysfs core from *_show().
-> I think this problem is different compared to what you had previously pointed
-> to. The values returned from drc_pmem_query_stats() can be stored in an
-> 'int' variable too, however it was the silent promotion of a signed type
-> to unsigned type was what caused this specific issue.
+> +FIXTURE(TRACE_syscall) {
+> +	struct sock_fprog prog;
+> +	pid_t tracer, mytid, mypid, parent;
+> +};
+> +
+> +FIXTURE_VARIANT(TRACE_syscall) {
+> +	/*
+> +	 * All of the SECCOMP_RET_TRACE behaviors can be tested with either
+> +	 * SECCOMP_RET_TRACE+PTRACE_CONT or plain ptrace()+PTRACE_SYSCALL.
+> +	 * This indicates if we should use SECCOMP_RET_TRACE (false), or
+> +	 * ptrace (true).
+> +	 */
+> +	bool use_ptrace;
+> +
+> +	/*
+> +	 * Some archs (like ppc) only support changing the return code during
+> +	 * syscall exit when ptrace is used.  As the syscall number might not
+> +	 * be available anymore during syscall exit, it needs to be saved
+> +	 * during syscall enter.
+> +	 */
+> +	int syscall_nr;
 
-Ok this makes more sense now.  Sorry about not looking more carefully.
+This should be part of the fixture struct, not the variant. 
 
-But I still think matching up the return of seq_buf_used() is worth it.  I
-don't particularly like depending on 'automatic' promotions which make
-reviewing code harder like this.
+> +};
+> +
+> +FIXTURE_VARIANT_ADD(TRACE_syscall, ptrace) {
+> +	.use_ptrace = true,
+> +};
+> +
+> +FIXTURE_VARIANT_ADD(TRACE_syscall, seccomp) {
+> +	.use_ptrace = false,
+> +};
 
-And sorry if my email seemed harsh I did not mean it to be.  I just like when
-types are more explicit because I feel like it can avoid issues like this.
-(Specifically my confusion over the types...)
+i.e. if a member isn't initialized in FIXTURE_VARIANT_ADD, it shouldn't
+be defined in FIXTURE_VARIANT. :)
 
-:-D
+> +
+>  void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+>  		   int status, void *args)
+>  {
+>  	int ret, nr;
+>  	unsigned long msg;
+>  	static bool entry;
+> +	FIXTURE_VARIANT(TRACE_syscall) * variant = args;
+>  
+>  	/*
+>  	 * The traditional way to tell PTRACE_SYSCALL entry/exit
+> @@ -1916,10 +1957,15 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+>  	EXPECT_EQ(entry ? PTRACE_EVENTMSG_SYSCALL_ENTRY
+>  			: PTRACE_EVENTMSG_SYSCALL_EXIT, msg);
+>  
+> -	if (!entry)
+> +	if (!entry && !variant)
+>  		return;
+>  
+> -	nr = get_syscall(_metadata, tracee);
+> +	if (entry)
+> +		nr = get_syscall(_metadata, tracee);
+> +	else if (variant)
+> +		nr = variant->syscall_nr;
+> +	if (variant)
+> +		variant->syscall_nr = nr;
 
-Thanks,
-Ira
+So, to be clear this is _only_ an issue for the ptrace side of things,
+yes? i.e. seccomp's setting of the return value will correct stick?
 
+-- 
+Kees Cook
