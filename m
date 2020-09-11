@@ -2,55 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DA5266003
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 15:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BF4266016
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 15:17:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bnx0b4SJqzDqrZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 23:09:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnxBP60WjzDqcM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 23:17:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnwyF0XhQzDqrC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 23:07:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bnx7g17BczDqcD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 23:15:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=HHWeIF9V; 
+ header.a=rsa-sha256 header.s=201909 header.b=K+ZBQQL8; 
  dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4Bnx7g05rNz9sTN; Fri, 11 Sep 2020 23:15:11 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bnwy94qSTz9ryj;
- Fri, 11 Sep 2020 23:06:57 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Bnx7f0Tbwz9sTC;
+ Fri, 11 Sep 2020 23:15:10 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1599829620;
- bh=x21mMNzQwjNVHC4uKxnhsEu5JP7jl+CQeVbbOvT5Dh4=;
+ s=201909; t=1599830110;
+ bh=E6bMDqJsUb+xgcTwhcnczzVvFUDMt/EWMnlP3L+2fmY=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=HHWeIF9VPAbictf3mXnGeVXmoNLw1N0a1ATY9YMnkJr70ZwyBqpNNdJFt1xCYgWwS
- kNQYQEpwCFD85XBHQ+aRkhjFsGqJ1ZMMXTnvTlD2krX5svi9YVQK9Dl4HmWwVpkL+z
- 34b1BvSHS8eGmS8RdbB/9Q98zzyg6gTItNiRtiHxh1btBlgbs2FfJ4OerP23S4FMiz
- 0ZLkMLOc1ZaLc1hGN2BlANg5xBiv+uQHm8kX2kfKSF6HF53QP3ZKJvPUvdjANXXMc8
- N1W8IvQAGv+qV7KFY4JbXMRjOtCtaHVQ2SAEC/jJGzPqfqQrpKIy2P8YVZZycZ6a87
- esCjsZWe56AXQ==
+ b=K+ZBQQL8i9GnDjmFSLChWG1r9giNUKgdftTQXMY6ccwRqn/2sWZZut5Tz1g8tAH8B
+ x36T94wWduJ3CijjST9DSCQVok1ugG3QJl9Q5EKIalv0mCl3k6JMnlAulvb2bWAEIw
+ lfRwLZC2pNJN7VwtU+5SmCQA7WjbWHiB1+SbddykiiEipt4kjJuf9ejOIr9Zk6pZnn
+ vPkN+/ee8lZlDl7kx+HggLyvaxqa2IS4i1F/aI6nzQv0O6qHPDYGJirREBjN3zny0w
+ i878qb1tD8M/3AezXevDIEEe5GbjrgNIwEsKoJcGKO9oK3xb7kwGjizDBUQXCilJXP
+ 6z9JtY8BLlySA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH] powerpc/powermac: Fix low_sleep_handler with KUAP and KUEP
-In-Reply-To: <d56e42c0-0117-81bb-b583-4944e7bf0383@csgroup.eu>
-References: <74472ea2a7e8698273643cde7d382bd9f31cd1dd.1598945727.git.christophe.leroy@csgroup.eu>
- <871rj9rxt1.fsf@mpe.ellerman.id.au>
- <d56e42c0-0117-81bb-b583-4944e7bf0383@csgroup.eu>
-Date: Fri, 11 Sep 2020 23:06:53 +1000
-Message-ID: <87v9gkqx76.fsf@mpe.ellerman.id.au>
+To: Scott Cheloha <cheloha@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v1] pseries/hotplug-memory: hot-add: skip redundant LMB
+ lookup
+In-Reply-To: <20200910175637.2865160-1-cheloha@linux.ibm.com>
+References: <20200910175637.2865160-1-cheloha@linux.ibm.com>
+Date: Fri, 11 Sep 2020 23:15:09 +1000
+Message-ID: <87sgboqwte.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,41 +61,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>,
+ David Hildenbrand <david@redhat.com>,
+ Rick Lindsley <ricklind@linux.vnet.ibm.com>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 11/09/2020 =C3=A0 01:56, Michael Ellerman a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> low_sleep_handler() has an hardcoded restore of segment registers
->>> that doesn't take KUAP and KUEP into account.
->>>
->>> Use head_32's load_segment_registers() routine instead.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> Fixes: a68c31fc01ef ("powerpc/32s: Implement Kernel Userspace Access Pr=
-otection")
->>> Fixes: 31ed2b13c48d ("powerpc/32s: Implement Kernel Userspace Execution=
- Prevention.")
->>> Cc: stable@vger.kernel.org
->>> ---
->>>   arch/powerpc/platforms/powermac/sleep.S | 9 +--------
->>>   1 file changed, 1 insertion(+), 8 deletions(-)
->>=20
->> Doesn't build? pmac32_defconfig, gcc 9.3.0:
->>=20
->> ld: arch/powerpc/platforms/powermac/sleep.o: in function `core99_wake_up=
-':
->> (.text+0x25c): undefined reference to `load_segment_registers'
->>=20
->> Missing _GLOBAL() presumably?
->
-> Oops .. :(
->
-> v2 sent out.
+Hi Scott,
 
-Thanks.
+Scott Cheloha <cheloha@linux.ibm.com> writes:
+> During memory hot-add, dlpar_add_lmb() calls memory_add_physaddr_to_nid()
+> to determine which node id (nid) to use when later calling __add_memory().
+>
+...
+>
+> Consider an LPAR with 126976 LMBs.  In one test, hot-adding 126000
+
+Nice little machine you got there :P
+
+> LMBs on an upatched kernel took ~3.5 hours while a patched kernel
+> completed the same operation in ~2 hours:
+
+...
+
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 0ea976d1cac4..9cd572440175 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -595,6 +595,8 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+>  }
+>  #endif /* CONFIG_MEMORY_HOTREMOVE */
+>  
+> +extern int of_drconf_to_nid_single(struct drmem_lmb *);
+> +
+
+This needs to go in a header.
+
+It should probably go in arch/powerpc/include/asm/topology.h
 
 cheers
+
+>  static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>  {
+>  	unsigned long block_sz;
+> @@ -611,8 +613,10 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>  
+>  	block_sz = memory_block_size_bytes();
+>  
+> -	/* Find the node id for this address. */
+> -	nid = memory_add_physaddr_to_nid(lmb->base_addr);
+> +	/* Find the node id for this address.  Fake one if necessary. */
+> +	nid = of_drconf_to_nid_single(lmb);
+> +	if (nid < 0 || !node_possible(nid))
+> +		nid = first_online_node;
+>  
+>  	/* Add the memory */
+>  	rc = __add_memory(nid, lmb->base_addr, block_sz);
+> -- 
+> 2.24.1
