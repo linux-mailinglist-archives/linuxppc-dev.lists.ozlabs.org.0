@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF2C26680E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 20:08:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B38026681A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 20:12:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp3f93BmhzDqkd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 04:08:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp3kS49XyzDqm6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 04:12:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,24 +19,21 @@ Received: from youngberry.canonical.com (youngberry.canonical.com
  [91.189.89.112])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp3cD3BfdzDqfc
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 04:06:51 +1000 (AEST)
-Received: from 1.general.cascardo.us.vpn ([10.172.70.58] helo=mussarela)
- by youngberry.canonical.com with esmtpsa
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp3hY6cv8zDqgp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 04:10:37 +1000 (AEST)
+Received: from 1.general.cascardo.us.vpn ([10.172.70.58]
+ helo=localhost.localdomain) by youngberry.canonical.com with esmtpsa
  (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
  (envelope-from <cascardo@canonical.com>)
- id 1kGnRa-00014t-EF; Fri, 11 Sep 2020 18:06:42 +0000
-Date: Fri, 11 Sep 2020 15:06:37 -0300
+ id 1kGnVI-0001Y9-HA; Fri, 11 Sep 2020 18:10:33 +0000
 From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] selftests/seccomp: fix ptrace tests on powerpc
-Message-ID: <20200911180637.GI4002@mussarela>
-References: <20200630164739.1268222-1-cascardo@canonical.com>
- <202009081505.D9FE52510B@keescook>
+To: linux-kselftest@vger.kernel.org
+Subject: [PATCH v2] selftests/seccomp: fix ptrace tests on powerpc
+Date: Fri, 11 Sep 2020 15:10:12 -0300
+Message-Id: <20200911181012.171027-1-cascardo@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202009081505.D9FE52510B@keescook>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,151 +45,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Shuah Khan <shuah@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, linux-kselftest@vger.kernel.org
+Cc: cascardo@canonical.com, Shuah Khan <shuah@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Kees Cook <keescook@google.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 08, 2020 at 04:18:17PM -0700, Kees Cook wrote:
-> On Tue, Jun 30, 2020 at 01:47:39PM -0300, Thadeu Lima de Souza Cascardo wrote:
-> > As pointed out by Michael Ellerman, the ptrace ABI on powerpc does not
-> > allow or require the return code to be set on syscall entry when
-> > skipping the syscall. It will always return ENOSYS and the return code
-> > must be set on syscall exit.
-> > 
-> > This code does that, behaving more similarly to strace. It still sets
-> > the return code on entry, which is overridden on powerpc, and it will
-> > always repeat the same on exit. Also, on powerpc, the errno is not
-> > inverted, and depends on ccr.so being set.
-> > 
-> > This has been tested on powerpc and amd64.
-> > 
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Kees Cook <keescook@google.com>
-> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-> 
-> Yikes, I missed this from a while ago. I apologize for responding so
-> late!
-> 
-> This appears still unfixed; is that correct?
-> 
+As pointed out by Michael Ellerman, the ptrace ABI on powerpc does not
+allow or require the return code to be set on syscall entry when
+skipping the syscall. It will always return ENOSYS and the return code
+must be set on syscall exit.
 
-Yes. I will send a v2 on top of recent changes to the test.
+This code does that, behaving more similarly to strace. It still sets
+the return code on entry, which is overridden on powerpc, and it will
+always repeat the same on exit. Also, on powerpc, the errno is not
+inverted, and depends on ccr.so being set.
 
-> > ---
-> >  tools/testing/selftests/seccomp/seccomp_bpf.c | 24 +++++++++++++++----
-> >  1 file changed, 20 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-> > index 252140a52553..b90a9190ba88 100644
-> > --- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-> > +++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-> > @@ -1738,6 +1738,14 @@ void change_syscall(struct __test_metadata *_metadata,
-> >  		TH_LOG("Can't modify syscall return on this architecture");
-> >  #else
-> >  		regs.SYSCALL_RET = result;
-> > +# if defined(__powerpc__)
-> > +		if (result < 0) {
-> > +			regs.SYSCALL_RET = -result;
-> > +			regs.ccr |= 0x10000000;
-> > +		} else {
-> > +			regs.ccr &= ~0x10000000;
-> > +		}
-> > +# endif
-> >  #endif
-> 
-> Just so I understand correctly: for ppc to "see" this result, it needs
-> to be both negative AND have this specific register set?
-> 
+This has been tested on powerpc and amd64.
 
-Yes. According to Documentation/powerpc/syscall64-abi.rst:
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Kees Cook <keescook@google.com>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+---
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 81 ++++++++++++-------
+ 1 file changed, 53 insertions(+), 28 deletions(-)
 
-"
-- For the sc instruction, both a value and an error condition are returned.
-  cr0.SO is the error condition, and r3 is the return value. When cr0.SO is
-  clear, the syscall succeeded and r3 is the return value. When cr0.SO is set,
-  the syscall failed and r3 is the error value (that normally corresponds to
-  errno).
-"
+diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
+index 7a6d40286a42..0ddc0846e9c0 100644
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -1837,15 +1837,24 @@ void change_syscall(struct __test_metadata *_metadata,
+ #endif
+ 
+ 	/* If syscall is skipped, change return value. */
+-	if (syscall == -1)
++	if (syscall == -1) {
+ #ifdef SYSCALL_NUM_RET_SHARE_REG
+ 		TH_LOG("Can't modify syscall return on this architecture");
+-
+ #elif defined(__xtensa__)
+ 		regs.SYSCALL_RET(regs) = result;
++#elif defined(__powerpc__)
++		/* Error is signaled by CR0 SO bit and error code is positive. */
++		if (result < 0) {
++			regs.SYSCALL_RET = -result;
++			regs.ccr |= 0x10000000;
++		} else {
++			regs.SYSCALL_RET = result;
++			regs.ccr &= ~0x10000000;
++		}
+ #else
+ 		regs.SYSCALL_RET = result;
+ #endif
++	}
+ 
+ #ifdef HAVE_GETREGS
+ 	ret = ptrace(PTRACE_SETREGS, tracee, 0, &regs);
+@@ -1897,12 +1906,44 @@ void tracer_seccomp(struct __test_metadata *_metadata, pid_t tracee,
+ 
+ }
+ 
++FIXTURE(TRACE_syscall) {
++	struct sock_fprog prog;
++	pid_t tracer, mytid, mypid, parent;
++};
++
++FIXTURE_VARIANT(TRACE_syscall) {
++	/*
++	 * All of the SECCOMP_RET_TRACE behaviors can be tested with either
++	 * SECCOMP_RET_TRACE+PTRACE_CONT or plain ptrace()+PTRACE_SYSCALL.
++	 * This indicates if we should use SECCOMP_RET_TRACE (false), or
++	 * ptrace (true).
++	 */
++	bool use_ptrace;
++
++	/*
++	 * Some archs (like ppc) only support changing the return code during
++	 * syscall exit when ptrace is used.  As the syscall number might not
++	 * be available anymore during syscall exit, it needs to be saved
++	 * during syscall enter.
++	 */
++	int syscall_nr;
++};
++
++FIXTURE_VARIANT_ADD(TRACE_syscall, ptrace) {
++	.use_ptrace = true,
++};
++
++FIXTURE_VARIANT_ADD(TRACE_syscall, seccomp) {
++	.use_ptrace = false,
++};
++
+ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+ 		   int status, void *args)
+ {
+ 	int ret, nr;
+ 	unsigned long msg;
+ 	static bool entry;
++	FIXTURE_VARIANT(TRACE_syscall) * variant = args;
+ 
+ 	/*
+ 	 * The traditional way to tell PTRACE_SYSCALL entry/exit
+@@ -1916,10 +1957,15 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+ 	EXPECT_EQ(entry ? PTRACE_EVENTMSG_SYSCALL_ENTRY
+ 			: PTRACE_EVENTMSG_SYSCALL_EXIT, msg);
+ 
+-	if (!entry)
++	if (!entry && !variant)
+ 		return;
+ 
+-	nr = get_syscall(_metadata, tracee);
++	if (entry)
++		nr = get_syscall(_metadata, tracee);
++	else if (variant)
++		nr = variant->syscall_nr;
++	if (variant)
++		variant->syscall_nr = nr;
+ 
+ 	if (nr == __NR_getpid)
+ 		change_syscall(_metadata, tracee, __NR_getppid, 0);
+@@ -1929,29 +1975,6 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
+ 		change_syscall(_metadata, tracee, -1, -ESRCH);
+ }
+ 
+-FIXTURE(TRACE_syscall) {
+-	struct sock_fprog prog;
+-	pid_t tracer, mytid, mypid, parent;
+-};
+-
+-FIXTURE_VARIANT(TRACE_syscall) {
+-	/*
+-	 * All of the SECCOMP_RET_TRACE behaviors can be tested with either
+-	 * SECCOMP_RET_TRACE+PTRACE_CONT or plain ptrace()+PTRACE_SYSCALL.
+-	 * This indicates if we should use SECCOMP_RET_TRACE (false), or
+-	 * ptrace (true).
+-	 */
+-	bool use_ptrace;
+-};
+-
+-FIXTURE_VARIANT_ADD(TRACE_syscall, ptrace) {
+-	.use_ptrace = true,
+-};
+-
+-FIXTURE_VARIANT_ADD(TRACE_syscall, seccomp) {
+-	.use_ptrace = false,
+-};
+-
+ FIXTURE_SETUP(TRACE_syscall)
+ {
+ 	struct sock_filter filter[] = {
+@@ -1992,7 +2015,9 @@ FIXTURE_SETUP(TRACE_syscall)
+ 	self->tracer = setup_trace_fixture(_metadata,
+ 					   variant->use_ptrace ? tracer_ptrace
+ 							       : tracer_seccomp,
+-					   NULL, variant->use_ptrace);
++					   variant->use_ptrace ? (void *) variant
++							       : NULL,
++					   variant->use_ptrace);
+ 
+ 	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
+ 	ASSERT_EQ(0, ret);
+-- 
+2.25.1
 
-So, while some other arches will return -EINVAL, ppc returns EINVAL. And that
-is distinguished from, say, read(2) returning 22 bytes read, by using CR.SO.
-
-> >  
-> >  #ifdef HAVE_GETREGS
-> > @@ -1796,6 +1804,7 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
-> >  	int ret, nr;
-> >  	unsigned long msg;
-> >  	static bool entry;
-> > +	int *syscall_nr = args;
-> >  
-> >  	/*
-> >  	 * The traditional way to tell PTRACE_SYSCALL entry/exit
-> > @@ -1809,10 +1818,15 @@ void tracer_ptrace(struct __test_metadata *_metadata, pid_t tracee,
-> >  	EXPECT_EQ(entry ? PTRACE_EVENTMSG_SYSCALL_ENTRY
-> >  			: PTRACE_EVENTMSG_SYSCALL_EXIT, msg);
-> >  
-> > -	if (!entry)
-> > +	if (!entry && !syscall_nr)
-> >  		return;
-> >  
-> > -	nr = get_syscall(_metadata, tracee);
-> > +	if (entry)
-> > +		nr = get_syscall(_metadata, tracee);
-> > +	else
-> > +		nr = *syscall_nr;
-> 
-> This is weird? Shouldn't get_syscall() be modified to do the right thing
-> here instead of depending on the extra arg?
-> 
-
-R0 might be clobered. Same documentation mentions it as volatile. So, during
-syscall exit, we can't tell for sure that R0 will have the original syscall
-number. So, we need to grab it during syscall enter, save it somewhere and
-reuse it. I used the test context/args for that. That's the main change I had
-to deal with after recent changes to the test. I used the variant struct now.
-
-I only saw the need to do this under tracer_ptrace, as that was the only one
-changing syscall return values using ptrace. And that can only be done during
-syscall exit on ppc (ptrace ABI we can't break). So, changing get_syscall did
-not seem necessary.
-
-Thanks.
-Cascardo.
-
-> > +	if (syscall_nr)
-> > +		*syscall_nr = nr;
-> >  
-> >  	if (nr == __NR_getpid)
-> >  		change_syscall(_metadata, tracee, __NR_getppid, 0);
-> > @@ -1889,9 +1903,10 @@ TEST_F(TRACE_syscall, ptrace_syscall_redirected)
-> >  
-> >  TEST_F(TRACE_syscall, ptrace_syscall_errno)
-> >  {
-> > +	int syscall_nr = -1;
-> >  	/* Swap SECCOMP_RET_TRACE tracer for PTRACE_SYSCALL tracer. */
-> >  	teardown_trace_fixture(_metadata, self->tracer);
-> > -	self->tracer = setup_trace_fixture(_metadata, tracer_ptrace, NULL,
-> > +	self->tracer = setup_trace_fixture(_metadata, tracer_ptrace, &syscall_nr,
-> >  					   true);
-> >  
-> >  	/* Tracer should skip the open syscall, resulting in ESRCH. */
-> > @@ -1900,9 +1915,10 @@ TEST_F(TRACE_syscall, ptrace_syscall_errno)
-> >  
-> >  TEST_F(TRACE_syscall, ptrace_syscall_faked)
-> >  {
-> > +	int syscall_nr = -1;
-> >  	/* Swap SECCOMP_RET_TRACE tracer for PTRACE_SYSCALL tracer. */
-> >  	teardown_trace_fixture(_metadata, self->tracer);
-> > -	self->tracer = setup_trace_fixture(_metadata, tracer_ptrace, NULL,
-> > +	self->tracer = setup_trace_fixture(_metadata, tracer_ptrace, &syscall_nr,
-> >  					   true);
-> >  
-> >  	/* Tracer should skip the gettid syscall, resulting fake pid. */
-> > -- 
-> > 2.25.1
-> > 
-> 
-> -- 
-> Kees Cook
