@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA4C267664
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 01:11:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A15F267667
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 01:13:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BpBN807sszDqgC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 09:11:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BpBPr04mXzDqyv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 09:13:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,84 +17,83 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=PAoqGBmI; dkim-atps=neutral
+ header.s=pp1 header.b=cz3YsExB; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp4tR2nTZzDqv3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 05:04:11 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp6y00kR8zDqvR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 06:37:27 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08BJ1nqJ070282; Fri, 11 Sep 2020 15:03:16 -0400
+ 08BKWdvP170701; Fri, 11 Sep 2020 16:36:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=date : from : to : cc :
  subject : message-id : references : mime-version : content-type :
  content-transfer-encoding : in-reply-to; s=pp1;
- bh=BA+waGK444WFdAdGsxtmH4MVyQmh9mHMY6P6ku0v4Ks=;
- b=PAoqGBmI1WsEu/qH5mX1NCJjx4VjyBJDOUw68p7GuYHEFTEDLVyHklhTy+D05a9nhIEh
- S3OPtLLBBYAxRCIWYIGMEgVuSzV/wiY0aRinuDzcFKAICBrC4V6KZGYgqhBPlJ/HtW90
- 2sVdth6sFOm8qAfahbo8bWOSGUQUEITM97sVy3F3h16HR0GwbY8iTIlfBFmJ+neomaWW
- ttvdIJBuVK0LzRf3TnGmPJDMF9t2Br4ehU8orVA+6UbKHdmO/NDqhkIh6K8Prm4HrnX/
- X/r9PwkYXTaBXZJhLWPSWh77gi2NbCByHKwD02OEDWOrr1Md8dXOnOojvEUCnbXgmBbM gw== 
+ bh=hOcVC6Va1COznQ0oD3ZHmavI0zSfYZBaHJyzu45rYTc=;
+ b=cz3YsExB/lDwLPfrpKWbTdWb5Qzbr5rHXXf/uwggBSWxDSVGHw4DszUvmlUKbaJ1o5Ko
+ TzxhoMu/K5Gf0zonK+k5Y8vnz5rB9fu90H1Nobz5XHKeaPkNmM3vBNK8py3MV/KXKyiD
+ LPBS5/2S4QWDUBed8/p5N9fWoVqnK6U0OjxWZe6GI5Fd9pkYNvx1+FAu3vrbG1i2q76k
+ +zPztI43rnQoxqfO+w71ZlU27pQ/sVlrWge7XwBoWSVLxemoml91gQzG1tf/sz7mtQ9B
+ CuAisIeupIx84L/7BmCPhhWqeYo0efEyMvf2+rbGzFA4QFuIUzqlC3oPwLWNeapC3Ngh Dw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33geac150s-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33gdycv10x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Sep 2020 15:03:16 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08BJ2G5J073420;
- Fri, 11 Sep 2020 15:03:15 -0400
+ Fri, 11 Sep 2020 16:36:55 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08BKXDuQ172749;
+ Fri, 11 Sep 2020 16:36:54 -0400
 Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33geac14yv-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33gdycv0yy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Sep 2020 15:03:15 -0400
+ Fri, 11 Sep 2020 16:36:54 -0400
 Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08BIvA0f002964;
- Fri, 11 Sep 2020 19:03:12 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 33c2a8fk1b-1
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08BKapqm003573;
+ Fri, 11 Sep 2020 20:36:51 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 33c2a8fn1f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Sep 2020 19:03:12 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 08BJ39xe22675840
+ Fri, 11 Sep 2020 20:36:51 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08BKamlD33358238
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 11 Sep 2020 19:03:10 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6F01A405F;
- Fri, 11 Sep 2020 19:03:09 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 02C6DA405B;
- Fri, 11 Sep 2020 19:03:08 +0000 (GMT)
+ Fri, 11 Sep 2020 20:36:48 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 536EAAE051;
+ Fri, 11 Sep 2020 20:36:48 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 70537AE04D;
+ Fri, 11 Sep 2020 20:36:46 +0000 (GMT)
 Received: from localhost (unknown [9.145.43.16])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 11 Sep 2020 19:03:07 +0000 (GMT)
-Date: Fri, 11 Sep 2020 21:03:06 +0200
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 11 Sep 2020 20:36:46 +0000 (GMT)
+Date: Fri, 11 Sep 2020 22:36:43 +0200
 From: Vasily Gorbik <gor@linux.ibm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH] mm/gup: fix gup_fast with dynamic page table folding
-Message-ID: <patch.git-2c4880212370.your-ad-here.call-01599849957-ext-4686@work.hours>
-References: <20200911070939.GB1362448@hirez.programming.kicks-ass.net>
+To: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH v2] mm/gup: fix gup_fast with dynamic page table folding
+Message-ID: <patch.git-943f1e5dcff2.your-ad-here.call-01599856292-ext-8676@work.hours>
+References: <20200911200511.GC1221970@ziepe.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200911070939.GB1362448@hirez.programming.kicks-ass.net>
+In-Reply-To: <20200911200511.GC1221970@ziepe.ca>
 X-Patchwork-Bot: notify
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-11_09:2020-09-10,
+ definitions=2020-09-11_10:2020-09-10,
  2020-09-11 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 suspectscore=0 spamscore=0 adultscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009110148
+ clxscore=1015 mlxlogscore=999
+ adultscore=0 impostorscore=0 mlxscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009110162
 X-Mailman-Approved-At: Sat, 12 Sep 2020 09:10:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -124,9 +123,11 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
  Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>,
  linux-arm <linux-arm-kernel@lists.infradead.org>,
- Dave Hansen <dave.hansen@intel.com>, LKML <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-power <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
+ Dave Hansen <dave.hansen@intel.com>,
+ linux-power <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -197,6 +198,8 @@ Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 ---
+v2: added brackets &pgd -> &(pgd)
+
  arch/s390/include/asm/pgtable.h | 42 +++++++++++++++++++++++----------
  include/linux/pgtable.h         | 10 ++++++++
  mm/gup.c                        | 18 +++++++-------
@@ -264,7 +267,7 @@ index 7eb01a5459cd..b55561cc8786 100644
  #define pmd_offset pmd_offset
  
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index e8cbc2e795d5..e899d3506671 100644
+index e8cbc2e795d5..90654cb63e9e 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
 @@ -1427,6 +1427,16 @@ typedef unsigned int pgtbl_mod_mask;
@@ -272,13 +275,13 @@ index e8cbc2e795d5..e899d3506671 100644
  #endif
  
 +#ifndef p4d_offset_lockless
-+#define p4d_offset_lockless(pgdp, pgd, address) p4d_offset(&pgd, address)
++#define p4d_offset_lockless(pgdp, pgd, address) p4d_offset(&(pgd), address)
 +#endif
 +#ifndef pud_offset_lockless
-+#define pud_offset_lockless(p4dp, p4d, address) pud_offset(&p4d, address)
++#define pud_offset_lockless(p4dp, p4d, address) pud_offset(&(p4d), address)
 +#endif
 +#ifndef pmd_offset_lockless
-+#define pmd_offset_lockless(pudp, pud, address) pmd_offset(&pud, address)
++#define pmd_offset_lockless(pudp, pud, address) pmd_offset(&(pud), address)
 +#endif
 +
  /*
