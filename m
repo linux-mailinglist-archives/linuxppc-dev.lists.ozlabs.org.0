@@ -1,60 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9450265C39
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 11:12:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596A4265C53
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 11:17:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnqlR2WxRzDqnR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:12:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnqsN6VZWzDqq5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:17:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bnqjh1PxRzDqlR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 19:10:45 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.20.68])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 15D1459EF14B;
- Fri, 11 Sep 2020 11:10:41 +0200 (CEST)
-Received: from kaod.org (37.59.142.103) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Fri, 11 Sep
- 2020 11:10:40 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-103G0052c01f6e8-9e15-4567-bcf5-0904db1ad251,
- A1694100663AAA22525CBAD2033D2796A0BDBC13) smtp.auth=clg@kaod.org
-Subject: Re: [PATCH 1/7] powerpc/sysfs: Fix W=1 compile warning
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman
- <mpe@ellerman.id.au>
-References: <20200910210250.1962595-1-clg@kaod.org>
- <20200910210250.1962595-2-clg@kaod.org>
- <622dc63b-d3ad-3d7e-b796-7b99db9746c4@csgroup.eu>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <0288d347-2d7b-12b4-8975-f4b58d52dd28@kaod.org>
-Date: Fri, 11 Sep 2020 11:10:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnqqR2YxMzDqTd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 19:15:47 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 2EE61ABEA;
+ Fri, 11 Sep 2020 09:15:59 +0000 (UTC)
+Date: Fri, 11 Sep 2020 11:15:42 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc/traps: fix recoverability of machine check
+ handling on book3s/32
+Message-ID: <20200911091542.GE29521@kitsune.suse.cz>
+References: <1c804764d38fb084b420b12ca13e8c1b2dea075e.1548166189.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <622dc63b-d3ad-3d7e-b796-7b99db9746c4@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.103]
-X-ClientProxiedBy: DAG4EX2.mxp5.local (172.16.2.32) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 87e400d9-1b4d-4a49-82be-f06c5f562d2f
-X-Ovh-Tracer-Id: 4544413500287912928
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrudehledgudegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1c804764d38fb084b420b12ca13e8c1b2dea075e.1548166189.git.christophe.leroy@c-s.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,25 +47,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/11/20 7:26 AM, Christophe Leroy wrote:
-> 
-> 
-> Le 10/09/2020 à 23:02, Cédric Le Goater a écrit :
->> arch/powerpc/kernel/sysfs.c: In function ‘sysfs_create_dscr_default’:
->> arch/powerpc/kernel/sysfs.c:228:7: error: variable ‘err’ set but not used [-Werror=unused-but-set-variable]
->>     int err = 0;
->>         ^~~
->> cc1: all warnings being treated as errors
-> 
-> A small sentence explaining how this is fixes would be welcome, so that you don't need to read the code the know what the commit does to fix the warning. Even the subject should be more explicite, rather than saying "Fix W=1 compile warning", I think it should say something like "remove unused err variable"
+Hello,
 
-Yes. I will respin a v2 with better commit logs for all.
+does this logic apply to "Unrecoverable System Reset" as well?
 
-Thanks,
+Thanks
 
-C. 
+Michal
+
+On Tue, Jan 22, 2019 at 02:11:24PM +0000, Christophe Leroy wrote:
+> Looks like book3s/32 doesn't set RI on machine check, so
+> checking RI before calling die() will always be fatal
+> allthought this is not an issue in most cases.
+> 
+> Fixes: b96672dd840f ("powerpc: Machine check interrupt is a non-maskable interrupt")
+> Fixes: daf00ae71dad ("powerpc/traps: restore recoverability of machine_check interrupts")
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/powerpc/kernel/traps.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index 64936b60d521..c740f8bfccc9 100644
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -763,15 +763,15 @@ void machine_check_exception(struct pt_regs *regs)
+>  	if (check_io_access(regs))
+>  		goto bail;
+>  
+> -	/* Must die if the interrupt is not recoverable */
+> -	if (!(regs->msr & MSR_RI))
+> -		nmi_panic(regs, "Unrecoverable Machine check");
+> -
+>  	if (!nested)
+>  		nmi_exit();
+>  
+>  	die("Machine check", regs, SIGBUS);
+>  
+> +	/* Must die if the interrupt is not recoverable */
+> +	if (!(regs->msr & MSR_RI))
+> +		nmi_panic(regs, "Unrecoverable Machine check");
+> +
+>  	return;
+>  
+>  bail:
+> -- 
+> 2.13.3
+> 
