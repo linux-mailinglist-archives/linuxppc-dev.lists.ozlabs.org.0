@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D702658E5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 07:40:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02372658E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 07:42:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bnl2h4dX0zDqXw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 15:40:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bnl4x4c3mzDqfp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 15:42:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,40 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bnl130ysLzDqHk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 15:38:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bnl2v5gyXzDqmd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 15:40:22 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4Bnl0w4Zd9z9tynT;
- Fri, 11 Sep 2020 07:38:40 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Bnl2p42mbz9tynV;
+ Fri, 11 Sep 2020 07:40:18 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id vp3BUqbbRUij; Fri, 11 Sep 2020 07:38:40 +0200 (CEST)
+ with ESMTP id gbIQCFWmjZPC; Fri, 11 Sep 2020 07:40:18 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Bnl0w3Fzfz9tynS;
- Fri, 11 Sep 2020 07:38:40 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Bnl2p1q6Cz9tynT;
+ Fri, 11 Sep 2020 07:40:18 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4BDDB8B832;
- Fri, 11 Sep 2020 07:38:41 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1A8AA8B834;
+ Fri, 11 Sep 2020 07:40:19 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id iSygJtrQWMMk; Fri, 11 Sep 2020 07:38:41 +0200 (CEST)
+ with ESMTP id DMU1Nb2WBBde; Fri, 11 Sep 2020 07:40:19 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E22AC8B75E;
- Fri, 11 Sep 2020 07:38:40 +0200 (CEST)
-Subject: Re: [PATCH 3/7] powerpc/sstep: Fix W=1 compile warning
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B1BBC8B832;
+ Fri, 11 Sep 2020 07:40:18 +0200 (CEST)
+Subject: Re: [PATCH 4/7] powerpc/xive: Fix W=1 compile warning
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
  Michael Ellerman <mpe@ellerman.id.au>
 References: <20200910210250.1962595-1-clg@kaod.org>
- <20200910210250.1962595-4-clg@kaod.org>
+ <20200910210250.1962595-5-clg@kaod.org>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <8a71335b-12b8-4d17-9b98-ff1eb0a39b84@csgroup.eu>
-Date: Fri, 11 Sep 2020 07:38:38 +0200
+Message-ID: <b344a592-f98d-9f01-c1e7-63f805296b64@csgroup.eu>
+Date: Fri, 11 Sep 2020 07:40:16 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <20200910210250.1962595-4-clg@kaod.org>
+In-Reply-To: <20200910210250.1962595-5-clg@kaod.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -65,7 +65,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -73,53 +73,54 @@ Sender: "Linuxppc-dev"
 
 
 Le 10/09/2020 à 23:02, Cédric Le Goater a écrit :
-> ../arch/powerpc/lib/sstep.c: In function ‘mlsd_8lsd_ea’:
-> ../arch/powerpc/lib/sstep.c:225:3: error: suggest braces around empty body in an ‘if’ statement [-Werror=empty-body]
->     ; /* Invalid form. Should already be checked for by caller! */
->     ^
+> CC      arch/powerpc/sysdev/xive/common.o
+> ../arch/powerpc/sysdev/xive/common.c:1568:6: error: no previous prototype for ‘xive_debug_show_cpu’ [-Werror=missing-prototypes]
+>   void xive_debug_show_cpu(struct seq_file *m, int cpu)
+>        ^~~~~~~~~~~~~~~~~~~
+> ../arch/powerpc/sysdev/xive/common.c:1602:6: error: no previous prototype for ‘xive_debug_show_irq’ [-Werror=missing-prototypes]
+>   void xive_debug_show_irq(struct seq_file *m, u32 hw_irq, struct irq_data *d)
+>        ^~~~~~~~~~~~~~~~~~~
+> 
 
 A small sentence explaining how this is fixed would be welcome, so that 
 you don't need to read the code the know what the commit does to fix the 
 warning. Also the subject should be more explicit.
 
+There are two ways of fixing it:
+- Add the missing prototype
+- Make it static
+
+You chose the second alternative, this needs to be told in the commit log.
 
 
-> 
-> Cc: Jordan Niethe <jniethe5@gmail.com>
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
 > ---
->   arch/powerpc/lib/sstep.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   arch/powerpc/sysdev/xive/common.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> index caee8cc77e19..14572af16e55 100644
-> --- a/arch/powerpc/lib/sstep.c
-> +++ b/arch/powerpc/lib/sstep.c
-> @@ -221,8 +221,9 @@ static nokprobe_inline unsigned long mlsd_8lsd_ea(unsigned int instr,
->   		; /* Leave ea as is */
->   	else if (prefix_r && !ra)
->   		ea += regs->nip;
-> -	else if (prefix_r && ra)
-> +	else if (prefix_r && ra) {
->   		; /* Invalid form. Should already be checked for by caller! */
-> +	}
-
-You can't do that. Now checkpatch will complain that you don't have 
-braces on all legs of the if/else dance.
-
-I think the last 'else if' should simply be removed entirely as it does 
-nothing. Eventually, just leave the comment, something like:
-
-	/* (prefix_r && ra) is Invalid form. Should already be checked for by 
-caller! */
-
-And if (prefix_r && ra) is not possible, then the previous if should 
-just be 'if (prefx_r)'
-
-Christophe
-
-
->   
->   	return ea;
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+> index f591be9f01f4..a80440af491a 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -1565,7 +1565,7 @@ static int __init xive_off(char *arg)
 >   }
+>   __setup("xive=off", xive_off);
+>   
+> -void xive_debug_show_cpu(struct seq_file *m, int cpu)
+> +static void xive_debug_show_cpu(struct seq_file *m, int cpu)
+>   {
+>   	struct xive_cpu *xc = per_cpu(xive_cpu, cpu);
+>   
+> @@ -1599,7 +1599,7 @@ void xive_debug_show_cpu(struct seq_file *m, int cpu)
+>   	seq_puts(m, "\n");
+>   }
+>   
+> -void xive_debug_show_irq(struct seq_file *m, u32 hw_irq, struct irq_data *d)
+> +static void xive_debug_show_irq(struct seq_file *m, u32 hw_irq, struct irq_data *d)
+>   {
+>   	struct irq_chip *chip = irq_data_get_irq_chip(d);
+>   	int rc;
 > 
