@@ -1,61 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E2D265915
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 08:06:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB2A265968
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 08:34:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnlcV2BHlzDqpC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 16:06:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnmFG1GCRzDqpv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 16:34:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
+ helo=mail-io1-xd44.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=X8Xtd3J3; dkim-atps=neutral
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
+ [IPv6:2607:f8b0:4864:20::d44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnlZR646zzDqr6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 16:04:12 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4BnlZJ214nz9txQq;
- Fri, 11 Sep 2020 08:04:08 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Fah9NAVS2WPz; Fri, 11 Sep 2020 08:04:08 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4BnlZJ0m5Vz9txQp;
- Fri, 11 Sep 2020 08:04:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 081828B832;
- Fri, 11 Sep 2020 08:04:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ncGerrPUg8dn; Fri, 11 Sep 2020 08:04:08 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AA0C28B75E;
- Fri, 11 Sep 2020 08:04:08 +0200 (CEST)
-Subject: Re: [PATCH 3/7] powerpc/sstep: Fix W=1 compile warning
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20200910210250.1962595-1-clg@kaod.org>
- <20200910210250.1962595-4-clg@kaod.org>
- <8a71335b-12b8-4d17-9b98-ff1eb0a39b84@csgroup.eu>
- <47310980-9989-c9c0-61a9-ec033ac18197@kaod.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <18c62771-569c-17af-d0be-824708f6f052@csgroup.eu>
-Date: Fri, 11 Sep 2020 08:04:07 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnmCC0DlBzDqg7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 16:32:37 +1000 (AEST)
+Received: by mail-io1-xd44.google.com with SMTP id j2so9875942ioj.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Sep 2020 23:32:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=84XSEIKLN0MTKHx/TdQ9w/7g8A73RhP8y25/X2uVtPo=;
+ b=X8Xtd3J3HyMEEwFsQvycrVUlGuGOblWxdcOJZRNSA11yCCYMze7xIXZ5XtrpV/nanO
+ XDmUuhYnvXi1cNa2oVE98owf6Og0OY7+KGuFNJ0JDR6hs2jaMuFqAH/O0o72s0FP8FIM
+ /gyHjOx76+6CtVROf4SDnSfXZ5OHrQKMdjI3k2i1lZIDodUPRm4gDhq+jUAU8h0BXi5H
+ NpjUPo2SEqAY0E2TrFy9ulH+IdGfvudZjEOqdTQIYKbAYAzm5MRLisH17Z4e0F68+7g9
+ +PZOkexodFuGxYEaEo+NwKuCSmViRHbJ84LQeA60Ldrpf+dnakmWp7tR3w9MHEaFAGSR
+ n0Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=84XSEIKLN0MTKHx/TdQ9w/7g8A73RhP8y25/X2uVtPo=;
+ b=AUkHTGAsDkn6jDNZ+cGIKZ5J4fBvRgB6aMyLDZF0ZvKpy6fgwnuqPLXpsT/Edk6RjN
+ /xGpy8crdv6WuFsXCcTlOmPuEZQcA+vsYEBpgrYAEEp7z9pDaEiWpvEMzx/6SNuIe2iW
+ z2BCjHMFH+PvJFBNjTwbSjuEqCn6vMyXoF6lODVpXVhSC5bK91NF7xOBpzS/i0iWLnuF
+ iefp1VurTIui5dZXlNMHjLUQPU0z7XkI9me44khYxezPd3FaRzqrxE9q7mM2o/1RuEsJ
+ LWt9SdNS60HdzCqy2RgehxUt6w+yXpp8De6Uu0H+iL2tuQJTLHo9vulMLUGJLtgSUVuH
+ 2YJQ==
+X-Gm-Message-State: AOAM531DZdjgSyf9zLn6B+t3+0hQ5fniTqlVs+Ca9tk/rlqezxCbbRY6
+ SyHqeh0918I4h2qEK+x/rGA1X/k0OtCcuZYdJ20=
+X-Google-Smtp-Source: ABdhPJxNJcICsUzFpeglOU9c+3f+WN3URF62m2C35Jlf2b4TFiQ3cY2mxRuaL9Rk6MdB4TNwnn8b0fBDpDH1yIeSDLc=
+X-Received: by 2002:a6b:6b06:: with SMTP id g6mr611931ioc.87.1599805954504;
+ Thu, 10 Sep 2020 23:32:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <47310980-9989-c9c0-61a9-ec033ac18197@kaod.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20200910210250.1962595-1-clg@kaod.org>
+ <20200910210250.1962595-6-clg@kaod.org>
+In-Reply-To: <20200910210250.1962595-6-clg@kaod.org>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 11 Sep 2020 16:32:23 +1000
+Message-ID: <CAOSf1CHg1oTK=Q__mYyLtEn7cvU_yKLtWWwy2Zq3sywk_=xV2A@mail.gmail.com>
+Subject: Re: [PATCH 5/7] powerpc/powernv/pci: Fix W=1 compile warning
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,53 +75,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Sep 11, 2020 at 7:02 AM C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+>
+>   CC      arch/powerpc/platforms/powernv/pci-ioda.o
+> ../arch/powerpc/platforms/powernv/pci-ioda.c: In function =E2=80=98pnv_io=
+da_configure_pe=E2=80=99:
+> ../arch/powerpc/platforms/powernv/pci-ioda.c:897:18: error: variable =E2=
+=80=98parent=E2=80=99 set but not used [-Werror=3Dunused-but-set-variable]
+>   struct pci_dev *parent;
+>                   ^~~~~~
+>
+> Cc: Oliver O'Halloran <oohall@gmail.com>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 
+Come to think of it a fix for this might already be in -next, see
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D193967&sta=
+te=3D*
 
-Le 11/09/2020 à 07:59, Cédric Le Goater a écrit :
-> On 9/11/20 7:38 AM, Christophe Leroy wrote:
->>
->>
->> Le 10/09/2020 à 23:02, Cédric Le Goater a écrit :
->>> ../arch/powerpc/lib/sstep.c: In function ‘mlsd_8lsd_ea’:
->>> ../arch/powerpc/lib/sstep.c:225:3: error: suggest braces around empty body in an ‘if’ statement [-Werror=empty-body]
->>>      ; /* Invalid form. Should already be checked for by caller! */
->>>      ^
->>
->> A small sentence explaining how this is fixed would be welcome, so that you don't need to read the code the know what the commit does to fix the warning. Also the subject should be more explicit.
->>
->>
->>
->>>
->>> Cc: Jordan Niethe <jniethe5@gmail.com>
->>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>> ---
->>>    arch/powerpc/lib/sstep.c | 3 ++-
->>>    1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
->>> index caee8cc77e19..14572af16e55 100644
->>> --- a/arch/powerpc/lib/sstep.c
->>> +++ b/arch/powerpc/lib/sstep.c
->>> @@ -221,8 +221,9 @@ static nokprobe_inline unsigned long mlsd_8lsd_ea(unsigned int instr,
->>>            ; /* Leave ea as is */
->>>        else if (prefix_r && !ra)
->>>            ea += regs->nip;
->>> -    else if (prefix_r && ra)
->>> +    else if (prefix_r && ra) {
->>>            ; /* Invalid form. Should already be checked for by caller! */
->>> +    }
->>
->> You can't do that. Now checkpatch will complain that you don't have braces on all legs of the if/else dance.
-> 
-> Should we fix checkpatch ?
+If not,
 
-Why not, not then fix 
-https://www.kernel.org/doc/html/latest/process/coding-style.html#placing-braces-and-spaces 
-first :)
-
-Christophe
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
