@@ -1,57 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8BA26581C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 06:21:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52753265893
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 07:07:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BnjHy0CgwzDqkk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 14:21:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BnkJk3HybzDqm6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 15:07:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=perches.com
- (client-ip=216.40.44.248; helo=smtprelay.hostedemail.com;
- envelope-from=joe@perches.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=perches.com
-Received: from smtprelay.hostedemail.com (smtprelay0248.hostedemail.com
- [216.40.44.248])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BnjFx06zXzDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 14:19:47 +1000 (AEST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
- [216.40.38.60])
- by smtprelay03.hostedemail.com (Postfix) with ESMTP id 12942837F24A;
- Fri, 11 Sep 2020 04:19:43 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, ,
- RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:5007:6742:6743:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12297:12438:12555:12740:12760:12895:13153:13161:13228:13229:13439:14096:14097:14181:14659:14721:21080:21433:21627:30054:30070:30091,
- 0, RBL:none, CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none,
- DomainCache:0, MSF:not bulk, SPF:, MSBL:0, DNSBL:none, Custom_rules:0:0:0,
- LFtime:1, LUA_SUMMARY:none
-X-HE-Tag: seat91_4d0f80d270eb
-X-Filterd-Recvd-Size: 4376
-Received: from XPS-9350.home (unknown [47.151.133.149])
- (Authenticated sender: joe@perches.com)
- by omf19.hostedemail.com (Postfix) with ESMTPA;
- Fri, 11 Sep 2020 04:19:36 +0000 (UTC)
-Message-ID: <f4ad706519917d493a0af32ea2da8565227cc74a.camel@perches.com>
-Subject: Re: [trivial PATCH] treewide: Convert switch/case fallthrough; to
- break;
-From: Joe Perches <joe@perches.com>
-To: Robin Murphy <robin.murphy@arm.com>, LKML
- <linux-kernel@vger.kernel.org>,  Jiri Kosina <trivial@kernel.org>
-Date: Thu, 10 Sep 2020 21:19:35 -0700
-In-Reply-To: <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
-References: <e6387578c75736d61b2fe70d9783d91329a97eb4.camel@perches.com>
- <9372456a-8dcf-2735-57a4-e126aa5df3a6@arm.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BnkH06TMxzDqWJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 15:05:46 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 4BnkGq5Rzbz9tynY;
+ Fri, 11 Sep 2020 07:05:39 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id dI0xBi-CVjY0; Fri, 11 Sep 2020 07:05:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4BnkGq2Bbrz9tynX;
+ Fri, 11 Sep 2020 07:05:39 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DBFAF8B832;
+ Fri, 11 Sep 2020 07:05:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ZU5cwRNYUVST; Fri, 11 Sep 2020 07:05:39 +0200 (CEST)
+Received: from po17688vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 413958B75E;
+ Fri, 11 Sep 2020 07:05:39 +0200 (CEST)
+Received: by po17688vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 0D0E265728; Fri, 11 Sep 2020 05:05:38 +0000 (UTC)
+Message-Id: <8ae4554357da4882612644a74387ae05525b2aaa.1599800716.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/kasan: Fix CONFIG_KASAN_VMALLOC for 8xx
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 11 Sep 2020 05:05:38 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,87 +58,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, oss-drivers@netronome.com,
- nouveau@lists.freedesktop.org, alsa-devel <alsa-devel@alsa-project.org>,
- dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
- linux-ide@vger.kernel.org, dm-devel@redhat.com, linux-mtd@lists.infradead.org,
- linux-i2c@vger.kernel.org, sparclinux@vger.kernel.org,
- Will Deacon <will@kernel.org>, linux-afs@lists.infradead.org,
- linux-rtc@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, dccp@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-atm-general@lists.sourceforge.net, kvmarm@lists.cs.columbia.edu,
- coreteam@netfilter.org, intel-wired-lan@lists.osuosl.org,
- linux-serial@vger.kernel.org, linux-input@vger.kernel.org,
- linux-mmc@vger.kernel.org, Kees Cook <kees.cook@canonical.com>,
- linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- linux-nvme@lists.infradead.org, storagedev@microchip.com,
- ceph-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Nick Desaulniers <ndesaulniers@google.com>, linux-nfs@vger.kernel.org,
- linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-sctp@vger.kernel.org, iommu@lists.linux-foundation.org,
- netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-09-10 at 15:21 +0100, Robin Murphy wrote:
-> On 2020-09-09 21:06, Joe Perches wrote:
-> > fallthrough to a separate case/default label break; isn't very readable.
-> > 
-> > Convert pseudo-keyword fallthrough; statements to a simple break; when
-> > the next label is case or default and the only statement in the next
-> > label block is break;
-> > 
-> > Found using:
-> > 
-> > $ grep-2.5.4 -rP --include=*.[ch] -n "fallthrough;(\s*(case\s+\w+|default)\s*:\s*){1,7}break;" *
-> > 
-> > Miscellanea:
-> > 
-> > o Move or coalesce a couple label blocks above a default: block.
-> > 
-> > Signed-off-by: Joe Perches <joe@perches.com>
-> > ---
-> > 
-> > Compiled allyesconfig x86-64 only.
-> > A few files for other arches were not compiled.
-> > 
-> 
-> [...]
-> > diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > index c192544e874b..743db1abec40 100644
-> > --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > @@ -3777,7 +3777,7 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
-> >   	switch (FIELD_GET(IDR0_TTF, reg)) {
-> >   	case IDR0_TTF_AARCH32_64:
-> >   		smmu->ias = 40;
-> > -		fallthrough;
-> > +		break;
-> >   	case IDR0_TTF_AARCH64:
-> >   		break;
-> >   	default:
-> 
-> I have to say I don't really agree with the readability argument for 
-> this one - a fallthrough is semantically correct here, since the first 
-> case is a superset of the second. It just happens that anything we would 
-> do for the common subset is implicitly assumed (there are other 
-> potential cases we simply haven't added support for at the moment), thus 
-> the second case is currently empty.
-> This change actively obfuscates that distinction.
+Before the commit identified below, pages tables allocation was
+performed after the allocation of final shadow area for linear memory.
+But that commit switched the order, leading to page tables being
+already allocated at the time 8xx kasan_init_shadow_8M() is called.
+Due to this, kasan_init_shadow_8M() doesn't map the needed
+shadow entries because there are already page tables.
 
-Then perhaps comments should be added to usefully
-describe the mechanisms.
+kasan_init_shadow_8M() installs huge PMD entries instead of page
+tables. We could at that time free the page tables, but there is no
+point in creating page tables that get freed before being used.
 
-	case IDR0_TTF_AARCH32_64:
-		smmu->ias = 40;
-		fallthrough;	/* and still do the 64 bit processing */
-	case IDR0_TTF_AARCH64:
-		/* Nothing specific yet */
-		break;
+Only book3s/32 hash needs early allocation of page tables. For other
+variants, we can keep the initial order and create remaining page
+tables after the allocation of final shadow memory for linear mem.
 
-> Robin.
+Move back the allocation of shadow page tables for
+CONFIG_KASAN_VMALLOC into kasan_init() after the loop which creates
+final shadow memory for linear mem.
+
+Fixes: 41ea93cf7ba4 ("powerpc/kasan: Fix shadow pages allocation failure")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/mm/kasan/kasan_init_32.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
+index fb294046e00e..929716ea21e9 100644
+--- a/arch/powerpc/mm/kasan/kasan_init_32.c
++++ b/arch/powerpc/mm/kasan/kasan_init_32.c
+@@ -127,8 +127,7 @@ void __init kasan_mmu_init(void)
+ {
+ 	int ret;
+ 
+-	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE) ||
+-	    IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
++	if (early_mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
+ 		ret = kasan_init_shadow_page_tables(KASAN_SHADOW_START, KASAN_SHADOW_END);
+ 
+ 		if (ret)
+@@ -139,11 +138,11 @@ void __init kasan_mmu_init(void)
+ void __init kasan_init(void)
+ {
+ 	struct memblock_region *reg;
++	int ret;
+ 
+ 	for_each_memblock(memory, reg) {
+ 		phys_addr_t base = reg->base;
+ 		phys_addr_t top = min(base + reg->size, total_lowmem);
+-		int ret;
+ 
+ 		if (base >= top)
+ 			continue;
+@@ -153,6 +152,13 @@ void __init kasan_init(void)
+ 			panic("kasan: kasan_init_region() failed");
+ 	}
+ 
++	if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
++		ret = kasan_init_shadow_page_tables(KASAN_SHADOW_START, KASAN_SHADOW_END);
++
++		if (ret)
++			panic("kasan: kasan_init_shadow_page_tables() failed");
++	}
++
+ 	kasan_remap_early_shadow_ro();
+ 
+ 	clear_page(kasan_early_shadow_page);
+-- 
+2.25.0
 
