@@ -2,72 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFDE265A2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 09:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 847D5265AC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 09:47:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bnn5t5TXmzDqmd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 17:13:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bnnsx3N2pzDqq5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 17:47:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=groug@kaod.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=PPlUR0zb; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bnn344hW9zDqZW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 17:10:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=l8KDsrY39924ACHw1Sx+CBM/Dlp985coTimHrE9LjSo=; b=PPlUR0zbTWPpH3hH0mqS5h+JtM
- R5WAVd9k68mxD195MB+izkmVzegbgPHsNwoqeWstbxpVQHOwYZt738fosFRddXnq7lM9LjNVOpgvf
- aHBt9Xv5geb9jIoXqmdd2+LCOdR3Esazwp6p1vrYqwcM7XgZhLdCU6BK8TWb6jDTqASDjRgb+LMkw
- DZdWCVrkMw1VSc3l/jkU1F4485cXb4zGr0GCfbJ1jWedoC3gMPDoeS5Iuj5/Hkwqs1iQJynSYBvtG
- y2Ljxas1gnPytmadt8Wy0oXAjuDpumpxpJONTdFo6plfIvfIwYgF99B3FDj1nFhOuVH/V2PMbPGxF
- mMa23LxQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kGdBn-00017e-8d; Fri, 11 Sep 2020 07:09:43 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo804.mail-out.ovh.net
+ (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E745E3003D8;
- Fri, 11 Sep 2020 09:09:39 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id A72E82C2AEBC1; Fri, 11 Sep 2020 09:09:39 +0200 (CEST)
-Date: Fri, 11 Sep 2020 09:09:39 +0200
-From: peterz@infradead.org
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [RFC PATCH v2 1/3] mm/gup: fix gup_fast with dynamic page table
- folding
-Message-ID: <20200911070939.GB1362448@hirez.programming.kicks-ass.net>
-References: <aacad1b7-f121-44a5-f01d-385cb0f6351e@intel.com>
- <20200909192534.442f8984@thinkpad>
- <20200909180324.GI87483@ziepe.ca>
- <20200910093925.GB29166@oc3871087118.ibm.com>
- <CAHk-=wh4SuNvThq1nBiqk0N-fW6NsY5w=VawC=rJs7ekmjAhjA@mail.gmail.com>
- <20200910181319.GO87483@ziepe.ca>
- <CAHk-=wh3SjOE2r4WCfagL5Zq4Oj4Jsu1=1jTTi2GxGDTxP-J0Q@mail.gmail.com>
- <20200910211010.46d064a7@thinkpad>
- <CAHk-=wg3ggXU98Mnv-ss-hEcvUNc9vCtgSRc7GpcGfvyOw_h3g@mail.gmail.com>
- <20200910215921.GP87483@ziepe.ca>
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bnnqg6cL9zDqcl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 17:45:50 +1000 (AEST)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.13])
+ by mo804.mail-out.ovh.net (Postfix) with ESMTPS id 6BEC660619AB;
+ Fri, 11 Sep 2020 09:45:43 +0200 (CEST)
+Received: from kaod.org (37.59.142.96) by DAG8EX1.mxp5.local (172.16.2.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Fri, 11 Sep
+ 2020 09:45:42 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-96R001d0b0f908-b7f8-4ded-830f-0b985388e565,
+ 864FBEA0465FE1F0C66A9C6AC37977A76827B8ED) smtp.auth=groug@kaod.org
+Date: Fri, 11 Sep 2020 09:45:36 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Fabiano Rosas <farosas@linux.ibm.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Do not allocate HPT for a nested
+ guest
+Message-ID: <20200911094536.72dd700a@bahia.lan>
+In-Reply-To: <20200911041607.198092-1-farosas@linux.ibm.com>
+References: <20200911041607.198092-1-farosas@linux.ibm.com>
+X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200910215921.GP87483@ziepe.ca>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.96]
+X-ClientProxiedBy: DAG9EX1.mxp5.local (172.16.2.81) To DAG8EX1.mxp5.local
+ (172.16.2.71)
+X-Ovh-Tracer-GUID: dfe5079d-0ecb-41fa-bf33-af55cbc276d2
+X-Ovh-Tracer-Id: 3109454068212603241
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrudehkedguddvhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgfgihesthejredtredtvdenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfedutdeijeejveehkeeileetgfelteekteehtedtieefffevhffflefftdefleejnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtohepuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,37 +62,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-mm <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Richard Weinberger <richard@nod.at>, linux-x86 <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- John Hubbard <jhubbard@nvidia.com>, Jeff Dike <jdike@addtoit.com>,
- linux-um <linux-um@lists.infradead.org>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm <linux-arm-kernel@lists.infradead.org>,
- Dave Hansen <dave.hansen@intel.com>,
- linux-power <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>
+Cc: kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 10, 2020 at 06:59:21PM -0300, Jason Gunthorpe wrote:
-> So, I suggest pXX_offset_unlocked()
+On Fri, 11 Sep 2020 01:16:07 -0300
+Fabiano Rosas <farosas@linux.ibm.com> wrote:
 
-Urgh, no. Elsewhere in gup _unlocked() means it will take the lock
-itself (get_user_pages_unlocked()) -- although often it seems to mean
-the lock is already held (git grep _unlocked and marvel).
+> The current nested KVM code does not support HPT guests. This is
+> informed/enforced in some ways:
+> 
+> - Hosts < P9 will not be able to enable the nested HV feature;
+> 
+> - The nested hypervisor MMU capabilities will not contain
+>   KVM_CAP_PPC_MMU_HASH_V3;
+> 
+> - QEMU reflects the MMU capabilities in the
+>   'ibm,arch-vec-5-platform-support' device-tree property;
+> 
+> - The nested guest, at 'prom_parse_mmu_model' ignores the
+>   'disable_radix' kernel command line option if HPT is not supported;
+> 
+> - The KVM_PPC_CONFIGURE_V3_MMU ioctl will fail if trying to use HPT.
+> 
+> There is, however, still a way to start a HPT guest by using
+> max-compat-cpu=power8 at the QEMU machine options. This leads to the
+> guest being set to use hash after QEMU calls the KVM_PPC_ALLOCATE_HTAB
+> ioctl.
+> 
+> With the guest set to hash, the nested hypervisor goes through the
+> entry path that has no knowledge of nesting (kvmppc_run_vcpu) and
+> crashes when it tries to execute an hypervisor-privileged (mtspr
+> HDEC) instruction at __kvmppc_vcore_entry:
+> 
+> root@L1:~ $ qemu-system-ppc64 -machine pseries,max-cpu-compat=power8 ...
+> 
+> <snip>
+> [  538.543303] CPU: 83 PID: 25185 Comm: CPU 0/KVM Not tainted 5.9.0-rc4 #1
+> [  538.543355] NIP:  c00800000753f388 LR: c00800000753f368 CTR: c0000000001e5ec0
+> [  538.543417] REGS: c0000013e91e33b0 TRAP: 0700   Not tainted  (5.9.0-rc4)
+> [  538.543470] MSR:  8000000002843033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 22422882  XER: 20040000
+> [  538.543546] CFAR: c00800000753f4b0 IRQMASK: 3
+>                GPR00: c0080000075397a0 c0000013e91e3640 c00800000755e600 0000000080000000
+>                GPR04: 0000000000000000 c0000013eab19800 c000001394de0000 00000043a054db72
+>                GPR08: 00000000003b1652 0000000000000000 0000000000000000 c0080000075502e0
+>                GPR12: c0000000001e5ec0 c0000007ffa74200 c0000013eab19800 0000000000000008
+>                GPR16: 0000000000000000 c00000139676c6c0 c000000001d23948 c0000013e91e38b8
+>                GPR20: 0000000000000053 0000000000000000 0000000000000001 0000000000000000
+>                GPR24: 0000000000000001 0000000000000001 0000000000000000 0000000000000001
+>                GPR28: 0000000000000001 0000000000000053 c0000013eab19800 0000000000000001
+> [  538.544067] NIP [c00800000753f388] __kvmppc_vcore_entry+0x90/0x104 [kvm_hv]
+> [  538.544121] LR [c00800000753f368] __kvmppc_vcore_entry+0x70/0x104 [kvm_hv]
+> [  538.544173] Call Trace:
+> [  538.544196] [c0000013e91e3640] [c0000013e91e3680] 0xc0000013e91e3680 (unreliable)
+> [  538.544260] [c0000013e91e3820] [c0080000075397a0] kvmppc_run_core+0xbc8/0x19d0 [kvm_hv]
+> [  538.544325] [c0000013e91e39e0] [c00800000753d99c] kvmppc_vcpu_run_hv+0x404/0xc00 [kvm_hv]
+> [  538.544394] [c0000013e91e3ad0] [c0080000072da4fc] kvmppc_vcpu_run+0x34/0x48 [kvm]
+> [  538.544472] [c0000013e91e3af0] [c0080000072d61b8] kvm_arch_vcpu_ioctl_run+0x310/0x420 [kvm]
+> [  538.544539] [c0000013e91e3b80] [c0080000072c7450] kvm_vcpu_ioctl+0x298/0x778 [kvm]
+> [  538.544605] [c0000013e91e3ce0] [c0000000004b8c2c] sys_ioctl+0x1dc/0xc90
+> [  538.544662] [c0000013e91e3dc0] [c00000000002f9a4] system_call_exception+0xe4/0x1c0
+> [  538.544726] [c0000013e91e3e20] [c00000000000d140] system_call_common+0xf0/0x27c
+> [  538.544787] Instruction dump:
+> [  538.544821] f86d1098 60000000 60000000 48000099 e8ad0fe8 e8c500a0 e9264140 75290002
+> [  538.544886] 7d1602a6 7cec42a6 40820008 7d0807b4 <7d164ba6> 7d083a14 f90d10a0 480104fd
+> [  538.544953] ---[ end trace 74423e2b948c2e0c ]---
+> 
+> This patch makes the KVM_PPC_ALLOCATE_HTAB ioctl fail when running in
+> the nested hypervisor, causing QEMU to abort.
+> 
+> Reported-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+> ---
 
-What we want is _lockless().
+LGTM
+
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+>  arch/powerpc/kvm/book3s_hv.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 4ba06a2a306c..764b6239ef72 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -5250,6 +5250,12 @@ static long kvm_arch_vm_ioctl_hv(struct file *filp,
+>  	case KVM_PPC_ALLOCATE_HTAB: {
+>  		u32 htab_order;
+>  
+> +		/* If we're a nested hypervisor, we currently only support radix */
+> +		if (kvmhv_on_pseries()) {
+> +			r = -EOPNOTSUPP;
+> +			break;
+> +		}
+> +
+>  		r = -EFAULT;
+>  		if (get_user(htab_order, (u32 __user *)argp))
+>  			break;
+
