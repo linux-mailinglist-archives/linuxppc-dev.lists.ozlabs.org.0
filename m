@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60442665DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EFD2665F0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Sep 2020 19:18:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp2V44M6szDqWN
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 03:16:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Bp2Xf0twzzDqsK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 03:18:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,48 +17,48 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tH0id7+4; dkim-atps=neutral
+ header.s=20161025 header.b=UpH81kZ+; dkim-atps=neutral
 Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
  [IPv6:2607:f8b0:4864:20::743])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp2Nw0tsmzDqrm
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 03:11:59 +1000 (AEST)
-Received: by mail-qk1-x743.google.com with SMTP id q5so10597219qkc.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 10:11:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Bp2Nz3FvzzDqrj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 03:12:03 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id f142so10537587qke.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Sep 2020 10:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=JPb1h2tIySxsLHm41I0P/MpzyhGFSSiDutLemqsFQec=;
- b=tH0id7+4+Ojn3K05k9DtMIv/Pg1q3yStYbinJeJ6msfz3dxWgeuTxvfm7sw8uR2GO1
- Gd3tTr+rlmb+af+OCIqxaWNu0Voz4/BcMvySwyE25VKVLxjvW1l8jIFL43IwS8NhTWSo
- x09lEyJGyKyXBzUDlTnbQpecbHCnOhSp1m+Ffg8tsa6fkytvrDZ/NFKJ6O5aK47C3UMY
- FXG37n5N29ReM/ArUKzskhSbFZtXBDzd/2WaxzDPg6nwpQZBSYsb9Hc5seXNnaUpDKNr
- xngL1MAE3Mh93PpAmSaUIDh4D0gfSXOzTOp0bvlPye+ayVoIn0TcvqpqYC0rAcxL+NAi
- I7tQ==
+ bh=RSyvL6te6IHF59WgBVBklEnTMVbSzvGBln8Tm9smObo=;
+ b=UpH81kZ+3LNRfosTdjybGAJ1gujZMNKmtThVl6ii1cUEFovG3ItG+DpFNwcVelCESp
+ YTX5E4ehbq7ChHKx5jnXa6ZyBrVvs3T9uC3BFmMxuTmGjgPa7jK4O3JMGL+aLzHo8N2T
+ td/KMq2sbqEzjN1CTNim4f0BR2ZIckMGE+WyGXeAyLm7J+XWYoLzR7uoaivLC71aJvsj
+ pW27M1namVuDt5uUgmRNtOlvvKo7bGcuOAA3mi7ZIXpYpAw6xJ+8wwqVGhKQz9kY4Kev
+ UdeENv+MCiSI7aKqNEvrBaLWSHOOu1Gsp91SozVGrsfeOaKzz9EQTywD9X/H/jb7MF2m
+ KNOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=JPb1h2tIySxsLHm41I0P/MpzyhGFSSiDutLemqsFQec=;
- b=Ab0/4QM/88KD2kb66EXQCfSjdcJdt2O+8sEuLF7j6fomVmfFQAGcS8XBVBBsVhYmEX
- E1putcTzZ0fl4SNxwBTsEcaGikXZ5AHGo0WMrr+FisSsUO21oziNNX8yLT4Su8B+Y0Hd
- L7hmG3yF8VxDhGycD+8a29ZYbRschD7LHOfAvaDBrQjSJTvSlWDUW2BDkNCUoU/SYbg5
- 2Zt3Ea9AIQkLnDZ1Dn137VbD3YY9rCCcFAx5UTgdkI62PLbO39+eyTQCcN7kSVlo+0lT
- 6UeRaLTIFlp38JU0L0JC11XYwFs5Ldsmja60ardt4GBayruhnPsDUaSZxqS63qRWPcUq
- 0A7Q==
-X-Gm-Message-State: AOAM531n6C78THWTZYC6eS8h+1HcAKKixqlpOY/K6H/GZlNIihAmYRZa
- JsoWUfWvFw4W7oWjRnQ6sbU=
-X-Google-Smtp-Source: ABdhPJze21uNfOy/pDg10dKIa3jLcFdao5ayx3UbjXDIp9ZSyxMAxagRinS3MFFdfoG23xhK33Kb9Q==
-X-Received: by 2002:a05:620a:1657:: with SMTP id
- c23mr2330042qko.382.1599844317784; 
- Fri, 11 Sep 2020 10:11:57 -0700 (PDT)
+ bh=RSyvL6te6IHF59WgBVBklEnTMVbSzvGBln8Tm9smObo=;
+ b=qh8ytRblsQcx5b9Te+8Jxqn8MZP+tLyPkUfCIGEvTBC9OALX1FtrJsXGwXzBc5um7G
+ QzIOxA/PEMM3sAtX52xYBOFoX4s4q75zhxhLFwYDnh0SX31A9B9HdTQJpOb2sMxuGT/6
+ Av1XiFprSyQMF7QQ0v0SiVS+y+Vvcbxjn2H4V0E0PQuw62Gk7ivn4yw2CpOhIsVgFQjX
+ c2310Wp95fooatkrNCimAt7EMn4hk0jmGuaSw9GLT/D7/M7nvUckzfi5J98eq2cOPRNx
+ jxqKulOFdmLMVHoZtj4kHz/FhMlKkohab0g8HP3wkRGN5q0qfPxpoKYdmkXvIpLJUmxM
+ fAVA==
+X-Gm-Message-State: AOAM5305WmeQMYlpCoy8oG+Pwtg707wEz0EbwC2jSQm0WwNATP0Siyxs
+ VN/aV1mGgkbdpQrF1z65EMY=
+X-Google-Smtp-Source: ABdhPJy30Qtb8FQClCnG8+MayL/5oIjHOj9+9L5XgDjl5SOPZiMQL/1/Onn6Lt2tskgLjh8pZfO62g==
+X-Received: by 2002:a05:620a:103c:: with SMTP id
+ a28mr2423751qkk.376.1599844321514; 
+ Fri, 11 Sep 2020 10:12:01 -0700 (PDT)
 Received: from LeoBras.ibmuc.com (179-125-254-96.dynamic.desktop.com.br.
  [179.125.254.96])
- by smtp.gmail.com with ESMTPSA id l5sm3533330qtc.28.2020.09.11.10.11.54
+ by smtp.gmail.com with ESMTPSA id l5sm3533330qtc.28.2020.09.11.10.11.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Sep 2020 10:11:57 -0700 (PDT)
+ Fri, 11 Sep 2020 10:12:00 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -69,9 +69,10 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Ram Pai <linuxram@us.ibm.com>, Brian King <brking@linux.vnet.ibm.com>,
  Murilo Fossa Vicentini <muvic@linux.ibm.com>,
  David Dai <zdai@linux.vnet.ibm.com>
-Subject: [PATCH v2 01/14] powerpc/pseries/iommu: Replace hard-coded page shift
-Date: Fri, 11 Sep 2020 14:07:26 -0300
-Message-Id: <20200911170738.82818-2-leobras.c@gmail.com>
+Subject: [PATCH v2 02/14] powerpc/pseries/iommu: Makes sure IOMMU_PAGE_SIZE <=
+ PAGE_SIZE
+Date: Fri, 11 Sep 2020 14:07:27 -0300
+Message-Id: <20200911170738.82818-3-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20200911170738.82818-1-leobras.c@gmail.com>
 References: <20200911170738.82818-1-leobras.c@gmail.com>
@@ -95,183 +96,48 @@ Sender: "Linuxppc-dev"
 
 Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
 
-Some functions assume IOMMU page size can only be 4K (pageshift == 12).
-Update them to accept any page size passed, so we can use 64K pages.
+Having System pagesize < IOMMU pagesize may cause a page owned by another
+process/VM to be written by a buggy driver / device.
 
-In the process, some defines like TCE_SHIFT were made obsolete, and then
-removed.
+As it's intended to use DDW for indirect mapping, it's possible to get
+a configuration where (PAGE_SIZE = 4k) < (IOMMU_PAGE_SIZE() = 64k).
 
-IODA3 Revision 3.0_prd1 (OpenPowerFoundation), Figures 3.4 and 3.5 show
-a RPN of 52-bit, and considers a 12-bit pageshift, so there should be
-no need of using TCE_RPN_MASK, which masks out any bit after 40 in rpn.
-It's usage removed from tce_build_pSeries(), tce_build_pSeriesLP(), and
-tce_buildmulti_pSeriesLP().
-
-Most places had a tbl struct, so using tbl->it_page_shift was simple.
-tce_free_pSeriesLP() was a special case, since callers not always have a
-tbl struct, so adding a tceshift parameter seems the right thing to do.
+To avoid this, make sure create_ddw() can only use pagesize <= PAGE_SIZE.
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 ---
- arch/powerpc/include/asm/tce.h         |  8 ------
- arch/powerpc/platforms/pseries/iommu.c | 39 +++++++++++++++-----------
- 2 files changed, 23 insertions(+), 24 deletions(-)
+ arch/powerpc/platforms/pseries/iommu.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/tce.h b/arch/powerpc/include/asm/tce.h
-index db5fc2f2262d..0c34d2756d92 100644
---- a/arch/powerpc/include/asm/tce.h
-+++ b/arch/powerpc/include/asm/tce.h
-@@ -19,15 +19,7 @@
- #define TCE_VB			0
- #define TCE_PCI			1
- 
--/* TCE page size is 4096 bytes (1 << 12) */
--
--#define TCE_SHIFT	12
--#define TCE_PAGE_SIZE	(1 << TCE_SHIFT)
--
- #define TCE_ENTRY_SIZE		8		/* each TCE is 64 bits */
--
--#define TCE_RPN_MASK		0xfffffffffful  /* 40-bit RPN (4K pages) */
--#define TCE_RPN_SHIFT		12
- #define TCE_VALID		0x800		/* TCE valid */
- #define TCE_ALLIO		0x400		/* TCE valid for all lpars */
- #define TCE_PCI_WRITE		0x2		/* write from PCI allowed */
 diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e4198700ed1a..9db3927607a4 100644
+index 9db3927607a4..4eff3a6a441e 100644
 --- a/arch/powerpc/platforms/pseries/iommu.c
 +++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -107,6 +107,8 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
- 	u64 proto_tce;
- 	__be64 *tcep;
- 	u64 rpn;
-+	const unsigned long tceshift = tbl->it_page_shift;
-+	const unsigned long pagesize = IOMMU_PAGE_SIZE(tbl);
- 
- 	proto_tce = TCE_PCI_READ; // Read allowed
- 
-@@ -117,10 +119,10 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
- 
- 	while (npages--) {
- 		/* can't move this out since we might cross MEMBLOCK boundary */
--		rpn = __pa(uaddr) >> TCE_SHIFT;
--		*tcep = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-+		rpn = __pa(uaddr) >> tceshift;
-+		*tcep = cpu_to_be64(proto_tce | rpn << tceshift);
- 
--		uaddr += TCE_PAGE_SIZE;
-+		uaddr += pagesize;
- 		tcep++;
- 	}
- 	return 0;
-@@ -146,7 +148,7 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
- 	return be64_to_cpu(*tcep);
- }
- 
--static void tce_free_pSeriesLP(unsigned long liobn, long, long);
-+static void tce_free_pSeriesLP(unsigned long liobn, long, long, long);
- static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
- 
- static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-@@ -166,12 +168,12 @@ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
- 		proto_tce |= TCE_PCI_WRITE;
- 
- 	while (npages--) {
--		tce = proto_tce | (rpn & TCE_RPN_MASK) << tceshift;
-+		tce = proto_tce | rpn << tceshift;
- 		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, tce);
- 
- 		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
- 			ret = (int)rc;
--			tce_free_pSeriesLP(liobn, tcenum_start,
-+			tce_free_pSeriesLP(liobn, tcenum_start, tceshift,
- 			                   (npages_start - (npages + 1)));
- 			break;
+@@ -1206,17 +1206,20 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 			goto out_failed;
  		}
-@@ -205,10 +207,11 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
- 	long tcenum_start = tcenum, npages_start = npages;
- 	int ret = 0;
- 	unsigned long flags;
-+	const unsigned long tceshift = tbl->it_page_shift;
- 
- 	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_PUT_TCE_IND)) {
- 		return tce_build_pSeriesLP(tbl->it_index, tcenum,
--					   tbl->it_page_shift, npages, uaddr,
-+					   tceshift, npages, uaddr,
- 		                           direction, attrs);
  	}
- 
-@@ -225,13 +228,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
- 		if (!tcep) {
- 			local_irq_restore(flags);
- 			return tce_build_pSeriesLP(tbl->it_index, tcenum,
--					tbl->it_page_shift,
-+					tceshift,
- 					npages, uaddr, direction, attrs);
- 		}
- 		__this_cpu_write(tce_page, tcep);
+-	if (query.page_size & 4) {
+-		page_shift = 24; /* 16MB */
+-	} else if (query.page_size & 2) {
++
++	/* Choose the biggest pagesize available <= PAGE_SHIFT */
++	if ((query.page_size & 4)) {
++		page_shift = 24; /* 16MB - Hugepages */
++	} else if ((query.page_size & 2) && PAGE_SHIFT >= 16) {
+ 		page_shift = 16; /* 64kB */
+-	} else if (query.page_size & 1) {
++	} else if ((query.page_size & 1) && PAGE_SHIFT >= 12) {
+ 		page_shift = 12; /* 4kB */
+ 	} else {
+ 		dev_dbg(&dev->dev, "no supported direct page size in mask %x",
+ 			  query.page_size);
+ 		goto out_failed;
  	}
- 
--	rpn = __pa(uaddr) >> TCE_SHIFT;
-+	rpn = __pa(uaddr) >> tceshift;
- 	proto_tce = TCE_PCI_READ;
- 	if (direction != DMA_TO_DEVICE)
- 		proto_tce |= TCE_PCI_WRITE;
-@@ -245,12 +248,12 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
- 		limit = min_t(long, npages, 4096/TCE_ENTRY_SIZE);
- 
- 		for (l = 0; l < limit; l++) {
--			tcep[l] = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
-+			tcep[l] = cpu_to_be64(proto_tce | rpn << tceshift);
- 			rpn++;
- 		}
- 
- 		rc = plpar_tce_put_indirect((u64)tbl->it_index,
--					    (u64)tcenum << 12,
-+					    (u64)tcenum << tceshift,
- 					    (u64)__pa(tcep),
- 					    limit);
- 
-@@ -277,12 +280,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
- 	return ret;
- }
- 
--static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long npages)
-+static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
-+			       long npages)
- {
- 	u64 rc;
- 
- 	while (npages--) {
--		rc = plpar_tce_put((u64)liobn, (u64)tcenum << 12, 0);
-+		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, 0);
- 
- 		if (rc && printk_ratelimit()) {
- 			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
-@@ -301,9 +305,11 @@ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long n
- 	u64 rc;
- 
- 	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
--		return tce_free_pSeriesLP(tbl->it_index, tcenum, npages);
-+		return tce_free_pSeriesLP(tbl->it_index, tcenum,
-+					  tbl->it_page_shift, npages);
- 
--	rc = plpar_tce_stuff((u64)tbl->it_index, (u64)tcenum << 12, 0, npages);
-+	rc = plpar_tce_stuff((u64)tbl->it_index,
-+			     (u64)tcenum << tbl->it_page_shift, 0, npages);
- 
- 	if (rc && printk_ratelimit()) {
- 		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
-@@ -319,7 +325,8 @@ static unsigned long tce_get_pSeriesLP(struct iommu_table *tbl, long tcenum)
- 	u64 rc;
- 	unsigned long tce_ret;
- 
--	rc = plpar_tce_get((u64)tbl->it_index, (u64)tcenum << 12, &tce_ret);
-+	rc = plpar_tce_get((u64)tbl->it_index,
-+			   (u64)tcenum << tbl->it_page_shift, &tce_ret);
- 
- 	if (rc && printk_ratelimit()) {
- 		printk("tce_get_pSeriesLP: plpar_tce_get failed. rc=%lld\n", rc);
++
+ 	/* verify the window * number of ptes will map the partition */
+ 	/* check largest block * page size > max memory hotplug addr */
+ 	max_addr = ddw_memory_hotplug_max();
 -- 
 2.25.4
 
