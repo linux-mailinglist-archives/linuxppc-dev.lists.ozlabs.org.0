@@ -2,65 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E5B2679EF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 13:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEAE2679F0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 13:25:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BpVd81lfyzDr4g
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 21:24:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BpVfr6DJTzDr4C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 21:25:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=dIji5loM; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=google header.b=NvsFIwxB; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BpVH52swczDqmY
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BpVH53RFtzDqsv
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 21:08:33 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id bd2so2146138plb.7
+Received: by mail-pf1-x442.google.com with SMTP id d9so9092669pfd.3
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 04:08:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=C4bs7CzTnl1kRyMgFNAx/cMdF4zfB7LMPrNYc0foUqg=;
- b=dIji5loM94lPX2BlTVOZY2wSfFrN4iEdIXvEB9ZXwb9K/O+5wmsPzNlErfm8yXGVnj
- TZPx65IreQCDy5KfHVk+h3ribfRTCS3w07xBw9RenEHHmWnwHiCYzDqMOh8nMd28EDm/
- Boz7+C1dQLQJ9R1+3Y82JwQo1BdlrCLDw68lI=
+ bh=k9Scn27yFC+W9ArnzObQ75YlAm/mAi2yXdvN+WcxI8I=;
+ b=NvsFIwxBor6gbhPRLZwb/jVT/T+nX6Z+XVHXFtFu/TcUGNP3/MncUQtopjc936YDWp
+ R3xYst7NJXA6aVBOzW2yqYtx004tCHQMSEjrxUDj6uvghiw4gRHuKyf6orJdFpOnqppR
+ k41JqT9G2h68b34eiIX80bwMoGJZHY/CSxIQk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=C4bs7CzTnl1kRyMgFNAx/cMdF4zfB7LMPrNYc0foUqg=;
- b=phd8E0gnkr823XoV5LvQkEriYxeJBUR7B5qx/i3LLbG0cuTPVeJHYSu6JQEelnlX2g
- 895x/Y88/U01F3flTRngxaB5xcAU5H9ENndAClS0EABJyRL3VQOaF0b5An/y41OagFHj
- AyDPEdrKbSTcuJT0UR/IQiiRR/BjmFLGW1jq2HGMx3teW4G/We41NEPuAYFu/M3GPxLY
- f26+AstHZSrmfTxKssBSg+RM/0tdwtXzhYppKocJFg8BP4YleH9MuhbfLpNbrfNxuA85
- w8vauyPbOFd9vrz1CRnVQktv4iRTCoHb72rqFQ0upPqtBuA378t6l6WSw20a1W92OIii
- ohvw==
-X-Gm-Message-State: AOAM531NhJj2eJAv5DS/Z2uYJ4qr5mP3V5xs9E32HL8N9sGzKwJIOXDg
- zNE2iqiT9wf3LQMspAwQJiWIfw==
-X-Google-Smtp-Source: ABdhPJx1tWnz+cXsPRMCEeezndnRWBXI9qrLyAtAljqVPQP8qrRmd00oQlT/nRtVdCFkQkBaLysfAw==
-X-Received: by 2002:a17:902:c404:: with SMTP id
- k4mr5997422plk.70.1599908909955; 
- Sat, 12 Sep 2020 04:08:29 -0700 (PDT)
+ bh=k9Scn27yFC+W9ArnzObQ75YlAm/mAi2yXdvN+WcxI8I=;
+ b=tNeL0yIX4UxBSk7SXMCMcQKxNw3i5NsZ8xlI9ydI3mwbHDUJbMUF+4R1EpB6oVFudR
+ LZwwIsI3KsZZTYeZtcNV3u3OISDaXIerD49Ov2jMONfIJsKHDkNTetfQgUBrKFpNmN8w
+ TPhlCTtQAV744O7f2B/CkwlefU/Mglkv6cB/txvh2AXvBMlX16b3HpehFVZG8oYtPZsW
+ RoTc4b94aDIYFO7h69TiLxoNSSg9kkDdW6Kt7jBIFzbB5F6oeh1CVWVJte5/U46Ok1ay
+ uo8HOT2gqDd8RevUefgc3KyNl/k7R/OlUFlz4n6OcGaAtgVQbKyg2xQCgzjgaulUstDh
+ ieDw==
+X-Gm-Message-State: AOAM533XA3pudK7+2hlP5e9Fkg2FS69HOFkl8IQBsRrZZrjp2yxvvKe4
+ RI2c0OIr+QG8JH5VzNS0GZOzsQ==
+X-Google-Smtp-Source: ABdhPJxOfgT/KlEkxzDrBNa4LGCxQcYJ5lPhAwfQMk4WTnlFoUysQ4K+RWVpU1AXIS+4PLjRZ0yExg==
+X-Received: by 2002:a63:60e:: with SMTP id 14mr4570723pgg.343.1599908911776;
+ Sat, 12 Sep 2020 04:08:31 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id bx22sm4345524pjb.23.2020.09.12.04.08.25
+ by smtp.gmail.com with ESMTPSA id x7sm4139666pjv.16.2020.09.12.04.08.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sat, 12 Sep 2020 04:08:27 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 08/15] selftests/seccomp: Convert HAVE_GETREG into
+Subject: [PATCH 09/15] selftests/seccomp: Convert REGSET calls into
  ARCH_GETREG/ARCH_SETREG
-Date: Sat, 12 Sep 2020 04:08:13 -0700
-Message-Id: <20200912110820.597135-9-keescook@chromium.org>
+Date: Sat, 12 Sep 2020 04:08:14 -0700
+Message-Id: <20200912110820.597135-10-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200912110820.597135-1-keescook@chromium.org>
 References: <20200912110820.597135-1-keescook@chromium.org>
@@ -87,84 +86,91 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of special-casing the get/set-registers routines, move the
-HAVE_GETREG logic into the new ARCH_GETREG() and ARCH_SETREG() macros.
+Consolidate the REGSET logic into the new ARCH_GETREG() and
+ARCH_SETREG() macros, avoiding more #ifdef code in function bodies.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c | 27 ++++++++++---------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 42 +++++++------------
+ 1 file changed, 15 insertions(+), 27 deletions(-)
 
 diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index 3b77bdbe7125..a986f2332327 100644
+index a986f2332327..d9346121b89b 100644
 --- a/tools/testing/selftests/seccomp/seccomp_bpf.c
 +++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -1821,20 +1821,21 @@ TEST_F(TRACE_poke, getpid_runs_normally)
- 	} while (0)
- #endif
- 
--/* Use PTRACE_GETREGS and PTRACE_SETREGS when available. This is useful for
-+/*
-+ * Use PTRACE_GETREGS and PTRACE_SETREGS when available. This is useful for
-  * architectures without HAVE_ARCH_TRACEHOOK (e.g. User-mode Linux).
-  */
+@@ -1828,26 +1828,29 @@ TEST_F(TRACE_poke, getpid_runs_normally)
  #if defined(__x86_64__) || defined(__i386__) || defined(__mips__)
--#define HAVE_GETREGS
-+# define ARCH_GETREGS(_regs)	ptrace(PTRACE_GETREGS, tracee, 0, &(_regs))
-+# define ARCH_SETREGS(_regs)	ptrace(PTRACE_SETREGS, tracee, 0, &(_regs))
+ # define ARCH_GETREGS(_regs)	ptrace(PTRACE_GETREGS, tracee, 0, &(_regs))
+ # define ARCH_SETREGS(_regs)	ptrace(PTRACE_SETREGS, tracee, 0, &(_regs))
++#else
++# define ARCH_GETREGS(_regs)	({					\
++		struct iovec __v;					\
++		__v.iov_base = &(_regs);				\
++		__v.iov_len = sizeof(_regs);				\
++		ptrace(PTRACE_GETREGSET, tracee, NT_PRSTATUS, &__v);	\
++	})
++# define ARCH_SETREGS(_regs)	({					\
++		struct iovec __v;					\
++		__v.iov_base = &(_regs);				\
++		__v.iov_len = sizeof(_regs);				\
++		ptrace(PTRACE_SETREGSET, tracee, NT_PRSTATUS, &__v);	\
++	})
  #endif
  
  /* Architecture-specific syscall fetching routine. */
  int get_syscall(struct __test_metadata *_metadata, pid_t tracee)
  {
  	ARCH_REGS regs;
--#ifdef HAVE_GETREGS
--	EXPECT_EQ(0, ptrace(PTRACE_GETREGS, tracee, 0, &regs)) {
--		TH_LOG("PTRACE_GETREGS failed");
-+#ifdef ARCH_GETREGS
+-#ifdef ARCH_GETREGS
+-	EXPECT_EQ(0, ARCH_GETREGS(regs)) {
+-		return -1;
+-	}
+-#else
+-	struct iovec iov;
+ 
+-	iov.iov_base = &regs;
+-	iov.iov_len = sizeof(regs);
+-	EXPECT_EQ(0, ptrace(PTRACE_GETREGSET, tracee, NT_PRSTATUS, &iov)) {
+-		TH_LOG("PTRACE_GETREGSET failed");
 +	EXPECT_EQ(0, ARCH_GETREGS(regs)) {
  		return -1;
  	}
- #else
-@@ -1855,17 +1856,19 @@ int get_syscall(struct __test_metadata *_metadata, pid_t tracee)
- void change_syscall(struct __test_metadata *_metadata,
+-#endif
+ 
+ 	return SYSCALL_NUM(regs);
+ }
+@@ -1857,18 +1860,10 @@ void change_syscall(struct __test_metadata *_metadata,
  		    pid_t tracee, int syscall, int result)
  {
--	int ret;
  	ARCH_REGS regs;
--#ifdef HAVE_GETREGS
--	ret = ptrace(PTRACE_GETREGS, tracee, 0, &regs);
-+#ifdef ARCH_GETREGS
-+	EXPECT_EQ(0, ARCH_GETREGS(regs)) {
-+		return;
-+	}
- #else
-+	int ret;
- 	struct iovec iov;
- 	iov.iov_base = &regs;
- 	iov.iov_len = sizeof(regs);
- 	ret = ptrace(PTRACE_GETREGSET, tracee, NT_PRSTATUS, &iov);
+-#ifdef ARCH_GETREGS
++
+ 	EXPECT_EQ(0, ARCH_GETREGS(regs)) {
+ 		return;
+ 	}
+-#else
+-	int ret;
+-	struct iovec iov;
+-	iov.iov_base = &regs;
+-	iov.iov_len = sizeof(regs);
+-	ret = ptrace(PTRACE_GETREGSET, tracee, NT_PRSTATUS, &iov);
+-	EXPECT_EQ(0, ret);
 -#endif
- 	EXPECT_EQ(0, ret);
-+#endif
  
  	SYSCALL_NUM_SET(regs, syscall);
  
-@@ -1878,14 +1881,14 @@ void change_syscall(struct __test_metadata *_metadata,
+@@ -1881,14 +1876,7 @@ void change_syscall(struct __test_metadata *_metadata,
  #endif
  
  	/* Flush any register changes made. */
--#ifdef HAVE_GETREGS
--	ret = ptrace(PTRACE_SETREGS, tracee, 0, &regs);
-+#ifdef ARCH_SETREGS
-+	EXPECT_EQ(0, ARCH_SETREGS(regs));
- #else
- 	iov.iov_base = &regs;
- 	iov.iov_len = sizeof(regs);
- 	ret = ptrace(PTRACE_SETREGSET, tracee, NT_PRSTATUS, &iov);
+-#ifdef ARCH_SETREGS
+ 	EXPECT_EQ(0, ARCH_SETREGS(regs));
+-#else
+-	iov.iov_base = &regs;
+-	iov.iov_len = sizeof(regs);
+-	ret = ptrace(PTRACE_SETREGSET, tracee, NT_PRSTATUS, &iov);
+-	EXPECT_EQ(0, ret);
 -#endif
- 	EXPECT_EQ(0, ret);
-+#endif
  }
  
  void tracer_seccomp(struct __test_metadata *_metadata, pid_t tracee,
