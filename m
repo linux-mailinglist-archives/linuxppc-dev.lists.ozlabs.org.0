@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE422679F8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 13:31:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B242679FA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 13:33:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BpVnv15bSzDr2y
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 21:31:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BpVqZ3dy9zDrF4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Sep 2020 21:33:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=Fl2bqtSL; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=google header.b=KLE1PL50; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BpVH83BW3zDqmY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 21:08:36 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id md22so3616079pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 04:08:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BpVH96ZDLzDqsv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 21:08:37 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id bh1so2148148plb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Sep 2020 04:08:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=F4tHM0L8tNnxsWtLsTsMp6Ii6Rnl8nRf7R1d/DJ5GX0=;
- b=Fl2bqtSL2iiRfZluzSWOTXzNL8dmVQDhsUPUUB10qGGSvjXPumusHfP3CokhnSfKCH
- +t1jc2Q7OaXG85BoTd0A91s9q9C//+V6czJh5bMgwh6mcmDIOuQaMrCFly9wGejcGRUz
- s31sojad768defEHNH0ElcsN5owiLsEYQ0XZ8=
+ bh=yfwK3v59ulDG8xRv4Cwr4k2seeBZHBJy/fMB9LYQCYQ=;
+ b=KLE1PL50FLBo8ev5qSDoj1kBBVOJoMyiHr99ME6rCPqlayRiESNpQWvxCHB3om2Bfc
+ XN0BVMjBNpBx5otJmu1jvqPjeWgsI4KksNuYIwR70mc27cvFLWlhjTRLgt83KBE2MFDw
+ Dm8vSbSJaJpHsO2XD/IeVUJf+GCoM9n5H04mM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=F4tHM0L8tNnxsWtLsTsMp6Ii6Rnl8nRf7R1d/DJ5GX0=;
- b=CBk59GOMEtUnN+z75MPtIBx+ZFpvztUxFG+k+IlSQ7LQxiXJWIs0T8mUDYNOuKxHbM
- UERkjCecWtkD677ho6gVrUo2zUrM+wgr0wpW4mk7ZatCvYC3pg3GNUop84/BomeVLvzJ
- o2G4r2/a99hH/4LPV0R3Ku5dj1hUxQYcXjLY0BDwaMxF4szK+G27GhxbY7hcIaXCDR0M
- t//O1f/GvINXqqmcCy5fpohzyz28mFkWVGoo40SKWXNUTzD8m8F2sJV19kK2r/keYiHp
- dIipndNUriQ/D7Il4MfX6MGRBLLHrssMKp9fOySBtrQ6F6pbWMgJ1lTbLSPVKltQ6ZpK
- VISA==
-X-Gm-Message-State: AOAM532vzErdFH64bClmYlJ9vOz1hED+XaZhBh0q8jOmvwtrlmQQcrT6
- muGJw45KLNrj9PPZA3gl+BEN7Q==
-X-Google-Smtp-Source: ABdhPJxIVZvhB1EkQWrlPCCU/1v4hWzLbZ0KeU8jimuCS6pLb+8hNC5hU2kfhglj/9om5Lrdkt4vIA==
-X-Received: by 2002:a17:90b:374b:: with SMTP id
- ne11mr5637226pjb.21.1599908913988; 
- Sat, 12 Sep 2020 04:08:33 -0700 (PDT)
+ bh=yfwK3v59ulDG8xRv4Cwr4k2seeBZHBJy/fMB9LYQCYQ=;
+ b=sEbduDPKLulXOxUBy3cgXUU6dyhGJDek8o6vP6m8pgDcx69nfGqphKwQBA2D3jk44z
+ H/FLuvfiKw8di9ItbNxtSpklDxrtvWjhey/WKMs5P+z9j9v4bFuAXmETdEJ+fI5j0q0/
+ AY6HRxofGHuHQAIfLu8i/qBmA/+zVM29YPAa5LeUnC2ivYyZVeLkmXJRMB/J2tueOo+m
+ yBfb1G182bF5qPhjuTyAvgU1i9AO5rJEL1pdKsCtXjVL5yIf8PeYwQsZ4WnIxy/WDRNS
+ Nc4pYXtXcFmrKQMK9lLnqlsXlc/icyRA/8Gf+B6U5Ylo1nRfwub6hGfpU7pXzIHFLNVl
+ n63Q==
+X-Gm-Message-State: AOAM533Mbss9+U8htWq5UzJ15yiNt+0buqKo5OEcw+c0Z0nSg5nie81Z
+ pvm9iHOw4mgS+/WVDlAJU2ftYw==
+X-Google-Smtp-Source: ABdhPJz39VXqPylLzqvKf+nVy4cjgyiwubNgnhEKUOy/E1w6B1m+xyacV3sKJYHyjEOTCLca7/KdBw==
+X-Received: by 2002:a17:902:7489:b029:d0:4c09:be with SMTP id
+ h9-20020a1709027489b02900d04c0900bemr6604087pll.0.1599908915516; 
+ Sat, 12 Sep 2020 04:08:35 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id m24sm4069132pgn.44.2020.09.12.04.08.27
+ by smtp.gmail.com with ESMTPSA id q190sm5265820pfq.99.2020.09.12.04.08.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 12 Sep 2020 04:08:27 -0700 (PDT)
+ Sat, 12 Sep 2020 04:08:34 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 11/15] selftests/seccomp: Remove SYSCALL_NUM_RET_SHARE_REG in
- favor of SYSCALL_RET_SET
-Date: Sat, 12 Sep 2020 04:08:16 -0700
-Message-Id: <20200912110820.597135-12-keescook@chromium.org>
+Subject: [PATCH 14/15] selftests/clone3: Avoid OS-defined clone_args
+Date: Sat, 12 Sep 2020 04:08:19 -0700
+Message-Id: <20200912110820.597135-15-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200912110820.597135-1-keescook@chromium.org>
 References: <20200912110820.597135-1-keescook@chromium.org>
@@ -87,86 +86,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of special-casing the specific case of shared registers, create
-a default SYSCALL_RET_SET() macro (mirroring SYSCALL_NUM_SET()), that
-writes to the SYSCALL_RET register. For architectures that can't set the
-return value (for whatever reason), they can define SYSCALL_RET_SET()
-without an associated SYSCALL_RET() macro. This also paves the way for
-architectures that need to do special things to set the return value
-(e.g. powerpc).
+As the UAPI headers start to appear in distros, we need to avoid
+outdated versions of struct clone_args to be able to test modern
+features. Additionally pull in the syscall numbers correctly.
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c | 33 +++++++++++++------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+I needed to fix this to get MIPS to build the seccomp selftests.
+---
+ .../testing/selftests/clone3/clone3_selftests.h  | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index 2790d9cd50f4..623953a53032 100644
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -1753,8 +1753,8 @@ TEST_F(TRACE_poke, getpid_runs_normally)
- #elif defined(__s390__)
- # define ARCH_REGS		s390_regs
- # define SYSCALL_NUM(_regs)	(_regs).gprs[2]
--# define SYSCALL_RET(_regs)	(_regs).gprs[2]
--# define SYSCALL_NUM_RET_SHARE_REG
-+# define SYSCALL_RET_SET(_regs, _val)			\
-+		TH_LOG("Can't modify syscall return on this architecture")
- #elif defined(__mips__)
- # include <asm/unistd_nr_n32.h>
- # include <asm/unistd_nr_n64.h>
-@@ -1776,8 +1776,8 @@ TEST_F(TRACE_poke, getpid_runs_normally)
- 		else					\
- 			(_regs).regs[2] = _nr;		\
- 	} while (0)
--# define SYSCALL_RET(_regs)	(_regs).regs[2]
--# define SYSCALL_NUM_RET_SHARE_REG
-+# define SYSCALL_RET_SET(_regs, _val)			\
-+		TH_LOG("Can't modify syscall return on this architecture")
- #elif defined(__xtensa__)
- # define ARCH_REGS		struct user_pt_regs
- # define SYSCALL_NUM(_regs)	(_regs).syscall
-@@ -1804,9 +1804,26 @@ TEST_F(TRACE_poke, getpid_runs_normally)
- 		SYSCALL_NUM(_regs) = (_nr);	\
- 	} while (0)
- #endif
-+/*
-+ * Most architectures can change the syscall return value by just
-+ * writing to the SYSCALL_RET register. This is the default if not
-+ * defined above. If an architecture cannot set the return value
-+ * (for example when the syscall and return value register is
-+ * shared), report it with TH_LOG() in an arch-specific definition
-+ * of SYSCALL_RET_SET() above, and leave SYSCALL_RET undefined.
-+ */
-+#if !defined(SYSCALL_RET) && !defined(SYSCALL_RET_SET)
-+# error "One of SYSCALL_RET or SYSCALL_RET_SET is needed for this arch"
+diff --git a/tools/testing/selftests/clone3/clone3_selftests.h b/tools/testing/selftests/clone3/clone3_selftests.h
+index 91c1a78ddb39..bc0f34e37ae1 100644
+--- a/tools/testing/selftests/clone3/clone3_selftests.h
++++ b/tools/testing/selftests/clone3/clone3_selftests.h
+@@ -4,11 +4,19 @@
+ #define _CLONE3_SELFTESTS_H
+ 
+ #define _GNU_SOURCE
++
++/* Pull in syscall numbers. */
++#include <unistd.h>
++#include <sys/syscall.h>
++
++/* Avoid old OS versions of "struct clone_args". */
++#define clone_args old_clone_args
+ #include <sched.h>
+ #include <linux/sched.h>
++#undef clone_args
++
+ #include <linux/types.h>
+ #include <stdint.h>
+-#include <syscall.h>
+ #include <sys/wait.h>
+ 
+ #include "../kselftest.h"
+@@ -25,6 +33,7 @@
+ 
+ #ifndef __NR_clone3
+ #define __NR_clone3 -1
 +#endif
-+#ifndef SYSCALL_RET_SET
-+# define SYSCALL_RET_SET(_regs, _val)		\
-+	do {					\
-+		SYSCALL_RET(_regs) = (_val);	\
-+	} while (0)
+ struct clone_args {
+ 	__aligned_u64 flags;
+ 	__aligned_u64 pidfd;
+@@ -34,13 +43,16 @@ struct clone_args {
+ 	__aligned_u64 stack;
+ 	__aligned_u64 stack_size;
+ 	__aligned_u64 tls;
++#ifndef CLONE_ARGS_SIZE_VER1
+ #define CLONE_ARGS_SIZE_VER1 80
 +#endif
+ 	__aligned_u64 set_tid;
+ 	__aligned_u64 set_tid_size;
++#ifndef CLONE_ARGS_SIZE_VER2
+ #define CLONE_ARGS_SIZE_VER2 88
++#endif
+ 	__aligned_u64 cgroup;
+ };
+-#endif /* __NR_clone3 */
  
- /* When the syscall return can't be changed, stub out the tests for it. */
--#ifdef SYSCALL_NUM_RET_SHARE_REG
-+#ifndef SYSCALL_RET
- # define EXPECT_SYSCALL_RETURN(val, action)	EXPECT_EQ(-1, action)
- #else
- # define EXPECT_SYSCALL_RETURN(val, action)		\
-@@ -1870,11 +1887,7 @@ void change_syscall(struct __test_metadata *_metadata,
- 
- 	/* If syscall is skipped, change return value. */
- 	if (syscall == -1)
--#ifdef SYSCALL_NUM_RET_SHARE_REG
--		TH_LOG("Can't modify syscall return on this architecture");
--#else
--		SYSCALL_RET(regs) = result;
--#endif
-+		SYSCALL_RET_SET(regs, result);
- 
- 	/* Flush any register changes made. */
- 	if (memcmp(&orig, &regs, sizeof(orig)) != 0)
+ static pid_t sys_clone3(struct clone_args *args, size_t size)
+ {
 -- 
 2.25.1
 
