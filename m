@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1352683D5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 06:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 906642683DA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 06:57:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BqYwW1RxhzDqWg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 14:56:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BqYyX0SSnzDqbt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 14:57:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=E6t5ATL8; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ header.s=20161025 header.b=ZhI/Ifh3; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BqYrX5KDJzDqW0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 14:52:44 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id c196so11700094pfc.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Sep 2020 21:52:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BqYrb588lzDqWN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 14:52:47 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id d13so2311360pgl.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Sep 2020 21:52:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=PMGQxaBKPbON3ssZWMqrEm63rTUeWUDOhP6COLqPYSc=;
- b=E6t5ATL8gx3qXPR8MutckEOtFp8N/QqyJhBR7KZvwdtkFuAEyC2lhZ2/emCtjTKBmo
- B0kb2CydVdVNlaob1xulncfmSHsG5MpRJYpG32az5As5jUlalJv5Z1u24HGgsukfOob0
- pStFmcZQbhM6RQl6+oGHRZ/T4R+TM1Eyv8T8Wo3EQa0oEPAufWykBkJADQ737q0p9bQY
- 2R33AJCLbtCHvjVUHJysl92cDr8E/Gps9+AWbHKehyystd+wcHrhzluGm/ArtKvSmZCu
- bm9w6OFAfNAC+nOJ6NR0QDHwYy2vZD6WeoHYvXZICjq3HwmMDhUuXmKAzk9mSX/KjWa1
- XD6A==
+ bh=qhSlIbBbaKajKS/IeKMTbHGZ3Q2g5fhRWyCc6GgGFOw=;
+ b=ZhI/Ifh3Hh6S9ezSZcFBjkvaYu4u3PPYdLMSfBHM9LS26Zi7yErlcuHKgA3qBwnTfV
+ iGDS/wM/bY3O58Mf9zXr4CxP6mSXYPzQgzApyoZV2tEVf9gLml7tNnK38HNgZ9lhZ1PJ
+ O/UmN55TOjc2KeHwMoARlpP1+PF+6o7rHRkXoljfAxCOBNXpYx5t3IZz46zUM3pG8DuF
+ GExC97I0wWEvqfV3A1vzgIZUAUrYlPpZAi9y12aoahe8F0r4WS6opEhiQVoBywwgh1vW
+ kd74xEfqE4D83mFc0YL7uL6vFIp+rLW+oHi7rtFTbHgufUqXHYwzY4kr7WBnW0BHfBbx
+ zhtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=PMGQxaBKPbON3ssZWMqrEm63rTUeWUDOhP6COLqPYSc=;
- b=ilLT7hhq6CQWaP6R0b47lq9O3s/fhN3XuQhK+sKRbZa0xpFq8Z8MFwtDnk7Hr2GQ3Z
- ivdrcOQ4IjfrWW4sE1CvYokI+uxLf52o0ij4Trq/Hx2kIE8ZS3eoFGeWEtuyR1uI9Y10
- gzVWrPrpfYTKQd/5I97pgCC7RkQpr67u4lCLUEAjXTrNf9yufuevkzvoqt4pJJa/VYkg
- FP4U0owYk5+BcorPHdy9pVxAUrtI0Yubf+NC2NQgnCoIV2P3tYa2Pfruh4qS2S956Ykx
- vLdkitYMMTOQAnXh09Sr6IyxiIfeBoMhvtZmJ2Kxx6st3h76+4Kkmkdx9LkFdjklaL2h
- egxA==
-X-Gm-Message-State: AOAM533ri8wY2GHB/AXoB1zQBi6nFOXxZtFX+Jx7b2zK9iP3BIO6Kt2j
- WtxxFcHdZdYnhP0ZqbcA5rs=
-X-Google-Smtp-Source: ABdhPJyPI7rDf+d21q9NzzsfoVdINl/UoWB/tNDVu6ib1rFaHHxGEc6qLhJCwAhX5Wm+j4pnSX9vTQ==
-X-Received: by 2002:a17:902:eec7:b029:d1:c2e4:6b58 with SMTP id
- h7-20020a170902eec7b02900d1c2e46b58mr4791803plb.4.1600059161060; 
- Sun, 13 Sep 2020 21:52:41 -0700 (PDT)
+ bh=qhSlIbBbaKajKS/IeKMTbHGZ3Q2g5fhRWyCc6GgGFOw=;
+ b=TddQq9xmK8MrRN9nYtYrqA4xofOXE4/0/lyhcVdDmxMXLrZuZHaxaVx0BrbHlqa3e1
+ bpxGRBrL1vF1zG8VDN4wpgWvJjO8nH2ss+69c69mgTGgT6vsr5FSI+0bZ/xfE6kJdUWc
+ SzxMRe0hS6n6E++xNSiFReL5tXPvZ10PbMzhFzbS5W4fHpptoAr/R7LFsZX+KfYw4zIl
+ H6V7Hnn3pTwhP4QGV0uL0khSrskfLL+W4GofLbI2Q0ReMcZ+Dwp36Mon9OBfH6B8YKUI
+ xCPMJsh6GrLLLfMmIAtaX0WjAuQNXt68prpEtTYh0YTL3Qt2akkkIxA365FTCXOWRuXN
+ WNZg==
+X-Gm-Message-State: AOAM532mMC1eBXP71e2TW/7FBpNsdRHhIJseZFlWss4/i64KTUff0J3D
+ ZtokqpkC6GTeaGaS25Ww+nE=
+X-Google-Smtp-Source: ABdhPJxbiaPuklpxkmh3T4+ZXi9ibcsoZFsVvSnpom8ez8y/HozIvGy1egzT8jlrpKnmg5m7ICoLVQ==
+X-Received: by 2002:a17:902:7883:: with SMTP id
+ q3mr840986pll.117.1600059165913; 
+ Sun, 13 Sep 2020 21:52:45 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id a13sm6945312pgq.41.2020.09.13.21.52.36
+ by smtp.gmail.com with ESMTPSA id a13sm6945312pgq.41.2020.09.13.21.52.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Sep 2020 21:52:40 -0700 (PDT)
+ Sun, 13 Sep 2020 21:52:45 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: "linux-mm @ kvack . org" <linux-mm@kvack.org>
-Subject: [PATCH v2 1/4] mm: fix exec activate_mm vs TLB shootdown and lazy tlb
- switching race
-Date: Mon, 14 Sep 2020 14:52:16 +1000
-Message-Id: <20200914045219.3736466-2-npiggin@gmail.com>
+Subject: [PATCH v2 2/4] powerpc: select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+Date: Mon, 14 Sep 2020 14:52:17 +1000
+Message-Id: <20200914045219.3736466-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200914045219.3736466-1-npiggin@gmail.com>
 References: <20200914045219.3736466-1-npiggin@gmail.com>
@@ -90,106 +89,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Reading and modifying current->mm and current->active_mm and switching
-mm should be done with irqs off, to prevent races seeing an intermediate
-state.
-
-This is similar to commit 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB
-invalidate"). At exec-time when the new mm is activated, the old one
-should usually be single-threaded and no longer used, unless something
-else is holding an mm_users reference (which may be possible).
-
-Absent other mm_users, there is also a race with preemption and lazy tlb
-switching. Consider the kernel_execve case where the current thread is
-using a lazy tlb active mm:
-
-  call_usermodehelper()
-    kernel_execve()
-      old_mm = current->mm;
-      active_mm = current->active_mm;
-      *** preempt *** -------------------->  schedule()
-                                               prev->active_mm = NULL;
-                                               mmdrop(prev active_mm);
-                                             ...
-                      <--------------------  schedule()
-      current->mm = mm;
-      current->active_mm = mm;
-      if (!old_mm)
-          mmdrop(active_mm);
-
-If we switch back to the kernel thread from a different mm, there is a
-double free of the old active_mm, and a missing free of the new one.
-
-Closing this race only requires interrupts to be disabled while ->mm
-and ->active_mm are being switched, but the TLB problem requires also
-holding interrupts off over activate_mm. Unfortunately not all archs
-can do that yet, e.g., arm defers the switch if irqs are disabled and
-expects finish_arch_post_lock_switch() to be called to complete the
-flush; um takes a blocking lock in activate_mm().
-
-So as a first step, disable interrupts across the mm/active_mm updates
-to close the lazy tlb preempt race, and provide an arch option to
-extend that to activate_mm which allows architectures doing IPI based
-TLB shootdowns to close the second race.
-
-This is a bit ugly, but in the interest of fixing the bug and backporting
-before all architectures are converted this is a compromise.
+powerpc uses IPIs in some situations to switch a kernel thread away
+from a lazy tlb mm, which is subject to the TLB flushing race
+described in the changelog introducing ARCH_WANT_IRQS_OFF_ACTIVATE_MM.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/Kconfig |  7 +++++++
- fs/exec.c    | 17 +++++++++++++++--
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ arch/powerpc/Kconfig                   | 1 +
+ arch/powerpc/include/asm/mmu_context.h | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index af14a567b493..94821e3f94d1 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -414,6 +414,13 @@ config MMU_GATHER_NO_GATHER
- 	bool
- 	depends on MMU_GATHER_TABLE_FREE
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 65bed1fdeaad..587ba8352d01 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -149,6 +149,7 @@ config PPC
+ 	select ARCH_USE_QUEUED_RWLOCKS		if PPC_QUEUED_SPINLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS	if PPC_QUEUED_SPINLOCKS
+ 	select ARCH_WANT_IPC_PARSE_VERSION
++	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	select ARCH_WEAK_RELEASE_ACQUIRE
+ 	select BINFMT_ELF
+ 	select BUILDTIME_TABLE_SORT
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index a3a12a8341b2..b42813359f49 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -244,7 +244,7 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+ #define activate_mm activate_mm
+ static inline void activate_mm(struct mm_struct *prev, struct mm_struct *next)
+ {
+-	switch_mm(prev, next, current);
++	switch_mm_irqs_off(prev, next, current);
+ }
  
-+config ARCH_WANT_IRQS_OFF_ACTIVATE_MM
-+	bool
-+	help
-+	  Temporary select until all architectures can be converted to have
-+	  irqs disabled over activate_mm. Architectures that do IPI based TLB
-+	  shootdowns should enable this.
-+
- config ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	bool
- 
-diff --git a/fs/exec.c b/fs/exec.c
-index a91003e28eaa..d4fb18baf1fb 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1130,11 +1130,24 @@ static int exec_mmap(struct mm_struct *mm)
- 	}
- 
- 	task_lock(tsk);
--	active_mm = tsk->active_mm;
- 	membarrier_exec_mmap(mm);
--	tsk->mm = mm;
-+
-+	local_irq_disable();
-+	active_mm = tsk->active_mm;
- 	tsk->active_mm = mm;
-+	tsk->mm = mm;
-+	/*
-+	 * This prevents preemption while active_mm is being loaded and
-+	 * it and mm are being updated, which could cause problems for
-+	 * lazy tlb mm refcounting when these are updated by context
-+	 * switches. Not all architectures can handle irqs off over
-+	 * activate_mm yet.
-+	 */
-+	if (!IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
-+		local_irq_enable();
- 	activate_mm(active_mm, mm);
-+	if (IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
-+		local_irq_enable();
- 	tsk->mm->vmacache_seqnum = 0;
- 	vmacache_flush(tsk);
- 	task_unlock(tsk);
+ /* We don't currently use enter_lazy_tlb() for anything */
 -- 
 2.23.0
 
