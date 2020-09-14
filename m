@@ -1,103 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5952687FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 11:08:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BAD2689AD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 12:58:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BqgWY4xJvzDqY6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 19:08:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BqjyN13kHzDqXr
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 20:58:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=infinera.com (client-ip=40.107.70.68;
- helo=nam04-sn1-obe.outbound.protection.outlook.com;
- envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=X0TnHGZc; 
- dkim-atps=neutral
-Received: from NAM04-SN1-obe.outbound.protection.outlook.com
- (mail-eopbgr700068.outbound.protection.outlook.com [40.107.70.68])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BqgTh6Yf6zDqRB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 19:06:46 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fu5Kluvur/1cQHqUVWNe1m8OhHw4l54CfA3LOm89LO8v3bUiY7lpD+ujC3Ium88L1igPS2IgNbggJ+8coQUGFfz1XIoeBScbUZMsmmdQUNE2QlOUFR3GeJUNIj8VqNG7apIrBBSALEH/vPIHUhCf150/lUmm11PG4lKZ8nzLNrdVgxcQ/lKE7oR6+cspSq0FQK2pcGeyLOt/no1HwGsVJ2KxE2Ew/C/fgqLk3aXqIpkwwdB1V9LtENkEcRnt0ml3gtwiWfF0jWwJiBNqLGu//XPd6jULReCh78XZ5iz5SVvZePu9RjAshpQ0R7+PQq8HveBUzD6J6wsne/pw5de9Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OHIlsQZJ/lbsypyE/2m0tKIro9ZIX1IVoMFm/LHuL+s=;
- b=kNU8CCri7Co0Tl36ES4x7OUkEo2DKpfrCo1CBXTlk5lKxmx3oAGt7FDXEaZ+SSRPsmOzor8/b1KVzTggFHNELPYujtNizek5XtG7scj8nrjXoqGRpm5rpolX1wE4H6gG+IN8WjJNRTo3Eiv+fs1cmKbZ+6PGjYanNDd6hcPraXldvDX51nQBGFpRfCNOP7dEvTZdSxuXAY/olh5E5MtRuSgup7igXFmCdUASYYwbZpeIpCKM7WI/kQjXW84Ra0z78o5q8Yuhdi06TYuheDhfnlMYdJaJxmNOem9cakKdpBv0bSY3AZV3ABZaaM9YUKUkDl/8zxCDcedGGWkoHBsEsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
- dkim=pass header.d=infinera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OHIlsQZJ/lbsypyE/2m0tKIro9ZIX1IVoMFm/LHuL+s=;
- b=X0TnHGZcSrrfDGu4wtZpHGhwP/rtR7Xh0ko+8KE84Uu/WSjb7tGZ+gEFDwb/uj20hKIJ7lpAiXRsssTOqJKiyIMN2OzHn1t1tFjm54vZQvcTvs8uFQYVKt9nwjgdLH0/a4X4YyRwFz+ACcqmTIVdmlSjoJYJizuym5zo8Tx0GIY=
-Received: from CY4PR1001MB2389.namprd10.prod.outlook.com
- (2603:10b6:910:45::21) by CY4PR10MB1943.namprd10.prod.outlook.com
- (2603:10b6:903:11a::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Mon, 14 Sep
- 2020 09:06:36 +0000
-Received: from CY4PR1001MB2389.namprd10.prod.outlook.com
- ([fe80::7c3b:e8e3:3d1b:284d]) by CY4PR1001MB2389.namprd10.prod.outlook.com
- ([fe80::7c3b:e8e3:3d1b:284d%7]) with mapi id 15.20.3370.019; Mon, 14 Sep 2020
- 09:06:36 +0000
-From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-To: "broonie@kernel.org" <broonie@kernel.org>, "npiggin@gmail.com"
- <npiggin@gmail.com>
-Subject: Re: [PATCH] spi: fsl-espi: Only process interrupts for expected events
-Thread-Topic: [PATCH] spi: fsl-espi: Only process interrupts for expected
- events
-Thread-Index: AQHWglNX/MkS6yQMU06L+lI5I1P9i6lnLtiAgABJ/gCAAG8xgA==
-Date: Mon, 14 Sep 2020 09:06:36 +0000
-Message-ID: <7ae62a6e39195af79eb8415f98d64ba5a1789d8d.camel@infinera.com>
-References: <20200904002812.7300-1-chris.packham@alliedtelesis.co.nz>
- <ecedc71d-100a-7d7a-ff7f-ef1a3086dd74@alliedtelesis.co.nz>
- <1600050281.5iiy8pkb7z.astroid@bobo.none>
-In-Reply-To: <1600050281.5iiy8pkb7z.astroid@bobo.none>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.37.92 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=infinera.com;
-x-originating-ip: [88.131.87.201]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0b6f2e28-46ef-4b8a-7c2d-08d8588d7bd7
-x-ms-traffictypediagnostic: CY4PR10MB1943:
-x-microsoft-antispam-prvs: <CY4PR10MB1943B9B4517E2A960E6D1AC0F4230@CY4PR10MB1943.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 0TIZOBoZN+FpKtWDngocoG870EHHdq/iRUE18KGrb+gQWvs46s7M0k7WKddRnXWZUC0byjcyTEXWCtzuOjxG/QW7mTqddNahpLMIY9BD7sTXSH/vs0ej1ty2E5xRec4HfZUQx4YPTZ5AYZ0iOINcVbTFIQgeFa7/D1mLGXVxo0/Ii8+7hG4hu0isicKfbPkdrUMP1rtqx3WyfYo+EUbn2sayBKWCTe5/+ltNqXycz3FH935DUFp53yw+Us4hKKPckoTEyuZ6KSbV7pdEmQIsLx7t4S8Ez8f2+pmYBisBFdWG0ViogSvCJtgwkVuJjPaUoxrcA+9Kf5fQWL3UE0xPpw==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY4PR1001MB2389.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(346002)(376002)(366004)(136003)(39860400002)(396003)(54906003)(5660300002)(110136005)(6512007)(6486002)(316002)(71200400001)(2616005)(66556008)(66476007)(478600001)(8936002)(2906002)(53546011)(64756008)(66446008)(36756003)(6506007)(26005)(8676002)(66946007)(83380400001)(76116006)(91956017)(86362001)(186003)(4326008);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: P1Ga8YsOs0KbKjCySpOli/t5xrDt4G29K2chYij0oKFYUNheZEHGQhM3MNPqzmb6nZr6pYUD74RqIYqTYqRtBUaGyzRGb4+cUXG7X3k7p5vk7Lg+8wqIINj4qg50Byp7SeKvPfRzJukZUgJZbWs5nxfvz+2CFzYJdsK0Ywanoqg0TqZD0E3mLDaKf28ezX0tOY51O9f64yn3xMTwyrzffVNERXMz+oG8pocwAtrDwLjqsXzLJxEy8lQhXWT/1xUFuWsMkUuuQPs/hDWpKtpO8tn5KttJM82bkrH+4szzxi8mTpPib/ghu1yNL/qaIXHMYXePKwggDTGg+9AbZauDfUN0zj/e5Tcj+FP3mfY+e2YzHlNJ+cLXDl3gnU5rQffsyT1ApQZSxNrirKCXyQ0NQ6cJy+NlTrGwDpcVB+T0YXzwsQpFCS75k905Hd7mePKKhF2ZC9voa8tagMGsiPoM7j0030d/DJy7CR2s4qtI0pNjzTUpQ5zaH8qaXFrrTJ6a+4QRLRZramkBKEDW8oV1yJVOcTnGQ/mPdEWVvYUPvggmESrL0agNAW1YTwD3e3xhXwZoF8a7meBU/4u9eGSgZxgEnw0xuU4mW+fkeE6DrVbh+/3dbMyJ64VcgUvWKE5o90vEULMR7KlVFxja60v+qw==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B54D11ED1530094EA0F116D330AB50F3@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BqjwP2KKSzDqJL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 20:56:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=12iDO9zK0M5MrFc9v9LnmYPbTArC0uf4AF99UCMX0/g=; b=MypNEzMCKsV0kDjFZpdYlzLbrc
+ 6jVvG6vst2kP1TuKPU0RbKSwT4f5aXkemcmA++NmHlfjANB+KOIuYBTFK+U4dDrGkq08pVvTYuCGr
+ 64XrtFpwD+zaYM0wPLqkolL1pXzmez6O2GauA4GZxoZWC2JUCo58zMGjmZ4KQyykyxoC3pE4HFsOV
+ wOdaJZ4wz5kYT0uT7MPzM6GQxyCQ6sVHR+Fiqkx1/HH5YcgPYsMoXksVoBOfa6PPoTtsC/17phU5P
+ 0FBTRJC5a6qRi0OxEvGOoCLGZsWCVmH7DaTXnCWgOL7BmL6M13ECbEyckAnfF5siMO3wHN+5pxlQD
+ k7eINU4g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1kHm9l-0001Ya-CT; Mon, 14 Sep 2020 10:56:21 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 8D20A30257C;
+ Mon, 14 Sep 2020 12:56:17 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 694F52CA75A81; Mon, 14 Sep 2020 12:56:17 +0200 (CEST)
+Date: Mon, 14 Sep 2020 12:56:17 +0200
+From: peterz@infradead.org
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 1/4] mm: fix exec activate_mm vs TLB shootdown and
+ lazy tlb switching race
+Message-ID: <20200914105617.GP1362448@hirez.programming.kicks-ass.net>
+References: <20200914045219.3736466-1-npiggin@gmail.com>
+ <20200914045219.3736466-2-npiggin@gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: infinera.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR1001MB2389.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b6f2e28-46ef-4b8a-7c2d-08d8588d7bd7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Sep 2020 09:06:36.2928 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: U2VNkKMxraK7S4mfZycH25Jb2q0k+Cg65An/Jfx1Xa3rxPFjqmtIi5NitG9daCzKtIKYGQJYaKcUoyhi61YeKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR10MB1943
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200914045219.3736466-2-npiggin@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,63 +67,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Cc: linux-arch@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+ Dave Hansen <dave.hansen@intel.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
+ "linux-mm @ kvack . org" <linux-mm@kvack.org>, sparclinux@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gTW9uLCAyMDIwLTA5LTE0IGF0IDEyOjI4ICsxMDAwLCBOaWNob2xhcyBQaWdnaW4gd3JvdGU6
-DQo+IENBVVRJT046IFRoaXMgZW1haWwgb3JpZ2luYXRlZCBmcm9tIG91dHNpZGUgb2YgdGhlIG9y
-Z2FuaXphdGlvbi4gRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNz
-IHlvdSByZWNvZ25pemUgdGhlIHNlbmRlciBhbmQga25vdyB0aGUgY29udGVudCBpcyBzYWZlLg0K
-PiANCj4gDQo+IEV4Y2VycHRzIGZyb20gQ2hyaXMgUGFja2hhbSdzIG1lc3NhZ2Ugb2YgU2VwdGVt
-YmVyIDE0LCAyMDIwIDg6MDMgYW06DQo+ID4gSGkgQWxsLA0KPiA+IA0KPiA+IE9uIDQvMDkvMjAg
-MTI6MjggcG0sIENocmlzIFBhY2toYW0gd3JvdGU6DQo+ID4gPiBUaGUgU1BJRSByZWdpc3RlciBj
-b250YWlucyBjb3VudHMgZm9yIHRoZSBUWCBGSUZPIHNvIGFueSB0aW1lIHRoZSBpcnENCj4gPiA+
-IGhhbmRsZXIgd2FzIGludm9rZWQgd2Ugd291bGQgYXR0ZW1wdCB0byBwcm9jZXNzIHRoZSBSWC9U
-WCBmaWZvcy4gVXNlIHRoZQ0KPiA+ID4gU1BJTSB2YWx1ZSB0byBtYXNrIHRoZSBldmVudHMgc28g
-dGhhdCB3ZSBvbmx5IHByb2Nlc3MgaW50ZXJydXB0cyB0aGF0DQo+ID4gPiB3ZXJlIGV4cGVjdGVk
-Lg0KPiA+ID4gDQo+ID4gPiBUaGlzIHdhcyBhIGxhdGVudCBpc3N1ZSBleHBvc2VkIGJ5IGNvbW1p
-dCAzMjgyYTNkYTI1YmQgKCJwb3dlcnBjLzY0Og0KPiA+ID4gSW1wbGVtZW50IHNvZnQgaW50ZXJy
-dXB0IHJlcGxheSBpbiBDIikuDQo+ID4gPiANCj4gPiA+IFNpZ25lZC1vZmYtYnk6IENocmlzIFBh
-Y2toYW0gPGNocmlzLnBhY2toYW1AYWxsaWVkdGVsZXNpcy5jby5uej4NCj4gPiA+IENjOiBzdGFi
-bGVAdmdlci5rZXJuZWwub3JnDQo+ID4gPiAtLS0NCj4gPiBwaW5nPw0KPiANCj4gSSBkb24ndCBr
-bm93IHRoZSBjb2RlL2hhcmR3YXJlIGJ1dCB0aGFua3MgZm9yIHRyYWNraW5nIHRoaXMgZG93bi4N
-Cj4gDQo+IFdhcyB0aGVyZSBhbnl0aGluZyBtb3JlIHRvIGJlIGRvbmUgd2l0aCBKb2NrZSdzIG9i
-c2VydmF0aW9ucywgb3Igd291bGQNCj4gdGhhdCBiZSBhIGZvbGxvdy11cCBwYXRjaCBpZiBhbnl0
-aGluZz8NCg0KUGF0Y2ggaXMgZ29vZCBJTUhPLCB0aGVyZSBtYXkgYmUgbW9yZSB0byBmaXggdy5y
-LnQgY2xlYXJpbmcgdGhlIElSUXMNCg0KPiANCj4gSWYgdGhpcyBwYXRjaCBmaXhlcyB5b3VyIHBy
-b2JsZW0gaXQgc2hvdWxkIHByb2JhYmx5IGdvIGluLCB1bmxlc3MgdGhlcmUNCj4gYXJlIGFueSBv
-YmplY3Rpb25zLg0KDQpJdCBzaG91bGQgZ28gaW4gSSB0aGluay4NCg0KIEpvY2tlDQoNCj4gDQo+
-IFRoYW5rcywNCj4gTmljaw0KPiANCj4gPiA+IA0KPiA+ID4gTm90ZXM6DQo+ID4gPiDCoMKgwqDC
-oMKgSSd2ZSB0ZXN0ZWQgdGhpcyBvbiBhIFQyMDgwUkRCIGFuZCBhIGN1c3RvbSBib2FyZCB1c2lu
-ZyB0aGUgVDIwODEgU29DLiBXaXRoDQo+ID4gPiDCoMKgwqDCoMKgdGhpcyBjaGFuZ2UgSSBkb24n
-dCBzZWUgYW55IHNwdXJpb3VzIGluc3RhbmNlcyBvZiB0aGUgIlRyYW5zZmVyIGRvbmUgYnV0DQo+
-ID4gPiDCoMKgwqDCoMKgU1BJRV9ET04gaXNuJ3Qgc2V0ISIgb3IgIlRyYW5zZmVyIGRvbmUgYnV0
-IHJ4L3R4IGZpZm8ncyBhcmVuJ3QgZW1wdHkhIiBtZXNzYWdlcw0KPiA+ID4gwqDCoMKgwqDCoGFu
-ZCB0aGUgdXBkYXRlcyB0byBzcGkgZmxhc2ggYXJlIHN1Y2Nlc3NmdWwuDQo+ID4gPiANCj4gPiA+
-IMKgwqDCoMKgwqBJIHRoaW5rIHRoaXMgc2hvdWxkIGdvIGludG8gdGhlIHN0YWJsZSB0cmVlcyB0
-aGF0IGNvbnRhaW4gMzI4MmEzZGEyNWJkIGJ1dCBJDQo+ID4gPiDCoMKgwqDCoMKgaGF2ZW4ndCBh
-ZGRlZCBhIEZpeGVzOiB0YWcgYmVjYXVzZSBJIHRoaW5rIDMyODJhM2RhMjViZCBleHBvc2VkIHRo
-ZSBpc3N1ZSBhcw0KPiA+ID4gwqDCoMKgwqDCoG9wcG9zZWQgdG8gY2F1c2luZyBpdC4NCj4gPiA+
-IA0KPiA+ID4gwqDCoGRyaXZlcnMvc3BpL3NwaS1mc2wtZXNwaS5jIHwgNSArKystLQ0KPiA+ID4g
-wqDCoDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+ID4g
-PiANCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLWVzcGkuYyBiL2RyaXZl
-cnMvc3BpL3NwaS1mc2wtZXNwaS5jDQo+ID4gPiBpbmRleCA3ZTdjOTJjYWZkYmIuLmNiMTIwYjY4
-YzBlMiAxMDA2NDQNCj4gPiA+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1mc2wtZXNwaS5jDQo+ID4g
-PiArKysgYi9kcml2ZXJzL3NwaS9zcGktZnNsLWVzcGkuYw0KPiA+ID4gQEAgLTU3NCwxMyArNTc0
-LDE0IEBAIHN0YXRpYyB2b2lkIGZzbF9lc3BpX2NwdV9pcnEoc3RydWN0IGZzbF9lc3BpICplc3Bp
-LCB1MzIgZXZlbnRzKQ0KPiA+ID4gwqDCoHN0YXRpYyBpcnFyZXR1cm5fdCBmc2xfZXNwaV9pcnEo
-czMyIGlycSwgdm9pZCAqY29udGV4dF9kYXRhKQ0KPiA+ID4gwqDCoHsNCj4gPiA+IMKgwqDCoMKg
-wqBzdHJ1Y3QgZnNsX2VzcGkgKmVzcGkgPSBjb250ZXh0X2RhdGE7DQo+ID4gPiAtICAgIHUzMiBl
-dmVudHM7DQo+ID4gPiArICAgIHUzMiBldmVudHMsIG1hc2s7DQo+ID4gPiANCj4gPiA+IMKgwqDC
-oMKgwqBzcGluX2xvY2soJmVzcGktPmxvY2spOw0KPiA+ID4gDQo+ID4gPiDCoMKgwqDCoMKgLyog
-R2V0IGludGVycnVwdCBldmVudHModHgvcngpICovDQo+ID4gPiDCoMKgwqDCoMKgZXZlbnRzID0g
-ZnNsX2VzcGlfcmVhZF9yZWcoZXNwaSwgRVNQSV9TUElFKTsNCj4gPiA+IC0gICAgaWYgKCFldmVu
-dHMpIHsNCj4gPiA+ICsgICAgbWFzayA9IGZzbF9lc3BpX3JlYWRfcmVnKGVzcGksIEVTUElfU1BJ
-TSk7DQo+ID4gPiArICAgIGlmICghKGV2ZW50cyAmIG1hc2spKSB7DQo+ID4gPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHNwaW5fdW5sb2NrKCZlc3BpLT5sb2NrKTsNCj4gPiA+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIElSUV9OT05FOw0KPiA+ID4gwqDCoMKgwqDCoH0NCg0K
+On Mon, Sep 14, 2020 at 02:52:16PM +1000, Nicholas Piggin wrote:
+> Reading and modifying current->mm and current->active_mm and switching
+> mm should be done with irqs off, to prevent races seeing an intermediate
+> state.
+> 
+> This is similar to commit 38cf307c1f20 ("mm: fix kthread_use_mm() vs TLB
+> invalidate"). At exec-time when the new mm is activated, the old one
+> should usually be single-threaded and no longer used, unless something
+> else is holding an mm_users reference (which may be possible).
+> 
+> Absent other mm_users, there is also a race with preemption and lazy tlb
+> switching. Consider the kernel_execve case where the current thread is
+> using a lazy tlb active mm:
+> 
+>   call_usermodehelper()
+>     kernel_execve()
+>       old_mm = current->mm;
+>       active_mm = current->active_mm;
+>       *** preempt *** -------------------->  schedule()
+>                                                prev->active_mm = NULL;
+>                                                mmdrop(prev active_mm);
+>                                              ...
+>                       <--------------------  schedule()
+>       current->mm = mm;
+>       current->active_mm = mm;
+>       if (!old_mm)
+>           mmdrop(active_mm);
+> 
+> If we switch back to the kernel thread from a different mm, there is a
+> double free of the old active_mm, and a missing free of the new one.
+> 
+> Closing this race only requires interrupts to be disabled while ->mm
+> and ->active_mm are being switched, but the TLB problem requires also
+> holding interrupts off over activate_mm. Unfortunately not all archs
+> can do that yet, e.g., arm defers the switch if irqs are disabled and
+> expects finish_arch_post_lock_switch() to be called to complete the
+> flush; um takes a blocking lock in activate_mm().
+> 
+> So as a first step, disable interrupts across the mm/active_mm updates
+> to close the lazy tlb preempt race, and provide an arch option to
+> extend that to activate_mm which allows architectures doing IPI based
+> TLB shootdowns to close the second race.
+> 
+> This is a bit ugly, but in the interest of fixing the bug and backporting
+> before all architectures are converted this is a compromise.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+
+I'm thinking we want this selected on x86 as well. Andy?
+
+> ---
+>  arch/Kconfig |  7 +++++++
+>  fs/exec.c    | 17 +++++++++++++++--
+>  2 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index af14a567b493..94821e3f94d1 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -414,6 +414,13 @@ config MMU_GATHER_NO_GATHER
+>  	bool
+>  	depends on MMU_GATHER_TABLE_FREE
+>  
+> +config ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+> +	bool
+> +	help
+> +	  Temporary select until all architectures can be converted to have
+> +	  irqs disabled over activate_mm. Architectures that do IPI based TLB
+> +	  shootdowns should enable this.
+> +
+>  config ARCH_HAVE_NMI_SAFE_CMPXCHG
+>  	bool
+>  
+> diff --git a/fs/exec.c b/fs/exec.c
+> index a91003e28eaa..d4fb18baf1fb 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -1130,11 +1130,24 @@ static int exec_mmap(struct mm_struct *mm)
+>  	}
+>  
+>  	task_lock(tsk);
+> -	active_mm = tsk->active_mm;
+>  	membarrier_exec_mmap(mm);
+> -	tsk->mm = mm;
+> +
+> +	local_irq_disable();
+> +	active_mm = tsk->active_mm;
+>  	tsk->active_mm = mm;
+> +	tsk->mm = mm;
+> +	/*
+> +	 * This prevents preemption while active_mm is being loaded and
+> +	 * it and mm are being updated, which could cause problems for
+> +	 * lazy tlb mm refcounting when these are updated by context
+> +	 * switches. Not all architectures can handle irqs off over
+> +	 * activate_mm yet.
+> +	 */
+> +	if (!IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
+> +		local_irq_enable();
+>  	activate_mm(active_mm, mm);
+> +	if (IS_ENABLED(CONFIG_ARCH_WANT_IRQS_OFF_ACTIVATE_MM))
+> +		local_irq_enable();
+>  	tsk->mm->vmacache_seqnum = 0;
+>  	vmacache_flush(tsk);
+>  	task_unlock(tsk);
+> -- 
+> 2.23.0
+> 
