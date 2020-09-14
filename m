@@ -1,77 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9A226819B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 00:05:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83EE268296
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 04:24:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BqNpv4rRXzDqRw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 08:05:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BqVYx42GgzDqWv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 12:24:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
- helo=gate2.alliedtelesis.co.nz;
- envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=alliedtelesis.co.nz
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
- header.a=rsa-sha256 header.s=mail181024 header.b=SF8O7cSl; 
- dkim-atps=neutral
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
- [202.36.163.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LRzvtOfw; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BqNmk49S1zDqQQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 08:03:50 +1000 (AEST)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 329F6891B1;
- Mon, 14 Sep 2020 10:03:48 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
- s=mail181024; t=1600034628;
- bh=0vTSBRn5WHx7qRnHEBgCpmmxaWmG9AHFklQJK9CNxGo=;
- h=From:To:CC:Subject:Date:References:In-Reply-To;
- b=SF8O7cSl1ocr6+OhWS+vS23ABoJSWyVCnQvk6PDIGORpHGtwTyQ78AGg2csUwR+Ao
- Q0/w30RLmAy914O+vAjvBJOrQMUcCc46uR+5qrOkyfFEMjK2YO5MhyiKmSqlIPqRt0
- BENaZRZpV3Tii3o2siH3vo2GuOWWYNKP7+wSLTdMLyg8w0DLmWZEzbhZWLdASRcjZu
- AUJIY1TmIGy8yvfo1XrCW665mV8mBbzQoUZtIXk2medGOQjl3JLDIPd5rmqLUiU/dA
- FmjKzUaZtCXpGYsnvtXfHA06LLxV1/j9YbeVaqR6RlvYBpoxYN39JDekTxrvygu1ta
- dWlw/3MdvKH2Q==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by
- mmarshal3.atlnz.lc with Trustwave SEG (v7, 5, 8, 10121)
- id <B5f5e97420000>; Mon, 14 Sep 2020 10:03:48 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) by
- svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8::77) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Mon, 14 Sep 2020 10:03:45 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Mon, 14 Sep 2020 10:03:45 +1200
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To: "broonie@kernel.org" <broonie@kernel.org>, "npiggin@gmail.com"
- <npiggin@gmail.com>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "Joakim
- Tjernlund" <Joakim.Tjernlund@infinera.com>
-Subject: Re: [PATCH] spi: fsl-espi: Only process interrupts for expected events
-Thread-Topic: [PATCH] spi: fsl-espi: Only process interrupts for expected
- events
-Thread-Index: AQHWglJIf7HpaAEB10myzqnWl8w4galmZa8A
-Date: Sun, 13 Sep 2020 22:03:45 +0000
-Message-ID: <ecedc71d-100a-7d7a-ff7f-ef1a3086dd74@alliedtelesis.co.nz>
-References: <20200904002812.7300-1-chris.packham@alliedtelesis.co.nz>
-In-Reply-To: <20200904002812.7300-1-chris.packham@alliedtelesis.co.nz>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DDA2418B87C5D64287296F4E4A41AD37@atlnz.lc>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BqVX1300szDqSW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 12:23:11 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id 34so10274880pgo.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Sep 2020 19:23:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=S0bpuER8lp5sCLLApRh4TVdUkMZpH/s2SiKWUHdd/Wk=;
+ b=LRzvtOfwJ7mfIhgSbAsvzmuhWDE8s77+SaIA0kP0jk8Gnpo3YDH/L4C0TXTxgvw4r+
+ dY/cr/G+b8g0plhTdbrvKRH7VTYJt7ihYowjwdm7nT6Tqlzi65h0Oua7J7+rhwdn3LSD
+ 6IK3SYBnhGoU+0TW8AkndZLAkgIlgMpCmIQ6PchAWQWEv1hHb5MnWS1/hF8r0L7WWlte
+ OtNw8rlDhA86kAcfLZ9iGmcZrbVs0JglpASNtrpZpwzB8odjb7d9Mc4ptPtcweP4cPop
+ KXTR53OEfsdbiZ8BWxdwYhwNk0WPl9ULx0+gsu6DjyQLXkYUvbeDvjnmYnHvZ5KkXo7R
+ 02uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=S0bpuER8lp5sCLLApRh4TVdUkMZpH/s2SiKWUHdd/Wk=;
+ b=N+OErRthKpeF3x79Ywes0OuhhJRVLxgHIXxoiFgrvi5/IOVGXt6A1qZtbAplEP7Cf9
+ 9AJqFcDfyCtw1LG7eHNhv0cDJktrCzi6zpRS4+aYFXZdH0//dzwgB504Ul2uzNp01TH8
+ 6UHBlwPxYWJYuXQ4iqOYW1C7vO5IXCGkPIz68WpRPUd6XUekfHkHMC6RyA4ezgC/gjIC
+ boZWiutZu6dJJ0F2+gVUDiHewp8pCNmHUE9GNjZedoF8YU7e/l5PmB5r3GVz4P0D1pue
+ SpvGaoP8vX+BAPnVn8c1AWGN7Cojw/oqb23rk90xIOiyrI6yjUCxGcOjVFPPttk8uRE7
+ TLdQ==
+X-Gm-Message-State: AOAM530wmmNZMEsBG9cFOh7mFEyXDZMdakXnTknav873EiL/idpCNFIx
+ Qr+fPC2I2Gj36EsK7jdaW5Q=
+X-Google-Smtp-Source: ABdhPJzM7aIfTnbjIRE8UmEylrMp0SwQ8IXrxRm//8Gh+7Y6sS/1zl/nUnchfjLUAnSctnC/0GY+mQ==
+X-Received: by 2002:a17:902:b7c7:b029:d1:cc21:9c38 with SMTP id
+ v7-20020a170902b7c7b02900d1cc219c38mr1129143plz.21.1600050187733; 
+ Sun, 13 Sep 2020 19:23:07 -0700 (PDT)
+Received: from localhost ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id h14sm8854048pfe.67.2020.09.13.19.23.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 13 Sep 2020 19:23:06 -0700 (PDT)
+Date: Mon, 14 Sep 2020 12:23:01 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v1 4/5] powerpc/fault: Avoid heavy
+ search_exception_tables() verification
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+References: <7baae4086cbb9ffb08c933b065ff7d29dbc03dd6.1596734104.git.christophe.leroy@csgroup.eu>
+ <b07bac7a882c69deb9e6c8f234a68b3022f29072.1596734105.git.christophe.leroy@csgroup.eu>
+ <871rjb5vv4.fsf@linux.ibm.com>
+ <1ded5e11-a9e0-a98f-295c-c623e0a5ed36@csgroup.eu>
+In-Reply-To: <1ded5e11-a9e0-a98f-295c-c623e0a5ed36@csgroup.eu>
 MIME-Version: 1.0
+Message-Id: <1600048261.m5q9cmngxb.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,45 +85,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGkgQWxsLA0KDQpPbiA0LzA5LzIwIDEyOjI4IHBtLCBDaHJpcyBQYWNraGFtIHdyb3RlOg0KPiBU
-aGUgU1BJRSByZWdpc3RlciBjb250YWlucyBjb3VudHMgZm9yIHRoZSBUWCBGSUZPIHNvIGFueSB0
-aW1lIHRoZSBpcnENCj4gaGFuZGxlciB3YXMgaW52b2tlZCB3ZSB3b3VsZCBhdHRlbXB0IHRvIHBy
-b2Nlc3MgdGhlIFJYL1RYIGZpZm9zLiBVc2UgdGhlDQo+IFNQSU0gdmFsdWUgdG8gbWFzayB0aGUg
-ZXZlbnRzIHNvIHRoYXQgd2Ugb25seSBwcm9jZXNzIGludGVycnVwdHMgdGhhdA0KPiB3ZXJlIGV4
-cGVjdGVkLg0KPg0KPiBUaGlzIHdhcyBhIGxhdGVudCBpc3N1ZSBleHBvc2VkIGJ5IGNvbW1pdCAz
-MjgyYTNkYTI1YmQgKCJwb3dlcnBjLzY0Og0KPiBJbXBsZW1lbnQgc29mdCBpbnRlcnJ1cHQgcmVw
-bGF5IGluIEMiKS4NCj4NCj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFj
-a2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56Pg0KPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0K
-PiAtLS0NCnBpbmc/DQo+DQo+IE5vdGVzOg0KPiAgICAgIEkndmUgdGVzdGVkIHRoaXMgb24gYSBU
-MjA4MFJEQiBhbmQgYSBjdXN0b20gYm9hcmQgdXNpbmcgdGhlIFQyMDgxIFNvQy4gV2l0aA0KPiAg
-ICAgIHRoaXMgY2hhbmdlIEkgZG9uJ3Qgc2VlIGFueSBzcHVyaW91cyBpbnN0YW5jZXMgb2YgdGhl
-ICJUcmFuc2ZlciBkb25lIGJ1dA0KPiAgICAgIFNQSUVfRE9OIGlzbid0IHNldCEiIG9yICJUcmFu
-c2ZlciBkb25lIGJ1dCByeC90eCBmaWZvJ3MgYXJlbid0IGVtcHR5ISIgbWVzc2FnZXMNCj4gICAg
-ICBhbmQgdGhlIHVwZGF0ZXMgdG8gc3BpIGZsYXNoIGFyZSBzdWNjZXNzZnVsLg0KPiAgICAgIA0K
-PiAgICAgIEkgdGhpbmsgdGhpcyBzaG91bGQgZ28gaW50byB0aGUgc3RhYmxlIHRyZWVzIHRoYXQg
-Y29udGFpbiAzMjgyYTNkYTI1YmQgYnV0IEkNCj4gICAgICBoYXZlbid0IGFkZGVkIGEgRml4ZXM6
-IHRhZyBiZWNhdXNlIEkgdGhpbmsgMzI4MmEzZGEyNWJkIGV4cG9zZWQgdGhlIGlzc3VlIGFzDQo+
-ICAgICAgb3Bwb3NlZCB0byBjYXVzaW5nIGl0Lg0KPg0KPiAgIGRyaXZlcnMvc3BpL3NwaS1mc2wt
-ZXNwaS5jIHwgNSArKystLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDIg
-ZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLWVzcGku
-YyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtZXNwaS5jDQo+IGluZGV4IDdlN2M5MmNhZmRiYi4uY2Ix
-MjBiNjhjMGUyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktZnNsLWVzcGkuYw0KPiAr
-KysgYi9kcml2ZXJzL3NwaS9zcGktZnNsLWVzcGkuYw0KPiBAQCAtNTc0LDEzICs1NzQsMTQgQEAg
-c3RhdGljIHZvaWQgZnNsX2VzcGlfY3B1X2lycShzdHJ1Y3QgZnNsX2VzcGkgKmVzcGksIHUzMiBl
-dmVudHMpDQo+ICAgc3RhdGljIGlycXJldHVybl90IGZzbF9lc3BpX2lycShzMzIgaXJxLCB2b2lk
-ICpjb250ZXh0X2RhdGEpDQo+ICAgew0KPiAgIAlzdHJ1Y3QgZnNsX2VzcGkgKmVzcGkgPSBjb250
-ZXh0X2RhdGE7DQo+IC0JdTMyIGV2ZW50czsNCj4gKwl1MzIgZXZlbnRzLCBtYXNrOw0KPiAgIA0K
-PiAgIAlzcGluX2xvY2soJmVzcGktPmxvY2spOw0KPiAgIA0KPiAgIAkvKiBHZXQgaW50ZXJydXB0
-IGV2ZW50cyh0eC9yeCkgKi8NCj4gICAJZXZlbnRzID0gZnNsX2VzcGlfcmVhZF9yZWcoZXNwaSwg
-RVNQSV9TUElFKTsNCj4gLQlpZiAoIWV2ZW50cykgew0KPiArCW1hc2sgPSBmc2xfZXNwaV9yZWFk
-X3JlZyhlc3BpLCBFU1BJX1NQSU0pOw0KPiArCWlmICghKGV2ZW50cyAmIG1hc2spKSB7DQo+ICAg
-CQlzcGluX3VubG9jaygmZXNwaS0+bG9jayk7DQo+ICAgCQlyZXR1cm4gSVJRX05PTkU7DQo+ICAg
-CX0=
+Excerpts from Christophe Leroy's message of September 9, 2020 4:20 pm:
+>=20
+>=20
+> Le 09/09/2020 =C3=A0 08:04, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>=20
+>>> search_exception_tables() is an heavy operation, we have to avoid it.
+>>> When KUAP is selected, we'll know the fault has been blocked by KUAP.
+>>> Otherwise, it behaves just as if the address was already in the TLBs
+>>> and no fault was generated.
+>>>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> ---
+>>>   arch/powerpc/mm/fault.c | 20 +++++---------------
+>>>   1 file changed, 5 insertions(+), 15 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+>>> index 525e0c2b5406..edde169ba3a6 100644
+>>> --- a/arch/powerpc/mm/fault.c
+>>> +++ b/arch/powerpc/mm/fault.c
+>>> @@ -214,24 +214,14 @@ static bool bad_kernel_fault(struct pt_regs *regs=
+, unsigned long error_code,
+>>>   	if (address >=3D TASK_SIZE)
+>>>   		return true;
+>>>  =20
+>>> -	if (!is_exec && (error_code & DSISR_PROTFAULT) &&
+>>> -	    !search_exception_tables(regs->nip)) {
+>>> +	// Read/write fault blocked by KUAP is bad, it can never succeed.
+>>> +	if (bad_kuap_fault(regs, address, is_write)) {
+>>>   		pr_crit_ratelimited("Kernel attempted to access user page (%lx) - e=
+xploit attempt? (uid: %d)\n",
+>>> -				    address,
+>>> -				    from_kuid(&init_user_ns, current_uid()));
+>>> -	}
+>>> -
+>>> -	// Fault on user outside of certain regions (eg. copy_tofrom_user()) =
+is bad
+>>> -	if (!search_exception_tables(regs->nip))
+>>> -		return true;
+>>=20
+>> We still need to keep this ? Without that we detect the lack of
+>> exception tables pretty late.
+>=20
+> Is that a problem at all to detect the lack of exception tables late ?
+> That case is very unlikely and will lead to failure anyway. So, is it=20
+> worth impacting performance of the likely case which will always have an=20
+> exception table and where we expect the exception to run as fast as=20
+> possible ?
+>=20
+> The other architectures I have looked at (arm64 and x86) only have the=20
+> exception table search together with the down_read_trylock(&mm->mmap_sem)=
+.
+
+Yeah I don't see how it'd be a problem. User could arrange for page=20
+table to already be at this address and avoid the fault so it's not the=20
+right way to stop an attacker, KUAP is.
+
+Thanks,
+Nick
