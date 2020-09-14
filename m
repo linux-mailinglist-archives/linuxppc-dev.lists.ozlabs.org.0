@@ -2,70 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F032696BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 22:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA26E26977A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 23:13:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BqylB0HxVzDqPM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 06:34:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BqzcX4MM3zDqQW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 07:13:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=clg@kaod.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=fLq43tsj; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+Received: from smtpout1.mo804.mail-out.ovh.net
+ (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bqyhb0z3qzDqP3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 06:32:14 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id kk9so496968pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 13:32:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=MAegNs4VOwWv9UrQbG/3KsC+fif9tz3H9h+v9DTenlg=;
- b=fLq43tsj0idL5YeRKTDNHNUi+/bcp9W/YMHPxve4qth42qg71hfTUM5Xq3cazIdDrI
- NFB+4SH1S70GAC48b8DplcyZACd4EXVyXgXskD80RFmDCDa/3pUt9RLyrlu1vxpWwB4f
- i2X0eeheLlVij915s5y5BUr4hEXriYpLc1OPM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=MAegNs4VOwWv9UrQbG/3KsC+fif9tz3H9h+v9DTenlg=;
- b=dcEB+YuqQyxf4d/QvrW/pxA4lx0DAe2ZkFu4+DsR401mwLsxPIwbpSm1KAMugeQe8T
- CNCTLu5qofVJduRmJX+qtUm1WEntYykcwd6rqvK8atXsvsBFcJFbDzA/YbyHwUDdQ6bT
- +SXWiRLcpgmtpEq/C3wuWgsgJkrK4jsWSVAAP6bfTJnJfWyVkjB9PS2gtx3Ka2jEBuin
- oO2ALbkXrR7ATvAKKaw0czkeY0xDjH2KgFlFzR0M0QOE16GLgzkJHYY7kETB4W4EW3QI
- 5CHbM4D7wV+UjGA467F90UC5lHOVnnnkb63I8R7HLB98jdwGPnyGDPcpIBN53cJhd6Aq
- QMVA==
-X-Gm-Message-State: AOAM532kfJqr9U3W4mbS90A9H79XiDTRX38Jmg49BiCJrGG8j2JbLhJa
- Ri5WUWpe1TgsqVImG+rMOMonkg==
-X-Google-Smtp-Source: ABdhPJwLrAeD4ZMb7OCOucEtPSfmxZNEDPJonNkzAiZJUR7jlcfwd9QjlJseUiJhoAyO2uqhAGri2A==
-X-Received: by 2002:a17:90b:364c:: with SMTP id
- nh12mr972235pjb.182.1600115531070; 
- Mon, 14 Sep 2020 13:32:11 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id j19sm11207357pfi.51.2020.09.14.13.32.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Sep 2020 13:32:10 -0700 (PDT)
-Date: Mon, 14 Sep 2020 13:32:09 -0700
-From: Kees Cook <keescook@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BqzXV2PQXzDqQ8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 07:10:16 +1000 (AEST)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.146.68])
+ by mo804.mail-out.ovh.net (Postfix) with ESMTPS id E1E596192E8D;
+ Mon, 14 Sep 2020 23:10:09 +0200 (CEST)
+Received: from kaod.org (37.59.142.105) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Mon, 14 Sep
+ 2020 23:10:08 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-105G006021c09b0-42e0-4a5b-a777-5bfb7f5a8969,
+ D669A8CAADBA69FE96853FFB68FF36F34E8DD5E5) smtp.auth=clg@kaod.org
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 00/15] selftests/seccomp: Refactor change_syscall()
-Message-ID: <202009141321.366935EF52@keescook>
-References: <20200912110820.597135-1-keescook@chromium.org>
- <87wo0wpnah.fsf@mpe.ellerman.id.au>
+Subject: [PATCH v2 0/7] powerpc: Fix a few W=1 compile warnings
+Date: Mon, 14 Sep 2020 23:10:00 +0200
+Message-ID: <20200914211007.2285999-1-clg@kaod.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wo0wpnah.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.105]
+X-ClientProxiedBy: DAG1EX2.mxp5.local (172.16.2.2) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: d7fd643f-d40c-4316-b2f7-b58d7d4c3f2e
+X-Ovh-Tracer-Id: 15866462963657640928
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrudeiiedgudeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkofggtgfgihesthekredtredtjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeefvdeutddvieekkeeuhfekudejjefggffghfetgfelgfevveefgefhvdegtdelveenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,137 +59,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- Will Drewry <wad@chromium.org>, linux-xtensa@linux-xtensa.org,
- linux-kernel@vger.kernel.org, Andy Lutomirski <luto@amacapital.net>,
- Max Filippov <jcmvbkbc@gmail.com>, linux-arm-kernel@lists.infradead.org,
- linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Christian Brauner <christian@brauner.io>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 14, 2020 at 10:15:18PM +1000, Michael Ellerman wrote:
-> Kees Cook <keescook@chromium.org> writes:
-> > Hi,
-> >
-> > This refactors the seccomp selftest macros used in change_syscall(),
-> > in an effort to remove special cases for mips, arm, arm64, and xtensa,
-> > which paves the way for powerpc fixes.
-> >
-> > I'm not entirely done testing, but all-arch build tests and x86_64
-> > selftests pass. I'll be doing arm, arm64, and i386 selftests shortly,
-> > but I currently don't have an easy way to check xtensa, mips, nor
-> > powerpc. Any help there would be appreciated!
-> 
-> The series builds fine for me, and all the tests pass (see below).
-> 
-> Thanks for picking up those changes to deal with powerpc being oddball.
-> 
-> Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Hello,
 
-Awesome; thanks!
+Here is a small contribution improving compile with W=1.	
 
-However...
+Thanks,
 
-> 
-> cheers
-> 
-> 
-> ./seccomp_bpf
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> #  RUN           global.kcmp ...
-> #            OK  global.kcmp
-> ok 1 global.kcmp
-> [...]
-> #  RUN           global.KILL_thread ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
+C.
 
-Was this a mis-paste, or has something very very bad happened here in
-global.KILL_one_arg_six finishes?
+Changes in v2:
 
-> #  RUN           global.kcmp ...
-> #            OK  global.kcmp
-> ok 1 global.kcmp
-> [...]
-> #  RUN           global.user_notification_basic ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_basic ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_signal ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_closed_listener ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_child_pid_ns ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_sibling_pid_ns ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_sibling_pid_ns ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_sibling_pid_ns ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_fault_recv ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_continue ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_filter_empty ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_filter_empty_threaded ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_addfd ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> #  RUN           global.user_notification_addfd_rlimit ...
-> TAP version 13
-> 1..86
-> # Starting 86 tests from 7 test cases.
-> [...]
-> # PASSED: 86 / 86 tests passed.
-> # Totals: pass:86 fail:0 xfail:0 xpass:0 skip:0 error:0
+ - Better commit logs
+ - Reworked early_reserve_mem() in prom
+ - Remove if statement in sstep
 
-And after every user_notification test? O_O
+Cédric Le Goater (7):
+  powerpc/sysfs: Remove unused 'err' variable in
+    sysfs_create_dscr_default()
+  powerpc/prom: Introduce early_reserve_mem_old()
+  powerpc/sstep: Remove empty if statement checking for invalid form
+  powerpc/xive: Make debug routines static
+  powerpc/powernv/pci: Remove unused variable 'parent' in
+    pnv_ioda_configure_pe()
+  powerpc/perf: Remove unused variable 'target' in
+    trace_imc_event_init()
+  powerpc/32: Declare stack_overflow_exception() prototype
+
+ arch/powerpc/include/asm/asm-prototypes.h |  1 +
+ arch/powerpc/kernel/prom.c                | 37 ++++++++++++-----------
+ arch/powerpc/kernel/sysfs.c               |  3 +-
+ arch/powerpc/lib/sstep.c                  |  9 ++++--
+ arch/powerpc/perf/imc-pmu.c               |  3 --
+ arch/powerpc/platforms/powernv/pci-ioda.c |  8 -----
+ arch/powerpc/sysdev/xive/common.c         |  4 +--
+ 7 files changed, 30 insertions(+), 35 deletions(-)
 
 -- 
-Kees Cook
+2.25.4
+
