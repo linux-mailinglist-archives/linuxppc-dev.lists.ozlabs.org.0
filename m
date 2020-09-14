@@ -2,74 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0506A268541
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 09:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E18DB26862B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 09:37:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Bqck70k5PzDqXr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 17:02:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BqdVC6m5KzDqVs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Sep 2020 17:37:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.67; helo=mail-ed1-f67.google.com;
+ envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SPsvJsoO; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com
+ [209.85.208.67])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Bqch55trhzDqRS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 17:00:37 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id jw11so4856603pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 00:00:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=Y2wlAqtXNyefQseZpanYLfJq3N5RvjaF5iCZEQXKmek=;
- b=SPsvJsoOJGWCNz0MqiQxw/0yRCr5888lfA3TYTSv87ufnSkUZYEsSA86+seIOVYE/Y
- sEsXwdezlw4T7/8lmU7BopeUocyx8Wa6xwC9agje45+MBpLMpwWv97C8P//JYAbRAGs3
- RMmdIo20tOL6WZzNu7HBBNTUuknLwntruhux56ilu09Rfw4I8shyVWz/6m63EEJ+2snF
- +epCklQ4IYAAnNg7MixSMBYM1fXZ+nXjSTYll1bQtE6q+nwWRrZrh+whLeyFq0aW0EYf
- K1k/F/sraohhvQlS7WMZtC4lA8lFxZZTPqySYZ/mADZFg1s3OkMfGyw5Am2EyNN2yrYJ
- NFdA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BqZgd0dzJzDqPj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 15:30:01 +1000 (AEST)
+Received: by mail-ed1-f67.google.com with SMTP id l17so16220971edq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Sep 2020 22:30:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Y2wlAqtXNyefQseZpanYLfJq3N5RvjaF5iCZEQXKmek=;
- b=ZANkSLj/4K6blrQHFpFUusp2i/f6o3r+E2cJVH61900FxfAqKPR4jE3dtyEb5bH3sQ
- lV6TstSJ8+VtsHoOEZB7Dxcu8TUicpwjSm4T0zHfAgnInDEfWgc09ipzPe4odyNXI6za
- lkKFzLxpv3xyQ3+7/0yhrWEpNZYLpgABCw2MEjnc22tm2FUxYFIGRhex9bhjqabHhvfA
- mOviEYg/+BrTTLJ2tFqwfSdWtDF5nWXHyM3D/PG3w/LMdfXHsCGXPOLgF3f3PJqoGVb7
- vDoHIJ4V9NIu2uJxkZXRxxG2/CLwuVXPkE7FmaIGntASzufezzd2C9zNqAZurE2Put/T
- VsxA==
-X-Gm-Message-State: AOAM533ftfTuEZMRmyUo+MuV9q/9tjy6gjuhf+WlPzCoE3THyV46oO/2
- cCaMETw/pDcBTFy7P+4P5rs=
-X-Google-Smtp-Source: ABdhPJxSdvNhMAY02DXO75GE5ykb8GoCQd5VlSAXulERBIog4wwB9uSCtbBQFfL7CZp4YQqpVBmMZw==
-X-Received: by 2002:a17:90a:930e:: with SMTP id
- p14mr13005911pjo.49.1600066835157; 
- Mon, 14 Sep 2020 00:00:35 -0700 (PDT)
-Received: from localhost ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id e2sm7536325pgl.38.2020.09.14.00.00.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Sep 2020 00:00:34 -0700 (PDT)
-Date: Mon, 14 Sep 2020 17:00:29 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 3/4] sparc64: remove mm_cpumask clearing to fix
- kthread_use_mm race
-To: linux-mm@kvack.org
-References: <20200914045219.3736466-1-npiggin@gmail.com>
- <20200914045219.3736466-4-npiggin@gmail.com>
-In-Reply-To: <20200914045219.3736466-4-npiggin@gmail.com>
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Z1T/2900SANPNqCTbSqc4He4lRILj51ILCl9GCqP3W4=;
+ b=s3UUJkIebXRh+ra61w7BmNjBAu6fWOopXCVonXcGAhdzlUx8e0NeKp67TA1pRcLEMz
+ mhNjfNj9q2IRrJs8dbpeU7tC5+Sjk3dmUtKysQA/PUfXCC/A+nRQr78N8li39ZB0d89I
+ YgAq64B6pPeO3rWmcLHr0PBYPDJjOAaqvLo/O4/gEMOoCB3dS0orSr++gW0N1gJH5d7O
+ 7cKRDvVc0yEUvkWIK6GIyWTBpAEqquc8N56B/8HyytQTqFkyIKS/OJpYIuFYZ4hQH3qy
+ B36XMiH4YoujKfIzorH807JVuvDVgBSzPH0bHEVkumnE7xYmT+OvDYbGrKOmNwy/bQ8C
+ YByQ==
+X-Gm-Message-State: AOAM532+ONri99Szi+JG0vJ6p6ec/hTih3GVaumLKD/W3QtDmEsDpv15
+ PHQgYH2CwUq23nYNkSzwWDc=
+X-Google-Smtp-Source: ABdhPJws3XUQIstEOGdOZPJBBXittRedeH4J1mdmUeRlgYjVJja4dh8lelFgQzZbYXI6D6tqtn3KRQ==
+X-Received: by 2002:aa7:c896:: with SMTP id p22mr15216133eds.382.1600061397730; 
+ Sun, 13 Sep 2020 22:29:57 -0700 (PDT)
+Received: from ?IPv6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
+ by smtp.gmail.com with ESMTPSA id k10sm8371017edo.36.2020.09.13.22.29.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 13 Sep 2020 22:29:56 -0700 (PDT)
+Subject: Re: [PATCH] serial: ucc_uart: make qe_uart_set_mctrl() static
+To: Jason Yan <yanaijie@huawei.com>, timur@kernel.org,
+ gregkh@linuxfoundation.org, linux@rasmusvillemoes.dk, leoyang.li@nxp.com,
+ linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org
+References: <20200912033834.143166-1-yanaijie@huawei.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <27cadfe5-7a7e-6d59-476d-1d03acc2185d@kernel.org>
+Date: Mon, 14 Sep 2020 07:29:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Message-Id: <1600066040.vnmz9nxhwt.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200912033834.143166-1-yanaijie@huawei.com>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Mon, 14 Sep 2020 17:35:24 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,160 +71,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-arch@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>
+Cc: Hulk Robot <hulkci@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of September 14, 2020 2:52 pm:
+On 12. 09. 20, 5:38, Jason Yan wrote:
+> This eliminates the following sparse warning:
+> 
+> drivers/tty/serial/ucc_uart.c:286:6: warning: symbol 'qe_uart_set_mctrl'
+> was not declared. Should it be static?
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-[...]
+Sure:
+Acked-by: Jiri Slaby <jirislaby@kernel.org>
 
-> The basic fix for sparc64 is to remove its mm_cpumask clearing code. The
-> optimisation could be effectively restored by sending IPIs to mm_cpumask
-> members and having them remove themselves from mm_cpumask. This is more
-> tricky so I leave it as an exercise for someone with a sparc64 SMP.
-> powerpc has a (currently similarly broken) example.
-
-So this compiles and boots on qemu, but qemu does not support any
-sparc64 machines with SMP. Attempting some simple hacks doesn't get
-me far because openbios isn't populating an SMP device tree, which
-blows up everywhere.
-
-The patch is _relatively_ simple, hopefully it shouldn't explode, so
-it's probably ready for testing on real SMP hardware, if someone has
-a few cycles.
-
-Thanks,
-Nick
-
->=20
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/sparc/kernel/smp_64.c | 65 ++++++++------------------------------
->  1 file changed, 14 insertions(+), 51 deletions(-)
->=20
-> diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-> index e286e2badc8a..e38d8bf454e8 100644
-> --- a/arch/sparc/kernel/smp_64.c
-> +++ b/arch/sparc/kernel/smp_64.c
-> @@ -1039,38 +1039,9 @@ void smp_fetch_global_pmu(void)
->   * are flush_tlb_*() routines, and these run after flush_cache_*()
->   * which performs the flushw.
->   *
-> - * The SMP TLB coherency scheme we use works as follows:
-> - *
-> - * 1) mm->cpu_vm_mask is a bit mask of which cpus an address
-> - *    space has (potentially) executed on, this is the heuristic
-> - *    we use to avoid doing cross calls.
-> - *
-> - *    Also, for flushing from kswapd and also for clones, we
-> - *    use cpu_vm_mask as the list of cpus to make run the TLB.
-> - *
-> - * 2) TLB context numbers are shared globally across all processors
-> - *    in the system, this allows us to play several games to avoid
-> - *    cross calls.
-> - *
-> - *    One invariant is that when a cpu switches to a process, and
-> - *    that processes tsk->active_mm->cpu_vm_mask does not have the
-> - *    current cpu's bit set, that tlb context is flushed locally.
-> - *
-> - *    If the address space is non-shared (ie. mm->count =3D=3D 1) we avo=
-id
-> - *    cross calls when we want to flush the currently running process's
-> - *    tlb state.  This is done by clearing all cpu bits except the curre=
-nt
-> - *    processor's in current->mm->cpu_vm_mask and performing the
-> - *    flush locally only.  This will force any subsequent cpus which run
-> - *    this task to flush the context from the local tlb if the process
-> - *    migrates to another cpu (again).
-> - *
-> - * 3) For shared address spaces (threads) and swapping we bite the
-> - *    bullet for most cases and perform the cross call (but only to
-> - *    the cpus listed in cpu_vm_mask).
-> - *
-> - *    The performance gain from "optimizing" away the cross call for thr=
-eads is
-> - *    questionable (in theory the big win for threads is the massive sha=
-ring of
-> - *    address space state across processors).
-> + * mm->cpu_vm_mask is a bit mask of which cpus an address
-> + * space has (potentially) executed on, this is the heuristic
-> + * we use to limit cross calls.
+>  drivers/tty/serial/ucc_uart.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
+> index 3c8c662c69e2..d6a8604157ab 100644
+> --- a/drivers/tty/serial/ucc_uart.c
+> +++ b/drivers/tty/serial/ucc_uart.c
+> @@ -283,7 +283,7 @@ static unsigned int qe_uart_tx_empty(struct uart_port *port)
+>   * don't need that support. This function must exist, however, otherwise
+>   * the kernel will panic.
 >   */
-> =20
->  /* This currently is only used by the hugetlb arch pre-fault
-> @@ -1080,18 +1051,13 @@ void smp_fetch_global_pmu(void)
->  void smp_flush_tlb_mm(struct mm_struct *mm)
+> -void qe_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
+> +static void qe_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
 >  {
->  	u32 ctx =3D CTX_HWBITS(mm->context);
-> -	int cpu =3D get_cpu();
-> =20
-> -	if (atomic_read(&mm->mm_users) =3D=3D 1) {
-> -		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
-> -		goto local_flush_and_out;
-> -	}
-> +	get_cpu();
-> =20
->  	smp_cross_call_masked(&xcall_flush_tlb_mm,
->  			      ctx, 0, 0,
->  			      mm_cpumask(mm));
-> =20
-> -local_flush_and_out:
->  	__flush_tlb_mm(ctx, SECONDARY_CONTEXT);
-> =20
->  	put_cpu();
-> @@ -1114,17 +1080,15 @@ void smp_flush_tlb_pending(struct mm_struct *mm, =
-unsigned long nr, unsigned long
->  {
->  	u32 ctx =3D CTX_HWBITS(mm->context);
->  	struct tlb_pending_info info;
-> -	int cpu =3D get_cpu();
-> +
-> +	get_cpu();
-> =20
->  	info.ctx =3D ctx;
->  	info.nr =3D nr;
->  	info.vaddrs =3D vaddrs;
-> =20
-> -	if (mm =3D=3D current->mm && atomic_read(&mm->mm_users) =3D=3D 1)
-> -		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
-> -	else
-> -		smp_call_function_many(mm_cpumask(mm), tlb_pending_func,
-> -				       &info, 1);
-> +	smp_call_function_many(mm_cpumask(mm), tlb_pending_func,
-> +			       &info, 1);
-> =20
->  	__flush_tlb_pending(ctx, nr, vaddrs);
-> =20
-> @@ -1134,14 +1098,13 @@ void smp_flush_tlb_pending(struct mm_struct *mm, =
-unsigned long nr, unsigned long
->  void smp_flush_tlb_page(struct mm_struct *mm, unsigned long vaddr)
->  {
->  	unsigned long context =3D CTX_HWBITS(mm->context);
-> -	int cpu =3D get_cpu();
-> =20
-> -	if (mm =3D=3D current->mm && atomic_read(&mm->mm_users) =3D=3D 1)
-> -		cpumask_copy(mm_cpumask(mm), cpumask_of(cpu));
-> -	else
-> -		smp_cross_call_masked(&xcall_flush_tlb_page,
-> -				      context, vaddr, 0,
-> -				      mm_cpumask(mm));
-> +	get_cpu();
-> +
-> +	smp_cross_call_masked(&xcall_flush_tlb_page,
-> +			      context, vaddr, 0,
-> +			      mm_cpumask(mm));
-> +
->  	__flush_tlb_page(context, vaddr);
-> =20
->  	put_cpu();
-> --=20
-> 2.23.0
->=20
->=20
+>  }
+>  
+> 
+
+
+-- 
+js
