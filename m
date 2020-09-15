@@ -2,70 +2,109 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F162226AAD3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 19:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCB126AB47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 19:57:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrVnT6TblzDqSW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 03:38:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrWCQ0gXgzDqWL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 03:57:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.143;
- helo=hqnvemgate24.nvidia.com; envelope-from=jhubbard@nvidia.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrW9K1mLvzDqLR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 03:55:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.a=rsa-sha256
- header.s=n1 header.b=W/i1+jdP; dkim-atps=neutral
-X-Greylist: delayed 305 seconds by postgrey-1.36 at bilbo;
- Wed, 16 Sep 2020 03:36:45 AEST
-Received: from hqnvemgate24.nvidia.com (hqnvemgate24.nvidia.com
- [216.228.121.143])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BokYlAUY; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 4BrW9J5B04z8tF4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 03:55:32 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4BrW9J4VrKz9sTt; Wed, 16 Sep 2020 03:55:32 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=cheloha@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BokYlAUY; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrVld5HfdzDqLT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 03:36:45 +1000 (AEST)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate24.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5f60f9e90000>; Tue, 15 Sep 2020 10:29:13 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Tue, 15 Sep 2020 10:31:34 -0700
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Tue, 15 Sep 2020 10:31:34 -0700
-Received: from [10.2.52.22] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 15 Sep
- 2020 17:31:28 +0000
-Subject: Re: [PATCH v2] mm/gup: fix gup_fast with dynamic page table folding
-To: Vasily Gorbik <gor@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>
-References: <20200911200511.GC1221970@ziepe.ca>
- <patch.git-943f1e5dcff2.your-ad-here.call-01599856292-ext-8676@work.hours>
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <9daa9203-d164-ec78-8a8d-30b8b22cb1da@nvidia.com>
-Date: Tue, 15 Sep 2020 10:31:28 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by ozlabs.org (Postfix) with ESMTPS id 4BrW9H66ztz9sSn
+ for <linuxppc-dev@ozlabs.org>; Wed, 16 Sep 2020 03:55:31 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08FHjRou120764; Tue, 15 Sep 2020 13:55:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=EE2yzL+woz+F1DWQ1rUUzsjDO78SCb+qe/hkxFzZl7w=;
+ b=BokYlAUYKg1tTE/qL5F9gXAXdXZTfoBLYPqBorPlX8xuFwGt1qAb+HHmsEph3fnwyIo3
+ W6waWM3igrHBpuoaCoapLITPj/LPwBRmJPNAt9tVaKQIF7x7l3zXs5/uHKZNc1wPTjQV
+ aWwHft4Rg9gCC2gYGcb9ik/3BuWYUQzSZ1ly9tvWXDeIwWIeX7C/W04NrdezzJ5EjTSO
+ HDTcx334vT6/bid188MKDoxZrMlWwi7DK1AWjL8rHJeNwW8hDF2y10lKIm9ksewYOr6t
+ cjtEiEgzvfp0TdcLZi/39Nm/QHmv+XAwkFD2r8G7ZNQEyWHbACGNvrB6FmZHJWd4sCQk FQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33k29vr62r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Sep 2020 13:55:28 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08FHjrrU121953;
+ Tue, 15 Sep 2020 13:55:28 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 33k29vr62k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Sep 2020 13:55:27 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08FHqKm3022881;
+ Tue, 15 Sep 2020 17:55:27 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02wdc.us.ibm.com with ESMTP id 33gny9191n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Sep 2020 17:55:27 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08FHtQU951970512
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 15 Sep 2020 17:55:27 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D3608124053;
+ Tue, 15 Sep 2020 17:55:26 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 603BA124054;
+ Tue, 15 Sep 2020 17:55:26 +0000 (GMT)
+Received: from rascal.austin.ibm.com (unknown [9.41.179.32])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 15 Sep 2020 17:55:26 +0000 (GMT)
+From: Scott Cheloha <cheloha@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2] pseries/hotplug-memory: hot-add: skip redundant LMB lookup
+Date: Tue, 15 Sep 2020 12:55:26 -0500
+Message-Id: <20200915175526.3324209-1-cheloha@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <patch.git-943f1e5dcff2.your-ad-here.call-01599856292-ext-8676@work.hours>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1600190953; bh=0LuXBF+QuyfRd7vsh816EU5TQVILtq5WYJSSBYonuEo=;
- h=X-PGP-Universal:Subject:To:CC:References:From:Message-ID:Date:
- User-Agent:MIME-Version:In-Reply-To:X-Originating-IP:
- X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=W/i1+jdP/N55Xza2MEm/gNz+nYX0bLMaq7K4jpYOydN5L+jzX14UrU6QLlOAou+x4
- 5llBNT9lKJ5kA0wXGCkfISrtAVC77+n+sNZvHsqoSgJnBEAxkiaKKljqwFvVixVgt5
- kS73XbEMXl9BfBEOqZvSjLoxf/8kpnSdyvYceULQC6Z6HqzD61F8GqcBS1pTkJoByO
- +4jmgHZSu4rRE5U2vRhPciij3I+cXnK0og81egRmf4sgJVhePYSfOwVDDhzMufBwCA
- crQDAaOYbstfztYG1D3h6XvP7ewjVrlMuhoWQa7v0odeBQEwLVADbGDE2bQJEFOJAC
- ttS6TCVAHFe/Q==
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-15_12:2020-09-15,
+ 2020-09-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ mlxlogscore=999 clxscore=1015 phishscore=0 impostorscore=0 mlxscore=0
+ adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009150137
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,276 +116,302 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave
- Hansen <dave.hansen@linux.intel.com>, linux-mm <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, linux-sparc <sparclinux@vger.kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Will
- Deacon <will@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Richard Weinberger <richard@nod.at>,
- linux-x86 <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Christian
- Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Andrey
- Ryabinin <aryabinin@virtuozzo.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Jeff Dike <jdike@addtoit.com>, linux-um <linux-um@lists.infradead.org>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linux-arm <linux-arm-kernel@lists.infradead.org>,
- Dave Hansen <dave.hansen@intel.com>,
- linux-power <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Mike
- Rapoport <rppt@kernel.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>,
+ Laurent Dufour <ldufour@linux.vnet.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Rick Lindsley <ricklind@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/11/20 1:36 PM, Vasily Gorbik wrote:
-> Currently to make sure that every page table entry is read just once
-> gup_fast walks perform READ_ONCE and pass pXd value down to the next
-> gup_pXd_range function by value e.g.:
-> 
-> static int gup_pud_range(p4d_t p4d, unsigned long addr, unsigned long end,
->                           unsigned int flags, struct page **pages, int *nr)
-> ...
->          pudp = pud_offset(&p4d, addr);
-> 
-> This function passes a reference on that local value copy to pXd_offset,
-> and might get the very same pointer in return. This happens when the
-> level is folded (on most arches), and that pointer should not be iterated.
-> 
-> On s390 due to the fact that each task might have different 5,4 or
-> 3-level address translation and hence different levels folded the logic
-> is more complex and non-iteratable pointer to a local copy leads to
-> severe problems.
-> 
-> Here is an example of what happens with gup_fast on s390, for a task
-> with 3-levels paging, crossing a 2 GB pud boundary:
-> 
-> // addr = 0x1007ffff000, end = 0x10080001000
-> static int gup_pud_range(p4d_t p4d, unsigned long addr, unsigned long end,
->                           unsigned int flags, struct page **pages, int *nr)
-> {
->          unsigned long next;
->          pud_t *pudp;
-> 
->          // pud_offset returns &p4d itself (a pointer to a value on stack)
->          pudp = pud_offset(&p4d, addr);
->          do {
->                  // on second iteratation reading "random" stack value
->                  pud_t pud = READ_ONCE(*pudp);
-> 
->                  // next = 0x10080000000, due to PUD_SIZE/MASK != PGDIR_SIZE/MASK on s390
->                  next = pud_addr_end(addr, end);
->                  ...
->          } while (pudp++, addr = next, addr != end); // pudp++ iterating over stack
-> 
->          return 1;
-> }
-> 
-> This happens since s390 moved to common gup code with
-> commit d1874a0c2805 ("s390/mm: make the pxd_offset functions more robust")
-> and commit 1a42010cdc26 ("s390/mm: convert to the generic
-> get_user_pages_fast code"). s390 tried to mimic static level folding by
-> changing pXd_offset primitives to always calculate top level page table
-> offset in pgd_offset and just return the value passed when pXd_offset
-> has to act as folded.
-> 
-> What is crucial for gup_fast and what has been overlooked is
-> that PxD_SIZE/MASK and thus pXd_addr_end should also change
-> correspondingly. And the latter is not possible with dynamic folding.
-> 
-> To fix the issue in addition to pXd values pass original
-> pXdp pointers down to gup_pXd_range functions. And introduce
-> pXd_offset_lockless helpers, which take an additional pXd
-> entry value parameter. This has already been discussed in
-> https://lkml.kernel.org/r/20190418100218.0a4afd51@mschwideX1
-> 
-> Cc: <stable@vger.kernel.org> # 5.2+
-> Fixes: 1a42010cdc26 ("s390/mm: convert to the generic get_user_pages_fast code")
-> Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-> ---
+During memory hot-add, dlpar_add_lmb() calls memory_add_physaddr_to_nid()
+to determine which node id (nid) to use when later calling __add_memory().
 
-Looks cleaner than I'd dared hope for. :)
+This is wasteful.  On pseries, memory_add_physaddr_to_nid() finds an
+appropriate nid for a given address by looking up the LMB containing the
+address and then passing that LMB to of_drconf_to_nid_single() to get the
+nid.  In dlpar_add_lmb() we get this address from the LMB itself.
 
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+In short, we have a pointer to an LMB and then we are searching for
+that LMB *again* in order to find its nid.
 
+If we call of_drconf_to_nid_single() directly from dlpar_add_lmb() we
+can skip the redundant lookup.  The only error handling we need to
+duplicate from memory_add_physaddr_to_nid() is the fallback to the
+default nid when drconf_to_nid_single() returns -1 (NUMA_NO_NODE) or
+an invalid nid.
 
-thanks,
+Skipping the extra lookup makes hot-add operations faster, especially
+on machines with many LMBs.
+
+Consider an LPAR with 126976 LMBs.  In one test, hot-adding 126000
+LMBs on an upatched kernel took ~3.5 hours while a patched kernel
+completed the same operation in ~2 hours:
+
+Unpatched (12450 seconds):
+Sep  9 04:06:31 ltc-brazos1 drmgr[810169]: drmgr: -c mem -a -q 126000
+Sep  9 04:06:31 ltc-brazos1 kernel: pseries-hotplug-mem: Attempting to hot-add 126000 LMB(s)
+[...]
+Sep  9 07:34:01 ltc-brazos1 kernel: pseries-hotplug-mem: Memory at 20000000 (drc index 80000002) was hot-added
+
+Patched (7065 seconds):
+Sep  8 21:49:57 ltc-brazos1 drmgr[877703]: drmgr: -c mem -a -q 126000
+Sep  8 21:49:57 ltc-brazos1 kernel: pseries-hotplug-mem: Attempting to hot-add 126000 LMB(s)
+[...]
+Sep  8 23:27:42 ltc-brazos1 kernel: pseries-hotplug-mem: Memory at 20000000 (drc index 80000002) was hot-added
+
+It should be noted that the speedup grows more substantial when
+hot-adding LMBs at the end of the drconf range.  This is because we
+are skipping a linear LMB search.
+
+To see the distinction, consider smaller hot-add test on the same
+LPAR.  A perf-stat run with 10 iterations showed that hot-adding 4096
+LMBs completed less than 1 second faster on a patched kernel:
+
+Unpatched:
+ Performance counter stats for 'drmgr -c mem -a -q 4096' (10 runs):
+
+        104,753.42 msec task-clock                #    0.992 CPUs utilized            ( +-  0.55% )
+             4,708      context-switches          #    0.045 K/sec                    ( +-  0.69% )
+             2,444      cpu-migrations            #    0.023 K/sec                    ( +-  1.25% )
+               394      page-faults               #    0.004 K/sec                    ( +-  0.22% )
+   445,902,503,057      cycles                    #    4.257 GHz                      ( +-  0.55% )  (66.67%)
+     8,558,376,740      stalled-cycles-frontend   #    1.92% frontend cycles idle     ( +-  0.88% )  (49.99%)
+   300,346,181,651      stalled-cycles-backend    #   67.36% backend cycles idle      ( +-  0.76% )  (50.01%)
+   258,091,488,691      instructions              #    0.58  insn per cycle
+                                                  #    1.16  stalled cycles per insn  ( +-  0.22% )  (66.67%)
+    70,568,169,256      branches                  #  673.660 M/sec                    ( +-  0.17% )  (50.01%)
+     3,100,725,426      branch-misses             #    4.39% of all branches          ( +-  0.20% )  (49.99%)
+
+           105.583 +- 0.589 seconds time elapsed  ( +-  0.56% )
+
+Patched:
+ Performance counter stats for 'drmgr -c mem -a -q 4096' (10 runs):
+
+        104,055.69 msec task-clock                #    0.993 CPUs utilized            ( +-  0.32% )
+             4,606      context-switches          #    0.044 K/sec                    ( +-  0.20% )
+             2,463      cpu-migrations            #    0.024 K/sec                    ( +-  0.93% )
+               394      page-faults               #    0.004 K/sec                    ( +-  0.25% )
+   442,951,129,921      cycles                    #    4.257 GHz                      ( +-  0.32% )  (66.66%)
+     8,710,413,329      stalled-cycles-frontend   #    1.97% frontend cycles idle     ( +-  0.47% )  (50.06%)
+   299,656,905,836      stalled-cycles-backend    #   67.65% backend cycles idle      ( +-  0.39% )  (50.02%)
+   252,731,168,193      instructions              #    0.57  insn per cycle
+                                                  #    1.19  stalled cycles per insn  ( +-  0.20% )  (66.66%)
+    68,902,851,121      branches                  #  662.173 M/sec                    ( +-  0.13% )  (49.94%)
+     3,100,242,882      branch-misses             #    4.50% of all branches          ( +-  0.15% )  (49.98%)
+
+           104.829 +- 0.325 seconds time elapsed  ( +-  0.31% )
+
+This is consistent.  An add-by-count hot-add operation adds LMBs
+greedily, so LMBs near the start of the drconf range are considered
+first.  On an otherwise idle LPAR with so many LMBs we would expect to
+find the LMBs we need near the start of the drconf range, hence the
+smaller speedup.
+
+Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+---
+Changelog:
+
+v1: https://lore.kernel.org/linuxppc-dev/20200910175637.2865160-1-cheloha@linux.ibm.com/
+
+v2:
+- Move prototype for of_drconf_to_nid_single() to topology.h.
+  Requested by Michael Ellerman.
+
+ arch/powerpc/include/asm/topology.h           |   2 +
+ arch/powerpc/mm/numa.c                        |   2 +-
+ .../platforms/pseries/hotplug-memory.c        | 101 +++++++-----------
+ 3 files changed, 44 insertions(+), 61 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+index f0b6300e7dd3..afd7e0513a65 100644
+--- a/arch/powerpc/include/asm/topology.h
++++ b/arch/powerpc/include/asm/topology.h
+@@ -96,6 +96,8 @@ static inline int find_and_online_cpu_nid(int cpu)
+ 
+ #endif /* CONFIG_NUMA && CONFIG_PPC_SPLPAR */
+ 
++extern int of_drconf_to_nid_single(struct drmem_lmb *);
++
+ #include <asm-generic/topology.h>
+ 
+ #ifdef CONFIG_SMP
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 1f61fa2148b5..63507b47164d 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -430,7 +430,7 @@ static int of_get_assoc_arrays(struct assoc_arrays *aa)
+  * This is like of_node_to_nid_single() for memory represented in the
+  * ibm,dynamic-reconfiguration-memory node.
+  */
+-static int of_drconf_to_nid_single(struct drmem_lmb *lmb)
++int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+ {
+ 	struct assoc_arrays aa = { .arrays = NULL };
+ 	int default_nid = NUMA_NO_NODE;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 0ea976d1cac4..f4474ef91fe5 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -388,108 +388,87 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+ static int dlpar_memory_remove_by_count(u32 lmbs_to_remove)
+ {
+ 	struct drmem_lmb *lmb;
+-	int lmbs_removed = 0;
+-	int lmbs_available = 0;
++	u32 lmbs_available, lmbs_removed;
+ 	int rc;
++	boolean readd;
+ 
+-	pr_info("Attempting to hot-remove %d LMB(s)\n", lmbs_to_remove);
++	lmbs_available = lmbs_removed = 0;
++	readd = false;
+ 
+-	if (lmbs_to_remove == 0)
+-		return -EINVAL;
++	pr_info("attempting to hot-remove %u LMB(s)\n", lmbs_to_remove);
+ 
+ 	/* Validate that there are enough LMBs to satisfy the request */
+ 	for_each_drmem_lmb(lmb) {
+-		if (lmb_is_removable(lmb))
+-			lmbs_available++;
+-
+ 		if (lmbs_available == lmbs_to_remove)
+ 			break;
++		if (lmb_is_removable(lmb))
++			lmbs_available++;
+ 	}
+ 
+ 	if (lmbs_available < lmbs_to_remove) {
+-		pr_info("Not enough LMBs available (%d of %d) to satisfy request\n",
++		pr_info("hot-remove failed: insufficient LMB(s): have %u/%u\n",
+ 			lmbs_available, lmbs_to_remove);
+ 		return -EINVAL;
+ 	}
+ 
+ 	for_each_drmem_lmb(lmb) {
+-		rc = dlpar_remove_lmb(lmb);
+-		if (rc)
++		if (lmbs_removed == lmbs_to_remove)
++			break;
++		if (dlpar_remove_lmb(lmb))
+ 			continue;
+ 
+-		/* Mark this lmb so we can add it later if all of the
+-		 * requested LMBs cannot be removed.
++		/*
++		 * Success!  Mark the LMB so we can readd it later if
++		 * the request fails.
+ 		 */
+ 		drmem_mark_lmb_reserved(lmb);
+-
+ 		lmbs_removed++;
+-		if (lmbs_removed == lmbs_to_remove)
+-			break;
++		pr_debug("hot-removed LMB %u\n", lmb->drc_index);
+ 	}
+ 
+ 	if (lmbs_removed != lmbs_to_remove) {
+-		pr_err("Memory hot-remove failed, adding LMB's back\n");
+-
+-		for_each_drmem_lmb(lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
++		pr_err("hot-remove failed: readding LMB(s)\n");
++		readd = true;
++	}
+ 
+-			rc = dlpar_add_lmb(lmb);
+-			if (rc)
+-				pr_err("Failed to add LMB back, drc index %x\n",
++	for_each_drmem_lmb(lmb) {
++		if (!drmem_lmb_reserved(lmb))
++			continue;
++		if (readd) {
++			if (dlpar_add_lmb(lmb)) {
++				pr_err("failed to readd LMB %u\n",
+ 				       lmb->drc_index);
+-
+-			drmem_remove_lmb_reservation(lmb);
+-		}
+-
+-		rc = -EINVAL;
+-	} else {
+-		for_each_drmem_lmb(lmb) {
+-			if (!drmem_lmb_reserved(lmb))
+-				continue;
+-
++			}
++		} else
+ 			dlpar_release_drc(lmb->drc_index);
+-			pr_info("Memory at %llx was hot-removed\n",
+-				lmb->base_addr);
+-
+-			drmem_remove_lmb_reservation(lmb);
+-		}
+-		rc = 0;
++		drmem_remove_lmb_reservation(lmb);
+ 	}
+ 
+-	return rc;
++	return (readd) ? -EINVAL : 0;
+ }
+ 
+ static int dlpar_memory_remove_by_index(u32 drc_index)
+ {
+ 	struct drmem_lmb *lmb;
+-	int lmb_found;
+ 	int rc;
+ 
+-	pr_info("Attempting to hot-remove LMB, drc index %x\n", drc_index);
+-
+ 	lmb_found = 0;
+ 	for_each_drmem_lmb(lmb) {
+ 		if (lmb->drc_index == drc_index) {
+-			lmb_found = 1;
+ 			rc = dlpar_remove_lmb(lmb);
+-			if (!rc)
++			if (!rc) {
+ 				dlpar_release_drc(lmb->drc_index);
+-
+-			break;
++				pr_info("hot-removed LMB %u\n", drc_index);
++			} else {
++				pr_err("failed to hot-remove LMB %u\n",
++				       drc_index);
++			}
++			return rc;
+ 		}
+ 	}
+ 
+-	if (!lmb_found)
+-		rc = -EINVAL;
+-
+-	if (rc)
+-		pr_info("Failed to hot-remove memory at %llx\n",
+-			lmb->base_addr);
+-	else
+-		pr_info("Memory at %llx was hot-removed\n", lmb->base_addr);
+-
+-	return rc;
++	pr_err("failed to hot-remove LMB %u: no such LMB\n", drc_index);
++	return -EINVAL;
+ }
+ 
+ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+@@ -611,8 +590,10 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ 
+ 	block_sz = memory_block_size_bytes();
+ 
+-	/* Find the node id for this address. */
+-	nid = memory_add_physaddr_to_nid(lmb->base_addr);
++	/* Find the node id for this LMB.  Fake one if necessary. */
++	nid = of_drconf_to_nid_single(lmb);
++	if (nid < 0 || !node_possible(nid))
++		nid = first_online_node;
+ 
+ 	/* Add the memory */
+ 	rc = __add_memory(nid, lmb->base_addr, block_sz);
 -- 
-John Hubbard
-NVIDIA
-
-> v2: added brackets &pgd -> &(pgd)
-> 
->   arch/s390/include/asm/pgtable.h | 42 +++++++++++++++++++++++----------
->   include/linux/pgtable.h         | 10 ++++++++
->   mm/gup.c                        | 18 +++++++-------
->   3 files changed, 49 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-> index 7eb01a5459cd..b55561cc8786 100644
-> --- a/arch/s390/include/asm/pgtable.h
-> +++ b/arch/s390/include/asm/pgtable.h
-> @@ -1260,26 +1260,44 @@ static inline pgd_t *pgd_offset_raw(pgd_t *pgd, unsigned long address)
->   
->   #define pgd_offset(mm, address) pgd_offset_raw(READ_ONCE((mm)->pgd), address)
->   
-> -static inline p4d_t *p4d_offset(pgd_t *pgd, unsigned long address)
-> +static inline p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd, unsigned long address)
->   {
-> -	if ((pgd_val(*pgd) & _REGION_ENTRY_TYPE_MASK) >= _REGION_ENTRY_TYPE_R1)
-> -		return (p4d_t *) pgd_deref(*pgd) + p4d_index(address);
-> -	return (p4d_t *) pgd;
-> +	if ((pgd_val(pgd) & _REGION_ENTRY_TYPE_MASK) >= _REGION_ENTRY_TYPE_R1)
-> +		return (p4d_t *) pgd_deref(pgd) + p4d_index(address);
-> +	return (p4d_t *) pgdp;
->   }
-> +#define p4d_offset_lockless p4d_offset_lockless
->   
-> -static inline pud_t *pud_offset(p4d_t *p4d, unsigned long address)
-> +static inline p4d_t *p4d_offset(pgd_t *pgdp, unsigned long address)
->   {
-> -	if ((p4d_val(*p4d) & _REGION_ENTRY_TYPE_MASK) >= _REGION_ENTRY_TYPE_R2)
-> -		return (pud_t *) p4d_deref(*p4d) + pud_index(address);
-> -	return (pud_t *) p4d;
-> +	return p4d_offset_lockless(pgdp, *pgdp, address);
-> +}
-> +
-> +static inline pud_t *pud_offset_lockless(p4d_t *p4dp, p4d_t p4d, unsigned long address)
-> +{
-> +	if ((p4d_val(p4d) & _REGION_ENTRY_TYPE_MASK) >= _REGION_ENTRY_TYPE_R2)
-> +		return (pud_t *) p4d_deref(p4d) + pud_index(address);
-> +	return (pud_t *) p4dp;
-> +}
-> +#define pud_offset_lockless pud_offset_lockless
-> +
-> +static inline pud_t *pud_offset(p4d_t *p4dp, unsigned long address)
-> +{
-> +	return pud_offset_lockless(p4dp, *p4dp, address);
->   }
->   #define pud_offset pud_offset
->   
-> -static inline pmd_t *pmd_offset(pud_t *pud, unsigned long address)
-> +static inline pmd_t *pmd_offset_lockless(pud_t *pudp, pud_t pud, unsigned long address)
-> +{
-> +	if ((pud_val(pud) & _REGION_ENTRY_TYPE_MASK) >= _REGION_ENTRY_TYPE_R3)
-> +		return (pmd_t *) pud_deref(pud) + pmd_index(address);
-> +	return (pmd_t *) pudp;
-> +}
-> +#define pmd_offset_lockless pmd_offset_lockless
-> +
-> +static inline pmd_t *pmd_offset(pud_t *pudp, unsigned long address)
->   {
-> -	if ((pud_val(*pud) & _REGION_ENTRY_TYPE_MASK) >= _REGION_ENTRY_TYPE_R3)
-> -		return (pmd_t *) pud_deref(*pud) + pmd_index(address);
-> -	return (pmd_t *) pud;
-> +	return pmd_offset_lockless(pudp, *pudp, address);
->   }
->   #define pmd_offset pmd_offset
->   
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index e8cbc2e795d5..90654cb63e9e 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1427,6 +1427,16 @@ typedef unsigned int pgtbl_mod_mask;
->   #define mm_pmd_folded(mm)	__is_defined(__PAGETABLE_PMD_FOLDED)
->   #endif
->   
-> +#ifndef p4d_offset_lockless
-> +#define p4d_offset_lockless(pgdp, pgd, address) p4d_offset(&(pgd), address)
-> +#endif
-> +#ifndef pud_offset_lockless
-> +#define pud_offset_lockless(p4dp, p4d, address) pud_offset(&(p4d), address)
-> +#endif
-> +#ifndef pmd_offset_lockless
-> +#define pmd_offset_lockless(pudp, pud, address) pmd_offset(&(pud), address)
-> +#endif
-> +
->   /*
->    * p?d_leaf() - true if this entry is a final mapping to a physical address.
->    * This differs from p?d_huge() by the fact that they are always available (if
-> diff --git a/mm/gup.c b/mm/gup.c
-> index e5739a1974d5..578bf5bd8bf8 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2485,13 +2485,13 @@ static int gup_huge_pgd(pgd_t orig, pgd_t *pgdp, unsigned long addr,
->   	return 1;
->   }
->   
-> -static int gup_pmd_range(pud_t pud, unsigned long addr, unsigned long end,
-> +static int gup_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr, unsigned long end,
->   		unsigned int flags, struct page **pages, int *nr)
->   {
->   	unsigned long next;
->   	pmd_t *pmdp;
->   
-> -	pmdp = pmd_offset(&pud, addr);
-> +	pmdp = pmd_offset_lockless(pudp, pud, addr);
->   	do {
->   		pmd_t pmd = READ_ONCE(*pmdp);
->   
-> @@ -2528,13 +2528,13 @@ static int gup_pmd_range(pud_t pud, unsigned long addr, unsigned long end,
->   	return 1;
->   }
->   
-> -static int gup_pud_range(p4d_t p4d, unsigned long addr, unsigned long end,
-> +static int gup_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr, unsigned long end,
->   			 unsigned int flags, struct page **pages, int *nr)
->   {
->   	unsigned long next;
->   	pud_t *pudp;
->   
-> -	pudp = pud_offset(&p4d, addr);
-> +	pudp = pud_offset_lockless(p4dp, p4d, addr);
->   	do {
->   		pud_t pud = READ_ONCE(*pudp);
->   
-> @@ -2549,20 +2549,20 @@ static int gup_pud_range(p4d_t p4d, unsigned long addr, unsigned long end,
->   			if (!gup_huge_pd(__hugepd(pud_val(pud)), addr,
->   					 PUD_SHIFT, next, flags, pages, nr))
->   				return 0;
-> -		} else if (!gup_pmd_range(pud, addr, next, flags, pages, nr))
-> +		} else if (!gup_pmd_range(pudp, pud, addr, next, flags, pages, nr))
->   			return 0;
->   	} while (pudp++, addr = next, addr != end);
->   
->   	return 1;
->   }
->   
-> -static int gup_p4d_range(pgd_t pgd, unsigned long addr, unsigned long end,
-> +static int gup_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr, unsigned long end,
->   			 unsigned int flags, struct page **pages, int *nr)
->   {
->   	unsigned long next;
->   	p4d_t *p4dp;
->   
-> -	p4dp = p4d_offset(&pgd, addr);
-> +	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
->   	do {
->   		p4d_t p4d = READ_ONCE(*p4dp);
->   
-> @@ -2574,7 +2574,7 @@ static int gup_p4d_range(pgd_t pgd, unsigned long addr, unsigned long end,
->   			if (!gup_huge_pd(__hugepd(p4d_val(p4d)), addr,
->   					 P4D_SHIFT, next, flags, pages, nr))
->   				return 0;
-> -		} else if (!gup_pud_range(p4d, addr, next, flags, pages, nr))
-> +		} else if (!gup_pud_range(p4dp, p4d, addr, next, flags, pages, nr))
->   			return 0;
->   	} while (p4dp++, addr = next, addr != end);
->   
-> @@ -2602,7 +2602,7 @@ static void gup_pgd_range(unsigned long addr, unsigned long end,
->   			if (!gup_huge_pd(__hugepd(pgd_val(pgd)), addr,
->   					 PGDIR_SHIFT, next, flags, pages, nr))
->   				return;
-> -		} else if (!gup_p4d_range(pgd, addr, next, flags, pages, nr))
-> +		} else if (!gup_p4d_range(pgdp, pgd, addr, next, flags, pages, nr))
->   			return;
->   	} while (pgdp++, addr = next, addr != end);
->   }
-> 
+2.24.1
 
