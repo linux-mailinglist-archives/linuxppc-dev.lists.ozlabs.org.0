@@ -2,67 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454A426A3F1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB87526A424
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:29:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrLGf3pw6zDqPn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:14:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrLbZ59TgzDqSn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:29:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::644;
- helo=mail-ej1-x644.google.com; envelope-from=jcmvbkbc@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Z/MAEsVT; dkim-atps=neutral
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
- [IPv6:2a00:1450:4864:20::644])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrLDV6KFRzDqHb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:12:41 +1000 (AEST)
-Received: by mail-ej1-x644.google.com with SMTP id i22so4460264eja.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 04:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=B4bOYSHsWHocnYArElpYthybN5SxC006LAFmz/36FHU=;
- b=Z/MAEsVTEnQKv9yb0HSOEZbJscLkrEI2KA6jePSwMg1TwHWUG2zmL/K+AbtjHO6/2o
- aIcnbhckWr6rgCmNGSrXn/T9XMsHZZKm/PsdMekg45hebYJEoEh6DtSQc6AwPL0FexMQ
- QEcy40U+GKpucQlCREx876BJYFzTaICPrYW4syFH6C95NZecWVgDFi7ziO/VvX17lotJ
- DDZY+9PHfKcooxB486MYcbnHky26yYukszeQjs76Kwm/6X3Co9rV5HLW0BzJkHQ4SNlQ
- 948TjdNG8+d8rKLvuzJokO+1T8T3AZzYmxIxeK7CMSgHmOVQw0cHLexkCCkg+JNIGJLn
- Ny/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=B4bOYSHsWHocnYArElpYthybN5SxC006LAFmz/36FHU=;
- b=uNjkELOhNeZ+3luWXos6+CPvb2/X97qqU5ReMNMUh7qQNUX3k0JmxN3VchEsbBlpme
- qSoorj+MMduF4BN/DHDuYhbUPJNnLESDI5rPBv4M/GeIosvcKH3Zjw0ftiuvWH/zUMin
- yfijyY1iK6mKXsg2o59JV9Qhj2yD7BrrSEeXjoobs9Y8z3ftWdsKlnxWI+Xq9l5SqVXW
- dorURL0TGJ9ZdRzX1mT+pkjx4yCcQDIO5Bj9Sb0BHTXiFq79+rXH3mTOJD7XCeetu1qn
- mfVqM2DsbiXyFljQYuwll/g7VOWebLLgVyneERExmS6aMXrle5fAicBUgUnURXmDZbKg
- lYpw==
-X-Gm-Message-State: AOAM531y4btNkF9SoARhDu/aurseGfFFbfPwxdCDvVtiSSA++kAsz0oL
- a0Hzghsem7XavfFSLSbSPgsOyPW1TYV06qtvJlc=
-X-Google-Smtp-Source: ABdhPJwPU+9ZWIwNO56zgtgygOIdmPreND4z7Ge5DlUnTt0Tfg9IxfvCSMJOXmsXBV/ZabpWxbhtETys6v+wayV6BRQ=
-X-Received: by 2002:a17:906:30c5:: with SMTP id
- b5mr19838526ejb.98.1600168356388; 
- Tue, 15 Sep 2020 04:12:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrLVQ0MwDzDqQK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:24:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=prKzwknF; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4BrLVM70dlz9sVM;
+ Tue, 15 Sep 2020 21:24:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1600169084;
+ bh=vwQV7qeFTU97cqEIIJI2HqYzEK96icuAhdrJc1SZ50c=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=prKzwknFVr9DjUmmzGOx6sGZ3/ZPjF5DldXo/d/XmMWSmSYb0s3ySkcsIUw+FO5SZ
+ GiDFjbh5ayGPdxxCjV7DbprPsL4p1d03V6pLg5m+cTO9RdPbYMu8pETXZf4gPwDcso
+ PyFQkhVjvaQ8qaJeQ0nhHhdTJgOVdSyk9MuXtgplYpBXcokTAmrpQXE025EdIpTvS2
+ U2tfrEg2SZRnsMQWPEEMP94Lujy0o8a+U1OKVHEVVMbHpINk8fr1B4uytBGwV4LB/x
+ HBPUVmEDUpXgaJspAWwyL1mvQPT5t+k1oNc/s1b+cS/hd5TVZZNcSjRZ/u3T+La5KM
+ 3ri0sJl1bXIZg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>, linux-next@vger.kernel.org
+Subject: Re: [5.9.0-rc5-20200914] Kernel crash while running LTP(mlock201)
+In-Reply-To: <3DCED508-4DC0-42AA-9CFF-3AB260ED1E9A@linux.vnet.ibm.com>
+References: <3DCED508-4DC0-42AA-9CFF-3AB260ED1E9A@linux.vnet.ibm.com>
+Date: Tue, 15 Sep 2020 21:24:38 +1000
+Message-ID: <87o8m7p9jd.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200912110820.597135-1-keescook@chromium.org>
- <87wo0wpnah.fsf@mpe.ellerman.id.au> <202009141321.366935EF52@keescook>
-In-Reply-To: <202009141321.366935EF52@keescook>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Tue, 15 Sep 2020 04:12:24 -0700
-Message-ID: <CAMo8BfK0Jcmt4EJ1R2d_4Hp9siSRrBsgaNDqCVjcQ0GK8XBGZA@mail.gmail.com>
-Subject: Re: [PATCH 00/15] selftests/seccomp: Refactor change_syscall()
-To: Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,45 +58,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- Will Drewry <wad@chromium.org>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- LKML <linux-kernel@vger.kernel.org>, Andy Lutomirski <luto@amacapital.net>,
- linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Christian Brauner <christian@brauner.io>
+Cc: linuxppc-dev@lists.ozlabs.org, willy@infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 14, 2020 at 1:32 PM Kees Cook <keescook@chromium.org> wrote:
-> On Mon, Sep 14, 2020 at 10:15:18PM +1000, Michael Ellerman wrote:
-> > Kees Cook <keescook@chromium.org> writes:
-> However...
->
-> >
-> > cheers
-> >
-> >
-> > ./seccomp_bpf
-> > TAP version 13
-> > 1..86
-> > # Starting 86 tests from 7 test cases.
-> > #  RUN           global.kcmp ...
-> > #            OK  global.kcmp
-> > ok 1 global.kcmp
-> > [...]
-> > #  RUN           global.KILL_thread ...
-> > TAP version 13
-> > 1..86
-> > # Starting 86 tests from 7 test cases.
->
-> Was this a mis-paste, or has something very very bad happened here in
-> global.KILL_one_arg_six finishes?
+Sachin Sant <sachinp@linux.vnet.ibm.com> writes:
+> While running LTP tests (specifically mlock201) against next-20200914 tree
+> on a POWER9 LPAR results in following crash.
 
-I observe similar output corruption on xtensa when I redirect test output
-into a file or pipe it to 'cat'. When it goes to the terminal it looks normal.
+Looks the same as:
 
--- 
-Thanks.
--- Max
+https://lore.kernel.org/linux-mm/20200914085545.GB28738@shao2-debian/
+
+cheers
+
+> BUG: Kernel NULL pointer dereference on read at 0x00000000
+> Faulting instruction address: 0xc000000000454248
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA pSeries
+> Modules linked in: af_packet(E) nft_ct(E) nf_conntrack(E) nf_defrag_ipv6(=
+E) nf_defrag_ipv4(E) libcrc32c(E) ip6_tables(E) nft_compat(E) ip_set(E) rfk=
+ill(E) nf_tables(E) nfnetlink(E) vmx_crypto(E) uio_pdrv_genirq(E) gf128mul(=
+E) uio(E) rtc_generic(E) crct10dif_vpmsum(E) sch_fq_codel(E) ip_tables(E) x=
+_tables(E) ext4(E) crc16(E) mbcache(E) jbd2(E) sd_mod(E) t10_pi(E) sg(E) ib=
+mvscsi(E) scsi_transport_srp(E) scsi_mod(E) ibmveth(E) crc32c_vpmsum(E) dm_=
+mirror(E) dm_region_hash(E) dm_log(E) dm_mod(E) autofs4(E)
+> CPU: 11 PID: 26435 Comm: mlock201 Tainted: G            E     5.9.0-rc5-n=
+ext-20200914-281.gf529200-default #1
+> NIP:  c000000000454248 LR: c000000000445a74 CTR: c000000000413150
+> REGS: c0000008e645b770 TRAP: 0300   Tainted: G            E      (5.9.0-r=
+c5-next-20200914-281.gf529200-default)
+> MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28002482  XER: 20040000
+> CFAR: c00000000000fbb0 DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 0=20
+> GPR00: c000000000445a74 c0000008e645ba00 c0000000017c4500 000000000000000=
+0=20
+> GPR04: 0000000000000001 c0000008ea109e98 c0000008f0c40000 000000000000000=
+0=20
+> GPR08: 0000000000000000 0000000000000000 0000000000000000 000000000000000=
+3=20
+> GPR12: c000000000413150 c00000001ec70200 0000000000000000 c00000000150203=
+8=20
+> GPR16: 00007fff9c61ffff 00007fff9c61ffff 00007fff9c61ffff c000000000cb02f=
+8=20
+> GPR20: 00007fff9c5c0000 00007fff9c620000 c0000008e645bcd8 c0000008f0c4000=
+0=20
+> GPR24: c00c0000023c0d00 fffffffffffffe7f 0000000000000000 c0000008f0c4000=
+0=20
+> GPR28: c0000008ea109e98 0000000000000001 c0000008ea9288a8 000000000000000=
+0=20
+> NIP [c000000000454248] PageHuge+0x8/0x60
+> LR [c000000000445a74] find_get_incore_page+0x114/0x160
+> Call Trace:
+> [c0000008e645ba00] [c000000000445994] find_get_incore_page+0x34/0x160 (un=
+reliable)
+> [c0000008e645ba40] [c000000000412e54] mincore_page+0x24/0x160
+> [c0000008e645ba70] [c000000000413020] __mincore_unmapped_range+0x90/0x160
+> [c0000008e645bac0] [c000000000413680] mincore_pte_range+0x530/0x5d0
+> [c0000008e645bb40] [c000000000422a38] walk_pgd_range+0x4e8/0xae0
+> [c0000008e645bc30] [c0000000004230c4] __walk_page_range+0x94/0x250
+> [c0000008e645bcb0] [c0000000004233d8] walk_page_range+0x158/0x1e0
+> [c0000008e645bd40] [c00000000041386c] sys_mincore+0x14c/0x370
+> [c0000008e645bdc0] [c000000000033eb8] system_call_exception+0xf8/0x200
+> [c0000008e645be20] [c00000000000d140] system_call_common+0xf0/0x27c
+> Instruction dump:
+> e8410018 38210020 e8010010 7c0803a6 4e800020 60000000 3d400001 7d435378=20
+> 4e800020 60000000 7c0802a6 60000000 <e9230000> 75290001 40820010 e9230008=
+=20
+> ---[ end trace 357eb14a3b22eab2 ]=E2=80=94
+>
+>
+> The function find_get_incore_page() was introduced with=20
+> 3fcbe4eb49a0406e6202e8c8c3560f30965a8e79=20
+>
+> mm: factor find_get_incore_page out of mincore_page
+>
+>
+> Thanks
+> -Sachin
