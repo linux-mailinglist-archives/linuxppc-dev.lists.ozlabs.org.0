@@ -1,45 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4B426A41F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:27:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454A426A3F1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:14:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrLYn1v13zDqQJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:27:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrLGf3pw6zDqPn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:14:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::644;
+ helo=mail-ej1-x644.google.com; envelope-from=jcmvbkbc@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=ard.biesheuvel@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4BrLBF6T4nzDqHb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:10:37 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD00D101E;
- Tue, 15 Sep 2020 04:10:35 -0700 (PDT)
-Received: from [192.168.1.205] (unknown [10.37.8.121])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3847B3F718;
- Tue, 15 Sep 2020 04:10:31 -0700 (PDT)
-Subject: Re: [PATCH v1] soc: fsl: rcpm: Add ACPI support
-To: kuldip dwivedi <kuldip.dwivedi@puresoftware.com>,
- Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20200915110647.846-1-kuldip.dwivedi@puresoftware.com>
-From: Ard Biesheuvel <ard.biesheuvel@arm.com>
-Message-ID: <4e008f0a-69da-d5c2-4dfc-ef8695e17f47@arm.com>
-Date: Tue, 15 Sep 2020 14:10:29 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Z/MAEsVT; dkim-atps=neutral
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
+ [IPv6:2a00:1450:4864:20::644])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrLDV6KFRzDqHb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:12:41 +1000 (AEST)
+Received: by mail-ej1-x644.google.com with SMTP id i22so4460264eja.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 04:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=B4bOYSHsWHocnYArElpYthybN5SxC006LAFmz/36FHU=;
+ b=Z/MAEsVTEnQKv9yb0HSOEZbJscLkrEI2KA6jePSwMg1TwHWUG2zmL/K+AbtjHO6/2o
+ aIcnbhckWr6rgCmNGSrXn/T9XMsHZZKm/PsdMekg45hebYJEoEh6DtSQc6AwPL0FexMQ
+ QEcy40U+GKpucQlCREx876BJYFzTaICPrYW4syFH6C95NZecWVgDFi7ziO/VvX17lotJ
+ DDZY+9PHfKcooxB486MYcbnHky26yYukszeQjs76Kwm/6X3Co9rV5HLW0BzJkHQ4SNlQ
+ 948TjdNG8+d8rKLvuzJokO+1T8T3AZzYmxIxeK7CMSgHmOVQw0cHLexkCCkg+JNIGJLn
+ Ny/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=B4bOYSHsWHocnYArElpYthybN5SxC006LAFmz/36FHU=;
+ b=uNjkELOhNeZ+3luWXos6+CPvb2/X97qqU5ReMNMUh7qQNUX3k0JmxN3VchEsbBlpme
+ qSoorj+MMduF4BN/DHDuYhbUPJNnLESDI5rPBv4M/GeIosvcKH3Zjw0ftiuvWH/zUMin
+ yfijyY1iK6mKXsg2o59JV9Qhj2yD7BrrSEeXjoobs9Y8z3ftWdsKlnxWI+Xq9l5SqVXW
+ dorURL0TGJ9ZdRzX1mT+pkjx4yCcQDIO5Bj9Sb0BHTXiFq79+rXH3mTOJD7XCeetu1qn
+ mfVqM2DsbiXyFljQYuwll/g7VOWebLLgVyneERExmS6aMXrle5fAicBUgUnURXmDZbKg
+ lYpw==
+X-Gm-Message-State: AOAM531y4btNkF9SoARhDu/aurseGfFFbfPwxdCDvVtiSSA++kAsz0oL
+ a0Hzghsem7XavfFSLSbSPgsOyPW1TYV06qtvJlc=
+X-Google-Smtp-Source: ABdhPJwPU+9ZWIwNO56zgtgygOIdmPreND4z7Ge5DlUnTt0Tfg9IxfvCSMJOXmsXBV/ZabpWxbhtETys6v+wayV6BRQ=
+X-Received: by 2002:a17:906:30c5:: with SMTP id
+ b5mr19838526ejb.98.1600168356388; 
+ Tue, 15 Sep 2020 04:12:36 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200915110647.846-1-kuldip.dwivedi@puresoftware.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 15 Sep 2020 21:24:02 +1000
+References: <20200912110820.597135-1-keescook@chromium.org>
+ <87wo0wpnah.fsf@mpe.ellerman.id.au> <202009141321.366935EF52@keescook>
+In-Reply-To: <202009141321.366935EF52@keescook>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Tue, 15 Sep 2020 04:12:24 -0700
+Message-ID: <CAMo8BfK0Jcmt4EJ1R2d_4Hp9siSRrBsgaNDqCVjcQ0GK8XBGZA@mail.gmail.com>
+Subject: Re: [PATCH 00/15] selftests/seccomp: Refactor change_syscall()
+To: Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,92 +74,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Biwen Li <biwen.li@nxp.com>,
- Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
- Ran Wang <ran.wang_1@nxp.com>, Paul Yang <Paul.Yang@arm.com>,
- Varun Sethi <V.Sethi@nxp.com>, tanveer <tanveer.alam@puresoftware.com>,
- Arokia Samy <arokia.samy@nxp.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+ Will Drewry <wad@chromium.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ LKML <linux-kernel@vger.kernel.org>, Andy Lutomirski <luto@amacapital.net>,
+ linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Christian Brauner <christian@brauner.io>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/15/20 1:06 PM, kuldip dwivedi wrote:
-> Add ACPI support in fsl RCPM driver. This is required
-> to support ACPI S3 state. S3 is the ACPI sleep state
-> that is known as "sleep" or "suspend to RAM".
-> It essentially turns off most power of the system but
-> keeps memory powered.
-> 
-> Signed-off-by: tanveer <tanveer.alam@puresoftware.com>
-> Signed-off-by: kuldip dwivedi <kuldip.dwivedi@puresoftware.com>
+On Mon, Sep 14, 2020 at 1:32 PM Kees Cook <keescook@chromium.org> wrote:
+> On Mon, Sep 14, 2020 at 10:15:18PM +1000, Michael Ellerman wrote:
+> > Kees Cook <keescook@chromium.org> writes:
+> However...
+>
+> >
+> > cheers
+> >
+> >
+> > ./seccomp_bpf
+> > TAP version 13
+> > 1..86
+> > # Starting 86 tests from 7 test cases.
+> > #  RUN           global.kcmp ...
+> > #            OK  global.kcmp
+> > ok 1 global.kcmp
+> > [...]
+> > #  RUN           global.KILL_thread ...
+> > TAP version 13
+> > 1..86
+> > # Starting 86 tests from 7 test cases.
+>
+> Was this a mis-paste, or has something very very bad happened here in
+> global.KILL_one_arg_six finishes?
 
-Why does the OS need to program this device? Can't this be done by firmware?
+I observe similar output corruption on xtensa when I redirect test output
+into a file or pipe it to 'cat'. When it goes to the terminal it looks normal.
 
-> ---
-> 
-> Notes:
->      1. Add ACPI match table
->      2. NXP team members are added for confirming HID changes
->      3. There is only one node in ACPI so no need to check for
->         current device explicitly
->      4. These changes are tested on LX2160A and LS1046A platforms
-> 
->   drivers/soc/fsl/rcpm.c | 22 +++++++++++++++++++---
->   1 file changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
-> index a093dbe6d2cb..e75a436fb159 100644
-> --- a/drivers/soc/fsl/rcpm.c
-> +++ b/drivers/soc/fsl/rcpm.c
-> @@ -2,10 +2,12 @@
->   //
->   // rcpm.c - Freescale QorIQ RCPM driver
->   //
-> -// Copyright 2019 NXP
-> +// Copyright 2019-2020 NXP
-> +// Copyright 2020 Puresoftware Ltd.
->   //
->   // Author: Ran Wang <ran.wang_1@nxp.com>
->   
-> +#include <linux/acpi.h>
->   #include <linux/init.h>
->   #include <linux/module.h>
->   #include <linux/platform_device.h>
-> @@ -57,8 +59,13 @@ static int rcpm_pm_prepare(struct device *dev)
->   				rcpm->wakeup_cells + 1);
->   
->   		/*  Wakeup source should refer to current rcpm device */
-> -		if (ret || (np->phandle != value[0]))
-> -			continue;
-> +		if (is_acpi_node(dev->fwnode)) {
-> +			if (ret)
-> +				continue;
-> +		} else {
-> +			if (ret || (np->phandle != value[0]))
-> +				continue;
-> +		}
->   
->   		/* Property "#fsl,rcpm-wakeup-cells" of rcpm node defines the
->   		 * number of IPPDEXPCR register cells, and "fsl,rcpm-wakeup"
-> @@ -139,10 +146,19 @@ static const struct of_device_id rcpm_of_match[] = {
->   };
->   MODULE_DEVICE_TABLE(of, rcpm_of_match);
->   
-> +#ifdef CONFIG_ACPI
-> +static const struct acpi_device_id rcpm_acpi_match[] = {
-> +	{ "NXP0015", },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(acpi, rcpm_acpi_match);
-> +#endif
-> +
->   static struct platform_driver rcpm_driver = {
->   	.driver = {
->   		.name = "rcpm",
->   		.of_match_table = rcpm_of_match,
-> +		.acpi_match_table = ACPI_PTR(rcpm_acpi_match),
->   		.pm	= &rcpm_pm_ops,
->   	},
->   	.probe = rcpm_probe,
-> 
-
+-- 
+Thanks.
+-- Max
