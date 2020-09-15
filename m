@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B8426A6E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 16:13:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AE826A707
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 16:28:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrQDl2nd9zDqSv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 00:13:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrQYv6b8fzDqRM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 00:28:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,16 +18,16 @@ Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrQ8t6clWzDqQC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 00:09:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrQVc3780zDqCY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 00:25:12 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 209277] New: Dead code :q
-Date: Tue, 15 Sep 2020 14:09:45 +0000
+Subject: [Bug 209277] powerpc: obsolete driver: Marvell MV64X60 MPSC
+Date: Tue, 15 Sep 2020 14:25:08 +0000
 X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
+X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Product: Platform Specific/Hardware
 X-Bugzilla-Component: PPC-32
@@ -40,10 +40,10 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cf_regression
-Message-ID: <bug-209277-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-209277-206035-ixHemW1Utk@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-209277-206035@https.bugzilla.kernel.org/>
+References: <bug-209277-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -66,21 +66,20 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D209277
 
-            Bug ID: 209277
-           Summary: Dead code :q
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.9-rc4
-          Hardware: All
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: enhancement
-          Priority: P1
-         Component: PPC-32
-          Assignee: platform_ppc-32@kernel-bugs.osdl.org
-          Reporter: fazilyildiran@gmail.com
-        Regression: No
+--- Comment #1 from Necip Fazil Yildiran (fazilyildiran@gmail.com) ---
+The config MV64X60 in arch/powerpc/platforms/embedded6xx/Kconfig is=20
+non-prompt selected nowhere -- thus, cannot be enabled.
+
+In addition, a few other configs cannot be enabled due to their dependency
+on MV64X60, e.g., EDAC_MV64X60.
+
+The last to use this driver was by PrPMC 280/2800, for which the support
+was ended with the commit 3c8464a9b12b=20
+("powerpc: Delete old PrPMC 280/2800 support").
+
+This looks like the related configs (e.g., MV64X60, EDAC_MV64X60) and the
+code (e.g., drivers/edac/mv64x60_edac.c) for Marvell MV64X60 MPSC are now
+obsolete.
 
 --=20
 You are receiving this mail because:
