@@ -2,52 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570A226A42E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD71826A464
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:50:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrLgh2W7FzDqVN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:32:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrM3n3FPyzDqQd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:50:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrLcf06s8zDqWR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:30:10 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Kt+4Q+i+; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=utnhRpgd; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BrLcd2lksz9sVM;
- Tue, 15 Sep 2020 21:30:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1600169409;
- bh=OQ8ZlDy64ei4/T3Jt7Yt/gqzJpjsR9iZH/wbYSEEXi4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Kt+4Q+i+95pHJ2GUXntDEfvXikdxYELoaEDu8K4QLKvBA3NlsKSvdzQ54SUoHIqVg
- CSXhc9s33UMWUYMFds1IRNb6TZOEq1WxKSn9Kt6XUVzPW8e2Jh8L0abkdt12A8KB3h
- 3T0gtjXya5WbpHRnLCNy5k2ObQjXQNjs40wJCmAQ5fH6AiZifOf2dbeSFnQpTtEQ6z
- DpZeuwezpM83zT9UOEhX8yJKsrQk7cUW6fFMDJe2h8OZoKzWWh57PC4IJfxHcTSTJH
- X/QEX9dIzv5JKDq2SB9Px4TF5RbrSlgRfm645iBnBOupNtkjBe5sUFLuVpY+AO5TU9
- voPe9UbNcG0lg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v2] powerpc/papr_scm: Fix warning triggered by
- perf_stats_show()
-In-Reply-To: <20200912081451.66225-1-vaibhav@linux.ibm.com>
-References: <20200912081451.66225-1-vaibhav@linux.ibm.com>
-Date: Tue, 15 Sep 2020 21:30:08 +1000
-Message-ID: <87imcfp9a7.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrM0B0nR0zDqKq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:47:04 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id u9so1203025plk.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 04:47:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=nNR2nUPpshbBtiLbdPt+k9Y54mJJ6xBG5qbPOnQ15oI=;
+ b=utnhRpgd80UQxHJNhJf5hburzxP9UrVjYGG04qiSszzhdatBCpN8TUCYgWGZa0Rc0O
+ 8/FoZBlEVuRp4BuyZMb25EHhZZ0hdCm+peil1eXiDzzEGFqIS5W2h7sg9HSivVDXTDob
+ C4yJOYHNnQ8W/h3WT7a6f0da2Gd7L5TgyvVxVlnzsBB9EwZOzHKS/mqoMn6dAoFli8jx
+ ZhBBf3pQ5758Jy50LQETlrA/oF4r90CZds6NDFSGzvCiyVoiA51FZ7KyROwwAx+3V00P
+ J2zC+xFQ+HNB3G25ntc0+QO2kznzmIo2o9QG2WR5rnvpqwgy+WEDsp0T/g6LuQBfJV8v
+ ekuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=nNR2nUPpshbBtiLbdPt+k9Y54mJJ6xBG5qbPOnQ15oI=;
+ b=BnnrGFiFEb/dNIi8rQQqFtUtT5naONmz9nQ1mMHqdMm7hSSnz0j1wxxJiRedLa+2fN
+ KIyKkNk0x/c6E8cY4fRAwdE7PRdIZmdytCvxbFQ7T1RFe3koN5TXf8Ag7wJmRgmR3Jfs
+ um93fMZ9abiXURjU8j4N5X/PvqEbQlUWR49a1vi1B53+dZcErtzlc/y5KSA0CTS0ch/P
+ 3QB4QTPYYldPGp47Ddu2j2kZFNlbXPKupQytBWir8/6DXnWLoVPeQbRDlIb1lcgLJzK2
+ 3XzezCk6q0XtIVTg2aaCxGZ1ZjpTqm3JrAoBxjMr69CKAYIE+bcSoO/jz53F4oVPDWb3
+ +ZKA==
+X-Gm-Message-State: AOAM531kxpRpozQ+vA6MQCZxwIkxxpENCgr0gfMMiq62K/hGtbVzuzAO
+ XfUM/h9LAWBKZTCoJWspKR6s6g6tT9JU5Q==
+X-Google-Smtp-Source: ABdhPJxyLsmIz6gu2nDF7gxvzhJHtTsNOrg0f/LlLmy6BuDbHmDs3wm1W/ZtrjaZoaHI4L/xUxqjxQ==
+X-Received: by 2002:a17:902:ed4c:b029:d1:e5f8:81df with SMTP id
+ y12-20020a170902ed4cb02900d1e5f881dfmr1250893plb.60.1600170419425; 
+ Tue, 15 Sep 2020 04:46:59 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id u2sm12118077pji.50.2020.09.15.04.46.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Sep 2020 04:46:59 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/6] powerpc/64: fix irq replay missing preempt
+Date: Tue, 15 Sep 2020 21:46:45 +1000
+Message-Id: <20200915114650.3980244-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,40 +77,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
-> A warning is reported by the kernel in case perf_stats_show() returns
-> an error code. The warning is of the form below:
->
->  papr_scm ibm,persistent-memory:ibm,pmemory@44100001:
->  	  Failed to query performance stats, Err:-10
->  dev_attr_show: perf_stats_show+0x0/0x1c0 [papr_scm] returned bad count
->  fill_read_buffer: dev_attr_show+0x0/0xb0 returned bad count
->
-> On investigation it looks like that the compiler is silently truncating the
-> return value of drc_pmem_query_stats() from 'long' to 'int', since the
-> variable used to store the return code 'rc' is an 'int'. This
-> truncated value is then returned back as a 'ssize_t' back from
-> perf_stats_show() to 'dev_attr_show()' which thinks of it as a large
-> unsigned number and triggers this warning..
->
-> To fix this we update the type of variable 'rc' from 'int' to
-> 'ssize_t' that prevents the compiler from truncating the return value
-> of drc_pmem_query_stats() and returning correct signed value back from
-> perf_stats_show().
->
-> Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance
->        stats from PHYP')
+Prior to commit 3282a3da25bd ("powerpc/64: Implement soft interrupt
+replay in C"), replayed interrupts returned by the regular interrupt
+exit code, which performs preemption in case an interrupt had set
+need_resched.
 
-Please don't word wrap the Fixes tag it breaks b4.
+This logic was missed by the conversion. Adding preempt_disable/enable
+around the interrupt replay and final irq enable will reschedule if
+needed.
 
-I've fixed it up this time.
+Fixes: 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in C")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/irq.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-cheers
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index bf21ebd36190..77019699606a 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -368,6 +368,12 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 		}
+ 	}
+ 
++	/*
++	 * Disable preempt here, so that the below preempt_enable will
++	 * perform resched if required (a replayed interrupt may set
++	 * need_resched).
++	 */
++	preempt_disable();
+ 	irq_soft_mask_set(IRQS_ALL_DISABLED);
+ 	trace_hardirqs_off();
+ 
+@@ -377,6 +383,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
+ 	trace_hardirqs_on();
+ 	irq_soft_mask_set(IRQS_ENABLED);
+ 	__hard_irq_enable();
++	preempt_enable();
+ }
+ EXPORT_SYMBOL(arch_local_irq_restore);
+ 
+-- 
+2.23.0
+
