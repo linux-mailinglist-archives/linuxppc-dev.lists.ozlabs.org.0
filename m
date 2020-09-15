@@ -2,83 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CAE4269A7B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 02:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E588E269AD5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 03:04:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Br48t5y96zDqRW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 10:38:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Br4kq5yQ9zDqRG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 11:04:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=drt@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.193;
+ helo=mail-il1-f193.google.com; envelope-from=robherring2@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=NKjD5SSF; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-il1-f193.google.com (mail-il1-f193.google.com
+ [209.85.166.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Br46r1J9lzDqQg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 10:36:50 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 08F0VRxw105841; Mon, 14 Sep 2020 20:36:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject : date : message-id; s=pp1;
- bh=BxLsjVda+7HYLveHXJd4jo821tGRHm8VY+B8ytp0LAM=;
- b=NKjD5SSF6JT1jH8w/eJEM0rjbey3CArmuFCe6aTbKH75CZIMkQqdn0ElAxqkQa/J1TGq
- 4V9B4NYRVspezdzfh/QWcGzV5n+UdvPDzfZj/epYczDUP9cJyiv2vtjaVYqJF4KNtu9c
- WE+x28boFtV/jjkHZs2hBXxNn0KQpxjQYlFiGUCnAOqL2cgNkcZMzPsAVA3Ti6yIBsTv
- wdIyEtzUbkHxE01cDr6hE0/GiR4wbdHihgA53p/XhfCGQdQ++rojXvb4cKAgpD3B1pwK
- bii6mlSty06w/y6uVLTlYazrfdKPTw/FCLuVmBK7uWrX7e1AVwbL/tfYq2E9U+LI7SkI XQ== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 33jjv38e53-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Sep 2020 20:36:48 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08F0SWvO030792;
- Tue, 15 Sep 2020 00:36:47 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03dal.us.ibm.com with ESMTP id 33gny98k0e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Sep 2020 00:36:47 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 08F0agpJ26411328
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Sep 2020 00:36:42 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 256C013604F;
- Tue, 15 Sep 2020 00:36:46 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6EF1136053;
- Tue, 15 Sep 2020 00:36:45 +0000 (GMT)
-Received: from ltcalpine2-lp16.aus.stglabs.ibm.com (unknown [9.40.195.199])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 15 Sep 2020 00:36:45 +0000 (GMT)
-From: Dany Madden <drt@linux.ibm.com>
-To: davem@davemloft.net
-Subject: [PATCH net] ibmvnic: update MAINTAINERS
-Date: Mon, 14 Sep 2020 20:35:35 -0400
-Message-Id: <20200915003535.819585-1-drt@linux.ibm.com>
-X-Mailer: git-send-email 2.18.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
- definitions=2020-09-14_09:2020-09-14,
- 2020-09-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- clxscore=1011 priorityscore=1501 bulkscore=0 spamscore=0 mlxlogscore=825
- impostorscore=0 suspectscore=1 malwarescore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009140184
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Br4j26w0yzDqQk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 11:03:02 +1000 (AEST)
+Received: by mail-il1-f193.google.com with SMTP id a8so1454310ilk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Sep 2020 18:03:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=xcbN9iKTXDr7Aos7+pozhifKeLZIE17W1Yh8urQPGxY=;
+ b=nLsovkd04GCYoZcmHp/jw8H5F6IVCu3AEfkWkMxei85hZId8iPB9hJwU+jyliV42tl
+ 4gUdwfwhuc3fPXkunt25ao9xrqLwif3E8Q/NAb4OV278cRQA6iRy/c/5ouycgHV92wM1
+ czaYcKt8Vg6BstR1Ie/ws24R4YFWy+8yEEh2qX8XFfFaLX2vXxGjgKDC9hSTb9oMIF6X
+ AajwEw99oLK8RbRzPZnxvbtyIEwCEej+dTyKJB+J2SPSW4yJLUn/PQYIat0VZosFS+g+
+ siX9aP1tMoNTStuHlafz68JWkUncFM1WOdsXX8/3EfkUmkXhsIAgZzb/BcoPx8sgRtlY
+ 33rQ==
+X-Gm-Message-State: AOAM530KbRxyTR9qUxd1cRqTgeMhXjl9jCirCDRaaj2+izc6l1vc+Lln
+ z5LMzxMyjlEceub/PjTQkA==
+X-Google-Smtp-Source: ABdhPJwADcHTTX8ykmWhIg1RbZQXXVUi9q14Cx8OKh2wwKij6EZxvnlf1fyQFPnwV22wrzrdT8Qy9w==
+X-Received: by 2002:a05:6e02:f06:: with SMTP id
+ x6mr12734734ilj.222.1600131779984; 
+ Mon, 14 Sep 2020 18:02:59 -0700 (PDT)
+Received: from xps15 ([64.188.179.253])
+ by smtp.gmail.com with ESMTPSA id m7sm8082416ili.26.2020.09.14.18.02.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Sep 2020 18:02:59 -0700 (PDT)
+Received: (nullmailer pid 623833 invoked by uid 1000);
+ Tue, 15 Sep 2020 01:02:58 -0000
+Date: Mon, 14 Sep 2020 19:02:58 -0600
+From: Rob Herring <robh@kernel.org>
+To: Christian Lamparter <chunkeey@gmail.com>
+Subject: Re: [PATCH v3 1/5] dt-bindings: powerpc: define apm,apm82181 binding
+Message-ID: <20200915010258.GA612463@bogus>
+References: <cover.1599343429.git.chunkeey@gmail.com>
+ <aa51a2aaffcbf98c90d378f6f6c7b926989b6c27.1599343429.git.chunkeey@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa51a2aaffcbf98c90d378f6f6c7b926989b6c27.1599343429.git.chunkeey@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,36 +69,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dany Madden <drt@linux.ibm.com>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Chris Blake <chrisrblake93@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Update supporters for IBM Power SRIOV Virtual NIC Device Driver. 
-Thomas Falcon is moving on to other works. Dany Madden, Lijun Pan 
-and Sukadev Bhattiprolu are the current supporters.
+On Sun, Sep 06, 2020 at 12:06:11AM +0200, Christian Lamparter wrote:
+> make a binding for the various boards based on the
+> AppliedMicro/APM APM82181 SoC.
+> 
+> Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+> ---
+>  .../bindings/powerpc/4xx/apm,apm82181.yaml    | 29 +++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/4xx/apm,apm82181.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/powerpc/4xx/apm,apm82181.yaml b/Documentation/devicetree/bindings/powerpc/4xx/apm,apm82181.yaml
+> new file mode 100644
+> index 000000000000..03a3c02fe920
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/4xx/apm,apm82181.yaml
+> @@ -0,0 +1,29 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/4xx/apm,apm82181.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: APM APM82181 device tree bindings
+> +
+> +description:
+> +  AppliedMicro APM82181 Wi-Fi/network SoCs based
+> +  on the PPC464-CPU architecture.
+> +
+> +maintainers:
+> +  - Christian Lamparter <chunkeey@gmail.com>
+> +
+> +properties:
+> +  $nodename:
+> +    const: '/'
+> +  compatible:
+> +    oneOf:
+> +      - description: APM82181 based boards
+> +        items:
+> +          - enum:
+> +              - apm,bluestone
+> +              - meraki,mr24
+> +              - wd,mybooklive
+> +          - const: amcc,apm82181
 
-Signed-off-by: Dany Madden <drt@linux.ibm.com>
----
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2783a5f68d2c..923c69ad4eec 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8315,7 +8315,9 @@ S:	Supported
- F:	drivers/pci/hotplug/rpaphp*
- 
- IBM Power SRIOV Virtual NIC Device Driver
--M:	Thomas Falcon <tlfalcon@linux.ibm.com>
-+M:	Dany Madden <drt@linux.ibm.com>
-+M:	Lijun Pan <ljp@linux.ibm.com>
-+M:	Sukadev Bhattiprolu <sukadev@linux.ibm.com>
- L:	netdev@vger.kernel.org
- S:	Supported
- F:	drivers/net/ethernet/ibm/ibmvnic.*
--- 
-2.18.2
-
+This doesn't match neither the existing dts nor your modifications.
