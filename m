@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0871A26A46A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8459126A472
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 13:53:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrM5n1Q0ZzDqSQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:51:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrM7d6sZ4zDqSq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 21:53:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VSfKAg4b; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20161025 header.b=RA6BA08N; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrM0F34PrzDqKq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:47:09 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id z19so1770935pfn.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 04:47:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrM0G29ZdzDqKq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 21:47:10 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id d19so1203345pld.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 04:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=dZhCp6L3XlZLXkfJVf2m77bSCdGj5gQScX4QSDH6zCw=;
- b=VSfKAg4bLs221QGTVWMS9ZjX5G3ekT6lomq1vCPknPoovi2VGTfbMSKU3B9eEx/deR
- bDiT2fHRg6o6u2NxlDdaMd0aqtQqXNch39v557cunQByly4AxbsSwnCYsrmF6JaKZew2
- NAvtUs1np7iKsdOx7WFBsO/iO4VTERnpqPUpaXcwFIf9bdA3sZ9S8SdVVRia3ZMizaIC
- S7qrEmA2bkYLN4I9R/+mMM1mu3Cg0E1qKmFcrY1peKP1X/5lmuVA20Pftzh5I3sseGtq
- iHu8ZoUQr1n89EqxYuEFGaljoHd3VdPq3eJVsJEMBXmuQgWW0WzsxL450xD8xh/Y4vyr
- +LyQ==
+ bh=25mRSvn3CQ3AAupfysV0tQoxcIdG+8XJkZoBnvFGHUI=;
+ b=RA6BA08NwGB1NtHvbBpp/zqkUJHaJ1Iv8NR0OJhJe7vVIJtLbsCynRu1CIulA/rP32
+ N6GTsk5W8ZCnfJgiJAsERPwyRp3xKoN0Dr3mBGWkJNqk7oYDd626K7m0Yl+koVHWawSZ
+ gDWIYKQEDfDDQB7J8V4sIxwK0z036FssbLaHCDRrT5A8CCf8EpWeN0d6DW/+VTVkTsdZ
+ q2vPJDT/LKnSHfUuoCTVGSFwCsEbbhpyonultbnvYhlja4iEk4M/r3WoYXYwgW0QmThB
+ VL0ncYydfTOJnxt1O9IiHtzq44mbs+VKhfLvYlWDT++sExvXhikbFLsdd2gHKqtvOTge
+ 7Xcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=dZhCp6L3XlZLXkfJVf2m77bSCdGj5gQScX4QSDH6zCw=;
- b=O73SO8bO0/H/zo8GmFSSYzNIXU+oWyrv6p41xSFUhzBGwb5JlA6uJQRhIpNTYyvOGD
- wTqERn+niC/J4A18cGfwNOOUAdxY+s7kpW1sFRSxPoyjZphBid1pe253nZgQAjueMVpJ
- L/dqqqr0tsWbXGhPkxBxlcpsMIujVvrbqJARzOL9Wge0BRY7xhpyqVKbp5A8kakqN4Q7
- liY1svwoVXs+jyLuYHXJ/zAE8Uon9Y/ljTqZvuBvygwZwnO6cc37IBzcXdh7R7hcVXyg
- B/AEct+G8dX/LVio2K6LwfE4bLXYXuKLtTcBc0JEV3Buh9V/ngaMEB/pA9GUkS04tM6b
- Osvw==
-X-Gm-Message-State: AOAM5312LLaYA1WTkoaVKG1N7CG0rMlQ2BRHrtzKI17/WzLXGDCbX/+m
- hRsJ/wyNQ3zhyokt9Hvs2G8Kdf1phWlaSw==
-X-Google-Smtp-Source: ABdhPJyZjS2jhAHXI+wzdH9KFTjpThjppn+BWuFjV/1diuM98E/dGSfcGs20RwFxD+UvcoAl8rJUbQ==
-X-Received: by 2002:a63:f606:: with SMTP id m6mr14453565pgh.193.1600170426352; 
- Tue, 15 Sep 2020 04:47:06 -0700 (PDT)
+ bh=25mRSvn3CQ3AAupfysV0tQoxcIdG+8XJkZoBnvFGHUI=;
+ b=DeYDFOa+cMrrBI5d3Eo2QLFUSAlBHBtqGAhgPu/PGyeZHtaU9fy7eOzf6lBcoXxgy+
+ xNmEDx23mfvc8KcrZoWnpfhmhEoTzQ02ZPXiekPXq0r3iVZrPHp51+w2pBxQE+D1PpNd
+ UPc+9aaZBaHp/vo6dcocUvLCuc7I6ydJhg7/SDB7AEMe8Y7SHlqux9V810rZkxiwTvVL
+ IuovNaClo1RpgOeARn9QiC4WHANmwW1R8wx5pQWcJg6mpfuhZZIoQz02Kpjwn1RZZugG
+ 6LYhx8qfu+JQUA97fBQtxdwskEB39/kQQHMgcSvAMvXlk0Kpq0FFGBTQruwFZLQvBuw3
+ oTog==
+X-Gm-Message-State: AOAM531psx2uJsKuCfD9evP15tvjZg+jnVI8Alp7RiTmSxHLK+bRL4RZ
+ UKUwThxaBKLrMCzVO5akjbQoM1uVo/kaNg==
+X-Google-Smtp-Source: ABdhPJzN/glO/Ur6ku/VkhwmWltKjQUDzRJH1joLBVu1BajwnJJJRAZnDWpNx6rFnB0YweekEJXAhg==
+X-Received: by 2002:a17:902:a712:b029:d1:cbf4:c583 with SMTP id
+ w18-20020a170902a712b02900d1cbf4c583mr7921340plq.16.1600170428381; 
+ Tue, 15 Sep 2020 04:47:08 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([203.185.249.227])
- by smtp.gmail.com with ESMTPSA id u2sm12118077pji.50.2020.09.15.04.47.04
+ by smtp.gmail.com with ESMTPSA id u2sm12118077pji.50.2020.09.15.04.47.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Sep 2020 04:47:06 -0700 (PDT)
+ Tue, 15 Sep 2020 04:47:08 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/6] powerpc/64e: remove PACA_IRQ_EE_EDGE
-Date: Tue, 15 Sep 2020 21:46:47 +1000
-Message-Id: <20200915114650.3980244-3-npiggin@gmail.com>
+Subject: [PATCH 4/6] powerpc/64e: remove 64s specific interrupt soft-mask code
+Date: Tue, 15 Sep 2020 21:46:48 +1000
+Message-Id: <20200915114650.3980244-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200915114650.3980244-1-npiggin@gmail.com>
 References: <20200915114650.3980244-1-npiggin@gmail.com>
@@ -83,84 +84,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is not used anywhere.
+Since the assembly soft-masking code was moved to 64e specific, there
+are some 64s specific interrupt types still there. Remove them.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/hw_irq.h    |  5 ++---
- arch/powerpc/kernel/exceptions-64e.S |  1 -
- arch/powerpc/kernel/irq.c            | 23 -----------------------
- 3 files changed, 2 insertions(+), 27 deletions(-)
+ arch/powerpc/kernel/exceptions-64e.S | 10 ----------
+ arch/powerpc/kernel/irq.c            |  2 +-
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
-index 35060be09073..50dc35711db3 100644
---- a/arch/powerpc/include/asm/hw_irq.h
-+++ b/arch/powerpc/include/asm/hw_irq.h
-@@ -25,9 +25,8 @@
- #define PACA_IRQ_DBELL		0x02
- #define PACA_IRQ_EE		0x04
- #define PACA_IRQ_DEC		0x08 /* Or FIT */
--#define PACA_IRQ_EE_EDGE	0x10 /* BookE only */
--#define PACA_IRQ_HMI		0x20
--#define PACA_IRQ_PMI		0x40
-+#define PACA_IRQ_HMI		0x10
-+#define PACA_IRQ_PMI		0x20
- 
- /*
-  * Some soft-masked interrupts must be hard masked until they are replayed
 diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index d9ed79415100..ca444ca82b8d 100644
+index ca444ca82b8d..f579ce46eef2 100644
 --- a/arch/powerpc/kernel/exceptions-64e.S
 +++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -988,7 +988,6 @@ kernel_dbg_exc:
- .endm
- 
- masked_interrupt_book3e_0x500:
--	// XXX When adding support for EPR, use PACA_IRQ_EE_EDGE
- 	masked_interrupt_book3e PACA_IRQ_EE 1
- 
- masked_interrupt_book3e_0x900:
+@@ -1302,16 +1302,6 @@ fast_exception_return:
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD;
+ 	bl	do_IRQ
+ 	b	ret_from_except
+-1:	cmpwi	cr0,r3,0xf00
+-	bne	1f
+-	addi	r3,r1,STACK_FRAME_OVERHEAD;
+-	bl	performance_monitor_exception
+-	b	ret_from_except
+-1:	cmpwi	cr0,r3,0xe60
+-	bne	1f
+-	addi	r3,r1,STACK_FRAME_OVERHEAD;
+-	bl	handle_hmi_exception
+-	b	ret_from_except
+ 1:	cmpwi	cr0,r3,0x900
+ 	bne	1f
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD;
 diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index 3fdad9336885..736a6b56e7d6 100644
+index 736a6b56e7d6..b725509f9073 100644
 --- a/arch/powerpc/kernel/irq.c
 +++ b/arch/powerpc/kernel/irq.c
-@@ -181,16 +181,6 @@ notrace unsigned int __check_irq_replay(void)
- 		return 0x500;
- 	}
+@@ -113,7 +113,7 @@ static inline notrace int decrementer_check_overflow(void)
+ #ifdef CONFIG_PPC_BOOK3E
  
--	/*
--	 * Check if an EPR external interrupt happened this bit is typically
--	 * set if we need to handle another "edge" interrupt from within the
--	 * MPIC "EPR" handler.
--	 */
--	if (happened & PACA_IRQ_EE_EDGE) {
--		local_paca->irq_happened &= ~PACA_IRQ_EE_EDGE;
--		return 0x500;
--	}
--
- 	if (happened & PACA_IRQ_DBELL) {
- 		local_paca->irq_happened &= ~PACA_IRQ_DBELL;
- 		return 0x280;
-@@ -270,19 +260,6 @@ void replay_soft_interrupts(void)
- 			hard_irq_disable();
- 	}
- 
--	/*
--	 * Check if an EPR external interrupt happened this bit is typically
--	 * set if we need to handle another "edge" interrupt from within the
--	 * MPIC "EPR" handler.
--	 */
--	if (IS_ENABLED(CONFIG_PPC_BOOK3E) && (happened & PACA_IRQ_EE_EDGE)) {
--		local_paca->irq_happened &= ~PACA_IRQ_EE_EDGE;
--		regs.trap = 0x500;
--		do_IRQ(&regs);
--		if (!(local_paca->irq_happened & PACA_IRQ_HARD_DIS))
--			hard_irq_disable();
--	}
--
- 	if (IS_ENABLED(CONFIG_PPC_DOORBELL) && (happened & PACA_IRQ_DBELL)) {
- 		local_paca->irq_happened &= ~PACA_IRQ_DBELL;
- 		if (IS_ENABLED(CONFIG_PPC_BOOK3E))
+ /* This is called whenever we are re-enabling interrupts
+- * and returns either 0 (nothing to do) or 500/900/280/a00/e80 if
++ * and returns either 0 (nothing to do) or 500/900/280 if
+  * there's an EE, DEC or DBELL to generate.
+  *
+  * This is called in two contexts: From arch_local_irq_restore()
 -- 
 2.23.0
 
