@@ -1,53 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AFA26A5AB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 14:57:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD3426A5FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 15:12:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrNYN54y9zDqNN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 22:57:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrNtH6WzXzDqTT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Sep 2020 23:12:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrNTm2TF8zDqMx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 22:54:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=PBeNJaRg; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4BrNTk57kBz9sVK;
- Tue, 15 Sep 2020 22:54:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1600174458;
- bh=cPMdzE3BW/hsrod/8cZNP4NMSHeYaoQDjzF2d0zvAjc=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=PBeNJaRgUe3r6Ez7HdzZY1UaMkCGbObAvnAC+kjQhe930kYEZGVNb4zPZTJdKDr1S
- 3/qvV8D4tGGEsKFbMuBsi3nfCtSnogejYpSAnnUd/1BMDwTsa7AEcxMwddZ5fFv6jc
- j7pX9P0BVu+Dr4PZdkF4MBU6rc8TgCCFZfOgIMIE37u/OBUrvt/BqtNCVxwdKnhcmk
- kjFqwAsj9QZVcWrywfoSVYWPOusTLoYtcXOMNwL6zAFbMIJTuIFAlr9W/WGlmcD4vW
- zNU1Q18yjacQbWpeSpEZL9cB9hyWGj1AJal9XCVg9QLksKnEwx6kduPYLbKty/osKf
- JNuG5KKHJjEMg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>,
-	linuxppc-dev@lists.ozlabs.org, mahesh@lists.ozlabs.org
-Subject: Re: Injecting SLB miltihit crashes kernel 5.9.0-rc5
-In-Reply-To: <20200915084302.GG29778@kitsune.suse.cz>
-References: <20200915084302.GG29778@kitsune.suse.cz>
-Date: Tue, 15 Sep 2020 22:54:18 +1000
-Message-ID: <87bli7p5dx.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrNq43HmCzDqRM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Sep 2020 23:09:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=kwi5xTW8GuxsUKcivQn36NFaCt8761GZDrxY8Oy02ps=; b=c4ffScwjfqCWw+EdTDmxxD0/Md
+ YVp4M/VSs7XaKf7niEJ7dzN51KxWBBeS4Bt/m867fSCGf0zVWC10Fx+mLWpxMzcjJw3rcb7pzwxJG
+ 1OlgT1smvxIQ2XLtD80u6Nn3mkF2r/DdKiQ7uyz3AP9pQbl4zOvLY/ds84QxVFBWQpJC/dW9N9kYQ
+ 6XcIrikGD4tlrj9wK7VvwGe5ggR8XZCTKculT8VAfSklViHBrPslJAH2umvg57m9FxNl6zV/ZyIT6
+ AxCsofUr9omwct1yz40TlKwfqus5qAYhy2eV1shZxesO8zs8391YEV4tlerCyksSyZz2vB1NP1FLF
+ yp/GMkyA==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1kIAhn-0000sv-NA; Tue, 15 Sep 2020 13:09:07 +0000
+Date: Tue, 15 Sep 2020 14:09:07 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [5.9.0-rc5-20200914] Kernel crash while running LTP(mlock201)
+Message-ID: <20200915130907.GE5449@casper.infradead.org>
+References: <3DCED508-4DC0-42AA-9CFF-3AB260ED1E9A@linux.vnet.ibm.com>
+ <87o8m7p9jd.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o8m7p9jd.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,29 +56,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linux-next@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> Hello,
->
-> Using the SLB mutihit injection test module (which I did not write so I
-> do not want to post it here) to verify updates on my 5.3 frankernekernel
-> I found that the kernel crashes with Oops: kernel bad access.
->
-> I tested on latest upstream kernel build that I have at hand and the
-> result is te same (minus the message - nothing was logged and the kernel
-> simply rebooted).
+On Tue, Sep 15, 2020 at 09:24:38PM +1000, Michael Ellerman wrote:
+> Sachin Sant <sachinp@linux.vnet.ibm.com> writes:
+> > While running LTP tests (specifically mlock201) against next-20200914 tree
+> > on a POWER9 LPAR results in following crash.
+> 
+> Looks the same as:
+> 
+> https://lore.kernel.org/linux-mm/20200914085545.GB28738@shao2-debian/
 
-That's disappointing.
-
-> Since the whole effort to write a real mode MCE handler was supposed to
-> prevent this maybe the SLB injection module should be added to the
-> kernel selftests?
-
-Yes I'd like to see it upstream. I think it should be integrated into
-LKDTM, which contains other dangerous things like that and is designed
-for testing how the kernel handles/recovers from bad conditions.
-
-cheers
+https://lore.kernel.org/linux-mm/20200914112738.GM6583@casper.infradead.org/
