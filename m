@@ -2,58 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F5226BC09
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 07:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6267026BC4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 08:12:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrqBl3H79zDqTT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 15:57:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrqWl5vJSzDqMG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 16:12:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
- helo=smtpout1.mo804.mail-out.ovh.net; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from smtpout1.mo804.mail-out.ovh.net
- (smtpout1.mo804.mail-out.ovh.net [79.137.123.220])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Brq9016fJzDqKh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 15:56:17 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.1.108])
- by mo804.mail-out.ovh.net (Postfix) with ESMTPS id E2C636214734;
- Wed, 16 Sep 2020 07:56:11 +0200 (CEST)
-Received: from kaod.org (37.59.142.99) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2044.4; Wed, 16 Sep
- 2020 07:56:11 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-99G0036402dd67-790b-4e21-a2fd-bbbd9dbeed35,
- 282F6B8BB580550643A9CB45D70726BD5CC915E6) smtp.auth=clg@kaod.org
-Subject: Re: [PATCH v2 2/7] powerpc/prom: Introduce early_reserve_mem_old()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20200914211007.2285999-1-clg@kaod.org>
- <20200914211007.2285999-3-clg@kaod.org>
- <20200915184607.Horde._j-BRtSmJ6vRGSRwLWoN7Q2@messagerie.si.c-s.fr>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <0d130b93-ce57-7efb-f528-f48a5feaf5ec@kaod.org>
-Date: Wed, 16 Sep 2020 07:56:10 +0200
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=ard.biesheuvel@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4BrqTh5GdwzDqB5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 16:10:46 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2655B1FB;
+ Tue, 15 Sep 2020 23:10:43 -0700 (PDT)
+Received: from [192.168.1.205] (unknown [10.37.8.121])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B8223F68F;
+ Tue, 15 Sep 2020 23:10:39 -0700 (PDT)
+Subject: Re: [PATCH v1] soc: fsl: rcpm: Add ACPI support
+To: Ran Wang <ran.wang_1@nxp.com>,
+ kuldip dwivedi <kuldip.dwivedi@puresoftware.com>, Leo Li
+ <leoyang.li@nxp.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20200915110647.846-1-kuldip.dwivedi@puresoftware.com>
+ <4e008f0a-69da-d5c2-4dfc-ef8695e17f47@arm.com>
+ <AM6PR04MB5413903EAAEDB2EED2E254C6F1210@AM6PR04MB5413.eurprd04.prod.outlook.com>
+From: Ard Biesheuvel <ard.biesheuvel@arm.com>
+Message-ID: <caf01871-1c3d-bdf8-867d-daf7138966a8@arm.com>
+Date: Wed, 16 Sep 2020 09:10:36 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200915184607.Horde._j-BRtSmJ6vRGSRwLWoN7Q2@messagerie.si.c-s.fr>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <AM6PR04MB5413903EAAEDB2EED2E254C6F1210@AM6PR04MB5413.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.99]
-X-ClientProxiedBy: DAG9EX1.mxp5.local (172.16.2.81) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: d605cbd9-b3cb-43ce-899a-5a87df6c0b0a
-X-Ovh-Tracer-Id: 12176326018178321376
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedujedrtddugdelhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeejkeduueduveelgeduueegkeelffevledujeetffeivdelvdfgkeeufeduheehfeenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghu
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,120 +56,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+Cc: Biwen Li <biwen.li@nxp.com>,
+ Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+ Arokia Samy <arokia.samy@nxp.com>, Paul Yang <Paul.Yang@arm.com>,
+ Varun Sethi <V.Sethi@nxp.com>, tanveer <tanveer.alam@puresoftware.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/15/20 6:46 PM, Christophe Leroy wrote:
-> Cédric Le Goater <clg@kaod.org> a écrit :
+On 9/16/20 3:32 AM, Ran Wang wrote:
+> Hi Ard,
 > 
->> and condition its call with IS_ENABLED(CONFIG_PPC32). This fixes a
->> compile error with W=1.
+> On Tuesday, September 15, 2020 7:10 PM, Ard Biesheuvel wrote:
+>> Subject: Re: [PATCH v1] soc: fsl: rcpm: Add ACPI support
 >>
->> arch/powerpc/kernel/prom.c: In function ‘early_reserve_mem’:
->> arch/powerpc/kernel/prom.c:625:10: error: variable ‘reserve_map’ set but not used [-Werror=unused-but-set-variable]
->>   __be64 *reserve_map;
->>           ^~~~~~~~~~~
->> cc1: all warnings being treated as errors
+>> On 9/15/20 1:06 PM, kuldip dwivedi wrote:
+>>> Add ACPI support in fsl RCPM driver. This is required to support ACPI
+>>> S3 state. S3 is the ACPI sleep state that is known as "sleep" or
+>>> "suspend to RAM".
+>>> It essentially turns off most power of the system but keeps memory
+>>> powered.
+>>>
+>>> Signed-off-by: tanveer <tanveer.alam@puresoftware.com>
+>>> Signed-off-by: kuldip dwivedi <kuldip.dwivedi@puresoftware.com>
 >>
->> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+>> Why does the OS need to program this device? Can't this be done by
+>> firmware?
 > 
-> @csgroup.eu instead of @c-s.fr please
-> 
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>  arch/powerpc/kernel/prom.c | 37 ++++++++++++++++++++-----------------
->>  1 file changed, 20 insertions(+), 17 deletions(-)
-> 
-> That's a lot of changes for a tiny warning.
-> 
-> You could make it easy by just replacing the #ifdef by:
-> 
->         if (!IS_ENABLED(CONFIG_PPC32))
->                 return;
+> This device is use to tell HW which IP (such as USB, SDHC, SATA, etc) should not be
+> clock gated during system enter low power state (to allow that IP work as a
+> wakeup source). And user does this configuration in device tree.
 
-It's equivalent and it moves out the reserve_map variable of the main routine
-which I think is better.
+The point of ACPI is *not* to describe a DT topology using a table 
+format that is not suited for it. The point of ACPI is to describe a 
+machine that is more abstracted from the hardware than is typically 
+possible with DT, where the abstractions are implemented by AML code 
+that is provided by the firmware, but executed in the context of the OS.
 
->>
->> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
->> index d8a2fb87ba0c..c958b67cf1a5 100644
->> --- a/arch/powerpc/kernel/prom.c
->> +++ b/arch/powerpc/kernel/prom.c
->> @@ -620,27 +620,14 @@ static void __init early_reserve_mem_dt(void)
->>      }
->>  }
->>
->> -static void __init early_reserve_mem(void)
->> +static void __init early_reserve_mem_old(void)
+So the idea is *not* finding the shortest possible path to get your 
+existing DT driver code running on a system that boots via ACPI. 
+Instead, you should carefully think about the abstract ACPI machine that 
+you will expose to the OS, and hide everything else in firmware.
+
+In this particular case, it seems like your USB, SDHC and SATA device 
+objects may need power state dependent AML methods that program this 
+block directly.
+
+
+
+> So implement
+> this RCPM driver to do it in kernel rather than firmware.
 > 
-> Why _old ? Do you mean ppc32 are old ? Modern ADSL boxes like for instance the famous French freebox have powerpc32 microcontroller.
-> Eventually you could name it _ppc32, but I don't think that's the good way, see above.
-
-I choose old because of the comment ' ... booting from an old kexec ... ', 
-but I agree _ppc32 might be a better choice.
-
-Thanks,
-
-C. 
-
-> Christophe
+> Regards,
+> Ran
 > 
->>  {
->>      __be64 *reserve_map;
->>
->>      reserve_map = (__be64 *)(((unsigned long)initial_boot_params) +
->>              fdt_off_mem_rsvmap(initial_boot_params));
->>
->> -    /* Look for the new "reserved-regions" property in the DT */
->> -    early_reserve_mem_dt();
->> -
->> -#ifdef CONFIG_BLK_DEV_INITRD
->> -    /* Then reserve the initrd, if any */
->> -    if (initrd_start && (initrd_end > initrd_start)) {
->> -        memblock_reserve(ALIGN_DOWN(__pa(initrd_start), PAGE_SIZE),
->> -            ALIGN(initrd_end, PAGE_SIZE) -
->> -            ALIGN_DOWN(initrd_start, PAGE_SIZE));
->> -    }
->> -#endif /* CONFIG_BLK_DEV_INITRD */
->> -
->> -#ifdef CONFIG_PPC32
->> -    /*
->> +    /*
->>       * Handle the case where we might be booting from an old kexec
->>       * image that setup the mem_rsvmap as pairs of 32-bit values
->>       */
->> @@ -658,9 +645,25 @@ static void __init early_reserve_mem(void)
->>              DBG("reserving: %x -> %x\n", base_32, size_32);
->>              memblock_reserve(base_32, size_32);
->>          }
->> -        return;
->>      }
->> -#endif
->> +}
->> +
->> +static void __init early_reserve_mem(void)
->> +{
->> +    /* Look for the new "reserved-regions" property in the DT */
->> +    early_reserve_mem_dt();
->> +
->> +#ifdef CONFIG_BLK_DEV_INITRD
->> +    /* Then reserve the initrd, if any */
->> +    if (initrd_start && (initrd_end > initrd_start)) {
->> +        memblock_reserve(ALIGN_DOWN(__pa(initrd_start), PAGE_SIZE),
->> +            ALIGN(initrd_end, PAGE_SIZE) -
->> +            ALIGN_DOWN(initrd_start, PAGE_SIZE));
->> +    }
->> +#endif /* CONFIG_BLK_DEV_INITRD */
->> +
->> +    if (IS_ENABLED(CONFIG_PPC32))
->> +        early_reserve_mem_old();
->>  }
->>
->>  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->> -- 
->> 2.25.4
-> 
+>>> ---
+>>>
+>>> Notes:
+>>>       1. Add ACPI match table
+>>>       2. NXP team members are added for confirming HID changes
+>>>       3. There is only one node in ACPI so no need to check for
+>>>          current device explicitly
+>>>       4. These changes are tested on LX2160A and LS1046A platforms
+>>>
+>>>    drivers/soc/fsl/rcpm.c | 22 +++++++++++++++++++---
+>>>    1 file changed, 19 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c index
+>>> a093dbe6d2cb..e75a436fb159 100644
+>>> --- a/drivers/soc/fsl/rcpm.c
+>>> +++ b/drivers/soc/fsl/rcpm.c
+>>> @@ -2,10 +2,12 @@
+>>>    //
+>>>    // rcpm.c - Freescale QorIQ RCPM driver
+>>>    //
+>>> -// Copyright 2019 NXP
+>>> +// Copyright 2019-2020 NXP
+>>> +// Copyright 2020 Puresoftware Ltd.
+>>>    //
+>>>    // Author: Ran Wang <ran.wang_1@nxp.com>
+>>>
+>>> +#include <linux/acpi.h>
+>>>    #include <linux/init.h>
+>>>    #include <linux/module.h>
+>>>    #include <linux/platform_device.h>
+>>> @@ -57,8 +59,13 @@ static int rcpm_pm_prepare(struct device *dev)
+>>>    				rcpm->wakeup_cells + 1);
+>>>
+>>>    		/*  Wakeup source should refer to current rcpm device */
+>>> -		if (ret || (np->phandle != value[0]))
+>>> -			continue;
+>>> +		if (is_acpi_node(dev->fwnode)) {
+>>> +			if (ret)
+>>> +				continue;
+>>> +		} else {
+>>> +			if (ret || (np->phandle != value[0]))
+>>> +				continue;
+>>> +		}
+>>>
+>>>    		/* Property "#fsl,rcpm-wakeup-cells" of rcpm node defines the
+>>>    		 * number of IPPDEXPCR register cells, and "fsl,rcpm-wakeup"
+>>> @@ -139,10 +146,19 @@ static const struct of_device_id rcpm_of_match[]
+>> = {
+>>>    };
+>>>    MODULE_DEVICE_TABLE(of, rcpm_of_match);
+>>>
+>>> +#ifdef CONFIG_ACPI
+>>> +static const struct acpi_device_id rcpm_acpi_match[] = {
+>>> +	{ "NXP0015", },
+>>> +	{ }
+>>> +};
+>>> +MODULE_DEVICE_TABLE(acpi, rcpm_acpi_match); #endif
+>>> +
+>>>    static struct platform_driver rcpm_driver = {
+>>>    	.driver = {
+>>>    		.name = "rcpm",
+>>>    		.of_match_table = rcpm_of_match,
+>>> +		.acpi_match_table = ACPI_PTR(rcpm_acpi_match),
+>>>    		.pm	= &rcpm_pm_ops,
+>>>    	},
+>>>    	.probe = rcpm_probe,
+>>>
 > 
 
