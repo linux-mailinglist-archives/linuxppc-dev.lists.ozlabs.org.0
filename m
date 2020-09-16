@@ -2,57 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B9A26BCB5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 08:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCA726BCE3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 08:24:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrqkT1MVNzDqDD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 16:21:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrqnH458LzDqQV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 16:24:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=miaoqinglang@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=DsBud3yN; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrqgK2lnBzDqHq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 16:19:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=fse+h8UCPDsleRNPufm6YCU5bALHyxaJ9NrZcm6xYM8=; b=DsBud3yN3zMNa+2ZYy1fFVo6t6
- b+xLAGAzKH9Op3myuxDOH7JrQPH0g+Y0wi6n+ZmdCfJDEFuI1PA6lRnb5zu1m3v0oVnWPalTEXpoR
- +cPDQORK6hBHtAvSCyJo73Vf8XmZldkrg44MW4H7Af+x98KfFOBoTOFz2XSHDD89QHpBlDGhK0Shf
- xV1vaRVt0cm5Pqc+4qL6sfRC5tITrJnPNZiSoW/YJrMC7ejuq8bHD3nCRM2fFzul+EysUkUv6U5Gi
- VZJI3Krd3r6uX5jTnPaJId+Hal8YM6cSwm68plBGaCxTBCQrn3fD+UjPSsggdbQ3Lt1b8Jvwiwk4j
- o6Kp8nMw==;
-Received: from [2601:1c0:6280:3f0::19c2]
- by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1kIQmO-0006tb-Lm; Wed, 16 Sep 2020 06:18:57 +0000
-Subject: Re: [PATCH] Doc: admin-guide: Add entry for kvm_cma_resv_ratio kernel
- param
-To: sathnaga@linux.vnet.ibm.com, linux-doc@vger.kernel.org
-References: <20200916061130.723411-1-sathnaga@linux.vnet.ibm.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <28eb9747-e4cc-424c-1f16-c68ed165b36a@infradead.org>
-Date: Tue, 15 Sep 2020 23:18:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrqjN639PzDqDL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 16:20:56 +1000 (AEST)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 055E765D4C38A2940654;
+ Wed, 16 Sep 2020 14:20:48 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 16 Sep 2020 14:20:41 +0800
+From: Qinglang Miao <miaoqinglang@huawei.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH -next] drivers/macintosh/smu.c: use for_each_child_of_node()
+ macro
+Date: Wed, 16 Sep 2020 14:21:22 +0800
+Message-ID: <20200916062122.190586-1-miaoqinglang@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20200916061130.723411-1-sathnaga@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,66 +48,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Qinglang Miao <miaoqinglang@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/15/20 11:11 PM, sathnaga@linux.vnet.ibm.com wrote:
-> From: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-> 
-> Add document entry for kvm_cma_resv_ratio kernel param which
-> is used to alter the KVM contiguous memory allocation percentage
-> for hash pagetable allocation used by hash mode PowerPC KVM guests.
-> 
-> Cc: linux-kernel@vger.kernel.org
-> Cc: kvm-ppc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Jonathan Corbet <corbet@lwn.net>  
-> Signed-off-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-> ---
->  Documentation/admin-guide/kernel-parameters.txt | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index a1068742a6df..9cb126573c71 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -599,6 +599,15 @@
->  			altogether. For more information, see
->  			include/linux/dma-contiguous.h
->  
-> +        kvm_cma_resv_ratio=n
-> +                        [PPC]
+Use for_each_child_of_node() macro instead of open coding it.
 
-You can put [PPC] on the line above.
+Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
+---
+ drivers/macintosh/smu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +                        Reserves given percentage from system memory area for
-> +                        contiguous memory allocation for KVM hash pagetable
-> +                        allocation.
-> +                        Bydefault it reserves 5% of total system memory.
-
-			   By default
-
-> +                        Format: <integer>
-> +                        Default: 5
-> +
-
-and please use tabs for indentation, not all spaces.
-
->  	cmo_free_hint=	[PPC] Format: { yes | no }
->  			Specify whether pages are marked as being inactive
->  			when they are freed.  This is used in CMO environments
-> 
-
-Entries in kernel-parameters.txt should be sorted into dictionary order,
-so please put that with the other kvm parameters.
-
-thanks.
+diff --git a/drivers/macintosh/smu.c b/drivers/macintosh/smu.c
+index 96684581a..45875e8c6 100644
+--- a/drivers/macintosh/smu.c
++++ b/drivers/macintosh/smu.c
+@@ -638,7 +638,7 @@ static void smu_expose_childs(struct work_struct *unused)
+ {
+ 	struct device_node *np;
+ 
+-	for (np = NULL; (np = of_get_next_child(smu->of_node, np)) != NULL;)
++	for_each_child_of_node(smu->of_node, np)
+ 		if (of_device_is_compatible(np, "smu-sensors"))
+ 			of_platform_device_create(np, "smu-sensors",
+ 						  &smu->of_dev->dev);
 -- 
-~Randy
+2.23.0
 
