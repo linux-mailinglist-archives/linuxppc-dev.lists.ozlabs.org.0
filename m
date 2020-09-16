@@ -2,74 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAF726BEB1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 10:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DE426BEC6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 10:04:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrsxB1NfVzDqFh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 18:01:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Brt0g6WxrzDqVs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 18:04:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=tony.ambardar@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sathnaga@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bLL86q+Z; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=mKW0ajCD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrsWf1dqRzDqTk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 17:42:31 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id mm21so1130491pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 00:42:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=IjUD0F6XmJJIFT5UAlzkPPx1enPEzZw4LiZfY+PSTUk=;
- b=bLL86q+ZcOR1A4VJ1duYRTdx6XqB66Wn3Xygvjuss1rMYTIezkiOVlB04WJS4wprxK
- czipKQk+YDFnf+SKMSJ/ccEzZ/ZIAfFVPgpLWG1EHWU9Xh1+ViF2F9t8kdYCCNPJqAQ8
- 9e+2m/8YKK2E/VNqjidKWHZkxc/KRxvw57jSTQHnyCzoWit53U3pznQLmAqBOoAA8UUw
- 44idV0N1OS814TFucxiZUh5wBsveHanKCQD0o3eb/A6CWCUWHItAVK70tImgIeRoZJIS
- vnSISoKxNfD5AMkS1YgCiUd9tCQitEjB1Cc2T0sLC8brqfDTU4JqXgMUzOF5KtAhAiJq
- Vc9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=IjUD0F6XmJJIFT5UAlzkPPx1enPEzZw4LiZfY+PSTUk=;
- b=Au8Iy6hT4ijRp1dglNkL2L04v8kI8SioLrOCZs0lui5nmC4WUKAxPaD5B9UWz3ibkp
- jFvk2ZKhfqg0XjIzWpVg3zWnwdbV0hDn6mv1TXOO/Si9xIncqs3QkdaGb631rXOXQZtJ
- GEp4Elyv+cJniWrU6yOkXRpwL6dPl86b8zOWudg5BFFaO0HOtUpuznTwZnocnV/wkcs8
- J85qrve45hpoDgg0S8vXFd2GbyrfDNfQm0CXA2Mu5HQ8nJ46BVGH0lC2DGaqZXMnBWAN
- QL7zEBM2GncUqnHBnxfQxtOVU3EHCZU7KVGvTNpaDfTQ0CS+tkBOsP+4yUs0SLUpXYQk
- T5lQ==
-X-Gm-Message-State: AOAM532s/AocPzmE32l8YZBu/q2s/TUnJxOhmG5c/4FCjDpvVTkvOgZv
- bgQkQbD2XXnxXoRXiKoM/WU=
-X-Google-Smtp-Source: ABdhPJza/sEXEDVNzVMlUYOQCWVI82fWeZ5KduXPTQK59ttTaEQQZILDfaf521IzMVIQ75m1GsSstA==
-X-Received: by 2002:a17:90a:d90c:: with SMTP id
- c12mr2817089pjv.94.1600242147868; 
- Wed, 16 Sep 2020 00:42:27 -0700 (PDT)
-Received: from localhost.localdomain ([2001:470:e92d:10:3481:f05e:64c3:d2bd])
- by smtp.gmail.com with ESMTPSA id
- z127sm7393152pfb.34.2020.09.16.00.42.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Sep 2020 00:42:27 -0700 (PDT)
-From: Tony Ambardar <tony.ambardar@gmail.com>
-X-Google-Original-From: Tony Ambardar <Tony.Ambardar@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v1] powerpc: fix EDEADLOCK redefinition error in
- uapi/asm/errno.h
-Date: Wed, 16 Sep 2020 00:42:14 -0700
-Message-Id: <20200916074214.995128-1-Tony.Ambardar@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrsyV0pGHzDqSx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 18:02:25 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 08G7XfFw191725; Wed, 16 Sep 2020 04:02:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=kYONQpZnfoJRN7A+f+OKz3QnmPOTSx5z/t0BhOZ1t2Y=;
+ b=mKW0ajCDhgsIBeC9W6whMBawJODAYR1jH5SqpG+bikxDbGclbnUEi/LPtlkC9aZR+W9s
+ 6FBbPVbxV4cnlu8VF/lUtfqz3GjEeUTLIyICBG0IOsFKjBV68wux464weHRHyClqW0bZ
+ CLOE4qLYWqzTLtwDSwqGi6HrkM6/A7etF6lnUKjkxn0s71PYNDhcqd0ngWKYlgJp6AgZ
+ O+GVpF3M2tN56WRhyoUwnArdCYImlrgrlDwD1dWbMRkNIIU0rkz2INiA7innyHLmag4w
+ z+MXvSO832xIr+kEeHk3tu/WSIuBk4EHoFlrjBHRDWcY7++wGq0/xnO4zcBlY3vlZnXl fg== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 33kd7tauv8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Sep 2020 04:02:16 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08G7v8p0008379;
+ Wed, 16 Sep 2020 08:02:14 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06fra.de.ibm.com with ESMTP id 33k5u7r77d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Sep 2020 08:02:14 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 08G82BS728705204
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Sep 2020 08:02:12 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A80DBA4109;
+ Wed, 16 Sep 2020 08:02:10 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 17809A411C;
+ Wed, 16 Sep 2020 08:01:57 +0000 (GMT)
+Received: from satheesh (unknown [9.85.113.207])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 16 Sep 2020 08:01:56 +0000 (GMT)
+Date: Wed, 16 Sep 2020 13:31:52 +0530
+From: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH] Doc: admin-guide: Add entry for kvm_cma_resv_ratio
+ kernel param
+Message-ID: <20200916080152.GB561070@satheesh>
+References: <20200916061130.723411-1-sathnaga@linux.vnet.ibm.com>
+ <28eb9747-e4cc-424c-1f16-c68ed165b36a@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 16 Sep 2020 17:59:29 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <28eb9747-e4cc-424c-1f16-c68ed165b36a@infradead.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235, 18.0.687
+ definitions=2020-09-16_02:2020-09-15,
+ 2020-09-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=5
+ spamscore=0 mlxlogscore=999 clxscore=1011 adultscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009160054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,73 +97,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tony Ambardar <Tony.Ambardar@gmail.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Rosen Penev <rosenp@gmail.com>,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Reply-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, sathnaga@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A few archs like powerpc have different errno.h values for macros
-EDEADLOCK and EDEADLK. In code including both libc and linux versions of
-errno.h, this can result in multiple definitions of EDEADLOCK in the
-include chain. Definitions to the same value (e.g. seen with mips) do
-not raise warnings, but on powerpc there are redefinitions changing the
-value, which raise warnings and errors (if using "-Werror").
+Hi Randy,
 
-Guard against these redefinitions to avoid build errors like the following,
-first seen cross-compiling libbpf v5.8.9 for powerpc using GCC 8.4.0 with
-musl 1.1.24:
+Thanks for the comments, will send a V2 fixing them.
 
-  In file included from ../../arch/powerpc/include/uapi/asm/errno.h:5,
-                   from ../../include/linux/err.h:8,
-                   from libbpf.c:29:
-  ../../include/uapi/asm-generic/errno.h:40: error: "EDEADLOCK" redefined [-Werror]
-   #define EDEADLOCK EDEADLK
+On Tue, Sep 15, 2020 at 11:18:52PM -0700, Randy Dunlap wrote:
+> On 9/15/20 11:11 PM, sathnaga@linux.vnet.ibm.com wrote:
+> > From: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> > 
+> > Add document entry for kvm_cma_resv_ratio kernel param which
+> > is used to alter the KVM contiguous memory allocation percentage
+> > for hash pagetable allocation used by hash mode PowerPC KVM guests.
+> > 
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: kvm-ppc@vger.kernel.org
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: Paul Mackerras <paulus@samba.org>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Jonathan Corbet <corbet@lwn.net>  
+> > Signed-off-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> > ---
+> >  Documentation/admin-guide/kernel-parameters.txt | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> > 
+> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> > index a1068742a6df..9cb126573c71 100644
+> > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > @@ -599,6 +599,15 @@
+> >  			altogether. For more information, see
+> >  			include/linux/dma-contiguous.h
+> >  
+> > +        kvm_cma_resv_ratio=n
+> > +                        [PPC]
+> 
+> You can put [PPC] on the line above.
+> 
+sure
+> > +                        Reserves given percentage from system memory area for
+> > +                        contiguous memory allocation for KVM hash pagetable
+> > +                        allocation.
+> > +                        Bydefault it reserves 5% of total system memory.
+> 
+> 			   By default
+> 
+> > +                        Format: <integer>
+> > +                        Default: 5
+> > +
+> 
+> and please use tabs for indentation, not all spaces.
+> 
+sure
+> >  	cmo_free_hint=	[PPC] Format: { yes | no }
+> >  			Specify whether pages are marked as being inactive
+> >  			when they are freed.  This is used in CMO environments
+> > 
+> 
+> Entries in kernel-parameters.txt should be sorted into dictionary order,
+> so please put that with the other kvm parameters.
+> 
+sure.
+> thanks.
+> -- 
+> ~Randy
+> 
 
-  In file included from toolchain-powerpc_8540_gcc-8.4.0_musl/include/errno.h:10,
-                   from libbpf.c:26:
-  toolchain-powerpc_8540_gcc-8.4.0_musl/include/bits/errno.h:58: note: this is the location of the previous definition
-   #define EDEADLOCK       58
-
-  cc1: all warnings being treated as errors
-  make[5]: *** [target-powerpc_8540_musl/bpftools-5.8.9/tools/build/Makefile.build:97: /home/kodidev/openwrt-project/build_dir/target-powerpc_8540_musl/bpftools-minimal/bpftools-5.8.9//libbpf/staticobjs/libbpf.o] Error 1
-
-Fixes: 95f28190aa01 ("tools include arch: Grab a copy of errno.h for arch's
-                      supported by perf")
-Fixes: c3617f72036c ("UAPI: (Scripted) Disintegrate arch/powerpc/include/asm")
-
-Reported-by: Rosen Penev <rosenp@gmail.com>
-Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
----
- arch/powerpc/include/uapi/asm/errno.h       | 1 +
- tools/arch/powerpc/include/uapi/asm/errno.h | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/arch/powerpc/include/uapi/asm/errno.h b/arch/powerpc/include/uapi/asm/errno.h
-index cc79856896a1..4ba87de32be0 100644
---- a/arch/powerpc/include/uapi/asm/errno.h
-+++ b/arch/powerpc/include/uapi/asm/errno.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_POWERPC_ERRNO_H
- #define _ASM_POWERPC_ERRNO_H
- 
-+#undef	EDEADLOCK
- #include <asm-generic/errno.h>
- 
- #undef	EDEADLOCK
-diff --git a/tools/arch/powerpc/include/uapi/asm/errno.h b/tools/arch/powerpc/include/uapi/asm/errno.h
-index cc79856896a1..4ba87de32be0 100644
---- a/tools/arch/powerpc/include/uapi/asm/errno.h
-+++ b/tools/arch/powerpc/include/uapi/asm/errno.h
-@@ -2,6 +2,7 @@
- #ifndef _ASM_POWERPC_ERRNO_H
- #define _ASM_POWERPC_ERRNO_H
- 
-+#undef	EDEADLOCK
- #include <asm-generic/errno.h>
- 
- #undef	EDEADLOCK
--- 
-2.25.1
-
+Thanks!
+-Satheesh.
