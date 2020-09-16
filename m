@@ -1,84 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2016F26B8DE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 02:51:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1740B26B900
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 02:54:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4BrhPW6FLvzDqMh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 10:51:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4BrhSy068XzDqRt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Sep 2020 10:54:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=OreGxmyp; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=iYk+kKA3; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4BrhLl5GP9zDqMF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 10:49:19 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08G0n37D044117;
- Wed, 16 Sep 2020 00:49:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=to : cc : subject :
- from : message-id : references : date : in-reply-to : mime-version :
- content-type; s=corp-2020-01-29;
- bh=Wpugk+2X4lKYTSUhznNeH62d8GptChzAALdIAX5yH4M=;
- b=OreGxmyp7u0pJXZnrDSw4H3kPCCPUFqIAYAt8XNAytEPV1CXDuYdycYjbY1496j+NYDF
- uBW5S8jJqArC0ZI867L6MHpkbLs6eR1sXrnp4THEAqJR1scjTJbHF1rTli+RNyyQHiqw
- v6g1GDCFTxcaFzuwrsrxH2H7CwFqr03KUadruKnxS7ClC9bBk/S7hEjkVKuVHTiBowD3
- mz4sAo9ZlymljhB8FNabiEPlL93whQrtUaYCUPEQQ+YCcBcsKV5Wkb97d46+YUhvurQU
- PUQ8QNTuSkLwqWe9FcTTrogIj6Z2MjhbRUqB8ffkth4uVxgCAPcBY+UOIc4ndP4pwAcG LQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by aserp2120.oracle.com with ESMTP id 33gp9m86dg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 16 Sep 2020 00:49:14 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08G0Uj2t151445;
- Wed, 16 Sep 2020 00:49:14 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by userp3030.oracle.com with ESMTP id 33h890bp29-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Sep 2020 00:49:14 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08G0nBFB005132;
- Wed, 16 Sep 2020 00:49:12 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 16 Sep 2020 00:49:11 +0000
-To: Brian King <brking@linux.vnet.ibm.com>
-Subject: Re: [PATCH] ibmvfc: Avoid link down on FS9100 canister reboot
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1o8m61r87.fsf@ca-mkp.ca.oracle.com>
-References: <1599859706-8505-1-git-send-email-brking@linux.vnet.ibm.com>
-Date: Tue, 15 Sep 2020 20:49:09 -0400
-In-Reply-To: <1599859706-8505-1-git-send-email-brking@linux.vnet.ibm.com>
- (Brian King's message of "Fri, 11 Sep 2020 16:28:26 -0500")
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4BrhPm40WBzDqKv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Sep 2020 10:51:55 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id v196so2977212pfc.1;
+ Tue, 15 Sep 2020 17:51:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=4VG52NZ5PylUbTv0Q7EDPuFbreo6io19OqglSpd2cD4=;
+ b=iYk+kKA3vmB4m0bCyZfbroS+2sCVjoLIS/stfocvV6oUe+sCR6FeTKps5z0e3jWiCD
+ T/yNexv7sL15rvODycGRaZId38woG+toYb4aJ17X5uwu/7ZPNmkxvGqfJGaBmbU+A2U2
+ Lr0UNOl1rPDbLUgwjA6vkzpfmCxB2SQf9X9qSNwFRtkD9QhoOTYZ8W0vjIGEAcFCiqG8
+ 6Qt0Pqumw7AcfddW/9g+J8bSkE4Y81CK0jHkAMxFQUC093N8ItSE/jS6g2hli+Dydbp+
+ wcqa7pznO82ZAPjfSQ/WKMjkgSXsUgBlMwYFwEoKpopFzDedgYUjkJceHtsRLkp9Jwkx
+ rUQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=4VG52NZ5PylUbTv0Q7EDPuFbreo6io19OqglSpd2cD4=;
+ b=Psoiin711QnIF9A8JQMvyqbpsvoWNRfYPv+ijqMFPRiX4weXCDBrIDsWQIrxkrVFSd
+ JgG5s1oyszXC9bl4cxUVvuvoFtKMtyf2v7dpNPiZvp0O7wp9O+YmJzvUduYywIsZTTvo
+ eaP/ogvkvArJR6BtO0v6PTwuGSgLTnpkTMQXlacUOHcA01VlrswbEVuUfJ6WMQ9dTatd
+ DNF4YNzni2MKM1i1O3rP77HQ4Juuq2hzuBkBjqDeQ75p6ZibPedA8NcqOdu7mW+paWK4
+ bKXhL8LrTQ8d6tZYuC0ZuLDiDgpjjVJrFPym46C4ikJAgnEb8rv5ky/voRDGeZY4VQmI
+ HOnQ==
+X-Gm-Message-State: AOAM530NKYF+ZI/RR1h57DteqeU0LbPVC+DEEXxYrc1G0mTiJun87Q+L
+ VCbNxGiwxdUxJd/eb2BY6ylUMfP28Jx9Yw==
+X-Google-Smtp-Source: ABdhPJykdFxYQHIpMnh8nQ1FL0zlz4bPSng6Kem9+6L9xgZeOow4kF8BNsWCc7U1lLS2kdop7q1Zew==
+X-Received: by 2002:a63:1a19:: with SMTP id a25mr16025701pga.359.1600217512373; 
+ Tue, 15 Sep 2020 17:51:52 -0700 (PDT)
+Received: from localhost ([203.185.249.227])
+ by smtp.gmail.com with ESMTPSA id nl10sm583701pjb.11.2020.09.15.17.51.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Sep 2020 17:51:51 -0700 (PDT)
+Date: Wed, 16 Sep 2020 10:51:46 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: Injecting SLB miltihit crashes kernel 5.9.0-rc5
+To: linuxppc-dev@lists.ozlabs.org, mahesh@lists.ozlabs.org, Michael Ellerman
+ <mpe@ellerman.id.au>, Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>
+References: <20200915084302.GG29778@kitsune.suse.cz>
+ <87bli7p5dx.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87bli7p5dx.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- spamscore=0 adultscore=0
- suspectscore=1 mlxscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009160001
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745
- signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- mlxlogscore=999
- adultscore=0 malwarescore=0 clxscore=1011 lowpriorityscore=0 phishscore=0
- spamscore=0 priorityscore=1501 suspectscore=1 impostorscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009160002
+Message-Id: <1600217251.rwlk7zedhj.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,22 +80,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- martin.petersen@oracle.com, linux-scsi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Michael Ellerman's message of September 15, 2020 10:54 pm:
+> Michal Such=C3=A1nek <msuchanek@suse.de> writes:
+>> Hello,
+>>
+>> Using the SLB mutihit injection test module (which I did not write so I
+>> do not want to post it here) to verify updates on my 5.3 frankernekernel
+>> I found that the kernel crashes with Oops: kernel bad access.
+>>
+>> I tested on latest upstream kernel build that I have at hand and the
+>> result is te same (minus the message - nothing was logged and the kernel
+>> simply rebooted).
+>=20
+> That's disappointing.
 
-Brian,
+It seems to work okay with qemu and mambo injection on upstream
+(powernv_defconfig). I wonder why that nmi_enter is crashing.
+Can you post the output of a successful test with the patch
+reverted?
 
-> When a canister on a FS9100, or similar storage, running in NPIV mode,
-> is rebooted, its WWPNs will fail over to another canister.
 
-[...]
+qemu injection test output -=20
+[  195.279885][    C0] Disabling lock debugging due to kernel taint
+[  195.280891][    C0] MCE: CPU0: machine check (Warning) Host SLB Multihit=
+ DAR: 00000000deadbeef [Recovered]
+[  195.282117][    C0] MCE: CPU0: NIP: [c00000000003c2b4] isa300_idle_stop_=
+mayloss+0x68/0x6c
+[  195.283631][    C0] MCE: CPU0: Initiator CPU
+[  195.284432][    C0] MCE: CPU0: Probable Software error (some chance of h=
+ardware cause)
+[  220.711577][   T90] MCE: CPU0: machine check (Warning) Host SLB Multihit=
+ DAR: 00000000deadbeef [Recovered]
+[  220.712805][   T90] MCE: CPU0: PID: 90 Comm: yes NIP: [00007fff7fdac2e0]
+[  220.713553][   T90] MCE: CPU0: Initiator CPU
+[  220.714021][   T90] MCE: CPU0: Probable Software error (some chance of h=
+ardware cause)
 
-Applied to 5.10/scsi-staging, thanks! I fixed a bunch of checkpatch
-warnings.
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Thanks,
+Nick
